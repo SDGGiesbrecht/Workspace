@@ -51,7 +51,13 @@ struct Repository {
             
             var result: [String] = []
             while let path = enumerator.nextObject() as? String {
-                result.append(path)
+                
+                var isDirectory: ObjCBool = false
+                if fileManager.fileExists(atPath: path, isDirectory: &isDirectory) {
+                    if ¬isDirectory.boolValue {
+                        result.append(path)
+                    }
+                }
             }
             return result
         }

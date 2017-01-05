@@ -13,4 +13,7 @@ print("") // Line break after the command itself.
 
 Command.current.run(andExit: true)
 
-fail(message: "This code should be unreachable. There may be a bug in Workspace.")
+fatalError(message: [
+    "This code should be unreachable.",
+    "There may be a bug in Workspace.",
+    ])

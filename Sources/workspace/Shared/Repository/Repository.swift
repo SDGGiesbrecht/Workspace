@@ -24,8 +24,9 @@ struct Repository {
     // MARK: - Cache
     
     private struct Cache {
+        fileprivate var allFilesIncludingWorkspaceItself: [String]?
         fileprivate var allFiles: [String]?
-        fileprivate var isEmpty: Bool?
+        fileprivate var printableListOfAllFiles: String?
     }
     private static var cache = Cache()
     
@@ -40,12 +41,12 @@ struct Repository {
         cache = Cache()
     }
     
-    static var allFiles: [String] {
-        return cachedResult(cache: &cache.allFiles) {
+    static var allFilesIncludingWorkspaceItself: [String] {
+        return cachedResult(cache: &cache.allFilesIncludingWorkspaceItself) {
             () -> [String] in
             
             guard let enumerator = fileManager.enumerator(atPath: repositoryPath) else {
-                fail(message: "Cannot enumerate files in project.")
+                fatalError(message: ["Cannot enumerate files in project."])
             }
             
             var result: [String] = []
@@ -56,16 +57,27 @@ struct Repository {
         }
     }
     
-    static var isEmpty: Bool {
-        return cachedResult(cache: &cache.isEmpty) {
-            () -> Bool in
+    static var allFiles: [String] {
+        return cachedResult(cache: &cache.allFiles) {
+            () -> [String] in
             
-            for path in allFiles {
-                if ¬(path.hasPrefix(workspaceDirectory) ∨ path == ".DS_Store") {
-                    return false
-                }
+            return allFilesIncludingWorkspaceItself.filter() {
+                (path: String) -> Bool in
+                
+                return ¬(path.hasPrefix(workspaceDirectory) ∨ path == ".DS_Store")
             }
-            return true
         }
+    }
+    
+    static var printableListOfAllFiles: String {
+        return cachedResult(cache: &cache.printableListOfAllFiles) {
+            () -> String in
+            
+            return allFiles.joined(separator: "\n")
+        }
+    }
+    
+    static var isEmpty: Bool {
+        return allFiles.isEmpty
     }
 }

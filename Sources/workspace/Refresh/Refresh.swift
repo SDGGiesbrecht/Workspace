@@ -12,6 +12,6 @@
 func runRefresh(andExit shouldExit: Bool) {
     
     if shouldExit {
-        succeed(message: "Refreshed.")
+        succeed(message: ["Refreshed."])
     }
 }

@@ -11,14 +11,12 @@
 
 import Foundation
 
-/*
 func inputSyntaxError(message: String) -> Never {
     let commands = Command.allNames.joined(separator: "\n")
     let flags = Flag.allFlags.joined(separator: "\n")
     
     fatalError(message: "\(message)\n\nAvailable commands:\n\n\(commands)\n\nAvailable flags:\n\n\(flags)")
 }
-*/
 
 func fatalError(message: String) -> Never  {
     fail(message: message)

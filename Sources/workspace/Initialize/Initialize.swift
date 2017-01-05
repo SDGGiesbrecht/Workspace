@@ -12,6 +12,9 @@
 func runInitialize(andExit shouldExit: Bool) {
     
     if shouldExit {
+        
+        print("Executable?: \(Flags.executable)")
+        
         succeed(message: "Initialized.")
     }
 }

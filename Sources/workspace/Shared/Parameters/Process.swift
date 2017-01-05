@@ -1,4 +1,4 @@
-// main.swift
+// Process.swift
 //
 // This source file is part of the Workspace open source project.
 //
@@ -9,11 +9,8 @@
 // Licensed under the Apache License, Version 2.0
 // See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
-print("") // Line break after the command itself.
+import Foundation
 
-Command.current.run(andExit: true)
-
-fatalError(message: [
-    "This code should be unreachable.",
-    "There may be a bug in Workspace.",
-    ])
+#if os(Linux)
+    typealias Process = Task
+#endif

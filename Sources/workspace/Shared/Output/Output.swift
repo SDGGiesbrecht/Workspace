@@ -15,41 +15,55 @@ func inputSyntaxError(message: String) -> Never {
     let commands = Command.allNames.joined(separator: "\n")
     let flags = Flag.allFlags.joined(separator: "\n")
     
-    fatalError(message: "\(message)\n\nAvailable commands:\n\n\(commands)\n\nAvailable flags:\n\n\(flags)")
+    fatalError(message: [
+        message,
+        "",
+        "Available commands:",
+        "",
+        commands,
+        "",
+        "Available flags:",
+        "",
+        flags,
+        ])
 }
 
-func fatalError(message: String) -> Never  {
+func fatalError(message: [String]) -> Never  {
     fail(message: message)
 }
 
 // MARK: - Generic Exiting
 
-func succeed(message: String) -> Never {
+func succeed(message: [String]) -> Never {
     print(message, in: .green, spaced: true)
     exit(EXIT_SUCCESS)
 }
 
-func fail(message: String) -> Never {
+func fail(message: [String]) -> Never {
     print(message, in: .red, spaced: true)
     exit(EXIT_FAILURE)
 }
 
 // MARK: - Generic Printing
 
-private func printHeader(_ message: String) {
+func printHeader(_ message: [String]) {
     print(message, in: .blue, spaced: true)
 }
 
-private func printPrompt(_ message: String) {
+func printPrompt(_ message: [String]) {
     print(message, in: .yellow, spaced: true)
 }
 
-private func printError(_ message: String) {
+private func printError(_ message: [String]) {
     print(message, in: .red, spaced: true)
 }
 
-private func print(_ message: String, in colour: OutputColour?, spaced: Bool = false) {
-    var output = message
+func print(_ message: [String]) {
+    print(message, in: nil)
+}
+
+private func print(_ message: [String], in colour: OutputColour?, spaced: Bool = false) {
+    var output = message.joined(separator: "\n")
     if let textColour = colour {
         output = "\u{1B}[0;\(textColour.code)m\(output)\u{1B}[0;30m"
     }

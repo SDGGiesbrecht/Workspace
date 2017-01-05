@@ -15,4 +15,16 @@ struct Environment {
     
     // MARK: - Properties
     
+    private static func environmentVariable(_ name: String) -> String? {
+        return ProcessInfo.processInfo.environment[name]
+    }
+    
+    private static func requiredEnvironmentVariable(_ name: String) -> String {
+        guard let result = environmentVariable(name) else {
+            fatalError(message: [
+                "Environment variable missing: \(name)"
+                ])
+        }
+        return result
+    }
 }

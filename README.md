@@ -23,14 +23,17 @@ Workspace automates management of Swift projects.
 
 To have Workspace create a new Swift project from scratch, run this script in an empty folder:
 
+```shell
 git clone https://github.com/SDGGiesbrecht/Workspace .Workspace
 cd .Workspace
 swift build --configuration release
 cd ..
 .Workspace/.build/release/workspace initialize
+```
 
 ### Existing Projects
 
+```shell
 To have Workspace take responsibility for an existing project, run this script the root of its repository:
 
 git clone https://github.com/SDGGiesbrecht/Workspace .Workspace
@@ -38,3 +41,4 @@ cd .Workspace
 swift build --configuration release
 cd ..
 .Workspace/.build/release/workspace refresh
+```

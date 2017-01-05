@@ -15,7 +15,7 @@ func runInitialize(andExit shouldExit: Bool) {
 
         print("Executable?: \(Flags.executable)")
         
-        print("Existing files:\n\n\(Repository.contentsList.joined(separator: "\n"))")
+        print("Empty directory: \(Repository.isEmpty)")
         
         succeed(message: "Initialized.")
     }

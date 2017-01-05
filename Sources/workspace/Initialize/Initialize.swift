@@ -12,8 +12,10 @@
 func runInitialize(andExit shouldExit: Bool) {
     
     if shouldExit {
-        
+
         print("Executable?: \(Flags.executable)")
+        
+        print("Existing files:\n\n\(Repository.contentsList)")
         
         succeed(message: "Initialized.")
     }

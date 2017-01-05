@@ -17,6 +17,8 @@ Workspace automates management of Swift projects.
 
 ## What Workspace Can Do
 
+- Set [new projects](#new-projects) up from scratch.
+
 ## Set‐Up
 
 ### New Projects

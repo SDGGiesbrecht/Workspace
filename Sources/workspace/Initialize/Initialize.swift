@@ -1,4 +1,4 @@
-// Package.swift
+// Initialize.swift
 //
 // This source file is part of the Workspace open source project.
 //
@@ -9,11 +9,9 @@
 // Licensed under the Apache License, Version 2.0
 // See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
-import PackageDescription
-
-let package = Package(
-    name: "Workspace",
-    dependencies: [
-        .Package(url: "https://github.com/SDGGiesbrecht/SDGMathematics", versions: "1.0.0" ..< "2.0.0")
-    ]
-)
+func runInitialize(andExit shouldExit: Bool) {
+    
+    if shouldExit {
+        succeed(message: "Initialized.")
+    }
+}

@@ -54,6 +54,7 @@ struct Repository {
                 
                 var isDirectory: ObjCBool = false
                 if fileManager.fileExists(atPath: path, isDirectory: &isDirectory) {
+                    
                     if ¬isDirectory.boolValue {
                         result.append(path)
                     }

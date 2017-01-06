@@ -133,7 +133,7 @@ struct Repository {
         resetCache()
     }
     
-    static func copy(_ origin: String, to destination: String) throws {
+    private static func performPathChange(from origin: String, to destination: String, copy: Bool) throws {
         
         // This must generate the entire list of files to copy before starting to make changes. Otherwise the run‐away effect of copying a directory into itself is catastrophic.
         let files = allFiles(at: origin)
@@ -147,19 +147,28 @@ struct Repository {
         
         for change in changes {
             
-            print(["Moving “\(change.changeOrigin)” to “\(change.changeDestination)”."])
+            let verb = copy ? "Copying" : "Moving"
+            print(["\(verb) “\(change.changeOrigin)” to “\(change.changeDestination)”."])
             
-            force() { try delete(change.changeOrigin) }
+            force() { try delete(change.changeDestination) }
+            
             try fileManager.copyItem(atPath: change.changeOrigin, toPath: change.changeDestination)
+            
+            if ¬copy {
+                try fileManager.removeItem(atPath: change.changeOrigin)
+            }
         }
         
         resetCache()
     }
     
-    static func move(_ origin: String, to destination: String) throws {
-        try copy(origin, to: destination)
-        // try delete(origin)
+    static func copy(_ origin: String, to destination: String) throws {
         
-        resetCache()
+        try performPathChange(from: origin, to: destination, copy: true)
+    }
+    
+    static func move(_ origin: String, to destination: String) throws {
+        
+        try performPathChange(from: origin, to: destination, copy: false)
     }
 }

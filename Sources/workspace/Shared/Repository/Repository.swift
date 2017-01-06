@@ -156,13 +156,9 @@ struct Repository {
             
             force() { try delete(change.changeDestination) }
             
-            print("Cleared the way.")
-            
-            print(fileManager.fileExists(atPath: absolute(change.changeOrigin).string))
+            force() { try fileManager.createDirectory(atPath: absolute(change.changeDestination).directory, withIntermediateDirectories: true, attributes: nil) }
             
             try fileManager.copyItem(atPath: absolute(change.changeOrigin).string, toPath: absolute(change.changeDestination).string)
-            
-            print("Copied successfully.")
             
             if ¬copy {
                 try delete(change.changeOrigin)

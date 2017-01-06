@@ -9,6 +9,8 @@
 // Licensed under the Apache License, Version 2.0
 // See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
+import Foundation
+
 struct AbsolutePath: CustomStringConvertible, Equatable, ExpressibleByStringLiteral {
     
     // MARK: - Initialization
@@ -20,6 +22,11 @@ struct AbsolutePath: CustomStringConvertible, Equatable, ExpressibleByStringLite
     // MARK: - Properties
     
     var string: String
+    
+    var directory: String {
+        let url = URL(fileURLWithPath: string)
+        return url.deletingLastPathComponent().path
+    }
     
     // MARK: - CustomStringConvertible
     

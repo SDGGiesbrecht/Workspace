@@ -146,7 +146,7 @@ struct Repository {
             
             let relative = changeOrigin.string.substring(from: changeOrigin.string.index(changeOrigin.string.characters.startIndex, offsetBy: origin.string.characters.count))
             
-            return (changeOrigin, RelativePath(destination.string + "/" + relative))
+            return (changeOrigin, RelativePath(destination.string + relative))
         }
         
         for change in changes {

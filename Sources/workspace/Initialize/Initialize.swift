@@ -50,7 +50,7 @@ func runInitialize(andExit shouldExit: Bool) {
     
     var script = ["swift", "package", "init"]
     if Flags.executable {
-        script.append(contentsOf: ["--executable"])
+        script.append(contentsOf: ["--type", "executable"])
     }
     requireBash(script)
     

@@ -161,10 +161,4 @@ struct Repository {
         
         resetCache()
     }
-    
-    // MARK: - Filename Sanitization
-    
-    static func sanitizeFilenameLikeSwiftPackageManager(filename: String) -> String {
-        return filename.replacingOccurrences(of: " ", with: "_")
-    }
 }

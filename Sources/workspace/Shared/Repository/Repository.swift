@@ -91,10 +91,24 @@ struct Repository {
     }
     
     static func allFiles(at path: String) -> [String] {
+        print("searching \(path)")
         return allFilesIncludingWorkspaceItself.filter() {
             (possiblePath: String) -> Bool in
             
-            return possiblePath.hasPrefix(path + "/") ∨ possiblePath == path
+            if possiblePath == path {
+                print("the file \(path)")
+                // The file itself
+                return true
+            }
+            
+            if possiblePath.hasPrefix(path + "/") {
+                print("subfolder \(path)")
+                // In the folder.
+                return true
+            }
+            print("Not \(path)")
+            
+            return false
         }
     }
     

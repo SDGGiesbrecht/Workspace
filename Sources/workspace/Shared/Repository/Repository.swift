@@ -127,6 +127,7 @@ struct Repository {
         
         // This must generate the entire list of files to copy before starting to make changes. Otherwise the run‐away effect of copying a directory into itself is catastrophic.
         let files = allFiles(at: origin)
+        print(files)
         let changes = files.map() {
             (changeOrigin: String) -> (changeOrigin: String, changeDestination: String) in
             

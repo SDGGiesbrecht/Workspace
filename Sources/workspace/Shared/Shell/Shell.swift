@@ -27,7 +27,7 @@ func bash(_ arguments: [String]) -> Bool {
     return process.terminationStatus == EXIT_SUCCESS
 }
 
-func forceBash(_ arguments: [String]) {
+func requireBash(_ arguments: [String]) {
     if ¬bash(arguments) {
         fatalError(message: [
             "Command failed:",

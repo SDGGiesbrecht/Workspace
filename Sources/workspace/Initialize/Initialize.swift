@@ -13,7 +13,9 @@ import SDGLogic
 
 func runInitialize(andExit shouldExit: Bool) {
     
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Initializing workspace..."])
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
     if ¬Repository.isEmpty {
         
@@ -42,17 +44,35 @@ func runInitialize(andExit shouldExit: Bool) {
         fatalError(message: message)
     }
     
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Generating Swift package..."])
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
     var script = ["swift", "package", "init"]
     if Flags.executable {
         script.append(contentsOf: ["--executable"])
     }
-    forceBash(script)
+    requireBash(script)
     
     print(["Arranging Swift package..."])
     
     force() { try Repository.move("Sources", to: "Sources/\(Configuration.projectName)") }
+    
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    printHeader(["Initializing git repository..."])
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    
+    requireBash(["git", "init"])
+    
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    // Refreshing
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    
+    Command.refresh.run(andExit: false)
+    
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    // Summary
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
     if shouldExit {
         succeed(message: ["\(Configuration.projectName) has been initialized."])

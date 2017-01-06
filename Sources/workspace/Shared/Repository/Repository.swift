@@ -146,10 +146,11 @@ struct Repository {
         }
         
         for change in changes {
+            
             print(["Moving “\(change.changeOrigin)” to “\(change.changeDestination)”."])
             
-            //force() { try delete(destination) }
-            //try fileManager.copyItem(atPath: file, toPath: destination)
+            force() { try delete(change.changeOrigin) }
+            try fileManager.copyItem(atPath: change.changeOrigin, toPath: change.changeDestination)
         }
         
         resetCache()

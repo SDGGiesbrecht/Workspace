@@ -119,7 +119,7 @@ struct Repository {
         
         force() { try delete(destination) }
         
-        try fileManager.copyItem(atPath: origin, toPath: destination)
+        //try fileManager.copyItem(atPath: origin, toPath: destination)
         
         resetCache()
     }

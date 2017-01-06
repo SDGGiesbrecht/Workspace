@@ -158,6 +158,8 @@ struct Repository {
             
             print("Cleared the way.")
             
+            print(fileManager.fileExists(atPath: absolute(change.changeOrigin).string))
+            
             try fileManager.copyItem(atPath: absolute(change.changeOrigin).string, toPath: absolute(change.changeDestination).string)
             
             print("Copied successfully.")

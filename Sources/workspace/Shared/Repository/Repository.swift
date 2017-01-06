@@ -150,12 +150,15 @@ struct Repository {
             let verb = copy ? "Copying" : "Moving"
             print(["\(verb) “\(change.changeOrigin)” to “\(change.changeDestination)”."])
             
-            force() { try delete(change.changeDestination) }
+            let absoluteOrigin = workspaceDirectory + change.changeOrigin
+            let absoluteDestination = workspaceDirectory + change.changeDestination
             
-            try fileManager.copyItem(atPath: change.changeOrigin, toPath: change.changeDestination)
+            force() { try delete(absoluteDestination) }
+            
+            try fileManager.copyItem(atPath: absoluteOrigin, toPath: absoluteDestination)
             
             if ¬copy {
-                try fileManager.removeItem(atPath: change.changeOrigin)
+                try fileManager.removeItem(atPath: absoluteOrigin)
             }
         }
         

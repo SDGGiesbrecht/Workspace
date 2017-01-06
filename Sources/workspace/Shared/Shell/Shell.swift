@@ -22,6 +22,8 @@ func bash(_ arguments: [String]) -> Bool {
     process.launch()
     process.waitUntilExit()
     
+    Repository.resetCache()
+    
     return process.terminationStatus == EXIT_SUCCESS
 }
 

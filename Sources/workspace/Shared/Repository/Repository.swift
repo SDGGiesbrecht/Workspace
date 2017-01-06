@@ -90,6 +90,14 @@ struct Repository {
         return allFiles.isEmpty
     }
     
+    static func allFiles(at path: String) -> [String] {
+        return allFilesIncludingWorkspaceItself.filter() {
+            (possiblePath: String) -> Bool in
+            
+            return possiblePath.hasPrefix(path + "/") ∨ possiblePath == path
+        }
+    }
+    
     // MARK: - Files
     
     static func read(file path: String) throws -> File {
@@ -117,9 +125,22 @@ struct Repository {
     
     static func copy(_ origin: String, to destination: String) throws {
         
-        force() { try delete(destination) }
+        // This must generate the entire list of files to copy before starting to make changes. Otherwise the run‐away effect of copying a directory into itself is catastrophic.
+        let files = allFiles(at: origin)
+        let changes = files.map() {
+            (changeOrigin: String) -> (changeOrigin: String, changeDestination: String) in
+            
+            let relative = changeOrigin.substring(from: changeOrigin.index(changeOrigin.characters.startIndex, offsetBy: origin.characters.count))
+            
+            return (changeOrigin, destination + relative)
+        }
         
-        //try fileManager.copyItem(atPath: origin, toPath: destination)
+        for change in changes {
+            print(["Moving “\(change.changeOrigin)” to “\(change.changeDestination)”."])
+            
+            //force() { try delete(destination) }
+            //try fileManager.copyItem(atPath: file, toPath: destination)
+        }
         
         resetCache()
     }

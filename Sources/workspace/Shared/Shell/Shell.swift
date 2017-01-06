@@ -13,11 +13,10 @@ import Foundation
 
 import SDGLogic
 
-/*
 func bash(_ arguments: [String]) -> Bool {
     
     let process = Process()
-    process.launchPath = "/bin/bash"
+    process.launchPath = "/usr/bin/env"
     process.arguments = arguments
     
     process.launch()
@@ -32,7 +31,8 @@ func forceBash(_ arguments: [String]) {
             "Command failed:",
             "",
             arguments.joined(separator: " "),
+            "",
+            "See details above.",
             ])
     }
 }
-*/

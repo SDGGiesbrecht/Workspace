@@ -96,17 +96,17 @@ struct Repository {
             (possiblePath: String) -> Bool in
             
             if possiblePath == path {
-                print("the file \(path)")
+                print("the file \(possiblePath)")
                 // The file itself
                 return true
             }
             
             if possiblePath.hasPrefix(path + "/") {
-                print("subfolder \(path)")
+                print("subfolder \(possiblePath)")
                 // In the folder.
                 return true
             }
-            print("Not \(path)")
+            print("Not \(possiblePath)")
             
             return false
         }

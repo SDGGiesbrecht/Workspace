@@ -56,8 +56,7 @@ func runInitialize(andExit shouldExit: Bool) {
     
     print(["Arranging Swift package..."])
     
-    let changeThisToForceOnceItWorks = 0
-    require() { try Repository.move("Sources", to: RelativePath("Sources/\(Configuration.projectName)")) }
+    force() { try Repository.move("Sources", to: RelativePath("Sources/\(Configuration.projectName)")) }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Initializing git repository..."])

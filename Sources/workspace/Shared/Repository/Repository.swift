@@ -156,7 +156,9 @@ struct Repository {
             
             force() { try delete(change.changeDestination) }
             
-            try fileManager.copyItem(atPath: absolute(change.changeOrigin).string, toPath: absolute(change.changeOrigin).string)
+            print(absolute(change.changeOrigin).string)
+            print(absolute(change.changeOrigin).string)
+            try fileManager.copyItem(atPath: absolute(change.changeOrigin).string, toPath: absolute(change.changeDestination).string)
             
             if ¬copy {
                 try delete(change.changeOrigin)

@@ -13,22 +13,27 @@ import SDGLogic
 
 func runInitialize(andExit shouldExit: Bool) {
     
+    if ¬Repository.isEmpty {
+        fatalError(message: [
+            "This folder is not empty.",
+            "",
+            "Existing files:",
+            Repository.printableListOfAllFiles,
+            "",
+            "This command is only for use in empty folders.",
+            "For more information, see:",
+            "https://github.com/SDGGiesbrecht/Workspace#setup",
+            ])
+    }
+    print("Executable?: \(Flags.executable)")
+    
+    var script = ["swift", "package", "init"]
+    if Flags.executable {
+        script.append(contentsOf: ["--executable"])
+    }
+    //forceBash(script)
+    
     if shouldExit {
-
-        if ¬Repository.isEmpty {
-            fatalError(message: [
-                "This folder is not empty.",
-                "",
-                "Existing files:",
-                Repository.printableListOfAllFiles,
-                "",
-                "This command is only for use in empty folders.",
-                "For more information, see:",
-                "https://github.com/SDGGiesbrecht/Workspace#setup",
-                ])
-        }
-        print("Executable?: \(Flags.executable)")
-        
         succeed(message: ["Initialized."])
     }
 }

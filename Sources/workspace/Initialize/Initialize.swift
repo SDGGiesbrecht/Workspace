@@ -13,8 +13,11 @@ import SDGLogic
 
 func runInitialize(andExit shouldExit: Bool) {
     
+    printHeader(["Initializing workspace..."])
+    
     if ¬Repository.isEmpty {
-        fatalError(message: [
+        
+        var message = [
             "This folder is not empty.",
             "",
             "Existing files:",
@@ -23,17 +26,34 @@ func runInitialize(andExit shouldExit: Bool) {
             "This command is only for use in empty folders.",
             "For more information, see:",
             "https://github.com/SDGGiesbrecht/Workspace#setup",
-            ])
+            ]
+        
+        do {
+            try Repository.delete(".Workspace")
+        } catch let error {
+            message.append(contentsOf: [
+                "",
+                "Failed to clean up “.Workspace”:",
+                "",
+                error.localizedDescription
+                ])
+        }
+        
+        fatalError(message: message)
     }
-    print("Executable?: \(Flags.executable)")
+    
+    printHeader(["Generating Swift package..."])
     
     var script = ["swift", "package", "init"]
     if Flags.executable {
         script.append(contentsOf: ["--executable"])
     }
-    //forceBash(script)
+    forceBash(script)
+    
+    print(["Arranging Swift package..."])
+    //force() { try Repository.move("Sources", to: "Sources/\(Configuration.projectName)") }
     
     if shouldExit {
-        succeed(message: ["Initialized."])
+        succeed(message: ["\(Configuration.projectName) has been initialized."])
     }
 }

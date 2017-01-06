@@ -156,6 +156,8 @@ struct Repository {
             
             force() { try delete(change.changeDestination) }
             
+            print("Cleared the way.")
+            
             try fileManager.copyItem(atPath: absolute(change.changeOrigin).string, toPath: absolute(change.changeDestination).string)
             
             print("Copied successfully.")

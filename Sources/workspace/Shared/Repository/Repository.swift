@@ -111,6 +111,7 @@ struct Repository {
     // MARK: - Files
     
     private static func absolute(_ relativePath: RelativePath) -> AbsolutePath {
+        print("\(relativePath) → \(AbsolutePath(repositoryPath.string + "/" + relativePath.string))")
         return AbsolutePath(repositoryPath.string + "/" + relativePath.string)
     }
     

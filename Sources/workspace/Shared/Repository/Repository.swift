@@ -147,7 +147,7 @@ struct Repository {
     
     static func move(_ origin: String, to destination: String) throws {
         try copy(origin, to: destination)
-        try delete(origin)
+        // try delete(origin)
         
         resetCache()
     }

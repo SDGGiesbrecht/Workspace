@@ -51,7 +51,9 @@ func runInitialize(andExit shouldExit: Bool) {
     forceBash(script)
     
     print(["Arranging Swift package..."])
-    force() { try Repository.move("Sources", to: "Sources/\(Configuration.projectName)") }
+    
+    let module = Repository.sanitizeFilenameLikeSwiftPackageManager(filename: Configuration.projectName)
+    force() { try Repository.move("Sources", to: "Sources/\(module)") }
     
     if shouldExit {
         succeed(message: ["\(Configuration.projectName) has been initialized."])

@@ -68,7 +68,11 @@ func runInitialize(andExit shouldExit: Bool) {
     printHeader(["Configuring Workspace..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
-    let configuration = "\n\n" + Configuration.configurationFileEntry(option: .automaticallyTakeOnNewResponsibilites, value: true, comment: ["This was the default setting when the Workspace initialized the project."])
+    let configuration = "\n\n" + Configuration.configurationFileEntry(option: .automaticallyTakeOnNewResponsibilites, value: true, comment: [
+        "This was the default setting when the Workspace initialized the project.",
+        "For more information about “\(Option.automaticallyTakeOnNewResponsibilites)”, see:",
+        "https://github.com/SDGGiesbrecht/Workspace/blob/master/Documentation/\(Option.automaticResponsibilityDocumentationPage).md"
+        ])
     require() { try Repository.write(file: File(path: Configuration.configurationFilePath, contents: configuration)) }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

@@ -33,6 +33,8 @@ cd ..
 .Workspace/.build/release/workspace initialize
 ```
 
+Add the ` •executable` flag to the end of the last line to initialize an executable instead of a library.
+
 ### Existing Projects
 
 To have Workspace take responsibility for an existing project, run this script the root of its repository:

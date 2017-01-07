@@ -19,44 +19,46 @@ struct Repository {
     
     // MARK: - Configuration
     
-    static let workspaceDirectory = ".Workspace/"
+    static let workspaceDirectory: RelativePath = ".Workspace"
     
     // MARK: - Cache
     
     private struct Cache {
-        fileprivate var allFilesIncludingWorkspaceItself: [String]?
-        fileprivate var allFiles: [String]?
+        fileprivate var allFilesIncludingWorkspaceItself: [RelativePath]?
+        fileprivate var allFiles: [RelativePath]?
         fileprivate var printableListOfAllFiles: String?
+        fileprivate var packageDescription: File?
     }
     private static var cache = Cache()
     
     // MARK: - Constants
     
     private static let fileManager = FileManager.default
-    private static let repositoryPath = fileManager.currentDirectoryPath
+    private static let repositoryPath: AbsolutePath = AbsolutePath(fileManager.currentDirectoryPath)
     
-    // MARK: - Interface
+    // MARK: - Repository
     
     static func resetCache() {
         cache = Cache()
+        Configuration.resetCache()
     }
     
-    static var allFilesIncludingWorkspaceItself: [String] {
+    static var allFilesIncludingWorkspaceItself: [RelativePath] {
         return cachedResult(cache: &cache.allFilesIncludingWorkspaceItself) {
-            () -> [String] in
+            () -> [RelativePath] in
             
-            guard let enumerator = fileManager.enumerator(atPath: repositoryPath) else {
+            guard let enumerator = fileManager.enumerator(atPath: repositoryPath.string) else {
                 fatalError(message: ["Cannot enumerate files in project."])
             }
             
-            var result: [String] = []
+            var result: [RelativePath] = []
             while let path = enumerator.nextObject() as? String {
                 
                 var isDirectory: ObjCBool = false
                 if fileManager.fileExists(atPath: path, isDirectory: &isDirectory) {
                     
                     if ¬isDirectory.boolValue {
-                        result.append(path)
+                        result.append(RelativePath(path))
                     }
                 }
             }
@@ -64,14 +66,14 @@ struct Repository {
         }
     }
     
-    static var allFiles: [String] {
+    static var allFiles: [RelativePath] {
         return cachedResult(cache: &cache.allFiles) {
-            () -> [String] in
+            () -> [RelativePath] in
             
             return allFilesIncludingWorkspaceItself.filter() {
-                (path: String) -> Bool in
+                (path: RelativePath) -> Bool in
                 
-                return ¬(path.hasPrefix(workspaceDirectory) ∨ path == ".DS_Store")
+                return ¬(path.string.hasPrefix(workspaceDirectory.string + "/") ∨ path == RelativePath(".DS_Store"))
             }
         }
     }
@@ -80,11 +82,99 @@ struct Repository {
         return cachedResult(cache: &cache.printableListOfAllFiles) {
             () -> String in
             
-            return allFiles.joined(separator: "\n")
+            return allFiles.map({ $0.string }).joined(separator: "\n")
         }
     }
     
     static var isEmpty: Bool {
         return allFiles.isEmpty
+    }
+    
+    static func allFiles(at path: RelativePath) -> [RelativePath] {
+        return allFilesIncludingWorkspaceItself.filter() {
+            (possiblePath: RelativePath) -> Bool in
+            
+            if possiblePath == path {
+                // The file itself
+                return true
+            }
+            
+            if possiblePath.string.hasPrefix(path.string + "/") {
+                // In that folder.
+                return true
+            }
+            
+            return false
+        }
+    }
+    
+    // MARK: - Files
+    
+    private static func absolute(_ relativePath: RelativePath) -> AbsolutePath {
+        return AbsolutePath(repositoryPath.string + "/" + relativePath.string)
+    }
+    
+    static func read(file path: String) throws -> File {
+        
+        var encoding = String.Encoding.utf8
+        return File(path: path, contents: try String(contentsOfFile: path, usedEncoding: &encoding))
+    }
+    
+    static var packageDescription: File {
+        return cachedResult(cache: &cache.packageDescription) {
+            () -> File in
+            
+            return require() { try read(file: "Package.swift") }
+        }
+    }
+    
+    // MARK: - Actions
+    
+    static func delete(_ path: RelativePath) throws {
+        
+        try fileManager.removeItem(atPath: absolute(path).string)
+        
+        resetCache()
+    }
+    
+    private static func performPathChange(from origin: RelativePath, to destination: RelativePath, copy: Bool) throws {
+        
+        // This must generate the entire list of files to copy before starting to make changes. Otherwise the run‐away effect of copying a directory into itself is catastrophic.
+        let files = allFiles(at: origin)
+        let changes = files.map() {
+            (changeOrigin: RelativePath) -> (changeOrigin: RelativePath, changeDestination: RelativePath) in
+            
+            let relative = changeOrigin.string.substring(from: changeOrigin.string.index(changeOrigin.string.characters.startIndex, offsetBy: origin.string.characters.count))
+            
+            return (changeOrigin, RelativePath(destination.string + relative))
+        }
+        
+        for change in changes {
+            
+            let verb = copy ? "Copying" : "Moving"
+            print(["\(verb) “\(change.changeOrigin)” to “\(change.changeDestination)”."])
+            
+            force() { try delete(change.changeDestination) }
+            
+            force() { try fileManager.createDirectory(atPath: absolute(change.changeDestination).directory, withIntermediateDirectories: true, attributes: nil) }
+            
+            try fileManager.copyItem(atPath: absolute(change.changeOrigin).string, toPath: absolute(change.changeDestination).string)
+            
+            if ¬copy {
+                try delete(change.changeOrigin)
+            }
+        }
+        
+        resetCache()
+    }
+    
+    static func copy(_ origin: RelativePath, to destination: RelativePath) throws {
+        
+        try performPathChange(from: origin, to: destination, copy: true)
+    }
+    
+    static func move(_ origin: RelativePath, to destination: RelativePath) throws {
+        
+        try performPathChange(from: origin, to: destination, copy: false)
     }
 }

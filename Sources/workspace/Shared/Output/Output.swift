@@ -46,16 +46,20 @@ func fail(message: [String]) -> Never {
 
 // MARK: - Generic Printing
 
-private func printHeader(_ message: [String]) {
+func printHeader(_ message: [String]) {
     print(message, in: .blue, spaced: true)
 }
 
-private func printPrompt(_ message: [String]) {
+func printPrompt(_ message: [String]) {
     print(message, in: .yellow, spaced: true)
 }
 
 private func printError(_ message: [String]) {
     print(message, in: .red, spaced: true)
+}
+
+func print(_ message: [String]) {
+    print(message, in: nil)
 }
 
 private func print(_ message: [String], in colour: OutputColour?, spaced: Bool = false) {

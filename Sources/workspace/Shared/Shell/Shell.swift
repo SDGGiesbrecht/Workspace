@@ -13,26 +13,28 @@ import Foundation
 
 import SDGLogic
 
-/*
 func bash(_ arguments: [String]) -> Bool {
     
     let process = Process()
-    process.launchPath = "/bin/bash"
+    process.launchPath = "/usr/bin/env"
     process.arguments = arguments
     
     process.launch()
     process.waitUntilExit()
     
+    Repository.resetCache()
+    
     return process.terminationStatus == EXIT_SUCCESS
 }
 
-func forceBash(_ arguments: [String]) {
+func requireBash(_ arguments: [String]) {
     if ¬bash(arguments) {
         fatalError(message: [
             "Command failed:",
             "",
             arguments.joined(separator: " "),
+            "",
+            "See details above.",
             ])
     }
 }
-*/

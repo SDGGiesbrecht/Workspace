@@ -18,5 +18,5 @@ let package = Package(
         
         .Package(url: "https://github.com/SDGGiesbrecht/SDGLogic", versions: "1.1.0" ..< "2.0.0"),
         .Package(url: "https://github.com/SDGGiesbrecht/SDGMathematics", versions: "1.0.1" ..< "2.0.0"),
-    ]
+        ]
 )

@@ -114,10 +114,10 @@ struct Repository {
         return AbsolutePath(repositoryPath.string + "/" + relativePath.string)
     }
     
-    static func read(file path: String) throws -> File {
+    static func read(file path: RelativePath) throws -> File {
         
         var encoding = String.Encoding.utf8
-        return File(path: path, contents: try String(contentsOfFile: path, usedEncoding: &encoding))
+        return File(path: path, contents: try String(contentsOfFile: absolute(path).string, usedEncoding: &encoding))
     }
     
     static var packageDescription: File {

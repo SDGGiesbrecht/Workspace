@@ -13,14 +13,14 @@ struct File {
     
     // MARK: - Initialization
     
-    init(path: String, contents: String) {
+    init(path: RelativePath, contents: String) {
         self.path = path
         self.contents = contents
     }
     
     // MARK: - Properties
     
-    var path: String
+    var path: RelativePath
     var contents: String
     
     // MARK: - Parsing

@@ -11,17 +11,34 @@
 
 extension String {
     
-    func contents(of tokens: (String, String)) -> String? {
+    func contents(of tokens: (start: String, end: String), requireWholeStringToMatch: Bool = false) -> String? {
         
-        guard let startTokenRange = range(of: tokens.0) else {
+        guard let startTokenRange = range(of: tokens.start) else {
             return nil
         }
         
-        guard let endTokenRange = range(of: tokens.1, in: startTokenRange.upperBound ..< endIndex) else {
+        guard let endTokenRange = range(of: tokens.end, in: startTokenRange.upperBound ..< endIndex) else {
             return nil
         }
         
-        return substring(with: startTokenRange.upperBound ..< endTokenRange.lowerBound)
+        let result = substring(with: startTokenRange.upperBound ..< endTokenRange.lowerBound)
+        
+        if requireWholeStringToMatch {
+            if self == tokens.start + result + tokens.end {
+                return result
+            } else {
+                return nil
+            }
+        } else {
+            return result
+        }
+    }
+    
+    func split(at token: String) -> (before: String, after: String)? {
+        guard let tokenRange = range(of: token) else {
+            return nil
+        }
+        return (substring(to: tokenRange.lowerBound), substring(from: tokenRange.upperBound))
     }
     
     func range(of searchTerm: String) -> Range<Index>? {

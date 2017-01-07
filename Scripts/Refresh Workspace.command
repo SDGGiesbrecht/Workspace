@@ -18,14 +18,8 @@
 # https://github.com/SDGGiesbrecht/Workspace
 # !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!!
 
-ls
-
 # Find and enter repository.
 cd "${0%/*}"
-
-ls
-
-exit 1
 
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 # Update Workspace

@@ -32,14 +32,14 @@ func runRefresh(andExit shouldExit: Bool) {
         print("Made it here.")
         print(Option.automaticRepsonsibilities)
         
-        for (option, details) in Option.automaticRepsonsibilities {
+        for (option, automaticValue, documentationPage) in Option.automaticRepsonsibilities {
             
             if ¬Configuration.optionIsDefined(option) {
                 
-                newResponsibilities.append((option: option, value: details.automaticValue, comment: [
+                newResponsibilities.append((option: option, value: automaticValue, comment: [
                     "Workspace took responsibility for this automatically because “\(Option.automaticallyTakeOnNewResponsibilites.key)” is “\(Configuration.trueOptionValue)”",
                     "For more information about “\(option.key)”, see:",
-                    details.documentationPage.url,
+                    documentationPage.url,
                     ]))
             }
         }

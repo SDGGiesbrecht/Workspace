@@ -9,7 +9,7 @@
 // Licensed under the Apache License, Version 2.0
 // See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
-let instructionsAfterRefresh = "The project is ready to be worked on."
+let instructionsAfterRefresh = "Open \(Configuration.projectName).xcodeproj to work on the project."
 
 func runRefresh(andExit shouldExit: Bool) {
     
@@ -20,6 +20,6 @@ func runRefresh(andExit shouldExit: Bool) {
     require() { try Repository.move(Repository.workspaceDirectory.subfolderOrFile("Scripts/Refresh Workspace.command"), into: Repository.root) }
     
     if shouldExit {
-        succeed(message: ["Refreshed.", instructionsAfterRefresh])
+        succeed(message: ["\(Configuration.projectName) is refreshed and ready.", instructionsAfterRefresh])
     }
 }

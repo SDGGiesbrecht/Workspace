@@ -27,7 +27,7 @@ func runInitialize(andExit shouldExit: Bool) {
             "",
             "This command is only for use in empty folders.",
             "For more information, see:",
-            "https://github.com/SDGGiesbrecht/Workspace#setup",
+            DocumentationLink.setUp.url,
             ]
         
         do {
@@ -71,7 +71,7 @@ func runInitialize(andExit shouldExit: Bool) {
     let configuration = "\n\n" + Configuration.configurationFileEntry(option: .automaticallyTakeOnNewResponsibilites, value: true, comment: [
         "This was the default setting when the Workspace initialized the project.",
         "For more information about “\(Option.automaticallyTakeOnNewResponsibilites)”, see:",
-        "https://github.com/SDGGiesbrecht/Workspace/blob/master/Documentation/\(Option.automaticResponsibilityDocumentationPage).md"
+        Option.automaticResponsibilityDocumentationPage.url
         ])
     require() { try Repository.write(file: File(path: Configuration.configurationFilePath, contents: configuration)) }
     

@@ -44,7 +44,10 @@ struct Configuration {
             do {
                 return try Repository.read(file: configurationFilePath)
             } catch {
-                print(["Found no configuration file.", "Following the default configuration."])
+                print([
+                    "Found no configuration file.",
+                    "Following the default configuration."
+                    ])
                 return File(path: configurationFilePath, contents: "")
             }
         }

@@ -36,7 +36,7 @@ func runRefresh(andExit shouldExit: Bool) {
                 newResponsibilities.append((option: option, value: details.automaticValue, comment: [
                     "Workspace took responsibility for this automatically because “\(Option.automaticallyTakeOnNewResponsibilites.key)” is “\(Configuration.trueOptionValue)”",
                     "For more information about “\(option.key)”, see:",
-                    "https://github.com/SDGGiesbrecht/Workspace/blob/master/Documentation/\(details.documentationPage).md",
+                    details.documentationPage.url,
                     ]))
             }
         }

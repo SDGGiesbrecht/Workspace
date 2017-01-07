@@ -34,8 +34,8 @@ enum Option: String, CustomStringConvertible {
         }
     }
     
-    static let automaticResponsibilityDocumentationPage = "Responsibilities"
-    static var automaticRepsonsibilities: [Option: (automaticValue: String, documentationPage: String)] = [
+    static let automaticResponsibilityDocumentationPage = DocumentationLink.responsibilities
+    static var automaticRepsonsibilities: [Option: (automaticValue: String, documentationPage: DocumentationLink)] = [
         :
     ]
     

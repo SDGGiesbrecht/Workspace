@@ -35,6 +35,7 @@ struct Repository {
     
     private static let fileManager = FileManager.default
     private static let repositoryPath: AbsolutePath = AbsolutePath(fileManager.currentDirectoryPath)
+    static let root: RelativePath = RelativePath("")
     
     // MARK: - Repository
     
@@ -111,7 +112,7 @@ struct Repository {
     // MARK: - Files
     
     private static func absolute(_ relativePath: RelativePath) -> AbsolutePath {
-        return AbsolutePath(repositoryPath.string + "/" + relativePath.string)
+        return repositoryPath.subfolderOrFile(relativePath.string)
     }
     
     static func read(file path: RelativePath) throws -> File {
@@ -180,13 +181,24 @@ struct Repository {
         resetCache()
     }
     
+    private static func performPathChange(from origin: RelativePath, into destination: RelativePath, copy: Bool) throws {
+        let destinationFile = destination.subfolderOrFile(origin.filename)
+        try performPathChange(from: origin, to: destinationFile, copy: copy)
+    }
+    
     static func copy(_ origin: RelativePath, to destination: RelativePath) throws {
-        
         try performPathChange(from: origin, to: destination, copy: true)
     }
     
+    static func copy(_ origin: RelativePath, into destination: RelativePath) throws {
+        try performPathChange(from: origin, into: destination, copy: true)
+    }
+    
     static func move(_ origin: RelativePath, to destination: RelativePath) throws {
-        
         try performPathChange(from: origin, to: destination, copy: false)
+    }
+    
+    static func move(_ origin: RelativePath, into destination: RelativePath) throws {
+        try performPathChange(from: origin, into: destination, copy: false)
     }
 }

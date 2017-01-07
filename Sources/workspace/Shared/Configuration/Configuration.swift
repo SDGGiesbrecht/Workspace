@@ -194,8 +194,7 @@ struct Configuration {
         }
     }
     
-    public static var automaticallyTakeOnNewResponsibilites: Bool {
-        let ChangeBackToPrivateAfterTest = 0
+    static var automaticallyTakeOnNewResponsibilites: Bool {
         return booleanValue(option: .automaticallyTakeOnNewResponsibilites)
     }
 }

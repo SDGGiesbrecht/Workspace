@@ -9,7 +9,7 @@
 // Licensed under the Apache License, Version 2.0
 // See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
-struct RelativePath: CustomStringConvertible, Equatable, ExpressibleByStringLiteral {
+struct RelativePath: ExpressibleByExtendedGraphemeClusterLiteral, ExpressibleByStringLiteral, ExpressibleByUnicodeScalarLiteral, Path {
     
     // MARK: - Initialization
     
@@ -20,18 +20,6 @@ struct RelativePath: CustomStringConvertible, Equatable, ExpressibleByStringLite
     // MARK: - Properties
     
     var string: String
-    
-    // MARK: - CustomStringConvertible
-    
-    var description: String {
-        return string
-    }
-    
-    // MARK: - Equatable
-    
-    static func ==(lhs: RelativePath, rhs: RelativePath) -> Bool {
-        return lhs.string == rhs.string
-    }
     
     // MARK: - ExpressibleByExtendedGraphemeClusterLiteral
     

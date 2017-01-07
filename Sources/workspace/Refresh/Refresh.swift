@@ -13,7 +13,11 @@ let instructionsAfterRefresh = "The project is ready to be worked on."
 
 func runRefresh(andExit shouldExit: Bool) {
     
-    print(Configuration.automaticallyTakeOnNewResponsibilites)
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    printHeader(["Updating Workplace commands..."])
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    
+    require() { try Repository.move(Repository.workspaceDirectory.subfolderOrFile("Scripts/Refresh Workspace.command"), into: Repository.root) }
     
     if shouldExit {
         succeed(message: ["Refreshed.", instructionsAfterRefresh])

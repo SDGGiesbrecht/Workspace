@@ -41,6 +41,8 @@ func runRefresh(andExit shouldExit: Bool) {
             }
         }
         
+        print(newResponsibilities)
+        
         require() { try Configuration.addEntries(entries: newResponsibilities) }
     }
     

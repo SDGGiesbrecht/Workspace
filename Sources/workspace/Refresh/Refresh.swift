@@ -29,6 +29,7 @@ func runRefresh(andExit shouldExit: Bool) {
         
         var newResponsibilities: [(option: Option, value: String, comment: [String]?)] = []
         
+        print("Made it here.")
         print(Option.automaticRepsonsibilities)
         
         for (option, details) in Option.automaticRepsonsibilities {

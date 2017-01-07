@@ -31,6 +31,8 @@ func runRefresh(andExit shouldExit: Bool) {
         
         var newResponsibilities: [(option: Option, value: String, comment: [String]?)] = []
         
+        print("Did I make it here?")
+        
         for (option, details) in Option.automaticRepsonsibilities {
             
             print("Hello??")

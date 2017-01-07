@@ -82,6 +82,6 @@ func runInitialize(andExit shouldExit: Bool) {
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
     if shouldExit {
-        succeed(message: ["\(Configuration.projectName) has been initialized., instructionsAfterRefresh"])
+        succeed(message: ["\(Configuration.projectName) has been initialized.", instructionsAfterRefresh])
     }
 }

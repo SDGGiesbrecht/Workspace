@@ -34,6 +34,6 @@ func runInitialize(andExit shouldExit: Bool) {
     //forceBash(script)
     
     if shouldExit {
-        succeed(message: ["Initialized."])
+        succeed(message: ["Initialized.", instructionsAfterRefresh])
     }
 }

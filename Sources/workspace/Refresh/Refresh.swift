@@ -9,9 +9,11 @@
 // Licensed under the Apache License, Version 2.0
 // See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
+let instructionsAfterRefresh = "The project is ready to be worked on."
+
 func runRefresh(andExit shouldExit: Bool) {
     
     if shouldExit {
-        succeed(message: ["Refreshed."])
+        succeed(message: ["Refreshed.", instructionsAfterRefresh])
     }
 }

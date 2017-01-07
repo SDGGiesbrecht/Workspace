@@ -27,11 +27,13 @@ func runRefresh(andExit shouldExit: Bool) {
         printHeader(["Updating Workspace configuration..."])
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         
+        print("Hello?")
+        
         var newResponsibilities: [(option: Option, value: String, comment: [String]?)] = []
         
         for (option, details) in Option.automaticRepsonsibilities {
             
-            print("Hello?")
+            print("Hello??")
             
             if ¬Configuration.optionIsDefined(option) {
                 
@@ -43,8 +45,12 @@ func runRefresh(andExit shouldExit: Bool) {
             }
         }
         
+        print("Hello???")
+        
         require() { try Configuration.addEntries(entries: newResponsibilities) }
     }
+    
+    print("Hello????")
     
     if shouldExit {
         succeed(message: ["\(Configuration.projectName) is refreshed and ready.", instructionsAfterRefresh])

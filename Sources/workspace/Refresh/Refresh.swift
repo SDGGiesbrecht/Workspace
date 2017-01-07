@@ -27,19 +27,13 @@ func runRefresh(andExit shouldExit: Bool) {
         printHeader(["Updating Workspace configuration..."])
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         
-        print("Hello?")
-        
         var newResponsibilities: [(option: Option, value: String, comment: [String]?)] = []
         
-        print("Did I make it here?")
+        print(Option.automaticRepsonsibilities)
         
         for (option, details) in Option.automaticRepsonsibilities {
             
-            print("Hello??")
-            
             if ¬Configuration.optionIsDefined(option) {
-                
-                print("What about here?")
                 
                 newResponsibilities.append((option: option, value: details.automaticValue, comment: [
                     "Workspace took responsibility for this automatically because “\(Option.automaticallyTakeOnNewResponsibilites.key)” is “\(Configuration.trueOptionValue)”",
@@ -49,12 +43,8 @@ func runRefresh(andExit shouldExit: Bool) {
             }
         }
         
-        print("Hello???")
-        
         require() { try Configuration.addEntries(entries: newResponsibilities) }
     }
-    
-    print("Hello????")
     
     if shouldExit {
         succeed(message: ["\(Configuration.projectName) is refreshed and ready.", instructionsAfterRefresh])

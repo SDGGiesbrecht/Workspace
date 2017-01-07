@@ -101,6 +101,7 @@ struct Configuration {
         
         var source = Configuration.file
         source.contents.append(appendix)
+        print(appendix)
         try Repository.write(file: source)
     }
     

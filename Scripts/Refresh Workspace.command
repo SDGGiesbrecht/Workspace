@@ -21,7 +21,7 @@
 ls
 
 # Find and enter repository.
-cd ${0%/*}
+cd "${0%/*}"
 
 ls
 

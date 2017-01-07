@@ -18,7 +18,7 @@
 # https://github.com/SDGGiesbrecht/Workspace
 # !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!!
 
-# Stop if any command fails.
+# Stop if a command fails.
 set -e
 
 # Find and enter repository.

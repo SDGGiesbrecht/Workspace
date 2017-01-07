@@ -31,6 +31,8 @@ func runRefresh(andExit shouldExit: Bool) {
         
         for (option, details) in Option.automaticRepsonsibilities {
             
+            print("Hello?")
+            
             if ¬Configuration.optionIsDefined(option) {
                 
                 newResponsibilities.append((option: option, value: details.automaticValue, comment: [
@@ -40,8 +42,6 @@ func runRefresh(andExit shouldExit: Bool) {
                     ]))
             }
         }
-        
-        print(newResponsibilities)
         
         require() { try Configuration.addEntries(entries: newResponsibilities) }
     }

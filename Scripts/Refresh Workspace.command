@@ -28,7 +28,10 @@ cd $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 # Get Workspace if necessary.
 WORKSPACE=".Workspace"
 if [ ! -d "${WORKSPACE}" ]; then
+    mkdir "${WORKSPACE}"
+    cd "${WORKSPACE}"
     git clone https://github.com/SDGGiesbrecht/Workspace
+    cd ..
 fi
 
 # Update source.

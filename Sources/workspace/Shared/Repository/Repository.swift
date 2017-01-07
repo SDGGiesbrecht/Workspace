@@ -126,6 +126,8 @@ struct Repository {
         prepareForWrite(path: file.path)
         
         try file.contents.write(toFile: absolute(file.path).string, atomically: true, encoding: String.Encoding.utf8)
+        
+        resetCache()
     }
     
     static var packageDescription: File {

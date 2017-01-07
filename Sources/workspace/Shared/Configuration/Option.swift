@@ -34,6 +34,10 @@ enum Option: String, CustomStringConvertible {
         }
     }
     
+    static var automaticRepsonsibilities: [Option: (automaticValue: String, documentationPage: String)] = [
+        :
+    ]
+    
     // MARK: - CustomStringConvertible
     
     var description: String {

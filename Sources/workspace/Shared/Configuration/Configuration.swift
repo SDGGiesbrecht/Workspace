@@ -20,6 +20,7 @@ struct Configuration {
 
         // MARK: - Properties
 
+        fileprivate var file: File?
         fileprivate var configurationFile: [Option: String]?
         fileprivate var projectName: String?
         
@@ -36,6 +37,18 @@ struct Configuration {
     }
     
     static let configurationFilePath: RelativePath = ".Workspace Configuration.txt"
+    static var file: File {
+        return cachedResult(cache: &cache.file) {
+            () -> File in
+            
+            do {
+                return try Repository.read(file: configurationFilePath)
+            } catch {
+                print(["Found no configuration file.", "Following the default configuration."])
+                return File(path: configurationFilePath, contents: "")
+            }
+        }
+    }
     
     private static let startTokens = (start: "[_Start ", end: "_]")
     private static let endToken = "[_End_]"
@@ -76,19 +89,23 @@ struct Configuration {
         return configurationFileEntry(option: option, value: value ? trueOptionValue : falseOptionValue, comment: comment)
     }
     
+    static func addEntries(entries: [(option: Option, value: String, comment: [String]?)]) throws {
+        var appendix = ""
+        for entry in entries {
+            appendix.append("\n\n")
+            appendix.append(Configuration.configurationFileEntry(option: entry.option, value: entry.value, comment: entry.comment))
+        }
+        
+        var source = Configuration.file
+        source.contents.append(appendix)
+        try Repository.write(file: source)
+    }
+    
     // MARK: - Properties
     
     private static var configurationFile: [Option: String] {
         return cachedResult(cache: &cache.configurationFile) {
             () -> [Option: String] in
-            
-            let file: File
-            do {
-                file = try Repository.read(file: configurationFilePath)
-            } catch {
-                print(["Found no configuration file.", "Following the default configuration."])
-                file = File(path: configurationFilePath, contents: "")
-            }
             
             func reportUnsupportedKey(_ key: String) -> Never {
                 fatalError(message: ["Unsupported configuration key:", key])
@@ -166,6 +183,10 @@ struct Configuration {
     }
     
     // MARK: - Settings
+    
+    static func optionIsDefined(_ option: Option) -> Bool {
+        return configurationFile[option] ≠ nil
+    }
     
     static let trueOptionValue = "True"
     static let falseOptionValue = "False"

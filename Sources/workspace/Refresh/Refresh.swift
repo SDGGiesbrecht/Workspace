@@ -44,6 +44,8 @@ func runRefresh(andExit shouldExit: Bool) {
         require() { try Configuration.addEntries(entries: newResponsibilities) }
     }
     
+    printWarning(["Warnings look like this."])
+    
     if shouldExit {
         succeed(message: ["\(Configuration.projectName) is refreshed and ready.", instructionsAfterRefresh])
     }

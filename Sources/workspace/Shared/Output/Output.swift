@@ -35,11 +35,13 @@ func fatalError(message: [String]) -> Never  {
 // MARK: - Generic Exiting
 
 func succeed(message: [String]) -> Never {
+    outputWarnings()
     print(message, in: .green, spaced: true)
     exit(EXIT_SUCCESS)
 }
 
 func fail(message: [String]) -> Never {
+    outputWarnings()
     print(message, in: .red, spaced: true)
     exit(EXIT_FAILURE)
 }
@@ -50,8 +52,15 @@ func printHeader(_ message: [String]) {
     print(message, in: .blue, spaced: true)
 }
 
-func printPrompt(_ message: [String]) {
-    print(message, in: .yellow, spaced: true)
+private var warnings: [[String]] = []
+func printWarning(_ message: [String]) {
+    warnings.append(message)
+    
+}
+private func outputWarnings() {
+    for warning in warnings {
+        print(warning, in: .yellow, spaced: true)
+    }
 }
 
 private func printError(_ message: [String]) {

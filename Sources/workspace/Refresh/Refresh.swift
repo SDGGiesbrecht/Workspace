@@ -15,7 +15,7 @@ let instructionsAfterRefresh = "" //"Open \(Configuration.projectName).xcodeproj
 
 func runRefresh(andExit shouldExit: Bool) {
     
-    fatalError(fatalError(message: ["???"])
+    fatalError(message: ["???"])
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Updating Workspace commands..."])

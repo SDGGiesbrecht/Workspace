@@ -18,6 +18,9 @@
 # https://github.com/SDGGiesbrecht/Workspace
 # !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!!
 
+# Stop if any command fails.
+set -e
+
 # Find and enter repository.
 cd "${0%/*}"
 
@@ -32,11 +35,10 @@ if [ ! -d "${WORKSPACE}" ]; then
 fi
 
 # Update Workspace.
-if cd "${WORKSPACE}"; then
-    git pull
-    swift build --configuration release
-    cd ..
-fi
+cd "${WORKSPACE}"
+git pull
+swift build --configuration release
+cd ..
 
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 # Run Workspace command

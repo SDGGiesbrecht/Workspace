@@ -29,20 +29,18 @@ cd $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 WORKSPACE=".Workspace"
 if [ ! -d "${WORKSPACE}" ]; then
     mkdir "${WORKSPACE}"
-    cd "${WORKSPACE}"
-    git clone https://github.com/SDGGiesbrecht/Workspace
-    cd ..
+    if cd "${WORKSPACE}"; then
+        git clone https://github.com/SDGGiesbrecht/Workspace
+        cd ..
+    fi
 fi
 
-# Update source.
-cd "${WORKSPACE}"
-git pull
-cd ..
-
-# Build Workspace
-cd "${WORKSPACE}"
-swift build --configuration release
-cd ..
+# Update Workspace.
+if cd "${WORKSPACE}"; then
+    git pull
+    swift build --configuration release
+    cd ..
+fi
 
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 # Run Workspace command

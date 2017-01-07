@@ -65,6 +65,15 @@ func runInitialize(andExit shouldExit: Bool) {
     requireBash(["git", "init"])
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    printHeader(["Configuring Workspace..."])
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    
+    let configuration = "\n\n" + Configuration.configurationFileEntry(option: .automaticallyTakeOnNewResponsibilites, value: true, comment: [
+        "This was the default setting when the Workspace initialized the project."
+        ])
+    Repository.write(file: File(path: Configuration.configurationFilePath, contents: configuration)
+    
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Refreshing
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     

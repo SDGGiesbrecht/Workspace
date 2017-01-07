@@ -9,7 +9,35 @@
 // Licensed under the Apache License, Version 2.0
 // See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
+import SDGLogic
+
 extension String {
+    
+    var lines: [String] {
+        var result: [String] = []
+        enumerateLines() {
+            (line: String, _: inout Bool) -> () in
+            
+            result.append(line)
+        }
+        return result
+    }
+    
+    var isMultiline: Bool {
+        var result: Bool = false
+        var firstLineRead: Bool = false
+        enumerateLines() {
+            (line: String, shouldStop: inout Bool) -> () in
+            
+            if ¬firstLineRead {
+                firstLineRead = true
+            } else {
+                result = true
+                shouldStop = true
+            }
+        }
+        return result
+    }
     
     func contents(of tokens: (start: String, end: String), requireWholeStringToMatch: Bool = false) -> String? {
         

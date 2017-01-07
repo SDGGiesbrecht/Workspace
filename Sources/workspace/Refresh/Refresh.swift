@@ -13,6 +13,8 @@ let instructionsAfterRefresh = "The project is ready to be worked on."
 
 func runRefresh(andExit shouldExit: Bool) {
     
+    print(Configuration.automaticallyTakeOnNewResponsibilites)
+    
     if shouldExit {
         succeed(message: ["Refreshed.", instructionsAfterRefresh])
     }

@@ -120,6 +120,13 @@ struct Repository {
         return File(path: path, contents: try String(contentsOfFile: absolute(path).string, usedEncoding: &encoding))
     }
     
+    static func write(file: File) throws {
+        
+        prepareForWrite(path: file.path)
+        
+        try file.contents.write(toFile: absolute(file.path).string, atomically: true, encoding: String.Encoding.utf8)
+    }
+    
     static var packageDescription: File {
         return cachedResult(cache: &cache.packageDescription) {
             () -> File in
@@ -135,6 +142,13 @@ struct Repository {
         try fileManager.removeItem(atPath: absolute(path).string)
         
         resetCache()
+    }
+    
+    private static func prepareForWrite(path: RelativePath) {
+        
+        force() { try delete(path) }
+        
+        force() { try fileManager.createDirectory(atPath: absolute(path).directory, withIntermediateDirectories: true, attributes: nil) }
     }
     
     private static func performPathChange(from origin: RelativePath, to destination: RelativePath, copy: Bool) throws {
@@ -154,9 +168,7 @@ struct Repository {
             let verb = copy ? "Copying" : "Moving"
             print(["\(verb) “\(change.changeOrigin)” to “\(change.changeDestination)”."])
             
-            force() { try delete(change.changeDestination) }
-            
-            force() { try fileManager.createDirectory(atPath: absolute(change.changeDestination).directory, withIntermediateDirectories: true, attributes: nil) }
+            prepareForWrite(path: change.changeDestination)
             
             try fileManager.copyItem(atPath: absolute(change.changeOrigin).string, toPath: absolute(change.changeDestination).string)
             

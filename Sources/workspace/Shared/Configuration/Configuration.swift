@@ -47,29 +47,33 @@ struct Configuration {
         return "\(startTokens.start)\(option)\(startTokens.end)"
     }
     
-    static func configurationFileEntry(option: Option, value: String) -> String {
-        var lineCount = 0
-        var multiline = false
-        value.enumerateLines() {
-            (_: String, shouldStop: inout Bool) -> () in
-            
-            lineCount += 1
-            
-            if lineCount > 1 {
-                multiline = true
-                shouldStop = true
-            }
+    static func configurationFileEntry(option: Option, value: String, comment: [String]?) -> String {
+        
+        let entry: String
+        if value.isMultiline {
+            entry = [
+                startMultilineOption(option: option),
+                value,
+                endToken,
+            ].joined(separator: "\n")
+        } else {
+            entry = option.key + colon + value
         }
         
-        if multiline {
-            return "\(startMultilineOption(option: option))\n\(value)\n\(endToken)"
+        if let array = comment {
+            let note = array.joined(separator: "\n")
+            
+            let newline = [optionalCommentEndToken, commentToken].joined(separator: "\n")
+            let joined = note.lines.joined(separator: newline)
+            let commentedNote = commentToken + joined + optionalCommentEndToken
+            return [commentedNote, entry].joined(separator: "\n")
         } else {
-            return "\(option)\(colon)\(value)"
+            return entry
         }
     }
     
-    static func configurationFileEntry(option: Option, value: Bool) -> String {
-        return configurationFileEntry(option: option, value: value ? trueOptionValue : falseOptionValue)
+    static func configurationFileEntry(option: Option, value: Bool, comment: [String]?) -> String {
+        return configurationFileEntry(option: option, value: value ? trueOptionValue : falseOptionValue, comment: comment)
     }
     
     // MARK: - Properties
@@ -92,8 +96,7 @@ struct Configuration {
             
             var result: [Option: String] = [:]
             var currentMultilineOption: Option?
-            file.contents.enumerateLines() {
-                (line: String, shouldStop: inout Bool) -> () in
+            for line in file.contents.lines {
                 
                 if let option = currentMultilineOption {
                     
@@ -191,7 +194,8 @@ struct Configuration {
         }
     }
     
-    private static var automaticallyTakeOnNewResponsibilites: Bool {
+    public static var automaticallyTakeOnNewResponsibilites: Bool {
+        let ChangeBackToPrivateAfterTest = 0
         return booleanValue(option: .automaticallyTakeOnNewResponsibilites)
     }
 }

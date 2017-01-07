@@ -68,7 +68,7 @@ private func print(_ message: [String], in colour: OutputColour?, spaced: Bool =
         output = "\u{1B}[0;\(textColour.code)m\(output)\u{1B}[0;30m"
     }
     if spaced {
-        output = "\n\(output)\n"
+        output = "\n" + output + "\n"
     }
     print(output)
 }

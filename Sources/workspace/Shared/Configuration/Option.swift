@@ -21,6 +21,9 @@ enum Option: String, CustomStringConvertible {
     
     case automaticallyTakeOnNewResponsibilites = "Automatically Take On New Responsibilities"
     
+    case testOption = "Test Option"
+    case testLongOption = "Test Long Option"
+    
     // MARK: - Properties
     
     var key: String {
@@ -31,12 +34,17 @@ enum Option: String, CustomStringConvertible {
         switch self {
         case .automaticallyTakeOnNewResponsibilites:
             return Configuration.falseOptionValue
+        case .testOption:
+            return "Default Value"
+        case .testLongOption:
+            return "Default\nValue"
         }
     }
     
     static let automaticResponsibilityDocumentationPage = DocumentationLink.responsibilities
     static var automaticRepsonsibilities: [Option: (automaticValue: String, documentationPage: DocumentationLink)] = [
-        :
+        .testOption: ("Test Value", DocumentationLink.setUp),
+        .testOption: ("Test\nLong\nValue", DocumentationLink.setUp),
     ]
     
     // MARK: - CustomStringConvertible

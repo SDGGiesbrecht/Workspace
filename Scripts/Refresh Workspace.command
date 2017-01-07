@@ -21,7 +21,7 @@
 ls
 
 # Find and enter repository.
-cd $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+cd ${0%/*}
 
 ls
 

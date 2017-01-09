@@ -17,15 +17,15 @@ struct Configuration {
     // MARK: - Cache
     
     private struct Cache {
-
+        
         // MARK: - Properties
-
+        
         fileprivate var file: File?
         fileprivate var configurationFile: [Option: String]?
         fileprivate var projectName: String?
         
         // MARK: - Settings
-
+        
         fileprivate var automaticallyTakeOnNewResponsibilites: Bool?
     }
     private static var cache = Cache()
@@ -56,8 +56,10 @@ struct Configuration {
     private static let startTokens = (start: "[_Start ", end: "_]")
     private static let endToken = "[_End_]"
     private static let colon = ": "
-    private static let commentToken = "("
-    private static let optionalCommentEndToken = ")"
+    
+    private static let lineCommentSyntax = LineCommentSyntax(start: "(", stylisticEnd: ")")
+    private static let blockCommentSyntax = BlockCommentSyntax(start: "((", end: "))", stylisticIndent: "    ")
+    static let syntax = FileSyntax(blockCommentSyntax: blockCommentSyntax, lineCommentSyntax: lineCommentSyntax)
     
     private static func startMultilineOption(option: Option) -> String {
         return "\(startTokens.start)\(option)\(startTokens.end)"
@@ -71,7 +73,7 @@ struct Configuration {
                 startMultilineOption(option: option),
                 value,
                 endToken,
-            ].joined(separator: "\n")
+                ].joined(separator: "\n")
         } else {
             entry = option.key + colon + value
         }
@@ -79,10 +81,18 @@ struct Configuration {
         if let array = comment {
             let note = array.joined(separator: "\n")
             
-            let newline = [optionalCommentEndToken, commentToken].joined(separator: "\n")
-            let joined = note.lines.joined(separator: newline)
-            let commentedNote = commentToken + joined + optionalCommentEndToken
+            let commentedNote: String
+            if note.isMultiline {
+                
+                commentedNote = blockCommentSyntax.comment(contents: note)
+                
+            } else {
+                
+                commentedNote = lineCommentSyntax.comment(contents: note)
+                
+            }
             return [commentedNote, entry].joined(separator: "\n")
+            
         } else {
             return entry
         }
@@ -95,14 +105,16 @@ struct Configuration {
     static func addEntries(entries: [(option: Option, value: String, comment: [String]?)]) throws {
         var appendix = ""
         for entry in entries {
-            appendix.append("\n\n")
             appendix.append(Configuration.configurationFileEntry(option: entry.option, value: entry.value, comment: entry.comment))
+            appendix.append("\n\n")
         }
         
-        var source = Configuration.file
-        source.contents.append(appendix)
-        print(appendix)
-        try Repository.write(file: source)
+        if appendix ≠ "" {
+            var configurationFile = file
+            
+            //configurationFile.body = appendix + configurationFile.body
+        }
+        
     }
     
     // MARK: - Properties
@@ -112,14 +124,19 @@ struct Configuration {
             () -> [Option: String] in
             
             func reportUnsupportedKey(_ key: String) -> Never {
-                fatalError(message: ["Unsupported configuration key:", key])
+                fatalError(message: [
+                    "Unsupported configuration key:",
+                    key
+                    ])
             }
             
             var result: [Option: String] = [:]
             var currentMultilineOption: Option?
+            var inMultilineComment = false
             for line in file.contents.lines {
                 
                 if let option = currentMultilineOption {
+                    // In multiline value
                     
                     if line == endToken {
                         currentMultilineOption = nil
@@ -129,46 +146,66 @@ struct Configuration {
                         result[option] = appended
                     }
                     
+                } else if inMultilineComment {
+                    // In multiline comment
+                    
+                    if line.hasSuffix(blockCommentSyntax.end) {
+                        inMultilineComment = false
+                    }
+                    
+                } else if line == "" ∨ lineCommentSyntax.commentExists(at: line.startIndex, in: line) {
+                    // Comment or whitespace
+                    
                 } else {
-                    if line.hasPrefix(commentToken) ∨ line == "" {
-                        // Ignore
-                    } else {
+                    // New scope
+                    
+                    if let multilineOption = line.contents(of: startTokens, requireWholeStringToMatch: true) {
+                        // Multiline option
                         
-                        if let multilineOption = line.contents(of: startTokens, requireWholeStringToMatch: true) {
-                            
-                            if let option = Option(key: multilineOption) {
-                                currentMultilineOption = option
-                            } else {
-                                reportUnsupportedKey(multilineOption)
-                            }
-                            
-                        } else if let (optionKey, value) = line.split(at: colon) {
-                            
-                            if let option = Option(key: optionKey) {
-                                result[option] = value
-                            } else {
-                                reportUnsupportedKey(optionKey)
-                            }
-                            
+                        if let option = Option(key: multilineOption) {
+                            currentMultilineOption = option
                         } else {
-                            
-                            fatalError(message: [
-                                "Syntax error!",
-                                "",
-                                line,
-                                "",
-                                "Valid syntax:",
-                                "",
-                                "Option A\(colon)Simple Value",
-                                "",
-                                "\(startTokens.start)Option B\(startTokens.end)",
-                                "Multiline",
-                                "Value",
-                                endToken,
-                                "",
-                                "\(commentToken)Comment\(optionalCommentEndToken)"
-                                ])
+                            reportUnsupportedKey(multilineOption)
                         }
+                        
+                    } else if blockCommentSyntax.startOfCommentExists(at: line.startIndex, in: line) {
+                        // Multiline comment
+                        
+                        inMultilineComment = true
+                        
+                    } else if let (optionKey, value) = line.split(at: colon) {
+                        // Simple option
+                        
+                        if let option = Option(key: optionKey) {
+                            result[option] = value
+                        } else {
+                            reportUnsupportedKey(optionKey)
+                        }
+                        
+                    } else {
+                        // Syntax error
+                        
+                        fatalError(message: [
+                            "Syntax error!",
+                            "",
+                            line,
+                            "",
+                            "Valid syntax:",
+                            "",
+                            "Option A\(colon)Simple Value",
+                            "",
+                            "\(startTokens.start)Option B\(startTokens.end)",
+                            "Multiline",
+                            "Value",
+                            endToken,
+                            "",
+                            lineCommentSyntax.comment(contents: "Comment"),
+                            "",
+                            blockCommentSyntax.comment(contents: [
+                                "Multiline",
+                                "Comment",
+                                ])
+                            ])
                     }
                 }
             }

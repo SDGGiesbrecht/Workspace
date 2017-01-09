@@ -14,6 +14,8 @@ import Foundation
 import SDGLogic
 import SDGMathematics
 
+typealias ScalarIndex = String.UnicodeScalarView.Index
+
 extension String {
     
     static var CR_LF: String {
@@ -38,16 +40,15 @@ extension String {
             let line = remainder.substring(to: endOfLine.lowerBound)
             
             var newRemainder = remainder.substring(from: endOfLine.lowerBound)
-            if newRemainder.hasPrefix(String.CR_LF) {
-                // CR + LF
-                newRemainder.unicodeScalars.removeFirst(2)
-            } else {
-                newRemainder.unicodeScalars.removeFirst(1)
-            }
+            newRemainder.removeOneNewline(at: newRemainder.startIndex)
             
             possibleRemainder = newRemainder
             return line
         })
+    }
+    
+    var linesArray: [String] {
+        return Array<String>(lines)
     }
     
     var isMultiline: Bool {
@@ -65,6 +66,12 @@ extension String {
         return result
     }
     
+    var isWhitespace: Bool {
+        var index = startIndex
+        advance(&index, past: CharacterSet.whitespaces)
+        return index == endIndex
+    }
+    
     // MARK: - Searching
     
     func range(of searchTerm: String) -> Range<Index>? {
@@ -73,6 +80,22 @@ extension String {
     
     func range(of searchTerm: String, in searchRange: Range<Index>) -> Range<Index>? {
         return range(of: searchTerm, options: String.CompareOptions.literal, range: searchRange)
+    }
+    
+    
+    func range(of characters: CharacterSet, in searchRange: Range<Index>) -> Range<Index>? {
+        
+        var location = searchRange.lowerBound.samePosition(in: unicodeScalars)
+        let end = searchRange.upperBound.samePosition(in: unicodeScalars)
+        while location < end ∧ ¬characters.contains(unicodeScalars[location]) {
+            location = unicodeScalars.index(after: location)
+        }
+        if location == end {
+            return nil
+        } else {
+            let position = location.positionOfExtendedGraphemeCluster(in: self)
+            return position ..< index(after: position)
+        }
     }
     
     // MARK: - Splitting at Tokens
@@ -147,10 +170,10 @@ extension String {
     func advance(_ index: inout Index, past string: String) -> Bool {
         
         var indexCopy = index
-        for (ownCharacter, stringCharacter) in zip(characters.lazy, string.characters.lazy) {
+        for (ownCharacter, stringCharacter) in zip(substring(from: index).characters.lazy, string.characters.lazy) {
             
             if ownCharacter == stringCharacter {
-                indexCopy = self.index(indexCopy, offsetBy: 1)
+                indexCopy = self.index(after: indexCopy)
             } else {
                 return false
             }
@@ -160,7 +183,7 @@ extension String {
         return true
     }
     
-    func advance(_ index: inout Index, past characters: CharacterSet, limit: Int? = nil) {
+    private func advance(_ index: inout Index, past characters: CharacterSet, limit: Int?, advanceOne: (inout UnicodeScalarView.Index) -> ()) {
         
         var scalarIndex = index.samePosition(in: unicodeScalars)
         
@@ -173,8 +196,90 @@ extension String {
             }
         }
         while notAtLimit() ∧ index ≠ endIndex ∧ characters.contains(unicodeScalars[scalarIndex]) {
-            scalarIndex = unicodeScalars.index(scalarIndex, offsetBy: 1)
+            advanceOne(&scalarIndex)
             iterationsCompleted += 1
         }
+        
+        guard let converted = scalarIndex.samePosition(in: self) else {
+            
+            parseError(at: index, in: nil)
+        }
+        
+        index = converted
+    }
+    
+    func advance(_ index: inout Index, past characters: CharacterSet, limit: Int? = nil) {
+        assert(characters ≠ CharacterSet.newlines, "Use advance(_:pastNewlinesWithLimit:) instead.")
+        
+        advance(&index, past: characters, limit: limit, advanceOne: { $0 = unicodeScalars.index(after: $0) })
+    }
+    
+    func advance(_ index: inout Index, pastNewlinesWithLimit limit: Int?) {
+        
+        advance(&index, past: CharacterSet.newlines, limit: limit, advanceOne: {
+            (mobileIndex: inout ScalarIndex) -> () in
+            
+            if substring(with: mobileIndex.positionOfExtendedGraphemeCluster(in: self) ..< endIndex).hasPrefix(String.CR_LF) {
+                mobileIndex = unicodeScalars.index(mobileIndex, offsetBy: 2)
+            } else {
+                mobileIndex = unicodeScalars.index(after: mobileIndex)
+            }
+        })
+    }
+    
+    @discardableResult mutating func removeOneNewline(at index: Index) -> Bool {
+        var position = index
+        advance(&position, pastNewlinesWithLimit: 1)
+        if position ≠ index {
+            removeSubrange(index ..< position)
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    // MARK: - Errors
+    
+    func lineNumber(for index: String.UnicodeScalarView.Index) -> Int {
+        let before = substring(to: index.positionOfExtendedGraphemeCluster(in: self))
+        return before.linesArray.count
+    }
+    
+    func columnNumber(for index: String.UnicodeScalarView.Index) -> Int {
+        let location = index.positionOfExtendedGraphemeCluster(in: self)
+        let line = lineRange(for: location ..< location)
+        return distance(from: line.lowerBound, to: location)
+    }
+    
+    func locationInformation(for index: String.UnicodeScalarView.Index) -> String {
+        return "Line \(lineNumber(for: index)), Column \(columnNumber(for: index))"
+    }
+    
+    func locationInformation(for index: String.CharacterView.Index) -> String {
+        return locationInformation(for: index.samePosition(in: unicodeScalars))
+    }
+    
+    func parseError(at index: String.Index, in file: File?) -> Never {
+        
+        var duplicate = self
+        duplicate.insert(contentsOf: "[Here]".characters, at: index)
+        let range = duplicate.lineRange(for: index ..< index)
+        let exerpt = duplicate.substring(with: range)
+        
+        var message: [String] = [
+            "A parse error occurred:",
+            exerpt,
+        ]
+        
+        if let fileInfo = file {
+            message.append(fileInfo.path.string)
+        }
+        
+        message.append(contentsOf: [
+            "",
+            "This may indicate a bug in Workspace.",
+            ])
+        
+        fatalError(message: message)
     }
 }

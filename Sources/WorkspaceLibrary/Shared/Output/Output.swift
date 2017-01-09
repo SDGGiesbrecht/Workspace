@@ -12,8 +12,8 @@
 import Foundation
 
 func inputSyntaxError(message: String) -> Never {
-    let commands = Command.allNames.joined(separator: "\n")
-    let flags = Flag.allFlags.joined(separator: "\n")
+    let commands = join(lines: Command.allNames)
+    let flags = join(lines: Flag.allFlags)
     
     fatalError(message: [
         message,
@@ -25,6 +25,13 @@ func inputSyntaxError(message: String) -> Never {
         "Available flags:",
         "",
         flags,
+        ])
+}
+
+func unreachableLocation() -> Never {
+    fatalError(message: [
+        "This code should be unreachable.",
+        "There may be a bug in Workspace.",
         ])
 }
 
@@ -72,7 +79,7 @@ func print(_ message: [String]) {
 }
 
 private func print(_ message: [String], in colour: OutputColour?, spaced: Bool = false) {
-    var output = message.joined(separator: "\n")
+    var output = join(lines: message)
     if let textColour = colour {
         output = "\u{1B}[0;\(textColour.code)m\(output)\u{1B}[0;30m"
     }

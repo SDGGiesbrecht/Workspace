@@ -83,7 +83,7 @@ struct Repository {
         return cachedResult(cache: &cache.printableListOfAllFiles) {
             () -> String in
             
-            return allFiles.map({ $0.string }).joined(separator: "\n")
+            return join(lines: allFiles.map({ $0.string }))
         }
     }
     

@@ -15,9 +15,6 @@ public func run() {
     
     Command.current.run(andExit: true)
     
-    fatalError(message: [
-        "This code should be unreachable.",
-        "There may be a bug in Workspace.",
-        ])
+    unreachableLocation()
 }
 

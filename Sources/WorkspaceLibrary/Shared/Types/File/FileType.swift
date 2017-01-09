@@ -9,7 +9,7 @@
 // Licensed under the Apache License, Version 2.0
 // See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
-enum FileType {
+enum FileType: CustomStringConvertible {
     
     // MARK: - Initialization
     
@@ -76,13 +76,30 @@ enum FileType {
         case .workspaceConfiguration:
             return Configuration.syntax
         case .swift:
-            return FileSyntax(blockCommentSyntax: BlockCommentSyntax(start: "/*", end: "*/"), lineCommentSyntax: LineCommentSyntax(start: "//"))
+            return FileSyntax(blockCommentSyntax: BlockCommentSyntax(start: "/*", end: "*/", stylisticIndent: " "), lineCommentSyntax: LineCommentSyntax(start: "//"))
         case .markdown:
-            return FileSyntax(blockCommentSyntax: BlockCommentSyntax(start: "<!--", end: "-->"), lineCommentSyntax: nil)
+            return FileSyntax(blockCommentSyntax: BlockCommentSyntax(start: "<!--", end: "-->", stylisticIndent: " "), lineCommentSyntax: nil)
         case .gitignore:
             return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"))
         case .shell:
-            return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"), requiredfirstLineTokens: (start: "#!", end: ""))
+            return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"), requiredFirstLineTokens: (start: "#!", end: "sh"))
+        }
+    }
+    
+    // MARK: - CustomStringConvertible
+    
+    var description: String {
+        switch self {
+        case .workspaceConfiguration:
+            return "Workspace Configuration"
+        case .swift:
+            return "Swift"
+        case .markdown:
+            return "Markdown"
+        case .gitignore:
+            return "Git Ignore"
+        case .shell:
+            return "Shell"
         }
     }
 }

@@ -57,7 +57,7 @@ struct Configuration {
     private static let endToken = "[_End_]"
     private static let colon = ": "
     
-    private static let lineCommentSyntax = LineCommentSyntax(start: "(", stylisticEnd: ")")
+    private static let lineCommentSyntax = LineCommentSyntax(start: "(", stylisticSpacing: false, stylisticEnd: ")")
     private static let blockCommentSyntax = BlockCommentSyntax(start: "((", end: "))", stylisticIndent: "    ")
     static let syntax = FileSyntax(blockCommentSyntax: blockCommentSyntax, lineCommentSyntax: lineCommentSyntax)
     
@@ -69,17 +69,17 @@ struct Configuration {
         
         let entry: String
         if value.isMultiline {
-            entry = [
+            entry = join(lines: [
                 startMultilineOption(option: option),
                 value,
                 endToken,
-                ].joined(separator: "\n")
+                ])
         } else {
             entry = option.key + colon + value
         }
         
         if let array = comment {
-            let note = array.joined(separator: "\n")
+            let note = join(lines: array)
             
             let commentedNote: String
             if note.isMultiline {
@@ -91,7 +91,10 @@ struct Configuration {
                 commentedNote = lineCommentSyntax.comment(contents: note)
                 
             }
-            return [commentedNote, entry].joined(separator: "\n")
+            return join(lines: [
+                commentedNote,
+                entry
+                ])
             
         } else {
             return entry

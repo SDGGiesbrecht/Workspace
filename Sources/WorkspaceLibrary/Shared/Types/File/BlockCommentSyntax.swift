@@ -13,6 +13,10 @@ import Foundation
 
 import SDGLogic
 
+func join(lines: [String]) -> String {
+    return lines.joined(separator: "\n")
+}
+
 struct BlockCommentSyntax {
     
     // MARK: - Initialization
@@ -32,17 +36,31 @@ struct BlockCommentSyntax {
     // MARK: - Output
     
     func comment(contents: [String]) -> String {
-        return comment(contents: contents.joined(separator: "\n"))
+        return comment(contents: join(lines: contents))
     }
     
     func comment(contents: String) -> String {
         
-        var newline = "\n"
-        if let indent = stylisticIndent {
-            newline += indent
+        let withEndToken = join(lines: [contents, end])
+        
+        var lines = withEndToken.linesArray
+        
+        lines = lines.map() {
+            (line: String) -> String in
+            
+            if let indent = stylisticIndent {
+                if line.isWhitespace {
+                    return line
+                } else {
+                    return indent + line
+                }
+            } else {
+                return line
+            }
         }
-        let joined = contents.lines.joined(separator: newline)
-        return start + newline + joined + newline + end
+        
+        lines = [start, join(lines: lines)]
+        return join(lines: lines)
     }
     
     // MARK: - Parsing
@@ -71,8 +89,66 @@ struct BlockCommentSyntax {
         }
     }
     
+    func rangeOfFirstComment(in range: Range<String.Index>, of string: String) -> Range<String.Index>? {
+        return string.range(of: (start, end), in: range)
+    }
+    
     func requireRangeOfFirstComment(in range: Range<String.Index>, of file: File) -> Range<String.Index> {
         
         return file.requireRange(of: (start, end), in: range)
+    }
+    
+    private func rangeOfContentsOfFirstComment(in range: Range<String.Index>, of string: String) -> Range<String.Index>? {
+        return string.rangeOfContents(of: (start, end), in: range)
+    }
+    
+    func firstComment(in range: Range<String.Index>, of string: String) -> String? {
+        if let range = rangeOfFirstComment(in: range, of: string) {
+            return string.substring(with: range)
+        } else {
+            return nil
+        }
+    }
+    
+    func contentsOfFirstComment(in range: Range<String.Index>, of string: String) -> String? {
+        guard let range = rangeOfContentsOfFirstComment(in: range, of: string) else {
+            return nil
+            
+        }
+        
+        var lines = string.substring(with: range).linesArray
+        while let line = lines.first, line.isWhitespace {
+            lines.removeFirst()
+        }
+        
+        guard let first = lines.first else {
+            return ""
+        }
+        lines.removeFirst()
+        
+        var index = first.startIndex
+        first.advance(&index, past: CharacterSet.whitespaces)
+        let indent = first.distance(from: first.startIndex, to: index)
+        
+        var result = [first.substring(from: index)]
+        for line in lines {
+            var indentIndex = line.startIndex
+            line.advance(&indentIndex, past: CharacterSet.whitespaces, limit: indent)
+            result.append(line.substring(from: indentIndex))
+        }
+        
+        while let last = result.last, last.isWhitespace {
+            result.removeLast()
+        }
+        
+        return join(lines: result)
+    }
+    
+    func firstComment(in string: String) -> String? {
+        return firstComment(in: string.startIndex ..< string.endIndex, of: string)
+    }
+    
+    func contentsOfFirstComment(in string: String) -> String? {
+        return contentsOfFirstComment(in: string.startIndex ..< string.endIndex, of: string)
     }
 }

@@ -9,8 +9,10 @@
 // Licensed under the Apache License, Version 2.0
 // See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
+import Foundation
+
 import XCTest
-@testable import workspace
+@testable import WorkspaceLibrary
 
 class WorkspaceTests: XCTestCase {
     
@@ -63,13 +65,12 @@ class WorkspaceTests: XCTestCase {
             "Line 4",
             ])
     }
-    /*
     
     func testBlockComments() {
         
         func testComment(syntax: BlockCommentSyntax, text: [String], comment: [String]) {
             
-            let output = syntax.comment(text)
+            let output = syntax.comment(contents: text)
             XCTAssert(output == comment, [
                 "Failure generating block comment using \(syntax):",
                 text,
@@ -77,7 +78,7 @@ class WorkspaceTests: XCTestCase {
                 output,
                 ].joined(separator: "\n"))
             
-            //let simpleParse = syntax.comment(comment)
+            let simpleParse = syntax.com
         }
         
         testComment(syntax: FileSyntax.swift.blockCommentSyntax, text: [
@@ -100,12 +101,12 @@ class WorkspaceTests: XCTestCase {
                 "    ))",
                 ])
 
-    }*/
+    }
     
     static var allTests : [(String, (WorkspaceTests) -> () throws -> Void)] {
         return [
             ("testGeneralParsing", testGeneralParsing),
-            //("testBlockComments", testBlockComments),
+            ("testBlockComments", testBlockComments),
         ]
     }
 }

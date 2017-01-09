@@ -13,5 +13,5 @@ import XCTest
 @testable import WorkspaceLibrary
 
 XCTMain([
-     testCase(WorkspaceLibraryTests.allTests),
+     testCase(workspaceTests.allTests),
 ])

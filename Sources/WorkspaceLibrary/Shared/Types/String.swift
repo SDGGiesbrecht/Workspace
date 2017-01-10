@@ -198,7 +198,7 @@ extension String {
         while notAtLimit() ∧ index ≠ endIndex ∧ characters.contains(unicodeScalars[scalarIndex]) {
             advanceOne(&scalarIndex)
             iterationsCompleted += 1
-         }
+        }
         
         guard let converted = scalarIndex.samePosition(in: self) else {
             
@@ -209,7 +209,11 @@ extension String {
     }
     
     func advance(_ index: inout Index, past characters: CharacterSet, limit: Int? = nil) {
-        assert(characters ≠ CharacterSet.newlines ∨ limit == nil, "Use advance(_:pastNewlinesWithLimit:) instead.")
+        assert(limit ≠ nil ∧ characters ≠ CharacterSet.newlines, [
+            "When counting newlines, CR + LF is not properly by String.advance(_:past:limit:).",
+            "Use String.advance(_:pastNewlinesWithLimit:) instead."])
+        
+        
         
         advance(&index, past: characters, limit: limit, advanceOne: { $0 = unicodeScalars.index(after: $0) })
     }
@@ -269,7 +273,7 @@ extension String {
         var message: [String] = [
             "A parse error occurred:",
             exerpt,
-        ]
+            ]
         
         if let fileInfo = file {
             message.append(fileInfo.path.string)

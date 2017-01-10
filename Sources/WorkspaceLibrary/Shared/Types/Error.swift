@@ -9,6 +9,8 @@
 // Licensed under the Apache License, Version 2.0
 // See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
+import SDGLogic
+
 func require<T>(operation: () throws -> T) -> T {
     do {
         return try operation()
@@ -27,4 +29,16 @@ func force(operation: () throws -> ()) {
     } catch _ {
         // Ignore failure.
     }
+}
+
+// These assertions print even in continuous integration.
+
+func assert(_ condition: @autoclosure () -> Bool, _ message: @autoclosure () -> [String]) {
+    if _isDebugAssertConfiguration() ∧ condition() {
+        fatalError(message: message())
+    }
+}
+
+func assert(_ condition: @autoclosure () -> Bool, _ message: @autoclosure () -> String) {
+    assert(condition(), [message()])
 }

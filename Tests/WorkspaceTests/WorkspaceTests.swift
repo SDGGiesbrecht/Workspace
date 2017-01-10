@@ -118,7 +118,7 @@ class WorkspaceTests: XCTestCase {
                     context
                     ]))
             }
-        }
+        }/*
         
         testComment(syntax: FileType.swift, text: [
             "Block",
@@ -138,7 +138,7 @@ class WorkspaceTests: XCTestCase {
                 "    Block",
                 "    Comment",
                 "    ))",
-                ])
+                ])*/
     }
     
     func testLineComments() {

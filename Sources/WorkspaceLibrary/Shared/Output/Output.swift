@@ -11,6 +11,8 @@
 
 import Foundation
 
+import SDGLogic
+
 func inputSyntaxError(message: String) -> Never {
     let commands = join(lines: Command.allNames)
     let flags = join(lines: Flag.allFlags)
@@ -47,9 +49,17 @@ func succeed(message: [String]) -> Never {
     exit(EXIT_SUCCESS)
 }
 
+var alreadyFailed = false
 func fail(message: [String]) -> Never {
     outputWarnings()
     print(message, in: .red, spaced: true)
+    
+    if ¬alreadyFailed {
+        alreadyFailed = true
+        print(Repository.root)
+        try? Repository.write(file: File(path: "FailureReason.txt", contents: join(lines: message)))
+    }
+    
     exit(EXIT_FAILURE)
 }
 

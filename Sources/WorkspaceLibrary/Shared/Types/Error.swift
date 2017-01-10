@@ -33,12 +33,19 @@ func force(operation: () throws -> ()) {
 
 // These assertions print even in continuous integration.
 
-func assert(_ condition: @autoclosure () -> Bool, _ message: @autoclosure () -> [String]) {
-    if _isDebugAssertConfiguration() ∧ condition() {
-        fatalError(message: message())
+func assert(_ condition: @autoclosure () -> Bool, _ message: @autoclosure () -> [String], file: StaticString = #file, line: UInt = #line) {
+    
+    if _isDebugAssertConfiguration() ∧ ¬condition() {
+        
+        fatalError(message: [
+            "Assertion Failure!",
+            "",
+            "File: \(file)",
+            "Line: \(line)",
+            ""] + message())
     }
 }
 
-func assert(_ condition: @autoclosure () -> Bool, _ message: @autoclosure () -> String) {
-    assert(condition(), [message()])
+func assert(_ condition: @autoclosure () -> Bool, _ message: @autoclosure () -> String, file: StaticString = #file, line: UInt = #line) {
+    assert(condition(), [message()], file: file, line: line)
 }

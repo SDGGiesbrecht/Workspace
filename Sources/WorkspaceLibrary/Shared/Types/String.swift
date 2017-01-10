@@ -209,11 +209,9 @@ extension String {
     }
     
     func advance(_ index: inout Index, past characters: CharacterSet, limit: Int? = nil) {
-        assert(limit ≠ nil ∧ characters ≠ CharacterSet.newlines, [
-            "When counting newlines, CR + LF is not properly by String.advance(_:past:limit:).",
+        assert(limit == nil ∨ characters ≠ CharacterSet.newlines, [
+            "When counting newlines, CR + LF is not counted properly by String.advance(_:past:limit:).",
             "Use String.advance(_:pastNewlinesWithLimit:) instead."])
-        
-        
         
         advance(&index, past: characters, limit: limit, advanceOne: { $0 = unicodeScalars.index(after: $0) })
     }

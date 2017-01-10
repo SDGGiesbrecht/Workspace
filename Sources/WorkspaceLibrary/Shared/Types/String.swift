@@ -170,13 +170,19 @@ extension String {
     func advance(_ index: inout Index, past string: String) -> Bool {
         
         var indexCopy = index
+        var syncedIndex = string.startIndex
         for (ownCharacter, stringCharacter) in zip(substring(from: index).characters.lazy, string.characters.lazy) {
             
             if ownCharacter == stringCharacter {
                 indexCopy = self.index(after: indexCopy)
+                syncedIndex = string.index(after: syncedIndex)
             } else {
                 return false
             }
+        }
+        if syncedIndex ≠ string.endIndex {
+            // Not all of the string was present
+            return false
         }
         
         index = indexCopy

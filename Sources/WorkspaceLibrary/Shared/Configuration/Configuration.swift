@@ -122,98 +122,126 @@ struct Configuration {
     
     // MARK: - Properties
     
+    static func parse(configurationSource: String) -> [Option: String] {
+        func reportUnsupportedKey(_ key: String) -> Never {
+            fatalError(message: [
+                "Unsupported configuration key:",
+                key
+                ])
+        }
+        
+        func syntaxError(description: [String]) -> Never {
+            fatalError(message: [
+                "Syntax error!",
+                "",
+                join(lines: description),
+                "",
+                "Valid syntax:",
+                "",
+                "Option A\(colon)Simple Value",
+                "",
+                "\(startTokens.start)Option B\(startTokens.end)",
+                "Multiline",
+                "Value",
+                endToken,
+                "",
+                lineCommentSyntax.comment(contents: "Comment"),
+                "",
+                blockCommentSyntax.comment(contents: [
+                    "Multiline",
+                    "Comment",
+                    ])
+                ])
+        }
+        
+        var result: [Option: String] = [:]
+        var currentMultilineOption: Option?
+        var currentMultilineComment: [String]?
+        for line in configurationSource.lines {
+            
+            if let option = currentMultilineOption {
+                // In multiline value
+                
+                if line == endToken {
+                    currentMultilineOption = nil
+                } else {
+                    var content: String
+                    if let existing = result[option] {
+                        content = existing
+                        content.append("\n" + line)
+                    } else {
+                        content = line
+                    }
+                    
+                    result[option] = content
+                }
+                
+            } else if currentMultilineComment ≠ nil {
+                // In multiline comment
+                
+                if line.hasSuffix(blockCommentSyntax.end) {
+                    currentMultilineComment = nil
+                } else {
+                    currentMultilineComment?.append(line)
+                }
+                
+            } else if blockCommentSyntax.startOfCommentExists(at: line.startIndex, in: line) {
+                // Multiline comment
+                
+                currentMultilineComment = [line]
+                
+            } else if line == "" ∨ lineCommentSyntax.commentExists(at: line.startIndex, in: line) {
+                // Comment or whitespace
+                
+            } else if let multilineOption = line.contents(of: startTokens, requireWholeStringToMatch: true) {
+                // Multiline option
+                
+                if let option = Option(key: multilineOption) {
+                    currentMultilineOption = option
+                } else {
+                    reportUnsupportedKey(multilineOption)
+                }
+                
+            } else if let (optionKey, value) = line.split(at: colon) {
+                // Simple option
+                
+                if let option = Option(key: optionKey) {
+                    result[option] = value
+                } else {
+                    reportUnsupportedKey(optionKey)
+                }
+                
+            } else {
+                // Syntax error
+                
+                syntaxError(description: [
+                    "Invalid Option:",
+                    line
+                    ])
+            }
+        }
+        
+        if let comment = currentMultilineComment {
+            syntaxError(description: [
+                "Unterminated Comment:",
+                join(lines: comment),
+                ])
+        }
+        if let option = currentMultilineOption {
+            syntaxError(description: [
+                "Unterminated Multiline Value:",
+                result[option] ?? "",
+                ])
+        }
+        
+        return result
+    }
+    
     private static var configurationFile: [Option: String] {
         return cachedResult(cache: &cache.configurationFile) {
             () -> [Option: String] in
             
-            func reportUnsupportedKey(_ key: String) -> Never {
-                fatalError(message: [
-                    "Unsupported configuration key:",
-                    key
-                    ])
-            }
-            
-            var result: [Option: String] = [:]
-            var currentMultilineOption: Option?
-            var inMultilineComment = false
-            for line in file.contents.lines {
-                
-                if let option = currentMultilineOption {
-                    // In multiline value
-                    
-                    if line == endToken {
-                        currentMultilineOption = nil
-                    } else {
-                        var appended = result[option] ?? ""
-                        appended.append("\n" + line)
-                        result[option] = appended
-                    }
-                    
-                } else if inMultilineComment {
-                    // In multiline comment
-                    
-                    if line.hasSuffix(blockCommentSyntax.end) {
-                        inMultilineComment = false
-                    }
-                    
-                } else if line == "" ∨ lineCommentSyntax.commentExists(at: line.startIndex, in: line) {
-                    // Comment or whitespace
-                    
-                } else {
-                    // New scope
-                    
-                    if let multilineOption = line.contents(of: startTokens, requireWholeStringToMatch: true) {
-                        // Multiline option
-                        
-                        if let option = Option(key: multilineOption) {
-                            currentMultilineOption = option
-                        } else {
-                            reportUnsupportedKey(multilineOption)
-                        }
-                        
-                    } else if blockCommentSyntax.startOfCommentExists(at: line.startIndex, in: line) {
-                        // Multiline comment
-                        
-                        inMultilineComment = true
-                        
-                    } else if let (optionKey, value) = line.split(at: colon) {
-                        // Simple option
-                        
-                        if let option = Option(key: optionKey) {
-                            result[option] = value
-                        } else {
-                            reportUnsupportedKey(optionKey)
-                        }
-                        
-                    } else {
-                        // Syntax error
-                        
-                        fatalError(message: [
-                            "Syntax error!",
-                            "",
-                            line,
-                            "",
-                            "Valid syntax:",
-                            "",
-                            "Option A\(colon)Simple Value",
-                            "",
-                            "\(startTokens.start)Option B\(startTokens.end)",
-                            "Multiline",
-                            "Value",
-                            endToken,
-                            "",
-                            lineCommentSyntax.comment(contents: "Comment"),
-                            "",
-                            blockCommentSyntax.comment(contents: [
-                                "Multiline",
-                                "Comment",
-                                ])
-                            ])
-                    }
-                }
-            }
-            
-            return result
+            return parse(configurationSource: file.contents)
         }
     }
     

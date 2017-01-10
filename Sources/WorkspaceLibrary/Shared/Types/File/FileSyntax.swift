@@ -105,7 +105,7 @@ struct FileSyntax {
         
         if let lineSyntax = lineCommentSyntax {
             
-            if lineSyntax.commentExists(at: start, in: file.contents) {
+            if lineSyntax.commentExists(at: start, in: file.contents, countDocumentationMarkup: false) {
                 
                 return lineSyntax.requireRangeOfFirstComment(in: start ..< file.contents.endIndex, of: file).upperBound
             }

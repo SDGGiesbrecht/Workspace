@@ -11,6 +11,8 @@
 
 import Foundation
 
+import SDGLogic
+
 import XCTest
 @testable import WorkspaceLibrary
 
@@ -120,6 +122,31 @@ class WorkspaceTests: XCTestCase {
                     context
                     ]))
             }
+            
+            let commentAtStart = join(lines: [
+                syntax.start,
+                syntax.end,
+                ])
+            XCTAssert(syntax.startOfCommentExists(at: commentAtStart.startIndex, in: commentAtStart), join(lines: [
+                "Comment not detected:",
+                commentAtStart,
+                ]))
+            
+            let noCommentAtStart = join(lines: [
+                "",
+                syntax.start,
+                syntax.end,
+            ])
+            XCTAssert(¬syntax.startOfCommentExists(at: noCommentAtStart.startIndex, in: noCommentAtStart), join(lines: [
+                "Comment detected on wrong line:",
+                noCommentAtStart,
+                ]))
+            
+            let empty = ""
+            XCTAssert(¬syntax.startOfCommentExists(at: empty.startIndex, in: empty), join(lines: [
+                "Comment detected in empty string:",
+                empty,
+                ]))
         }
         
         testComment(syntax: FileType.swift, text: [
@@ -258,6 +285,38 @@ class WorkspaceTests: XCTestCase {
                 ])
     }
     
+    func testConfiguration() {
+        let source = join(lines: [
+            "Test Option: Simple Value",
+            "",
+            "[_Start Test Long Option_]",
+            "Multiline",
+            "Value",
+            "[_End_]",
+            "",
+            "(Comment)",
+            "",
+            "((",
+            "    Multiline",
+            "    Comment",
+            "    ))",
+            ])
+        let expectedConfiguration: [Option: String] = [
+            .testOption: "Simple Value",
+            .testLongOption: join(lines: ["Multiline","Value"]),
+        ]
+        let parsed = Configuration.parse(configurationSource: source)
+        
+        XCTAssert(parsed == expectedConfiguration, join(lines: [
+            "Failure parsing configuration source:",
+            source,
+            "↓",
+            "\(parsed)",
+            "≠",
+            "\(expectedConfiguration)",
+            ]))
+    }
+    
     func testHeaders() {
         
         func testHeader(syntax fileExtension: String, header: [String], source: [String]) {
@@ -324,6 +383,31 @@ class WorkspaceTests: XCTestCase {
                     "≠",
                     expectedSwift,
                     ]))
+                
+                let startingWithDocumentation = File(path: path, contents: join(lines: [
+                    "/**",
+                    " Documentation",
+                    " */",
+                    ]))
+                var withHeader = startingWithDocumentation
+                withHeader.header = "Header"
+                let expectedResult = join(lines: [
+                    "/*",
+                    " Header",
+                    " */",
+                    "",
+                    "/**",
+                    " Documentation",
+                    " */",
+                    ])
+                XCTAssert(withHeader.contents == expectedResult, join(lines: [
+                        "Failure inserting header using \(fileType):",
+                        startingWithDocumentation.contents,
+                        "↓",
+                        withHeader.contents,
+                        "≠",
+                        expectedResult,
+                        ]))
             }
             
             if fileExtension == ".sh" {

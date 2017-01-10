@@ -58,9 +58,9 @@ struct BlockCommentSyntax {
                 return line
             }
         }
-        
-        lines = [start, join(lines: lines)]
         */
+        lines = [start, join(lines: lines)]
+        
         return join(lines: lines)
     }
     

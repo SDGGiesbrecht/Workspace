@@ -70,7 +70,7 @@ func runInitialize(andExit shouldExit: Bool) {
     
     var configuration = File(path: Configuration.configurationFilePath, contents: "")
     let note: [String]? = [
-        "This was the default setting when the Workspace initialized the project.",
+        "This is the default setting when the Workspace initializes projects.",
         "For more information about “\(Option.automaticallyTakeOnNewResponsibilites)”, see:",
         Option.automaticResponsibilityDocumentationPage.url,
         ]

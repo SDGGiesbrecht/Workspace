@@ -210,7 +210,7 @@ extension String {
     }
     
     func advance(_ index: inout Index, past characters: CharacterSet, limit: Int? = nil) {
-        assert(characters ≠ CharacterSet.newlines, "Use advance(_:pastNewlinesWithLimit:) instead.")
+        assert(characters ≠ CharacterSet.newlines ∨ limit == nil, "Use advance(_:pastNewlinesWithLimit:) instead.")
         
         advance(&index, past: characters, limit: limit, advanceOne: { $0 = unicodeScalars.index(after: $0) })
     }

@@ -10,8 +10,8 @@
 // See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
 import XCTest
-@testable import WorkspaceLibrary
+@testable import Workspace
 
 XCTMain([
-     testCase(WorkspaceLibraryTests.allTests),
+     testCase(WorkspaceTests.allTests),
 ])

@@ -12,9 +12,9 @@
 import Foundation
 
 import XCTest
-@testable import WorkspaceLibrary
+@testable import Workspace
 
-class WorkspaceLibraryTests: XCTestCase {
+class WorkspaceTests: XCTestCase {
     
     func testGeneralParsing() {
         
@@ -429,7 +429,7 @@ class WorkspaceLibraryTests: XCTestCase {
                 ])
     }
     
-    static var allTests : [(String, (WorkspaceLibraryTests) -> () throws -> Void)] {
+    static var allTests : [(String, (WorkspaceTests) -> () throws -> Void)] {
         return [
             ("testGeneralParsing", testGeneralParsing),
             ("testBlockComments", testBlockComments),

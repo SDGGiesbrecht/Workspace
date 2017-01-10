@@ -20,8 +20,6 @@ class WorkspaceTests: XCTestCase {
         
         func testLineBreaking(text: [String]) {
             
-            fail(message: ["Hello, world!"])
-            
             for newline in ["\n", String.CR_LF] {
                 
                 let parsed = text.joined(separator: newline).linesArray

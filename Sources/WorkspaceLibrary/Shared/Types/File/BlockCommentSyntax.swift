@@ -44,7 +44,7 @@ struct BlockCommentSyntax {
         let withEndToken = join(lines: [contents, end])
         
         var lines = withEndToken.linesArray
-        
+        /*
         lines = lines.map() {
             (line: String) -> String in
             
@@ -60,6 +60,7 @@ struct BlockCommentSyntax {
         }
         
         lines = [start, join(lines: lines)]
+        */
         return join(lines: lines)
     }
     

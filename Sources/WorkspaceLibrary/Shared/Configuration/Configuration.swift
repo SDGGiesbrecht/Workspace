@@ -130,7 +130,7 @@ struct Configuration {
     static func addEntries(entries: [(option: Option, value: String, comment: [String]?)]) throws {
         var configuration = file
         addEntries(entries: entries, to: &configuration)
-        require() { try Repository.write(file: file) }
+        require() { try Repository.write(file: configuration) }
     }
     
     // MARK: - Properties

@@ -12,7 +12,7 @@
 import Foundation
 
 import XCTest
-@testable import Workspace
+@testable import WorkspaceLibrary
 
 class WorkspaceTests: XCTestCase {
     

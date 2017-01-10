@@ -68,7 +68,8 @@ extension String {
     
     var isWhitespace: Bool {
         var index = startIndex
-        //advance(&index, past: CharacterSet.whitespaces)
+        let whitespaces = CharacterSet.whitespaces
+        //advance(&index, past: whitespaces)
         return index == endIndex
     }
     

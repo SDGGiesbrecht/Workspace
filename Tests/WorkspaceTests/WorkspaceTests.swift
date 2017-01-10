@@ -69,7 +69,7 @@ class WorkspaceTests: XCTestCase {
     func testBlockComments() {
         
         func testComment(syntax fileType: FileType, text: [String], comment: [String]) {
-            /*
+            
             let syntax = fileType.syntax.blockCommentSyntax!
             
             let textString = join(lines: text)
@@ -86,7 +86,7 @@ class WorkspaceTests: XCTestCase {
                 ]))
             
             let context = "..." + commentString + "..."
-            
+            /*
             if let parse = syntax.firstComment(in: context) {
                 XCTAssert(parse == commentString, join(lines: [
                     "Failure finding comment using \(fileType) syntax:",

@@ -64,6 +64,10 @@ class WorkspaceTests: XCTestCase {
             "",
             "Line 4",
             ])
+        
+        var index = String.CR_LF.startIndex
+        String.CR_LF.advance(&index, past: CharacterSet.newlines)
+        XCTAssert(index == String.CR_LF.endIndex)
     }
     
     func testBlockComments() {
@@ -74,6 +78,7 @@ class WorkspaceTests: XCTestCase {
             
             let textString = join(lines: text)
             let commentString = join(lines: comment)
+            
             // ↓
             //let output = syntax.comment(contents: text)
             // ↑

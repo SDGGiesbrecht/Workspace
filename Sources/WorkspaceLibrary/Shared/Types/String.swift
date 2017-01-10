@@ -184,7 +184,7 @@ extension String {
     }
     
     private func advance(_ index: inout Index, past characters: CharacterSet, limit: Int?, advanceOne: (inout UnicodeScalarView.Index) -> ()) {
-        /*
+        
         var scalarIndex = index.samePosition(in: unicodeScalars)
         
         var iterationsCompleted = 0
@@ -206,7 +206,7 @@ extension String {
         }
         
         index = converted
-        */
+        
     }
     
     func advance(_ index: inout Index, past characters: CharacterSet, limit: Int? = nil) {

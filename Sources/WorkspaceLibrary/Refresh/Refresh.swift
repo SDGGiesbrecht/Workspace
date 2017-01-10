@@ -42,7 +42,7 @@ func runRefresh(andExit shouldExit: Bool) {
             }
         }
         
-        require() { try Configuration.addEntries(entries: newResponsibilities) }
+        Configuration.addEntries(entries: newResponsibilities)
     }
     
     if shouldExit {

@@ -194,11 +194,11 @@ extension String {
             } else {
                 return true
             }
-        }
+        }/*
         while notAtLimit() ∧ index ≠ endIndex ∧ characters.contains(unicodeScalars[scalarIndex]) {
             advanceOne(&scalarIndex)
             iterationsCompleted += 1
-        }
+         }*/index = self.index(after: index)
         
         guard let converted = scalarIndex.samePosition(in: self) else {
             
@@ -206,7 +206,6 @@ extension String {
         }
         
         index = converted
-        
     }
     
     func advance(_ index: inout Index, past characters: CharacterSet, limit: Int? = nil) {

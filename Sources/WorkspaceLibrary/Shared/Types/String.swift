@@ -195,8 +195,8 @@ extension String {
                 return true
             }
         }
-        while notAtLimit() ∧ index ≠ endIndex /*∧ characters.contains(unicodeScalars[scalarIndex])*/ {
-            advanceOne(&scalarIndex)
+        while notAtLimit() ∧ index ≠ endIndex ∧ characters.contains(unicodeScalars[scalarIndex]) {
+            //advanceOne(&scalarIndex)
             iterationsCompleted += 1
          }
         

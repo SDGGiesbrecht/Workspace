@@ -132,6 +132,7 @@ struct Configuration {
         addEntries(entries: entries, to: &configuration)
         print(configuration.body)
         require() { try Repository.write(file: configuration) }
+        print(file.body)
     }
     
     // MARK: - Properties

@@ -49,17 +49,9 @@ func succeed(message: [String]) -> Never {
     exit(EXIT_SUCCESS)
 }
 
-var alreadyFailed = false
 func fail(message: [String]) -> Never {
     outputWarnings()
     print(message, in: .red, spaced: true)
-    
-    if ¬alreadyFailed {
-        alreadyFailed = true
-        print(Repository.root)
-        try? Repository.write(file: File(path: "FailureReason.txt", contents: join(lines: message)))
-    }
-    
     exit(EXIT_FAILURE)
 }
 

@@ -74,7 +74,7 @@ class WorkspaceTests: XCTestCase {
             
             let textString = join(lines: text)
             let commentString = join(lines: comment)
-            /*
+            // ↓
             let output = syntax.comment(contents: text)
             XCTAssert(output == commentString, join(lines: [
                 "Failure generating comment using \(fileType):",
@@ -84,9 +84,9 @@ class WorkspaceTests: XCTestCase {
                 "≠",
                 commentString,
                 ]))
-            
+            /*
             let context = "..." + commentString + "..."
-            ↑
+            // ↑
             if let parse = syntax.firstComment(in: context) {
                 XCTAssert(parse == commentString, join(lines: [
                     "Failure finding comment using \(fileType) syntax:",

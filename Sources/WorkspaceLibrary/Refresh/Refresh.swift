@@ -34,7 +34,8 @@ func runRefresh(andExit shouldExit: Bool) {
             if ¬Configuration.optionIsDefined(option) {
                 
                 newResponsibilities.append((option: option, value: automaticValue, comment: [
-                    "Workspace took responsibility for this automatically because “\(Option.automaticallyTakeOnNewResponsibilites.key)” is “\(Configuration.trueOptionValue)”",
+                    "Workspace took responsibility for this automatically.",
+                    "(Because “\(Option.automaticallyTakeOnNewResponsibilites.key)” is “\(Configuration.trueOptionValue)”)",
                     "For more information about “\(option.key)”, see:",
                     documentationPage.url,
                     ]))

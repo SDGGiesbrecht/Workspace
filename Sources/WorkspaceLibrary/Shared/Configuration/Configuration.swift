@@ -105,7 +105,8 @@ struct Configuration {
         return configurationFileEntry(option: option, value: value ? trueOptionValue : falseOptionValue, comment: comment)
     }
     
-    static func addEntries(entries: [(option: Option, value: String, comment: [String]?)]) throws {
+    static func addEntries(entries: [(option: Option, value: String, comment: [String]?)], to configuration: inout File) {
+        
         var additions = ""
         for entry in entries {
             additions.append(Configuration.configurationFileEntry(option: entry.option, value: entry.value, comment: entry.comment))
@@ -113,17 +114,21 @@ struct Configuration {
         }
         
         if additions ≠ "" {
-            var configurationFile = file
-            if configurationFile.headerStart == configurationFile.headerEnd {
+            if configuration.headerStart == configuration.headerEnd {
                 // No header
                 
                 // Prevent comment from disappearing when headers are generated.
                 additions = "\n" + additions
             }
-            configurationFile.body = additions + configurationFile.body
-            require() { try Repository.write(file: configurationFile) }
+            configuration.body = additions + configuration.body
+            
         }
-        
+    }
+    
+    static func addEntries(entries: [(option: Option, value: String, comment: [String]?)]) throws {
+        var configuration = file
+        addEntries(entries: entries, to: &configuration)
+        require() { try Repository.write(file: file) }
     }
     
     // MARK: - Properties

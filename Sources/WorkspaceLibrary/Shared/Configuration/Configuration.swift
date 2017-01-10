@@ -106,16 +106,22 @@ struct Configuration {
     }
     
     static func addEntries(entries: [(option: Option, value: String, comment: [String]?)]) throws {
-        var appendix = ""
+        var additions = ""
         for entry in entries {
-            appendix.append(Configuration.configurationFileEntry(option: entry.option, value: entry.value, comment: entry.comment))
-            appendix.append("\n\n")
+            additions.append(Configuration.configurationFileEntry(option: entry.option, value: entry.value, comment: entry.comment))
+            additions.append("\n\n")
         }
         
-        if appendix ≠ "" {
+        if additions ≠ "" {
             var configurationFile = file
-            
-            //configurationFile.body = appendix + configurationFile.body
+            if configurationFile.headerStart == configurationFile.headerEnd {
+                // No header
+                
+                // Prevent comment from disappearing when headers are generated.
+                additions = "\n" + additions
+            }
+            configurationFile.body = additions + configurationFile.body
+            require() { try Repository.write(file: configurationFile) }
         }
         
     }

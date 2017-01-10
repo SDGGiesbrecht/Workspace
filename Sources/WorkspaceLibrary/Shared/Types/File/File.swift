@@ -101,7 +101,12 @@ struct File {
     }
     
     var body: String {
-        return contents.substring(from: headerEnd)
+        get {
+            return contents.substring(from: headerEnd)
+        } set {
+            contents.replaceSubrange(headerEnd ..< contents.endIndex, with: newValue)
+        }
+        
     }
     
     // MARK: - Handling Parse Errors

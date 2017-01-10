@@ -326,23 +326,27 @@ class WorkspaceTests: XCTestCase {
                 preconditionFailure("Unrecognized extension: \(fileExtension)")
             }
             let syntax = fileType.syntax
+            let body = "..."
             
+            var headerlessFirstLine = ""
             func inContext(headerSource: String) -> File {
                 
                 var contents = ""
                 if let firstLine = syntax.requiredFirstLineTokens {
-                    contents = join(lines: [
+                    let value = join(lines: [
                         firstLine.start + "..." + firstLine.end,
                         "",
                         "", // First line of header.
                         ])
+                    contents = value
+                    headerlessFirstLine = value
                 }
                 
                 contents.append(headerSource)
                 contents.append(join(lines: [
                     "", // Last line of header.
                     "",
-                    "...",
+                    body,
                     ]))
                 
                 return File(path: path, contents: contents)
@@ -354,7 +358,7 @@ class WorkspaceTests: XCTestCase {
                     "",
                     ]))
             }
-            contextString.append("...")
+            contextString.append(body)
             let context = File(path: path, contents: contextString)
             let file = inContext(headerSource: join(lines: source))
             
@@ -372,7 +376,7 @@ class WorkspaceTests: XCTestCase {
                     " Licence",
                     " */",
                     "",
-                    "...",
+                    body,
                     ])
                 
                 XCTAssert(file.contents == expectedSwift, join(lines: [
@@ -422,7 +426,7 @@ class WorkspaceTests: XCTestCase {
                     "# ",
                     "# Licence",
                     "",
-                    "...",
+                    body,
                     ])
                 
                 XCTAssert(file.contents == expectedShell, join(lines: [
@@ -454,6 +458,47 @@ class WorkspaceTests: XCTestCase {
                 input,
                 "≠",
                 headerString,
+                ]))
+            
+            XCTAssert(context.body == body, join(lines: [
+                "Failure parsing body using \(fileType):",
+                output.contents,
+                "↓",
+                output.body,
+                "≠",
+                body,
+                ]))
+            
+            var newBody = context
+            newBody.body = body
+            XCTAssert(newBody.contents == context.contents, join(lines: [
+                "Failure replacing body using \(fileType):",
+                context.contents,
+                "↓",
+                newBody.contents,
+                "≠",
+                context.contents,
+                ]))
+            
+            let noHeader = File(path: path, contents: headerlessFirstLine + body)
+            XCTAssert(noHeader.body == body, join(lines: [
+                "Failure parsing body using \(fileType):",
+                noHeader.contents,
+                "↓",
+                noHeader.body,
+                "≠",
+                body,
+                ]))
+            
+            var newBodyNoHeader = noHeader
+            newBodyNoHeader.body = body
+            XCTAssert(newBodyNoHeader.contents == noHeader.contents, join(lines: [
+                "Failure replacing body using \(fileType):",
+                noHeader.contents,
+                "↓",
+                newBodyNoHeader.contents,
+                "≠",
+                noHeader.contents,
                 ]))
         }
         

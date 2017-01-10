@@ -44,21 +44,21 @@ struct BlockCommentSyntax {
         let withEndToken = join(lines: [contents, end])
         
         var lines = withEndToken.linesArray
-        /*
+        
         lines = lines.map() {
             (line: String) -> String in
-            
+            /*
             if let indent = stylisticIndent {
                 if line.isWhitespace {
                     return line
                 } else {
                     return indent + line
                 }
-            } else {
+            } else {*/
                 return line
-            }
+            //}
         }
-        */
+ 
         lines = [start, join(lines: lines)]
         
         return join(lines: lines)

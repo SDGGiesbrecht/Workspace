@@ -75,7 +75,7 @@ class WorkspaceTests: XCTestCase {
             let textString = join(lines: text)
             let commentString = join(lines: comment)
             // ↓
-            let output = syntax.comment(contents: text)
+            //let output = syntax.comment(contents: text)
             // ↑
             /*
             XCTAssert(output == commentString, join(lines: [

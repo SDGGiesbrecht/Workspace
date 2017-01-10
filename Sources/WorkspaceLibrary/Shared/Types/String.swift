@@ -196,7 +196,7 @@ extension String {
             }
         }
         while notAtLimit() ∧ index ≠ endIndex ∧ characters.contains(unicodeScalars[scalarIndex]) {
-            //advanceOne(&scalarIndex)
+            advanceOne(&scalarIndex)
             iterationsCompleted += 1
          }
         
@@ -214,7 +214,7 @@ extension String {
         advance(&index, past: characters, limit: limit, advanceOne: { $0 = unicodeScalars.index(after: $0) })
     }
     
-    func advance(_ index: inout Index, pastNewlinesWithLimit limit: Int?) {
+    func advance(_ index: inout Index, pastNewlinesWithLimit limit: Int) {
         
         advance(&index, past: CharacterSet.newlines, limit: limit, advanceOne: {
             (mobileIndex: inout ScalarIndex) -> () in

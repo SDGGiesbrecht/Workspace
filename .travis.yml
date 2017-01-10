@@ -12,7 +12,7 @@
 language: generic
 matrix:
   include:
-    #- os: osx
+    - os: osx
     - os: linux
       env: SWIFT_VERSION=3.0.2
 osx_image: xcode8.2

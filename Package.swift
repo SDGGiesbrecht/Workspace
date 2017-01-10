@@ -14,7 +14,7 @@ import PackageDescription
 let package = Package(
     name: "Workspace",
     targets: [
-        Target(name: "workspace", dependencies: ["WorkspaceLibrary"]),
+        //Target(name: "workspace", dependencies: ["WorkspaceLibrary"]),
         Target(name: "WorkspaceLibrary"),
     ],
     dependencies: [

@@ -170,6 +170,12 @@ struct Repository {
             
             return (changeOrigin, RelativePath(destination.string + relative))
         }
+        if changes.isEmpty {
+            fatalError(message: [
+                "No files exist at “\(origin)”",
+                "This may indicate a bug in Workspace.",
+                ])
+        }
         
         for change in changes {
             

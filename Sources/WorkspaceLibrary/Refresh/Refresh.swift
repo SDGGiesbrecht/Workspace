@@ -43,6 +43,8 @@ func runRefresh(andExit shouldExit: Bool) {
         }
         
         Configuration.addEntries(entries: newResponsibilities)
+    } else {
+        fatalError(message: ["Configuration not being read!"])
     }
     
     if shouldExit {

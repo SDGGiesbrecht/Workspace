@@ -129,7 +129,7 @@ struct Repository {
         
         resetCache()
         
-        if _isDebugAssertConfiguration() ∧ true {
+        if debug {
             let written = try Repository.read(file: file.path)
             assert(written.contents == file.contents, "Write operation failed.")
         }

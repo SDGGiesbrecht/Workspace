@@ -30,3 +30,5 @@ func force(operation: () throws -> ()) {
         // Ignore failure.
     }
 }
+
+let debug = _isDebugAssertConfiguration()

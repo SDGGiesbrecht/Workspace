@@ -205,7 +205,7 @@ class WorkspaceTests: XCTestCase {
                     ]))
             }
             
-            /*
+            
             if let parse = syntax.contentsOfFirstComment(in: context) {
                 XCTAssert(parse == text, join(lines: [
                     "Failure parsing comment using \(fileType) syntax:",
@@ -236,9 +236,9 @@ class WorkspaceTests: XCTestCase {
                     "Comment not detected using \(fileType):",
                     consecutiveContext
                     ]))
-            }*/
+            }
         }
-        
+        /*
         testComment(syntax: FileType.swift, text: "Comment", comment: "// Comment", consecutiveText: [
             "Consecutive",
             "Comment",
@@ -253,7 +253,7 @@ class WorkspaceTests: XCTestCase {
             ], consecutiveComment: [
                 "(Consecutive)",
                 "(Comment)",
-                ])
+                ])*/
     }
     
     func testHeaders() {

@@ -19,7 +19,7 @@ func runRefresh(andExit shouldExit: Bool) {
     printHeader(["Updating Workspace commands..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
-    require() { try Repository.move(Repository.workspaceDirectory.subfolderOrFile("Scripts/Refresh Workspace.command"), into: Repository.root) }
+    require() { try Repository.copy(Repository.workspaceDirectory.subfolderOrFile("Scripts/Refresh Workspace.command"), into: Repository.root) }
     
     if Configuration.automaticallyTakeOnNewResponsibilites {
         

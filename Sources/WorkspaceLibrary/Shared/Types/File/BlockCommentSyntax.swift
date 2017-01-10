@@ -47,16 +47,16 @@ struct BlockCommentSyntax {
         
         lines = lines.map() {
             (line: String) -> String in
-            /*
+            
             if let indent = stylisticIndent {
-                if line.isWhitespace {
+                /*if line.isWhitespace {
                     return line
-                } else {
+                } else {*/
                     return indent + line
-                }
-            } else {*/
+                //}
+            } else {
                 return line
-            //}
+            }
         }
  
         lines = [start, join(lines: lines)]

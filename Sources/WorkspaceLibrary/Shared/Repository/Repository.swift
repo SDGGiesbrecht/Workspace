@@ -123,13 +123,11 @@ struct Repository {
     
     static func write(file: File) throws {
         
-        print("===== New =====", file.contents)
         prepareForWrite(path: file.path)
         
         try file.contents.write(toFile: absolute(file.path).string, atomically: true, encoding: String.Encoding.utf8)
-        print("===== Written =====", file.contents)
+        
         resetCache()
-        print("===== Loaded =====", try read(file: file.path).contents)
     }
     
     static var packageDescription: File {

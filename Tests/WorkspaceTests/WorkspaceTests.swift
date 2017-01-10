@@ -69,7 +69,7 @@ class WorkspaceTests: XCTestCase {
     func testBlockComments() {
         
         func testComment(syntax fileType: FileType, text: [String], comment: [String]) {
-            
+            /*
             let syntax = fileType.syntax.blockCommentSyntax!
             
             let textString = join(lines: text)
@@ -117,8 +117,8 @@ class WorkspaceTests: XCTestCase {
                     "Comment not detected using \(fileType):",
                     context
                     ]))
-            }
-        }/*
+            }*/
+        }
         
         testComment(syntax: FileType.swift, text: [
             "Block",
@@ -138,13 +138,13 @@ class WorkspaceTests: XCTestCase {
                 "    Block",
                 "    Comment",
                 "    ))",
-                ])*/
+                ])
     }
     
     func testLineComments() {
         
         func testComment(syntax fileType: FileType, text: String, comment: String, consecutiveText: [String], consecutiveComment: [String]) {
-            
+            /*
             let syntax = fileType.syntax.lineCommentSyntax!
             
             let consecutiveTextString = join(lines: consecutiveText)
@@ -236,9 +236,9 @@ class WorkspaceTests: XCTestCase {
                     "Comment not detected using \(fileType):",
                     consecutiveContext
                     ]))
-            }
+            }*/
         }
-        /*
+        
         testComment(syntax: FileType.swift, text: "Comment", comment: "// Comment", consecutiveText: [
             "Consecutive",
             "Comment",
@@ -253,13 +253,13 @@ class WorkspaceTests: XCTestCase {
             ], consecutiveComment: [
                 "(Consecutive)",
                 "(Comment)",
-                ])*/
+                ])
     }
     
     func testHeaders() {
         
         func testHeader(syntax fileExtension: String, header: [String], source: [String]) {
-            
+            /*
             let path = RelativePath("Test." + fileExtension)
             guard let fileType = FileType(filePath: path) else {
                 preconditionFailure("Unrecognized extension: \(fileExtension)")
@@ -368,7 +368,7 @@ class WorkspaceTests: XCTestCase {
                 input,
                 "≠",
                 headerString,
-                ]))
+                ]))*/
         }
         
         testHeader(syntax: ".swift", header: [

@@ -194,11 +194,11 @@ extension String {
             } else {
                 return true
             }
-        }/*
-        while notAtLimit() ∧ index ≠ endIndex ∧ characters.contains(unicodeScalars[scalarIndex]) {
+        }
+        while notAtLimit() ∧ index ≠ endIndex /*∧ characters.contains(unicodeScalars[scalarIndex])*/ {
             advanceOne(&scalarIndex)
             iterationsCompleted += 1
-         }*/index = self.index(after: index)
+         }
         
         guard let converted = scalarIndex.samePosition(in: self) else {
             

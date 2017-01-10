@@ -67,6 +67,8 @@ struct Configuration {
     
     static func configurationFileEntry(option: Option, value: String, comment: [String]?) -> String {
         
+        print(["Adding “\(option.key)” to configuration..."])
+        
         let entry: String
         if value.isMultiline {
             entry = join(lines: [

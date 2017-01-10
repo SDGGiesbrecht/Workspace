@@ -13,6 +13,9 @@ import SDGLogic
 
 func runInitialize(andExit shouldExit: Bool) {
     
+    printWarning(["Warning A"])
+    printWarning(["Warning B"])
+    
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Initializing workspace..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

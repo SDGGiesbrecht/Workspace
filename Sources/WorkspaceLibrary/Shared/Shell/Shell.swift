@@ -15,6 +15,10 @@ import SDGLogic
 
 func bash(_ arguments: [String], silent: Bool = false) -> (succeeded: Bool, output: String?, exitCode: ExitCode) {
     
+    defer {
+        Repository.resetCache()
+    }
+    
     var argumentsString = arguments.map({
         (string: String) -> String in
         
@@ -52,8 +56,6 @@ func bash(_ arguments: [String], silent: Bool = false) -> (succeeded: Bool, outp
             "\(data)",
             ])
     }
-    
-    Repository.resetCache()
     
     guard process.terminationStatus == ExitCode.succeeded else {
         return (succeeded: false, output: output, exitCode: process.terminationStatus)

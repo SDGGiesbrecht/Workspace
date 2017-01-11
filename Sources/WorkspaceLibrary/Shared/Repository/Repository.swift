@@ -237,8 +237,10 @@ struct Repository {
         // This must generate the entire list of files to copy before starting to make changes. Otherwise the run‐away effect of copying a directory into itself is catastrophic.
         let files: [RelativePath]
         if includeIgnoredFiles {
+            print("include")
             files = allFiles(at: origin)
         } else {
+            print("exclude")
             files = trackedFiles(at: origin)
         }
         print("for: \(origin)")

@@ -562,8 +562,15 @@ class WorkspaceTests: XCTestCase {
     }
     
     func testShell() {
+        
+        var exitCodes: Set<Int32> = []
+        exitCodes.insert(ExitCode.succeeded)
+        exitCodes.insert(ExitCode.failed)
+        exitCodes.insert(ExitCode.testsFailed)
+        XCTAssert(exitCodes.count == 3, "Exit codes clash.")
+        
         let message = "Hello, world!"
-        let output = requireBashOutput(["echo", "\(message)"])
+        let output = requireBash(["echo", "\(message)"])
         XCTAssert(output == message + "\n", join(lines: [
             "Shell failed:",
             output,

@@ -81,17 +81,42 @@ struct Repository {
         }
     }
     
-    /*static var trackedFiles: [RelativePath] {
+    static var trackedFiles: [RelativePath] {
         
         return cachedResult(cache: &cache.trackedFiles) {
+            () -> [RelativePath] in
+            
+            let ignoredSummary = requireBash(["git", "status", "--ignored"], silent: true)
+            var ignoredPaths: [String] = [
+                ".git/"
+            ]
+            if let header = ignoredSummary.range(of: "Ignored files:") {
+                
+                let remainder = ignoredSummary.substring(from: header.upperBound)
+                for line in remainder.lines.dropFirst(3) {
+                    if line.isWhitespace {
+                        break
+                    } else {
+                        var start = line.startIndex
+                        line.advance(&start, past: CharacterSet.whitespaces)
+                        ignoredPaths.append(line.substring(from: start))
+                    }
+                }
+                
+            }
             
             return allFiles.filter() {
                 (path: RelativePath) -> Bool in
                 
-                return
+                for ignored in ignoredPaths {
+                    if path.string.hasPrefix(ignored) {
+                        return false
+                    }
+                }
+                return true
             }
         }
-    }*/
+    }
     
     static var printableListOfAllFiles: String {
         return cachedResult(cache: &cache.printableListOfAllFiles) {
@@ -105,25 +130,38 @@ struct Repository {
         return allFiles.isEmpty
     }
     
+    private static func path(_ possiblePath: RelativePath, isIn path: RelativePath) -> Bool {
+        
+        if path == Repository.root {
+            return true
+        }
+        
+        if possiblePath == path {
+            // The file itself
+            return true
+        }
+        
+        if possiblePath.string.hasPrefix(path.string + "/") {
+            // In that folder.
+            return true
+        }
+        
+        return false
+    }
+    
     static func allFiles(at path: RelativePath) -> [RelativePath] {
-        return allFilesIncludingWorkspaceItself.filter() {
+        return allFiles.filter() {
             (possiblePath: RelativePath) -> Bool in
             
-            if path == Repository.root {
-                return true
-            }
+            return Repository.path(possiblePath, isIn: path)
+        }
+    }
+    
+    static func trackedFiles(at path: RelativePath) -> [RelativePath] {
+        return trackedFiles.filter() {
+            (possiblePath: RelativePath) -> Bool in
             
-            if possiblePath == path {
-                // The file itself
-                return true
-            }
-            
-            if possiblePath.string.hasPrefix(path.string + "/") {
-                // In that folder.
-                return true
-            }
-            
-            return false
+            return Repository.path(possiblePath, isIn: path)
         }
     }
     
@@ -194,10 +232,15 @@ struct Repository {
         force() { try fileManager.createDirectory(atPath: absolute(path).directory, withIntermediateDirectories: true, attributes: nil) }
     }
     
-    private static func performPathChange(from origin: RelativePath, to destination: RelativePath, copy: Bool) throws {
+    private static func performPathChange(from origin: RelativePath, to destination: RelativePath, copy: Bool, includeIgnoredFiles: Bool = false) throws {
         
         // This must generate the entire list of files to copy before starting to make changes. Otherwise the run‐away effect of copying a directory into itself is catastrophic.
-        let files = allFiles(at: origin)
+        let files: [RelativePath]
+        if includeIgnoredFiles {
+            files = allFiles(at: origin)
+        } else {
+            files = trackedFiles(at: origin)
+        }
         let changes = files.map() {
             (changeOrigin: RelativePath) -> (changeOrigin: RelativePath, changeDestination: RelativePath) in
             
@@ -219,7 +262,15 @@ struct Repository {
             
             prepareForWrite(path: change.changeDestination)
             
-            try fileManager.copyItem(atPath: absolute(change.changeOrigin).string, toPath: absolute(change.changeDestination).string)
+            #if os(Linux)
+            
+                let result = bash(["cp", absolute(change.changeOrigin).string, absolute(change.changeDestination).string], silent: true)
+                if ¬result.succeeded {
+                    throw LinuxFileError(exitCode: result.exitCode)
+                }
+            #else
+                try fileManager.copyItem(atPath: absolute(change.changeOrigin).string, toPath: absolute(change.changeDestination).string)
+            #endif
             
             if ¬copy {
                 try delete(change.changeOrigin)
@@ -229,24 +280,24 @@ struct Repository {
         resetCache()
     }
     
-    private static func performPathChange(from origin: RelativePath, into destination: RelativePath, copy: Bool) throws {
+    private static func performPathChange(from origin: RelativePath, into destination: RelativePath, copy: Bool, includeIgnoredFiles: Bool = false) throws {
         let destinationFile = destination.subfolderOrFile(origin.filename)
-        try performPathChange(from: origin, to: destinationFile, copy: copy)
+        try performPathChange(from: origin, to: destinationFile, copy: copy, includeIgnoredFiles: includeIgnoredFiles)
     }
     
-    static func copy(_ origin: RelativePath, to destination: RelativePath) throws {
-        try performPathChange(from: origin, to: destination, copy: true)
+    static func copy(_ origin: RelativePath, to destination: RelativePath, includeIgnoredFiles: Bool = false) throws {
+        try performPathChange(from: origin, to: destination, copy: true, includeIgnoredFiles: includeIgnoredFiles)
     }
     
-    static func copy(_ origin: RelativePath, into destination: RelativePath) throws {
-        try performPathChange(from: origin, into: destination, copy: true)
+    static func copy(_ origin: RelativePath, into destination: RelativePath, includeIgnoredFiles: Bool = false) throws {
+        try performPathChange(from: origin, into: destination, copy: true, includeIgnoredFiles: includeIgnoredFiles)
     }
     
-    static func move(_ origin: RelativePath, to destination: RelativePath) throws {
-        try performPathChange(from: origin, to: destination, copy: false)
+    static func move(_ origin: RelativePath, to destination: RelativePath, includeIgnoredFiles: Bool = false) throws {
+        try performPathChange(from: origin, to: destination, copy: false, includeIgnoredFiles: includeIgnoredFiles)
     }
     
-    static func move(_ origin: RelativePath, into destination: RelativePath) throws {
-        try performPathChange(from: origin, into: destination, copy: false)
+    static func move(_ origin: RelativePath, into destination: RelativePath, includeIgnoredFiles: Bool = false) throws {
+        try performPathChange(from: origin, into: destination, copy: false, includeIgnoredFiles: includeIgnoredFiles)
     }
 }

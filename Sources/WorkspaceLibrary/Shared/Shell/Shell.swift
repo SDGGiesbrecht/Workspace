@@ -13,7 +13,7 @@ import Foundation
 
 import SDGLogic
 
-func bashOutput(_ arguments: [String], silent: Bool = false) -> String? {
+func bash(_ arguments: [String], silent: Bool = false) -> (succeeded: Bool, output: String?, exitCode: ExitCode) {
     var argumentsString = arguments.map({
         (string: String) -> String in
         
@@ -54,37 +54,28 @@ func bashOutput(_ arguments: [String], silent: Bool = false) -> String? {
     
     Repository.resetCache()
     
-    guard process.terminationStatus == EXIT_SUCCESS else {
-        return nil
+    guard process.terminationStatus == ExitCode.succeeded else {
+        return (succeeded: false, output: nil, exitCode: process.terminationStatus)
     }
     
-    return output
+    return (succeeded: true, output: output, exitCode: process.terminationStatus)
 }
 
-func bash(_ arguments: [String], silent: Bool = false) -> Bool {
-    return bashOutput(arguments, silent: silent) ≠ nil
-}
-
-func requireBash(_ arguments: [String], silent: Bool = false) {
-    if ¬bash(arguments, silent: silent) {
-        commandFailed(arguments)
-    }
-}
-
-func requireBashOutput(_ arguments: [String], silent: Bool = false) -> String {
-    if let result = bashOutput(arguments, silent: silent) {
-        return result
+@discardableResult func requireBash(_ arguments: [String], silent: Bool = false) -> String {
+    let result = bash(arguments, silent: silent)
+    if result.succeeded {
+        if let output = result.output {
+            return output
+        } else {
+            return ""
+        }
     } else {
-        commandFailed(arguments)
+        fatalError(message: [
+            "Command failed:",
+            "",
+            arguments.joined(separator: " "),
+            "",
+            "See details above.",
+            ])
     }
-}
-
-private func commandFailed(_ arguments: [String]) -> Never {
-    fatalError(message: [
-        "Command failed:",
-        "",
-        arguments.joined(separator: " "),
-        "",
-        "See details above.",
-        ])
 }

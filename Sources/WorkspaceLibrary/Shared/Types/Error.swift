@@ -32,3 +32,14 @@ func force(operation: () throws -> ()) {
 }
 
 let debug = _isDebugAssertConfiguration()
+
+#if os(Linux)
+    struct LinuxFileError: Error {
+        init(exitCode: ExitCode) {
+            code = exitCode
+            description = "Linux file error: \(exitCode)"
+        }
+        let code: ExitCode
+        let description: String
+    }
+#endif

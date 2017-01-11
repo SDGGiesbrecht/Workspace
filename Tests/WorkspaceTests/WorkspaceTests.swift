@@ -595,6 +595,7 @@ class WorkspaceTests: XCTestCase {
             ("testBlockComments", testBlockComments),
             ("testLineComments", testLineComments),
             ("testHeaders", testHeaders),
+            ("testShell", testShell),
             ("testOnProjects", testOnProjects),
         ]
     }

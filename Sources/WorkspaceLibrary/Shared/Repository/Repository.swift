@@ -73,11 +73,17 @@ struct Repository {
         return cachedResult(cache: &cache.allFiles) {
             () -> [RelativePath] in
             
-            return allFilesIncludingWorkspaceItself.filter() {
+            printHeader(["All files generated here!"])
+            
+            let result = allFilesIncludingWorkspaceItself.filter() {
                 (path: RelativePath) -> Bool in
                 
                 return ¬(path.string.hasPrefix(workspaceDirectory.string + "/") ∨ path == RelativePath(".DS_Store"))
             }
+            
+            print(result.map({ $0.string }))
+            
+            return result
         }
     }
     
@@ -85,8 +91,6 @@ struct Repository {
         
         return cachedResult(cache: &cache.trackedFiles) {
             () -> [RelativePath] in
-            
-            printHeader(["Tracked files generated here!"])
             
             let ignoredSummary = requireBash(["git", "status", "--ignored"], silent: true)
             var ignoredPaths: [String] = [
@@ -117,8 +121,6 @@ struct Repository {
                 }
                 return true
             }
-            
-            print(result.map({ $0.string }))
             
             return result
         }
@@ -249,8 +251,6 @@ struct Repository {
             print("exclude")
             files = trackedFiles(at: origin)
         }
-        print("for: \(origin)")
-        print(files)
         
         let changes = files.map() {
             (changeOrigin: RelativePath) -> (changeOrigin: RelativePath, changeDestination: RelativePath) in

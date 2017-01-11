@@ -30,7 +30,7 @@ func bashOutput(_ arguments: [String], silent: Bool = false) -> String? {
     let standardOutput = Pipe()
     process.standardOutput = standardOutput
     
-    if ¬silent {
+    if ¬silent  {
         argumentsString += " | tee /dev/tty"
     }
     process.arguments = ["-c", argumentsString]

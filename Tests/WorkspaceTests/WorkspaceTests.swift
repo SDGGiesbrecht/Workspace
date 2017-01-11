@@ -627,6 +627,54 @@ class WorkspaceTests: XCTestCase {
                             XCTFail("Failed to initialize test project “\(project.name)”.")
                         }
                     }
+                    
+                    Repository.performInDirectory(directory: root(of: project.name)) {
+                        
+                        if ¬bash([".Workspace/.build/debug/workspace", "validate"]).succeeded {
+                            XCTFail("Validation fails for initialized project “\(project.name)”.")
+                        }
+                    }
+                }
+                
+                let realProjects: [(name: String, url: String)] = [
+                    
+                    (name: "SDGCaching", url: "https://github.com/SDGGiesbrecht/SDGCaching"),
+                    
+                    (name: "SDGLogic", url: "https://github.com/SDGGiesbrecht/SDGLogic"),
+                    (name: "SDGMathematics", url: "https://github.com/SDGGiesbrecht/SDGMathematics"),
+                ]
+                
+                for project in realProjects {
+                    
+                    printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
+                    printHeader(["Testing Workspace with \(project.name)..."])
+                    printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
+                    
+                    Repository.performInDirectory(directory: Repository.testZone) {
+                        
+                        if ¬bash(["git", "clone", project.url]).succeeded {
+                            XCTFail("Failed to clone “\(project.name)”.")
+                        }
+                    }
+                    
+                    try installWorkspace(repository: project.name)
+                    
+                    Repository.performInDirectory(directory: workspace(in: project.name)) {
+                        
+                        if ¬bash(["swift", "build"]).succeeded {
+                            XCTFail("Failed to build Workspace in test project “\(project.name)”...")
+                        }
+                        
+                    }
+                    
+                    Repository.performInDirectory(directory: root(of: project.name)) {
+                        
+                        let allowedExitCodes: Set<ExitCode> = [ExitCode.succeeded, ExitCode.testsFailed]
+                        
+                        if ¬allowedExitCodes.contains(bash([".Workspace/.build/debug/workspace", "validate"]).exitCode) {
+                            XCTFail("Validation crashes for initialized project “\(project.name)”.")
+                        }
+                    }
                 }
                 
             } catch let error {

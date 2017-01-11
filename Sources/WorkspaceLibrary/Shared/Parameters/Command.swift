@@ -30,10 +30,12 @@ enum Command: String, Comparable, CustomStringConvertible, LosslessStringConvert
     
     case initialize = "initialize"
     case refresh = "refresh"
+    case validate = "validate"
     
     static let all: [Command] = [
         .initialize,
         .refresh,
+        .validate,
         ]
     
     static let allNames: [String] = all.map() { $0.name }
@@ -50,6 +52,8 @@ enum Command: String, Comparable, CustomStringConvertible, LosslessStringConvert
             runInitialize(andExit: shouldExit)
         case .refresh:
             runRefresh(andExit: shouldExit)
+        case .validate:
+            runValidate(andExit: shouldExit)
         }
     }
     

@@ -16,10 +16,15 @@ let instructionsAfterRefresh = "" //"Open \(Configuration.projectName).xcodeproj
 func runRefresh(andExit shouldExit: Bool) {
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    printHeader(["Refreshing \(Configuration.projectName)..."])
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Updating Workspace commands..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
     require() { try Repository.copy(Repository.workspaceDirectory.subfolderOrFile("Scripts/Refresh Workspace.command"), into: Repository.root, includeIgnoredFiles: true) }
+    require() { try Repository.copy(Repository.workspaceDirectory.subfolderOrFile("Scripts/Validate Changes.command"), into: Repository.root, includeIgnoredFiles: true) }
     
     if Configuration.automaticallyTakeOnNewResponsibilites {
         

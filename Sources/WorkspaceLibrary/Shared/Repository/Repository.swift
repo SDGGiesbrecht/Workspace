@@ -181,7 +181,7 @@ struct Repository {
         let filePath = absolute(path).string
         
         #if os(Linux)
-            let contents = String(contentsOfFile: filePath, encoding: String.Encoding.utf8)
+            let contents = try String(contentsOfFile: filePath, encoding: String.Encoding.utf8)
         #else
             var encoding = String.Encoding.utf8
             let contents = try String(contentsOfFile: filePath, usedEncoding: &encoding)

@@ -577,6 +577,8 @@ class WorkspaceTests: XCTestCase {
             "≠",
             message + "\n",
             ]))
+        
+        XCTAssert(bash(["NotARealCommand"]).succeeded == false, "Schript should have failed.")
     }
     
     func testOnProjects() {
@@ -587,7 +589,43 @@ class WorkspaceTests: XCTestCase {
                 
                 try Repository.delete(Repository.testZone)
                 
-                try Repository.copy(Repository.root, to: Repository.testZone.subfolderOrFile(Repository.workspaceDirectory.string + "/"))
+                let new: [(name: String, flags: [String])] = [
+                    (name: "New Library", flags: []),
+                    (name: "New Executable", flags: ["•executable"]),
+                ]
+                
+                func root(of repository: String) -> RelativePath {
+                    return Repository.testZone.subfolderOrFile(repository)
+                }
+                func workspace(in repository: String) -> RelativePath {
+                    return root(of: repository).subfolderOrFile(Repository.workspaceDirectory.string + "/")
+                }
+                
+                func installWorkspace(repository: String) throws {
+                    try Repository.copy(Repository.root, to: workspace(in: repository))
+                }
+                
+                for project in new {
+                    try installWorkspace(repository: project.name)
+                    
+                    Repository.performInDirectory(directory: workspace(in: project.name)) {
+                        
+                        print("Building Workspace in test project “\(project.name)”...")
+                        if ¬bash(["swift", "build"], silent: true).succeeded {
+                            XCTFail("Failed to build Workspace in test project “\(project.name)”...")
+                        }
+                        
+                    }
+                    
+                    Repository.performInDirectory(directory: root(of: project.name)) {
+                        
+                        print("Initialization of test project “\(project.name)...")
+                        if ¬bash([".Workspace/.build/debug/workspace", "initialize"] + project.flags, silent: true).succeeded {
+                            XCTFail("Failed to initialize test project “\(project.name)”.")
+                        }
+                    }
+                }
+                
             } catch let error {
                 
                 XCTFail(error.localizedDescription)

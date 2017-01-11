@@ -21,7 +21,7 @@ enum Option: String, CustomStringConvertible {
     
     case automaticallyTakeOnNewResponsibilites = "Automatically Take On New Responsibilities"
     
-    // Unit tests
+    // Testing Workspace
     case testOption = "Test Option"
     case testLongOption = "Test Long Option"
     

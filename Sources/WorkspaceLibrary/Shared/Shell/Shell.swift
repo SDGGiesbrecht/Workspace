@@ -14,6 +14,7 @@ import Foundation
 import SDGLogic
 
 func bash(_ arguments: [String], silent: Bool = false) -> (succeeded: Bool, output: String?, exitCode: ExitCode) {
+    
     var argumentsString = arguments.map({
         (string: String) -> String in
         
@@ -25,13 +26,13 @@ func bash(_ arguments: [String], silent: Bool = false) -> (succeeded: Bool, outp
     }).joined(separator: " ")
     
     let process = Process()
-    process.launchPath = "/bin/sh"
+    process.launchPath = "/bin/bash"
     
     let standardOutput = Pipe()
     process.standardOutput = standardOutput
     
     if ¬silent ∧ ¬Environment.isInXcode /* Fails in Xcode’s container. */ {
-        argumentsString += " | tee /dev/tty"
+        argumentsString = "set -o pipefail; " + argumentsString + " | tee /dev/tty"
     }
     process.arguments = ["-c", argumentsString]
     
@@ -55,7 +56,7 @@ func bash(_ arguments: [String], silent: Bool = false) -> (succeeded: Bool, outp
     Repository.resetCache()
     
     guard process.terminationStatus == ExitCode.succeeded else {
-        return (succeeded: false, output: nil, exitCode: process.terminationStatus)
+        return (succeeded: false, output: output, exitCode: process.terminationStatus)
     }
     
     return (succeeded: true, output: output, exitCode: process.terminationStatus)

@@ -211,17 +211,17 @@ struct Repository {
             // Linux crashes if it attempts to catch the error.
             try? fileManager.removeItem(atPath: absolute(path).string)
         #else
-        do {
-            try fileManager.removeItem(atPath: absolute(path).string)
-        } catch let error as NSError {
-            
-            if let POSIX = (error.userInfo[NSUnderlyingErrorKey] as? NSError),
-                POSIX.domain == NSPOSIXErrorDomain,
-                POSIX.code == 2 /* No such file or directory. */ {
+            do {
+                try fileManager.removeItem(atPath: absolute(path).string)
+            } catch let error as NSError {
                 
-                return
+                if let POSIX = (error.userInfo[NSUnderlyingErrorKey] as? NSError),
+                    POSIX.domain == NSPOSIXErrorDomain,
+                    POSIX.code == 2 /* No such file or directory. */ {
+                    
+                    return
+                }
             }
-        }
         #endif
     }
     
@@ -263,7 +263,7 @@ struct Repository {
             prepareForWrite(path: change.changeDestination)
             
             #if os(Linux)
-            
+                
                 let result = bash(["cp", absolute(change.changeOrigin).string, absolute(change.changeDestination).string], silent: true)
                 if ¬result.succeeded {
                     throw LinuxFileError(exitCode: result.exitCode)
@@ -299,5 +299,20 @@ struct Repository {
     
     static func move(_ origin: RelativePath, into destination: RelativePath, includeIgnoredFiles: Bool = false) throws {
         try performPathChange(from: origin, into: destination, copy: false, includeIgnoredFiles: includeIgnoredFiles)
+    }
+    
+    static func performInDirectory(directory: RelativePath, action: () -> ()) {
+        
+        func changeToDirectory(path: String) {
+            if ¬fileManager.changeCurrentDirectoryPath(path) {
+                fatalError(message: [
+                    "Failed to change working directory.",
+                    ])
+            }
+        }
+        
+        changeToDirectory(path: directory.string)
+        action()
+        changeToDirectory(path: repositoryPath.string)
     }
 }

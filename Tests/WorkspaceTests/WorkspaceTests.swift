@@ -16,10 +16,6 @@ import SDGLogic
 import XCTest
 @testable import WorkspaceLibrary
 
-func isInXcode() -> Bool {
-    return ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil
-}
-
 class WorkspaceTests: XCTestCase {
     
     func testGeneralParsing() {
@@ -578,7 +574,7 @@ class WorkspaceTests: XCTestCase {
     
     func testOnProjects() {
         
-        if ¬isInXcode() {
+        if ¬Environment.isInXcode {
             
             do {
                 

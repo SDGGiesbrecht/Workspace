@@ -28,9 +28,9 @@ func bashOutput(_ arguments: [String], silent: Bool = false) -> String? {
     process.launchPath = "/bin/sh"
     
     let standardOutput = Pipe()
-    process.standardOutput = standardOutput
+    //process.standardOutput = standardOutput
     
-    if ¬silent  {
+    if ¬silent ∧ ¬Environment.isInXcode /* Fails in Xcode’s container. */ {
         argumentsString += " | tee /dev/tty"
     }
     process.arguments = ["-c", argumentsString]
@@ -38,7 +38,7 @@ func bashOutput(_ arguments: [String], silent: Bool = false) -> String? {
     process.launch()
     process.waitUntilExit()
     
-    let data = standardOutput.fileHandleForReading.readDataToEndOfFile()
+    let data = Data()̧ //standardOutput.fileHandleForReading.readDataToEndOfFile()
     let output: String
     if let utf8 = String(data: data, encoding: String.Encoding.utf8) {
         output = utf8

@@ -11,6 +11,8 @@
 
 import Foundation
 
+import SDGLogic
+
 struct Environment {
     
     // MARK: - Properties
@@ -27,4 +29,6 @@ struct Environment {
         }
         return result
     }
+    
+    static let isInXcode: Bool = environmentVariable("__XCODE_BUILT_PRODUCTS_DIR_PATHS") ≠ nil
 }

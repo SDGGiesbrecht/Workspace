@@ -580,7 +580,7 @@ class WorkspaceTests: XCTestCase {
                 
                 try Repository.delete(Repository.testZone)
                 
-                //try Repository.copy(Repository.root, to: Repository.testZone.subfolderOrFile(Repository.workspaceDirectory.string + "/"))
+                try Repository.copy(Repository.root, to: Repository.testZone.subfolderOrFile(Repository.workspaceDirectory.string + "/"))
             } catch let error {
                 
                 XCTFail(error.localizedDescription)

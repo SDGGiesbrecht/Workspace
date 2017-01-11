@@ -170,6 +170,7 @@ struct Repository {
         }
         
         #if os(Linux)
+            // Linux crashes if it attempts to catch the error.
             try? fileManager.removeItem(atPath: absolute(path).string)
         #else
         do {

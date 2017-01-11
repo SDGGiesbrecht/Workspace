@@ -169,6 +169,9 @@ struct Repository {
             resetCache()
         }
         
+        #if os(Linux)
+            try? fileManager.removeItem(atPath: absolute(path).string)
+        #else
         do {
             try fileManager.removeItem(atPath: absolute(path).string)
         } catch let error as NSError {
@@ -180,6 +183,7 @@ struct Repository {
                 return
             }
         }
+        #endif
     }
     
     private static func prepareForWrite(path: RelativePath) {

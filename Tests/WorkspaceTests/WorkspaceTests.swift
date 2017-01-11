@@ -620,7 +620,7 @@ class WorkspaceTests: XCTestCase {
                     Repository.performInDirectory(directory: root(of: project.name)) {
                         
                         print("Initialization of test project “\(project.name)...")
-                        if ¬bash([".Workspace/.build/debug/workspace", "initialize"] + project.flags, silent: true).succeeded {
+                        if ¬bash([".Workspace/.build/debug/workspace", "initialize"] + project.flags).succeeded {
                             XCTFail("Failed to initialize test project “\(project.name)”.")
                         }
                     }

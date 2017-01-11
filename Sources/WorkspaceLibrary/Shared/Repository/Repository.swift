@@ -132,7 +132,7 @@ struct Repository {
     }
     
     static var isEmpty: Bool {
-        return allFiles.isEmpty
+        return allFilesExcludingWorkspaceInself.isEmpty
     }
     
     private static func path(_ possiblePath: RelativePath, isIn path: RelativePath) -> Bool {

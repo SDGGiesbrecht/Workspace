@@ -45,6 +45,12 @@ func runInitialize(andExit shouldExit: Bool) {
     }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    printHeader(["Initializing git repository..."])
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    
+    requireBash(["git", "init"])
+    
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Generating Swift package..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
@@ -57,12 +63,6 @@ func runInitialize(andExit shouldExit: Bool) {
     print(["Arranging Swift package..."])
     
     force() { try Repository.move("Sources", to: RelativePath("Sources/\(Configuration.projectName)")) }
-    
-    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Initializing git repository..."])
-    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    
-    requireBash(["git", "init"])
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Configuring Workspace..."])

@@ -241,6 +241,9 @@ struct Repository {
         } else {
             files = trackedFiles(at: origin)
         }
+        print("for: \(origin)")
+        print(files)
+        
         let changes = files.map() {
             (changeOrigin: RelativePath) -> (changeOrigin: RelativePath, changeDestination: RelativePath) in
             

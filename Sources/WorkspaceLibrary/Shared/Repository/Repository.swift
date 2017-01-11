@@ -20,12 +20,14 @@ struct Repository {
     // MARK: - Configuration
     
     static let workspaceDirectory: RelativePath = ".Workspace"
+    static let testZone: RelativePath = ".Test Zone"
     
     // MARK: - Cache
     
     private struct Cache {
         fileprivate var allFilesIncludingWorkspaceItself: [RelativePath]?
         fileprivate var allFiles: [RelativePath]?
+        fileprivate var trackedFiles: [RelativePath]?
         fileprivate var printableListOfAllFiles: String?
         fileprivate var packageDescription: File?
     }
@@ -79,6 +81,18 @@ struct Repository {
         }
     }
     
+    /*static var trackedFiles: [RelativePath] {
+        
+        return cachedResult(cache: &cache.trackedFiles) {
+            
+            return allFiles.filter() {
+                (path: RelativePath) -> Bool in
+                
+                return
+            }
+        }
+    }*/
+    
     static var printableListOfAllFiles: String {
         return cachedResult(cache: &cache.printableListOfAllFiles) {
             () -> String in
@@ -94,6 +108,10 @@ struct Repository {
     static func allFiles(at path: RelativePath) -> [RelativePath] {
         return allFilesIncludingWorkspaceItself.filter() {
             (possiblePath: RelativePath) -> Bool in
+            
+            if path == Repository.root {
+                return true
+            }
             
             if possiblePath == path {
                 // The file itself
@@ -147,9 +165,21 @@ struct Repository {
     
     static func delete(_ path: RelativePath) throws {
         
-        try fileManager.removeItem(atPath: absolute(path).string)
+        defer {
+            resetCache()
+        }
         
-        resetCache()
+        do {
+            try fileManager.removeItem(atPath: absolute(path).string)
+        } catch let error as NSError {
+            
+            if let POSIX = (error.userInfo[NSUnderlyingErrorKey] as? NSError),
+                POSIX.domain == NSPOSIXErrorDomain,
+                POSIX.code == 2 /* No such file or directory. */ {
+                
+                return
+            }
+        }
     }
     
     private static func prepareForWrite(path: RelativePath) {

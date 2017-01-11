@@ -16,6 +16,10 @@ import SDGLogic
 import XCTest
 @testable import WorkspaceLibrary
 
+func isInXcode() -> Bool {
+    return ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil
+}
+
 class WorkspaceTests: XCTestCase {
     
     func testGeneralParsing() {
@@ -136,7 +140,7 @@ class WorkspaceTests: XCTestCase {
                 "",
                 syntax.start,
                 syntax.end,
-            ])
+                ])
             XCTAssert(¬syntax.startOfCommentExists(at: noCommentAtStart.startIndex, in: noCommentAtStart), join(lines: [
                 "Comment detected on wrong line:",
                 noCommentAtStart,
@@ -304,7 +308,7 @@ class WorkspaceTests: XCTestCase {
         let expectedConfiguration: [Option: String] = [
             .testOption: "Simple Value",
             .testLongOption: join(lines: ["Multiline","Value"]),
-        ]
+            ]
         let parsed = Configuration.parse(configurationSource: source)
         
         XCTAssert(parsed == expectedConfiguration, join(lines: [
@@ -405,13 +409,13 @@ class WorkspaceTests: XCTestCase {
                     " */",
                     ])
                 XCTAssert(withHeader.contents == expectedResult, join(lines: [
-                        "Failure inserting header using \(fileType):",
-                        startingWithDocumentation.contents,
-                        "↓",
-                        withHeader.contents,
-                        "≠",
-                        expectedResult,
-                        ]))
+                    "Failure inserting header using \(fileType):",
+                    startingWithDocumentation.contents,
+                    "↓",
+                    withHeader.contents,
+                    "≠",
+                    expectedResult,
+                    ]))
             }
             
             if fileExtension == ".sh" {
@@ -561,12 +565,41 @@ class WorkspaceTests: XCTestCase {
                 ])
     }
     
+    func testShell() {
+        let message = "Hello, world!"
+        let output = requireBashOutput(["echo", "\(message)"])
+        XCTAssert(output == message + "\n", join(lines: [
+            "Shell failed:",
+            output,
+            "≠",
+            message + "\n",
+            ]))
+    }
+    
+    func testOnProjects() {
+        
+        if ¬isInXcode() {
+            
+            do {
+                
+                try Repository.delete(Repository.testZone)
+                
+                //try Repository.copy(Repository.root, to: Repository.testZone.subfolderOrFile(Repository.workspaceDirectory.string + "/"))
+            } catch let error {
+                
+                XCTFail(error.localizedDescription)
+            }
+            
+        }
+    }
+    
     static var allTests : [(String, (WorkspaceTests) -> () throws -> Void)] {
         return [
             ("testGeneralParsing", testGeneralParsing),
             ("testBlockComments", testBlockComments),
             ("testLineComments", testLineComments),
             ("testHeaders", testHeaders),
+            ("testOnProjects", testOnProjects),
         ]
     }
 }

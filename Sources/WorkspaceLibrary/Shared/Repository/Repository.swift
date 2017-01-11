@@ -25,8 +25,8 @@ struct Repository {
     // MARK: - Cache
     
     private struct Cache {
-        fileprivate var allFilesIncludingWorkspaceItself: [RelativePath]?
         fileprivate var allFiles: [RelativePath]?
+        fileprivate var allFilesExcludingWorkspaceItself: [RelativePath]?
         fileprivate var trackedFiles: [RelativePath]?
         fileprivate var printableListOfAllFiles: String?
         fileprivate var packageDescription: File?
@@ -46,8 +46,8 @@ struct Repository {
         Configuration.resetCache()
     }
     
-    static var allFilesIncludingWorkspaceItself: [RelativePath] {
-        return cachedResult(cache: &cache.allFilesIncludingWorkspaceItself) {
+    static var allFiles: [RelativePath] {
+        return cachedResult(cache: &cache.allFiles) {
             () -> [RelativePath] in
             
             guard let enumerator = fileManager.enumerator(atPath: repositoryPath.string) else {
@@ -69,19 +69,16 @@ struct Repository {
         }
     }
     
-    static var allFiles: [RelativePath] {
+    static var allFilesExcludingWorkspaceInself: [RelativePath] {
         return cachedResult(cache: &cache.allFiles) {
             () -> [RelativePath] in
             
-            printHeader(["All files generated here!"])
-            
-            let result = allFilesIncludingWorkspaceItself.filter() {
+            let result = allFiles.filter() {
                 (path: RelativePath) -> Bool in
                 
                 return ¬(path.string.hasPrefix(workspaceDirectory.string + "/") ∨ path == RelativePath(".DS_Store"))
+                
             }
-            
-            print(result.map({ $0.string }))
             
             return result
         }
@@ -245,10 +242,8 @@ struct Repository {
         // This must generate the entire list of files to copy before starting to make changes. Otherwise the run‐away effect of copying a directory into itself is catastrophic.
         let files: [RelativePath]
         if includeIgnoredFiles {
-            print("include")
             files = allFiles(at: origin)
         } else {
-            print("exclude")
             files = trackedFiles(at: origin)
         }
         

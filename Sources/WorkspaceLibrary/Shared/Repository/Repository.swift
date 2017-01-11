@@ -178,8 +178,16 @@ struct Repository {
     
     static func read(file path: RelativePath) throws -> File {
         
-        var encoding = String.Encoding.utf8
-        return File(path: path, contents: try String(contentsOfFile: absolute(path).string, usedEncoding: &encoding))
+        let filePath = absolute(path).string
+        
+        #if os(Linux)
+            let contents = String(contentsOfFile: filePath, encoding: String.Encoding.utf8)
+        #else
+            var encoding = String.Encoding.utf8
+            let contents = try String(contentsOfFile: filePath, usedEncoding: &encoding)
+        #endif
+        
+        return File(path: path, contents: contents)
     }
     
     static func write(file: File) throws {

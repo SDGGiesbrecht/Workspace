@@ -606,12 +606,16 @@ class WorkspaceTests: XCTestCase {
                 }
                 
                 for project in new {
+                    
+                    printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
+                    printHeader(["Testing Workspace with \(project.name)..."])
+                    printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
+                    
                     try installWorkspace(repository: project.name)
                     
                     Repository.performInDirectory(directory: workspace(in: project.name)) {
                         
-                        print("Building Workspace in test project “\(project.name)”...")
-                        if ¬bash(["swift", "build"], silent: true).succeeded {
+                        if ¬bash(["swift", "build"]).succeeded {
                             XCTFail("Failed to build Workspace in test project “\(project.name)”...")
                         }
                         
@@ -619,7 +623,6 @@ class WorkspaceTests: XCTestCase {
                     
                     Repository.performInDirectory(directory: root(of: project.name)) {
                         
-                        print("Initialization of test project “\(project.name)...")
                         if ¬bash([".Workspace/.build/debug/workspace", "initialize"] + project.flags).succeeded {
                             XCTFail("Failed to initialize test project “\(project.name)”.")
                         }
@@ -639,6 +642,7 @@ class WorkspaceTests: XCTestCase {
             ("testGeneralParsing", testGeneralParsing),
             ("testBlockComments", testBlockComments),
             ("testLineComments", testLineComments),
+            ("testConfiguration", testConfiguration),
             ("testHeaders", testHeaders),
             ("testShell", testShell),
             ("testOnProjects", testOnProjects),

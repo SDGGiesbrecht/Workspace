@@ -107,7 +107,7 @@ struct Repository {
                 
             }
             
-            return allFiles.filter() {
+            let result = allFiles.filter() {
                 (path: RelativePath) -> Bool in
                 
                 for ignored in ignoredPaths {
@@ -117,6 +117,10 @@ struct Repository {
                 }
                 return true
             }
+            
+            print(result.map({ $0.string }))
+            
+            return result
         }
     }
     

@@ -63,7 +63,18 @@ func runInitialize(andExit shouldExit: Bool) {
     
     if Flags.executable {
         
+        let libraryName = Configuration.projectName + "Library"
+        
         require() { try Repository.delete(RelativePath("Sources/\(Configuration.projectName)")) }
+        
+        let program = File(path: RelativePath("Sources/\(libraryName)"), contents: join(lines: [
+            "/// :nodoc:",
+            "public func run() {",
+            "    print(\u{22}Hello, world!\u{22})",
+            "}",
+            ]))
+        
+        require() { try Repository.write(file: program) }
     }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

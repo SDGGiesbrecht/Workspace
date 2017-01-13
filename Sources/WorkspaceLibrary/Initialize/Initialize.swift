@@ -67,6 +67,7 @@ func runInitialize(andExit shouldExit: Bool) {
         
         let executableName = projectName
         let libraryName = projectName + "Library"
+        let testsName = projectName + "Tests"
         
         require() { try Repository.delete(RelativePath("Sources/\(Configuration.projectName)")) }
         
@@ -79,12 +80,25 @@ func runInitialize(andExit shouldExit: Bool) {
         
         require() { try Repository.write(file: program) }
         
-        let main = File(path: RelativePath("Sources/\(projectName)/main.swift"), contents: join(lines: [
+        let main = File(path: RelativePath("Sources/\(executableName)/main.swift"), contents: join(lines: [
             "import \(libraryName)",
             "\(libraryName).run()",
             ]))
         
         require() { try Repository.write(file: main) }
+        
+        var package = Repository.packageDescription
+        let nameRange = package.requireRange(of: ("name: \u{22}", "\u{22},"))
+        let replacement = join(lines: [
+            package.contents.substring(with: nameRange),
+            "    targets: [",
+            "        Target(name: \u{22}\(executableName)\u{22}, dependencies: [\u{22}\(libraryName)\u{22}])",
+            "        Target(name: \u{22}\(libraryName)\u{22})",
+            "        Target(name: \u{22}\(testsName)\u{22}, dependencies: [\u{22}\(libraryName)\u{22}])",
+            "    ]",
+            ])
+        
+        package.contents.replaceSubrange(nameRange, with: replacement)
     }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

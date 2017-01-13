@@ -95,9 +95,9 @@ func runInitialize(andExit shouldExit: Bool) {
         require() { try Repository.write(file: main) }
         
         var package = Repository.packageDescription
-        let nameRange = package.requireRange(of: ("name: \u{22}", "\u{22},"))
+        let nameRange = package.requireRange(of: ("name: \u{22}", "\u{22}"))
         let replacement = join(lines: [
-            package.contents.substring(with: nameRange),
+            package.contents.substring(with: nameRange) + ",",
             "    targets: [",
             "        Target(name: \u{22}\(executableName)\u{22}, dependencies: [\u{22}\(libraryName)\u{22}])",
             "        Target(name: \u{22}\(libraryName)\u{22})",

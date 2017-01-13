@@ -25,7 +25,8 @@ If the necessary fix is undesirable, it is possible to [run these scripts from a
 
 Linux needs to be set to run executable scripts when they are double‐clicked instead of opening them to edit.
 
-On Ubuntu, the setting is found at:<br>
+On Ubuntu, the setting is found at:
+
 Files<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↳ Edit<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↳ Preferences<br>

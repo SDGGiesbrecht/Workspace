@@ -86,4 +86,25 @@ To refresh the workspace, double‐click the “Refresh Workspace” script for 
 
 (If you are on Linux and double‐clicking fails or opens a text file, see [here](Documentation/Linux Notes#double-clicking-scripts).)
 
-A terminal window opens and Workspace reports its actions as it sets the project folder up for development. When it is finished, 
+A terminal window opens and Workspace reports its actions as it sets the project folder up for development.
+
+Now its time to write some code...
+
+### Validating Changes
+
+Once you are finished making changes and you think they are ready to push, merge, or submit a pull request...
+
+Validate the current state of the project by double‐clicking the “Validate Changes” script.
+
+A terminal window opens and Workspace runs the project through a series of checks.
+
+When it finishes, you will see a summary of which tests passed and which tests failed.
+
+### Summary
+
+1. “Refresh Workspace” before you work.
+2. “Validate Changes” when you think you are done.
+
+That’s all there is to it!
+
+Of course, if you are setting Workspace up to manage your own project, you will also want to learn how to [configure](Documents/Configuring Workspace.md) which [tasks](#what-workspace-can-do) Workspace should handle.

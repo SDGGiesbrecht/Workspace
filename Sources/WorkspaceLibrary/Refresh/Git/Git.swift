@@ -20,7 +20,6 @@ struct Git {
     static let ignoreEntriesForSwiftProjectManager = [
         "/.build",
         "/Packages",
-        
         ]
     
     static let ignoreEntriesForXcode = [

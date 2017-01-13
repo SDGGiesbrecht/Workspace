@@ -74,6 +74,7 @@ func runInitialize(andExit shouldExit: Bool) {
     
     if Flags.executable {
         
+        let executableName = projectName
         let libraryName = projectName + "Library"
         
         require() { try Repository.delete(RelativePath("Sources/\(Configuration.projectName)")) }

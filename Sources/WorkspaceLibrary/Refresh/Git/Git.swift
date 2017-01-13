@@ -55,12 +55,16 @@ struct Git {
         gitIngore.contents.advance(&endIndex, past: CharacterSet.newlines)
         managedRange = managedRange.lowerBound ..< endIndex
         
+        let managementWarning = File.managmentWarning(section: true, documentation: .git)
+        let managementComment = FileType.gitignore.syntax.comment(contents: managementWarning)
+        
+        
         var updatedLines: [String] = []
         updatedLines += [""] // End of header
         updatedLines += [""]
         updatedLines += [startToken]
         updatedLines += [""]
-        updatedLines += File.managmentWarning(section: true, documentation: .git)
+        updatedLines += [managementComment]
         updatedLines += [""]
         updatedLines += requiredIgnoreEntries
         updatedLines += [""]

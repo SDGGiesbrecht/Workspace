@@ -32,11 +32,11 @@ struct FileSyntax {
     
     // MARK: - Output
     
-    func generateHeader(contents: [String]) -> String {
-        return generateHeader(contents: join(lines: contents))
+    func comment(contents: [String]) -> String {
+        return comment(contents: join(lines: contents))
     }
     
-    func generateHeader(contents: String) -> String {
+    func comment(contents: String) -> String {
         if let blockSyntax = blockCommentSyntax {
             return blockSyntax.comment(contents: contents)
         } else if let lineSyntax = lineCommentSyntax {
@@ -44,6 +44,14 @@ struct FileSyntax {
         } else {
             fatalError(message: ["No comment syntax available."])
         }
+    }
+    
+    func generateHeader(contents: [String]) -> String {
+        return comment(contents: contents)
+    }
+    
+    func generateHeader(contents: String) -> String {
+        return comment(contents: contents)
     }
     
     func insert(header: String, into file: inout File) {

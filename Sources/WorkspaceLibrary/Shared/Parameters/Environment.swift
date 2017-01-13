@@ -31,4 +31,6 @@ struct Environment {
     }
     
     static let isInXcode: Bool = environmentVariable("__XCODE_BUILT_PRODUCTS_DIR_PATHS") ≠ nil
+    
+    static let isInContinuousIntegration: Bool = environmentVariable("CONTINUOUS_INTEGRATION") ≠ nil
 }

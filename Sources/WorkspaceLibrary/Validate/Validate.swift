@@ -58,7 +58,7 @@ func runValidate(andExit shouldExit: Bool) {
         if overallSuccess {
             succeed(message: ["It looks like this is ready for a pull request."])
         } else {
-            fail(message: ["It looks like there are a few things left to fix."])
+            failTests(message: ["It looks like there are a few things left to fix."])
         }
         
     }

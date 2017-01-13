@@ -139,7 +139,11 @@ struct Configuration {
         func reportUnsupportedKey(_ key: String) -> Never {
             fatalError(message: [
                 "Unsupported configuration key:",
-                key
+                key,
+                "",
+                "Supported keys:",
+                "",
+                join(lines: Option.allPublic.map({ $0.key })),
                 ])
         }
         
@@ -302,5 +306,10 @@ struct Configuration {
     
     static var automaticallyTakeOnNewResponsibilites: Bool {
         return booleanValue(option: .automaticallyTakeOnNewResponsibilites)
+    }
+    
+    // Testing
+    static var nestedTest: Bool {
+        return booleanValue(option: .nestedTest)
     }
 }

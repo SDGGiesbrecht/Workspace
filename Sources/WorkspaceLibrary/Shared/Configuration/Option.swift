@@ -22,8 +22,13 @@ enum Option: String, CustomStringConvertible {
     case automaticallyTakeOnNewResponsibilites = "Automatically Take On New Responsibilities"
     
     // Testing Workspace
+    case nestedTest = "Nested Test"
     case testOption = "Test Option"
     case testLongOption = "Test Long Option"
+    
+    static let allPublic: [Option] = [
+        .automaticallyTakeOnNewResponsibilites
+    ]
     
     // MARK: - Properties
     
@@ -35,6 +40,10 @@ enum Option: String, CustomStringConvertible {
         switch self {
         case .automaticallyTakeOnNewResponsibilites:
             return Configuration.falseOptionValue
+            
+            // Tests
+        case .nestedTest:
+            return "False"
         case .testOption:
             return "Default Value"
         case .testLongOption:

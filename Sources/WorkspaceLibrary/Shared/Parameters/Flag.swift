@@ -31,9 +31,6 @@ enum Flag: String, Comparable, CustomStringConvertible {
     
     case executable = "executable"
     
-    // Tests
-    case noRecursion = "no‐recursion"
-    
     static let all: [Flag] = [
         .executable,
         ].sorted()

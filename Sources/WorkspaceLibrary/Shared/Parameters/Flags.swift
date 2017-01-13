@@ -18,7 +18,4 @@ struct Flags {
     }
     
     static let executable = isSet(.executable)
-    
-    // Tests
-    static let noRecursion = isSet(.noRecursion)
 }

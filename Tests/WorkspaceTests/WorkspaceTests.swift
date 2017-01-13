@@ -623,7 +623,7 @@ class WorkspaceTests: XCTestCase {
             "Scripts",
             ]
         
-        if ¬Environment.isInXcode {
+        if ¬Environment.isInXcode ∧ ¬Configuration.nestedTest {
             
             let unexpected = Repository.trackedFiles.map({ $0.string }).filter() {
                 (file: String) -> Bool in
@@ -646,7 +646,7 @@ class WorkspaceTests: XCTestCase {
     
     func testDocumentationCoverage() {
         
-        if ¬Environment.isInXcode {
+        if ¬Environment.isInXcode ∧ ¬Configuration.nestedTest {
             for link in DocumentationLink.all {
                 var url = link.url
                 if let anchor = url.range(of: "#") {
@@ -668,9 +668,11 @@ class WorkspaceTests: XCTestCase {
     
     func testOnProjects() {
         
-        if ¬Environment.isInXcode {
-            
-            if ¬Flags.noRecursion {
+        if ¬Environment.isInXcode ∧ ¬Configuration.nestedTest {
+            if Environment.isInContinuousIntegration {
+                // These tests are time consuming.
+                // They are skipped them on local machines so that following along in with the workflow documentation is relatively quick.
+                // Comment out the if‐statement to debug locally if failures occur in continuous integration.
                 
                 do {
                     
@@ -771,6 +773,11 @@ class WorkspaceTests: XCTestCase {
                     let testWorkspaceProject = "Workspace"
                     try Repository.copy(Repository.root, to: root(of: testWorkspaceProject + "/"))
                     
+                    // Block tests from being recursive.
+                    var nestedConfiguration = try Repository.read(file: root(of: testWorkspaceProject).subfolderOrFile(Configuration.configurationFilePath.string))
+                    nestedConfiguration.body.append("\n" + Configuration.configurationFileEntry(option: Option.nestedTest, value: true, comment: nil))
+                    try Repository.write(file: nestedConfiguration)
+                    
                     try installWorkspace(repository: testWorkspaceProject)
                     
                     Repository.performInDirectory(directory: workspace(in: testWorkspaceProject)) {
@@ -783,7 +790,7 @@ class WorkspaceTests: XCTestCase {
                     
                     Repository.performInDirectory(directory: root(of: testWorkspaceProject)) {
                         
-                        if ¬(bash([".Workspace/.build/debug/workspace", "validate", "•no‐recursion"]).exitCode == ExitCode.succeeded) {
+                        if ¬(bash([".Workspace/.build/debug/workspace", "validate"]).exitCode == ExitCode.succeeded) {
                             XCTFail("Workspace fails its own validation.")
                         }
                     }
@@ -792,9 +799,7 @@ class WorkspaceTests: XCTestCase {
                     
                     XCTFail(error.localizedDescription)
                 }
-                
             }
-            
         }
     }
     

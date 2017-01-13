@@ -46,13 +46,19 @@ func fatalError(message: [String]) -> Never  {
 func succeed(message: [String]) -> Never {
     outputWarnings()
     print(message, in: .green, spaced: true)
-    exit(EXIT_SUCCESS)
+    exit(ExitCode.succeeded)
 }
 
 func fail(message: [String]) -> Never {
     outputWarnings()
     print(message, in: .red, spaced: true)
-    exit(EXIT_FAILURE)
+    exit(ExitCode.failed)
+}
+
+func failTests(message: [String]) -> Never {
+    outputWarnings()
+    print(message, in: .red, spaced: true)
+    exit(ExitCode.testsFailed)
 }
 
 // MARK: - Generic Printing

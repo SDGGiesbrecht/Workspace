@@ -63,7 +63,7 @@ func runInitialize(andExit shouldExit: Bool) {
     
     if Flags.executable {
         
-        require() { try Repository.move(RelativePath("Sources/\(Configuration.projectName)"), to: RelativePath("Sources/\(Configuration.projectName)Library")) }
+        require() { try Repository.delete(RelativePath("Sources/\(Configuration.projectName)")) }
     }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

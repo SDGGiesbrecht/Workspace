@@ -74,7 +74,9 @@ func runInitialize(andExit shouldExit: Bool) {
         let program = File(path: RelativePath("Sources/\(libraryName)/Program.swift"), contents: join(lines: [
             "/// :nodoc:",
             "public func run() {",
+            "",
             "    print(\u{22}Hello, world!\u{22})",
+            "",
             "}",
             ]))
         
@@ -82,6 +84,11 @@ func runInitialize(andExit shouldExit: Bool) {
         
         let main = File(path: RelativePath("Sources/\(executableName)/main.swift"), contents: join(lines: [
             "import \(libraryName)",
+            "",
+            "/*",
+            " Nothing in this executable module (\(executableName)) will be testable.",
+            " It is recommended to put the entire implementation in \(libraryName).",
+            " */",
             "\(libraryName).run()",
             ]))
         

@@ -54,18 +54,25 @@ func runInitialize(andExit shouldExit: Bool) {
     printHeader(["Generating Swift package..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
-    var script = ["swift", "package", "init"]
+    let script = ["swift", "package", "init"]
     requireBash(script)
     
     print(["Arranging Swift package..."])
     
     let projectName = Configuration.projectName.replacingOccurrences(of: " ", with: "_")
+    let testsName = projectName + "Tests"
     
+    // Make module to allow folder structure.
     require() { try Repository.move("Sources", to: RelativePath("Sources/\(projectName)")) }
     
-    let testsName = projectName + "Tests"
     // Escape spaces
-    require() { try Repository.move(RelativePath("Tests/\(Configuration.projectName)Tests"), to: RelativePath("Tests/\(testsName)")) }
+    let withSpaces = RelativePath("Tests/\(Configuration.projectName)Tests")
+    let noSpaces = RelativePath("Tests/\(testsName)")
+    if withSpaces ≠ noSpaces {
+        require() { try Repository.move(withSpaces, to: noSpaces) }
+        require() { try Repository.delete(withSpaces) }
+    }
+    
     
     // Erase redundant .gitignore entries.
     var gitIngore = require() { try Repository.read(file: RelativePath(".gitignore")) }

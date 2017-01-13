@@ -61,6 +61,11 @@ func runInitialize(andExit shouldExit: Bool) {
     
     force() { try Repository.move("Sources", to: RelativePath("Sources/\(Configuration.projectName)")) }
     
+    if Flags.executable {
+        
+        require() { try Repository.move(RelativePath("Sources/\(Configuration.projectName)"), to: RelativePath("Sources/\(Configuration.projectName)Library")) }
+    }
+    
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Configuring Workspace..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

@@ -90,13 +90,13 @@ func runInitialize(andExit shouldExit: Bool) {
             "/// :nodoc:",
             "public func run() {",
             "",
-            "    print(\(projectName)().text)",
+            "    print(sayHello())",
             "",
             "}",
             "",
-            "struct \(projectName) {",
+            "func sayHello() -> String {",
             "",
-            "    var text = \u{22}Hello, world!\u{22}",
+            "    return \u{22}Hello, world!\u{22}",
             "",
             "}",
             ]))
@@ -129,6 +129,11 @@ func runInitialize(andExit shouldExit: Bool) {
         package.contents.replaceSubrange(nameRange, with: replacement)
         
         require() { try Repository.write(file: package) }
+        
+        var tests = require { try Repository.read(file: RelativePath("Tests/\(testsName)/\(testsName).swift")) }
+        let testRange = tests.requireRange(of: ("XCT", "\u{22})"))
+        tests.contents.replaceSubrange(testRange, with: "XCTAssert(sayHello().hasPrefix(\u{22}Hello\u{22}))")
+        require() { try Repository.write(file: tests) }
     }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

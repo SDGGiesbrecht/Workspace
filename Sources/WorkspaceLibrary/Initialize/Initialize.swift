@@ -67,7 +67,7 @@ func runInitialize(andExit shouldExit: Bool) {
         
         require() { try Repository.delete(RelativePath("Sources/\(Configuration.projectName)")) }
         
-        let program = File(path: RelativePath("Sources/\(libraryName)"), contents: join(lines: [
+        let program = File(path: RelativePath("Sources/\(libraryName)/Program.swift"), contents: join(lines: [
             "/// :nodoc:",
             "public func run() {",
             "    print(\u{22}Hello, world!\u{22})",

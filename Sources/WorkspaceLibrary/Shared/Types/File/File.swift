@@ -154,12 +154,19 @@ struct File {
         fatalError(message: message)
     }
     
-    func requireRange(of searchTerm: String, in range: Range<String.Index>) -> Range<String.Index> {
+    func requireRange(of searchTerm: String, in range: Range<String.Index>? = nil) -> Range<String.Index> {
+        let rangeToSearch: Range<String.Index>
+        if let searchRange = range {
+            rangeToSearch = searchRange
+        } else {
+            rangeToSearch = contents.startIndex ..< contents.endIndex
+        }
         
-        if let result = contents.range(of: searchTerm, in: range) {
+        
+        if let result = contents.range(of: searchTerm, in: rangeToSearch) {
             return result
         } else {
-            missingContentError(content: searchTerm, range: range)
+            missingContentError(content: searchTerm, range: rangeToSearch)
         }
     }
     

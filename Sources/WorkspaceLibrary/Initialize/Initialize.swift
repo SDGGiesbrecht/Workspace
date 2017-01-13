@@ -131,6 +131,8 @@ func runInitialize(andExit shouldExit: Bool) {
         require() { try Repository.write(file: package) }
         
         var tests = require { try Repository.read(file: RelativePath("Tests/\(testsName)/\(testsName).swift")) }
+        let importRange = tests.requireRange(of: projectName)
+        tests.contents.replaceSubrange(importRange, with: libraryName)
         let testRange = tests.requireRange(of: ("  XCTAssert", "\u{22})"))
         tests.contents.replaceSubrange(testRange, with: "  XCTAssert(sayHello().hasPrefix(\u{22}Hello\u{22}))")
         require() { try Repository.write(file: tests) }

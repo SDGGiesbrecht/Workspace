@@ -13,6 +13,14 @@ func runValidate(andExit shouldExit: Bool) {
     
     var overallSuccess = true
     
+    var summary: [(result: Bool, message: String)] = []
+    func individualSuccess(message: String) {
+        summary.append((result: true, message: message))
+    }
+    func individualFailure(message: String) {
+        summary.append((result: false, message: message))
+    }
+    
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Refreshing
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
@@ -22,6 +30,28 @@ func runValidate(andExit shouldExit: Bool) {
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Validating \(Configuration.projectName)..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    printHeader(["Running unit tests..."])
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    
+    if bash(["swift", "test"]).succeeded {
+        individualSuccess(message: "Unit tests succeed.")
+    } else {
+        individualFailure(message: "Unit tests fail. (See above for details.)")
+    }
+    
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    printHeader(["Summary"])
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    
+    for (result, message) in summary {
+        if result {
+            print(["✓" + message], in: .green)
+        } else {
+            print(["✗" + message], in: .red)
+        }
+    }
     
     if shouldExit {
         if overallSuccess {

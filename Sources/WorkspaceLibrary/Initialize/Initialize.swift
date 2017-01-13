@@ -90,7 +90,13 @@ func runInitialize(andExit shouldExit: Bool) {
             "/// :nodoc:",
             "public func run() {",
             "",
-            "    print(\u{22}Hello, world!\u{22})",
+            "    print(\(projectName).text)",
+            "",
+            "}",
+            "",
+            "struct \(projectName) {",
+            "",
+            "    var text = \u{22}Hello, world!\u{22}",
             "",
             "}",
             ]))
@@ -123,7 +129,6 @@ func runInitialize(andExit shouldExit: Bool) {
         package.contents.replaceSubrange(nameRange, with: replacement)
         
         require() { try Repository.write(file: package) }
-        
     }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

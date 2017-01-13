@@ -62,7 +62,7 @@ func runInitialize(andExit shouldExit: Bool) {
     require() { try Repository.move("Sources", to: RelativePath("Sources/\(Configuration.projectName)")) }
     
     // Erase redundant .gitignore entries.
-    var gitIngore = require() { try Repository.read(RelativePath(".gitignore")) }
+    var gitIngore = require() { try Repository.read(file: RelativePath(".gitignore")) }
     gitIngore.contents = ""
     require() { try Repository.write(file: gitIngore) }
     

@@ -670,125 +670,129 @@ class WorkspaceTests: XCTestCase {
         
         if ¬Environment.isInXcode {
             
-            do {
+            if ¬Flags.noRecursion {
                 
-                try Repository.delete(Repository.testZone)
-                
-                let new: [(name: String, flags: [String])] = [
-                    (name: "New Library", flags: []),
-                    (name: "New Executable", flags: ["•executable"]),
-                    ]
-                
-                func root(of repository: String) -> RelativePath {
-                    return Repository.testZone.subfolderOrFile(repository)
-                }
-                func workspace(in repository: String) -> RelativePath {
-                    return root(of: repository).subfolderOrFile(Repository.workspaceDirectory.string + "/")
-                }
-                
-                func installWorkspace(repository: String) throws {
-                    try Repository.copy(Repository.root, to: workspace(in: repository))
-                }
-                
-                for project in new {
+                do {
+                    
+                    try Repository.delete(Repository.testZone)
+                    
+                    let new: [(name: String, flags: [String])] = [
+                        (name: "New Library", flags: []),
+                        (name: "New Executable", flags: ["•executable"]),
+                        ]
+                    
+                    func root(of repository: String) -> RelativePath {
+                        return Repository.testZone.subfolderOrFile(repository)
+                    }
+                    func workspace(in repository: String) -> RelativePath {
+                        return root(of: repository).subfolderOrFile(Repository.workspaceDirectory.string + "/")
+                    }
+                    
+                    func installWorkspace(repository: String) throws {
+                        try Repository.copy(Repository.root, to: workspace(in: repository))
+                    }
+                    
+                    for project in new {
+                        
+                        printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
+                        printHeader(["Testing Workspace with \(project.name)..."])
+                        printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
+                        
+                        try installWorkspace(repository: project.name)
+                        
+                        Repository.performInDirectory(directory: workspace(in: project.name)) {
+                            
+                            if ¬bash(["swift", "build"]).succeeded {
+                                XCTFail("Failed to build Workspace in test project “\(project.name)”...")
+                            }
+                            
+                        }
+                        
+                        Repository.performInDirectory(directory: root(of: project.name)) {
+                            
+                            if ¬bash([".Workspace/.build/debug/workspace", "initialize"] + project.flags).succeeded {
+                                XCTFail("Failed to initialize test project “\(project.name)”.")
+                            }
+                        }
+                        
+                        Repository.performInDirectory(directory: root(of: project.name)) {
+                            
+                            if ¬bash([".Workspace/.build/debug/workspace", "validate"]).succeeded {
+                                XCTFail("Validation fails for initialized project “\(project.name)”.")
+                            }
+                        }
+                    }
+                    
+                    let realProjects: [(name: String, url: String)] = [
+                        
+                        (name: "SDGCaching", url: "https://github.com/SDGGiesbrecht/SDGCaching"),
+                        
+                        (name: "SDGLogic", url: "https://github.com/SDGGiesbrecht/SDGLogic"),
+                        (name: "SDGMathematics", url: "https://github.com/SDGGiesbrecht/SDGMathematics"),
+                        ]
+                    
+                    for project in realProjects {
+                        
+                        printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
+                        printHeader(["Testing Workspace with \(project.name)..."])
+                        printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
+                        
+                        Repository.performInDirectory(directory: Repository.testZone) {
+                            
+                            if ¬bash(["git", "clone", project.url]).succeeded {
+                                XCTFail("Failed to clone “\(project.name)”.")
+                            }
+                        }
+                        
+                        try installWorkspace(repository: project.name)
+                        
+                        Repository.performInDirectory(directory: workspace(in: project.name)) {
+                            
+                            if ¬bash(["swift", "build"]).succeeded {
+                                XCTFail("Failed to build Workspace in test project “\(project.name)”...")
+                            }
+                            
+                        }
+                        
+                        Repository.performInDirectory(directory: root(of: project.name)) {
+                            
+                            let allowedExitCodes: Set<ExitCode> = [ExitCode.succeeded, ExitCode.testsFailed]
+                            
+                            if ¬allowedExitCodes.contains(bash([".Workspace/.build/debug/workspace", "validate"]).exitCode) {
+                                XCTFail("Validation crashes for initialized project “\(project.name)”.")
+                            }
+                        }
+                    }
                     
                     printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
-                    printHeader(["Testing Workspace with \(project.name)..."])
+                    printHeader(["Making sure Workspace passes its own tests..."])
                     printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
                     
-                    try installWorkspace(repository: project.name)
+                    let testWorkspaceProject = "Workspace"
+                    try Repository.copy(Repository.root, to: root(of: testWorkspaceProject + "/"))
                     
-                    Repository.performInDirectory(directory: workspace(in: project.name)) {
+                    try installWorkspace(repository: testWorkspaceProject)
+                    
+                    Repository.performInDirectory(directory: workspace(in: testWorkspaceProject)) {
                         
                         if ¬bash(["swift", "build"]).succeeded {
-                            XCTFail("Failed to build Workspace in test project “\(project.name)”...")
+                            XCTFail("Failed to build Workspace as a test project...")
                         }
                         
                     }
                     
-                    Repository.performInDirectory(directory: root(of: project.name)) {
+                    Repository.performInDirectory(directory: root(of: testWorkspaceProject)) {
                         
-                        if ¬bash([".Workspace/.build/debug/workspace", "initialize"] + project.flags).succeeded {
-                            XCTFail("Failed to initialize test project “\(project.name)”.")
+                        if ¬(bash([".Workspace/.build/debug/workspace", "validate", "no‐recursion"]).exitCode == ExitCode.succeeded) {
+                            XCTFail("Workspace fails its own validation.")
                         }
                     }
                     
-                    Repository.performInDirectory(directory: root(of: project.name)) {
-                        
-                        if ¬bash([".Workspace/.build/debug/workspace", "validate"]).succeeded {
-                            XCTFail("Validation fails for initialized project “\(project.name)”.")
-                        }
-                    }
+                } catch let error {
+                    
+                    XCTFail(error.localizedDescription)
                 }
                 
-                let realProjects: [(name: String, url: String)] = [
-                    
-                    (name: "SDGCaching", url: "https://github.com/SDGGiesbrecht/SDGCaching"),
-                    
-                    (name: "SDGLogic", url: "https://github.com/SDGGiesbrecht/SDGLogic"),
-                    (name: "SDGMathematics", url: "https://github.com/SDGGiesbrecht/SDGMathematics"),
-                    ]
-                
-                for project in realProjects {
-                    
-                    printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
-                    printHeader(["Testing Workspace with \(project.name)..."])
-                    printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
-                    
-                    Repository.performInDirectory(directory: Repository.testZone) {
-                        
-                        if ¬bash(["git", "clone", project.url]).succeeded {
-                            XCTFail("Failed to clone “\(project.name)”.")
-                        }
-                    }
-                    
-                    try installWorkspace(repository: project.name)
-                    
-                    Repository.performInDirectory(directory: workspace(in: project.name)) {
-                        
-                        if ¬bash(["swift", "build"]).succeeded {
-                            XCTFail("Failed to build Workspace in test project “\(project.name)”...")
-                        }
-                        
-                    }
-                    
-                    Repository.performInDirectory(directory: root(of: project.name)) {
-                        
-                        let allowedExitCodes: Set<ExitCode> = [ExitCode.succeeded, ExitCode.testsFailed]
-                        
-                        if ¬allowedExitCodes.contains(bash([".Workspace/.build/debug/workspace", "validate"]).exitCode) {
-                            XCTFail("Validation crashes for initialized project “\(project.name)”.")
-                        }
-                    }
-                }
-                
-                printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
-                printHeader(["Making sure Workspace passes its own tests..."])
-                printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
-                
-                let testWorkspaceProject = "Workspace"
-                try Repository.copy(Repository.root, to: root(of: testWorkspaceProject + "/"))
-                
-                try installWorkspace(repository: testWorkspaceProject)
-                
-                Repository.performInDirectory(directory: workspace(in: testWorkspaceProject)) {
-                    
-                    if ¬bash(["swift", "build"]).succeeded {
-                        XCTFail("Failed to build Workspace as a test project...")
-                    }
-                    
-                }
-                
-                Repository.performInDirectory(directory: root(of: testWorkspaceProject)) {
-                    
-                    if ¬(bash([".Workspace/.build/debug/workspace", "validate"]).exitCode == ExitCode.succeeded) {
-                        XCTFail("Workspace fails its own validation.")
-                    }
-                }
-                
-            } catch let error {
-                
-                XCTFail(error.localizedDescription)
             }
             
         }

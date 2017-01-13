@@ -59,7 +59,13 @@ func runInitialize(andExit shouldExit: Bool) {
     
     print(["Arranging Swift package..."])
     
-    require() { try Repository.move("Sources", to: RelativePath("Sources/\(Configuration.projectName)")) }
+    let projectName = Configuration.projectName.replacingOccurrences(of: " ", with: "_")
+    
+    require() { try Repository.move("Sources", to: RelativePath("Sources/\(projectName)")) }
+    
+    let testsName = projectName + "Tests"
+    // Escape spaces
+    require() { try Repository.move(RelativePath("Tests/\(Configuration.projectName)Tests"), to: RelativePath("Tests/\(testsName)")) }
     
     // Erase redundant .gitignore entries.
     var gitIngore = require() { try Repository.read(file: RelativePath(".gitignore")) }
@@ -68,11 +74,7 @@ func runInitialize(andExit shouldExit: Bool) {
     
     if Flags.executable {
         
-        let projectName = Configuration.projectName.replacingOccurrences(of: " ", with: "_")
-        
-        let executableName = projectName
         let libraryName = projectName + "Library"
-        let testsName = projectName + "Tests"
         
         require() { try Repository.delete(RelativePath("Sources/\(Configuration.projectName)")) }
         

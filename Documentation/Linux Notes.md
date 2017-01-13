@@ -17,22 +17,22 @@
 
 Linux may require some additional set‐up before `Refresh Workspace (Linux).sh` works with a double‐click. This also applies to `Validate Changes (Linux).sh`.
 
-If double‐clicking does not work, look for the particular error below.
+Solutions to common errors are found below.
 
-If the fix for the error is undesirable, see [Running from a Terminal](#running-from-a-terminal)
+If the necessary fix is undesirable, it is possible to [run these scripts from a terminal](#running-from-a-terminal) instead.
 
-### The Script Opens in a Text Editor
+### Error: The Script Opens in a Text Editor
 
 Linux needs to be set to run executable scripts when they are double‐clicked instead of opening them to edit.
 
 On Ubuntu, the setting is found at:
-Files
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↳ Edit
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↳ Preferences
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↳ Behavior
+Files<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↳ Edit<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↳ Preferences<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↳ Behavior<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;↳ Run execuatable text files when they are opened
 
-### Swift Is Unavailable
+### Error: Swift Is Unavailable
 
 Because the script opens a new terminal to display its output, brand‐new terminal sessions need to be able to find the `swift` command without additional set‐up.
 
@@ -44,10 +44,10 @@ To register the location of `swift` even for new terminal sessions, run the foll
 
 ### Running from a Terminal
 
-While double‐clicking is usually the most convenient, it can be bypassed by manually running the macOS equivalent from a terminal:
+While double‐clicking is usually the most convenient, it can be bypassed by manually running the **macOS equivalent** from a terminal:
 
 ```
 ./Refresh\ Workspace\ \(macOS\).command
 ```
 
-This is exactly what the Linux script does internally. It merely opens a new terminal window to display the output, and then runs the macOS script.
+This is exactly what the Linux script does internally. It just opens a new terminal window first to display the output.

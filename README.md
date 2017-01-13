@@ -15,14 +15,15 @@
 
 Workspace automates management of Swift projects.
 
-Contents:
+Table of Contents:
 - [What Workspace Can Do](#what-workspace-can-do)
-- [Set‐Up](#set-up)
+- [Set‐Up](#setup)
 - [The Workspace Workflow](#the-workspace-workflow)
 
 ## What Workspace Can Do
 
 - Set [new projects](#new-projects) up from scratch.
+- Be [configured](Documentation/Configuring Workspace.md) to opt in or out of any of these features.
 
 ## Set‐Up
 
@@ -62,11 +63,11 @@ cd ..
 .Workspace/.build/release/workspace refresh
 ```
 
-By default, Workspace will refrain from most responsibilities when it is added to an existing project, behaving in a primarily opt‐in manner, but this setting can be [changed](Documentation/Responsibilies.md).
+By default, Workspace will refrain from most responsibilities when it is added to an existing project, behaving in a primarily opt‐in manner, but this setting can be [changed](Documentation/Responsibilities.md).
 
 ## The Workspace Workflow
 
-The Workspace project is managed by... Workspace! It is possible to try it out and follow along using the Workspace project itself.
+*The Workspace project is managed by... Workspace! So lets try it out by following along and using the Workspace project itself.*
 
 ### When the Repository Is Cloned
 
@@ -78,33 +79,33 @@ git clone https://github.com/SDGGiesbrecht/Workspace
 
 ...only one small piece of Workspace comes with it: A short script called “Refresh Workspace” that comes in two variants, one for each operating system.
 
-The development environment seems kind of sparse and unwieldly in this state though, so...
+*Hmm... I wish I had more tools at my disposal... Hey! What if I...*
 
-### Refreshing the Workspace
+### Refresh the Workspace
 
-To refresh the workspace, double‐click the “Refresh Workspace” script for the right operating system.
+To refresh the workspace, double‐click the `Refresh Workspace` script for the corresponding operating system. (If you are on Linux and double‐clicking fails or opens a text file, see [here](Documentation/Linux Notes.md#doubleclicking-scripts).)
 
-(If you are on Linux and double‐clicking fails or opens a text file, see [here](Documentation/Linux Notes#double-clicking-scripts).)
+`Refresh Workspace` opens a terminal window, and in it Workspace reports its actions while it sets the project folder up for development.
 
-A terminal window opens and Workspace reports its actions as it sets the project folder up for development.
+*This looks better. Let’s get coding!*
 
-Now its time to write some code...
+*[Add this... Remove that... Change something over here...]*
 
-### Validating Changes
+*...All done. I wonder if I broke anything while I was working? Hey! It looks like I can...*
 
-Once you are finished making changes and you think they are ready to push, merge, or submit a pull request...
+### Validate Changes
 
-Validate the current state of the project by double‐clicking the “Validate Changes” script.
+When the project seems ready for a push, merge, or pull request, validate the current state of the project by double‐clicking the `Validate Changes` script.
 
-A terminal window opens and Workspace runs the project through a series of checks.
+`Validate Changes` opens a terminal window and in it Workspace runs the project through a series of checks.
 
-When it finishes, you will see a summary of which tests passed and which tests failed.
+When it finishes, it prints a summary of which tests passed and which tests failed.
+
+*Oops! I never realized that would happen...*
 
 ### Summary
 
-1. “Refresh Workspace” before you work.
-2. “Validate Changes” when you think you are done.
+1. `Refresh Workspace` before working.
+2. `Validate Changes` when it looks complete.
 
-That’s all there is to it!
-
-Of course, if you are setting Workspace up to manage your own project, you will also want to learn how to [configure](Documents/Configuring Workspace.md) which [tasks](#what-workspace-can-do) Workspace should handle.
+*Wow! That was so much easier than doing it all manually!*

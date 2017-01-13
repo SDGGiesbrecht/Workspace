@@ -27,7 +27,7 @@ or
 Automatically Take On New Responsibilities: False
 ```
 
-`True` means Workspace’s will automatically add any configuration options that are not specified yet.
+`True` means Workspace will automatically add any configuration options that are not specified yet.<br>
 `False` means Workspace’s responsibilities will need to be configured manually.
 
 This option is inferred to be `False` if it is not specified in the configuration file.
@@ -36,7 +36,7 @@ This option is inferred to be `False` if it is not specified in the configuratio
 
 When Workspace is used to [create a new project](../README.md#new-projects), it generates a configuration file with this option set to `True`.
 
-When Workspace is added to an existing project, it does not create a configuration file, so this option will default to `False`.
+When Workspace is [added to an existing project](../README.md#existing-projects), it does not create a configuration file, so this option will default to `False`.
 
 ## Default vs Automatic
 

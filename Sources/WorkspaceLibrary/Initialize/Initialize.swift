@@ -106,6 +106,8 @@ func runInitialize(andExit shouldExit: Bool) {
             ])
         
         package.contents.replaceSubrange(nameRange, with: replacement)
+        
+        require() { try Repository.write(file: package) }
     }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

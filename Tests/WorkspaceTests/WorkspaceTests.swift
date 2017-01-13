@@ -68,6 +68,19 @@ class WorkspaceTests: XCTestCase {
             ])
     }
     
+    func testLineNumbers() {
+        let file = join(lines: [
+            "Line 1: א",
+            "Line 2: β",
+            "Line 3: c",
+            ])
+        let index = file.range(of: "β")!.lowerBound
+        let line = file.lineNumber(for: index)
+        XCTAssert(line == 2, "Incorrect line number: \(line) ≠ 2")
+        let column = file.columnNumber(for: index)
+        XCTAssert(column == 9, "Incorrect column number: \(column) ≠ 9")
+    }
+    
     func testBlockComments() {
         
         func testComment(syntax fileType: FileType, text: [String], comment: [String]) {
@@ -289,7 +302,7 @@ class WorkspaceTests: XCTestCase {
         let source = join(lines: [
             "Test Option: Simple Value",
             "",
-            "[_Start Test Long Option_]",
+            "[_Begin Test Long Option_]",
             "Multiline",
             "Value",
             "[_End_]",
@@ -581,6 +594,78 @@ class WorkspaceTests: XCTestCase {
         XCTAssert(bash(["NotARealCommand"]).succeeded == false, "Schript should have failed.")
     }
     
+    func testGitIgnoreCoverage() {
+        
+        let expectedPrefixes = [
+            
+            // Swift Package Manager
+            "Package.swift",
+            "Sources",
+            "Tests",
+            
+            // Workspace
+            ".Workspace Configuration.txt",
+            "Refresh Workspace (macOS).command",
+            "Refresh Workspace (Linux).sh",
+            
+            // Git
+            ".gitignore",
+            
+            // GitHub
+            "README.md",
+            "LICENSE.md",
+            
+            // Travis CI
+            ".travis.yml",
+            
+            // Workspace Project
+            "Documentation",
+            "Scripts",
+            ]
+        
+        if ¬Environment.isInXcode {
+            
+            let unexpected = Repository.trackedFiles.map({ $0.string }).filter() {
+                (file: String) -> Bool in
+                
+                for prefix in expectedPrefixes {
+                    if file.hasPrefix(prefix) {
+                        return false
+                    }
+                }
+                
+                return true
+            }
+            
+            XCTAssert(unexpected.isEmpty, join(lines: [
+                "Unexpected files are being tracked by Git:",
+                join(lines: unexpected),
+                ]))
+        }
+    }
+    
+    func testDocumentationCoverage() {
+        
+        if ¬Environment.isInXcode {
+            for link in DocumentationLink.all {
+                var url = link.url
+                if let anchor = url.range(of: "#") {
+                    url = url.substring(to: anchor.lowerBound)
+                }
+                
+                var exists = false
+                for file in Repository.trackedFiles {
+                    
+                    if url.hasSuffix(file.string) {
+                        exists = true
+                        break
+                    }
+                }
+                XCTAssert(exists, "Broken link: \(link.url)")
+            }
+        }
+    }
+    
     func testOnProjects() {
         
         if ¬Environment.isInXcode {
@@ -592,7 +677,7 @@ class WorkspaceTests: XCTestCase {
                 let new: [(name: String, flags: [String])] = [
                     (name: "New Library", flags: []),
                     (name: "New Executable", flags: ["•executable"]),
-                ]
+                    ]
                 
                 func root(of repository: String) -> RelativePath {
                     return Repository.testZone.subfolderOrFile(repository)
@@ -642,7 +727,7 @@ class WorkspaceTests: XCTestCase {
                     
                     (name: "SDGLogic", url: "https://github.com/SDGGiesbrecht/SDGLogic"),
                     (name: "SDGMathematics", url: "https://github.com/SDGGiesbrecht/SDGMathematics"),
-                ]
+                    ]
                 
                 for project in realProjects {
                     
@@ -677,6 +762,30 @@ class WorkspaceTests: XCTestCase {
                     }
                 }
                 
+                printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
+                printHeader(["Making sure Workspace passes its own tests..."])
+                printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
+                
+                let testWorkspaceProject = "Workspace"
+                try Repository.copy(Repository.root, to: root(of: testWorkspaceProject + "/"))
+                
+                try installWorkspace(repository: testWorkspaceProject)
+                
+                Repository.performInDirectory(directory: workspace(in: testWorkspaceProject)) {
+                    
+                    if ¬bash(["swift", "build"]).succeeded {
+                        XCTFail("Failed to build Workspace as a test project...")
+                    }
+                    
+                }
+                
+                Repository.performInDirectory(directory: root(of: testWorkspaceProject)) {
+                    
+                    if ¬(bash([".Workspace/.build/debug/workspace", "validate"]).exitCode == ExitCode.succeeded) {
+                        XCTFail("Workspace fails its own validation.")
+                    }
+                }
+                
             } catch let error {
                 
                 XCTFail(error.localizedDescription)
@@ -688,11 +797,14 @@ class WorkspaceTests: XCTestCase {
     static var allTests : [(String, (WorkspaceTests) -> () throws -> Void)] {
         return [
             ("testGeneralParsing", testGeneralParsing),
+            ("testLineNumbers", testLineNumbers),
             ("testBlockComments", testBlockComments),
             ("testLineComments", testLineComments),
             ("testConfiguration", testConfiguration),
             ("testHeaders", testHeaders),
             ("testShell", testShell),
+            ("testGitIgnoreCoverage", testGitIgnoreCoverage),
+            ("testDocumentationCoverage", testDocumentationCoverage),
             ("testOnProjects", testOnProjects),
         ]
     }

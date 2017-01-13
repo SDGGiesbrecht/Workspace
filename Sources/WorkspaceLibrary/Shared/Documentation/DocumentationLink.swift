@@ -27,8 +27,17 @@ enum DocumentationLink: String, CustomStringConvertible {
     
     // MARK: - Cases
     
-    case setUp = "#setup"
-    case responsibilities = "Responsibilities"
+    case setUp = "README.md#setup"
+    case responsibilities = "Responsibilities.md"
+    case git = "Git.md"
+    
+    static var all: [DocumentationLink] {
+        return [
+            .setUp,
+            .responsibilities,
+            .git,
+        ]
+    }
     
     // MARK: - Properties
     

@@ -52,6 +52,13 @@ func runRefresh(andExit shouldExit: Bool) {
         Configuration.addEntries(entries: newResponsibilities)
     }
     
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    printHeader(["Updating Git configuration..."])
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    
+    print("Updating “.gitignore”...")
+    Git.refreshGitIgnore()
+    
     if shouldExit {
         succeed(message: ["\(Configuration.projectName) is refreshed and ready.", instructionsAfterRefresh])
     }

@@ -15,6 +15,11 @@
 
 Workspace automates management of Swift projects.
 
+Contents:
+- [What Workspace Can Do](#what-workspace-can-do)
+- [Set‐Up](#set-up)
+- [The Workspace Workflow](#the-workspace-workflow)
+
 ## What Workspace Can Do
 
 - Set [new projects](#new-projects) up from scratch.
@@ -23,8 +28,9 @@ Workspace automates management of Swift projects.
 
 ### New Projects
 
-To have Workspace create a new Swift project from scratch, run this script in an empty folder:
+To have Workspace create a new Swift project from scratch, run one of the following scripts in an empty folder:
 
+To create a library project:
 ```shell
 git clone https://github.com/SDGGiesbrecht/Workspace .Workspace
 cd .Workspace
@@ -33,7 +39,16 @@ cd ..
 .Workspace/.build/release/workspace initialize
 ```
 
-Add the ` •executable` flag to the end of the last line to initialize an executable instead of a library.
+To create an executable project:
+```shell
+git clone https://github.com/SDGGiesbrecht/Workspace .Workspace
+cd .Workspace
+swift build --configuration release
+cd ..
+.Workspace/.build/release/workspace initialize •executable
+```
+
+By default, Workspace will handle many responsibilities when it creates a new project, behaving in a primarily opt‐out manner, but this setting can be [changed](Documentation/Responsibilities.md).
 
 ### Existing Projects
 
@@ -46,3 +61,7 @@ swift build --configuration release
 cd ..
 .Workspace/.build/release/workspace refresh
 ```
+
+By default, Workspace will refrain from most responsibilities when it is added to an existing project, behaving in a primarily opt‐in manner, but this setting can be [changed](Documentation/Responsibilies.md).
+
+## The Workspace Workflow

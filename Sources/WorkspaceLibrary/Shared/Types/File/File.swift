@@ -15,6 +15,18 @@ import SDGLogic
 
 struct File {
     
+    static func managmentWarning(section: Bool, documentation: DocumentationLink) -> [String] {
+        let place = section ? "section" : "file"
+        return [
+            "!!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!!",
+            "This \(place) is managed by Workspace.",
+            "Manual changes will not persist.",
+            "For more information, see:",
+            documentation.url,
+            "!!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!!",
+        ]
+    }
+    
     // MARK: - Initialization
     
     init(path: RelativePath, contents: String) {
@@ -124,7 +136,7 @@ struct File {
         var message: [String] = [
             "Expected “\(content)” in:",
             path.string,
-        ]
+            ]
         
         if (range.lowerBound == contents.startIndex ∧ range.upperBound == contents.endIndex) {
             // Whole file
@@ -136,7 +148,7 @@ struct File {
             "Range:",
             content.locationInformation(for: range.lowerBound),
             content.locationInformation(for: range.upperBound),
-        ]
+            ]
         message.append(contentsOf: appendix)
         
         fatalError(message: message)

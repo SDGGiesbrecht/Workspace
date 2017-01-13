@@ -53,7 +53,7 @@ struct Configuration {
         }
     }
     
-    private static let startTokens = (start: "[_Start ", end: "_]")
+    private static let startTokens = (start: "[_Begin ", end: "_]")
     private static let endToken = "[_End_]"
     private static let colon = ": "
     

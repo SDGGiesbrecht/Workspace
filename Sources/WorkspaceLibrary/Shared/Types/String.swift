@@ -259,10 +259,18 @@ extension String {
         return before.linesArray.count
     }
     
+    func lineNumber(for index: String.Index) -> Int {
+        return lineNumber(for: index.samePosition(in: unicodeScalars))
+    }
+    
     func columnNumber(for index: String.UnicodeScalarView.Index) -> Int {
         let location = index.positionOfExtendedGraphemeCluster(in: self)
         let line = lineRange(for: location ..< location)
-        return distance(from: line.lowerBound, to: location)
+        return distance(from: line.lowerBound, to: location) + 1
+    }
+    
+    func columnNumber(for index: String.Index) -> Int {
+        return columnNumber(for: index.samePosition(in: unicodeScalars))
     }
     
     func locationInformation(for index: String.UnicodeScalarView.Index) -> String {

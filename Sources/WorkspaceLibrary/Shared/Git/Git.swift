@@ -28,6 +28,9 @@ struct Git {
         ]
     
     static let ignoreEntriesForWorkspace = [
+        "/.Workspace",
+        "/.Validate\\ Changes (macOS).command",
+        "/.Validate\\ Changes (Linux).sh",
         "/.Test\\ Zone",
         ]
     

@@ -65,3 +65,25 @@ cd ..
 By default, Workspace will refrain from most responsibilities when it is added to an existing project, behaving in a primarily opt‐in manner, but this setting can be [changed](Documentation/Responsibilies.md).
 
 ## The Workspace Workflow
+
+The Workspace project is managed by... Workspace! It is possible to try it out and follow along using the Workspace project itself.
+
+### When the Repository Is Cloned
+
+Workspace hides as much as it can from Git, so when a project using Workspace is pulled, pushed, or cloned...
+
+```
+git clone https://github.com/SDGGiesbrecht/Workspace
+```
+
+...only one small piece of Workspace comes with it: A short script called “Refresh Workspace” that comes in two variants, one for each operating system.
+
+The development environment seems kind of sparse and unwieldly in this state though, so...
+
+### Refreshing the Workspace
+
+To refresh the workspace, double‐click the “Refresh Workspace” script for the right operating system.
+
+(If you are on Linux and double‐clicking fails or opens a text file, see [here](Documentation/Linux Notes#double-clicking-scripts).)
+
+A terminal window opens and Workspace reports its actions as it sets the project folder up for development. When it is finished, 

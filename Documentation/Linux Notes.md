@@ -13,7 +13,7 @@
 
 # Linux Notes
 
-## Enabling Double‐Click for “Refresh Workspace (Linux).sh”
+## Double‐Clicking Scripts
 
 Linux may require some additional set‐up before `Refresh Workspace (Linux).sh` works with a double‐click. This also applies to `Validate Changes (Linux).sh`.
 

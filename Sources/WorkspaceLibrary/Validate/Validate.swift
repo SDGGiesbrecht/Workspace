@@ -19,6 +19,7 @@ func runValidate(andExit shouldExit: Bool) {
     }
     func individualFailure(message: String) {
         summary.append((result: false, message: message))
+        overallSuccess = false
     }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

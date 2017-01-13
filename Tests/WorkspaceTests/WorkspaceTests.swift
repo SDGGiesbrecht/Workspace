@@ -783,7 +783,7 @@ class WorkspaceTests: XCTestCase {
                     
                     Repository.performInDirectory(directory: root(of: testWorkspaceProject)) {
                         
-                        if ¬(bash([".Workspace/.build/debug/workspace", "validate", "no‐recursion"]).exitCode == ExitCode.succeeded) {
+                        if ¬(bash([".Workspace/.build/debug/workspace", "validate", "•no‐recursion"]).exitCode == ExitCode.succeeded) {
                             XCTFail("Workspace fails its own validation.")
                         }
                     }

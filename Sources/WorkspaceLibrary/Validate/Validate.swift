@@ -47,9 +47,9 @@ func runValidate(andExit shouldExit: Bool) {
     
     for (result, message) in summary {
         if result {
-            print(["✓" + message], in: .green)
+            print(["✓ " + message], in: .green)
         } else {
-            print(["✗" + message], in: .red)
+            print(["✗ " + message], in: .red)
         }
     }
     

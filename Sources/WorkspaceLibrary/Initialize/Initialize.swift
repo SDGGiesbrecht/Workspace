@@ -63,7 +63,10 @@ func runInitialize(andExit shouldExit: Bool) {
     
     if Flags.executable {
         
-        let libraryName = Configuration.projectName + "Library"
+        let projectName = Configuration.projectName.replacingOccurrences(of: " ", with: "_")
+        
+        let executableName = projectName
+        let libraryName = projectName + "Library"
         
         require() { try Repository.delete(RelativePath("Sources/\(Configuration.projectName)")) }
         
@@ -75,6 +78,13 @@ func runInitialize(andExit shouldExit: Bool) {
             ]))
         
         require() { try Repository.write(file: program) }
+        
+        let main = File(path: RelativePath("Sources/\(projectName)/main.swift"), contents: join(lines: [
+            "import \(libraryName)",
+            "\(libraryName).run()",
+            ]))
+        
+        require() { try Repository.write(file: main) }
     }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

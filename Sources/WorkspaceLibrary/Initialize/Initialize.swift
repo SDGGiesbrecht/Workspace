@@ -59,7 +59,12 @@ func runInitialize(andExit shouldExit: Bool) {
     
     print(["Arranging Swift package..."])
     
-    force() { try Repository.move("Sources", to: RelativePath("Sources/\(Configuration.projectName)")) }
+    require() { try Repository.move("Sources", to: RelativePath("Sources/\(Configuration.projectName)")) }
+    
+    // Erase redundant .gitignore entries.
+    var gitIngore = require() { try Repository.read(RelativePath(".gitignore")) }
+    gitIngore.contents = ""
+    require() { try Repository.write(file: gitIngore) }
     
     if Flags.executable {
         
@@ -99,7 +104,7 @@ func runInitialize(andExit shouldExit: Bool) {
         let replacement = join(lines: [
             package.contents.substring(with: nameRange) + ",",
             "    targets: [",
-            "        Target(name: \u{22}\(executableName)\u{22}, dependencies: [\u{22}\(libraryName)\u{22}])",,
+            "        Target(name: \u{22}\(executableName)\u{22}, dependencies: [\u{22}\(libraryName)\u{22}]),",
             "        Target(name: \u{22}\(libraryName)\u{22}),",
             "        Target(name: \u{22}\(testsName)\u{22}, dependencies: [\u{22}\(libraryName)\u{22}]),",
             "    ]",
@@ -108,6 +113,7 @@ func runInitialize(andExit shouldExit: Bool) {
         package.contents.replaceSubrange(nameRange, with: replacement)
         
         require() { try Repository.write(file: package) }
+        
     }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

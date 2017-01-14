@@ -11,6 +11,8 @@
 
 import Foundation
 
+import SDGLogic
+
 struct Git {
     
     static let ignoreEntriesForMacOS = [
@@ -58,10 +60,18 @@ struct Git {
         let managementWarning = File.managmentWarning(section: true, documentation: .git)
         let managementComment = FileType.gitignore.syntax.comment(contents: managementWarning)
         
+        let precedingLines = gitIngore.contents.substring(to: managedRange.lowerBound)
         
         var updatedLines: [String] = []
-        updatedLines += [""] // End of header
-        updatedLines += [""]
+        if precedingLines.isEmpty {
+            // Prevent appearing like a header
+            updatedLines += [""] // Empty first line
+        } else if ¬precedingLines.hasSuffix("\n") {
+            updatedLines += [""] // Last line of predecessor
+            if ¬precedingLines.hasSuffix("\n\n") {
+                updatedLines += [""] // Empty line
+            }
+        }
         updatedLines += [startToken]
         updatedLines += [""]
         updatedLines += [managementComment]

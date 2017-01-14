@@ -13,6 +13,11 @@ import PackageDescription
 
 let package = Package(
     name: "Workspace",
+    targets: [
+        Target(name: "workspace", dependencies: ["WorkspaceLibrary"]),
+        Target(name: "WorkspaceLibrary"),
+        Target(name: "WorkspaceTests", dependencies: ["WorkspaceLibrary"])
+    ],
     dependencies: [
         .Package(url: "https://github.com/SDGGiesbrecht/SDGCaching", versions: "1.0.0" ..< "2.0.0"),
         

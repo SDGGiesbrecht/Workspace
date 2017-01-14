@@ -1,4 +1,6 @@
-# .travis.yml
+#!/bin/bash
+
+# Refresh Workspace (Linux).sh
 #
 # This source file is part of the Workspace open source project.
 #
@@ -9,23 +11,18 @@
 # Licensed under the Apache License, Version 2.0
 # See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
-# [_Begin Workspace Section_]
-
 # !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!!
-# This section is managed by Workspace.
+# This file is managed by Workspace.
 # Manual changes will not persist.
 # For more information, see:
-# https://github.com/SDGGiesbrecht/Workspace/blob/master/Documentation/Git.md
+# https://github.com/SDGGiesbrecht/Workspace
 # !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!!
 
-.DS_Store
-/.build
-/Packages
-/*.xcodeproj
-/.Workspace
-/Validate\ Changes\ (macOS).command
-/Validate\ Changes\ (Linux).sh
-/.Test\ Zone
+# Stop if a command fails.
+set -e
 
-# [_End Workspace Section]
+# Find and enter repository.
+cd "${0%/*}"
 
+# Run refresh in terminal.
+gnome-terminal -e "bash --login -c \"source ~/.bashrc; ./Refresh\ Workspace\ \(macOS\).command; exec bash\""

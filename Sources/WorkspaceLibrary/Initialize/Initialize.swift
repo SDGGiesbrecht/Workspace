@@ -134,7 +134,7 @@ func runInitialize(andExit shouldExit: Bool) {
         let importRange = tests.requireRange(of: projectName)
         tests.contents.replaceSubrange(importRange, with: libraryName)
         let testRange = tests.requireRange(of: ("  XCTAssert", "\u{22})"))
-        tests.contents.replaceSubrange(testRange, with: "  XCTAssert(sayHello() == \u{22}Hello, world!\u{22}))")
+        tests.contents.replaceSubrange(testRange, with: "  XCTAssert(sayHello() == \u{22}Hello, world!\u{22})")
         require() { try Repository.write(file: tests) }
     }
     

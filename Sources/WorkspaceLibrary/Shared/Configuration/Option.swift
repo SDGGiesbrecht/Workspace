@@ -22,6 +22,7 @@ enum Option: String, CustomStringConvertible {
     case automaticallyTakeOnNewResponsibilites = "Automatically Take On New Responsibilities"
     
     case manageXcode = "Manage Xcode"
+    case manageContinuousIntegration = "Manage Continuous Integration"
     
     // Testing Workspace
     case nestedTest = "Nested Test"
@@ -31,6 +32,7 @@ enum Option: String, CustomStringConvertible {
     static let allPublic: [Option] = [
         .automaticallyTakeOnNewResponsibilites,
         .manageXcode,
+        .manageContinuousIntegration,
     ]
     
     // MARK: - Properties
@@ -44,6 +46,8 @@ enum Option: String, CustomStringConvertible {
         case .automaticallyTakeOnNewResponsibilites:
             return Configuration.falseOptionValue
         case .manageXcode:
+            return Configuration.falseOptionValue
+        case .manageContinuousIntegration:
             return Configuration.falseOptionValue
             
             // Tests
@@ -59,6 +63,7 @@ enum Option: String, CustomStringConvertible {
     static let automaticResponsibilityDocumentationPage = DocumentationLink.responsibilities
     static let automaticRepsonsibilities: [(option: Option, automaticValue: String, documentationPage: DocumentationLink)] = [
         (.manageXcode, automaticValue: Configuration.trueOptionValue, DocumentationLink.xcode),
+        (.manageContinuousIntegration, automaticValue: Configuration.trueOptionValue, DocumentationLink.continuousIntegration)
     ]
     
     // MARK: - CustomStringConvertible

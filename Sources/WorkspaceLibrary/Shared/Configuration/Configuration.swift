@@ -308,6 +308,10 @@ struct Configuration {
         return booleanValue(option: .automaticallyTakeOnNewResponsibilites)
     }
     
+    static var manageXcode: Bool {
+        return booleanValue(option: .manageXcode)
+    }
+    
     // Testing
     static var nestedTest: Bool {
         return booleanValue(option: .nestedTest)

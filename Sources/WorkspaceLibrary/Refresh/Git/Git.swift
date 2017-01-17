@@ -24,10 +24,6 @@ struct Git {
         "/Packages",
         ]
     
-    static let ignoreEntriesForXcode = [
-        "/*.xcodeproj",
-        ]
-    
     static let ignoreEntriesForWorkspace = [
         "/.Workspace",
         "/Validate\\ Changes\\ (macOS).command",
@@ -37,8 +33,11 @@ struct Git {
     
     static let requiredIgnoreEntries = ignoreEntriesForMacOS
         + ignoreEntriesForSwiftProjectManager
-        + ignoreEntriesForXcode
         + ignoreEntriesForWorkspace
+    
+    static let ignoreEntriesForXcode = [
+        "/*.xcodeproj",
+        ]
     
     static func refreshGitIgnore() {
         
@@ -77,6 +76,9 @@ struct Git {
         updatedLines += [managementComment]
         updatedLines += [""]
         updatedLines += requiredIgnoreEntries
+        if Configuration.manageXcode {
+            updatedLines += ignoreEntriesForXcode
+        }
         updatedLines += [""]
         updatedLines += [endToken]
         updatedLines += [""]

@@ -11,7 +11,7 @@
 
 import SDGLogic
 
-let instructionsAfterRefresh = "" //"Open \(Configuration.projectName).xcodeproj to work on the project."
+let instructionsAfterRefresh = Environment.operatingSystem == .macOS ? "Open \(Configuration.projectName).xcodeproj to work on the project." : ""
 
 func runRefresh(andExit shouldExit: Bool) {
     
@@ -58,6 +58,16 @@ func runRefresh(andExit shouldExit: Bool) {
     
     print("Updating “.gitignore”...")
     Git.refreshGitIgnore()
+    
+    if Configuration.manageXcode ∧ Environment.operatingSystem == .macOS {
+        
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        printHeader(["Refreshing Xcode project..."])
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        
+        force() { try Repository.delete(RelativePath("\(Configuration.projectName).xcodeproj")) }
+        requireBash(["swift", "package", "generate-xcodeproj", "--enable-code-coverage"])
+    }
     
     if shouldExit {
         succeed(message: ["\(Configuration.projectName) is refreshed and ready.", instructionsAfterRefresh])

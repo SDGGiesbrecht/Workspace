@@ -30,6 +30,7 @@ enum DocumentationLink: String, CustomStringConvertible {
     case setUp = "README.md#setup"
     case responsibilities = "Responsibilities.md"
     case git = "Git.md"
+    case xcode = "Xcode.md"
     
     static var all: [DocumentationLink] {
         return [

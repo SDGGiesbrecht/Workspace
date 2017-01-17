@@ -16,14 +16,20 @@
 Workspace automates management of Swift projects.
 
 Table of Contents:
+- [Platforms](#platforms)
 - [What Workspace Can Do](#what-workspace-can-do)
 - [Set‐Up](#setup)
 - [The Workspace Workflow](#the-workspace-workflow)
+
+## Platforms
+
+Workspace can be used for development on macOS and Linux.
 
 ## What Workspace Can Do
 
 - Set [new projects](#new-projects) up from scratch.
 - Be [configured](Documentation/Configuring Workspace.md) to opt in or out of any of these features.
+- Generate and maintain a local [Xcode project](Documentation/Xcode.md). (macOS‐only)
 
 ## Set‐Up
 
@@ -67,7 +73,7 @@ By default, Workspace will refrain from most responsibilities when it is added t
 
 ## The Workspace Workflow
 
-*The Workspace project is managed by... Workspace! So lets try it out by following along and using the Workspace project itself.*
+*The Workspace project is managed by... Workspace! So let’s try it out by following along using the Workspace project itself.*
 
 ### When the Repository Is Cloned
 

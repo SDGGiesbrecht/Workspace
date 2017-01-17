@@ -23,5 +23,5 @@ Workspace will create and maintain a `.travis.yml` file at the project root, whi
 
 ## Special Thanks
 
-• [Travis CI](https://travis-ci.org)
-• Kyle Fuller and [Swift Version Manager](https://github.com/kylef/swiftenv), which makes continuous integration possible on Linux.
+- [Travis CI](https://travis-ci.org)
+- Kyle Fuller and [Swift Version Manager](https://github.com/kylef/swiftenv), which makes continuous integration possible on Linux.

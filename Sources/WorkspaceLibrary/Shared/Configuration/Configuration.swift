@@ -312,6 +312,10 @@ struct Configuration {
         return booleanValue(option: .manageXcode)
     }
     
+    static var manageContinuousIntegration: Bool {
+        return booleanValue(option: .manageContinuousIntegration)
+    }
+    
     // Testing
     static var nestedTest: Bool {
         return booleanValue(option: .nestedTest)

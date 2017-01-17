@@ -56,8 +56,15 @@ func runRefresh(andExit shouldExit: Bool) {
     printHeader(["Updating Git configuration..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
-    print("Updating “.gitignore”...")
     Git.refreshGitIgnore()
+    
+    if Configuration.manageContinuousIntegration {
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        printHeader(["Updating continuous integration configuration..."])
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        
+        ContinuousIntegration.refreshContinuousIntegrationConfiguration()
+    }
     
     if Configuration.manageXcode ∧ Environment.operatingSystem == .macOS {
         

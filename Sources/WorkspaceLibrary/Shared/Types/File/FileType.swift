@@ -47,6 +47,9 @@ enum FileType: CustomStringConvertible {
     // Scripts
     case shell
     
+    // Configuration of Components
+    case yaml
+    
     // MARK: - Filename Suffixes
     
     private static let fileNameSuffixes: [(suffix: String, type: FileType)] = [
@@ -67,9 +70,13 @@ enum FileType: CustomStringConvertible {
         (".sh", .shell),
         (".command", .shell),
         
+        // Configuration of Components
+        (".yaml", .yaml),
+        (".yml", .yaml),
+        
         ]
     
-    // MARK: - Header Syntax
+    // MARK: - Syntax
     
     var syntax: FileSyntax {
         switch self {
@@ -83,6 +90,8 @@ enum FileType: CustomStringConvertible {
             return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"))
         case .shell:
             return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"), requiredFirstLineTokens: (start: "#!", end: "sh"))
+        case .yaml:
+            return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"), requiredFirstLineTokens: nil)
         }
     }
     
@@ -100,6 +109,8 @@ enum FileType: CustomStringConvertible {
             return "Git Ignore"
         case .shell:
             return "Shell"
+        case .yaml:
+            return "YAML"
         }
     }
 }

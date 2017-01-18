@@ -19,6 +19,8 @@ Table of Contents:
 - [Platforms](#platforms)
 - [What Workspace Can Do](#what-workspace-can-do)
 - [Set‐Up](#setup)
+  - [New Projects](#new-projects)
+  - [Existing Projects](#existing-projects)
 - [The Workspace Workflow](#the-workspace-workflow)
 
 ## Platforms

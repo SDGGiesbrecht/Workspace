@@ -31,12 +31,15 @@ enum DocumentationLink: String, CustomStringConvertible {
     case responsibilities = "Responsibilities.md"
     case git = "Git.md"
     case xcode = "Xcode.md"
+    case continuousIntegration = "Continuous Integration.md"
     
     static var all: [DocumentationLink] {
         return [
             .setUp,
             .responsibilities,
             .git,
+            .xcode,
+            .continuousIntegration,
         ]
     }
     

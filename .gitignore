@@ -21,11 +21,11 @@
 .DS_Store
 /.build
 /Packages
-/*.xcodeproj
 /.Workspace
 /Validate\ Changes\ (macOS).command
 /Validate\ Changes\ (Linux).sh
 /.Test\ Zone
+/*.xcodeproj
 
 # [_End Workspace Section]
 

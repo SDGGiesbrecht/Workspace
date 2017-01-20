@@ -339,7 +339,10 @@ class WorkspaceTests: XCTestCase {
                 preconditionFailure("Unrecognized extension: \(fileExtension)")
             }
             let syntax = fileType.syntax
-            let body = "..."
+            let body = join(lines: [
+                "...",
+                "", // Final newline
+                ])
             
             var headerlessFirstLine = ""
             func inContext(headerSource: String) -> File {
@@ -362,7 +365,7 @@ class WorkspaceTests: XCTestCase {
                     body,
                     ]))
                 
-                return File(path: path, contents: contents)
+                return File(_path: path, _contents: contents)
             }
             var contextString = ""
             if let firstLine = syntax.requiredFirstLineTokens {
@@ -372,7 +375,7 @@ class WorkspaceTests: XCTestCase {
                     ]))
             }
             contextString.append(body)
-            let context = File(path: path, contents: contextString)
+            let context = File(_path: path, _contents: contextString)
             let file = inContext(headerSource: join(lines: source))
             
             let headerString = join(lines: header)
@@ -401,7 +404,7 @@ class WorkspaceTests: XCTestCase {
                     expectedSwift,
                     ]))
                 
-                let startingWithDocumentation = File(path: path, contents: join(lines: [
+                let startingWithDocumentation = File(_path: path, _contents: join(lines: [
                     "/**",
                     " Documentation",
                     " */",
@@ -416,6 +419,7 @@ class WorkspaceTests: XCTestCase {
                     "/**",
                     " Documentation",
                     " */",
+                    "", // Final newline
                     ])
                 XCTAssert(withHeader.contents == expectedResult, join(lines: [
                     "Failure inserting header using \(fileType):",
@@ -493,7 +497,7 @@ class WorkspaceTests: XCTestCase {
                 context.contents,
                 ]))
             
-            let noHeader = File(path: path, contents: headerlessFirstLine + body)
+            let noHeader = File(_path: path, _contents: headerlessFirstLine + body)
             XCTAssert(noHeader.body == body, join(lines: [
                 "Failure parsing body using \(fileType):",
                 noHeader.contents,
@@ -774,9 +778,9 @@ class WorkspaceTests: XCTestCase {
                     try Repository.copy(Repository.root, to: root(of: testWorkspaceProject + "/"))
                     
                     // Block tests from being recursive.
-                    var nestedConfiguration = try Repository.read(file: root(of: testWorkspaceProject).subfolderOrFile(Configuration.configurationFilePath.string))
+                    var nestedConfiguration = try File(at: root(of: testWorkspaceProject).subfolderOrFile(Configuration.configurationFilePath.string))
                     nestedConfiguration.body.append("\n" + Configuration.configurationFileEntry(option: Option.nestedTest, value: true, comment: nil))
-                    try Repository.write(file: nestedConfiguration)
+                    try nestedConfiguration.write()
                     
                     try installWorkspace(repository: testWorkspaceProject)
                     

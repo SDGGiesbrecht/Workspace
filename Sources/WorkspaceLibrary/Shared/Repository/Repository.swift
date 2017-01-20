@@ -176,7 +176,7 @@ struct Repository {
         return repositoryPath.subfolderOrFile(relativePath.string)
     }
     
-    static func read(file path: RelativePath) throws -> File {
+    static func _read(file path: RelativePath) throws -> String {
         
         let filePath = absolute(path).string
         
@@ -187,20 +187,20 @@ struct Repository {
             let contents = try String(contentsOfFile: filePath, usedEncoding: &encoding)
         #endif
         
-        return File(path: path, contents: contents)
+        return contents
     }
     
-    static func write(file: File) throws {
+    static func _write(file: String, to path: RelativePath) throws {
         
-        prepareForWrite(path: file.path)
+        prepareForWrite(path: path)
         
-        try file.contents.write(toFile: absolute(file.path).string, atomically: true, encoding: String.Encoding.utf8)
+        try file.write(toFile: absolute(path).string, atomically: true, encoding: String.Encoding.utf8)
         
         resetCache()
         
         if debug {
-            let written = try Repository.read(file: file.path)
-            assert(written.contents == file.contents, "Write operation failed.")
+            let written = try Repository._read(file: path)
+            assert(written == file, "Write operation failed.")
         }
     }
     
@@ -208,7 +208,7 @@ struct Repository {
         return cachedResult(cache: &cache.packageDescription) {
             () -> File in
             
-            return require() { try read(file: "Package.swift") }
+            return require() { try File(at: "Package.swift") }
         }
     }
     

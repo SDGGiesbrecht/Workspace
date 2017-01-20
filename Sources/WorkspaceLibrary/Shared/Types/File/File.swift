@@ -71,8 +71,8 @@ struct File {
         set {
             let new = File.normalize(contents: newValue)
             
-            print(new)
-            print(contents)
+            print("“\(new)”")
+            print("“\(contents)”")
             
             // Check for changes
             if new ≠ contents {

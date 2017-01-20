@@ -176,6 +176,7 @@ struct Repository {
         return repositoryPath.subfolderOrFile(relativePath.string)
     }
     
+    /// Use “File(at:)” instead.
     static func _read(file path: RelativePath) throws -> String {
         
         let filePath = absolute(path).string
@@ -190,6 +191,7 @@ struct Repository {
         return contents
     }
     
+    /// Use File’s “write()” instead.
     static func _write(file: String, to path: RelativePath) throws {
         
         prepareForWrite(path: path)

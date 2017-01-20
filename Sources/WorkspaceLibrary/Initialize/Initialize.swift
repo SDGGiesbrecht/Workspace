@@ -73,11 +73,10 @@ func runInitialize(andExit shouldExit: Bool) {
         require() { try Repository.delete(withSpaces) }
     }
     
-    
     // Erase redundant .gitignore entries.
-    var gitIngore = require() { try Repository.read(file: RelativePath(".gitignore")) }
+    var gitIngore = require() { try File(at: RelativePath(".gitignore")) }
     gitIngore.contents = ""
-    require() { try Repository.write(file: gitIngore) }
+    require() { try gitIngore.write() }
     
     if Flags.executable {
         
@@ -86,7 +85,8 @@ func runInitialize(andExit shouldExit: Bool) {
         
         require() { try Repository.delete(RelativePath("Sources/\(projectName)")) }
         
-        let program = File(path: RelativePath("Sources/\(libraryName)/Program.swift"), contents: join(lines: [
+        var program = File(newAt: RelativePath("Sources/\(libraryName)/Program.swift"))
+        program.body = join(lines: [
             "/// :nodoc:",
             "public func run() {",
             "",
@@ -99,11 +99,12 @@ func runInitialize(andExit shouldExit: Bool) {
             "    return \u{22}Hello, world!\u{22}",
             "",
             "}",
-            ]))
+            ])
         
-        require() { try Repository.write(file: program) }
+        require() { try program.write() }
         
-        let main = File(path: RelativePath("Sources/\(executableName)/main.swift"), contents: join(lines: [
+        var main = File(newAt: RelativePath("Sources/\(executableName)/main.swift"))
+        main.body = join(lines: [
             "import \(libraryName)",
             "",
             "/*",
@@ -111,9 +112,9 @@ func runInitialize(andExit shouldExit: Bool) {
             " It is recommended to put the entire implementation in \(libraryName).",
             " */",
             "\(libraryName).run()",
-            ]))
+            ])
         
-        require() { try Repository.write(file: main) }
+        require() { try main.write() }
         
         var package = Repository.packageDescription
         let nameRange = package.requireRange(of: ("name: \u{22}", "\u{22}"))
@@ -128,28 +129,28 @@ func runInitialize(andExit shouldExit: Bool) {
         
         package.contents.replaceSubrange(nameRange, with: replacement)
         
-        require() { try Repository.write(file: package) }
+        require() { try package.write() }
         
-        var tests = require { try Repository.read(file: RelativePath("Tests/\(testsName)/\(testsName).swift")) }
+        var tests = require { try File(at: RelativePath("Tests/\(testsName)/\(testsName).swift")) }
         let importRange = tests.requireRange(of: projectName)
         tests.contents.replaceSubrange(importRange, with: libraryName)
         let testRange = tests.requireRange(of: ("  XCTAssert", "\u{22})"))
         tests.contents.replaceSubrange(testRange, with: "  XCTAssert(sayHello() == \u{22}Hello, world!\u{22})")
-        require() { try Repository.write(file: tests) }
+        require() { try tests.write() }
     }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Configuring Workspace..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
-    var configuration = File(path: Configuration.configurationFilePath, contents: "")
+    var configuration = File(newAt: Configuration.configurationFilePath)
     let note: [String]? = [
         "This is the default setting when the Workspace initializes projects.",
         "For more information about “\(Option.automaticallyTakeOnNewResponsibilites)”, see:",
         Option.automaticResponsibilityDocumentationPage.url,
         ]
     Configuration.addEntries(entries: [(option: .automaticallyTakeOnNewResponsibilites, value: Configuration.trueOptionValue, comment: note)], to: &configuration)
-    require() { try Repository.write(file: configuration) }
+    require() { try configuration.write() }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Refreshing

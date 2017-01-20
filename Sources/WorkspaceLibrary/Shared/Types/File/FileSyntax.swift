@@ -84,6 +84,12 @@ struct FileSyntax {
     
     // MARK: - Parsing
     
+    private static func advance(_ index: inout String.Index, pastLayoutSpacingIn string: String) {
+        string.advance(&index, pastNewlinesWithLimit: 1)
+        string.advance(&index, past: CharacterSet.whitespaces)
+        string.advance(&index, pastNewlinesWithLimit: 1)
+    }
+    
     func headerStart(file: File) -> String.Index {
         
         var index = file.contents.startIndex
@@ -91,15 +97,13 @@ struct FileSyntax {
         if let required = requiredFirstLineTokens {
             
             index = file.requireRange(of: required).upperBound
-            file.contents.advance(&index, pastNewlinesWithLimit: 1)
-            file.contents.advance(&index, past: CharacterSet.whitespaces)
-            file.contents.advance(&index, pastNewlinesWithLimit: 1)
+            FileSyntax.advance(&index, pastLayoutSpacingIn: file.contents)
         }
         
         return index
     }
     
-    func headerEnd(file: File) -> String.Index {
+    private func headerEndWithoutSpacing(file: File) -> String.Index {
         
         let start = file.headerStart
         
@@ -120,6 +124,12 @@ struct FileSyntax {
         }
         
         return start
+    }
+    
+    func headerEnd(file: File) -> String.Index {
+        var result = headerEndWithoutSpacing(file: file)
+        FileSyntax.advance(&result, pastLayoutSpacingIn: file.contents)
+        return result
     }
     
     func header(file: File) -> String {

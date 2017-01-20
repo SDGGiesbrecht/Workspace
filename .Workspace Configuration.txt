@@ -1,18 +1,14 @@
-
 ((
-    Workspace took responsibility for this automatically.
-    (Because “Automatically Take On New Responsibilities” is “True”)
-    For more information about “Manage Xcode”, see:
-    https://github.com/SDGGiesbrecht/Workspace/blob/master/Documentation/Xcode.md
-    ))
-Manage Xcode: True
+    .Workspace Configuration.txt
 
-((
-    Workspace took responsibility for this automatically.
-    (Because “Automatically Take On New Responsibilities” is “True”)
-    For more information about “Manage Continuous Integration”, see:
-    https://github.com/SDGGiesbrecht/Workspace/blob/master/Documentation/Continuous Integration.md
-    ))
-Manage Continuous Integration: True
+    This source file is part of the Workspace open source project.
 
-Automatically Take On New Responsibilities: True
+    Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
+
+    Soli Deo gloria
+
+    Licensed under the Apache License, Version 2.0
+    See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+    ))
+
+[_Import https://github.com/SDGGiesbrecht/SDG_]

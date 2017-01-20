@@ -44,7 +44,7 @@ struct File {
     
     private init(path: RelativePath, contents: String, isNew: Bool) {
         self.path = path
-        self._contents = File.normalize(contents: contents)
+        self._contents = contents
         self.hasChanged = isNew
     }
     
@@ -69,18 +69,21 @@ struct File {
             return _contents
         }
         set {
-            let new = File.normalize(contents: newValue)
+            var new = newValue
             
-            print("“\(new)”")
-            print("“\(contents)”")
+            // Ensure singular final newline
+            while new.hasSuffix("\n\n") {
+                new.unicodeScalars.removeLast()
+            }
+            if ¬new.hasSuffix("\n") {
+                new.append("\n")
+            }
             
             // Check for changes
             if new ≠ contents {
-                print("not equal")
                 hasChanged = true
                 _contents = new
             }
-            print("equal")
         }
     }
     
@@ -93,20 +96,6 @@ struct File {
     }
     
     // MARK: - File Headers
-    
-    private static func normalize(contents: String) -> String {
-        var new = contents
-        
-        // Ensure singular final newline
-        while new.hasSuffix("\n\n") {
-            new.unicodeScalars.removeLast()
-        }
-        if ¬new.hasSuffix("\n") {
-            new.append("\n")
-        }
-        
-        return new
-    }
     
     var headerStart: String.Index {
         

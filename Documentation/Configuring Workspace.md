@@ -34,3 +34,15 @@ Value
 ```
 
 An option may be specified more than once, in which case the last instance overrides any previous instances.
+
+## Sharing Configurations between Projects
+
+A configuration file can import options from another repository:
+
+```
+[_Import https://github.com/user/repository_]
+```
+
+The referenced repository can be a real project or an otherwise empty repository, as long as it contains a `.Workspace Configuration.txt` file at its root.
+
+Precedence rules still apply. The imported options can override any options before the import statement, and options that follow the import statement can override the imported options.

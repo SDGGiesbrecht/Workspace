@@ -76,9 +76,11 @@ struct File {
             
             // Check for changes
             if new ≠ contents {
+                print("not equal")
                 hasChanged = true
                 _contents = new
             }
+            print("equal")
         }
     }
     

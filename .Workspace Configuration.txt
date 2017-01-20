@@ -1,19 +1,1 @@
-
-((
-    Workspace took responsibility for this automatically.
-    (Because “Automatically Take On New Responsibilities” is “True”)
-    For more information about “Manage Continuous Integration”, see:
-    https://github.com/SDGGiesbrecht/Workspace/blob/master/Documentation/Continuous Integration.md
-    ))
-Manage Continuous Integration: True
-
-
-((
-    Workspace took responsibility for this automatically.
-    (Because “Automatically Take On New Responsibilities” is “True”)
-    For more information about “Manage Xcode”, see:
-    https://github.com/SDGGiesbrecht/Workspace/blob/master/Documentation/Xcode.md
-    ))
-Manage Xcode: True
-
 Automatically Take On New Responsibilities: True

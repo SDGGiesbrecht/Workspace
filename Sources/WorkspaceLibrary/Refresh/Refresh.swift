@@ -12,13 +12,12 @@
 import SDGLogic
 
 let instructionsAfterRefresh: String = {
-    
     if Environment.operatingSystem == .macOS ∧ Configuration.manageXcode {
         return "Open \(Configuration.projectName).xcodeproj to work on the project."
     } else {
         return ""
     }
-}
+}()
 
 func runRefresh(andExit shouldExit: Bool) {
     
@@ -84,6 +83,10 @@ func runRefresh(andExit shouldExit: Bool) {
     }
     
     if shouldExit {
-        succeed(message: ["\(Configuration.projectName) is refreshed and ready.", instructionsAfterRefresh])
+        
+        succeed(message: [
+            "\(Configuration.projectName) is refreshed and ready.",
+            instructionsAfterRefresh
+            ])
     }
 }

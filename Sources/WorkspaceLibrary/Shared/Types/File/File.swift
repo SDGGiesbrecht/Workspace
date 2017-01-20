@@ -59,7 +59,7 @@ struct File {
     private var hasChanged: Bool
     let path: RelativePath
     
-    var _contents: String {
+    private var _contents: String {
         willSet {
             cache = Cache()
         }
@@ -70,6 +70,9 @@ struct File {
         }
         set {
             let new = File.normalize(contents: newValue)
+            
+            print(new)
+            print(contents)
             
             // Check for changes
             if new ≠ contents {

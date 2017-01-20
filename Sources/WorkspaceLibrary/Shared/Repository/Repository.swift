@@ -20,6 +20,7 @@ struct Repository {
     // MARK: - Configuration
     
     static let workspaceDirectory: RelativePath = ".Workspace"
+    private static let linkedRepositories: RelativePath = ".Linked Repositories"
     static let testZone: RelativePath = ".Test Zone"
     
     // MARK: - Cache
@@ -214,7 +215,7 @@ struct Repository {
         }
     }
     
-    // MARK: - Actions
+    // MARK: - File Actions
     
     static func delete(_ path: RelativePath) throws {
         
@@ -330,5 +331,38 @@ struct Repository {
         changeToDirectory(path: directory.string)
         action()
         changeToDirectory(path: repositoryPath.string)
+    }
+    
+    // MARK: - Linked Repositories
+    
+    static func nameOfLinkedRepository(atURL url: String) -> String {
+        guard let urlObject = URL(string: url) else {
+            fatalError(message: [
+                "Invalid URL:",
+                "",
+                url,
+                ])
+        }
+        
+        let name = urlObject.lastPathComponent
+        
+        let repository = linkedRepositories.subfolderOrFile(name)
+        
+        if ¬fileManager.fileExists(atPath: absolute(repository).string) {
+            prepareForWrite(path: repository)
+            performInDirectory(directory: linkedRepositories) {
+                requireBash(["git", "clone", url])
+            }
+        }
+        
+        performInDirectory(directory: repository) {
+            requireBash(["git", "pull"])
+        }
+        
+        return name
+    }
+    
+    static func linkedRepository(named name: String) -> RelativePath {
+        return linkedRepositories.subfolderOrFile(name)
     }
 }

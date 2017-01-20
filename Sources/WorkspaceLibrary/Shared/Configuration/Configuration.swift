@@ -54,6 +54,9 @@ struct Configuration {
     }
     
     private static let startTokens = (start: "[_Begin ", end: "_]")
+    private static func startMultilineOption(option: Option) -> String {
+        return "\(startTokens.start)\(option)\(startTokens.end)"
+    }
     private static let endToken = "[_End_]"
     private static let colon = ": "
     
@@ -61,9 +64,7 @@ struct Configuration {
     private static let blockCommentSyntax = BlockCommentSyntax(start: "((", end: "))", stylisticIndent: "    ")
     static let syntax = FileSyntax(blockCommentSyntax: blockCommentSyntax, lineCommentSyntax: lineCommentSyntax)
     
-    private static func startMultilineOption(option: Option) -> String {
-        return "\(startTokens.start)\(option)\(startTokens.end)"
-    }
+    private static let importStatementTokens = (start: "[_Import ", end: "_]")
     
     static func configurationFileEntry(option: Option, value: String, comment: [String]?) -> String {
         
@@ -158,7 +159,9 @@ struct Configuration {
                 blockCommentSyntax.comment(contents: [
                     "Multiline",
                     "Comment",
-                    ])
+                    ]),
+                "",
+                "\(importStatementTokens.start)https://github.com/user/repository\(importStatementTokens.end)",
                 ])
         }
         
@@ -200,6 +203,17 @@ struct Configuration {
                 
             } else if line == "" ∨ lineCommentSyntax.commentExists(at: line.startIndex, in: line) {
                 // Comment or whitespace
+                
+            } else if let url = line.contents(of: importStatementTokens, requireWholeStringToMatch: true) {
+                // Import statement
+                
+                let repositoryName = Repository.nameOfLinkedRepository(atURL: url)
+                let otherConfiguration = require() { try File(at: Repository.linkedRepository(named: repositoryName).subfolderOrFile(configurationFilePath.string)) }
+                
+                let otherFile = parse(configurationSource: otherConfiguration.contents)
+                for (option, value) in otherFile {
+                    result[option] = value
+                }
                 
             } else if let multilineOption = line.contents(of: startTokens, requireWholeStringToMatch: true) {
                 // Multiline option

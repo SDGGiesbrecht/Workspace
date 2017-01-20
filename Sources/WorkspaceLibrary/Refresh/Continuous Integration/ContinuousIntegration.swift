@@ -19,17 +19,15 @@ struct ContinuousIntegration {
         
         var travisConfiguration: File
         if Repository.trackedFiles.contains(travisConfigurationPath) {
-            travisConfiguration = require() { try Repository.read(file: travisConfigurationPath) }
+            travisConfiguration = require() { try File(at: travisConfigurationPath) }
         } else {
-            travisConfiguration = File(path: travisConfigurationPath, contents: "")
+            travisConfiguration = File(newAt: travisConfigurationPath)
         }
         
         let managementWarning = File.managmentWarning(section: false, documentation: .continuousIntegration)
         let managementComment = FileType.yaml.syntax.comment(contents: managementWarning)
         
         let updatedLines: [String] = [
-            "", // Last line of header
-            "", // Empty first line
             managementComment,
             "",
             "language: generic",
@@ -41,14 +39,11 @@ struct ContinuousIntegration {
             "      dist: trusty",
             "      env: SWIFT_VERSION=3.0.2",
             "script: \u{22}eval \u{5C}\u{22}$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\u{5C}\u{22}; bash ./Refresh\u{5C}\u{5C}\u{5C} Workspace\u{5C}\u{5C}\u{5C} \u{5C}\u{5C}(macOS\u{5C}\u{5C}).command; bash ./Validate\u{5C}\u{5C}\u{5C} Changes\u{5C}\u{5C}\u{5C} \u{5C}\u{5C}(macOS\u{5C}\u{5C}).command\u{22}",
-            "", // Empty last line
             ]
         
         let newBody = join(lines: updatedLines)
-        if travisConfiguration.body ≠ newBody {
-            travisConfiguration.body = newBody
-            require() { try Repository.write(file: travisConfiguration) }
-        }
+        travisConfiguration.body = newBody
+        require() { try travisConfiguration.write() }
     }
     
 }

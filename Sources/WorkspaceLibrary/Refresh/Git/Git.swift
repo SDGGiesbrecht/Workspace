@@ -44,33 +44,20 @@ struct Git {
         let startToken = "# [_Begin Workspace Section_]"
         let endToken = "# [_End Workspace Section]"
         
-        var gitIngore = require() { try Repository.read(file: RelativePath(".gitignore")) }
+        var gitIngore = require() { try File(at: RelativePath(".gitignore")) }
+        var body = gitIngore.body
         
         var managedRange: Range<String.Index>
-        if let section = gitIngore.contents.range(of: (startToken, endToken)) {
+        if let section = body.range(of: (startToken, endToken)) {
             managedRange = section
         } else {
-            managedRange = gitIngore.headerEnd ..< gitIngore.headerEnd
+            managedRange = body.startIndex ..< body.endIndex
         }
-        var endIndex = managedRange.upperBound
-        gitIngore.contents.advance(&endIndex, past: CharacterSet.newlines)
-        managedRange = managedRange.lowerBound ..< endIndex
         
         let managementWarning = File.managmentWarning(section: true, documentation: .git)
         let managementComment = FileType.gitignore.syntax.comment(contents: managementWarning)
         
-        let precedingLines = gitIngore.contents.substring(to: managedRange.lowerBound)
-        
         var updatedLines: [String] = []
-        if precedingLines.isEmpty {
-            // Prevent appearing like a header
-            updatedLines += [""] // Empty first line
-        } else if ¬precedingLines.hasSuffix("\n") {
-            updatedLines += [""] // Last line of predecessor
-            if ¬precedingLines.hasSuffix("\n\n") {
-                updatedLines += [""] // Empty line
-            }
-        }
         updatedLines += [startToken]
         updatedLines += [""]
         updatedLines += [managementComment]
@@ -81,11 +68,10 @@ struct Git {
         }
         updatedLines += [""]
         updatedLines += [endToken]
-        updatedLines += [""]
-        updatedLines += [""] // First line of body
         
-        gitIngore.contents.replaceSubrange(managedRange, with: join(lines: updatedLines))
-        require() { try Repository.write(file: gitIngore) }
+        body.replaceSubrange(managedRange, with: join(lines: updatedLines))
+        gitIngore.body = body
+        require() { try gitIngore.write() }
     }
     
 }

@@ -42,13 +42,13 @@ struct Configuration {
             () -> File in
             
             do {
-                return try Repository.read(file: configurationFilePath)
+                return try File(at: configurationFilePath)
             } catch {
                 print([
                     "Found no configuration file.",
                     "Following the default configuration."
                     ])
-                return File(path: configurationFilePath, contents: "")
+                return File(newAt: configurationFilePath)
             }
         }
     }
@@ -109,28 +109,19 @@ struct Configuration {
     
     static func addEntries(entries: [(option: Option, value: String, comment: [String]?)], to configuration: inout File) {
         
-        var additions = ""
-        for entry in entries {
-            additions.append(Configuration.configurationFileEntry(option: entry.option, value: entry.value, comment: entry.comment))
-            additions.append("\n\n")
+        let additions = entries.map() {
+            (entry: (option: Option, value: String, comment: [String]?)) -> String in
+            
+            return Configuration.configurationFileEntry(option: entry.option, value: entry.value, comment: entry.comment) + "\n\n"
         }
         
-        if additions ≠ "" {
-            if configuration.headerStart == configuration.headerEnd {
-                // No header
-                
-                // Prevent comment from disappearing when headers are generated.
-                additions = "\n" + additions
-            }
-            configuration.body = additions + configuration.body
-            
-        }
+        configuration.body = additions.joined() + configuration.body
     }
     
     static func addEntries(entries: [(option: Option, value: String, comment: [String]?)]) {
         var configuration = file
         addEntries(entries: entries, to: &configuration)
-        require() { try Repository.write(file: configuration) }
+        require() { try configuration.write() }
     }
     
     // MARK: - Properties

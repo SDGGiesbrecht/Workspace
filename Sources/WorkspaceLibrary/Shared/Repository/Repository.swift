@@ -349,6 +349,7 @@ struct Repository {
         let repository = linkedRepositories.subfolderOrFile(name)
         
         if ¬fileManager.fileExists(atPath: absolute(repository).string) {
+            prepareForWrite(path: repository)
             performInDirectory(directory: linkedRepositories) {
                 requireBash(["git", "clone", url])
             }

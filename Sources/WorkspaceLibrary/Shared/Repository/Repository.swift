@@ -274,7 +274,7 @@ struct Repository {
         for change in changes {
             
             let verb = copy ? "Copying" : "Moving"
-            print(["\(verb) “\(change.changeOrigin)” to “\(change.changeDestination)”."])
+            print(["\(verb) “\(change.changeOrigin)” to “\(change.changeDestination)”..."])
             
             prepareForWrite(path: change.changeDestination)
             

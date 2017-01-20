@@ -28,27 +28,35 @@ func runRefresh(andExit shouldExit: Bool) {
     require() { try Repository.copy(Repository.workspaceDirectory.subfolderOrFile("Scripts/Validate Changes (macOS).command"), into: Repository.root, includeIgnoredFiles: true) }
     require() { try Repository.copy(Repository.workspaceDirectory.subfolderOrFile("Scripts/Validate Changes (Linux).sh"), into: Repository.root, includeIgnoredFiles: true) }
     
-    if Configuration.automaticallyTakeOnNewResponsibilites {
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    printHeader(["Updating Workspace configuration..."])
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    
+    var newResponsibilities: [(option: Option, value: String, comment: [String]?)] = []
+    
+    for (option, automaticValue, documentationPage) in Option.automaticRepsonsibilities {
         
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        printHeader(["Updating Workspace configuration..."])
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        
-        var newResponsibilities: [(option: Option, value: String, comment: [String]?)] = []
-        
-        for (option, automaticValue, documentationPage) in Option.automaticRepsonsibilities {
+        if ¬Configuration.optionIsDefined(option) {
             
-            if ¬Configuration.optionIsDefined(option) {
-                
+            if Configuration.automaticallyTakeOnNewResponsibilites {
                 newResponsibilities.append((option: option, value: automaticValue, comment: [
                     "Workspace took responsibility for this automatically.",
                     "(Because “\(Option.automaticallyTakeOnNewResponsibilites.key)” is “\(Configuration.trueOptionValue)”)",
                     "For more information about “\(option.key)”, see:",
                     documentationPage.url,
                     ]))
+            } else {
+                printWarning([
+                    "The configuration option “\(option.key)” is now available.",
+                    "For more information, see:",
+                    documentationPage.url,
+                    "(To silence this notice, set “\(option.key)” to “\(option.defaultValue)”)",
+                    ])
             }
         }
-        
+    }
+    
+    if Configuration.automaticallyTakeOnNewResponsibilites {
         Configuration.addEntries(entries: newResponsibilities)
     }
     

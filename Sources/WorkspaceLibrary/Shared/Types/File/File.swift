@@ -29,9 +29,23 @@ struct File {
     
     // MARK: - Initialization
     
-    init(path: RelativePath, contents: String) {
+    init(at path: RelativePath) throws {
+        self = File(path: path, contents: try Repository._read(file: path), isNew: false)
+    }
+    
+    init(newAt path: RelativePath) {
+        self = File(path: path, contents: "", isNew: true)
+    }
+    
+    /// For testing only
+    init(_path: RelativePath, _contents: String) {
+        self = File(path: _path, contents: _contents, isNew: true)
+    }
+    
+    private init(path: RelativePath, contents: String, isNew: Bool) {
         self.path = path
-        self.contents = contents
+        self._contents = contents
+        self.hasChanged = isNew
     }
     
     // MARK: - Properties
@@ -42,10 +56,34 @@ struct File {
     }
     private var cache = Cache()
     
-    var path: RelativePath
-    var contents: String {
+    private var hasChanged: Bool
+    let path: RelativePath
+    
+    private var _contents: String {
         willSet {
             cache = Cache()
+        }
+    }
+    var contents: String {
+        get {
+            return _contents
+        }
+        set {
+            var new = newValue
+            
+            // Ensure singular final newline
+            while new.hasSuffix("\n\n") {
+                new.unicodeScalars.removeLast()
+            }
+            if ¬new.hasSuffix("\n") {
+                new.append("\n")
+            }
+            
+            // Check for changes
+            if new ≠ contents {
+                hasChanged = true
+                _contents = new
+            }
         }
     }
     
@@ -115,8 +153,40 @@ struct File {
     var body: String {
         get {
             return contents.substring(from: headerEnd)
-        } set {
-            contents.replaceSubrange(headerEnd ..< contents.endIndex, with: newValue)
+        }
+        set {
+            var new = newValue
+            // Remove unnecessary initial spacing
+            while new.hasPrefix("\n") {
+                new.unicodeScalars.removeFirst()
+            }
+            
+            if headerStart == headerEnd {
+                // No header, so prevent initial comments from being mistaken as headers
+                if headerStart == contents.startIndex {
+                    // No intervening line
+                    new = "\n" + new
+                } else {
+                    // Intervening line
+                    var numberOfNewlines = 0
+                    var intervening = contents.substring(to: headerEnd)
+                    while intervening.hasSuffix("\n") {
+                        intervening.unicodeScalars.removeLast()
+                        numberOfNewlines += 1
+                    }
+                    
+                    var additionalNewlines = ""
+                    while numberOfNewlines < 4 {
+                        additionalNewlines += "\n"
+                        numberOfNewlines += 1
+                    }
+                    
+                    new = additionalNewlines + new
+                }
+                
+            }
+            
+            contents.replaceSubrange(headerEnd ..< contents.endIndex, with: new)
         }
         
     }
@@ -187,5 +257,14 @@ struct File {
     func requireContents(of tokens: (String, String), in searchRange: Range<String.Index>? = nil) -> String {
         
         return require(search: { contents.contents(of: $0, in: searchRange) }, tokens: tokens, range: searchRange)
+    }
+    
+    // MARK: - Writing
+    
+    func write() throws {
+        if hasChanged {
+            print("Writing to “\(path)”...")
+            try Repository._write(file: contents, to: path)
+        }
     }
 }

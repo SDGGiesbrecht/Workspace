@@ -163,10 +163,29 @@ struct File {
             
             if headerStart == headerEnd {
                 // No header, so prevent initial comments from being mistaken as headers
-                new = "\n" + new
+                if headerStart == startIndex {
+                    // No intervening line
+                    new = "\n" + new
+                } else {
+                    var numberOfNewlines = 0
+                    var intervening = contents.substring(to: headerEnd)
+                    while intervening.hasSuffix("\n") {
+                        intervening.unicodeScalars.removeLast()
+                        numberOfNewlines += 1
+                    }
+                    
+                    var additionalNewlines = ""
+                    while numberOfNewlines < 4 {
+                        additionalNewlines += "\n"
+                        numberOfNewlines += 1
+                    }
+                    
+                    new = additionalNewlines + new
+                }
+                
             }
             
-            contents.replaceSubrange(headerEnd ..< contents.endIndex, with: newValue)
+            contents.replaceSubrange(headerEnd ..< contents.endIndex, with: new)
         }
         
     }

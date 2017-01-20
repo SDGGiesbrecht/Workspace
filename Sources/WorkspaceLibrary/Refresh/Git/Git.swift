@@ -28,6 +28,7 @@ struct Git {
         "/.Workspace",
         "/Validate\\ Changes\\ (macOS).command",
         "/Validate\\ Changes\\ (Linux).sh",
+        "/.Linked Repositories",
         "/.Test\\ Zone",
         ]
     

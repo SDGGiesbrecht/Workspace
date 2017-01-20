@@ -372,7 +372,10 @@ class WorkspaceTests: XCTestCase {
                 contextString.append(join(lines: [
                     firstLine.start + "..." + firstLine.end,
                     "",
+                    "", // First line of header
                     ]))
+            } else {
+                contextString = "\n" + contextString
             }
             contextString.append(body)
             let context = File(_path: path, _contents: contextString)
@@ -486,18 +489,19 @@ class WorkspaceTests: XCTestCase {
                 body,
                 ]))
             
-            var newBody = context
+            var newBody = file
             newBody.body = body
-            XCTAssert(newBody.contents == context.contents, join(lines: [
+            XCTAssert(newBody.contents == file.contents, join(lines: [
                 "Failure replacing body using \(fileType):",
-                context.contents,
+                file.contents,
                 "↓",
                 newBody.contents,
                 "≠",
-                context.contents,
+                file.contents,
                 ]))
             
-            let noHeader = File(_path: path, _contents: headerlessFirstLine + body)
+            let headerLessStartSection = headerlessFirstLine == "" ? "\n" : headerlessFirstLine + "\n\n"
+            let noHeader = File(_path: path, _contents: headerLessStartSection + body)
             XCTAssert(noHeader.body == body, join(lines: [
                 "Failure parsing body using \(fileType):",
                 noHeader.contents,

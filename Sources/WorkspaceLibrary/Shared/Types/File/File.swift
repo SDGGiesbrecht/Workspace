@@ -163,10 +163,11 @@ struct File {
             
             if headerStart == headerEnd {
                 // No header, so prevent initial comments from being mistaken as headers
-                if headerStart == startIndex {
+                if headerStart == contents.startIndex {
                     // No intervening line
                     new = "\n" + new
                 } else {
+                    // Intervening line
                     var numberOfNewlines = 0
                     var intervening = contents.substring(to: headerEnd)
                     while intervening.hasSuffix("\n") {

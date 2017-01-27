@@ -25,7 +25,11 @@ Table of Contents:
 
 ## Platforms
 
-Workspace can be used for development on macOS and Linux.
+Workspace can be used for development on [macOS](http://www.apple.com/macos/) and [Linux](https://www.ubuntu.com).
+
+Workspace can manage projects for [macOS](http://www.apple.com/macos/), [Linux](https://www.ubuntu.com), [iOS](http://www.apple.com/ios/), [watchOS](http://www.apple.com/watchos/) and [tvOS](http://www.apple.com/tvos/).
+
+A particular project can [configure](Documentation/Operating Systems.md) which operating systems it supports.
 
 ## What Workspace Can Do
 

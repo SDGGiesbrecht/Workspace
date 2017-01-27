@@ -98,11 +98,18 @@ func runRefresh(andExit shouldExit: Bool) {
     if Configuration.manageXcode ∧ Environment.operatingSystem == .macOS {
         
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        printHeader(["Refreshing Xcode project..."])
+        printHeader(["Refreshing Xcode projects..."])
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         
-        force() { try Repository.delete(RelativePath("\(Configuration.projectName).xcodeproj")) }
-        requireBash(["swift", "package", "generate-xcodeproj", "--enable-code-coverage"])
+        func generatePath(operatingSystem: OperatingSystem) -> RelativePath {
+            return RelativePath("\(Configuration.projectName) (\(operatingSystem)).xcodeproj")
+        }
+        
+        for operatingSystem in OperatingSystem.all.filter({ $0.buildsOnMacOS }) {
+            
+            force() { try Repository.delete(generatePath(operatingSystem: operatingSystem)) }
+            requireBash(["swift", "package", "generate-xcodeproj", "--enable-code-coverage"])
+        }
     }
     
     if shouldExit {

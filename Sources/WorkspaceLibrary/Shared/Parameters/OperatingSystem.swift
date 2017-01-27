@@ -19,6 +19,23 @@ enum OperatingSystem: String, CustomStringConvertible {
     case watchOS = "watchOS"
     case tvOS = "tvOS"
     
+    static let all: [OperatingSystem] = [
+        .macOS,
+        .linux,
+        .iOS,
+        .watchOS,
+        .tvOS,
+    ]
+    
+    var buildsOnMacOS: Bool {
+        switch self {
+        case .macOS, .iOS, .watchOS, .tvOS:
+            return true
+        case .linux:
+            return false
+        }
+    }
+    
     // MARK: - CustomStringConvertible
     
     var description: String {

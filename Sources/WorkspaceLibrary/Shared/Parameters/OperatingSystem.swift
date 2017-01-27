@@ -9,23 +9,19 @@
 // Licensed under the Apache License, Version 2.0
 // See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
-enum OperatingSystem: String {
-    
-    // MARK: - Initialization
-    
-    init?(code: String) {
-        self.init(rawValue: code)
-    }
+enum OperatingSystem: String, CustomStringConvertible {
     
     // MARK: - Cases
     
-    // Raw values are Travis CI environment keys.
-    case macOS = "osx"
-    case linux = "linux"
+    case macOS = "macOS"
+    case linux = "Linux"
+    case iOS = "iOS"
+    case watchOS = "watchOS"
+    case tvOS = "tvOS"
     
-    // MARK: - Usage
+    // MARK: - CustomStringConvertible
     
-    var code: String {
+    var description: String {
         return rawValue
     }
 }

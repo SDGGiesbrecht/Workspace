@@ -25,7 +25,7 @@ enum OperatingSystem: String, CustomStringConvertible {
         .iOS,
         .watchOS,
         .tvOS,
-    ]
+        ]
     
     var buildsOnMacOS: Bool {
         switch self {
@@ -33,6 +33,21 @@ enum OperatingSystem: String, CustomStringConvertible {
             return true
         case .linux:
             return false
+        }
+    }
+    
+    var isSupportedByProject: Bool {
+        switch self {
+        case .macOS:
+            return Configuration.supportMacOS
+        case .linux:
+            return Configuration.supportLinux
+        case .iOS:
+            return Configuration.supportIOS
+        case .watchOS:
+            return Configuration.supportWatchOS
+        case .tvOS:
+            return Configuration.supportTVOS
         }
     }
     

@@ -101,13 +101,7 @@ func runRefresh(andExit shouldExit: Bool) {
         printHeader(["Refreshing Xcode projects..."])
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         
-        for operatingSystem in OperatingSystem.all.filter({ $0.buildsOnMacOS ∧ $0.isSupportedByProject }) {
-            
-            let path = RelativePath("\(Configuration.projectName) (\(operatingSystem)).xcodeproj")
-            
-            force() { try Repository.delete(path) }
-            requireBash(["swift", "package", "generate-xcodeproj", "--output", path.string, "--enable-code-coverage", ])
-        }
+        Xcode.refreshXcodeProjects()
     }
     
     if shouldExit {

@@ -36,10 +36,36 @@ func runValidate(andExit shouldExit: Bool) {
     printHeader(["Running unit tests..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
-    if bash(["swift", "test"]).succeeded {
-        individualSuccess(message: "Unit tests succeed.")
-    } else {
-        individualFailure(message: "Unit tests fail. (See above for details.)")
+    if Environment.operatingSystem = .macOS ∧ Configuration.supportMacOS {
+        if bash(["swift", "test"]).succeeded {
+            individualSuccess(message: "Unit tests succeed on macOS.")
+        } else {
+            individualFailure(message: "Unit tests fail on macOS. (See above for details.)")
+        }
+    }
+    
+    if Environment.operatingSystem = .linux ∧ Configuration.supportLinux {
+        if bash(["swift", "test"]).succeeded {
+            individualSuccess(message: "Unit tests succeed on Linux.")
+        } else {
+            individualFailure(message: "Unit tests fail on Linux. (See above for details.)")
+        }
+    }
+    
+    if Environment.operatingSystem = .macOS ∧ Configuration.supportIOS {
+        if bash(["xcodebuild", "test", "-destination", "'platform=iOS Simulator'"]).succeeded {
+            individualSuccess(message: "Unit tests succeed on iOS.")
+        } else {
+            individualFailure(message: "Unit tests fail on iOS. (See above for details.)")
+        }
+    }
+    
+    if Environment.operatingSystem = .macOS ∧ Configuration.supportTVOS {
+        if bash(["xcodebuild", "test", "-destination", "'platform=tvOS Simulator'"]).succeeded {
+            individualSuccess(message: "Unit tests succeed on tvOS.")
+        } else {
+            individualFailure(message: "Unit tests fail on tvOS. (See above for details.)")
+        }
     }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

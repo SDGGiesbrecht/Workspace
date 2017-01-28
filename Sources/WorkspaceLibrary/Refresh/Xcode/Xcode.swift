@@ -78,6 +78,18 @@ struct Xcode {
         let path = RelativePath("\(Configuration.projectName).xcodeproj")
         force() { try Repository.delete(path) }
         requireBash(["swift", "package", "generate-xcodeproj", "--output", path.string, "--enable-code-coverage"])
+        
+        var file = require() { try File(at: path.subfolderOrFile("project.pbxproj")) }
+        file.contents.replaceContentsOfEveryPair(of: ("LD_RUNPATH_SEARCH_PATHS = (", ");"), with: join(lines: [
+            "",
+            "$(inherited)",
+            "@executable_path/Frameworks",
+            "@loader_path/Frameworks",
+            "@executable_path/../Frameworks",
+            "@loader_path/../Frameworks",
+            ].map({ "\u{22}\($0)\u{22}," })))
+        
+        require() { try file.write() }
         /*
         for operatingSystem in OperatingSystem.all.filter({ $0.buildsOnMacOS ∧ $0.isSupportedByProject }) {
             

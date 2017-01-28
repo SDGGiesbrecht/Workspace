@@ -13,7 +13,7 @@ import SDGLogic
 
 let instructionsAfterRefresh: String = {
     if Environment.operatingSystem == .macOS ∧ Configuration.manageXcode {
-        return "Open \(Configuration.projectName).xcodeproj to work on the project."
+        return "Open one of the “.xcodeproj” files to work on the project."
     } else {
         return ""
     }

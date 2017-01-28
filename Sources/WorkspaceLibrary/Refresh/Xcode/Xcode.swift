@@ -28,6 +28,21 @@ struct Xcode {
         }
     }
     
+    static func deploymentTargetPrefix(for operatingSystem: OperatingSystem) -> String {
+        switch operatingSystem {
+        case .macOS:
+            return "MACOSX"
+        case .iOS:
+            return "IPHONEOS"
+        case .watchOS:
+            return "WATCHOS"
+        case .tvOS:
+            return "TVOS"
+        case .linux:
+            fatalError(message: ["Xcode cannot handle Linux targets."])
+        }
+    }
+    
     static func refreshXcodeProjects() {
         
         for operatingSystem in OperatingSystem.all.filter({ $0.buildsOnMacOS ∧ $0.isSupportedByProject }) {
@@ -44,6 +59,9 @@ struct Xcode {
             
             let toolchainPath = "/usr/lib/swift/"
             source = source.replacingOccurrences(of: toolchainPath + toolchainSubdirectory(for: .macOS), with: toolchainPath + toolchainSubdirectory(for: operatingSystem))
+            
+            let deploymentTargetKey = "_DEPLOYMENT_TARGET"
+            source = source.replacingOccurrences(of: deploymentTargetPrefix(for: .macOS) + deploymentTargetKey, with: deploymentTargetPrefix(for: operatingSystem) + deploymentTargetKey)
             
             file.contents = source
             require() { try file.write() }

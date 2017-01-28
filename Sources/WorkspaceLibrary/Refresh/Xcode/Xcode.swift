@@ -80,8 +80,17 @@ struct Xcode {
             let deploymentVersionRange = file.requireRangeOfContents(of: (deploymentTargetKey + " = ", ";"))
             file.contents.replaceSubrange(deploymentVersionRange, with: deploymentTarge(for: operatingSystem))
             
-            let sdkRootRange = file.requireRangeOfContents(of: ("SDKROOT = ", ";"))
-            file.contents.replaceSubrange(sdkRootRange, with: sdkRoot(for: operatingSystem))
+            var sdkRemainder: Range<String.Index>? = file.contents.startIndex ..< file.contents.endIndex
+            while let remainder = sdkRemainder {
+                if let sdkRootRange = file.contents.rangeOfContents(of: ("SDKROOT = ", ";"), in: remainder) {
+                    
+                    file.contents.replaceSubrange(sdkRootRange, with: sdkRoot(for: operatingSystem))
+                    
+                    sdkRemainder = sdkRootRange.upperBound ..< file.contents.endIndex
+                } else {
+                    sdkRemainder = nil
+                }
+            }
             
             require() { try file.write() }
         }

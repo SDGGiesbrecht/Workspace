@@ -66,7 +66,7 @@ func runValidate(andExit shouldExit: Bool) {
             return [
                 "xcodebuild", "test",
                 "-scheme", "\u{22}\(Configuration.projectName)\u{22}",
-                "-destination", "'platform=\(platform) Simulator,name=\(name)'"
+                "-destination", "platform=\(platform) Simulator,name=\(name)"
             ]
         }
         

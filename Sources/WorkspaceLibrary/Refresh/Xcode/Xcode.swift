@@ -80,6 +80,8 @@ struct Xcode {
             
             file.contents.replaceContentsOfEveryPair(of: ("SDKROOT = ", ";"), with: sdkRoot(for: operatingSystem))
             
+            file.contents.replaceContentsOfEveryPair(of: ("buildActionMask = ", ";"), with: "2147483647")
+            
             require() { try file.write() }
         }
     }

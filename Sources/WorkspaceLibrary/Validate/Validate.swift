@@ -9,6 +9,8 @@
 // Licensed under the Apache License, Version 2.0
 // See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
+import SDGLogic
+
 func runValidate(andExit shouldExit: Bool) {
     
     var overallSuccess = true
@@ -36,7 +38,7 @@ func runValidate(andExit shouldExit: Bool) {
     printHeader(["Running unit tests..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
-    if Environment.operatingSystem = .macOS ∧ Configuration.supportMacOS {
+    if Environment.operatingSystem == .macOS ∧ Configuration.supportMacOS {
         if bash(["swift", "test"]).succeeded {
             individualSuccess(message: "Unit tests succeed on macOS.")
         } else {
@@ -44,7 +46,7 @@ func runValidate(andExit shouldExit: Bool) {
         }
     }
     
-    if Environment.operatingSystem = .linux ∧ Configuration.supportLinux {
+    if Environment.operatingSystem == .linux {
         if bash(["swift", "test"]).succeeded {
             individualSuccess(message: "Unit tests succeed on Linux.")
         } else {
@@ -52,19 +54,24 @@ func runValidate(andExit shouldExit: Bool) {
         }
     }
     
-    if Environment.operatingSystem = .macOS ∧ Configuration.supportIOS {
-        if bash(["xcodebuild", "test", "-destination", "'platform=iOS Simulator'"]).succeeded {
-            individualSuccess(message: "Unit tests succeed on iOS.")
-        } else {
-            individualFailure(message: "Unit tests fail on iOS. (See above for details.)")
+    if Environment.operatingSystem == .macOS {
+        
+        if Configuration.supportIOS {
+            if bash(["xcodebuild", "test", "-destination", "'platform=iOS Simulator'"]).succeeded {
+                individualSuccess(message: "Unit tests succeed on iOS.")
+            } else {
+                individualFailure(message: "Unit tests fail on iOS. (See above for details.)")
+            }
         }
-    }
-    
-    if Environment.operatingSystem = .macOS ∧ Configuration.supportTVOS {
-        if bash(["xcodebuild", "test", "-destination", "'platform=tvOS Simulator'"]).succeeded {
-            individualSuccess(message: "Unit tests succeed on tvOS.")
-        } else {
-            individualFailure(message: "Unit tests fail on tvOS. (See above for details.)")
+        
+        // watchOS does not support unit testing.
+        
+        if Configuration.supportTVOS {
+            if bash(["xcodebuild", "test", "-destination", "'platform=tvOS Simulator'"]).succeeded {
+                individualSuccess(message: "Unit tests succeed on tvOS.")
+            } else {
+                individualFailure(message: "Unit tests fail on tvOS. (See above for details.)")
+            }
         }
     }
     

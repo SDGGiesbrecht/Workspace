@@ -80,7 +80,7 @@ struct Xcode {
             let deploymentVersionRange = file.requireRangeOfContents(of: (deploymentTargetKey + " = ", ";"))
             file.contents.replaceSubrange(deploymentVersionRange, with: deploymentTarge(for: operatingSystem))
             
-            let sdkRootRange = file.requireRange(of: ("SDKROOT = ", ";"))
+            let sdkRootRange = file.requireRangeOfContents(of: ("SDKROOT = ", ";"))
             file.contents.replaceSubrange(sdkRootRange, with: sdkRoot(for: operatingSystem))
             
             require() { try file.write() }

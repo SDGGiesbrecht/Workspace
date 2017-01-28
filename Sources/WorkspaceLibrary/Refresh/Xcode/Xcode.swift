@@ -43,6 +43,21 @@ struct Xcode {
         }
     }
     
+    static func deploymentTarge(for operatingSystem: OperatingSystem) -> String {
+        switch operatingSystem {
+        case .macOS:
+            return "10.12"
+        case .iOS:
+            return "10.2"
+        case .watchOS:
+            return "3.1"
+        case .tvOS:
+            return "10.1"
+        case .linux:
+            fatalError(message: ["Xcode cannot handle Linux targets."])
+        }
+    }
+    
     static func refreshXcodeProjects() {
         
         for operatingSystem in OperatingSystem.all.filter({ $0.buildsOnMacOS ∧ $0.isSupportedByProject }) {
@@ -53,17 +68,18 @@ struct Xcode {
             requireBash(["swift", "package", "generate-xcodeproj", "--output", path.string, "--enable-code-coverage", ])
             
             var file = require() { try File(at: path.subfolderOrFile("project.pbxproj")) }
-            var source = file.contents
             
             // Tailor for operating system
             
             let toolchainPath = "/usr/lib/swift/"
-            source = source.replacingOccurrences(of: toolchainPath + toolchainSubdirectory(for: .macOS), with: toolchainPath + toolchainSubdirectory(for: operatingSystem))
+            file.contents = file.contents.replacingOccurrences(of: toolchainPath + toolchainSubdirectory(for: .macOS), with: toolchainPath + toolchainSubdirectory(for: operatingSystem))
             
             let deploymentTargetKey = "_DEPLOYMENT_TARGET"
-            source = source.replacingOccurrences(of: deploymentTargetPrefix(for: .macOS) + deploymentTargetKey, with: deploymentTargetPrefix(for: operatingSystem) + deploymentTargetKey)
+            file.contents = file.contents.replacingOccurrences(of: deploymentTargetPrefix(for: .macOS) + deploymentTargetKey, with: deploymentTargetPrefix(for: operatingSystem) + deploymentTargetKey)
             
-            file.contents = source
+            let deploymentVersionRange = file.requireRangeOfContents(of: (deploymentTargetKey + " = ", ";"))
+            file.contents.replaceSubrange(deploymentVersionRange, with: deploymentTarge(for: operatingSystem))
+            
             require() { try file.write() }
         }
     }

@@ -254,6 +254,11 @@ struct File {
         return require(search: { contents.range(of: $0, in: searchRange) }, tokens: tokens, range: searchRange)
     }
     
+    func requireRangeOfContents(of tokens: (String, String), in searchRange: Range<String.Index>? = nil) -> Range<String.Index> {
+        
+        return require(search: { contents.rangeOfContents(of: $0, in: searchRange) }, tokens: tokens, range: searchRange)
+    }
+    
     func requireContents(of tokens: (String, String), in searchRange: Range<String.Index>? = nil) -> String {
         
         return require(search: { contents.contents(of: $0, in: searchRange) }, tokens: tokens, range: searchRange)

@@ -105,12 +105,13 @@ struct Xcode {
             }
             
             file.contents.replaceContentsOfEveryPair(of: ("LD_RUNPATH_SEARCH_PATHS = (", ");"), with: join(lines: [
+                "",
                 "$(inherited)",
                 "@executable_path/Frameworks",
                 "@loader_path/Frameworks",
                 "@executable_path/../Frameworks",
                 "@loader_path/../Frameworks",
-                ]))
+                ].map({ "\u{22}\($0)\u{22}," })))
             
             require() { try file.write() }
         }

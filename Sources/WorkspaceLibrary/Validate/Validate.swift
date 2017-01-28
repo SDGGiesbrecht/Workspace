@@ -66,7 +66,7 @@ func runValidate(andExit shouldExit: Bool) {
             
             print(["Running unit tests on iOS..."], in: nil, spaced: true)
             
-            if bash(["xcodebuild", "test", "-destination", "'platform=iOS Simulator'"]).succeeded {
+            if bash(["xcodebuild", "test", "-destination", "'platform=iOS Simulator,name=iPhone 7'"]).succeeded {
                 individualSuccess(message: "Unit tests succeed on iOS.")
             } else {
                 individualFailure(message: "Unit tests fail on iOS. (See above for details.)")

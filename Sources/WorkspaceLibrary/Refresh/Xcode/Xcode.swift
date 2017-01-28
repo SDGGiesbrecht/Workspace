@@ -67,29 +67,20 @@ struct Xcode {
             force() { try Repository.delete(path) }
             requireBash(["swift", "package", "generate-xcodeproj", "--output", path.string, "--enable-code-coverage", ])
             
-            print("A")
             var file = require() { try File(at: path.subfolderOrFile("project.pbxproj")) }
             
             // Tailor for operating system
             
-            print("B")
             let toolchainPath = "/usr/lib/swift/"
-            print("C")
             file.contents = file.contents.replacingOccurrences(of: toolchainPath + sdkRoot(for: .macOS), with: toolchainPath + sdkRoot(for: operatingSystem))
-            print("D")
             
             let deploymentTargetKey = "_DEPLOYMENT_TARGET"
-            print("E")
             file.contents = file.contents.replacingOccurrences(of: deploymentTargetPrefix(for: .macOS) + deploymentTargetKey, with: deploymentTargetPrefix(for: operatingSystem) + deploymentTargetKey)
-            print("F")
             file.contents.replaceContentsOfEveryPair(of: (deploymentTargetKey + " = ", ";"), with: deploymentTarget(for: operatingSystem))
-            print("G")
             
             file.contents.replaceContentsOfEveryPair(of: ("SDKROOT = ", ";"), with: sdkRoot(for: operatingSystem))
-            print("H")
             
             require() { try file.write() }
-            print("I")
         }
     }
 }

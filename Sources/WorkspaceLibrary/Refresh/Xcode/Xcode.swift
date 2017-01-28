@@ -13,7 +13,7 @@ import SDGLogic
 
 struct Xcode {
     
-    static func toolchainSubdirectory(for operatingSystem: OperatingSystem) -> String {
+    static func sdkRoot(for operatingSystem: OperatingSystem) -> String {
         switch operatingSystem {
         case .macOS:
             return "macosx"
@@ -72,13 +72,16 @@ struct Xcode {
             // Tailor for operating system
             
             let toolchainPath = "/usr/lib/swift/"
-            file.contents = file.contents.replacingOccurrences(of: toolchainPath + toolchainSubdirectory(for: .macOS), with: toolchainPath + toolchainSubdirectory(for: operatingSystem))
+            file.contents = file.contents.replacingOccurrences(of: toolchainPath + sdkRoot(for: .macOS), with: toolchainPath + sdkRoot(for: operatingSystem))
             
             let deploymentTargetKey = "_DEPLOYMENT_TARGET"
             file.contents = file.contents.replacingOccurrences(of: deploymentTargetPrefix(for: .macOS) + deploymentTargetKey, with: deploymentTargetPrefix(for: operatingSystem) + deploymentTargetKey)
             
             let deploymentVersionRange = file.requireRangeOfContents(of: (deploymentTargetKey + " = ", ";"))
             file.contents.replaceSubrange(deploymentVersionRange, with: deploymentTarge(for: operatingSystem))
+            
+            let sdkRootRange = file.requireRange(of: ("SDKROOT = ", ";"))
+            file.contents.replaceSubrange(sdkRootRange, with: sdkRoot(for: operatingSystem))
             
             require() { try file.write() }
         }

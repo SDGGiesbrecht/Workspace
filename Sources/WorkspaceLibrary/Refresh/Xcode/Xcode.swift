@@ -58,6 +58,21 @@ struct Xcode {
         }
     }
     
+    static func deviceID(for operatingSystem: OperatingSystem) -> String? {
+        switch operatingSystem {
+        case .macOS:
+            return nil
+        case .iOS:
+            return "1,2"
+        case .watchOS:
+            return nil
+        case .tvOS:
+            return nil
+        case .linux:
+            fatalError(message: ["Xcode cannot handle Linux targets."])
+        }
+    }
+    
     static func refreshXcodeProjects() {
         
         for operatingSystem in OperatingSystem.all.filter({ $0.buildsOnMacOS ∧ $0.isSupportedByProject }) {
@@ -78,7 +93,16 @@ struct Xcode {
             file.contents = file.contents.replacingOccurrences(of: deploymentTargetPrefix(for: .macOS) + deploymentTargetKey, with: deploymentTargetPrefix(for: operatingSystem) + deploymentTargetKey)
             file.contents.replaceContentsOfEveryPair(of: (deploymentTargetKey + " = ", ";"), with: deploymentTarget(for: operatingSystem))
             
-            file.contents.replaceContentsOfEveryPair(of: ("SDKROOT = ", ";"), with: sdkRoot(for: operatingSystem))
+            let sdkRootTokens = (start: "SDKROOT = ", end: ";")
+            file.contents.replaceContentsOfEveryPair(of: sdkRootTokens, with: sdkRoot(for: operatingSystem))
+            
+            if let id = deviceID(for: operatingSystem) {
+                let sdkRootLine = sdkRootTokens.start + sdkRoot(for: operatingSystem) + sdkRootTokens.end
+                file.contents = file.contents.replacingOccurrences(of: sdkRootLine, with: join(lines: [
+                    sdkRootLine,
+                    "TARGETED_DEVICE_FAMILY = \u{22}\(id)\u{22};",
+                    ]))
+            }
             
             require() { try file.write() }
         }

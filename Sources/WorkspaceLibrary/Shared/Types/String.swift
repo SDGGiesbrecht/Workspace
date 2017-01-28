@@ -165,6 +165,21 @@ extension String {
         return substring(with: targetRange)
     }
     
+    mutating func replaceContentsOfEveryPair(of tokens: (start: String, end: String), with replacement: String, in searchRange: Range<Index>? = nil) {
+        
+        var possibleRemainder: Range<String.Index>? = searchRange ?? startIndex ..< endIndex
+        while let remainder = possibleRemainder {
+            if let range = rangeOfContents(of: ("SDKROOT = ", ";"), in: remainder) {
+                
+                replaceSubrange(range, with: replacement)
+                
+                possibleRemainder = remainder.upperBound ..< endIndex
+            } else {
+                possibleRemainder = nil
+            }
+        }
+    }
+    
     // MARK: - Moving Indices
     
     func advance(_ index: inout Index, past string: String) -> Bool {

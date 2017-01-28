@@ -76,21 +76,9 @@ struct Xcode {
             
             let deploymentTargetKey = "_DEPLOYMENT_TARGET"
             file.contents = file.contents.replacingOccurrences(of: deploymentTargetPrefix(for: .macOS) + deploymentTargetKey, with: deploymentTargetPrefix(for: operatingSystem) + deploymentTargetKey)
+            file.contents.replaceContentsOfEveryPair(of: (deploymentTargetKey + " = ", ";"), with: deploymentTarge(for: operatingSystem))
             
-            let deploymentVersionRange = file.requireRangeOfContents(of: (deploymentTargetKey + " = ", ";"))
-            file.contents.replaceSubrange(deploymentVersionRange, with: deploymentTarge(for: operatingSystem))
-            
-            var sdkRemainder: Range<String.Index>? = file.contents.startIndex ..< file.contents.endIndex
-            while let remainder = sdkRemainder {
-                if let sdkRootRange = file.contents.rangeOfContents(of: ("SDKROOT = ", ";"), in: remainder) {
-                    
-                    file.contents.replaceSubrange(sdkRootRange, with: sdkRoot(for: operatingSystem))
-                    
-                    sdkRemainder = sdkRootRange.upperBound ..< file.contents.endIndex
-                } else {
-                    sdkRemainder = nil
-                }
-            }
+            file.contents.replaceContentsOfEveryPair(of: ("SDKROOT = ", ";"), with: sdkRoot(for: operatingSystem))
             
             require() { try file.write() }
         }

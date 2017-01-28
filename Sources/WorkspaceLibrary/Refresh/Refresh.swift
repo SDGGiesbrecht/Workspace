@@ -13,7 +13,7 @@ import SDGLogic
 
 let instructionsAfterRefresh: String = {
     if Environment.operatingSystem == .macOS ∧ Configuration.manageXcode {
-        return "Open one of the “.xcodeproj” files to work on the project."
+        return "Open “\(Configuration.projectName).xcodeproj” to work on the project."
     } else {
         return ""
     }
@@ -98,7 +98,7 @@ func runRefresh(andExit shouldExit: Bool) {
     if Configuration.manageXcode ∧ Environment.operatingSystem == .macOS {
         
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        printHeader(["Refreshing Xcode projects..."])
+        printHeader(["Refreshing Xcode project..."])
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         
         Xcode.refreshXcodeProjects()

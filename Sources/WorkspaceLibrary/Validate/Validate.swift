@@ -61,7 +61,7 @@ func runValidate(andExit shouldExit: Bool) {
     }
     
     if Environment.operatingSystem == .macOS {
-        
+        /*
         func xcodebuildArguments(platform: String, name: String) -> [String] {
             return [
                 "xcodebuild", "test",
@@ -96,7 +96,7 @@ func runValidate(andExit shouldExit: Bool) {
             } else {
                 individualFailure(message: "Unit tests fail on tvOS. (See above for details.)")
             }
-        }
+        }*/
     }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

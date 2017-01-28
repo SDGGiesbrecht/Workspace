@@ -13,8 +13,8 @@
 
 # Xcode
 
-Workspace can generate and maintain local [Xcode](https://developer.apple.com/xcode/) projects on macOS for ease of development.
+Workspace can generate and maintain a local [Xcode](https://developer.apple.com/xcode/) project on macOS for ease of development.
 
 This is controlled by the [configuration](Configuring Workspace.md) option `Manage Xcode`. The [default](Responsibilities.md#default-vs-automatic) value is `False`. The [automatic](Responsibilities.md#default-vs-automatic) value is `True`.
 
-The Xcode projects will not be checked into the repository. (The Swift Package Manager does not use them.) Manual changes to the Xcode projects’ settings will not persist.
+The Xcode project will not be checked into the repository. (The Swift Package Manager does not use it.) Manual changes to the Xcode project settings will not persist.

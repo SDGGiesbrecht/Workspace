@@ -20,6 +20,19 @@ class WorkspaceTests: XCTestCase {
     
     func testGeneralParsing() {
         
+        let originalStringWithTokens = "()()()"
+        let expectedReplacedTokenContents = "(x)(x)(x)"
+        var stringWithTokens = originalStringWithTokens
+        stringWithTokens.replaceContentsOfEveryPair(of: ("(", ")"), with: "x")
+        XCTAssert(stringWithTokens == expectedReplacedTokenContents, join(lines: [
+            "Failure replacing token contents:",
+            originalStringWithTokens,
+            "↓",
+            stringWithTokens,
+            "≠",
+            expectedReplacedTokenContents,
+            ]))
+        
         func testLineBreaking(text: [String]) {
             
             for newline in ["\n", String.CR_LF] {

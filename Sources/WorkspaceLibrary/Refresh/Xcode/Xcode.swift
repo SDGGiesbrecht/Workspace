@@ -65,9 +65,9 @@ struct Xcode {
         case .iOS:
             return "1,2"
         case .watchOS:
-            return nil
+            return "4"
         case .tvOS:
-            return nil
+            return "3"
         case .linux:
             fatalError(message: ["Xcode cannot handle Linux targets."])
         }
@@ -80,7 +80,7 @@ struct Xcode {
             let path = RelativePath("\(Configuration.projectName) (\(operatingSystem)).xcodeproj")
             
             force() { try Repository.delete(path) }
-            requireBash(["swift", "package", "generate-xcodeproj", "--output", path.string, "--enable-code-coverage", ])
+            requireBash(["swift", "package", "generate-xcodeproj", "--output", path.string, "--enable-code-coverage"])
             
             var file = require() { try File(at: path.subfolderOrFile("project.pbxproj")) }
             

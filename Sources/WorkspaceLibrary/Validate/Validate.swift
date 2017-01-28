@@ -89,7 +89,7 @@ func runValidate(andExit shouldExit: Bool) {
             printHeader(["Verifying build on watchOS..."])
             // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
             
-            if bash(xcodebuildArguments(platform: "watchOS", name: "Apple Watch Series 2 - 38mm")).succeeded {
+            if bash(xcodebuildArguments(platform: "watchOS", name: "Apple Watch Series 2 - 38mm", test: false)).succeeded {
                 individualSuccess(message: "Build succeeds on watchOS.")
             } else {
                 individualFailure(message: "Build fails on watchOS. (See above for details.)")

@@ -692,7 +692,7 @@ class WorkspaceTests: XCTestCase {
         if ¬Environment.isInXcode ∧ ¬Configuration.nestedTest {
             if Environment.isInContinuousIntegration {
                 // These tests are time consuming.
-                // They are skipped them on local machines so that following along in with the workflow documentation is relatively quick.
+                // They are skipped on local machines so that following along in with the workflow documentation is relatively quick.
                 // Comment out the if‐statement to debug locally if failures occur in continuous integration.
                 
                 do {

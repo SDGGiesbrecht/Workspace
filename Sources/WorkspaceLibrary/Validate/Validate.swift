@@ -39,6 +39,9 @@ func runValidate(andExit shouldExit: Bool) {
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
     if Environment.operatingSystem == .macOS ∧ Configuration.supportMacOS {
+        
+        print(["Running unit tests on macOS..."], in: nil, spaced: true)
+        
         if bash(["swift", "test"]).succeeded {
             individualSuccess(message: "Unit tests succeed on macOS.")
         } else {
@@ -47,6 +50,9 @@ func runValidate(andExit shouldExit: Bool) {
     }
     
     if Environment.operatingSystem == .linux {
+        
+        print(["Running unit tests on Linux..."], in: nil, spaced: true)
+        
         if bash(["swift", "test"]).succeeded {
             individualSuccess(message: "Unit tests succeed on Linux.")
         } else {
@@ -57,6 +63,9 @@ func runValidate(andExit shouldExit: Bool) {
     if Environment.operatingSystem == .macOS {
         
         if Configuration.supportIOS {
+            
+            print(["Running unit tests on iOS..."], in: nil, spaced: true)
+            
             if bash(["xcodebuild", "test", "-destination", "'platform=iOS Simulator'"]).succeeded {
                 individualSuccess(message: "Unit tests succeed on iOS.")
             } else {
@@ -67,6 +76,9 @@ func runValidate(andExit shouldExit: Bool) {
         // watchOS does not support unit testing.
         
         if Configuration.supportTVOS {
+            
+            print(["Running unit tests on tvOS..."], in: nil, spaced: true)
+            
             if bash(["xcodebuild", "test", "-destination", "'platform=tvOS Simulator'"]).succeeded {
                 individualSuccess(message: "Unit tests succeed on tvOS.")
             } else {

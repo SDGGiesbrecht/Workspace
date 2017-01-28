@@ -75,6 +75,10 @@ struct Xcode {
     
     static func refreshXcodeProjects() {
         
+        let path = RelativePath("\(Configuration.projectName).xcodeproj")
+        force() { try Repository.delete(path) }
+        requireBash(["swift", "package", "generate-xcodeproj", "--output", path.string, "--enable-code-coverage"])
+        /*
         for operatingSystem in OperatingSystem.all.filter({ $0.buildsOnMacOS ∧ $0.isSupportedByProject }) {
             
             let path = RelativePath("\(Configuration.projectName) (\(operatingSystem)).xcodeproj")
@@ -114,6 +118,6 @@ struct Xcode {
                 ].map({ "\u{22}\($0)\u{22}," })))
             
             require() { try file.write() }
-        }
+        }*/
     }
 }

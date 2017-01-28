@@ -34,13 +34,11 @@ func runValidate(andExit shouldExit: Bool) {
     printHeader(["Validating \(Configuration.projectName)..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
-    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Running unit tests..."])
-    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    
     if Environment.operatingSystem == .macOS ∧ Configuration.supportMacOS {
         
-        print(["Running unit tests on macOS..."], in: nil, spaced: true)
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        printHeader(["Running unit tests on macOS..."])
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         
         if bash(["swift", "test"]).succeeded {
             individualSuccess(message: "Unit tests succeed on macOS.")
@@ -51,7 +49,9 @@ func runValidate(andExit shouldExit: Bool) {
     
     if Environment.operatingSystem == .linux {
         
-        print(["Running unit tests on Linux..."], in: nil, spaced: true)
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        printHeader(["Running unit tests on Linux..."])
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         
         if bash(["swift", "test"]).succeeded {
             individualSuccess(message: "Unit tests succeed on Linux.")
@@ -62,11 +62,21 @@ func runValidate(andExit shouldExit: Bool) {
     
     if Environment.operatingSystem == .macOS {
         
+        func xcodebuildArguments(platform: String, name: String) -> [String] {
+            return [
+                "xcodebuild", "test",
+                "-scheme", "\u{22}\(Configuration.projectName)\u{22}",
+                "-destination", "'platform=\(platform) Simulator,name=\(name)'"
+            ]
+        }
+        
         if Configuration.supportIOS {
             
-            print(["Running unit tests on iOS..."], in: nil, spaced: true)
+            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+            printHeader(["Running unit tests on iOS..."])
+            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
             
-            if bash(["xcodebuild", "test", "-destination", "'platform=iOS Simulator,name=iPhone 7'"]).succeeded {
+            if bash(xcodebuildArguments(platform: "iOS", name: "iPhone 7")).succeeded {
                 individualSuccess(message: "Unit tests succeed on iOS.")
             } else {
                 individualFailure(message: "Unit tests fail on iOS. (See above for details.)")
@@ -77,9 +87,11 @@ func runValidate(andExit shouldExit: Bool) {
         
         if Configuration.supportTVOS {
             
-            print(["Running unit tests on tvOS..."], in: nil, spaced: true)
+            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+            printHeader(["Running unit tests on tvOS..."])
+            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
             
-            if bash(["xcodebuild", "test", "-destination", "'platform=tvOS Simulator'"]).succeeded {
+            if bash(xcodebuildArguments(platform: "tvOS", name: "Apple TV 1080p")).succeeded {
                 individualSuccess(message: "Unit tests succeed on tvOS.")
             } else {
                 individualFailure(message: "Unit tests fail on tvOS. (See above for details.)")

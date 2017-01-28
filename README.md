@@ -34,9 +34,11 @@ A particular project can [configure](Documentation/Operating Systems.md) which o
 ## What Workspace Can Do
 
 - Set [new projects](#new-projects) up from scratch.
-- Be [configured](Documentation/Configuring Workspace.md) to opt in or out of any of these features.
-- Generate and maintain a local [Xcode project](Documentation/Xcode.md). (macOS‐only)
-- Automatically configure projects for [continuous integration](Documentation/Continuous Integration.md) on each operating system. ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))
+- Be [configured](Documentation/Configuring Workspace.md) to opt in or out of any of the following features.
+- Automatically
+    - Generate and maintain a local [Xcode project](Documentation/Xcode.md). (macOS‐only)
+    - Run unit tests on each operating system (except watchOS).
+    - Configure [continuous integration](Documentation/Continuous Integration.md) for each operating system. ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))
 
 ## Set‐Up
 

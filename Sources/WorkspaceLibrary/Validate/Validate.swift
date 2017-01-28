@@ -61,10 +61,10 @@ func runValidate(andExit shouldExit: Bool) {
     }
     
     if Environment.operatingSystem == .macOS {
-        /*
-        func xcodebuildArguments(platform: String, name: String) -> [String] {
+        
+        func xcodebuildArguments(platform: String, name: String, test: Bool = true) -> [String] {
             return [
-                "xcodebuild", "test",
+                "xcodebuild", (test ? "test" : "build"),
                 "-scheme", "\u{22}\(Configuration.projectName)\u{22}",
                 "-destination", "platform=\(platform) Simulator,name=\(name)"
             ]
@@ -83,7 +83,18 @@ func runValidate(andExit shouldExit: Bool) {
             }
         }
         
-        // watchOS does not support unit testing.
+        if Configuration.supportWatchOS {
+            
+            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+            printHeader(["Verifying build on watchOS..."])
+            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+            
+            if bash(xcodebuildArguments(platform: "watchOS", name: "Apple Watch Series 2 - 38mm")).succeeded {
+                individualSuccess(message: "Build succeeds on watchOS.")
+            } else {
+                individualFailure(message: "Build fails on watchOS. (See above for details.)")
+            }
+        }
         
         if Configuration.supportTVOS {
             
@@ -96,7 +107,7 @@ func runValidate(andExit shouldExit: Bool) {
             } else {
                 individualFailure(message: "Unit tests fail on tvOS. (See above for details.)")
             }
-        }*/
+        }
     }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

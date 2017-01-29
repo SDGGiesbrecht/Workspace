@@ -15,7 +15,13 @@
 
 Workspace automates management of Swift projects.
 
-Table of Contents:
+>> 
+>
+> Whatever you do, work at it with all your heart, as working for the Lord, not for human masters.<!--The Holy Bible, New International Version®, NIV® Copyright ©1973, 1978, 1984, 2011 by Biblica, Inc.® Used by permission. All rights reserved worldwide.-->
+>
+> ― Colossians 3:23 (NIV)
+
+### Table of Contents
 - [Platforms](#platforms)
 - [What Workspace Can Do](#what-workspace-can-do)
 - [Set‐Up](#setup)

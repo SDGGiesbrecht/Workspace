@@ -716,7 +716,7 @@ class WorkspaceTests: XCTestCase {
                     }
                     
                     for project in new {
-                        /*
+                        
                         printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
                         printHeader(["Testing Workspace with \(project.name)..."])
                         printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
@@ -743,7 +743,7 @@ class WorkspaceTests: XCTestCase {
                             if ¬bash([".Workspace/.build/debug/workspace", "validate"]).succeeded {
                                 XCTFail("Validation fails for initialized project “\(project.name)”.")
                             }
-                        }*/
+                        }
                     }
                     
                     let realProjects: [(name: String, url: String)] = [
@@ -755,7 +755,7 @@ class WorkspaceTests: XCTestCase {
                         ]
                     
                     for project in realProjects {
-                        /*
+                        
                         printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
                         printHeader(["Testing Workspace with \(project.name)..."])
                         printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
@@ -784,7 +784,7 @@ class WorkspaceTests: XCTestCase {
                             if ¬allowedExitCodes.contains(bash([".Workspace/.build/debug/workspace", "validate"]).exitCode) {
                                 XCTFail("Validation crashes for initialized project “\(project.name)”.")
                             }
-                        }*/
+                        }
                     }
                     
                     printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])

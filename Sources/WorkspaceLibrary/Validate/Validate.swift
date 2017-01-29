@@ -65,7 +65,7 @@ func runValidate(andExit shouldExit: Bool) {
         func xcodebuildArguments(platform: String, name: String, test: Bool = true) -> [String] {
             let arguments: [String] = [
                 "xcodebuild", (test ? "test" : "build"),
-                "-scheme", "\u{22}\(Configuration.projectName)\u{22}",
+                "-scheme", Configuration.projectName
                 "-destination", "platform=\(platform) Simulator,name=\(name)"
             ]
             print(join(lines: arguments))

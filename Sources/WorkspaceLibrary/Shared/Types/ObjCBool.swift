@@ -14,10 +14,9 @@ import Foundation
 extension ObjCBool {
     
     #if os(Linux)
+    // [_Workaround: Provide missing boolValue property on Linux. (Swift 3.0.2)_]
     var boolValue: Bool {
         return self
     }
-    #else
-    // var boolValue: Bool (supplied by Foundation)
     #endif
 }

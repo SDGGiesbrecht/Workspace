@@ -9,6 +9,8 @@
 // Licensed under the Apache License, Version 2.0
 // See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
+import SDGLogic
+
 func runValidate(andExit shouldExit: Bool) {
     
     var overallSuccess = true
@@ -22,25 +24,25 @@ func runValidate(andExit shouldExit: Bool) {
         overallSuccess = false
     }
     
-    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    // Refreshing
-    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    
-    Command.refresh.run(andExit: false)
+    if ¬Environment.isInContinuousIntegration {
+        
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        // Refreshing
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        
+        Command.refresh.run(andExit: false)
+        
+    }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Validating \(Configuration.projectName)..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Running unit tests..."])
+    // Running unit tests...
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
-    if bash(["swift", "test"]).succeeded {
-        individualSuccess(message: "Unit tests succeed.")
-    } else {
-        individualFailure(message: "Unit tests fail. (See above for details.)")
-    }
+    UnitTests.test(individualSuccess: individualSuccess, individualFailure: individualFailure)
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Summary"])

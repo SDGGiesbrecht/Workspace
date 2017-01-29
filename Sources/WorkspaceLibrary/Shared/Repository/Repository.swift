@@ -183,6 +183,7 @@ struct Repository {
         let filePath = absolute(path).string
         
         #if os(Linux)
+            // [_Workaround: Skip unavailable encoding detection on Linux. (Swift 3.0.2)_]
             let contents = try String(contentsOfFile: filePath, encoding: String.Encoding.utf8)
         #else
             var encoding = String.Encoding.utf8
@@ -224,6 +225,7 @@ struct Repository {
         }
         
         #if os(Linux)
+            // [_Workaround: Skip unavailable catching of NSErrors on Linux. (Swift 3.0.2)_]
             // Linux crashes if it attempts to catch the error.
             try? fileManager.removeItem(atPath: absolute(path).string)
         #else
@@ -280,7 +282,7 @@ struct Repository {
             prepareForWrite(path: change.changeDestination)
             
             #if os(Linux)
-                
+                // [_Workaround: Skip unavailable file copying by using shell on Linux. (Swift 3.0.2)_]
                 let result = bash(["cp", absolute(change.changeOrigin).string, absolute(change.changeDestination).string], silent: true)
                 if ¬result.succeeded {
                     throw LinuxFileError(exitCode: result.exitCode)

@@ -13,7 +13,7 @@ import SDGLogic
 
 let instructionsAfterRefresh: String = {
     if Environment.operatingSystem == .macOS ∧ Configuration.manageXcode {
-        return "Open \(Configuration.projectName).xcodeproj to work on the project."
+        return "Open “\(Configuration.projectName).xcodeproj” to work on the project."
     } else {
         return ""
     }
@@ -29,10 +29,25 @@ func runRefresh(andExit shouldExit: Bool) {
     printHeader(["Updating Workspace commands..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
+    // Refresh Workspace
+    
     require() { try Repository.copy(Repository.workspaceDirectory.subfolderOrFile("Scripts/Refresh Workspace (macOS).command"), into: Repository.root, includeIgnoredFiles: true) }
-    require() { try Repository.copy(Repository.workspaceDirectory.subfolderOrFile("Scripts/Refresh Workspace (Linux).sh"), into: Repository.root, includeIgnoredFiles: true) }
+    
+    if Configuration.supportLinux {
+        // Checked into repository, so dependent on configuration.
+        
+        require() { try Repository.copy(Repository.workspaceDirectory.subfolderOrFile("Scripts/Refresh Workspace (Linux).sh"), into: Repository.root, includeIgnoredFiles: true) }
+    }
+    
+    // Validate Changes
+    
     require() { try Repository.copy(Repository.workspaceDirectory.subfolderOrFile("Scripts/Validate Changes (macOS).command"), into: Repository.root, includeIgnoredFiles: true) }
-    require() { try Repository.copy(Repository.workspaceDirectory.subfolderOrFile("Scripts/Validate Changes (Linux).sh"), into: Repository.root, includeIgnoredFiles: true) }
+    
+    if Environment.operatingSystem == .linux {
+        // Not checked into repository, so dependent on environment.
+        
+        require() { try Repository.copy(Repository.workspaceDirectory.subfolderOrFile("Scripts/Validate Changes (Linux).sh"), into: Repository.root, includeIgnoredFiles: true) }
+    }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Updating Workspace configuration..."])
@@ -86,8 +101,7 @@ func runRefresh(andExit shouldExit: Bool) {
         printHeader(["Refreshing Xcode project..."])
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         
-        force() { try Repository.delete(RelativePath("\(Configuration.projectName).xcodeproj")) }
-        requireBash(["swift", "package", "generate-xcodeproj", "--enable-code-coverage"])
+        Xcode.refreshXcodeProjects()
     }
     
     if shouldExit {

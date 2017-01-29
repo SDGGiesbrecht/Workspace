@@ -32,11 +32,18 @@ cd "${0%/*}"
 WORKSPACE=".Workspace"
 if [ ! -d "${WORKSPACE}" ]; then
     git clone https://github.com/SDGGiesbrecht/Workspace "${WORKSPACE}"
+
+    # To test a development branch of Workspace, uncomment the following for lines in a test project after Validate Changes, but before committing.
+    # BRANCH="branch-name"
+    # cd "${WORKSPACE}"
+    # git checkout -b "${BRANCH}" "origin/${BRANCH}"
+    # cd ..
 fi
 
 # Update Workspace.
 cd "${WORKSPACE}"
 git pull
+swift package update
 swift build --configuration release
 cd ..
 

@@ -21,6 +21,12 @@ enum Option: String, CustomStringConvertible {
     
     case automaticallyTakeOnNewResponsibilites = "Automatically Take On New Responsibilities"
     
+    case supportMacOS = "Support macOS"
+    case supportLinux = "Support Linux"
+    case supportIOS = "Support iOS"
+    case supportWatchOS = "Support watchOS"
+    case supportTVOS = "Support tvOS"
+    
     case manageXcode = "Manage Xcode"
     case manageContinuousIntegration = "Manage Continuous Integration"
     
@@ -31,6 +37,13 @@ enum Option: String, CustomStringConvertible {
     
     static let allPublic: [Option] = [
         .automaticallyTakeOnNewResponsibilites,
+        
+        .supportMacOS,
+        .supportLinux,
+        .supportIOS,
+        .supportWatchOS,
+        .supportTVOS,
+        
         .manageXcode,
         .manageContinuousIntegration,
     ]
@@ -45,6 +58,18 @@ enum Option: String, CustomStringConvertible {
         switch self {
         case .automaticallyTakeOnNewResponsibilites:
             return Configuration.falseOptionValue
+            
+        case .supportMacOS:
+            return Configuration.trueOptionValue
+        case .supportLinux:
+            return Configuration.trueOptionValue
+        case .supportIOS:
+            return Configuration.trueOptionValue
+        case .supportWatchOS:
+            return Configuration.trueOptionValue
+        case .supportTVOS:
+            return Configuration.trueOptionValue
+            
         case .manageXcode:
             return Configuration.falseOptionValue
         case .manageContinuousIntegration:

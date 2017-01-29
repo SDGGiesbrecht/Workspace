@@ -165,6 +165,31 @@ extension String {
         return substring(with: targetRange)
     }
     
+    mutating func replaceContentsOfEveryPair(of tokens: (start: String, end: String), with replacement: String, in searchRange: Range<Index>? = nil) {
+        
+        var possibleRemainder: Range<String.Index>? = searchRange ?? startIndex ..< endIndex
+        
+        while let remainder = possibleRemainder {
+            if let range = rangeOfContents(of: tokens, in: remainder) {
+                
+                replaceSubrange(range, with: replacement)
+                
+                var location = range.lowerBound
+                
+                if ¬advance(&location, past: replacement)
+                    ∨ ¬advance(&location, past: tokens.end) {
+                    fatalError(message: [
+                        "Failed to replace text.",
+                        "This may indicate a bug in Workspace.",
+                        ])
+                }
+                possibleRemainder = location ..< endIndex
+            } else {
+                possibleRemainder = nil
+            }
+        }
+    }
+    
     // MARK: - Moving Indices
     
     func advance(_ index: inout Index, past string: String) -> Bool {
@@ -217,6 +242,7 @@ extension String {
     func advance(_ index: inout Index, past characters: CharacterSet, limit: Int? = nil) {
         
         #if os(Linux)
+            // [_Workaround: Skip unavailable character set equality check on Linux. (Swift 3.0.2)_]
         #else
             assert(limit == nil ∨ characters ≠ CharacterSet.newlines, join(lines: [
                 "When counting newlines, CR + LF is not counted properly by String.advance(_:past:limit:).",

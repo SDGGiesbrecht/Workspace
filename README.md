@@ -15,11 +15,11 @@
 
 Workspace automates management of Swift projects.
 
->> 
+>> [Πᾶν ὅ τι ἐὰν ποιῆτε, ἐκ ψυχῆς ἐργάζεσθε, ὡς τῷ Κυρίῳ καὶ οὐκ ἀνθρώποις.](https://www.biblegateway.com/passage/?search=Colossians+3:23&version=SBLGNT;NIV)
 >
-> Whatever you do, work at it with all your heart, as working for the Lord, not for human masters.<!--The Holy Bible, New International Version®, NIV® Copyright ©1973, 1978, 1984, 2011 by Biblica, Inc.® Used by permission. All rights reserved worldwide.-->
+> [Whatever you do, work from the heart, as working for the Lord and not for men.](https://www.biblegateway.com/passage/?search=Colossians+3:23&version=SBLGNT;NIV)
 >
-> ― Colossians 3:23 (NIV)
+> ―‎שאול/Shaʼul of Tarsus
 
 ### Table of Contents
 - [Platforms](#platforms)

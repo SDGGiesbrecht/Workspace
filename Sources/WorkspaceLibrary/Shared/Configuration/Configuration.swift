@@ -313,6 +313,26 @@ struct Configuration {
         return booleanValue(option: .automaticallyTakeOnNewResponsibilites)
     }
     
+    static var supportMacOS: Bool {
+        return booleanValue(option: .supportMacOS)
+    }
+    
+    static var supportLinux: Bool {
+        return booleanValue(option: .supportLinux)
+    }
+    
+    static var supportIOS: Bool {
+        return booleanValue(option: .supportIOS)
+    }
+    
+    static var supportWatchOS: Bool {
+        return booleanValue(option: .supportWatchOS)
+    }
+    
+    static var supportTVOS: Bool {
+        return booleanValue(option: .supportTVOS)
+    }
+    
     static var manageXcode: Bool {
         return booleanValue(option: .manageXcode)
     }

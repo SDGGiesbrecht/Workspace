@@ -39,7 +39,7 @@ Because the script opens a new terminal to display its output, brand‐new termi
 
 To register the location of `swift` even for new terminal sessions, run the following command, substituting the real location of the Swift install.
 
-`echo 'export PATH=`/path/to/swift-0.0.0-RELEASE-ubuntu00.00`/usr/bin:"${PATH}"' >>~/.bashrc`
+`echo 'export PATH=`/path/to/swift-0.0.0-RELEASE-ubuntu00.00`/usr/bin:"${PATH}"' >>~/.profile`
 
 (If Swift is not even istalled yet, see the [Swift website](https://swift.org/download/) for instructions.)
 

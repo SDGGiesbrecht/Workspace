@@ -12,3 +12,7 @@
     ))
 
 [_Import https://github.com/SDGGiesbrecht/SDG_]
+
+(Support iOS: False)
+(Support watchOS: False)
+(Support tvOS: False)

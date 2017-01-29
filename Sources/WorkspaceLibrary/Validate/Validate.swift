@@ -68,7 +68,6 @@ func runValidate(andExit shouldExit: Bool) {
                 "-scheme", Configuration.projectName,
                 "-destination", "platform=\(platform) Simulator,name=\(name)"
             ]
-            print(join(lines: arguments))
             return arguments
         }
         

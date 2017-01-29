@@ -63,11 +63,13 @@ func runValidate(andExit shouldExit: Bool) {
     if Environment.operatingSystem == .macOS {
         
         func xcodebuildArguments(platform: String, name: String, test: Bool = true) -> [String] {
-            return [
+            let arguments: [String] = [
                 "xcodebuild", (test ? "test" : "build"),
                 "-scheme", "\u{22}\(Configuration.projectName)\u{22}",
                 "-destination", "platform=\(platform) Simulator,name=\(name)"
             ]
+            print(join(lines: arguments))
+            return arguments
         }
         
         if Configuration.supportIOS {

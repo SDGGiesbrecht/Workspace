@@ -62,6 +62,12 @@ func runValidate(andExit shouldExit: Bool) {
     
     if Environment.operatingSystem == .macOS {
         
+        if Environment.isInContinuousIntegration {
+            // [_Workaround: Erases duplicate simulators in Travis CI._]
+            requireBash(["xcrun", "simctl", "delete", "E40727B3-41FB-4D6E-B4CB-BFA87109EB12"])
+        }
+        
+        
         func xcodebuildArguments(platform: String, name: String, test: Bool = true) -> [String] {
             let arguments: [String] = [
                 "xcodebuild", (test ? "test" : "build"),

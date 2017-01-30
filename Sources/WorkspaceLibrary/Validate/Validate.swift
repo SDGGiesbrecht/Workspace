@@ -119,7 +119,7 @@ func runValidate(andExit shouldExit: Bool) {
                 ])
         }
         
-        runUnitTestsInXcode(enabledInConfiguration: Configuration.supportIOS, buildOnly: false, operatingSystemName: "iOS", deviceKey: "iPhone 7")
+        //runUnitTestsInXcode(enabledInConfiguration: Configuration.supportIOS, buildOnly: false, operatingSystemName: "iOS", deviceKey: "iPhone 7")
         runUnitTestsInXcode(enabledInConfiguration: Configuration.supportWatchOS, buildOnly: true, operatingSystemName: "watchOS", deviceKey: "Apple Watch Series 2 - 38mm")
         //runUnitTestsInXcode(enabledInConfiguration: Configuration.supportTVOS, buildOnly: false, operatingSystemName: "tvOS", platformKey: "tvOS", deviceKey: "Apple TV 1080p")
     }

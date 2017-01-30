@@ -34,31 +34,35 @@ func runValidate(andExit shouldExit: Bool) {
     printHeader(["Validating \(Configuration.projectName)..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
-    if Environment.operatingSystem == .macOS ∧ Configuration.supportMacOS {
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    // Running unit tests...
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    
+    func runUnitTests(enabledInConfiguration: Bool, buildOnly: Bool, operatingSystemName: String, script: [String]) {
         
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        printHeader(["Running unit tests on macOS..."])
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        
-        if bash(["swift", "test"]).succeeded {
-            individualSuccess(message: "Unit tests succeed on macOS.")
-        } else {
-            individualFailure(message: "Unit tests fail on macOS. (See above for details.)")
+        if enabledInConfiguration {
+            
+            let verbPhrase = buildOnly ? "Verifying build for" : "Running unit tests on"
+            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+            printHeader(["\(verbPhrase) \(operatingSystemName)..."])
+            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+            
+            if bash(script).succeeded {
+                let phrase = buildOnly ? "Build succeeds for" : "Unit tests succeed on"
+                individualSuccess(message: "\(phrase) \(operatingSystemName).")
+            } else {
+                let phrase = buildOnly ? "Build fails for" : "Unit tests fail on"
+                individualFailure(message: "\(phrase) \(operatingSystemName). (See above for details.)")
+            }
         }
     }
     
-    if Environment.operatingSystem == .linux {
-        
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        printHeader(["Running unit tests on Linux..."])
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        
-        if bash(["swift", "test"]).succeeded {
-            individualSuccess(message: "Unit tests succeed on Linux.")
-        } else {
-            individualFailure(message: "Unit tests fail on Linux. (See above for details.)")
-        }
+    func runUnitTestsInSwiftPackageManager(enabledInConfiguration: Bool, operatingSystemName: String) {
+        runUnitTests(enabledInConfiguration: enabledInConfiguration, buildOnly: false, operatingSystemName: operatingSystemName, script: ["swift", "test"])
     }
+    
+    runUnitTestsInSwiftPackageManager(enabledInConfiguration: Environment.operatingSystem == .macOS ∧ Configuration.supportMacOS, operatingSystemName: "macOS")
+    runUnitTestsInSwiftPackageManager(enabledInConfiguration: Environment.operatingSystem == .linux, operatingSystemName: "Linux")
     
     if Environment.operatingSystem == .macOS {
         
@@ -67,54 +71,18 @@ func runValidate(andExit shouldExit: Bool) {
             requireBash(["xcrun", "simctl", "delete", "E40727B3-41FB-4D6E-B4CB-BFA87109EB12"])
         }
         
-        
-        func xcodebuildArguments(platform: String, name: String, test: Bool = true) -> [String] {
-            let arguments: [String] = [
-                "xcodebuild", (test ? "test" : "build"),
+        func runUnitTestsInXcode(enabledInConfiguration: Bool, buildOnly: Bool, operatingSystemName: String, platformKey: String, deviceKey: String) {
+            
+            return runUnitTests(enabledInConfiguration: enabledInConfiguration, buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: [
+                "xcodebuild", (buildOnly ? "build" : "test"),
                 "-scheme", Configuration.projectName,
-                "-destination", "platform=\(platform) Simulator,name=\(name)"
-            ]
-            return arguments
+                "-destination", "platform=\(platformKey) Simulator,name=\(deviceKey)"
+                ])
         }
         
-        if Configuration.supportIOS {
-            
-            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-            printHeader(["Running unit tests on iOS..."])
-            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-            
-            if bash(xcodebuildArguments(platform: "iOS", name: "iPhone 7")).succeeded {
-                individualSuccess(message: "Unit tests succeed on iOS.")
-            } else {
-                individualFailure(message: "Unit tests fail on iOS. (See above for details.)")
-            }
-        }
-        
-        if Configuration.supportWatchOS {
-            
-            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-            printHeader(["Verifying build on watchOS..."])
-            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-            
-            if bash(xcodebuildArguments(platform: "watchOS", name: "Apple Watch Series 2 - 38mm", test: false)).succeeded {
-                individualSuccess(message: "Build succeeds on watchOS.")
-            } else {
-                individualFailure(message: "Build fails on watchOS. (See above for details.)")
-            }
-        }
-        
-        if Configuration.supportTVOS {
-            
-            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-            printHeader(["Running unit tests on tvOS..."])
-            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-            
-            if bash(xcodebuildArguments(platform: "tvOS", name: "Apple TV 1080p")).succeeded {
-                individualSuccess(message: "Unit tests succeed on tvOS.")
-            } else {
-                individualFailure(message: "Unit tests fail on tvOS. (See above for details.)")
-            }
-        }
+        runUnitTestsInXcode(enabledInConfiguration: Configuration.supportIOS, buildOnly: false, operatingSystemName: "iOS", platformKey: "iOS", deviceKey: "iPhone 7")
+        runUnitTestsInXcode(enabledInConfiguration: Configuration.supportWatchOS, buildOnly: true, operatingSystemName: "watchOS", platformKey: "watchOS", deviceKey: "Apple Watch Series 2 - 38mm")
+        runUnitTestsInXcode(enabledInConfiguration: Configuration.supportTVOS, buildOnly: false, operatingSystemName: "tvOS", platformKey: "tvOS", deviceKey: "Apple TV 1080p")
     }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

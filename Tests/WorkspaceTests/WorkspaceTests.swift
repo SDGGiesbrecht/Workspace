@@ -747,7 +747,10 @@ class WorkspaceTests: XCTestCase {
                     }
                     
                     let realProjects: [(name: String, url: String)] = [
+                        
+                        // Generic Set‐Up
                         (name: "SDGLogic", url: "https://github.com/SDGGiesbrecht/SDGLogic"),
+                        
                         ]
                     
                     for project in realProjects {

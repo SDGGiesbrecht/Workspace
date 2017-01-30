@@ -68,6 +68,7 @@ func runValidate(andExit shouldExit: Bool) {
         
         if Environment.isInContinuousIntegration {
             // [_Workaround: Erases duplicate simulators in Travis CI. (https://github.com/travis-ci/travis-ci/issues/7031)_]
+            print(bash(["instruments", "-s", "devices"]).output)
             requireBash(["xcrun", "simctl", "delete", "E40727B3-41FB-4D6E-B4CB-BFA87109EB12"])
         }
         

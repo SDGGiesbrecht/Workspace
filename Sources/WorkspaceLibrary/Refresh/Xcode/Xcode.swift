@@ -17,7 +17,11 @@ struct Xcode {
         
         let path = RelativePath("\(Configuration.projectName).xcodeproj")
         force() { try Repository.delete(path) }
-        requireBash(["swift", "package", "generate-xcodeproj", "--output", path.string, "--enable-code-coverage"])
+        
+        var script = ["swift", "package", "generate-xcodeproj", "--output", path.string]
+        if ¬Environment.isInContinuousIntegration {
+            script.append("--enable-code-coverage")
+        }
         
         var file = require() { try File(at: path.subfolderOrFile("project.pbxproj")) }
         file.contents.replaceContentsOfEveryPair(of: ("LD_RUNPATH_SEARCH_PATHS = (", ");"), with: join(lines: [

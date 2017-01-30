@@ -9,6 +9,8 @@
 // Licensed under the Apache License, Version 2.0
 // See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
+import SDGCaching
+
 import SDGLogic
 
 func runValidate(andExit shouldExit: Bool) {
@@ -66,42 +68,50 @@ func runValidate(andExit shouldExit: Bool) {
     
     if Environment.operatingSystem == .macOS {
         
-        if Environment.isInContinuousIntegration {
-            // [_Workaround: Erases duplicate simulators in Travis CI. (https://github.com/travis-ci/travis-ci/issues/7031)_]
-            guard let deviceList = bash(["instruments", "-s", "devices"]).output else {
-                fatalError(message: ["Failed to get list of simulators."])
-            }
-            var deviceEntries = deviceList.lines.filter() { $0.hasPrefix("iPhone 7 (") }
-            while deviceEntries.count > 1 {
-                let entry = deviceEntries.last!
-                guard let deviceID = entry.contents(of: ("[", "]")) else {
-                    fatalError(message: [
-                        "Unsupported device list entry format:",
-                        "",
-                        entry,
-                        ])
-                }
-                
-                requireBash(["xcrun", "simctl", "delete", deviceID])
-            }
-        }
+        var deviceList: [String: String]?
         
-        func runUnitTestsInXcode(enabledInConfiguration: Bool, buildOnly: Bool, operatingSystemName: String, platformKey: String, deviceKey: String) {
+        func runUnitTestsInXcode(enabledInConfiguration: Bool, buildOnly: Bool, operatingSystemName: String, deviceKey: String) {
             
             if enabledInConfiguration ∧ ¬buildOnly {
                 // Manually launch the simulator to avoid timeouts.
                 let _ = bash(["open", "-b", "com.apple.iphonesimulator"])
             }
             
+            let devices = cachedResult(cache: &deviceList) {
+                () -> [String: String] in
+                
+                guard let deviceManifest = bash(["instruments", "-s", "devices"]).output else {
+                    fatalError(message: ["Failed to get list of simulators."])
+                }
+                
+                var result: [String: String] = [:]
+                for entry in deviceManifest.lines {
+                    
+                    if let nameEnd = entry.range(of: " (")?.lowerBound, let identifier = entry.contents(of: ("[", "]")) {
+                        let name = entry.substring(to: nameEnd)
+                        result[name] = identifier
+                    }
+                }
+                return result
+            }
+            
+            guard let deviceID = devices[deviceKey] else {
+                fatalError(message: [
+                    "Unable to find device:",
+                    "",
+                    deviceKey,
+                    ])
+            }
+            
             return runUnitTests(enabledInConfiguration: enabledInConfiguration, buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: [
                 "xcodebuild", (buildOnly ? "build" : "test"),
                 "-scheme", Configuration.projectName,
-                "-destination", "platform=\(platformKey) Simulator,name=\(deviceKey)"
+                "-destination", "id=\(deviceID)"
                 ])
         }
         
-        runUnitTestsInXcode(enabledInConfiguration: Configuration.supportIOS, buildOnly: false, operatingSystemName: "iOS", platformKey: "iOS", deviceKey: "iPhone 7")
-        runUnitTestsInXcode(enabledInConfiguration: Configuration.supportWatchOS, buildOnly: true, operatingSystemName: "watchOS", platformKey: "watchOS", deviceKey: "Apple Watch Series 2 - 38mm")
+        runUnitTestsInXcode(enabledInConfiguration: Configuration.supportIOS, buildOnly: false, operatingSystemName: "iOS", deviceKey: "iPhone 7")
+        runUnitTestsInXcode(enabledInConfiguration: Configuration.supportWatchOS, buildOnly: true, operatingSystemName: "watchOS", deviceKey: "Apple Watch Series 2 - 38mm")
         //runUnitTestsInXcode(enabledInConfiguration: Configuration.supportTVOS, buildOnly: false, operatingSystemName: "tvOS", platformKey: "tvOS", deviceKey: "Apple TV 1080p")
     }
     

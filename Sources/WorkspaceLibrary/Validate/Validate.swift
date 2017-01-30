@@ -68,8 +68,22 @@ func runValidate(andExit shouldExit: Bool) {
         
         if Environment.isInContinuousIntegration {
             // [_Workaround: Erases duplicate simulators in Travis CI. (https://github.com/travis-ci/travis-ci/issues/7031)_]
-            print(bash(["instruments", "-s", "devices"]).output)
-            requireBash(["xcrun", "simctl", "delete", "E40727B3-41FB-4D6E-B4CB-BFA87109EB12"])
+            guard let deviceList = bash(["instruments", "-s", "devices"]).output else {
+                fatalError(message: ["Failed to get list of simulators."])
+            }
+            var deviceEntries = deviceList.lines.filter() { $0.hasPrefix("iPhone 7 (") }
+            while deviceEntries.count > 1 {
+                let entry = deviceEntries.last!
+                guard let deviceID = entry.rangeOfContents(of: ("[", "]")) else {
+                    fatalError(message: [
+                        "Unsupported device list entry format:",
+                        "",
+                        entry,
+                        ])
+                }
+                
+                requireBash(["xcrun", "simctl", "delete", deviceID])
+            }
         }
         
         func runUnitTestsInXcode(enabledInConfiguration: Bool, buildOnly: Bool, operatingSystemName: String, platformKey: String, deviceKey: String) {

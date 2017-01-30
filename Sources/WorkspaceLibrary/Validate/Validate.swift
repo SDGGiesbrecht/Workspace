@@ -74,7 +74,7 @@ func runValidate(andExit shouldExit: Bool) {
             var deviceEntries = deviceList.lines.filter() { $0.hasPrefix("iPhone 7 (") }
             while deviceEntries.count > 1 {
                 let entry = deviceEntries.last!
-                guard let deviceID = entry.rangeOfContents(of: ("[", "]")) else {
+                guard let deviceID = entry.contents(of: ("[", "]")) else {
                     fatalError(message: [
                         "Unsupported device list entry format:",
                         "",

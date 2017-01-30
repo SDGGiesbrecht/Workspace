@@ -34,6 +34,7 @@ func force(operation: () throws -> ()) {
 let debug = _isDebugAssertConfiguration()
 
 #if os(Linux)
+    // [_Workaround: Skip unavailable file copying by using shell on Linux._]
     struct LinuxFileError: Error {
         init(exitCode: ExitCode) {
             code = exitCode

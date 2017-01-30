@@ -309,9 +309,13 @@ struct Configuration {
         }
     }
     
+    // Workspace Behaviour
+    
     static var automaticallyTakeOnNewResponsibilites: Bool {
         return booleanValue(option: .automaticallyTakeOnNewResponsibilites)
     }
+    
+    // Project Type
     
     static var supportMacOS: Bool {
         return booleanValue(option: .supportMacOS)
@@ -332,6 +336,8 @@ struct Configuration {
     static var supportTVOS: Bool {
         return booleanValue(option: .supportTVOS)
     }
+    
+    // Responsibilities
     
     static var manageXcode: Bool {
         return booleanValue(option: .manageXcode)

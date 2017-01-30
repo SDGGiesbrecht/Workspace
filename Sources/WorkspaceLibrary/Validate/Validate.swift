@@ -87,17 +87,18 @@ func runValidate(andExit shouldExit: Bool) {
                 var result: [String: String] = [:]
                 for entry in deviceManifest.lines {
                     
-                    if entry.contains("+") {
-                        if let name = contents(of: ("+ ", " (")) {
-                            result[name] = identifier
-                        }
-                    } else {
-                        if let nameEnd = entry.range(of: " (")?.lowerBound, let identifier = entry.contents(of: ("[", "]")) {
-                            var name = entry.substring(to: nameEnd)
-                            result[name] = identifier
+                    if let identifier = entry.contents(of: ("[", "]")) {
+                        if entry.contains("+") {
+                            if let name = entry.contents(of: ("+ ", " (")) {
+                                result[name] = identifier
+                            }
+                        } else {
+                            if let nameEnd = entry.range(of: " (")?.lowerBound {
+                                let name = entry.substring(to: nameEnd)
+                                result[name] = identifier
+                            }
                         }
                     }
-                    
                 }
                 return result
             }

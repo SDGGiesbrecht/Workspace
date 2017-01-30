@@ -63,7 +63,7 @@ func runValidate(andExit shouldExit: Bool) {
     if Environment.operatingSystem == .macOS {
         
         if Environment.isInContinuousIntegration {
-            // [_Workaround: Erases duplicate simulators in Travis CI._]
+            // [_Workaround: Erases duplicate simulators in Travis CI. (https://github.com/travis-ci/travis-ci/issues/7031)_]
             requireBash(["xcrun", "simctl", "delete", "E40727B3-41FB-4D6E-B4CB-BFA87109EB12"])
         }
         

@@ -73,7 +73,7 @@ func runValidate(andExit shouldExit: Bool) {
         
         func runUnitTestsInXcode(enabledInConfiguration: Bool, buildOnly: Bool, operatingSystemName: String, platformKey: String, deviceKey: String) {
             
-            if enabledInConfiguration {
+            if enabledInConfiguration ∧ ¬buildOnly {
                 // Manually launch the simulator to avoid timeouts.
                 let _ = bash(["open", "-b", "com.apple.iphonesimulator"])
             }

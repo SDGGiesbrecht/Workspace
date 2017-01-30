@@ -149,7 +149,17 @@ func runInitialize(andExit shouldExit: Bool) {
         "For more information about “\(Option.automaticallyTakeOnNewResponsibilites)”, see:",
         Option.automaticResponsibilityDocumentationPage.url,
         ]
-    Configuration.addEntries(entries: [(option: .automaticallyTakeOnNewResponsibilites, value: Configuration.trueOptionValue, comment: note)], to: &configuration)
+    var entries: [(option: Option, value: String, comment: [String]?)] = [(option: .automaticallyTakeOnNewResponsibilites, value: Configuration.trueOptionValue, comment: note)]
+    if Flags.executable {
+        // [_Workaround: No support for executables on iOS, watchOS, or tvOS yet._]
+        let explanation: [String]? = ["No support for executables."]
+        entries.append(contentsOf: [
+            (option: .supportIOS, value: Configuration.falseOptionValue, comment: explanation),
+            (option: .supportWatchOS, value: Configuration.falseOptionValue, comment: explanation),
+            (option: .supportTVOS, value: Configuration.falseOptionValue, comment: explanation),
+            ])
+    }
+    Configuration.addEntries(entries: entries, to: &configuration)
     require() { try configuration.write() }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

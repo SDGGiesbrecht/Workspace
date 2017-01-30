@@ -65,7 +65,7 @@ func runValidate(andExit shouldExit: Bool) {
     runUnitTestsInSwiftPackageManager(enabledInConfiguration: Environment.operatingSystem == .linux, operatingSystemName: "Linux")
     
     if Environment.operatingSystem == .macOS {
-        /*
+        
         if Environment.isInContinuousIntegration {
             // [_Workaround: Erases duplicate simulators in Travis CI. (https://github.com/travis-ci/travis-ci/issues/7031)_]
             requireBash(["xcrun", "simctl", "delete", "E40727B3-41FB-4D6E-B4CB-BFA87109EB12"])
@@ -83,10 +83,9 @@ func runValidate(andExit shouldExit: Bool) {
                 ])
         }
         
-        runUnitTestsInXcode(enabledInConfiguration: Configuration.supportIOS, buildOnly: false, operatingSystemName: "iOS", platformKey: "iOS", deviceKey: "iPhone 7")
-        runUnitTestsInXcode(enabledInConfiguration: Configuration.supportWatchOS, buildOnly: true, operatingSystemName: "watchOS", platformKey: "watchOS", deviceKey: "Apple Watch Series 2 - 38mm")
-        runUnitTestsInXcode(enabledInConfiguration: Configuration.supportTVOS, buildOnly: false, operatingSystemName: "tvOS", platformKey: "tvOS", deviceKey: "Apple TV 1080p")
- */
+        //runUnitTestsInXcode(enabledInConfiguration: Configuration.supportIOS, buildOnly: false, operatingSystemName: "iOS", platformKey: "iOS", deviceKey: "iPhone 7")
+        //runUnitTestsInXcode(enabledInConfiguration: Configuration.supportWatchOS, buildOnly: true, operatingSystemName: "watchOS", platformKey: "watchOS", deviceKey: "Apple Watch Series 2 - 38mm")
+        //runUnitTestsInXcode(enabledInConfiguration: Configuration.supportTVOS, buildOnly: false, operatingSystemName: "tvOS", platformKey: "tvOS", deviceKey: "Apple TV 1080p")
     }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

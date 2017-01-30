@@ -747,11 +747,7 @@ class WorkspaceTests: XCTestCase {
                     }
                     
                     let realProjects: [(name: String, url: String)] = [
-                        
-                        (name: "SDGCaching", url: "https://github.com/SDGGiesbrecht/SDGCaching"),
-                        
                         (name: "SDGLogic", url: "https://github.com/SDGGiesbrecht/SDGLogic"),
-                        (name: "SDGMathematics", url: "https://github.com/SDGGiesbrecht/SDGMathematics"),
                         ]
                     
                     for project in realProjects {

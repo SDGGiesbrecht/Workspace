@@ -71,6 +71,9 @@ func runValidate(andExit shouldExit: Bool) {
             requireBash(["xcrun", "simctl", "delete", "E40727B3-41FB-4D6E-B4CB-BFA87109EB12"])
         }
         
+        // Manually launch the simulator to avoid timeouts.
+        let _ = bash(["open", "-b", "com.apple.iphonesimulator"])
+        
         func runUnitTestsInXcode(enabledInConfiguration: Bool, buildOnly: Bool, operatingSystemName: String, platformKey: String, deviceKey: String) {
             
             return runUnitTests(enabledInConfiguration: enabledInConfiguration, buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: [

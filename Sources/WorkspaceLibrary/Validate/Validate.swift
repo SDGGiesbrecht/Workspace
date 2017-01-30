@@ -71,10 +71,12 @@ func runValidate(andExit shouldExit: Bool) {
             requireBash(["xcrun", "simctl", "delete", "E40727B3-41FB-4D6E-B4CB-BFA87109EB12"])
         }
         
-        // Manually launch the simulator to avoid timeouts.
-        let _ = bash(["open", "-b", "com.apple.iphonesimulator"])
-        
         func runUnitTestsInXcode(enabledInConfiguration: Bool, buildOnly: Bool, operatingSystemName: String, platformKey: String, deviceKey: String) {
+            
+            if enabledInConfiguration {
+                // Manually launch the simulator to avoid timeouts.
+                let _ = bash(["open", "-b", "com.apple.iphonesimulator"])
+            }
             
             return runUnitTests(enabledInConfiguration: enabledInConfiguration, buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: [
                 "xcodebuild", (buildOnly ? "build" : "test"),
@@ -84,7 +86,7 @@ func runValidate(andExit shouldExit: Bool) {
         }
         
         //runUnitTestsInXcode(enabledInConfiguration: Configuration.supportIOS, buildOnly: false, operatingSystemName: "iOS", platformKey: "iOS", deviceKey: "iPhone 7")
-        //runUnitTestsInXcode(enabledInConfiguration: Configuration.supportWatchOS, buildOnly: true, operatingSystemName: "watchOS", platformKey: "watchOS", deviceKey: "Apple Watch Series 2 - 38mm")
+        runUnitTestsInXcode(enabledInConfiguration: Configuration.supportWatchOS, buildOnly: true, operatingSystemName: "watchOS", platformKey: "watchOS", deviceKey: "Apple Watch Series 2 - 38mm")
         //runUnitTestsInXcode(enabledInConfiguration: Configuration.supportTVOS, buildOnly: false, operatingSystemName: "tvOS", platformKey: "tvOS", deviceKey: "Apple TV 1080p")
     }
     

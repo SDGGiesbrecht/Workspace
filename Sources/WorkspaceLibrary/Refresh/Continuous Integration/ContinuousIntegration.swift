@@ -57,7 +57,7 @@ struct ContinuousIntegration {
             updatedLines.append(contentsOf: [
                 "    - os: osx",
                 "      osx_image: xcode8.2",
-                "      script",
+                "      script:",
                 runRefreshWorkspace,
                 runValidateChanges,
                 ])
@@ -69,7 +69,7 @@ struct ContinuousIntegration {
             "    - os: linux",
             "      dist: trusty",
             "      env: SWIFT_VERSION=3.0.2",
-            "      script",
+            "      script:",
             runCommand("eval \u{22}$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\u{22}"),
             runRefreshWorkspace,
             runValidateChanges,

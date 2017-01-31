@@ -35,10 +35,17 @@ struct ContinuousIntegration {
             "  include:",
             "    - os: osx",
             "      osx_image: xcode8.2",
+            "      script: bash ./Refresh\u{5C}\u{5C}\u{5C} Workspace\u{5C}\u{5C}\u{5C} \u{5C}\u{5C}(macOS\u{5C}\u{5C}).command; bash ./Validate\u{5C}\u{5C}\u{5C} Changes\u{5C}\u{5C}\u{5C} \u{5C}\u{5C}(macOS\u{5C}\u{5C}).command",
             "    - os: linux",
             "      dist: trusty",
             "      env: SWIFT_VERSION=3.0.2",
-            "script: \u{22}eval \u{5C}\u{22}$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\u{5C}\u{22}; bash ./Refresh\u{5C}\u{5C}\u{5C} Workspace\u{5C}\u{5C}\u{5C} \u{5C}\u{5C}(macOS\u{5C}\u{5C}).command; bash ./Validate\u{5C}\u{5C}\u{5C} Changes\u{5C}\u{5C}\u{5C} \u{5C}\u{5C}(macOS\u{5C}\u{5C}).command\u{22}",
+            "      script: \u{22}eval \u{5C}\u{22}$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\u{5C}\u{22}; bash ./Refresh\u{5C}\u{5C}\u{5C} Workspace\u{5C}\u{5C}\u{5C} \u{5C}\u{5C}(macOS\u{5C}\u{5C}).command; bash ./Validate\u{5C}\u{5C}\u{5C} Changes\u{5C}\u{5C}\u{5C} \u{5C}\u{5C}(macOS\u{5C}\u{5C}).command\u{22}",
+            "    - os: osx",
+            "      language: objective-c",
+            "      before_script: bash ./Refresh\u{5C}\u{5C}\u{5C} Workspace\u{5C}\u{5C}\u{5C} \u{5C}\u{5C}(macOS\u{5C}\u{5C}).command",
+            "      xcode_project: \(Configuration.projectName).xcodeproj",
+            "      xcode_scheme: \(Configuration.projectName)",
+            "      xcode_sdk: iphonesimulator10.2",
             ]
         
         let newBody = join(lines: updatedLines)

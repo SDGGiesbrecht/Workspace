@@ -29,7 +29,10 @@ Workspace automates management of Swift projects.
 
 Workspace can be used for development on [macOS](http://www.apple.com/macos/) and [Linux](https://www.ubuntu.com).
 
-Workspace can manage projects for [macOS](http://www.apple.com/macos/), [Linux](https://www.ubuntu.com), [iOS](http://www.apple.com/ios/), [watchOS](http://www.apple.com/watchos/) and [tvOS](http://www.apple.com/tvos/).
+Workspace can manage:
+
+- Library projects for [macOS](http://www.apple.com/macos/), [Linux](https://www.ubuntu.com), [iOS](http://www.apple.com/ios/), [watchOS](http://www.apple.com/watchos/) and [tvOS](http://www.apple.com/tvos/).
+- Executable projects for [macOS](http://www.apple.com/macos/) and [Linux](https://www.ubuntu.com).
 
 A particular project can [configure](Documentation/Operating Systems.md) which operating systems it supports.
 

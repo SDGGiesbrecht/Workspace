@@ -12,5 +12,6 @@
 import Foundation
 
 #if os(Linux)
+    // [_Workaround: Rename Process on Linux._]
     typealias Process = Task
 #endif

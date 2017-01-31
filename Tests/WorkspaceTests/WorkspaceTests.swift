@@ -716,7 +716,7 @@ class WorkspaceTests: XCTestCase {
                     }
                     
                     for project in new {
-                        /*
+                        
                         printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
                         printHeader(["Testing Workspace with \(project.name)..."])
                         printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
@@ -743,19 +743,18 @@ class WorkspaceTests: XCTestCase {
                             if ¬bash([".Workspace/.build/debug/workspace", "validate"]).succeeded {
                                 XCTFail("Validation fails for initialized project “\(project.name)”.")
                             }
-                        }*/
+                        }
                     }
                     
                     let realProjects: [(name: String, url: String)] = [
                         
-                        (name: "SDGCaching", url: "https://github.com/SDGGiesbrecht/SDGCaching"),
-                        
+                        // Generic Set‐Up
                         (name: "SDGLogic", url: "https://github.com/SDGGiesbrecht/SDGLogic"),
-                        (name: "SDGMathematics", url: "https://github.com/SDGGiesbrecht/SDGMathematics"),
+                        
                         ]
                     
                     for project in realProjects {
-                        /*
+                        
                         printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
                         printHeader(["Testing Workspace with \(project.name)..."])
                         printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
@@ -784,7 +783,7 @@ class WorkspaceTests: XCTestCase {
                             if ¬allowedExitCodes.contains(bash([".Workspace/.build/debug/workspace", "validate"]).exitCode) {
                                 XCTFail("Validation crashes for initialized project “\(project.name)”.")
                             }
-                        }*/
+                        }
                     }
                     
                     printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])

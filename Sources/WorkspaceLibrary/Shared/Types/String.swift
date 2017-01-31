@@ -242,6 +242,7 @@ extension String {
     func advance(_ index: inout Index, past characters: CharacterSet, limit: Int? = nil) {
         
         #if os(Linux)
+            // [_Workaround: Skip unavailable character set equality check on Linux._]
         #else
             assert(limit == nil ∨ characters ≠ CharacterSet.newlines, join(lines: [
                 "When counting newlines, CR + LF is not counted properly by String.advance(_:past:limit:).",

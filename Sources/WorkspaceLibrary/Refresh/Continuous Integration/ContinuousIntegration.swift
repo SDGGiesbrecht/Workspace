@@ -40,6 +40,7 @@ struct ContinuousIntegration {
             "      dist: trusty",
             "      env: SWIFT_VERSION=3.0.2",
             "      script: \u{22}eval \u{5C}\u{22}$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\u{5C}\u{22}; bash ./Refresh\u{5C}\u{5C}\u{5C} Workspace\u{5C}\u{5C}\u{5C} \u{5C}\u{5C}(macOS\u{5C}\u{5C}).command; bash ./Validate\u{5C}\u{5C}\u{5C} Changes\u{5C}\u{5C}\u{5C} \u{5C}\u{5C}(macOS\u{5C}\u{5C}).command\u{22}",
+            // [_Workaround: Travis CI hangs at manual simulator launch._]
             "    - os: osx",
             "      language: objective-c",
             "      before_script: bash ./Refresh\u{5C}\u{5C}\u{5C} Workspace\u{5C}\u{5C}\u{5C} \u{5C}\u{5C}(macOS\u{5C}\u{5C}).command",

@@ -128,6 +128,7 @@ func runValidate(andExit shouldExit: Bool) {
             
             if ¬buildOnly {
                 // Manually launch the simulator to avoid timeouts.
+                let _ = bash(["killall", "Simulator"])
                 let _ = bash(["open", "-b", "com.apple.iphonesimulator", "--args", "-CurrentDeviceUDID", deviceID])
                 
                 var decasecondsToWait: Int?

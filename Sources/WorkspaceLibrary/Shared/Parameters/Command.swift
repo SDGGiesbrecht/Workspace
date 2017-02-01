@@ -30,11 +30,13 @@ enum Command: String, Comparable, CustomStringConvertible, LosslessStringConvert
     
     case initialize = "initialize"
     case refresh = "refresh"
+    case proofread = "proofread"
     case validate = "validate"
     
     static let all: [Command] = [
         .initialize,
         .refresh,
+        .proofread,
         .validate,
         ]
     
@@ -52,6 +54,8 @@ enum Command: String, Comparable, CustomStringConvertible, LosslessStringConvert
             runInitialize(andExit: shouldExit)
         case .refresh:
             runRefresh(andExit: shouldExit)
+        case .proofread:
+            let _ = runProofread(andExit: shouldExit)
         case .validate:
             runValidate(andExit: shouldExit)
         }

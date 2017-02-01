@@ -154,7 +154,7 @@ struct FileSyntax {
             "Malformed header in \(file.path.filename):",
             "",
             "",
-            markup,
+            "“" + markup + "”",
             "",
             "",
             "This may indicate a bug in Workspace.",

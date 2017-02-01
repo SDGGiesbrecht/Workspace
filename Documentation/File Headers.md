@@ -13,7 +13,7 @@
 
 # File Headers
 
-Workspace can keep all the file headers in a project uniform and up‐to‐date.
+Workspace can keep all the file headers in a project uniform and up to date.
 
 This is controlled by the [configuration](Configuring Workspace.md) option `Manage File Headers`. The [default](Responsibilities.md#default-vs-automatic) value is `False`. The [automatic](Responsibilities.md#default-vs-automatic) value is `True`.
 

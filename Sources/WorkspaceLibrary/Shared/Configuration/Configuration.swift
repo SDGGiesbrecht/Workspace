@@ -278,6 +278,7 @@ struct Configuration {
     
     // MARK: - Settings
     
+    static let noValue = "[_None_]"
     static func optionIsDefined(_ option: Option) -> Bool {
         return configurationFile[option] ≠ nil
     }
@@ -313,7 +314,24 @@ struct Configuration {
         if let result = configurationFile[option] {
             return result
         } else {
-            return option.defaultValue
+            if option.defaultValue ≠ Configuration.noValue {
+                return option.defaultValue
+            } else {
+                fatalError(message: [
+                    "Missing configuration option:",
+                    "",
+                    option.key,
+                    ])
+            }
+        }
+    }
+    
+    private static func possibleStringValue(option: Option) -> String? {
+        let result = stringValue(option: option)
+        if result ≠ Configuration.noValue {
+            return result
+        } else {
+            return nil
         }
     }
     
@@ -367,6 +385,9 @@ struct Configuration {
     }
     static var fileHeader: String {
         return stringValue(option: .fileHeader)
+    }
+    static var author: String {
+        return stringValue(option: .author)
     }
     
     static var manageXcode: Bool {

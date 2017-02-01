@@ -109,7 +109,7 @@ enum Option: String, CustomStringConvertible {
                 ])
             return join(lines: defaultHeader)
         case .author:
-            return "John Doe"
+            return Configuration.noValue
             
         case .manageXcode:
             return Configuration.falseOptionValue

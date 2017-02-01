@@ -15,7 +15,7 @@ import SDGLogic
 
 struct FileHeaders {
     
-    static func copyright(fromHeader header: String) -> String {
+    private static func copyright(fromHeader header: String) -> String {
         
         var oldStartDate: String?
         for symbol in ["©", "(C)", "(c)"] {
@@ -46,6 +46,16 @@ struct FileHeaders {
         return copyright
     }
     
+    private static func insertAuthor(intoHeader header: inout String) {
+        
+        let authorKey = "Author"
+        
+        if header.contains(authorKey) {
+            
+            header = header.replacingOccurrences(of: authorKey, with: Configuration.author)
+        }
+    }
+    
     static func refreshFileHeaders() {
         
         let template = Configuration.fileHeader
@@ -70,6 +80,8 @@ struct FileHeaders {
                 header = header.replacingOccurrences(of: key("Filename"), with: path.filename)
                 header = header.replacingOccurrences(of: key("Project"), with: Configuration.projectName)
                 header = header.replacingOccurrences(of: key("Copyright"), with: FileHeaders.copyright(fromHeader: oldHeader))
+                insertAuthor(intoHeader: &header)
+                
                 
                 file.header = header
                 require() { try file.write() }

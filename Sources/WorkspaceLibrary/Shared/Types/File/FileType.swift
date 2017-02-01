@@ -108,6 +108,7 @@ enum FileType: CustomStringConvertible {
         
         // Repository
         (".gitignore", .gitignore),
+        (".gitattributes", .gitignore),
         
         // Scripts
         (".sh", .shell),

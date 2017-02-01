@@ -13,7 +13,16 @@ struct FileHeaders {
     
     static func refreshFileHeaders() {
         
+        let template = Configuration.fileHeader
         
+        for path in Repository.trackedFiles {
+            
+            var file = require() { try File(at: path) }
+            
+            file.header = template
+            
+            require() { try file.write() }
+        }
     }
     
 }

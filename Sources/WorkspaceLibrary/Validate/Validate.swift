@@ -88,6 +88,12 @@ func runValidate(andExit shouldExit: Bool) {
         
         func runUnitTestsInXcode(buildOnly: Bool, operatingSystemName: String, deviceKey: String) {
             
+            var buildOnly = buildOnly
+            if Environment.isInContinuousIntegration {
+                // [_Workaround: Travis CI cannot start the simulator this way._]
+                buildOnly = true
+            }
+            
             printTestHeader(buildOnly: buildOnly, operatingSystemName: operatingSystemName)
             
             let devices = cachedResult(cache: &deviceList) {

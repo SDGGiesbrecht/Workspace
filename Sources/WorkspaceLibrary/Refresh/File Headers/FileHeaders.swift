@@ -15,7 +15,12 @@ struct FileHeaders {
         
         let template = Configuration.fileHeader
         
-        for path in Repository.sourceFiles {
+        let workspaceFiles: Set<String> = [
+            "Refresh Workspace (macOS).command",
+            "Refresh Workspace (Linux).sh",
+        ]
+        
+        for path in Repository.sourceFiles.filter({ workspaceFiles.contains($0.string) }) {
             
             if let _ = FileType(filePath: path)?.syntax {
                 

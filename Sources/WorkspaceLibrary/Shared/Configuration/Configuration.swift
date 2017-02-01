@@ -321,6 +321,10 @@ struct Configuration {
                     "Missing configuration option:",
                     "",
                     option.key,
+                    "",
+                    "Detected options:",
+                    "",
+                    join(lines: configurationFile.keys.map({ $0.key }).sorted()),
                     ])
             }
         }

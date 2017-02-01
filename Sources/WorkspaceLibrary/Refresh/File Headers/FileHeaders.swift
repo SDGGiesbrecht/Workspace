@@ -17,12 +17,14 @@ struct FileHeaders {
         
         for path in Repository.trackedFiles {
             
-            var file = require() { try File(at: path) }
-            
-            file.header = template
-            
-            require() { try file.write() }
+            if let _ = FileType(filePath: path)?.syntax {
+                
+                var file = require() { try File(at: path) }
+                    
+                file.header = template
+                
+                require() { try file.write() }
+            }
         }
     }
-    
 }

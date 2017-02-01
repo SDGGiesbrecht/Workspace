@@ -73,6 +73,11 @@ func printWarning(_ message: [String]) {
     
 }
 private func outputWarnings() {
+    
+    if let fileTypeWarning = FileType.unsupportedTypesWarning {
+        printWarning(fileTypeWarning)
+    }
+    
     for warning in warnings {
         print(warning, in: .yellow, spaced: true)
     }

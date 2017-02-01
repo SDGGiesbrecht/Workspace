@@ -127,7 +127,7 @@ struct File {
     
     func fatalFileTypeError() -> Never {
         fatalError(message: [
-            "Unsupported filetype:",
+            "Unsupported file type:",
             path.string,
             "",
             "This may indicate a bug in Workspace.",

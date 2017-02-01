@@ -34,6 +34,8 @@ enum Option: String, CustomStringConvertible {
     
     case manageXcode = "Manage Xcode"
     
+    case ignoreFileTypes = "Ignore File Types"
+    
     // Testing Workspace
     case nestedTest = "Nested Test"
     case testOption = "Test Option"
@@ -41,6 +43,8 @@ enum Option: String, CustomStringConvertible {
     
     static let allPublic: [Option] = [
         .automaticallyTakeOnNewResponsibilites,
+
+        .ignoreFileTypes,
         
         .supportMacOS,
         .supportLinux,
@@ -54,6 +58,8 @@ enum Option: String, CustomStringConvertible {
         .fileHeader,
         
         .manageXcode,
+        
+        .ignoreFileTypes,
     ]
     
     // MARK: - Properties
@@ -96,6 +102,9 @@ enum Option: String, CustomStringConvertible {
             
         case .manageXcode:
             return Configuration.falseOptionValue
+            
+        case .ignoreFileTypes:
+            return ""
             
             // Tests
         case .nestedTest:

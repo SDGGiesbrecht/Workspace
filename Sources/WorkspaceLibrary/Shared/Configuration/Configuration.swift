@@ -317,6 +317,17 @@ struct Configuration {
         }
     }
     
+    private static func listValue(option: Option) -> [String] {
+        
+        let string = stringValue(option: option)
+        
+        if string == "" {
+            return []
+        } else {
+            return string.linesArray
+        }
+    }
+    
     // Workspace Behaviour
     
     static var automaticallyTakeOnNewResponsibilites: Bool {
@@ -360,6 +371,12 @@ struct Configuration {
     
     static var manageXcode: Bool {
         return booleanValue(option: .manageXcode)
+    }
+    
+    // Miscellaneous
+    
+    static var ignoreFileTypes: Set<String> {
+        return Set(listValue(option: .ignoreFileTypes))
     }
     
     // Testing

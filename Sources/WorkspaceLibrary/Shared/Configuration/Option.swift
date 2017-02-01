@@ -93,9 +93,9 @@ enum Option: String, CustomStringConvertible {
             return join(lines: [
                 "[_Filename_]",
                 "",
-                "This source file is part of the [_Project Name_] project.",
+                "This source file is part of the [_Project_] project.",
                 "",
-                "Copyright [_Copyright_] [_Author_] and the [_Project Name_] project contributors.",
+                "Copyright [_Copyright_] [_Author_] and the [_Project_] project contributors.",
                 "",
                 "[_Licence Information_]",
                 ])

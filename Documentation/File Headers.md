@@ -52,8 +52,9 @@ becomes:
 
 The available dynamic elements are:
 
-- `Filename`: the name of the particular file, e.g. `Package.swift`.
-- `Project Name`: the name of the particular project, e.g. `MyLibrary`.
+- `Filename`: the name of the particular file. e.g. `Package.swift`
+- `Project`: the name of the particular project. e.g. `MyLibrary`
+- `Copyright`: the file’s copyright date(s). e.g. `©2016–2017` More information [below](#copyright).
 
 Dynamic elements can be especially useful when they are combined with [configuration sharing](Configuring Workspace.md#sharing-configurations-between-projects).
 
@@ -97,3 +98,13 @@ In shell scripts, the shebang line precedes the header and is not part of it.
 
 # This is a header
 ```
+
+## Copyright
+
+With the dynamic element `Copyright`, Workspace can keep the copyright notices in file headers up to date.
+
+### Determination of the Dates
+
+Workspace uses any pre‐existing start date if it can detect one already in the file header. Workspace searches for `©`, `(C)`, or `(c)` followed by an optional space and four digits. If none is found, Workspace will use the current date as the start date.
+
+Workspace always uses the current date as the end date.

@@ -9,6 +9,8 @@
 // Licensed under the Apache License, Version 2.0
 // See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
+import SDGLogic
+
 struct FileHeaders {
     
     static func refreshFileHeaders() {
@@ -20,7 +22,7 @@ struct FileHeaders {
             "Refresh Workspace (Linux).sh",
         ]
         
-        for path in Repository.sourceFiles.filter({ workspaceFiles.contains($0.string) }) {
+        for path in Repository.sourceFiles.filter({ ¬workspaceFiles.contains($0.string) }) {
             
             if let _ = FileType(filePath: path)?.syntax {
                 

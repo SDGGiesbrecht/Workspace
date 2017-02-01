@@ -36,13 +36,11 @@ Workspace considers any comment that starts a file to be a file header, with the
 A file header may be a single block comment:
 
 ```swift
-
 /*
  This is a header.
  This is more of the same header.
  */
 /* This is not part of the header. */
-
 ```
 
 Alternatively, a file header may be a continous sequence of line comments:

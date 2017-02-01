@@ -151,7 +151,7 @@ struct FileSyntax {
         }
         
         fatalError(message: [
-            "Malformed header:",
+            "Malformed header in \(file.path.filename):",
             "",
             "",
             markup,

@@ -52,10 +52,11 @@ becomes:
 
 The available dynamic elements are:
 
-- `Filename`: the name of the particular file. e.g. `Package.swift`
-- `Project`: the name of the particular project. e.g. `MyLibrary`
-- `Copyright`: the file’s copyright date(s). e.g. `©2016–2017` More information [below](#copyright).
-- `Author`: the value of the configuration option `Author`, e.g. `John Doe`
+- `Filename`: The name of the particular file. e.g. `Package.swift`
+- `Project`: The name of the particular project. e.g. `MyLibrary`
+- `Copyright`: The file’s copyright date(s). e.g. `©2016–2017` More information [below](#copyright).
+- `Author`: The value of the configuration option `Author`, e.g. `John Doe`
+- `Licence`: The notice for the project’s [licence](Licence.md).
 
 Dynamic elements can be especially useful when they are combined with [configuration sharing](Configuring Workspace.md#sharing-configurations-between-projects).
 

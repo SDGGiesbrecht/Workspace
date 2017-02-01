@@ -32,6 +32,7 @@ enum Option: String, CustomStringConvertible {
     case manageFileHeaders = "Manage File Headers"
     case fileHeader = "File Header"
     case author = "Author"
+    case licence = "Licence"
     
     case manageXcode = "Manage Xcode"
     
@@ -58,6 +59,7 @@ enum Option: String, CustomStringConvertible {
         .manageFileHeaders,
         .fileHeader,
         .author,
+        .licence,
         
         .manageXcode,
         
@@ -103,10 +105,12 @@ enum Option: String, CustomStringConvertible {
             } else {
                 defaultHeader.append("Copyright [_Copyright_] the [_Project_] project contributors.")
             }
-            defaultHeader.append(contentsOf: [
-                "",
-                "[_Licence Information_]",
-                ])
+            if Configuration.optionIsDefined(.licence) {
+                defaultHeader.append(contentsOf: [
+                    "",
+                    "[_Licence Information_]",
+                    ])
+            }
             return join(lines: defaultHeader)
         case .author:
             return Configuration.noValue

@@ -15,7 +15,7 @@ struct FileHeaders {
         
         let template = Configuration.fileHeader
         
-        for path in Repository.trackedFiles {
+        for path in Repository.sourceFiles {
             
             if let _ = FileType(filePath: path)?.syntax {
                 

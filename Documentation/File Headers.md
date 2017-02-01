@@ -27,6 +27,33 @@ A file header is a commented section at the top of each file in a project. Typic
 
 The file header can be customized by defining a template with the `File Header` [configuration](Configuring Workspace.md) option.
 
+There are several dynamic elements available for the file header template. Dynamic elements can be used by placing the element’s key inside `[_` and `_]` at the desired location.
+
+For example:
+
+```
+[_Begin Manage File Headers_]
+[_Filename_]
+
+Copyright [_Copyright_] John Doe.
+[_End_]
+
+```
+
+becomes:
+
+```swift
+/*
+ Package.swift
+
+ Copyright ©2017 John Doe.
+ */
+```
+
+The available dynamic elements are:
+
+- `[_Filename_]` the name of the particular file, e.g. `Package.swift`.
+
 ## Precise Definition of a File Header
 
 Because Workspace overwrites existing file headers, it is important to know how Workspace identifies them.

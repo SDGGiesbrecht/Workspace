@@ -27,9 +27,11 @@ struct FileHeaders {
             if let _ = FileType(filePath: path)?.syntax {
                 
                 var file = require() { try File(at: path) }
-                    
-                file.header = template
+                var header = template
                 
+                header = header.replacingOccurrences(of: "[_Filename_]", with: path.filename)
+                
+                file.header = header
                 require() { try file.write() }
             }
         }

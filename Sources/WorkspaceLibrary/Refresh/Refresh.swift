@@ -95,6 +95,14 @@ func runRefresh(andExit shouldExit: Bool) {
         ContinuousIntegration.refreshContinuousIntegrationConfiguration()
     }
     
+    if Configuration.manageFileHeaders {
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        printHeader(["Updating file headers..."])
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        
+        FileHeaders.refreshFileHeaders()
+    }
+    
     if Configuration.manageXcode ∧ Environment.operatingSystem == .macOS {
         
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

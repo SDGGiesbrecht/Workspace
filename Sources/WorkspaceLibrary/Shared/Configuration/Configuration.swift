@@ -309,6 +309,14 @@ struct Configuration {
         }
     }
     
+    private static func stringValue(option: Option) -> String {
+        if let result = configurationFile[option] {
+            return result
+        } else {
+            return option.defaultValue
+        }
+    }
+    
     // Workspace Behaviour
     
     static var automaticallyTakeOnNewResponsibilites: Bool {
@@ -339,12 +347,19 @@ struct Configuration {
     
     // Responsibilities
     
-    static var manageXcode: Bool {
-        return booleanValue(option: .manageXcode)
-    }
-    
     static var manageContinuousIntegration: Bool {
         return booleanValue(option: .manageContinuousIntegration)
+    }
+    
+    static var manageFileHeaders: Bool {
+        return booleanValue(option: .manageFileHeaders)
+    }
+    static var fileHeader: String {
+        return stringValue(option: .fileHeader)
+    }
+    
+    static var manageXcode: Bool {
+        return booleanValue(option: .manageXcode)
     }
     
     // Testing

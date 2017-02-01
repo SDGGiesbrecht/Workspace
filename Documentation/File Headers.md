@@ -52,7 +52,10 @@ becomes:
 
 The available dynamic elements are:
 
-- `[_Filename_]` the name of the particular file, e.g. `Package.swift`.
+- `Filename`: the name of the particular file, e.g. `Package.swift`.
+- `Project Name`: the name of the particular project, e.g. `MyLibrary`.
+
+Dynamic elements can be especially useful when they are combined with [configuration sharing](Configuring Workspace.md#sharing-configurations-between-projects).
 
 ## Precise Definition of a File Header
 

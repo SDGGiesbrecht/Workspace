@@ -20,7 +20,7 @@ struct FileHeaders {
         let workspaceFiles: Set<String> = [
             "Refresh Workspace (macOS).command",
             "Refresh Workspace (Linux).sh",
-        ]
+            ]
         
         for path in Repository.sourceFiles.filter({ ¬workspaceFiles.contains($0.string) }) {
             
@@ -29,7 +29,12 @@ struct FileHeaders {
                 var file = require() { try File(at: path) }
                 var header = template
                 
-                header = header.replacingOccurrences(of: "[_Filename_]", with: path.filename)
+                func key(_ name: String) -> String {
+                    return "[_\(name)_]"
+                }
+                
+                header = header.replacingOccurrences(of: key("Filename"), with: path.filename)
+                header = header.replacingOccurrences(of: key("Project Name"), with: Configuration.projectName)
                 
                 file.header = header
                 require() { try file.write() }

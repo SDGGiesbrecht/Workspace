@@ -25,5 +25,3 @@ jpg
 mp3
 [_End_]
 ```
-
-**Note that file types entered in `Ignore File Types` will continue to be ignored even if Workspace adds support for them later.**

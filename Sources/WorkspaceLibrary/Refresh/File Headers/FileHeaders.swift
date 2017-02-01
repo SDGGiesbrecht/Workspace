@@ -46,19 +46,17 @@ struct FileHeaders {
         return copyright
     }
     
-    private static func insertAuthor(intoHeader header: inout String) {
-        
-        let authorKey = "Author"
-        
-        if header.contains(authorKey) {
-            
-            header = header.replacingOccurrences(of: authorKey, with: Configuration.author)
-        }
-    }
-    
     static func refreshFileHeaders() {
         
+        func key(_ name: String) -> String {
+            return "[_\(name)_]"
+        }
+        
         let template = Configuration.fileHeader
+        var possibleAuthor: String?
+        if template.contains(key("Author")) {
+            possibleAuthor = Configuration.author
+        }
         
         let workspaceFiles: Set<String> = [
             "Refresh Workspace (macOS).command",
@@ -73,14 +71,12 @@ struct FileHeaders {
                 let oldHeader = file.header
                 var header = template
                 
-                func key(_ name: String) -> String {
-                    return "[_\(name)_]"
-                }
-                
                 header = header.replacingOccurrences(of: key("Filename"), with: path.filename)
                 header = header.replacingOccurrences(of: key("Project"), with: Configuration.projectName)
                 header = header.replacingOccurrences(of: key("Copyright"), with: FileHeaders.copyright(fromHeader: oldHeader))
-                insertAuthor(intoHeader: &header)
+                if let author = possibleAuthor {
+                    header = header.replacingOccurrences(of: key("Author"), with: author)
+                }
                 
                 
                 file.header = header

@@ -28,6 +28,10 @@ enum Option: String, CustomStringConvertible {
     case supportTVOS = "Support tvOS"
     
     case manageContinuousIntegration = "Manage Continuous Integration"
+    
+    case manageFileHeaders = "Manage File Headers"
+    case fileHeader = "File Header"
+    
     case manageXcode = "Manage Xcode"
     
     // Testing Workspace
@@ -45,6 +49,10 @@ enum Option: String, CustomStringConvertible {
         .supportTVOS,
         
         .manageContinuousIntegration,
+        
+        .manageFileHeaders,
+        .fileHeader,
+        
         .manageXcode,
     ]
     
@@ -72,6 +80,20 @@ enum Option: String, CustomStringConvertible {
             
         case .manageContinuousIntegration:
             return Configuration.falseOptionValue
+            
+        case .manageFileHeaders:
+            return Configuration.falseOptionValue
+        case .fileHeader:
+            return join(lines: [
+                "[_Filename_]",
+                "",
+                "This source file is part of the [_Project Name_] project.",
+                "",
+                "Copyright [_Copyright_] [_Author_] and the [_Project Name_] project contributors.",
+                "",
+                "[_Licence Information_]",
+                ])
+            
         case .manageXcode:
             return Configuration.falseOptionValue
             
@@ -88,6 +110,7 @@ enum Option: String, CustomStringConvertible {
     static let automaticResponsibilityDocumentationPage = DocumentationLink.responsibilities
     static let automaticRepsonsibilities: [(option: Option, automaticValue: String, documentationPage: DocumentationLink)] = [
         (.manageContinuousIntegration, automaticValue: Configuration.trueOptionValue, DocumentationLink.continuousIntegration),
+        (.manageFileHeaders, automaticValue: Configuration.trueOptionValue, DocumentationLink.fileHeaders),
         (.manageXcode, automaticValue: Configuration.trueOptionValue, DocumentationLink.xcode),
     ]
     

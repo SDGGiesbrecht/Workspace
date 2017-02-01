@@ -27,8 +27,8 @@ enum Option: String, CustomStringConvertible {
     case supportWatchOS = "Support watchOS"
     case supportTVOS = "Support tvOS"
     
-    case manageXcode = "Manage Xcode"
     case manageContinuousIntegration = "Manage Continuous Integration"
+    case manageXcode = "Manage Xcode"
     
     // Testing Workspace
     case nestedTest = "Nested Test"
@@ -44,8 +44,8 @@ enum Option: String, CustomStringConvertible {
         .supportWatchOS,
         .supportTVOS,
         
-        .manageXcode,
         .manageContinuousIntegration,
+        .manageXcode,
     ]
     
     // MARK: - Properties
@@ -70,9 +70,9 @@ enum Option: String, CustomStringConvertible {
         case .supportTVOS:
             return Configuration.trueOptionValue
             
-        case .manageXcode:
-            return Configuration.falseOptionValue
         case .manageContinuousIntegration:
+            return Configuration.falseOptionValue
+        case .manageXcode:
             return Configuration.falseOptionValue
             
             // Tests
@@ -87,8 +87,8 @@ enum Option: String, CustomStringConvertible {
     
     static let automaticResponsibilityDocumentationPage = DocumentationLink.responsibilities
     static let automaticRepsonsibilities: [(option: Option, automaticValue: String, documentationPage: DocumentationLink)] = [
+        (.manageContinuousIntegration, automaticValue: Configuration.trueOptionValue, DocumentationLink.continuousIntegration),
         (.manageXcode, automaticValue: Configuration.trueOptionValue, DocumentationLink.xcode),
-        (.manageContinuousIntegration, automaticValue: Configuration.trueOptionValue, DocumentationLink.continuousIntegration)
     ]
     
     // MARK: - CustomStringConvertible

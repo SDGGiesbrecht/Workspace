@@ -337,12 +337,12 @@ struct Configuration {
     }
     
     private static func possibleStringValue(option: Option) -> String? {
-        let result = stringValue(option: option)
-        if result ≠ Configuration.noValue {
-            return result
-        } else {
-            return nil
+        if let result = configurationFile[option] {
+            if result ≠ Configuration.noValue {
+                return result
+            }
         }
+        return nil
     }
     
     private static func listValue(option: Option) -> [String] {

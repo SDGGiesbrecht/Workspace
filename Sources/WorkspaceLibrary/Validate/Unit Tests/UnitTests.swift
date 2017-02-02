@@ -183,7 +183,7 @@ struct UnitTests {
                 // [_Workaround: xcodebuild hangs on first attempt for iOS._]
                 if operatingSystemName == "iphoneos" {
                     let _ = bash(generateScript(buildOnly: true), silent: true, triggerOnly: true)
-                    sleep(5)
+                    sleep(10)
                 }
                 
                 return runUnitTests(buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: generateScript(buildOnly: buildOnly))

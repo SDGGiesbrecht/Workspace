@@ -183,7 +183,7 @@ struct UnitTests {
                 
                 // iOS
                 
-                runUnitTestsInXcode(buildOnly: false, operatingSystemName: "iOS", sdk: "iphoneos10.1", deviceKey: "iPhone 7")
+                runUnitTestsInXcode(buildOnly: false, operatingSystemName: "iOS", sdk: "iphoneos", deviceKey: "iPhone 7")
             }
             
             if Configuration.supportWatchOS {

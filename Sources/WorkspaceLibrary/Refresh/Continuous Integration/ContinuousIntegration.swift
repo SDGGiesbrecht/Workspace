@@ -61,7 +61,7 @@ struct ContinuousIntegration {
             updatedLines.append(contentsOf: [
                 "    - os: osx",
                 "      env:",
-                "        -\(continuousIntegrationJobKey)=\u{22}macOS & Misc.\u{22}",
+                "        - \(continuousIntegrationJobKey)=\u{22}macOS & Misc.\u{22}",
                 "      osx_image: xcode8.2",
                 "      script:",
                 runRefreshWorkspace,

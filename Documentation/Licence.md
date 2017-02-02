@@ -24,8 +24,5 @@ For the short notices in [file headers](File Headers.md), `Manage Licence` is no
 A particular licence can be selected with the [configuration](Configuring Workspace.md) option `Licence`. Possible values are:
 
 - `Apache 2.0` (Swift itself is under this licence.)
-- `Custom` (see [below](#custom-licences))
 
-Know of a common licence that is not yet directly supported? [Request it.](https://github.com/SDGGiesbrecht/Workspace/issues)
-
-### Custom Licences
+Know of a common licence that is not yet supported? [Request it.](https://github.com/SDGGiesbrecht/Workspace/issues)

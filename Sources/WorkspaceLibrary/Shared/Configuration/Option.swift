@@ -91,7 +91,7 @@ enum Option: String, CustomStringConvertible {
             return Configuration.trueOptionValue
             
         case .manageLicence:
-            return Configuration.noValue
+            return Configuration.falseOptionValue
         case .licence:
             return Configuration.noValue
             
@@ -130,7 +130,7 @@ enum Option: String, CustomStringConvertible {
             
             // Tests
         case .nestedTest:
-            return "False"
+            return Configuration.falseOptionValue
         case .testOption:
             return "Default Value"
         case .testLongOption:
@@ -140,7 +140,7 @@ enum Option: String, CustomStringConvertible {
     
     static let automaticResponsibilityDocumentationPage = DocumentationLink.responsibilities
     static let automaticRepsonsibilities: [(option: Option, automaticValue: String, documentationPage: DocumentationLink)] = [
-        (.manageLicence, automaticValue: Configuration.trueOptionValue, DocumentationLink.fileHeaders),
+        (.manageLicence, automaticValue: Configuration.trueOptionValue, DocumentationLink.licence),
         (.manageXcode, automaticValue: Configuration.trueOptionValue, DocumentationLink.xcode),
         (.manageFileHeaders, automaticValue: Configuration.trueOptionValue, DocumentationLink.fileHeaders),
         (.manageContinuousIntegration, automaticValue: Configuration.trueOptionValue, DocumentationLink.continuousIntegration),

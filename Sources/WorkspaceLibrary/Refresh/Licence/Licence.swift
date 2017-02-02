@@ -13,7 +13,7 @@ enum Licence: String {
     
     // MARK: - Cases
     
-    case Apache2_0 = "Apache 2.0"
+    case apache2_0 = "Apache 2.0"
     
     // MARK: - Properties
     
@@ -28,7 +28,7 @@ enum Licence: String {
     static let licenceFolder = "Resources/Licences"
     
     private func licenceData(fileExtension: String) -> String {
-
+        
         let licenceDirectory = Repository.workspaceDirectory.subfolderOrFile(Licence.licenceFolder)
         let path = licenceDirectory.subfolderOrFile("\(filenameWithoutExtension).\(fileExtension)")
         let file = require() { try File(at: path) }
@@ -44,7 +44,17 @@ enum Licence: String {
         return licenceData(fileExtension: "md")
     }
     
+    private var noticeLines: [String] {
+        switch self {
+        case .apache2_0:
+            return [
+                "Licensed under the Apache Licence, Version 2.0",
+                "See http://www.apache.org/licenses/LICENSE-2.0 for licence information.",
+            ]
+        }
+    }
+    
     var notice: String {
-        return licenceData(fileExtension: ".txt")
+        return join(lines: noticeLines)
     }
 }

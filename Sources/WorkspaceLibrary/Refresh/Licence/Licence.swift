@@ -86,5 +86,8 @@ enum Licence: String {
         var file = File(possiblyAt: RelativePath("LICENSE.md"))
         file.contents = text
         require() { try file.write() }
+        
+        // Delete alternate licence files to prevent duplicates.
+        force() { try Repository.delete(RelativePath("LICENSE.txt")) }
     }
 }

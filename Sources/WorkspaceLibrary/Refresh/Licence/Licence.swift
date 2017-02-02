@@ -9,6 +9,8 @@
 // Licensed under the Apache License, Version 2.0
 // See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
+import SDGLogic
+
 enum Licence: String {
     
     // MARK: - Initialization
@@ -66,5 +68,23 @@ enum Licence: String {
     
     var notice: String {
         return join(lines: noticeLines)
+    }
+    
+    // MARK: - Licence Management
+    
+    private static var havePrintedWarning = false
+    static func refreshLicence() {
+        
+        guard let licence = Configuration.licence else {
+            
+            // Fails later in validation phase.
+            
+            return
+        }
+        
+        let text = licence.text
+        var file = File(possiblyAt: RelativePath("LICENSE.md"))
+        file.contents = text
+        require() { try file.write() }
     }
 }

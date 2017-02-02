@@ -17,12 +17,7 @@ struct ContinuousIntegration {
         
         let travisConfigurationPath = RelativePath(".travis.yml")
         
-        var travisConfiguration: File
-        if Repository.trackedFiles.contains(travisConfigurationPath) {
-            travisConfiguration = require() { try File(at: travisConfigurationPath) }
-        } else {
-            travisConfiguration = File(newAt: travisConfigurationPath)
-        }
+        var travisConfiguration = File(possiblyAt: travisConfigurationPath)
         
         let managementWarning = File.managmentWarning(section: false, documentation: .continuousIntegration)
         let managementComment = FileType.yaml.syntax.comment(contents: managementWarning)

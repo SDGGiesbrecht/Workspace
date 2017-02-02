@@ -85,7 +85,7 @@ func runInitialize(andExit shouldExit: Bool) {
         
         require() { try Repository.delete(RelativePath("Sources/\(projectName)")) }
         
-        var program = File(newAt: RelativePath("Sources/\(libraryName)/Program.swift"))
+        var program = File(possiblyAt: RelativePath("Sources/\(libraryName)/Program.swift"))
         program.body = join(lines: [
             "/// :nodoc:",
             "public func run() {",
@@ -103,7 +103,7 @@ func runInitialize(andExit shouldExit: Bool) {
         
         require() { try program.write() }
         
-        var main = File(newAt: RelativePath("Sources/\(executableName)/main.swift"))
+        var main = File(possiblyAt: RelativePath("Sources/\(executableName)/main.swift"))
         main.body = join(lines: [
             "import \(libraryName)",
             "",
@@ -143,7 +143,7 @@ func runInitialize(andExit shouldExit: Bool) {
     printHeader(["Configuring Workspace..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
-    var configuration = File(newAt: Configuration.configurationFilePath)
+    var configuration = File(possiblyAt: Configuration.configurationFilePath)
     let note: [String]? = [
         "This is the default setting when the Workspace initializes projects.",
         "For more information about “\(Option.automaticallyTakeOnNewResponsibilites)”, see:",

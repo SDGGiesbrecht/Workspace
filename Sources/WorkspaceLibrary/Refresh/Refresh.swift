@@ -87,6 +87,15 @@ func runRefresh(andExit shouldExit: Bool) {
     
     Git.refreshGitIgnore()
     
+    if Configuration.manageLicence {
+        
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        printHeader(["Updating licence..."])
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        
+        Licence.refreshLicence()
+    }
+    
     if Configuration.manageContinuousIntegration {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         printHeader(["Updating continuous integration configuration..."])

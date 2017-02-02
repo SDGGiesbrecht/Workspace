@@ -48,7 +48,7 @@ struct Configuration {
                     "Found no configuration file.",
                     "Following the default configuration."
                     ])
-                return File(newAt: configurationFilePath)
+                return File(possiblyAt: configurationFilePath)
             }
         }
     }

@@ -32,12 +32,6 @@ cd "${0%/*}"
 WORKSPACE=".Workspace"
 if [ ! -d "${WORKSPACE}" ]; then
     git clone https://github.com/SDGGiesbrecht/Workspace "${WORKSPACE}"
-
-    # To test the continuous integration behaviour of a development branch of Workspace, uncomment the following four lines before committing a test project (but after running Validate Changes).
-    #BRANCH="branch-name"
-    #cd "${WORKSPACE}"
-    #git checkout -b "${BRANCH}" "origin/${BRANCH}"
-    #cd ..
 fi
 
 # Update Workspace.

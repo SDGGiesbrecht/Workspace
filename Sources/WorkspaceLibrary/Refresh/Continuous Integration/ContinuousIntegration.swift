@@ -13,10 +13,13 @@ import SDGLogic
 
 struct ContinuousIntegration {
     
-    static let continuousIntegrationJobKey = "JOB"
-    static let continuousIntegrationIOSJob = "iOS"
-    static let continuousIntegrationWatchOSJob = "watchOS"
-    static let continuousIntegrationTVOSJob = "tvOS"
+    static let jobKey = "JOB"
+    static let macOSJob = "macOS"
+    static let linuxJob = "Linux"
+    static let iOSJob = "iOS"
+    static let watchOSJob = "watchOS"
+    static let tvOSJob = "tvOS"
+    static let miscellaneousJob = "Misc."
     
     static func refreshContinuousIntegrationConfiguration() {
         
@@ -57,12 +60,12 @@ struct ContinuousIntegration {
         let runRefreshWorkspace = runWorkspaceScript("Refresh Workspace")
         let runValidateChanges = runWorkspaceScript("Validate Changes")
         
-        if Configuration.supportMacOS ∨ Configuration.supportIOS ∨ Configuration.supportWatchOS ∨ Configuration.supportTVOS {
+        if Configuration.supportMacOS {
             
             updatedLines.append(contentsOf: [
                 "    - os: osx",
                 "      env:",
-                "        - \(continuousIntegrationJobKey)=\u{22}macOS & Misc.\u{22}",
+                "        - \(jobKey)=\u{22}\(macOSJob)\u{22}",
                 "      osx_image: xcode8.2",
                 "      script:",
                 runRefreshWorkspace,
@@ -76,7 +79,7 @@ struct ContinuousIntegration {
             "    - os: linux",
             "      dist: trusty",
             "      env:",
-            "        - \(continuousIntegrationJobKey)=\u{22}Linux & Misc.\u{22}",
+            "        - \(jobKey)=\u{22}\(linuxJob)\u{22}",
             "        - SWIFT_VERSION=3.0.2",
             "      script:",
             runCommand("eval \u{22}$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\u{22}"),
@@ -89,7 +92,7 @@ struct ContinuousIntegration {
             updatedLines.append(contentsOf: [
                 "    - os: osx",
                 "      env:",
-                "        - \(continuousIntegrationJobKey)=\u{22}\(name)\u{22}",
+                "        - \(jobKey)=\u{22}\(name)\u{22}",
                 "      osx_image: xcode8.2",
                 "      language: objective-c",
                 "      xcode_sdk: \(sdk)",
@@ -101,18 +104,30 @@ struct ContinuousIntegration {
         
         if Configuration.supportIOS {
             
-            addPortableOSJob(name: continuousIntegrationIOSJob, sdk: "iphonesimulator")
+            addPortableOSJob(name: iOSJob, sdk: "iphonesimulator")
         }
         
         if Configuration.supportWatchOS {
             
-            addPortableOSJob(name: continuousIntegrationWatchOSJob, sdk: "watchsimulator")
+            addPortableOSJob(name: watchOSJob, sdk: "watchsimulator")
         }
         
         if Configuration.supportTVOS {
             
-            addPortableOSJob(name: continuousIntegrationTVOSJob, sdk: "appletvsimulator")
+            addPortableOSJob(name: tvOSJob, sdk: "appletvsimulator")
         }
+        
+        updatedLines.append(contentsOf: [
+            "    - os: linux",
+            "      dist: trusty",
+            "      env:",
+            "        - \(jobKey)=\u{22}\(miscellaneousJob)\u{22}",
+            "        - SWIFT_VERSION=3.0.2",
+            "      script:",
+            runCommand("eval \u{22}$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\u{22}"),
+            runRefreshWorkspace,
+            runValidateChanges,
+            ])
         
         let newBody = join(lines: updatedLines)
         travisConfiguration.body = newBody

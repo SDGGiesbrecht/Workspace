@@ -42,6 +42,7 @@ func bash(_ arguments: [String], silent: Bool = false) -> (succeeded: Bool, outp
     
     process.launch()
     process.waitUntilExit()
+    print("Shell returned.")
     
     let data = standardOutput.fileHandleForReading.readDataToEndOfFile()
     let output: String

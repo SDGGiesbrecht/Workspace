@@ -194,7 +194,7 @@ struct UnitTests {
                 
                 // iOS
                 
-                // [_Workaround: xcodebuild hangs on first attempt for iOS._]
+                // [_Workaround: xcodebuild hangs on the first attempt to build for SDK “iphoneos”. Using simulator instead._]
                 runUnitTestsInXcode(buildOnly: false, operatingSystemName: "iOS", sdk: "iphonesimulator", deviceKey: "iPhone 7")
             }
             

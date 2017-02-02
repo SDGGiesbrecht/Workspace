@@ -11,9 +11,19 @@
 
 enum Licence: String {
     
+    // MARK: - Initialization
+    
+    init?(key: String) {
+        self.init(rawValue: key)
+    }
+    
     // MARK: - Cases
     
     case apache2_0 = "Apache 2.0"
+    
+    static let all: [Licence] = [
+        .apache2_0
+    ]
     
     // MARK: - Properties
     

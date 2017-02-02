@@ -283,6 +283,19 @@ struct Configuration {
         return configurationFile[option] ≠ nil
     }
     
+    private static func invalidEnumValue(option: Option, value: String, valid: [String]) -> Never {
+        fatalError(message: [
+            "Invalid option value:",
+            "",
+            "Option: \(option.key)",
+            "Value: \(value)",
+            "",
+            "Valid values:",
+            "",
+            join(lines: valid),
+            ])
+    }
+    
     static let trueOptionValue = "True"
     static let falseOptionValue = "False"
     private static func booleanValue(option: Option) -> Bool {
@@ -293,14 +306,7 @@ struct Configuration {
             case falseOptionValue:
                 return false
             default:
-                fatalError(message: [
-                    "Invalid option value:",
-                    "",
-                    "Option: \(option)",
-                    "Value: \(value)",
-                    "",
-                    "Valid values:",
-                    "",
+                invalidEnumValue(option: option, value: value, valid: [
                     trueOptionValue,
                     falseOptionValue,
                     ])
@@ -380,8 +386,19 @@ struct Configuration {
     
     // Responsibilities
     
-    static var manageContinuousIntegration: Bool {
-        return booleanValue(option: .manageContinuousIntegration)
+    static var manageLicence: Bool {
+        return booleanValue(option: .manageLicence)
+    }
+    static var licence: Licence? {
+        if let key = possibleStringValue(option: .licence) {
+            if let result = Licence(key: key) {
+                return result
+            } else {
+                invalidEnumValue(option: .licence, value: key, valid: Licence.all.map({ $0.key }))
+            }
+        } else {
+            return nil
+        }
     }
     
     static var manageFileHeaders: Bool {
@@ -396,6 +413,10 @@ struct Configuration {
     
     static var manageXcode: Bool {
         return booleanValue(option: .manageXcode)
+    }
+    
+    static var manageContinuousIntegration: Bool {
+        return booleanValue(option: .manageContinuousIntegration)
     }
     
     // Miscellaneous

@@ -143,30 +143,32 @@ struct UnitTests {
                             ])
                     }
                     
-                    // [_Workaround: ↓ Manually launch the simulator to avoid timeouts._]
-                    
-                    let _ = bash(["killall", "Simulator"])
-                    let _ = bash(["open", "-b", "com.apple.iphonesimulator", "--args", "-CurrentDeviceUDID", deviceID])
-                    
-                    var decasecondsToWait: Int?
-                    switch operatingSystemName {
-                    case "iOS":
-                        decasecondsToWait = 12
-                    case "tvOS":
-                        decasecondsToWait = 6
-                    default:
-                        break
-                    }
-                    
-                    if let decaseconds = decasecondsToWait {
-                        print(["Giving the simulator time to boot..."])
-                        for decasecond in (1 ... decaseconds).reversed() {
-                            print(["\(decasecond)0 s..."])
-                            sleep(10)
+                    if ¬Environment.isInContinuousIntegration {
+                        // [_Workaround: ↓ Manually launch the simulator to avoid timeouts._]
+                        
+                        let _ = bash(["killall", "Simulator"])
+                        let _ = bash(["open", "-b", "com.apple.iphonesimulator", "--args", "-CurrentDeviceUDID", deviceID])
+                        
+                        var decasecondsToWait: Int?
+                        switch operatingSystemName {
+                        case "iOS":
+                            decasecondsToWait = 12
+                        case "tvOS":
+                            decasecondsToWait = 6
+                        default:
+                            break
                         }
+                        
+                        if let decaseconds = decasecondsToWait {
+                            print(["Giving the simulator time to boot..."])
+                            for decasecond in (1 ... decaseconds).reversed() {
+                                print(["\(decasecond)0 s..."])
+                                sleep(10)
+                            }
+                        }
+                        
+                        // [_Workaround: ↑ Manually launch the simulator to avoid timeouts._]
                     }
-                    
-                    // [_Workaround: ↑ Manually launch the simulator to avoid timeouts._]
                     
                     flag = "-destination"
                     flagValue = "id=\(deviceID)"

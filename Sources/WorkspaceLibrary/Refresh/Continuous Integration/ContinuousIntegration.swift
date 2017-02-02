@@ -13,6 +13,10 @@ import SDGLogic
 
 struct ContinuousIntegration {
     
+    static let continuousIntegrationJobKey = "JOB"
+    static let continuousIntegrationiOSJob = "iOS"
+    static let continuousIntegrationTVOSJob = "tvOS"
+    
     static func refreshContinuousIntegrationConfiguration() {
         
         let travisConfigurationPath = RelativePath(".travis.yml")
@@ -56,6 +60,8 @@ struct ContinuousIntegration {
             
             updatedLines.append(contentsOf: [
                 "    - os: osx",
+                "      env:",
+                "        -\(continuousIntegrationJobKey)=\u{22}macOS & Misc.\u{22}",
                 "      osx_image: xcode8.2",
                 "      script:",
                 runRefreshWorkspace,
@@ -68,7 +74,9 @@ struct ContinuousIntegration {
             updatedLines.append(contentsOf: [
             "    - os: linux",
             "      dist: trusty",
-            "      env: SWIFT_VERSION=3.0.2",
+            "      env:",
+            "        - \(continuousIntegrationJobKey)=\u{22}Linux & Misc.\u{22}",
+            "        - SWIFT_VERSION=3.0.2",
             "      script:",
             runCommand("eval \u{22}$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\u{22}"),
             runRefreshWorkspace,

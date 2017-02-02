@@ -190,7 +190,7 @@ struct UnitTests {
                 
                 // watchOS
                 
-                runUnitTestsInXcode(buildOnly: true, operatingSystemName: "watchOS", sdk: "watchOS", deviceKey: "Apple Watch Series 2 - 38mm")
+                runUnitTestsInXcode(buildOnly: true, operatingSystemName: "watchos", sdk: "watchOS", deviceKey: "Apple Watch Series 2 - 38mm")
             }
             
             if Configuration.supportTVOS {

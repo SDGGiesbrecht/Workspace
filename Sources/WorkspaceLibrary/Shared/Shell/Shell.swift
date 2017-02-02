@@ -13,7 +13,8 @@ import Foundation
 
 import SDGLogic
 
-func bash(_ arguments: [String], silent: Bool = false) -> (succeeded: Bool, output: String?, exitCode: ExitCode) {
+func bash(_ arguments: [String], silent: Bool = false, triggerOnly: Bool = false) -> (succeeded: Bool, output: String?, exitCode: ExitCode) {
+    // [_Workaround: xcodebuild hangs on first attempt for iOS (triggerOnly)._]
     
     defer {
         Repository.resetCache()
@@ -41,7 +42,10 @@ func bash(_ arguments: [String], silent: Bool = false) -> (succeeded: Bool, outp
     process.arguments = ["-c", argumentsString]
     
     process.launch()
-    process.waitUntilExit()
+    if ¬triggerOnly {
+        // [_Workaround: xcodebuild hangs on first attempt for iOS (triggerOnly)._]
+        process.waitUntilExit()
+    }
     
     let data = standardOutput.fileHandleForReading.readDataToEndOfFile()
     let output: String

@@ -172,11 +172,21 @@ struct UnitTests {
                     flagValue = "id=\(deviceID)"
                 }
                 
-                return runUnitTests(buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: [
-                    "xcodebuild", (buildOnly ? "build" : "test"),
-                    "-scheme", Configuration.projectName,
-                    flag, flagValue
-                    ])
+                func generateScript(buildOnly: Bool) -> [String] {
+                    return [
+                        "xcodebuild", (buildOnly ? "build" : "test"),
+                        "-scheme", Configuration.projectName,
+                        flag, flagValue
+                    ]
+                }
+                
+                // [_Workaround: xcodebuild hangs on first attempt for iOS._]
+                if operatingSystemName == "iphoneos" {
+                    let _ = bash(generateScript(buildOnly: true), silent: true, triggerOnly: true)
+                    sleep(5)
+                }
+                
+                return runUnitTests(buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: generateScript(buildOnly: buildOnly))
             }
             
             if Configuration.supportIOS {

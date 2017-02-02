@@ -63,7 +63,22 @@ struct FileHeaders {
             "Refresh Workspace (Linux).sh",
             ]
         
-        for path in Repository.sourceFiles.filter({ ¬workspaceFiles.contains($0.string) }) {
+        var skippedFiles: Set<String> = workspaceFiles
+        skippedFiles.insert("LICENSE.md")
+        
+        func shouldManageHeader(path: RelativePath) -> Bool {
+            if skippedFiles.contains(path.string) {
+                return false
+            }
+            
+            if Configuration.projectName == "Workspace" ∧ path.string.hasPrefix(Licence.licenceFolder) {
+                return false
+            }
+            
+            return true
+        }
+        
+        for path in Repository.sourceFiles.filter({ shouldManageHeader(path: $0) }) {
             
             if let _ = FileType(filePath: path)?.syntax {
                 

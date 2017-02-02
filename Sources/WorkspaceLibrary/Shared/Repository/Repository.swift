@@ -20,6 +20,7 @@ struct Repository {
     // MARK: - Configuration
     
     static let workspaceDirectory: RelativePath = ".Workspace"
+    static let workspaceResources: RelativePath = workspaceDirectory.subfolderOrFile("Resources")
     private static let linkedRepositories: RelativePath = ".Linked Repositories"
     static let testZone: RelativePath = ".Test Zone"
     

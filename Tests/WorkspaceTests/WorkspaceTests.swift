@@ -641,7 +641,7 @@ class WorkspaceTests: XCTestCase {
             
             // Workspace Project
             "Documentation",
-            "Scripts",
+            "Resources",
             ]
         
         if ¬Environment.isInXcode ∧ ¬Configuration.nestedTest {

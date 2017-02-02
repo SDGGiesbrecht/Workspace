@@ -66,6 +66,7 @@ struct UnitTests {
             func runUnitTestsInXcode(buildOnly: Bool, operatingSystemName: String, sdk: String, deviceKey: String) {
                 
                 var buildOnly = buildOnly
+                // [_Workaround: Commented for testing._]
                 //if Environment.isInContinuousIntegration {
                     // [_Workaround: Travis CI cannot start the simulator this way._]
                     buildOnly = true
@@ -193,7 +194,8 @@ struct UnitTests {
                 
                 // iOS
                 
-                runUnitTestsInXcode(buildOnly: false, operatingSystemName: "iOS", sdk: "iphoneos", deviceKey: "iPhone 7")
+                // [_Workaround: xcodebuild hangs on first attempt for iOS._]
+                runUnitTestsInXcode(buildOnly: false, operatingSystemName: "iOS", sdk: "iphonesimulator", deviceKey: "iPhone 7")
             }
             
             if Configuration.supportWatchOS {

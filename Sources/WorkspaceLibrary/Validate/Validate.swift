@@ -9,6 +9,8 @@
 // Licensed under the Apache License, Version 2.0
 // See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
+import SDGLogic
+
 func runValidate(andExit shouldExit: Bool) {
     
     var overallSuccess = true
@@ -22,11 +24,21 @@ func runValidate(andExit shouldExit: Bool) {
         overallSuccess = false
     }
     
-    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    // Refreshing
-    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    let skipMiscellaneousTasks = Environment.isContinuousIntegrationIOSJob ∨ Environment.isContinuousIntegrationWatchOSJob ∨ Environment.isContinuousIntegrationTVOSJob
     
-    Command.refresh.run(andExit: false)
+    if ¬Environment.isInContinuousIntegration {
+        
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        // Refreshing
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        
+        Command.refresh.run(andExit: false)
+        
+    }
+    
+    if ¬skipMiscellaneousTasks {
+        
+    }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Validating \(Configuration.projectName)..."])
@@ -37,6 +49,10 @@ func runValidate(andExit shouldExit: Bool) {
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
     UnitTests.test(individualSuccess: individualSuccess, individualFailure: individualFailure)
+    
+    if ¬skipMiscellaneousTasks {
+        
+    }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Summary"])

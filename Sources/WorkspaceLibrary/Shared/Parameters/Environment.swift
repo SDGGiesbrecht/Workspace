@@ -39,4 +39,7 @@ struct Environment {
     static let isInXcode: Bool = environmentVariable("__XCODE_BUILT_PRODUCTS_DIR_PATHS") ≠ nil
     
     static let isInContinuousIntegration: Bool = environmentVariable("CONTINUOUS_INTEGRATION") ≠ nil
+    static let isContinuousIntegrationIOSJob = environmentVariable(ContinuousIntegration.continuousIntegrationJobKey) == ContinuousIntegration.continuousIntegrationIOSJob
+    static let isContinuousIntegrationWatchOSJob = environmentVariable(ContinuousIntegration.continuousIntegrationJobKey) == ContinuousIntegration.continuousIntegrationWatchOSJob
+    static let isContinuousIntegrationTVOSJob = environmentVariable(ContinuousIntegration.continuousIntegrationJobKey) == ContinuousIntegration.continuousIntegrationTVOSJob
 }

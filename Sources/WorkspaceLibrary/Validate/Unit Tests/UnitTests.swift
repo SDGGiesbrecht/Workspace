@@ -183,7 +183,7 @@ struct UnitTests {
                 return runUnitTests(buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: generateScript(buildOnly: buildOnly))
             }
             
-            if Configuration.supportIOS {
+            if Configuration.supportIOS ∧ (¬Environment.isInContinuousIntegration ∨ Environment.isContinuousIntegrationIOSJob) {
                 
                 // iOS
                 
@@ -191,14 +191,14 @@ struct UnitTests {
                 runUnitTestsInXcode(buildOnly: false, operatingSystemName: "iOS", sdk: "iphonesimulator", deviceKey: "iPhone 7")
             }
             
-            if Configuration.supportWatchOS {
+            if Configuration.supportWatchOS ∧ (¬Environment.isInContinuousIntegration ∨ Environment.isContinuousIntegrationWatchOSJob) {
                 
                 // watchOS
                 
                 runUnitTestsInXcode(buildOnly: true, operatingSystemName: "watchOS", sdk: "watchos", deviceKey: "Apple Watch Series 2 - 38mm")
             }
             
-            if Configuration.supportTVOS {
+            if Configuration.supportTVOS ∧ (¬Environment.isInContinuousIntegration ∨ Environment.isContinuousIntegrationTVOSJob) {
                 
                 // tvOS
                 

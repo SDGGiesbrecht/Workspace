@@ -27,14 +27,16 @@ enum Option: String, CustomStringConvertible {
     case supportWatchOS = "Support watchOS"
     case supportTVOS = "Support tvOS"
     
-    case manageContinuousIntegration = "Manage Continuous Integration"
+    case manageLicence = "Manage Licence"
+    case licence = "Licence"
+    
+    case manageXcode = "Manage Xcode"
     
     case manageFileHeaders = "Manage File Headers"
     case fileHeader = "File Header"
     case author = "Author"
-    case licence = "Licence"
     
-    case manageXcode = "Manage Xcode"
+    case manageContinuousIntegration = "Manage Continuous Integration"
     
     case ignoreFileTypes = "Ignore File Types"
     
@@ -45,8 +47,6 @@ enum Option: String, CustomStringConvertible {
     
     static let allPublic: [Option] = [
         .automaticallyTakeOnNewResponsibilites,
-
-        .ignoreFileTypes,
         
         .supportMacOS,
         .supportLinux,
@@ -54,14 +54,16 @@ enum Option: String, CustomStringConvertible {
         .supportWatchOS,
         .supportTVOS,
         
-        .manageContinuousIntegration,
+        .manageLicence,
+        .licence,
+        
+        .manageXcode,
         
         .manageFileHeaders,
         .fileHeader,
         .author,
-        .licence,
         
-        .manageXcode,
+        .manageContinuousIntegration,
         
         .ignoreFileTypes,
     ]
@@ -88,7 +90,12 @@ enum Option: String, CustomStringConvertible {
         case .supportTVOS:
             return Configuration.trueOptionValue
             
-        case .manageContinuousIntegration:
+        case .manageLicence:
+            return Configuration.noValue
+        case .licence:
+            return Configuration.noValue
+            
+        case .manageXcode:
             return Configuration.falseOptionValue
             
         case .manageFileHeaders:
@@ -115,7 +122,7 @@ enum Option: String, CustomStringConvertible {
         case .author:
             return Configuration.noValue
             
-        case .manageXcode:
+        case .manageContinuousIntegration:
             return Configuration.falseOptionValue
             
         case .ignoreFileTypes:
@@ -133,9 +140,10 @@ enum Option: String, CustomStringConvertible {
     
     static let automaticResponsibilityDocumentationPage = DocumentationLink.responsibilities
     static let automaticRepsonsibilities: [(option: Option, automaticValue: String, documentationPage: DocumentationLink)] = [
-        (.manageContinuousIntegration, automaticValue: Configuration.trueOptionValue, DocumentationLink.continuousIntegration),
-        (.manageFileHeaders, automaticValue: Configuration.trueOptionValue, DocumentationLink.fileHeaders),
+        (.manageLicence, automaticValue: Configuration.trueOptionValue, DocumentationLink.fileHeaders),
         (.manageXcode, automaticValue: Configuration.trueOptionValue, DocumentationLink.xcode),
+        (.manageFileHeaders, automaticValue: Configuration.trueOptionValue, DocumentationLink.fileHeaders),
+        (.manageContinuousIntegration, automaticValue: Configuration.trueOptionValue, DocumentationLink.continuousIntegration),
     ]
     
     // MARK: - CustomStringConvertible

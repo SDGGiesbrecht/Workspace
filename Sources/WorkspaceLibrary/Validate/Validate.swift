@@ -24,8 +24,6 @@ func runValidate(andExit shouldExit: Bool) {
         overallSuccess = false
     }
     
-    let skipMiscellaneousTasks = Environment.isContinuousIntegrationIOSJob ∨ Environment.isContinuousIntegrationWatchOSJob ∨ Environment.isContinuousIntegrationTVOSJob
-    
     if ¬Environment.isInContinuousIntegration {
         
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
@@ -33,10 +31,6 @@ func runValidate(andExit shouldExit: Bool) {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         
         Command.refresh.run(andExit: false)
-        
-    }
-    
-    if ¬skipMiscellaneousTasks {
         
     }
     
@@ -49,10 +43,6 @@ func runValidate(andExit shouldExit: Bool) {
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
     UnitTests.test(individualSuccess: individualSuccess, individualFailure: individualFailure)
-    
-    if ¬skipMiscellaneousTasks {
-        
-    }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Summary"])

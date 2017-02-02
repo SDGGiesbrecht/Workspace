@@ -21,6 +21,11 @@ struct ContinuousIntegration {
     static let tvOSJob = "tvOS"
     static let miscellaneousJob = "Misc."
     
+    static let operatingSystemsForMiscellaneousJobs: Set<OperatingSystem> = [
+        .macOS,
+        .linux,
+    ]
+    
     static func refreshContinuousIntegrationConfiguration() {
         
         let travisConfigurationPath = RelativePath(".travis.yml")

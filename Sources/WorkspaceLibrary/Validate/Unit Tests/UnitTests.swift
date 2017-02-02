@@ -66,11 +66,10 @@ struct UnitTests {
             func runUnitTestsInXcode(buildOnly: Bool, operatingSystemName: String, sdk: String, deviceKey: String) {
                 
                 var buildOnly = buildOnly
-                // [_Workaround: Commented for testing._]
-                //if Environment.isInContinuousIntegration {
+                if Environment.isInContinuousIntegration {
                     // [_Workaround: Travis CI cannot start the simulator this way._]
                     buildOnly = true
-                //}
+                }
                 
                 printTestHeader(buildOnly: buildOnly, operatingSystemName: operatingSystemName)
                 
@@ -179,12 +178,6 @@ struct UnitTests {
                         "-scheme", Configuration.projectName,
                         flag, flagValue
                     ]
-                }
-                
-                // [_Workaround: xcodebuild hangs on first attempt for iOS._]
-                if operatingSystemName == "iphoneos" {
-                    let _ = bash(generateScript(buildOnly: true), silent: true, triggerOnly: true)
-                    sleep(10)
                 }
                 
                 return runUnitTests(buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: generateScript(buildOnly: buildOnly))

@@ -14,7 +14,8 @@ import SDGLogic
 struct ContinuousIntegration {
     
     static let continuousIntegrationJobKey = "JOB"
-    static let continuousIntegrationiOSJob = "iOS"
+    static let continuousIntegrationIOSJob = "iOS"
+    static let continuousIntegrationWatchOSJob = "watchOS"
     static let continuousIntegrationTVOSJob = "tvOS"
     
     static func refreshContinuousIntegrationConfiguration() {
@@ -82,6 +83,35 @@ struct ContinuousIntegration {
             runRefreshWorkspace,
             runValidateChanges,
             ])
+        }
+        
+        func addPortableOSJob(name: String, sdk: String) {
+            updatedLines.append(contentsOf: [
+                "    - os: osx",
+                "      env:",
+                "        - \(continuousIntegrationJobKey)=\u{22}\(name)\u{22}",
+                "      osx_image: xcode8.2",
+                "      language: objective-c",
+                "      xcode_sdk: \(sdk)",
+                "      script:",
+                runRefreshWorkspace,
+                runValidateChanges,
+                ])
+        }
+        
+        if Configuration.supportIOS {
+            
+            addPortableOSJob(name: continuousIntegrationIOSJob, sdk: "iphonesimulator")
+        }
+        
+        if Configuration.supportWatchOS {
+            
+            addPortableOSJob(name: continuousIntegrationWatchOSJob, sdk: "watchsimulator")
+        }
+        
+        if Configuration.supportTVOS {
+            
+            addPortableOSJob(name: continuousIntegrationTVOSJob, sdk: "appletvsimulator")
         }
         
         let newBody = join(lines: updatedLines)

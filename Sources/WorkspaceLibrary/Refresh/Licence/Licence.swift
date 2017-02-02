@@ -72,7 +72,6 @@ enum Licence: String {
     
     // MARK: - Licence Management
     
-    private static var havePrintedWarning = false
     static func refreshLicence() {
         
         guard let licence = Configuration.licence else {

@@ -86,7 +86,7 @@ func runValidate(andExit shouldExit: Bool) {
         
         var deviceList: [String: String]?
         
-        func runUnitTestsInXcode(buildOnly: Bool, operatingSystemName: String, deviceKey: String) {
+        func runUnitTestsInXcode(buildOnly: Bool, operatingSystemName: String, sdk: String, deviceKey: String) {
             
             var buildOnly = buildOnly
             if Environment.isInContinuousIntegration {
@@ -96,44 +96,52 @@ func runValidate(andExit shouldExit: Bool) {
             
             printTestHeader(buildOnly: buildOnly, operatingSystemName: operatingSystemName)
             
-            let devices = cachedResult(cache: &deviceList) {
-                () -> [String: String] in
+            let flag: String
+            let flagValue: String
+            if buildOnly {
+                flag = "-sdk"
+                flagValue = sdk
+            } else {
+                // Test
                 
-                print(["Searching for simulator..."], in: nil, spaced: true)
-                
-                guard let deviceManifest = bash(["instruments", "-s", "devices"]).output else {
-                    fatalError(message: ["Failed to get list of simulators."])
-                }
-                
-                var result: [String: String] = [:]
-                for entry in deviceManifest.lines {
+                let devices = cachedResult(cache: &deviceList) {
+                    () -> [String: String] in
                     
-                    if let identifier = entry.contents(of: ("[", "]")) {
-                        if entry.contains("+") {
-                            if let name = entry.contents(of: ("+ ", " (")) {
-                                result[name] = identifier
-                            }
-                        } else {
-                            if let nameEnd = entry.range(of: " (")?.lowerBound {
-                                let name = entry.substring(to: nameEnd)
-                                result[name] = identifier
+                    print(["Searching for simulator..."], in: nil, spaced: true)
+                    
+                    guard let deviceManifest = bash(["instruments", "-s", "devices"]).output else {
+                        fatalError(message: ["Failed to get list of simulators."])
+                    }
+                    
+                    var result: [String: String] = [:]
+                    for entry in deviceManifest.lines {
+                        
+                        if let identifier = entry.contents(of: ("[", "]")) {
+                            if entry.contains("+") {
+                                if let name = entry.contents(of: ("+ ", " (")) {
+                                    result[name] = identifier
+                                }
+                            } else {
+                                if let nameEnd = entry.range(of: " (")?.lowerBound {
+                                    let name = entry.substring(to: nameEnd)
+                                    result[name] = identifier
+                                }
                             }
                         }
                     }
+                    return result
                 }
-                return result
-            }
-            
-            guard let deviceID = devices[deviceKey] else {
-                fatalError(message: [
-                    "Unable to find device:",
-                    "",
-                    deviceKey,
-                    ])
-            }
-            
-            if ¬buildOnly {
-                // Manually launch the simulator to avoid timeouts.
+                
+                guard let deviceID = devices[deviceKey] else {
+                    fatalError(message: [
+                        "Unable to find device:",
+                        "",
+                        deviceKey,
+                        ])
+                }
+                
+                // [_Workaround: ↓ Manually launch the simulator to avoid timeouts._]
+                
                 let _ = bash(["killall", "Simulator"])
                 let _ = bash(["open", "-b", "com.apple.iphonesimulator", "--args", "-CurrentDeviceUDID", deviceID])
                 
@@ -154,12 +162,17 @@ func runValidate(andExit shouldExit: Bool) {
                         sleep(10)
                     }
                 }
+                
+                // [_Workaround: ↑ Manually launch the simulator to avoid timeouts._]
+                
+                flag = "-destination"
+                flagValue = "id=\(deviceID)"
             }
             
             return runUnitTests(buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: [
                 "xcodebuild", (buildOnly ? "build" : "test"),
                 "-scheme", Configuration.projectName,
-                "-destination", "id=\(deviceID)"
+                flag, flagValue
                 ])
         }
         
@@ -167,21 +180,21 @@ func runValidate(andExit shouldExit: Bool) {
             
             // iOS
             
-            runUnitTestsInXcode(buildOnly: false, operatingSystemName: "iOS", deviceKey: "iPhone 7")
+            runUnitTestsInXcode(buildOnly: false, operatingSystemName: "iOS", sdk: "iphoneos", deviceKey: "iPhone 7")
         }
         
         if Configuration.supportWatchOS {
             
             // watchOS
             
-            runUnitTestsInXcode(buildOnly: true, operatingSystemName: "watchOS", deviceKey: "Apple Watch Series 2 - 38mm")
+            runUnitTestsInXcode(buildOnly: true, operatingSystemName: "watchOS", sdk: "watchOS", deviceKey: "Apple Watch Series 2 - 38mm")
         }
         
         if Configuration.supportTVOS {
             
             // tvOS
             
-            runUnitTestsInXcode(buildOnly: false, operatingSystemName: "tvOS", deviceKey: "Apple TV 1080p")
+            runUnitTestsInXcode(buildOnly: false, operatingSystemName: "tvOS", sdk: "appletvos", deviceKey: "Apple TV 1080p")
         }
     }
     

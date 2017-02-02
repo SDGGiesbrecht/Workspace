@@ -66,10 +66,10 @@ struct UnitTests {
             func runUnitTestsInXcode(buildOnly: Bool, operatingSystemName: String, sdk: String, deviceKey: String) {
                 
                 var buildOnly = buildOnly
-                if Environment.isInContinuousIntegration {
+                //if Environment.isInContinuousIntegration {
                     // [_Workaround: Travis CI cannot start the simulator this way._]
                     buildOnly = true
-                }
+                //}
                 
                 printTestHeader(buildOnly: buildOnly, operatingSystemName: operatingSystemName)
                 

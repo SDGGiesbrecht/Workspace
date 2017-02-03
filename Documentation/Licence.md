@@ -19,6 +19,8 @@ Management of the main licence file is controlled by the [configuration](Configu
 
 For the short notices in [file headers](File Headers.md), `Manage Licence` is not necessary. As long as a license has been [selected](#selecting-a-licence), the default header will display a licence notice, and a `Licence` dynamic element will be available for [custom headers](File Headers.md#customization).
 
+Licence management can be especially useful when they are combined with [configuration sharing](Configuring Workspace.md#sharing-configurations-between-projects).
+
 ## Selecting a Licence
 
 A particular licence can be selected with the [configuration](Configuring Workspace.md) option `Licence`. Possible values are:

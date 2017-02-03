@@ -115,7 +115,7 @@ enum Option: String, CustomStringConvertible {
             if Configuration.optionIsDefined(.licence) {
                 defaultHeader.append(contentsOf: [
                     "",
-                    "[_Licence Information_]",
+                    "[_Licence_]",
                     ])
             }
             return join(lines: defaultHeader)

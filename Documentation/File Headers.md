@@ -21,7 +21,7 @@ A file header is a commented section at the top of each file in a project. Typic
 
 - Identifing which project the file belongs to.
 - Indicating copyright.
-- Providing licence information.
+- Providing licence reminders.
 
 ## Customization
 

@@ -11,7 +11,7 @@
 
 import SDGMathematics
 
-struct Version: CustomStringConvertible, LosslessStringConvertible {
+struct Version: Comparable, CustomStringConvertible, Equatable, LosslessStringConvertible {
     
     // MARK: - Initialization
     
@@ -27,10 +27,22 @@ struct Version: CustomStringConvertible, LosslessStringConvertible {
     var minor: Int
     var patch: Int
     
+    // MARK: - Comparable
+    
+    static func <(lhs: Version, rhs: Version) -> Bool {
+        return (lhs.major, lhs.minor, lhs.patch) < (rhs.major, rhs.minor, rhs.patch)
+    }
+    
     // MARK: - CustomStringConvertible
     
     var description: String {
         return "\(major).\(minor).\(patch)"
+    }
+    
+    // MARK: - Equatable
+    
+    static func ==(lhs: Version, rhs: Version) -> Bool {
+        return (lhs.major, lhs.minor, lhs.patch) == (rhs.major, rhs.minor, rhs.patch)
     }
     
     // MARK: - LosslessStringConvertible

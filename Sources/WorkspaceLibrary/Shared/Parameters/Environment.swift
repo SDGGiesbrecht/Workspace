@@ -17,7 +17,7 @@ struct Environment {
     
     // MARK: - Properties
     
-    private static func environmentVariable(_ name: String) -> String? {
+    static func environmentVariable(_ name: String) -> String? {
         return ProcessInfo.processInfo.environment[name]
     }
     
@@ -39,4 +39,37 @@ struct Environment {
     static let isInXcode: Bool = environmentVariable("__XCODE_BUILT_PRODUCTS_DIR_PATHS") ≠ nil
     
     static let isInContinuousIntegration: Bool = environmentVariable("CONTINUOUS_INTEGRATION") ≠ nil
+    
+    // Job Factoring
+    
+    private static func shouldDoJobSet(requiredEnvironments: Set<OperatingSystem>, isConfigured: Bool, jobKey: String) -> Bool {
+        
+        let isPossible = requiredEnvironments.contains(operatingSystem)
+        let shouldRunSomewhere = isConfigured
+        
+        if isPossible ∧ shouldRunSomewhere {
+            
+            // Decide where
+            
+            let isLocal = ¬Environment.isInContinuousIntegration
+            let isCorrectJob = Environment.environmentVariable(ContinuousIntegration.jobKey) == jobKey
+            
+            return isLocal ∨ isCorrectJob
+            
+        } else {
+            return false
+        }
+    }
+    
+    static let shouldDoMacOSJobs = shouldDoJobSet(requiredEnvironments: [.macOS], isConfigured: Configuration.supportMacOS, jobKey: ContinuousIntegration.macOSJob)
+    
+    static let shouldDoLinuxJobs = shouldDoJobSet(requiredEnvironments: [.linux], isConfigured: Configuration.supportLinux, jobKey: ContinuousIntegration.linuxJob)
+    
+    static let shouldDoIOSJobs = shouldDoJobSet(requiredEnvironments: [.macOS], isConfigured: Configuration.supportIOS, jobKey: ContinuousIntegration.iOSJob)
+    
+    static let shouldDoWatchOSJobs = shouldDoJobSet(requiredEnvironments: [.macOS], isConfigured: Configuration.supportWatchOS, jobKey: ContinuousIntegration.watchOSJob)
+    
+    static let shouldDoTVOSJobs = shouldDoJobSet(requiredEnvironments: [.macOS], isConfigured: Configuration.supportTVOS, jobKey: ContinuousIntegration.tvOSJob)
+    
+    static let shouldDoMiscellaneousJobs = shouldDoJobSet(requiredEnvironments: ContinuousIntegration.operatingSystemsForMiscellaneousJobs, isConfigured: true, jobKey: ContinuousIntegration.miscellaneousJob)
 }

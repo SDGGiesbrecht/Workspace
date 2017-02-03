@@ -25,12 +25,14 @@ enum Licence: String {
     case mit = "MIT"
     case gnuGeneralPublic3_0 = "GNU GeneralPublic3_0"
     case unlicense = "Unlicense"
+    case copyright = "Copyright"
     
     static let all: [Licence] = [
         .apache2_0,
         .mit,
         .gnuGeneralPublic3_0,
         .unlicense,
+        .copyright,
     ]
     
     // MARK: - Properties
@@ -83,6 +85,11 @@ enum Licence: String {
             return [
                 "Dedicated to the public domain.",
                 "See http://unlicense.org/ for more information.",
+            ]
+        case .copyright:
+            return [
+                "This software is subject to copyright law.",
+                "It may not be used, copied, distributed or modified without first obtaining a private licence from the copyright holder(s)."
             ]
         }
     }

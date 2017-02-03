@@ -179,9 +179,10 @@ struct UnitTests {
                 ]
             }
             
-            // [_Workaround: Attempt hanging build first._]
-            let _ = bash(generateScript(buildOnly: true) + ["&"])
+            // [_Workaround: Attempt and kill hanging build first._]
+            let _ = bash(generateScript(buildOnly: buildOnly) + ["&"], silent: true)
             sleep(10)
+            let _ = bash(["killall", "xcodebuild"], silent: true)
             
             return runUnitTests(buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: generateScript(buildOnly: buildOnly))
         }

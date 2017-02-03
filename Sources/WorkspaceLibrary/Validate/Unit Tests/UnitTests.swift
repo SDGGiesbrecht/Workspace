@@ -179,6 +179,10 @@ struct UnitTests {
                 ]
             }
             
+            // [_Workaround: Attempt hanging build first._]
+            let _ = bash(generateScript(buildOnly: true) + ["&"])
+            sleep(10)
+            
             return runUnitTests(buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: generateScript(buildOnly: buildOnly))
         }
         

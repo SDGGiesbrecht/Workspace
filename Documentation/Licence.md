@@ -25,6 +25,9 @@ Licence management can be especially useful when they are combined with [configu
 
 A particular licence can be selected with the [configuration](Configuring Workspace.md) option `Licence`. Possible values are:
 
-- `Apache 2.0` (Swift itself is under this licence.)
+- `Apache 2.0` ([text](Resources/Licences/Apache 2.0.md)) (Swift itself is under this licence.)
+- `MIT` ([text](Resources/Licences/MIT.md))
+
+For information about the various licences, see [choosealicense.com](https://choosealicense.com).
 
 Know of a common licence that is not yet supported? [Request it.](https://github.com/SDGGiesbrecht/Workspace/issues)

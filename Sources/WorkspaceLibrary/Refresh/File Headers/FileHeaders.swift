@@ -15,15 +15,15 @@ import SDGLogic
 
 struct FileHeaders {
     
-    private static func copyright(fromHeader header: String) -> String {
+    static func copyright(fromText text: String) -> String {
         
         var oldStartDate: String?
         for symbol in ["©", "(C)", "(c)"] {
             for space in ["", " "] {
-                if let range = header.range(of: symbol + space) {
+                if let range = text.range(of: symbol + space) {
                     var numberEnd = range.upperBound
-                    header.advance(&numberEnd, past: CharacterSet.decimalDigits, limit: 4)
-                    let number = header.substring(with: range.upperBound ..< numberEnd)
+                    text.advance(&numberEnd, past: CharacterSet.decimalDigits, limit: 4)
+                    let number = text.substring(with: range.upperBound ..< numberEnd)
                     if number.unicodeScalars.count == 4 {
                         oldStartDate = number
                         break
@@ -56,7 +56,7 @@ struct FileHeaders {
         
         var possibleAuthor: String?
         if template.contains(key("Author")) {
-            possibleAuthor = Configuration.author
+            possibleAuthor = Configuration.requiredAuthor
         }
         
         var possibleLicence: String?
@@ -94,7 +94,7 @@ struct FileHeaders {
                 
                 header = header.replacingOccurrences(of: key("Filename"), with: path.filename)
                 header = header.replacingOccurrences(of: key("Project"), with: Configuration.projectName)
-                header = header.replacingOccurrences(of: key("Copyright"), with: FileHeaders.copyright(fromHeader: oldHeader))
+                header = header.replacingOccurrences(of: key("Copyright"), with: FileHeaders.copyright(fromText: oldHeader))
                 if let author = possibleAuthor {
                     header = header.replacingOccurrences(of: key("Author"), with: author)
                 }

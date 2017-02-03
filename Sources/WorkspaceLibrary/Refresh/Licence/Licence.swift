@@ -87,8 +87,25 @@ enum Licence: String {
             return
         }
         
-        let text = licence.text
+        var text = licence.text
+        
         var file = File(possiblyAt: RelativePath("LICENSE.md"))
+        let oldContents = file.contents
+        
+        let copyright = FileHeaders.copyright(fromText: oldContents)
+        var authors = "the \(Configuration.projectName) project contributors."
+        if let author = Configuration.author {
+            authors = "\(author) and " + authors
+        }
+        
+        func key(_ key: String) -> String {
+            return "[_\(key)_]"
+        }
+        
+        text = text.replacingOccurrences(of: key("Copyright"), with: copyright)
+        text = text.replacingOccurrences(of: key("Authors"), with: authors)
+        
+        
         file.contents = text
         require() { try file.write() }
         

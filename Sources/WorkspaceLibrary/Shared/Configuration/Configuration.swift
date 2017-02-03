@@ -416,7 +416,10 @@ struct Configuration {
     static var fileHeader: String {
         return stringValue(option: .fileHeader)
     }
-    static var author: String {
+    static var author: String? {
+        return possibleStringValue(option: .author)
+    }
+    static var requiredAuthor: String {
         return stringValue(option: .author)
     }
     

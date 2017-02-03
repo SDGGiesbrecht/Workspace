@@ -53,9 +53,15 @@ struct FileHeaders {
         }
         
         let template = Configuration.fileHeader
+        
         var possibleAuthor: String?
         if template.contains(key("Author")) {
             possibleAuthor = Configuration.author
+        }
+        
+        var possibleLicence: String?
+        if template.contains(key("Licence")) {
+            possibleLicence = Configuration.requiredLicence.notice
         }
         
         let workspaceFiles: Set<String> = [
@@ -91,6 +97,9 @@ struct FileHeaders {
                 header = header.replacingOccurrences(of: key("Copyright"), with: FileHeaders.copyright(fromHeader: oldHeader))
                 if let author = possibleAuthor {
                     header = header.replacingOccurrences(of: key("Author"), with: author)
+                }
+                if let licence = possibleLicence {
+                    header = header.replacingOccurrences(of: key("Licence"), with: licence)
                 }
                 
                 

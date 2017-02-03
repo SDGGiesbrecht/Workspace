@@ -400,6 +400,15 @@ struct Configuration {
             return nil
         }
     }
+    static var requiredLicence: Licence {
+        let key = stringValue(option: .licence)
+        
+        if let result = Licence(key: key) {
+            return result
+        } else {
+            invalidEnumValue(option: .licence, value: key, valid: Licence.all.map({ $0.key }))
+        }
+    }
     
     static var manageFileHeaders: Bool {
         return booleanValue(option: .manageFileHeaders)

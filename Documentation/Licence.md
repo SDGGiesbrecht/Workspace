@@ -28,6 +28,7 @@ A particular licence can be selected with the [configuration](Configuring Worksp
 - `Apache 2.0` ([text](../Resources/Licences/Apache 2.0.md)) (Swift itself is under this licence.)
 - `MIT` ([text](../Resources/Licences/MIT.md))
 - `GNU General Public 3.0` ([text](../Resources/Licences/GNU General Public 3.0.md))
+- `Unlicense` ([text](../Resources/Licences/Unlicense.md)) (Public Domain)
 
 For information about the various licences, see [choosealicense.com](https://choosealicense.com).
 

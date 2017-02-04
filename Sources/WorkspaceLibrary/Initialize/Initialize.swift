@@ -153,12 +153,8 @@ func runInitialize(andExit shouldExit: Bool) {
         ]
     var entries: [(option: Option, value: String, comment: [String]?)] = [(option: .automaticallyTakeOnNewResponsibilites, value: Configuration.trueOptionValue, comment: note)]
     if Flags.executable {
-        // [_Workaround: No support for executables on iOS, watchOS, or tvOS yet._]
-        let explanation: [String]? = ["No support for executables."]
         entries.append(contentsOf: [
-            (option: .supportIOS, value: Configuration.falseOptionValue, comment: explanation),
-            (option: .supportWatchOS, value: Configuration.falseOptionValue, comment: explanation),
-            (option: .supportTVOS, value: Configuration.falseOptionValue, comment: explanation),
+            (option: .projectType, value: Configuration.falseOptionValue, comment: nil),
             ])
     }
     Configuration.addEntries(entries: entries, to: &configuration)

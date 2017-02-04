@@ -366,6 +366,17 @@ struct Configuration {
     
     // Project Type
     
+    static var projectType: ProjectType? {
+        if let key = possibleStringValue(option: .projectType) {
+            guard let type = ProjectType(key: key) else {
+                invalidEnumValue(option: .projectType, value: key, valid: ProjectType.all.map({ $0.key }))
+            }
+            return type
+        } else {
+            return nil
+        }
+    }
+    
     static var supportMacOS: Bool {
         return booleanValue(option: .supportMacOS)
     }

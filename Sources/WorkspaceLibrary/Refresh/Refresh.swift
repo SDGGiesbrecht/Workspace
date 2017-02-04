@@ -1,13 +1,15 @@
-// Refresh.swift
-//
-// This source file is part of the Workspace open source project.
-//
-// Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
-//
-// Soli Deo gloria
-//
-// Licensed under the Apache License, Version 2.0
-// See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+/*
+ Refresh.swift
+
+ This source file is part of the Workspace open source project.
+
+ Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
+
+ Soli Deo gloria.
+
+ Licensed under the Apache Licence, Version 2.0.
+ See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+ */
 
 import SDGLogic
 
@@ -31,22 +33,22 @@ func runRefresh(andExit shouldExit: Bool) {
     
     // Refresh Workspace
     
-    require() { try Repository.copy(Repository.workspaceDirectory.subfolderOrFile("Scripts/Refresh Workspace (macOS).command"), into: Repository.root, includeIgnoredFiles: true) }
+    require() { try Repository.copy(Repository.workspaceResources.subfolderOrFile("Scripts/Refresh Workspace (macOS).command"), into: Repository.root, includeIgnoredFiles: true) }
     
     if Configuration.supportLinux {
         // Checked into repository, so dependent on configuration.
         
-        require() { try Repository.copy(Repository.workspaceDirectory.subfolderOrFile("Scripts/Refresh Workspace (Linux).sh"), into: Repository.root, includeIgnoredFiles: true) }
+        require() { try Repository.copy(Repository.workspaceResources.subfolderOrFile("Scripts/Refresh Workspace (Linux).sh"), into: Repository.root, includeIgnoredFiles: true) }
     }
     
     // Validate Changes
     
-    require() { try Repository.copy(Repository.workspaceDirectory.subfolderOrFile("Scripts/Validate Changes (macOS).command"), into: Repository.root, includeIgnoredFiles: true) }
+    require() { try Repository.copy(Repository.workspaceResources.subfolderOrFile("Scripts/Validate Changes (macOS).command"), into: Repository.root, includeIgnoredFiles: true) }
     
     if Environment.operatingSystem == .linux {
         // Not checked into repository, so dependent on environment.
         
-        require() { try Repository.copy(Repository.workspaceDirectory.subfolderOrFile("Scripts/Validate Changes (Linux).sh"), into: Repository.root, includeIgnoredFiles: true) }
+        require() { try Repository.copy(Repository.workspaceResources.subfolderOrFile("Scripts/Validate Changes (Linux).sh"), into: Repository.root, includeIgnoredFiles: true) }
     }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
@@ -87,12 +89,29 @@ func runRefresh(andExit shouldExit: Bool) {
     
     Git.refreshGitIgnore()
     
+    if Configuration.manageLicence {
+        
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        printHeader(["Updating licence..."])
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        
+        Licence.refreshLicence()
+    }
+    
     if Configuration.manageContinuousIntegration {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         printHeader(["Updating continuous integration configuration..."])
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         
         ContinuousIntegration.refreshContinuousIntegrationConfiguration()
+    }
+    
+    if Configuration.manageFileHeaders {
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        printHeader(["Updating file headers..."])
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        
+        FileHeaders.refreshFileHeaders()
     }
     
     if Configuration.manageXcode ∧ Environment.operatingSystem == .macOS {

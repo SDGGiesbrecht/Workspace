@@ -1,13 +1,15 @@
-// FileSyntax.swift
-//
-// This source file is part of the Workspace open source project.
-//
-// Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
-//
-// Soli Deo gloria
-//
-// Licensed under the Apache License, Version 2.0
-// See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+/*
+ FileSyntax.swift
+
+ This source file is part of the Workspace open source project.
+
+ Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
+
+ Soli Deo gloria.
+
+ Licensed under the Apache Licence, Version 2.0.
+ See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+ */
 
 import Foundation
 
@@ -135,7 +137,7 @@ struct FileSyntax {
     func header(file: File) -> String {
         let markup = file.contents.substring(with: file.headerStart ..< file.headerEnd)
         
-        if markup.isEmpty {
+        if markup.lines.filter({ ¬$0.isWhitespace }).isEmpty {
             return markup
         }
         
@@ -151,7 +153,7 @@ struct FileSyntax {
         }
         
         fatalError(message: [
-            "Malformed header:",
+            "Malformed header in \(file.path.filename):",
             "",
             "",
             markup,

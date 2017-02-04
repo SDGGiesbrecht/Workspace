@@ -1,13 +1,15 @@
-// Initialize.swift
-//
-// This source file is part of the Workspace open source project.
-//
-// Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
-//
-// Soli Deo gloria
-//
-// Licensed under the Apache License, Version 2.0
-// See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+/*
+ Initialize.swift
+
+ This source file is part of the Workspace open source project.
+
+ Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
+
+ Soli Deo gloria.
+
+ Licensed under the Apache Licence, Version 2.0.
+ See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+ */
 
 import SDGLogic
 
@@ -85,7 +87,7 @@ func runInitialize(andExit shouldExit: Bool) {
         
         require() { try Repository.delete(RelativePath("Sources/\(projectName)")) }
         
-        var program = File(newAt: RelativePath("Sources/\(libraryName)/Program.swift"))
+        var program = File(possiblyAt: RelativePath("Sources/\(libraryName)/Program.swift"))
         program.body = join(lines: [
             "/// :nodoc:",
             "public func run() {",
@@ -103,7 +105,7 @@ func runInitialize(andExit shouldExit: Bool) {
         
         require() { try program.write() }
         
-        var main = File(newAt: RelativePath("Sources/\(executableName)/main.swift"))
+        var main = File(possiblyAt: RelativePath("Sources/\(executableName)/main.swift"))
         main.body = join(lines: [
             "import \(libraryName)",
             "",
@@ -143,7 +145,7 @@ func runInitialize(andExit shouldExit: Bool) {
     printHeader(["Configuring Workspace..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
-    var configuration = File(newAt: Configuration.configurationFilePath)
+    var configuration = File(possiblyAt: Configuration.configurationFilePath)
     let note: [String]? = [
         "This is the default setting when the Workspace initializes projects.",
         "For more information about “\(Option.automaticallyTakeOnNewResponsibilites)”, see:",

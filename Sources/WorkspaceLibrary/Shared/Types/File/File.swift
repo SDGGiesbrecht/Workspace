@@ -1,13 +1,15 @@
-// File.swift
-//
-// This source file is part of the Workspace open source project.
-//
-// Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
-//
-// Soli Deo gloria
-//
-// Licensed under the Apache License, Version 2.0
-// See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+/*
+ File.swift
+
+ This source file is part of the Workspace open source project.
+
+ Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
+
+ Soli Deo gloria.
+
+ Licensed under the Apache Licence, Version 2.0.
+ See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+ */
 
 import SDGCaching
 
@@ -33,8 +35,12 @@ struct File {
         self = File(path: path, contents: try Repository._read(file: path), isNew: false)
     }
     
-    init(newAt path: RelativePath) {
-        self = File(path: path, contents: "", isNew: true)
+    init(possiblyAt path: RelativePath) {
+        do {
+            self = try File(at: path)
+        } catch {
+            self = File(path: path, contents: "", isNew: true)
+        }
     }
     
     /// For testing only
@@ -127,7 +133,7 @@ struct File {
     
     func fatalFileTypeError() -> Never {
         fatalError(message: [
-            "Unsupported filetype:",
+            "Unsupported file type:",
             path.string,
             "",
             "This may indicate a bug in Workspace.",

@@ -1,13 +1,15 @@
-// Command.swift
-//
-// This source file is part of the Workspace open source project.
-//
-// Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
-//
-// Soli Deo gloria
-//
-// Licensed under the Apache License, Version 2.0
-// See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+/*
+ Command.swift
+
+ This source file is part of the Workspace open source project.
+
+ Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
+
+ Soli Deo gloria.
+
+ Licensed under the Apache Licence, Version 2.0.
+ See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+ */
 
 enum Command: String, Comparable, CustomStringConvertible, LosslessStringConvertible {
     
@@ -30,11 +32,13 @@ enum Command: String, Comparable, CustomStringConvertible, LosslessStringConvert
     
     case initialize = "initialize"
     case refresh = "refresh"
+    case proofread = "proofread"
     case validate = "validate"
     
     static let all: [Command] = [
         .initialize,
         .refresh,
+        .proofread,
         .validate,
         ]
     
@@ -52,6 +56,8 @@ enum Command: String, Comparable, CustomStringConvertible, LosslessStringConvert
             runInitialize(andExit: shouldExit)
         case .refresh:
             runRefresh(andExit: shouldExit)
+        case .proofread:
+            let _ = runProofread(andExit: shouldExit)
         case .validate:
             runValidate(andExit: shouldExit)
         }

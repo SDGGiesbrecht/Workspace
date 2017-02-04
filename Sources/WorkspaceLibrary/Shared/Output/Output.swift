@@ -1,13 +1,15 @@
-// Output.swift
-//
-// This source file is part of the Workspace open source projects.
-//
-// Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
-//
-// Soli Deo gloria
-//
-// Licensed under the Apache License, Version 2.0
-// See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+/*
+ Output.swift
+
+ This source file is part of the Workspace open source project.
+
+ Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
+
+ Soli Deo gloria.
+
+ Licensed under the Apache Licence, Version 2.0.
+ See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+ */
 
 import Foundation
 
@@ -73,6 +75,11 @@ func printWarning(_ message: [String]) {
     
 }
 private func outputWarnings() {
+    
+    if let fileTypeWarning = FileType.unsupportedTypesWarning {
+        printWarning(fileTypeWarning)
+    }
+    
     for warning in warnings {
         print(warning, in: .yellow, spaced: true)
     }

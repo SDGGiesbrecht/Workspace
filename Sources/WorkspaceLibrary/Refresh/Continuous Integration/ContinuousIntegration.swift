@@ -1,13 +1,15 @@
-// Continuous Integration.swift
-//
-// This source file is part of the Workspace open source project.
-//
-// Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
-//
-// Soli Deo gloria
-//
-// Licensed under the Apache License, Version 2.0
-// See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+/*
+ ContinuousIntegration.swift
+
+ This source file is part of the Workspace open source project.
+
+ Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
+
+ Soli Deo gloria.
+
+ Licensed under the Apache Licence, Version 2.0.
+ See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+ */
 
 import SDGLogic
 
@@ -30,12 +32,7 @@ struct ContinuousIntegration {
         
         let travisConfigurationPath = RelativePath(".travis.yml")
         
-        var travisConfiguration: File
-        if Repository.trackedFiles.contains(travisConfigurationPath) {
-            travisConfiguration = require() { try File(at: travisConfigurationPath) }
-        } else {
-            travisConfiguration = File(newAt: travisConfigurationPath)
-        }
+        var travisConfiguration = File(possiblyAt: travisConfigurationPath)
         
         let managementWarning = File.managmentWarning(section: false, documentation: .continuousIntegration)
         let managementComment = FileType.yaml.syntax.comment(contents: managementWarning)

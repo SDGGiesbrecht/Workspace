@@ -12,6 +12,6 @@
 import Foundation
 
 #if os(Linux)
-    // [_Workaround: Rename Process on Linux._]
+    // [_Workaround: Rename Process on Linux. (Swift 3.0.2)_]
     typealias Process = Task
 #endif

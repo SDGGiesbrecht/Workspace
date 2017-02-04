@@ -52,6 +52,7 @@ Precedence rules still apply. The imported options can override any options befo
 For information on the various available options, see the documentation for the particular feature:
 
 - [Responsibilities](Responsibilities.md)
+- [Project Types](Project Types.md)
 - [Operating Systems](Operating Systems.md)
 - [Simulator](Simulator.md)
 - [Licence](Licence.md)

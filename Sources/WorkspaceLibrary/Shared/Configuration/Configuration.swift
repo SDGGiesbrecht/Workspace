@@ -386,6 +386,14 @@ struct Configuration {
         return booleanValue(option: .supportTVOS)
     }
     
+    static var skipSimulators: Bool {
+        if Environment.isInContinuousIntegration {
+            return false
+        } else {
+            return booleanValue(option: .skipSimulator)
+        }
+    }
+    
     // Responsibilities
     
     static var manageLicence: Bool {

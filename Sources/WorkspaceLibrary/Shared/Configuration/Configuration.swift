@@ -386,15 +386,15 @@ struct Configuration {
     }
     
     static var supportIOS: Bool {
-        return booleanValue(option: .supportIOS)
+        return booleanValue(option: .supportIOS) ∧ projectType ≠ ProjectType.executable
     }
     
     static var supportWatchOS: Bool {
-        return booleanValue(option: .supportWatchOS)
+        return booleanValue(option: .supportWatchOS) ∧ projectType ≠ ProjectType.executable
     }
     
     static var supportTVOS: Bool {
-        return booleanValue(option: .supportTVOS)
+        return booleanValue(option: .supportTVOS) ∧ projectType ≠ ProjectType.executable
     }
     
     static var skipSimulators: Bool {

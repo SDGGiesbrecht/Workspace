@@ -29,6 +29,8 @@ enum Option: String, CustomStringConvertible {
     case supportWatchOS = "Support watchOS"
     case supportTVOS = "Support tvOS"
     
+    case skipSimulator = "Skip Simulator"
+    
     case manageLicence = "Manage Licence"
     case licence = "Licence"
     
@@ -55,6 +57,8 @@ enum Option: String, CustomStringConvertible {
         .supportIOS,
         .supportWatchOS,
         .supportTVOS,
+        
+        .skipSimulator,
         
         .manageLicence,
         .licence,
@@ -91,6 +95,9 @@ enum Option: String, CustomStringConvertible {
             return Configuration.trueOptionValue
         case .supportTVOS:
             return Configuration.trueOptionValue
+            
+        case .skipSimulator:
+            return Configuration.falseOptionValue
             
         case .manageLicence:
             return Configuration.falseOptionValue

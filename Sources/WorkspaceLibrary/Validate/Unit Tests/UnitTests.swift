@@ -140,34 +140,6 @@ struct UnitTests {
                         ])
                 }
                 
-                /*
-                if ¬Environment.isInContinuousIntegration {
-                    // [_Workaround: ↓ Manually launch the simulator to avoid timeouts. (Xcode 8.2.1)_]
-                    
-                    let _ = bash(["killall", "Simulator"])
-                    let _ = bash(["open", "-b", "com.apple.iphonesimulator", "--args", "-CurrentDeviceUDID", deviceID])
-                    
-                    var decasecondsToWait: Int?
-                    switch operatingSystemName {
-                    case "iOS":
-                        decasecondsToWait = 12
-                    case "tvOS":
-                        decasecondsToWait = 6
-                    default:
-                        break
-                    }
-                    
-                    if let decaseconds = decasecondsToWait {
-                        print(["Giving the simulator time to boot..."])
-                        for decasecond in (1 ... decaseconds).reversed() {
-                            print(["\(decasecond)0 s..."])
-                            sleep(10)
-                        }
-                    }
-                    
-                    // [_Workaround: ↑ Manually launch the simulator to avoid timeouts. (Xcode 8.2.1)_]
-                }*/
-                
                 flag = "-destination"
                 flagValue = "id=\(deviceID)"
             }
@@ -191,9 +163,6 @@ struct UnitTests {
         if Environment.shouldDoIOSJobs {
             
             // iOS
-            
-            // [_Workaround: xcodebuild hangs on first attempt to build for SDK “iphoneos”. Using simulator instead. (Xcode 8.2.1)_]
-            //runUnitTestsInXcode(buildOnly: false, operatingSystemName: "iOS", sdk: "iphonesimulator", deviceKey: "iPhone 7")
             
             runUnitTestsInXcode(buildOnly: false, operatingSystemName: "iOS", sdk: "iphoneos", deviceKey: "iPhone 7")
         }

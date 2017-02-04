@@ -37,6 +37,7 @@ fi
 # Update Workspace.
 cd "${WORKSPACE}"
 git pull
+swift package update
 swift build --configuration release
 cd ..
 

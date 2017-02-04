@@ -33,8 +33,12 @@ struct File {
         self = File(path: path, contents: try Repository._read(file: path), isNew: false)
     }
     
-    init(newAt path: RelativePath) {
-        self = File(path: path, contents: "", isNew: true)
+    init(possiblyAt path: RelativePath) {
+        do {
+            self = try File(at: path)
+        } catch {
+            self = File(path: path, contents: "", isNew: true)
+        }
     }
     
     /// For testing only
@@ -127,7 +131,7 @@ struct File {
     
     func fatalFileTypeError() -> Never {
         fatalError(message: [
-            "Unsupported filetype:",
+            "Unsupported file type:",
             path.string,
             "",
             "This may indicate a bug in Workspace.",

@@ -48,7 +48,7 @@ struct Configuration {
                     "Found no configuration file.",
                     "Following the default configuration."
                     ])
-                return File(newAt: configurationFilePath)
+                return File(possiblyAt: configurationFilePath)
             }
         }
     }
@@ -278,8 +278,22 @@ struct Configuration {
     
     // MARK: - Settings
     
+    static let noValue = "[_None_]"
     static func optionIsDefined(_ option: Option) -> Bool {
         return configurationFile[option] ≠ nil
+    }
+    
+    private static func invalidEnumValue(option: Option, value: String, valid: [String]) -> Never {
+        fatalError(message: [
+            "Invalid option value:",
+            "",
+            "Option: \(option.key)",
+            "Value: \(value)",
+            "",
+            "Valid values:",
+            "",
+            join(lines: valid),
+            ])
     }
     
     static let trueOptionValue = "True"
@@ -292,20 +306,53 @@ struct Configuration {
             case falseOptionValue:
                 return false
             default:
-                fatalError(message: [
-                    "Invalid option value:",
-                    "",
-                    "Option: \(option)",
-                    "Value: \(value)",
-                    "",
-                    "Valid values:",
-                    "",
+                invalidEnumValue(option: option, value: value, valid: [
                     trueOptionValue,
                     falseOptionValue,
                     ])
             }
         } else {
             return option.defaultValue == trueOptionValue
+        }
+    }
+    
+    private static func stringValue(option: Option) -> String {
+        if let result = configurationFile[option] {
+            return result
+        } else {
+            if option.defaultValue ≠ Configuration.noValue {
+                return option.defaultValue
+            } else {
+                fatalError(message: [
+                    "Missing configuration option:",
+                    "",
+                    option.key,
+                    "",
+                    "Detected options:",
+                    "",
+                    join(lines: configurationFile.keys.map({ $0.key }).sorted()),
+                    ])
+            }
+        }
+    }
+    
+    private static func possibleStringValue(option: Option) -> String? {
+        if let result = configurationFile[option] {
+            if result ≠ Configuration.noValue {
+                return result
+            }
+        }
+        return nil
+    }
+    
+    private static func listValue(option: Option) -> [String] {
+        
+        let string = stringValue(option: option)
+        
+        if string == "" {
+            return []
+        } else {
+            return string.linesArray
         }
     }
     
@@ -339,12 +386,55 @@ struct Configuration {
     
     // Responsibilities
     
+    static var manageLicence: Bool {
+        return booleanValue(option: .manageLicence)
+    }
+    static var licence: Licence? {
+        if let key = possibleStringValue(option: .licence) {
+            if let result = Licence(key: key) {
+                return result
+            } else {
+                invalidEnumValue(option: .licence, value: key, valid: Licence.all.map({ $0.key }))
+            }
+        } else {
+            return nil
+        }
+    }
+    static var requiredLicence: Licence {
+        let key = stringValue(option: .licence)
+        
+        if let result = Licence(key: key) {
+            return result
+        } else {
+            invalidEnumValue(option: .licence, value: key, valid: Licence.all.map({ $0.key }))
+        }
+    }
+    
+    static var manageFileHeaders: Bool {
+        return booleanValue(option: .manageFileHeaders)
+    }
+    static var fileHeader: String {
+        return stringValue(option: .fileHeader)
+    }
+    static var author: String? {
+        return possibleStringValue(option: .author)
+    }
+    static var requiredAuthor: String {
+        return stringValue(option: .author)
+    }
+    
     static var manageXcode: Bool {
         return booleanValue(option: .manageXcode)
     }
     
     static var manageContinuousIntegration: Bool {
         return booleanValue(option: .manageContinuousIntegration)
+    }
+    
+    // Miscellaneous
+    
+    static var ignoreFileTypes: Set<String> {
+        return Set(listValue(option: .ignoreFileTypes))
     }
     
     // Testing

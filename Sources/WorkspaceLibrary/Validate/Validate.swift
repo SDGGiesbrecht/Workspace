@@ -39,6 +39,16 @@ func runValidate(andExit shouldExit: Bool) {
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    // Proofreading...
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    
+    if runProofread(andExit: false) {
+        individualSuccess(message: "Code passes proofreading.")
+    } else {
+        individualFailure(message: "Code fails proofreading. (See above for details.)")
+    }
+    
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Running unit tests...
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     

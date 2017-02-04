@@ -14,6 +14,7 @@ enum DocumentationLink: String, CustomStringConvertible {
     // MARK: - Configuration
     
     private static let repository = "https://github.com/SDGGiesbrecht/Workspace"
+    static let reportIssueLink = repository + "/issues"
 
     private static let documentationFolder = "/blob/master/Documentation/"
     private var inDocumentationFolder: Bool {
@@ -30,16 +31,22 @@ enum DocumentationLink: String, CustomStringConvertible {
     case setUp = "README.md#setup"
     case responsibilities = "Responsibilities.md"
     case git = "Git.md"
+    case licence = "Licence.md"
+    case fileHeaders = "File Headers.md"
     case xcode = "Xcode.md"
     case continuousIntegration = "Continuous Integration.md"
+    case ignoringFileTypes = "Ignoring File Types.md"
     
     static var all: [DocumentationLink] {
         return [
             .setUp,
             .responsibilities,
             .git,
+            .licence,
+            .fileHeaders,
             .xcode,
             .continuousIntegration,
+            .ignoringFileTypes,
         ]
     }
     

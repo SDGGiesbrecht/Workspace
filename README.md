@@ -40,7 +40,10 @@ A particular project can [configure](Documentation/Operating Systems.md) which o
 
 - Set [new projects](#new-projects) up from scratch.
 - Be [configured](Documentation/Configuring Workspace.md) to opt in or out of any of the following features.
+- Have its configuration [shared](Documentation/Configuring Workspace.md#sharing-configurations-between-projects) between projects.
 - Automatically
+    - Keep [licence notices](Documentation/Licence.md) uniform.
+    - Keep [file headers](Documentation/File Headers.md) uniform and up to date.
     - Generate and maintain a local [Xcode project](Documentation/Xcode.md). (macOS‐only)
     - Run unit tests on each operating system (except watchOS).
     - Configure [continuous integration](Documentation/Continuous Integration.md) for each operating system. ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))

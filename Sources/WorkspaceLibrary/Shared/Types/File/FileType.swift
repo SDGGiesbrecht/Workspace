@@ -9,7 +9,36 @@
 // Licensed under the Apache License, Version 2.0
 // See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
+import SDGLogic
+
 enum FileType: CustomStringConvertible {
+    
+    // MARK: - Static Properties
+    
+    private static var unsupportedTypesEncountered: Set<String> = []
+    static var unsupportedTypesWarning: [String]? {
+        
+        if unsupportedTypesEncountered.isEmpty {
+            return nil
+        } else {
+            
+            var warning: [String] = [
+                "Workspace encountered unsupported file types:",
+                ]
+            
+            warning.append(contentsOf: unsupportedTypesEncountered.sorted())
+            
+            warning.append(contentsOf: [
+                "All such files were skipped.",
+                "If these are standard file types, please report them at:",
+                DocumentationLink.reportIssueLink,
+                "To silence this warning for non‐standard file types, see:",
+                DocumentationLink.ignoringFileTypes.url,
+                ])
+            
+            return warning
+        }
+    }
     
     // MARK: - Initialization
     
@@ -26,6 +55,20 @@ enum FileType: CustomStringConvertible {
         if let value = result {
             self = value
         } else {
+            
+            let filename = filePath.filename
+            
+            let identifier: String
+            if let dotRange = filename.range(of: ".") {
+                identifier = filename.substring(from: dotRange.upperBound)
+            } else {
+                identifier = filename
+            }
+            
+            if ¬Configuration.ignoreFileTypes.contains(identifier) {
+                FileType.unsupportedTypesEncountered.insert(identifier)
+            }
+            
             return nil
         }
     }
@@ -65,6 +108,7 @@ enum FileType: CustomStringConvertible {
         
         // Repository
         (".gitignore", .gitignore),
+        (".gitattributes", .gitignore),
         
         // Scripts
         (".sh", .shell),

@@ -135,7 +135,7 @@ struct FileSyntax {
     func header(file: File) -> String {
         let markup = file.contents.substring(with: file.headerStart ..< file.headerEnd)
         
-        if markup.isEmpty {
+        if markup.lines.filter({ ¬$0.isWhitespace }).isEmpty {
             return markup
         }
         
@@ -151,7 +151,7 @@ struct FileSyntax {
         }
         
         fatalError(message: [
-            "Malformed header:",
+            "Malformed header in \(file.path.filename):",
             "",
             "",
             markup,

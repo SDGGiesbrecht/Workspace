@@ -20,6 +20,7 @@ struct Repository {
     // MARK: - Configuration
     
     static let workspaceDirectory: RelativePath = ".Workspace"
+    static let workspaceResources: RelativePath = workspaceDirectory.subfolderOrFile("Resources")
     private static let linkedRepositories: RelativePath = ".Linked Repositories"
     static let testZone: RelativePath = ".Test Zone"
     
@@ -29,6 +30,7 @@ struct Repository {
         fileprivate var allFiles: [RelativePath]?
         fileprivate var allFilesExcludingWorkspaceItself: [RelativePath]?
         fileprivate var trackedFiles: [RelativePath]?
+        fileprivate var sourceFiles: [RelativePath]?
         fileprivate var printableListOfAllFiles: String?
         fileprivate var packageDescription: File?
     }
@@ -114,6 +116,30 @@ struct Repository {
                 
                 for ignored in ignoredPaths {
                     if path.string.hasPrefix(ignored) {
+                        return false
+                    }
+                }
+                return true
+            }
+            
+            return result
+        }
+    }
+    
+    static var sourceFiles: [RelativePath] {
+        
+        return cachedResult(cache: &cache.sourceFiles) {
+            () -> [RelativePath] in
+            
+            let result = trackedFiles.filter() {
+                (path: RelativePath) -> Bool in
+                
+                let generatedPaths = [
+                    "docs/",
+                ]
+                
+                for generated in generatedPaths {
+                    if path.string.hasPrefix(generated) {
                         return false
                     }
                 }

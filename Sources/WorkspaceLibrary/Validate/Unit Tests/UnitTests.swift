@@ -140,6 +140,7 @@ struct UnitTests {
                         ])
                 }
                 
+                /*
                 if ¬Environment.isInContinuousIntegration {
                     // [_Workaround: ↓ Manually launch the simulator to avoid timeouts. (Xcode 8.2.1)_]
                     
@@ -165,7 +166,7 @@ struct UnitTests {
                     }
                     
                     // [_Workaround: ↑ Manually launch the simulator to avoid timeouts. (Xcode 8.2.1)_]
-                }
+                }*/
                 
                 flag = "-destination"
                 flagValue = "id=\(deviceID)"
@@ -192,7 +193,9 @@ struct UnitTests {
             // iOS
             
             // [_Workaround: xcodebuild hangs on first attempt to build for SDK “iphoneos”. Using simulator instead. (Xcode 8.2.1)_]
-            runUnitTestsInXcode(buildOnly: false, operatingSystemName: "iOS", sdk: "iphonesimulator", deviceKey: "iPhone 7")
+            //runUnitTestsInXcode(buildOnly: false, operatingSystemName: "iOS", sdk: "iphonesimulator", deviceKey: "iPhone 7")
+            
+            runUnitTestsInXcode(buildOnly: false, operatingSystemName: "iOS", sdk: "iphoneos", deviceKey: "iPhone 7")
         }
         
         if Environment.shouldDoWatchOSJobs {

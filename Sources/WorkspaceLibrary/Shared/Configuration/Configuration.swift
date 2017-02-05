@@ -366,6 +366,17 @@ struct Configuration {
     
     // Project Type
     
+    static var projectType: ProjectType? {
+        if let key = possibleStringValue(option: .projectType) {
+            guard let type = ProjectType(key: key) else {
+                invalidEnumValue(option: .projectType, value: key, valid: ProjectType.all.map({ $0.key }))
+            }
+            return type
+        } else {
+            return nil
+        }
+    }
+    
     static var supportMacOS: Bool {
         return booleanValue(option: .supportMacOS)
     }
@@ -375,15 +386,23 @@ struct Configuration {
     }
     
     static var supportIOS: Bool {
-        return booleanValue(option: .supportIOS)
+        return booleanValue(option: .supportIOS) ∧ projectType ≠ ProjectType.executable
     }
     
     static var supportWatchOS: Bool {
-        return booleanValue(option: .supportWatchOS)
+        return booleanValue(option: .supportWatchOS) ∧ projectType ≠ ProjectType.executable
     }
     
     static var supportTVOS: Bool {
-        return booleanValue(option: .supportTVOS)
+        return booleanValue(option: .supportTVOS) ∧ projectType ≠ ProjectType.executable
+    }
+    
+    static var skipSimulators: Bool {
+        if Environment.isInContinuousIntegration {
+            return false
+        } else {
+            return booleanValue(option: .skipSimulator)
+        }
     }
     
     // Responsibilities
@@ -424,6 +443,12 @@ struct Configuration {
     static var requiredAuthor: String {
         return stringValue(option: .author)
     }
+    static var projectWebsite: String? {
+        return possibleStringValue(option: .projectWebsite)
+    }
+    static var requiredProjectWebsite: String? {
+        return stringValue(option: .projectWebsite)
+    }
     
     static var manageXcode: Bool {
         return booleanValue(option: .manageXcode)
@@ -442,5 +467,65 @@ struct Configuration {
     // Testing
     static var nestedTest: Bool {
         return booleanValue(option: .nestedTest)
+    }
+    
+    static func validate() -> Bool {
+        
+        var succeeding = true
+        
+        func incompatibilityDetected(between firstOption: Option, and secondOption: Option, documentation: DocumentationLink?) {
+
+            let firstValue = configurationFile[firstOption]
+            let secondValue = configurationFile[secondOption]
+            
+            func describe(option: Option, value: String?) -> String {
+                if let actualValue = value {
+                    return "\(option.key): \(actualValue)"
+                } else {
+                    return "\(option.key): [Not specified.]"
+                }
+            }
+            
+            var description: [String] = [
+                "The options...",
+                describe(option: firstOption, value: firstValue),
+                "...and...",
+                describe(option: secondOption, value: secondValue),
+                "...are incompatible."
+            ]
+            
+            if let link = documentation {
+                description.append(contentsOf: [
+                    "For more information, see:",
+                    link.url,
+                    ])
+            }
+            
+            succeeding = false
+            printValidationFailureDescription(description)
+        }
+        
+        // Project Type vs Operating System
+        
+        if projectType == .executable {
+            
+            func check(forIncompatibleOperatingSystem option: Option) {
+                if configurationFile[option] == Configuration.trueOptionValue {
+                    incompatibilityDetected(between: .projectType, and: option, documentation: .platforms)
+                }
+            }
+            
+            check(forIncompatibleOperatingSystem: .supportIOS)
+            check(forIncompatibleOperatingSystem: .supportWatchOS)
+            check(forIncompatibleOperatingSystem: .supportTVOS)
+        }
+        
+        // Manage Licence
+        
+        if manageLicence ∧ configurationFile[.licence] == nil {
+            incompatibilityDetected(between: .manageLicence, and: .licence, documentation: .licence)
+        }
+        
+        return succeeding
     }
 }

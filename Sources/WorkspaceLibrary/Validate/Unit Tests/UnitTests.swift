@@ -66,7 +66,7 @@ struct UnitTests {
         func runUnitTestsInXcode(buildOnly: Bool, operatingSystemName: String, sdk: String, deviceKey: String) {
             
             var buildOnly = buildOnly
-            if false {
+            if Configuration.skipSimulators {
                 buildOnly = true
             }
             

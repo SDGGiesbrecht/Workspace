@@ -386,7 +386,7 @@ struct Repository {
         }
         
         performInDirectory(directory: repository) {
-            requireBash(["git", "pull"])
+            requireBash(["git", "pull"], silent: true)
         }
         
         return name

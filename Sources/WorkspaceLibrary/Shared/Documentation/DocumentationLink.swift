@@ -21,7 +21,7 @@ enum DocumentationLink: String, CustomStringConvertible {
     private static let documentationFolder = "/blob/master/Documentation/"
     private var inDocumentationFolder: Bool {
         switch self {
-        case .setUp:
+        case .platforms, .setUp:
             return false
         default:
             return true
@@ -30,6 +30,7 @@ enum DocumentationLink: String, CustomStringConvertible {
     
     // MARK: - Cases
     
+    case platforms = "README.md#platforms"
     case setUp = "README.md#setup"
     case responsibilities = "Responsibilities.md"
     case git = "Git.md"
@@ -41,6 +42,7 @@ enum DocumentationLink: String, CustomStringConvertible {
     
     static var all: [DocumentationLink] {
         return [
+            .platforms,
             .setUp,
             .responsibilities,
             .git,

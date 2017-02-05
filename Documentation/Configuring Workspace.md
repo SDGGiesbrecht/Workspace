@@ -46,3 +46,17 @@ A configuration file can import options from another repository:
 The referenced repository can be a real project or an otherwise empty repository, as long as it contains a `.Workspace Configuration.txt` file at its root.
 
 Precedence rules still apply. The imported options can override any options before the import statement, and options that follow the import statement can override the imported options.
+
+## Available Options
+
+For information on the various available options, see the documentation for the particular feature:
+
+- [Responsibilities](Responsibilities.md)
+- [Project Types](Project Types.md)
+- [Operating Systems](Operating Systems.md)
+- [Simulator](Simulator.md)
+- [Licence](Licence.md)
+- [Xcode](Xcode.md)
+- [File Headers](File Headers.md)
+- [Continuous Integration](Continuous Integration.md)
+- [Ignoring File Types](Ignoring File Types.md)

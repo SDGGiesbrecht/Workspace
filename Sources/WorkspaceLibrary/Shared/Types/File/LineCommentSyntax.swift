@@ -40,7 +40,10 @@ struct LineCommentSyntax {
         
         var result: [String] = []
         for line in contents.lines {
-            var modified = start + spacing + line
+            var modified = start
+            if ¬line.isWhitespace {
+                modified += spacing + line
+            }
             if let end = stylisticEnd {
                 modified += spacing + end
             }

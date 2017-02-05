@@ -31,8 +31,6 @@ func runRefresh(andExit shouldExit: Bool) {
     printHeader(["Updating Workspace commands..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
-    
-    /*
     func copy(script: String) {
         let origin = Repository.workspaceResources.subfolderOrFile("Scripts/\(script)")
         
@@ -62,26 +60,6 @@ func runRefresh(andExit shouldExit: Bool) {
         // Not checked into repository, so dependent on environment.
         
         copy(script: "Validate Changes (Linux).sh")
-    }*/
-    
-    // Refresh Workspace
-    
-    require() { try Repository.copy(Repository.workspaceResources.subfolderOrFile("Scripts/Refresh Workspace (macOS).command"), into: Repository.root, includeIgnoredFiles: true) }
-    
-    if Configuration.supportLinux {
-        // Checked into repository, so dependent on configuration.
-        
-        require() { try Repository.copy(Repository.workspaceResources.subfolderOrFile("Scripts/Refresh Workspace (Linux).sh"), into: Repository.root, includeIgnoredFiles: true) }
-    }
-    
-    // Validate Changes
-    
-    require() { try Repository.copy(Repository.workspaceResources.subfolderOrFile("Scripts/Validate Changes (macOS).command"), into: Repository.root, includeIgnoredFiles: true) }
-    
-    if Environment.operatingSystem == .linux {
-        // Not checked into repository, so dependent on environment.
-        
-        require() { try Repository.copy(Repository.workspaceResources.subfolderOrFile("Scripts/Validate Changes (Linux).sh"), into: Repository.root, includeIgnoredFiles: true) }
     }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

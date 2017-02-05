@@ -32,11 +32,14 @@ func runRefresh(andExit shouldExit: Bool) {
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
     func copy(script: String) {
-        let origin = require() { try File(at: Repository.workspaceResources.subfolderOrFile("Scripts/\(script)")) }
+        let origin = Repository.workspaceResources.subfolderOrFile("Scripts/\(script)")
         
-        var destination = File(possiblyAt: RelativePath(script))
-        destination.contents = origin.contents
-        require() { try destination.write() }
+        let updated = require() { try File(at: origin) }
+        let old = File(possiblyAt: RelativePath(script))
+        
+        if old.contents ≠ updated.contents {
+            require() { try Repository.copy(origin, into: Repository.root, includeIgnoredFiles: true) }
+        }
     }
     
     // Refresh Workspace
@@ -56,7 +59,7 @@ func runRefresh(andExit shouldExit: Bool) {
     if Environment.operatingSystem == .linux {
         // Not checked into repository, so dependent on environment.
         
-        copy(script: "Validate Changes (Linux).command")
+        copy(script: "Validate Changes (Linux).sh")
     }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

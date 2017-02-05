@@ -499,14 +499,25 @@ struct Configuration {
             printValidationFailureDescription(description)
         }
         
-        if projectType == .executable ∧ supportIOS {
-            incompatibilityDetected(between: .projectType, and: .supportIOS, documentation: .platforms)
+        // Project Type vs Operating System
+        
+        if projectType == .executable {
+            
+            func check(forIncompatibleOperatingSystem option: Option) {
+                if configurationFile[option] == Configuration.trueOptionValue {
+                    incompatibilityDetected(between: .projectType, and: option, documentation: .platforms)
+                }
+            }
+            
+            check(forIncompatibleOperatingSystem: .supportIOS)
+            check(forIncompatibleOperatingSystem: .supportWatchOS)
+            check(forIncompatibleOperatingSystem: .supportTVOS)
         }
-        if projectType == .executable ∧ supportWatchOS {
-            incompatibilityDetected(between: .projectType, and: .supportWatchOS, documentation: .platforms)
-        }
-        if projectType == .executable ∧ supportTVOS {
-            incompatibilityDetected(between: .projectType, and: .supportTVOS, documentation: .platforms)
+        
+        // Manage Licence
+        
+        if manageLicence ∧ configurationFile[.licence] == nil {
+            incompatibilityDetected(between: .manageLicence, and: .licence, documentation: .licence)
         }
         
         return succeeding

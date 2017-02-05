@@ -2,6 +2,7 @@
     .Workspace Configuration.txt
 
     This source file is part of the Workspace open source project.
+    https://github.com/SDGGiesbrecht/Workspace
 
     Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
 
@@ -13,6 +14,6 @@
 
 [_Import https://github.com/SDGGiesbrecht/SDG_]
 
-Support iOS: False
-Support watchOS: False
-Support tvOS: False
+Project Type: Executable
+
+Project Website: https://github.com/SDGGiesbrecht/Workspace

@@ -31,24 +31,32 @@ func runRefresh(andExit shouldExit: Bool) {
     printHeader(["Updating Workspace commands..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
+    func copy(script: String) {
+        let origin = require() { try File(at: Repository.workspaceResources.subfolderOrFile("Scripts/\(script)")) }
+        
+        var destination = File(possiblyAt: RelativePath(script))
+        destination.contents = origin.contents
+        require() { try destination.write() }
+    }
+    
     // Refresh Workspace
     
-    require() { try Repository.copy(Repository.workspaceResources.subfolderOrFile("Scripts/Refresh Workspace (macOS).command"), into: Repository.root, includeIgnoredFiles: true) }
+    copy(script: "Refresh Workspace (macOS).command")
     
     if Configuration.supportLinux {
         // Checked into repository, so dependent on configuration.
         
-        require() { try Repository.copy(Repository.workspaceResources.subfolderOrFile("Scripts/Refresh Workspace (Linux).sh"), into: Repository.root, includeIgnoredFiles: true) }
+        copy(script: "Refresh Workspace (Linux).sh")
     }
     
     // Validate Changes
     
-    require() { try Repository.copy(Repository.workspaceResources.subfolderOrFile("Scripts/Validate Changes (macOS).command"), into: Repository.root, includeIgnoredFiles: true) }
+    copy(script: "Validate Changes (macOS).command")
     
     if Environment.operatingSystem == .linux {
         // Not checked into repository, so dependent on environment.
         
-        require() { try Repository.copy(Repository.workspaceResources.subfolderOrFile("Scripts/Validate Changes (Linux).sh"), into: Repository.root, includeIgnoredFiles: true) }
+        copy(script: "Validate Changes (Linux).command")
     }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
@@ -104,6 +112,8 @@ func runRefresh(andExit shouldExit: Bool) {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         
         ContinuousIntegration.refreshContinuousIntegrationConfiguration()
+    } else {
+        ContinuousIntegration.relinquishControl()
     }
     
     if Configuration.manageFileHeaders {

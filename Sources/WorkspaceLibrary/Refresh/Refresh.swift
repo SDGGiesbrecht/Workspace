@@ -38,6 +38,7 @@ func runRefresh(andExit shouldExit: Bool) {
         let old = File(possiblyAt: RelativePath(script))
         
         if old.contents ≠ updated.contents {
+            print("Difference!")
             require() { try Repository.copy(origin, into: Repository.root, includeIgnoredFiles: true) }
         }
     }

@@ -32,7 +32,7 @@ There are several dynamic elements available for the file header template. Dynam
 For example:
 
 ```
-[_Begin Manage File Headers_]
+[_Begin File Header_]
 [_Filename_]
 
 Copyright [_Copyright_] John Doe.

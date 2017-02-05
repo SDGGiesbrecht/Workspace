@@ -1,12 +1,12 @@
 /*
  Option.swift
-
+ 
  This source file is part of the Workspace open source project.
-
+ 
  Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
-
+ 
  Soli Deo gloria.
-
+ 
  Licensed under the Apache Licence, Version 2.0.
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
@@ -78,7 +78,7 @@ enum Option: String, CustomStringConvertible {
         .manageContinuousIntegration,
         
         .ignoreFileTypes,
-    ]
+        ]
     
     // MARK: - Properties
     
@@ -123,8 +123,13 @@ enum Option: String, CustomStringConvertible {
                 "[_Filename_]",
                 "",
                 "This source file is part of the [_Project_] open source project.",
-                "",
                 ]
+            if Configuration.optionIsDefined(.projectWebsite) {
+                defaultHeader.append("[_Website_]")
+            }
+            defaultHeader.append(contentsOf: [
+                "",
+                ])
             if Configuration.optionIsDefined(.author) {
                 defaultHeader.append("Copyright [_Copyright_] [_Author_] and the [_Project_] project contributors.")
             } else {
@@ -148,7 +153,7 @@ enum Option: String, CustomStringConvertible {
         case .ignoreFileTypes:
             return ""
             
-            // Tests
+        // Tests
         case .nestedTest:
             return Configuration.falseOptionValue
         case .testOption:
@@ -164,7 +169,7 @@ enum Option: String, CustomStringConvertible {
         (.manageXcode, automaticValue: Configuration.trueOptionValue, DocumentationLink.xcode),
         (.manageFileHeaders, automaticValue: Configuration.trueOptionValue, DocumentationLink.fileHeaders),
         (.manageContinuousIntegration, automaticValue: Configuration.trueOptionValue, DocumentationLink.continuousIntegration),
-    ]
+        ]
     
     // MARK: - CustomStringConvertible
     

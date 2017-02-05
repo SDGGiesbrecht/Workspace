@@ -443,6 +443,12 @@ struct Configuration {
     static var requiredAuthor: String {
         return stringValue(option: .author)
     }
+    static var projectWebsite: String? {
+        return possibleStringValue(option: .projectWebsite)
+    }
+    static var requiredProjectWebsite: String? {
+        return stringValue(option: .projectWebsite)
+    }
     
     static var manageXcode: Bool {
         return booleanValue(option: .manageXcode)

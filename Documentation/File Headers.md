@@ -54,6 +54,7 @@ The available dynamic elements are:
 
 - `Filename`: The name of the particular file. (e.g. `Package.swift`)
 - `Project`: The name of the particular project. (e.g. `MyLibrary`)
+- `Website`: The value of the configuration option `Project Website`. (e.g. `github.com/JohnDoe/MyLibrary`)
 - `Copyright`: The file’s copyright date(s). (e.g. `©2016–2017`) More information [below](#copyright).
 - `Author`: The value of the configuration option `Author`. (e.g. `John Doe`)
 - `Licence`: The notice for the project’s [licence](Licence.md#selecting-a-licence).

@@ -44,6 +44,7 @@ fi
 cd "${WORKSPACE}"
 git pull
 if swift build --configuration release; then
+    :
 else
     swift package update
     swift build --configuration release

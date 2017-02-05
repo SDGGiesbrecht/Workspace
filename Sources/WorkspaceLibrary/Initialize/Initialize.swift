@@ -154,7 +154,7 @@ func runInitialize(andExit shouldExit: Bool) {
     var entries: [(option: Option, value: String, comment: [String]?)] = [(option: .automaticallyTakeOnNewResponsibilites, value: Configuration.trueOptionValue, comment: note)]
     if Flags.executable {
         entries.append(contentsOf: [
-            (option: .projectType, value: Configuration.falseOptionValue, comment: nil),
+            (option: .projectType, value: ProjectType.executable.key, comment: nil),
             ])
     }
     Configuration.addEntries(entries: entries, to: &configuration)

@@ -41,6 +41,7 @@ enum Option: String, CustomStringConvertible {
     case manageFileHeaders = "Manage File Headers"
     case fileHeader = "File Header"
     case author = "Author"
+    case projectWebsite = "Project Website"
     
     case manageContinuousIntegration = "Manage Continuous Integration"
     
@@ -71,6 +72,7 @@ enum Option: String, CustomStringConvertible {
         
         .manageFileHeaders,
         .fileHeader,
+        .projectWebsite,
         .author,
         
         .manageContinuousIntegration,
@@ -135,6 +137,8 @@ enum Option: String, CustomStringConvertible {
                     ])
             }
             return join(lines: defaultHeader)
+        case .projectWebsite:
+            return Configuration.noValue
         case .author:
             return Configuration.noValue
             

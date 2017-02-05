@@ -2,6 +2,7 @@
  Output.swift
 
  This source file is part of the Workspace open source project.
+ https://github.com/SDGGiesbrecht/Workspace
 
  Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
 
@@ -83,6 +84,10 @@ private func outputWarnings() {
     for warning in warnings {
         print(warning, in: .yellow, spaced: true)
     }
+}
+
+func printValidationFailureDescription(_ message: [String]) {
+    print(message, in: .red, spaced: true)
 }
 
 private func printError(_ message: [String]) {

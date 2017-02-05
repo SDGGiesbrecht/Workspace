@@ -2,6 +2,7 @@
  LineCommentSyntax.swift
 
  This source file is part of the Workspace open source project.
+ https://github.com/SDGGiesbrecht/Workspace
 
  Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
 
@@ -40,7 +41,10 @@ struct LineCommentSyntax {
         
         var result: [String] = []
         for line in contents.lines {
-            var modified = start + spacing + line
+            var modified = start
+            if ¬line.isWhitespace {
+                modified += spacing + line
+            }
             if let end = stylisticEnd {
                 modified += spacing + end
             }

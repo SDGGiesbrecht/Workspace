@@ -2,6 +2,7 @@
  UnitTests.swift
 
  This source file is part of the Workspace open source project.
+ https://github.com/SDGGiesbrecht/Workspace
 
  Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
 
@@ -66,7 +67,7 @@ struct UnitTests {
         func runUnitTestsInXcode(buildOnly: Bool, operatingSystemName: String, sdk: String, deviceKey: String) {
             
             var buildOnly = buildOnly
-            if false {
+            if Configuration.skipSimulators {
                 buildOnly = true
             }
             

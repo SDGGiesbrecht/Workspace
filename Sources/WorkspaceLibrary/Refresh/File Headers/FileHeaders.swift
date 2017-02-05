@@ -2,6 +2,7 @@
  FileHeaders.swift
 
  This source file is part of the Workspace open source project.
+ https://github.com/SDGGiesbrecht/Workspace
 
  Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
 
@@ -56,6 +57,11 @@ struct FileHeaders {
         
         let template = Configuration.fileHeader
         
+        var possibleWebsite: String?
+        if template.contains(key("Website")) {
+            possibleWebsite = Configuration.requiredProjectWebsite
+        }
+        
         var possibleAuthor: String?
         if template.contains(key("Author")) {
             possibleAuthor = Configuration.requiredAuthor
@@ -96,6 +102,9 @@ struct FileHeaders {
                 
                 header = header.replacingOccurrences(of: key("Filename"), with: path.filename)
                 header = header.replacingOccurrences(of: key("Project"), with: Configuration.projectName)
+                if let website = possibleWebsite {
+                    header = header.replacingOccurrences(of: key("Website"), with: website)
+                }
                 header = header.replacingOccurrences(of: key("Copyright"), with: FileHeaders.copyright(fromText: oldHeader))
                 if let author = possibleAuthor {
                     header = header.replacingOccurrences(of: key("Author"), with: author)

@@ -2,6 +2,7 @@
  Validate.swift
 
  This source file is part of the Workspace open source project.
+ https://github.com/SDGGiesbrecht/Workspace
 
  Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
 
@@ -40,14 +41,28 @@ func runValidate(andExit shouldExit: Bool) {
     printHeader(["Validating \(Configuration.projectName)..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
-    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    // Proofreading...
-    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    
-    if runProofread(andExit: false) {
-        individualSuccess(message: "Code passes proofreading.")
-    } else {
-        individualFailure(message: "Code fails proofreading. (See above for details.)")
+    if Environment.shouldDoMiscellaneousJobs {
+        
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        printHeader(["Validating Workspace configuration..."])
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        
+        if Configuration.validate() {
+            individualSuccess(message: "Workspace configuration is valid.")
+        } else {
+            individualFailure(message: "Invalid Workspace configuration. (See above for details.)")
+        }
+        
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        // Proofreading...
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        
+        
+        if runProofread(andExit: false) {
+            individualSuccess(message: "Code passes proofreading.")
+        } else {
+            individualFailure(message: "Code fails proofreading. (See above for details.)")
+        }
     }
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

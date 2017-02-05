@@ -2,6 +2,7 @@
  Option.swift
 
  This source file is part of the Workspace open source project.
+ https://github.com/SDGGiesbrecht/Workspace
 
  Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
 
@@ -23,11 +24,15 @@ enum Option: String, CustomStringConvertible {
     
     case automaticallyTakeOnNewResponsibilites = "Automatically Take On New Responsibilities"
     
+    case projectType = "Project Type"
+    
     case supportMacOS = "Support macOS"
     case supportLinux = "Support Linux"
     case supportIOS = "Support iOS"
     case supportWatchOS = "Support watchOS"
     case supportTVOS = "Support tvOS"
+    
+    case skipSimulator = "Skip Simulator"
     
     case manageLicence = "Manage Licence"
     case licence = "Licence"
@@ -37,6 +42,7 @@ enum Option: String, CustomStringConvertible {
     case manageFileHeaders = "Manage File Headers"
     case fileHeader = "File Header"
     case author = "Author"
+    case projectWebsite = "Project Website"
     
     case manageContinuousIntegration = "Manage Continuous Integration"
     
@@ -50,11 +56,15 @@ enum Option: String, CustomStringConvertible {
     static let allPublic: [Option] = [
         .automaticallyTakeOnNewResponsibilites,
         
+        .projectType,
+        
         .supportMacOS,
         .supportLinux,
         .supportIOS,
         .supportWatchOS,
         .supportTVOS,
+        
+        .skipSimulator,
         
         .manageLicence,
         .licence,
@@ -63,12 +73,13 @@ enum Option: String, CustomStringConvertible {
         
         .manageFileHeaders,
         .fileHeader,
+        .projectWebsite,
         .author,
         
         .manageContinuousIntegration,
         
         .ignoreFileTypes,
-    ]
+        ]
     
     // MARK: - Properties
     
@@ -81,6 +92,9 @@ enum Option: String, CustomStringConvertible {
         case .automaticallyTakeOnNewResponsibilites:
             return Configuration.falseOptionValue
             
+        case .projectType:
+            return Configuration.noValue
+            
         case .supportMacOS:
             return Configuration.trueOptionValue
         case .supportLinux:
@@ -91,6 +105,9 @@ enum Option: String, CustomStringConvertible {
             return Configuration.trueOptionValue
         case .supportTVOS:
             return Configuration.trueOptionValue
+            
+        case .skipSimulator:
+            return Configuration.falseOptionValue
             
         case .manageLicence:
             return Configuration.falseOptionValue
@@ -107,8 +124,13 @@ enum Option: String, CustomStringConvertible {
                 "[_Filename_]",
                 "",
                 "This source file is part of the [_Project_] open source project.",
-                "",
                 ]
+            if Configuration.optionIsDefined(.projectWebsite) {
+                defaultHeader.append("[_Website_]")
+            }
+            defaultHeader.append(contentsOf: [
+                "",
+                ])
             if Configuration.optionIsDefined(.author) {
                 defaultHeader.append("Copyright [_Copyright_] [_Author_] and the [_Project_] project contributors.")
             } else {
@@ -121,6 +143,8 @@ enum Option: String, CustomStringConvertible {
                     ])
             }
             return join(lines: defaultHeader)
+        case .projectWebsite:
+            return Configuration.noValue
         case .author:
             return Configuration.noValue
             
@@ -130,7 +154,7 @@ enum Option: String, CustomStringConvertible {
         case .ignoreFileTypes:
             return ""
             
-            // Tests
+        // Tests
         case .nestedTest:
             return Configuration.falseOptionValue
         case .testOption:
@@ -146,7 +170,7 @@ enum Option: String, CustomStringConvertible {
         (.manageXcode, automaticValue: Configuration.trueOptionValue, DocumentationLink.xcode),
         (.manageFileHeaders, automaticValue: Configuration.trueOptionValue, DocumentationLink.fileHeaders),
         (.manageContinuousIntegration, automaticValue: Configuration.trueOptionValue, DocumentationLink.continuousIntegration),
-    ]
+        ]
     
     // MARK: - CustomStringConvertible
     

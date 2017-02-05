@@ -2,6 +2,7 @@
  ContinuousIntegration.swift
 
  This source file is part of the Workspace open source project.
+ https://github.com/SDGGiesbrecht/Workspace
 
  Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
 
@@ -28,14 +29,16 @@ struct ContinuousIntegration {
         .linux,
     ]
     
+    private static let travisConfigurationPath = RelativePath(".travis.yml")
+    
+    private static let managementComment: String = {
+        let managementWarning = File.managmentWarning(section: false, documentation: .continuousIntegration)
+        return FileType.yaml.syntax.comment(contents: managementWarning)
+    }()
+    
     static func refreshContinuousIntegrationConfiguration() {
         
-        let travisConfigurationPath = RelativePath(".travis.yml")
-        
         var travisConfiguration = File(possiblyAt: travisConfigurationPath)
-        
-        let managementWarning = File.managmentWarning(section: false, documentation: .continuousIntegration)
-        let managementComment = FileType.yaml.syntax.comment(contents: managementWarning)
         
         var updatedLines: [String] = [
             managementComment,
@@ -134,6 +137,17 @@ struct ContinuousIntegration {
         let newBody = join(lines: updatedLines)
         travisConfiguration.body = newBody
         require() { try travisConfiguration.write() }
+    }
+    
+    static func relinquishControl() {
+        var configuration = File(possiblyAt: travisConfigurationPath)
+        if configuration.contents.contains(managementComment) {
+            
+            printHeader(["Cancelling continuous integration management..."])
+            
+            print(["Deleting \(travisConfigurationPath)"])
+            force() { try Repository.delete(travisConfigurationPath) }
+        }
     }
     
 }

@@ -85,6 +85,10 @@ private func outputWarnings() {
     }
 }
 
+func printValidationFailureDescription(_ message: [String]) {
+    print(message, in: .red, spaced: true)
+}
+
 private func printError(_ message: [String]) {
     print(message, in: .red, spaced: true)
 }

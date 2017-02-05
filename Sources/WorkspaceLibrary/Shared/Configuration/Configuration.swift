@@ -462,4 +462,53 @@ struct Configuration {
     static var nestedTest: Bool {
         return booleanValue(option: .nestedTest)
     }
+    
+    static func validate() -> Bool {
+        
+        var succeeding = true
+        
+        func incompatibilityDetected(between firstOption: Option, and secondOption: Option, documentation: DocumentationLink?) {
+
+            let firstValue = configurationFile[firstOption]
+            let secondValue = configurationFile[secondOption]
+            
+            func describe(option: Option, value: String?) -> String {
+                if let actualValue = value {
+                    return "\(option.key): \(actualValue)"
+                } else {
+                    return "\(option.key): [Not specified.]"
+                }
+            }
+            
+            var description: [String] = [
+                "The options...",
+                describe(option: firstOption, value: firstValue),
+                "...and...",
+                describe(option: secondOption, value: secondValue),
+                "...are incompatible."
+            ]
+            
+            if let link = documentation {
+                description.append(contentsOf: [
+                    "For more information, see:",
+                    link.url,
+                    ])
+            }
+            
+            succeeding = false
+            printValidationFailureDescription(description)
+        }
+        
+        if projectType == .executable ∧ supportIOS {
+            incompatibilityDetected(between: .projectType, and: .supportIOS, documentation: .platforms)
+        }
+        if projectType == .executable ∧ supportWatchOS {
+            incompatibilityDetected(between: .projectType, and: .supportWatchOS, documentation: .platforms)
+        }
+        if projectType == .executable ∧ supportTVOS {
+            incompatibilityDetected(between: .projectType, and: .supportTVOS, documentation: .platforms)
+        }
+        
+        return succeeding
+    }
 }

@@ -41,6 +41,16 @@ func runValidate(andExit shouldExit: Bool) {
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    printHeader(["Validating Workspace configuration..."])
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    
+    if Configuration.validate() {
+        individualSuccess(message: "Workspace configuration is valid.")
+    } else {
+        individualFailure(message: "Invalid Workspace configuration. (See above for details.)")
+    }
+    
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Proofreading...
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     

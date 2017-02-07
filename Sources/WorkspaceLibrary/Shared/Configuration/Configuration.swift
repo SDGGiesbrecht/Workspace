@@ -432,6 +432,13 @@ struct Configuration {
         }
     }
     
+    static var manageContributingInstructions: Bool {
+        return booleanValue(option: .manageContributingInstructions)
+    }
+    static var contributingInstructions: String {
+        return stringValue(option: .contributingInstructions)
+    }
+    
     static var manageFileHeaders: Bool {
         return booleanValue(option: .manageFileHeaders)
     }

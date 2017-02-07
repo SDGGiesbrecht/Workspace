@@ -110,6 +110,17 @@ func runRefresh(andExit shouldExit: Bool) {
         Licence.refreshLicence()
     }
     
+    if Configuration.manageContributingInstructions {
+        
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        printHeader(["Updating contributing instructions..."])
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        
+        ContributingInstructions.refreshContributingInstructions()
+    } else {
+        ContributingInstructions.relinquishControl()
+    }
+    
     if Configuration.manageContinuousIntegration {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         printHeader(["Updating continuous integration configuration..."])

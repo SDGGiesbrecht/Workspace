@@ -1,7 +1,8 @@
 <!--
- Xcode.md
+ Simulator.md
 
  This source file is part of the Workspace open source project.
+ https://github.com/SDGGiesbrecht/Workspace
 
  Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
 
@@ -17,7 +18,7 @@ By default, Workspace launches each Apple simulator as necessary.
 
 Because booting and switching the simulator often takes longer than all the other tasks combined, Workspace provides a [configuration](Configuring Workspace.md) option, `Skip Simulator`, to skip actions that require the simulator. This can save a lot of time for projects where there are very few differences between the macOS tests and those of the other Apple platforms.
 
-*`Skip Simulator` only takes effect when running locally. Workspace still performs all tasks during continuous integration.*
+**`Skip Simulator` only takes effect when running locally. Workspace still performs all tasks during continuous integration.**
 
 If `Skip Simulator` is set to `True`:
 

@@ -18,6 +18,32 @@ import SDGLogic
 
 struct FileHeaders {
     
+    static let defaultFileHeader: String = {
+        var defaultHeader: [String] = [
+            "[_Filename_]",
+            "",
+            "This source file is part of the [_Project_] open source project.",
+            ]
+        if Configuration.optionIsDefined(.projectWebsite) {
+            defaultHeader.append("[_Website_]")
+        }
+        defaultHeader.append(contentsOf: [
+            "",
+            ])
+        if Configuration.optionIsDefined(.author) {
+            defaultHeader.append("Copyright [_Copyright_] [_Author_] and the [_Project_] project contributors.")
+        } else {
+            defaultHeader.append("Copyright [_Copyright_] the [_Project_] project contributors.")
+        }
+        if Configuration.optionIsDefined(.licence) {
+            defaultHeader.append(contentsOf: [
+                "",
+                "[_Licence_]",
+                ])
+        }
+        return join(lines: defaultHeader)
+    }()
+    
     static func copyright(fromText text: String) -> String {
         
         var oldStartDate: String?

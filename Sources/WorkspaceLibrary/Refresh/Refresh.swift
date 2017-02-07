@@ -99,7 +99,7 @@ func runRefresh(andExit shouldExit: Bool) {
     printHeader(["Updating Git configuration..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     
-    Git.refreshGitIgnore()
+    Git.updateGitConfiguraiton()
     
     if Configuration.manageLicence {
         

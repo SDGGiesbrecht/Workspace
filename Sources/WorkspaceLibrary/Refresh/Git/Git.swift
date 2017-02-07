@@ -43,39 +43,66 @@ struct Git {
         "/*.xcodeproj",
         ]
     
-    static func refreshGitIgnore() {
+    static func updateGitConfiguraiton() {
         
         let startToken = "# [_Begin Workspace Section_]"
         let endToken = "# [_End Workspace Section]"
         
-        var gitIngore = require() { try File(at: RelativePath(".gitignore")) }
-        var body = gitIngore.body
-        
-        var managedRange: Range<String.Index>
-        if let section = body.range(of: (startToken, endToken)) {
-            managedRange = section
-        } else {
-            managedRange = body.startIndex ..< body.endIndex
-        }
-        
         let managementWarning = File.managmentWarning(section: true, documentation: .git)
         let managementComment = FileType.gitignore.syntax.comment(contents: managementWarning)
         
-        var updatedLines: [String] = []
-        updatedLines += [startToken]
-        updatedLines += [""]
-        updatedLines += [managementComment]
-        updatedLines += [""]
-        updatedLines += requiredIgnoreEntries
+        func replaceManagedSection(in file: File, with contents: [String]) {
+            var updatedFile = file
+            
+            var body = updatedFile.body
+            
+            var managedRange: Range<String.Index>
+            if let section = body.range(of: (startToken, endToken)) {
+                managedRange = section
+            } else {
+                if Command.current == .initialize {
+                    managedRange = body.startIndex ..< body.endIndex
+                } else {
+                    managedRange = body.startIndex ..< body.startIndex
+                }
+            }
+            
+            let updatedLines: [String] = [
+                startToken,
+                "",
+                managementComment,
+                "",
+                ] + contents + [
+                    "",
+                    endToken,
+            ]
+            
+            body.replaceSubrange(managedRange, with: join(lines: updatedLines))
+            updatedFile.body = body
+            require() {try updatedFile.write() }
+        }
+        
+        // .gitignore
+        
+        let gitIgnore = require() { try File(at: RelativePath(".gitignore")) }
+        
+        var updatedLines: [String] = requiredIgnoreEntries
         if Configuration.manageXcode {
             updatedLines += ignoreEntriesForXcode
         }
-        updatedLines += [""]
-        updatedLines += [endToken]
         
-        body.replaceSubrange(managedRange, with: join(lines: updatedLines))
-        gitIngore.body = body
-        require() { try gitIngore.write() }
+        replaceManagedSection(in: gitIgnore, with: updatedLines)
+        
+        // .gitattributes
+        
+        let gitAttributes = File(possiblyAt: RelativePath(".gitattributes"))
+        
+        let updatedAttributes = [
+            "Refresh[[:space]]Workspace[[:space]](macOS).command linguist-vendored=true",
+            "Refresh[[:space]]Workspace[[:space]](Linux).sh linguist-vendored=true",
+            ]
+        
+        replaceManagedSection(in: gitAttributes, with: updatedAttributes)
+        
     }
-    
 }

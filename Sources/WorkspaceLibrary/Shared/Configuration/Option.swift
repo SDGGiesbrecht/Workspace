@@ -51,6 +51,9 @@ enum Option: String, CustomStringConvertible {
     
     case ignoreFileTypes = "Ignore File Types"
     
+    // SDG
+    case sdg = "SDG"
+    
     // Testing Workspace
     case nestedTest = "Nested Test"
     case testOption = "Test Option"
@@ -143,6 +146,10 @@ enum Option: String, CustomStringConvertible {
             
         case .ignoreFileTypes:
             return ""
+            
+        // SDG
+        case .sdg:
+            return Configuration.falseOptionValue
             
         // Tests
         case .nestedTest:

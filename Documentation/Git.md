@@ -14,6 +14,6 @@
 
 # Git
 
-Workspace will manage a section of the project’s `.gitignore` file to prevent itself and its components from being checked in.
+Workspace will manage a section of the project’s `.gitignore` and `.gitattributes` files to prevent itself and its components from being checked in.
 
-This section is clearly marked and placed at the top of the `.gitignore` file so that it can be manually overridden by placing rules after it.
+This section is clearly marked and placed at the top of each file so that it can be manually overridden by placing rules after it.

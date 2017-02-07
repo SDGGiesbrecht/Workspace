@@ -472,6 +472,11 @@ struct Configuration {
         return Set(listValue(option: .ignoreFileTypes))
     }
     
+    // SDG
+    static var sdg: Bool {
+        return booleanValue(option: .sdg)
+    }
+    
     // Testing
     static var nestedTest: Bool {
         return booleanValue(option: .nestedTest)

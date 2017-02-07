@@ -690,6 +690,22 @@ class WorkspaceTests: XCTestCase {
         }
     }
     
+    func testExecutables() {
+        if ¬Environment.isInXcode ∧ ¬Configuration.nestedTest {
+            
+            let executables: [String] = [
+                "Refresh Workspace (macOS).command",
+                "Refresh Workspace (Linux).sh",
+                "Validate Changes (macOS).command",
+                "Validate Changes (Linux).sh",
+                ]
+            
+            for file in executables {
+                XCTAssert(try! File(at: RelativePath("Resources/Scripts/\(file)")).isExecutable, "Script is not longer executable: \(file)")
+            }
+        }
+    }
+    
     func testOnProjects() {
         
         if ¬Environment.isInXcode ∧ ¬Configuration.nestedTest {

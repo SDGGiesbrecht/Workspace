@@ -634,6 +634,7 @@ class WorkspaceTests: XCTestCase {
             
             // Git
             ".gitignore",
+            ".gitattributes",
             
             // GitHub
             "README.md",
@@ -853,6 +854,7 @@ class WorkspaceTests: XCTestCase {
             ("testShell", testShell),
             ("testGitIgnoreCoverage", testGitIgnoreCoverage),
             ("testDocumentationCoverage", testDocumentationCoverage),
+            ("testExecutables", testExecutables),
             ("testOnProjects", testOnProjects),
         ]
     }

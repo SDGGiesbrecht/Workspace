@@ -223,17 +223,20 @@ struct Repository {
     }
     
     /// Use File’s “write()” instead.
-    static func _write(file: String, to path: RelativePath) throws {
+    static func _write(file: String, to path: RelativePath, asExecutable executable: Bool) throws {
         
         prepareForWrite(path: path)
         
         try file.write(toFile: absolute(path).string, atomically: true, encoding: String.Encoding.utf8)
+        if executable {
+            try fileManager.setAttributes([.posixPermissions: 0o777], ofItemAtPath: absolute(path).string)
+        }
         
         resetCache()
         
         if debug {
-            let written = try Repository._read(file: path).contents
-            assert(written == file, "Write operation failed.")
+            let written = try Repository._read(file: path)
+            assert(written == (file, executable), "Write operation failed.")
         }
     }
     

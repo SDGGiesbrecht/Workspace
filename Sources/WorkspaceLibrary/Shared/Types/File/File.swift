@@ -290,7 +290,7 @@ struct File {
     func write() throws {
         if hasChanged {
             print("Writing to “\(path)”...")
-            try Repository._write(file: contents, to: path)
+            try Repository._write(file: contents, to: path, asExecutable: isExecutable)
         }
     }
 }

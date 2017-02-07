@@ -207,7 +207,7 @@ struct Repository {
     }
     
     /// Use “File(at:)” instead.
-    static func _read(file path: RelativePath) throws -> String {
+    static func _read(file path: RelativePath) throws -> (contents: String, isExecutable: Bool) {
         
         let filePath = absolute(path).string
         
@@ -219,7 +219,7 @@ struct Repository {
             let contents = try String(contentsOfFile: filePath, usedEncoding: &encoding)
         #endif
         
-        return contents
+        return (contents, fileManager.isExecutableFile(atPath: filePath))
     }
     
     /// Use File’s “write()” instead.
@@ -232,7 +232,7 @@ struct Repository {
         resetCache()
         
         if debug {
-            let written = try Repository._read(file: path)
+            let written = try Repository._read(file: path).contents
             assert(written == file, "Write operation failed.")
         }
     }

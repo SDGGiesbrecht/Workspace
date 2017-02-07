@@ -60,7 +60,11 @@ struct Git {
             if let section = body.range(of: (startToken, endToken)) {
                 managedRange = section
             } else {
-                managedRange = body.startIndex ..< body.endIndex
+                if Command.current == .initialize {
+                    managedRange = body.startIndex ..< body.endIndex
+                } else {
+                    managedRange = body.startIndex ..< body.startIndex
+                }
             }
             
             let updatedLines: [String] = [

@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace
 
- Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
+ Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -36,6 +36,11 @@ enum Option: String, CustomStringConvertible {
     
     case manageLicence = "Manage Licence"
     case licence = "Licence"
+    
+    case manageContributingInstructions = "Manage Contributing Instructions"
+    case contributingInstructions = "Contributing Instructions"
+    case administrators = "Administrators"
+    case developmentNotes = "Development Notes"
     
     case manageXcode = "Manage Xcode"
     
@@ -71,6 +76,11 @@ enum Option: String, CustomStringConvertible {
         
         .manageLicence,
         .licence,
+        
+        .manageContributingInstructions,
+        .contributingInstructions,
+        .administrators,
+        .developmentNotes,
         
         .manageXcode,
         
@@ -117,41 +127,23 @@ enum Option: String, CustomStringConvertible {
         case .licence:
             return Configuration.noValue
             
+        case .manageContributingInstructions:
+            return Configuration.falseOptionValue
+        case .contributingInstructions:
+            return ContributingInstructions.defaultContributingInstructions
+        case .administrators:
+            return Configuration.emptyListOptionValue
+        case .developmentNotes:
+            return Configuration.noValue
+            
         case .manageXcode:
             return Configuration.falseOptionValue
             
         case .manageFileHeaders:
             return Configuration.falseOptionValue
         case .fileHeader:
-            var defaultHeader: [String] = [
-                "[_Filename_]",
-                "",
-                "This source file is part of the [_Project_] open source project.",
-                ]
-            if Configuration.optionIsDefined(.projectWebsite) {
-                defaultHeader.append("[_Website_]")
-            }
-            defaultHeader.append(contentsOf: [
-                "",
-                ])
-            if Configuration.optionIsDefined(.author) {
-                defaultHeader.append("Copyright [_Copyright_] [_Author_] and the [_Project_] project contributors.")
-            } else {
-                defaultHeader.append("Copyright [_Copyright_] the [_Project_] project contributors.")
-            }
-            if Configuration.sdg {
-                defaultHeader.append(contentsOf: [
-                    "",
-                    "Soli Deo gloria.",
-                    ])
-            }
-            if Configuration.optionIsDefined(.licence) {
-                defaultHeader.append(contentsOf: [
-                    "",
-                    "[_Licence_]",
-                    ])
-            }
-            return join(lines: defaultHeader)
+            return FileHeaders.defaultFileHeader
+            
         case .projectWebsite:
             return Configuration.noValue
         case .author:
@@ -161,7 +153,7 @@ enum Option: String, CustomStringConvertible {
             return Configuration.falseOptionValue
             
         case .ignoreFileTypes:
-            return ""
+            return Configuration.emptyListOptionValue
             
         // SDG
         case .sdg:
@@ -180,6 +172,7 @@ enum Option: String, CustomStringConvertible {
     static let automaticResponsibilityDocumentationPage = DocumentationLink.responsibilities
     static let automaticRepsonsibilities: [(option: Option, automaticValue: String, documentationPage: DocumentationLink)] = [
         (.manageLicence, automaticValue: Configuration.trueOptionValue, DocumentationLink.licence),
+        (.manageContributingInstructions, automaticValue: Configuration.trueOptionValue, DocumentationLink.contributingInstructions),
         (.manageXcode, automaticValue: Configuration.trueOptionValue, DocumentationLink.xcode),
         (.manageFileHeaders, automaticValue: Configuration.trueOptionValue, DocumentationLink.fileHeaders),
         (.manageContinuousIntegration, automaticValue: Configuration.trueOptionValue, DocumentationLink.continuousIntegration),

@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace
 
- Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
+ Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -348,6 +348,7 @@ struct Configuration {
         return nil
     }
     
+    static let emptyListOptionValue = ""
     private static func listValue(option: Option) -> [String] {
         
         let string = stringValue(option: option)
@@ -432,6 +433,22 @@ struct Configuration {
         }
     }
     
+    static var manageContributingInstructions: Bool {
+        return booleanValue(option: .manageContributingInstructions)
+    }
+    static var contributingInstructions: String {
+        return stringValue(option: .contributingInstructions)
+    }
+    static var administrators: [String] {
+        return listValue(option: .administrators)
+    }
+    static var developmentNotes: String? {
+        return possibleStringValue(option: .developmentNotes)
+    }
+    static var requiredDevelopmentNotes: String {
+        return possibleStringValue(option: .developmentNotes) ?? ""
+    }
+    
     static var manageFileHeaders: Bool {
         return booleanValue(option: .manageFileHeaders)
     }
@@ -447,7 +464,7 @@ struct Configuration {
     static var projectWebsite: String? {
         return possibleStringValue(option: .projectWebsite)
     }
-    static var requiredProjectWebsite: String? {
+    static var requiredProjectWebsite: String {
         return stringValue(option: .projectWebsite)
     }
     

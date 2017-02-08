@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace
 
- Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
+ Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -108,6 +108,17 @@ func runRefresh(andExit shouldExit: Bool) {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         
         Licence.refreshLicence()
+    }
+    
+    if Configuration.manageContributingInstructions {
+        
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        printHeader(["Updating contributing instructions..."])
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        
+        ContributingInstructions.refreshContributingInstructions()
+    } else {
+        ContributingInstructions.relinquishControl()
     }
     
     if Configuration.manageContinuousIntegration {

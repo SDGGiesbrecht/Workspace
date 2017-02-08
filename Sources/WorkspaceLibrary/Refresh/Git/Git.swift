@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace
 
- Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
+ Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -98,8 +98,8 @@ struct Git {
         let gitAttributes = File(possiblyAt: RelativePath(".gitattributes"))
         
         let updatedAttributes = [
-            "Refresh[[:space]]Workspace[[:space]](macOS).command linguist-vendored=true",
-            "Refresh[[:space]]Workspace[[:space]](Linux).sh linguist-vendored=true",
+            "Refresh[[:space:]]Workspace[[:space:]](macOS).command linguist-vendored=true",
+            "Refresh[[:space:]]Workspace[[:space:]](Linux).sh linguist-vendored=true",
             ]
         
         replaceManagedSection(in: gitAttributes, with: updatedAttributes)

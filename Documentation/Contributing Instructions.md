@@ -24,7 +24,7 @@ Contributing instructions are instructions in a `CONTRIBUTING.md` file that GitH
 
 The contributing instructions can be customized by defining a template with the `Contributing Instructions` [configuration](Configuring Workspace.md) option.
 
-The template for contributing instructions works the same as the [template for file headers](File Headers.md#Customization).
+The template for contributing instructions works the same as the [template for file headers](File Headers.md#customization).
 
 The available dynamic elements are:
 

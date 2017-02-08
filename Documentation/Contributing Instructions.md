@@ -30,5 +30,6 @@ The available dynamic elements are:
 
 - `Project`: The name of the particular project. (e.g. `MyLibrary`)
 - `Administrators`: The value of the configuration option `Administrators`, which is a list of GitHub user names separated by line breaks.
+- `Development Notes`: The value of the configuration option `Development Notes`, which is Markdown.
 
 Customization can be especially useful when it is combined with [configuration sharing](Configuring Workspace.md#sharing-configurations-between-projects).

@@ -40,6 +40,7 @@ enum Option: String, CustomStringConvertible {
     case manageContributingInstructions = "Manage Contributing Instructions"
     case contributingInstructions = "Contributing Instructions"
     case administrators = "Administrators"
+    case developmentNotes = "Development Notes"
     
     case manageXcode = "Manage Xcode"
     
@@ -79,6 +80,7 @@ enum Option: String, CustomStringConvertible {
         .manageContributingInstructions,
         .contributingInstructions,
         .administrators,
+        .developmentNotes,
         
         .manageXcode,
         
@@ -131,6 +133,8 @@ enum Option: String, CustomStringConvertible {
             return ContributingInstructions.defaultContributingInstructions
         case .administrators:
             return Configuration.emptyListOptionValue
+        case .developmentNotes:
+            return Configuration.noValue
             
         case .manageXcode:
             return Configuration.falseOptionValue

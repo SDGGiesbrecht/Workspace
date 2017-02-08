@@ -1,10 +1,10 @@
 <!--
- File Headers.md
+ Contributing Instructions.md
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace
 
- Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
+ Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -29,7 +29,7 @@ The template for contributing instructions works the same as the [template for f
 The available dynamic elements are:
 
 - `Project`: The name of the particular project. (e.g. `MyLibrary`)
-- `Administrators`: The value of the configuration option `Administrators`, which is a list of GitHub user names separated by line breaks.
-- `Development Notes`: The value of the configuration option `Development Notes`, which is Markdown.
+- `Administrators`: The value of the configuration option `Administrators`, a list of GitHub usernames separated by line breaks.
+- `Development Notes`: The value of the configuration option `Development Notes`, in Markdown.
 
 Customization can be especially useful when it is combined with [configuration sharing](Configuring Workspace.md#sharing-configurations-between-projects).

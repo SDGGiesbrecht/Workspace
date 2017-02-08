@@ -44,8 +44,9 @@ A particular project can [configure](Documentation/Operating Systems.md) which o
 - Have its configuration [shared](Documentation/Configuring Workspace.md#sharing-configurations-between-projects) between projects.
 - Automatically
     - Keep [licence notices](Documentation/Licence.md) uniform.
-    - Keep [file headers](Documentation/File Headers.md) uniform and up to date.
+    - Keep [contributing instructions](Documentation/Contributing Instructions.md) uniform.
     - Generate and maintain a local [Xcode project](Documentation/Xcode.md). (macOS‐only)
+    - Keep [file headers](Documentation/File Headers.md) uniform and up to date.
     - Run unit tests on each operating system (except watchOS).
     - Configure [continuous integration](Documentation/Continuous Integration.md) for each operating system. ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))
 

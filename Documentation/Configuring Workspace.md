@@ -57,6 +57,7 @@ For information on the various available options, see the documentation for the 
 - [Operating Systems](Operating Systems.md)
 - [Simulator](Simulator.md)
 - [Licence](Licence.md)
+- [Contributing Instructions](Contributing Instructions.md)
 - [Xcode](Xcode.md)
 - [File Headers](File Headers.md)
 - [Continuous Integration](Continuous Integration.md)

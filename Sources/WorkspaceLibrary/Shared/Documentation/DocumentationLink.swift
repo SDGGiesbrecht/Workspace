@@ -36,8 +36,9 @@ enum DocumentationLink: String, CustomStringConvertible {
     case responsibilities = "Responsibilities.md"
     case git = "Git.md"
     case licence = "Licence.md"
-    case fileHeaders = "File Headers.md"
+    case contributingInstructions = "Contributing Instructions.md"
     case xcode = "Xcode.md"
+    case fileHeaders = "File Headers.md"
     case continuousIntegration = "Continuous Integration.md"
     case ignoringFileTypes = "Ignoring File Types.md"
     
@@ -48,8 +49,9 @@ enum DocumentationLink: String, CustomStringConvertible {
             .responsibilities,
             .git,
             .licence,
-            .fileHeaders,
+            .contributingInstructions,
             .xcode,
+            .fileHeaders,
             .continuousIntegration,
             .ignoringFileTypes,
         ]

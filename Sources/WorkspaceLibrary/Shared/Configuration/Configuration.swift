@@ -348,6 +348,7 @@ struct Configuration {
         return nil
     }
     
+    static let emptyListOptionValue = ""
     private static func listValue(option: Option) -> [String] {
         
         let string = stringValue(option: option)
@@ -437,6 +438,9 @@ struct Configuration {
     }
     static var contributingInstructions: String {
         return stringValue(option: .contributingInstructions)
+    }
+    static var administrators: [String] {
+         return listValue(option: .administrators)
     }
     
     static var manageFileHeaders: Bool {

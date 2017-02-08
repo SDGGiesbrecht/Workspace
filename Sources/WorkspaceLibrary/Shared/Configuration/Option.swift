@@ -39,6 +39,7 @@ enum Option: String, CustomStringConvertible {
     
     case manageContributingInstructions = "Manage Contributing Instructions"
     case contributingInstructions = "Contributing Instructions"
+    case administrators = "Administrators"
     
     case manageXcode = "Manage Xcode"
     
@@ -77,6 +78,7 @@ enum Option: String, CustomStringConvertible {
         
         .manageContributingInstructions,
         .contributingInstructions,
+        .administrators,
         
         .manageXcode,
         
@@ -127,6 +129,8 @@ enum Option: String, CustomStringConvertible {
             return Configuration.falseOptionValue
         case .contributingInstructions:
             return ContributingInstructions.defaultContributingInstructions
+        case .administrators:
+            return Configuration.emptyListOptionValue
             
         case .manageXcode:
             return Configuration.falseOptionValue
@@ -145,7 +149,7 @@ enum Option: String, CustomStringConvertible {
             return Configuration.falseOptionValue
             
         case .ignoreFileTypes:
-            return ""
+            return Configuration.emptyListOptionValue
             
         // SDG
         case .sdg:

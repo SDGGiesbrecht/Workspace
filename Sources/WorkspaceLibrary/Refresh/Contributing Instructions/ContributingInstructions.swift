@@ -79,7 +79,11 @@ struct ContributingInstructions {
             return "[_\(name)_]"
         }
         
-        var body = Configuration.contributingInstructions
+        var body = join(lines: [
+            managementComment,
+            "",
+            Configuration.contributingInstructions,
+            ])
         
         body = body.replacingOccurrences(of: key("Project"), with: Configuration.projectName)
         

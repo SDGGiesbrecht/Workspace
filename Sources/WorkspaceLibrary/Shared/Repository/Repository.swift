@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace
 
- Copyright ©2017 Jeremy David Giesbrecht and the Workspace contributors.
+ Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -229,7 +229,11 @@ struct Repository {
         
         try file.write(toFile: absolute(path).string, atomically: true, encoding: String.Encoding.utf8)
         if executable {
-            try fileManager.setAttributes([.posixPermissions: 0o777], ofItemAtPath: absolute(path).string)
+            #if os(Linux)
+                requireBash(["chmod", "+x", absolute(path).string], silent: true)
+            #else
+                try fileManager.setAttributes([.posixPermissions: 0o777], ofItemAtPath: absolute(path).string)
+            #endif
         }
         
         resetCache()

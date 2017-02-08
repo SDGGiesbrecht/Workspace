@@ -35,6 +35,12 @@ struct FileHeaders {
         } else {
             defaultHeader.append("Copyright [_Copyright_] the [_Project_] project contributors.")
         }
+        if Configuration.sdg {
+            defaultHeader.append(contentsOf: [
+                "",
+                "Soli Deo gloria.",
+                ])
+        }
         if Configuration.optionIsDefined(.licence) {
             defaultHeader.append(contentsOf: [
                 "",

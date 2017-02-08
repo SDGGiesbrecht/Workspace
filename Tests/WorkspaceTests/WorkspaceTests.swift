@@ -639,6 +639,7 @@ class WorkspaceTests: XCTestCase {
             // GitHub
             "README.md",
             "LICENSE.md",
+            "CONTRIBUTING.md",
             
             // Travis CI
             ".travis.yml",

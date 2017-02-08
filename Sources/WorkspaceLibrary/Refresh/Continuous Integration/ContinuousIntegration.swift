@@ -145,7 +145,7 @@ struct ContinuousIntegration {
             
             printHeader(["Cancelling continuous integration management..."])
             
-            print(["Deleting \(travisConfigurationPath)"])
+            print(["Deleting \(travisConfigurationPath)..."])
             force() { try Repository.delete(travisConfigurationPath) }
         }
     }

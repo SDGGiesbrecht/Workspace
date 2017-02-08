@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 struct ContributingInstructions {
     
     static let contributingInstructionsPath = RelativePath("CONTRIBUTING.md")
@@ -70,6 +72,15 @@ struct ContributingInstructions {
             "- 6. **Request a review** from [_Administrators_] by clicking the gear in the top right of the pull request page.",
             ]
         
+        if Configuration.developmentNotes ≠ nil {
+            instructions.append(contentsOf: [
+                "",
+                "## Development Notes",
+                "",
+                "[_Development Notes_]",
+                ])
+        }
+        
         return join(lines: instructions)
     }()
     
@@ -100,6 +111,11 @@ struct ContributingInstructions {
         }
         body = body.replacingOccurrences(of: key("Administrators"), with: administratorList)
         
+        let developmentNotesKey = key("Development Notes")
+        if body.contains(developmentNotesKey) {
+            body = body.replacingOccurrences(of: developmentNotesKey, with: Configuration.requiredDevelopmentNotes)
+        }
+        
         var contributing = File(possiblyAt: contributingInstructionsPath)
         contributing.body = body
         require() { try contributing.write() }
@@ -111,7 +127,7 @@ struct ContributingInstructions {
             
             printHeader(["Cancelling contributing instruction management..."])
             
-            print(["Deleting \(contributingInstructionsPath)"])
+            print(["Deleting \(contributingInstructionsPath)..."])
             force() { try Repository.delete(contributingInstructionsPath) }
         }
     }

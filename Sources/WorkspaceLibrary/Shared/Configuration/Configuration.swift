@@ -440,7 +440,13 @@ struct Configuration {
         return stringValue(option: .contributingInstructions)
     }
     static var administrators: [String] {
-         return listValue(option: .administrators)
+        return listValue(option: .administrators)
+    }
+    static var developmentNotes: String? {
+        return possibleStringValue(option: .developmentNotes)
+    }
+    static var requiredDevelopmentNotes: String {
+        return possibleStringValue(option: .developmentNotes) ?? ""
     }
     
     static var manageFileHeaders: Bool {
@@ -458,7 +464,7 @@ struct Configuration {
     static var projectWebsite: String? {
         return possibleStringValue(option: .projectWebsite)
     }
-    static var requiredProjectWebsite: String? {
+    static var requiredProjectWebsite: String {
         return stringValue(option: .projectWebsite)
     }
     

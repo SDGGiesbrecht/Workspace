@@ -83,11 +83,18 @@ struct ContributingInstructions {
         
         body = body.replacingOccurrences(of: key("Project"), with: Configuration.projectName)
         
-        let administrators = Configuration.administrators
-        
-        
-        
-        body = body.replacingOccurrences(of: key("Administrators"), with: Configuration.ad)
+        var administrators = Configuration.administrators
+        var administratorList: String
+        if administrators.isEmpty {
+            administratorList = "an administrator"
+        } else if administrators.count == 1 {
+            administratorList = administrators[0]
+        } else {
+            let last = administrators.removeLast()
+            administratorList = administrators.joined(separator: ", ")
+            administratorList += " or " + last
+        }
+        body = body.replacingOccurrences(of: key("Administrators"), with: administratorList)
         
         var contributing = File(possiblyAt: contributingInstructionsPath)
         contributing.body = body

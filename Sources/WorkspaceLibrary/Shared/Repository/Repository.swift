@@ -230,6 +230,7 @@ struct Repository {
         try file.write(toFile: absolute(path).string, atomically: true, encoding: String.Encoding.utf8)
         if executable {
             #if os(Linux)
+                // [_Workaround: FileManager cannot change permissions on Linux. (Swift 3.0.2)_]
                 requireBash(["chmod", "+x", absolute(path).string], silent: true)
             #else
                 try fileManager.setAttributes([.posixPermissions: 0o777], ofItemAtPath: absolute(path).string)

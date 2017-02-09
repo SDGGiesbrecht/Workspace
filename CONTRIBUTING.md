@@ -67,3 +67,42 @@ Once you have your idea working properly, follow these steps to submit your chan
     - State your agreement to licensing your contributions under the [project licence](LICENSE.md).
 5. **Wait for continuous integration** to complete its validation.
 6. **Request a review** from SDGGiesbrecht by clicking the gear in the top right of the pull request page.
+
+## Development Notes
+
+### Running Forks & Branches
+
+#### Locally
+
+To test a fork of Workspace, run the following script in the test project’s root directory (replacing “user” with the owner of the fork):
+
+```shell
+rm -rf .Workspace
+git clone https://github.com/user/Workspace .Workspace
+```
+
+To test a particular branch, run the following script in the test project’s root directory (replacing “branch-name” with a valid branch):
+
+```shell
+cd .Workspace
+git checkout branch-name
+cd ..
+```
+
+(If the `.Workspace` folder does not exist yet, double‐click `Refresh Workspace` first.)
+
+To revert to normal behaviour, run the following:
+
+```shell
+rm -rf .Workspace
+```
+
+#### In Continuous Integration
+
+To set continuous integration to run a test fork or branch, open `Refresh Workspace (manOS).command`...
+
+```shell
+open -a Xcode "Refresh Workspace (macOS).command"
+```
+
+...and follow the instructions in the comments halfway down.

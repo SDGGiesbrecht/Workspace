@@ -32,9 +32,13 @@ cd "${0%/*}"
 # Get Workspace if necessary.
 WORKSPACE=".Workspace"
 if [ ! -d "${WORKSPACE}" ]; then
+
+    # The following changes for testing must be made after Validate Changes, but before committing.
+
+    # To test a fork of Workspace, replace the URL on the next line with that of the fork.
     git clone https://github.com/SDGGiesbrecht/Workspace "${WORKSPACE}"
 
-    # To test a development branch of Workspace, uncomment the following for lines in a test project after Validate Changes, but before committing.
+    # To test a development branch of Workspace, uncomment the following four lines and use the real branch name.
     # BRANCH="branch-name"
     # cd "${WORKSPACE}"
     # git checkout -b "${BRANCH}" "origin/${BRANCH}"

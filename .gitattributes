@@ -19,7 +19,6 @@
 # https://github.com/SDGGiesbrecht/Workspace/blob/master/Documentation/Git.md
 # !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!!
 
-Refresh[[:space:]]Workspace[[:space:]](macOS).command linguist-vendored=true
-Refresh[[:space:]]Workspace[[:space:]](Linux).sh linguist-vendored=true
+/Refresh?Workspace* linguist-vendored=true
 
 # [_End Workspace Section]

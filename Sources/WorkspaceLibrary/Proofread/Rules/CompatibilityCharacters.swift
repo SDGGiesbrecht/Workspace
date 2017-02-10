@@ -18,9 +18,12 @@ struct CompatibilityCharacters: Rule {
     
     static func check(file: File, status: inout Bool) {
         
-        while let range = file.contents.range(of: "½") {
+        var location = file.contents.startIndex
+        while let range = file.contents.range(of: "½", in: location ..< file.contents.endIndex) {
             
             errorNotice(status: &status, file: file, range: range, replacement: "1⁄2", message: "This shouldn’t be here.")
+            
+            location = range.upperBound
         }
     }
 }

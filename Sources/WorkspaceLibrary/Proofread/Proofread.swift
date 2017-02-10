@@ -20,8 +20,6 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
     
     var overallSuccess = true
     
-    print([OutputColour.red.start])
-    
     for path in Repository.sourceFiles {
         let file = require() { try File(at: path) }
         
@@ -30,8 +28,6 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
             rule.check(file: file, status: &overallSuccess)
         }
     }
-    
-    print([OutputColour.end])
     
     if shouldExit {
         if overallSuccess {

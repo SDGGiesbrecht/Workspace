@@ -76,6 +76,10 @@ extension Rule {
         }
         
         status = false
-        print(output)
+        if ¬Environment.isInXcode {
+            print(output, in: OutputColour.red, spaced: true)
+        } else {
+            print(output)
+        }
     }
 }

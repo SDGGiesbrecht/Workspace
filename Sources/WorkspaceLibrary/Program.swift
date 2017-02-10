@@ -12,9 +12,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 public func run() {
     
-    print("") // Line break after the input line.
+    if Command.current ≠ Command.proofread {
+        print("") // Line break after the input line.
+    }
     
     Command.current.run(andExit: true)
     

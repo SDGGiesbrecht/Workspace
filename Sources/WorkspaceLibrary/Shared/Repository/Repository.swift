@@ -202,7 +202,7 @@ struct Repository {
     
     // MARK: - Files
     
-    private static func absolute(_ relativePath: RelativePath) -> AbsolutePath {
+    static func absolute(_ relativePath: RelativePath) -> AbsolutePath {
         return repositoryPath.subfolderOrFile(relativePath.string)
     }
     

@@ -472,6 +472,10 @@ struct Configuration {
         return booleanValue(option: .manageXcode)
     }
     
+    static var manageDependencyGraph: Bool {
+        return booleanValue(option: .manageDependencyGraph)
+    }
+    
     static var manageContinuousIntegration: Bool {
         return booleanValue(option: .manageContinuousIntegration)
     }

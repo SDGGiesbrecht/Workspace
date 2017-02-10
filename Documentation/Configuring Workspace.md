@@ -59,6 +59,7 @@ For information on the various available options, see the documentation for the 
 - [Licence](Licence.md)
 - [Contributing Instructions](Contributing Instructions.md)
 - [Xcode](Xcode.md)
+- [Dependency Graph](Dependency Graph.md)
 - [File Headers](File Headers.md)
 - [Continuous Integration](Continuous Integration.md)
 - [Ignoring File Types](Ignoring File Types.md)

@@ -39,4 +39,34 @@ struct Xcode {
         
         require() { try file.write() }
     }
+    
+    static func enableProofreading() {
+        let path = RelativePath("\(Configuration.projectName).xcodeproj/project.pbxproj")
+        
+        do {
+            var file = try File(at: path)
+            
+            if ¬file.contents.contains("workspace proofread") {
+                let scriptInsertLocation = file.requireRange(of: "objects = {\n").upperBound
+                file.contents.replaceSubrange(scriptInsertLocation ..< scriptInsertLocation, with: join(lines: [
+                    "PROOFREAD = {",
+                    "    isa = PBXShellScriptBuildPhase;",
+                    "    shellPath = /bin/bash;",
+                    "    shellScript = .Workspace/.build/release/workspace proofread;",
+                    "}",
+                    "" // Final line break.
+                    ]))
+                
+                let phaseInsertLocation = file.requireRange(of: "buildPhases = (\n").upperBound
+                file.contents.replaceSubrange(phaseInsertLocation ..< phaseInsertLocation, with: join(lines: [
+                    "PROOFREAD,",
+                    "" // Final line break.
+                    ]))
+                
+                require() { try file.write() }
+            }
+        } catch {
+            return
+        }
+    }
 }

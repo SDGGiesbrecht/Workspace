@@ -20,6 +20,15 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
     
     var overallSuccess = true
     
+    for path in Repository.sourceFiles {
+        let file = require() { try File(at: path) }
+        
+        for rule in rules {
+            
+            rule.check(file: file, status: &overallSuccess)
+        }
+    }
+    
     if shouldExit {
         if overallSuccess {
             succeed(message: ["This code passes proofreading."])

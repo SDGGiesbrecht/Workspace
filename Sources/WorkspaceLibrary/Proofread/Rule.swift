@@ -20,6 +20,10 @@ protocol Rule {
     static func check(file: File, status: inout Bool)
 }
 
+let rules: [Rule.Type] = [
+    CompatibilityCharacters.self,
+]
+
 extension Rule {
     
     // ½

@@ -26,8 +26,6 @@ let rules: [Rule.Type] = [
 
 extension Rule {
     
-    // ½
-    
     static func errorNotice(status: inout Bool, file: File, range: Range<String.Index>, replacement: String?, message: String) {
         errorNotice(status: &status, file: file, range: range.lowerBound.samePosition(in: file.contents.unicodeScalars) ..< range.upperBound.samePosition(in: file.contents.unicodeScalars), replacement: replacement, message: message)
     }
@@ -56,7 +54,11 @@ extension Rule {
         let column = file.contents.columnNumber(for: clusterRange.lowerBound)
         
         let lineRange = file.contents.lineRange(for: clusterRange)
-        let line = file.contents[lineRange]
+        var line = file.contents[lineRange]
+        if line.hasSuffix(String.CR_LF) {
+            line.unicodeScalars.removeLast()
+        }
+        line.unicodeScalars.removeLast()
         
         let previousDistance = file.contents.distance(from: lineRange.lowerBound, to: clusterRange.lowerBound)
         let previous = String(repeating: " ", count: previousDistance)

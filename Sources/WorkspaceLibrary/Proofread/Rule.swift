@@ -17,14 +17,18 @@ import SDGMathematics
 
 protocol Rule {
     
-    static func check(file: File) -> Bool
+    static func check(file: File, status: inout Bool)
 }
 
 extension Rule {
     
     // ½
     
-    func throwError(state: inout Bool, file: File, range scalarRange: Range<String.UnicodeScalarView.Index>, scalarReplacement: String?, message: String) {
+    static func errorNotice(status: inout Bool, file: File, range: Range<String.Index>, replacement: String?, message: String) {
+        errorNotice(status: &status, file: file, range: range.lowerBound.samePosition(in: file.contents.unicodeScalars) ..< range.upperBound.samePosition(in: file.contents.unicodeScalars), replacement: replacement, message: message)
+    }
+    
+    static func errorNotice(status: inout Bool, file: File, range scalarRange: Range<String.UnicodeScalarView.Index>, replacement scalarReplacement: String?, message: String) {
         
         // Scalars vs Clusters
         let clusterStart = scalarRange.lowerBound.positionOfExtendedGraphemeCluster(in: file.contents)
@@ -65,7 +69,7 @@ extension Rule {
             output += [previous + replacement]
         }
         
-        state = false
+        status = false
         print(output)
     }
 }

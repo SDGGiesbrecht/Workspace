@@ -76,7 +76,7 @@ extension Rule {
         }
         
         status = false
-        if ¬Environment.isInXcode {
+        if Command.current ≠ Command.proofread {
             print(output, in: OutputColour.red, spaced: true)
         } else {
             print(output)

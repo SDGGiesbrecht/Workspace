@@ -52,8 +52,8 @@ struct Xcode {
                     "PROOFREAD = {",
                     "    isa = PBXShellScriptBuildPhase;",
                     "    shellPath = /bin/bash;",
-                    "    shellScript = .Workspace/.build/release/workspace proofread;",
-                    "}",
+                    "    shellScript = \u{22}.Workspace/.build/release/workspace proofread\u{22};",
+                    "};",
                     "" // Final line break.
                     ]))
                 

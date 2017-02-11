@@ -62,9 +62,6 @@ extension Rule {
         }
         line.unicodeScalars.removeLast()
         
-        var x = "Boo"
-        let y = x
-        
         let previousDistance = file.contents.distance(from: lineRange.lowerBound, to: clusterRange.lowerBound)
         let previous = String(repeating: " ", count: previousDistance)
         

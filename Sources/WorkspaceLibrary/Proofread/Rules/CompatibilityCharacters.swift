@@ -14,6 +14,8 @@
 
 import Foundation
 
+import SDGLogic
+
 struct CompatibilityCharacters: Rule {
     
     static func check(file: File, status: inout Bool) {

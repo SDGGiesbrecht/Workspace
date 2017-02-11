@@ -69,7 +69,7 @@ extension Rule {
         let marked = "^" + String(repeating: "~", count: markedDistance − 1)
         
         var output = [
-            "\(path):\(lineNumber):\(column): warning: \(message)",
+            "\(path):\(lineNumber):\(column): warning: \(message) (\(name))",
             line,
             previous + marked,
         ]

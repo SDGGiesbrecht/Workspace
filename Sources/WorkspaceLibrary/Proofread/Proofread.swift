@@ -30,8 +30,9 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
         let file = require() { try File(at: path) }
         
         for rule in rules {
-            
-            rule.check(file: file, status: &overallSuccess)
+            if ¬Configuration.disableProofreadingRules.contains(rule.name) {
+                rule.check(file: file, status: &overallSuccess)
+            }
         }
     }
     

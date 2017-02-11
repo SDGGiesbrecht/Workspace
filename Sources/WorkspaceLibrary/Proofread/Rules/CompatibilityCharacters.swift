@@ -22,8 +22,6 @@ struct CompatibilityCharacters: Rule {
     
     static func check(file: File, status: inout Bool) {
         
-        // ½
-        
         var index = file.contents.startIndex
         while index ≠ file.contents.endIndex {
             let next = file.contents.index(after: index)

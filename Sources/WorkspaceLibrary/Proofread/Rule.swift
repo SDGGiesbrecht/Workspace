@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGLogic
 import SDGMathematics
 
@@ -82,7 +84,8 @@ extension Rule {
         if Command.current ≠ Command.proofread {
             print(output, in: OutputColour.red, spaced: true)
         } else {
-            print(output)
+            let standardError = FileHandle.standardError
+            standardError.write(join(lines: output).data(using: String.Encoding.utf8)!)
         }
     }
 }

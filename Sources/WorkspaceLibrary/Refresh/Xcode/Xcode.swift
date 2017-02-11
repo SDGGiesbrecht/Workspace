@@ -40,33 +40,52 @@ struct Xcode {
         require() { try file.write() }
     }
     
-    static func enableProofreading() {
+    private static func modifyProject(condition shouldModify: (String) -> Bool, modification modify: (inout File) -> ()) {
         let path = RelativePath("\(Configuration.projectName).xcodeproj/project.pbxproj")
         
         do {
             var file = try File(at: path)
             
-            if ¬file.contents.contains("workspace proofread") {
-                let scriptInsertLocation = file.requireRange(of: "objects = {\n").upperBound
-                file.contents.replaceSubrange(scriptInsertLocation ..< scriptInsertLocation, with: join(lines: [
-                    "PROOFREAD = {",
-                    "    isa = PBXShellScriptBuildPhase;",
-                    "    shellPath = /bin/bash;",
-                    "    shellScript = \u{22}.Workspace/.build/release/workspace proofread\u{22};",
-                    "};",
-                    "" // Final line break.
-                    ]))
+            if shouldModify(file.contents) {
                 
-                let phaseInsertLocation = file.requireRange(of: "buildPhases = (\n").upperBound
-                file.contents.replaceSubrange(phaseInsertLocation ..< phaseInsertLocation, with: join(lines: [
-                    "PROOFREAD,",
-                    "" // Final line break.
-                    ]))
-                
+                modify(&file)
                 require() { try file.write() }
             }
         } catch {
             return
         }
+    }
+    
+    static func enableProofreading() {
+        
+        modifyProject(condition: {
+            return ¬$0.contains("workspace proofread")
+        }, modification: {
+            (file: inout File) -> () in
+            
+            let scriptInsertLocation = file.requireRange(of: "objects = {\n").upperBound
+            file.contents.replaceSubrange(scriptInsertLocation ..< scriptInsertLocation, with: join(lines: [
+                "PROOFREAD = {",
+                "    isa = PBXShellScriptBuildPhase;",
+                "    shellPath = /bin/bash;",
+                "    shellScript = \u{22}.Workspace/.build/release/workspace proofread\u{22};",
+                "};",
+                "" // Final line break.
+                ]))
+            
+            let phaseInsertLocation = file.requireRange(of: "buildPhases = (\n").upperBound
+            file.contents.replaceSubrange(phaseInsertLocation ..< phaseInsertLocation, with: join(lines: [
+                "PROOFREAD,",
+                "" // Final line break.
+                ]))
+        })
+    }
+    
+    static func temporarilyDisableProofreading() {
+        
+    }
+    
+    static func reEnableProofreading() {
+        
     }
 }

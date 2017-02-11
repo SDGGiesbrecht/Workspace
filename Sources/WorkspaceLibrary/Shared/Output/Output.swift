@@ -101,7 +101,7 @@ func print(_ message: [String]) {
 func print(_ message: [String], in colour: OutputColour?, spaced: Bool = false) {
     var output = join(lines: message)
     if let textColour = colour {
-        output = "\u{1B}[0;\(textColour.code)m\(output)\u{1B}[0;30m"
+        output = "\(textColour.start)\(output)\(OutputColour.end)"
     }
     if spaced {
         output = "\n" + output + "\n"

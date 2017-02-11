@@ -476,6 +476,10 @@ struct Configuration {
         return booleanValue(option: .manageDependencyGraph)
     }
     
+    static var disableProofreadingRules: Set<String> {
+        return Set(listValue(option: .disableProofreadingRules))
+    }
+    
     static var manageContinuousIntegration: Bool {
         return booleanValue(option: .manageContinuousIntegration)
     }

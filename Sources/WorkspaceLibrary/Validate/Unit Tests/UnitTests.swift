@@ -22,6 +22,11 @@ struct UnitTests {
     
     static func test(individualSuccess: @escaping (String) -> (), individualFailure: @escaping (String) -> ()) {
         
+        Xcode.temporarilyDisableProofreading()
+        defer {
+            Xcode.reEnableProofreading()
+        }
+        
         func printTestHeader(buildOnly: Bool, operatingSystemName: String) {
             
             let verbPhrase = buildOnly ? "Verifying build for" : "Running unit tests on"

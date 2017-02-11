@@ -51,6 +51,8 @@ enum Option: String, CustomStringConvertible {
     case author = "Author"
     case projectWebsite = "Project Website"
     
+    case disableProofreadingRules = "Disable Proofreading Rules"
+    
     case manageContinuousIntegration = "Manage Continuous Integration"
     
     case ignoreFileTypes = "Ignore File Types"
@@ -92,6 +94,8 @@ enum Option: String, CustomStringConvertible {
         .fileHeader,
         .projectWebsite,
         .author,
+        
+        .disableProofreadingRules,
         
         .manageContinuousIntegration,
         
@@ -155,6 +159,9 @@ enum Option: String, CustomStringConvertible {
             return Configuration.noValue
         case .author:
             return Configuration.noValue
+            
+        case .disableProofreadingRules:
+            return Configuration.emptyListOptionValue
             
         case .manageContinuousIntegration:
             return Configuration.falseOptionValue

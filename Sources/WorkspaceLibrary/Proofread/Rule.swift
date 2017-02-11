@@ -18,7 +18,7 @@ import SDGLogic
 import SDGMathematics
 
 protocol Rule {
-    
+    static var name: String { get }
     static func check(file: File, status: inout Bool)
 }
 

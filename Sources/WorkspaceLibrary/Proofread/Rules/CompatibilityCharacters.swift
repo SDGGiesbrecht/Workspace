@@ -18,20 +18,24 @@ import SDGLogic
 
 struct CompatibilityCharacters: Rule {
     
+    static let name = "Compatibility Characters"
+    
     static func check(file: File, status: inout Bool) {
         
         // ½
         
-        var location = file.contents.startIndex
-        while let range = file.contents.range(of: CharacterSet.decomposables, in: location ..< file.contents.endIndex) {
+        var index = file.contents.startIndex
+        while index ≠ file.contents.endIndex {
+            let next = file.contents.index(after: index)
             
-            let character = file.contents[range]
+            let characterRange = index ..< next
+            let character = file.contents[characterRange]
             let normalized = character.decomposedStringWithCompatibilityMapping
             if character ≠ normalized {
-                errorNotice(status: &status, file: file, range: range, replacement: normalized, message: "Some programs may lose “\(character)” in normalization. Use “\(normalized)” instead (with markup if necessary).")
+                errorNotice(status: &status, file: file, range: characterRange, replacement: normalized, message: "“\(character)” may be lost in normalization; use “\(normalized)” instead.")
             }
             
-            location = range.upperBound
+            index = next
         }
     }
 }

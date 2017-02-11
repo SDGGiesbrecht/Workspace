@@ -12,20 +12,32 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
+import SDGLogic
+
 func runProofread(andExit shouldExit: Bool) -> Bool {
     
-    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Proofreading \(Configuration.projectName)..."])
-    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    if Command.current ≠ Command.proofread {
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        printHeader(["Proofreading \(Configuration.projectName)..."])
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    }
     
     var overallSuccess = true
     
-    if shouldExit {
-        if overallSuccess {
-            succeed(message: ["This code passes proofreading."])
-        } else {
-            failTests(message: ["It looks like there are a few things left to fix."])
+    for path in Repository.sourceFiles {
+        let file = require() { try File(at: path) }
+        
+        for rule in rules {
+            if ¬Configuration.disableProofreadingRules.contains(rule.name) {
+                rule.check(file: file, status: &overallSuccess)
+            }
         }
+    }
+    
+    if shouldExit {
+        exit(ExitCode.succeeded)
     }
     
     return overallSuccess

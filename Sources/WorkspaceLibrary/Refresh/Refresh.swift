@@ -155,6 +155,9 @@ func runRefresh(andExit shouldExit: Bool) {
         
         Xcode.refreshXcodeProjects()
     }
+    if Environment.operatingSystem == .macOS {
+        Xcode.enableProofreading()
+    }
     
     if shouldExit {
         

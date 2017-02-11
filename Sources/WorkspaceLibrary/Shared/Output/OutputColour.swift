@@ -23,7 +23,13 @@ enum OutputColour: String {
     
     // MARK: - Usage
     
-    var code: String {
+    private var code: String {
         return rawValue
     }
+    
+    var start: String {
+        return "\u{1B}[0;\(code)m"
+    }
+    
+    static let end: String = "\u{1B}[0;30m"
 }

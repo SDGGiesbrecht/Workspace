@@ -39,4 +39,74 @@ struct Xcode {
         
         require() { try file.write() }
     }
+    
+    private static func modifyProject(condition shouldModify: (String) -> Bool, modification modify: (inout File) -> ()) {
+        let path = RelativePath("\(Configuration.projectName).xcodeproj/project.pbxproj")
+        
+        do {
+            var file = try File(at: path)
+            
+            if shouldModify(file.contents) {
+                
+                modify(&file)
+                require() { try file.write() }
+            }
+        } catch {
+            return
+        }
+    }
+    
+    static let scriptObjectName = "PROOFREAD"
+    static let scriptActionEntry = scriptObjectName + ","
+    
+    static func enableProofreading() {
+        
+        modifyProject(condition: {
+            return ¬$0.contains("workspace proofread")
+        }, modification: {
+            (file: inout File) -> () in
+            
+            let scriptInsertLocation = file.requireRange(of: "objects = {\n").upperBound
+            file.contents.replaceSubrange(scriptInsertLocation ..< scriptInsertLocation, with: join(lines: [
+                "\(scriptObjectName) = {",
+                "    isa = PBXShellScriptBuildPhase;",
+                "    shellPath = /bin/bash;",
+                "    shellScript = \u{22}.Workspace/.build/release/workspace proofread\u{22};",
+                "};",
+                "" // Final line break.
+                ]))
+            
+            let phaseInsertLocation = file.requireRange(of: "buildPhases = (\n").upperBound
+            file.contents.replaceSubrange(phaseInsertLocation ..< phaseInsertLocation, with: join(lines: [
+                scriptActionEntry,
+                "" // Final line break.
+                ]))
+        })
+    }
+    
+    static let disabledScriptActionEntry = "/* " + scriptObjectName + " */"
+    
+    static func temporarilyDisableProofreading() {
+        
+        modifyProject(condition: {
+            (String) -> Bool in
+            return true
+        }, modification: {
+            (file: inout File) -> () in
+            
+            file.contents = file.contents.replacingOccurrences(of: scriptActionEntry, with: disabledScriptActionEntry)
+        })
+    }
+    
+    static func reEnableProofreading() {
+        
+        modifyProject(condition: {
+            (String) -> Bool in
+            return true
+        }, modification: {
+            (file: inout File) -> () in
+            
+            file.contents = file.contents.replacingOccurrences(of: disabledScriptActionEntry, with: scriptActionEntry)
+        })
+    }
 }

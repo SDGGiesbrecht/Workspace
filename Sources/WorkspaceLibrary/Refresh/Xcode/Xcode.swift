@@ -56,6 +56,9 @@ struct Xcode {
         }
     }
     
+    static let scriptObjectName = "PROOFREAD"
+    static let scriptActionEntry = scriptObjectName + ","
+    
     static func enableProofreading() {
         
         modifyProject(condition: {
@@ -65,7 +68,7 @@ struct Xcode {
             
             let scriptInsertLocation = file.requireRange(of: "objects = {\n").upperBound
             file.contents.replaceSubrange(scriptInsertLocation ..< scriptInsertLocation, with: join(lines: [
-                "PROOFREAD = {",
+                "\(scriptObjectName) = {",
                 "    isa = PBXShellScriptBuildPhase;",
                 "    shellPath = /bin/bash;",
                 "    shellScript = \u{22}.Workspace/.build/release/workspace proofread\u{22};",
@@ -75,17 +78,35 @@ struct Xcode {
             
             let phaseInsertLocation = file.requireRange(of: "buildPhases = (\n").upperBound
             file.contents.replaceSubrange(phaseInsertLocation ..< phaseInsertLocation, with: join(lines: [
-                "PROOFREAD,",
+                scriptActionEntry,
                 "" // Final line break.
                 ]))
         })
     }
     
+    static let disabledScriptActionEntry = "/* " + scriptObjectName + " */"
+    
     static func temporarilyDisableProofreading() {
         
+        modifyProject(condition: {
+            (String) -> Bool in
+            return true
+        }, modification: {
+            (file: inout File) -> () in
+            
+            file.contents = file.contents.replacingOccurrences(of: scriptActionEntry, with: disabledScriptActionEntry)
+        })
     }
     
     static func reEnableProofreading() {
         
+        modifyProject(condition: {
+            (String) -> Bool in
+            return true
+        }, modification: {
+            (file: inout File) -> () in
+            
+            file.contents = file.contents.replacingOccurrences(of: disabledScriptActionEntry, with: scriptActionEntry)
+        })
     }
 }

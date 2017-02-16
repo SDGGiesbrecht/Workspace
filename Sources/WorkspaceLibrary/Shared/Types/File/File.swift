@@ -181,6 +181,13 @@ struct File {
             while new.hasPrefix("\n") {
                 new.unicodeScalars.removeFirst()
             }
+            
+            if ¬header.hasSuffix("\n") {
+                new.append("\n")
+            }
+            if ¬header.hasSuffix("\n\n") {
+                new.append("\n")
+            }
 
             if headerStart == headerEnd {
                 // No header, so prevent initial comments from being mistaken as headers

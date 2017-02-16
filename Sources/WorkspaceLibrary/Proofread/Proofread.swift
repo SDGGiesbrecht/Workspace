@@ -36,6 +36,12 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
         }
     }
     
+    if let swiftLintResult = runThirdPartyTool(command: ["swiftlint", "lint", "--strict"]) {
+        if ¬swiftLintResult.succeeded {
+            overallSuccess = false
+        }
+    }
+    
     if shouldExit {
         exit(ExitCode.succeeded)
     }

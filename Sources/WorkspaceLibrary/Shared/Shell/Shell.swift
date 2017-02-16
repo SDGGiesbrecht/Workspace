@@ -85,3 +85,8 @@ func bash(_ arguments: [String], silent: Bool = false) -> (succeeded: Bool, outp
             ])
     }
 }
+
+func runThirdPartyTool(command: [String]) -> (succeeded: Bool, output: String?, exitCode: ExitCode)? {
+    
+    return bash(command)
+}

@@ -23,7 +23,7 @@ protocol Rule {
 }
 
 let rules: [Rule.Type] = [
-    CompatibilityCharacters.self,
+    CompatibilityCharacters.self
 ]
 
 extension Rule {
@@ -71,7 +71,7 @@ extension Rule {
         var output = [
             "\(path):\(lineNumber):\(column): warning: \(message) (\(name))",
             line,
-            previous + marked,
+            previous + marked
         ]
         if let replacement = clusterReplacement {
             output += [previous + replacement]

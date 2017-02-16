@@ -29,18 +29,18 @@ func inputSyntaxError(message: String) -> Never {
         "",
         "Available flags:",
         "",
-        flags,
+        flags
         ])
 }
 
 func unreachableLocation() -> Never {
     fatalError(message: [
         "This code should be unreachable.",
-        "There may be a bug in Workspace.",
+        "There may be a bug in Workspace."
         ])
 }
 
-func fatalError(message: [String]) -> Never  {
+func fatalError(message: [String]) -> Never {
     fail(message: message)
 }
 

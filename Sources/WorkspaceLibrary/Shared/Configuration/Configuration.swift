@@ -78,7 +78,7 @@ struct Configuration {
             entry = join(lines: [
                 startMultilineOption(option: option),
                 value,
-                endToken,
+                endToken
                 ])
         } else {
             entry = option.key + colon + value
@@ -113,8 +113,7 @@ struct Configuration {
 
     static func addEntries(entries: [(option: Option, value: String, comment: [String]?)], to configuration: inout File) {
 
-        let additions = entries.map() {
-            (entry: (option: Option, value: String, comment: [String]?)) -> String in
+        let additions = entries.map() { (entry: (option: Option, value: String, comment: [String]?)) -> String in
 
             return Configuration.configurationFileEntry(option: entry.option, value: entry.value, comment: entry.comment) + "\n\n"
         }
@@ -138,7 +137,7 @@ struct Configuration {
                 "",
                 "Supported keys:",
                 "",
-                join(lines: Option.allPublic.map({ $0.key })),
+                join(lines: Option.allPublic.map({ $0.key }))
                 ])
         }
 
@@ -161,10 +160,10 @@ struct Configuration {
                 "",
                 blockCommentSyntax.comment(contents: [
                     "Multiline",
-                    "Comment",
+                    "Comment"
                     ]),
                 "",
-                "\(importStatementTokens.start)https://github.com/user/repository\(importStatementTokens.end)",
+                "\(importStatementTokens.start)https://github.com/user/repository\(importStatementTokens.end)"
                 ])
         }
 
@@ -249,13 +248,13 @@ struct Configuration {
         if let comment = currentMultilineComment {
             syntaxError(description: [
                 "Unterminated Comment:",
-                join(lines: comment),
+                join(lines: comment)
                 ])
         }
         if let option = currentMultilineOption {
             syntaxError(description: [
                 "Unterminated Multiline Value:",
-                result[option] ?? "",
+                result[option] ?? ""
                 ])
         }
 
@@ -295,7 +294,7 @@ struct Configuration {
             "",
             "Valid values:",
             "",
-            join(lines: valid),
+            join(lines: valid)
             ])
     }
 
@@ -311,7 +310,7 @@ struct Configuration {
             default:
                 invalidEnumValue(option: option, value: value, valid: [
                     trueOptionValue,
-                    falseOptionValue,
+                    falseOptionValue
                     ])
             }
         } else {
@@ -333,7 +332,7 @@ struct Configuration {
                     "",
                     "Detected options:",
                     "",
-                    join(lines: configurationFile.keys.map({ $0.key }).sorted()),
+                    join(lines: configurationFile.keys.map({ $0.key }).sorted())
                     ])
             }
         }
@@ -528,7 +527,7 @@ struct Configuration {
             if let link = documentation {
                 description.append(contentsOf: [
                     "For more information, see:",
-                    link.url,
+                    link.url
                     ])
             }
 

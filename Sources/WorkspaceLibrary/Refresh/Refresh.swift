@@ -78,14 +78,14 @@ func runRefresh(andExit shouldExit: Bool) {
                     "Workspace took responsibility for this automatically.",
                     "(Because “\(Option.automaticallyTakeOnNewResponsibilites.key)” is “\(Configuration.trueOptionValue)”)",
                     "For more information about “\(option.key)”, see:",
-                    documentationPage.url,
+                    documentationPage.url
                     ]))
             } else {
                 printWarning([
                     "The configuration option “\(option.key)” is now available.",
                     "For more information, see:",
                     documentationPage.url,
-                    "(To silence this notice, set “\(option.key)” to “\(option.defaultValue)”)",
+                    "(To silence this notice, set “\(option.key)” to “\(option.defaultValue)”)"
                     ])
             }
         }

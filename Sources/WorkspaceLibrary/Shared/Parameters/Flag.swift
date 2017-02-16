@@ -32,10 +32,10 @@ enum Flag: String, Comparable, CustomStringConvertible {
 
     // MARK: - Cases
 
-    case executable = "executable"
+    case executable
 
     static let all: [Flag] = [
-        .executable,
+        .executable
         ].sorted()
 
     static let allNames: [String] = all.map() { $0.name }
@@ -54,7 +54,7 @@ enum Flag: String, Comparable, CustomStringConvertible {
 
     // MARK: - Comparable
 
-    static func <(lhs: Flag, rhs: Flag) -> Bool {
+    static func < (lhs: Flag, rhs: Flag) -> Bool {
         return lhs.name < rhs.name
     }
 

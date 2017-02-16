@@ -136,8 +136,7 @@ struct LineCommentSyntax {
         }
 
         let comment = string.substring(with: range)
-        let lines = comment.lines.map() {
-            (line: String) -> String in
+        let lines = comment.lines.map() { (line: String) -> String in
 
             var index = line.startIndex
 

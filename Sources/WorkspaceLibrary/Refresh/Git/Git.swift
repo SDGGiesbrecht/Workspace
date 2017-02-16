@@ -19,12 +19,12 @@ import SDGLogic
 struct Git {
 
     static let ignoreEntriesForMacOS = [
-        ".DS_Store",
+        ".DS_Store"
         ]
 
     static let ignoreEntriesForSwiftProjectManager = [
         "/.build",
-        "/Packages",
+        "/Packages"
         ]
 
     static let ignoreEntriesForWorkspace = [
@@ -32,7 +32,7 @@ struct Git {
         "/Validate\\ Changes\\ (macOS).command",
         "/Validate\\ Changes\\ (Linux).sh",
         "/.Linked Repositories",
-        "/.Test\\ Zone",
+        "/.Test\\ Zone"
         ]
 
     static let requiredIgnoreEntries = ignoreEntriesForMacOS
@@ -40,7 +40,7 @@ struct Git {
         + ignoreEntriesForWorkspace
 
     static let ignoreEntriesForXcode = [
-        "/*.xcodeproj",
+        "/*.xcodeproj"
         ]
 
     static func updateGitConfiguraiton() {
@@ -71,10 +71,10 @@ struct Git {
                 startToken,
                 "",
                 managementComment,
-                "",
+                ""
                 ] + contents + [
                     "",
-                    endToken,
+                    endToken
             ]
 
             body.replaceSubrange(managedRange, with: join(lines: updatedLines))
@@ -98,7 +98,7 @@ struct Git {
         let gitAttributes = File(possiblyAt: RelativePath(".gitattributes"))
 
         let updatedAttributes = [
-            "/Refresh?Workspace* linguist-vendored=true",
+            "/Refresh?Workspace* linguist-vendored=true"
             ]
 
         replaceManagedSection(in: gitAttributes, with: updatedAttributes)

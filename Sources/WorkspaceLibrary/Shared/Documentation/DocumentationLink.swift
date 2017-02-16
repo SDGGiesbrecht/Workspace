@@ -54,7 +54,7 @@ enum DocumentationLink: String, CustomStringConvertible {
             .xcode,
             .fileHeaders,
             .continuousIntegration,
-            .ignoringFileTypes,
+            .ignoringFileTypes
         ]
     }
 

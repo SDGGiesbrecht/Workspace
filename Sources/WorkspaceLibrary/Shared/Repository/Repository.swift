@@ -79,8 +79,7 @@ struct Repository {
         return cachedResult(cache: &cache.allFiles) {
             () -> [RelativePath] in
 
-            let result = allFiles.filter() {
-                (path: RelativePath) -> Bool in
+            let result = allFiles.filter() { (path: RelativePath) -> Bool in
 
                 return ¬(path.string.hasPrefix(workspaceDirectory.string + "/") ∨ path == RelativePath(".DS_Store"))
 
@@ -114,8 +113,7 @@ struct Repository {
 
             }
 
-            let result = allFiles.filter() {
-                (path: RelativePath) -> Bool in
+            let result = allFiles.filter() { (path: RelativePath) -> Bool in
 
                 for ignored in ignoredPaths {
                     if path.string.hasPrefix(ignored) {
@@ -134,11 +132,10 @@ struct Repository {
         return cachedResult(cache: &cache.sourceFiles) {
             () -> [RelativePath] in
 
-            let result = trackedFiles.filter() {
-                (path: RelativePath) -> Bool in
+            let result = trackedFiles.filter() { (path: RelativePath) -> Bool in
 
                 let generatedPaths = [
-                    "docs/",
+                    "docs/"
                 ]
 
                 for generated in generatedPaths {
@@ -185,16 +182,14 @@ struct Repository {
     }
 
     static func allFiles(at path: RelativePath) -> [RelativePath] {
-        return allFiles.filter() {
-            (possiblePath: RelativePath) -> Bool in
+        return allFiles.filter() { (possiblePath: RelativePath) -> Bool in
 
             return Repository.path(possiblePath, isIn: path)
         }
     }
 
     static func trackedFiles(at path: RelativePath) -> [RelativePath] {
-        return trackedFiles.filter() {
-            (possiblePath: RelativePath) -> Bool in
+        return trackedFiles.filter() { (possiblePath: RelativePath) -> Bool in
 
             return Repository.path(possiblePath, isIn: path)
         }
@@ -297,8 +292,7 @@ struct Repository {
             files = trackedFiles(at: origin)
         }
 
-        let changes = files.map() {
-            (changeOrigin: RelativePath) -> (changeOrigin: RelativePath, changeDestination: RelativePath) in
+        let changes = files.map() { (changeOrigin: RelativePath) -> (changeOrigin: RelativePath, changeDestination: RelativePath) in
 
             let relative = changeOrigin.string.substring(from: changeOrigin.string.index(changeOrigin.string.characters.startIndex, offsetBy: origin.string.characters.count))
 
@@ -307,7 +301,7 @@ struct Repository {
         if changes.isEmpty {
             fatalError(message: [
                 "No files exist at “\(origin)”",
-                "This may indicate a bug in Workspace.",
+                "This may indicate a bug in Workspace."
                 ])
         }
 
@@ -357,12 +351,12 @@ struct Repository {
         try performPathChange(from: origin, into: destination, copy: false, includeIgnoredFiles: includeIgnoredFiles)
     }
 
-    static func performInDirectory(directory: RelativePath, action: () -> ()) {
+    static func performInDirectory(directory: RelativePath, action: () -> Void) {
 
         func changeToDirectory(path: String) {
             if ¬fileManager.changeCurrentDirectoryPath(path) {
                 fatalError(message: [
-                    "Failed to change working directory.",
+                    "Failed to change working directory."
                     ])
             }
         }
@@ -379,7 +373,7 @@ struct Repository {
             fatalError(message: [
                 "Invalid URL:",
                 "",
-                url,
+                url
                 ])
         }
 

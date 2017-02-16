@@ -35,7 +35,7 @@ extension String.UnicodeScalarView.Index {
                 "Error reading Unicode:",
                 context,
                 "",
-                "This may indicate a bug in Workspace.",
+                "This may indicate a bug in Workspace."
                 ])
         }
 

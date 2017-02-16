@@ -26,7 +26,7 @@ struct File {
             "Manual changes will not persist.",
             "For more information, see:",
             documentation.url,
-            "!!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!!",
+            "!!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!!"
         ]
     }
 
@@ -151,7 +151,7 @@ struct File {
             "Unsupported file type:",
             path.string,
             "",
-            "This may indicate a bug in Workspace.",
+            "This may indicate a bug in Workspace."
             ])
     }
 
@@ -226,10 +226,10 @@ struct File {
 
         var message: [String] = [
             "Expected “\(content)” in:",
-            path.string,
+            path.string
             ]
 
-        if (range.lowerBound == contents.startIndex ∧ range.upperBound == contents.endIndex) {
+        if range.lowerBound == contents.startIndex ∧ range.upperBound == contents.endIndex {
             // Whole file
 
             fatalError(message: message)
@@ -238,7 +238,7 @@ struct File {
         let appendix: [String] = [
             "Range:",
             content.locationInformation(for: range.lowerBound),
-            content.locationInformation(for: range.upperBound),
+            content.locationInformation(for: range.upperBound)
             ]
         message.append(contentsOf: appendix)
 
@@ -252,7 +252,6 @@ struct File {
         } else {
             rangeToSearch = contents.startIndex ..< contents.endIndex
         }
-
 
         if let result = contents.range(of: searchTerm, in: rangeToSearch) {
             return result

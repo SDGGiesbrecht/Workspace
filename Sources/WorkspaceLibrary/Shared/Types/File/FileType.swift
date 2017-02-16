@@ -26,7 +26,7 @@ enum FileType: CustomStringConvertible {
         } else {
 
             var warning: [String] = [
-                "Workspace encountered unsupported file types:",
+                "Workspace encountered unsupported file types:"
                 ]
 
             warning.append(contentsOf: unsupportedTypesEncountered.sorted())
@@ -36,7 +36,7 @@ enum FileType: CustomStringConvertible {
                 "If these are standard file types, please report them at:",
                 DocumentationLink.reportIssueLink,
                 "To silence this warning for non‐standard file types, see:",
-                DocumentationLink.ignoringFileTypes.url,
+                DocumentationLink.ignoringFileTypes.url
                 ])
 
             return warning
@@ -119,7 +119,7 @@ enum FileType: CustomStringConvertible {
 
         // Configuration of Components
         (".yaml", .yaml),
-        (".yml", .yaml),
+        (".yml", .yaml)
 
         ]
 

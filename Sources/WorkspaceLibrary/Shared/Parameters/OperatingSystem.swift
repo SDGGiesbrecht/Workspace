@@ -27,7 +27,7 @@ enum OperatingSystem: String, CustomStringConvertible {
         .linux,
         .iOS,
         .watchOS,
-        .tvOS,
+        .tvOS
         ]
 
     var buildsOnMacOS: Bool {

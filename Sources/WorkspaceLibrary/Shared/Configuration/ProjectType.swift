@@ -27,7 +27,7 @@ enum ProjectType: String, CustomStringConvertible {
 
     static let all: [ProjectType] = [
         .library,
-        .executable,
+        .executable
     ]
 
     // MARK: - Properties

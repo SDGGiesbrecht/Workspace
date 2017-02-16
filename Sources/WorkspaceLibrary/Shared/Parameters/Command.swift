@@ -31,16 +31,16 @@ enum Command: String, Comparable, CustomStringConvertible, LosslessStringConvert
 
     // MARK: - Cases
 
-    case initialize = "initialize"
-    case refresh = "refresh"
-    case proofread = "proofread"
-    case validate = "validate"
+    case initialize
+    case refresh
+    case proofread
+    case validate
 
     static let all: [Command] = [
         .initialize,
         .refresh,
         .proofread,
-        .validate,
+        .validate
         ]
 
     static let allNames: [String] = all.map() { $0.name }
@@ -66,7 +66,7 @@ enum Command: String, Comparable, CustomStringConvertible, LosslessStringConvert
 
     // MARK: - Comparable
 
-    static func <(lhs: Command, rhs: Command) -> Bool {
+    static func < (lhs: Command, rhs: Command) -> Bool {
         return lhs.name < rhs.name
     }
 

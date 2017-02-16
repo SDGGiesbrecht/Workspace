@@ -70,7 +70,7 @@ struct ContributingInstructions {
             "    - Link to the original issue with `#`000` `.",
             "    - State your agreement to licensing your contributions under the [project licence](LICENSE.md).",
             "5. **Wait for continuous integration** to complete its validation.",
-            "6. **Request a review** from [_Administrators_] by clicking the gear in the top right of the pull request page.",
+            "6. **Request a review** from [_Administrators_] by clicking the gear in the top right of the pull request page."
             ]
 
         if Configuration.developmentNotes ≠ nil {
@@ -78,7 +78,7 @@ struct ContributingInstructions {
                 "",
                 "## Development Notes",
                 "",
-                "[_Development Notes_]",
+                "[_Development Notes_]"
                 ])
         }
 
@@ -94,7 +94,7 @@ struct ContributingInstructions {
         var body = join(lines: [
             managementComment,
             "",
-            Configuration.contributingInstructions,
+            Configuration.contributingInstructions
             ])
 
         body = body.replacingOccurrences(of: key("Project"), with: Configuration.projectName)

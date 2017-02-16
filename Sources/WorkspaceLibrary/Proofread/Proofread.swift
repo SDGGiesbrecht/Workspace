@@ -61,7 +61,7 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
                 "  - Packages",
                 // Workspace
                 "  - .Workspace",
-                "  - .Linked Repositories",
+                "  - .Linked Repositories"
                 ]
             let disabled = Configuration.disableProofreadingRules.sorted().map({ "  - " + $0 })
             if ¬disabled.isEmpty {
@@ -90,7 +90,7 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
                 "Command to install SwiftLint:",
                 "brew install swiftlint",
                 "Command to update SwiftLint:",
-                "brew upgrade swiftlint",
+                "brew upgrade swiftlint"
                 ],
             dropOutput: true) {
 

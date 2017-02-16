@@ -26,8 +26,7 @@ extension String {
     }
 
     var lines: UnfoldSequence<String, String?> {
-        return sequence(state: self, next: {
-            (possibleRemainder: inout String?) -> String? in
+        return sequence(state: self, next: { (possibleRemainder: inout String?) -> String? in
 
             guard let remainder = possibleRemainder else {
                 return nil
@@ -51,7 +50,7 @@ extension String {
     }
 
     var linesArray: [String] {
-        return Array<String>(lines)
+        return [String](lines)
     }
 
     var isMultiline: Bool {
@@ -84,7 +83,6 @@ extension String {
     func range(of searchTerm: String, in searchRange: Range<Index>) -> Range<Index>? {
         return range(of: searchTerm, options: String.CompareOptions.literal, range: searchRange)
     }
-
 
     func range(of characters: CharacterSet, in searchRange: Range<Index>) -> Range<Index>? {
 
@@ -183,7 +181,7 @@ extension String {
                     ∨ ¬advance(&location, past: tokens.end) {
                     fatalError(message: [
                         "Failed to replace text.",
-                        "This may indicate a bug in Workspace.",
+                        "This may indicate a bug in Workspace."
                         ])
                 }
                 possibleRemainder = location ..< endIndex
@@ -217,7 +215,7 @@ extension String {
         return true
     }
 
-    private func advance(_ index: inout Index, past characters: CharacterSet, limit: Int?, advanceOne: (inout UnicodeScalarView.Index) -> ()) {
+    private func advance(_ index: inout Index, past characters: CharacterSet, limit: Int?, advanceOne: (inout UnicodeScalarView.Index) -> Void) {
 
         var scalarIndex = index.samePosition(in: unicodeScalars)
 
@@ -253,14 +251,12 @@ extension String {
                 ]))
         #endif
 
-
         advance(&index, past: characters, limit: limit, advanceOne: { $0 = unicodeScalars.index(after: $0) })
     }
 
     func advance(_ index: inout Index, pastNewlinesWithLimit limit: Int) {
 
-        advance(&index, past: CharacterSet.newlines, limit: limit, advanceOne: {
-            (mobileIndex: inout ScalarIndex) -> () in
+        advance(&index, past: CharacterSet.newlines, limit: limit, advanceOne: { (mobileIndex: inout ScalarIndex) -> Void in
 
             if substring(with: mobileIndex.positionOfExtendedGraphemeCluster(in: self) ..< endIndex).hasPrefix(String.CR_LF) {
                 mobileIndex = unicodeScalars.index(mobileIndex, offsetBy: 2)
@@ -319,7 +315,7 @@ extension String {
 
         var message: [String] = [
             "A parse error occurred:",
-            exerpt,
+            exerpt
             ]
 
         if let fileInfo = file {
@@ -328,7 +324,7 @@ extension String {
 
         message.append(contentsOf: [
             "",
-            "This may indicate a bug in Workspace.",
+            "This may indicate a bug in Workspace."
             ])
 
         fatalError(message: message)

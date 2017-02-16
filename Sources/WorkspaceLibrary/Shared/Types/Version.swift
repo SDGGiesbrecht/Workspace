@@ -32,7 +32,7 @@ struct Version: Comparable, CustomStringConvertible, Equatable, LosslessStringCo
 
     // MARK: - Comparable
 
-    static func <(lhs: Version, rhs: Version) -> Bool {
+    static func < (lhs: Version, rhs: Version) -> Bool {
         return (lhs.major, lhs.minor, lhs.patch) < (rhs.major, rhs.minor, rhs.patch)
     }
 
@@ -44,7 +44,7 @@ struct Version: Comparable, CustomStringConvertible, Equatable, LosslessStringCo
 
     // MARK: - Equatable
 
-    static func ==(lhs: Version, rhs: Version) -> Bool {
+    static func == (lhs: Version, rhs: Version) -> Bool {
         return (lhs.major, lhs.minor, lhs.patch) == (rhs.major, rhs.minor, rhs.patch)
     }
 

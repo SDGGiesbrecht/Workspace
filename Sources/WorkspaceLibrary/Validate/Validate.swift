@@ -57,7 +57,6 @@ func runValidate(andExit shouldExit: Bool) {
         // Proofreading...
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-
         if runProofread(andExit: false) {
             individualSuccess(message: "Code passes proofreading.")
         } else {

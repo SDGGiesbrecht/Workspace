@@ -80,7 +80,7 @@ struct FileSyntax {
         body = join(lines: [
             "", // Line at end of header
             "",
-            "", // Body starts in this line
+            "" // Body starts in this line
             ]) + body
 
         let contents = first + generateHeader(contents: header) + body
@@ -163,7 +163,7 @@ struct FileSyntax {
             markup,
             "",
             "",
-            "This may indicate a bug in Workspace.",
+            "This may indicate a bug in Workspace."
             ])
     }
 }

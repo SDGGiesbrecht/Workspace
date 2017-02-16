@@ -33,7 +33,7 @@ class WorkspaceTests: XCTestCase {
             "↓",
             stringWithTokens,
             "≠",
-            expectedReplacedTokenContents,
+            expectedReplacedTokenContents
             ]))
 
         func testLineBreaking(text: [String]) {
@@ -45,7 +45,7 @@ class WorkspaceTests: XCTestCase {
                     "Failure parsing lines using \(newline.addingPercentEncoding(withAllowedCharacters: CharacterSet())!):",
                     join(lines: text),
                     "↓",
-                    join(lines: parsed),
+                    join(lines: parsed)
                     ]))
             }
         }
@@ -53,34 +53,34 @@ class WorkspaceTests: XCTestCase {
         testLineBreaking(text: [
             "Line 1",
             "Line 2",
-            "Line 3",
+            "Line 3"
             ])
 
         testLineBreaking(text: [
-            "",
-            ])
-
-        testLineBreaking(text: [
-            "Line 1",
-            "",
-            "Line 3",
-            ])
-
-        testLineBreaking(text: [
-            "",
-            "Line 2",
+            ""
             ])
 
         testLineBreaking(text: [
             "Line 1",
             "",
+            "Line 3"
+            ])
+
+        testLineBreaking(text: [
+            "",
+            "Line 2"
+            ])
+
+        testLineBreaking(text: [
+            "Line 1",
+            ""
             ])
 
         testLineBreaking(text: [
             "Line 1",
             "",
             "",
-            "Line 4",
+            "Line 4"
             ])
     }
 
@@ -88,7 +88,7 @@ class WorkspaceTests: XCTestCase {
         let file = join(lines: [
             "Line 1: א",
             "Line 2: β",
-            "Line 3: c",
+            "Line 3: c"
             ])
         let index = file.range(of: "β")!.lowerBound
         let line = file.lineNumber(for: index)
@@ -108,14 +108,13 @@ class WorkspaceTests: XCTestCase {
 
             let output = syntax.comment(contents: text)
 
-
             XCTAssert(output == commentString, join(lines: [
                 "Failure generating comment using \(fileType):",
                 textString,
                 "↓",
                 output,
                 "≠",
-                commentString,
+                commentString
                 ]))
 
             let context = "..." + commentString + "..."
@@ -127,7 +126,7 @@ class WorkspaceTests: XCTestCase {
                     "↓",
                     parse,
                     "≠",
-                    commentString,
+                    commentString
                     ]))
             } else {
                 XCTFail(join(lines: [
@@ -143,7 +142,7 @@ class WorkspaceTests: XCTestCase {
                     "↓",
                     parse,
                     "≠",
-                    textString,
+                    textString
                     ]))
             } else {
                 XCTFail(join(lines: [
@@ -154,48 +153,48 @@ class WorkspaceTests: XCTestCase {
 
             let commentAtStart = join(lines: [
                 syntax.start,
-                syntax.end,
+                syntax.end
                 ])
             XCTAssert(syntax.startOfCommentExists(at: commentAtStart.startIndex, in: commentAtStart), join(lines: [
                 "Comment not detected:",
-                commentAtStart,
+                commentAtStart
                 ]))
 
             let noCommentAtStart = join(lines: [
                 "",
                 syntax.start,
-                syntax.end,
+                syntax.end
                 ])
             XCTAssert(¬syntax.startOfCommentExists(at: noCommentAtStart.startIndex, in: noCommentAtStart), join(lines: [
                 "Comment detected on wrong line:",
-                noCommentAtStart,
+                noCommentAtStart
                 ]))
 
             let empty = ""
             XCTAssert(¬syntax.startOfCommentExists(at: empty.startIndex, in: empty), join(lines: [
                 "Comment detected in empty string:",
-                empty,
+                empty
                 ]))
         }
 
         testComment(syntax: FileType.swift, text: [
             "Block",
-            "Comment",
+            "Comment"
             ], comment: [
                 "/*",
                 " Block",
                 " Comment",
-                " */",
+                " */"
                 ])
 
         testComment(syntax: FileType.workspaceConfiguration, text: [
             "Block",
-            "Comment",
+            "Comment"
             ], comment: [
                 "((",
                 "    Block",
                 "    Comment",
-                "    ))",
+                "    ))"
                 ])
     }
 
@@ -215,7 +214,7 @@ class WorkspaceTests: XCTestCase {
                 "↓",
                 output,
                 "≠",
-                comment,
+                comment
                 ]))
 
             let consecutiveOutput = syntax.comment(contents: consecutiveTextString)
@@ -225,7 +224,7 @@ class WorkspaceTests: XCTestCase {
                 "↓",
                 consecutiveOutput,
                 "≠",
-                consecutiveCommentString,
+                consecutiveCommentString
                 ]))
 
             let context = "..." + comment + "\n..."
@@ -238,7 +237,7 @@ class WorkspaceTests: XCTestCase {
                     "↓",
                     parse,
                     "≠",
-                    comment,
+                    comment
                     ]))
             } else {
                 XCTFail(join(lines: [
@@ -254,7 +253,7 @@ class WorkspaceTests: XCTestCase {
                     "↓",
                     parse,
                     "≠",
-                    consecutiveCommentString,
+                    consecutiveCommentString
                     ]))
             } else {
                 XCTFail(join(lines: [
@@ -263,7 +262,6 @@ class WorkspaceTests: XCTestCase {
                     ]))
             }
 
-
             if let parse = syntax.contentsOfFirstComment(in: context) {
                 XCTAssert(parse == text, join(lines: [
                     "Failure parsing comment using \(fileType) syntax:",
@@ -271,7 +269,7 @@ class WorkspaceTests: XCTestCase {
                     "↓",
                     parse,
                     "≠",
-                    text,
+                    text
                     ]))
             } else {
                 XCTFail(join(lines: [
@@ -287,7 +285,7 @@ class WorkspaceTests: XCTestCase {
                     "↓",
                     parse,
                     "≠",
-                    consecutiveTextString,
+                    consecutiveTextString
                     ]))
             } else {
                 XCTFail(join(lines: [
@@ -299,18 +297,18 @@ class WorkspaceTests: XCTestCase {
 
         testComment(syntax: FileType.swift, text: "Comment", comment: "// Comment", consecutiveText: [
             "Consecutive",
-            "Comment",
+            "Comment"
             ], consecutiveComment: [
                 "// Consecutive",
-                "// Comment",
+                "// Comment"
                 ])
 
         testComment(syntax: FileType.workspaceConfiguration, text: "Comment", comment: "(Comment)", consecutiveText: [
             "Consecutive",
-            "Comment",
+            "Comment"
             ], consecutiveComment: [
                 "(Consecutive)",
-                "(Comment)",
+                "(Comment)"
                 ])
     }
 
@@ -328,11 +326,11 @@ class WorkspaceTests: XCTestCase {
             "((",
             "    Multiline",
             "    Comment",
-            "    ))",
+            "    ))"
             ])
         let expectedConfiguration: [Option: String] = [
             .testOption: "Simple Value",
-            .testLongOption: join(lines: ["Multiline","Value"]),
+            .testLongOption: join(lines: ["Multiline", "Value"])
             ]
         let parsed = Configuration.parse(configurationSource: source)
 
@@ -342,7 +340,7 @@ class WorkspaceTests: XCTestCase {
             "↓",
             "\(parsed)",
             "≠",
-            "\(expectedConfiguration)",
+            "\(expectedConfiguration)"
             ]))
     }
 
@@ -357,7 +355,7 @@ class WorkspaceTests: XCTestCase {
             let syntax = fileType.syntax
             let body = join(lines: [
                 "...",
-                "", // Final newline
+                "" // Final newline
                 ])
 
             var headerlessFirstLine = ""
@@ -368,7 +366,7 @@ class WorkspaceTests: XCTestCase {
                     let value = join(lines: [
                         firstLine.start + "..." + firstLine.end,
                         "",
-                        "", // First line of header.
+                        "" // First line of header.
                         ])
                     contents = value
                     headerlessFirstLine = value
@@ -378,7 +376,7 @@ class WorkspaceTests: XCTestCase {
                 contents.append(join(lines: [
                     "", // Last line of header.
                     "",
-                    body,
+                    body
                     ]))
 
                 return File(_path: path, _contents: contents)
@@ -388,7 +386,7 @@ class WorkspaceTests: XCTestCase {
                 contextString.append(join(lines: [
                     firstLine.start + "..." + firstLine.end,
                     "",
-                    "", // First line of header
+                    "" // First line of header
                     ]))
             } else {
                 contextString = "\n" + contextString
@@ -411,7 +409,7 @@ class WorkspaceTests: XCTestCase {
                     " Licence",
                     " */",
                     "",
-                    body,
+                    body
                     ])
 
                 XCTAssert(file.contents == expectedSwift, join(lines: [
@@ -420,13 +418,13 @@ class WorkspaceTests: XCTestCase {
                     "↓",
                     file.contents,
                     "≠",
-                    expectedSwift,
+                    expectedSwift
                     ]))
 
                 let startingWithDocumentation = File(_path: path, _contents: join(lines: [
                     "/**",
                     " Documentation",
-                    " */",
+                    " */"
                     ]))
                 var withHeader = startingWithDocumentation
                 withHeader.header = "Header"
@@ -438,7 +436,7 @@ class WorkspaceTests: XCTestCase {
                     "/**",
                     " Documentation",
                     " */",
-                    "", // Final newline
+                    "" // Final newline
                     ])
                 XCTAssert(withHeader.contents == expectedResult, join(lines: [
                     "Failure inserting header using \(fileType):",
@@ -446,7 +444,7 @@ class WorkspaceTests: XCTestCase {
                     "↓",
                     withHeader.contents,
                     "≠",
-                    expectedResult,
+                    expectedResult
                     ]))
             }
 
@@ -462,7 +460,7 @@ class WorkspaceTests: XCTestCase {
                     "#",
                     "# Licence",
                     "",
-                    body,
+                    body
                     ])
 
                 XCTAssert(file.contents == expectedShell, join(lines: [
@@ -471,7 +469,7 @@ class WorkspaceTests: XCTestCase {
                     "↓",
                     file.contents,
                     "≠",
-                    expectedShell,
+                    expectedShell
                     ]))
             }
 
@@ -483,7 +481,7 @@ class WorkspaceTests: XCTestCase {
                 "↓",
                 output.contents,
                 "≠",
-                file.contents,
+                file.contents
                 ]))
 
             let input = file.header
@@ -493,7 +491,7 @@ class WorkspaceTests: XCTestCase {
                 "↓",
                 input,
                 "≠",
-                headerString,
+                headerString
                 ]))
 
             XCTAssert(context.body == body, join(lines: [
@@ -502,7 +500,7 @@ class WorkspaceTests: XCTestCase {
                 "↓",
                 output.body,
                 "≠",
-                body,
+                body
                 ]))
 
             var newBody = file
@@ -513,7 +511,7 @@ class WorkspaceTests: XCTestCase {
                 "↓",
                 newBody.contents,
                 "≠",
-                file.contents,
+                file.contents
                 ]))
 
             let headerLessStartSection = headerlessFirstLine == "" ? "\n" : headerlessFirstLine + "\n\n"
@@ -524,7 +522,7 @@ class WorkspaceTests: XCTestCase {
                 "↓",
                 noHeader.body,
                 "≠",
-                body,
+                body
                 ]))
 
             var newBodyNoHeader = noHeader
@@ -535,7 +533,7 @@ class WorkspaceTests: XCTestCase {
                 "↓",
                 newBodyNoHeader.contents,
                 "≠",
-                noHeader.contents,
+                noHeader.contents
                 ]))
         }
 
@@ -546,7 +544,7 @@ class WorkspaceTests: XCTestCase {
             "",
             "Copyright",
             "",
-            "Licence",
+            "Licence"
             ], source: [
                 "/*",
                 " File",
@@ -556,7 +554,7 @@ class WorkspaceTests: XCTestCase {
                 " Copyright",
                 "",
                 " Licence",
-                " */",
+                " */"
                 ])
 
         testHeader(syntax: Configuration.configurationFilePath.string, header: [
@@ -566,7 +564,7 @@ class WorkspaceTests: XCTestCase {
             "",
             "Copyright",
             "",
-            "Licence",
+            "Licence"
             ], source: [
                 "((",
                 "    File",
@@ -576,7 +574,7 @@ class WorkspaceTests: XCTestCase {
                 "    Copyright",
                 "",
                 "    Licence",
-                "    ))",
+                "    ))"
                 ])
 
         testHeader(syntax: ".sh", header: [
@@ -586,7 +584,7 @@ class WorkspaceTests: XCTestCase {
             "",
             "Copyright",
             "",
-            "Licence",
+            "Licence"
             ], source: [
                 "# File",
                 "#",
@@ -594,7 +592,7 @@ class WorkspaceTests: XCTestCase {
                 "#",
                 "# Copyright",
                 "#",
-                "# Licence",
+                "# Licence"
                 ])
     }
 
@@ -612,7 +610,7 @@ class WorkspaceTests: XCTestCase {
             "Shell failed:",
             output,
             "≠",
-            message + "\n",
+            message + "\n"
             ]))
 
         XCTAssert(bash(["NotARealCommand"]).succeeded == false, "Schript should have failed.")
@@ -646,13 +644,12 @@ class WorkspaceTests: XCTestCase {
 
             // Workspace Project
             "Documentation",
-            "Resources",
+            "Resources"
             ]
 
         if ¬Environment.isInXcode ∧ ¬Configuration.nestedTest {
 
-            let unexpected = Repository.trackedFiles.map({ $0.string }).filter() {
-                (file: String) -> Bool in
+            let unexpected = Repository.trackedFiles.map({ $0.string }).filter() { (file: String) -> Bool in
 
                 for prefix in expectedPrefixes {
                     if file.hasPrefix(prefix) {
@@ -665,7 +662,7 @@ class WorkspaceTests: XCTestCase {
 
             XCTAssert(unexpected.isEmpty, join(lines: [
                 "Unexpected files are being tracked by Git:",
-                join(lines: unexpected),
+                join(lines: unexpected)
                 ]))
         }
     }
@@ -699,11 +696,15 @@ class WorkspaceTests: XCTestCase {
                 "Refresh Workspace (macOS).command",
                 "Refresh Workspace (Linux).sh",
                 "Validate Changes (macOS).command",
-                "Validate Changes (Linux).sh",
+                "Validate Changes (Linux).sh"
                 ]
 
             for file in executables {
-                XCTAssert(try! File(at: RelativePath("Resources/Scripts/\(file)")).isExecutable, "Script is not longer executable: \(file)")
+                do {
+                    XCTAssert(try File(at: RelativePath("Resources/Scripts/\(file)")).isExecutable, "Script is not longer executable: \(file)")
+                } catch let error {
+                    XCTFail("\(error.localizedDescription)")
+                }
             }
         }
     }
@@ -722,7 +723,7 @@ class WorkspaceTests: XCTestCase {
 
                     let new: [(name: String, flags: [String])] = [
                         (name: "New Library", flags: []),
-                        (name: "New Executable", flags: ["•executable"]),
+                        (name: "New Executable", flags: ["•executable"])
                         ]
 
                     func root(of repository: String) -> RelativePath {
@@ -770,7 +771,7 @@ class WorkspaceTests: XCTestCase {
                     let realProjects: [(name: String, url: String)] = [
 
                         // Generic Set‐Up
-                        (name: "SDGLogic", url: "https://github.com/SDGGiesbrecht/SDGLogic"),
+                        (name: "SDGLogic", url: "https://github.com/SDGGiesbrecht/SDGLogic")
 
                         ]
 
@@ -844,7 +845,7 @@ class WorkspaceTests: XCTestCase {
         }
     }
 
-    static var allTests : [(String, (WorkspaceTests) -> () throws -> Void)] {
+    static var allTests: [(String, (WorkspaceTests) -> () throws -> Void)] {
         return [
             ("testGeneralParsing", testGeneralParsing),
             ("testLineNumbers", testLineNumbers),
@@ -856,7 +857,7 @@ class WorkspaceTests: XCTestCase {
             ("testGitIgnoreCoverage", testGitIgnoreCoverage),
             ("testDocumentationCoverage", testDocumentationCoverage),
             ("testExecutables", testExecutables),
-            ("testOnProjects", testOnProjects),
+            ("testOnProjects", testOnProjects)
         ]
     }
 }

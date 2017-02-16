@@ -34,13 +34,13 @@ struct Xcode {
             "@executable_path/Frameworks",
             "@loader_path/Frameworks",
             "@executable_path/../Frameworks",
-            "@loader_path/../Frameworks",
+            "@loader_path/../Frameworks"
             ].map({ "\u{22}\($0)\u{22}," })))
 
         require() { try file.write() }
     }
 
-    private static func modifyProject(condition shouldModify: (String) -> Bool, modification modify: (inout File) -> ()) {
+    private static func modifyProject(condition shouldModify: (String) -> Bool, modification modify: (inout File) -> Void) {
         let path = RelativePath("\(Configuration.projectName).xcodeproj/project.pbxproj")
 
         do {
@@ -63,8 +63,8 @@ struct Xcode {
 
         modifyProject(condition: {
             return ¬$0.contains("workspace proofread")
-        }, modification: {
-            (file: inout File) -> () in
+
+        }, modification: { (file: inout File) -> Void in
 
             let scriptInsertLocation = file.requireRange(of: "objects = {\n").upperBound
             file.contents.replaceSubrange(scriptInsertLocation ..< scriptInsertLocation, with: join(lines: [
@@ -88,11 +88,9 @@ struct Xcode {
 
     static func temporarilyDisableProofreading() {
 
-        modifyProject(condition: {
-            (String) -> Bool in
+        modifyProject(condition: { (_) -> Bool in
             return true
-        }, modification: {
-            (file: inout File) -> () in
+        }, modification: { (file: inout File) -> Void in
 
             file.contents = file.contents.replacingOccurrences(of: scriptActionEntry, with: disabledScriptActionEntry)
         })
@@ -100,11 +98,9 @@ struct Xcode {
 
     static func reEnableProofreading() {
 
-        modifyProject(condition: {
-            (String) -> Bool in
+        modifyProject(condition: { (_) -> Bool in
             return true
-        }, modification: {
-            (file: inout File) -> () in
+        }, modification: { (file: inout File) -> Void in
 
             file.contents = file.contents.replacingOccurrences(of: disabledScriptActionEntry, with: scriptActionEntry)
         })

@@ -22,13 +22,13 @@ struct FileHeaders {
         var defaultHeader: [String] = [
             "[_Filename_]",
             "",
-            "This source file is part of the [_Project_] open source project.",
+            "This source file is part of the [_Project_] open source project."
             ]
         if Configuration.optionIsDefined(.projectWebsite) {
             defaultHeader.append("[_Website_]")
         }
         defaultHeader.append(contentsOf: [
-            "",
+            ""
             ])
         if Configuration.optionIsDefined(.author) {
             defaultHeader.append("Copyright [_Copyright_] [_Author_] and the [_Project_] project contributors.")
@@ -38,13 +38,13 @@ struct FileHeaders {
         if Configuration.sdg {
             defaultHeader.append(contentsOf: [
                 "",
-                "Soli Deo gloria.",
+                "Soli Deo gloria."
                 ])
         }
         if Configuration.optionIsDefined(.licence) {
             defaultHeader.append(contentsOf: [
                 "",
-                "[_Licence_]",
+                "[_Licence_]"
                 ])
         }
         return join(lines: defaultHeader)
@@ -106,7 +106,7 @@ struct FileHeaders {
 
         let workspaceFiles: Set<String> = [
             "Refresh Workspace (macOS).command",
-            "Refresh Workspace (Linux).sh",
+            "Refresh Workspace (Linux).sh"
             ]
 
         var skippedFiles: Set<String> = workspaceFiles
@@ -144,7 +144,6 @@ struct FileHeaders {
                 if let licence = possibleLicence {
                     header = header.replacingOccurrences(of: key("Licence"), with: licence)
                 }
-
 
                 file.header = header
                 require() { try file.write() }

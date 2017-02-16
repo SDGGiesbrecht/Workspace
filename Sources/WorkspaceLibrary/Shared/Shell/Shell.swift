@@ -22,8 +22,7 @@ func bash(_ arguments: [String], silent: Bool = false, dropOutput: Bool = false)
         Repository.resetCache()
     }
 
-    var argumentsString = arguments.map({
-        (string: String) -> String in
+    var argumentsString = arguments.map({ (string: String) -> String in
 
         if string.contains(" ") {
             return "\u{22}" + string + "\u{22}"
@@ -69,7 +68,7 @@ func bash(_ arguments: [String], silent: Bool = false, dropOutput: Bool = false)
         fatalError(message: [
             "Cannot identify string encoding:",
             "",
-            "\(data)",
+            "\(data)"
             ])
     }
 
@@ -94,7 +93,7 @@ func bash(_ arguments: [String], silent: Bool = false, dropOutput: Bool = false)
             "",
             arguments.joined(separator: " "),
             "",
-            "See details above.",
+            "See details above."
             ])
     }
 }
@@ -124,7 +123,7 @@ func runThirdPartyTool(name: String, repositoryURL: String, tagPrefix: String?, 
 
     guard let requiredVersion = newest else {
         fatalError(message: [
-            "Failed to determine latest \(name) version.",
+            "Failed to determine latest \(name) version."
             ])
     }
 
@@ -149,7 +148,7 @@ func runThirdPartyTool(name: String, repositoryURL: String, tagPrefix: String?, 
             printWarning([
                 "Some tests were skipped because \(name) \(requiredVersion.version) could not be found.",
                 repositoryURL,
-                join(lines: updateInstructions),
+                join(lines: updateInstructions)
                 ])
 
             return nil

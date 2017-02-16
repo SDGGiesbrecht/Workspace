@@ -20,7 +20,7 @@ import SDGLogic
 
 struct UnitTests {
 
-    static func test(individualSuccess: @escaping (String) -> (), individualFailure: @escaping (String) -> ()) {
+    static func test(individualSuccess: @escaping (String) -> Void, individualFailure: @escaping (String) -> Void) {
 
         Xcode.temporarilyDisableProofreading()
         defer {
@@ -57,8 +57,6 @@ struct UnitTests {
 
             runUnitTestsInSwiftPackageManager(operatingSystemName: "macOS")
         }
-
-
 
         if Environment.shouldDoLinuxJobs {
 
@@ -144,7 +142,7 @@ struct UnitTests {
                     fatalError(message: [
                         "Unable to find device:",
                         "",
-                        deviceKey,
+                        deviceKey
                         ])
                 }
 

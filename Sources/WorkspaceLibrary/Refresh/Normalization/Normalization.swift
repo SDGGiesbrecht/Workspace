@@ -23,8 +23,7 @@ func normalizeFiles() {
             var file = require() { try File(at: path) }
 
             let lines = file.contents.linesArray
-            let normalizedLines = lines.map() {
-                (line: String) -> String in
+            let normalizedLines = lines.map() { (line: String) -> String in
 
                 var normalized = line.decomposedStringWithCanonicalMapping
 

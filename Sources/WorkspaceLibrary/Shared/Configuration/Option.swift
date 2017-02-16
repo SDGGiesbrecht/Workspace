@@ -99,7 +99,7 @@ enum Option: String, CustomStringConvertible {
 
         .manageContinuousIntegration,
 
-        .ignoreFileTypes,
+        .ignoreFileTypes
         ]
 
     // MARK: - Properties
@@ -190,7 +190,7 @@ enum Option: String, CustomStringConvertible {
         (.manageXcode, automaticValue: Configuration.trueOptionValue, DocumentationLink.xcode),
         (.manageDependencyGraph, automaticValue: Configuration.trueOptionValue, DocumentationLink.dependencyGraph),
         (.manageFileHeaders, automaticValue: Configuration.trueOptionValue, DocumentationLink.fileHeaders),
-        (.manageContinuousIntegration, automaticValue: Configuration.trueOptionValue, DocumentationLink.continuousIntegration),
+        (.manageContinuousIntegration, automaticValue: Configuration.trueOptionValue, DocumentationLink.continuousIntegration)
         ]
 
     // MARK: - CustomStringConvertible

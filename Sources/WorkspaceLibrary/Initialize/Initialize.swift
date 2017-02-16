@@ -30,7 +30,7 @@ func runInitialize(andExit shouldExit: Bool) {
             "",
             "This command is only for use in empty folders.",
             "For more information, see:",
-            DocumentationLink.setUp.url,
+            DocumentationLink.setUp.url
             ]
 
         do {
@@ -101,7 +101,7 @@ func runInitialize(andExit shouldExit: Bool) {
             "",
             "    return \u{22}Hello, world!\u{22}",
             "",
-            "}",
+            "}"
             ])
 
         require() { try program.write() }
@@ -114,7 +114,7 @@ func runInitialize(andExit shouldExit: Bool) {
             " Nothing in this executable module (\(executableName)) will be testable.",
             " It is recommended to put the entire implementation in \(libraryName).",
             " */",
-            "\(libraryName).run()",
+            "\(libraryName).run()"
             ])
 
         require() { try main.write() }
@@ -127,7 +127,7 @@ func runInitialize(andExit shouldExit: Bool) {
             "        Target(name: \u{22}\(executableName)\u{22}, dependencies: [\u{22}\(libraryName)\u{22}]),",
             "        Target(name: \u{22}\(libraryName)\u{22}),",
             "        Target(name: \u{22}\(testsName)\u{22}, dependencies: [\u{22}\(libraryName)\u{22}]),",
-            "    ]",
+            "    ]"
             ])
 
         package.contents.replaceSubrange(nameRange, with: replacement)
@@ -150,12 +150,12 @@ func runInitialize(andExit shouldExit: Bool) {
     let note: [String]? = [
         "This is the default setting when the Workspace initializes projects.",
         "For more information about “\(Option.automaticallyTakeOnNewResponsibilites)”, see:",
-        Option.automaticResponsibilityDocumentationPage.url,
+        Option.automaticResponsibilityDocumentationPage.url
         ]
     var entries: [(option: Option, value: String, comment: [String]?)] = [(option: .automaticallyTakeOnNewResponsibilites, value: Configuration.trueOptionValue, comment: note)]
     if Flags.executable {
         entries.append(contentsOf: [
-            (option: .projectType, value: ProjectType.executable.key, comment: nil),
+            (option: .projectType, value: ProjectType.executable.key, comment: nil)
             ])
     }
     Configuration.addEntries(entries: entries, to: &configuration)

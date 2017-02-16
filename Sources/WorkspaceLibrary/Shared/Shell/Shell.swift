@@ -16,7 +16,7 @@ import Foundation
 
 import SDGLogic
 
-func bash(_ arguments: [String], silent: Bool = false) -> (succeeded: Bool, output: String?, exitCode: ExitCode) {
+func bash(_ arguments: [String], silent: Bool = false, dropOutput: Bool = false) -> (succeeded: Bool, output: String?, exitCode: ExitCode) {
     
     defer {
         Repository.resetCache()
@@ -36,9 +36,11 @@ func bash(_ arguments: [String], silent: Bool = false) -> (succeeded: Bool, outp
     process.launchPath = "/bin/bash"
     
     let standardOutput = Pipe()
-    process.standardOutput = standardOutput
+    if ¬dropOutput {
+        process.standardOutput = standardOutput
+    }
     
-    if ¬silent ∧ ¬Environment.isInXcode /* Fails in Xcode’s container. */ {
+    if ¬silent ∧ ¬dropOutput ∧ ¬Environment.isInXcode /* Fails in Xcode’s container. */ {
         argumentsString = "set -o pipefail; " + argumentsString + " | tee /dev/tty"
     }
     process.arguments = ["-c", argumentsString]
@@ -90,7 +92,7 @@ func bash(_ arguments: [String], silent: Bool = false) -> (succeeded: Bool, outp
     }
 }
 
-func runThirdPartyTool(command: [String]) -> (succeeded: Bool, output: String?, exitCode: ExitCode)? {
+func runThirdPartyTool(command: [String], dropOutput: Bool = false) -> (succeeded: Bool, output: String?, exitCode: ExitCode)? {
     
-    return bash(command)
+    return bash(command, dropOutput: dropOutput)
 }

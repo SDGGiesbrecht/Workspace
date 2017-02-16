@@ -20,10 +20,11 @@ struct FileSyntax {
     
     // MARK: - Initialization
     
-    init(blockCommentSyntax: BlockCommentSyntax? = nil, lineCommentSyntax: LineCommentSyntax? = nil, requiredFirstLineTokens: (start: String, end: String)? = nil) {
+    init(blockCommentSyntax: BlockCommentSyntax? = nil, lineCommentSyntax: LineCommentSyntax? = nil, requiredFirstLineTokens: (start: String, end: String)? = nil, semanticLineTerminalWhitespace: [String] = []) {
         self.blockCommentSyntax = blockCommentSyntax
         self.lineCommentSyntax = lineCommentSyntax
         self.requiredFirstLineTokens = requiredFirstLineTokens
+        self.semanticLineTerminalWhitespace = semanticLineTerminalWhitespace
     }
     
     // MARK: - Properties
@@ -32,6 +33,8 @@ struct FileSyntax {
     
     let blockCommentSyntax: BlockCommentSyntax?
     let lineCommentSyntax: LineCommentSyntax?
+    
+    let semanticLineTerminalWhitespace: [String]
     
     // MARK: - Output
     

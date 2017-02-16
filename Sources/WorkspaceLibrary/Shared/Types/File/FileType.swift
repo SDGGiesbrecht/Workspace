@@ -132,7 +132,7 @@ enum FileType: CustomStringConvertible {
         case .swift:
             return FileSyntax(blockCommentSyntax: BlockCommentSyntax(start: "/*", end: "*/", stylisticIndent: " "), lineCommentSyntax: LineCommentSyntax(start: "//"))
         case .markdown:
-            return FileSyntax(blockCommentSyntax: BlockCommentSyntax(start: "<!--", end: "-->", stylisticIndent: " "), lineCommentSyntax: nil)
+            return FileSyntax(blockCommentSyntax: BlockCommentSyntax(start: "<!--", end: "-->", stylisticIndent: " "), lineCommentSyntax: nil, semanticLineTerminalWhitespace: ["  "])
         case .gitignore:
             return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"))
         case .shell:

@@ -147,6 +147,12 @@ func runRefresh(andExit shouldExit: Bool) {
         FileHeaders.refreshFileHeaders()
     }
     
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    printHeader(["Normalizing Files..."])
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    
+    normalizeFiles()
+    
     if Configuration.manageXcode ∧ Environment.operatingSystem == .macOS {
         
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

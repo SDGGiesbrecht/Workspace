@@ -121,7 +121,7 @@ struct ContinuousIntegration {
 
             addPortableOSJob(name: tvOSJob, sdk: "appletvsimulator")
         }
-        
+
         // Miscellaneous must be done on macOS because of SwiftLint.
         updatedLines.append(contentsOf: [
             "    - os: osx",

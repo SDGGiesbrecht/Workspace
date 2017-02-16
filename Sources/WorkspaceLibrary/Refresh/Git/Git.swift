@@ -56,10 +56,13 @@ struct Git {
 
             var body = updatedFile.body
 
+            let existsAlready: Bool
             var managedRange: Range<String.Index>
             if let section = body.range(of: (startToken, endToken)) {
+                existsAlready = true
                 managedRange = section
             } else {
+                existsAlready = false
                 if Command.current == .initialize {
                     managedRange = body.startIndex ..< body.endIndex
                 } else {
@@ -67,7 +70,7 @@ struct Git {
                 }
             }
 
-            let updatedLines: [String] = [
+            var updatedLines: [String] = [
                 startToken,
                 "",
                 managementComment,
@@ -76,6 +79,9 @@ struct Git {
                     "",
                     endToken
             ]
+            if ¬existsAlready {
+                updatedLines += [""]
+            }
 
             body.replaceSubrange(managedRange, with: join(lines: updatedLines))
             updatedFile.body = body

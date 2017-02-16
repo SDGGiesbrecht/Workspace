@@ -48,7 +48,7 @@ A particular project can [configure](Documentation/Operating Systems.md) which o
     - Generate and maintain a local [Xcode project](Documentation/Xcode.md) (except on Linux).
     - Keep [dependencies and their version restrictions](Documentation/Dependency Graph.md) up to date.
     - Keep [file headers](Documentation/File Headers.md) uniform and up to date.
-    - [Proofread](Documentation/Proofreading.md) source files for code style.
+    - [Proofread](Documentation/Proofreading.md) source files for code style. (Including [SwiftLint](https://github.com/realm/SwiftLint))
     - Run unit tests on each operating system (except watchOS).
     - Configure [continuous integration](Documentation/Continuous Integration.md) for each operating system. ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))
 

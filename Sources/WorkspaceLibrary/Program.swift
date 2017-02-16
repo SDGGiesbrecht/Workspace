@@ -15,12 +15,12 @@
 import SDGLogic
 
 public func run() {
-    
+
     if Command.current ≠ Command.proofread {
         print("") // Line break after the input line.
     }
-    
+
     Command.current.run(andExit: true)
-    
+
     unreachableLocation()
 }

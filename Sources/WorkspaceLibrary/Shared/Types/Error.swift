@@ -21,12 +21,12 @@ func require<T>(operation: () throws -> T) -> T {
         fatalError(message: [
             "An error occurred:",
             "",
-            error.localizedDescription,
+            error.localizedDescription
             ])
     }
 }
 
-func force(operation: () throws -> ()) {
+func force(operation: () throws -> Void) {
     do {
         try operation()
     } catch _ {

@@ -15,21 +15,21 @@
 import SDGLogic
 
 enum Licence: String {
-    
+
     // MARK: - Initialization
-    
+
     init?(key: String) {
         self.init(rawValue: key)
     }
-    
+
     // MARK: - Cases
-    
+
     case apache2_0 = "Apache 2.0"
     case mit = "MIT"
     case gnuGeneralPublic3_0 = "GNU GeneralPublic3_0"
     case unlicense = "Unlicense"
     case copyright = "Copyright"
-    
+
     static let all: [Licence] = [
         .apache2_0,
         .mit,
@@ -37,36 +37,36 @@ enum Licence: String {
         .unlicense,
         .copyright,
     ]
-    
+
     // MARK: - Properties
-    
+
     var key: String {
         return rawValue
     }
-    
+
     private var filenameWithoutExtension: String {
         return rawValue
     }
-    
+
     static let licenceFolder = "Resources/Licences"
-    
+
     private func licenceData(fileExtension: String) -> String {
-        
+
         let licenceDirectory = Repository.workspaceDirectory.subfolderOrFile(Licence.licenceFolder)
         let path = licenceDirectory.subfolderOrFile("\(filenameWithoutExtension).\(fileExtension)")
         let file = require() { try File(at: path) }
-        
+
         return file.contents
     }
-    
+
     var filename: String {
         return filenameWithoutExtension + ".md"
     }
-    
+
     var text: String {
         return licenceData(fileExtension: "md")
     }
-    
+
     private var noticeLines: [String] {
         switch self {
         case .apache2_0:
@@ -96,44 +96,44 @@ enum Licence: String {
             ]
         }
     }
-    
+
     var notice: String {
         return join(lines: noticeLines)
     }
-    
+
     // MARK: - Licence Management
-    
+
     static func refreshLicence() {
-        
+
         guard let licence = Configuration.licence else {
-            
+
             // Fails later in validation phase.
-            
+
             return
         }
-        
+
         var text = licence.text
-        
+
         var file = File(possiblyAt: RelativePath("LICENSE.md"))
         let oldContents = file.contents
-        
+
         let copyright = FileHeaders.copyright(fromText: oldContents)
         var authors = "the \(Configuration.projectName) project contributors."
         if let author = Configuration.author {
             authors = "\(author) and " + authors
         }
-        
+
         func key(_ key: String) -> String {
             return "[_\(key)_]"
         }
-        
+
         text = text.replacingOccurrences(of: key("Copyright"), with: copyright)
         text = text.replacingOccurrences(of: key("Authors"), with: authors)
-        
-        
+
+
         file.contents = text
         require() { try file.write() }
-        
+
         // Delete alternate licence files to prevent duplicates.
         force() { try Repository.delete(RelativePath("LICENSE.txt")) }
     }

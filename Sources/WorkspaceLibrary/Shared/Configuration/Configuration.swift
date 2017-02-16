@@ -16,34 +16,34 @@ import SDGCaching
 import SDGLogic
 
 struct Configuration {
-    
+
     // MARK: - Cache
-    
+
     private struct Cache {
-        
+
         // MARK: - Properties
-        
+
         fileprivate var file: File?
         fileprivate var configurationFile: [Option: String]?
         fileprivate var projectName: String?
-        
+
         // MARK: - Settings
-        
+
         fileprivate var automaticallyTakeOnNewResponsibilites: Bool?
     }
     private static var cache = Cache()
-    
+
     // MARK: - Interface
-    
+
     static func resetCache() {
         cache = Cache()
     }
-    
+
     static let configurationFilePath: RelativePath = ".Workspace Configuration.txt"
     static var file: File {
         return cachedResult(cache: &cache.file) {
             () -> File in
-            
+
             do {
                 return try File(at: configurationFilePath)
             } catch {
@@ -55,24 +55,24 @@ struct Configuration {
             }
         }
     }
-    
+
     private static let startTokens = (start: "[_Begin ", end: "_]")
     private static func startMultilineOption(option: Option) -> String {
         return "\(startTokens.start)\(option)\(startTokens.end)"
     }
     private static let endToken = "[_End_]"
     private static let colon = ": "
-    
+
     private static let lineCommentSyntax = LineCommentSyntax(start: "(", stylisticSpacing: false, stylisticEnd: ")")
     private static let blockCommentSyntax = BlockCommentSyntax(start: "((", end: "))", stylisticIndent: "    ")
     static let syntax = FileSyntax(blockCommentSyntax: blockCommentSyntax, lineCommentSyntax: lineCommentSyntax)
-    
+
     private static let importStatementTokens = (start: "[_Import ", end: "_]")
-    
+
     static func configurationFileEntry(option: Option, value: String, comment: [String]?) -> String {
-        
+
         print(["Adding “\(option.key)” to configuration..."])
-        
+
         let entry: String
         if value.isMultiline {
             entry = join(lines: [
@@ -83,53 +83,53 @@ struct Configuration {
         } else {
             entry = option.key + colon + value
         }
-        
+
         if let array = comment {
             let note = join(lines: array)
-            
+
             let commentedNote: String
             if note.isMultiline {
-                
+
                 commentedNote = blockCommentSyntax.comment(contents: note)
-                
+
             } else {
-                
+
                 commentedNote = lineCommentSyntax.comment(contents: note)
-                
+
             }
             return join(lines: [
                 commentedNote,
                 entry
                 ])
-            
+
         } else {
             return entry
         }
     }
-    
+
     static func configurationFileEntry(option: Option, value: Bool, comment: [String]?) -> String {
         return configurationFileEntry(option: option, value: value ? trueOptionValue : falseOptionValue, comment: comment)
     }
-    
+
     static func addEntries(entries: [(option: Option, value: String, comment: [String]?)], to configuration: inout File) {
-        
+
         let additions = entries.map() {
             (entry: (option: Option, value: String, comment: [String]?)) -> String in
-            
+
             return Configuration.configurationFileEntry(option: entry.option, value: entry.value, comment: entry.comment) + "\n\n"
         }
-        
+
         configuration.body = additions.joined() + configuration.body
     }
-    
+
     static func addEntries(entries: [(option: Option, value: String, comment: [String]?)]) {
         var configuration = file
         addEntries(entries: entries, to: &configuration)
         require() { try configuration.write() }
     }
-    
+
     // MARK: - Properties
-    
+
     static func parse(configurationSource: String) -> [Option: String] {
         func reportUnsupportedKey(_ key: String) -> Never {
             fatalError(message: [
@@ -141,7 +141,7 @@ struct Configuration {
                 join(lines: Option.allPublic.map({ $0.key })),
                 ])
         }
-        
+
         func syntaxError(description: [String]) -> Never {
             fatalError(message: [
                 "Syntax error!",
@@ -167,15 +167,15 @@ struct Configuration {
                 "\(importStatementTokens.start)https://github.com/user/repository\(importStatementTokens.end)",
                 ])
         }
-        
+
         var result: [Option: String] = [:]
         var currentMultilineOption: Option?
         var currentMultilineComment: [String]?
         for line in configurationSource.lines {
-            
+
             if let option = currentMultilineOption {
                 // In multiline value
-                
+
                 if line == endToken {
                     currentMultilineOption = nil
                 } else {
@@ -186,66 +186,66 @@ struct Configuration {
                     } else {
                         content = line
                     }
-                    
+
                     result[option] = content
                 }
-                
+
             } else if currentMultilineComment ≠ nil {
                 // In multiline comment
-                
+
                 if line.hasSuffix(blockCommentSyntax.end) {
                     currentMultilineComment = nil
                 } else {
                     currentMultilineComment?.append(line)
                 }
-                
+
             } else if blockCommentSyntax.startOfCommentExists(at: line.startIndex, in: line) {
                 // Multiline comment
-                
+
                 currentMultilineComment = [line]
-                
+
             } else if line == "" ∨ lineCommentSyntax.commentExists(at: line.startIndex, in: line) {
                 // Comment or whitespace
-                
+
             } else if let url = line.contents(of: importStatementTokens, requireWholeStringToMatch: true) {
                 // Import statement
-                
+
                 let repositoryName = Repository.nameOfLinkedRepository(atURL: url)
                 let otherConfiguration = require() { try File(at: Repository.linkedRepository(named: repositoryName).subfolderOrFile(configurationFilePath.string)) }
-                
+
                 let otherFile = parse(configurationSource: otherConfiguration.contents)
                 for (option, value) in otherFile {
                     result[option] = value
                 }
-                
+
             } else if let multilineOption = line.contents(of: startTokens, requireWholeStringToMatch: true) {
                 // Multiline option
-                
+
                 if let option = Option(key: multilineOption) {
                     currentMultilineOption = option
                 } else {
                     reportUnsupportedKey(multilineOption)
                 }
-                
+
             } else if let (optionKey, value) = line.split(at: colon) {
                 // Simple option
-                
+
                 if let option = Option(key: optionKey) {
                     result[option] = value
                 } else {
                     reportUnsupportedKey(optionKey)
                 }
-                
+
             } else {
                 // Syntax error
-                
+
                 syntaxError(description: [
                     "Invalid Option:",
                     line
                     ])
             }
         }
-        
+
         if let comment = currentMultilineComment {
             syntaxError(description: [
                 "Unterminated Comment:",
@@ -258,34 +258,34 @@ struct Configuration {
                 result[option] ?? "",
                 ])
         }
-        
+
         return result
     }
-    
+
     private static var configurationFile: [Option: String] {
         return cachedResult(cache: &cache.configurationFile) {
             () -> [Option: String] in
-            
+
             return parse(configurationSource: file.contents)
         }
     }
-    
+
     static var projectName: String {
         return cachedResult(cache: &cache.projectName) {
             () -> String in
-            
+
             let tokens = ("name: \u{22}", "\u{22}")
             return Repository.packageDescription.requireContents(of: tokens)
         }
     }
-    
+
     // MARK: - Settings
-    
+
     static let noValue = "[_None_]"
     static func optionIsDefined(_ option: Option) -> Bool {
         return configurationFile[option] ≠ nil
     }
-    
+
     private static func invalidEnumValue(option: Option, value: String, valid: [String]) -> Never {
         fatalError(message: [
             "Invalid option value:",
@@ -298,7 +298,7 @@ struct Configuration {
             join(lines: valid),
             ])
     }
-    
+
     static let trueOptionValue = "True"
     static let falseOptionValue = "False"
     private static func booleanValue(option: Option) -> Bool {
@@ -318,7 +318,7 @@ struct Configuration {
             return option.defaultValue == trueOptionValue
         }
     }
-    
+
     private static func stringValue(option: Option) -> String {
         if let result = configurationFile[option] {
             return result
@@ -338,7 +338,7 @@ struct Configuration {
             }
         }
     }
-    
+
     private static func possibleStringValue(option: Option) -> String? {
         if let result = configurationFile[option] {
             if result ≠ Configuration.noValue {
@@ -347,27 +347,27 @@ struct Configuration {
         }
         return nil
     }
-    
+
     static let emptyListOptionValue = ""
     private static func listValue(option: Option) -> [String] {
-        
+
         let string = stringValue(option: option)
-        
+
         if string == "" {
             return []
         } else {
             return string.linesArray
         }
     }
-    
+
     // Workspace Behaviour
-    
+
     static var automaticallyTakeOnNewResponsibilites: Bool {
         return booleanValue(option: .automaticallyTakeOnNewResponsibilites)
     }
-    
+
     // Project Type
-    
+
     static var projectType: ProjectType? {
         if let key = possibleStringValue(option: .projectType) {
             guard let type = ProjectType(key: key) else {
@@ -378,27 +378,27 @@ struct Configuration {
             return nil
         }
     }
-    
+
     static var supportMacOS: Bool {
         return booleanValue(option: .supportMacOS)
     }
-    
+
     static var supportLinux: Bool {
         return booleanValue(option: .supportLinux)
     }
-    
+
     static var supportIOS: Bool {
         return booleanValue(option: .supportIOS) ∧ projectType ≠ ProjectType.executable
     }
-    
+
     static var supportWatchOS: Bool {
         return booleanValue(option: .supportWatchOS) ∧ projectType ≠ ProjectType.executable
     }
-    
+
     static var supportTVOS: Bool {
         return booleanValue(option: .supportTVOS) ∧ projectType ≠ ProjectType.executable
     }
-    
+
     static var skipSimulators: Bool {
         if Environment.isInContinuousIntegration {
             return false
@@ -406,9 +406,9 @@ struct Configuration {
             return booleanValue(option: .skipSimulator)
         }
     }
-    
+
     // Responsibilities
-    
+
     static var manageLicence: Bool {
         return booleanValue(option: .manageLicence)
     }
@@ -425,14 +425,14 @@ struct Configuration {
     }
     static var requiredLicence: Licence {
         let key = stringValue(option: .licence)
-        
+
         if let result = Licence(key: key) {
             return result
         } else {
             invalidEnumValue(option: .licence, value: key, valid: Licence.all.map({ $0.key }))
         }
     }
-    
+
     static var manageContributingInstructions: Bool {
         return booleanValue(option: .manageContributingInstructions)
     }
@@ -448,7 +448,7 @@ struct Configuration {
     static var requiredDevelopmentNotes: String {
         return possibleStringValue(option: .developmentNotes) ?? ""
     }
-    
+
     static var manageFileHeaders: Bool {
         return booleanValue(option: .manageFileHeaders)
     }
@@ -467,48 +467,48 @@ struct Configuration {
     static var requiredProjectWebsite: String {
         return stringValue(option: .projectWebsite)
     }
-    
+
     static var manageXcode: Bool {
         return booleanValue(option: .manageXcode)
     }
-    
+
     static var manageDependencyGraph: Bool {
         return booleanValue(option: .manageDependencyGraph)
     }
-    
+
     static var disableProofreadingRules: Set<String> {
         return Set(listValue(option: .disableProofreadingRules))
     }
-    
+
     static var manageContinuousIntegration: Bool {
         return booleanValue(option: .manageContinuousIntegration)
     }
-    
+
     // Miscellaneous
-    
+
     static var ignoreFileTypes: Set<String> {
         return Set(listValue(option: .ignoreFileTypes))
     }
-    
+
     // SDG
     static var sdg: Bool {
         return booleanValue(option: .sdg)
     }
-    
+
     // Testing
     static var nestedTest: Bool {
         return booleanValue(option: .nestedTest)
     }
-    
+
     static func validate() -> Bool {
-        
+
         var succeeding = true
-        
+
         func incompatibilityDetected(between firstOption: Option, and secondOption: Option, documentation: DocumentationLink?) {
 
             let firstValue = configurationFile[firstOption]
             let secondValue = configurationFile[secondOption]
-            
+
             func describe(option: Option, value: String?) -> String {
                 if let actualValue = value {
                     return "\(option.key): \(actualValue)"
@@ -516,7 +516,7 @@ struct Configuration {
                     return "\(option.key): [Not specified.]"
                 }
             }
-            
+
             var description: [String] = [
                 "The options...",
                 describe(option: firstOption, value: firstValue),
@@ -524,39 +524,39 @@ struct Configuration {
                 describe(option: secondOption, value: secondValue),
                 "...are incompatible."
             ]
-            
+
             if let link = documentation {
                 description.append(contentsOf: [
                     "For more information, see:",
                     link.url,
                     ])
             }
-            
+
             succeeding = false
             printValidationFailureDescription(description)
         }
-        
+
         // Project Type vs Operating System
-        
+
         if projectType == .executable {
-            
+
             func check(forIncompatibleOperatingSystem option: Option) {
                 if configurationFile[option] == Configuration.trueOptionValue {
                     incompatibilityDetected(between: .projectType, and: option, documentation: .platforms)
                 }
             }
-            
+
             check(forIncompatibleOperatingSystem: .supportIOS)
             check(forIncompatibleOperatingSystem: .supportWatchOS)
             check(forIncompatibleOperatingSystem: .supportTVOS)
         }
-        
+
         // Manage Licence
-        
+
         if manageLicence ∧ configurationFile[.licence] == nil {
             incompatibilityDetected(between: .manageLicence, and: .licence, documentation: .licence)
         }
-        
+
         return succeeding
     }
 }

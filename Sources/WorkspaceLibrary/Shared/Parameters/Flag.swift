@@ -13,13 +13,13 @@
  */
 
 enum Flag: String, Comparable, CustomStringConvertible {
-    
+
     // MARK: - Initialization
-    
+
     init?(name: String) {
         self.init(rawValue: name)
     }
-    
+
     init?(flag: String) {
         if flag.hasPrefix("•") {
             var name = flag
@@ -29,37 +29,37 @@ enum Flag: String, Comparable, CustomStringConvertible {
             return nil
         }
     }
-    
+
     // MARK: - Cases
-    
+
     case executable = "executable"
-    
+
     static let all: [Flag] = [
         .executable,
         ].sorted()
-    
+
     static let allNames: [String] = all.map() { $0.name }
-    
+
     static let allFlags: [String] = all.map() { $0.flag }
-    
+
     // MARK: - Usage
-    
+
     var name: String {
         return rawValue
     }
-    
+
     var flag: String {
         return "•\(name)"
     }
-    
+
     // MARK: - Comparable
-    
+
     static func <(lhs: Flag, rhs: Flag) -> Bool {
         return lhs.name < rhs.name
     }
-    
+
     // MARK: - CustomStringConvertible
-    
+
     var description: String {
         return name
     }

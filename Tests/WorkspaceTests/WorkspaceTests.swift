@@ -20,9 +20,9 @@ import XCTest
 @testable import WorkspaceLibrary
 
 class WorkspaceTests: XCTestCase {
-    
+
     func testGeneralParsing() {
-        
+
         let originalStringWithTokens = "()()()"
         let expectedReplacedTokenContents = "(x)(x)(x)"
         var stringWithTokens = originalStringWithTokens
@@ -35,11 +35,11 @@ class WorkspaceTests: XCTestCase {
             "≠",
             expectedReplacedTokenContents,
             ]))
-        
+
         func testLineBreaking(text: [String]) {
-            
+
             for newline in ["\n", String.CR_LF] {
-                
+
                 let parsed = text.joined(separator: newline).linesArray
                 XCTAssert(parsed == text, join(lines: [
                     "Failure parsing lines using \(newline.addingPercentEncoding(withAllowedCharacters: CharacterSet())!):",
@@ -49,33 +49,33 @@ class WorkspaceTests: XCTestCase {
                     ]))
             }
         }
-        
+
         testLineBreaking(text: [
             "Line 1",
             "Line 2",
             "Line 3",
             ])
-        
+
         testLineBreaking(text: [
             "",
             ])
-        
+
         testLineBreaking(text: [
             "Line 1",
             "",
             "Line 3",
             ])
-        
+
         testLineBreaking(text: [
             "",
             "Line 2",
             ])
-        
+
         testLineBreaking(text: [
             "Line 1",
             "",
             ])
-        
+
         testLineBreaking(text: [
             "Line 1",
             "",
@@ -83,7 +83,7 @@ class WorkspaceTests: XCTestCase {
             "Line 4",
             ])
     }
-    
+
     func testLineNumbers() {
         let file = join(lines: [
             "Line 1: א",
@@ -96,19 +96,19 @@ class WorkspaceTests: XCTestCase {
         let column = file.columnNumber(for: index)
         XCTAssert(column == 9, "Incorrect column number: \(column) ≠ 9")
     }
-    
+
     func testBlockComments() {
-        
+
         func testComment(syntax fileType: FileType, text: [String], comment: [String]) {
-            
+
             let syntax = fileType.syntax.blockCommentSyntax!
-            
+
             let textString = join(lines: text)
             let commentString = join(lines: comment)
-            
+
             let output = syntax.comment(contents: text)
-            
-            
+
+
             XCTAssert(output == commentString, join(lines: [
                 "Failure generating comment using \(fileType):",
                 textString,
@@ -117,9 +117,9 @@ class WorkspaceTests: XCTestCase {
                 "≠",
                 commentString,
                 ]))
-            
+
             let context = "..." + commentString + "..."
-            
+
             if let parse = syntax.firstComment(in: context) {
                 XCTAssert(parse == commentString, join(lines: [
                     "Failure finding comment using \(fileType) syntax:",
@@ -135,7 +135,7 @@ class WorkspaceTests: XCTestCase {
                     context
                     ]))
             }
-            
+
             if let parse = syntax.contentsOfFirstComment(in: context) {
                 XCTAssert(parse == textString, join(lines: [
                     "Failure parsing comment using \(fileType) syntax:",
@@ -151,7 +151,7 @@ class WorkspaceTests: XCTestCase {
                     context
                     ]))
             }
-            
+
             let commentAtStart = join(lines: [
                 syntax.start,
                 syntax.end,
@@ -160,7 +160,7 @@ class WorkspaceTests: XCTestCase {
                 "Comment not detected:",
                 commentAtStart,
                 ]))
-            
+
             let noCommentAtStart = join(lines: [
                 "",
                 syntax.start,
@@ -170,14 +170,14 @@ class WorkspaceTests: XCTestCase {
                 "Comment detected on wrong line:",
                 noCommentAtStart,
                 ]))
-            
+
             let empty = ""
             XCTAssert(¬syntax.startOfCommentExists(at: empty.startIndex, in: empty), join(lines: [
                 "Comment detected in empty string:",
                 empty,
                 ]))
         }
-        
+
         testComment(syntax: FileType.swift, text: [
             "Block",
             "Comment",
@@ -187,7 +187,7 @@ class WorkspaceTests: XCTestCase {
                 " Comment",
                 " */",
                 ])
-        
+
         testComment(syntax: FileType.workspaceConfiguration, text: [
             "Block",
             "Comment",
@@ -198,16 +198,16 @@ class WorkspaceTests: XCTestCase {
                 "    ))",
                 ])
     }
-    
+
     func testLineComments() {
-        
+
         func testComment(syntax fileType: FileType, text: String, comment: String, consecutiveText: [String], consecutiveComment: [String]) {
-            
+
             let syntax = fileType.syntax.lineCommentSyntax!
-            
+
             let consecutiveTextString = join(lines: consecutiveText)
             let consecutiveCommentString = join(lines: consecutiveComment)
-            
+
             let output = syntax.comment(contents: text)
             XCTAssert(output == comment, join(lines: [
                 "Failure generating comment using \(fileType):",
@@ -217,7 +217,7 @@ class WorkspaceTests: XCTestCase {
                 "≠",
                 comment,
                 ]))
-            
+
             let consecutiveOutput = syntax.comment(contents: consecutiveTextString)
             XCTAssert(consecutiveOutput == consecutiveCommentString, join(lines: [
                 "Failure generating comment using \(fileType):",
@@ -227,10 +227,10 @@ class WorkspaceTests: XCTestCase {
                 "≠",
                 consecutiveCommentString,
                 ]))
-            
+
             let context = "..." + comment + "\n..."
             let consecutiveContext = "..." + consecutiveCommentString + "\n..."
-            
+
             if let parse = syntax.firstComment(in: context) {
                 XCTAssert(parse == comment, join(lines: [
                     "Failure finding comment using \(fileType) syntax:",
@@ -246,7 +246,7 @@ class WorkspaceTests: XCTestCase {
                     context
                     ]))
             }
-            
+
             if let parse = syntax.firstComment(in: consecutiveContext) {
                 XCTAssert(parse == consecutiveCommentString, join(lines: [
                     "Failure finding comment using \(fileType) syntax:",
@@ -262,8 +262,8 @@ class WorkspaceTests: XCTestCase {
                     consecutiveContext
                     ]))
             }
-            
-            
+
+
             if let parse = syntax.contentsOfFirstComment(in: context) {
                 XCTAssert(parse == text, join(lines: [
                     "Failure parsing comment using \(fileType) syntax:",
@@ -279,7 +279,7 @@ class WorkspaceTests: XCTestCase {
                     context
                     ]))
             }
-            
+
             if let parse = syntax.contentsOfFirstComment(in: consecutiveContext) {
                 XCTAssert(parse == consecutiveTextString, join(lines: [
                     "Failure parsing comment using \(fileType) syntax:",
@@ -296,7 +296,7 @@ class WorkspaceTests: XCTestCase {
                     ]))
             }
         }
-        
+
         testComment(syntax: FileType.swift, text: "Comment", comment: "// Comment", consecutiveText: [
             "Consecutive",
             "Comment",
@@ -304,7 +304,7 @@ class WorkspaceTests: XCTestCase {
                 "// Consecutive",
                 "// Comment",
                 ])
-        
+
         testComment(syntax: FileType.workspaceConfiguration, text: "Comment", comment: "(Comment)", consecutiveText: [
             "Consecutive",
             "Comment",
@@ -313,7 +313,7 @@ class WorkspaceTests: XCTestCase {
                 "(Comment)",
                 ])
     }
-    
+
     func testConfiguration() {
         let source = join(lines: [
             "Test Option: Simple Value",
@@ -335,7 +335,7 @@ class WorkspaceTests: XCTestCase {
             .testLongOption: join(lines: ["Multiline","Value"]),
             ]
         let parsed = Configuration.parse(configurationSource: source)
-        
+
         XCTAssert(parsed == expectedConfiguration, join(lines: [
             "Failure parsing configuration source:",
             source,
@@ -345,11 +345,11 @@ class WorkspaceTests: XCTestCase {
             "\(expectedConfiguration)",
             ]))
     }
-    
+
     func testHeaders() {
-        
+
         func testHeader(syntax fileExtension: String, header: [String], source: [String]) {
-            
+
             let path = RelativePath("Test." + fileExtension)
             guard let fileType = FileType(filePath: path) else {
                 preconditionFailure("Unrecognized extension: \(fileExtension)")
@@ -359,10 +359,10 @@ class WorkspaceTests: XCTestCase {
                 "...",
                 "", // Final newline
                 ])
-            
+
             var headerlessFirstLine = ""
             func inContext(headerSource: String) -> File {
-                
+
                 var contents = ""
                 if let firstLine = syntax.requiredFirstLineTokens {
                     let value = join(lines: [
@@ -373,14 +373,14 @@ class WorkspaceTests: XCTestCase {
                     contents = value
                     headerlessFirstLine = value
                 }
-                
+
                 contents.append(headerSource)
                 contents.append(join(lines: [
                     "", // Last line of header.
                     "",
                     body,
                     ]))
-                
+
                 return File(_path: path, _contents: contents)
             }
             var contextString = ""
@@ -396,9 +396,9 @@ class WorkspaceTests: XCTestCase {
             contextString.append(body)
             let context = File(_path: path, _contents: contextString)
             let file = inContext(headerSource: join(lines: source))
-            
+
             let headerString = join(lines: header)
-            
+
             if fileExtension == ".swift" {
                 let expectedSwift = join(lines: [
                     "/*",
@@ -413,7 +413,7 @@ class WorkspaceTests: XCTestCase {
                     "",
                     body,
                     ])
-                
+
                 XCTAssert(file.contents == expectedSwift, join(lines: [
                     "Failure simulating file using \(fileType):",
                     headerString,
@@ -422,7 +422,7 @@ class WorkspaceTests: XCTestCase {
                     "≠",
                     expectedSwift,
                     ]))
-                
+
                 let startingWithDocumentation = File(_path: path, _contents: join(lines: [
                     "/**",
                     " Documentation",
@@ -449,7 +449,7 @@ class WorkspaceTests: XCTestCase {
                     expectedResult,
                     ]))
             }
-            
+
             if fileExtension == ".sh" {
                 let expectedShell = join(lines: [
                     "#!...sh",
@@ -464,7 +464,7 @@ class WorkspaceTests: XCTestCase {
                     "",
                     body,
                     ])
-                
+
                 XCTAssert(file.contents == expectedShell, join(lines: [
                     "Failure simulating file using \(fileType):",
                     headerString,
@@ -474,7 +474,7 @@ class WorkspaceTests: XCTestCase {
                     expectedShell,
                     ]))
             }
-            
+
             var output = context
             output.header = headerString
             XCTAssert(output.contents == file.contents, join(lines: [
@@ -485,7 +485,7 @@ class WorkspaceTests: XCTestCase {
                 "≠",
                 file.contents,
                 ]))
-            
+
             let input = file.header
             XCTAssert(input == headerString, join(lines: [
                 "Failure parsing header using \(fileType):",
@@ -495,7 +495,7 @@ class WorkspaceTests: XCTestCase {
                 "≠",
                 headerString,
                 ]))
-            
+
             XCTAssert(context.body == body, join(lines: [
                 "Failure parsing body using \(fileType):",
                 output.contents,
@@ -504,7 +504,7 @@ class WorkspaceTests: XCTestCase {
                 "≠",
                 body,
                 ]))
-            
+
             var newBody = file
             newBody.body = body
             XCTAssert(newBody.contents == file.contents, join(lines: [
@@ -515,7 +515,7 @@ class WorkspaceTests: XCTestCase {
                 "≠",
                 file.contents,
                 ]))
-            
+
             let headerLessStartSection = headerlessFirstLine == "" ? "\n" : headerlessFirstLine + "\n\n"
             let noHeader = File(_path: path, _contents: headerLessStartSection + body)
             XCTAssert(noHeader.body == body, join(lines: [
@@ -526,7 +526,7 @@ class WorkspaceTests: XCTestCase {
                 "≠",
                 body,
                 ]))
-            
+
             var newBodyNoHeader = noHeader
             newBodyNoHeader.body = body
             XCTAssert(newBodyNoHeader.contents == noHeader.contents, join(lines: [
@@ -538,7 +538,7 @@ class WorkspaceTests: XCTestCase {
                 noHeader.contents,
                 ]))
         }
-        
+
         testHeader(syntax: ".swift", header: [
             "File",
             "",
@@ -558,7 +558,7 @@ class WorkspaceTests: XCTestCase {
                 " Licence",
                 " */",
                 ])
-        
+
         testHeader(syntax: Configuration.configurationFilePath.string, header: [
             "File",
             "",
@@ -578,7 +578,7 @@ class WorkspaceTests: XCTestCase {
                 "    Licence",
                 "    ))",
                 ])
-        
+
         testHeader(syntax: ".sh", header: [
             "File",
             "",
@@ -597,15 +597,15 @@ class WorkspaceTests: XCTestCase {
                 "# Licence",
                 ])
     }
-    
+
     func testShell() {
-        
+
         var exitCodes: Set<Int32> = []
         exitCodes.insert(ExitCode.succeeded)
         exitCodes.insert(ExitCode.failed)
         exitCodes.insert(ExitCode.testsFailed)
         XCTAssert(exitCodes.count == 3, "Exit codes clash.")
-        
+
         let message = "Hello, world!"
         let output = requireBash(["echo", "\(message)"])
         XCTAssert(output == message + "\n", join(lines: [
@@ -614,74 +614,74 @@ class WorkspaceTests: XCTestCase {
             "≠",
             message + "\n",
             ]))
-        
+
         XCTAssert(bash(["NotARealCommand"]).succeeded == false, "Schript should have failed.")
     }
-    
+
     func testGitIgnoreCoverage() {
-        
+
         let expectedPrefixes = [
-            
+
             // Swift Package Manager
             "Package.swift",
             "Sources",
             "Tests",
-            
+
             // Workspace
             ".Workspace Configuration.txt",
             "Refresh Workspace (macOS).command",
             "Refresh Workspace (Linux).sh",
-            
+
             // Git
             ".gitignore",
             ".gitattributes",
-            
+
             // GitHub
             "README.md",
             "LICENSE.md",
             "CONTRIBUTING.md",
-            
+
             // Travis CI
             ".travis.yml",
-            
+
             // Workspace Project
             "Documentation",
             "Resources",
             ]
-        
+
         if ¬Environment.isInXcode ∧ ¬Configuration.nestedTest {
-            
+
             let unexpected = Repository.trackedFiles.map({ $0.string }).filter() {
                 (file: String) -> Bool in
-                
+
                 for prefix in expectedPrefixes {
                     if file.hasPrefix(prefix) {
                         return false
                     }
                 }
-                
+
                 return true
             }
-            
+
             XCTAssert(unexpected.isEmpty, join(lines: [
                 "Unexpected files are being tracked by Git:",
                 join(lines: unexpected),
                 ]))
         }
     }
-    
+
     func testDocumentationCoverage() {
-        
+
         if ¬Environment.isInXcode ∧ ¬Configuration.nestedTest {
             for link in DocumentationLink.all {
                 var url = link.url
                 if let anchor = url.range(of: "#") {
                     url = url.substring(to: anchor.lowerBound)
                 }
-                
+
                 var exists = false
                 for file in Repository.trackedFiles {
-                    
+
                     if url.hasSuffix(file.string) {
                         exists = true
                         break
@@ -691,159 +691,159 @@ class WorkspaceTests: XCTestCase {
             }
         }
     }
-    
+
     func testExecutables() {
         if ¬Environment.isInXcode ∧ ¬Configuration.nestedTest {
-            
+
             let executables: [String] = [
                 "Refresh Workspace (macOS).command",
                 "Refresh Workspace (Linux).sh",
                 "Validate Changes (macOS).command",
                 "Validate Changes (Linux).sh",
                 ]
-            
+
             for file in executables {
                 XCTAssert(try! File(at: RelativePath("Resources/Scripts/\(file)")).isExecutable, "Script is not longer executable: \(file)")
             }
         }
     }
-    
+
     func testOnProjects() {
-        
+
         if ¬Environment.isInXcode ∧ ¬Configuration.nestedTest {
             if Environment.isInContinuousIntegration {
                 // These tests are time consuming.
                 // They are skipped on local machines so that following along in with the workflow documentation is relatively quick.
                 // Comment out the if‐statement to debug locally if failures occur in continuous integration.
-                
+
                 do {
-                    
+
                     try Repository.delete(Repository.testZone)
-                    
+
                     let new: [(name: String, flags: [String])] = [
                         (name: "New Library", flags: []),
                         (name: "New Executable", flags: ["•executable"]),
                         ]
-                    
+
                     func root(of repository: String) -> RelativePath {
                         return Repository.testZone.subfolderOrFile(repository)
                     }
                     func workspace(in repository: String) -> RelativePath {
                         return root(of: repository).subfolderOrFile(Repository.workspaceDirectory.string + "/")
                     }
-                    
+
                     func installWorkspace(repository: String) throws {
                         try Repository.copy(Repository.root, to: workspace(in: repository))
                     }
-                    
+
                     for project in new {
-                        
+
                         printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
                         printHeader(["Testing Workspace with \(project.name)..."])
                         printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
-                        
+
                         try installWorkspace(repository: project.name)
-                        
+
                         Repository.performInDirectory(directory: workspace(in: project.name)) {
-                            
+
                             if ¬bash(["swift", "build"]).succeeded {
                                 XCTFail("Failed to build Workspace in test project “\(project.name)”...")
                             }
-                            
+
                         }
-                        
+
                         Repository.performInDirectory(directory: root(of: project.name)) {
-                            
+
                             if ¬bash([".Workspace/.build/debug/workspace", "initialize"] + project.flags).succeeded {
                                 XCTFail("Failed to initialize test project “\(project.name)”.")
                             }
                         }
-                        
+
                         Repository.performInDirectory(directory: root(of: project.name)) {
-                            
+
                             if ¬bash([".Workspace/.build/debug/workspace", "validate"]).succeeded {
                                 XCTFail("Validation fails for initialized project “\(project.name)”.")
                             }
                         }
                     }
-                    
+
                     let realProjects: [(name: String, url: String)] = [
-                        
+
                         // Generic Set‐Up
                         (name: "SDGLogic", url: "https://github.com/SDGGiesbrecht/SDGLogic"),
-                        
+
                         ]
-                    
+
                     for project in realProjects {
-                        
+
                         printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
                         printHeader(["Testing Workspace with \(project.name)..."])
                         printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
-                        
+
                         Repository.performInDirectory(directory: Repository.testZone) {
-                            
+
                             if ¬bash(["git", "clone", project.url]).succeeded {
                                 XCTFail("Failed to clone “\(project.name)”.")
                             }
                         }
-                        
+
                         try installWorkspace(repository: project.name)
-                        
+
                         Repository.performInDirectory(directory: workspace(in: project.name)) {
-                            
+
                             if ¬bash(["swift", "build"]).succeeded {
                                 XCTFail("Failed to build Workspace in test project “\(project.name)”...")
                             }
-                            
+
                         }
-                        
+
                         Repository.performInDirectory(directory: root(of: project.name)) {
-                            
+
                             let allowedExitCodes: Set<ExitCode> = [ExitCode.succeeded, ExitCode.testsFailed]
-                            
+
                             if ¬allowedExitCodes.contains(bash([".Workspace/.build/debug/workspace", "validate"]).exitCode) {
                                 XCTFail("Validation crashes for initialized project “\(project.name)”.")
                             }
                         }
                     }
-                    
+
                     printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
                     printHeader(["Making sure Workspace passes its own tests..."])
                     printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
-                    
+
                     let testWorkspaceProject = "Workspace"
                     try Repository.copy(Repository.root, to: root(of: testWorkspaceProject + "/"))
-                    
+
                     // Block tests from being recursive.
                     var nestedConfiguration = try File(at: root(of: testWorkspaceProject).subfolderOrFile(Configuration.configurationFilePath.string))
                     nestedConfiguration.body.append("\n" + Configuration.configurationFileEntry(option: Option.nestedTest, value: true, comment: nil))
                     try nestedConfiguration.write()
-                    
+
                     try installWorkspace(repository: testWorkspaceProject)
-                    
+
                     Repository.performInDirectory(directory: workspace(in: testWorkspaceProject)) {
-                        
+
                         if ¬bash(["swift", "build"]).succeeded {
                             XCTFail("Failed to build Workspace as a test project...")
                         }
-                        
+
                     }
-                    
+
                     Repository.performInDirectory(directory: root(of: testWorkspaceProject)) {
-                        
+
                         if ¬(bash([".Workspace/.build/debug/workspace", "validate"]).exitCode == ExitCode.succeeded) {
                             XCTFail("Workspace fails its own validation.")
                         }
                     }
-                    
+
                 } catch let error {
-                    
+
                     XCTFail(error.localizedDescription)
                 }
             }
         }
     }
-    
+
     static var allTests : [(String, (WorkspaceTests) -> () throws -> Void)] {
         return [
             ("testGeneralParsing", testGeneralParsing),

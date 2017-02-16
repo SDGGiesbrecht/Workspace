@@ -13,31 +13,31 @@
  */
 
 enum ProjectType: String, CustomStringConvertible {
-    
+
     // MARK: - Initialization
-    
+
     init?(key: String) {
         self.init(rawValue: key)
     }
-    
+
     // MARK: - Cases
-    
+
     case library = "Library"
     case executable = "Executable"
-    
+
     static let all: [ProjectType] = [
         .library,
         .executable,
     ]
-    
+
     // MARK: - Properties
-    
+
     var key: String {
         return rawValue
     }
-    
+
     // MARK: - CustomStringConvertible
-    
+
     var description: String {
         return key
     }

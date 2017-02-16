@@ -13,15 +13,15 @@
  */
 
 enum OperatingSystem: String, CustomStringConvertible {
-    
+
     // MARK: - Cases
-    
+
     case macOS = "macOS"
     case linux = "Linux"
     case iOS = "iOS"
     case watchOS = "watchOS"
     case tvOS = "tvOS"
-    
+
     static let all: [OperatingSystem] = [
         .macOS,
         .linux,
@@ -29,7 +29,7 @@ enum OperatingSystem: String, CustomStringConvertible {
         .watchOS,
         .tvOS,
         ]
-    
+
     var buildsOnMacOS: Bool {
         switch self {
         case .macOS, .iOS, .watchOS, .tvOS:
@@ -38,7 +38,7 @@ enum OperatingSystem: String, CustomStringConvertible {
             return false
         }
     }
-    
+
     var isSupportedByProject: Bool {
         switch self {
         case .macOS:
@@ -53,9 +53,9 @@ enum OperatingSystem: String, CustomStringConvertible {
             return Configuration.supportTVOS
         }
     }
-    
+
     // MARK: - CustomStringConvertible
-    
+
     var description: String {
         return rawValue
     }

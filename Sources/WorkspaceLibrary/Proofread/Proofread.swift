@@ -17,39 +17,39 @@ import Foundation
 import SDGLogic
 
 func runProofread(andExit shouldExit: Bool) -> Bool {
-    
+
     if Command.current ≠ Command.proofread {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         printHeader(["Proofreading \(Configuration.projectName)..."])
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     }
-    
+
     // Workspace Rules
-    
+
     var overallSuccess = true
-    
+
     for path in Repository.sourceFiles {
         let file = require() { try File(at: path) }
-        
+
         for rule in rules {
             if ¬Configuration.disableProofreadingRules.contains(rule.name) {
                 rule.check(file: file, status: &overallSuccess)
             }
         }
     }
-    
+
     // SwiftLint
-    
+
     if Environment.operatingSystem == .macOS {
         // [_Workaround: SwiftLint fails to build with the Swift Package Manager. Using homebrew instead. (SwiftLint 0.16.1)_]
-        
+
         let swiftLintConfigurationPath = RelativePath(".swiftlint.yml")
         var manualSwiftLintConfiguration = false
         if Repository.sourceFiles.contains(swiftLintConfigurationPath) {
             manualSwiftLintConfiguration = true
         } else {
             var file = File(possiblyAt: swiftLintConfigurationPath)
-            
+
             var lines = [
                 "excluded:",
                 " - Packages",
@@ -61,11 +61,11 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
                     join(lines: disabled)
                 ]
             }
-            
+
             file.contents = join(lines: lines)
             require() { try file.write() }
         }
-        
+
         if let swiftLintResult = runThirdPartyTool(
             name: "SwiftLint",
             repositoryURL: "https://github.com/realm/SwiftLint",
@@ -84,23 +84,23 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
                 "brew upgrade swiftlint",
                 ],
             dropOutput: true) {
-            
+
             if ¬swiftLintResult.succeeded {
                 overallSuccess = false
             }
         }
-        
+
         if ¬manualSwiftLintConfiguration {
             force() { try Repository.delete(swiftLintConfigurationPath) }
         }
-        
+
     }
-    
+
     // End
-    
+
     if shouldExit {
         exit(ExitCode.succeeded)
     }
-    
+
     return overallSuccess
 }

@@ -15,18 +15,18 @@
 import SDGLogic
 
 struct Xcode {
-    
+
     static func refreshXcodeProjects() {
-        
+
         let path = RelativePath("\(Configuration.projectName).xcodeproj")
         force() { try Repository.delete(path) }
-        
+
         var script = ["swift", "package", "generate-xcodeproj", "--output", path.string]
         if ¬Environment.isInContinuousIntegration {
             script.append("--enable-code-coverage")
         }
         requireBash(script)
-        
+
         var file = require() { try File(at: path.subfolderOrFile("project.pbxproj")) }
         file.contents.replaceContentsOfEveryPair(of: ("LD_RUNPATH_SEARCH_PATHS = (", ");"), with: join(lines: [
             "",
@@ -36,18 +36,18 @@ struct Xcode {
             "@executable_path/../Frameworks",
             "@loader_path/../Frameworks",
             ].map({ "\u{22}\($0)\u{22}," })))
-        
+
         require() { try file.write() }
     }
-    
+
     private static func modifyProject(condition shouldModify: (String) -> Bool, modification modify: (inout File) -> ()) {
         let path = RelativePath("\(Configuration.projectName).xcodeproj/project.pbxproj")
-        
+
         do {
             var file = try File(at: path)
-            
+
             if shouldModify(file.contents) {
-                
+
                 modify(&file)
                 require() { try file.write() }
             }
@@ -55,17 +55,17 @@ struct Xcode {
             return
         }
     }
-    
+
     static let scriptObjectName = "PROOFREAD"
     static let scriptActionEntry = scriptObjectName + ","
-    
+
     static func enableProofreading() {
-        
+
         modifyProject(condition: {
             return ¬$0.contains("workspace proofread")
         }, modification: {
             (file: inout File) -> () in
-            
+
             let scriptInsertLocation = file.requireRange(of: "objects = {\n").upperBound
             file.contents.replaceSubrange(scriptInsertLocation ..< scriptInsertLocation, with: join(lines: [
                 "\(scriptObjectName) = {",
@@ -75,7 +75,7 @@ struct Xcode {
                 "};",
                 "" // Final line break.
                 ]))
-            
+
             let phaseInsertLocation = file.requireRange(of: "buildPhases = (\n").upperBound
             file.contents.replaceSubrange(phaseInsertLocation ..< phaseInsertLocation, with: join(lines: [
                 scriptActionEntry,
@@ -83,29 +83,29 @@ struct Xcode {
                 ]))
         })
     }
-    
+
     static let disabledScriptActionEntry = "/* " + scriptObjectName + " */"
-    
+
     static func temporarilyDisableProofreading() {
-        
+
         modifyProject(condition: {
             (String) -> Bool in
             return true
         }, modification: {
             (file: inout File) -> () in
-            
+
             file.contents = file.contents.replacingOccurrences(of: scriptActionEntry, with: disabledScriptActionEntry)
         })
     }
-    
+
     static func reEnableProofreading() {
-        
+
         modifyProject(condition: {
             (String) -> Bool in
             return true
         }, modification: {
             (file: inout File) -> () in
-            
+
             file.contents = file.contents.replacingOccurrences(of: disabledScriptActionEntry, with: scriptActionEntry)
         })
     }

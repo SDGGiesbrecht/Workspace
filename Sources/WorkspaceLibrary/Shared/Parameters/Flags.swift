@@ -13,12 +13,12 @@
  */
 
 struct Flags {
-    
+
     // MARK: - Properties
-    
+
     private static func isSet(_ flag: Flag) -> Bool {
         return CommandLine.arguments.contains(flag.flag)
     }
-    
+
     static let executable = isSet(.executable)
 }

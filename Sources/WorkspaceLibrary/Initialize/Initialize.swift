@@ -15,13 +15,13 @@
 import SDGLogic
 
 func runInitialize(andExit shouldExit: Bool) {
-    
+
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Initializing workspace..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    
+
     if ¬Repository.isEmpty {
-        
+
         var message = [
             "This folder is not empty.",
             "",
@@ -32,7 +32,7 @@ func runInitialize(andExit shouldExit: Bool) {
             "For more information, see:",
             DocumentationLink.setUp.url,
             ]
-        
+
         do {
             try Repository.delete(".Workspace")
         } catch let error {
@@ -43,31 +43,31 @@ func runInitialize(andExit shouldExit: Bool) {
                 error.localizedDescription
                 ])
         }
-        
+
         fatalError(message: message)
     }
-    
+
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Initializing git repository..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    
+
     requireBash(["git", "init"])
-    
+
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Generating Swift package..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    
+
     let script = ["swift", "package", "init"]
     requireBash(script)
-    
+
     print(["Arranging Swift package..."])
-    
+
     let projectName = Configuration.projectName.replacingOccurrences(of: " ", with: "_")
     let testsName = projectName + "Tests"
-    
+
     // Make module to allow folder structure.
     require() { try Repository.move("Sources", to: RelativePath("Sources/\(projectName)")) }
-    
+
     // Escape spaces
     let withSpaces = RelativePath("Tests/\(Configuration.projectName)Tests")
     let noSpaces = RelativePath("Tests/\(testsName)")
@@ -75,19 +75,19 @@ func runInitialize(andExit shouldExit: Bool) {
         require() { try Repository.move(withSpaces, to: noSpaces) }
         require() { try Repository.delete(withSpaces) }
     }
-    
+
     // Erase redundant .gitignore entries.
     var gitIngore = require() { try File(at: RelativePath(".gitignore")) }
     gitIngore.contents = ""
     require() { try gitIngore.write() }
-    
+
     if Flags.executable {
-        
+
         let executableName = projectName
         let libraryName = projectName + "Library"
-        
+
         require() { try Repository.delete(RelativePath("Sources/\(projectName)")) }
-        
+
         var program = File(possiblyAt: RelativePath("Sources/\(libraryName)/Program.swift"))
         program.body = join(lines: [
             "/// :nodoc:",
@@ -103,9 +103,9 @@ func runInitialize(andExit shouldExit: Bool) {
             "",
             "}",
             ])
-        
+
         require() { try program.write() }
-        
+
         var main = File(possiblyAt: RelativePath("Sources/\(executableName)/main.swift"))
         main.body = join(lines: [
             "import \(libraryName)",
@@ -116,9 +116,9 @@ func runInitialize(andExit shouldExit: Bool) {
             " */",
             "\(libraryName).run()",
             ])
-        
+
         require() { try main.write() }
-        
+
         var package = Repository.packageDescription
         let nameRange = package.requireRange(of: ("name: \u{22}", "\u{22}"))
         let replacement = join(lines: [
@@ -129,11 +129,11 @@ func runInitialize(andExit shouldExit: Bool) {
             "        Target(name: \u{22}\(testsName)\u{22}, dependencies: [\u{22}\(libraryName)\u{22}]),",
             "    ]",
             ])
-        
+
         package.contents.replaceSubrange(nameRange, with: replacement)
-        
+
         require() { try package.write() }
-        
+
         var tests = require { try File(at: RelativePath("Tests/\(testsName)/\(testsName).swift")) }
         let importRange = tests.requireRange(of: projectName)
         tests.contents.replaceSubrange(importRange, with: libraryName)
@@ -141,11 +141,11 @@ func runInitialize(andExit shouldExit: Bool) {
         tests.contents.replaceSubrange(testRange, with: "  XCTAssert(sayHello() == \u{22}Hello, world!\u{22})")
         require() { try tests.write() }
     }
-    
+
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Configuring Workspace..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    
+
     var configuration = File(possiblyAt: Configuration.configurationFilePath)
     let note: [String]? = [
         "This is the default setting when the Workspace initializes projects.",
@@ -160,17 +160,17 @@ func runInitialize(andExit shouldExit: Bool) {
     }
     Configuration.addEntries(entries: entries, to: &configuration)
     require() { try configuration.write() }
-    
+
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Refreshing
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    
+
     Command.refresh.run(andExit: false)
-    
+
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Summary
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    
+
     if shouldExit {
         succeed(message: ["\(Configuration.projectName) has been initialized.", instructionsAfterRefresh])
     }

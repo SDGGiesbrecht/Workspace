@@ -15,14 +15,14 @@
 import SDGLogic
 
 struct ContributingInstructions {
-    
+
     static let contributingInstructionsPath = RelativePath("CONTRIBUTING.md")
-    
+
     private static let managementComment: String = {
         let managementWarning = File.managmentWarning(section: false, documentation: .contributingInstructions)
         return FileType.markdown.syntax.comment(contents: managementWarning)
     }()
-    
+
     static let defaultContributingInstructions: String = {
         var instructions: [String] = [
             "# Contributing to [_Project_]",
@@ -72,7 +72,7 @@ struct ContributingInstructions {
             "5. **Wait for continuous integration** to complete its validation.",
             "6. **Request a review** from [_Administrators_] by clicking the gear in the top right of the pull request page.",
             ]
-        
+
         if Configuration.developmentNotes ≠ nil {
             instructions.append(contentsOf: [
                 "",
@@ -81,24 +81,24 @@ struct ContributingInstructions {
                 "[_Development Notes_]",
                 ])
         }
-        
+
         return join(lines: instructions)
     }()
-    
+
     static func refreshContributingInstructions() {
-        
+
         func key(_ name: String) -> String {
             return "[_\(name)_]"
         }
-        
+
         var body = join(lines: [
             managementComment,
             "",
             Configuration.contributingInstructions,
             ])
-        
+
         body = body.replacingOccurrences(of: key("Project"), with: Configuration.projectName)
-        
+
         var administrators = Configuration.administrators
         var administratorList: String
         if administrators.isEmpty {
@@ -111,23 +111,23 @@ struct ContributingInstructions {
             administratorList += " or " + last
         }
         body = body.replacingOccurrences(of: key("Administrators"), with: administratorList)
-        
+
         let developmentNotesKey = key("Development Notes")
         if body.contains(developmentNotesKey) {
             body = body.replacingOccurrences(of: developmentNotesKey, with: Configuration.requiredDevelopmentNotes)
         }
-        
+
         var contributing = File(possiblyAt: contributingInstructionsPath)
         contributing.body = body
         require() { try contributing.write() }
     }
-    
+
     static func relinquishControl() {
         var contributing = File(possiblyAt: contributingInstructionsPath)
         if contributing.contents.contains(managementComment) {
-            
+
             printHeader(["Cancelling contributing instruction management..."])
-            
+
             print(["Deleting \(contributingInstructionsPath)..."])
             force() { try Repository.delete(contributingInstructionsPath) }
         }

@@ -13,9 +13,9 @@
  */
 
 enum Command: String, Comparable, CustomStringConvertible, LosslessStringConvertible {
-    
+
     // MARK: - Initialization
-    
+
     static let current: Command = {
         if CommandLine.arguments.count > 1 {
             let name = CommandLine.arguments[1]
@@ -28,29 +28,29 @@ enum Command: String, Comparable, CustomStringConvertible, LosslessStringConvert
             inputSyntaxError(message: "No command.")
         }
     }()
-    
+
     // MARK: - Cases
-    
+
     case initialize = "initialize"
     case refresh = "refresh"
     case proofread = "proofread"
     case validate = "validate"
-    
+
     static let all: [Command] = [
         .initialize,
         .refresh,
         .proofread,
         .validate,
         ]
-    
+
     static let allNames: [String] = all.map() { $0.name }
-    
+
     // MARK: - Usage
-    
+
     var name: String {
         return rawValue
     }
-    
+
     func run(andExit shouldExit: Bool = false) {
         switch self {
         case .initialize:
@@ -63,21 +63,21 @@ enum Command: String, Comparable, CustomStringConvertible, LosslessStringConvert
             runValidate(andExit: shouldExit)
         }
     }
-    
+
     // MARK: - Comparable
-    
+
     static func <(lhs: Command, rhs: Command) -> Bool {
         return lhs.name < rhs.name
     }
-    
+
     // MARK: - CustomStringConvertible
-    
+
     var description: String {
         return name
     }
-    
+
     // MARK: - LosslessStringConvertible
-    
+
     init?(_ string: String) {
         self.init(rawValue: string)
     }

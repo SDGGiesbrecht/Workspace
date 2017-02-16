@@ -13,9 +13,9 @@
  */
 
 enum DocumentationLink: String, CustomStringConvertible {
-    
+
     // MARK: - Configuration
-    
+
     private static let repository = "https://github.com/SDGGiesbrecht/Workspace"
     static let reportIssueLink = repository + "/issues"
 
@@ -28,9 +28,9 @@ enum DocumentationLink: String, CustomStringConvertible {
             return true
         }
     }
-    
+
     // MARK: - Cases
-    
+
     case platforms = "README.md#platforms"
     case setUp = "README.md#setup"
     case responsibilities = "Responsibilities.md"
@@ -42,7 +42,7 @@ enum DocumentationLink: String, CustomStringConvertible {
     case fileHeaders = "File Headers.md"
     case continuousIntegration = "Continuous Integration.md"
     case ignoringFileTypes = "Ignoring File Types.md"
-    
+
     static var all: [DocumentationLink] {
         return [
             .platforms,
@@ -57,23 +57,23 @@ enum DocumentationLink: String, CustomStringConvertible {
             .ignoringFileTypes,
         ]
     }
-    
+
     // MARK: - Properties
-    
+
     var url: String {
         var result = DocumentationLink.repository
-        
+
         if inDocumentationFolder {
             result.append(DocumentationLink.documentationFolder)
         }
-        
+
         result.append(rawValue)
-        
+
         return result
     }
-    
+
     // MARK: - CustomStringConvertible
-    
+
     var description: String {
         return url
     }

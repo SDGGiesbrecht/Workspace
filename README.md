@@ -45,8 +45,8 @@ A particular project can [configure](Documentation/Operating Systems.md) which o
 - Automatically
     - Keep [licence notices](Documentation/Licence.md) uniform.
     - Keep [contributing instructions](Documentation/Contributing Instructions.md) uniform.
-    - Generate and maintain a local [Xcode project](Documentation/Xcode.md). (macOS‐only)
-    - Keep [dependencies and their versions](Documentation/Dependency Graph.md) up to date. 
+    - Generate and maintain a local [Xcode project](Documentation/Xcode.md) (except on Linux).
+    - Keep [dependencies and their version restrictions](Documentation/Dependency Graph.md) up to date.
     - Keep [file headers](Documentation/File Headers.md) uniform and up to date.
     - [Proofread](Documentation/Proofreading.md) source files for code style.
     - Run unit tests on each operating system (except watchOS).

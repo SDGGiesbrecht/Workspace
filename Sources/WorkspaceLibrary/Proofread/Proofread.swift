@@ -63,7 +63,6 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
             }
             
             file.contents = join(lines: lines)
-            print(file.contents)
             require() { try file.write() }
         }
         

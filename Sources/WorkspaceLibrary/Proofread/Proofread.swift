@@ -40,49 +40,60 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
     
     // SwiftLint
     
-    let swiftLintConfigurationPath = RelativePath(".swiftlint.yml")
-    var manualSwiftLintConfiguration = false
-    if Repository.sourceFiles.contains(swiftLintConfigurationPath) {
-        manualSwiftLintConfiguration = true
-    } else {
-        var file = File(possiblyAt: swiftLintConfigurationPath)
+    if Environment.operatingSystem == .macOS {
+        // [_Workaround: SwiftLint fails to build with the Swift Package Manager. Using homebrew instead. (SwiftLint 0.16.1)_]
         
-        file.contents = join(lines: [
-            "excluded",
-            " - Packages",
-            "disabled_rules:",
-            join(lines: Configuration.disableProofreadingRules.sorted().map({ "  - " + $0 }))
-            ])
-        
-        require() { try file.write() }
-    }
-    
-    if let swiftLintResult = runThirdPartyTool(
-        name: "SwiftLint",
-        repositoryURL: "https://github.com/realm/SwiftLint",
-        tagPrefix: nil,
-        versionCheck: ["swiftlint", "version"],
-        continuousIntegrationSetUp: [
-            ["brew", "install", "swiftlint"]
-        ],
-        command: ["swiftlint", "lint", "--strict"],
-        updateInstructions: [
-            "Command to install Homebrew (https://brew.sh):",
-            "/usr/bin/ruby -e \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\"",
-            "Command to install SwiftLint:",
-            "brew install swiftlint",
-            "Command to update SwiftLint:",
-            "brew upgrade swiftlint",
-            ],
-        dropOutput: true) {
-        
-        if ¬swiftLintResult.succeeded {
-            overallSuccess = false
+        let swiftLintConfigurationPath = RelativePath(".swiftlint.yml")
+        var manualSwiftLintConfiguration = false
+        if Repository.sourceFiles.contains(swiftLintConfigurationPath) {
+            manualSwiftLintConfiguration = true
+        } else {
+            var file = File(possiblyAt: swiftLintConfigurationPath)
+            
+            var lines = [
+                "excluded",
+                " - Packages",
+                ]
+            let disabled = Configuration.disableProofreadingRules.sorted().map({ "  - " + $0 })
+            if ¬disabled.isEmpty {
+                lines += [
+                    "disabled_rules:",
+                    join(lines: disabled)
+                ]
+            }
+            
+            file.contents = join(lines: lines)
+            require() { try file.write() }
         }
-    }
-    
-    if ¬manualSwiftLintConfiguration {
-        force() { try Repository.delete(swiftLintConfigurationPath) }
+        
+        if let swiftLintResult = runThirdPartyTool(
+            name: "SwiftLint",
+            repositoryURL: "https://github.com/realm/SwiftLint",
+            tagPrefix: nil,
+            versionCheck: ["swiftlint", "version"],
+            continuousIntegrationSetUp: [
+                ["brew", "install", "swiftlint"]
+            ],
+            command: ["swiftlint", "lint", "--strict"],
+            updateInstructions: [
+                "Command to install Homebrew (https://brew.sh):",
+                "/usr/bin/ruby -e \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\"",
+                "Command to install SwiftLint:",
+                "brew install swiftlint",
+                "Command to update SwiftLint:",
+                "brew upgrade swiftlint",
+                ],
+            dropOutput: true) {
+            
+            if ¬swiftLintResult.succeeded {
+                overallSuccess = false
+            }
+        }
+        
+        if ¬manualSwiftLintConfiguration {
+            force() { try Repository.delete(swiftLintConfigurationPath) }
+        }
+        
     }
     
     // End

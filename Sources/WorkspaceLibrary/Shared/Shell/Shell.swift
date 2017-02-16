@@ -44,9 +44,13 @@ func bash(_ arguments: [String], silent: Bool = false) -> (succeeded: Bool, outp
     process.arguments = ["-c", argumentsString]
     
     process.launch()
-    process.waitUntilExit()
     
-    let data = standardOutput.fileHandleForReading.readDataToEndOfFile()
+    var data = Data()
+    while process.isRunning {
+        data.append(standardOutput.fileHandleForReading.availableData)
+    }
+    
+    data.append(standardOutput.fileHandleForReading.readDataToEndOfFile())
     let output: String
     if let utf8 = String(data: data, encoding: String.Encoding.utf8) {
         output = utf8

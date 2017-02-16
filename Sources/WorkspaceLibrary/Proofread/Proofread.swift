@@ -24,6 +24,8 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     }
     
+    // Workspace Rules
+    
     var overallSuccess = true
     
     for path in Repository.sourceFiles {
@@ -34,6 +36,25 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
                 rule.check(file: file, status: &overallSuccess)
             }
         }
+    }
+    
+    // SwiftLint
+    
+    let swiftLintConfigurationPath = RelativePath(".swiftlint.yml")
+    var manualSwiftLintConfiguration = false
+    if Repository.sourceFiles.contains(swiftLintConfigurationPath) {
+        manualSwiftLintConfiguration = true
+    } else {
+        var file = File(possiblyAt: swiftLintConfigurationPath)
+        
+        file.contents = join(lines: [
+            "excluded",
+            " - Packages",
+            "disabled_rules:",
+            join(lines: Configuration.disableProofreadingRules.sorted().map({ "  - " + $0 }))
+            ])
+        
+        require() { try file.write() }
     }
     
     if let swiftLintResult = runThirdPartyTool(
@@ -59,6 +80,12 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
             overallSuccess = false
         }
     }
+    
+    if ¬manualSwiftLintConfiguration {
+        force() { try Repository.delete(swiftLintConfigurationPath) }
+    }
+    
+    // End
     
     if shouldExit {
         exit(ExitCode.succeeded)

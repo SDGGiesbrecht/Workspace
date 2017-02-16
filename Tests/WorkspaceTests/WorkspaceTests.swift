@@ -701,7 +701,8 @@ class WorkspaceTests: XCTestCase {
 
             for file in executables {
                 do {
-                    XCTAssert(try File(at: RelativePath("Resources/Scripts/\(file)")).isExecutable, "Script is not longer executable: \(file)")
+                    let condition = try File(at: RelativePath("Resources/Scripts/\(file)")).isExecutable
+                    XCTAssert(condition, "Script is not longer executable: \(file)")
                 } catch let error {
                     XCTFail("\(error.localizedDescription)")
                 }

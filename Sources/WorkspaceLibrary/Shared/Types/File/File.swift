@@ -181,7 +181,7 @@ struct File {
             while new.hasPrefix("\n") {
                 new.unicodeScalars.removeFirst()
             }
-            
+
             if ¬header.hasSuffix("\n") {
                 new.append("\n")
             }

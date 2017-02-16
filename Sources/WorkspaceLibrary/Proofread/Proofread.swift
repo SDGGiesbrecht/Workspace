@@ -23,7 +23,7 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
         printHeader(["Proofreading \(Configuration.projectName)..."])
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     }
-    
+
     if Command.current == .proofread {
         // So that SwiftLint’s trailing_whitespace doesn’t trigger.
         normalizeFiles()

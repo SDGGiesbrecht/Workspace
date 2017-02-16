@@ -13,31 +13,31 @@
  */
 
 struct RelativePath: ExpressibleByExtendedGraphemeClusterLiteral, ExpressibleByStringLiteral, ExpressibleByUnicodeScalarLiteral, Path {
-    
+
     // MARK: - Initialization
-    
+
     init(_ string: String) {
         self.string = string
     }
-    
+
     // MARK: - Properties
-    
+
     var string: String
-    
+
     // MARK: - ExpressibleByExtendedGraphemeClusterLiteral
-    
+
     init(extendedGraphemeClusterLiteral value: ExtendedGraphemeClusterType) {
         self.init(value)
     }
-    
+
     // MARK: - ExpressibleByStringLiteral
-    
+
     init(stringLiteral value: StringLiteralType) {
         self.init(value)
     }
-    
+
     // MARK: - ExpressibleByUnicodeScalarLiteral
-    
+
     init(unicodeScalarLiteral value: UnicodeScalarType) {
         self.init(value)
     }

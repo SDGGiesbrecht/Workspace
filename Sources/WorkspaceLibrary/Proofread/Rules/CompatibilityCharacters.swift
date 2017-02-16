@@ -17,22 +17,22 @@ import Foundation
 import SDGLogic
 
 struct CompatibilityCharacters: Rule {
-    
+
     static let name = "Compatibility Characters"
-    
+
     static func check(file: File, status: inout Bool) {
-        
+
         var index = file.contents.startIndex
         while index ≠ file.contents.endIndex {
             let next = file.contents.index(after: index)
-            
+
             let characterRange = index ..< next
             let character = file.contents[characterRange]
             let normalized = character.decomposedStringWithCompatibilityMapping
             if character ≠ normalized {
                 errorNotice(status: &status, file: file, range: characterRange, replacement: normalized, message: "“\(character)” may be lost in normalization; use “\(normalized)” instead.")
             }
-            
+
             index = next
         }
     }

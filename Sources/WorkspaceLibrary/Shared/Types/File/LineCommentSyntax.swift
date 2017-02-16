@@ -18,27 +18,27 @@ import SDGLogic
 import SDGMathematics
 
 struct LineCommentSyntax {
-    
+
     // MARK: - Initialization
-    
+
     init(start: String, stylisticSpacing: Bool = true, stylisticEnd: String? = nil) {
         self.start = start
         self.stylisticSpacing = stylisticSpacing
         self.stylisticEnd = stylisticEnd
     }
-    
+
     // MARK: - Properties
-    
+
     private let start: String
     private let stylisticSpacing: Bool
     private let stylisticEnd: String?
-    
+
     // MARK: - Output
-    
+
     func comment(contents: String) -> String {
-        
+
         let spacing = stylisticSpacing ? " " : ""
-        
+
         var result: [String] = []
         for line in contents.lines {
             var modified = start
@@ -50,27 +50,27 @@ struct LineCommentSyntax {
             }
             result.append(modified)
         }
-        
+
         return join(lines: result)
     }
-    
+
     // MARK: - Parsing
-    
+
     func commentExists(at location: String.Index, in string: String, countDocumentationMarkup: Bool = true) -> Bool {
-        
+
         var index = location
         if ¬string.advance(&index, past: start) {
             return false
         } else {
             // Comment
-            
+
             if countDocumentationMarkup {
                 return true
             } else {
                 // Make shure this isn’t documentation.
-                
+
                 if let nextCharacter = string.substring(from: index).unicodeScalars.first {
-                    
+
                     if CharacterSet.whitespacesAndNewlines.contains(nextCharacter) {
                         return true
                     }
@@ -79,48 +79,48 @@ struct LineCommentSyntax {
             }
         }
     }
-    
+
     private func restOfLine(at index: String.Index, in range: Range<String.Index>, of string: String) -> Range<String.Index> {
-        
+
         if let newline = string.range(of: CharacterSet.newlines, in: index ..< range.upperBound) {
-            
+
             return index ..< newline.lowerBound
         } else {
             return index ..< range.upperBound
         }
     }
-    
+
     func rangeOfFirstComment(in range: Range<String.Index>, of string: String) -> Range<String.Index>? {
-        
+
         guard let startRange = string.range(of: start, in: range) else {
             return nil
         }
-        
+
         var resultEnd = restOfLine(at: startRange.lowerBound, in: range, of: string).upperBound
         var testIndex = resultEnd
         string.advance(&testIndex, pastNewlinesWithLimit: 1)
         string.advance(&testIndex, past: CharacterSet.whitespaces)
-        
+
         while string.substring(from: testIndex).hasPrefix(start) {
             resultEnd = restOfLine(at: testIndex, in: range, of: string).upperBound
             testIndex = resultEnd
             string.advance(&testIndex, pastNewlinesWithLimit: 1)
             string.advance(&testIndex, past: CharacterSet.whitespaces)
         }
-        
+
         return startRange.lowerBound ..< resultEnd
     }
-    
+
     func requireRangeOfFirstComment(in range: Range<String.Index>, of file: File) -> Range<String.Index> {
-        
+
         guard let result = rangeOfFirstComment(in: range, of: file.contents) else {
             let _ = file.requireRange(of: start, in: range) // Trigger error at File.
             unreachableLocation()
         }
-        
+
         return result
     }
-    
+
     func firstComment(in range: Range<String.Index>, of string: String) -> String? {
         if let range = rangeOfFirstComment(in: range, of: string) {
             return string.substring(with: range)
@@ -128,28 +128,27 @@ struct LineCommentSyntax {
             return nil
         }
     }
-    
+
     func contentsOfFirstComment(in range: Range<String.Index>, of string: String) -> String? {
         guard let range = rangeOfFirstComment(in: range, of: string) else {
             return nil
-            
+
         }
-        
+
         let comment = string.substring(with: range)
-        let lines = comment.lines.map() {
-            (line: String) -> String in
-            
+        let lines = comment.lines.map() { (line: String) -> String in
+
             var index = line.startIndex
-            
+
             line.advance(&index, past: CharacterSet.whitespaces)
             guard line.advance(&index, past: start) else {
                 line.parseError(at: index, in: nil)
             }
-            
+
             if stylisticSpacing {
                 line.advance(&index, past: CharacterSet.whitespaces, limit: 1)
             }
-            
+
             var result = line.substring(from: index)
             if let end = stylisticEnd {
                 if result.hasSuffix(end) {
@@ -160,11 +159,11 @@ struct LineCommentSyntax {
         }
         return join(lines: lines)
     }
-    
+
     func firstComment(in string: String) -> String? {
         return firstComment(in: string.startIndex ..< string.endIndex, of: string)
     }
-    
+
     func contentsOfFirstComment(in string: String) -> String? {
         return contentsOfFirstComment(in: string.startIndex ..< string.endIndex, of: string)
     }

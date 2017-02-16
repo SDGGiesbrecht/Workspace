@@ -13,23 +13,23 @@
  */
 
 enum OutputColour: String {
-    
+
     // MARK: - Cases
-    
+
     case red = "31"
     case green = "32"
     case yellow = "33"
     case blue = "34"
-    
+
     // MARK: - Usage
-    
+
     private var code: String {
         return rawValue
     }
-    
+
     var start: String {
         return "\u{1B}[0;\(code)m"
     }
-    
+
     static let end: String = "\u{1B}[0;30m"
 }

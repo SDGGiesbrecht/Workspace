@@ -49,12 +49,19 @@ func bash(_ arguments: [String], silent: Bool = false, dropOutput: Bool = false)
     
     var data = Data()
     while process.isRunning {
-        data.append(standardOutput.fileHandleForReading.availableData)
+        if ¬dropOutput {
+            data.append(standardOutput.fileHandleForReading.availableData)
+        }
     }
     
-    data.append(standardOutput.fileHandleForReading.readDataToEndOfFile())
-    let output: String
-    if let utf8 = String(data: data, encoding: String.Encoding.utf8) {
+    if ¬dropOutput {
+        data.append(standardOutput.fileHandleForReading.readDataToEndOfFile())
+    }
+    
+    let output: String?
+    if dropOutput {
+        output = nil
+    } else if let utf8 = String(data: data, encoding: String.Encoding.utf8) {
         output = utf8
     } else if let latin1 = String(data: data, encoding: String.Encoding.isoLatin1) {
         output = latin1

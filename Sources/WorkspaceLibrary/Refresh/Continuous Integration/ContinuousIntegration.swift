@@ -121,15 +121,13 @@ struct ContinuousIntegration {
 
             addPortableOSJob(name: tvOSJob, sdk: "appletvsimulator")
         }
-
+        
         updatedLines.append(contentsOf: [
-            "    - os: linux",
-            "      dist: trusty",
+            "    - os: osx",
             "      env:",
             "        - \(jobKey)=\u{22}\(miscellaneousJob)\u{22}",
-            "        - SWIFT_VERSION=3.0.2",
+            "      osx_image: xcode8.2",
             "      script:",
-            runCommand("eval \u{22}$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\u{22}"),
             runRefreshWorkspace,
             runValidateChanges
             ])

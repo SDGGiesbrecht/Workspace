@@ -51,7 +51,7 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
             var file = File(possiblyAt: swiftLintConfigurationPath)
             
             var lines = [
-                "excluded",
+                "excluded:",
                 " - Packages",
                 ]
             let disabled = Configuration.disableProofreadingRules.sorted().map({ "  - " + $0 })

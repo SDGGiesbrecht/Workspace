@@ -36,7 +36,25 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
         }
     }
     
-    if let swiftLintResult = runThirdPartyTool(command: ["swiftlint", "lint", "--strict"], dropOutput: true) {
+    if let swiftLintResult = runThirdPartyTool(
+        name: "SwiftLint",
+        repositoryURL: "https://github.com/realm/SwiftLint",
+        tagPrefix: nil,
+        versionCheck: ["swiftlint", "version"],
+        continuousIntegrationSetUp: [
+            ["brew", "install", "swiftlint"]
+        ],
+        command: ["swiftlint", "lint", "--strict"],
+        updateInstructions: [
+            "Command to install Homebrew (https://brew.sh):",
+            "/usr/bin/ruby -e \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\"",
+            "Command to install SwiftLint:",
+            "brew install swiftlint",
+            "Command to update SwiftLint:",
+            "brew upgrade swiftlint",
+            ],
+        dropOutput: true) {
+        
         if ¬swiftLintResult.succeeded {
             overallSuccess = false
         }

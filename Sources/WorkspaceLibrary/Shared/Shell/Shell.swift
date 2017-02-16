@@ -99,7 +99,62 @@ func bash(_ arguments: [String], silent: Bool = false, dropOutput: Bool = false)
     }
 }
 
-func runThirdPartyTool(command: [String], dropOutput: Bool = false) -> (succeeded: Bool, output: String?, exitCode: ExitCode)? {
+func runThirdPartyTool(name: String, repositoryURL: String, tagPrefix: String?, versionCheck: [String], continuousIntegrationSetUp: [[String]], command: [String], updateInstructions: [String], dropOutput: Bool = false) -> (succeeded: Bool, output: String?, exitCode: ExitCode)? {
+    
+    let versions = requireBash(["git", "ls-remote", "--tags", repositoryURL], silent: true)
+    var newest: (tag: String, version: Version)? = nil
+    for line in versions.lines {
+        var tagMarker = "refs/tags/"
+        if let prefix = tagPrefix {
+            tagMarker += prefix
+        }
+        if let tagPrefixRange = line.range(of: "refs/tags/") {
+            let tag = line.substring(from: tagPrefixRange.upperBound)
+            if let version = Version(tag) {
+                if let last = newest {
+                    if version > last.version {
+                        newest = (tag: tag, version: version)
+                    }
+                } else {
+                    newest = (tag: tag, version: version)
+                }
+            }
+        }
+    }
+    
+    guard let requiredVersion = newest else {
+        fatalError(message: [
+            "Failed to determine latest \(name) version.",
+            ])
+    }
+    
+    if Environment.isInContinuousIntegration {
+        for command in continuousIntegrationSetUp {
+            requireBash(command)
+        }
+    }
+    
+    if let systemVersionString = bash(versionCheck, silent: true).output?.linesArray.first, let systemVersion = Version(systemVersionString), systemVersion == requiredVersion.version {
+        
+        return bash(command, dropOutput: dropOutput)
+        
+    } else {
+        
+        print(["System: \(bash(versionCheck, silent: true).output)"])
+        
+        if Environment.isInContinuousIntegration {
+            fatalError(message: ["\(name) \(requiredVersion.version) could not be found."])
+        } else {
+            
+            printWarning([
+                "Some tests were skipped because \(name) \(requiredVersion.version) could not be found.",
+                repositoryURL,
+                join(lines: updateInstructions),
+                ])
+            
+            return nil
+        }
+    }
     
     return bash(command, dropOutput: dropOutput)
 }

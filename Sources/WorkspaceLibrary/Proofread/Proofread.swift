@@ -57,7 +57,11 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
 
             var lines = [
                 "excluded:",
-                " - Packages",
+                // Swift Package Manager
+                "  - Packages",
+                // Workspace
+                "  - .Workspace",
+                "  - .Linked Repositories",
                 ]
             let disabled = Configuration.disableProofreadingRules.sorted().map({ "  - " + $0 })
             if ¬disabled.isEmpty {
@@ -68,7 +72,6 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
             }
 
             file.contents = join(lines: lines)
-            print(file.contents)
             require() { try file.write() }
         }
 

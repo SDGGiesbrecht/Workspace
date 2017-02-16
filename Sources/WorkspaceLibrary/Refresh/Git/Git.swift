@@ -53,8 +53,10 @@ struct Git {
 
         func replaceManagedSection(in file: File, with contents: [String]) {
             var updatedFile = file
+            print(updatedFile.contents)
 
             var body = updatedFile.body
+            print(updatedFile.body)
 
             let existsAlready: Bool
             var managedRange: Range<String.Index>
@@ -83,8 +85,11 @@ struct Git {
                 updatedLines += [""]
             }
 
+            print(join(lines: updatedLines))
             body.replaceSubrange(managedRange, with: join(lines: updatedLines))
+            print(body)
             updatedFile.body = body
+            print(updatedFile.contents)
             require() {try updatedFile.write() }
         }
 

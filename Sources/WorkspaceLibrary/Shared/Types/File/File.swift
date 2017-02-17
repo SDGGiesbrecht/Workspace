@@ -183,6 +183,7 @@ struct File {
             }
 
             let headerSource = contents.substring(with: headerStart ..< headerEnd)
+            print("\(headerSource)")
             if ¬headerSource.hasSuffix("\n") {
                 new.append("\n")
             }

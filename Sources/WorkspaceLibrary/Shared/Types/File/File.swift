@@ -183,12 +183,11 @@ struct File {
             }
 
             let headerSource = contents.substring(with: headerStart ..< headerEnd)
-            print("“\(headerSource)”")
             if ¬headerSource.hasSuffix("\n") {
-                new.append("\n")
+                new = "\n" + new
             }
             if ¬headerSource.hasSuffix("\n\n") {
-                new.append("\n")
+                new = "\n" + new
             }
 
             contents.replaceSubrange(headerEnd ..< contents.endIndex, with: new)

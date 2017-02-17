@@ -514,8 +514,8 @@ class WorkspaceTests: XCTestCase {
                 file.contents
                 ]))
 
-            let headerLessStartSection = headerlessFirstLine == "" ? "\n" : headerlessFirstLine + "\n\n"
-            let noHeader = File(_path: path, _contents: headerLessStartSection + body)
+            let headerlessStartSection = headerlessFirstLine + "\n\n"
+            let noHeader = File(_path: path, _contents: headerlessStartSection + body)
             XCTAssert(noHeader.body == body, join(lines: [
                 "Failure parsing body using \(fileType):",
                 noHeader.contents,

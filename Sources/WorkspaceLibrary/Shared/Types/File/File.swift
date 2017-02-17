@@ -182,36 +182,12 @@ struct File {
                 new.unicodeScalars.removeFirst()
             }
 
-            if ¬header.hasSuffix("\n") {
+            let headerSource = contents.substring(with: headerStart ..< headerEnd)
+            if ¬headerSource.hasSuffix("\n") {
                 new.append("\n")
             }
-            if ¬header.hasSuffix("\n\n") {
+            if ¬headerSource.hasSuffix("\n\n") {
                 new.append("\n")
-            }
-
-            if headerStart == headerEnd {
-                // No header, so prevent initial comments from being mistaken as headers
-                if headerStart == contents.startIndex {
-                    // No intervening line
-                    new = "\n" + new
-                } else {
-                    // Intervening line
-                    var numberOfNewlines = 0
-                    var intervening = contents.substring(to: headerEnd)
-                    while intervening.hasSuffix("\n") {
-                        intervening.unicodeScalars.removeLast()
-                        numberOfNewlines += 1
-                    }
-
-                    var additionalNewlines = ""
-                    while numberOfNewlines < 4 {
-                        additionalNewlines += "\n"
-                        numberOfNewlines += 1
-                    }
-
-                    new = additionalNewlines + new
-                }
-
             }
 
             contents.replaceSubrange(headerEnd ..< contents.endIndex, with: new)

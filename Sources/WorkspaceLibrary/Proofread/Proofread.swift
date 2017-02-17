@@ -81,7 +81,7 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
             tagPrefix: nil,
             versionCheck: ["swiftlint", "version"],
             continuousIntegrationSetUp: [
-                ["brew", "install", "swiftlint"]
+                ["brew", "upgrade", "swiftlint"]
             ],
             command: ["swiftlint", "lint", "--strict"],
             updateInstructions: [

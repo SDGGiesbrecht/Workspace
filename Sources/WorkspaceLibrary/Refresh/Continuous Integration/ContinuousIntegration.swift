@@ -146,7 +146,7 @@ struct ContinuousIntegration {
             // Xcode
             "  - $HOME/Library/Developer/Xcode/DerivedData",
             // SwiftLint
-            "  - usr/local/Cellar/swiftlint",
+            "  - /usr/local/Cellar/swiftlint",
             // Jazzy
             "  - $HOME/.rvm/rubies"
             ])

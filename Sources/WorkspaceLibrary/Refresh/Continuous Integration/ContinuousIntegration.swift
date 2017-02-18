@@ -133,6 +133,20 @@ struct ContinuousIntegration {
             runValidateChanges
             ])
 
+        updatedLines.append(contentsOf: [
+            "",
+            "cache:",
+            "  directories:",
+            // Workspace
+            "  - .Workspace",
+            "  - .Linked\\ Repositories",
+            // Swift Package Manager
+            "  - Packages",
+            "  - .build",
+            // Xcode
+            "$HOME/Library/Developer/Xcode/DerivedData"
+            ])
+
         let newBody = join(lines: updatedLines)
         travisConfiguration.body = newBody
         require() { try travisConfiguration.write() }

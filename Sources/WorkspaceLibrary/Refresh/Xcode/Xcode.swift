@@ -86,7 +86,6 @@ struct Xcode {
                     discoveredPhaseInsertLocation = possiblePhaseInsertLocation
                     break
                 }
-                print(name)
             }
 
             guard let phaseInsertLocation = discoveredPhaseInsertLocation else {

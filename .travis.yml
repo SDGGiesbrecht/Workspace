@@ -51,3 +51,5 @@ cache:
   - Packages
   - .build
   - $HOME/Library/Developer/Xcode/DerivedData
+  - usr/local/Cellar/swiftlint
+  - $HOME/.rvm/rubies

@@ -139,16 +139,6 @@ struct ContinuousIntegration {
             "  directories:",
             // Workspace
             "  - .Workspace",
-            "  - .Linked\\ Repositories",
-            // Swift Package Manager
-            "  - Packages",
-            "  - .build",
-            // Xcode
-            "  - $HOME/Library/Developer/Xcode/DerivedData",
-            // SwiftLint
-            "  - /usr/local/Cellar/swiftlint",
-            // Jazzy
-            "  - $HOME/.rvm/rubies"
             ])
 
         let newBody = join(lines: updatedLines)

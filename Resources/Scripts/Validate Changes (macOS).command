@@ -31,7 +31,7 @@ cd "${0%/*}"
 
 # Get Workspace if necessary.
 WORKSPACE=".Workspace"
-if [ ! -d "${WORKSPACE}" ]; then
+if [ ! -d "${WORKSPACE}/Sources" ]; then
     git clone https://github.com/SDGGiesbrecht/Workspace "${WORKSPACE}"
 fi
 

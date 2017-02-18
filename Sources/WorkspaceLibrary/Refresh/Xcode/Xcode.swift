@@ -81,7 +81,7 @@ struct Xcode {
             while let possiblePhaseInsertLocation = file.contents.range(of: "buildPhases = (\n", in: searchRange)?.upperBound {
                 searchRange = possiblePhaseInsertLocation ..< file.contents.endIndex
 
-                let name = file.requireContents(of: ("name = \u{22}", "\u{22};"))
+                let name = file.requireContents(of: ("name = \u{22}", "\u{22};"), in: searchRange)
                 if name == Configuration.primaryXcodeTarget {
                     discoveredPhaseInsertLocation = possiblePhaseInsertLocation
                     break

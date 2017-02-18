@@ -470,6 +470,9 @@ struct Configuration {
     static var manageXcode: Bool {
         return booleanValue(option: .manageXcode)
     }
+    static var primaryXcodeTarget: String {
+        return stringValue(option: .primaryXcodeTarget)
+    }
 
     static var manageDependencyGraph: Bool {
         return booleanValue(option: .manageDependencyGraph)

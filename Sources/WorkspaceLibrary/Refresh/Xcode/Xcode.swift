@@ -76,7 +76,31 @@ struct Xcode {
                 "" // Final line break.
                 ]))
 
-            let phaseInsertLocation = file.requireRange(of: "buildPhases = (\n").upperBound
+            var searchRange = file.contents.startIndex ..< file.contents.endIndex
+            var discoveredPhaseInsertLocation: String.Index?
+            while let possiblePhaseInsertLocation = file.contents.range(of: "buildPhases = (\n", in: searchRange)?.upperBound {
+                searchRange = possiblePhaseInsertLocation ..< file.contents.endIndex
+
+                let name = file.requireContents(of: ("name = \u{22}", "\u{22};"))
+                if name == Configuration.primaryXcodeTarget {
+                    discoveredPhaseInsertLocation = possiblePhaseInsertLocation
+                    break
+                }
+            }
+
+            guard let phaseInsertLocation = discoveredPhaseInsertLocation else {
+
+                fatalError(message: [
+                    "Failed to find a target with the following name:",
+                    Configuration.primaryXcodeTarget,
+                    "Please configure the option...",
+                    "\(Option.primaryXcodeTarget)",
+                    "...specifying one of the following:",
+                    "",
+                    join(lines: Repository.moduleNames)
+                    ])
+            }
+
             file.contents.replaceSubrange(phaseInsertLocation ..< phaseInsertLocation, with: join(lines: [
                 scriptActionEntry,
                 "" // Final line break.

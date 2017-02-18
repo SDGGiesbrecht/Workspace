@@ -52,6 +52,14 @@ struct Repository {
         Configuration.resetCache()
     }
 
+    static var moduleNames: [String] {
+        do {
+            return try fileManager.contentsOfDirectory(atPath: "Sources")
+        } catch let error {
+            fatalError(message: [error.localizedDescription])
+        }
+    }
+
     static var allFiles: [RelativePath] {
         return cachedResult(cache: &cache.allFiles) {
             () -> [RelativePath] in

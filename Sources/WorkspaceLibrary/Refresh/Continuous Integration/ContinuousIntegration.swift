@@ -144,7 +144,7 @@ struct ContinuousIntegration {
             "  - Packages",
             "  - .build",
             // Xcode
-            "$HOME/Library/Developer/Xcode/DerivedData"
+            "  - $HOME/Library/Developer/Xcode/DerivedData"
             ])
 
         let newBody = join(lines: updatedLines)

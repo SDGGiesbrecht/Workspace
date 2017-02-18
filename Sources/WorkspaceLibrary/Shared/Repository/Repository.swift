@@ -30,6 +30,7 @@ struct Repository {
     // MARK: - Cache
 
     private struct Cache {
+        fileprivate var moduleNames: [String]?
         fileprivate var allFiles: [RelativePath]?
         fileprivate var allFilesExcludingWorkspaceItself: [RelativePath]?
         fileprivate var trackedFiles: [RelativePath]?
@@ -53,10 +54,21 @@ struct Repository {
     }
 
     static var moduleNames: [String] {
-        do {
-            return try fileManager.contentsOfDirectory(atPath: "Sources")
-        } catch let error {
-            fatalError(message: [error.localizedDescription])
+        return cachedResult(cache: &cache.moduleNames) {
+            
+            do {
+                return try fileManager.contentsOfDirectory(atPath: "Sources").filter() { (module: String) -> Bool in
+                    
+                    for path in trackedFiles(at: "Sources") {
+                        if path.string.contains("Sources/\(module)/") {
+                            return true
+                        }
+                    }
+                    return false
+                }
+            } catch let error {
+                fatalError(message: [error.localizedDescription])
+            }
         }
     }
 

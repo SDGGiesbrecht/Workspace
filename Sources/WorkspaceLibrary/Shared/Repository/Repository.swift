@@ -55,10 +55,10 @@ struct Repository {
 
     static var moduleNames: [String] {
         return cachedResult(cache: &cache.moduleNames) {
-            
+
             do {
                 return try fileManager.contentsOfDirectory(atPath: "Sources").filter() { (module: String) -> Bool in
-                    
+
                     for path in trackedFiles(at: "Sources") {
                         if path.string.contains("Sources/\(module)/") {
                             return true

@@ -57,3 +57,5 @@ open -a Xcode "Refresh Workspace (macOS).command"
 ...and follow the instructions in the comments halfway down.
 
 [_End_]
+
+Primary Xcode Target: workspace

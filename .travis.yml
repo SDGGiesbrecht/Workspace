@@ -50,4 +50,4 @@ cache:
   - .Linked\ Repositories
   - Packages
   - .build
-$HOME/Library/Developer/Xcode/DerivedData
+  - $HOME/Library/Developer/Xcode/DerivedData

@@ -138,7 +138,7 @@ struct ContinuousIntegration {
             "cache:",
             "  directories:",
             // Workspace
-            "  - .Workspace",
+            "  - .Workspace"
             ])
 
         let newBody = join(lines: updatedLines)

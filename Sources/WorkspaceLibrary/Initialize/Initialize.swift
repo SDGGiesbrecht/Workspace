@@ -62,7 +62,7 @@ func runInitialize(andExit shouldExit: Bool) {
 
     print(["Arranging Swift package..."])
 
-    let projectName = Configuration.projectName.replacingOccurrences(of: " ", with: "_")
+    let projectName = Configuration.sanitizedProjectName
     let testsName = projectName + "Tests"
 
     // Make module to allow folder structure.

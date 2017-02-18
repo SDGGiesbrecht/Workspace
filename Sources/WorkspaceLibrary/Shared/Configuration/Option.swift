@@ -149,7 +149,7 @@ enum Option: String, CustomStringConvertible {
         case .manageXcode:
             return Configuration.falseOptionValue
         case .primaryXcodeTarget:
-            let target = Configuration.projectName
+            let target = Configuration.sanitizedProjectName
             if Configuration.projectType == .executable {
                 return target + "Library"
             } else {

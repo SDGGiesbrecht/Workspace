@@ -277,6 +277,9 @@ struct Configuration {
             return Repository.packageDescription.requireContents(of: tokens)
         }
     }
+    static var sanitizedProjectName: String {
+        return projectName.replacingOccurrences(of: " ", with: "_")
+    }
 
     // MARK: - Settings
 

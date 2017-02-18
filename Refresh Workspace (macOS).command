@@ -31,7 +31,7 @@ cd "${0%/*}"
 
 # Get Workspace if necessary.
 WORKSPACE=".Workspace"
-if [ ! -d "${WORKSPACE}" ]; then
+if [ ! -d "${WORKSPACE}/Sources" ]; then
 
     # The following changes for testing must be made after Validate Changes, but before committing.
 

@@ -47,9 +47,3 @@ matrix:
 cache:
   directories:
   - .Workspace
-  - .Linked\ Repositories
-  - Packages
-  - .build
-  - $HOME/Library/Developer/Xcode/DerivedData
-  - /usr/local/Cellar/swiftlint
-  - $HOME/.rvm/rubies

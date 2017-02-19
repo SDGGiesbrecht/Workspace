@@ -22,18 +22,16 @@
 # Stop if a command fails.
 set -e
 
-# Find and enter repository.
-cd "${0%/*}"
-
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 # Update Workspace
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
 # Get Workspace if necessary.
-WORKSPACE=".Workspace"
+WORKSPACE="~/.Workspace/Workspace"
 if [ ! -d "${WORKSPACE}/Sources" ]; then
 
-    # The following changes for testing must be made after Validate Changes, but before committing.
+    # The following changes for testing continuous integration behaviour must be made after Validate Changes, but before committing.
+    # Travis CI’s cache must also be deleted. (The cache must be deleted again afterward in order to revert to normal behaviour.)
 
     # To test a fork of Workspace, replace the URL on the next line with that of the fork.
     git clone https://github.com/SDGGiesbrecht/Workspace "${WORKSPACE}"
@@ -60,4 +58,8 @@ cd ..
 # Run Workspace command
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-.Workspace/.build/release/workspace refresh
+# Find and enter repository.
+cd "${0%/*}"
+
+# Run
+~/.Workspace/Workspace/.build/release/workspace refresh

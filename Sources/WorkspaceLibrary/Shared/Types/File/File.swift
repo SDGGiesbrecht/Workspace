@@ -273,13 +273,10 @@ struct File {
         if hasChanged {
             var pathString = path.string
             
-            let root = Repository.absolute(Repository.root).string + "/"
-            print(root)
+            let root = Repository.absolute(Repository.root).string
             var startIndex = pathString.startIndex
             if pathString.advance(&startIndex, past: root) {
                 pathString = pathString.substring(from: startIndex)
-            } else {
-                print("Didn’t shorten.")
             }
             print("Writing to “\(pathString)”...")
             try Repository._write(file: contents, to: path, asExecutable: isExecutable)

@@ -52,7 +52,7 @@ enum Licence: String {
 
     private func licenceData(fileExtension: String) -> String {
 
-        let licenceDirectory = Repository.workspaceDirectory.subfolderOrFile(Licence.licenceFolder)
+        let licenceDirectory = Workspace.resources.subfolderOrFile(Licence.licenceFolder)
         let path = licenceDirectory.subfolderOrFile("\(filenameWithoutExtension).\(fileExtension)")
         let file = require() { try File(at: path) }
 

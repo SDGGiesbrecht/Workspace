@@ -730,13 +730,6 @@ class WorkspaceTests: XCTestCase {
                     func root(of repository: String) -> RelativePath {
                         return Repository.testZone.subfolderOrFile(repository)
                     }
-                    func workspace(in repository: String) -> RelativePath {
-                        return root(of: repository).subfolderOrFile(Repository.workspaceDirectory.string + "/")
-                    }
-
-                    func installWorkspace(repository: String) throws {
-                        try Repository.copy(Repository.root, to: workspace(in: repository))
-                    }
 
                     for project in new {
 
@@ -744,26 +737,16 @@ class WorkspaceTests: XCTestCase {
                         printHeader(["Testing Workspace with \(project.name)..."])
                         printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
 
-                        try installWorkspace(repository: project.name)
-
-                        Repository.performInDirectory(directory: workspace(in: project.name)) {
-
-                            if ¬bash(["swift", "build"]).succeeded {
-                                XCTFail("Failed to build Workspace in test project “\(project.name)”...")
-                            }
-
-                        }
-
                         Repository.performInDirectory(directory: root(of: project.name)) {
 
-                            if ¬bash([".Workspace/.build/debug/workspace", "initialize"] + project.flags).succeeded {
+                            if ¬bash(["../../.Workspace/.build/debug/workspace", "initialize"] + project.flags).succeeded {
                                 XCTFail("Failed to initialize test project “\(project.name)”.")
                             }
                         }
 
                         Repository.performInDirectory(directory: root(of: project.name)) {
 
-                            if ¬bash([".Workspace/.build/debug/workspace", "validate"]).succeeded {
+                            if ¬bash(["../../.Workspace/.build/debug/workspace", "validate"]).succeeded {
                                 XCTFail("Validation fails for initialized project “\(project.name)”.")
                             }
                         }
@@ -789,21 +772,11 @@ class WorkspaceTests: XCTestCase {
                             }
                         }
 
-                        try installWorkspace(repository: project.name)
-
-                        Repository.performInDirectory(directory: workspace(in: project.name)) {
-
-                            if ¬bash(["swift", "build"]).succeeded {
-                                XCTFail("Failed to build Workspace in test project “\(project.name)”...")
-                            }
-
-                        }
-
                         Repository.performInDirectory(directory: root(of: project.name)) {
 
                             let allowedExitCodes: Set<ExitCode> = [ExitCode.succeeded, ExitCode.testsFailed]
 
-                            if ¬allowedExitCodes.contains(bash([".Workspace/.build/debug/workspace", "validate"]).exitCode) {
+                            if ¬allowedExitCodes.contains(bash(["../../.Workspace/.build/debug/workspace", "validate"]).exitCode) {
                                 XCTFail("Validation crashes for initialized project “\(project.name)”.")
                             }
                         }
@@ -821,19 +794,9 @@ class WorkspaceTests: XCTestCase {
                     nestedConfiguration.body.append("\n" + Configuration.configurationFileEntry(option: Option.nestedTest, value: true, comment: nil))
                     try nestedConfiguration.write()
 
-                    try installWorkspace(repository: testWorkspaceProject)
-
-                    Repository.performInDirectory(directory: workspace(in: testWorkspaceProject)) {
-
-                        if ¬bash(["swift", "build"]).succeeded {
-                            XCTFail("Failed to build Workspace as a test project...")
-                        }
-
-                    }
-
                     Repository.performInDirectory(directory: root(of: testWorkspaceProject)) {
 
-                        if ¬(bash([".Workspace/.build/debug/workspace", "validate"]).exitCode == ExitCode.succeeded) {
+                        if ¬(bash(["../../.Workspace/.build/debug/workspace", "validate"]).exitCode == ExitCode.succeeded) {
                             XCTFail("Workspace fails its own validation.")
                         }
                     }

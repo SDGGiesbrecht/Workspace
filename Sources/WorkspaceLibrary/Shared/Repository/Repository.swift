@@ -21,9 +21,7 @@ import SDGLogic
 struct Repository {
 
     // MARK: - Configuration
-
-    static let workspaceDirectory: RelativePath = ".Workspace"
-    static let workspaceResources: RelativePath = workspaceDirectory.subfolderOrFile("Resources")
+    
     private static let linkedRepositories: RelativePath = ".Linked Repositories"
     static let testZone: RelativePath = ".Test Zone"
 
@@ -32,7 +30,7 @@ struct Repository {
     private struct Cache {
         fileprivate var moduleNames: [String]?
         fileprivate var allFiles: [RelativePath]?
-        fileprivate var allFilesExcludingWorkspaceItself: [RelativePath]?
+        fileprivate var allRealFiles: [RelativePath]?
         fileprivate var trackedFiles: [RelativePath]?
         fileprivate var sourceFiles: [RelativePath]?
         fileprivate var printableListOfAllFiles: String?
@@ -95,13 +93,13 @@ struct Repository {
         }
     }
 
-    static var allFilesExcludingWorkspaceInself: [RelativePath] {
-        return cachedResult(cache: &cache.allFiles) {
+    static var allRealFiles: [RelativePath] {
+        return cachedResult(cache: &cache.allRealFiles) {
             () -> [RelativePath] in
 
             let result = allFiles.filter() { (path: RelativePath) -> Bool in
 
-                return ¬(path.string.hasPrefix(workspaceDirectory.string + "/") ∨ path == RelativePath(".DS_Store"))
+                return ¬path.string.hasSuffix(".DS_Store")
 
             }
 
@@ -179,7 +177,7 @@ struct Repository {
     }
 
     static var isEmpty: Bool {
-        return allFilesExcludingWorkspaceInself.isEmpty
+        return allRealFiles.isEmpty
     }
 
     private static func path(_ possiblePath: RelativePath, isIn path: RelativePath) -> Bool {
@@ -217,12 +215,21 @@ struct Repository {
 
     // MARK: - Files
 
-    static func absolute(_ relativePath: RelativePath) -> AbsolutePath {
-        return repositoryPath.subfolderOrFile(relativePath.string)
+    static func absolute<P: Path>(_ path: P) -> AbsolutePath {
+        if let absolute = path as? AbsolutePath {
+            return absolute
+        } else if let relative = path as? RelativePath {
+            return repositoryPath.subfolderOrFile(relative.string)
+        } else {
+            fatalError(message: [
+                "Unsupported path type.",
+                "This may indicate a bug in Workspace.",
+                ])
+        }
     }
 
     /// Use “File(at:)” instead.
-    static func _read(file path: RelativePath) throws -> (contents: String, isExecutable: Bool) {
+    static func _read<P: Path>(file path: P) throws -> (contents: String, isExecutable: Bool) {
 
         let filePath = absolute(path).string
 
@@ -238,8 +245,8 @@ struct Repository {
     }
 
     /// Use File’s “write()” instead.
-    static func _write(file: String, to path: RelativePath, asExecutable executable: Bool) throws {
-
+    static func _write<P: Path>(file: String, to path: P, asExecutable executable: Bool) throws {
+        
         prepareForWrite(path: path)
 
         try file.write(toFile: absolute(path).string, atomically: true, encoding: String.Encoding.utf8)
@@ -264,13 +271,13 @@ struct Repository {
         return cachedResult(cache: &cache.packageDescription) {
             () -> File in
 
-            return require() { try File(at: "Package.swift") }
+            return require() { try File(at: RelativePath("Package.swift")) }
         }
     }
 
     // MARK: - File Actions
 
-    static func delete(_ path: RelativePath) throws {
+    static func delete<P: Path>(_ path: P) throws {
 
         defer {
             resetCache()
@@ -295,7 +302,7 @@ struct Repository {
         #endif
     }
 
-    private static func prepareForWrite(path: RelativePath) {
+    private static func prepareForWrite<P: Path>(path: P) {
 
         force() { try delete(path) }
 

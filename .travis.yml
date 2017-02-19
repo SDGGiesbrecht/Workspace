@@ -26,10 +26,13 @@ matrix:
       osx_image: xcode8.2
       script:
         - pwd
+        - ls
         - "bash ./Refresh\\ Workspace\\ \\(macOS\\).command"
         - pwd
+        - ls
         - "bash ./Validate\\ Changes\\ \\(macOS\\).command"
         - pwd
+        - ls
     - os: linux
       dist: trusty
       env:

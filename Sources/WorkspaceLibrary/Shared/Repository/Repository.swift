@@ -406,7 +406,7 @@ struct Repository {
         try performPathChange(from: origin, into: destination, copy: false, includeIgnoredFiles: includeIgnoredFiles)
     }
 
-    static func performInDirectory(directory: RelativePath, action: () -> Void) {
+    static func performInDirectory<P: Path>(directory: P, action: () -> Void) {
 
         func changeToDirectory(path: String) {
             if ¬fileManager.changeCurrentDirectoryPath(path) {
@@ -416,7 +416,7 @@ struct Repository {
             }
         }
 
-        changeToDirectory(path: directory.string)
+        changeToDirectory(path: absolute(directory).string)
         action()
         changeToDirectory(path: repositoryPath.string)
     }
@@ -438,7 +438,7 @@ struct Repository {
 
         if ¬fileManager.fileExists(atPath: absolute(repository).string) {
             prepareForWrite(path: repository)
-            performInDirectory(directory: linkedRepositories) {
+            performInDirectory(directory: Workspace.linkedRepositories) {
                 requireBash(["git", "clone", url])
             }
         }
@@ -450,7 +450,7 @@ struct Repository {
         return name
     }
 
-    static func linkedRepository(named name: String) -> RelativePath {
-        return linkedRepositories.subfolderOrFile(name)
+    static func linkedRepository(named name: String) -> AbsolutePath {
+        return Workspace.linkedRepositories.subfolderOrFile(name)
     }
 }

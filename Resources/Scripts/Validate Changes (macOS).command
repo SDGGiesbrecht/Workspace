@@ -27,7 +27,7 @@ set -e
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
 # Get Workspace if necessary.
-WORKSPACE="~/.Workspace/Workspace"
+WORKSPACE="$HOME/.Workspace/Workspace"
 if [ ! -d "${WORKSPACE}/Sources" ]; then
     git clone https://github.com/SDGGiesbrecht/Workspace "${WORKSPACE}"
 fi

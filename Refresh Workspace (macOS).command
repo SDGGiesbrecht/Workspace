@@ -27,7 +27,7 @@ set -e
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
 # Get Workspace if necessary.
-WORKSPACE="~/.Workspace/Workspace"
+WORKSPACE="$HOME/.Workspace/Workspace"
 if [ ! -d "${WORKSPACE}/Sources" ]; then
 
     # The following changes for testing continuous integration behaviour must be made after Validate Changes, but before committing.

@@ -273,6 +273,8 @@ struct File {
         if hasChanged {
             print("Writing to “\(path)”...")
             try Repository._write(file: contents, to: path, asExecutable: isExecutable)
+        } else {
+            print("\(path) has not changed.")
         }
     }
 }

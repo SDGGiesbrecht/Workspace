@@ -16,6 +16,8 @@ import SDGLogic
 
 public func run() {
 
+    print(Repository.absolute(Repository.root))
+    
     if Command.current ≠ Command.proofread {
         print("") // Line break after the input line.
     }

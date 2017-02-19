@@ -22,7 +22,6 @@ struct Repository {
 
     // MARK: - Configuration
 
-    private static let linkedRepositories: RelativePath = ".Linked Repositories"
     static let testZone: RelativePath = ".Test Zone"
 
     // MARK: - Cache
@@ -435,7 +434,7 @@ struct Repository {
 
         let name = urlObject.lastPathComponent
 
-        let repository = linkedRepositories.subfolderOrFile(name)
+        let repository = Workspace.linkedRepositories.subfolderOrFile(name)
 
         if ¬fileManager.fileExists(atPath: absolute(repository).string) {
             prepareForWrite(path: repository)

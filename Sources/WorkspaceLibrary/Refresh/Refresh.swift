@@ -36,11 +36,23 @@ func runRefresh(andExit shouldExit: Bool) {
         let origin = Workspace.resources.subfolderOrFile("Scripts/\(script)")
 
         let updated = require() { try File(at: origin) }
-        assert(updated.isExecutable, "Script is not executable: \(script)")
+        if ¬updated.isExecutable {
+            fatalError(message: [
+                "\(script) is not executable.",
+                "There may be a bug in Workspace.",
+                ])
+        }
         var inRepository = File(possiblyAt: RelativePath(script))
 
         inRepository.contents = updated.contents
         require() { try inRepository.write() }
+        
+        if ¬(require() { try File(at: RelativePath(script)) }).isExecutable {
+            fatalError(message: [
+                "\(script) is no longer executable.",
+                "There may be a bug in Workspace.",
+                ])
+        }
     }
 
     // Refresh Workspace

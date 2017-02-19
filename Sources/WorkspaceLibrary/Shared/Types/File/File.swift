@@ -271,10 +271,15 @@ struct File {
 
     func write() throws {
         if hasChanged {
-            print("Writing to “\(path)”...")
+            var pathString = path.string
+            
+            let root = Repository.absolute(Repository.root).string + "/"
+            var startIndex = pathString.startIndex
+            if pathString.advance(&startIndex, past: root) {
+                pathString = pathString.substring(from: startIndex)
+            }
+            print("Writing to “\(pathString)”...")
             try Repository._write(file: contents, to: path, asExecutable: isExecutable)
-        } else {
-            print("\(path) has not changed.")
         }
     }
 }

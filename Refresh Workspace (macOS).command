@@ -58,6 +58,7 @@ fi
 
 # Find and enter repository.
 cd "${0%/*}"
+pwd
 
 # Run
 ~/.Workspace/Workspace/.build/release/workspace refresh

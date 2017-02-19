@@ -214,6 +214,13 @@ struct Repository {
     }
 
     // MARK: - Files
+    
+    static func unsupportedPathType() -> Never {
+        fatalError(message: [
+            "Unsupported path type.",
+            "This may indicate a bug in Workspace.",
+            ])
+    }
 
     static func absolute<P: Path>(_ path: P) -> AbsolutePath {
         if let absolute = path as? AbsolutePath {
@@ -221,10 +228,27 @@ struct Repository {
         } else if let relative = path as? RelativePath {
             return repositoryPath.subfolderOrFile(relative.string)
         } else {
-            fatalError(message: [
-                "Unsupported path type.",
-                "This may indicate a bug in Workspace.",
-                ])
+            unsupportedPathType()
+        }
+    }
+    
+    static func relative<P: Path>(_ path: P) -> RelativePath? {
+        if let relative = path as? RelativePath {
+            return relative
+        } else if let absolute = path as? AbsolutePath {
+            
+            let pathString = absolute.string
+            
+            let root = Repository.absolute(Repository.root).string
+            var startIndex = pathString.startIndex
+            if pathString.advance(&startIndex, past: root) {
+                return RelativePath(pathString.substring(from: startIndex))
+            } else {
+                return nil
+            }
+            
+        } else {
+            unsupportedPathType()
         }
     }
 

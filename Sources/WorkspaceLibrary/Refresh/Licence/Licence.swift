@@ -48,12 +48,12 @@ enum Licence: String {
         return rawValue
     }
 
-    static let licenceFolder = "Resources/Licences"
+    static let directory = Workspace.resources.subfolderOrFile("Licences")
+    static let projectDirectory = Workspace.projectResources.subfolderOrFile("Licences")
 
     private func licenceData(fileExtension: String) -> String {
 
-        let licenceDirectory = Workspace.resources.subfolderOrFile(Licence.licenceFolder)
-        let path = licenceDirectory.subfolderOrFile("\(filenameWithoutExtension).\(fileExtension)")
+        let path = Licence.directory.subfolderOrFile("\(filenameWithoutExtension).\(fileExtension)")
         let file = require() { try File(at: path) }
 
         return file.contents

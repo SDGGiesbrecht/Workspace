@@ -46,13 +46,6 @@ func runRefresh(andExit shouldExit: Bool) {
 
         inRepository.contents = updated.contents
         require() { try inRepository.write() }
-        
-        if ¬(require() { try File(at: RelativePath(script)) }).isExecutable {
-            fatalError(message: [
-                "\(script) is no longer executable.",
-                "There may be a bug in Workspace.",
-                ])
-        }
     }
 
     // Refresh Workspace

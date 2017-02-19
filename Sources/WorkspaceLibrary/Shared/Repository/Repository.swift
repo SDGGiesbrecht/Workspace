@@ -261,9 +261,14 @@ struct Repository {
 
         resetCache()
 
-        if debug {
-            let written = try Repository._read(file: path)
-            assert(written == (file, executable), "Write operation failed.")
+        
+        if executable {
+            if ¬(require() { try Repository._read(file: path) }).isExecutable {
+                fatalError(message: [
+                    "\(path) is no longer executable.",
+                    "There may be a bug in Workspace.",
+                    ])
+            }
         }
     }
 

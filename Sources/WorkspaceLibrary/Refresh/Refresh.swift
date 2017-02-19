@@ -36,6 +36,7 @@ func runRefresh(andExit shouldExit: Bool) {
         let origin = Workspace.resources.subfolderOrFile("Scripts/\(script)")
 
         let updated = require() { try File(at: origin) }
+        assert(updated.isExecutable, "Script is not executable: \(script)")
         var inRepository = File(possiblyAt: RelativePath(script))
 
         inRepository.contents = updated.contents

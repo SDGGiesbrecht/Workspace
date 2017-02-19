@@ -21,7 +21,7 @@ import SDGLogic
 struct Repository {
 
     // MARK: - Configuration
-    
+
     private static let linkedRepositories: RelativePath = ".Linked Repositories"
     static let testZone: RelativePath = ".Test Zone"
 
@@ -214,7 +214,7 @@ struct Repository {
     }
 
     // MARK: - Files
-    
+
     static func unsupportedPathType() -> Never {
         fatalError(message: [
             "Unsupported path type.",
@@ -231,14 +231,14 @@ struct Repository {
             unsupportedPathType()
         }
     }
-    
+
     static func relative<P: Path>(_ path: P) -> RelativePath? {
         if let relative = path as? RelativePath {
             return relative
         } else if let absolute = path as? AbsolutePath {
-            
+
             let pathString = absolute.string
-            
+
             let root = Repository.absolute(Repository.root).string
             var startIndex = pathString.startIndex
             if pathString.advance(&startIndex, past: root) {
@@ -246,7 +246,7 @@ struct Repository {
             } else {
                 return nil
             }
-            
+
         } else {
             unsupportedPathType()
         }
@@ -270,7 +270,7 @@ struct Repository {
 
     /// Use File’s “write()” instead.
     static func _write<P: Path>(file: String, to path: P, asExecutable executable: Bool) throws {
-        
+
         prepareForWrite(path: path)
 
         try file.write(toFile: absolute(path).string, atomically: true, encoding: String.Encoding.utf8)
@@ -285,7 +285,7 @@ struct Repository {
 
         resetCache()
 
-        
+
         if executable {
             if ¬(require() { try Repository._read(file: path) }).isExecutable {
                 fatalError(message: [

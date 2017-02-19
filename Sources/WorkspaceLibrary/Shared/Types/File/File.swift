@@ -276,7 +276,7 @@ struct File {
             } else {
                 print("Writing to “\(path)”...")
             }
-            
+
             try Repository._write(file: contents, to: path, asExecutable: isExecutable)
         }
     }

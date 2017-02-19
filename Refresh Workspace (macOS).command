@@ -37,10 +37,10 @@ if [ ! -d "${WORKSPACE}/Sources" ]; then
     git clone https://github.com/SDGGiesbrecht/Workspace "${WORKSPACE}"
 
     # To test a development branch of Workspace, uncomment the following four lines and use the real branch name.
-    # BRANCH="branch-name"
-    # cd "${WORKSPACE}"
-    # git checkout -b "${BRANCH}" "origin/${BRANCH}"
-    # cd ..
+    BRANCH="centralization"
+    cd "${WORKSPACE}"
+    git checkout -b "${BRANCH}" "origin/${BRANCH}"
+    cd ..
 fi
 
 # Update Workspace.

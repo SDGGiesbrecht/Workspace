@@ -46,4 +46,4 @@ matrix:
 
 cache:
   directories:
-  - .Workspace
+  - $HOME/.Workspace

@@ -36,11 +36,10 @@ if [ ! -d "${WORKSPACE}/Sources" ]; then
     # To test a fork of Workspace, replace the URL on the next line with that of the fork.
     git clone https://github.com/SDGGiesbrecht/Workspace "${WORKSPACE}"
 
-    # To test a development branch of Workspace, uncomment the following four lines and use the real branch name.
+    # To test a development branch of Workspace, uncomment the following three lines and use the real branch name.
     # BRANCH="branch-name"
     # cd "${WORKSPACE}"
     # git checkout -b "${BRANCH}" "origin/${BRANCH}"
-    # cd ..
 fi
 
 # Update Workspace.
@@ -52,7 +51,6 @@ else
     swift package update
     swift build --configuration release
 fi
-cd ..
 
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 # Run Workspace command

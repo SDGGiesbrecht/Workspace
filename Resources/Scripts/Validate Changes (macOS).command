@@ -41,7 +41,6 @@ else
     swift package update
     swift build --configuration release
 fi
-cd ..
 
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 # Run Workspace command

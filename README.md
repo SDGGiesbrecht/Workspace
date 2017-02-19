@@ -21,10 +21,10 @@ Workspace automates management of Swift projects.
 ### Table of Contents
 - [Platforms](#platforms)
 - [What Workspace Can Do](#what-workspace-can-do)
+- [The Workspace Workflow](#the-workspace-workflow)
 - [Set‐Up](#setup)
   - [New Projects](#new-projects)
   - [Existing Projects](#existing-projects)
-- [The Workspace Workflow](#the-workspace-workflow)
 
 ## Platforms
 
@@ -51,46 +51,6 @@ A particular project can [configure](Documentation/Operating Systems.md) which o
     - [Proofread](Documentation/Proofreading.md) source files for code style. (Including [SwiftLint](https://github.com/realm/SwiftLint))
     - Run unit tests on each operating system (except watchOS).
     - Configure [continuous integration](Documentation/Continuous Integration.md) for each operating system. ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))
-
-## Set‐Up
-
-### New Projects
-
-To have Workspace create a new Swift project from scratch, run one of the following scripts in an empty folder:
-
-To create a library project:
-```shell
-git clone https://github.com/SDGGiesbrecht/Workspace .Workspace
-cd .Workspace
-swift build --configuration release
-cd ..
-.Workspace/.build/release/workspace initialize
-```
-
-To create an executable project:
-```shell
-git clone https://github.com/SDGGiesbrecht/Workspace .Workspace
-cd .Workspace
-swift build --configuration release
-cd ..
-.Workspace/.build/release/workspace initialize •executable
-```
-
-By default, Workspace will handle many responsibilities when it creates a new project, behaving in a primarily opt‐out manner, but this setting can be [changed](Documentation/Responsibilities.md).
-
-### Existing Projects
-
-To have Workspace take responsibility for an existing project, run this script the root of its repository:
-
-```shell
-git clone https://github.com/SDGGiesbrecht/Workspace .Workspace
-cd .Workspace
-swift build --configuration release
-cd ..
-.Workspace/.build/release/workspace refresh
-```
-
-By default, Workspace will refrain from most responsibilities when it is added to an existing project, behaving in a primarily opt‐in manner, but this setting can be [changed](Documentation/Responsibilities.md).
 
 ## The Workspace Workflow
 
@@ -136,3 +96,33 @@ When it finishes, it prints a summary of which tests passed and which tests fail
 2. `Validate Changes` when it looks complete.
 
 *Wow! That was so much easier than doing it all manually!*
+
+## Set‐Up
+
+If Workspace has never been used on a particular device, follow the above [worksflow steps](#the-workspace-workflow) first to cause Workspace to install itself.
+
+### New Projects
+
+To have Workspace create a new Swift project from scratch, run one of the following commands in an empty folder:
+
+To create a library project:
+```shell
+~/.Workspace/Workspace/.build/release/workspace initialize
+```
+
+To create an executable project:
+```shell
+~/.Workspace/Workspace/.build/release/workspace initialize •executable
+```
+
+When it creates a new project, Workspace will handle many responsibilities by default, behaving in a primarily opt‐out manner. This setting can be [changed](Documentation/Responsibilities.md).
+
+### Existing Projects
+
+To have Workspace take responsibility for an existing project, run this command the root of its repository:
+
+```shell
+~/.Workspace/Workspace/.build/release/workspace refresh
+```
+
+When it is added to an existing project, Workspace will refrain from most responsibilities by default, behaving in a primarily opt‐in manner. This setting can be [changed](Documentation/Responsibilities.md).

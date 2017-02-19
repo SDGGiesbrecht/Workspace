@@ -269,6 +269,8 @@ struct Repository {
                     "There may be a bug in Workspace.",
                     ])
             }
+        } else {
+            print("\(path) is not supposed to be executable.")
         }
     }
 

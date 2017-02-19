@@ -42,7 +42,7 @@ func runRefresh(andExit shouldExit: Bool) {
                 "There may be a bug in Workspace.",
                 ])
         }
-        var inRepository = File(possiblyAt: RelativePath(script))
+        var inRepository = File(possiblyAt: RelativePath(script), executable: true)
 
         inRepository.contents = updated.contents
         require() { try inRepository.write() }

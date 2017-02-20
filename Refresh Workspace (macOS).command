@@ -24,6 +24,7 @@ set -e
 
 # Find and enter repository.
 REPOSITORY="${0%/*}"
+pwd
 
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 # Update Workspace

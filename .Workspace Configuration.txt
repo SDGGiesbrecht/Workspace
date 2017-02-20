@@ -23,19 +23,20 @@ Project Website: https://github.com/SDGGiesbrecht/Workspace
 
 #### Locally
 
-To test a fork of Workspace, run the following script in the test project’s root directory (replacing “user” with the owner of the fork):
+To test a fork of Workspace, run the following script (replacing “user” with the owner of the fork):
 
 ```shell
-rm -rf .Workspace
-git clone https://github.com/user/Workspace .Workspace
+WORKSPACE_INSTALLATION="$HOME/.Workspace/Workspace"
+rm -rf $WORKSPACE_INSTALLATION
+git clone https://github.com/user/Workspace $WORKSPACE_INSTALLATION
 ```
 
-To test a particular branch, run the following script in the test project’s root directory (replacing “branch-name” with a valid branch):
+To test a particular branch, run the following script (replacing “branch-name” with a valid branch):
 
 ```shell
-cd .Workspace
-git checkout branch-name
-cd ..
+BRANCH="branch-name"
+cd "$HOME/.Workspace/Workspace"
+git checkout -b $BRANCH "origin/$BRANCH"
 ```
 
 (If the `.Workspace` folder does not exist yet, double‐click `Refresh Workspace` first.)
@@ -43,7 +44,7 @@ cd ..
 To revert to normal behaviour, run the following:
 
 ```shell
-rm -rf .Workspace
+rm -rf "$HOME/.Workspace"
 ```
 
 #### In Continuous Integration

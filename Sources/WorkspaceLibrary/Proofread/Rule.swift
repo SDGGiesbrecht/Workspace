@@ -51,7 +51,7 @@ extension Rule {
 
         // Output
 
-        let path = Repository.absolute(file.path)
+        let path = file.path
         let lineNumber = file.contents.lineNumber(for: clusterRange.lowerBound)
         let column = file.contents.columnNumber(for: clusterRange.lowerBound)
 

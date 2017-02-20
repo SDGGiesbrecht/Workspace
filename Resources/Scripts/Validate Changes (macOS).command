@@ -22,16 +22,20 @@
 # Stop if a command fails.
 set -e
 
-# Find and enter repository.
-cd "${0%/*}"
+# Find repository.
+if [ "$CONTINUOUS_INTEGRATION" ]; then
+    REPOSITORY=$(pwd)
+else
+    REPOSITORY="${0%/*}"
+fi
 
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 # Update Workspace
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
 # Get Workspace if necessary.
-WORKSPACE=".Workspace"
-if [ ! -d "${WORKSPACE}" ]; then
+WORKSPACE="$HOME/.Workspace/Workspace"
+if [ ! -d "${WORKSPACE}/Sources" ]; then
     git clone https://github.com/SDGGiesbrecht/Workspace "${WORKSPACE}"
 fi
 
@@ -44,10 +48,13 @@ else
     swift package update
     swift build --configuration release
 fi
-cd ..
 
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 # Run Workspace command
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-.Workspace/.build/release/workspace validate
+# Enter repository.
+cd "${REPOSITORY}"
+
+# Run.
+~/.Workspace/Workspace/.build/release/workspace validate

@@ -56,7 +56,7 @@ struct DependencyGraph {
             dependencies[name] = version
         }
 
-        var packageDescription = require() { try File(at: "Package.swift") }
+        var packageDescription = require() { try File(at: RelativePath("Package.swift")) }
         var body = packageDescription.body
 
         for (name, version) in dependencies {

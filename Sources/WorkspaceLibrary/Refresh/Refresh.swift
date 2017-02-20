@@ -33,14 +33,19 @@ func runRefresh(andExit shouldExit: Bool) {
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     func copy(script: String) {
-        let origin = Repository.workspaceResources.subfolderOrFile("Scripts/\(script)")
+        let origin = Workspace.resources.subfolderOrFile("Scripts/\(script)")
 
         let updated = require() { try File(at: origin) }
-        let old = File(possiblyAt: RelativePath(script))
-
-        if old.contents ≠ updated.contents {
-            require() { try Repository.copy(origin, into: Repository.root, includeIgnoredFiles: true) }
+        if ¬updated.isExecutable {
+            fatalError(message: [
+                "\(script) is not executable.",
+                "There may be a bug in Workspace."
+                ])
         }
+        var inRepository = File(possiblyAt: RelativePath(script), executable: true)
+
+        inRepository.contents = updated.contents
+        require() { try inRepository.write() }
     }
 
     // Refresh Workspace

@@ -49,7 +49,3 @@ matrix:
       script:
         - "bash ./Refresh\\ Workspace\\ \\(macOS\\).command"
         - "bash ./Validate\\ Changes\\ \\(macOS\\).command"
-
-cache:
-  directories:
-  - $HOME/.Workspace

@@ -23,7 +23,7 @@
 set -e
 
 # Find repository.
-if [ -z "$CONTINUOUS_INTEGRATION" ]; then
+if [ "$CONTINUOUS_INTEGRATION" ]; then
     REPOSITORY=$(pwd)
 else
     REPOSITORY="${0%/*}"

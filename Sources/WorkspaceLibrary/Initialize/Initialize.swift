@@ -22,7 +22,7 @@ func runInitialize(andExit shouldExit: Bool) {
 
     if ¬Repository.isEmpty {
 
-        var message = [
+        let message = [
             "This folder is not empty.",
             "",
             "Existing files:",
@@ -32,17 +32,6 @@ func runInitialize(andExit shouldExit: Bool) {
             "For more information, see:",
             DocumentationLink.setUp.url
             ]
-
-        do {
-            try Repository.delete(".Workspace")
-        } catch let error {
-            message.append(contentsOf: [
-                "",
-                "Failed to clean up “.Workspace”:",
-                "",
-                error.localizedDescription
-                ])
-        }
 
         fatalError(message: message)
     }
@@ -62,7 +51,7 @@ func runInitialize(andExit shouldExit: Bool) {
 
     print(["Arranging Swift package..."])
 
-    let projectName = Configuration.projectName.replacingOccurrences(of: " ", with: "_")
+    let projectName = Configuration.sanitizedProjectName
     let testsName = projectName + "Tests"
 
     // Make module to allow folder structure.

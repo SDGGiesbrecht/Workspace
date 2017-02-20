@@ -277,6 +277,9 @@ struct Configuration {
             return Repository.packageDescription.requireContents(of: tokens)
         }
     }
+    static var sanitizedProjectName: String {
+        return projectName.replacingOccurrences(of: " ", with: "_")
+    }
 
     // MARK: - Settings
 
@@ -469,6 +472,9 @@ struct Configuration {
 
     static var manageXcode: Bool {
         return booleanValue(option: .manageXcode)
+    }
+    static var primaryXcodeTarget: String {
+        return stringValue(option: .primaryXcodeTarget)
     }
 
     static var manageDependencyGraph: Bool {

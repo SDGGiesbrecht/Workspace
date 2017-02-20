@@ -133,6 +133,14 @@ struct ContinuousIntegration {
             runValidateChanges
             ])
 
+        updatedLines.append(contentsOf: [
+            "",
+            "cache:",
+            "  directories:",
+            // Workspace
+            "  - $HOME/.Workspace"
+            ])
+
         let newBody = join(lines: updatedLines)
         travisConfiguration.body = newBody
         require() { try travisConfiguration.write() }

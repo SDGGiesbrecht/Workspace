@@ -43,6 +43,7 @@ enum Option: String, CustomStringConvertible {
     case developmentNotes = "Development Notes"
 
     case manageXcode = "Manage Xcode"
+    case primaryXcodeTarget = "Primary Xcode Target"
 
     case manageDependencyGraph = "Manage Dependency Graph"
 
@@ -99,6 +100,7 @@ enum Option: String, CustomStringConvertible {
 
         .manageContinuousIntegration,
 
+        .primaryXcodeTarget,
         .ignoreFileTypes
         ]
 
@@ -146,6 +148,13 @@ enum Option: String, CustomStringConvertible {
 
         case .manageXcode:
             return Configuration.falseOptionValue
+        case .primaryXcodeTarget:
+            let target = Configuration.sanitizedProjectName
+            if Configuration.projectType == .executable {
+                return target + "Library"
+            } else {
+                return target
+            }
 
         case .manageDependencyGraph:
             return Configuration.falseOptionValue

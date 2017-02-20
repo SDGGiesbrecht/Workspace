@@ -22,16 +22,14 @@ struct Repository {
 
     // MARK: - Configuration
 
-    static let workspaceDirectory: RelativePath = ".Workspace"
-    static let workspaceResources: RelativePath = workspaceDirectory.subfolderOrFile("Resources")
-    private static let linkedRepositories: RelativePath = ".Linked Repositories"
     static let testZone: RelativePath = ".Test Zone"
 
     // MARK: - Cache
 
     private struct Cache {
+        fileprivate var moduleNames: [String]?
         fileprivate var allFiles: [RelativePath]?
-        fileprivate var allFilesExcludingWorkspaceItself: [RelativePath]?
+        fileprivate var allRealFiles: [RelativePath]?
         fileprivate var trackedFiles: [RelativePath]?
         fileprivate var sourceFiles: [RelativePath]?
         fileprivate var printableListOfAllFiles: String?
@@ -50,6 +48,25 @@ struct Repository {
     static func resetCache() {
         cache = Cache()
         Configuration.resetCache()
+    }
+
+    static var moduleNames: [String] {
+        return cachedResult(cache: &cache.moduleNames) {
+
+            do {
+                return try fileManager.contentsOfDirectory(atPath: "Sources").filter() { (module: String) -> Bool in
+
+                    for path in trackedFiles(at: "Sources") {
+                        if path.string.contains("Sources/\(module)/") {
+                            return true
+                        }
+                    }
+                    return false
+                }
+            } catch let error {
+                fatalError(message: [error.localizedDescription])
+            }
+        }
     }
 
     static var allFiles: [RelativePath] {
@@ -75,13 +92,13 @@ struct Repository {
         }
     }
 
-    static var allFilesExcludingWorkspaceInself: [RelativePath] {
-        return cachedResult(cache: &cache.allFiles) {
+    static var allRealFiles: [RelativePath] {
+        return cachedResult(cache: &cache.allRealFiles) {
             () -> [RelativePath] in
 
             let result = allFiles.filter() { (path: RelativePath) -> Bool in
 
-                return ¬(path.string.hasPrefix(workspaceDirectory.string + "/") ∨ path == RelativePath(".DS_Store"))
+                return ¬path.string.hasSuffix(".DS_Store")
 
             }
 
@@ -159,7 +176,7 @@ struct Repository {
     }
 
     static var isEmpty: Bool {
-        return allFilesExcludingWorkspaceInself.isEmpty
+        return allRealFiles.isEmpty
     }
 
     private static func path(_ possiblePath: RelativePath, isIn path: RelativePath) -> Bool {
@@ -197,12 +214,45 @@ struct Repository {
 
     // MARK: - Files
 
-    static func absolute(_ relativePath: RelativePath) -> AbsolutePath {
-        return repositoryPath.subfolderOrFile(relativePath.string)
+    static func unsupportedPathType() -> Never {
+        fatalError(message: [
+            "Unsupported path type.",
+            "This may indicate a bug in Workspace."
+            ])
+    }
+
+    static func absolute<P: Path>(_ path: P) -> AbsolutePath {
+        if let absolute = path as? AbsolutePath {
+            return absolute
+        } else if let relative = path as? RelativePath {
+            return repositoryPath.subfolderOrFile(relative.string)
+        } else {
+            unsupportedPathType()
+        }
+    }
+
+    static func relative<P: Path>(_ path: P) -> RelativePath? {
+        if let relative = path as? RelativePath {
+            return relative
+        } else if let absolute = path as? AbsolutePath {
+
+            let pathString = absolute.string
+
+            let root = Repository.absolute(Repository.root).string
+            var startIndex = pathString.startIndex
+            if pathString.advance(&startIndex, past: root) {
+                return RelativePath(pathString.substring(from: startIndex))
+            } else {
+                return nil
+            }
+
+        } else {
+            unsupportedPathType()
+        }
     }
 
     /// Use “File(at:)” instead.
-    static func _read(file path: RelativePath) throws -> (contents: String, isExecutable: Bool) {
+    static func _read<P: Path>(file path: P) throws -> (contents: String, isExecutable: Bool) {
 
         let filePath = absolute(path).string
 
@@ -218,7 +268,7 @@ struct Repository {
     }
 
     /// Use File’s “write()” instead.
-    static func _write(file: String, to path: RelativePath, asExecutable executable: Bool) throws {
+    static func _write<P: Path>(file: String, to path: P, asExecutable executable: Bool) throws {
 
         prepareForWrite(path: path)
 
@@ -234,9 +284,13 @@ struct Repository {
 
         resetCache()
 
-        if debug {
-            let written = try Repository._read(file: path)
-            assert(written == (file, executable), "Write operation failed.")
+        if executable {
+            if ¬(require() { try Repository._read(file: path) }).isExecutable {
+                fatalError(message: [
+                    "\(path) is no longer executable.",
+                    "There may be a bug in Workspace."
+                    ])
+            }
         }
     }
 
@@ -244,13 +298,13 @@ struct Repository {
         return cachedResult(cache: &cache.packageDescription) {
             () -> File in
 
-            return require() { try File(at: "Package.swift") }
+            return require() { try File(at: RelativePath("Package.swift")) }
         }
     }
 
     // MARK: - File Actions
 
-    static func delete(_ path: RelativePath) throws {
+    static func delete<P: Path>(_ path: P) throws {
 
         defer {
             resetCache()
@@ -275,7 +329,7 @@ struct Repository {
         #endif
     }
 
-    private static func prepareForWrite(path: RelativePath) {
+    private static func prepareForWrite<P: Path>(path: P) {
 
         force() { try delete(path) }
 
@@ -351,7 +405,7 @@ struct Repository {
         try performPathChange(from: origin, into: destination, copy: false, includeIgnoredFiles: includeIgnoredFiles)
     }
 
-    static func performInDirectory(directory: RelativePath, action: () -> Void) {
+    static func performInDirectory<P: Path>(directory: P, action: () -> Void) {
 
         func changeToDirectory(path: String) {
             if ¬fileManager.changeCurrentDirectoryPath(path) {
@@ -361,7 +415,7 @@ struct Repository {
             }
         }
 
-        changeToDirectory(path: directory.string)
+        changeToDirectory(path: absolute(directory).string)
         action()
         changeToDirectory(path: repositoryPath.string)
     }
@@ -379,11 +433,11 @@ struct Repository {
 
         let name = urlObject.lastPathComponent
 
-        let repository = linkedRepositories.subfolderOrFile(name)
+        let repository = Workspace.linkedRepositories.subfolderOrFile(name)
 
         if ¬fileManager.fileExists(atPath: absolute(repository).string) {
             prepareForWrite(path: repository)
-            performInDirectory(directory: linkedRepositories) {
+            performInDirectory(directory: Workspace.linkedRepositories) {
                 requireBash(["git", "clone", url])
             }
         }
@@ -395,7 +449,7 @@ struct Repository {
         return name
     }
 
-    static func linkedRepository(named name: String) -> RelativePath {
-        return linkedRepositories.subfolderOrFile(name)
+    static func linkedRepository(named name: String) -> AbsolutePath {
+        return Workspace.linkedRepositories.subfolderOrFile(name)
     }
 }

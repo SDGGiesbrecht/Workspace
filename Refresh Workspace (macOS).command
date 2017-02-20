@@ -27,7 +27,6 @@ if [ "$CONTINUOUS_INTEGRATION" ]; then
     REPOSITORY=$(pwd)
 else
     REPOSITORY="${0%/*}"
-    echo "${REPOSITORY}"
 fi
 
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

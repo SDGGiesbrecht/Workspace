@@ -22,9 +22,12 @@
 # Stop if a command fails.
 set -e
 
-# Find and enter repository.
-REPOSITORY="${0%/*}"
-pwd
+# Find repository.
+if [ -z "$CONTINUOUS_INTEGRATION" ]; then
+    REPOSITORY=$(pwd)
+else
+    REPOSITORY="${0%/*}"
+fi
 
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 # Update Workspace
@@ -61,7 +64,6 @@ fi
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
 cd "${REPOSITORY}"
-pwd
 
 # Run
 ~/.Workspace/Workspace/.build/release/workspace refresh

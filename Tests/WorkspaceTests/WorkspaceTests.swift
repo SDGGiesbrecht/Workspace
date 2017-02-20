@@ -736,6 +736,8 @@ class WorkspaceTests: XCTestCase {
                         printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
                         printHeader(["Testing Workspace with \(project.name)..."])
                         printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
+                        
+                        try FileManager.default.createDirectory(atPath: Repository.absolute(root(of: project.name)).string, withIntermediateDirectories: true, attributes: nil)
 
                         Repository.performInDirectory(directory: root(of: project.name)) {
 
@@ -753,9 +755,11 @@ class WorkspaceTests: XCTestCase {
                     }
 
                     let realProjects: [(name: String, url: String)] = [
-
-                        // Generic Set‐Up
-                        (name: "SDGLogic", url: "https://github.com/SDGGiesbrecht/SDGLogic")
+                        
+                        (name: "SDGCaching", url: "https://github.com/SDGGiesbrecht/SDGCaching"),
+                        
+                        (name: "SDGLogic", url: "https://github.com/SDGGiesbrecht/SDGLogic"),
+                        (name: "SDGMathematics", url: "https://github.com/SDGGiesbrecht/SDGMathematics")
 
                         ]
 

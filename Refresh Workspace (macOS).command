@@ -63,7 +63,8 @@ fi
 # Run Workspace command
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
+# Enter repository.
 cd "${REPOSITORY}"
 
-# Run
+# Run.
 ~/.Workspace/Workspace/.build/release/workspace refresh

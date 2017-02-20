@@ -22,6 +22,9 @@
 # Stop if a command fails.
 set -e
 
+# Find and enter repository.
+REPOSITORY="${0%/*}"
+
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 # Update Workspace
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
@@ -56,8 +59,7 @@ fi
 # Run Workspace command
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-# Find and enter repository.
-cd "${0%/*}"
+cd "$REPOSITORY"
 pwd
 
 # Run

@@ -60,7 +60,7 @@ fi
 # Run Workspace command
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-cd "$REPOSITORY"
+cd "${REPOSITORY}"
 pwd
 
 # Run

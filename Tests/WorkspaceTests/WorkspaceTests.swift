@@ -720,6 +720,8 @@ class WorkspaceTests: XCTestCase {
 
                 do {
 
+                    let _ = bash(["swift build"])
+
                     try Repository.delete(Repository.testZone)
 
                     let new: [(name: String, flags: [String])] = [
@@ -736,28 +738,28 @@ class WorkspaceTests: XCTestCase {
                         printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
                         printHeader(["Testing Workspace with \(project.name)..."])
                         printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
-                        
+
                         try FileManager.default.createDirectory(atPath: Repository.absolute(root(of: project.name)).string, withIntermediateDirectories: true, attributes: nil)
 
                         Repository.performInDirectory(directory: root(of: project.name)) {
 
-                            if ¬bash(["../../.Workspace/.build/debug/workspace", "initialize"] + project.flags).succeeded {
+                            if ¬bash(["../../.build/debug/workspace", "initialize"] + project.flags).succeeded {
                                 XCTFail("Failed to initialize test project “\(project.name)”.")
                             }
                         }
 
                         Repository.performInDirectory(directory: root(of: project.name)) {
 
-                            if ¬bash(["../../.Workspace/.build/debug/workspace", "validate"]).succeeded {
+                            if ¬bash(["../../.build/debug/workspace", "validate"]).succeeded {
                                 XCTFail("Validation fails for initialized project “\(project.name)”.")
                             }
                         }
                     }
 
                     let realProjects: [(name: String, url: String)] = [
-                        
+
                         (name: "SDGCaching", url: "https://github.com/SDGGiesbrecht/SDGCaching"),
-                        
+
                         (name: "SDGLogic", url: "https://github.com/SDGGiesbrecht/SDGLogic"),
                         (name: "SDGMathematics", url: "https://github.com/SDGGiesbrecht/SDGMathematics")
 
@@ -780,7 +782,7 @@ class WorkspaceTests: XCTestCase {
 
                             let allowedExitCodes: Set<ExitCode> = [ExitCode.succeeded, ExitCode.testsFailed]
 
-                            if ¬allowedExitCodes.contains(bash(["../../.Workspace/.build/debug/workspace", "validate"]).exitCode) {
+                            if ¬allowedExitCodes.contains(bash(["../../.build/debug/workspace", "validate"]).exitCode) {
                                 XCTFail("Validation crashes for initialized project “\(project.name)”.")
                             }
                         }
@@ -800,7 +802,7 @@ class WorkspaceTests: XCTestCase {
 
                     Repository.performInDirectory(directory: root(of: testWorkspaceProject)) {
 
-                        if ¬(bash(["../../.Workspace/.build/debug/workspace", "validate"]).exitCode == ExitCode.succeeded) {
+                        if ¬(bash(["../../.build/debug/workspace", "validate"]).exitCode == ExitCode.succeeded) {
                             XCTFail("Workspace fails its own validation.")
                         }
                     }

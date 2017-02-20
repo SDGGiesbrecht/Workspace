@@ -217,7 +217,7 @@ struct Repository {
     static func unsupportedPathType() -> Never {
         fatalError(message: [
             "Unsupported path type.",
-            "This may indicate a bug in Workspace.",
+            "This may indicate a bug in Workspace."
             ])
     }
 
@@ -284,12 +284,11 @@ struct Repository {
 
         resetCache()
 
-
         if executable {
             if ¬(require() { try Repository._read(file: path) }).isExecutable {
                 fatalError(message: [
                     "\(path) is no longer executable.",
-                    "There may be a bug in Workspace.",
+                    "There may be a bug in Workspace."
                     ])
             }
         }

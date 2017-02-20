@@ -39,7 +39,7 @@ func runRefresh(andExit shouldExit: Bool) {
         if ¬updated.isExecutable {
             fatalError(message: [
                 "\(script) is not executable.",
-                "There may be a bug in Workspace.",
+                "There may be a bug in Workspace."
                 ])
         }
         var inRepository = File(possiblyAt: RelativePath(script), executable: true)

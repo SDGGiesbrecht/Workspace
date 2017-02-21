@@ -103,6 +103,7 @@ func runThirdPartyTool(name: String, repositoryURL: String, tagPrefix: String?, 
     let versions = requireBash(["git", "ls-remote", "--tags", repositoryURL], silent: true)
     var newest: (tag: String, version: Version)? = nil
     for line in versions.lines {
+        print(line)
         var tagMarker = "refs/tags/"
         if let prefix = tagPrefix {
             tagMarker += prefix

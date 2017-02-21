@@ -14,7 +14,17 @@
 
 # Proofreading
 
-Workspace proofreads the project source.
+Workspace proofreads the project source during validation.
+
+## In Xcode
+
+Proofreading will also automatically work within Xcode if Workspace has been put [in charge of Xcode](Xcode.md).
+
+If Workspace is not in charge of Xcode, proofreading can still be activated by manually adding the following “run script” build phase:
+
+```shell
+~/.Workspace/Workspace/.build/release/workspace proofread
+```
 
 ## Disabling Rules
 

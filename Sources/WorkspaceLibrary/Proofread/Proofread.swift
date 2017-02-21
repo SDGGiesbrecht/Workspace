@@ -60,8 +60,7 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
                 // Swift Package Manager
                 "  - Packages",
                 // Workspace
-                "  - .Workspace",
-                "  - .Linked Repositories"
+                "  - .Test Zone"
                 ]
             let disabled = Configuration.disableProofreadingRules.sorted().map({ "  - " + $0 })
             if ¬disabled.isEmpty {

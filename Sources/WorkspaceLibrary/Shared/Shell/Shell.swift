@@ -113,7 +113,6 @@ func runThirdPartyTool(name: String, repositoryURL: String, tagPrefix: String?, 
             if let version = Version(tag) ?? Version(String(tag.characters.dropFirst())) {
                 print(version)
                 if let last = newest {
-                    print("skipping")
                     if version > last.version {
                         print("using")
                         newest = (tag: tag, version: version)

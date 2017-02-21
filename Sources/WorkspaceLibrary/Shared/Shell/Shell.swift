@@ -98,12 +98,12 @@ func bash(_ arguments: [String], silent: Bool = false, dropOutput: Bool = false)
     }
 }
 
+private var missingTools: Set<String> = []
 func runThirdPartyTool(name: String, repositoryURL: String, tagPrefix: String?, versionCheck: [String], continuousIntegrationSetUp: [[String]], command: [String], updateInstructions: [String], dropOutput: Bool = false) -> (succeeded: Bool, output: String?, exitCode: ExitCode)? {
 
     let versions = requireBash(["git", "ls-remote", "--tags", repositoryURL], silent: true)
     var newest: (tag: String, version: Version)? = nil
     for line in versions.lines {
-        print(line)
         var tagMarker = "refs/tags/"
         if let prefix = tagPrefix {
             tagMarker += prefix
@@ -111,14 +111,11 @@ func runThirdPartyTool(name: String, repositoryURL: String, tagPrefix: String?, 
         if let tagPrefixRange = line.range(of: "refs/tags/") {
             let tag = line.substring(from: tagPrefixRange.upperBound)
             if let version = Version(tag) ?? Version(String(tag.characters.dropFirst())) {
-                print(version)
                 if let last = newest {
                     if version > last.version {
-                        print("using")
                         newest = (tag: tag, version: version)
                     }
                 } else {
-                    print("using")
                     newest = (tag: tag, version: version)
                 }
             }
@@ -147,11 +144,15 @@ func runThirdPartyTool(name: String, repositoryURL: String, tagPrefix: String?, 
             fatalError(message: ["\(name) \(requiredVersion.version) could not be found."])
         } else {
 
-            printWarning([
-                "Some tests were skipped because \(name) \(requiredVersion.version) could not be found.",
-                repositoryURL,
-                join(lines: updateInstructions)
-                ])
+            if ¬missingTools.contains(name) {
+                missingTools.insert(name)
+
+                printWarning([
+                    "Some tests were skipped because \(name) \(requiredVersion.version) could not be found.",
+                    repositoryURL,
+                    join(lines: updateInstructions)
+                    ])
+            }
 
             return nil
         }

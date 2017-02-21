@@ -22,7 +22,7 @@ struct Documentation {
         printHeader(["Generating documentation..."])
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        func generate(operatingSystemName: OperatingSystem) {
+        func generate(operatingSystemName: String) {
 
             if let jazzyResult = runThirdPartyTool(
                 name: "Jazzy",
@@ -42,9 +42,43 @@ struct Documentation {
                 dropOutput: true) {
 
                 if ¬jazzyResult.succeeded {
-                    individualFailure("Failed to generate documentation for \(operatingSystemName)")
+                    individualFailure("Failed to generate documentation for \(operatingSystemName).")
                 }
             }
+        }
+
+        if Environment.shouldDoMacOSJobs {
+
+            // macOS
+
+            generate(operatingSystemName: "macOS")
+        }
+
+        if Environment.shouldDoMiscellaneousJobs ∧ Configuration.supportLinux {
+            // [_Workaround: Generate Linux documentation on macOS instead. (Jazzy 0.7.4)_]
+
+            generate(operatingSystemName: "Linux")
+        }
+
+        if Environment.shouldDoIOSJobs {
+
+            // iOS
+
+            generate(operatingSystemName: "iOS")
+        }
+
+        if Environment.shouldDoWatchOSJobs {
+
+            // watchOS
+
+            generate(operatingSystemName: "watchOS")
+        }
+
+        if Environment.shouldDoTVOSJobs {
+
+            // tvOS
+
+            generate(operatingSystemName: "tvOS")
         }
     }
 }

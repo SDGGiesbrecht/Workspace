@@ -139,8 +139,6 @@ func runThirdPartyTool(name: String, repositoryURL: String, tagPrefix: String?, 
 
     } else {
 
-        print(["System: \(bash(versionCheck, silent: true).output)"])
-
         if Environment.isInContinuousIntegration {
             fatalError(message: ["\(name) \(requiredVersion.version) could not be found."])
         } else {

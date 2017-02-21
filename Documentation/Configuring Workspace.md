@@ -62,5 +62,6 @@ For information on the various available options, see the documentation for the 
 - [Dependency Graph](Dependency Graph.md)
 - [File Headers](File Headers.md)
 - [Proofreading](Proofreading.md)
+- [Documentation Generation](Documentation Generation.md)
 - [Continuous Integration](Continuous Integration.md)
 - [Ignoring File Types](Ignoring File Types.md)

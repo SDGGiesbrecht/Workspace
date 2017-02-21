@@ -485,6 +485,10 @@ struct Configuration {
         return Set(listValue(option: .disableProofreadingRules))
     }
 
+    static var generateDocumentation: Bool {
+        return booleanValue(option: .generateDocumentation)
+    }
+
     static var manageContinuousIntegration: Bool {
         return booleanValue(option: .manageContinuousIntegration)
     }

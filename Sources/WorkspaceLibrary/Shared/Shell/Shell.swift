@@ -110,11 +110,14 @@ func runThirdPartyTool(name: String, repositoryURL: String, tagPrefix: String?, 
         if let tagPrefixRange = line.range(of: "refs/tags/") {
             let tag = line.substring(from: tagPrefixRange.upperBound)
             if let version = Version(tag) {
+                print(version)
                 if let last = newest {
                     if version > last.version {
+                        print("using")
                         newest = (tag: tag, version: version)
                     }
                 } else {
+                    print("using")
                     newest = (tag: tag, version: version)
                 }
             }

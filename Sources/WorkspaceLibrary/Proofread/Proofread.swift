@@ -77,7 +77,6 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
         if let swiftLintResult = runThirdPartyTool(
             name: "SwiftLint",
             repositoryURL: "https://github.com/realm/SwiftLint",
-            tagPrefix: nil,
             versionCheck: ["swiftlint", "version"],
             continuousIntegrationSetUp: [
                 ["brew", "upgrade", "swiftlint"]

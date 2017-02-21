@@ -27,7 +27,6 @@ struct Documentation {
             if let jazzyResult = runThirdPartyTool(
                 name: "Jazzy",
                 repositoryURL: "https://github.com/realm/jazzy",
-                tagPrefix: "jazzy version: ",
                 versionCheck: ["jazzy", "--version"],
                 continuousIntegrationSetUp: [
                     ["gem", "install", "jazzy"]

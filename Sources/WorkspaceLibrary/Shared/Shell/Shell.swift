@@ -99,15 +99,11 @@ func bash(_ arguments: [String], silent: Bool = false, dropOutput: Bool = false)
 }
 
 private var missingTools: Set<String> = []
-func runThirdPartyTool(name: String, repositoryURL: String, tagPrefix: String?, versionCheck: [String], continuousIntegrationSetUp: [[String]], command: [String], updateInstructions: [String], dropOutput: Bool = false) -> (succeeded: Bool, output: String?, exitCode: ExitCode)? {
+func runThirdPartyTool(name: String, repositoryURL: String, versionCheck: [String], continuousIntegrationSetUp: [[String]], command: [String], updateInstructions: [String], dropOutput: Bool = false) -> (succeeded: Bool, output: String?, exitCode: ExitCode)? {
 
     let versions = requireBash(["git", "ls-remote", "--tags", repositoryURL], silent: true)
     var newest: (tag: String, version: Version)? = nil
     for line in versions.lines {
-        var tagMarker = "refs/tags/"
-        if let prefix = tagPrefix {
-            tagMarker += prefix
-        }
         if let tagPrefixRange = line.range(of: "refs/tags/") {
             let tag = line.substring(from: tagPrefixRange.upperBound)
             if let version = Version(tag) ?? Version(String(tag.characters.dropFirst())) {
@@ -134,7 +130,10 @@ func runThirdPartyTool(name: String, repositoryURL: String, tagPrefix: String?, 
         }
     }
 
-    if let systemVersionString = bash(versionCheck, silent: true).output?.linesArray.first, let systemVersion = Version(systemVersionString), systemVersion == requiredVersion.version {
+    if let systemVersionLine = bash(versionCheck, silent: true).output?.linesArray.first,
+        let systemVersionStart = systemVersionLine.range(of: CharacterSet.decimalDigits)?.lowerBound,
+        let systemVersion = Version(systemVersionLine.substring(from: systemVersionStart)),
+        systemVersion == requiredVersion.version {
 
         return bash(command, dropOutput: dropOutput)
 

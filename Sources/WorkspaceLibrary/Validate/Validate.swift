@@ -71,6 +71,15 @@ func runValidate(andExit shouldExit: Bool) {
     UnitTests.test(individualSuccess: individualSuccess, individualFailure: individualFailure)
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    // Generating documentation...
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+
+    if Configuration.generateDocumentation ∧ Environment.operatingSystem == .macOS {
+
+        Documentation.generate(individualSuccess: individualSuccess, individualFailure: individualFailure)
+    }
+
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Summary"])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 

@@ -110,7 +110,7 @@ func runThirdPartyTool(name: String, repositoryURL: String, tagPrefix: String?, 
         }
         if let tagPrefixRange = line.range(of: "refs/tags/") {
             let tag = line.substring(from: tagPrefixRange.upperBound)
-            if let version = Version(tag) {
+            if let version = Version(tag) ?? Version(String(tag.characters.dropFirst())) {
                 print(version)
                 if let last = newest {
                     print("skipping")

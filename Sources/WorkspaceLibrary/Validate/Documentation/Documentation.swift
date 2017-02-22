@@ -41,7 +41,8 @@ struct Documentation {
                 continuousIntegrationSetUp: [
                     ["gem", "install", "jazzy"]
                 ],
-                command: ["jazzy", "--clean", "--use-safe-filenames",
+                // [_Workaround: Jazzy produces symbols from unbuilt #if directives with no documentation. Removing them with --skip-undocumented. (Jazzy 0.7.4)_]
+                command: ["jazzy", "--clean", "--use-safe-filenames", "--skip-undocumented",
                           "--output", documentationFolder,
                           "--xcodebuild-arguments", xcodebuildArguments.joined(separator: ",")
                 ],

@@ -17,14 +17,14 @@ import SDGLogic
 struct Documentation {
 
     static func generate(individualSuccess: @escaping (String) -> Void, individualFailure: @escaping (String) -> Void) {
-        
+
         Xcode.temporarilyDisableProofreading()
         defer {
             Xcode.reEnableProofreading()
         }
 
         func generate(operatingSystemName: String, sdk: String, condition: String? = nil) {
-            
+
             // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
             printHeader(["Generating documentation for \(operatingSystemName)..."])
             // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
@@ -38,7 +38,7 @@ struct Documentation {
             if let extraCondition = condition {
                 xcodebuildArguments.append("SWIFT_ACTIVE_COMPILATION_CONDITIONS=\(extraCondition)")
             }
-            
+
             if Environment.isInContinuousIntegration {
                 // [_Workaround: Testing in CI._]
                 let _ = bash(["xcodebuild"] + xcodebuildArguments)

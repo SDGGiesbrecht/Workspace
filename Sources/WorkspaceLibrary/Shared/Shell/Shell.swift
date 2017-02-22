@@ -31,6 +31,10 @@ func bash(_ arguments: [String], silent: Bool = false, dropOutput: Bool = false)
         }
     }).joined(separator: " ")
 
+    if ¬silent {
+        print("$ " + argumentsString)
+    }
+
     let process = Process()
     process.launchPath = "/bin/bash"
 

@@ -16,6 +16,29 @@ import SDGLogic
 
 struct Documentation {
 
+    static func copyright(folder: String) -> String {
+
+        var copyright = Configuration.documentationCopyright
+
+        func key(_ name: String) -> String {
+            return "[_\(name)_]"
+        }
+
+        let dates = FileHeaders.copyright(fromText: File(possiblyAt: RelativePath(folder).subfolderOrFile("index.html")).contents)
+
+        var possibleAuthor: String?
+        if copyright.contains(key("Author")) {
+            possibleAuthor = Configuration.requiredAuthor
+        }
+
+        copyright = copyright.replacingOccurrences(of: key("Copyright"), with: dates)
+        if let author = possibleAuthor {
+            copyright = copyright.replacingOccurrences(of: key("Author"), with: author)
+        }
+
+        return copyright
+    }
+
     static func generate(individualSuccess: @escaping (String) -> Void, individualFailure: @escaping (String) -> Void) {
 
         Xcode.temporarilyDisableProofreading()
@@ -30,8 +53,6 @@ struct Documentation {
             // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
             let documentationFolder = "docs/\(operatingSystemName)"
-
-            var copyright = Configuration.documentationCopyright
 
             var xcodebuildArguments = [
                 "-target", Configuration.primaryXcodeTarget,
@@ -58,7 +79,7 @@ struct Documentation {
                           "--output", documentationFolder,
                           "--xcodebuild-arguments", xcodebuildArguments.joined(separator: ","),
                           "--module", Configuration.primaryXcodeTarget,
-                          "--copyright", copyright
+                          "--copyright", copyright(folder: documentationFolder)
                 ],
                 updateInstructions: [
                     "Command to install Jazzy:",

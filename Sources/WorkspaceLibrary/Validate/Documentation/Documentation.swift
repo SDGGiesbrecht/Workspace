@@ -76,7 +76,7 @@ struct Documentation {
             ]
             if let github = Configuration.projectWebsite {
                 command.append(contentsOf: [
-                    "--github-url", github
+                    "--github_url", github
                     ])
             }
 

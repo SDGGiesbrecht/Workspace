@@ -17,12 +17,17 @@ import SDGLogic
 struct Documentation {
 
     static func generate(individualSuccess: @escaping (String) -> Void, individualFailure: @escaping (String) -> Void) {
-
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        printHeader(["Generating documentation..."])
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        
+        Xcode.temporarilyDisableProofreading()
+        defer {
+            Xcode.reEnableProofreading()
+        }
 
         func generate(operatingSystemName: String, sdk: String, condition: String? = nil) {
+            
+            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+            printHeader(["Generating documentation for \(operatingSystemName)..."])
+            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
             let documentationFolder = "docs/\(operatingSystemName)"
 

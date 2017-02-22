@@ -27,7 +27,7 @@ struct Documentation {
             let documentationFolder = "docs/\(operatingSystemName)"
 
             var xcodebuildArguments = [
-                "-scheme", Configuration.primaryXcodeTarget,
+                "-target", Configuration.primaryXcodeTarget,
                 "-sdk", sdk
                 ]
             if let extraCondition = condition {

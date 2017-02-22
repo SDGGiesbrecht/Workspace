@@ -35,6 +35,7 @@ struct Documentation {
         if let author = possibleAuthor {
             copyright = copyright.replacingOccurrences(of: key("Author"), with: author)
         }
+        copyright = copyright.replacingOccurrences(of: key("Project"), with: Configuration.projectName)
 
         return copyright
     }

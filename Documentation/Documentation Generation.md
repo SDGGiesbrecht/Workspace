@@ -37,22 +37,18 @@ The copyright notice can be further customized by defining a template with the `
 There are several dynamic elements available for the file header template. Dynamic elements can be used by placing the element’s key inside `[_` and `_]` at the desired location.
 
 For example:
-
 ```
 Documentation Copyright: Copyright [_Copyright_] [_Author_].
-
 ```
-
 becomes:
-
-```swift
+```
 Copyright ©2016–2017 John Doe.
 ```
 
 The available dynamic elements are:
 
 - `Project`: The name of the particular project. (e.g. `MyLibrary`)
-- `Copyright`: The file’s copyright date(s). (e.g. `©2016–2017`) More information [below](#copyright).
+- `Copyright`: The copyright date(s). (e.g. `©2016–2017`)
 - `Author`: The value of the configuration option `Author`. (e.g. `John Doe`)
 
 Dynamic elements can be especially useful when they are combined with [configuration sharing](Configuring Workspace.md#sharing-configurations-between-projects).

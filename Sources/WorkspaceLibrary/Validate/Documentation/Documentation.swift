@@ -31,6 +31,8 @@ struct Documentation {
 
             let documentationFolder = "docs/\(operatingSystemName)"
 
+            var copyright = Configuration.documentationCopyright
+
             var xcodebuildArguments = [
                 "-target", Configuration.primaryXcodeTarget,
                 "-sdk", sdk
@@ -55,7 +57,8 @@ struct Documentation {
                 command: ["jazzy", "--clean", "--use-safe-filenames", "--skip-undocumented",
                           "--output", documentationFolder,
                           "--xcodebuild-arguments", xcodebuildArguments.joined(separator: ","),
-                          "--module", Configuration.primaryXcodeTarget
+                          "--module", Configuration.primaryXcodeTarget,
+                          "--copyright", copyright
                 ],
                 updateInstructions: [
                     "Command to install Jazzy:",

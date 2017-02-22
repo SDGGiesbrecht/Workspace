@@ -26,7 +26,9 @@ A file header is a commented section at the top of each file in a project. Typic
 
 ## Customization
 
-The file header can be customized by defining a template with the `File Header` [configuration](Configuring Workspace.md) option.
+The default file header will automatically change to accommodate some configuration options, such as `Project Website`, `Author` and `Licence`.
+
+The file header can be further customized by defining a template with the `File Header` [configuration](Configuring Workspace.md) option.
 
 There are several dynamic elements available for the file header template. Dynamic elements can be used by placing the element’s key inside `[_` and `_]` at the desired location.
 

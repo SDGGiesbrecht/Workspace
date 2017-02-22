@@ -28,6 +28,37 @@ etc.
 
 ## Customization
 
+### Copyright
+
+The default copyright notice will automatically change to accommodate the configuration option `Author`.
+
+The copyright notice can be further customized by defining a template with the `Documentation Copyright` [configuration](Configuring Workspace.md) option.
+
+There are several dynamic elements available for the file header template. Dynamic elements can be used by placing the element’s key inside `[_` and `_]` at the desired location.
+
+For example:
+
+```
+Documentation Copyright: Copyright [_Copyright_] [_Author_].
+
+```
+
+becomes:
+
+```swift
+Copyright ©2016–2017 John Doe.
+```
+
+The available dynamic elements are:
+
+- `Project`: The name of the particular project. (e.g. `MyLibrary`)
+- `Copyright`: The file’s copyright date(s). (e.g. `©2016–2017`) More information [below](#copyright).
+- `Author`: The value of the configuration option `Author`. (e.g. `John Doe`)
+
+Dynamic elements can be especially useful when they are combined with [configuration sharing](Configuring Workspace.md#sharing-configurations-between-projects).
+
+### Advanced
+
 Jazzy can be further configured by placing a `.jazzy.yaml` file in the project root. For more information see [Jazzy’s own documentation](https://github.com/realm/jazzy).
 
 ## Linux

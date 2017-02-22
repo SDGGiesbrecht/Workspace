@@ -26,6 +26,10 @@ or<br>
 `https://`username`.github.io/`repository`/Linux`<br>
 etc.
 
+## Customization
+
+Jazzy can be further configured by placing a `.jazzy.yaml` file in the project root. For more information see [Jazzy’s own documentation](https://github.com/realm/jazzy).
+
 ## Linux
 
 Documentation generation is not supported *from* Linux because Jazzy does not run on Linux.

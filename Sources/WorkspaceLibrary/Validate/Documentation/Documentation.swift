@@ -31,7 +31,7 @@ struct Documentation {
                 continuousIntegrationSetUp: [
                     ["gem", "install", "jazzy"]
                 ],
-                command: ["jazzy"],
+                command: ["jazzy", "--clean", "--use-safe-filenames"],
                 updateInstructions: [
                     "Command to install Jazzy:",
                     "gem install jazzy",
@@ -39,6 +39,8 @@ struct Documentation {
                     "gem update jazzy"
                 ],
                 dropOutput: true) {
+
+                requireBash(["touch", "docs/.nojekyll"])
 
                 if ¬jazzyResult.succeeded {
                     individualFailure("Failed to generate documentation for \(operatingSystemName).")

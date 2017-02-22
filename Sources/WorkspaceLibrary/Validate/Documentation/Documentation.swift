@@ -68,6 +68,18 @@ struct Documentation {
                 let _ = bash(["xcodebuild"] + xcodebuildArguments)
             }
 
+            var command = ["jazzy", "--clean", "--use-safe-filenames", "--skip-undocumented",
+                           "--output", documentationFolder,
+                           "--xcodebuild-arguments", xcodebuildArguments.joined(separator: ","),
+                           "--module", Configuration.primaryXcodeTarget,
+                           "--copyright", copyright(folder: documentationFolder)
+            ]
+            if let github = Configuration.projectWebsite {
+                command.append(contentsOf: [
+                    "--github-url", github
+                    ])
+            }
+
             if let jazzyResult = runThirdPartyTool(
                 name: "Jazzy",
                 repositoryURL: "https://github.com/realm/jazzy",
@@ -76,12 +88,7 @@ struct Documentation {
                     ["gem", "install", "jazzy"]
                 ],
                 // [_Workaround: Jazzy produces symbols from unbuilt #if directives with no documentation. Removing them with --skip-undocumented. (Jazzy 0.7.4)_]
-                command: ["jazzy", "--clean", "--use-safe-filenames", "--skip-undocumented",
-                          "--output", documentationFolder,
-                          "--xcodebuild-arguments", xcodebuildArguments.joined(separator: ","),
-                          "--module", Configuration.primaryXcodeTarget,
-                          "--copyright", copyright(folder: documentationFolder)
-                ],
+                command: command,
                 updateInstructions: [
                     "Command to install Jazzy:",
                     "gem install jazzy",

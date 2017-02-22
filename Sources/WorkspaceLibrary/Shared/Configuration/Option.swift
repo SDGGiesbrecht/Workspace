@@ -55,6 +55,7 @@ enum Option: String, CustomStringConvertible {
     case disableProofreadingRules = "Disable Proofreading Rules"
 
     case generateDocumentation = "Generate Documentation"
+    case documentationCopyright = "Documentation Copyright"
 
     case manageContinuousIntegration = "Manage Continuous Integration"
 
@@ -101,6 +102,7 @@ enum Option: String, CustomStringConvertible {
         .disableProofreadingRules,
 
         .generateDocumentation,
+        .documentationCopyright,
 
         .manageContinuousIntegration,
 
@@ -178,6 +180,8 @@ enum Option: String, CustomStringConvertible {
 
         case .generateDocumentation:
             return Configuration.falseOptionValue
+        case .documentationCopyright:
+            return FileHeaders.defaultCopyright + " All rights reserved."
 
         case .manageContinuousIntegration:
             return Configuration.falseOptionValue

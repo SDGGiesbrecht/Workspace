@@ -22,9 +22,14 @@ struct Documentation {
         printHeader(["Generating documentation..."])
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        func generate(operatingSystemName: String) {
-            
+        func generate(operatingSystemName: String, sdk: String) {
+
             let documentationFolder = "docs/\(operatingSystemName)"
+
+            let xcodebuildArguments = [
+                "-scheme", Configuration.primaryXcodeTarget,
+                "-sdk", sdk
+                ].joined(separator: ",")
 
             if let jazzyResult = runThirdPartyTool(
                 name: "Jazzy",
@@ -33,7 +38,10 @@ struct Documentation {
                 continuousIntegrationSetUp: [
                     ["gem", "install", "jazzy"]
                 ],
-                command: ["jazzy", "--clean", "--use-safe-filenames", "--output", documentationFolder],
+                command: ["jazzy", "--clean", "--use-safe-filenames",
+                          "--output", documentationFolder,
+                          "--xcodebuild-arguments", xcodebuildArguments
+                ],
                 updateInstructions: [
                     "Command to install Jazzy:",
                     "gem install jazzy",
@@ -44,7 +52,9 @@ struct Documentation {
 
                 requireBash(["touch", "docs/.nojekyll"])
 
-                if ¬jazzyResult.succeeded {
+                if jazzyResult.succeeded {
+                    individualSuccess("Generated documentation for \(operatingSystemName).")
+                } else {
                     individualFailure("Failed to generate documentation for \(operatingSystemName).")
                 }
             }
@@ -54,34 +64,34 @@ struct Documentation {
 
             // macOS
 
-            generate(operatingSystemName: "macOS")
+            generate(operatingSystemName: "macOS", sdk: "macos")
         }
 
         if Environment.shouldDoMiscellaneousJobs ∧ Configuration.supportLinux {
             // [_Workaround: Generate Linux documentation on macOS instead. (Jazzy 0.7.4)_]
 
-            generate(operatingSystemName: "Linux")
+            generate(operatingSystemName: "Linux", sdk: "macos")
         }
 
         if Environment.shouldDoIOSJobs {
 
             // iOS
 
-            generate(operatingSystemName: "iOS")
+            generate(operatingSystemName: "iOS", sdk: "iphoneos")
         }
 
         if Environment.shouldDoWatchOSJobs {
 
             // watchOS
 
-            generate(operatingSystemName: "watchOS")
+            generate(operatingSystemName: "watchOS", sdk: "watchos")
         }
 
         if Environment.shouldDoTVOSJobs {
 
             // tvOS
 
-            generate(operatingSystemName: "tvOS")
+            generate(operatingSystemName: "tvOS", sdk: "appletvos")
         }
     }
 }

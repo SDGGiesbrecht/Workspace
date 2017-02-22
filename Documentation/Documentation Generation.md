@@ -53,6 +53,8 @@ The available dynamic elements are:
 
 Dynamic elements can be especially useful when they are combined with [configuration sharing](Configuring Workspace.md#sharing-configurations-between-projects).
 
+Copyright dates are determined by searching `index.html` at the target location the [same way](File Headers.md#determination-of-the-dates) as for file headers.
+
 ### Advanced
 
 Jazzy can be further configured by placing a `.jazzy.yaml` file in the project root. For more information see [Jazzy’s own documentation](https://github.com/realm/jazzy).

@@ -15,3 +15,75 @@
 # Documentation Generation
 
 Workspace can automatically generate API documentation using [Jazzy](https://github.com/realm/jazzy).
+
+This is controlled by the [configuration](Configuring Workspace.md) option `Generate Documentation`. The [default](Responsibilities.md#default-vs-automatic) value is `False`. The [automatic](Responsibilities.md#default-vs-automatic) value is `True`.
+
+The generated documentation will be placed in a `docs` folder at the project root. Adjust [these GitHub settings](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch), to automatically host them directly from the repository.
+
+Each operating system receives its own subfolder. Link to the documentation like this:
+`https://`username`.github.io/`repository`/macOS`
+or
+`https://`username`.github.io/`repository`/Linux`
+etc.
+
+## Linux
+
+Documentation generation is not supported *from* Linux because Jazzy does not run on Linux.
+
+However, documentation can still be generated *for* Linux from macOS, albeit with a little extra preparation.
+
+Workspace activates the conditional build flag `LinuxDocs` when it builds on macOS for the sake of Linux documentation.
+
+Conditional compilation involving public symbols must be done like this:
+
+```swift
+// For Linux:
+
+#if os(macOS) && LinuxDocs
+    /// Does penguin stuff.
+    public func doPenguinStuff() {
+        preconditionFailure()
+    }
+#elseif os(Linux)
+    /// Does penguin stuff.
+    public func doPenguinStuff() {
+        goForSwim()
+        slideOnIce()
+        watchAirplane()
+        fallOver()
+    }
+#endif
+
+// For macOS:
+
+#if os(macOS) && !LinuxDocs
+    /// Does apple stuff.
+    public func doAppleStuff() {
+        grow()
+        turnRed()
+        demonstrateGravity()
+        landOnNewton()
+    }
+#endif
+```
+
+Where there are no public symbols involved, conditional compilation can be done normally:
+```swift
+#if os(Linux)
+    import Glibc
+#else
+    import Darwin
+#endif
+
+/// Makes the operating system say, “Hi”.
+func sayHi() {
+    let name: String
+    #if os(Linux)
+        name = "Linux"
+    #else
+        name = "macOS"
+    #endif
+
+    print("Hi! My name is \(name).")
+}
+```

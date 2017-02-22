@@ -91,3 +91,7 @@ func sayHi() {
     print("Hi! My name is \(name).")
 }
 ```
+
+## Special Thanks
+
+- Realm and [Jazzy](https://github.com/realm/jazzy)

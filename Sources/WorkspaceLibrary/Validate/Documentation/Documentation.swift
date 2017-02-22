@@ -22,14 +22,17 @@ struct Documentation {
         printHeader(["Generating documentation..."])
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        func generate(operatingSystemName: String, sdk: String) {
+        func generate(operatingSystemName: String, sdk: String, condition: String? = nil) {
 
             let documentationFolder = "docs/\(operatingSystemName)"
 
-            let xcodebuildArguments = [
+            var xcodebuildArguments = [
                 "-scheme", Configuration.primaryXcodeTarget,
                 "-sdk", sdk
-                ].joined(separator: ",")
+                ]
+            if let extraCondition = condition {
+                xcodebuildArguments.append("SWIFT_ACTIVE_COMPILATION_CONDITIONS=\(extraCondition)")
+            }
 
             if let jazzyResult = runThirdPartyTool(
                 name: "Jazzy",
@@ -40,7 +43,7 @@ struct Documentation {
                 ],
                 command: ["jazzy", "--clean", "--use-safe-filenames",
                           "--output", documentationFolder,
-                          "--xcodebuild-arguments", xcodebuildArguments
+                          "--xcodebuild-arguments", xcodebuildArguments.joined(separator: ",")
                 ],
                 updateInstructions: [
                     "Command to install Jazzy:",
@@ -70,7 +73,7 @@ struct Documentation {
         if Environment.shouldDoMiscellaneousJobs ∧ Configuration.supportLinux {
             // [_Workaround: Generate Linux documentation on macOS instead. (Jazzy 0.7.4)_]
 
-            generate(operatingSystemName: "Linux", sdk: "macosx")
+            generate(operatingSystemName: "Linux", sdk: "macosx", condition: "LinuxDocs")
         }
 
         if Environment.shouldDoIOSJobs {

@@ -23,6 +23,8 @@ struct Documentation {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
         func generate(operatingSystemName: String) {
+            
+            let documentationFolder = "docs/\(operatingSystemName)"
 
             if let jazzyResult = runThirdPartyTool(
                 name: "Jazzy",
@@ -31,7 +33,7 @@ struct Documentation {
                 continuousIntegrationSetUp: [
                     ["gem", "install", "jazzy"]
                 ],
-                command: ["jazzy", "--clean", "--use-safe-filenames"],
+                command: ["jazzy", "--clean", "--use-safe-filenames", "--output", documentationFolder],
                 updateInstructions: [
                     "Command to install Jazzy:",
                     "gem install jazzy",
@@ -40,7 +42,7 @@ struct Documentation {
                 ],
                 dropOutput: true) {
 
-                requireBash(["touch", "docs/.nojekyll"])
+                requireBash(["touch", "docs/\(documentationFolder)/.nojekyll"])
 
                 if ¬jazzyResult.succeeded {
                     individualFailure("Failed to generate documentation for \(operatingSystemName).")

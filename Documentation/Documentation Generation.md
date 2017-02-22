@@ -53,7 +53,7 @@ The available dynamic elements are:
 
 Dynamic elements can be especially useful when they are combined with [configuration sharing](Configuring Workspace.md#sharing-configurations-between-projects).
 
-Copyright dates are determined by searching `index.html` at the target location the [same way](File Headers.md#determination-of-the-dates) as for file headers.
+Copyright dates are determined by searching the contents of `index.html` at the target location the [same way](File Headers.md#determination-of-the-dates) as for file headers.
 
 ### Advanced
 

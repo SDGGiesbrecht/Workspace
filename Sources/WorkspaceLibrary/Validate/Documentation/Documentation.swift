@@ -38,6 +38,11 @@ struct Documentation {
             if let extraCondition = condition {
                 xcodebuildArguments.append("SWIFT_ACTIVE_COMPILATION_CONDITIONS=\(extraCondition)")
             }
+            
+            if Environment.isInContinuousIntegration {
+                // [_Workaround: Testing in CI._]
+                let _ = bash(["xcodebuild"] + xcodebuildArguments)
+            }
 
             if let jazzyResult = runThirdPartyTool(
                 name: "Jazzy",

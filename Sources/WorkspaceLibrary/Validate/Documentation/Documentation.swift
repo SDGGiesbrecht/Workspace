@@ -64,13 +64,13 @@ struct Documentation {
 
             // macOS
 
-            generate(operatingSystemName: "macOS", sdk: "macos")
+            generate(operatingSystemName: "macOS", sdk: "macosx")
         }
 
         if Environment.shouldDoMiscellaneousJobs ∧ Configuration.supportLinux {
             // [_Workaround: Generate Linux documentation on macOS instead. (Jazzy 0.7.4)_]
 
-            generate(operatingSystemName: "Linux", sdk: "macos")
+            generate(operatingSystemName: "Linux", sdk: "macosx")
         }
 
         if Environment.shouldDoIOSJobs {

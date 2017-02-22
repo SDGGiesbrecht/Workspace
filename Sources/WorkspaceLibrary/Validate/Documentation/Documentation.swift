@@ -42,7 +42,7 @@ struct Documentation {
                 ],
                 dropOutput: true) {
 
-                requireBash(["touch", "docs/\(documentationFolder)/.nojekyll"])
+                requireBash(["touch", "docs/.nojekyll"])
 
                 if ¬jazzyResult.succeeded {
                     individualFailure("Failed to generate documentation for \(operatingSystemName).")

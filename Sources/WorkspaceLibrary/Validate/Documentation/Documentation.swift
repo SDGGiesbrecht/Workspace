@@ -70,11 +70,6 @@ struct Documentation {
                 xcodebuildArguments.append("SWIFT_ACTIVE_COMPILATION_CONDITIONS=\(extraCondition)")
             }
 
-            if Environment.isInContinuousIntegration {
-                // [_Workaround: Testing in CI._]
-                let _ = bash(["xcodebuild"] + xcodebuildArguments)
-            }
-
             var command = ["jazzy", "--clean", "--use-safe-filenames", "--skip-undocumented",
                            "--output", documentationFolder,
                            "--xcodebuild-arguments", xcodebuildArguments.joined(separator: ","),

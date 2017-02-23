@@ -25,7 +25,6 @@ struct Documentation {
         }
 
         let existing = File(possiblyAt: RelativePath(folder).subfolderOrFile("index.html")).contents
-        print(existing)
         let dates = FileHeaders.copyright(fromText: existing)
 
         var possibleAuthor: String?

@@ -25,7 +25,13 @@ struct Documentation {
         }
 
         let existing = File(possiblyAt: RelativePath(folder).subfolderOrFile("index.html")).contents
-        let dates = FileHeaders.copyright(fromText: existing)
+        let searchArea: String
+        if let footerStart = existing.range(of: "<section id=\u{22}footer\u{22}>")?.upperBound {
+            searchArea = existing.substring(from: footerStart)
+        } else {
+            searchArea = ""
+        }
+        let dates = FileHeaders.copyright(fromText: searchArea)
 
         var possibleAuthor: String?
         if copyright.contains(key("Author")) {

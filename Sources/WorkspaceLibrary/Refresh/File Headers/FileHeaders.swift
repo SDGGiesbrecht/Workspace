@@ -65,14 +65,10 @@ struct FileHeaders {
                     let number = text.substring(with: range.upperBound ..< numberEnd)
                     if number.unicodeScalars.count == 4 {
                         oldStartDate = number
-                        print("Found: \(number)")
                         break
                     }
                 }
             }
-        }
-        if oldStartDate == nil {
-            print("None found.")
         }
         let currentDate = Date()
         let calendar = NSCalendar(identifier: NSCalendar.Identifier.gregorian)!

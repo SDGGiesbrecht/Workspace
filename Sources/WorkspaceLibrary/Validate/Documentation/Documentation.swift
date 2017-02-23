@@ -24,7 +24,9 @@ struct Documentation {
             return "[_\(name)_]"
         }
 
-        let dates = FileHeaders.copyright(fromText: File(possiblyAt: RelativePath(folder).subfolderOrFile("index.html")).contents)
+        let existing = File(possiblyAt: RelativePath(folder).subfolderOrFile("index.html")).contents
+        print(existing)
+        let dates = FileHeaders.copyright(fromText: existing)
 
         var possibleAuthor: String?
         if copyright.contains(key("Author")) {

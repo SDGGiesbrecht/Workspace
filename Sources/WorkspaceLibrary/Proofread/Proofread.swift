@@ -60,8 +60,7 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
                 // Swift Package Manager
                 "  - Packages",
                 // Workspace
-                "  - .Workspace",
-                "  - .Linked Repositories"
+                "  - .Test Zone"
                 ]
             let disabled = Configuration.disableProofreadingRules.sorted().map({ "  - " + $0 })
             if ¬disabled.isEmpty {
@@ -78,7 +77,6 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
         if let swiftLintResult = runThirdPartyTool(
             name: "SwiftLint",
             repositoryURL: "https://github.com/realm/SwiftLint",
-            tagPrefix: nil,
             versionCheck: ["swiftlint", "version"],
             continuousIntegrationSetUp: [
                 ["brew", "upgrade", "swiftlint"]

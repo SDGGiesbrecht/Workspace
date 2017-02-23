@@ -31,6 +31,10 @@ func bash(_ arguments: [String], silent: Bool = false, dropOutput: Bool = false)
         }
     }).joined(separator: " ")
 
+    if ¬silent {
+        print("$ " + argumentsString)
+    }
+
     let process = Process()
     process.launchPath = "/bin/bash"
 
@@ -98,18 +102,15 @@ func bash(_ arguments: [String], silent: Bool = false, dropOutput: Bool = false)
     }
 }
 
-func runThirdPartyTool(name: String, repositoryURL: String, tagPrefix: String?, versionCheck: [String], continuousIntegrationSetUp: [[String]], command: [String], updateInstructions: [String], dropOutput: Bool = false) -> (succeeded: Bool, output: String?, exitCode: ExitCode)? {
+private var missingTools: Set<String> = []
+func runThirdPartyTool(name: String, repositoryURL: String, versionCheck: [String], continuousIntegrationSetUp: [[String]], command: [String], updateInstructions: [String], dropOutput: Bool = false) -> (succeeded: Bool, output: String?, exitCode: ExitCode)? {
 
     let versions = requireBash(["git", "ls-remote", "--tags", repositoryURL], silent: true)
     var newest: (tag: String, version: Version)? = nil
     for line in versions.lines {
-        var tagMarker = "refs/tags/"
-        if let prefix = tagPrefix {
-            tagMarker += prefix
-        }
         if let tagPrefixRange = line.range(of: "refs/tags/") {
             let tag = line.substring(from: tagPrefixRange.upperBound)
-            if let version = Version(tag) {
+            if let version = Version(tag) ?? Version(String(tag.characters.dropFirst())) {
                 if let last = newest {
                     if version > last.version {
                         newest = (tag: tag, version: version)
@@ -133,23 +134,28 @@ func runThirdPartyTool(name: String, repositoryURL: String, tagPrefix: String?, 
         }
     }
 
-    if let systemVersionString = bash(versionCheck, silent: true).output?.linesArray.first, let systemVersion = Version(systemVersionString), systemVersion == requiredVersion.version {
+    if let systemVersionLine = bash(versionCheck, silent: true).output?.linesArray.first,
+        let systemVersionStart = systemVersionLine.range(of: CharacterSet.decimalDigits)?.lowerBound,
+        let systemVersion = Version(systemVersionLine.substring(from: systemVersionStart)),
+        systemVersion == requiredVersion.version {
 
         return bash(command, dropOutput: dropOutput)
 
     } else {
 
-        print(["System: \(bash(versionCheck, silent: true).output)"])
-
         if Environment.isInContinuousIntegration {
             fatalError(message: ["\(name) \(requiredVersion.version) could not be found."])
         } else {
 
-            printWarning([
-                "Some tests were skipped because \(name) \(requiredVersion.version) could not be found.",
-                repositoryURL,
-                join(lines: updateInstructions)
-                ])
+            if ¬missingTools.contains(name) {
+                missingTools.insert(name)
+
+                printWarning([
+                    "Some tests were skipped because \(name) \(requiredVersion.version) could not be found.",
+                    repositoryURL,
+                    join(lines: updateInstructions)
+                    ])
+            }
 
             return nil
         }

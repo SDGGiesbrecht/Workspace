@@ -84,10 +84,11 @@ extension String {
         return range(of: searchTerm, options: String.CompareOptions.literal, range: searchRange)
     }
 
-    func range(of characters: CharacterSet, in searchRange: Range<Index>) -> Range<Index>? {
+    func range(of characters: CharacterSet, in searchRange: Range<Index>? = nil) -> Range<Index>? {
+        let actualSearchRange = searchRange ?? startIndex ..< endIndex
 
-        var location = searchRange.lowerBound.samePosition(in: unicodeScalars)
-        let end = searchRange.upperBound.samePosition(in: unicodeScalars)
+        var location = actualSearchRange.lowerBound.samePosition(in: unicodeScalars)
+        let end = actualSearchRange.upperBound.samePosition(in: unicodeScalars)
         while location < end ∧ ¬characters.contains(unicodeScalars[location]) {
             location = unicodeScalars.index(after: location)
         }

@@ -485,6 +485,13 @@ struct Configuration {
         return Set(listValue(option: .disableProofreadingRules))
     }
 
+    static var generateDocumentation: Bool {
+        return booleanValue(option: .generateDocumentation)
+    }
+    static var documentationCopyright: String {
+        return stringValue(option: .documentationCopyright)
+    }
+
     static var manageContinuousIntegration: Bool {
         return booleanValue(option: .manageContinuousIntegration)
     }

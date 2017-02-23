@@ -71,6 +71,29 @@ func runValidate(andExit shouldExit: Bool) {
     UnitTests.test(individualSuccess: individualSuccess, individualFailure: individualFailure)
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    // Generating documentation...
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+
+    if Configuration.generateDocumentation ∧ Environment.operatingSystem == .macOS {
+
+        Documentation.generate(individualSuccess: individualSuccess, individualFailure: individualFailure)
+    }
+
+    if Environment.isInContinuousIntegration {
+
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        printHeader(["Validating project state..."])
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+
+        requireBash(["git", "add", ".", "--intent-to-add"], silent: true)
+        if bash(["git", "diff", "--exit-code"], dropOutput: true).succeeded {
+            individualSuccess(message: "The project is up to date.")
+        } else {
+            individualFailure(message: "The project is out of date. (Please run “Validate Changes” before committing.)")
+        }
+    }
+
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Summary"])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 

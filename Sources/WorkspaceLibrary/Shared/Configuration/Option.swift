@@ -54,6 +54,9 @@ enum Option: String, CustomStringConvertible {
 
     case disableProofreadingRules = "Disable Proofreading Rules"
 
+    case generateDocumentation = "Generate Documentation"
+    case documentationCopyright = "Documentation Copyright"
+
     case manageContinuousIntegration = "Manage Continuous Integration"
 
     case ignoreFileTypes = "Ignore File Types"
@@ -97,6 +100,9 @@ enum Option: String, CustomStringConvertible {
         .author,
 
         .disableProofreadingRules,
+
+        .generateDocumentation,
+        .documentationCopyright,
 
         .manageContinuousIntegration,
 
@@ -172,6 +178,11 @@ enum Option: String, CustomStringConvertible {
         case .disableProofreadingRules:
             return Configuration.emptyListOptionValue
 
+        case .generateDocumentation:
+            return Configuration.falseOptionValue
+        case .documentationCopyright:
+            return FileHeaders.defaultCopyright + " All rights reserved."
+
         case .manageContinuousIntegration:
             return Configuration.falseOptionValue
 
@@ -199,6 +210,7 @@ enum Option: String, CustomStringConvertible {
         (.manageXcode, automaticValue: Configuration.trueOptionValue, DocumentationLink.xcode),
         (.manageDependencyGraph, automaticValue: Configuration.trueOptionValue, DocumentationLink.dependencyGraph),
         (.manageFileHeaders, automaticValue: Configuration.trueOptionValue, DocumentationLink.fileHeaders),
+        (.generateDocumentation, automaticValue: Configuration.trueOptionValue, DocumentationLink.documentationGeneration),
         (.manageContinuousIntegration, automaticValue: Configuration.trueOptionValue, DocumentationLink.continuousIntegration)
         ]
 

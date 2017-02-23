@@ -41,6 +41,12 @@ struct Git {
         "/*.xcodeproj"
         ]
 
+    static let ignoreEntriesForJazzy = [
+        "/build",
+        "undocumented.json",
+        "*.tgz"
+    ]
+
     static func updateGitConfiguraiton() {
 
         let startToken = "# [_Begin Workspace Section_]"
@@ -93,6 +99,9 @@ struct Git {
         var updatedLines: [String] = requiredIgnoreEntries
         if Configuration.manageXcode {
             updatedLines += ignoreEntriesForXcode
+        }
+        if Configuration.generateDocumentation {
+            updatedLines += ignoreEntriesForJazzy
         }
 
         replaceManagedSection(in: gitIgnore, with: updatedLines)

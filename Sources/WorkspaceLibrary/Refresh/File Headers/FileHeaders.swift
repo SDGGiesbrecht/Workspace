@@ -18,6 +18,14 @@ import SDGLogic
 
 struct FileHeaders {
 
+    static let defaultCopyright: String = {
+        if Configuration.optionIsDefined(.author) {
+            return "Copyright [_Copyright_] [_Author_] and the [_Project_] project contributors."
+        } else {
+            return "Copyright [_Copyright_] the [_Project_] project contributors."
+        }
+    }()
+
     static let defaultFileHeader: String = {
         var defaultHeader: [String] = [
             "[_Filename_]",
@@ -30,11 +38,7 @@ struct FileHeaders {
         defaultHeader.append(contentsOf: [
             ""
             ])
-        if Configuration.optionIsDefined(.author) {
-            defaultHeader.append("Copyright [_Copyright_] [_Author_] and the [_Project_] project contributors.")
-        } else {
-            defaultHeader.append("Copyright [_Copyright_] the [_Project_] project contributors.")
-        }
+        defaultHeader.append(defaultCopyright)
         if Configuration.sdg {
             defaultHeader.append(contentsOf: [
                 "",

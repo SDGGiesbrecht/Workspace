@@ -120,7 +120,7 @@ When it creates a new project, Workspace will handle many responsibilities by de
 
 ### Existing Projects
 
-To have Workspace take responsibility for an existing project, run this command the root of its repository:
+To have Workspace take responsibility for an existing project, run this command in the root of its repository:
 
 ```shell
 ~/.Workspace/Workspace/.build/release/workspace refresh

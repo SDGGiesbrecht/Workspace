@@ -746,9 +746,14 @@ class WorkspaceTests: XCTestCase {
                             if ¬bash(["../../.build/debug/workspace", "initialize"] + project.flags).succeeded {
                                 XCTFail("Failed to initialize test project “\(project.name)”.")
                             }
-                        }
 
-                        Repository.performInDirectory(directory: root(of: project.name)) {
+                            if ¬bash(["git", "add", "."], silent: true).succeeded {
+                                XCTFail("Failed to add files to Git in test project “\(project.name)”.")
+                            }
+
+                            if ¬bash(["git", "commit", "-m", "Initialized state."], silent: true).succeeded {
+                                XCTFail("Failed to add files to Git in test project “\(project.name)”.")
+                            }
 
                             if ¬bash(["../../.build/debug/workspace", "validate"]).succeeded {
                                 XCTFail("Validation fails for initialized project “\(project.name)”.")

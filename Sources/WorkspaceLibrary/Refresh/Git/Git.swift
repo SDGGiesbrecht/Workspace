@@ -44,7 +44,7 @@ struct Git {
     static let ignoreEntriesForJazzy = [
         "/build",
         "undocumented.json",
-        ".tgz"
+        "*.tgz"
     ]
 
     static func updateGitConfiguraiton() {

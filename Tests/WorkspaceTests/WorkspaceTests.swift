@@ -749,7 +749,7 @@ class WorkspaceTests: XCTestCase {
                             }
 
                             // Normalize project state.
-                            let _ = bash(["../../.build/debug/workspace", "validate"])
+                            let _ = bash(["../../.build/debug/workspace", "validate"], silent: true)
 
                             // Commit normalized project state.
                             if ¬bash(["git", "add", "."], silent: true).succeeded {

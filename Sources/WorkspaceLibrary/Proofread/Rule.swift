@@ -23,7 +23,9 @@ protocol Rule {
 }
 
 let rules: [Rule.Type] = [
-    CompatibilityCharacters.self
+    CompatibilityCharacters.self,
+
+    ColonSpacing.self
 ]
 
 extension Rule {

@@ -49,11 +49,13 @@ struct ColonSpacing: Rule {
 
                 }
 
-                if let following = file.contents.substring(from: range.upperBound).unicodeScalars.first {
+                let following = file.contents.substring(from: range.upperBound)
+                if let followingCharacter = file.contents.substring(from: range.upperBound).unicodeScalars.first {
 
-                    if ¬CharacterSet.whitespacesAndNewlines.contains(following) {
+                    if ¬CharacterSet.whitespacesAndNewlines.contains(followingCharacter) {
 
-                        if ¬file.contents.substring(from: range.upperBound).hasPrefix("//") /* URL */ {
+                        if ¬following.hasPrefix("\u{22}") /* End of string literal */
+                            ∧ ¬following.hasPrefix("//") /* URL */ {
                             errorNotice(status: &status, file: file, range: range, replacement: ": ", message: "Colons should be followed by a space.")
                         }
                     }

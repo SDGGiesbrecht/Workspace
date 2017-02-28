@@ -39,7 +39,7 @@ struct ColonSpacing: Rule {
                     ∧ ¬line.contains(":nodoc:") {
 
                     let inGenerics = linePrefix.contains("where ")
-                        ∨ (linePrefix.contains("<") ∧ ¬linePrefix.contains("(")) /* Generics */
+                        ∨ (linePrefix.contains("<") ∧ ¬linePrefix.contains("(") ∧ lineSuffix.contains(">")) /* Generics */
                     if let preceding = file.contents.substring(to: range.lowerBound).characters.last {
 
                         if preceding == " " {

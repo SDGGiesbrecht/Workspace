@@ -78,6 +78,7 @@ extension Rule {
         if let replacement = clusterReplacement {
             output += [previous + replacement]
         }
+        output += [""] // Final line break
 
         status = false
         if Command.current ≠ Command.proofread {

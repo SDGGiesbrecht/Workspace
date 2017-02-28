@@ -1,5 +1,5 @@
 /*
- Colon.swift
+ ColonSpacing.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace
@@ -52,7 +52,10 @@ struct ColonSpacing: Rule {
                 if let following = file.contents.substring(from: range.upperBound).unicodeScalars.first {
 
                     if ¬CharacterSet.whitespacesAndNewlines.contains(following) {
-                        errorNotice(status: &status, file: file, range: range, replacement: ": ", message: "Colons should be followed by a space.")
+
+                        if ¬file.contents.substring(from: range.upperBound).hasPrefix("//") /* URL */ {
+                            errorNotice(status: &status, file: file, range: range, replacement: ": ", message: "Colons should be followed by a space.")
+                        }
                     }
                 }
             }

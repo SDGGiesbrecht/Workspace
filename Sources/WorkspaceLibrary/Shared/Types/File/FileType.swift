@@ -45,7 +45,7 @@ enum FileType: CustomStringConvertible {
 
     // MARK: - Initialization
 
-    init?<P: Path>(filePath: P) {
+    init?<P : Path>(filePath: P) {
 
         var result: FileType?
         for (suffix, type) in FileType.fileNameSuffixes {

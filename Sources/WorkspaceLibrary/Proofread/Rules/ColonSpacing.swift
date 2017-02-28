@@ -60,7 +60,8 @@ struct ColonSpacing: Rule {
 
                         if ¬CharacterSet.whitespacesAndNewlines.contains(followingCharacter) {
 
-                            if ¬lineSuffix.hasPrefix("//") /* URL */ {
+                            if ¬lineSuffix.hasPrefix("]") /* Empty Dictionary Literal */
+                                ∧ ¬lineSuffix.hasPrefix("//") /* URL */ {
                                 errorNotice(status: &status, file: file, range: range, replacement: ": ", message: "Colons should be followed by a space.")
                             }
                         }

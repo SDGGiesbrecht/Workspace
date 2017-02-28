@@ -29,7 +29,8 @@ struct ColonSpacing: Rule {
             while let range = file.contents.range(of: ":", in: index ..< file.contents.endIndex) {
                 index = range.upperBound
 
-                let line = file.contents.substring(with: file.contents.lineRange(for: range))
+                let lineRange = file.contents.lineRange(for: range)
+                let line = file.contents.substring(with: lineRange)
                 let inWhereClause = line.contains("where ")
                 if let preceding = file.contents.substring(to: range.lowerBound).characters.last {
 
@@ -50,12 +51,15 @@ struct ColonSpacing: Rule {
                 }
 
                 let following = file.contents.substring(from: range.upperBound)
+                let linePrefix = file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound)
+                let lineSuffix = file.contents.substring(with: range.upperBound ..< lineRange.upperBound)
                 if let followingCharacter = file.contents.substring(from: range.upperBound).unicodeScalars.first {
 
                     if ¬CharacterSet.whitespacesAndNewlines.contains(followingCharacter) {
 
-                        if ¬following.hasPrefix("\u{22}") /* End of string literal */
-                            ∧ ¬following.hasPrefix("//") /* URL */ {
+                        if ¬(linePrefix.contains("\u{22}") ∧ lineSuffix.contains("\u{22}")) /* String Literal */
+                            ∧ ¬following.hasPrefix("//") /* URL */
+                            ∧ ¬line.contains(":nodoc:") {
                             errorNotice(status: &status, file: file, range: range, replacement: ": ", message: "Colons should be followed by a space.")
                         }
                     }

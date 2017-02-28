@@ -38,8 +38,7 @@ struct ColonSpacing: Rule {
                     ∧ ¬linePrefix.contains("//") /* Comment */
                     ∧ ¬line.contains(":nodoc:") {
 
-                    let inGenerics = linePrefix.contains("where ")
-                        ∨ (linePrefix.contains("<") ∧ ¬linePrefix.contains("(") ∧ lineSuffix.contains(">")) /* Generics */
+                    let inWhereClause = linePrefix.contains("where ")
                     if let preceding = file.contents.substring(to: range.lowerBound).characters.last {
 
                         if preceding == " " {
@@ -47,14 +46,14 @@ struct ColonSpacing: Rule {
                                 let precedingIndex = file.contents.index(before: range.lowerBound)
                                 let errorRange = precedingIndex ..< range.upperBound
 
-                                if ¬inGenerics {
+                                if ¬inWhereClause {
                                     errorNotice(status: &status, file: file, range: errorRange, replacement: ":", message: "Colons should not be preceded by spaces.")
                                 }
                             }
                         } else {
 
-                            if inGenerics {
-                                errorNotice(status: &status, file: file, range: range, replacement: " :", message: "In generics, colons should be preceded by spaces.")
+                            if inWhereClause {
+                                errorNotice(status: &status, file: file, range: range, replacement: " :", message: "In where clauses, colons should be preceded by spaces.")
                             }
                         }
 

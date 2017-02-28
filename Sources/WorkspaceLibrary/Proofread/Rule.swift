@@ -71,12 +71,17 @@ extension Rule {
         let marked = "^" + String(repeating: "~", count: markedDistance − 1)
 
         var output = [
-            "\(path):\(lineNumber):\(column): warning: \(message) (\(name))",
-            line,
-            previous + marked
+            "\(path):\(lineNumber):\(column): warning: \(message) (\(name))"
         ]
-        if let replacement = clusterReplacement {
-            output += [previous + replacement]
+        if Command.current ≠ Command.proofread {
+            output += [
+                line,
+                previous + marked
+            ]
+            if let replacement = clusterReplacement {
+                output += [previous + replacement]
+            }
+
         }
 
         status = false

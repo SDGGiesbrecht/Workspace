@@ -32,12 +32,12 @@ struct File {
 
     // MARK: - Initialization
 
-    init<P : Path>(at path: P) throws {
+    init<P: Path>(at path: P) throws {
         let file = try Repository._read(file: path)
         self = File(path: path, executable: file.isExecutable, contents: file.contents, isNew: false)
     }
 
-    init<P : Path>(possiblyAt path: P, executable: Bool = false) {
+    init<P: Path>(possiblyAt path: P, executable: Bool = false) {
         do {
             self = try File(at: path)
             if isExecutable ≠ executable {
@@ -50,11 +50,11 @@ struct File {
     }
 
     /// For testing only
-    init<P : Path>(_path: P, _contents: String) {
+    init<P: Path>(_path: P, _contents: String) {
         self = File(path: _path, executable: false, contents: _contents, isNew: true)
     }
 
-    private init<P : Path>(path: P, executable: Bool, contents: String, isNew: Bool) {
+    private init<P: Path>(path: P, executable: Bool, contents: String, isNew: Bool) {
         self.path = Repository.absolute(path)
         self.isExecutable = executable
         self._contents = contents

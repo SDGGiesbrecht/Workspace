@@ -31,36 +31,39 @@ struct ColonSpacing: Rule {
 
                 let lineRange = file.contents.lineRange(for: range)
                 let line = file.contents.substring(with: lineRange)
-                let inWhereClause = line.contains("where ")
-                if let preceding = file.contents.substring(to: range.lowerBound).characters.last {
 
-                    if preceding == " " {
-                        let precedingIndex = file.contents.index(before: range.lowerBound)
-                        let errorRange = precedingIndex ..< range.upperBound
+                if ¬line.contains(":nodoc:") {
 
-                        if ¬inWhereClause {
-                            errorNotice(status: &status, file: file, range: errorRange, replacement: ":", message: "Colons should not be preceded by spaces.")
+                    let inWhereClause = line.contains("where ")
+                    if let preceding = file.contents.substring(to: range.lowerBound).characters.last {
+
+                        if preceding == " " {
+                            let precedingIndex = file.contents.index(before: range.lowerBound)
+                            let errorRange = precedingIndex ..< range.upperBound
+
+                            if ¬inWhereClause {
+                                errorNotice(status: &status, file: file, range: errorRange, replacement: ":", message: "Colons should not be preceded by spaces.")
+                            }
+                        } else {
+
+                            if inWhereClause {
+                                errorNotice(status: &status, file: file, range: range, replacement: " :", message: "In where clauses, colons should be preceded by spaces.")
+                            }
                         }
-                    } else {
 
-                        if inWhereClause {
-                            errorNotice(status: &status, file: file, range: range, replacement: " :", message: "In where clauses, colons should be preceded by spaces.")
-                        }
                     }
 
-                }
+                    let following = file.contents.substring(from: range.upperBound)
+                    let linePrefix = file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound)
+                    let lineSuffix = file.contents.substring(with: range.upperBound ..< lineRange.upperBound)
+                    if let followingCharacter = file.contents.substring(from: range.upperBound).unicodeScalars.first {
 
-                let following = file.contents.substring(from: range.upperBound)
-                let linePrefix = file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound)
-                let lineSuffix = file.contents.substring(with: range.upperBound ..< lineRange.upperBound)
-                if let followingCharacter = file.contents.substring(from: range.upperBound).unicodeScalars.first {
+                        if ¬CharacterSet.whitespacesAndNewlines.contains(followingCharacter) {
 
-                    if ¬CharacterSet.whitespacesAndNewlines.contains(followingCharacter) {
-
-                        if ¬(linePrefix.contains("\u{22}") ∧ lineSuffix.contains("\u{22}")) /* String Literal */
-                            ∧ ¬following.hasPrefix("//") /* URL */
-                            ∧ ¬line.contains(":nodoc:") {
-                            errorNotice(status: &status, file: file, range: range, replacement: ": ", message: "Colons should be followed by a space.")
+                            if ¬(linePrefix.contains("\u{22}") ∧ lineSuffix.contains("\u{22}")) /* String Literal */
+                                ∧ ¬following.hasPrefix("//") /* URL */ {
+                                errorNotice(status: &status, file: file, range: range, replacement: ": ", message: "Colons should be followed by a space.")
+                            }
                         }
                     }
                 }

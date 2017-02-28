@@ -35,17 +35,20 @@ struct ColonSpacing: Rule {
                 let lineSuffix = file.contents.substring(with: range.upperBound ..< lineRange.upperBound)
 
                 if ¬(linePrefix.contains("\u{22}") ∧ lineSuffix.contains("\u{22}")) /* String Literal */
+                    ∧ ¬linePrefix.contains("//") /* Comment */
                     ∧ ¬line.contains(":nodoc:") {
 
                     let inWhereClause = linePrefix.contains("where ")
                     if let preceding = file.contents.substring(to: range.lowerBound).characters.last {
 
                         if preceding == " " {
-                            let precedingIndex = file.contents.index(before: range.lowerBound)
-                            let errorRange = precedingIndex ..< range.upperBound
+                            if ¬linePrefix.contains(" ? ") /* Ternary Conditional Operator */ {
+                                let precedingIndex = file.contents.index(before: range.lowerBound)
+                                let errorRange = precedingIndex ..< range.upperBound
 
-                            if ¬inWhereClause {
-                                errorNotice(status: &status, file: file, range: errorRange, replacement: ":", message: "Colons should not be preceded by spaces.")
+                                if ¬inWhereClause {
+                                    errorNotice(status: &status, file: file, range: errorRange, replacement: ":", message: "Colons should not be preceded by spaces.")
+                                }
                             }
                         } else {
 

@@ -84,7 +84,7 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
             command: ["swiftlint", "lint", "--strict"],
             updateInstructions: [
                 "Command to install Homebrew (https://brew.sh):",
-                "/usr/bin/ruby -e \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\"",
+                "/usr/bin/ruby -e \u{22}$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\u{22}",
                 "Command to install SwiftLint:",
                 "brew install swiftlint",
                 "Command to update SwiftLint:",

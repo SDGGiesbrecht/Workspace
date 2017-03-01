@@ -28,7 +28,7 @@ struct QuotationMarks: Rule {
                 index = range.upperBound
 
                 func throwError() {
-                    errorNotice(status: &status, file: file, range: range, replacement: "[„/“/”/«/»]", message: "This ASCII character is obsolete. Use real quotation marks instead („, “, ”, « or »).")
+                    errorNotice(status: &status, file: file, range: range, replacement: "[„/“/”/«/»]", message: "This character is obsolete. Use real quotation marks instead („, “, ”, « or »).")
                 }
 
                 let filePrefix = file.contents.substring(to: range.lowerBound)
@@ -51,7 +51,7 @@ struct QuotationMarks: Rule {
                         throwError()
                     }
                 case .swift:
-                    if linePrefix.hasSuffix("\\") // String Literal */
+                    if linePrefix.hasSuffix("\u{5C}") // String Literal */
                         ∨ linePrefixWithoutIndentation.hasPrefix("//") /* Comment */ {
                         throwError()
                     }

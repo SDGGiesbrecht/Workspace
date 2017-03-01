@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGLogic
 
 struct QuotationMarks: Rule {
@@ -36,6 +38,12 @@ struct QuotationMarks: Rule {
                 let linePrefix = file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound)
                 let lineSuffix = file.contents.substring(with: range.upperBound ..< lineRange.upperBound)
 
+                var linePrefixWithoutIndentation = linePrefix
+                while let first = linePrefixWithoutIndentation.unicodeScalars.first,
+                    CharacterSet.whitespaces.contains(first) {
+                        linePrefixWithoutIndentation.unicodeScalars.removeFirst()
+                }
+
                 switch fileType {
                 case .markdown, .workspaceConfiguration:
                     if ¬(filePrefix.contains("```") ∧ fileSuffix.contains("```")) /* Sample Code */
@@ -44,7 +52,7 @@ struct QuotationMarks: Rule {
                     }
                 case .swift:
                     if linePrefix.hasSuffix("\\") // String Literal */
-                        ∨ linePrefix.contains("//") /* Comment */ {
+                        ∨ linePrefixWithoutIndentation.hasPrefix("//") /* Comment */ {
                         throwError()
                     }
                 case .shell, .yaml:

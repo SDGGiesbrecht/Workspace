@@ -25,7 +25,9 @@ protocol Rule {
 let rules: [Rule.Type] = [
     CompatibilityCharacters.self,
 
-    ColonSpacing.self
+    ColonSpacing.self,
+
+    QuotationMarks.self
 ]
 
 extension Rule {

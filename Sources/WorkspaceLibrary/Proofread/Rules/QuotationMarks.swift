@@ -37,12 +37,13 @@ struct QuotationMarks: Rule {
                 let lineSuffix = file.contents.substring(with: range.upperBound ..< lineRange.upperBound)
 
                 switch fileType {
-                case .workspaceConfiguration, .markdown:
-                    if ¬(filePrefix.contains("```") ∧ fileSuffix.contains("```")) /* Sample Code */ {
+                case .markdown, .workspaceConfiguration:
+                    if ¬(filePrefix.contains("```") ∧ fileSuffix.contains("```")) /* Sample Code */
+                    ∧ ¬(linePrefix.contains("`") ∧ lineSuffix.contains("`")) {
                         throwError()
                     }
                 case .swift:
-                    if (linePrefix.contains("\u{22}") ∧ lineSuffix.contains("\u{22}")) // String Literal */
+                    if linePrefix.hasSuffix("\\") // String Literal */
                         ∨ linePrefix.contains("//") /* Comment */ {
                         throwError()
                     }

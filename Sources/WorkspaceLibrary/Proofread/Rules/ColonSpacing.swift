@@ -65,7 +65,7 @@ struct ColonSpacing: Rule {
                         } else {
 
                             if followsType {
-                                errorNotice(status: &status, file: file, range: range, replacement: " :", message: "After types, colons should be preceded by spaces.")
+                                errorNotice(status: &status, file: file, range: range, replacement: " :", message: "Colons should be preceded by spaces when denoting protocols or superclasses.")
                             }
                         }
 

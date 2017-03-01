@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-enum FileType: CustomStringConvertible {
+enum FileType : CustomStringConvertible {
 
     // MARK: - Static Properties
 

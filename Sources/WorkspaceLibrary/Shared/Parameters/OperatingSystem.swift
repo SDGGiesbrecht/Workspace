@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-enum OperatingSystem: String, CustomStringConvertible {
+enum OperatingSystem : String, CustomStringConvertible {
 
     // MARK: - Cases
 

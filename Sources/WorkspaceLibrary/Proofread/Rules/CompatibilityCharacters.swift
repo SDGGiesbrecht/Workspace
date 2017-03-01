@@ -16,7 +16,7 @@ import Foundation
 
 import SDGLogic
 
-struct CompatibilityCharacters: Rule {
+struct CompatibilityCharacters : Rule {
 
     static let name = "Compatibility Characters"
 

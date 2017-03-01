@@ -16,7 +16,7 @@ import Foundation
 
 import SDGLogic
 
-struct QuotationMarks: Rule {
+struct QuotationMarks : Rule {
 
     static let name = "Quotation Marks"
 

@@ -61,7 +61,7 @@ extension Rule {
 
         let lineRange = file.contents.lineRange(for: clusterRange)
         var line = file.contents[lineRange]
-        if line.hasSuffix(String.CR_LF) {
+        if line.hasSuffix(String.crLF) {
             line.unicodeScalars.removeLast()
         }
         line.unicodeScalars.removeLast()

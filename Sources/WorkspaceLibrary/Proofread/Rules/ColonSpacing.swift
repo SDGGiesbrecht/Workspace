@@ -16,7 +16,7 @@ import Foundation
 
 import SDGLogic
 
-struct ColonSpacing: Rule {
+struct ColonSpacing : Rule {
 
     static let name = "Colon Spacing"
 
@@ -38,11 +38,14 @@ struct ColonSpacing: Rule {
                     ∧ ¬linePrefix.contains("//") /* Comment */
                     ∧ ¬line.contains(":nodoc:") {
 
-                    let followsType: Bool
-                    if let startOfPreviousIdentifier = linePrefix.components(separatedBy: CharacterSet.whitespaces.union(CharacterSet.punctuationCharacters)).filter({ ¬$0.isEmpty }).last?.unicodeScalars.first {
-                        followsType = CharacterSet.uppercaseLetters.contains(startOfPreviousIdentifier)
+                    let protocolOrSuperclass: Bool
+
+                    if linePrefix.contains("[") ∧ lineSuffix.contains("]") /* Dictionary Literal */ {
+                        protocolOrSuperclass = false
+                    } else if let startOfPreviousIdentifier = linePrefix.components(separatedBy: CharacterSet.whitespaces.union(CharacterSet.punctuationCharacters)).filter({ ¬$0.isEmpty }).last?.unicodeScalars.first {
+                        protocolOrSuperclass = CharacterSet.uppercaseLetters.contains(startOfPreviousIdentifier)
                     } else {
-                        followsType = false
+                        protocolOrSuperclass = false
                     }
 
                     if let preceding = file.contents.substring(to: range.lowerBound).characters.last {
@@ -52,13 +55,13 @@ struct ColonSpacing: Rule {
                                 let precedingIndex = file.contents.index(before: range.lowerBound)
                                 let errorRange = precedingIndex ..< range.upperBound
 
-                                if ¬followsType {
+                                if ¬protocolOrSuperclass {
                                     errorNotice(status: &status, file: file, range: errorRange, replacement: ":", message: "Colons should not be preceded by spaces.")
                                 }
                             }
                         } else {
 
-                            if followsType {
+                            if protocolOrSuperclass {
                                 errorNotice(status: &status, file: file, range: range, replacement: " :", message: "Colons should be preceded by spaces when denoting protocols or superclasses.")
                             }
                         }

@@ -33,9 +33,8 @@ struct QuotationMarks: Rule {
                 let fileSuffix = file.contents.substring(from: range.upperBound)
 
                 let lineRange = file.contents.lineRange(for: range)
-                let line = file.contents.substring(with: lineRange)
-                let linePrefix = line.substring(with: lineRange.lowerBound ..< range.lowerBound)
-                let lineSuffix = line.substring(with: range.upperBound ..< lineRange.upperBound)
+                let linePrefix = file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound)
+                let lineSuffix = file.contents.substring(with: range.upperBound ..< lineRange.upperBound)
 
                 switch fileType {
                 case .workspaceConfiguration, .markdown:

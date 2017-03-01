@@ -38,7 +38,7 @@ let debug = _isDebugAssertConfiguration()
 
 #if os(Linux)
     // [_Workaround: Skip unavailable file copying by using shell on Linux. (Swift 3.0.2)_]
-    struct LinuxFileError: Error {
+    struct LinuxFileError : Error {
         init(exitCode: ExitCode) {
             code = exitCode
             description = "Linux file error: \(exitCode)"

@@ -52,7 +52,8 @@ struct QuotationMarks: Rule {
                     }
                 case .swift:
                     if linePrefix.hasSuffix("\u{5C}") // String Literal */
-                        ∨ linePrefixWithoutIndentation.hasPrefix("//") /* Comment */ {
+                        ∨ (linePrefixWithoutIndentation.hasPrefix("//") /* Comment */
+                            ∧ ¬(filePrefix.contains("```") ∧ fileSuffix.contains("```")) /* Sample Code */) {
                         throwError()
                     }
                 case .shell, .yaml:

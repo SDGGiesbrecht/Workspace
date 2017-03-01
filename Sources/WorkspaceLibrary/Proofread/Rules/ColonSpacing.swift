@@ -40,7 +40,7 @@ struct ColonSpacing: Rule {
 
                     let followsType: Bool
                     if let startOfPreviousIdentifier = linePrefix.components(separatedBy: CharacterSet.whitespaces.union(CharacterSet.punctuationCharacters)).filter({ ¬$0.isEmpty }).last?.unicodeScalars.first {
-                        followsType = CharacterSet.capitalizedLetters.contains(startOfPreviousIdentifier)
+                        followsType = CharacterSet.uppercaseLetters.contains(startOfPreviousIdentifier)
                     } else {
                         followsType = false
                     }

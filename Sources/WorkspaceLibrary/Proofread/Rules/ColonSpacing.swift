@@ -45,6 +45,12 @@ struct ColonSpacing: Rule {
                         followsType = false
                     }
 
+                    if followsType {
+                        print("Type: \(linePrefix.components(separatedBy: CharacterSet.whitespaces.union(CharacterSet.punctuationCharacters)).filter({ ¬$0.isEmpty }).last)")
+                    } else {
+                        print("Not a type: \(linePrefix.components(separatedBy: CharacterSet.whitespaces.union(CharacterSet.punctuationCharacters)).filter({ ¬$0.isEmpty }).last)")
+                    }
+
                     if let preceding = file.contents.substring(to: range.lowerBound).characters.last {
 
                         if preceding == " " {

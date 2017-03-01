@@ -42,7 +42,7 @@ struct ColonSpacing : Rule {
 
                     if linePrefix.contains("[") ∧ lineSuffix.contains("]") /* Dictionary Literal */ {
                         protocolOrSuperclass = false
-                    } else if let startOfPreviousIdentifier = linePrefix.components(separatedBy: CharacterSet.whitespaces.union(CharacterSet.punctuationCharacters)).filter({ ¬$0.isEmpty }).last?.unicodeScalars.first {
+                    } else if let startOfPreviousIdentifier = linePrefix.components(separatedBy: CharacterSet.whitespaces.union(CharacterSet.punctuationCharacters).union(CharacterSet.symbols)).filter({ ¬$0.isEmpty }).last?.unicodeScalars.first {
                         protocolOrSuperclass = CharacterSet.uppercaseLetters.contains(startOfPreviousIdentifier)
                     } else {
                         protocolOrSuperclass = false

@@ -12,17 +12,44 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 struct NotEqual : Rule {
 
     static let name = "Not Equal"
 
     static func check(file: File, status: inout Bool) {
 
-        var index = file.contents.startIndex
-        while let range = file.contents.range(of: "!=", in: index ..< file.contents.endIndex) {
-            index = range.upperBound
+        if let fileType = file.fileType {
 
-            errorNotice(status: &status, file: file, range: range, replacement: "≠", message: "Use “≠” instead. (Import SDGLogic.)")
+            var message = "Use “≠” instead."
+            if fileType == .swift {
+                message += " (Import SDGLogic.)"
+            }
+
+            var index = file.contents.startIndex
+            while let range = file.contents.range(of: "!=", in: index ..< file.contents.endIndex) {
+                index = range.upperBound
+
+                func throwError() {
+                    errorNotice(status: &status, file: file, range: range, replacement: "≠", message: message)
+                }
+
+                switch fileType {
+                case .swift, .workspaceConfiguration, .markdown, .yaml, .gitignore:
+                    throwError()
+
+                case .shell:
+                    let lineRange = file.contents.lineRange(for: range)
+                    let linePrefix = file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound)
+                    let lineSuffix = file.contents.substring(with: range.upperBound ..< lineRange.upperBound)
+
+                    if ¬(linePrefix.contains("[") ∧ lineSuffix.contains("]")) {
+                        throwError()
+                    }
+
+                }
+            }
         }
     }
 }

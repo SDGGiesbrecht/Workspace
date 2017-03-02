@@ -86,7 +86,7 @@ func runValidate(andExit shouldExit: Bool) {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
         requireBash(["git", "add", ".", "--intent-to-add"], silent: true)
-        if bash(["git", "diff", "--exit-code"], dropOutput: true).succeeded {
+        if bash(["git", "diff", "--exit-code", "--", ".", "':(exclude)*.dsidx'"], dropOutput: true).succeeded {
             individualSuccess(message: "The project is up to date.")
         } else {
             individualFailure(message: "The project is out of date. (Please run “Validate Changes” before committing.)")

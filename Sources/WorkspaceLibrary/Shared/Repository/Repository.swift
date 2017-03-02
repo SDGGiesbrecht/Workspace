@@ -221,7 +221,7 @@ struct Repository {
             ])
     }
 
-    static func absolute<P: Path>(_ path: P) -> AbsolutePath {
+    static func absolute<P : Path>(_ path: P) -> AbsolutePath {
         if let absolute = path as? AbsolutePath {
             return absolute
         } else if let relative = path as? RelativePath {
@@ -231,7 +231,7 @@ struct Repository {
         }
     }
 
-    static func relative<P: Path>(_ path: P) -> RelativePath? {
+    static func relative<P : Path>(_ path: P) -> RelativePath? {
         if let relative = path as? RelativePath {
             return relative
         } else if let absolute = path as? AbsolutePath {
@@ -252,7 +252,7 @@ struct Repository {
     }
 
     /// Use “File(at:)” instead.
-    static func _read<P: Path>(file path: P) throws -> (contents: String, isExecutable: Bool) {
+    static func _read<P : Path>(file path: P) throws -> (contents: String, isExecutable: Bool) {
 
         let filePath = absolute(path).string
 
@@ -268,7 +268,7 @@ struct Repository {
     }
 
     /// Use File’s “write()” instead.
-    static func _write<P: Path>(file: String, to path: P, asExecutable executable: Bool) throws {
+    static func _write<P : Path>(file: String, to path: P, asExecutable executable: Bool) throws {
 
         prepareForWrite(path: path)
 
@@ -304,7 +304,7 @@ struct Repository {
 
     // MARK: - File Actions
 
-    static func delete<P: Path>(_ path: P) throws {
+    static func delete<P : Path>(_ path: P) throws {
 
         defer {
             resetCache()
@@ -329,7 +329,7 @@ struct Repository {
         #endif
     }
 
-    private static func prepareForWrite<P: Path>(path: P) {
+    private static func prepareForWrite<P : Path>(path: P) {
 
         force() { try delete(path) }
 
@@ -405,7 +405,7 @@ struct Repository {
         try performPathChange(from: origin, into: destination, copy: false, includeIgnoredFiles: includeIgnoredFiles)
     }
 
-    static func performInDirectory<P: Path>(directory: P, action: () -> Void) {
+    static func performInDirectory<P : Path>(directory: P, action: () -> Void) {
 
         func changeToDirectory(path: String) {
             if ¬fileManager.changeCurrentDirectoryPath(path) {

@@ -21,7 +21,7 @@ typealias ScalarIndex = String.UnicodeScalarView.Index
 
 extension String {
 
-    static var CR_LF: String {
+    static var crLF: String {
         return "\u{D}\u{A}"
     }
 
@@ -259,7 +259,7 @@ extension String {
 
         advance(&index, past: CharacterSet.newlines, limit: limit, advanceOne: { (mobileIndex: inout ScalarIndex) -> Void in
 
-            if substring(with: mobileIndex.positionOfExtendedGraphemeCluster(in: self) ..< endIndex).hasPrefix(String.CR_LF) {
+            if substring(with: mobileIndex.positionOfExtendedGraphemeCluster(in: self) ..< endIndex).hasPrefix(String.crLF) {
                 mobileIndex = unicodeScalars.index(mobileIndex, offsetBy: 2)
             } else {
                 mobileIndex = unicodeScalars.index(after: mobileIndex)

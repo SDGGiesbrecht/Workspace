@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-enum ProjectType: String, CustomStringConvertible {
+enum ProjectType : String, CustomStringConvertible {
 
     // MARK: - Initialization
 

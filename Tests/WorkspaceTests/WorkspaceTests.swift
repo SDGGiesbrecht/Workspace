@@ -19,7 +19,7 @@ import SDGLogic
 import XCTest
 @testable import WorkspaceLibrary
 
-class WorkspaceTests: XCTestCase {
+class WorkspaceTests : XCTestCase {
 
     func testGeneralParsing() {
 
@@ -38,7 +38,7 @@ class WorkspaceTests: XCTestCase {
 
         func testLineBreaking(text: [String]) {
 
-            for newline in ["\n", String.CR_LF] {
+            for newline in ["\n", String.crLF] {
 
                 let parsed = text.joined(separator: newline).linesArray
                 XCTAssert(parsed == text, join(lines: [

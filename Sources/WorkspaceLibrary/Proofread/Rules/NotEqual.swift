@@ -28,7 +28,7 @@ struct NotEqual : Rule {
             }
 
             var index = file.contents.startIndex
-            while let range = file.contents.range(of: "!=", in: index ..< file.contents.endIndex) {
+            while let range = file.contents.range(of: "\u{21}\u{3D}", in: index ..< file.contents.endIndex) {
                 index = range.upperBound
 
                 func throwError() {

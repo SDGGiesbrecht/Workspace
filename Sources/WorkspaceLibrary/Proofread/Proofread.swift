@@ -36,10 +36,21 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
     for path in Repository.sourceFiles {
         let file = require() { try File(at: path) }
 
-        for rule in rules {
-            if ¬Configuration.disableProofreadingRules.contains(rule.name) {
-                rule.check(file: file, status: &overallSuccess)
+        if let _ = file.fileType {
+
+            let ruleSet: [Rule.Type]
+            if Configuration.sdg {
+                ruleSet = sdgRules
+            } else {
+                ruleSet = rules
             }
+
+            for rule in ruleSet {
+                if ¬Configuration.disableProofreadingRules.contains(rule.name) {
+                    rule.check(file: file, status: &overallSuccess)
+                }
+            }
+
         }
     }
 
@@ -61,7 +72,7 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
                 "  - Packages",
                 // Workspace
                 "  - .Test Zone"
-                ]
+            ]
             let disabled = Configuration.disableProofreadingRules.sorted().map({ "  - " + $0 })
             if ¬disabled.isEmpty {
                 lines += [
@@ -89,7 +100,7 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
                 "brew install swiftlint",
                 "Command to update SwiftLint:",
                 "brew upgrade swiftlint"
-                ],
+            ],
             dropOutput: true) {
 
             if ¬swiftLintResult.succeeded {

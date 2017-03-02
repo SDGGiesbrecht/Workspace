@@ -46,6 +46,8 @@ struct NotEqual : Rule {
                     if lineRange.lowerBound ≠ file.contents.startIndex,
                         file.contents.substring(with: file.contents.lineRange(for: file.contents.index(before: lineRange.lowerBound) ..< lineRange.lowerBound)).contains("func ≠") {
                         // Defining an alias.
+                    } else if file.contents.substring(with: lineRange).contains("RecommendedOver") {
+                        // RecommendedOver
                     } else {
                         throwError()
                     }

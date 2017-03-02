@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-enum Flag: String, Comparable, CustomStringConvertible {
+enum Flag : String, Comparable, CustomStringConvertible {
 
     // MARK: - Initialization
 

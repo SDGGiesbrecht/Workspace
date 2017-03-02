@@ -43,10 +43,13 @@ if [ ! -d "${WORKSPACE}/Sources" ]; then
     # To test a fork of Workspace, replace the URL on the next line with that of the fork.
     git clone https://github.com/SDGGiesbrecht/Workspace "${WORKSPACE}"
 
-    # To test a development branch of Workspace, uncomment the following three lines and use the real branch name.
-    # BRANCH="branch-name"
-    # cd "${WORKSPACE}"
-    # git checkout -b "${BRANCH}" "origin/${BRANCH}"
+    # To test a development branch of Workspace, change this to a real branch name.
+    BRANCH="branch-name"
+
+    if [ "$BRANCH" != "branch-name" ]; then
+        cd "${WORKSPACE}"
+        git checkout -b "${BRANCH}" "origin/${BRANCH}"
+    fi
 fi
 
 # Update Workspace.

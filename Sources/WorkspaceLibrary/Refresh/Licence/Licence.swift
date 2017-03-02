@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-enum Licence: String {
+enum Licence : String {
 
     // MARK: - Initialization
 

@@ -14,7 +14,7 @@
 
 import SDGMathematics
 
-struct Version: Comparable, CustomStringConvertible, Equatable, LosslessStringConvertible {
+struct Version : Comparable, CustomStringConvertible, Equatable, LosslessStringConvertible {
 
     // MARK: - Initialization
 

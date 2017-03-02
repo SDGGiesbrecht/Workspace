@@ -14,7 +14,7 @@
 
 import Foundation
 
-protocol Path: CustomStringConvertible, Equatable, ExpressibleByExtendedGraphemeClusterLiteral, ExpressibleByStringLiteral, ExpressibleByUnicodeScalarLiteral {
+protocol Path : CustomStringConvertible, Equatable, ExpressibleByExtendedGraphemeClusterLiteral, ExpressibleByStringLiteral, ExpressibleByUnicodeScalarLiteral {
 
     // MARK: - Initialization
 

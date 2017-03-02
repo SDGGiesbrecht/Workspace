@@ -36,8 +36,19 @@ struct NotEqual : Rule {
                 }
 
                 switch fileType {
-                case .swift, .workspaceConfiguration, .markdown, .yaml, .gitignore:
+                case .workspaceConfiguration, .markdown, .yaml, .gitignore:
                     throwError()
+
+                case .swift:
+
+                    let lineRange = file.contents.lineRange(for: range)
+
+                    if lineRange.lowerBound ≠ file.contents.startIndex,
+                        file.contents.substring(with: file.contents.lineRange(for: file.contents.index(before: lineRange.lowerBound) ..< lineRange.lowerBound)).contains("func ≠") {
+                        // Defining an alias.
+                    } else {
+                        throwError()
+                    }
 
                 case .shell:
                     let lineRange = file.contents.lineRange(for: range)

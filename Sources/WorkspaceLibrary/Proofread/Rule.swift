@@ -30,6 +30,10 @@ let rules: [Rule.Type] = [
     QuotationMarks.self
 ]
 
+let sdgRules: [Rule.Type] = rules + [
+    NotEqual.self
+]
+
 extension Rule {
 
     static func errorNotice(status: inout Bool, file: File, range: Range<String.Index>, replacement: String?, message: String) {

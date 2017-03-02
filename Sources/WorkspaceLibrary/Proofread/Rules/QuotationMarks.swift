@@ -28,7 +28,7 @@ struct QuotationMarks : Rule {
                 index = range.upperBound
 
                 func throwError() {
-                    errorNotice(status: &status, file: file, range: range, replacement: "[„/“/”/«/»]", message: "This character is obsolete. Use real quotation marks instead („, “, ”, « or »).")
+                    errorNotice(status: &status, file: file, range: range, replacement: "[“/”/„/«/»/′′/״]", message: "Use quotation marks (“, ”, „, «, »), double prime (′′) or gershayim (״) instead.")
                 }
 
                 let filePrefix = file.contents.substring(to: range.lowerBound)

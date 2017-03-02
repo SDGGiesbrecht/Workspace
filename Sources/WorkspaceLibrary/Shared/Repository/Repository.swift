@@ -152,7 +152,9 @@ struct Repository {
             let result = trackedFiles.filter() { (path: RelativePath) -> Bool in
 
                 let generatedPaths = [
-                    "docs/"
+                    "docs/",
+                    "Refresh Workspace (macOS).command",
+                    "Refresh Workspace (Linux).sh"
                 ]
 
                 for generated in generatedPaths {

@@ -31,7 +31,8 @@ let rules: [Rule.Type] = [
 ]
 
 let sdgRules: [Rule.Type] = rules + [
-    NotEqual.self
+    NotEqual.self,
+    Not.self
 ]
 
 extension Rule {

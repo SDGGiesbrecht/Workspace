@@ -22,17 +22,12 @@ struct HyphenMinus : Rule {
 
         if let fileType = file.fileType {
 
-            var message = "Use “−” instead."
-            if fileType == .swift {
-                message += " (Import SDGLogic.)"
-            }
-
             var index = file.contents.startIndex
             while let range = file.contents.range(of: "\u{2D}", in: index ..< file.contents.endIndex) {
                 index = range.upperBound
 
                 func throwError() {
-                    errorNotice(status: &status, file: file, range: range, replacement: "−", message: message)
+                    errorNotice(status: &status, file: file, range: range, replacement: "[“/”/„/«/»/′′/״]", message: "Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range (–) instead.")
                 }
 
                 switch fileType {

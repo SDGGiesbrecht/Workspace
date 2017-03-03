@@ -35,7 +35,7 @@ struct HyphenMinus : Rule {
 
                 if ¬line.contains("http") {
                     switch fileType {
-                        
+
                     case .swift:
                         if ¬isInAliasDefinition(for: "−", at: range, in: file) {
                             throwError()
@@ -53,7 +53,9 @@ struct HyphenMinus : Rule {
                         }
 
                     case .markdown, .yaml:
-                        if ¬file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound).isWhitespace {
+                        if ¬file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound).isWhitespace
+                            ∧ ¬line.contains("<\u{21}\u{2D}\u{2D}")
+                            ∧ ¬line.contains("\u{2D}\u{2D}>") {
                             throwError()
                         }
                     }

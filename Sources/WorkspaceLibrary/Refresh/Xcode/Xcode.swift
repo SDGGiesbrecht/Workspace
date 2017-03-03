@@ -21,9 +21,9 @@ struct Xcode {
         let path = RelativePath("\(Configuration.projectName).xcodeproj")
         force() { try Repository.delete(path) }
 
-        var script = ["swift", "package", "generate-xcodeproj", "--output", path.string]
+        var script = ["swift", "package", "generate\u{2D}xcodeproj", "\u{2D}\u{2D}output", path.string]
         if ¬Environment.isInContinuousIntegration {
-            script.append("--enable-code-coverage")
+            script.append("\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage")
         }
         requireBash(script)
 

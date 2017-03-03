@@ -111,7 +111,7 @@ struct Repository {
         return cachedResult(cache: &cache.trackedFiles) {
             () -> [RelativePath] in
 
-            let ignoredSummary = requireBash(["git", "status", "--ignored"], silent: true)
+            let ignoredSummary = requireBash(["git", "status", "\u{2D}\u{2D}ignored"], silent: true)
             var ignoredPaths: [String] = [
                 ".git/"
             ]

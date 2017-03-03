@@ -44,9 +44,9 @@ func bash(_ arguments: [String], silent: Bool = false, dropOutput: Bool = false)
     }
 
     if ¬silent ∧ ¬dropOutput ∧ ¬Environment.isInXcode /* Fails in Xcode’s container. */ {
-        argumentsString = "set -o pipefail; " + argumentsString + " | tee /dev/tty"
+        argumentsString = "set \u{2D}o pipefail; " + argumentsString + " | tee /dev/tty"
     }
-    process.arguments = ["-c", argumentsString]
+    process.arguments = ["\u{2D}c", argumentsString]
 
     process.launch()
 
@@ -105,7 +105,7 @@ func bash(_ arguments: [String], silent: Bool = false, dropOutput: Bool = false)
 private var missingTools: Set<String> = []
 func runThirdPartyTool(name: String, repositoryURL: String, versionCheck: [String], continuousIntegrationSetUp: [[String]], command: [String], updateInstructions: [String], dropOutput: Bool = false) -> (succeeded: Bool, output: String?, exitCode: ExitCode)? {
 
-    let versions = requireBash(["git", "ls-remote", "--tags", repositoryURL], silent: true)
+    let versions = requireBash(["git", "ls\u{2D}remote", "\u{2D}\u{2D}tags", repositoryURL], silent: true)
     var newest: (tag: String, version: Version)? = nil
     for line in versions.lines {
         if let tagPrefixRange = line.range(of: "refs/tags/") {

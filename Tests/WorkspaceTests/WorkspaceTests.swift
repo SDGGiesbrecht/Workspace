@@ -755,7 +755,7 @@ class WorkspaceTests : XCTestCase {
                             if ¬bash(["git", "add", "."], silent: true).succeeded {
                                 XCTFail("Failed to add files to Git in test project “\(project.name)”.")
                             }
-                            if ¬bash(["git", "commit", "-m", "Initialized state."], silent: true).succeeded {
+                            if ¬bash(["git", "commit", "\u{2D}m", "Initialized state."], silent: true).succeeded {
                                 XCTFail("Failed to commit files to Git in test project “\(project.name)”.")
                             }
 

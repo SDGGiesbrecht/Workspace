@@ -38,10 +38,11 @@ struct Not : Rule {
                 }
 
                 if let next = file.contents.substring(from: range.upperBound).unicodeScalars.first {
-                    if ¬CharacterSet.whitespacesAndNewlines.union(CharacterSet(charactersIn: "\u{22}!")).contains(next) {
+                    if ¬CharacterSet.whitespacesAndNewlines.union(CharacterSet(charactersIn: "\u{22})*/!")).contains(next)
+                        ∧ next ≠ "=" /* “Not Equal” rule */ {
 
                         switch fileType {
-                        case .workspaceConfiguration, .yaml, .gitignore:
+                        case .workspaceConfiguration, .yaml, .gitignore, .shell:
                             throwError()
 
                         case .swift:
@@ -53,11 +54,6 @@ struct Not : Rule {
                         case .markdown:
                             if next ≠ "-"
                                 ∧ ¬isInConditionalCompilationStatement(at: range, in: file) {
-                                throwError()
-                            }
-
-                        case .shell:
-                            if next ≠ "/" {
                                 throwError()
                             }
                         }

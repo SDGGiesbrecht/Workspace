@@ -27,7 +27,7 @@ struct HyphenMinus : Rule {
                 index = range.upperBound
 
                 func throwError() {
-                    errorNotice(status: &status, file: file, range: range, replacement: "[“/”/„/«/»/′′/״]", message: "Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range (–) instead.")
+                    errorNotice(status: &status, file: file, range: range, replacement: "[‐/−/—/•/–]", message: "Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range (–) instead.")
                 }
 
                 switch fileType {

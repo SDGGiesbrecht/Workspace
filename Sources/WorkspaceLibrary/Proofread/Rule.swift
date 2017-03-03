@@ -25,16 +25,23 @@ protocol Rule {
 let rules: [Rule.Type] = [
     CompatibilityCharacters.self,
 
-    ColonSpacing.self,
-
-    QuotationMarks.self
+    ColonSpacing.self
 ]
 
 let sdgRules: [Rule.Type] = rules + [
+    QuotationMarks.self,
     NotEqual.self,
     Not.self,
     Conjunction.self,
-    Disjunction.self
+    Disjunction.self,
+    LessThanOrEqual.self,
+    GreaterThanOrEqual.self,
+    HyphenMinus.self,
+    SubtractAndSet.self,
+    Multiplication.self,
+    MultiplyAndSet.self,
+    Division.self,
+    DivideAndSet.self
 ]
 
 extension Rule {

@@ -28,11 +28,11 @@ struct Division : Rule {
             }
 
             var index = file.contents.startIndex
-            while let range = file.contents.range(of: "\u{2F}", in: index ..< file.contents.endIndex) {
+            while let range = file.contents.range(of: " \u{2F} ", in: index ..< file.contents.endIndex) {
                 index = range.upperBound
 
                 func throwError() {
-                    errorNotice(status: &status, file: file, range: range, replacement: "÷", message: message)
+                    errorNotice(status: &status, file: file, range: range, replacement: " ÷ ", message: message)
                 }
 
                 switch fileType {

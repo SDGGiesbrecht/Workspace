@@ -69,11 +69,11 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
             var lines = [
                 "excluded:",
                 // Swift Package Manager
-                "  - Packages",
+                "  \u{2D} Packages",
                 // Workspace
-                "  - .Test Zone"
+                "  \u{2D} .Test Zone"
             ]
-            let disabled = Configuration.disableProofreadingRules.sorted().map({ "  - " + $0 })
+            let disabled = Configuration.disableProofreadingRules.sorted().map({ "  \u{2D} " + $0 })
             if ¬disabled.isEmpty {
                 lines += [
                     "disabled_rules:",
@@ -92,7 +92,7 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
             continuousIntegrationSetUp: [
                 ["brew", "upgrade", "swiftlint"]
             ],
-            command: ["swiftlint", "lint", "--strict"],
+            command: ["swiftlint", "lint", "\u{2D}\u{2D}strict"],
             updateInstructions: [
                 "Command to install Homebrew (https://brew.sh):",
                 "/usr/bin/ruby -e \u{22}$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\u{22}",

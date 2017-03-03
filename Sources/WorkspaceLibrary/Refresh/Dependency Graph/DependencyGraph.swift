@@ -31,7 +31,7 @@ struct DependencyGraph {
                     ])
             }
 
-            let parts = folderName.components(separatedBy: "-")
+            let parts = folderName.components(separatedBy: "\u{2D}")
             guard parts.count == 2 else {
                 fatalError(message: [
                     "Failed to parse dependency data from folder name:",

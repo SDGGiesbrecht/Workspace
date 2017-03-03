@@ -38,7 +38,8 @@ struct HyphenMinus : Rule {
 
                     case .swift:
                         if ¬isInAliasDefinition(for: "−", at: range, in: file)
-                            ∧ ¬file.contents.substring(from: range.upperBound).hasPrefix(">") {
+                            ∧ ¬file.contents.substring(from: range.upperBound).hasPrefix(">")
+                            ∧ ¬file.contents.substring(to: range.lowerBound).hasSuffix("// MARK: ") {
                             throwError()
                         }
 

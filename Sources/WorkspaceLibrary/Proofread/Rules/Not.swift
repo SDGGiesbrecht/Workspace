@@ -52,7 +52,7 @@ struct Not : Rule {
                             }
 
                         case .markdown:
-                            if next ≠ "-"
+                            if next ≠ "\u{2D}"
                                 ∧ ¬isInConditionalCompilationStatement(at: range, in: file) {
                                 throwError()
                             }

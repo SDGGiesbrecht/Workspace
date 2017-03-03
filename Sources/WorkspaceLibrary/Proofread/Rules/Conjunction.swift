@@ -36,11 +36,17 @@ struct Conjunction : Rule {
                 }
 
                 switch fileType {
-                case .workspaceConfiguration, .markdown, .yaml, .gitignore, .shell:
+                case .workspaceConfiguration, .yaml, .gitignore, .shell:
                     throwError()
 
                 case .swift:
-                    if ¬isInAliasDefinition(for: "∧", at: range, in: file) {
+                    if ¬isInAliasDefinition(for: "∧", at: range, in: file)
+                        ∧ ¬isInConditionalCompilationStatement(at: range, in: file) {
+                        throwError()
+                    }
+
+                case .markdown:
+                    if ¬isInConditionalCompilationStatement(at: range, in: file) {
                         throwError()
                     }
                 }

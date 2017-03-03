@@ -45,12 +45,14 @@ struct Not : Rule {
                             throwError()
 
                         case .swift:
-                            if ¬isInAliasDefinition(for: "¬", at: range, in: file) {
+                            if ¬isInAliasDefinition(for: "¬", at: range, in: file)
+                                ∧ ¬isInConditionalCompilationStatement(at: range, in: file) {
                                 throwError()
                             }
 
                         case .markdown:
-                            if next ≠ "-" {
+                            if next ≠ "-"
+                                ∧ ¬isInConditionalCompilationStatement(at: range, in: file) {
                                 throwError()
                             }
 

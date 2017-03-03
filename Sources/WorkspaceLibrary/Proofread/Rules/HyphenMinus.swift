@@ -35,7 +35,7 @@ struct HyphenMinus : Rule {
 
                 if ¬line.contains("http") {
                     switch fileType {
-                    case .workspaceConfiguration, .markdown, .yaml, .gitignore:
+                    case .markdown, .yaml, .gitignore:
                         throwError()
 
                     case .swift:
@@ -43,7 +43,7 @@ struct HyphenMinus : Rule {
                             throwError()
                         }
 
-                    case .shell:
+                    case .shell, .workspaceConfiguration:
                         if line.hasPrefix("#") {
                             throwError()
                         }

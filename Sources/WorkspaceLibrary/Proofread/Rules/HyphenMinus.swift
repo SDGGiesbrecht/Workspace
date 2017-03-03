@@ -29,14 +29,19 @@ struct HyphenMinus : Rule {
                 func throwError() {
                     errorNotice(status: &status, file: file, range: range, replacement: "[‐/−/—/•/–]", message: "Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range (–) instead.")
                 }
+                
+                let lineRange = file.contents.lineRange(for: range)
+                let line = file.contents.substring(with: lineRange)
 
-                switch fileType {
-                case .workspaceConfiguration, .markdown, .yaml, .gitignore, .shell:
-                    throwError()
-
-                case .swift:
-                    if ¬isInAliasDefinition(for: "−", at: range, in: file) {
+                if ¬line.contains("http") {
+                    switch fileType {
+                    case .workspaceConfiguration, .markdown, .yaml, .gitignore, .shell:
                         throwError()
+                        
+                    case .swift:
+                        if ¬isInAliasDefinition(for: "−", at: range, in: file) {
+                            throwError()
+                        }
                     }
                 }
             }

@@ -51,7 +51,7 @@ struct ContinuousIntegration {
         func runCommand(_ command: String) -> String {
             var escapedCommand = command.replacingOccurrences(of: "\u{5C}", with: "\u{5C}\u{5C}")
             escapedCommand = escapedCommand.replacingOccurrences(of: "\u{22}", with: "\u{5C}\u{22}")
-            return "        - \u{22}\(escapedCommand)\u{22}"
+            return "        \u{2D} \u{22}\(escapedCommand)\u{22}"
         }
 
         func runWorkspaceScript(_ name: String) -> String {
@@ -68,9 +68,9 @@ struct ContinuousIntegration {
         if Configuration.supportMacOS {
 
             updatedLines.append(contentsOf: [
-                "    - os: osx",
+                "    \u{2D} os: osx",
                 "      env:",
-                "        - \(jobKey)=\u{22}\(macOSJob)\u{22}",
+                "        \u{2D} \(jobKey)=\u{22}\(macOSJob)\u{22}",
                 "      osx_image: xcode8.2",
                 "      script:",
                 runRefreshWorkspace,
@@ -81,11 +81,11 @@ struct ContinuousIntegration {
         if Configuration.supportLinux {
 
             updatedLines.append(contentsOf: [
-            "    - os: linux",
+            "    \u{2D} os: linux",
             "      dist: trusty",
             "      env:",
-            "        - \(jobKey)=\u{22}\(linuxJob)\u{22}",
-            "        - SWIFT_VERSION=3.0.2",
+            "        \u{2D} \(jobKey)=\u{22}\(linuxJob)\u{22}",
+            "        \u{2D} SWIFT_VERSION=3.0.2",
             "      script:",
             runCommand("eval \u{22}$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\u{22}"),
             runRefreshWorkspace,
@@ -95,11 +95,11 @@ struct ContinuousIntegration {
 
         func addPortableOSJob(name: String, sdk: String) {
             updatedLines.append(contentsOf: [
-                "    - os: osx",
+                "    \u{2D} os: osx",
                 "      env:",
-                "        - \(jobKey)=\u{22}\(name)\u{22}",
+                "        \u{2D} \(jobKey)=\u{22}\(name)\u{22}",
                 "      osx_image: xcode8.2",
-                "      language: objective-c",
+                "      language: objective\u{2D}c",
                 "      xcode_sdk: \(sdk)",
                 "      script:",
                 runRefreshWorkspace,
@@ -124,9 +124,9 @@ struct ContinuousIntegration {
 
         // Miscellaneous must be done on macOS because of SwiftLint.
         updatedLines.append(contentsOf: [
-            "    - os: osx",
+            "    \u{2D} os: osx",
             "      env:",
-            "        - \(jobKey)=\u{22}\(miscellaneousJob)\u{22}",
+            "        \u{2D} \(jobKey)=\u{22}\(miscellaneousJob)\u{22}",
             "      osx_image: xcode8.2",
             "      script:",
             runRefreshWorkspace,
@@ -138,7 +138,7 @@ struct ContinuousIntegration {
             "cache:",
             "  directories:",
             // Workspace
-            "  - $HOME/.Workspace"
+            "  \u{2D} $HOME/.Workspace"
             ])
 
         let newBody = join(lines: updatedLines)

@@ -79,7 +79,7 @@ struct UnitTests {
             let flag: String
             let flagValue: String
             if buildOnly {
-                flag = "-sdk"
+                flag = "\u{2D}sdk"
                 flagValue = sdk
             } else {
                 // Test
@@ -89,7 +89,7 @@ struct UnitTests {
 
                     print(["Searching for simulator..."], in: nil, spaced: true)
 
-                    guard let deviceManifest = bash(["instruments", "-s", "devices"]).output else {
+                    guard let deviceManifest = bash(["instruments", "\u{2D}s", "devices"]).output else {
                         fatalError(message: ["Failed to get list of simulators."])
                     }
 
@@ -146,14 +146,14 @@ struct UnitTests {
                         ])
                 }
 
-                flag = "-destination"
+                flag = "\u{2D}destination"
                 flagValue = "id=\(deviceID)"
             }
 
             func generateScript(buildOnly: Bool) -> [String] {
                 return [
                     "xcodebuild", (buildOnly ? "build" : "test"),
-                    "-scheme", Configuration.projectName,
+                    "\u{2D}scheme", Configuration.projectName,
                     flag, flagValue
                 ]
             }
@@ -177,7 +177,7 @@ struct UnitTests {
 
             // watchOS
 
-            runUnitTestsInXcode(buildOnly: true, operatingSystemName: "watchOS", sdk: "watchos", deviceKey: "Apple Watch Series 2 - 38mm")
+            runUnitTestsInXcode(buildOnly: true, operatingSystemName: "watchOS", sdk: "watchos", deviceKey: "Apple Watch Series 2 \u{2D} 38mm")
         }
 
         if Environment.shouldDoTVOSJobs {

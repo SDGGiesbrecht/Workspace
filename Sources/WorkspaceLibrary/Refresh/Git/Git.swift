@@ -111,7 +111,7 @@ struct Git {
         let gitAttributes = File(possiblyAt: RelativePath(".gitattributes"))
 
         let updatedAttributes = [
-            "/Refresh?Workspace* linguist-vendored=true"
+            "/Refresh?Workspace* linguist\u{2D}vendored=true"
             ]
 
         replaceManagedSection(in: gitAttributes, with: updatedAttributes)

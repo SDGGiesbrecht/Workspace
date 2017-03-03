@@ -1,5 +1,5 @@
 /*
- NotEqual.swift
+ Conjunction.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace
@@ -14,45 +14,41 @@
 
 import SDGLogic
 
-struct NotEqual : Rule {
+struct Conjunction : Rule {
 
-    static let name = "Not Equal"
+    static let name = "Conjunction"
 
     static func check(file: File, status: inout Bool) {
 
         if let fileType = file.fileType {
 
-            var message = "Use “≠” instead."
+            var message = "Use “∧” instead."
             if fileType == .swift {
                 message += " (Import SDGLogic.)"
             }
 
             var index = file.contents.startIndex
-            while let range = file.contents.range(of: "\u{21}\u{3D}", in: index ..< file.contents.endIndex) {
+            while let range = file.contents.range(of: "&\u{26}", in: index ..< file.contents.endIndex) {
                 index = range.upperBound
 
                 func throwError() {
-                    errorNotice(status: &status, file: file, range: range, replacement: "≠", message: message)
+                    errorNotice(status: &status, file: file, range: range, replacement: "∧", message: message)
                 }
 
                 switch fileType {
-                case .workspaceConfiguration, .markdown, .yaml, .gitignore:
+                case .workspaceConfiguration, .yaml, .gitignore, .shell:
                     throwError()
 
                 case .swift:
-                    if ¬isInAliasDefinition(for: "≠", at: range, in: file) {
+                    if ¬isInAliasDefinition(for: "∧", at: range, in: file)
+                        ∧ ¬isInConditionalCompilationStatement(at: range, in: file) {
                         throwError()
                     }
 
-                case .shell:
-                    let lineRange = file.contents.lineRange(for: range)
-                    let linePrefix = file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound)
-                    let lineSuffix = file.contents.substring(with: range.upperBound ..< lineRange.upperBound)
-
-                    if ¬(linePrefix.contains("[") ∧ lineSuffix.contains("]")) {
+                case .markdown:
+                    if ¬isInConditionalCompilationStatement(at: range, in: file) {
                         throwError()
                     }
-
                 }
             }
         }

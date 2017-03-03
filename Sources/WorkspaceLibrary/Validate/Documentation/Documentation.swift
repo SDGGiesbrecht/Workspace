@@ -63,33 +63,33 @@ struct Documentation {
             let documentationFolder = "docs/\(operatingSystemName)"
 
             var xcodebuildArguments = [
-                "-target", Configuration.primaryXcodeTarget,
-                "-sdk", sdk
+                "\u{2D}target", Configuration.primaryXcodeTarget,
+                "\u{2D}sdk", sdk
                 ]
             if let extraCondition = condition {
                 xcodebuildArguments.append("SWIFT_ACTIVE_COMPILATION_CONDITIONS=\(extraCondition)")
             }
 
-            var command = ["jazzy", "--clean", "--use-safe-filenames", "--skip-undocumented",
-                           "--output", documentationFolder,
-                           "--xcodebuild-arguments", xcodebuildArguments.joined(separator: ","),
-                           "--module", Configuration.primaryXcodeTarget,
-                           "--copyright", copyright(folder: documentationFolder)
+            var command = ["jazzy", "\u{2D}\u{2D}clean", "\u{2D}\u{2D}use\u{2D}safe\u{2D}filenames", "\u{2D}\u{2D}skip\u{2D}undocumented",
+                           "\u{2D}\u{2D}output", documentationFolder,
+                           "\u{2D}\u{2D}xcodebuild\u{2D}arguments", xcodebuildArguments.joined(separator: ","),
+                           "\u{2D}\u{2D}module", Configuration.primaryXcodeTarget,
+                           "\u{2D}\u{2D}copyright", copyright(folder: documentationFolder)
             ]
             if let github = Configuration.projectWebsite {
                 command.append(contentsOf: [
-                    "--github_url", github
+                    "\u{2D}\u{2D}github_url", github
                     ])
             }
 
             if let jazzyResult = runThirdPartyTool(
                 name: "Jazzy",
                 repositoryURL: "https://github.com/realm/jazzy",
-                versionCheck: ["jazzy", "--version"],
+                versionCheck: ["jazzy", "\u{2D}\u{2D}version"],
                 continuousIntegrationSetUp: [
                     ["gem", "install", "jazzy"]
                 ],
-                // [_Workaround: Jazzy produces symbols from unbuilt #if directives with no documentation. Removing them with --skip-undocumented. (Jazzy 0.7.4)_]
+                // [_Workaround: Jazzy produces symbols from unbuilt #if directives with no documentation. Removing them by skipping undocumented symbols. (Jazzy 0.7.4)_]
                 command: command,
                 updateInstructions: [
                     "Command to install Jazzy:",

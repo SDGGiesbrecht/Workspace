@@ -28,7 +28,7 @@ struct Conjunction : Rule {
             }
 
             var index = file.contents.startIndex
-            while let range = file.contents.range(of: "&&", in: index ..< file.contents.endIndex) {
+            while let range = file.contents.range(of: "&\u{26}", in: index ..< file.contents.endIndex) {
                 index = range.upperBound
 
                 func throwError() {

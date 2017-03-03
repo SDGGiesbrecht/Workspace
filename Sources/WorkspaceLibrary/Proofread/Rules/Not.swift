@@ -38,7 +38,7 @@ struct Not : Rule {
                 }
 
                 if let next = file.contents.substring(from: range.upperBound).unicodeScalars.first {
-                    if ¬CharacterSet.whitespacesAndNewlines.union(CharacterSet(charactersIn: "\u{22})*/!")).contains(next)
+                    if ¬CharacterSet.whitespacesAndNewlines.union(CharacterSet(charactersIn: "\u{22})*/\u{5C}!")).contains(next)
                         ∧ next ≠ "=" /* “Not Equal” rule */ {
 
                         switch fileType {

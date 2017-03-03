@@ -32,7 +32,9 @@ let rules: [Rule.Type] = [
 
 let sdgRules: [Rule.Type] = rules + [
     NotEqual.self,
-    Not.self
+    Not.self,
+    Conjunction.self,
+    Disjunction.self
 ]
 
 extension Rule {

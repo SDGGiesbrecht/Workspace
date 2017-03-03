@@ -35,7 +35,7 @@ struct HyphenMinus : Rule {
 
                 if ¬line.contains("http") {
                     switch fileType {
-                    case .workspaceConfiguration, .markdown, .yaml, .gitignore, .shell:
+                    case .workspaceConfiguration, .markdown, .yaml, .gitignore:
                         throwError()
 
                     case .swift:

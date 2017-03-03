@@ -94,4 +94,18 @@ extension Rule {
             standardError.write(join(lines: output).data(using: String.Encoding.utf8)!)
         }
     }
+
+    static func isInAliasDefinition(for alias: String, at location: Range<String.Index>, in file: File) -> Bool {
+
+        let lineRange = file.contents.lineRange(for: location)
+
+        if lineRange.lowerBound ≠ file.contents.startIndex,
+            file.contents.substring(with: file.contents.lineRange(for: file.contents.index(before: lineRange.lowerBound) ..< lineRange.lowerBound)).contains("func " + alias) {
+            return true
+        } else if file.contents.substring(with: lineRange).contains("RecommendedOver") {
+            return true
+        } else {
+            return false
+        }
+    }
 }

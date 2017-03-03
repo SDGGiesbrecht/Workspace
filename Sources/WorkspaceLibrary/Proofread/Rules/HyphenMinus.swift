@@ -39,7 +39,9 @@ struct HyphenMinus : Rule {
                     case .swift:
                         if ¬isInAliasDefinition(for: "−", at: range, in: file)
                             ∧ ¬file.contents.substring(from: range.upperBound).hasPrefix(">")
-                            ∧ ¬file.contents.substring(to: range.lowerBound).hasSuffix("// MARK: ") {
+                            ∧ ¬file.contents.substring(to: range.lowerBound).hasSuffix("// MARK: ")
+                            ∧ ¬file.contents.substring(to: range.lowerBound).hasSuffix("/// ")
+                            ∧ ¬file.contents.substring(to: range.lowerBound).hasSuffix("///     ") {
                             throwError()
                         }
 
@@ -65,7 +67,8 @@ struct HyphenMinus : Rule {
                         }
 
                     case .yaml:
-                        if ¬file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound).isWhitespace {
+                        if ¬file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound).isWhitespace
+                            ∧ ¬file.path.string.hasSuffix(".travis.yml") {
                             throwError()
                         }
                     }

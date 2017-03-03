@@ -60,7 +60,7 @@ struct HyphenMinus : Rule {
                         if ¬file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound).isWhitespace
                             ∧ ¬line.contains("<\u{21}\u{2D}\u{2D}")
                             ∧ ¬line.contains("\u{2D}\u{2D}>")
-                            ∧ ¬(file.contents.substring(to: range.lowerBound).contains("```shell") ∧ file.contents.substring(from: range.upperBound).contains("```"))
+                            ∧ ¬((file.contents.substring(to: range.lowerBound).contains("```shell") ∨ file.contents.substring(to: range.lowerBound).contains("```swift")) ∧ file.contents.substring(from: range.upperBound).contains("```"))
                             ∧ ¬line.contains("](")
                             ∧ ¬line.contains("`") {
                             throwError()

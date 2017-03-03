@@ -38,14 +38,19 @@ struct Not : Rule {
                 }
 
                 if let next = file.contents.substring(from: range.upperBound).unicodeScalars.first {
-                    if ¬CharacterSet.whitespacesAndNewlines.contains(next) {
+                    if ¬CharacterSet.whitespacesAndNewlines.union(CharacterSet(charactersIn: "\u{22}!")).contains(next) {
 
                         switch fileType {
-                        case .workspaceConfiguration, .markdown, .yaml, .gitignore:
+                        case .workspaceConfiguration, .yaml, .gitignore:
                             throwError()
 
                         case .swift:
                             if ¬isInAliasDefinition(for: "¬", at: range, in: file) {
+                                throwError()
+                            }
+                            
+                        case .markdown:
+                            if next ≠ "-" {
                                 throwError()
                             }
 

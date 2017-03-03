@@ -48,7 +48,7 @@ struct Not : Rule {
                             if ¬isInAliasDefinition(for: "¬", at: range, in: file) {
                                 throwError()
                             }
-                            
+
                         case .markdown:
                             if next ≠ "-" {
                                 throwError()

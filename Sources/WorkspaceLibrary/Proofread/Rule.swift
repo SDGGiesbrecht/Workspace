@@ -111,4 +111,10 @@ extension Rule {
             return false
         }
     }
+
+    static func isInConditionalCompilationStatement(at location: Range<String.Index>, in file: File) -> Bool {
+        let lineRange = file.contents.lineRange(for: location)
+        let line = file.contents.substring(with: lineRange)
+        return line.contains("#if") ∨ line.contains("#elseif")
+    }
 }

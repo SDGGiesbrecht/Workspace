@@ -43,9 +43,15 @@ struct HyphenMinus : Rule {
                             throwError()
                         }
 
-                    case .shell, .workspaceConfiguration:
+                    case .shell:
                         if line.hasPrefix("#") {
                             throwError()
+                        }
+
+                    case .workspaceConfiguration:
+                        if ¬(file.contents.substring(with: file.contents.startIndex ..< range.lowerBound).contains("```shell")
+                            ∧ file.contents.substring(with: range.upperBound ..< file.contents.endIndex).contains("```")) {
+                                throwError()
                         }
                     }
                 }

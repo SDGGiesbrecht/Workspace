@@ -37,7 +37,8 @@ struct HyphenMinus : Rule {
                     switch fileType {
 
                     case .swift:
-                        if ¬isInAliasDefinition(for: "−", at: range, in: file) {
+                        if ¬isInAliasDefinition(for: "−", at: range, in: file)
+                            ∧ ¬file.contents.substring(from: range.upperBound).hasPrefix(">") {
                             throwError()
                         }
 
@@ -49,15 +50,20 @@ struct HyphenMinus : Rule {
                     case .workspaceConfiguration:
                         if ¬(file.contents.substring(with: file.contents.startIndex ..< range.lowerBound).contains("```shell")
                             ∧ file.contents.substring(with: range.upperBound ..< file.contents.endIndex).contains("```")) {
-                                throwError()
+                            throwError()
                         }
 
-                    case .markdown, .yaml:
+                    case .markdown:
                         if ¬file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound).isWhitespace
                             ∧ ¬line.contains("<\u{21}\u{2D}\u{2D}")
                             ∧ ¬line.contains("\u{2D}\u{2D}>")
                             ∧ ¬line.contains("](")
                             ∧ ¬line.contains("`") {
+                            throwError()
+                        }
+
+                    case .yaml:
+                        if ¬file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound).isWhitespace {
                             throwError()
                         }
                     }

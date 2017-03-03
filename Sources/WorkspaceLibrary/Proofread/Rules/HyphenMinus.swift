@@ -33,7 +33,8 @@ struct HyphenMinus : Rule {
                 let lineRange = file.contents.lineRange(for: range)
                 let line = file.contents.substring(with: lineRange)
 
-                if ¬line.contains("http") {
+                if ¬line.contains("http")
+                    ∧ ¬file.contents.substring(from: range.upperBound).hasPrefix("=") /* “Subtract & Set” rule */ {
                     switch fileType {
 
                     case .swift:

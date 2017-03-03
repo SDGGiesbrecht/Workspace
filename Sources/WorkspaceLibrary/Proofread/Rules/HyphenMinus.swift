@@ -42,6 +42,11 @@ struct HyphenMinus : Rule {
                         if ¬isInAliasDefinition(for: "−", at: range, in: file) {
                             throwError()
                         }
+
+                    case .shell:
+                        if line.hasPrefix("#") {
+                            throwError()
+                        }
                     }
                 }
             }

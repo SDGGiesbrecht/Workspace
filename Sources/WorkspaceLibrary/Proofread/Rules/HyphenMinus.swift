@@ -35,15 +35,13 @@ struct HyphenMinus : Rule {
 
                 if ¬line.contains("http") {
                     switch fileType {
-                    case .markdown, .yaml, .gitignore:
-                        throwError()
-
+                        
                     case .swift:
                         if ¬isInAliasDefinition(for: "−", at: range, in: file) {
                             throwError()
                         }
 
-                    case .shell:
+                    case .shell, .gitignore:
                         if line.hasPrefix("#") {
                             throwError()
                         }
@@ -52,6 +50,11 @@ struct HyphenMinus : Rule {
                         if ¬(file.contents.substring(with: file.contents.startIndex ..< range.lowerBound).contains("```shell")
                             ∧ file.contents.substring(with: range.upperBound ..< file.contents.endIndex).contains("```")) {
                                 throwError()
+                        }
+
+                    case .markdown, .yaml:
+                        if ¬file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound).isWhitespace {
+                            throwError()
                         }
                     }
                 }

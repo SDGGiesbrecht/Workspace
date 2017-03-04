@@ -40,7 +40,8 @@ struct SubtractAndSet : Rule {
                     throwError()
 
                 case .swift:
-                    if ¬isInAliasDefinition(for: "−=", at: range, in: file) {
+                    if ¬isInAliasDefinition(for: "−=", at: range, in: file)
+                        ∧ ¬isInAliasDefinition(for: "subtractAndAssignAsFloatingPoint", at: range, in: file) {
                         throwError()
                     }
                 }

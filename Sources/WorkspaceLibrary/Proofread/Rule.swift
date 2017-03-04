@@ -23,20 +23,36 @@ protocol Rule {
 }
 
 let rules: [Rule.Type] = [
-    CompatibilityCharacters.self,
 
-    ColonSpacing.self
+    // Functionality
+    CompatibilityCharacters.self,
+    AutoindentResilience.self,
+    Mark.self,
+
+    // Documentation
+    DocumentationOfExtensionContstraints.self,
+
+    // Style
+    ColonSpacing.self,
+    CalloutCasing.self,
+    ParametersStyle.self
 ]
 
 let sdgRules: [Rule.Type] = rules + [
+
+    // General
     QuotationMarks.self,
+    HyphenMinus.self,
+
+    // Logic
     NotEqual.self,
     Not.self,
     Conjunction.self,
     Disjunction.self,
+
+    // Mathematics
     LessThanOrEqual.self,
     GreaterThanOrEqual.self,
-    HyphenMinus.self,
     SubtractAndSet.self,
     Multiplication.self,
     MultiplyAndSet.self,

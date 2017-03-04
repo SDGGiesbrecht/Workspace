@@ -422,7 +422,7 @@ class WorkspaceTests : XCTestCase {
                     ]))
 
                 let startingWithDocumentation = File(_path: path, _contents: join(lines: [
-                    "/**",
+                    "/*\u{2A}",
                     " Documentation",
                     " */"
                     ]))
@@ -433,7 +433,7 @@ class WorkspaceTests : XCTestCase {
                     " Header",
                     " */",
                     "",
-                    "/**",
+                    "/*\u{2A}",
                     " Documentation",
                     " */",
                     "" // Final newline

@@ -22,55 +22,60 @@ struct HyphenMinus : Rule {
 
         if let fileType = file.fileType {
 
-            var index = file.contents.startIndex
-            while let range = file.contents.range(of: "\u{2D}", in: index ..< file.contents.endIndex) {
-                index = range.upperBound
+            if ¬file.path.string.hasSuffix("SignedNumber.swift") {
 
-                func throwError() {
-                    errorNotice(status: &status, file: file, range: range, replacement: "[‐/−/—/•/–]", message: "Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range (–) instead.")
-                }
+                var index = file.contents.startIndex
+                while let range = file.contents.range(of: "\u{2D}", in: index ..< file.contents.endIndex) {
+                    index = range.upperBound
 
-                let lineRange = file.contents.lineRange(for: range)
-                let line = file.contents.substring(with: lineRange)
+                    func throwError() {
+                        errorNotice(status: &status, file: file, range: range, replacement: "[‐/−/—/•/–]", message: "Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range (–) instead.")
+                    }
 
-                if ¬line.contains("http")
-                    ∧ ¬file.contents.substring(from: range.upperBound).hasPrefix("=") /* “Subtract & Set” rule */ {
-                    switch fileType {
+                    let lineRange = file.contents.lineRange(for: range)
+                    let line = file.contents.substring(with: lineRange)
 
-                    case .swift:
-                        if ¬isInAliasDefinition(for: "−", at: range, in: file)
-                            ∧ ¬file.contents.substring(from: range.upperBound).hasPrefix(">")
-                            ∧ ¬file.contents.substring(to: range.lowerBound).hasSuffix("// MARK: ")
-                            ∧ ¬file.contents.substring(to: range.lowerBound).hasSuffix("/// ")
-                            ∧ ¬file.contents.substring(to: range.lowerBound).hasSuffix("///     ") {
-                            throwError()
-                        }
+                    if ¬line.contains("http")
+                        ∧ ¬file.contents.substring(from: range.upperBound).hasPrefix("=") /* “Subtract & Set” rule */ {
+                        switch fileType {
 
-                    case .shell, .gitignore:
-                        if line.hasPrefix("#") {
-                            throwError()
-                        }
+                        case .swift:
+                            if ¬isInAliasDefinition(for: "−", at: range, in: file)
+                                ∧ ¬file.contents.substring(from: range.upperBound).hasPrefix(">")
+                                ∧ ¬file.contents.substring(to: range.lowerBound).hasSuffix("// MARK\u{3A} ")
+                                ∧ ¬file.contents.substring(to: range.lowerBound).hasSuffix("/// ")
+                                ∧ ¬file.contents.substring(to: range.lowerBound).hasSuffix("///     ")
+                                ∧ ¬line.contains("let ln2")
+                                ∧ ¬line.contains("Swift.SignedNumber") {
+                                throwError()
+                            }
 
-                    case .workspaceConfiguration:
-                        if ¬(file.contents.substring(with: file.contents.startIndex ..< range.lowerBound).contains("```shell")
-                            ∧ file.contents.substring(with: range.upperBound ..< file.contents.endIndex).contains("```")) {
-                            throwError()
-                        }
+                        case .shell, .gitignore:
+                            if line.hasPrefix("#") {
+                                throwError()
+                            }
 
-                    case .markdown:
-                        if ¬file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound).isWhitespace
-                            ∧ ¬line.contains("<\u{21}\u{2D}\u{2D}")
-                            ∧ ¬line.contains("\u{2D}\u{2D}>")
-                            ∧ ¬((file.contents.substring(to: range.lowerBound).contains("```shell") ∨ file.contents.substring(to: range.lowerBound).contains("```swift")) ∧ file.contents.substring(from: range.upperBound).contains("```"))
-                            ∧ ¬line.contains("](")
-                            ∧ ¬line.contains("`") {
-                            throwError()
-                        }
+                        case .workspaceConfiguration:
+                            if ¬(file.contents.substring(with: file.contents.startIndex ..< range.lowerBound).contains("```shell")
+                                ∧ file.contents.substring(with: range.upperBound ..< file.contents.endIndex).contains("```")) {
+                                throwError()
+                            }
 
-                    case .yaml:
-                        if ¬file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound).isWhitespace
-                            ∧ ¬file.path.string.hasSuffix(".travis.yml") {
-                            throwError()
+                        case .markdown:
+                            if ¬file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound).isWhitespace
+                                ∧ ¬line.contains("<\u{21}\u{2D}\u{2D}")
+                                ∧ ¬line.contains("\u{2D}\u{2D}>")
+                                ∧ ¬((file.contents.substring(to: range.lowerBound).contains("```shell") ∨ file.contents.substring(to: range.lowerBound).contains("```swift")) ∧ file.contents.substring(from: range.upperBound).contains("```"))
+                                ∧ ¬line.contains("](")
+                                ∧ ¬line.contains("`") {
+                                throwError()
+                            }
+
+                        case .yaml:
+                            if ¬file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound).isWhitespace
+                                ∧ ¬file.path.string.hasSuffix(".travis.yml") {
+                                throwError()
+                            }
                         }
                     }
                 }

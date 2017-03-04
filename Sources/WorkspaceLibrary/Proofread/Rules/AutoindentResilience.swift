@@ -22,7 +22,7 @@ struct AutoindentResilience : Rule {
 
         if file.fileType == .swift {var index = file.contents.startIndex
 
-            while let range = file.contents.range(of: "/**", in: index ..< file.contents.endIndex) {
+            while let range = file.contents.range(of: "/*\u{2A}", in: index ..< file.contents.endIndex) {
                 index = range.upperBound
 
                 errorNotice(status: &status, file: file, range: range.lowerBound ..< file.contents.index(range.lowerBound, offsetBy: 3), replacement: nil, message: "This may not survive autoindent (⌃I). Use the “///” style instead.")

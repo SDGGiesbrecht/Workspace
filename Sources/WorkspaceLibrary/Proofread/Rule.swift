@@ -26,6 +26,7 @@ let rules: [Rule.Type] = [
     // Functionality
     CompatibilityCharacters.self,
     Mark.self,
+    DocumentationOfExtensionContstraints.self,
 
     // Style
     ColonSpacing.self

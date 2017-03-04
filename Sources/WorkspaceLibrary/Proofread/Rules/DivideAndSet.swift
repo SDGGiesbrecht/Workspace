@@ -40,7 +40,8 @@ struct DivideAndSet : Rule {
                     throwError()
 
                 case .swift:
-                    if ¬isInAliasDefinition(for: "÷=", at: range, in: file) {
+                    if ¬isInAliasDefinition(for: "÷=", at: range, in: file)
+                        ∧ ¬isInAliasDefinition(for: "divideAccordingToEuclid", at: range, in: file) {
                         throwError()
                     }
                 }

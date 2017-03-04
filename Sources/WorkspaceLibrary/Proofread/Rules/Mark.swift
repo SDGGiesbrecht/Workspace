@@ -23,7 +23,7 @@ struct Mark : Rule {
     static func check(file: File, status: inout Bool) {
 
         var index = file.contents.startIndex
-        while let range = file.contents.range(of: "MARK:", in: index ..< file.contents.endIndex) {
+        while let range = file.contents.range(of: "MARK\u{3A}", in: index ..< file.contents.endIndex) {
             index = range.upperBound
 
             let lineRange = file.contents.lineRange(for: range)
@@ -33,7 +33,7 @@ struct Mark : Rule {
             var errorExists = false
 
             var errorStart = range.lowerBound
-            if ¬before.hasSuffix(" // ") ∨ before ≠ "// " {
+            if ¬before.hasSuffix(" // ") ∧ before ≠ "// " {
                 errorExists = true
                 errorStart = lineRange.lowerBound
                 file.contents.advance(&errorStart, past: CharacterSet.whitespaces)
@@ -45,7 +45,7 @@ struct Mark : Rule {
             }
 
             if errorExists {
-                errorNotice(status: &status, file: file, range: errorStart ..< errorEnd, replacement: "// MARK: \u{2D} ", message: "Use “// MARK: \u{2D} ” instead.")
+                errorNotice(status: &status, file: file, range: errorStart ..< errorEnd, replacement: "// MARK\u{3A} \u{2D} ", message: "Use “// MARK\u{3A} \u{2D} ” instead.")
             }
         }
     }

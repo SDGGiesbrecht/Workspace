@@ -16,7 +16,7 @@ import SDGLogic
 
 struct DocumentationOfExtensionContstraints : Rule {
 
-    static let name = "Mark"
+    static let name = "Documentation of Extension Constraints"
 
     static func check(file: File, status: inout Bool) {
 
@@ -36,7 +36,7 @@ struct DocumentationOfExtensionContstraints : Rule {
                         let nextLine = file.contents.substring(with: nextLineRange)
 
                         if ¬nextLine.contains("// MARK\u{3A} \u{2D} ") {
-                            errorNotice(status: &status, file: file, range: range, replacement: nil, message: "Add “// MARK\u{3A} - where ...” on the next line for generated documentation.")
+                            errorNotice(status: &status, file: file, range: range, replacement: nil, message: "Add “// MARK\u{3A} \u{2D} where ...” on the next line for generated documentation.")
                         }
                     }
                 }

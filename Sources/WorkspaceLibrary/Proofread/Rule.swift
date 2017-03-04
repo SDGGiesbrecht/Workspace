@@ -23,8 +23,11 @@ protocol Rule {
 }
 
 let rules: [Rule.Type] = [
+    // Functionality
     CompatibilityCharacters.self,
+    Mark.self,
 
+    // Style
     ColonSpacing.self
 ]
 

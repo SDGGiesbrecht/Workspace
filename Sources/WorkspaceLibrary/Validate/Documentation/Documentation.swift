@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGLogic
 
 struct Documentation {
@@ -47,6 +49,27 @@ struct Documentation {
         return copyright
     }
 
+    static let operatorCharacters: CharacterSet = {
+        let sections: [CharacterSet] = [
+            CharacterSet(charactersIn: "\u{2F}=\u{2D}+\u{21}\u{2A}%<>&|^~?"),
+            CharacterSet(charactersIn: "\u{A1}" ..< "\u{A7}"),
+            CharacterSet(charactersIn: "©«¬®°±¶»¿×÷‖\u{2017}"),
+            CharacterSet(charactersIn: "\u{2020}" ..< "\u{2027}"),
+            CharacterSet(charactersIn: "\u{2030}" ..< "\u{203E}"),
+            CharacterSet(charactersIn: "\u{2041}" ..< "\u{2053}"),
+            CharacterSet(charactersIn: "\u{2055}" ..< "\u{205E}"),
+            CharacterSet(charactersIn: "\u{2190}" ..< "\u{23FF}"),
+            CharacterSet(charactersIn: "\u{2500}" ..< "\u{2775}"),
+            CharacterSet(charactersIn: "\u{2794}" ..< "\u{2BFF}"),
+            CharacterSet(charactersIn: "\u{2E00}" ..< "\u{2E7F}"),
+            CharacterSet(charactersIn: "\u{3001}" ..< "\u{3003}"),
+            CharacterSet(charactersIn: "\u{3008}" ..< "\u{3030}"),
+
+            CharacterSet(charactersIn: ".")
+        ]
+        return sections.reduce(CharacterSet()) { $0.union($1) }
+    }()
+
     static func generate(individualSuccess: @escaping (String) -> Void, individualFailure: @escaping (String) -> Void) {
 
         Xcode.temporarilyDisableProofreading()
@@ -65,7 +88,7 @@ struct Documentation {
             var xcodebuildArguments = [
                 "\u{2D}target", Configuration.primaryXcodeTarget,
                 "\u{2D}sdk", sdk
-                ]
+            ]
             if let extraCondition = condition {
                 xcodebuildArguments.append("SWIFT_ACTIVE_COMPILATION_CONDITIONS=\(extraCondition)")
             }
@@ -152,7 +175,8 @@ struct Documentation {
 
                 let tokens = ("<span class=\u{22}err\u{22}>", "</span>")
                 while let error = source.range(of: tokens) {
-                    guard let contents = source.contents(of: tokens) else {
+
+                    func parseError() -> Never {
                         fatalError(message: [
                             "Error parsing HTML:",
                             "",
@@ -161,7 +185,28 @@ struct Documentation {
                             "This may indicate a bug in Workspace."
                             ])
                     }
-                    source.replaceSubrange(error, with: contents)
+
+                    guard let contents = source.contents(of: tokens),
+                        let first = contents.unicodeScalars.first else {
+                            parseError()
+                    }
+
+                    if CharacterSet.nonBaseCharacters.contains(first) {
+                        guard let division = source.range(of: "</span><span class=\u{22}err\u{22}>") else {
+                            parseError()
+                        }
+                        source.removeSubrange(division)
+                    } else {
+                        guard let `class` = source.range(of: ("<span class=\u{22}", "\u{22}>")) else {
+                            parseError()
+                        }
+
+                        if operatorCharacters.contains(first) {
+                            source.replaceSubrange(`class`, with: "o")
+                        } else {
+                            source.replaceSubrange(`class`, with: "n")
+                        }
+                    }
                 }
 
                 file.contents = source

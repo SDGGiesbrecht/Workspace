@@ -44,7 +44,7 @@ A particular project can [configure](Documentation/Operating Systems.md) which o
 - Have its configuration [shared](Documentation/Configuring Workspace.md#sharing-configurations-between-projects) between projects.
 - Automatically
     - Keep [licence notices](Documentation/Licence.md) uniform.
-    - Keep [contributing instructions](Documentation/Contributing Instructions.md) uniform.
+    - Keep [contributing instructions](Documentation/Contributing Instructions.md) uniform, including issue and pull request templates.
     - Generate and maintain a local [Xcode project](Documentation/Xcode.md) (except on Linux).
     - Keep [dependencies and their version restrictions](Documentation/Dependency Graph.md) up to date.
     - Keep [file headers](Documentation/File Headers.md) uniform and up to date.

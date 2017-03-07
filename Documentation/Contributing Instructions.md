@@ -14,13 +14,17 @@
 
 # Contributing Instructions
 
-Workspace can manage the project’s contributing instructions.
+Workspace can manage the project’s contributing instructions, issue template and pull request template.
 
 This is controlled by the [configuration](Configuring Workspace.md) option `Manage Contributing Instructions`. The [default](Responsibilities.md#default-vs-automatic) value is `False`. The [automatic](Responsibilities.md#default-vs-automatic) value is `True`.
 
 Contributing instructions are instructions in a `CONTRIBUTING.md` file that GitHub directs contributors to read.
 
+Issue and pull request templates are markdown files in a `.github` folder that GitHub uses when someone creates a new issue or pull request.
+
 ## Customization
+
+### Contributing Instructions
 
 The contributing instructions can be customized by defining a template with the `Contributing Instructions` [configuration](Configuring Workspace.md) option.
 
@@ -31,5 +35,17 @@ The available dynamic elements are:
 - `Project`: The name of the particular project. (e.g. `MyLibrary`)
 - `Administrators`: The value of the configuration option `Administrators`, a list of GitHub usernames separated by line breaks.
 - `Development Notes`: The value of the configuration option `Development Notes`, in Markdown.
+
+Customization can be especially useful when it is combined with [configuration sharing](Configuring Workspace.md#sharing-configurations-between-projects).
+
+### Issue Template
+
+The issue template can be customized by defining the `Issue Template` [configuration](Configuring Workspace.md) option.
+
+Customization can be especially useful when it is combined with [configuration sharing](Configuring Workspace.md#sharing-configurations-between-projects).
+
+### Pull Request Template
+
+The issue template can be customized by defining the `Pull Request Template` [configuration](Configuring Workspace.md) option.
 
 Customization can be especially useful when it is combined with [configuration sharing](Configuring Workspace.md#sharing-configurations-between-projects).

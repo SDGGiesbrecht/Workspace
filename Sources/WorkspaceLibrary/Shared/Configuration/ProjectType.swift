@@ -24,10 +24,12 @@ enum ProjectType : String, CustomStringConvertible {
 
     case library = "Library"
     case executable = "Executable"
+    case application = "Application"
 
     static let all: [ProjectType] = [
         .library,
-        .executable
+        .executable,
+        .application
     ]
 
     // MARK: - Properties

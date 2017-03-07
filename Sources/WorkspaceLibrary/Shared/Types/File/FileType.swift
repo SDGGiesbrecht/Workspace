@@ -96,6 +96,9 @@ enum FileType : CustomStringConvertible {
     // Configuration of Components
     case yaml
 
+    // Documentation
+    case html
+
     // MARK: - Filename Suffixes
 
     private static let fileNameSuffixes: [(suffix: String, type: FileType)] = [
@@ -119,11 +122,16 @@ enum FileType : CustomStringConvertible {
 
         // Configuration of Components
         (".yaml", .yaml),
-        (".yml", .yaml)
+        (".yml", .yaml),
 
+        // Documentation
+        (".html", .html),
+        (".htm", .html)
         ]
 
     // MARK: - Syntax
+
+    private static let htmlBlockComment = BlockCommentSyntax(start: "<\u{21}\u{2D}\u{2D}", end: "\u{2D}\u{2D}>", stylisticIndent: " ")
 
     var syntax: FileSyntax {
         switch self {
@@ -132,13 +140,15 @@ enum FileType : CustomStringConvertible {
         case .swift:
             return FileSyntax(blockCommentSyntax: BlockCommentSyntax(start: "/*", end: "*/", stylisticIndent: " "), lineCommentSyntax: LineCommentSyntax(start: "//"))
         case .markdown:
-            return FileSyntax(blockCommentSyntax: BlockCommentSyntax(start: "<\u{21}\u{2D}\u{2D}", end: "\u{2D}\u{2D}>", stylisticIndent: " "), lineCommentSyntax: nil, semanticLineTerminalWhitespace: ["  "])
+            return FileSyntax(blockCommentSyntax: FileType.htmlBlockComment, lineCommentSyntax: nil, semanticLineTerminalWhitespace: ["  "])
         case .gitignore:
             return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"))
         case .shell:
             return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"), requiredFirstLineTokens: (start: "#!", end: "sh"))
         case .yaml:
             return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"), requiredFirstLineTokens: nil)
+        case .html:
+            return FileSyntax(blockCommentSyntax: FileType.htmlBlockComment, lineCommentSyntax: nil, requiredFirstLineTokens: (start: "<\u{21}DOCTYPE", end: ">"))
         }
     }
 
@@ -158,6 +168,8 @@ enum FileType : CustomStringConvertible {
             return "Shell"
         case .yaml:
             return "YAML"
+        case .html:
+            return "HTML"
         }
     }
 }

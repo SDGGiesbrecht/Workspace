@@ -36,7 +36,7 @@ struct Conjunction : Rule {
                 }
 
                 switch fileType {
-                case .workspaceConfiguration, .yaml, .gitignore, .shell:
+                case .workspaceConfiguration, .yaml, .gitignore, .shell, .html:
                     throwError()
 
                 case .swift:

@@ -36,7 +36,7 @@ struct NotEqual : Rule {
                 }
 
                 switch fileType {
-                case .workspaceConfiguration, .markdown, .yaml, .gitignore:
+                case .workspaceConfiguration, .markdown, .yaml, .gitignore, .html:
                     throwError()
 
                 case .swift:

@@ -42,7 +42,7 @@ struct Not : Rule {
                         ∧ next ≠ "=" /* “Not Equal” rule */ {
 
                         switch fileType {
-                        case .workspaceConfiguration, .yaml, .gitignore, .shell:
+                        case .workspaceConfiguration, .yaml, .gitignore, .shell, .html:
                             throwError()
 
                         case .swift:

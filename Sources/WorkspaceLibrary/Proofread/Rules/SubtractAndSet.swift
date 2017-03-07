@@ -36,7 +36,7 @@ struct SubtractAndSet : Rule {
                 }
 
                 switch fileType {
-                case .workspaceConfiguration, .markdown, .yaml, .gitignore, .shell:
+                case .workspaceConfiguration, .markdown, .yaml, .gitignore, .shell, .html:
                     throwError()
 
                 case .swift:

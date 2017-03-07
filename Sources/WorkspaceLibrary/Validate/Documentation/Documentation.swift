@@ -142,5 +142,31 @@ struct Documentation {
 
             generate(operatingSystemName: "tvOS", sdk: "appletvos")
         }
+
+        for path in Repository.trackedFiles(at: RelativePath("docs")) {
+            if let fileType = FileType(filePath: path),
+                fileType == .html {
+
+                var file = require() { try File(at: path) }
+                var source = file.contents
+
+                let tokens = ("<span class=\u{22}err\u{22}>", "</span>")
+                while let error = source.range(of: tokens) {
+                    guard let contents = source.contents(of: tokens) else {
+                        fatalError(message: [
+                            "Error parsing HTML:",
+                            "",
+                            source.substring(with: error),
+                            "",
+                            "This may indicate a bug in Workspace."
+                            ])
+                    }
+                    source.replaceSubrange(error, with: contents)
+                }
+
+                file.contents = source
+                require() { try file.write() }
+            }
+        }
     }
 }

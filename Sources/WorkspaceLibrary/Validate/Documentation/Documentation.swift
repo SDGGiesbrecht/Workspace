@@ -197,7 +197,7 @@ struct Documentation {
                         }
                         source.removeSubrange(division)
                     } else {
-                        guard let `class` = source.range(of: ("<span class=\u{22}", "\u{22}>")) else {
+                        guard let `class` = source.rangeOfContents(of: ("<span class=\u{22}", "\u{22}>"), in: error) else {
                             parseError()
                         }
 

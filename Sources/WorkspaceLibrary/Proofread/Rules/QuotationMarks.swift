@@ -60,7 +60,7 @@ struct QuotationMarks : Rule {
                     if linePrefix.contains("#") /* Comment */ {
                         throwError()
                     }
-                case .gitignore, .html:
+                case .gitignore, .json, .html, .css, .javaScript:
                     throwError()
                 }
 

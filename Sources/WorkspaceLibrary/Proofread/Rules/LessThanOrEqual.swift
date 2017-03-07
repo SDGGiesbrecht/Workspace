@@ -36,7 +36,7 @@ struct LessThanOrEqual : Rule {
                 }
 
                 switch fileType {
-                case .workspaceConfiguration, .markdown, .yaml, .gitignore, .shell, .html:
+                case .workspaceConfiguration, .markdown, .json, .yaml, .gitignore, .shell, .html, .css, .javaScript:
                     throwError()
 
                 case .swift:

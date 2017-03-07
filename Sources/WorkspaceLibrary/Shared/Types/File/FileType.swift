@@ -27,7 +27,7 @@ enum FileType : CustomStringConvertible {
 
             var warning: [String] = [
                 "Workspace encountered unsupported file types:"
-                ]
+            ]
 
             warning.append(contentsOf: unsupportedTypesEncountered.sorted())
 
@@ -44,6 +44,14 @@ enum FileType : CustomStringConvertible {
     }
 
     // MARK: - Initialization
+
+    static let binaryFileTypes: Set<String> = [
+        "dsidx",
+        "nojekyll",
+        "plist",
+        "png",
+        "svg"
+    ]
 
     init?<P : Path>(filePath: P) {
 
@@ -68,7 +76,8 @@ enum FileType : CustomStringConvertible {
                 identifier = filename
             }
 
-            if ¬Configuration.ignoreFileTypes.contains(identifier) {
+            if ¬FileType.binaryFileTypes.contains(identifier)
+                ∧ ¬Configuration.ignoreFileTypes.contains(identifier) {
                 FileType.unsupportedTypesEncountered.insert(identifier)
             }
 
@@ -94,10 +103,13 @@ enum FileType : CustomStringConvertible {
     case shell
 
     // Configuration of Components
+    case json
     case yaml
 
     // Documentation
     case html
+    case css
+    case javaScript
 
     // MARK: - Filename Suffixes
 
@@ -121,13 +133,19 @@ enum FileType : CustomStringConvertible {
         (".command", .shell),
 
         // Configuration of Components
+        (".json", .json),
+
         (".yaml", .yaml),
         (".yml", .yaml),
 
         // Documentation
         (".html", .html),
-        (".htm", .html)
-        ]
+        (".htm", .html),
+
+        (".css", .css),
+
+        (".js", .javaScript)
+    ]
 
     // MARK: - Syntax
 
@@ -137,16 +155,16 @@ enum FileType : CustomStringConvertible {
         switch self {
         case .workspaceConfiguration:
             return Configuration.syntax
-        case .swift:
+        case .swift, .css, .javaScript:
             return FileSyntax(blockCommentSyntax: BlockCommentSyntax(start: "/*", end: "*/", stylisticIndent: " "), lineCommentSyntax: LineCommentSyntax(start: "//"))
         case .markdown:
             return FileSyntax(blockCommentSyntax: FileType.htmlBlockComment, lineCommentSyntax: nil, semanticLineTerminalWhitespace: ["  "])
-        case .gitignore:
+        case .gitignore, .yaml:
             return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"))
         case .shell:
             return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"), requiredFirstLineTokens: (start: "#!", end: "sh"))
-        case .yaml:
-            return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"), requiredFirstLineTokens: nil)
+        case .json:
+            return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: nil)
         case .html:
             return FileSyntax(blockCommentSyntax: FileType.htmlBlockComment, lineCommentSyntax: nil, requiredFirstLineTokens: (start: "<\u{21}DOCTYPE", end: ">"))
         }
@@ -166,10 +184,16 @@ enum FileType : CustomStringConvertible {
             return "Git Ignore"
         case .shell:
             return "Shell"
+        case .json:
+            return "JSON"
         case .yaml:
             return "YAML"
         case .html:
             return "HTML"
+        case .css:
+            return "CSS"
+        case .javaScript:
+            return "JavaScript"
         }
     }
 }

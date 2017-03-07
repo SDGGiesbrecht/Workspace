@@ -36,7 +36,7 @@ struct Disjunction : Rule {
                 }
 
                 switch fileType {
-                case .workspaceConfiguration, .yaml, .gitignore, .shell, .html:
+                case .workspaceConfiguration, .json, .yaml, .gitignore, .shell, .html, .css, .javaScript:
                     throwError()
 
                 case .swift:

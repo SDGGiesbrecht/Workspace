@@ -39,7 +39,7 @@ struct HyphenMinus : Rule {
                         ∧ ¬file.contents.substring(from: range.upperBound).hasPrefix("=") /* “Subtract & Set” rule */ {
                         switch fileType {
 
-                        case .html:
+                        case .json, .html, .css, .javaScript:
                             throwError()
 
                         case .swift:

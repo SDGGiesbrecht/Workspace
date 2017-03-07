@@ -101,7 +101,7 @@ struct File {
             }
 
             // Check for changes
-            if new ≠ contents {
+            if ¬new.unicodeScalars.elementsEqual(contents.unicodeScalars) {
                 hasChanged = true
                 _contents = new
             }

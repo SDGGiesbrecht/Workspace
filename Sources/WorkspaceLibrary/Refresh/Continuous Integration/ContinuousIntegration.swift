@@ -46,7 +46,7 @@ struct ContinuousIntegration {
             "language: generic",
             "matrix:",
             "  include:"
-            ]
+        ]
 
         func runCommand(_ command: String) -> String {
             var escapedCommand = command.replacingOccurrences(of: "\u{5C}", with: "\u{5C}\u{5C}")
@@ -81,16 +81,16 @@ struct ContinuousIntegration {
         if Configuration.supportLinux {
 
             updatedLines.append(contentsOf: [
-            "    \u{2D} os: linux",
-            "      dist: trusty",
-            "      env:",
-            "        \u{2D} \(jobKey)=\u{22}\(linuxJob)\u{22}",
-            "        \u{2D} SWIFT_VERSION=3.0.2",
-            "      script:",
-            runCommand("eval \u{22}$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\u{22}"),
-            runRefreshWorkspace,
-            runValidateChanges
-            ])
+                "    \u{2D} os: linux",
+                "      dist: trusty",
+                "      env:",
+                "        \u{2D} \(jobKey)=\u{22}\(linuxJob)\u{22}",
+                "        \u{2D} SWIFT_VERSION=3.0.2",
+                "      script:",
+                runCommand("eval \u{22}$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\u{22}"),
+                runRefreshWorkspace,
+                runValidateChanges
+                ])
         }
 
         func addPortableOSJob(name: String, sdk: String) {
@@ -122,16 +122,30 @@ struct ContinuousIntegration {
             addPortableOSJob(name: tvOSJob, sdk: "appletvsimulator")
         }
 
-        // Miscellaneous must be done on macOS because of SwiftLint.
-        updatedLines.append(contentsOf: [
-            "    \u{2D} os: osx",
-            "      env:",
-            "        \u{2D} \(jobKey)=\u{22}\(miscellaneousJob)\u{22}",
-            "      osx_image: xcode8.2",
-            "      script:",
-            runRefreshWorkspace,
-            runValidateChanges
-            ])
+        if Configuration.supportOnlyLinux {
+            updatedLines.append(contentsOf: [
+                "    \u{2D} os: linux",
+                "      dist: trusty",
+                "      env:",
+                "        \u{2D} \(jobKey)=\u{22}\(miscellaneousJob)\u{22}",
+                "        \u{2D} SWIFT_VERSION=3.0.2",
+                "      script:",
+                runCommand("eval \u{22}$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\u{22}"),
+                runRefreshWorkspace,
+                runValidateChanges
+                ])
+        } else {
+            // Miscellaneous must be done on macOS because of SwiftLint.
+            updatedLines.append(contentsOf: [
+                "    \u{2D} os: osx",
+                "      env:",
+                "        \u{2D} \(jobKey)=\u{22}\(miscellaneousJob)\u{22}",
+                "      osx_image: xcode8.2",
+                "      script:",
+                runRefreshWorkspace,
+                runValidateChanges
+                ])
+        }
 
         updatedLines.append(contentsOf: [
             "",

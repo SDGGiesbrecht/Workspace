@@ -401,6 +401,10 @@ struct Configuration {
         return booleanValue(option: .supportTVOS) ∧ projectType ≠ ProjectType.executable
     }
 
+    static var supportOnlyLinux: Bool {
+        return ¬supportMacOS ∧ ¬supportIOS ∧ ¬supportWatchOS ∧ ¬supportTVOS
+    }
+
     static var skipSimulators: Bool {
         if Environment.isInContinuousIntegration {
             return false

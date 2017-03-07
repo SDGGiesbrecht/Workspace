@@ -16,7 +16,10 @@ import SDGLogic
 
 struct ContributingInstructions {
 
-    static let contributingInstructionsPath = RelativePath("CONTRIBUTING.md")
+    static let deprecatedContributingInstructionsPath = RelativePath("CONTRIBUTING.md")
+    static let contributingInstructionsPath = RelativePath(".github/CONTRIBUTING.md")
+    static let issueTemplatePath = RelativePath(".github/ISSUE_TEMPLATE.md")
+    static let pullRequestTemplatePath = RelativePath(".github/PULL_REQUEST_TEMPLATE.md")
 
     private static let managementComment: String = {
         let managementWarning = File.managmentWarning(section: false, documentation: .contributingInstructions)
@@ -85,6 +88,78 @@ struct ContributingInstructions {
         return join(lines: instructions)
     }()
 
+    static let defaultIssueTemplate: String = {
+
+        var template = [
+        "<\u{21}\u{2D}\u{2D} Reminder: \u{2D}\u{2D}>",
+            "<\u{21}\u{2D}\u{2D} Have you searched to see if a related issue exists already? \u{2D}\u{2D}>",
+            "<\u{21}\u{2D}\u{2D} If one exists, please add your information there instead. \u{2D}\u{2D}>",
+            "",
+            "### Description",
+            "",
+            "“Such‐and‐such appears broken.”",
+            "or",
+            "“Such‐and‐such would be a nice feature.”",
+            "",
+            "### Demonstration",
+            "<\u{21}\u{2D}\u{2D} If the issue is not a bug, erase this section.) \u{2D}\u{2D}>",
+            ""
+        ]
+
+        switch Configuration.projectType ?? ProjectType.library {
+        case .library:
+            template += [
+                "```swift",
+                "let thisCode = trigger(theBug)",
+                "",
+                "// Or provide a link to code elsewhere.",
+                "```"
+            ]
+        case .executable:
+            template += [
+                "```shell",
+                "this script \u{2D}\u{2D}triggers \u{22}the bug\u{22}",
+                "",
+                "# Or provide a link to a script elsewhere.",
+                "```"
+            ]
+        }
+
+        template += [
+            "",
+            "### Availability to Help",
+            "",
+            "<\u{21}\u{2D}\u{2D} Keep only one of the following lines. \u{2D}\u{2D}>",
+            "I **would like** the honour of helping with the implementation, and I think **I know my way around**.",
+            "I **would like** the honour of helping with the implementation, but **I would need some guidance** along the way.",
+            "I **do not want to help** with the implementation.",
+            "",
+            "### Solution/Design Thoughts",
+            "",
+            "It might work to do something like..."
+        ]
+
+        return join(lines: template)
+    }()
+
+    static let defaultPullRequestTemplate: String = {
+
+        var template = [
+            "<\u{21}\u{2D}\u{2D} Reminder: \u{2D}\u{2D}>",
+            "<\u{21}\u{2D}\u{2D} Have you opened an issue and gotten a response from an administrator? \u{2D}\u{2D}>",
+            "<\u{21}\u{2D}\u{2D} Always do that first; sometimes it will save you some work. \u{2D}\u{2D}>",
+            "",
+            "<\u{21}\u{2D}\u{2D} Fill in the issue number. \u{2D}\u{2D}>",
+            "This work was commissioned by an administrator in issue #000.",
+            "",
+            "<\u{21}\u{2D}\u{2D} Keep only one of the following lines. \u{2D}\u{2D}>",
+            "I **am licensing** this under the [project licence](../blob/master/LICENSE.md).",
+            "I **refuse to license** this under the [project licence](../blob/master/LICENSE.md)."
+        ]
+
+        return join(lines: template)
+    }()
+
     static func refreshContributingInstructions() {
 
         func key(_ name: String) -> String {
@@ -120,16 +195,32 @@ struct ContributingInstructions {
         var contributing = File(possiblyAt: contributingInstructionsPath)
         contributing.body = body
         require() { try contributing.write() }
+
+        var issue = File(possiblyAt: issueTemplatePath)
+        issue.body = Configuration.issueTemplate
+        require() { try issue.write() }
+
+        var pullRequest = File(possiblyAt: pullRequestTemplatePath)
+        pullRequest.body = Configuration.pullRequestTemplate
+        require() { try pullRequest.write() }
+
+        // Remove deprecated.
+
+        force() { try Repository.delete(deprecatedContributingInstructionsPath) }
     }
 
     static func relinquishControl() {
-        var contributing = File(possiblyAt: contributingInstructionsPath)
-        if contributing.contents.contains(managementComment) {
 
-            printHeader(["Cancelling contributing instruction management..."])
+        for path in [contributingInstructionsPath, issueTemplatePath, pullRequestTemplatePath] {
 
-            print(["Deleting \(contributingInstructionsPath)..."])
-            force() { try Repository.delete(contributingInstructionsPath) }
+            var file = File(possiblyAt: path)
+            if file.contents.contains(managementComment) {
+
+                printHeader(["Cancelling contributing instruction management..."])
+
+                print(["Deleting \(path)..."])
+                force() { try Repository.delete(path) }
+            }
         }
     }
 }

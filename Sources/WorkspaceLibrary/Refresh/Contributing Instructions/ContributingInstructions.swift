@@ -197,11 +197,11 @@ struct ContributingInstructions {
         require() { try contributing.write() }
 
         var issue = File(possiblyAt: issueTemplatePath)
-        issue.body = Configuration.issueTemplate
+        issue.contents = Configuration.issueTemplate
         require() { try issue.write() }
 
         var pullRequest = File(possiblyAt: pullRequestTemplatePath)
-        pullRequest.body = Configuration.pullRequestTemplate
+        pullRequest.contents = Configuration.pullRequestTemplate
         require() { try pullRequest.write() }
 
         // Remove deprecated.

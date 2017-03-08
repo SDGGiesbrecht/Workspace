@@ -47,6 +47,7 @@ func runInitialize(andExit shouldExit: Bool) {
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     let packageType = Flags.type
+    print(packageType)
     let projectName = Configuration.projectName
 
     let packageName = Configuration.packageName(forProjectName: projectName)

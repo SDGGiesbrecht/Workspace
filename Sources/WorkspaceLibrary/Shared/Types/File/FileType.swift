@@ -53,7 +53,6 @@ enum FileType : CustomStringConvertible {
 
     static let binaryFileTypes: Set<String> = [
         "dsidx",
-        "DS_Store",
         "nojekyll",
         "plist",
         "png",

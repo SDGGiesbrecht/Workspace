@@ -280,11 +280,8 @@ struct Configuration {
     static var sanitizedProjectName: String {
         return projectName.replacingOccurrences(of: " ", with: "_")
     }
-    static var sanitizedProjectNameForModuleName: String {
-        return sanitizedProjectName.replacingOccurrences(of: "_", with: "")
-    }
     static var sanitizedProjectNameForPrincipalClass: String {
-        return sanitizedProjectNameForModuleName
+        return sanitizedProjectName.replacingOccurrences(of: "_", with: "")
     }
 
     // MARK: - Settings

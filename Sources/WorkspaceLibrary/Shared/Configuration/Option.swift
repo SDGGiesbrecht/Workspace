@@ -164,7 +164,7 @@ enum Option : String, CustomStringConvertible {
                 return target
             }
         case .moduleName:
-            return Configuration.sanitizedProjectNameForModuleName
+            return Configuration.sanitizedProjectName
         case .principalClass:
             return Configuration.sanitizedProjectNameForPrincipalClass
 

@@ -517,6 +517,9 @@ struct Configuration {
     static var primaryXcodeTarget: String {
         return stringValue(option: .primaryXcodeTarget)
     }
+    static var primaryXcodeScheme: String {
+        return primaryXcodeTarget
+    }
 
     static var manageDependencyGraph: Bool {
         return booleanValue(option: .manageDependencyGraph)

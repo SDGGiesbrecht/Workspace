@@ -38,8 +38,17 @@ struct Xcode {
             ].map({ "\u{22}\($0)\u{22}," })))
 
         if Configuration.projectType == .application {
-            //file.contents = file.contents.replacingOccurrences(of: "com.apple.product\u{2D}type.framework", with: "com.apple.product\u{2D}type.application")
+            var project = file.contents
+
+            guard let productMarker = project.range(of: "productName = \u{22}\(Configuration.projectName)\u{22}"),
+                let rangeOfProductType = project.range(of: ".framework", in: productMarker.upperBound ..< project.endIndex)else {
+                    fatalError(message: ["Cannot find primary product in Xcode project."])
+            }
+            project.replaceSubrange(rangeOfProductType, with: ".application")
+
             //file.contents = file.contents.replacingOccurrences(of: "\(Configuration.projectName).framework", with: "\(Configuration.projectName).app")
+
+            file.contents = project
         }
 
         require() { try file.write() }

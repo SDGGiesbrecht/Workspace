@@ -46,6 +46,10 @@ func runInitialize(andExit shouldExit: Bool) {
     printHeader(["Generating Swift package..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
+    let packageName = Repository.folderName
+    print(packageName)
+
+    /*
     let script = ["swift", "package", "init"]
     requireBash(script)
 
@@ -129,7 +133,7 @@ func runInitialize(andExit shouldExit: Bool) {
         let testRange = tests.requireRange(of: ("  XCTAssert", "\u{22})"))
         tests.contents.replaceSubrange(testRange, with: "  XCTAssert(sayHello() == \u{22}Hello, world!\u{22})")
         require() { try tests.write() }
-    }
+    }*/
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Configuring Workspace..."])

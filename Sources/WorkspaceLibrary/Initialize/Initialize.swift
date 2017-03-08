@@ -53,7 +53,7 @@ func runInitialize(andExit shouldExit: Bool) {
     let moduleName = Configuration.moduleName(forProjectName: projectName)
     let executableName = Configuration.executableName(forProjectName: projectName)
     let executableLibraryName = Configuration.executableLibraryName(forProjectName: projectName)
-    let executableTestsName = Configuration.executableTestsName(forProjectName: projectName)
+    let testsName = Configuration.testsName(forProjectName: projectName)
 
     var packageDescription = [
         "import PackageDescription",
@@ -72,7 +72,7 @@ func runInitialize(andExit shouldExit: Bool) {
             "    targets: [",
             "        Target(name: \u{22}\(executableName)\u{22}, dependencies: [\u{22}\(executableLibraryName)\u{22}]),",
             "        Target(name: \u{22}\(executableLibraryName)\u{22}),",
-            "        Target(name: \u{22}\(executableTestsName)\u{22}, dependencies: [\u{22}\(executableLibraryName)\u{22}]),",
+            "        Target(name: \u{22}\(testsName)\u{22}, dependencies: [\u{22}\(executableLibraryName)\u{22}]),",
             "    ]"
         ]
     }
@@ -84,25 +84,21 @@ func runInitialize(andExit shouldExit: Bool) {
     var packageDescriptionFile = File(possiblyAt: RelativePath("Package.swift"))
     packageDescriptionFile.body = join(lines: packageDescription)
     require() { try packageDescriptionFile.write() }
-    
+
     var source: [String]
     var sourceFile: File
     switch packageType {
-        
+
     case .library:
         sourceFile = File(possiblyAt: RelativePath("Sources/\(moduleName)/\(moduleName).swift"))
-        source = [
-            "func sayHello() -> String {"
-            "    return \u{22}Hello, world!\u{22}"
-            "}",
-        ]
-        
+        source = []
+
     case .application:
         sourceFile = File(possiblyAt: RelativePath("Sources/\(moduleName)/\(moduleName).swift"))
         source = [
             "import Cocoa",
             "",
-            "private let applicationDelegate = \u(moduleName)()"
+            "private let applicationDelegate = \(moduleName)()",
             "private Application: Cocoa.NSApplication {",
             "    override init() {",
             "        delegate = applicationDelegate",
@@ -115,114 +111,71 @@ func runInitialize(andExit shouldExit: Bool) {
             "",
             "@NSApplicationMain class \(moduleName) : NSObject, NSApplicationDelegate {",
             "",
-            "    func applicationDidFinishLaunching(_ aNotification: Notification) {"
+            "    func applicationDidFinishLaunching(_ aNotification: Notification) {",
             "        print(sayHello())",
             "    }",
             "}",
-            "",
-            "func sayHello() -> String {"
-            "    return \u{22}Hello, world!\u{22}"
-            "}",
+            ""
         ]
-        
+
     case .executable:
         sourceFile = File(possiblyAt: RelativePath("Sources/\(executableLibraryName)/Program.swift"))
         source = [
+            "/// Runs \(executableName).",
             "public func run() {",
             "    print(sayHello())",
             "}",
-            "",
-            "func sayHello() -> String {"
-            "    return \u{22}Hello, world!\u{22}"
-            "}",
+            ""
         ]
     }
 
-    /*
-    let script = ["swift", "package", "init"]
-    requireBash(script)
+    source += [
+        "func sayHello() -> String {",
+        "    return \u{22}Hello, world!\u{22}",
+        "}"
+    ]
 
-    print(["Arranging Swift package..."])
+    sourceFile.body = join(lines: source)
+    require() { try sourceFile.write() }
 
-    let projectName = Configuration.sanitizedProjectName
-    let testsName = projectName + "Tests"
+    var linuxMainFile = File(possiblyAt: RelativePath("Tests/LinuxMain.swift"))
+    let linuxMain = [
+        "import XCTest",
+        "@testable import \(testsName)",
+        "",
+        "XCTMain([",
+        "    testCase(\(testsName).allTests)",
+        "]"
+    ]
+    linuxMainFile.body = join(lines: linuxMain)
+    require() { try linuxMainFile.write() }
 
-    // Make module to allow folder structure.
-    require() { try Repository.move("Sources", to: RelativePath("Sources/\(projectName)")) }
-
-    // Escape spaces
-    let withSpaces = RelativePath("Tests/\(Configuration.projectName)Tests")
-    let noSpaces = RelativePath("Tests/\(testsName)")
-    if withSpaces ≠ noSpaces {
-        require() { try Repository.move(withSpaces, to: noSpaces) }
-        require() { try Repository.delete(withSpaces) }
+    var testsFile = File(possiblyAt: RelativePath("Tests/\(testsName)/\(testsName).swift"))
+    var tests = [
+        "import XCTest"
+    ]
+    switch packageType {
+    case .library, .application:
+        tests += ["@testable import \(moduleName)"]
+    case .executable:
+        tests += ["@testable import \(executableLibraryName)"]
     }
-
-    // Erase redundant .gitignore entries.
-    var gitIngore = require() { try File(at: RelativePath(".gitignore")) }
-    gitIngore.contents = ""
-    require() { try gitIngore.write() }
-
-    if Flags.executable {
-
-        let executableName = projectName
-        let libraryName = projectName + "Library"
-
-        require() { try Repository.delete(RelativePath("Sources/\(projectName)")) }
-
-        var program = File(possiblyAt: RelativePath("Sources/\(libraryName)/Program.swift"))
-        program.body = join(lines: [
-            "/// :nodoc:",
-            "public func run() {",
-            "",
-            "    print(sayHello())",
-            "",
-            "}",
-            "",
-            "func sayHello() -> String {",
-            "",
-            "    return \u{22}Hello, world!\u{22}",
-            "",
-            "}"
-            ])
-
-        require() { try program.write() }
-
-        var main = File(possiblyAt: RelativePath("Sources/\(executableName)/main.swift"))
-        main.body = join(lines: [
-            "import \(libraryName)",
-            "",
-            "/*",
-            " Nothing in this executable module (\(executableName)) will be testable.",
-            " It is recommended to put the entire implementation in \(libraryName).",
-            " */",
-            "\(libraryName).run()"
-            ])
-
-        require() { try main.write() }
-
-        var package = Repository.packageDescription
-        let nameRange = package.requireRange(of: ("name: \u{22}", "\u{22}"))
-        let replacement = join(lines: [
-            package.contents.substring(with: nameRange) + ",",
-            "    targets: [",
-            "        Target(name: \u{22}\(executableName)\u{22}, dependencies: [\u{22}\(libraryName)\u{22}]),",
-            "        Target(name: \u{22}\(libraryName)\u{22}),",
-            "        Target(name: \u{22}\(testsName)\u{22}, dependencies: [\u{22}\(libraryName)\u{22}]),",
-            "    ]"
-            ])
-
-        package.contents.replaceSubrange(nameRange, with: replacement)
-
-        require() { try package.write() }
-
-        var tests = require { try File(at: RelativePath("Tests/\(testsName)/\(testsName).swift")) }
-        let importRange = tests.requireRange(of: projectName)
-        tests.contents.replaceSubrange(importRange, with: libraryName)
-        let testRange = tests.requireRange(of: ("  XCTAssert", "\u{22})"))
-        tests.contents.replaceSubrange(testRange, with: "  XCTAssert(sayHello() == \u{22}Hello, world!\u{22})")
-        require() { try tests.write() }
-    }*/
+    tests += [
+        "class \(testsName) : XCTestCase {",
+        "",
+        "    func testExample() {",
+        "        XCTAssert(sayHello() == \u{22}Hello, world!\u{22}",
+        "    }",
+        "",
+        "    static var allTests: [(String, (\(testsName)) -> () throws -> Void)] {",
+        "        return [",
+        "            (\u{22}testExample\u{22}, testExample)",
+        "        ]",
+        "    }",
+        "}"
+    ]
+    testsFile.body = join(lines: tests)
+    require() { try testsFile.write() }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Configuring Workspace..."])

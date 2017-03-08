@@ -442,7 +442,7 @@ struct Configuration {
     static func executableLibraryName(forProjectName projectName: String) -> String {
         return moduleName(forProjectName: projectName) + "Library"
     }
-    static func executableTestsName(forProjectName projectName: String) -> String {
+    static func testsName(forProjectName projectName: String) -> String {
         return moduleName(forProjectName: projectName) + "Tests"
     }
 

@@ -46,7 +46,7 @@ struct Xcode {
             }
             project.replaceSubrange(rangeOfProductType, with: ".application")
 
-            //file.contents = file.contents.replacingOccurrences(of: "\(Configuration.projectName).framework", with: "\(Configuration.projectName).app")
+            project = project.replacingOccurrences(of: "\(Configuration.projectName).framework", with: "\(Configuration.projectName).app")
 
             file.contents = project
         }

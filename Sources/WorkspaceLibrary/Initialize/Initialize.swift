@@ -72,7 +72,7 @@ func runInitialize(andExit shouldExit: Bool) {
             "    targets: [",
             "        Target(name: \u{22}\(executableName)\u{22}, dependencies: [\u{22}\(executableLibraryName)\u{22}]),",
             "        Target(name: \u{22}\(executableLibraryName)\u{22}),",
-            "        Target(name: \u{22}\(testsName)\u{22}, dependencies: [\u{22}\(executableLibraryName)\u{22}]),",
+            "        Target(name: \u{22}\(testsName)\u{22}, dependencies: [\u{22}\(executableLibraryName)\u{22}])",
             "    ]"
         ]
     }

@@ -101,6 +101,7 @@ func runInitialize(andExit shouldExit: Bool) {
             "private let applicationDelegate = \(moduleName)()",
             "private class Application : Cocoa.NSApplication {",
             "    override init() {",
+            "        super.init()",
             "        delegate = applicationDelegate",
             "    }",
             "    required init?(coder: NSCoder) {",

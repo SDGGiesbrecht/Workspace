@@ -130,7 +130,7 @@ enum Option : String, CustomStringConvertible {
             return Configuration.falseOptionValue
 
         case .projectType:
-            return Configuration.noValue
+            return ProjectType.library.key
 
         case .supportMacOS:
             return Configuration.trueOptionValue

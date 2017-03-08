@@ -301,7 +301,7 @@ struct Repository {
         return cachedResult(cache: &cache.packageDescription) {
             () -> File in
 
-            return require() { try File(at: RelativePath("Package.swift")) }
+            return File(possiblyAt: RelativePath("Package.swift"))
         }
     }
 

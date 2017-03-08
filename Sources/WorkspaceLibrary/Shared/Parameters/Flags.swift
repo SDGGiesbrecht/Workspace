@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 struct Flags {
 
     // MARK: - Properties
@@ -20,5 +22,25 @@ struct Flags {
         return CommandLine.arguments.contains(flag.flag)
     }
 
-    static let executable = isSet(.executable)
+    private static func value(of flag: Flag) -> String? {
+
+        guard let index = CommandLine.arguments.index(of: flag.flag) else {
+            return nil
+        }
+
+        guard index ≠ CommandLine.arguments.endIndex else {
+            return nil
+        }
+
+        let nextArgument = CommandLine.arguments.index(after: index)
+        return CommandLine.arguments[nextArgument]
+    }
+
+    static let type: ProjectType = {
+        if let string = value(of: .type),
+            let projectType = ProjectType(key: string) {
+            return projectType
+        }
+        return .library
+    }()
 }

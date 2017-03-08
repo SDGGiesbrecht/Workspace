@@ -16,9 +16,26 @@ import SDGLogic
 
 struct Xcode {
 
+    static var projectFilename: String {
+        return Configuration.defaultPackageName + ".xcodeproj"
+    }
+
+    static var applicationProductName: String {
+        return Configuration.defaultPackageName
+    }
+
+    static var defaultPrimaryTargetName: String {
+        let target = Configuration.defaultModuleName
+        if Configuration.projectType == .executable {
+            return target + "Library"
+        } else {
+            return target
+        }
+    }
+
     static func refreshXcodeProjects() {
 
-        let path = RelativePath("\(Configuration.projectName).xcodeproj")
+        let path = RelativePath("\(Xcode.projectFilename)")
         force() { try Repository.delete(path) }
 
         var script = ["swift", "package", "generate\u{2D}xcodeproj", "\u{2D}\u{2D}output", path.string]
@@ -42,13 +59,13 @@ struct Xcode {
         if Configuration.projectType == .application {
             var project = file.contents
 
-            guard let productMarker = project.range(of: "productName = \u{22}\(Configuration.projectName)\u{22}"),
+            guard let productMarker = project.range(of: "productName = \u{22}\(Xcode.applicationProductName)\u{22}"),
                 let rangeOfProductType = project.range(of: ".framework", in: productMarker.upperBound ..< project.endIndex)else {
                     fatalError(message: ["Cannot find primary product in Xcode project."])
             }
             project.replaceSubrange(rangeOfProductType, with: ".application")
 
-            project = project.replacingOccurrences(of: "\(Configuration.projectName).framework", with: "\(Configuration.projectName).app")
+            project = project.replacingOccurrences(of: "\(Xcode.applicationProductName).framework", with: "\(Xcode.applicationProductName).app")
 
             file.contents = project
         }
@@ -56,16 +73,16 @@ struct Xcode {
         require() { try file.write() }
 
         if Configuration.projectType == .application {
-            var info = require() { try File(at: path.subfolderOrFile("\(Configuration.primaryXcodeTarget)_Info.plist")) }
+            var info = require() { try File(at: path.subfolderOrFile("\(Xcode.applicationProductName)_Info.plist")) }
 
-            info.contents = info.contents.replacingOccurrences(of: "<key>NSPrincipalClass</key>\n  <string></string>", with: "<key>NSPrincipalClass</key>\n  <string>\(Configuration.projectName).Application</string>")
+            info.contents = info.contents.replacingOccurrences(of: "<key>NSPrincipalClass</key>\n  <string></string>", with: "<key>NSPrincipalClass</key>\n  <string>\(Configuration.moduleName).Application</string>")
 
             require() { try info.write() }
         }
     }
 
     private static func modifyProject(condition shouldModify: (String) -> Bool, modification modify: (inout File) -> Void) {
-        let path = RelativePath("\(Configuration.projectName).xcodeproj/project.pbxproj")
+        let path = RelativePath("\(Xcode.projectFilename)/project.pbxproj")
 
         do {
             var file = try File(at: path)

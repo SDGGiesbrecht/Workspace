@@ -46,8 +46,40 @@ func runInitialize(andExit shouldExit: Bool) {
     printHeader(["Generating Swift package..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    let packageName = Repository.folderName
-    print(packageName)
+    let packageType = Flags.type
+    let projectName = Repository.folderName
+    //let executableName = Repository.
+
+    var packageDescription = [
+        "import PackageDescription",
+        "",
+        "let package = Package("
+        ]
+
+    switch packageType {
+    case .library, .application:
+        packageDescription += [
+            "    name: \(Configuration.packageName)"
+        ]
+    case .executable:
+        packageDescription += [
+            "    name: \(Configuration.packageName),",
+            "    targets: [",
+            "        Target(name: \u{22}\u{22}"
+        ]
+    }
+/*
+    let package = Package(
+        name: "SampleExectuable",
+        targets: [
+            Target(name: "SampleExectuable", dependencies: ["SampleExectuableLibrary"]),
+            Target(name: "SampleExectuableLibrary"),
+            Target(name: "SampleExectuableTests", dependencies: ["SampleExectuableLibrary"]),
+            ],
+        dependencies: [
+            .Package(url: "https://github.com/SDGGiesbrecht/SDGLogic", versions: "1.1.0" ..< "2.0.0")
+        ]
+    )*/
 
     /*
     let script = ["swift", "package", "init"]
@@ -146,7 +178,7 @@ func runInitialize(andExit shouldExit: Bool) {
         Option.automaticResponsibilityDocumentationPage.url
         ]
     var entries: [(option: Option, value: String, comment: [String]?)] = [(option: .automaticallyTakeOnNewResponsibilites, value: Configuration.trueOptionValue, comment: note)]
-    if Flags.executable {
+    if Flags.type == .executable {
         entries.append(contentsOf: [
             (option: .projectType, value: ProjectType.executable.key, comment: nil)
             ])

@@ -43,7 +43,6 @@ enum Option : String, CustomStringConvertible {
     case developmentNotes = "Development Notes"
 
     case manageXcode = "Manage Xcode"
-    case primaryXcodeTarget = "Primary Xcode Target"
 
     case manageDependencyGraph = "Manage Dependency Graph"
 
@@ -58,6 +57,11 @@ enum Option : String, CustomStringConvertible {
     case documentationCopyright = "Documentation Copyright"
 
     case manageContinuousIntegration = "Manage Continuous Integration"
+
+    case projectName = "Project Name"
+    case packageName = "Package Name"
+    case moduleName = "Module Name"
+    case primaryXcodeTarget = "Primary Xcode Target"
 
     case ignoreFileTypes = "Ignore File Types"
 
@@ -106,7 +110,11 @@ enum Option : String, CustomStringConvertible {
 
         .manageContinuousIntegration,
 
+        .projectName,
+        .packageName,
+        .moduleName,
         .primaryXcodeTarget,
+
         .ignoreFileTypes
         ]
 
@@ -154,13 +162,6 @@ enum Option : String, CustomStringConvertible {
 
         case .manageXcode:
             return Configuration.falseOptionValue
-        case .primaryXcodeTarget:
-            let target = Configuration.sanitizedProjectName
-            if Configuration.projectType == .executable {
-                return target + "Library"
-            } else {
-                return target
-            }
 
         case .manageDependencyGraph:
             return Configuration.falseOptionValue
@@ -185,6 +186,15 @@ enum Option : String, CustomStringConvertible {
 
         case .manageContinuousIntegration:
             return Configuration.falseOptionValue
+
+        case .projectName:
+            return Configuration.packageName
+        case .packageName:
+            return Configuration.defaultPackageName
+        case .moduleName:
+            return Configuration.defaultModuleName
+        case .primaryXcodeTarget:
+            return Xcode.defaultPrimaryTargetName
 
         case .ignoreFileTypes:
             return Configuration.emptyListOptionValue

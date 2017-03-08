@@ -25,7 +25,7 @@ struct Configuration {
 
         fileprivate var file: File?
         fileprivate var configurationFile: [Option: String]?
-        fileprivate var projectName: String?
+        fileprivate var packageName: String?
 
         // MARK: - Settings
 
@@ -269,18 +269,6 @@ struct Configuration {
         }
     }
 
-    static var projectName: String {
-        return cachedResult(cache: &cache.projectName) {
-            () -> String in
-
-            let tokens = ("name: \u{22}", "\u{22}")
-            return Repository.packageDescription.requireContents(of: tokens)
-        }
-    }
-    static var sanitizedProjectName: String {
-        return projectName.replacingOccurrences(of: " ", with: "_")
-    }
-
     // MARK: - Settings
 
     static let noValue = "[_None_]"
@@ -411,6 +399,41 @@ struct Configuration {
         } else {
             return booleanValue(option: .skipSimulator)
         }
+    }
+
+    // Project Names
+
+    static var projectName: String {
+        return stringValue(option: .projectName)
+    }
+
+    static func packageName(forProjectName projectName: String) -> String {
+        return projectName
+    }
+    static var defaultPackageName: String {
+        let tokens = ("name: \u{22}", "\u{22}")
+        if let name = Repository.packageDescription.contents.contents(of: tokens) {
+            return name
+        } else {
+            return packageName(forProjectName: Repository.folderName)
+        }
+    }
+    static var packageName: String {
+        return cachedResult(cache: &cache.packageName) {
+            () -> String in
+
+            return stringValue(option: .packageName)
+        }
+    }
+
+    static func moduleName(forProjectName projectName: String) -> String {
+        return projectName.replacingOccurrences(of: " ", with: "")
+    }
+    static var defaultModuleName: String {
+        return moduleName(forProjectName: projectName)
+    }
+    static var moduleName: String {
+        return stringValue(option: .moduleName)
     }
 
     // Responsibilities

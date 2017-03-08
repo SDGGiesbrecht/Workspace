@@ -164,7 +164,7 @@ func runInitialize(andExit shouldExit: Bool) {
         "class \(testsName) : XCTestCase {",
         "",
         "    func testExample() {",
-        "        XCTAssert(sayHello() == \u{22}Hello, world!\u{22}",
+        "        XCTAssert(sayHello() == \u{22}Hello, world!\u{22})",
         "    }",
         "",
         "    static var allTests: [(String, (\(testsName)) -> () throws -> Void)] {",

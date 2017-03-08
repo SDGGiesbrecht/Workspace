@@ -38,7 +38,8 @@ struct Xcode {
             ].map({ "\u{22}\($0)\u{22}," })))
 
         if Configuration.projectType == .application {
-            file.contents = file.contents.replacingOccurrences(of: "com.apple.product\u{2D}type.framework", with: "com.apple.product\u{2D}type.application")
+            //file.contents = file.contents.replacingOccurrences(of: "com.apple.product\u{2D}type.framework", with: "com.apple.product\u{2D}type.application")
+            //file.contents = file.contents.replacingOccurrences(of: "\(Configuration.projectName).framework", with: "\(Configuration.projectName).app")
         }
 
         require() { try file.write() }

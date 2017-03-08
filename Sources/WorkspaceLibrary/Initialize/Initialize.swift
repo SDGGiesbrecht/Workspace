@@ -47,8 +47,10 @@ func runInitialize(andExit shouldExit: Bool) {
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     let packageType = Flags.type
-    let projectName = Repository.folderName
-    //let executableName = Repository.
+    let projectName = Configuration.projectName
+
+    let packageName = Configuration.packageName(forProjectName: projectName)
+    let executableName = Configuration.executableName(forProjectName: projectName)
 
     var packageDescription = [
         "import PackageDescription",
@@ -59,15 +61,20 @@ func runInitialize(andExit shouldExit: Bool) {
     switch packageType {
     case .library, .application:
         packageDescription += [
-            "    name: \(Configuration.packageName)"
+            "    name: \(packageName)"
         ]
     case .executable:
         packageDescription += [
-            "    name: \(Configuration.packageName),",
+            "    name: \(packageName),",
             "    targets: [",
-            "        Target(name: \u{22}\u{22}"
+            "        Target(name: \u{22}\(executableName)\u{22}",
+            "    ]"
         ]
     }
+
+    packageDescription += [
+        ")"
+    ]
 /*
     let package = Package(
         name: "SampleExectuable",

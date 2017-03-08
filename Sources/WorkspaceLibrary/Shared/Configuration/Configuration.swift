@@ -426,6 +426,10 @@ struct Configuration {
         }
     }
 
+    static func executableName(forProjectName: String) -> String {
+        return projectName.replacingOccurrences(of: " ", with: "").lowercased()
+    }
+
     static func moduleName(forProjectName projectName: String) -> String {
         return projectName.replacingOccurrences(of: " ", with: "")
     }

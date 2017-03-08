@@ -204,12 +204,10 @@ func runInitialize(andExit shouldExit: Bool) {
         "For more information about “\(Option.automaticallyTakeOnNewResponsibilites)”, see:",
         Option.automaticResponsibilityDocumentationPage.url
         ]
-    var entries: [(option: Option, value: String, comment: [String]?)] = [(option: .automaticallyTakeOnNewResponsibilites, value: Configuration.trueOptionValue, comment: note)]
-    if Flags.type == .executable {
-        entries.append(contentsOf: [
-            (option: .projectType, value: ProjectType.executable.key, comment: nil)
-            ])
-    }
+    let entries: [(option: Option, value: String, comment: [String]?)] = [
+        (option: .automaticallyTakeOnNewResponsibilites, value: Configuration.trueOptionValue, comment: note),
+        (option: .projectType, value: packageType.key, comment: nil)
+    ]
     Configuration.addEntries(entries: entries, to: &configuration)
     require() { try configuration.write() }
 

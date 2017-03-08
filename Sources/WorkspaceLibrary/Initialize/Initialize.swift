@@ -50,6 +50,7 @@ func runInitialize(andExit shouldExit: Bool) {
     let projectName = Configuration.projectName
 
     let packageName = Configuration.packageName(forProjectName: projectName)
+    let moduleName = Configuration.moduleName(forProjectName: projectName)
     let executableName = Configuration.executableName(forProjectName: projectName)
     let executableLibraryName = Configuration.executableLibraryName(forProjectName: projectName)
     let executableTestsName = Configuration.executableTestsName(forProjectName: projectName)
@@ -67,7 +68,7 @@ func runInitialize(andExit shouldExit: Bool) {
         ]
     case .executable:
         packageDescription += [
-            "    name: \(packageName),",
+            "    name: \u{22}\(packageName)\u{22},",
             "    targets: [",
             "        Target(name: \u{22}\(executableName)\u{22}, dependencies: [\u{22}\(executableLibraryName)\u{22}]),",
             "        Target(name: \u{22}\(executableLibraryName)\u{22}),",
@@ -83,6 +84,59 @@ func runInitialize(andExit shouldExit: Bool) {
     var packageDescriptionFile = File(possiblyAt: RelativePath("Package.swift"))
     packageDescriptionFile.body = join(lines: packageDescription)
     require() { try packageDescriptionFile.write() }
+    
+    var source: [String]
+    var sourceFile: File
+    switch packageType {
+        
+    case .library:
+        sourceFile = File(possiblyAt: RelativePath("Sources/\(moduleName)/\(moduleName).swift"))
+        source = [
+            "func sayHello() -> String {"
+            "    return \u{22}Hello, world!\u{22}"
+            "}",
+        ]
+        
+    case .application:
+        sourceFile = File(possiblyAt: RelativePath("Sources/\(moduleName)/\(moduleName).swift"))
+        source = [
+            "import Cocoa",
+            "",
+            "private let applicationDelegate = \u(moduleName)()"
+            "private Application: Cocoa.NSApplication {",
+            "    override init() {",
+            "        delegate = applicationDelegate",
+            "    }",
+            "    required init?(coder: NSCoder) {",
+            "        super.init(coder: coder)",
+            "        delegate = applicationDelegate",
+            "    }",
+            "}",
+            "",
+            "@NSApplicationMain class \(moduleName) : NSObject, NSApplicationDelegate {",
+            "",
+            "    func applicationDidFinishLaunching(_ aNotification: Notification) {"
+            "        print(sayHello())",
+            "    }",
+            "}",
+            "",
+            "func sayHello() -> String {"
+            "    return \u{22}Hello, world!\u{22}"
+            "}",
+        ]
+        
+    case .executable:
+        sourceFile = File(possiblyAt: RelativePath("Sources/\(executableLibraryName)/Program.swift"))
+        source = [
+            "public func run() {",
+            "    print(sayHello())",
+            "}",
+            "",
+            "func sayHello() -> String {"
+            "    return \u{22}Hello, world!\u{22}"
+            "}",
+        ]
+    }
 
     /*
     let script = ["swift", "package", "init"]

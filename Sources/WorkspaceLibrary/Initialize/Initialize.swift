@@ -75,6 +75,10 @@ func runInitialize(andExit shouldExit: Bool) {
     packageDescription += [
         ")"
     ]
+
+    var packageDescriptionFile = File(possiblyAt: RelativePath("Package.swift"))
+    packageDescriptionFile.body = join(lines: packageDescription)
+    require() { try packageDescriptionFile.write() }
 /*
     let package = Package(
         name: "SampleExectuable",

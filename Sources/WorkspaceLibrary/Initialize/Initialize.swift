@@ -51,6 +51,8 @@ func runInitialize(andExit shouldExit: Bool) {
 
     let packageName = Configuration.packageName(forProjectName: projectName)
     let executableName = Configuration.executableName(forProjectName: projectName)
+    let executableLibraryName = Configuration.executableLibraryName(forProjectName: projectName)
+    let executableTestsName = Configuration.executableTestsName(forProjectName: projectName)
 
     var packageDescription = [
         "import PackageDescription",
@@ -67,7 +69,9 @@ func runInitialize(andExit shouldExit: Bool) {
         packageDescription += [
             "    name: \(packageName),",
             "    targets: [",
-            "        Target(name: \u{22}\(executableName)\u{22}",
+            "        Target(name: \u{22}\(executableName)\u{22}, dependencies: [\u{22}\(executableLibraryName)\u{22}]),",
+            "        Target(name: \u{22}\(executableLibraryName)\u{22}),",
+            "        Target(name: \u{22}\(executableTestsName)\u{22}, dependencies: [\u{22}\(executableLibraryName)\u{22}]),",
             "    ]"
         ]
     }
@@ -79,18 +83,6 @@ func runInitialize(andExit shouldExit: Bool) {
     var packageDescriptionFile = File(possiblyAt: RelativePath("Package.swift"))
     packageDescriptionFile.body = join(lines: packageDescription)
     require() { try packageDescriptionFile.write() }
-/*
-    let package = Package(
-        name: "SampleExectuable",
-        targets: [
-            Target(name: "SampleExectuable", dependencies: ["SampleExectuableLibrary"]),
-            Target(name: "SampleExectuableLibrary"),
-            Target(name: "SampleExectuableTests", dependencies: ["SampleExectuableLibrary"]),
-            ],
-        dependencies: [
-            .Package(url: "https://github.com/SDGGiesbrecht/SDGLogic", versions: "1.1.0" ..< "2.0.0")
-        ]
-    )*/
 
     /*
     let script = ["swift", "package", "init"]

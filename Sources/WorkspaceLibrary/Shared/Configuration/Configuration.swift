@@ -426,10 +426,6 @@ struct Configuration {
         }
     }
 
-    static func executableName(forProjectName: String) -> String {
-        return projectName.replacingOccurrences(of: " ", with: "").lowercased()
-    }
-
     static func moduleName(forProjectName projectName: String) -> String {
         return projectName.replacingOccurrences(of: " ", with: "")
     }
@@ -438,6 +434,16 @@ struct Configuration {
     }
     static var moduleName: String {
         return stringValue(option: .moduleName)
+    }
+
+    static func executableName(forProjectName projectName: String) -> String {
+        return moduleName(forProjectName: projectName).lowercased()
+    }
+    static func executableLibraryName(forProjectName projectName: String) -> String {
+        return moduleName(forProjectName: projectName) + "Library"
+    }
+    static func executableTestsName(forProjectName projectName: String) -> String {
+        return moduleName(forProjectName: projectName) + "Tests"
     }
 
     // Responsibilities

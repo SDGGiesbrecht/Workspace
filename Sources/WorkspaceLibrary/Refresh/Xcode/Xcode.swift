@@ -25,11 +25,10 @@ struct Xcode {
     }
 
     static var defaultPrimaryTargetName: String {
-        let target = Configuration.defaultModuleName
         if Configuration.projectType == .executable {
-            return target + "Library"
+            return Configuration.executableLibraryName(forProjectName: Configuration.projectName)
         } else {
-            return target
+            return Configuration.moduleName(forProjectName: Configuration.projectName)
         }
     }
 

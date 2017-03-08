@@ -52,6 +52,14 @@ struct Xcode {
         }
 
         require() { try file.write() }
+
+        if Configuration.projectType == .application {
+            var info = require() { try File(at: path.subfolderOrFile("\(Configuration.primaryXcodeTarget)_Info.plist")) }
+
+            info.contents = info.contents.replacingOccurrences(of: "<key>NSPrincipalClass</key>\n  <string></string>", with: "<key>NSPrincipalClass</key>\n  <string>\(Configuration.principalClass)</string>")
+
+            require() { try info.write() }
+        }
     }
 
     private static func modifyProject(condition shouldModify: (String) -> Bool, modification modify: (inout File) -> Void) {

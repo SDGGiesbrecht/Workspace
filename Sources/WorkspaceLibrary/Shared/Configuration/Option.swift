@@ -44,6 +44,7 @@ enum Option : String, CustomStringConvertible {
 
     case manageXcode = "Manage Xcode"
     case primaryXcodeTarget = "Primary Xcode Target"
+    case principalClass = "Principal Class"
 
     case manageDependencyGraph = "Manage Dependency Graph"
 
@@ -161,6 +162,8 @@ enum Option : String, CustomStringConvertible {
             } else {
                 return target
             }
+        case .principalClass:
+            return Configuration.sanitizedProjectNameForPrincipalClass
 
         case .manageDependencyGraph:
             return Configuration.falseOptionValue

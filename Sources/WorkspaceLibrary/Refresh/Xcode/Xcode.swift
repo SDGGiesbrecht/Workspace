@@ -27,6 +27,8 @@ struct Xcode {
         }
         requireBash(script)
 
+        require() { try Repository.delete(path.subfolderOrFile("xcshareddata/xcschemes")) }
+        
         var file = require() { try File(at: path.subfolderOrFile("project.pbxproj")) }
         file.contents.replaceContentsOfEveryPair(of: ("LD_RUNPATH_SEARCH_PATHS = (", ");"), with: join(lines: [
             "",

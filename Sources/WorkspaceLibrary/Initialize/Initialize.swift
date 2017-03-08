@@ -118,7 +118,7 @@ func runInitialize(andExit shouldExit: Bool) {
             "",
             "#if os(macOS)",
             "    @NSApplicationMain class \(moduleName) : NSObject, NSApplicationDelegate {}",
-            "else",
+            "#else",
             "    @UIApplicationMain class \(moduleName) : NSObject, UIApplicationDelegate {}",
             "#endif",
             "extension \(moduleName) {",

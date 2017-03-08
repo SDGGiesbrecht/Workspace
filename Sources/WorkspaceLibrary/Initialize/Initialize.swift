@@ -139,6 +139,22 @@ func runInitialize(andExit shouldExit: Bool) {
     sourceFile.body = join(lines: source)
     require() { try sourceFile.write() }
 
+    if packageType == .executable {
+        var mainFile = File(possiblyAt: RelativePath("Sources/\(executableName)/main.swift"))
+        let main = [
+            "import \(executableLibraryName)",
+            "",
+            "/*",
+            " Nothing in this executable module (\(executableName)) will be testable.",
+            " It is recommended to put the entire implementation in \(executableLibraryName).",
+            " */",
+            "",
+            "\(executableLibraryName).run()"
+        ]
+        mainFile.body = join(lines: main)
+        require() { try mainFile.write() }
+    }
+
     var linuxMainFile = File(possiblyAt: RelativePath("Tests/LinuxMain.swift"))
     let linuxMain = [
         "import XCTest",

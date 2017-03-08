@@ -99,7 +99,7 @@ func runInitialize(andExit shouldExit: Bool) {
             "import Cocoa",
             "",
             "private let applicationDelegate = \(moduleName)()",
-            "private Application : Cocoa.NSApplication {",
+            "private class Application : Cocoa.NSApplication {",
             "    override init() {",
             "        delegate = applicationDelegate",
             "    }",

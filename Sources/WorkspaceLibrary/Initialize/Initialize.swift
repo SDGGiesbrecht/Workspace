@@ -98,10 +98,10 @@ func runInitialize(andExit shouldExit: Bool) {
         source = [
             "#if os(macOS)",
             "    import AppKit",
-            "    private typealias SystemApplication = AppKit.NSApplication",
+            "    typealias SystemApplication = AppKit.NSApplication",
             "#else",
             "    import UIKit",
-            "    private typealias SystemApplication = UIKit.UIApplication",
+            "    typealias SystemApplication = UIKit.UIApplication",
             "#endif",
             "",
             "private let applicationDelegate = \(moduleName)()",

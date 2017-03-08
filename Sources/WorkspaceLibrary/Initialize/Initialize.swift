@@ -61,7 +61,7 @@ func runInitialize(andExit shouldExit: Bool) {
     switch packageType {
     case .library, .application:
         packageDescription += [
-            "    name: \(packageName)"
+            "    name: \u{22}\(packageName)\u{22}"
         ]
     case .executable:
         packageDescription += [

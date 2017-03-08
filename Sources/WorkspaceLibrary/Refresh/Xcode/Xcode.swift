@@ -28,7 +28,7 @@ struct Xcode {
         requireBash(script)
 
         require() { try Repository.delete(path.subfolderOrFile("xcshareddata/xcschemes")) }
-        
+
         var file = require() { try File(at: path.subfolderOrFile("project.pbxproj")) }
         file.contents.replaceContentsOfEveryPair(of: ("LD_RUNPATH_SEARCH_PATHS = (", ");"), with: join(lines: [
             "",
@@ -58,7 +58,7 @@ struct Xcode {
         if Configuration.projectType == .application {
             var info = require() { try File(at: path.subfolderOrFile("\(Configuration.primaryXcodeTarget)_Info.plist")) }
 
-            info.contents = info.contents.replacingOccurrences(of: "<key>NSPrincipalClass</key>\n  <string></string>", with: "<key>NSPrincipalClass</key>\n  <string>\(Configuration.principalClass)</string>")
+            info.contents = info.contents.replacingOccurrences(of: "<key>NSPrincipalClass</key>\n  <string></string>", with: "<key>NSPrincipalClass</key>\n  <string>\(Configuration.moduleName).\(Configuration.principalClass)</string>")
 
             require() { try info.write() }
         }

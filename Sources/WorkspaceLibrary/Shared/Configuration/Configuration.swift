@@ -280,8 +280,11 @@ struct Configuration {
     static var sanitizedProjectName: String {
         return projectName.replacingOccurrences(of: " ", with: "_")
     }
-    static var sanitizedProjectNameForPrincipalClass: String {
+    static var sanitizedProjectNameForModuleName: String {
         return sanitizedProjectName.replacingOccurrences(of: "_", with: "")
+    }
+    static var sanitizedProjectNameForPrincipalClass: String {
+        return sanitizedProjectNameForModuleName
     }
 
     // MARK: - Settings
@@ -482,6 +485,9 @@ struct Configuration {
     }
     static var primaryXcodeTarget: String {
         return stringValue(option: .primaryXcodeTarget)
+    }
+    static var moduleName: String {
+        return stringValue(option: .moduleName)
     }
     static var principalClass: String {
         return stringValue(option: .principalClass)

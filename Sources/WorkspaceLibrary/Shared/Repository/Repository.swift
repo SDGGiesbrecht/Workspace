@@ -130,7 +130,7 @@ struct Repository {
 
             }
 
-            let result = allFiles.filter() { (path: RelativePath) -> Bool in
+            let result = allRealFiles.filter() { (path: RelativePath) -> Bool in
 
                 for ignored in ignoredPaths {
                     if path.string.hasPrefix(ignored) {

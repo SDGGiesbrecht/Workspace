@@ -56,7 +56,8 @@ enum FileType : CustomStringConvertible {
         "nojekyll",
         "plist",
         "png",
-        "svg"
+        "svg",
+        "tgz"
     ]
 
     init?<P : Path>(filePath: P) {

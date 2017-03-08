@@ -115,6 +115,8 @@ struct FileHeaders {
 
         var skippedFiles: Set<String> = workspaceFiles
         skippedFiles.insert("LICENSE.md")
+        skippedFiles.insert(".github/ISSUE_TEMPLATE.md")
+        skippedFiles.insert(".github/PULL_REQUEST_TEMPLATE.md")
 
         func shouldManageHeader(path: RelativePath) -> Bool {
             if skippedFiles.contains(path.string) {

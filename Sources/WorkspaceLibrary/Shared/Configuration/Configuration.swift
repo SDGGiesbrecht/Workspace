@@ -482,6 +482,12 @@ struct Configuration {
     static var contributingInstructions: String {
         return stringValue(option: .contributingInstructions)
     }
+    static var issueTemplate: String {
+        return stringValue(option: .issueTemplate)
+    }
+    static var pullRequestTemplate: String {
+        return stringValue(option: .pullRequestTemplate)
+    }
     static var administrators: [String] {
         return listValue(option: .administrators)
     }

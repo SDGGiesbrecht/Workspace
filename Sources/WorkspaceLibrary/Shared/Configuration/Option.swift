@@ -39,6 +39,8 @@ enum Option : String, CustomStringConvertible {
 
     case manageContributingInstructions = "Manage Contributing Instructions"
     case contributingInstructions = "Contributing Instructions"
+    case issueTemplate = "Issue Template"
+    case pullRequestTemplate = "Pull Request Template"
     case administrators = "Administrators"
     case developmentNotes = "Development Notes"
 
@@ -91,6 +93,8 @@ enum Option : String, CustomStringConvertible {
 
         .manageContributingInstructions,
         .contributingInstructions,
+        .issueTemplate,
+        .pullRequestTemplate,
         .administrators,
         .developmentNotes,
 
@@ -155,6 +159,10 @@ enum Option : String, CustomStringConvertible {
             return Configuration.falseOptionValue
         case .contributingInstructions:
             return ContributingInstructions.defaultContributingInstructions
+        case .issueTemplate:
+            return ContributingInstructions.defaultIssueTemplate
+        case .pullRequestTemplate:
+            return ContributingInstructions.defaultPullRequestTemplate
         case .administrators:
             return Configuration.emptyListOptionValue
         case .developmentNotes:

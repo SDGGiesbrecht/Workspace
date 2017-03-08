@@ -38,7 +38,7 @@ struct Flags {
 
     static let type: ProjectType = {
         if let string = value(of: .type),
-            let projectType = ProjectType(key: string) {
+            let projectType = ProjectType(flag: string) {
             return projectType
         }
         return .library

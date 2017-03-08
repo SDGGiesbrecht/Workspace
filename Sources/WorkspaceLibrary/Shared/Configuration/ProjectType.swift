@@ -20,6 +20,19 @@ enum ProjectType : String, CustomStringConvertible {
         self.init(rawValue: key)
     }
 
+    init?(flag: String) {
+        switch flag {
+        case "library":
+            self = .library
+        case "application":
+            self = .application
+        case "executable":
+            self = .executable
+        default:
+            return nil
+        }
+    }
+
     // MARK: - Cases
 
     case library = "Library"

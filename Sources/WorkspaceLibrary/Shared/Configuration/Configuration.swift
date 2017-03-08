@@ -358,15 +358,14 @@ struct Configuration {
 
     // Project Type
 
-    static var projectType: ProjectType? {
-        if let key = possibleStringValue(option: .projectType) {
-            guard let type = ProjectType(key: key) else {
-                invalidEnumValue(option: .projectType, value: key, valid: ProjectType.all.map({ $0.key }))
-            }
-            return type
-        } else {
-            return nil
+    static var projectType: ProjectType {
+        let key = stringValue(option: .projectType)
+
+        guard let result = ProjectType(key: key) else {
+            invalidEnumValue(option: .projectType, value: key, valid: ProjectType.all.map({ $0.key }))
         }
+
+        return result
     }
 
     static var supportMacOS: Bool {
@@ -430,7 +429,12 @@ struct Configuration {
         return projectName.replacingOccurrences(of: " ", with: "")
     }
     static var defaultModuleName: String {
-        return moduleName(forProjectName: projectName)
+        switch projectType {
+        case .library, .application:
+            return moduleName(forProjectName: projectName)
+        default:
+            return executableLibraryName(forProjectName: projectName)
+        }
     }
     static var moduleName: String {
         return stringValue(option: .moduleName)

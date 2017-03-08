@@ -37,6 +37,10 @@ struct Xcode {
             "@loader_path/../Frameworks"
             ].map({ "\u{22}\($0)\u{22}," })))
 
+        if Configuration.projectType == .application {
+            file.contents = file.contents.replacingOccurrences(of: "com.apple.product\u{2D}type.framework", with: "com.apple.product\u{2D}type.application")
+        }
+
         require() { try file.write() }
     }
 

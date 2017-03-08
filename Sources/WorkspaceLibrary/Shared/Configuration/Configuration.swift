@@ -373,7 +373,7 @@ struct Configuration {
     }
 
     static var supportLinux: Bool {
-        return booleanValue(option: .supportLinux)
+        return booleanValue(option: .supportLinux) ∧ projectType ≠ ProjectType.application
     }
 
     static var supportIOS: Bool {
@@ -381,7 +381,7 @@ struct Configuration {
     }
 
     static var supportWatchOS: Bool {
-        return booleanValue(option: .supportWatchOS) ∧ projectType ≠ ProjectType.executable
+        return booleanValue(option: .supportWatchOS) ∧ projectType ≠ ProjectType.application ∧ projectType ≠ ProjectType.executable
     }
 
     static var supportTVOS: Bool {
@@ -600,13 +600,19 @@ struct Configuration {
 
         // Project Type vs Operating System
 
-        if projectType == .executable {
-
-            func check(forIncompatibleOperatingSystem option: Option) {
-                if configurationFile[option] == Configuration.trueOptionValue {
-                    incompatibilityDetected(between: .projectType, and: option, documentation: .platforms)
-                }
+        func check(forIncompatibleOperatingSystem option: Option) {
+            if configurationFile[option] == Configuration.trueOptionValue {
+                incompatibilityDetected(between: .projectType, and: option, documentation: .platforms)
             }
+        }
+
+        if projectType == .application {
+
+            check(forIncompatibleOperatingSystem: .supportLinux)
+            check(forIncompatibleOperatingSystem: .supportWatchOS)
+        }
+
+        if projectType == .executable {
 
             check(forIncompatibleOperatingSystem: .supportIOS)
             check(forIncompatibleOperatingSystem: .supportWatchOS)

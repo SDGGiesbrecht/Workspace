@@ -122,7 +122,7 @@ func runInitialize(andExit shouldExit: Bool) {
     case .executable:
         sourceFile = File(possiblyAt: RelativePath("Sources/\(executableLibraryName)/Program.swift"))
         source = [
-            "/// Runs \(executableName).",
+            "/// Runs `\(executableName)`.",
             "public func run() {",
             "    print(sayHello())",
             "}",

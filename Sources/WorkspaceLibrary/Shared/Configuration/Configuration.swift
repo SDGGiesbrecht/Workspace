@@ -449,12 +449,6 @@ struct Configuration {
     static func testModuleName(forProjectName projectName: String) -> String {
         return moduleName(forProjectName: projectName) + "Tests"
     }
-    static var defaultTestModuleName: String {
-        return testModuleName(forProjectName: projectName)
-    }
-    static var testModuleName: String {
-        return stringValue(option: .testModuleName)
-    }
 
     // Responsibilities
 
@@ -531,6 +525,9 @@ struct Configuration {
     }
     static var primaryXcodeScheme: String {
         return primaryXcodeTarget
+    }
+    static var xcodeTestTarget: String {
+        return stringValue(option: .xcodeTestTarget)
     }
 
     static var manageDependencyGraph: Bool {

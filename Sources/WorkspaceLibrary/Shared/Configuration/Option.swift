@@ -63,8 +63,8 @@ enum Option : String, CustomStringConvertible {
     case projectName = "Project Name"
     case packageName = "Package Name"
     case moduleName = "Module Name"
-    case testModuleName = "Test Module Name"
     case primaryXcodeTarget = "Primary Xcode Target"
+    case xcodeTestTarget = "Xcode Test Target"
 
     case ignoreFileTypes = "Ignore File Types"
 
@@ -118,8 +118,8 @@ enum Option : String, CustomStringConvertible {
         .projectName,
         .packageName,
         .moduleName,
-        .testModuleName,
         .primaryXcodeTarget,
+        .xcodeTestTarget,
 
         .ignoreFileTypes
         ]
@@ -203,10 +203,10 @@ enum Option : String, CustomStringConvertible {
             return Configuration.defaultPackageName
         case .moduleName:
             return Configuration.defaultModuleName
-        case .testModuleName:
-            return Configuration.defaultTestModuleName
         case .primaryXcodeTarget:
             return Xcode.defaultPrimaryTargetName
+        case .xcodeTestTarget:
+            return Xcode.defaultTestTargetName
 
         case .ignoreFileTypes:
             return Configuration.emptyListOptionValue

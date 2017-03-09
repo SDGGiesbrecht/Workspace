@@ -36,6 +36,10 @@ struct Xcode {
         }
     }
 
+    static var defaultTestTargetName: String {
+        return Configuration.testModuleName(forProjectName: Configuration.projectName)
+    }
+
     static func refreshXcodeProjects() {
 
         let path = RelativePath("\(Xcode.projectFilename)")
@@ -106,7 +110,7 @@ struct Xcode {
 
             // Provide test linking information.
 
-            let testMarker = "TARGET_NAME = \u{22}\(Configuration.testModuleName)\u{22};"
+            let testMarker = "TARGET_NAME = \u{22}\(Configuration.xcodeTestTarget)\u{22};"
             let testInfo = [
                 "\u{22}TEST_HOST[sdk=macosx*]\u{22} = \u{22}$(BUILT_PRODUCTS_DIR)/\(Xcode.applicationProductName).app/Contents/MacOS/\(Xcode.applicationExecutableName)\u{22};",
                 "TEST_HOST = \u{22}$(BUILT_PRODUCTS_DIR)/\(Xcode.applicationProductName).app/\(Xcode.applicationExecutableName)\u{22};",

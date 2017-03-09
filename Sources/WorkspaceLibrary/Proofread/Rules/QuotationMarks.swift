@@ -47,7 +47,7 @@ struct QuotationMarks : Rule {
                 switch fileType {
                 case .markdown, .workspaceConfiguration:
                     if ¬(filePrefix.contains("```") ∧ fileSuffix.contains("```")) /* Sample Code */
-                    ∧ ¬(linePrefix.contains("`") ∧ lineSuffix.contains("`")) {
+                        ∧ ¬(linePrefix.contains("`") ∧ lineSuffix.contains("`")) {
                         throwError()
                     }
                 case .swift:
@@ -58,7 +58,9 @@ struct QuotationMarks : Rule {
                     }
                 case .shell, .yaml:
                     if linePrefix.contains("#") /* Comment */ {
-                        throwError()
+                        if ¬linePrefix.contains("REPOSITORY=") {
+                            throwError()
+                        }
                     }
                 case .gitignore, .json, .html, .css, .javaScript:
                     throwError()

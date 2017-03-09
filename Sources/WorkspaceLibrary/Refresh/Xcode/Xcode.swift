@@ -43,6 +43,8 @@ struct Xcode {
         }
         requireBash(script)
 
+        // Allow dependencies to be found by the executable.
+
         var file = require() { try File(at: path.subfolderOrFile("project.pbxproj")) }
         file.contents.replaceContentsOfEveryPair(of: ("LD_RUNPATH_SEARCH_PATHS = (", ");"), with: join(lines: [
             "",
@@ -56,13 +58,47 @@ struct Xcode {
         if Configuration.projectType == .application {
             var project = file.contents
 
+            // Change product type from framework to application.
+
             guard let productMarker = project.range(of: "productName = \u{22}\(Xcode.applicationProductName)\u{22}"),
                 let rangeOfProductType = project.range(of: ".framework", in: productMarker.upperBound ..< project.endIndex)else {
                     fatalError(message: ["Cannot find primary product in Xcode project."])
             }
             project.replaceSubrange(rangeOfProductType, with: ".application")
 
+            // Application bundle name should be .app not .framework.
+
             project = project.replacingOccurrences(of: "\(Xcode.applicationProductName).framework", with: "\(Xcode.applicationProductName).app")
+
+            // Remove .app from the list of frameworks that tests link against.
+
+            var possibleFrameworksList: Range<String.Index>?
+            var searchLocation = project.startIndex
+            while let frameworkPhase = project.range(of: "isa = \u{22}PBXFrameworksBuildPhase\u{22}", in: searchLocation ..< project.endIndex) {
+                searchLocation = frameworkPhase.upperBound
+
+                if let fileList = project.rangeOfContents(of: ("files = (", ");"), in: frameworkPhase.upperBound ..< project.endIndex) {
+                    if let existing = possibleFrameworksList {
+                        if project.distance(from: fileList.lowerBound, to: fileList.upperBound) > project.distance(from: existing.lowerBound, to: existing.upperBound) {
+                            possibleFrameworksList = fileList
+                        }
+                    } else {
+                        possibleFrameworksList = fileList
+                    }
+                }
+            }
+            guard let frameworksList = possibleFrameworksList else {
+                fatalError(message: ["Cannot find test dependency list in Xcode project."])
+            }
+            var frameworkLines = project.substring(with: frameworksList).linesArray
+            for index in frameworkLines.indices {
+                let line = frameworkLines[index]
+                if ¬line.isWhitespace {
+                    frameworkLines.remove(at: index)
+                    break
+                }
+            }
+            project.replaceSubrange(frameworksList, with: join(lines: frameworkLines))
 
             file.contents = project
         }

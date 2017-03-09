@@ -184,7 +184,7 @@ func runInitialize(andExit shouldExit: Bool) {
         "",
         "XCTMain([",
         "    testCase(\(testsName).allTests)",
-        "]"
+        "])"
     ]
     linuxMainFile.body = join(lines: linuxMain)
     require() { try linuxMainFile.write() }

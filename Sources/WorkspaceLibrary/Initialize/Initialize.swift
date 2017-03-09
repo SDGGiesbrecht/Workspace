@@ -228,7 +228,8 @@ func runInitialize(andExit shouldExit: Bool) {
         ]
     let entries: [(option: Option, value: String, comment: [String]?)] = [
         (option: .automaticallyTakeOnNewResponsibilites, value: Configuration.trueOptionValue, comment: note),
-        (option: .projectType, value: packageType.key, comment: nil)
+        (option: .projectType, value: packageType.key, comment: nil),
+        (option: .disableProofreadingRules, value: join(lines: ["colon", "line_length"]), comment: nil)
     ]
     Configuration.addEntries(entries: entries, to: &configuration)
     require() { try configuration.write() }

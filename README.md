@@ -107,7 +107,7 @@ If Workspace has never been used on a particular device, follow the above [works
 
 To have Workspace create a new Swift project from scratch, run one of the following commands in an empty folder:
 
-To create a [library](Documentation/Project Types.md)) project:
+To create a [library](Documentation/Project Types.md) project:
 ```shell
 ~/.Workspace/Workspace/.build/release/workspace initialize
 ```

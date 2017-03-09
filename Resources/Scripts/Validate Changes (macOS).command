@@ -30,7 +30,7 @@ set -e
 # REPOSITORY="${0%/*}"
 # Does not work for double‐click on Linux or as a command on macOS or Linux from a different directory.
 
-REPOSITORY="dirname" "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+REPOSITORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 # Update Workspace

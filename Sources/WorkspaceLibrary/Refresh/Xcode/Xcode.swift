@@ -24,6 +24,10 @@ struct Xcode {
         return Configuration.defaultPackageName
     }
 
+    static var applicationExecutableName: String {
+        return applicationProductName
+    }
+
     static var defaultPrimaryTargetName: String {
         if Configuration.projectType == .executable {
             return Configuration.executableLibraryName(forProjectName: Configuration.projectName)
@@ -99,6 +103,16 @@ struct Xcode {
                 }
             }
             project.replaceSubrange(frameworksList, with: join(lines: frameworkLines))
+
+            // Provide test linking information.
+
+            let testMarker = "TARGET_NAME = \u{22}\(Configuration.testModuleName)\u{22};"
+            let testInfo = [
+                "TEST_HOST[sdk=macosx*] = \u{22}$(BUILT_PRODUCTS_DIR)/\(Xcode.applicationProductName).app/Contents/MacOS/\(Xcode.applicationExecutableName)\u{22};",
+                "TEST_HOST = \u{22}$(BUILT_PRODUCTS_DIR)/\(Xcode.applicationProductName).app/\(Xcode.applicationExecutableName)\u{22};",
+                "BUNDLE_LOADER = \u{22}$(TEST_HOST)\u{22};"
+            ]
+            project = project.replacingOccurrences(of: testMarker, with: join(lines: [testMarker] + testInfo))
 
             file.contents = project
         }

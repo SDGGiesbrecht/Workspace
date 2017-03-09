@@ -446,8 +446,14 @@ struct Configuration {
     static func executableLibraryName(forProjectName projectName: String) -> String {
         return moduleName(forProjectName: projectName) + "Library"
     }
-    static func testsName(forProjectName projectName: String) -> String {
+    static func testModuleName(forProjectName projectName: String) -> String {
         return moduleName(forProjectName: projectName) + "Tests"
+    }
+    static var defaultTestModuleName: String {
+        return testModuleName(forProjectName: projectName)
+    }
+    static var testModuleName: String {
+        return stringValue(option: .testModuleName)
     }
 
     // Responsibilities

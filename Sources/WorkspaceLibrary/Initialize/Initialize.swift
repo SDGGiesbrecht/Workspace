@@ -53,7 +53,7 @@ func runInitialize(andExit shouldExit: Bool) {
     let moduleName = Configuration.moduleName(forProjectName: projectName)
     let executableName = Configuration.executableName(forProjectName: projectName)
     let executableLibraryName = Configuration.executableLibraryName(forProjectName: projectName)
-    let testsName = Configuration.testsName(forProjectName: projectName)
+    let testsName = Configuration.testModuleName(forProjectName: projectName)
 
     var packageDescription = [
         "import PackageDescription",

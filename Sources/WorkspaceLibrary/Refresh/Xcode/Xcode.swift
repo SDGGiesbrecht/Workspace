@@ -68,9 +68,13 @@ struct Xcode {
 
             // Change product type from framework to application.
 
-            guard let productMarker = project.range(of: "productName = \u{22}\(Xcode.applicationProductName)\u{22}"),
+            let productMarkerSearchString = "productName = \u{22}\(Xcode.applicationProductName)\u{22}"
+            guard let productMarker = project.range(of: productMarkerSearchString),
                 let rangeOfProductType = project.range(of: ".framework", in: productMarker.upperBound ..< project.endIndex)else {
-                    fatalError(message: ["Cannot find primary product in Xcode project."])
+                    fatalError(message: [
+                        "Cannot find primary product in Xcode project.",
+                        "Expected “.framework” after “\(productMarkerSearchString)”."
+                        ])
             }
             project.replaceSubrange(rangeOfProductType, with: ".application")
 
@@ -82,10 +86,12 @@ struct Xcode {
 
             var possibleFrameworksList: Range<String.Index>?
             var searchLocation = project.startIndex
-            while let frameworkPhase = project.range(of: "isa = \u{22}PBXFrameworksBuildPhase\u{22}", in: searchLocation ..< project.endIndex) {
+            let frameworkPhaseSearchString = "isa = \u{22}PBXFrameworksBuildPhase\u{22}"
+            let fileListTokens = ("files = (", ");")
+            while let frameworkPhase = project.range(of: frameworkPhaseSearchString, in: searchLocation ..< project.endIndex) {
                 searchLocation = frameworkPhase.upperBound
 
-                if let fileList = project.rangeOfContents(of: ("files = (", ");"), in: frameworkPhase.upperBound ..< project.endIndex) {
+                if let fileList = project.rangeOfContents(of: fileListTokens, in: frameworkPhase.upperBound ..< project.endIndex) {
                     if let existing = possibleFrameworksList {
                         if project.distance(from: fileList.lowerBound, to: fileList.upperBound) > project.distance(from: existing.lowerBound, to: existing.upperBound) {
                             possibleFrameworksList = fileList
@@ -96,7 +102,10 @@ struct Xcode {
                 }
             }
             guard let frameworksList = possibleFrameworksList else {
-                fatalError(message: ["Cannot find test dependency list in Xcode project."])
+                fatalError(message: [
+                    "Cannot find test dependency list in Xcode project.",
+                    "Expected “\(fileListTokens.0)”...“\(fileListTokens.1)” after “\(frameworkPhaseSearchString)”."
+                    ])
             }
             var frameworkLines = project.substring(with: frameworksList).linesArray
             for index in frameworkLines.indices.reversed() {

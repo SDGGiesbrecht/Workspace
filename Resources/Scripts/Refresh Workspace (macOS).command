@@ -23,11 +23,14 @@
 set -e
 
 # Find repository.
-if [ "$CONTINUOUS_INTEGRATION" ]; then
-    REPOSITORY=$(pwd)
-else
-    REPOSITORY="${0%/*}"
-fi
+
+# REPOSITORY="$(pwd)"
+# Does not work for double‐click on macOS, or as a command on macOS or Linux from a different directory.
+
+# REPOSITORY="${0%/*}"
+# Does not work for double‐click on Linux or as a command on macOS or Linux from a different directory.
+
+REPOSITORY="dirname" "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 # Update Workspace

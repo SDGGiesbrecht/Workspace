@@ -22,22 +22,15 @@
 # Stop if a command fails.
 set -e
 
-echo "pwd" "$(pwd)"
-echo "0" "${0%/*}"
-echo "dirname" "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# Find repository.
 
 # REPOSITORY="$(pwd)"
-# Does not work for double‐click (on macOS).
+# Does not work for double‐click on macOS, or as a command on macOS or Linux from a different directory.
 
 # REPOSITORY="${0%/*}"
-# Does not work when run as a command (on macOS).
+# Does not work for double‐click on Linux or as a command on macOS or Linux from a different directory.
 
-# Find repository.
-if [ "$CONTINUOUS_INTEGRATION" ]; then
-    REPOSITORY=$(pwd)
-else
-    REPOSITORY="${0%/*}"
-fi
+REPOSITORY="dirname" "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 # Update Workspace
@@ -80,4 +73,4 @@ fi
 cd "${REPOSITORY}"
 
 # Run.
-# ~/.Workspace/Workspace/.build/release/workspace refresh
+~/.Workspace/Workspace/.build/release/workspace refresh

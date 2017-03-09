@@ -20,10 +20,12 @@ As a short cut, instead of manually disabling each individual feature, Workspace
 
 Currently supported project types:
 
-- `Library` (all platforms):
+- `Library` (all platforms)
     - Swift Module (when built by the Swift Package Manager)
     - Framework Bundle* (when built by Xcode)
-- `Application` (macOS, iOS, tvOS): Cocoa (Touch) Application Bundle*
-- `Executable` (macOS, Linux): Command Line Tool
+- `Application` (macOS, iOS, tvOS)
+    - Cocoa (Touch) Application Bundle*
+- `Executable` (macOS, Linux)
+    - Command Line Tool
 
 *Bundled resources are not supported.

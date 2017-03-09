@@ -91,7 +91,7 @@ struct Xcode {
                 fatalError(message: ["Cannot find test dependency list in Xcode project."])
             }
             var frameworkLines = project.substring(with: frameworksList).linesArray
-            for index in frameworkLines.indices {
+            for index in frameworkLines.indices.reversed() {
                 let line = frameworkLines[index]
                 if ¬line.isWhitespace {
                     frameworkLines.remove(at: index)
@@ -106,6 +106,9 @@ struct Xcode {
         require() { try file.write() }
 
         if Configuration.projectType == .application {
+
+            // Denote principal class in Info.plist for @NSApplicationMain to work.
+
             var info = require() { try File(at: path.subfolderOrFile("\(Xcode.applicationProductName)_Info.plist")) }
 
             info.contents = info.contents.replacingOccurrences(of: "<key>NSPrincipalClass</key>\n  <string></string>", with: "<key>NSPrincipalClass</key>\n  <string>\(Configuration.moduleName).Application</string>")

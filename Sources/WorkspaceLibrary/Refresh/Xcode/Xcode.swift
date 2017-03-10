@@ -21,7 +21,7 @@ struct Xcode {
     }
 
     static var applicationProductName: String {
-        return Configuration.defaultPackageName
+        return Configuration.moduleName
     }
 
     static var applicationExecutableName: String {

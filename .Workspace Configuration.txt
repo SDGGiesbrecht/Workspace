@@ -58,4 +58,12 @@ open -a Xcode "Refresh Workspace (macOS).command"
 
 ...and follow the instructions in the comments halfway down.
 
+### Changes to Auto‐Generated Files
+
+If changes are made which affect auto‐generated files like `.gitignore` or `.travis.yml`, continuous integration will always fail with the message “This project is out of date.”.
+
+This is to be expected, because the same project cannot simultaneously satisfy the differing expectations of the stable and development versions of Workspace.
+
+Once that is the only error remaining, contact an administrator the same as if everything were passing and mention the reason for the false failure report.
+
 [_End_]

@@ -18,7 +18,7 @@ enum FileType : CustomStringConvertible {
 
     // MARK: - Static Properties
 
-    private static var unsupportedTypesEncountered: Set<String> = []
+    private static var unsupportedTypesEncountered: [String: RelativePath] = [:]
     static var unsupportedTypesWarning: [String]? {
 
         if unsupportedTypesEncountered.isEmpty {
@@ -29,7 +29,13 @@ enum FileType : CustomStringConvertible {
                 "Workspace encountered unsupported file types:"
             ]
 
-            warning.append(contentsOf: unsupportedTypesEncountered.sorted())
+            warning.append(contentsOf: unsupportedTypesEncountered.keys.sorted().map({ (key: String) -> String in
+                if let path = unsupportedTypesEncountered[key]?.string {
+                    return "\(key) (\(path))"
+                } else {
+                    return key
+                }
+            }))
 
             warning.append(contentsOf: [
                 "All such files were skipped.",
@@ -79,7 +85,9 @@ enum FileType : CustomStringConvertible {
 
             if ¬FileType.binaryFileTypes.contains(identifier)
                 ∧ ¬Configuration.ignoreFileTypes.contains(identifier) {
-                FileType.unsupportedTypesEncountered.insert(identifier)
+                if FileType.unsupportedTypesEncountered[identifier] == nil {
+                    FileType.unsupportedTypesEncountered[identifier] = Repository.relative(filePath)
+                }
             }
 
             return nil

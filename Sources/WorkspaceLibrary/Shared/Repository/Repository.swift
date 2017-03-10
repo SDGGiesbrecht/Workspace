@@ -41,6 +41,7 @@ struct Repository {
 
     private static let fileManager = FileManager.default
     private static let repositoryPath: AbsolutePath = AbsolutePath(fileManager.currentDirectoryPath)
+    static let folderName = URL(fileURLWithPath: repositoryPath.string).lastPathComponent
     static let root: RelativePath = RelativePath("")
 
     // MARK: - Repository
@@ -130,7 +131,7 @@ struct Repository {
 
             }
 
-            let result = allFiles.filter() { (path: RelativePath) -> Bool in
+            let result = allRealFiles.filter() { (path: RelativePath) -> Bool in
 
                 for ignored in ignoredPaths {
                     if path.string.hasPrefix(ignored) {
@@ -300,7 +301,7 @@ struct Repository {
         return cachedResult(cache: &cache.packageDescription) {
             () -> File in
 
-            return require() { try File(at: RelativePath("Package.swift")) }
+            return File(possiblyAt: RelativePath("Package.swift"))
         }
     }
 

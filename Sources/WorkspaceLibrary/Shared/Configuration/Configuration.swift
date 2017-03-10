@@ -25,7 +25,7 @@ struct Configuration {
 
         fileprivate var file: File?
         fileprivate var configurationFile: [Option: String]?
-        fileprivate var projectName: String?
+        fileprivate var packageName: String?
 
         // MARK: - Settings
 
@@ -269,18 +269,6 @@ struct Configuration {
         }
     }
 
-    static var projectName: String {
-        return cachedResult(cache: &cache.projectName) {
-            () -> String in
-
-            let tokens = ("name: \u{22}", "\u{22}")
-            return Repository.packageDescription.requireContents(of: tokens)
-        }
-    }
-    static var sanitizedProjectName: String {
-        return projectName.replacingOccurrences(of: " ", with: "_")
-    }
-
     // MARK: - Settings
 
     static let noValue = "[_None_]"
@@ -370,15 +358,14 @@ struct Configuration {
 
     // Project Type
 
-    static var projectType: ProjectType? {
-        if let key = possibleStringValue(option: .projectType) {
-            guard let type = ProjectType(key: key) else {
-                invalidEnumValue(option: .projectType, value: key, valid: ProjectType.all.map({ $0.key }))
-            }
-            return type
-        } else {
-            return nil
+    static var projectType: ProjectType {
+        let key = stringValue(option: .projectType)
+
+        guard let result = ProjectType(key: key) else {
+            invalidEnumValue(option: .projectType, value: key, valid: ProjectType.all.map({ $0.key }))
         }
+
+        return result
     }
 
     static var supportMacOS: Bool {
@@ -386,7 +373,7 @@ struct Configuration {
     }
 
     static var supportLinux: Bool {
-        return booleanValue(option: .supportLinux)
+        return booleanValue(option: .supportLinux) ∧ projectType ≠ ProjectType.application
     }
 
     static var supportIOS: Bool {
@@ -394,7 +381,7 @@ struct Configuration {
     }
 
     static var supportWatchOS: Bool {
-        return booleanValue(option: .supportWatchOS) ∧ projectType ≠ ProjectType.executable
+        return booleanValue(option: .supportWatchOS) ∧ projectType ≠ ProjectType.application ∧ projectType ≠ ProjectType.executable
     }
 
     static var supportTVOS: Bool {
@@ -411,6 +398,56 @@ struct Configuration {
         } else {
             return booleanValue(option: .skipSimulator)
         }
+    }
+
+    // Project Names
+
+    static var projectName: String {
+        return stringValue(option: .projectName)
+    }
+
+    static func packageName(forProjectName projectName: String) -> String {
+        return projectName
+    }
+    static var defaultPackageName: String {
+        let tokens = ("name: \u{22}", "\u{22}")
+        if let name = Repository.packageDescription.contents.contents(of: tokens) {
+            return name
+        } else {
+            return packageName(forProjectName: Repository.folderName)
+        }
+    }
+    static var packageName: String {
+        return cachedResult(cache: &cache.packageName) {
+            () -> String in
+
+            return stringValue(option: .packageName)
+        }
+    }
+
+    static func moduleName(forProjectName projectName: String) -> String {
+        return projectName.replacingOccurrences(of: " ", with: "")
+    }
+    static var defaultModuleName: String {
+        switch projectType {
+        case .library, .application:
+            return moduleName(forProjectName: projectName)
+        default:
+            return executableLibraryName(forProjectName: projectName)
+        }
+    }
+    static var moduleName: String {
+        return stringValue(option: .moduleName)
+    }
+
+    static func executableName(forProjectName projectName: String) -> String {
+        return moduleName(forProjectName: projectName).lowercased()
+    }
+    static func executableLibraryName(forProjectName projectName: String) -> String {
+        return moduleName(forProjectName: projectName) + "Library"
+    }
+    static func testModuleName(forProjectName projectName: String) -> String {
+        return moduleName(forProjectName: projectName) + "Tests"
     }
 
     // Responsibilities
@@ -483,8 +520,14 @@ struct Configuration {
     static var manageXcode: Bool {
         return booleanValue(option: .manageXcode)
     }
+    static var xcodeSchemeName: String {
+        return stringValue(option: .xcodeSchemeName)
+    }
     static var primaryXcodeTarget: String {
         return stringValue(option: .primaryXcodeTarget)
+    }
+    static var xcodeTestTarget: String {
+        return stringValue(option: .xcodeTestTarget)
     }
 
     static var manageDependencyGraph: Bool {
@@ -560,13 +603,19 @@ struct Configuration {
 
         // Project Type vs Operating System
 
-        if projectType == .executable {
-
-            func check(forIncompatibleOperatingSystem option: Option) {
-                if configurationFile[option] == Configuration.trueOptionValue {
-                    incompatibilityDetected(between: .projectType, and: option, documentation: .platforms)
-                }
+        func check(forIncompatibleOperatingSystem option: Option) {
+            if configurationFile[option] == Configuration.trueOptionValue {
+                incompatibilityDetected(between: .projectType, and: option, documentation: .platforms)
             }
+        }
+
+        if projectType == .application {
+
+            check(forIncompatibleOperatingSystem: .supportLinux)
+            check(forIncompatibleOperatingSystem: .supportWatchOS)
+        }
+
+        if projectType == .executable {
 
             check(forIncompatibleOperatingSystem: .supportIOS)
             check(forIncompatibleOperatingSystem: .supportWatchOS)

@@ -726,7 +726,8 @@ class WorkspaceTests : XCTestCase {
 
                     let new: [(name: String, flags: [String])] = [
                         (name: "New Library", flags: []),
-                        (name: "New Executable", flags: ["•executable"])
+                        (name: "New Application", flags: ["•type", "application"]),
+                        (name: "New Executable", flags: ["•type", "executable"])
                         ]
 
                     func root(of repository: String) -> RelativePath {

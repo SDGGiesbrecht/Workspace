@@ -96,7 +96,7 @@ struct Documentation {
             var command = ["jazzy", "\u{2D}\u{2D}clean", "\u{2D}\u{2D}use\u{2D}safe\u{2D}filenames", "\u{2D}\u{2D}skip\u{2D}undocumented",
                            "\u{2D}\u{2D}output", documentationFolder,
                            "\u{2D}\u{2D}xcodebuild\u{2D}arguments", xcodebuildArguments.joined(separator: ","),
-                           "\u{2D}\u{2D}module", Configuration.primaryXcodeTarget,
+                           "\u{2D}\u{2D}module", Configuration.moduleName,
                            "\u{2D}\u{2D}copyright", copyright(folder: documentationFolder)
             ]
             if let github = Configuration.projectWebsite {

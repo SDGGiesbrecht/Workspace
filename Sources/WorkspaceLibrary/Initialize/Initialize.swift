@@ -46,90 +46,175 @@ func runInitialize(andExit shouldExit: Bool) {
     printHeader(["Generating Swift package..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    let script = ["swift", "package", "init"]
-    requireBash(script)
+    let packageType = Flags.type
+    let projectName = Configuration.projectName
 
-    print(["Arranging Swift package..."])
+    let packageName = Configuration.packageName(forProjectName: projectName)
+    let moduleName = Configuration.moduleName(forProjectName: projectName)
+    let executableName = Configuration.executableName(forProjectName: projectName)
+    let executableLibraryName = Configuration.executableLibraryName(forProjectName: projectName)
+    let testsName = Configuration.testModuleName(forProjectName: projectName)
 
-    let projectName = Configuration.sanitizedProjectName
-    let testsName = projectName + "Tests"
+    var packageDescription = [
+        "import PackageDescription",
+        "",
+        "let package = Package("
+        ]
 
-    // Make module to allow folder structure.
-    require() { try Repository.move("Sources", to: RelativePath("Sources/\(projectName)")) }
-
-    // Escape spaces
-    let withSpaces = RelativePath("Tests/\(Configuration.projectName)Tests")
-    let noSpaces = RelativePath("Tests/\(testsName)")
-    if withSpaces ≠ noSpaces {
-        require() { try Repository.move(withSpaces, to: noSpaces) }
-        require() { try Repository.delete(withSpaces) }
+    switch packageType {
+    case .library, .application:
+        packageDescription += [
+            "    name: \u{22}\(packageName)\u{22}"
+        ]
+    case .executable:
+        packageDescription += [
+            "    name: \u{22}\(packageName)\u{22},",
+            "    targets: [",
+            "        Target(name: \u{22}\(executableName)\u{22}, dependencies: [\u{22}\(executableLibraryName)\u{22}]),",
+            "        Target(name: \u{22}\(executableLibraryName)\u{22}),",
+            "        Target(name: \u{22}\(testsName)\u{22}, dependencies: [\u{22}\(executableLibraryName)\u{22}])",
+            "    ]"
+        ]
     }
 
-    // Erase redundant .gitignore entries.
-    var gitIngore = require() { try File(at: RelativePath(".gitignore")) }
-    gitIngore.contents = ""
-    require() { try gitIngore.write() }
+    packageDescription += [
+        ")"
+    ]
 
-    if Flags.executable {
+    var packageDescriptionFile = File(possiblyAt: RelativePath("Package.swift"))
+    packageDescriptionFile.body = join(lines: packageDescription)
+    require() { try packageDescriptionFile.write() }
 
-        let executableName = projectName
-        let libraryName = projectName + "Library"
+    var source: [String]
+    var sourceFile: File
+    switch packageType {
 
-        require() { try Repository.delete(RelativePath("Sources/\(projectName)")) }
+    case .library:
+        sourceFile = File(possiblyAt: RelativePath("Sources/\(moduleName)/\(moduleName).swift"))
+        source = []
 
-        var program = File(possiblyAt: RelativePath("Sources/\(libraryName)/Program.swift"))
-        program.body = join(lines: [
-            "/// :nodoc:",
-            "public func run() {",
+    case .application:
+        sourceFile = File(possiblyAt: RelativePath("Sources/\(moduleName)/\(moduleName).swift"))
+        source = [
+            "#if os(macOS)",
+            "    import AppKit",
+            "    typealias SystemApplication = AppKit.NSApplication",
+            "#else",
+            "    import UIKit",
+            "    typealias SystemApplication = UIKit.UIApplication",
+            "#endif",
             "",
-            "    print(sayHello())",
-            "",
+            "private let applicationDelegate = \(moduleName)()",
+            "class Application : SystemApplication {",
+            "    override init() {",
+            "        super.init()",
+            "        delegate = applicationDelegate",
+            "    }",
+            "    #if os(macOS)",
+            "        required init?(coder: NSCoder) {",
+            "            super.init(coder: coder)",
+            "            delegate = applicationDelegate",
+            "        }",
+            "    #endif",
             "}",
             "",
-            "func sayHello() -> String {",
+            "#if os(macOS)",
+            "    @NSApplicationMain class \(moduleName) : NSObject, NSApplicationDelegate {",
+            "        func applicationDidFinishLaunching(_ aNotification: Notification) {",
+            "            applicationDidFinishLaunching()",
+            "        }",
+            "    }",
+            "#else",
+            "    @UIApplicationMain class \(moduleName) : NSObject, UIApplicationDelegate {",
+            "        func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]? = nil) -> Bool {",
+            "            applicationDidFinishLaunching()",
+            "            return true",
+            "        }",
+            "    }",
+            "#endif",
+            "extension \(moduleName) {",
             "",
-            "    return \u{22}Hello, world!\u{22}",
-            "",
-            "}"
-            ])
+            "    func applicationDidFinishLaunching() {",
+            "        print(sayHello())",
+            "    }",
+            "}",
+            ""
+        ]
 
-        require() { try program.write() }
+    case .executable:
+        sourceFile = File(possiblyAt: RelativePath("Sources/\(executableLibraryName)/Program.swift"))
+        source = [
+            "/// Runs `\(executableName)`.",
+            "public func run() {",
+            "    print(sayHello())",
+            "}",
+            ""
+        ]
+    }
 
-        var main = File(possiblyAt: RelativePath("Sources/\(executableName)/main.swift"))
-        main.body = join(lines: [
-            "import \(libraryName)",
+    source += [
+        "func sayHello() -> String {",
+        "    return \u{22}Hello, world!\u{22}",
+        "}"
+    ]
+
+    sourceFile.body = join(lines: source)
+    require() { try sourceFile.write() }
+
+    if packageType == .executable {
+        var mainFile = File(possiblyAt: RelativePath("Sources/\(executableName)/main.swift"))
+        let main = [
+            "import \(executableLibraryName)",
             "",
             "/*",
             " Nothing in this executable module (\(executableName)) will be testable.",
-            " It is recommended to put the entire implementation in \(libraryName).",
+            " It is recommended to put the entire implementation in \(executableLibraryName).",
             " */",
-            "\(libraryName).run()"
-            ])
-
-        require() { try main.write() }
-
-        var package = Repository.packageDescription
-        let nameRange = package.requireRange(of: ("name: \u{22}", "\u{22}"))
-        let replacement = join(lines: [
-            package.contents.substring(with: nameRange) + ",",
-            "    targets: [",
-            "        Target(name: \u{22}\(executableName)\u{22}, dependencies: [\u{22}\(libraryName)\u{22}]),",
-            "        Target(name: \u{22}\(libraryName)\u{22}),",
-            "        Target(name: \u{22}\(testsName)\u{22}, dependencies: [\u{22}\(libraryName)\u{22}]),",
-            "    ]"
-            ])
-
-        package.contents.replaceSubrange(nameRange, with: replacement)
-
-        require() { try package.write() }
-
-        var tests = require { try File(at: RelativePath("Tests/\(testsName)/\(testsName).swift")) }
-        let importRange = tests.requireRange(of: projectName)
-        tests.contents.replaceSubrange(importRange, with: libraryName)
-        let testRange = tests.requireRange(of: ("  XCTAssert", "\u{22})"))
-        tests.contents.replaceSubrange(testRange, with: "  XCTAssert(sayHello() == \u{22}Hello, world!\u{22})")
-        require() { try tests.write() }
+            "",
+            "\(executableLibraryName).run()"
+        ]
+        mainFile.body = join(lines: main)
+        require() { try mainFile.write() }
     }
+
+    var linuxMainFile = File(possiblyAt: RelativePath("Tests/LinuxMain.swift"))
+    let linuxMain = [
+        "import XCTest",
+        "@testable import \(testsName)",
+        "",
+        "XCTMain([",
+        "    testCase(\(testsName).allTests)",
+        "])"
+    ]
+    linuxMainFile.body = join(lines: linuxMain)
+    require() { try linuxMainFile.write() }
+
+    var testsFile = File(possiblyAt: RelativePath("Tests/\(testsName)/\(testsName).swift"))
+    var tests = [
+        "import XCTest"
+    ]
+    switch packageType {
+    case .library, .application:
+        tests += ["@testable import \(moduleName)"]
+    case .executable:
+        tests += ["@testable import \(executableLibraryName)"]
+    }
+    tests += [
+        "class \(testsName) : XCTestCase {",
+        "",
+        "    func testExample() {",
+        "        XCTAssert(sayHello() == \u{22}Hello, world!\u{22})",
+        "    }",
+        "",
+        "    static var allTests: [(String, (\(testsName)) -> () throws -> Void)] {",
+        "        return [",
+        "            (\u{22}testExample\u{22}, testExample)",
+        "        ]",
+        "    }",
+        "}"
+    ]
+    testsFile.body = join(lines: tests)
+    require() { try testsFile.write() }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Configuring Workspace..."])
@@ -141,12 +226,11 @@ func runInitialize(andExit shouldExit: Bool) {
         "For more information about “\(Option.automaticallyTakeOnNewResponsibilites)”, see:",
         Option.automaticResponsibilityDocumentationPage.url
         ]
-    var entries: [(option: Option, value: String, comment: [String]?)] = [(option: .automaticallyTakeOnNewResponsibilites, value: Configuration.trueOptionValue, comment: note)]
-    if Flags.executable {
-        entries.append(contentsOf: [
-            (option: .projectType, value: ProjectType.executable.key, comment: nil)
-            ])
-    }
+    let entries: [(option: Option, value: String, comment: [String]?)] = [
+        (option: .automaticallyTakeOnNewResponsibilites, value: Configuration.trueOptionValue, comment: note),
+        (option: .projectType, value: packageType.key, comment: nil),
+        (option: .disableProofreadingRules, value: join(lines: ["colon", "line_length"]), comment: nil)
+    ]
     Configuration.addEntries(entries: entries, to: &configuration)
     require() { try configuration.write() }
 

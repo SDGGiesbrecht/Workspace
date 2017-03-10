@@ -106,7 +106,7 @@ struct ContributingInstructions {
             ""
         ]
 
-        switch Configuration.projectType ?? ProjectType.library {
+        switch Configuration.projectType {
         case .library:
             template += [
                 "```swift",
@@ -122,6 +122,12 @@ struct ContributingInstructions {
                 "",
                 "# Or provide a link to a script elsewhere.",
                 "```"
+            ]
+        case .application:
+            template += [
+                "1. To trigger the bug, follow this step.",
+                "2. Then this step.",
+                "..."
             ]
         }
 

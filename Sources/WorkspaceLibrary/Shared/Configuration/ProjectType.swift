@@ -20,14 +20,29 @@ enum ProjectType : String, CustomStringConvertible {
         self.init(rawValue: key)
     }
 
+    init?(flag: String) {
+        switch flag {
+        case "library":
+            self = .library
+        case "application":
+            self = .application
+        case "executable":
+            self = .executable
+        default:
+            return nil
+        }
+    }
+
     // MARK: - Cases
 
     case library = "Library"
     case executable = "Executable"
+    case application = "Application"
 
     static let all: [ProjectType] = [
         .library,
-        .executable
+        .executable,
+        .application
     ]
 
     // MARK: - Properties

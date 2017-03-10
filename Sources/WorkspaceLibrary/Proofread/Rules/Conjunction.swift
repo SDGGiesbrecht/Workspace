@@ -36,7 +36,7 @@ struct Conjunction : Rule {
                 }
 
                 switch fileType {
-                case .workspaceConfiguration, .json, .yaml, .gitignore, .shell, .html, .css, .javaScript:
+                case .workspaceConfiguration, .json, .yaml, .gitignore, .html, .css, .javaScript:
                     throwError()
 
                 case .swift:
@@ -47,6 +47,11 @@ struct Conjunction : Rule {
 
                 case .markdown:
                     if ¬isInConditionalCompilationStatement(at: range, in: file) {
+                        throwError()
+                    }
+
+                case .shell:
+                    if ¬file.contents.substring(with: file.contents.lineRange(for: range)).contains("REPOSITORY=") {
                         throwError()
                     }
                 }

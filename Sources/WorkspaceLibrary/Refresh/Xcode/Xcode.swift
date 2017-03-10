@@ -16,9 +16,37 @@ import SDGLogic
 
 struct Xcode {
 
+    static var projectFilename: String {
+        return Configuration.defaultPackageName + ".xcodeproj"
+    }
+
+    static var applicationProductName: String {
+        return Configuration.moduleName
+    }
+
+    static var applicationExecutableName: String {
+        return applicationProductName
+    }
+
+    static var defaultXcodeSchemeName: String {
+        return Configuration.packageName
+    }
+
+    static var defaultPrimaryTargetName: String {
+        if Configuration.projectType == .executable {
+            return Configuration.executableLibraryName(forProjectName: Configuration.projectName)
+        } else {
+            return Configuration.moduleName(forProjectName: Configuration.projectName)
+        }
+    }
+
+    static var defaultTestTargetName: String {
+        return Configuration.testModuleName(forProjectName: Configuration.projectName)
+    }
+
     static func refreshXcodeProjects() {
 
-        let path = RelativePath("\(Configuration.projectName).xcodeproj")
+        let path = RelativePath("\(Xcode.projectFilename)")
         force() { try Repository.delete(path) }
 
         var script = ["swift", "package", "generate\u{2D}xcodeproj", "\u{2D}\u{2D}output", path.string]
@@ -26,6 +54,8 @@ struct Xcode {
             script.append("\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage")
         }
         requireBash(script)
+
+        // Allow dependencies to be found by the executable.
 
         var file = require() { try File(at: path.subfolderOrFile("project.pbxproj")) }
         file.contents.replaceContentsOfEveryPair(of: ("LD_RUNPATH_SEARCH_PATHS = (", ");"), with: join(lines: [
@@ -37,11 +67,89 @@ struct Xcode {
             "@loader_path/../Frameworks"
             ].map({ "\u{22}\($0)\u{22}," })))
 
+        if Configuration.projectType == .application {
+            var project = file.contents
+
+            // Change product type from framework to application.
+
+            let productMarkerSearchString = "productName = \u{22}\(Xcode.applicationProductName)\u{22}"
+            guard let productMarker = project.range(of: productMarkerSearchString),
+                let rangeOfProductType = project.range(of: ".framework", in: productMarker.upperBound ..< project.endIndex)else {
+                    fatalError(message: [
+                        "Cannot find primary product in Xcode project.",
+                        "Expected “.framework” after “\(productMarkerSearchString)”."
+                        ])
+            }
+            project.replaceSubrange(rangeOfProductType, with: ".application")
+
+            // Application bundle name should be .app not .framework.
+
+            project = project.replacingOccurrences(of: "\(Xcode.applicationProductName).framework", with: "\(Xcode.applicationProductName).app")
+
+            // Remove .app from the list of frameworks that tests link against.
+
+            var possibleFrameworksList: Range<String.Index>?
+            var searchLocation = project.startIndex
+            let frameworkPhaseSearchString = "isa = \u{22}PBXFrameworksBuildPhase\u{22}"
+            let fileListTokens = ("files = (", ");")
+            while let frameworkPhase = project.range(of: frameworkPhaseSearchString, in: searchLocation ..< project.endIndex) {
+                searchLocation = frameworkPhase.upperBound
+
+                if let fileList = project.rangeOfContents(of: fileListTokens, in: frameworkPhase.upperBound ..< project.endIndex) {
+                    if let existing = possibleFrameworksList {
+                        if project.distance(from: fileList.lowerBound, to: fileList.upperBound) > project.distance(from: existing.lowerBound, to: existing.upperBound) {
+                            possibleFrameworksList = fileList
+                        }
+                    } else {
+                        possibleFrameworksList = fileList
+                    }
+                }
+            }
+            guard let frameworksList = possibleFrameworksList else {
+                fatalError(message: [
+                    "Cannot find test dependency list in Xcode project.",
+                    "Expected “\(fileListTokens.0)”...“\(fileListTokens.1)” after “\(frameworkPhaseSearchString)”."
+                    ])
+            }
+            var frameworkLines = project.substring(with: frameworksList).linesArray
+            for index in frameworkLines.indices.reversed() {
+                let line = frameworkLines[index]
+                if ¬line.isWhitespace {
+                    frameworkLines.remove(at: index)
+                    break
+                }
+            }
+            project.replaceSubrange(frameworksList, with: join(lines: frameworkLines))
+
+            // Provide test linking information.
+
+            let testMarker = "TARGET_NAME = \u{22}\(Configuration.xcodeTestTarget)\u{22};"
+            let testInfo = [
+                "\u{22}TEST_HOST[sdk=macosx*]\u{22} = \u{22}$(BUILT_PRODUCTS_DIR)/\(Xcode.applicationProductName).app/Contents/MacOS/\(Xcode.applicationExecutableName)\u{22};",
+                "TEST_HOST = \u{22}$(BUILT_PRODUCTS_DIR)/\(Xcode.applicationProductName).app/\(Xcode.applicationExecutableName)\u{22};",
+                "BUNDLE_LOADER = \u{22}$(TEST_HOST)\u{22};"
+            ]
+            project = project.replacingOccurrences(of: testMarker, with: join(lines: [testMarker] + testInfo))
+
+            file.contents = project
+        }
+
         require() { try file.write() }
+
+        if Configuration.projectType == .application {
+
+            // Denote principal class in Info.plist for @NSApplicationMain to work.
+
+            var info = require() { try File(at: path.subfolderOrFile("\(Xcode.applicationProductName)_Info.plist")) }
+
+            info.contents = info.contents.replacingOccurrences(of: "<key>NSPrincipalClass</key>\n  <string></string>", with: "<key>NSPrincipalClass</key>\n  <string>\(Configuration.moduleName).Application</string>")
+
+            require() { try info.write() }
+        }
     }
 
     private static func modifyProject(condition shouldModify: (String) -> Bool, modification modify: (inout File) -> Void) {
-        let path = RelativePath("\(Configuration.projectName).xcodeproj/project.pbxproj")
+        let path = RelativePath("\(Xcode.projectFilename)/project.pbxproj")
 
         do {
             var file = try File(at: path)

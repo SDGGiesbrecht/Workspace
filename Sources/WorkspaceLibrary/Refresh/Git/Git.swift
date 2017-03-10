@@ -94,7 +94,7 @@ struct Git {
 
         // .gitignore
 
-        let gitIgnore = require() { try File(at: RelativePath(".gitignore")) }
+        let gitIgnore = File(possiblyAt: RelativePath(".gitignore"))
 
         var updatedLines: [String] = requiredIgnoreEntries
         if Configuration.manageXcode {

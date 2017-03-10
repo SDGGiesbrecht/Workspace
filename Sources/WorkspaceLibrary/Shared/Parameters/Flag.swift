@@ -32,10 +32,10 @@ enum Flag : String, Comparable, CustomStringConvertible {
 
     // MARK: - Cases
 
-    case executable
+    case type
 
     static let all: [Flag] = [
-        .executable
+        .type
         ].sorted()
 
     static let allNames: [String] = all.map() { $0.name }

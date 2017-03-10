@@ -32,8 +32,9 @@ Workspace can be used for development on [macOS](http://www.apple.com/macos/) an
 
 Workspace can manage:
 
-- Library projects for [macOS](http://www.apple.com/macos/), [Linux](https://www.ubuntu.com), [iOS](http://www.apple.com/ios/), [watchOS](http://www.apple.com/watchos/) and [tvOS](http://www.apple.com/tvos/).
-- Executable projects for [macOS](http://www.apple.com/macos/) and [Linux](https://www.ubuntu.com).
+- [Library](Documentation/Project Types.md) projects for [macOS](http://www.apple.com/macos/), [Linux](https://www.ubuntu.com), [iOS](http://www.apple.com/ios/), [watchOS](http://www.apple.com/watchos/) and [tvOS](http://www.apple.com/tvos/).
+- [Application](Documentation/Project Types.md) projects for [macOS](http://www.apple.com/macos/), [iOS](http://www.apple.com/ios/) and [tvOS](http://www.apple.com/tvos/).
+- [Executable](Documentation/Project Types.md) projects for [macOS](http://www.apple.com/macos/) and [Linux](https://www.ubuntu.com).
 
 A particular project can [configure](Documentation/Operating Systems.md) which operating systems it supports.
 
@@ -106,14 +107,19 @@ If Workspace has never been used on a particular device, follow the above [works
 
 To have Workspace create a new Swift project from scratch, run one of the following commands in an empty folder:
 
-To create a library project:
+To create a [library](Documentation/Project Types.md) project:
 ```shell
 ~/.Workspace/Workspace/.build/release/workspace initialize
 ```
 
-To create an executable project:
+To create an [application](Documentation/Project Types.md) project:
 ```shell
-~/.Workspace/Workspace/.build/release/workspace initialize •executable
+~/.Workspace/Workspace/.build/release/workspace initialize •type application
+```
+
+To create an [executable](Documentation/Project Types.md) project:
+```shell
+~/.Workspace/Workspace/.build/release/workspace initialize •type executable
 ```
 
 When it creates a new project, Workspace will handle many responsibilities by default, behaving in a primarily opt‐out manner. This setting can be [changed](Documentation/Responsibilities.md).

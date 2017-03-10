@@ -24,6 +24,9 @@ protocol Rule {
 
 let rules: [Rule.Type] = [
 
+    // Manual
+    ManualWarning.self,
+
     // Functionality
     CompatibilityCharacters.self,
     AutoindentResilience.self,

@@ -63,6 +63,7 @@ enum Option : String, CustomStringConvertible {
     case projectName = "Project Name"
     case packageName = "Package Name"
     case moduleName = "Module Name"
+    case xcodeSchemeName = "Xcode Scheme Name"
     case primaryXcodeTarget = "Primary Xcode Target"
     case xcodeTestTarget = "Xcode Test Target"
 
@@ -118,6 +119,7 @@ enum Option : String, CustomStringConvertible {
         .projectName,
         .packageName,
         .moduleName,
+        .xcodeSchemeName,
         .primaryXcodeTarget,
         .xcodeTestTarget,
 
@@ -203,6 +205,8 @@ enum Option : String, CustomStringConvertible {
             return Configuration.defaultPackageName
         case .moduleName:
             return Configuration.defaultModuleName
+        case .xcodeSchemeName:
+            return Xcode.defaultXcodeSchemeName
         case .primaryXcodeTarget:
             return Xcode.defaultPrimaryTargetName
         case .xcodeTestTarget:

@@ -28,6 +28,10 @@ struct Xcode {
         return applicationProductName
     }
 
+    static var defaultXcodeSchemeName: String {
+        return Configuration.packageName
+    }
+
     static var defaultPrimaryTargetName: String {
         if Configuration.projectType == .executable {
             return Configuration.executableLibraryName(forProjectName: Configuration.projectName)

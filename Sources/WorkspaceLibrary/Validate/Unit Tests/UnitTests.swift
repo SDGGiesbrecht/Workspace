@@ -153,7 +153,7 @@ struct UnitTests {
             func generateScript(buildOnly: Bool) -> [String] {
                 return [
                     "xcodebuild", (buildOnly ? "build" : "test"),
-                    "\u{2D}scheme", Configuration.primaryXcodeScheme,
+                    "\u{2D}scheme", Configuration.xcodeSchemeName,
                     flag, flagValue
                 ]
             }

@@ -65,6 +65,7 @@ struct WorkaroundReminder : Warning {
                             }
 
                             if let currentVersion = Version(currentVersionString) {
+                                print(currentVersion)
 
                                 dependencyList?[dependency] = currentVersion // Cache shell result
 

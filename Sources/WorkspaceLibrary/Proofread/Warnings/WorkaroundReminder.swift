@@ -52,7 +52,7 @@ struct WorkaroundReminder : Warning {
 
                             let versionCharacters = CharacterSet(charactersIn: "0123456789.")
                             while let first = currentVersionString.unicodeScalars.first,
-                                versionCharacters.contains(first) {
+                                ¬versionCharacters.contains(first) {
                                 currentVersionString.unicodeScalars.removeFirst()
                             }
 

@@ -62,11 +62,11 @@ let sdgRules: [Rule.Type] = rules + [
 
 extension Rule {
 
-    static func errorNotice(status: inout Bool, file: File, range: Range<String.Index>, replacement: String?, message: String) {
+    static func errorNotice(status: inout Bool, file: File, range: Range<String.Index>, replacement: String?, message: String, noticeOnly: Bool = false) {
         errorNotice(status: &status, file: file, range: range.lowerBound.samePosition(in: file.contents.unicodeScalars) ..< range.upperBound.samePosition(in: file.contents.unicodeScalars), replacement: replacement, message: message)
     }
 
-    static func errorNotice(status: inout Bool, file: File, range scalarRange: Range<String.UnicodeScalarView.Index>, replacement scalarReplacement: String?, message: String) {
+    static func errorNotice(status: inout Bool, file: File, range scalarRange: Range<String.UnicodeScalarView.Index>, replacement scalarReplacement: String?, message: String, noticeOnly: Bool = false) {
 
         // Scalars vs Clusters
         let clusterStart = scalarRange.lowerBound.positionOfExtendedGraphemeCluster(in: file.contents)
@@ -112,9 +112,17 @@ extension Rule {
         }
         output += [""] // Final line break
 
-        status = false
+        if ¬noticeOnly {
+            status = false
+        }
         if Command.current ≠ Command.proofread {
-            print(output, in: OutputColour.red, spaced: true)
+            let colour: OutputColour
+            if noticeOnly {
+                colour = .yellow
+            } else {
+                colour = .red
+            }
+            print(output, in: colour, spaced: true)
         } else {
             let standardError = FileHandle.standardError
             standardError.write(join(lines: output).data(using: String.Encoding.utf8)!)

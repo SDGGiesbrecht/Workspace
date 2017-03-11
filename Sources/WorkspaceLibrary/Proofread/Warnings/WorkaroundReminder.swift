@@ -16,6 +16,7 @@ struct WorkaroundReminder : Warning {
 
     static let name = "Workaround Reminder"
     static let trigger = "Workaround"
+    static let noticeOnly = true
 
     static func message(forDetails details: String) -> String? {
         return details

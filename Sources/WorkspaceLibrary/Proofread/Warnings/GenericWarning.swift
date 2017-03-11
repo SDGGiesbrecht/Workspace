@@ -16,6 +16,7 @@ struct GenericWarning : Warning {
 
     static let name = "Manual Warning"
     static let trigger = "Warning"
+    static let noticeOnly = false
 
     static func message(forDetails details: String) -> String? {
         return details

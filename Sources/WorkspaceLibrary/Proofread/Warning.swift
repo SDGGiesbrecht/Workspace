@@ -15,6 +15,7 @@
 protocol Warning : Rule {
     static var trigger: String { get }
     static func message(forDetails details: String) -> String?
+    static var noticeOnly: Bool { get }
 }
 
 let manualWarnings: [Warning.Type] = [
@@ -48,7 +49,7 @@ extension Warning {
             }
 
             if let message = message(forDetails: details) {
-                errorNotice(status: &status, file: file, range: range, replacement: nil, message: message)
+                errorNotice(status: &status, file: file, range: range, replacement: nil, message: message, noticeOnly: noticeOnly)
             }
         }
     }

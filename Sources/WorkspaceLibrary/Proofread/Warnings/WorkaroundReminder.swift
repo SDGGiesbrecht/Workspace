@@ -40,10 +40,12 @@ struct WorkaroundReminder : Warning {
                     }
 
                     let dependency = parameters.joined(separator: " ")
-                    if dependency == "Swift" {
+                    let swift = "Swift"
+                    if dependency == swift {
                         var newDetails = details
-                        newDetails.replaceSubrange(versionCheckRange, with: "swift \u{2D}\u{2D}version \(problemVersion)")
-                        return message(forDetails: newDetails)
+                        let script = "swift \u{2D}\u{2D}version"
+                        newDetails.replaceSubrange(versionCheckRange, with: "\(script) \(problemVersion)")
+                            return message(forDetails: newDetails)?.replacingOccurrences(of: script, with: swift)
                     }
                     if let currentVersion = dependencies[dependency] {
                         // Package dependency

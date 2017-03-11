@@ -22,10 +22,18 @@ Warnings can be used in any kind of text file—Swift, Markdown, Git Ignore, YAM
 
 Generic warnings are for times when you want to prevent the project from passing validation until you come back to fix something, but you still need the project to build while you are working on it.
 
-The text `[_Warning: `Some description here.`_]` will always trigger a warning during proofreading and cause validation to fail. It will not interrupt Swift or Xcode builds.
+The text...
+
+`[_Warning: `Some description here.`_]`
+
+...will always trigger a warning during [proofreading](Proofreading.md) and cause validation to fail. It will not interrupt Swift or Xcode builds.
 
 ### Workaround Reminder
 
 Workaround reminders are for times when you need to implement a temporary workaround because of a problem in a dependency, and you would like to remind yourself to go back and remove the workaround once the dependency is fixed.
 
-The text `[_Workaround: `Some description here.`_]` will trigger a warning during proofreading, but will still pass validation.
+The text...
+
+`[_Workaround: `Some description here.`_]`
+
+...will trigger a warning during [proofreading](Proofreading.md), but will still pass validation.

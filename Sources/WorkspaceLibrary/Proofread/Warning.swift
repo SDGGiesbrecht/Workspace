@@ -49,6 +49,7 @@ extension Warning {
             }
 
             if let message = message(forDetails: details) {
+                print(noticeOnly)
                 errorNotice(status: &status, file: file, range: range, replacement: nil, message: message, noticeOnly: noticeOnly)
             }
         }

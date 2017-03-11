@@ -53,10 +53,10 @@ The dependency can be specified three different ways.
 
 - Swift itself can be specified with the string “Swift”.
 ```swift
-// [_Workaround: Default implementations for variables cause segmentation faults on Linux. (Swift 3.0.2)_]
+// [_Workaround: There is a problem with Swift. (Swift 3.0.2)_]
 ```
 
 - Arbitrary dependencies can be specified by bash commands that output a version number. Workspace will look for the first group of the characters `0`–`9` and `.` in the command output. Only simple commands are supported; commands cannot contain quotation marks.
 ```swift
-// [_Workaround: Jazzy mangles parameter names containing underscores. (jazzy --version 0.7.4)_]
+// [_Workaround: There is a problem with Git. (git --version 2.10.1)_]
 ```

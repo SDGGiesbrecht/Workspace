@@ -31,23 +31,28 @@ struct WorkaroundReminder : Warning {
             var parameters = versionCheck.components(separatedBy: " ")
             if ¬parameters.isEmpty {
                 let problemVersionString = parameters.removeLast()
-                let dependency = parameters.joined(separator: " ")
                 if let problemVersion = Version(problemVersionString) {
 
                     let dependencies = cachedResult(cache: &dependencyList) {
                         return DependencyGraph.loadDependencyList()
                     }
 
-                    print(dependency)
-                    if let currentVersion = dependencies[dependency] {
+                    if let currentVersion = dependencies[parameters.joined(separator: " ")] {
                         // Package dependency
-                        print("\(currentVersion) ≤? \(problemVersion)")
+
                         if currentVersion ≤ problemVersion {
-                            // [_Workaround: This is a test. (SDGLogic 1.1.0)_]
                             return nil
                         }
                     } else {
                         // Not a package dependency
+
+                        if let currentVersionString = bash(parameters).output,
+                            let currentVersion = Version(currentVersionString) {
+
+                            if currentVersion ≤ problemVersion {
+                                return nil
+                            }
+                        }
                     }
                 }
             }

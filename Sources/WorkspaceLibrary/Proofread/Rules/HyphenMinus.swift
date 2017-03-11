@@ -49,7 +49,8 @@ struct HyphenMinus : Rule {
                                 ∧ ¬file.contents.substring(to: range.lowerBound).hasSuffix("/// ")
                                 ∧ ¬file.contents.substring(to: range.lowerBound).hasSuffix("///     ")
                                 ∧ ¬line.contains("let ln2")
-                                ∧ ¬line.contains("Swift.SignedNumber") {
+                                ∧ ¬line.contains("Swift.SignedNumber")
+                                ∧ ¬line.contains("jazzy \u{2D}\u{2D}") {
                                 throwError()
                             }
 

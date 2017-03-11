@@ -58,7 +58,7 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
     // SwiftLint
 
     if Environment.operatingSystem == .macOS {
-        // [_Workaround: SwiftLint fails to build with the Swift Package Manager. Using homebrew instead. (SwiftLint 0.16.1)_]
+        // [_Workaround: SwiftLint fails to build with the Swift Package Manager. Using homebrew instead. (swiftlint version 0.16.1)_]
 
         let swiftLintConfigurationPath = RelativePath(".swiftlint.yml")
         var manualSwiftLintConfiguration = false

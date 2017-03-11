@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 protocol Warning : Rule {
     static var trigger: String { get }
     static func message(forDetails details: String) -> String?
@@ -26,6 +28,10 @@ let manualWarnings: [Warning.Type] = [
 extension Warning {
 
     static func check(file: File, status: inout Bool) {
+
+        if Configuration.projectName == "Workspace" ∧ Repository.relative(file.path) == RelativePath("Documentation/Manual Warnings.md") {
+            return
+        }
 
         let marker = ("[_\(trigger)", "_]")
 

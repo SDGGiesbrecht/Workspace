@@ -38,7 +38,7 @@ struct WorkaroundReminder : Warning {
                     let dependencies = cachedResult(cache: &dependencyList) {
                         return DependencyGraph.loadDependencyList()
                     }
-                    
+
                     let dependency = parameters.joined(separator: " ")
                     if dependency == "Swift" {
                         return message(forDetails: "swift \u{2D}\u{2D} \(problemVersion)")

@@ -27,7 +27,7 @@ extension Warning {
 
     static func check(file: File, status: inout Bool) {
 
-        let marker = ("[\u{5F}\(trigger)", "_]")
+        let marker = ("[_\(trigger)", "_]")
 
         var index = file.contents.startIndex
         while let range = file.contents.range(of: marker, in: index ..< file.contents.endIndex) {

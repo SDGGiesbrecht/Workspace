@@ -112,6 +112,7 @@ extension Rule {
         }
         output += [""] // Final line break
 
+        print(noticeOnly)
         if ¬noticeOnly {
             status = false
         }

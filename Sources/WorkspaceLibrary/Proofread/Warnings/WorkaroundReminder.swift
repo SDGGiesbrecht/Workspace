@@ -26,7 +26,7 @@ struct WorkaroundReminder : Warning {
     static var dependencyList: [String: Version]?
 
     static func message(forDetails details: String) -> String? {
-        if let versionCheckRange = details.range(of: ("(", ")")) {
+        if let versionCheckRange = details.rangeOfContents(of: ("(", ")")) {
             let versionCheck = details.substring(with: versionCheckRange)
             var parameters = versionCheck.components(separatedBy: " ")
             if ¬parameters.isEmpty {

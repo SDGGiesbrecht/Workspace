@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGCaching
 
 import SDGLogic
@@ -46,11 +48,19 @@ struct WorkaroundReminder : Warning {
                     } else {
                         // Not a package dependency
 
-                        if let currentVersionString = bash(parameters).output,
-                            let currentVersion = Version(currentVersionString) {
+                        if var currentVersionString = bash(parameters).output {
 
-                            if currentVersion ≤ problemVersion {
-                                return nil
+                            let versionCharacters = CharacterSet(charactersIn: "0123456789.")
+                            while let first = currentVersionString.unicodeScalars.first,
+                                versionCharacters.contains(first) {
+                                currentVersionString.unicodeScalars.removeFirst()
+                            }
+
+                            if let currentVersion = Version(currentVersionString) {
+
+                                if currentVersion ≤ problemVersion {
+                                    return nil
+                                }
                             }
                         }
                     }

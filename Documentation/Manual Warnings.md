@@ -38,23 +38,25 @@ The text...
 
 ...will trigger a warning during [proofreading](Proofreading.md), but will still pass validation.
 
+### Version Detection
+
 Optionally, a workaround reminder can specify the dependency and version were the problem exists. Then Workspace will ignore it until the problematic version is out of date.
 
 `[_Workaround: `Some description here.` (`Dependency` `0.0.0`)_]`
 
 The dependency can be specified three different ways.
 
-1. Package dependencies can be specified using the exact name of the package.
+- Package dependencies can be specified using the exact name of the package.
 ```swift
 // [_Workaround: There is a problem in MyLibrary. (MyLibrary 1.0.0)_]
 ```
 
-2. Swift itself can be specified with the string “Swift”.
+- Swift itself can be specified with the string “Swift”.
 ```swift
 // [_Workaround: Default implementations for variables cause segmentation faults on Linux. (Swift 3.0.2)_]
 ```
 
-3. Arbitrary dependencies can be specified by bash commands that output a version number. Workspace will look for the first group of the characters 0–9 and “.” in the command output. Only simple commands are supported; commands cannot contain quotation marks.
+- Arbitrary dependencies can be specified by bash commands that output a version number. Workspace will look for the first group of the characters `0`–`9` and `.` in the command output. Only simple commands are supported; commands cannot contain quotation marks.
 ```swift
 // [_Workaround: Jazzy mangles parameter names containing underscores. (jazzy --version 0.7.4)_]
 ```

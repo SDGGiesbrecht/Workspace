@@ -37,10 +37,11 @@ struct WorkaroundReminder : Warning {
                     let dependencies = cachedResult(cache: &dependencyList) {
                         return DependencyGraph.loadDependencyList()
                     }
-                    print(dependencies)
 
+                    print(dependency)
                     if let currentVersion = dependencies[dependency] {
                         // Package dependency
+                        print("\(currentVersion) ≤? \(problemVersion)")
                         if currentVersion ≤ problemVersion {
                             // [_Workaround: This is a test. (SDGLogic 1.1.0)_]
                             return nil

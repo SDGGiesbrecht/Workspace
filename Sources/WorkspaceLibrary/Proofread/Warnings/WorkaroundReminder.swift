@@ -63,10 +63,11 @@ struct WorkaroundReminder : Warning {
                                 ¬versionCharacters.contains(first) {
                                 currentVersionString.unicodeScalars.removeFirst()
                             }
+                            var end = currentVersionString.startIndex
+                            currentVersionString.advance(&end, past: versionCharacters)
+                            currentVersionString = currentVersionString.substring(to: end)
 
                             if let currentVersion = Version(currentVersionString) {
-                                print(currentVersionString)
-                                print(currentVersion)
 
                                 dependencyList?[dependency] = currentVersion // Cache shell result
 

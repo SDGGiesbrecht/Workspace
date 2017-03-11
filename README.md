@@ -43,7 +43,7 @@ A particular project can [configure](Documentation/Operating Systems.md) which o
 - Set [new projects](#new-projects) up from scratch.
 - Be [configured](Documentation/Configuring Workspace.md) to opt in or out of any of the following features.
 - Have its configuration [shared](Documentation/Configuring Workspace.md#sharing-configurations-between-projects) between projects.
-- Automatically
+- Automatically...
     - Keep [licence notices](Documentation/Licence.md) uniform.
     - Keep [contributing instructions](Documentation/Contributing Instructions.md) uniform, including issue and pull request templates.
     - Generate and maintain a local [Xcode project](Documentation/Xcode.md) (except on Linux).
@@ -101,7 +101,14 @@ When it finishes, it prints a summary of which tests passed and which tests fail
 
 ## Set‐Up
 
-If Workspace has never been used on a particular device, follow the above [worksflow steps](#the-workspace-workflow) first to cause Workspace to install itself.
+For the following set‐up commands to work, the device needs to have run `Refresh Workspace` at least once already.
+
+This script can be used to do trigger it:
+```shell
+git clone https://github.com/SDGGiesbrecht/Workspace
+Workspace/Refresh\ \Workspace\ \(macOS\).command
+rm -rf Workspace
+```
 
 ### New Projects
 

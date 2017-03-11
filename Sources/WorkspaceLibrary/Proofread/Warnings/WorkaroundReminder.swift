@@ -41,7 +41,9 @@ struct WorkaroundReminder : Warning {
 
                     let dependency = parameters.joined(separator: " ")
                     if dependency == "Swift" {
-                        return message(forDetails: "swift \u{2D}\u{2D}version \(problemVersion)")
+                        var newDetails = details
+                        newDetails.replaceSubrange(versionCheckRange, with: "swift \u{2D}\u{2D}version \(problemVersion)")
+                        return message(forDetails: newDetails)
                     }
                     if let currentVersion = dependencies[dependency] {
                         // Package dependency

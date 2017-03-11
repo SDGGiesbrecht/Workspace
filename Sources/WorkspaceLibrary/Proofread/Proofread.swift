@@ -38,12 +38,13 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
 
         if let _ = file.fileType {
 
-            let ruleSet: [Rule.Type]
+            var ruleSet: [Rule.Type]
             if Configuration.sdg {
                 ruleSet = sdgRules
             } else {
                 ruleSet = rules
             }
+            ruleSet += manualWarnings as [Rule.Type]
 
             for rule in ruleSet {
                 if ¬Configuration.disableProofreadingRules.contains(rule.name) {

@@ -103,7 +103,7 @@ When it finishes, it prints a summary of which tests passed and which tests fail
 
 For the following set‐up commands to work, the device needs to have run `Refresh Workspace` at least once already.
 
-This script can be used to do trigger it:
+This script can be used to trigger `Refresh Workspace`:
 ```shell
 git clone https://github.com/SDGGiesbrecht/Workspace
 Workspace/Refresh\ \Workspace\ \(macOS\).command

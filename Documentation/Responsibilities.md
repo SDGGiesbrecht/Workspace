@@ -18,13 +18,13 @@ Workspace can automatically take on new responsibilities as new features become 
 
 This setting is controlled in the [configuration](Configuring Workspace.md) file:
 
-```
+```text
 Automatically Take On New Responsibilities: True
 ```
 
 or
 
-```
+```text
 Automatically Take On New Responsibilities: False
 ```
 

@@ -34,7 +34,7 @@ There are several dynamic elements available for the file header template. Dynam
 
 For example:
 
-```
+```text
 [_Begin File Header_]
 [_Filename_]
 

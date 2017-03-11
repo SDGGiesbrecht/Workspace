@@ -63,7 +63,7 @@ A particular project can [configure](Documentation/Operating Systems.md) which o
 
 Workspace hides as much as it can from Git, so when a project using Workspace is pulled, pushed, or cloned...
 
-```
+```shell
 git clone https://github.com/SDGGiesbrecht/Workspace
 ```
 

@@ -63,7 +63,7 @@ let sdgRules: [Rule.Type] = rules + [
 extension Rule {
 
     static func errorNotice(status: inout Bool, file: File, range: Range<String.Index>, replacement: String?, message: String, noticeOnly: Bool = false) {
-        errorNotice(status: &status, file: file, range: range.lowerBound.samePosition(in: file.contents.unicodeScalars) ..< range.upperBound.samePosition(in: file.contents.unicodeScalars), replacement: replacement, message: message)
+        errorNotice(status: &status, file: file, range: range.lowerBound.samePosition(in: file.contents.unicodeScalars) ..< range.upperBound.samePosition(in: file.contents.unicodeScalars), replacement: replacement, message: message, noticeOnly: noticeOnly)
     }
 
     static func errorNotice(status: inout Bool, file: File, range scalarRange: Range<String.UnicodeScalarView.Index>, replacement scalarReplacement: String?, message: String, noticeOnly: Bool = false) {
@@ -112,7 +112,6 @@ extension Rule {
         }
         output += [""] // Final line break
 
-        print(noticeOnly)
         if ¬noticeOnly {
             status = false
         }

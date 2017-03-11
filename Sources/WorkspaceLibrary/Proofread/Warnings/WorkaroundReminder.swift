@@ -37,6 +37,7 @@ struct WorkaroundReminder : Warning {
                     let dependencies = cachedResult(cache: &dependencyList) {
                         return DependencyGraph.loadDependencyList()
                     }
+                    print(dependencies)
 
                     if let currentVersion = dependencies[dependency] {
                         // Package dependency
@@ -50,6 +51,6 @@ struct WorkaroundReminder : Warning {
                 }
             }
         }
-        return details
+        return "Workaround: " + details
     }
 }

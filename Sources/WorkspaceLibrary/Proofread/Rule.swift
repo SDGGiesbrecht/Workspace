@@ -31,6 +31,7 @@ let rules: [Rule.Type] = [
 
     // Documentation
     DocumentationOfExtensionContstraints.self,
+    SyntaxColouring.self,
 
     // Style
     ColonSpacing.self,

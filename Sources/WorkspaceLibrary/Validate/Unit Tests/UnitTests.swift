@@ -261,7 +261,7 @@ struct UnitTests {
                                 "[_Exempt from Code Coverage_]",
                                 "assert",
                                 "precondition"
-                            ]
+                            ] + Configuration.codeCoverageExemptionTokensForSameLine
                             var noUntestableTokens = true
                             for token in untestableTokensOnPreviousLine {
                                 if sourceLine.contains(token) {
@@ -285,7 +285,7 @@ struct UnitTests {
                                 "assertionFailure",
                                 "preconditionFailure",
                                 "fatalError"
-                            ]
+                            ] + Configuration.codeCoverageExemptionTokensForPreviousLine
                             if noUntestableTokens {
                                 for token in untestableTokensOnFollowingLine {
                                     if nextLine.contains(token) {

@@ -545,6 +545,12 @@ struct Configuration {
     static var enforceCodeCoverage: Bool {
         return booleanValue(option: .enforceCodeCoverage)
     }
+    static var codeCoverageExemptionTokensForSameLine: [String] {
+        return listValue(option: .codeCoverageExemptionTokensForSameLine)
+    }
+    static var codeCoverageExemptionTokensForPreviousLine: [String] {
+        return listValue(option: .codeCoverageExemptionTokensForPreviousLine)
+    }
 
     static var generateDocumentation: Bool {
         return booleanValue(option: .generateDocumentation)

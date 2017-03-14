@@ -58,6 +58,8 @@ enum Option : String, CustomStringConvertible {
     case disallowBuildWarnings = "Disallow Build Warnings"
 
     case enforceCodeCoverage = "Enforce Code Coverage"
+    case codeCoverageExemptionTokensForSameLine = "Code Coverage Exemption Tokens for the Same Line"
+    case codeCoverageExemptionTokensForPreviousLine = "Code Coverage Exemption Tokens for the Previous Line"
 
     case generateDocumentation = "Generate Documentation"
     case documentationCopyright = "Documentation Copyright"
@@ -118,6 +120,8 @@ enum Option : String, CustomStringConvertible {
         .disallowBuildWarnings,
 
         .enforceCodeCoverage,
+        .codeCoverageExemptionTokensForSameLine,
+        .codeCoverageExemptionTokensForPreviousLine,
 
         .generateDocumentation,
         .documentationCopyright,
@@ -204,6 +208,10 @@ enum Option : String, CustomStringConvertible {
 
         case .enforceCodeCoverage:
             return Configuration.trueOptionValue
+        case .codeCoverageExemptionTokensForSameLine:
+            return Configuration.emptyListOptionValue
+        case .codeCoverageExemptionTokensForPreviousLine:
+            return Configuration.emptyListOptionValue
 
         case .generateDocumentation:
             return Configuration.falseOptionValue

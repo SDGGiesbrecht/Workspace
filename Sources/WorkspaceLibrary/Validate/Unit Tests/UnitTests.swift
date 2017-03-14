@@ -215,8 +215,18 @@ struct UnitTests {
                 let relativeExecutableLocation = Xcode.primaryProductName + "." + executableLocationSuffix
                 let executableLocation = coverageDirectory + "Products/Debug/" + relativeExecutableLocation
 
-                print(coverageData)
-                print(executableLocation)
+                if let coverageResults = bash([
+                    "xcrun", "llvm\u{2D}cov", "show", "\u{2D}show\u{2D}regions",
+                    "\u{2D}instr\u{2D}profile", coverageData,
+                    executableLocation
+                    ], silent: true).output {
+
+                    print(coverageResults)
+
+                } else {
+                    // Code coverage data unavailable.
+                    individualFailure("Tests generate no code coverage information.")
+                }
             }
         }
 

@@ -55,6 +55,10 @@ enum Option : String, CustomStringConvertible {
 
     case disableProofreadingRules = "Disable Proofreading Rules"
 
+    case disallowBuildWarnings = "Disallow Build Warnings"
+
+    case enforceCodeCoverage = "Enforce Code Coverage"
+
     case generateDocumentation = "Generate Documentation"
     case documentationCopyright = "Documentation Copyright"
 
@@ -110,6 +114,10 @@ enum Option : String, CustomStringConvertible {
         .author,
 
         .disableProofreadingRules,
+
+        .disallowBuildWarnings,
+
+        .enforceCodeCoverage,
 
         .generateDocumentation,
         .documentationCopyright,
@@ -190,6 +198,12 @@ enum Option : String, CustomStringConvertible {
 
         case .disableProofreadingRules:
             return Configuration.emptyListOptionValue
+
+        case .disallowBuildWarnings:
+            return Configuration.trueOptionValue
+
+        case .enforceCodeCoverage:
+            return Configuration.trueOptionValue
 
         case .generateDocumentation:
             return Configuration.falseOptionValue

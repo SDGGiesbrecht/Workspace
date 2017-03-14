@@ -40,17 +40,19 @@ struct UnitTests {
             let result = bash(script)
 
             if result.succeeded {
-                if let log = result.output {
-                    if ¬log.contains(" warning: ") {
-                        individualSuccess("There are no build warnings for \(operatingSystemName).")
+                if Configuration.disallowBuildWarnings {
+                    if let log = result.output {
+                        if ¬log.contains(" warning: ") {
+                            individualSuccess("There are no build warnings for \(operatingSystemName).")
+                        } else {
+                            individualFailure("There are build warnings for \(operatingSystemName). (See above for details.)")
+                        }
                     } else {
-                        individualFailure("There are build warnings for \(operatingSystemName). (See above for details.)")
+                        fatalError(message: [
+                            "No build log detected.",
+                            "This may indicate a bug in Workspace."
+                            ])
                     }
-                } else {
-                    fatalError(message: [
-                        "No build log detected.",
-                        "This may indicate a bug in Workspace."
-                        ])
                 }
             }
 
@@ -176,7 +178,7 @@ struct UnitTests {
             let script = generateScript(buildOnly: buildOnly)
             runUnitTests(buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: script)
 
-            if ¬buildOnly ∧ true/* Code Coverage */ {
+            if ¬buildOnly ∧ Configuration.enforceCodeCoverage {
 
                 // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
                 printHeader(["Checking code coverage on \(operatingSystemName)..."])
@@ -321,7 +323,7 @@ struct UnitTests {
 
             // macOS
 
-            if true/* Code Coverage */ {
+            if Configuration.enforceCodeCoverage {
                 runUnitTestsInXcode(buildOnly: false, operatingSystem: .macOS, sdk: "macosx", deviceKey: nil)
             } else {
                 runUnitTestsInSwiftPackageManager(operatingSystemName: "macOS")

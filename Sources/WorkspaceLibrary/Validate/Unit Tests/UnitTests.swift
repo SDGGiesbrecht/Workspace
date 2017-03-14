@@ -225,6 +225,8 @@ struct UnitTests {
                     executableLocation
                     ], silent: true).output {
 
+                    let nullCharacters = CharacterSet.whitespacesAndNewlines.union(CharacterSet.decimalDigits.union(CharacterSet(charactersIn: "|")))
+
                     var overallCoverageSuccess = true
                     var overallIndex = coverageResults.startIndex
                     let fileMarker = ".swift:"
@@ -265,11 +267,11 @@ struct UnitTests {
                                 }
                             }
 
-                            let next = coverageResults.index(before: errorLineRange.upperBound)
+                            let next = coverageResults.index(after: errorLineRange.upperBound)
                             let nextLineRange = coverageResults.lineRange(for: next ..< next)
                             let nextLine = coverageResults.substring(with: nextLineRange)
                             var sourceLines = sourceLine + nextLine
-                            sourceLines.unicodeScalars = String.UnicodeScalarView(sourceLines.unicodeScalars.filter({ ¬CharacterSet.whitespacesAndNewlines.contains($0) }))
+                            sourceLines.unicodeScalars = String.UnicodeScalarView(sourceLines.unicodeScalars.filter({ ¬nullCharacters.contains($0) }))
                             print(sourceLines)
                             var isExecutable = true
                             if sourceLines == "}}" {

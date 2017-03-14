@@ -255,12 +255,12 @@ struct UnitTests {
                             let sourceLineRange = coverageResults.lineRange(for: previous ..< previous)
                             let sourceLine = coverageResults.substring(with: sourceLineRange)
 
-                            let untestableTokens = [
+                            let untestableTokensOnPreviousLine = [
                                 "assert",
                                 "precondition"
                             ]
                             var noUntestableTokens = true
-                            for token in untestableTokens {
+                            for token in untestableTokensOnPreviousLine {
                                 if sourceLine.contains(token) {
                                     noUntestableTokens = false
                                     break
@@ -272,10 +272,24 @@ struct UnitTests {
                             let nextLine = coverageResults.substring(with: nextLineRange)
                             var sourceLines = sourceLine + nextLine
                             sourceLines.unicodeScalars = String.UnicodeScalarView(sourceLines.unicodeScalars.filter({ ¬nullCharacters.contains($0) }))
-                            print(sourceLines)
+
                             var isExecutable = true
                             if sourceLines == "}}" {
                                 isExecutable = false
+                            }
+
+                            let untestableTokensOnFollowingLine = [
+                                "assertionFailure",
+                                "preconditionFailure",
+                                "fatalError"
+                            ]
+                            if noUntestableTokens {
+                                for token in untestableTokensOnFollowingLine {
+                                    if nextLine.contains(token) {
+                                        noUntestableTokens = false
+                                        break
+                                    }
+                                }
                             }
 
                             if noUntestableTokens ∧ isExecutable {

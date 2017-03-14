@@ -205,15 +205,25 @@ func runInitialize(andExit shouldExit: Bool) {
         "    func testExample() {",
         "        XCTAssert(sayHello() == \u{22}Hello, world!\u{22})",
         "    }",
-        "",
-        "    func testCommand() {",
-        "        run()",
-        "    }",
-        "",
+        ""
+        ]
+    if packageType == .executable {
+        tests += [
+            "    func testCommand() {",
+            "        \(executableLibraryName).run()",
+            "    }",
+            ""
+        ]
+    }
+    tests += [
         "    static var allTests: [(String, (\(testsName)) -> () throws -> Void)] {",
         "        return [",
-        "            (\u{22}testExample\u{22}, testExample),",
-        "            (\u{22}testCommand\u{22}, testCommand)",
+        "            (\u{22}testExample\u{22}, testExample),"
+        ]
+    if packageType == .executable {
+        tests += ["            (\u{22}testCommand\u{22}, testCommand)"]
+    }
+    tests += [
         "        ]",
         "    }",
         "}"

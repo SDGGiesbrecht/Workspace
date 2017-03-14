@@ -212,7 +212,7 @@ func runInitialize(andExit shouldExit: Bool) {
         "",
         "    static var allTests: [(String, (\(testsName)) -> () throws -> Void)] {",
         "        return [",
-        "            (\u{22}testExample\u{22}, testExample)",
+        "            (\u{22}testExample\u{22}, testExample),",
         "            (\u{22}testCommand\u{22}, testCommand)",
         "        ]",
         "    }",

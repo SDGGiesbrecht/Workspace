@@ -270,6 +270,7 @@ struct UnitTests {
                             let nextLine = coverageResults.substring(with: nextLineRange)
                             var sourceLines = sourceLine + nextLine
                             sourceLines.unicodeScalars = String.UnicodeScalarView(sourceLines.unicodeScalars.filter({ ¬CharacterSet.whitespacesAndNewlines.contains($0) }))
+                            print(sourceLines)
                             var isExecutable = true
                             if sourceLines == "}}" {
                                 isExecutable = false

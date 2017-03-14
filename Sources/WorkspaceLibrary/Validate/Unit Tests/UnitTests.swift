@@ -42,9 +42,9 @@ struct UnitTests {
             if result.succeeded {
                 if let log = result.output {
                     if ¬log.contains(" warning: ") {
-                        individualSuccess("Build triggers no warnings for \(operatingSystemName).")
+                        individualSuccess("There are no build warnings for \(operatingSystemName).")
                     } else {
-                        individualFailure("Build triggers warnings for \(operatingSystemName). (See above for details.)")
+                        individualFailure("There are build warnings for \(operatingSystemName). (See above for details.)")
                     }
                 } else {
                     fatalError(message: [
@@ -179,7 +179,7 @@ struct UnitTests {
             if ¬buildOnly ∧ true/* Code Coverage */ {
 
                 // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-                printHeader(["Validating code coverage for \(operatingSystemName)..."])
+                printHeader(["Checking code coverage on \(operatingSystemName)..."])
                 // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
                 guard let settings = bash(script + ["\u{2D}showBuildSettings"], silent: true).output else {

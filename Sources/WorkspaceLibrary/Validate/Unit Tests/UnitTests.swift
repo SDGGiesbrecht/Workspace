@@ -37,12 +37,29 @@ struct UnitTests {
 
         func runUnitTests(buildOnly: Bool, operatingSystemName: String, script: [String]) {
 
-            if bash(script).succeeded {
+            let result = bash(script)
+
+            if result.succeeded {
                 let phrase = buildOnly ? "Build succeeds for" : "Unit tests succeed on"
                 individualSuccess("\(phrase) \(operatingSystemName).")
             } else {
                 let phrase = buildOnly ? "Build fails for" : "Unit tests fail on"
                 individualFailure("\(phrase) \(operatingSystemName). (See above for details.)")
+            }
+
+            if result.succeeded {
+                if let log = result.output {
+                    if ¬log.contains(" warning: ") {
+                        individualSuccess("Build triggers no warnings for \(operatingSystemName).")
+                    } else {
+                        individualFailure("Build triggers warnings for \(operatingSystemName). (See above for details.)")
+                    }
+                } else {
+                    fatalError(message: [
+                        "No build log detected.",
+                        "This may indicate a bug in Workspace."
+                        ])
+                }
             }
         }
 

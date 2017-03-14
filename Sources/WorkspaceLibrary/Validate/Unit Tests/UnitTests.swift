@@ -82,7 +82,7 @@ struct UnitTests {
 
             let flag: String
             let flagValue: String
-            if buildOnly ∧ operatingSystem == .macOS {
+            if buildOnly ∨ operatingSystem == .macOS {
                 flag = "\u{2D}sdk"
                 flagValue = sdk
             } else {

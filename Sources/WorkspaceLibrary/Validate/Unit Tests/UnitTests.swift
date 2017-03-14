@@ -265,7 +265,17 @@ struct UnitTests {
                                 }
                             }
 
-                            if noUntestableTokens {
+                            let next = coverageResults.index(before: errorLineRange.upperBound)
+                            let nextLineRange = coverageResults.lineRange(for: next ..< next)
+                            let nextLine = coverageResults.substring(with: nextLineRange)
+                            var sourceLines = sourceLine + nextLine
+                            sourceLines.unicodeScalars = String.UnicodeScalarView(sourceLines.unicodeScalars.filter({ ¬CharacterSet.whitespacesAndNewlines.contains($0) }))
+                            var isExecutable = true
+                            if sourceLines == "}}" {
+                                isExecutable = false
+                            }
+
+                            if noUntestableTokens ∧ isExecutable {
                                 overallCoverageSuccess = false
                                 print([
                                     file

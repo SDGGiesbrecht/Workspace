@@ -38,12 +38,13 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
 
         if let _ = file.fileType {
 
-            let ruleSet: [Rule.Type]
+            var ruleSet: [Rule.Type]
             if Configuration.sdg {
                 ruleSet = sdgRules
             } else {
                 ruleSet = rules
             }
+            ruleSet += manualWarnings as [Rule.Type]
 
             for rule in ruleSet {
                 if ¬Configuration.disableProofreadingRules.contains(rule.name) {
@@ -57,7 +58,7 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
     // SwiftLint
 
     if Environment.operatingSystem == .macOS {
-        // [_Workaround: SwiftLint fails to build with the Swift Package Manager. Using homebrew instead. (SwiftLint 0.16.1)_]
+        // [_Workaround: SwiftLint fails to build with the Swift Package Manager. Using homebrew instead. (swiftlint version 0.16.1)_]
 
         let swiftLintConfigurationPath = RelativePath(".swiftlint.yml")
         var manualSwiftLintConfiguration = false

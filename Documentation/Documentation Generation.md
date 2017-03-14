@@ -37,11 +37,11 @@ The copyright notice can be further customized by defining a template with the `
 There are several dynamic elements available for the file header template. Dynamic elements can be used by placing the element’s key inside `[_` and `_]` at the desired location.
 
 For example:
-```
+```text
 Documentation Copyright: Copyright [_Copyright_] [_Author_].
 ```
 becomes:
-```
+```text
 Copyright ©2016–2017 John Doe.
 ```
 

@@ -18,7 +18,7 @@ Workspace can be configured by placing a text file called `.Workspace Configurat
 
 The basic syntax is as follows:
 
-```
+```text
 Option A: Simple Value
 
 [_Begin Option B_]
@@ -40,7 +40,7 @@ An option may be specified more than once, in which case the last instance overr
 
 A configuration file can import options from another repository:
 
-```
+```text
 [_Import https://github.com/user/repository_]
 ```
 

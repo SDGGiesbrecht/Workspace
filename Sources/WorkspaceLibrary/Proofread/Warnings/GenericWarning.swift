@@ -1,5 +1,5 @@
-<!--
- Operating Systems.md
+/*
+ GenericWarning.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace
@@ -10,20 +10,15 @@
 
  Licensed under the Apache Licence, Version 2.0.
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
- -->
+ */
 
-# Operating Systems
+struct GenericWarning : Warning {
 
-By default, Workspace assumes projects support all available operating systems:
+    static let name = "Manual Warning"
+    static let trigger = "Warning"
+    static let noticeOnly = false
 
-- `macOS`
-- `Linux`
-- `iOS`
-- `watchOS`
-- `tvOS`
-
-Any of these can be disabled by adding the corresponding option to the [configuration file](Configuring Workspace.md):
-
-```text
-Support Linux: False
-```
+    static func message(forDetails details: String) -> String? {
+        return details
+    }
+}

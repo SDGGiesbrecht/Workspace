@@ -20,8 +20,9 @@ struct DocumentationOfExtensionContstraints : Rule {
 
     static func check(file: File, status: inout Bool) {
 
-        if file.fileType == .swift {var index = file.contents.startIndex
+        if file.fileType == .swift {
 
+            var index = file.contents.startIndex
             while let range = file.contents.range(of: "extension ", in: index ..< file.contents.endIndex) {
                 index = range.upperBound
 

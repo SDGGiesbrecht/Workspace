@@ -43,13 +43,14 @@ A particular project can [configure](Documentation/Operating Systems.md) which o
 - Set [new projects](#new-projects) up from scratch.
 - Be [configured](Documentation/Configuring Workspace.md) to opt in or out of any of the following features.
 - Have its configuration [shared](Documentation/Configuring Workspace.md#sharing-configurations-between-projects) between projects.
-- Automatically
+- Automatically...
     - Keep [licence notices](Documentation/Licence.md) uniform.
     - Keep [contributing instructions](Documentation/Contributing Instructions.md) uniform, including issue and pull request templates.
     - Generate and maintain a local [Xcode project](Documentation/Xcode.md) (except on Linux).
     - Keep [dependencies and their version restrictions](Documentation/Dependency Graph.md) up to date.
     - Keep [file headers](Documentation/File Headers.md) uniform and up to date.
     - [Proofread](Documentation/Proofreading.md) source files for code style. (Including [SwiftLint](https://github.com/realm/SwiftLint))
+    - Trigger [manual warnings](Documentation/Manual Warnings.md) in source code.
     - Run unit tests on each operating system (except watchOS).
     - Generate API [documentation](Documentation/Documentation Generation.md) (except from Linux). (Using [Jazzy](https://github.com/realm/jazzy))
     - Configure [continuous integration](Documentation/Continuous Integration.md) for each operating system. ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))
@@ -62,7 +63,7 @@ A particular project can [configure](Documentation/Operating Systems.md) which o
 
 Workspace hides as much as it can from Git, so when a project using Workspace is pulled, pushed, or cloned...
 
-```
+```shell
 git clone https://github.com/SDGGiesbrecht/Workspace
 ```
 
@@ -101,7 +102,14 @@ When it finishes, it prints a summary of which tests passed and which tests fail
 
 ## Set‐Up
 
-If Workspace has never been used on a particular device, follow the above [worksflow steps](#the-workspace-workflow) first to cause Workspace to install itself.
+For the following set‐up commands to work, the device needs to have run `Refresh Workspace` at least once already.
+
+This script can be used to trigger `Refresh Workspace`:
+```shell
+git clone https://github.com/SDGGiesbrecht/Workspace
+Workspace/Refresh\ \Workspace\ \(macOS\).command
+rm -rf Workspace
+```
 
 ### New Projects
 

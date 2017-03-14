@@ -20,7 +20,7 @@ For standard file types, please [request that support be added](https://github.c
 
 For non‐standard file types, the warning can be silenced using the [configuration](Configuring Workspace.md) option `Ignore File Types`. Each line is a separate entry:
 
-```
+```text
 [_Begin Ignore File Types_]
 jpg
 mp3

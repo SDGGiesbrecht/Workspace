@@ -14,10 +14,7 @@
 
 struct DependencyGraph {
 
-    static func updateDependencyGraph() {
-
-        requireBash(["swift", "package", "update"])
-
+    static func loadDependencyList() -> [String: Version] {
         let dependencyFiles = Repository.allFiles(at: RelativePath("Packages"))
         var dependencies: [String: Version] = [:]
         for dependecyFile in dependencyFiles {
@@ -55,6 +52,13 @@ struct DependencyGraph {
 
             dependencies[name] = version
         }
+        return dependencies
+    }
+
+    static func updateDependencyGraph() {
+
+        requireBash(["swift", "package", "update"])
+        let dependencies = loadDependencyList()
 
         var packageDescription = require() { try File(at: RelativePath("Package.swift")) }
         var body = packageDescription.body

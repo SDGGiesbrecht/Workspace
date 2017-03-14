@@ -48,7 +48,7 @@ To register the location of `swift` even for new terminal sessions, run the foll
 
 While double‐clicking is usually the most convenient, it can be bypassed by manually running the **macOS equivalent** from a terminal:
 
-```
+```shell
 ./Refresh\ Workspace\ \(macOS\).command
 ```
 

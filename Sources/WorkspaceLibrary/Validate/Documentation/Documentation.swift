@@ -112,7 +112,7 @@ struct Documentation {
                 continuousIntegrationSetUp: [
                     ["gem", "install", "jazzy"]
                 ],
-                // [_Workaround: Jazzy produces symbols from unbuilt #if directives with no documentation. Removing them by skipping undocumented symbols. (Jazzy 0.7.4)_]
+                // [_Workaround: Jazzy produces symbols from unbuilt #if directives with no documentation. Removing them by skipping undocumented symbols. (jazzy --version 0.7.4)_]
                 command: command,
                 updateInstructions: [
                     "Command to install Jazzy:",
@@ -140,7 +140,7 @@ struct Documentation {
         }
 
         if Environment.shouldDoMiscellaneousJobs ∧ Configuration.supportLinux {
-            // [_Workaround: Generate Linux documentation on macOS instead. (Jazzy 0.7.4)_]
+            // [_Workaround: Generate Linux documentation on macOS instead. (jazzy --version 0.7.4)_]
 
             generate(operatingSystemName: "Linux", sdk: "macosx", condition: "LinuxDocs")
         }

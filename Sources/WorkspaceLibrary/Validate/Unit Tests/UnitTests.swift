@@ -173,10 +173,13 @@ struct UnitTests {
             sleep(10)
             let _ = bash(["killall", "xcodebuild"], silent: true)
 
-            runUnitTests(buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: generateScript(buildOnly: buildOnly))
+            let script = generateScript(buildOnly: buildOnly)
+            runUnitTests(buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: script)
 
             if ¬buildOnly {
-
+                if let settings = bash(script + ["\u{2D}showBuildSettings"], silent: true).output {
+                    print(settings)
+                }
             }
         }
 

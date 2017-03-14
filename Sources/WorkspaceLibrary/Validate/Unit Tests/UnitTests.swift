@@ -176,10 +176,45 @@ struct UnitTests {
             let script = generateScript(buildOnly: buildOnly)
             runUnitTests(buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: script)
 
-            if ¬buildOnly {
-                if let settings = bash(script + ["\u{2D}showBuildSettings"], silent: true).output {
-                    print(settings)
+            if ¬buildOnly ∧ true/* Code Coverage */ {
+
+                guard let settings = bash(script + ["\u{2D}showBuildSettings"], silent: true).output else {
+                    fatalError(message: [
+                        "Failed to detect Xcode build settings.",
+                        "This may indicate a bug in Workspace."
+                        ])
                 }
+
+                let buildDirectoryKey = (" BUILD_DIR = ", "\n")
+                guard let buildDirectory = settings.contents(of: buildDirectoryKey) else {
+                    fatalError(message: [
+                        "Failed to find “\(buildDirectoryKey.0)” in Xcode build settings.",
+                        "This may indicate a bug in Workspace."
+                        ])
+                }
+
+                let irrelevantPathComponents = "Products"
+                guard let irrelevantRange = buildDirectory.range(of: irrelevantPathComponents) else {
+                    fatalError(message: [
+                        "Expected “\(irrelevantPathComponents)” at the end of the Xcode build directory path.",
+                        "This may indicate a bug in Workspace."
+                        ])
+                }
+
+                let rootPath = buildDirectory.substring(to: irrelevantRange.lowerBound)
+                let coverageData = rootPath + "Intermediates/CodeCoverage/Coverage.profdata"
+
+                let executableLocationKey = (" EXECUTABLE_PATH = \(Xcode.primaryProductName).", "\n")
+                guard let executableLocationSuffix = settings.contents(of: executableLocationKey) else {
+                    fatalError(message: [
+                        "Failed to find “\(buildDirectoryKey.0)” in Xcode build settings.",
+                        "This may indicate a bug in Workspace."
+                        ])
+                }
+                let executableLocation = Xcode.primaryProductName + "." + executableLocationSuffix
+
+                print(coverageData)
+                print(executableLocation)
             }
         }
 

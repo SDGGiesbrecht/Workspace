@@ -202,7 +202,8 @@ struct UnitTests {
                 }
 
                 let rootPath = buildDirectory.substring(to: irrelevantRange.lowerBound)
-                let coverageData = rootPath + "Intermediates/CodeCoverage/Coverage.profdata"
+                let coverageDirectory = rootPath + "Intermediates/CodeCoverage/"
+                let coverageData = coverageDirectory + "Coverage.profdata"
 
                 let executableLocationKey = (" EXECUTABLE_PATH = \(Xcode.primaryProductName).", "\n")
                 guard let executableLocationSuffix = settings.contents(of: executableLocationKey) else {
@@ -211,7 +212,8 @@ struct UnitTests {
                         "This may indicate a bug in Workspace."
                         ])
                 }
-                let executableLocation = Xcode.primaryProductName + "." + executableLocationSuffix
+                let relativeExecutableLocation = Xcode.primaryProductName + "." + executableLocationSuffix
+                let executableLocation = coverageDirectory + "Products/Debug/" + relativeExecutableLocation
 
                 print(coverageData)
                 print(executableLocation)

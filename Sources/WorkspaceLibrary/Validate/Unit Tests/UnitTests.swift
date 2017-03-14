@@ -40,14 +40,6 @@ struct UnitTests {
             let result = bash(script)
 
             if result.succeeded {
-                let phrase = buildOnly ? "Build succeeds for" : "Unit tests succeed on"
-                individualSuccess("\(phrase) \(operatingSystemName).")
-            } else {
-                let phrase = buildOnly ? "Build fails for" : "Unit tests fail on"
-                individualFailure("\(phrase) \(operatingSystemName). (See above for details.)")
-            }
-
-            if result.succeeded {
                 if let log = result.output {
                     if ¬log.contains(" warning: ") {
                         individualSuccess("Build triggers no warnings for \(operatingSystemName).")
@@ -60,6 +52,14 @@ struct UnitTests {
                         "This may indicate a bug in Workspace."
                         ])
                 }
+            }
+
+            if result.succeeded {
+                let phrase = buildOnly ? "Build succeeds for" : "Unit tests succeed on"
+                individualSuccess("\(phrase) \(operatingSystemName).")
+            } else {
+                let phrase = buildOnly ? "Build fails for" : "Unit tests fail on"
+                individualFailure("\(phrase) \(operatingSystemName). (See above for details.)")
             }
         }
 

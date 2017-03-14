@@ -68,26 +68,13 @@ struct UnitTests {
             runUnitTests(buildOnly: false, operatingSystemName: operatingSystemName, script: ["swift", "test"])
         }
 
-        if Environment.shouldDoMacOSJobs {
-
-            // macOS
-
-            runUnitTestsInSwiftPackageManager(operatingSystemName: "macOS")
-        }
-
-        if Environment.shouldDoLinuxJobs {
-
-            // Linux
-
-            runUnitTestsInSwiftPackageManager(operatingSystemName: "Linux")
-        }
-
         var deviceList: [String: String]?
 
-        func runUnitTestsInXcode(buildOnly: Bool, operatingSystemName: String, sdk: String, deviceKey: String) {
+        func runUnitTestsInXcode(buildOnly: Bool, operatingSystem: OperatingSystem, sdk: String, deviceKey: String?) {
+            let operatingSystemName = "\(operatingSystem)"
 
             var buildOnly = buildOnly
-            if Configuration.skipSimulators {
+            if Configuration.skipSimulators ∧ operatingSystem ≠ .macOS {
                 buildOnly = true
             }
 
@@ -95,11 +82,17 @@ struct UnitTests {
 
             let flag: String
             let flagValue: String
-            if buildOnly {
+            if buildOnly ∧ operatingSystem == .macOS {
                 flag = "\u{2D}sdk"
                 flagValue = sdk
             } else {
-                // Test
+                // Simulator
+                guard let requiredDeviceKey = deviceKey else {
+                    fatalError(message: [
+                        "A device key is required for the simulator.",
+                        "This may indicate a bug in Workspace."
+                        ])
+                }
 
                 let devices = cachedResult(cache: &deviceList) {
                     () -> [String: String] in
@@ -155,11 +148,11 @@ struct UnitTests {
                     return result
                 }
 
-                guard let deviceID = devices[deviceKey] else {
+                guard let deviceID = devices[requiredDeviceKey] else {
                     fatalError(message: [
                         "Unable to find device:",
                         "",
-                        deviceKey
+                        requiredDeviceKey
                         ])
                 }
 
@@ -180,28 +173,50 @@ struct UnitTests {
             sleep(10)
             let _ = bash(["killall", "xcodebuild"], silent: true)
 
-            return runUnitTests(buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: generateScript(buildOnly: buildOnly))
+            runUnitTests(buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: generateScript(buildOnly: buildOnly))
+
+            if ¬buildOnly {
+
+            }
+        }
+
+        if Environment.shouldDoMacOSJobs {
+
+            // macOS
+
+            if true/* Code Coverage */ {
+                runUnitTestsInXcode(buildOnly: false, operatingSystem: .macOS, sdk: "macosx", deviceKey: nil)
+            } else {
+                runUnitTestsInSwiftPackageManager(operatingSystemName: "macOS")
+            }
+        }
+
+        if Environment.shouldDoLinuxJobs {
+
+            // Linux
+
+            runUnitTestsInSwiftPackageManager(operatingSystemName: "Linux")
         }
 
         if Environment.shouldDoIOSJobs {
 
             // iOS
 
-            runUnitTestsInXcode(buildOnly: false, operatingSystemName: "iOS", sdk: "iphoneos", deviceKey: "iPhone 7")
+            runUnitTestsInXcode(buildOnly: false, operatingSystem: .iOS, sdk: "iphoneos", deviceKey: "iPhone 7")
         }
 
         if Environment.shouldDoWatchOSJobs {
 
             // watchOS
 
-            runUnitTestsInXcode(buildOnly: true, operatingSystemName: "watchOS", sdk: "watchos", deviceKey: "Apple Watch Series 2 \u{2D} 38mm")
+            runUnitTestsInXcode(buildOnly: true, operatingSystem: .watchOS, sdk: "watchos", deviceKey: "Apple Watch Series 2 \u{2D} 38mm")
         }
 
         if Environment.shouldDoTVOSJobs {
 
             // tvOS
 
-            runUnitTestsInXcode(buildOnly: false, operatingSystemName: "tvOS", sdk: "appletvos", deviceKey: "Apple TV 1080p")
+            runUnitTestsInXcode(buildOnly: false, operatingSystem: .tvOS, sdk: "appletvos", deviceKey: "Apple TV 1080p")
         }
     }
 }

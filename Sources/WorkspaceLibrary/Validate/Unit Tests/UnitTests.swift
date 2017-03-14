@@ -178,6 +178,10 @@ struct UnitTests {
 
             if ¬buildOnly ∧ true/* Code Coverage */ {
 
+                // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+                printHeader(["Validating code coverage for \(operatingSystemName)..."])
+                // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+
                 guard let settings = bash(script + ["\u{2D}showBuildSettings"], silent: true).output else {
                     fatalError(message: [
                         "Failed to detect Xcode build settings.",
@@ -221,11 +225,52 @@ struct UnitTests {
                     executableLocation
                     ], silent: true).output {
 
-                    print(coverageResults)
+                    var overallCoverageSuccess = true
+                    var overallIndex = coverageResults.startIndex
+                    let fileMarker = ".swift:"
+                    while let range = coverageResults.range(of: fileMarker, in: overallIndex ..< coverageResults.endIndex) {
+                        overallIndex = range.upperBound
+
+                        let fileRange = coverageResults.lineRange(for: range)
+                        let file = coverageResults.substring(with: fileRange)
+
+                        let end: String.Index
+                        if let next = coverageResults.range(of: fileMarker, in: fileRange.upperBound ..< coverageResults.endIndex) {
+                            let nextFileRange = coverageResults.lineRange(for: next)
+                            end = nextFileRange.lowerBound
+                        } else {
+                            end = coverageResults.endIndex
+                        }
+
+                        var index = overallIndex
+                        while let missingRange = coverageResults.range(of: "^0", in: index ..< end) {
+                            index = missingRange.upperBound
+
+                            let errorLineRange = coverageResults.lineRange(for: missingRange)
+                            let errorLine = coverageResults.substring(with: errorLineRange)
+
+                            let previous = coverageResults.index(before: errorLineRange.lowerBound)
+                            let sourceLineRange = coverageResults.lineRange(for: previous ..< previous)
+                            let sourceLine = coverageResults.substring(with: sourceLineRange)
+
+                            overallCoverageSuccess = false
+                            print([
+                                file
+                                + sourceLine
+                                + errorLine
+                                ], in: .red, spaced: true)
+                        }
+                    }
+
+                    if overallCoverageSuccess {
+                        individualSuccess("Code coverage is complete for \(operatingSystemName).")
+                    } else {
+                        individualFailure("Code coverage is incomplete for \(operatingSystemName). (See above for details.)")
+                    }
 
                 } else {
                     // Code coverage data unavailable.
-                    individualFailure("Tests generate no code coverage information.")
+                    individualFailure("Code coverage information is unavailable.")
                 }
             }
         }

@@ -256,6 +256,7 @@ struct UnitTests {
                             let sourceLine = coverageResults.substring(with: sourceLineRange)
 
                             let untestableTokensOnPreviousLine = [
+                                "[_Exempt from Code Coverage_]",
                                 "assert",
                                 "precondition"
                             ]

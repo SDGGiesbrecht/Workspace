@@ -253,12 +253,26 @@ struct UnitTests {
                             let sourceLineRange = coverageResults.lineRange(for: previous ..< previous)
                             let sourceLine = coverageResults.substring(with: sourceLineRange)
 
-                            overallCoverageSuccess = false
-                            print([
-                                file
-                                + sourceLine
-                                + errorLine
-                                ], in: .red, spaced: true)
+                            let untestableTokens = [
+                                "assert",
+                                "precondition"
+                            ]
+                            var noUntestableTokens = true
+                            for token in untestableTokens {
+                                if sourceLine.contains(token) {
+                                    noUntestableTokens = false
+                                    break
+                                }
+                            }
+
+                            if noUntestableTokens {
+                                overallCoverageSuccess = false
+                                print([
+                                    file
+                                        + sourceLine
+                                        + errorLine
+                                    ], in: .red, spaced: true)
+                            }
                         }
                     }
 

@@ -36,7 +36,7 @@ Workspace can manage:
 - [Application](Documentation/Project Types.md) projects for [macOS](http://www.apple.com/macos/), [iOS](http://www.apple.com/ios/) and [tvOS](http://www.apple.com/tvos/).
 - [Executable](Documentation/Project Types.md) projects for [macOS](http://www.apple.com/macos/) and [Linux](https://www.ubuntu.com).
 
-A particular project can [configure](Documentation/Operating Systems.md) which operating systems it supports.
+A particular project can [configure](Documentation/Operating%20Systems.md) which operating systems it supports.
 
 ## What Workspace Can Do
 

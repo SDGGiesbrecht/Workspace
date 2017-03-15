@@ -794,7 +794,7 @@ class WorkspaceTests : XCTestCase {
                             let allowedExitCodes: Set<ExitCode> = [ExitCode.succeeded, ExitCode.testsFailed]
 
                             if ¬allowedExitCodes.contains(bash(["../../.build/debug/workspace", "validate"]).exitCode) {
-                                XCTFail("Validation crashes for initialized project “\(project.name)”.")
+                                XCTFail("Validation crashes for “\(project.name)”.")
                             }
                         }
                     }

@@ -42,7 +42,7 @@ A particular project can [configure](Documentation/Operating%20Systems.md) which
 
 - Set [new projects](#new-projects) up from scratch.
 - Be [configured](Documentation/Configuring%20Workspace.md) to opt in or out of any of the following features.
-- Have its configuration [shared](Documentation/Configuring Workspace.md#sharing-configurations-between-projects) between projects.
+- Have its configuration [shared](Documentation/Configuring%20Workspace.md#sharing-configurations-between-projects) between projects.
 - Automatically...
     - Keep [licence notices](Documentation/Licence.md) uniform.
     - Keep [contributing instructions](Documentation/Contributing%20Instructions.md) uniform, including issue and pull request templates.

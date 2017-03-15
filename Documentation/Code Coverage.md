@@ -20,11 +20,11 @@ This is controlled by the [configuration](Configuring%20Workspace.md) option `En
 
 ## Exemptions
 
-Some code paths should never occur or cannot be tested. These code paths can be exempted from code coverage requirements. There are two categories: [same‐line exemptions](#sameline-exemptions) and [previous‐line exemptions](#previousline-exemptions)
+Some code paths should never occur or cannot be tested. These code paths can be exempted from code coverage requirements. There are two categories: [same‐line exemptions](#sameline-exemptions) and [previous‐line exemptions](#previousline-exemptions).
 
 ### Same‐Line Exemptions
 
-Same‐line exemption tokens cause the exemption of any untested ranges that begin on the previous line.
+Same‐line exemption tokens cause the exemption of any untested ranges that begin on the same line.
 
 ```swift
 assert(x == y, "There is a problem: \(problem)")
@@ -37,7 +37,7 @@ func untestableFunction() { // [_Exempt from Code Coverage_]
 }
 ```
 
-Built‐in same‐line tokens:
+The built‐in same‐line tokens are:
 
 - `assert`
 - `precondition`
@@ -57,7 +57,7 @@ guard let x = y else { // ← The untested range starts at this brace...
 }
 ```
 
-Built‐in previous‐line tokens:
+The built‐in previous‐line tokens are:
 
 - `assertionFailure`
 - `preconditionFailure`

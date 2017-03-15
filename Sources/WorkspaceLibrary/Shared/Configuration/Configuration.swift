@@ -538,8 +538,8 @@ struct Configuration {
         return Set(listValue(option: .disableProofreadingRules))
     }
 
-    static var disallowBuildWarnings: Bool {
-        return booleanValue(option: .disallowBuildWarnings)
+    static var prohibitCompilerWarnings: Bool {
+        return booleanValue(option: .prohibitCompilerWarnings)
     }
 
     static var enforceCodeCoverage: Bool {

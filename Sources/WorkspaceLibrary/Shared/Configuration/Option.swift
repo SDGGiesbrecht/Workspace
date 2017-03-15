@@ -55,7 +55,7 @@ enum Option : String, CustomStringConvertible {
 
     case disableProofreadingRules = "Disable Proofreading Rules"
 
-    case disallowBuildWarnings = "Disallow Build Warnings"
+    case prohibitCompilerWarnings = "Prohibit Compiler Warnings"
 
     case enforceCodeCoverage = "Enforce Code Coverage"
     case codeCoverageExemptionTokensForSameLine = "Code Coverage Exemption Tokens for the Same Line"
@@ -117,7 +117,7 @@ enum Option : String, CustomStringConvertible {
 
         .disableProofreadingRules,
 
-        .disallowBuildWarnings,
+        .prohibitCompilerWarnings,
 
         .enforceCodeCoverage,
         .codeCoverageExemptionTokensForSameLine,
@@ -203,7 +203,7 @@ enum Option : String, CustomStringConvertible {
         case .disableProofreadingRules:
             return Configuration.emptyListOptionValue
 
-        case .disallowBuildWarnings:
+        case .prohibitCompilerWarnings:
             return Configuration.trueOptionValue
 
         case .enforceCodeCoverage:

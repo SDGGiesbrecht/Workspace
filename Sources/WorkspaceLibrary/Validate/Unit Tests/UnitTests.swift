@@ -40,12 +40,12 @@ struct UnitTests {
             let result = bash(script)
 
             if result.succeeded {
-                if Configuration.disallowBuildWarnings {
+                if Configuration.prohibitCompilerWarnings {
                     if let log = result.output {
                         if ¬log.contains(" warning: ") {
-                            individualSuccess("There are no build warnings for \(operatingSystemName).")
+                            individualSuccess("There are no compiler warnings for \(operatingSystemName).")
                         } else {
-                            individualFailure("There are build warnings for \(operatingSystemName). (See above for details.)")
+                            individualFailure("There are compiler warnings for \(operatingSystemName). (See above for details.)")
                         }
                     } else {
                         fatalError(message: [

@@ -18,7 +18,7 @@ Workspace automatically skips files it does not understand, but it prints a warn
 
 For standard file types, please [request that support be added](https://github.com/SDGGiesbrecht/Workspace/issues).
 
-For non‐standard file types, the warning can be silenced using the [configuration](Configuring Workspace.md) option `Ignore File Types`. Each line is a separate entry:
+For non‐standard file types, the warning can be silenced using the [configuration](Configuring%20Workspace.md) option `Ignore File Types`. Each line is a separate entry:
 
 ```text
 [_Begin Ignore File Types_]

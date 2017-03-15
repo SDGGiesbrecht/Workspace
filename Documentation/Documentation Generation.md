@@ -16,7 +16,7 @@
 
 Workspace can automatically generate API documentation using [Jazzy](https://github.com/realm/jazzy).
 
-This is controlled by the [configuration](Configuring Workspace.md) option `Generate Documentation`. The [default](Responsibilities.md#default-vs-automatic) value is `False`. The [automatic](Responsibilities.md#default-vs-automatic) value is `True`.
+This is controlled by the [configuration](Configuring%20Workspace.md) option `Generate Documentation`. The [default](Responsibilities.md#default-vs-automatic) value is `False`. The [automatic](Responsibilities.md#default-vs-automatic) value is `True`.
 
 The generated documentation will be placed in a `docs` folder at the project root. [These GitHub settings](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch) can be adjusted to automatically host the documentation directly from the repository.
 
@@ -32,7 +32,7 @@ etc.
 
 The default copyright notice will automatically change to accommodate the configuration option `Author`.
 
-The copyright notice can be further customized by defining a template with the `Documentation Copyright` [configuration](Configuring Workspace.md) option.
+The copyright notice can be further customized by defining a template with the `Documentation Copyright` [configuration](Configuring%20Workspace.md) option.
 
 There are several dynamic elements available for the file header template. Dynamic elements can be used by placing the element’s key inside `[_` and `_]` at the desired location.
 
@@ -51,9 +51,9 @@ The available dynamic elements are:
 - `Copyright`: The copyright date(s). (e.g. `©2016–2017`)
 - `Author`: The value of the configuration option `Author`. (e.g. `John Doe`)
 
-Dynamic elements can be especially useful when they are combined with [configuration sharing](Configuring Workspace.md#sharing-configurations-between-projects).
+Dynamic elements can be especially useful when they are combined with [configuration sharing](Configuring%20Workspace.md#sharing-configurations-between-projects).
 
-Copyright dates are determined by searching the contents of `index.html` at the target location the [same way](File Headers.md#determination-of-the-dates) as for file headers.
+Copyright dates are determined by searching the contents of `index.html` at the target location the [same way](File%20Headers.md#determination-of-the-dates) as for file headers.
 
 ### Advanced
 

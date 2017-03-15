@@ -30,7 +30,7 @@ If Workspace is not in charge of Xcode, proofreading can still be activated by m
 
 When Workspace triggers a warning, the name of the particular rule is always given in parentheses.
 
-A rule can be disabled by adding the name of the rule to the [configuration](Configuring Workspace.md) option `Disable Proofreading Rules`.
+A rule can be disabled by adding the name of the rule to the [configuration](Configuring%20Workspace.md) option `Disable Proofreading Rules`.
 
 `Disable Proofreading Rules` is a list separated by line breaks.
 

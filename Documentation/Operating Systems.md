@@ -22,7 +22,7 @@ By default, Workspace assumes projects support all available operating systems:
 - `watchOS`
 - `tvOS`
 
-Any of these can be disabled by adding the corresponding option to the [configuration file](Configuring Workspace.md):
+Any of these can be disabled by adding the corresponding option to the [configuration file](Configuring%20Workspace.md):
 
 ```text
 Support Linux: False

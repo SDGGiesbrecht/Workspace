@@ -16,7 +16,7 @@
 
 Workspace can enforce code coverage.
 
-This is controlled by the [configuration](Configuring Workspace.md) option `Enforce Code Coverage`. The default value is `True`.
+This is controlled by the [configuration](Configuring%20Workspace.md) option `Enforce Code Coverage`. The default value is `True`.
 
 ## Exemptions
 
@@ -43,7 +43,7 @@ Built‐in same‐line tokens:
 - `precondition`
 - `[_Exempt from Code Coverage_]`
 
-The [configuration](Configuring Workspace.md) option `Code Coverage Exemption Tokens for the Same Line` can be used to add custom tokens. It is a list separated by line breaks.
+The [configuration](Configuring%20Workspace.md) option `Code Coverage Exemption Tokens for the Same Line` can be used to add custom tokens. It is a list separated by line breaks.
 
 ### Previous‐Line Exemptions
 
@@ -63,4 +63,4 @@ Built‐in previous‐line tokens:
 - `preconditionFailure`
 - `fatalError`
 
-The [configuration](Configuring Workspace.md) option `Code Coverage Exemption Tokens for the Previous Line` can be used to add custom tokens. It is a list separated by line breaks.
+The [configuration](Configuring%20Workspace.md) option `Code Coverage Exemption Tokens for the Previous Line` can be used to add custom tokens. It is a list separated by line breaks.

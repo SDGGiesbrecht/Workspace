@@ -178,7 +178,7 @@ struct UnitTests {
             let script = generateScript(buildOnly: buildOnly)
             runUnitTests(buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: script)
 
-            if ¬buildOnly ∧ Configuration.enforceCodeCoverage {
+            if ¬buildOnly ∧ Configuration.enforceCodeCoverage ∧ ¬Configuration.nestedTest {
 
                 // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
                 printHeader(["Checking code coverage on \(operatingSystemName)..."])

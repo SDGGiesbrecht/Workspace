@@ -62,6 +62,7 @@ enum Option : String, CustomStringConvertible {
     case codeCoverageExemptionTokensForPreviousLine = "Code Coverage Exemption Tokens for the Previous Line"
 
     case generateDocumentation = "Generate Documentation"
+    case enforceDocumentationCoverage = "Enforce Documentation Coverage"
     case documentationCopyright = "Documentation Copyright"
 
     case manageContinuousIntegration = "Manage Continuous Integration"
@@ -127,6 +128,7 @@ enum Option : String, CustomStringConvertible {
         .documentationCopyright,
 
         .manageContinuousIntegration,
+        .enforceDocumentationCoverage,
 
         .projectName,
         .packageName,
@@ -215,6 +217,8 @@ enum Option : String, CustomStringConvertible {
 
         case .generateDocumentation:
             return Configuration.falseOptionValue
+        case .enforceDocumentationCoverage:
+            return Configuration.trueOptionValue
         case .documentationCopyright:
             return FileHeaders.defaultCopyright + " All rights reserved."
 

@@ -26,6 +26,12 @@ or<br>
 `https://`username`.github.io/`repository`/Linux`<br>
 etc.
 
+## Enforcement
+
+Workspace can enforce documentation coverage.
+
+This is controlled by the [configuration](Configuring%20Workspace.md) option `Enforce Documentation Coverage`. The default value is `True`.
+
 ## Customization
 
 ### Copyright

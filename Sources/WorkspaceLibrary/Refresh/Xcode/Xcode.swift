@@ -49,10 +49,7 @@ struct Xcode {
         let path = RelativePath("\(Xcode.projectFilename)")
         force() { try Repository.delete(path) }
 
-        var script = ["swift", "package", "generate\u{2D}xcodeproj", "\u{2D}\u{2D}output", path.string]
-        if ¬Environment.isInContinuousIntegration {
-            script.append("\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage")
-        }
+        let script = ["swift", "package", "generate\u{2D}xcodeproj", "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage", "\u{2D}\u{2D}output", path.string]
         requireBash(script)
 
         // Allow dependencies to be found by the executable.

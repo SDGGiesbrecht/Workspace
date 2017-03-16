@@ -178,7 +178,7 @@ struct UnitTests {
             let script = generateScript(buildOnly: buildOnly)
             runUnitTests(buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: script)
 
-            if ¬buildOnly ∧ Configuration.enforceCodeCoverage ∧ ¬Configuration.nestedTest {
+            if ¬buildOnly ∧ Configuration.enforceCodeCoverage {
 
                 // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
                 printHeader(["Checking code coverage on \(operatingSystemName)..."])
@@ -221,100 +221,101 @@ struct UnitTests {
                 let relativeExecutableLocation = Xcode.primaryProductName + "." + executableLocationSuffix
                 let executableLocation = coverageDirectory + "Products/Debug/" + relativeExecutableLocation
 
-                if let coverageResults = bash([
+                let shellResult = bash([
                     "xcrun", "llvm\u{2D}cov", "show", "\u{2D}show\u{2D}regions",
                     "\u{2D}instr\u{2D}profile", coverageData,
                     executableLocation
-                    ], silent: true).output {
+                    ], silent: true)
 
-                    let nullCharacters = CharacterSet.whitespacesAndNewlines.union(CharacterSet.decimalDigits.union(CharacterSet(charactersIn: "|")))
+                guard shellResult.succeeded,
+                    let coverageResults = shellResult.output else {
+                        individualFailure("Code coverage information is unavailable.")
+                        return
+                }
 
-                    var overallCoverageSuccess = true
-                    var overallIndex = coverageResults.startIndex
-                    let fileMarker = ".swift:"
-                    while let range = coverageResults.range(of: fileMarker, in: overallIndex ..< coverageResults.endIndex) {
-                        overallIndex = range.upperBound
+                let nullCharacters = CharacterSet.whitespacesAndNewlines.union(CharacterSet.decimalDigits.union(CharacterSet(charactersIn: "|")))
 
-                        let fileRange = coverageResults.lineRange(for: range)
-                        let file = coverageResults.substring(with: fileRange)
+                var overallCoverageSuccess = true
+                var overallIndex = coverageResults.startIndex
+                let fileMarker = ".swift:"
+                while let range = coverageResults.range(of: fileMarker, in: overallIndex ..< coverageResults.endIndex) {
+                    overallIndex = range.upperBound
 
-                        let end: String.Index
-                        if let next = coverageResults.range(of: fileMarker, in: fileRange.upperBound ..< coverageResults.endIndex) {
-                            let nextFileRange = coverageResults.lineRange(for: next)
-                            end = nextFileRange.lowerBound
-                        } else {
-                            end = coverageResults.endIndex
+                    let fileRange = coverageResults.lineRange(for: range)
+                    let file = coverageResults.substring(with: fileRange)
+
+                    let end: String.Index
+                    if let next = coverageResults.range(of: fileMarker, in: fileRange.upperBound ..< coverageResults.endIndex) {
+                        let nextFileRange = coverageResults.lineRange(for: next)
+                        end = nextFileRange.lowerBound
+                    } else {
+                        end = coverageResults.endIndex
+                    }
+
+                    var index = overallIndex
+                    while let missingRange = coverageResults.range(of: "^0", in: index ..< end) {
+                        index = missingRange.upperBound
+
+                        let errorLineRange = coverageResults.lineRange(for: missingRange)
+                        let errorLine = coverageResults.substring(with: errorLineRange)
+
+                        let previous = coverageResults.index(before: errorLineRange.lowerBound)
+                        let sourceLineRange = coverageResults.lineRange(for: previous ..< previous)
+                        let sourceLine = coverageResults.substring(with: sourceLineRange)
+
+                        let untestableTokensOnPreviousLine = [
+                            "[_Exempt from Code Coverage_]",
+                            "assert",
+                            "precondition"
+                            ] + Configuration.codeCoverageExemptionTokensForSameLine
+                        var noUntestableTokens = true
+                        for token in untestableTokensOnPreviousLine {
+                            if sourceLine.contains(token) {
+                                noUntestableTokens = false
+                                break
+                            }
                         }
 
-                        var index = overallIndex
-                        while let missingRange = coverageResults.range(of: "^0", in: index ..< end) {
-                            index = missingRange.upperBound
+                        let next = coverageResults.index(after: errorLineRange.upperBound)
+                        let nextLineRange = coverageResults.lineRange(for: next ..< next)
+                        let nextLine = coverageResults.substring(with: nextLineRange)
+                        var sourceLines = sourceLine + nextLine
+                        sourceLines.unicodeScalars = String.UnicodeScalarView(sourceLines.unicodeScalars.filter({ ¬nullCharacters.contains($0) }))
 
-                            let errorLineRange = coverageResults.lineRange(for: missingRange)
-                            let errorLine = coverageResults.substring(with: errorLineRange)
+                        var isExecutable = true
+                        if sourceLines == "}}" {
+                            isExecutable = false
+                        }
 
-                            let previous = coverageResults.index(before: errorLineRange.lowerBound)
-                            let sourceLineRange = coverageResults.lineRange(for: previous ..< previous)
-                            let sourceLine = coverageResults.substring(with: sourceLineRange)
-
-                            let untestableTokensOnPreviousLine = [
-                                "[_Exempt from Code Coverage_]",
-                                "assert",
-                                "precondition"
-                            ] + Configuration.codeCoverageExemptionTokensForSameLine
-                            var noUntestableTokens = true
-                            for token in untestableTokensOnPreviousLine {
-                                if sourceLine.contains(token) {
+                        let untestableTokensOnFollowingLine = [
+                            "assertionFailure",
+                            "preconditionFailure",
+                            "fatalError"
+                            ] + Configuration.codeCoverageExemptionTokensForPreviousLine
+                        if noUntestableTokens {
+                            for token in untestableTokensOnFollowingLine {
+                                if nextLine.contains(token) {
                                     noUntestableTokens = false
                                     break
                                 }
                             }
+                        }
 
-                            let next = coverageResults.index(after: errorLineRange.upperBound)
-                            let nextLineRange = coverageResults.lineRange(for: next ..< next)
-                            let nextLine = coverageResults.substring(with: nextLineRange)
-                            var sourceLines = sourceLine + nextLine
-                            sourceLines.unicodeScalars = String.UnicodeScalarView(sourceLines.unicodeScalars.filter({ ¬nullCharacters.contains($0) }))
-
-                            var isExecutable = true
-                            if sourceLines == "}}" {
-                                isExecutable = false
-                            }
-
-                            let untestableTokensOnFollowingLine = [
-                                "assertionFailure",
-                                "preconditionFailure",
-                                "fatalError"
-                            ] + Configuration.codeCoverageExemptionTokensForPreviousLine
-                            if noUntestableTokens {
-                                for token in untestableTokensOnFollowingLine {
-                                    if nextLine.contains(token) {
-                                        noUntestableTokens = false
-                                        break
-                                    }
-                                }
-                            }
-
-                            if noUntestableTokens ∧ isExecutable {
-                                overallCoverageSuccess = false
-                                print([
-                                    file
-                                        + sourceLine
-                                        + errorLine
-                                    ], in: .red, spaced: true)
-                            }
+                        if noUntestableTokens ∧ isExecutable {
+                            overallCoverageSuccess = false
+                            print([
+                                file
+                                    + sourceLine
+                                    + errorLine
+                                ], in: .red, spaced: true)
                         }
                     }
+                }
 
-                    if overallCoverageSuccess {
-                        individualSuccess("Code coverage is complete for \(operatingSystemName).")
-                    } else {
-                        individualFailure("Code coverage is incomplete for \(operatingSystemName). (See above for details.)")
-                    }
-
+                if overallCoverageSuccess {
+                    individualSuccess("Code coverage is complete for \(operatingSystemName).")
                 } else {
-                    // Code coverage data unavailable.
-                    individualFailure("Code coverage information is unavailable.")
+                    individualFailure("Code coverage is incomplete for \(operatingSystemName). (See above for details.)")
                 }
             }
         }

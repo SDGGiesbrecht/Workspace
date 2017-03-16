@@ -184,8 +184,7 @@ struct UnitTests {
                 printHeader(["Checking code coverage on \(operatingSystemName)..."])
                 // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-                // [_Workaround: This should be silent._]
-                let settingsScriptResult = bash(script + ["\u{2D}showBuildSettings"]/*, silent: true*/)
+                let settingsScriptResult = bash(script + ["\u{2D}showBuildSettings"], silent: true)
                 guard settingsScriptResult.succeeded,
                     let settings = settingsScriptResult.output else {
                     fatalError(message: [
@@ -193,7 +192,6 @@ struct UnitTests {
                         "This may indicate a bug in Workspace."
                         ])
                 }
-                print(settings)
 
                 let buildDirectoryKey = (" BUILD_DIR = ", "\n")
                 guard let buildDirectory = settings.contents(of: buildDirectoryKey) else {
@@ -202,7 +200,6 @@ struct UnitTests {
                         "This may indicate a bug in Workspace."
                         ])
                 }
-                print(buildDirectory)
 
                 let irrelevantPathComponents = "Products"
                 guard let irrelevantRange = buildDirectory.range(of: irrelevantPathComponents) else {
@@ -211,35 +208,46 @@ struct UnitTests {
                         "This may indicate a bug in Workspace."
                         ])
                 }
-                print(irrelevantRange)
 
                 let rootPath = buildDirectory.substring(to: irrelevantRange.lowerBound)
-                print(rootPath)
                 let coverageDirectory = rootPath + "Intermediates/CodeCoverage/"
-                print(coverageDirectory)
                 let coverageData = coverageDirectory + "Coverage.profdata"
-                print(coverageData)
 
                 let executableLocationKey = (" EXECUTABLE_PATH = \(Xcode.primaryProductName).", "\n")
-                print(executableLocationKey)
                 guard let executableLocationSuffix = settings.contents(of: executableLocationKey) else {
                     fatalError(message: [
                         "Failed to find “\(buildDirectoryKey.0)” in Xcode build settings.",
                         "This may indicate a bug in Workspace."
                         ])
                 }
-                print(executableLocationSuffix)
                 let relativeExecutableLocation = Xcode.primaryProductName + "." + executableLocationSuffix
-                print(relativeExecutableLocation)
                 let executableLocation = coverageDirectory + "Products/Debug/" + relativeExecutableLocation
-                print(executableLocation)
 
-                // [_Workaround: This should be silent._]
+                for path in [coverageData, executableLocation] {
+                    // [_Warning: Only necessary for debugging._]
+                    var url = URL(fileURLWithPath: path)
+                    var urls = [url]
+                    while url.deletingLastPathComponent() ≠ url {
+                        url = url.deletingLastPathComponent()
+                        urls.append(url)
+                    }
+
+                    for url in urls.reversed() {
+                        print([url.path], in: nil, spaced: true)
+
+                        do {
+                        print(join(lines: try FileManager.default.contentsOfDirectory(atPath: url.path)))
+                        } catch let error {
+                            print(error.localizedDescription)
+                        }
+                    }
+                }
+
                 let shellResult = bash([
                     "xcrun", "llvm\u{2D}cov", "show", "\u{2D}show\u{2D}regions",
                     "\u{2D}instr\u{2D}profile", coverageData,
                     executableLocation
-                    ]/*, silent: true*/)
+                    ], silent: true)
                 guard shellResult.succeeded,
                     let coverageResults = shellResult.output else {
                         individualFailure("Code coverage information is unavailable.")

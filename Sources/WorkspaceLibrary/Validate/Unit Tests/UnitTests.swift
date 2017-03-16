@@ -184,12 +184,16 @@ struct UnitTests {
                 printHeader(["Checking code coverage on \(operatingSystemName)..."])
                 // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-                guard let settings = bash(script + ["\u{2D}showBuildSettings"], silent: true).output else {
+                // [_Workaround: This should be silent._]
+                let settingsScriptResult = bash(script + ["\u{2D}showBuildSettings"]/*, silent: true*/)
+                guard settingsScriptResult.succeeded,
+                    let settings = settingsScriptResult.output else {
                     fatalError(message: [
                         "Failed to detect Xcode build settings.",
                         "This may indicate a bug in Workspace."
                         ])
                 }
+                print(settings)
 
                 let buildDirectoryKey = (" BUILD_DIR = ", "\n")
                 guard let buildDirectory = settings.contents(of: buildDirectoryKey) else {
@@ -198,6 +202,7 @@ struct UnitTests {
                         "This may indicate a bug in Workspace."
                         ])
                 }
+                print(buildDirectory)
 
                 let irrelevantPathComponents = "Products"
                 guard let irrelevantRange = buildDirectory.range(of: irrelevantPathComponents) else {
@@ -206,27 +211,35 @@ struct UnitTests {
                         "This may indicate a bug in Workspace."
                         ])
                 }
+                print(irrelevantRange)
 
                 let rootPath = buildDirectory.substring(to: irrelevantRange.lowerBound)
+                print(rootPath)
                 let coverageDirectory = rootPath + "Intermediates/CodeCoverage/"
+                print(coverageDirectory)
                 let coverageData = coverageDirectory + "Coverage.profdata"
+                print(coverageData)
 
                 let executableLocationKey = (" EXECUTABLE_PATH = \(Xcode.primaryProductName).", "\n")
+                print(executableLocationKey)
                 guard let executableLocationSuffix = settings.contents(of: executableLocationKey) else {
                     fatalError(message: [
                         "Failed to find “\(buildDirectoryKey.0)” in Xcode build settings.",
                         "This may indicate a bug in Workspace."
                         ])
                 }
+                print(executableLocationSuffix)
                 let relativeExecutableLocation = Xcode.primaryProductName + "." + executableLocationSuffix
+                print(relativeExecutableLocation)
                 let executableLocation = coverageDirectory + "Products/Debug/" + relativeExecutableLocation
+                print(executableLocation)
 
+                // [_Workaround: This should be silent._]
                 let shellResult = bash([
                     "xcrun", "llvm\u{2D}cov", "show", "\u{2D}show\u{2D}regions",
                     "\u{2D}instr\u{2D}profile", coverageData,
                     executableLocation
-                    ], silent: true)
-
+                    ]/*, silent: true*/)
                 guard shellResult.succeeded,
                     let coverageResults = shellResult.output else {
                         individualFailure("Code coverage information is unavailable.")

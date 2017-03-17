@@ -46,10 +46,14 @@ struct UnitTests {
             if result.succeeded {
                 if Configuration.prohibitCompilerWarnings {
                     if let log = result.output {
+                        var configuration = operatingSystemName
+                        if let tool = buildToolName {
+                            configuration += " with \(tool)"
+                        }
                         if ¬log.contains(" warning: ") {
-                            individualSuccess("There are no compiler warnings for \(operatingSystemName).")
+                            individualSuccess("There are no compiler warnings for \(configuration).")
                         } else {
-                            individualFailure("There are compiler warnings for \(operatingSystemName). (See above for details.)")
+                            individualFailure("There are compiler warnings for \(configuration). (See above for details.)")
                         }
                     } else {
                         fatalError(message: [

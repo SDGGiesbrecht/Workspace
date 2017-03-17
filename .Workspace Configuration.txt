@@ -19,6 +19,9 @@ Generate Documentation: False
 
 Project Website: https://github.com/SDGGiesbrecht/Workspace
 
+(Hopefully temporary:)
+Enforce Code Coverage: False
+
 [_Begin Development Notes_]
 ### Running Forks & Branches
 

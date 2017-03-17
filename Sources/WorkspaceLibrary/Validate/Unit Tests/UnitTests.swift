@@ -27,15 +27,19 @@ struct UnitTests {
             Xcode.reEnableProofreading()
         }
 
-        func printTestHeader(buildOnly: Bool, operatingSystemName: String) {
+        func printTestHeader(buildOnly: Bool, operatingSystemName: String, buildToolName: String? = nil) {
 
             let verbPhrase = buildOnly ? "Verifying build for" : "Running unit tests on"
+            var configuration = operatingSystemName
+            if let tool = buildToolName {
+                configuration += "with \(tool)"
+            }
             // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-            printHeader(["\(verbPhrase) \(operatingSystemName)..."])
+            printHeader(["\(verbPhrase) \(configuration)..."])
             // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         }
 
-        func runUnitTests(buildOnly: Bool, operatingSystemName: String, script: [String]) {
+        func runUnitTests(buildOnly: Bool, operatingSystemName: String, script: [String], buildToolName: String? = nil) {
 
             let result = bash(script)
 
@@ -56,23 +60,28 @@ struct UnitTests {
                 }
             }
 
+            var configuration = operatingSystemName
+            if let tool = buildToolName {
+                configuration += "with \(tool)"
+            }
+
             if result.succeeded {
                 let phrase = buildOnly ? "Build succeeds for" : "Unit tests succeed on"
-                individualSuccess("\(phrase) \(operatingSystemName).")
+                individualSuccess("\(phrase) \(configuration).")
             } else {
                 let phrase = buildOnly ? "Build fails for" : "Unit tests fail on"
-                individualFailure("\(phrase) \(operatingSystemName). (See above for details.)")
+                individualFailure("\(phrase) \(configuration). (See above for details.)")
             }
         }
 
-        func runUnitTestsInSwiftPackageManager(operatingSystemName: String) {
+        func runUnitTestsInSwiftPackageManager(operatingSystemName: String, buildToolName: String? = nil) {
             printTestHeader(buildOnly: false, operatingSystemName: operatingSystemName)
-            runUnitTests(buildOnly: false, operatingSystemName: operatingSystemName, script: ["swift", "test"])
+            runUnitTests(buildOnly: false, operatingSystemName: operatingSystemName, script: ["swift", "test"], buildToolName: buildToolName)
         }
 
         var deviceList: [String: String]?
 
-        func runUnitTestsInXcode(buildOnly: Bool, operatingSystem: OperatingSystem, sdk: String, simulatorSDK: String? = nil, deviceKey: String?) {
+        func runUnitTestsInXcode(buildOnly: Bool, operatingSystem: OperatingSystem, sdk: String, simulatorSDK: String? = nil, deviceKey: String?, buildToolName: String? = nil) {
             let operatingSystemName = "\(operatingSystem)"
 
             var buildOnly = buildOnly
@@ -176,7 +185,7 @@ struct UnitTests {
             let _ = bash(["killall", "xcodebuild"], silent: true)
 
             let script = generateScript(buildOnly: buildOnly)
-            runUnitTests(buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: script)
+            runUnitTests(buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: script, buildToolName: buildToolName)
 
             if ¬buildOnly ∧ Configuration.enforceCodeCoverage {
 
@@ -184,18 +193,17 @@ struct UnitTests {
                 printHeader(["Checking code coverage on \(operatingSystemName)..."])
                 // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-                // [_Warning: Should not be silent._]
                 let settingsScriptResult = bash([
                     "xcodebuild", "\u{2D}showBuildSettings",
                     "\u{2D}target", Configuration.primaryXcodeTarget,
                     "\u{2D}sdk", sdk
-                    ]/*, silent: true*/)
+                    ], silent: true)
                 guard settingsScriptResult.succeeded,
                     let settings = settingsScriptResult.output else {
-                    fatalError(message: [
-                        "Failed to detect Xcode build settings.",
-                        "This may indicate a bug in Workspace."
-                        ])
+                        fatalError(message: [
+                            "Failed to detect Xcode build settings.",
+                            "This may indicate a bug in Workspace."
+                            ])
                 }
 
                 let buildDirectoryKey = (" BUILD_DIR = ", "\n")
@@ -233,26 +241,6 @@ struct UnitTests {
                     directorySuffix = ""
                 }
                 let executableLocation = coverageDirectory + "Products/Debug" + directorySuffix + "/" + relativeExecutableLocation
-
-                for path in [coverageData, executableLocation] {
-                    // [_Warning: Only necessary for debugging._]
-                    var url = URL(fileURLWithPath: path)
-                    var urls = [url]
-                    while ¬url.deletingLastPathComponent().path.contains("..") {
-                        url = url.deletingLastPathComponent()
-                        urls.append(url)
-                    }
-
-                    for url in urls.reversed() {
-                        print([url.path], in: nil, spaced: true)
-
-                        do {
-                        print(join(lines: try FileManager.default.contentsOfDirectory(atPath: url.path)))
-                        } catch let error {
-                            print(error.localizedDescription)
-                        }
-                    }
-                }
 
                 let shellResult = bash([
                     "xcrun", "llvm\u{2D}cov", "show", "\u{2D}show\u{2D}regions",
@@ -356,11 +344,10 @@ struct UnitTests {
 
             // macOS
 
-            if Configuration.enforceCodeCoverage {
-                runUnitTestsInXcode(buildOnly: false, operatingSystem: .macOS, sdk: "macosx", deviceKey: nil)
-            } else {
-                runUnitTestsInSwiftPackageManager(operatingSystemName: "macOS")
+            if Configuration.projectType ≠ .application {
+                runUnitTestsInSwiftPackageManager(operatingSystemName: "macOS", buildToolName: "the Swift Package Manager")
             }
+            runUnitTestsInXcode(buildOnly: false, operatingSystem: .macOS, sdk: "macosx", deviceKey: nil, buildToolName: "Xcode")
         }
 
         if Environment.shouldDoLinuxJobs {

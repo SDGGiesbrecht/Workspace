@@ -229,6 +229,7 @@ struct UnitTests {
                     var urls = [url]
                     while url.deletingLastPathComponent() ≠ url {
                         url = url.deletingLastPathComponent()
+                        print(url)
                         urls.append(url)
                     }
 

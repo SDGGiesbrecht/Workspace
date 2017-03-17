@@ -19,7 +19,7 @@ Generate Documentation: False
 
 Project Website: https://github.com/SDGGiesbrecht/Workspace
 
-(Hopefully temporary:)
+([_Workaround: Workspace’s tests need to be refactored into the test module so that code coverage results become meaningful._])
 Enforce Code Coverage: False
 
 [_Begin Development Notes_]

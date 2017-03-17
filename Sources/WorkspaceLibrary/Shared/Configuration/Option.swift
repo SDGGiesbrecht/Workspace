@@ -34,6 +34,8 @@ enum Option : String, CustomStringConvertible {
 
     case skipSimulator = "Skip Simulator"
 
+    case manageReadMe = "Manage Read‐Me"
+
     case manageLicence = "Manage Licence"
     case licence = "Licence"
 
@@ -96,6 +98,8 @@ enum Option : String, CustomStringConvertible {
         .supportTVOS,
 
         .skipSimulator,
+
+        .manageReadMe,
 
         .manageLicence,
         .licence,
@@ -166,6 +170,9 @@ enum Option : String, CustomStringConvertible {
             return Configuration.trueOptionValue
 
         case .skipSimulator:
+            return Configuration.falseOptionValue
+
+        case .manageReadMe:
             return Configuration.falseOptionValue
 
         case .manageLicence:
@@ -257,6 +264,7 @@ enum Option : String, CustomStringConvertible {
 
     static let automaticResponsibilityDocumentationPage = DocumentationLink.responsibilities
     static let automaticRepsonsibilities: [(option: Option, automaticValue: String, documentationPage: DocumentationLink)] = [
+        (.manageReadMe, automaticValue: Configuration.trueOptionValue, DocumentationLink.readMe),
         (.manageLicence, automaticValue: Configuration.trueOptionValue, DocumentationLink.licence),
         (.manageContributingInstructions, automaticValue: Configuration.trueOptionValue, DocumentationLink.contributingInstructions),
         (.manageXcode, automaticValue: Configuration.trueOptionValue, DocumentationLink.xcode),

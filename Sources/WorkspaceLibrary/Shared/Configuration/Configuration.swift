@@ -452,6 +452,10 @@ struct Configuration {
 
     // Responsibilities
 
+    static var manageReadMe: Bool {
+        return booleanValue(option: .manageReadMe)
+    }
+
     static var manageLicence: Bool {
         return booleanValue(option: .manageLicence)
     }

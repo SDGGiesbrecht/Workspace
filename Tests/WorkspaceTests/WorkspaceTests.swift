@@ -818,7 +818,7 @@ class WorkspaceTests : XCTestCase {
                     Repository.performInDirectory(directory: root(of: testWorkspaceProject)) {
 
                         if ¬bash(["../../.build/debug/workspace", "refresh"]).succeeded {
-                            XCTFail("Failed to refresh “\(project.name)”.")
+                            XCTFail("Failed to refresh Workspace.")
                         }
 
                         if ¬(bash(["../../.build/debug/workspace", "validate"]).exitCode == ExitCode.succeeded) {

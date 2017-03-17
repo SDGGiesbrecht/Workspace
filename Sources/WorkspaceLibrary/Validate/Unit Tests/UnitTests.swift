@@ -185,7 +185,7 @@ struct UnitTests {
                 // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
                 // [_Warning: Should not be silent._]
-                let settingsScriptResult = bash(script + ["\u{2D}showBuildSettings"]/*, silent: true*/)
+                let settingsScriptResult = bash(generateScript(buildOnly: true) + ["\u{2D}showBuildSettings"]/*, silent: true*/)
                 guard settingsScriptResult.succeeded,
                     let settings = settingsScriptResult.output else {
                     fatalError(message: [

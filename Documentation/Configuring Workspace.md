@@ -56,6 +56,7 @@ For information on the various available options, see the documentation for the 
 - [Project Types](Project%20Types.md)
 - [Operating Systems](Operating%20Systems.md)
 - [Simulator](Simulator.md)
+- [Read‐Me](Read‐Me.md)
 - [Licence](Licence.md)
 - [Contributing Instructions](Contributing%20Instructions.md)
 - [Xcode](Xcode.md)

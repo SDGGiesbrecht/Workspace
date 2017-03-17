@@ -455,6 +455,15 @@ struct Configuration {
     static var manageReadMe: Bool {
         return booleanValue(option: .manageReadMe)
     }
+    static var readMe: String {
+        return stringValue(option: .readMe)
+    }
+    static var shortProjectDescription: String? {
+        return possibleStringValue(option: .shortProjectDescription)
+    }
+    static var requiredShortProjectDescription: String {
+        return stringValue(option: .shortProjectDescription)
+    }
 
     static var manageLicence: Bool {
         return booleanValue(option: .manageLicence)

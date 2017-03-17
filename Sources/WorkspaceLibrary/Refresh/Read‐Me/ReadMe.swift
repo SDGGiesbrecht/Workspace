@@ -24,11 +24,18 @@ struct ReadMe {
     }()
 
     static let defaultReadMeTemplate: String = {
-        var instructions: [String] = [
+        var readMe: [String] = [
             "# [_Project_]"
         ]
 
-        return join(lines: instructions)
+        if Configuration.shortProjectDescription ≠ nil {
+            readMe += [
+                "",
+                "[_Short Description_]"
+            ]
+        }
+
+        return join(lines: readMe)
     }()
 
     static func refreshReadMe() {
@@ -40,10 +47,15 @@ struct ReadMe {
         var body = join(lines: [
             managementComment,
             "",
-            ReadMe.defaultReadMeTemplate
+            Configuration.readMe
             ])
 
         body = body.replacingOccurrences(of: key("Project"), with: Configuration.projectName)
+
+        let shortDescription = key("Short Description")
+        if body.contains(shortDescription) {
+            body = body.replacingOccurrences(of: shortDescription, with: Configuration.requiredShortProjectDescription)
+        }
 
         var readMe = File(possiblyAt: readMePath)
         readMe.body = body

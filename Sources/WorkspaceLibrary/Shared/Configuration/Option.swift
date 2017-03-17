@@ -35,6 +35,8 @@ enum Option : String, CustomStringConvertible {
     case skipSimulator = "Skip Simulator"
 
     case manageReadMe = "Manage Read‐Me"
+    case readMe = "Read‐Me"
+    case shortProjectDescription = "Short Project Description"
 
     case manageLicence = "Manage Licence"
     case licence = "Licence"
@@ -100,6 +102,8 @@ enum Option : String, CustomStringConvertible {
         .skipSimulator,
 
         .manageReadMe,
+        .readMe,
+        .shortProjectDescription,
 
         .manageLicence,
         .licence,
@@ -174,6 +178,10 @@ enum Option : String, CustomStringConvertible {
 
         case .manageReadMe:
             return Configuration.falseOptionValue
+        case .readMe:
+            return ReadMe.defaultReadMeTemplate
+        case .shortProjectDescription:
+            return Configuration.noValue
 
         case .manageLicence:
             return Configuration.falseOptionValue

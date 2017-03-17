@@ -32,7 +32,7 @@ struct UnitTests {
             let verbPhrase = buildOnly ? "Verifying build for" : "Running unit tests on"
             var configuration = operatingSystemName
             if let tool = buildToolName {
-                configuration += "with \(tool)"
+                configuration += " with \(tool)"
             }
             // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
             printHeader(["\(verbPhrase) \(configuration)..."])
@@ -62,7 +62,7 @@ struct UnitTests {
 
             var configuration = operatingSystemName
             if let tool = buildToolName {
-                configuration += "with \(tool)"
+                configuration += " with \(tool)"
             }
 
             if result.succeeded {

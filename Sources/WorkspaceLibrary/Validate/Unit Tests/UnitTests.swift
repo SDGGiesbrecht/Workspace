@@ -184,7 +184,8 @@ struct UnitTests {
                 printHeader(["Checking code coverage on \(operatingSystemName)..."])
                 // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-                let settingsScriptResult = bash(script + ["\u{2D}showBuildSettings"], silent: true)
+                // [_Warning: Should not be silent._]
+                let settingsScriptResult = bash(script + ["\u{2D}showBuildSettings"]/*, silent: true*/)
                 guard settingsScriptResult.succeeded,
                     let settings = settingsScriptResult.output else {
                     fatalError(message: [
@@ -259,7 +260,7 @@ struct UnitTests {
                     ], silent: true)
                 guard shellResult.succeeded,
                     let coverageResults = shellResult.output else {
-                        individualFailure("Code coverage information is unavailable.")
+                        individualFailure("Code coverage information is unavailable for \(operatingSystem).")
                         return
                 }
 

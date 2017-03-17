@@ -40,7 +40,7 @@ struct ReadMe {
         var body = join(lines: [
             managementComment,
             "",
-            Configuration.contributingInstructions
+            ReadMe.defaultReadMeTemplate
             ])
 
         body = body.replacingOccurrences(of: key("Project"), with: Configuration.projectName)

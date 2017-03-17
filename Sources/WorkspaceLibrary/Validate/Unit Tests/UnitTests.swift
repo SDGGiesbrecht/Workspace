@@ -221,7 +221,16 @@ struct UnitTests {
                         ])
                 }
                 let relativeExecutableLocation = Xcode.primaryProductName + "." + executableLocationSuffix
-                let executableLocation = coverageDirectory + "Products/Debug/" + relativeExecutableLocation
+                var debugFolder = "Debug"
+                switch operatingSystem {
+                case .iOS:
+                    debugFolder += "\u{2D}iphonesimulator"
+                case .tvOS:
+                    debugFolder += "\u{2D}appletvsimulator"
+                default:
+                    break
+                }
+                let executableLocation = coverageDirectory + "Products/" + debugFolder + "/" + relativeExecutableLocation
 
                 for path in [coverageData, executableLocation] {
                     // [_Warning: Only necessary for debugging._]

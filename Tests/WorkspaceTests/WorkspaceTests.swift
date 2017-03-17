@@ -793,6 +793,10 @@ class WorkspaceTests : XCTestCase {
 
                             let allowedExitCodes: Set<ExitCode> = [ExitCode.succeeded, ExitCode.testsFailed]
 
+                            if ¬bash(["../../.build/debug/workspace", "refresh"]).succeeded {
+                                XCTFail("Failed to refresh “\(project.name)”.")
+                            }
+
                             if ¬allowedExitCodes.contains(bash(["../../.build/debug/workspace", "validate"]).exitCode) {
                                 XCTFail("Validation crashes for “\(project.name)”.")
                             }
@@ -812,6 +816,10 @@ class WorkspaceTests : XCTestCase {
                     try nestedConfiguration.write()
 
                     Repository.performInDirectory(directory: root(of: testWorkspaceProject)) {
+
+                        if ¬bash(["../../.build/debug/workspace", "refresh"]).succeeded {
+                            XCTFail("Failed to refresh “\(project.name)”.")
+                        }
 
                         if ¬(bash(["../../.build/debug/workspace", "validate"]).exitCode == ExitCode.succeeded) {
                             XCTFail("Workspace fails its own validation.")

@@ -29,4 +29,4 @@ When Workspace is not in charge of Xcode, it may not know where to find some of 
 - `Module Name`: The name of the main module as used by `import` statements. Workspace uses this for documentation generation and for finding an application’s delegate.
 - `Xcode Scheme Name`: The name of the Xcode scheme as used by the `xcodebuild` `-scheme` flag. Workspace uses this for running unit tests.
 - `Xcode Test Target`: The name of the Xcode test target as used by the `xcodebuild` `-target` flag. Workspace uses this for setting the host application.
-- `Primary Xcode Target`: The name of the main Xcode target as used by the `xcodebuild` `-target` flag. Workspace uses this for documentation generation and for inserting the proofread phase.
+- `Primary Xcode Target`: The name of the main Xcode target as used by the `xcodebuild` `-target` flag. Workspace uses this for code coverage, for documentation generation and for inserting the proofread phase.

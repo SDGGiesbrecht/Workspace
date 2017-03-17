@@ -464,6 +464,18 @@ struct Configuration {
     static var requiredShortProjectDescription: String {
         return stringValue(option: .shortProjectDescription)
     }
+    static var quotation: String? {
+        return possibleStringValue(option: .quotation)
+    }
+    static var requiredQuotation: String {
+        return stringValue(option: .quotation)
+    }
+    static var quotationURL: String? {
+        return possibleStringValue(option: .quotationURL)
+    }
+    static var citation: String? {
+        return possibleStringValue(option: .citation)
+    }
 
     static var manageLicence: Bool {
         return booleanValue(option: .manageLicence)

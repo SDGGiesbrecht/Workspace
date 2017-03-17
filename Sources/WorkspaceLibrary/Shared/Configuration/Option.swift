@@ -37,6 +37,9 @@ enum Option : String, CustomStringConvertible {
     case manageReadMe = "Manage Read‐Me"
     case readMe = "Read‐Me"
     case shortProjectDescription = "Short Project Description"
+    case quotation = "Quotation"
+    case quotationURL = "Quotation URL"
+    case citation = "Citation"
 
     case manageLicence = "Manage Licence"
     case licence = "Licence"
@@ -104,6 +107,9 @@ enum Option : String, CustomStringConvertible {
         .manageReadMe,
         .readMe,
         .shortProjectDescription,
+        .quotation,
+        .quotationURL,
+        .citation,
 
         .manageLicence,
         .licence,
@@ -181,6 +187,12 @@ enum Option : String, CustomStringConvertible {
         case .readMe:
             return ReadMe.defaultReadMeTemplate
         case .shortProjectDescription:
+            return Configuration.noValue
+        case .quotation:
+            return Configuration.noValue
+        case .quotationURL:
+            return Configuration.noValue
+        case .citation:
             return Configuration.noValue
 
         case .manageLicence:

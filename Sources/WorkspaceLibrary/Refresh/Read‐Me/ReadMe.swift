@@ -35,7 +35,27 @@ struct ReadMe {
             ]
         }
 
+        if Configuration.quotation ≠ nil {
+            readMe += [
+                "",
+                "[_Quotation_]"
+            ]
+        }
+
         return join(lines: readMe)
+    }()
+
+    static let quotationMarkup: String = {
+        var quotation = Configuration.requiredQuotation.replacingOccurrences(of: "\n", with: "<br>")
+        if let url = Configuration.quotationURL {
+            quotation = "[\(quotation)](\(url))"
+        }
+        if let citation = Configuration.citation {
+            let indent = [String](repeating: "&nbsp;", count: 100).joined()
+            quotation += indent + "―" + citation
+        }
+
+        return "> " + quotation
     }()
 
     static func refreshReadMe() {
@@ -55,6 +75,11 @@ struct ReadMe {
         let shortDescription = key("Short Description")
         if body.contains(shortDescription) {
             body = body.replacingOccurrences(of: shortDescription, with: Configuration.requiredShortProjectDescription)
+        }
+
+        let quotation = key("Quotation")
+        if body.contains(quotation) {
+            body = body.replacingOccurrences(of: quotation, with: quotationMarkup)
         }
 
         var readMe = File(possiblyAt: readMePath)

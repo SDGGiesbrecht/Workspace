@@ -227,9 +227,8 @@ struct UnitTests {
                     // [_Warning: Only necessary for debugging._]
                     var url = URL(fileURLWithPath: path)
                     var urls = [url]
-                    while url.deletingLastPathComponent() ≠ url {
+                    while ¬url.deletingLastPathComponent().path.contains("..") {
                         url = url.deletingLastPathComponent()
-                        print(url)
                         urls.append(url)
                     }
 

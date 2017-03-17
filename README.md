@@ -32,28 +32,31 @@ Workspace can be used for development on [macOS](http://www.apple.com/macos/) an
 
 Workspace can manage:
 
-- [Library](Documentation/Project Types.md) projects for [macOS](http://www.apple.com/macos/), [Linux](https://www.ubuntu.com), [iOS](http://www.apple.com/ios/), [watchOS](http://www.apple.com/watchos/) and [tvOS](http://www.apple.com/tvos/).
-- [Application](Documentation/Project Types.md) projects for [macOS](http://www.apple.com/macos/), [iOS](http://www.apple.com/ios/) and [tvOS](http://www.apple.com/tvos/).
-- [Executable](Documentation/Project Types.md) projects for [macOS](http://www.apple.com/macos/) and [Linux](https://www.ubuntu.com).
+- [Library](Documentation/Project%20Types.md) projects for [macOS](http://www.apple.com/macos/), [Linux](https://www.ubuntu.com), [iOS](http://www.apple.com/ios/), [watchOS](http://www.apple.com/watchos/) and [tvOS](http://www.apple.com/tvos/).
+- [Application](Documentation/Project%20Types.md) projects for [macOS](http://www.apple.com/macos/), [iOS](http://www.apple.com/ios/) and [tvOS](http://www.apple.com/tvos/).
+- [Executable](Documentation/Project%20Types.md) projects for [macOS](http://www.apple.com/macos/) and [Linux](https://www.ubuntu.com).
 
-A particular project can [configure](Documentation/Operating Systems.md) which operating systems it supports.
+A particular project can [configure](Documentation/Operating%20Systems.md) which operating systems it supports.
 
 ## What Workspace Can Do
 
 - Set [new projects](#new-projects) up from scratch.
-- Be [configured](Documentation/Configuring Workspace.md) to opt in or out of any of the following features.
-- Have its configuration [shared](Documentation/Configuring Workspace.md#sharing-configurations-between-projects) between projects.
+- Be [configured](Documentation/Configuring%20Workspace.md) to opt in or out of any of the following features.
+- Have its configuration [shared](Documentation/Configuring%20Workspace.md#sharing-configurations-between-projects) between projects.
 - Automatically...
     - Keep [licence notices](Documentation/Licence.md) uniform.
-    - Keep [contributing instructions](Documentation/Contributing Instructions.md) uniform, including issue and pull request templates.
+    - Keep [contributing instructions](Documentation/Contributing%20Instructions.md) uniform, including issue and pull request templates.
     - Generate and maintain a local [Xcode project](Documentation/Xcode.md) (except on Linux).
-    - Keep [dependencies and their version restrictions](Documentation/Dependency Graph.md) up to date.
-    - Keep [file headers](Documentation/File Headers.md) uniform and up to date.
+    - Keep [dependencies and their version restrictions](Documentation/Dependency%20Graph.md) up to date.
+    - Keep [file headers](Documentation/File%20Headers.md) uniform and up to date.
     - [Proofread](Documentation/Proofreading.md) source files for code style. (Including [SwiftLint](https://github.com/realm/SwiftLint))
-    - Trigger [manual warnings](Documentation/Manual Warnings.md) in source code.
+    - Trigger [manual warnings](Documentation/Manual%20Warnings.md) in source code.
+    - Prohibit [compiler warnings](Documentation/Compiler%20Warnings.md).
     - Run unit tests on each operating system (except watchOS).
-    - Generate API [documentation](Documentation/Documentation Generation.md) (except from Linux). (Using [Jazzy](https://github.com/realm/jazzy))
-    - Configure [continuous integration](Documentation/Continuous Integration.md) for each operating system. ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))
+    - Enforce [code coverage](Documentation/Code%20Coverage.md).
+    - Generate API [documentation](Documentation/Documentation%20Generation.md) (except from Linux). (Using [Jazzy](https://github.com/realm/jazzy))
+    - Enforce [documentation coverage](Documentation/Documentation%20Generation.md#enforcement).
+    - Configure [continuous integration](Documentation/Continuous%20Integration.md) for each operating system. ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))
 
 ## The Workspace Workflow
 
@@ -73,7 +76,7 @@ git clone https://github.com/SDGGiesbrecht/Workspace
 
 ### Refresh the Workspace
 
-To refresh the workspace, double‐click the `Refresh Workspace` script for the corresponding operating system. (If you are on Linux and double‐clicking fails or opens a text file, see [here](Documentation/Linux Notes.md#doubleclicking-scripts).)
+To refresh the workspace, double‐click the `Refresh Workspace` script for the corresponding operating system. (If you are on Linux and double‐clicking fails or opens a text file, see [here](Documentation/Linux%20Notes.md#doubleclicking-scripts).)
 
 `Refresh Workspace` opens a terminal window, and in it Workspace reports its actions while it sets the project folder up for development.
 
@@ -115,17 +118,17 @@ rm -rf Workspace
 
 To have Workspace create a new Swift project from scratch, run one of the following commands in an empty folder:
 
-To create a [library](Documentation/Project Types.md) project:
+To create a [library](Documentation/Project%20Types.md) project:
 ```shell
 ~/.Workspace/Workspace/.build/release/workspace initialize
 ```
 
-To create an [application](Documentation/Project Types.md) project:
+To create an [application](Documentation/Project%20Types.md) project:
 ```shell
 ~/.Workspace/Workspace/.build/release/workspace initialize •type application
 ```
 
-To create an [executable](Documentation/Project Types.md) project:
+To create an [executable](Documentation/Project%20Types.md) project:
 ```shell
 ~/.Workspace/Workspace/.build/release/workspace initialize •type executable
 ```

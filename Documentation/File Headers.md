@@ -16,7 +16,7 @@
 
 Workspace can keep all the file headers in a project uniform and up to date.
 
-This is controlled by the [configuration](Configuring Workspace.md) option `Manage File Headers`. The [default](Responsibilities.md#default-vs-automatic) value is `False`. The [automatic](Responsibilities.md#default-vs-automatic) value is `True`.
+This is controlled by the [configuration](Configuring%20Workspace.md) option `Manage File Headers`. The [default](Responsibilities.md#default-vs-automatic) value is `False`. The [automatic](Responsibilities.md#default-vs-automatic) value is `True`.
 
 A file header is a commented section at the top of each file in a project. Typical uses for file headers include:
 
@@ -28,7 +28,7 @@ A file header is a commented section at the top of each file in a project. Typic
 
 The default file header will automatically change to accommodate some configuration options, such as `Project Website`, `Author` and `Licence`.
 
-The file header can be further customized by defining a template with the `File Header` [configuration](Configuring Workspace.md) option.
+The file header can be further customized by defining a template with the `File Header` [configuration](Configuring%20Workspace.md) option.
 
 There are several dynamic elements available for the file header template. Dynamic elements can be used by placing the element’s key inside `[_` and `_]` at the desired location.
 
@@ -62,7 +62,7 @@ The available dynamic elements are:
 - `Author`: The value of the configuration option `Author`. (e.g. `John Doe`)
 - `Licence`: The notice for the project’s [licence](Licence.md#selecting-a-licence).
 
-Dynamic elements can be especially useful when they are combined with [configuration sharing](Configuring Workspace.md#sharing-configurations-between-projects).
+Dynamic elements can be especially useful when they are combined with [configuration sharing](Configuring%20Workspace.md#sharing-configurations-between-projects).
 
 ## Precise Definition of a File Header
 

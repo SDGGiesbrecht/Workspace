@@ -538,8 +538,25 @@ struct Configuration {
         return Set(listValue(option: .disableProofreadingRules))
     }
 
+    static var prohibitCompilerWarnings: Bool {
+        return booleanValue(option: .prohibitCompilerWarnings)
+    }
+
+    static var enforceCodeCoverage: Bool {
+        return booleanValue(option: .enforceCodeCoverage)
+    }
+    static var codeCoverageExemptionTokensForSameLine: [String] {
+        return listValue(option: .codeCoverageExemptionTokensForSameLine)
+    }
+    static var codeCoverageExemptionTokensForPreviousLine: [String] {
+        return listValue(option: .codeCoverageExemptionTokensForPreviousLine)
+    }
+
     static var generateDocumentation: Bool {
         return booleanValue(option: .generateDocumentation)
+    }
+    static var enforceDocumentationCoverage: Bool {
+        return booleanValue(option: .enforceDocumentationCoverage)
     }
     static var documentationCopyright: String {
         return stringValue(option: .documentationCopyright)

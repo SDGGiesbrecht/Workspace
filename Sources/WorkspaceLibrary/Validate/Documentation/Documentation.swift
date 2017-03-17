@@ -129,6 +129,55 @@ struct Documentation {
                 } else {
                     individualFailure("Failed to generate documentation for \(operatingSystemName).")
                 }
+
+                if jazzyResult.succeeded ∧ Configuration.enforceDocumentationCoverage {
+
+                    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+                    printHeader(["Checking documentation coverage for \(operatingSystemName)..."])
+                    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+
+                    let undocumented = require() { try File(at: RelativePath("docs/\(operatingSystemName)/undocumented.json")) }
+
+                    guard let jsonData = undocumented.contents.data(using: String.Encoding.utf8) else {
+                        fatalError(message: [
+                            "“undocumented.json” is not in UTF‐8.",
+                            "This may indicate a bug in Workspace."
+                            ])
+                    }
+
+                    do {
+                        guard let jsonDictionary = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] else {
+                            fatalError(message: [
+                                "Failed to parse “undocumented.json” as a dictionary.",
+                                "This may indicate a bug in Workspace."
+                                ])
+                        }
+
+                        guard let warnings = jsonDictionary["warnings"] as? [Any] else {
+                            fatalError(message: [
+                                "Failed to parse “warnings” in “undocumented.json”.",
+                                "This may indicate a bug in Workspace."
+                                ])
+                        }
+
+                        for warning in warnings {
+                            print(["\(warning)"], in: .red, spaced: true)
+                        }
+
+                        if warnings.isEmpty {
+                            individualSuccess("Documentation coverage is complete for \(operatingSystemName).")
+                        } else {
+                            individualFailure("Documentation coverage is incomplete for \(operatingSystemName). (See above for details.)")
+                        }
+
+                    } catch let error {
+                        fatalError(message: [
+                            "An error occurred while parsing “undocumented.json”.",
+                            "",
+                            error.localizedDescription
+                            ])
+                    }
+                }
             }
         }
 

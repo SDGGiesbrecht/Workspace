@@ -1,5 +1,5 @@
 <!--
- Operating Systems.md
+ Compiler Warnings.md
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace
@@ -12,18 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  -->
 
-# Operating Systems
+# Compiler Warnings
 
-By default, Workspace assumes projects support all available operating systems:
+Workspace can prohibit compiler warnings.
 
-- `macOS`
-- `Linux`
-- `iOS`
-- `watchOS`
-- `tvOS`
-
-Any of these can be disabled by adding the corresponding option to the [configuration file](Configuring%20Workspace.md):
-
-```text
-Support Linux: False
-```
+This is controlled by the [configuration](Configuring%20Workspace.md) option `Prohibit Compiler Warnings`. The default value is `True`.

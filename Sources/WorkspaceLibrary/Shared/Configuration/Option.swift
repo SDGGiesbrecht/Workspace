@@ -55,7 +55,14 @@ enum Option : String, CustomStringConvertible {
 
     case disableProofreadingRules = "Disable Proofreading Rules"
 
+    case prohibitCompilerWarnings = "Prohibit Compiler Warnings"
+
+    case enforceCodeCoverage = "Enforce Code Coverage"
+    case codeCoverageExemptionTokensForSameLine = "Code Coverage Exemption Tokens for the Same Line"
+    case codeCoverageExemptionTokensForPreviousLine = "Code Coverage Exemption Tokens for the Previous Line"
+
     case generateDocumentation = "Generate Documentation"
+    case enforceDocumentationCoverage = "Enforce Documentation Coverage"
     case documentationCopyright = "Documentation Copyright"
 
     case manageContinuousIntegration = "Manage Continuous Integration"
@@ -111,10 +118,17 @@ enum Option : String, CustomStringConvertible {
 
         .disableProofreadingRules,
 
+        .prohibitCompilerWarnings,
+
+        .enforceCodeCoverage,
+        .codeCoverageExemptionTokensForSameLine,
+        .codeCoverageExemptionTokensForPreviousLine,
+
         .generateDocumentation,
         .documentationCopyright,
 
         .manageContinuousIntegration,
+        .enforceDocumentationCoverage,
 
         .projectName,
         .packageName,
@@ -191,8 +205,20 @@ enum Option : String, CustomStringConvertible {
         case .disableProofreadingRules:
             return Configuration.emptyListOptionValue
 
+        case .prohibitCompilerWarnings:
+            return Configuration.trueOptionValue
+
+        case .enforceCodeCoverage:
+            return Configuration.trueOptionValue
+        case .codeCoverageExemptionTokensForSameLine:
+            return Configuration.emptyListOptionValue
+        case .codeCoverageExemptionTokensForPreviousLine:
+            return Configuration.emptyListOptionValue
+
         case .generateDocumentation:
             return Configuration.falseOptionValue
+        case .enforceDocumentationCoverage:
+            return Configuration.trueOptionValue
         case .documentationCopyright:
             return FileHeaders.defaultCopyright + " All rights reserved."
 

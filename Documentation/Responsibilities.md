@@ -16,7 +16,7 @@
 
 Workspace can automatically take on new responsibilities as new features become available.
 
-This setting is controlled in the [configuration](Configuring Workspace.md) file:
+This setting is controlled in the [configuration](Configuring%20Workspace.md) file:
 
 ```text
 Automatically Take On New Responsibilities: True

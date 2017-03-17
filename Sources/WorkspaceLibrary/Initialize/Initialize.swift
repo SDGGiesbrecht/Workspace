@@ -111,7 +111,7 @@ func runInitialize(andExit shouldExit: Bool) {
             "        delegate = applicationDelegate",
             "    }",
             "    #if os(macOS)",
-            "        required init?(coder: NSCoder) {",
+            "        required init?(coder: NSCoder) { // [_Exempt from Code Coverage_]",
             "            super.init(coder: coder)",
             "            delegate = applicationDelegate",
             "        }",
@@ -205,10 +205,31 @@ func runInitialize(andExit shouldExit: Bool) {
         "    func testExample() {",
         "        XCTAssert(sayHello() == \u{22}Hello, world!\u{22})",
         "    }",
-        "",
+        ""
+        ]
+    if packageType == .executable {
+        tests += [
+            "    func testCommand() {",
+            "        \(executableLibraryName).run()",
+            "    }",
+            ""
+        ]
+    }
+    tests += [
         "    static var allTests: [(String, (\(testsName)) -> () throws -> Void)] {",
-        "        return [",
-        "            (\u{22}testExample\u{22}, testExample)",
+        "        return ["
+        ]
+    if packageType ≠ .executable {
+        tests += [
+            "            (\u{22}testExample\u{22}, testExample)"
+        ]
+    } else {
+        tests += [
+            "            (\u{22}testExample\u{22}, testExample),",
+            "            (\u{22}testCommand\u{22}, testCommand)"
+        ]
+    }
+    tests += [
         "        ]",
         "    }",
         "}"

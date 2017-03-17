@@ -27,50 +27,69 @@ struct UnitTests {
             Xcode.reEnableProofreading()
         }
 
-        func printTestHeader(buildOnly: Bool, operatingSystemName: String) {
+        func printTestHeader(buildOnly: Bool, operatingSystemName: String, buildToolName: String? = nil) {
 
             let verbPhrase = buildOnly ? "Verifying build for" : "Running unit tests on"
+            var configuration = operatingSystemName
+            if let tool = buildToolName {
+                configuration += " with \(tool)"
+            }
             // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-            printHeader(["\(verbPhrase) \(operatingSystemName)..."])
+            printHeader(["\(verbPhrase) \(configuration)..."])
             // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         }
 
-        func runUnitTests(buildOnly: Bool, operatingSystemName: String, script: [String]) {
+        func runUnitTests(buildOnly: Bool, operatingSystemName: String, script: [String], buildToolName: String? = nil) {
 
-            if bash(script).succeeded {
+            let result = bash(script)
+
+            if result.succeeded {
+                if Configuration.prohibitCompilerWarnings {
+                    if let log = result.output {
+                        var configuration = operatingSystemName
+                        if let tool = buildToolName {
+                            configuration += " with \(tool)"
+                        }
+                        if ¬log.contains(" warning: ") {
+                            individualSuccess("There are no compiler warnings for \(configuration).")
+                        } else {
+                            individualFailure("There are compiler warnings for \(configuration). (See above for details.)")
+                        }
+                    } else {
+                        fatalError(message: [
+                            "No build log detected.",
+                            "This may indicate a bug in Workspace."
+                            ])
+                    }
+                }
+            }
+
+            var configuration = operatingSystemName
+            if let tool = buildToolName {
+                configuration += " with \(tool)"
+            }
+
+            if result.succeeded {
                 let phrase = buildOnly ? "Build succeeds for" : "Unit tests succeed on"
-                individualSuccess("\(phrase) \(operatingSystemName).")
+                individualSuccess("\(phrase) \(configuration).")
             } else {
                 let phrase = buildOnly ? "Build fails for" : "Unit tests fail on"
-                individualFailure("\(phrase) \(operatingSystemName). (See above for details.)")
+                individualFailure("\(phrase) \(configuration). (See above for details.)")
             }
         }
 
-        func runUnitTestsInSwiftPackageManager(operatingSystemName: String) {
+        func runUnitTestsInSwiftPackageManager(operatingSystemName: String, buildToolName: String? = nil) {
             printTestHeader(buildOnly: false, operatingSystemName: operatingSystemName)
-            runUnitTests(buildOnly: false, operatingSystemName: operatingSystemName, script: ["swift", "test"])
-        }
-
-        if Environment.shouldDoMacOSJobs {
-
-            // macOS
-
-            runUnitTestsInSwiftPackageManager(operatingSystemName: "macOS")
-        }
-
-        if Environment.shouldDoLinuxJobs {
-
-            // Linux
-
-            runUnitTestsInSwiftPackageManager(operatingSystemName: "Linux")
+            runUnitTests(buildOnly: false, operatingSystemName: operatingSystemName, script: ["swift", "test"], buildToolName: buildToolName)
         }
 
         var deviceList: [String: String]?
 
-        func runUnitTestsInXcode(buildOnly: Bool, operatingSystemName: String, sdk: String, deviceKey: String) {
+        func runUnitTestsInXcode(buildOnly: Bool, operatingSystem: OperatingSystem, sdk: String, simulatorSDK: String? = nil, deviceKey: String?, buildToolName: String? = nil) {
+            let operatingSystemName = "\(operatingSystem)"
 
             var buildOnly = buildOnly
-            if Configuration.skipSimulators {
+            if Configuration.skipSimulators ∧ operatingSystem ≠ .macOS {
                 buildOnly = true
             }
 
@@ -78,11 +97,17 @@ struct UnitTests {
 
             let flag: String
             let flagValue: String
-            if buildOnly {
+            if buildOnly ∨ operatingSystem == .macOS {
                 flag = "\u{2D}sdk"
                 flagValue = sdk
             } else {
-                // Test
+                // Simulator
+                guard let requiredDeviceKey = deviceKey else {
+                    fatalError(message: [
+                        "A device key is required for the simulator.",
+                        "This may indicate a bug in Workspace."
+                        ])
+                }
 
                 let devices = cachedResult(cache: &deviceList) {
                     () -> [String: String] in
@@ -138,11 +163,11 @@ struct UnitTests {
                     return result
                 }
 
-                guard let deviceID = devices[deviceKey] else {
+                guard let deviceID = devices[requiredDeviceKey] else {
                     fatalError(message: [
                         "Unable to find device:",
                         "",
-                        deviceKey
+                        requiredDeviceKey
                         ])
                 }
 
@@ -163,28 +188,198 @@ struct UnitTests {
             sleep(10)
             let _ = bash(["killall", "xcodebuild"], silent: true)
 
-            return runUnitTests(buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: generateScript(buildOnly: buildOnly))
+            let script = generateScript(buildOnly: buildOnly)
+            runUnitTests(buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: script, buildToolName: buildToolName)
+
+            if ¬buildOnly ∧ Configuration.enforceCodeCoverage {
+
+                // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+                printHeader(["Checking code coverage on \(operatingSystemName)..."])
+                // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+
+                let settingsScriptResult = bash([
+                    "xcodebuild", "\u{2D}showBuildSettings",
+                    "\u{2D}target", Configuration.primaryXcodeTarget,
+                    "\u{2D}sdk", sdk
+                    ], silent: true)
+                guard settingsScriptResult.succeeded,
+                    let settings = settingsScriptResult.output else {
+                        fatalError(message: [
+                            "Failed to detect Xcode build settings.",
+                            "This may indicate a bug in Workspace."
+                            ])
+                }
+
+                let buildDirectoryKey = (" BUILD_DIR = ", "\n")
+                guard let buildDirectory = settings.contents(of: buildDirectoryKey) else {
+                    fatalError(message: [
+                        "Failed to find “\(buildDirectoryKey.0)” in Xcode build settings.",
+                        "This may indicate a bug in Workspace."
+                        ])
+                }
+
+                let irrelevantPathComponents = "Products"
+                guard let irrelevantRange = buildDirectory.range(of: irrelevantPathComponents) else {
+                    fatalError(message: [
+                        "Expected “\(irrelevantPathComponents)” at the end of the Xcode build directory path.",
+                        "This may indicate a bug in Workspace."
+                        ])
+                }
+
+                let rootPath = buildDirectory.substring(to: irrelevantRange.lowerBound)
+                let coverageDirectory = rootPath + "Intermediates/CodeCoverage/"
+                let coverageData = coverageDirectory + "Coverage.profdata"
+
+                let executableLocationKey = (" EXECUTABLE_PATH = \(Xcode.primaryProductName).", "\n")
+                guard let executableLocationSuffix = settings.contents(of: executableLocationKey) else {
+                    fatalError(message: [
+                        "Failed to find “\(buildDirectoryKey.0)” in Xcode build settings.",
+                        "This may indicate a bug in Workspace."
+                        ])
+                }
+                let relativeExecutableLocation = Xcode.primaryProductName + "." + executableLocationSuffix
+                let directorySuffix: String
+                if let simulator = simulatorSDK {
+                    directorySuffix = "\u{2D}" + simulator
+                } else {
+                    directorySuffix = ""
+                }
+                let executableLocation = coverageDirectory + "Products/Debug" + directorySuffix + "/" + relativeExecutableLocation
+
+                let shellResult = bash([
+                    "xcrun", "llvm\u{2D}cov", "show", "\u{2D}show\u{2D}regions",
+                    "\u{2D}instr\u{2D}profile", coverageData,
+                    executableLocation
+                    ], silent: true)
+                guard shellResult.succeeded,
+                    let coverageResults = shellResult.output else {
+                        individualFailure("Code coverage information is unavailable for \(operatingSystem).")
+                        return
+                }
+
+                let nullCharacters = CharacterSet.whitespacesAndNewlines.union(CharacterSet.decimalDigits.union(CharacterSet(charactersIn: "|")))
+
+                var overallCoverageSuccess = true
+                var overallIndex = coverageResults.startIndex
+                let fileMarker = ".swift:"
+                while let range = coverageResults.range(of: fileMarker, in: overallIndex ..< coverageResults.endIndex) {
+                    overallIndex = range.upperBound
+
+                    let fileRange = coverageResults.lineRange(for: range)
+                    let file = coverageResults.substring(with: fileRange)
+
+                    let end: String.Index
+                    if let next = coverageResults.range(of: fileMarker, in: fileRange.upperBound ..< coverageResults.endIndex) {
+                        let nextFileRange = coverageResults.lineRange(for: next)
+                        end = nextFileRange.lowerBound
+                    } else {
+                        end = coverageResults.endIndex
+                    }
+
+                    var index = overallIndex
+                    while let missingRange = coverageResults.range(of: "^0", in: index ..< end) {
+                        index = missingRange.upperBound
+
+                        let errorLineRange = coverageResults.lineRange(for: missingRange)
+                        let errorLine = coverageResults.substring(with: errorLineRange)
+
+                        let previous = coverageResults.index(before: errorLineRange.lowerBound)
+                        let sourceLineRange = coverageResults.lineRange(for: previous ..< previous)
+                        let sourceLine = coverageResults.substring(with: sourceLineRange)
+
+                        let untestableTokensOnPreviousLine = [
+                            "[_Exempt from Code Coverage_]",
+                            "assert",
+                            "precondition"
+                            ] + Configuration.codeCoverageExemptionTokensForSameLine
+                        var noUntestableTokens = true
+                        for token in untestableTokensOnPreviousLine {
+                            if sourceLine.contains(token) {
+                                noUntestableTokens = false
+                                break
+                            }
+                        }
+
+                        let next = coverageResults.index(after: errorLineRange.upperBound)
+                        let nextLineRange = coverageResults.lineRange(for: next ..< next)
+                        let nextLine = coverageResults.substring(with: nextLineRange)
+                        var sourceLines = sourceLine + nextLine
+                        sourceLines.unicodeScalars = String.UnicodeScalarView(sourceLines.unicodeScalars.filter({ ¬nullCharacters.contains($0) }))
+
+                        var isExecutable = true
+                        if sourceLines == "}}" {
+                            isExecutable = false
+                        }
+
+                        let untestableTokensOnFollowingLine = [
+                            "assertionFailure",
+                            "preconditionFailure",
+                            "fatalError"
+                            ] + Configuration.codeCoverageExemptionTokensForPreviousLine
+                        if noUntestableTokens {
+                            for token in untestableTokensOnFollowingLine {
+                                if nextLine.contains(token) {
+                                    noUntestableTokens = false
+                                    break
+                                }
+                            }
+                        }
+
+                        if noUntestableTokens ∧ isExecutable {
+                            overallCoverageSuccess = false
+                            print([
+                                file
+                                    + sourceLine
+                                    + errorLine
+                                ], in: .red, spaced: true)
+                        }
+                    }
+                }
+
+                if overallCoverageSuccess {
+                    individualSuccess("Code coverage is complete for \(operatingSystemName).")
+                } else {
+                    individualFailure("Code coverage is incomplete for \(operatingSystemName). (See above for details.)")
+                }
+            }
+        }
+
+        if Environment.shouldDoMacOSJobs {
+
+            // macOS
+
+            if Configuration.projectType ≠ .application {
+                runUnitTestsInSwiftPackageManager(operatingSystemName: "macOS", buildToolName: "the Swift Package Manager")
+            }
+            runUnitTestsInXcode(buildOnly: false, operatingSystem: .macOS, sdk: "macosx", deviceKey: nil, buildToolName: "Xcode")
+        }
+
+        if Environment.shouldDoLinuxJobs {
+
+            // Linux
+
+            runUnitTestsInSwiftPackageManager(operatingSystemName: "Linux")
         }
 
         if Environment.shouldDoIOSJobs {
 
             // iOS
 
-            runUnitTestsInXcode(buildOnly: false, operatingSystemName: "iOS", sdk: "iphoneos", deviceKey: "iPhone 7")
+            runUnitTestsInXcode(buildOnly: false, operatingSystem: .iOS, sdk: "iphoneos", simulatorSDK: "iphonesimulator", deviceKey: "iPhone 7")
         }
 
         if Environment.shouldDoWatchOSJobs {
 
             // watchOS
 
-            runUnitTestsInXcode(buildOnly: true, operatingSystemName: "watchOS", sdk: "watchos", deviceKey: "Apple Watch Series 2 \u{2D} 38mm")
+            runUnitTestsInXcode(buildOnly: true, operatingSystem: .watchOS, sdk: "watchos", deviceKey: "Apple Watch Series 2 \u{2D} 38mm")
         }
 
         if Environment.shouldDoTVOSJobs {
 
             // tvOS
 
-            runUnitTestsInXcode(buildOnly: false, operatingSystemName: "tvOS", sdk: "appletvos", deviceKey: "Apple TV 1080p")
+            runUnitTestsInXcode(buildOnly: false, operatingSystem: .tvOS, sdk: "appletvos", simulatorSDK: "appletvsimulator", deviceKey: "Apple TV 1080p")
         }
     }
 }

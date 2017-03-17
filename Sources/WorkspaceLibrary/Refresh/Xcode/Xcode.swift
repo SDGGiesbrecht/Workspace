@@ -20,12 +20,12 @@ struct Xcode {
         return Configuration.defaultPackageName + ".xcodeproj"
     }
 
-    static var applicationProductName: String {
+    static var primaryProductName: String {
         return Configuration.moduleName
     }
 
     static var applicationExecutableName: String {
-        return applicationProductName
+        return primaryProductName
     }
 
     static var defaultXcodeSchemeName: String {
@@ -49,10 +49,7 @@ struct Xcode {
         let path = RelativePath("\(Xcode.projectFilename)")
         force() { try Repository.delete(path) }
 
-        var script = ["swift", "package", "generate\u{2D}xcodeproj", "\u{2D}\u{2D}output", path.string]
-        if ¬Environment.isInContinuousIntegration {
-            script.append("\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage")
-        }
+        let script = ["swift", "package", "generate\u{2D}xcodeproj", "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage", "\u{2D}\u{2D}output", path.string]
         requireBash(script)
 
         // Allow dependencies to be found by the executable.
@@ -72,7 +69,7 @@ struct Xcode {
 
             // Change product type from framework to application.
 
-            let productMarkerSearchString = "productName = \u{22}\(Xcode.applicationProductName)\u{22}"
+            let productMarkerSearchString = "productName = \u{22}\(Xcode.primaryProductName)\u{22}"
             guard let productMarker = project.range(of: productMarkerSearchString),
                 let rangeOfProductType = project.range(of: ".framework", in: productMarker.upperBound ..< project.endIndex)else {
                     fatalError(message: [
@@ -84,7 +81,7 @@ struct Xcode {
 
             // Application bundle name should be .app not .framework.
 
-            project = project.replacingOccurrences(of: "\(Xcode.applicationProductName).framework", with: "\(Xcode.applicationProductName).app")
+            project = project.replacingOccurrences(of: "\(Xcode.primaryProductName).framework", with: "\(Xcode.primaryProductName).app")
 
             // Remove .app from the list of frameworks that tests link against.
 
@@ -125,8 +122,8 @@ struct Xcode {
 
             let testMarker = "TARGET_NAME = \u{22}\(Configuration.xcodeTestTarget)\u{22};"
             let testInfo = [
-                "\u{22}TEST_HOST[sdk=macosx*]\u{22} = \u{22}$(BUILT_PRODUCTS_DIR)/\(Xcode.applicationProductName).app/Contents/MacOS/\(Xcode.applicationExecutableName)\u{22};",
-                "TEST_HOST = \u{22}$(BUILT_PRODUCTS_DIR)/\(Xcode.applicationProductName).app/\(Xcode.applicationExecutableName)\u{22};",
+                "\u{22}TEST_HOST[sdk=macosx*]\u{22} = \u{22}$(BUILT_PRODUCTS_DIR)/\(Xcode.primaryProductName).app/Contents/MacOS/\(Xcode.applicationExecutableName)\u{22};",
+                "TEST_HOST = \u{22}$(BUILT_PRODUCTS_DIR)/\(Xcode.primaryProductName).app/\(Xcode.applicationExecutableName)\u{22};",
                 "BUNDLE_LOADER = \u{22}$(TEST_HOST)\u{22};"
             ]
             project = project.replacingOccurrences(of: testMarker, with: join(lines: [testMarker] + testInfo))
@@ -140,7 +137,7 @@ struct Xcode {
 
             // Denote principal class in Info.plist for @NSApplicationMain to work.
 
-            var info = require() { try File(at: path.subfolderOrFile("\(Xcode.applicationProductName)_Info.plist")) }
+            var info = require() { try File(at: path.subfolderOrFile("\(Xcode.primaryProductName)_Info.plist")) }
 
             info.contents = info.contents.replacingOccurrences(of: "<key>NSPrincipalClass</key>\n  <string></string>", with: "<key>NSPrincipalClass</key>\n  <string>\(Configuration.moduleName).Application</string>")
 

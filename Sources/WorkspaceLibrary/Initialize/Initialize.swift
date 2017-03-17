@@ -120,7 +120,7 @@ func runInitialize(andExit shouldExit: Bool) {
             "",
             "#if os(macOS)",
             "    @NSApplicationMain class \(moduleName) : NSObject, NSApplicationDelegate {",
-            "        func applicationDidFinishLaunching(_ aNotification: Notification) { // [_Exempt from Code Coverage_]",
+            "        func applicationDidFinishLaunching(_ aNotification: Notification) {",
             "            applicationDidFinishLaunching()",
             "        }",
             "    }",

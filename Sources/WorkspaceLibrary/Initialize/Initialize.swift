@@ -217,11 +217,17 @@ func runInitialize(andExit shouldExit: Bool) {
     }
     tests += [
         "    static var allTests: [(String, (\(testsName)) -> () throws -> Void)] {",
-        "        return [",
-        "            (\u{22}testExample\u{22}, testExample),"
+        "        return ["
         ]
-    if packageType == .executable {
-        tests += ["            (\u{22}testCommand\u{22}, testCommand)"]
+    if packageType ≠ .executable {
+        tests += [
+            "            (\u{22}testExample\u{22}, testExample)"
+        ]
+    } else {
+        tests += [
+            "            (\u{22}testExample\u{22}, testExample),",
+            "            (\u{22}testCommand\u{22}, testCommand)"
+        ]
     }
     tests += [
         "        ]",

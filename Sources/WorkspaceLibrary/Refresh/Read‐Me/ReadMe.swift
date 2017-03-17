@@ -52,7 +52,7 @@ struct ReadMe {
         }
         if let citation = Configuration.citation {
             let indent = [String](repeating: "&nbsp;", count: 100).joined()
-            quotation += indent + "―" + citation
+            quotation += "<br>" + indent + "―" + citation
         }
 
         return "> " + quotation

@@ -72,7 +72,7 @@ struct UnitTests {
 
         var deviceList: [String: String]?
 
-        func runUnitTestsInXcode(buildOnly: Bool, operatingSystem: OperatingSystem, sdk: String, deviceKey: String?) {
+        func runUnitTestsInXcode(buildOnly: Bool, operatingSystem: OperatingSystem, sdk: String, simulatorSDK: String? = nil, deviceKey: String?) {
             let operatingSystemName = "\(operatingSystem)"
 
             var buildOnly = buildOnly
@@ -222,16 +222,13 @@ struct UnitTests {
                         ])
                 }
                 let relativeExecutableLocation = Xcode.primaryProductName + "." + executableLocationSuffix
-                var debugFolder = "Debug"
-                switch operatingSystem {
-                case .iOS:
-                    debugFolder += "\u{2D}iphonesimulator"
-                case .tvOS:
-                    debugFolder += "\u{2D}appletvsimulator"
-                default:
-                    break
+                let directorySuffix: String
+                if let simulator = simulatorSDK {
+                    directorySuffix = "\u{2D}" + simulator
+                } else {
+                    directorySuffix = ""
                 }
-                let executableLocation = coverageDirectory + "Products/" + debugFolder + "/" + relativeExecutableLocation
+                let executableLocation = coverageDirectory + "Products/Debug" + directorySuffix + "/" + relativeExecutableLocation
 
                 for path in [coverageData, executableLocation] {
                     // [_Warning: Only necessary for debugging._]
@@ -373,7 +370,7 @@ struct UnitTests {
 
             // iOS
 
-            runUnitTestsInXcode(buildOnly: false, operatingSystem: .iOS, sdk: "iphoneos", deviceKey: "iPhone 7")
+            runUnitTestsInXcode(buildOnly: false, operatingSystem: .iOS, sdk: "iphoneos", simulatorSDK: "iphonesimulator", deviceKey: "iPhone 7")
         }
 
         if Environment.shouldDoWatchOSJobs {
@@ -387,7 +384,7 @@ struct UnitTests {
 
             // tvOS
 
-            runUnitTestsInXcode(buildOnly: false, operatingSystem: .tvOS, sdk: "appletvos", deviceKey: "Apple TV 1080p")
+            runUnitTestsInXcode(buildOnly: false, operatingSystem: .tvOS, sdk: "appletvos", simulatorSDK: "appletvsimulator", deviceKey: "Apple TV 1080p")
         }
     }
 }

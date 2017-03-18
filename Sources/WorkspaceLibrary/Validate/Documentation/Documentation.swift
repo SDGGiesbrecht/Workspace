@@ -99,7 +99,7 @@ struct Documentation {
                            "\u{2D}\u{2D}module", Configuration.moduleName,
                            "\u{2D}\u{2D}copyright", copyright(folder: documentationFolder)
             ]
-            if let github = Configuration.projectWebsite {
+            if let github = Configuration.repositoryURL {
                 command.append(contentsOf: [
                     "\u{2D}\u{2D}github_url", github
                     ])

@@ -29,6 +29,7 @@ The default read‐me will automatically change to accommodate some [configurati
 - `Quotation`, `Quotation URL` & `Citation` (Text)
 - `Feature List` (Markdown)
 - `Related Projects` (A list separated by line breaks. Each entry is one of two forms: (1) ` `Name`: `https://url.of/repository` `, or (2) `# `Section Heading` `.)
+- `Installation Instructions` (Markdown. Default instructions exist for library projects that have `Repository URL` and `Current Version` defined.)
 
 The read‐me can be further customized by defining a template with the `Read‐Me` [configuration](Configuring%20Workspace.md) option.
 
@@ -41,5 +42,9 @@ The available dynamic elements are:
 - `Quotation`: The combined result of the configuration options `Quotation`, `Quotation URL` and `Citation`.
 - `Features`: The value of the configuration option `Feature List`.
 - `Related Projects`: A link to the results of the configuration option `Related Projects`.
+- `Installation Instructions`: The value of the configuration option `Installation Instructions`.
+- `Repository URL`: The value of the configuration option `Repository URL`.
+- `Current Version`: The value of the configuration option `Current Version`.
+- `Next Major Version`: The major version following the value of `Current Version`.
 
 Customization can be especially useful when it is combined with [configuration sharing](Configuring%20Workspace.md#sharing-configurations-between-projects).

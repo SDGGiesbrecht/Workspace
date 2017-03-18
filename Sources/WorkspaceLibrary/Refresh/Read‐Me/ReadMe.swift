@@ -66,7 +66,7 @@ struct ReadMe {
         if Configuration.featureList ≠ nil {
             readMe += [
                 "",
-                "# Features",
+                "## Features",
                 "",
                 "[_Features_]"
             ]
@@ -123,6 +123,54 @@ struct ReadMe {
         return "(For a list of related projecs, see [here](\(ReadMe.relatedProjectsPath.string.replacingOccurrences(of: " ", with: "%20"))).)"
     }()
 
+    static let defaultInstallationInstructions: String? = {
+        if Configuration.projectType == .library {
+
+            var instructions = [
+                "## Importing",
+                "",
+                "\(Configuration.projectName) is indended for use with the [Swift Package Manager](https://swift.org/package-manager/).",
+                ""
+            ]
+
+            var dependencySummary = "Simply add \(Configuration.projectName) as a dependency in `Package.swift`"
+
+            if let repository = Configuration.repositoryURL,
+                let currentVersion = Configuration.currentVersion {
+
+                instructions += [
+                    dependencySummary + ":",
+                    "",
+                    "```swift",
+                    "let package = Package(",
+                    "    ...",
+                    "    dependencies: [",
+                    "        ...",
+                    "        .Package(url: \u{22}\(repository)\u{22}, versions: \u{22}\(currentVersion)\u{22} ..< \u{22}\(currentVersion.nextMajorVersion)\u{22}),",
+                    "        ...",
+                    "    ]",
+                    ")",
+                    "```"
+                ]
+
+            } else {
+                instructions += [
+                    dependencySummary + "."
+                ]
+            }
+
+            instructions += [
+                "\(Configuration.projectName) can then be imported in source files:",
+                "",
+                "```swift",
+                "import \(Configuration.moduleName)",
+                "```"
+            ]
+        }
+
+        return nil
+    }()
+
     static func refreshReadMe() {
 
         func key(_ name: String) -> String {
@@ -160,6 +208,26 @@ struct ReadMe {
         let relatedProjectsLink = key("Related Projects")
         if body.contains(relatedProjectsLink) {
             body = body.replacingOccurrences(of: relatedProjectsLink, with: relatedProjectsLinkMarkup)
+        }
+
+        let installationInsructions = key("Installation Instructions")
+        if body.contains(installationInsructions) {
+            body = body.replacingOccurrences(of: installationInsructions, with: Configuration.requiredInstallationInstructions)
+        }
+
+        let repositoryURL = key("Repository URL")
+        if body.contains(repositoryURL) {
+            body = body.replacingOccurrences(of: repositoryURL, with: Configuration.requiredRepositoryURL)
+        }
+
+        let currentVersion = key("Current Version")
+        if body.contains(currentVersion) {
+            body = body.replacingOccurrences(of: currentVersion, with: "\(Configuration.requiredCurrentVersion)")
+        }
+
+        let nextMajorVersion = key("Next Major Version")
+        if body.contains(nextMajorVersion) {
+            body = body.replacingOccurrences(of: nextMajorVersion, with: "\(Configuration.requiredCurrentVersion.nextMajorVersion)")
         }
 
         var readMe = File(possiblyAt: readMePath)

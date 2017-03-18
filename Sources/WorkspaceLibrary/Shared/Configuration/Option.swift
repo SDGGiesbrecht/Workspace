@@ -46,6 +46,9 @@ enum Option : String, CustomStringConvertible {
     case citation = "Citation"
     case featureList = "Feature List"
     case relatedProjects = "Related Projects"
+    case installationInstructions = "Installation Instructions"
+    case repositoryURL = "Repository URL"
+    case currentVersion = "Current Version"
 
     case manageLicence = "Manage Licence"
     case licence = "Licence"
@@ -119,6 +122,9 @@ enum Option : String, CustomStringConvertible {
         .citation,
         .featureList,
         .relatedProjects,
+        .installationInstructions,
+        .repositoryURL,
+        .currentVersion,
 
         .manageLicence,
         .licence,
@@ -215,6 +221,12 @@ enum Option : String, CustomStringConvertible {
             return Configuration.noValue
         case .relatedProjects:
             return Configuration.emptyListOptionValue
+        case .installationInstructions:
+            return ReadMe.defaultInstallationInstructions ?? Configuration.noValue
+        case .repositoryURL:
+            return Configuration.noValue
+        case .currentVersion:
+            return Configuration.noValue
 
         case .manageLicence:
             return Configuration.falseOptionValue

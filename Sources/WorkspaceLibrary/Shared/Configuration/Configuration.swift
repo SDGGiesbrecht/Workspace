@@ -511,6 +511,33 @@ struct Configuration {
     static var requiredFeatureList: String {
         return stringValue(option: .featureList)
     }
+    static var installationInstructions: String? {
+        return possibleStringValue(option: .installationInstructions)
+    }
+    static var requiredInstallationInstructions: String {
+        return stringValue(option: .installationInstructions)
+    }
+    static var repositoryURL: String? {
+        return possibleStringValue(option: .repositoryURL)
+    }
+    static var requiredRepositoryURL: String {
+        return stringValue(option: .repositoryURL)
+    }
+    static var currentVersion: Version? {
+        if let version = possibleStringValue(option: .currentVersion) {
+            return Version(version)
+        } else {
+            return nil
+        }
+    }
+    static var requiredCurrentVersion: Version {
+        guard let result = Version(stringValue(option: .currentVersion)) else {
+            failTests(message: [
+                "Invalid version identifier: " + stringValue(option: .currentVersion)
+                ])
+        }
+        return result
+    }
 
     static var manageLicence: Bool {
         return booleanValue(option: .manageLicence)

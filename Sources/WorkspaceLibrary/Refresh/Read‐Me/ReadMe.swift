@@ -76,11 +76,6 @@ struct ReadMe {
         return "> " + quotation
     }()
 
-    static let featureMarkup: String = {
-        var features = Configuration.requiredQuotation.replacingOccurrences(of: "\n", with: "\n\u{2D} ")
-        return "\u{2D} " + features
-    }()
-
     static func refreshReadMe() {
 
         func key(_ name: String) -> String {
@@ -107,7 +102,7 @@ struct ReadMe {
 
         let features = key("Features")
         if body.contains(features) {
-            body = body.replacingOccurrences(of: quotation, with: featureMarkup)
+            body = body.replacingOccurrences(of: features, with: Configuration.requiredFeatureList)
         }
 
         var readMe = File(possiblyAt: readMePath)

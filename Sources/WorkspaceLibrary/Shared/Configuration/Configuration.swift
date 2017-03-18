@@ -497,6 +497,9 @@ struct Configuration {
     static var featureList: String? {
         return possibleStringValue(option: .featureList)
     }
+    static var requiredFeatureList: String {
+        return stringValue(option: .featureList)
+    }
 
     static var manageLicence: Bool {
         return booleanValue(option: .manageLicence)

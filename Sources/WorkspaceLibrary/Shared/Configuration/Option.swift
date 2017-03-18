@@ -43,7 +43,7 @@ enum Option : String, CustomStringConvertible {
     case quotationTestament = "Quotation Testament"
     case quotationTranslationKey = "Quotation Translation Key"
     case citation = "Citation"
-    case featureList = "FeatureList"
+    case featureList = "Feature List"
 
     case manageLicence = "Manage Licence"
     case licence = "Licence"

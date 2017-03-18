@@ -194,6 +194,7 @@ enum Option : String, CustomStringConvertible {
         case .quotation:
             return Configuration.noValue
         case .quotationURL:
+            print("default requested")
             return ReadMe.defaultQuotationURL
         case .quotationChapter:
             return Configuration.noValue

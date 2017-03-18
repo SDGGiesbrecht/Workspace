@@ -330,10 +330,9 @@ struct Configuration {
     }
 
     private static func possibleStringValue(option: Option) -> String? {
-        if let result = configurationFile[option] {
-            if result ≠ Configuration.noValue {
-                return result
-            }
+        let result = configurationFile[option] ?? option.defaultValue
+        if result ≠ Configuration.noValue {
+            return result
         }
         return nil
     }
@@ -471,7 +470,7 @@ struct Configuration {
         return stringValue(option: .quotation)
     }
     static var quotationURL: String? {
-        return possibleStringValue(option: .quotationURL) ?? Option.quotationURL.defaultValue
+        return possibleStringValue(option: .quotationURL)
     }
     static var quotationChapter: String? {
         return possibleStringValue(option: .quotationChapter)

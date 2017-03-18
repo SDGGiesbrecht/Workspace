@@ -25,11 +25,9 @@ struct ReadMe {
 
     static let defaultQuotationURL: String = {
         if var chapter = Configuration.quotationChapter {
-            print(chapter)
             chapter = chapter.replacingOccurrences(of: " ", with: "+")
             return "https://www.biblegateway.com/passage/?search=\(chapter)&version=\(Configuration.quotationOriginalKey);\(Configuration.quotationTranslationKey)"
         } else {
-            print("No chapter.")
             return Configuration.noValue
         }
     }()

@@ -40,7 +40,8 @@ struct ReadMe {
 
         if Configuration.documentationURL ≠ nil {
             readMe += [
-                "[_API Links_]"
+                "[_API Links_]",
+                ""
             ]
         }
 
@@ -97,7 +98,7 @@ struct ReadMe {
 
             let root = url.deletingLastPathComponent().absoluteString
             let links = operatingSystems.map() {
-                return "[\($0)](\(root)/\($0))"
+                return "[\($0)](\(root)\($0))"
             }
             return "APIs: \(links.joined(separator: " • "))"
         } else {

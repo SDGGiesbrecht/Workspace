@@ -473,6 +473,25 @@ struct Configuration {
     static var quotationURL: String? {
         return possibleStringValue(option: .quotationURL)
     }
+    static var quotationChapter: String? {
+        return possibleStringValue(option: .quotationChapter)
+    }
+    static var quotationOriginalKey: String {
+        let value = stringValue(option: .quotationTestament)
+        let old = "Old"
+        let new = "New"
+        switch value {
+        case old:
+            return "WLC"
+        case new:
+            return "SBLGNT"
+        default:
+            invalidEnumValue(option: .quotationTestament, value: value, valid: [old, new])
+        }
+    }
+    static var quotationTranslationKey: String {
+        return stringValue(option: .quotationTranslationKey)
+    }
     static var citation: String? {
         return possibleStringValue(option: .citation)
     }

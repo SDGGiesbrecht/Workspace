@@ -23,6 +23,15 @@ struct ReadMe {
         return FileType.markdown.syntax.comment(contents: managementWarning)
     }()
 
+    static let defaultQuotationURL: String = {
+        if var chapter = Configuration.quotationChapter {
+            chapter = chapter.replacingOccurrences(of: " ", with: "+")
+            return "https://www.biblegateway.com/passage/?search=\(chapter)&version=\(Configuration.quotationOriginalKey);\(Configuration.quotationTranslationKey)"
+        } else {
+            return Configuration.noValue
+        }
+    }()
+
     static let defaultReadMeTemplate: String = {
         var readMe: [String] = [
             "# [_Project_]"

@@ -82,7 +82,7 @@ struct ReadMe {
         if Configuration.installationInstructions ≠ nil {
             readMe += [
                 "",
-                "[_Installation Instructions]"
+                "[_Installation Instructions_]"
             ]
         }
 

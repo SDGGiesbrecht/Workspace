@@ -153,7 +153,7 @@ struct ReadMe {
                 if line.hasPrefix("# ") {
                     let header = extractHeader(line: line)
                     projects += [
-                        "\u{2D} [\(header)](#\(header.replacingOccurrences(of: " ", with: "\u{2D}")))"
+                        "\u{2D} [\(header)](#\(header.replacingOccurrences(of: " ", with: "\u{2D}").lowercased()))"
                     ]
                 }
             }
@@ -188,7 +188,7 @@ struct ReadMe {
                     }
                     projects += [
                         "",
-                        "[\(name)](\(link))"
+                        "### [\(name)](\(link))"
                     ]
 
                     if let shortDescription = configuration[.shortProjectDescription] {

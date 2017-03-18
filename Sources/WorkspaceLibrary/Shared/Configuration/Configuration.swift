@@ -471,8 +471,7 @@ struct Configuration {
         return stringValue(option: .quotation)
     }
     static var quotationURL: String? {
-        print("url requested")
-        return possibleStringValue(option: .quotationURL)
+        return possibleStringValue(option: .quotationURL) ?? Option.quotationURL.defaultValue
     }
     static var quotationChapter: String? {
         return possibleStringValue(option: .quotationChapter)

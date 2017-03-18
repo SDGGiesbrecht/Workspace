@@ -79,6 +79,13 @@ struct ReadMe {
             ]
         }
 
+        if Configuration.installationInstructions ≠ nil {
+            readMe += [
+                "",
+                "[_Installation Instructions]"
+            ]
+        }
+
         return join(lines: readMe)
     }()
 

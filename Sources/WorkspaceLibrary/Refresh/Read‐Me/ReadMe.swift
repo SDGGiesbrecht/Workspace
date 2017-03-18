@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGLogic
 
 struct ReadMe {
@@ -34,7 +36,15 @@ struct ReadMe {
     }()
 
     static let defaultReadMeTemplate: String = {
-        var readMe: [String] = [
+        var readMe: [String] = []
+
+        if Configuration.documentationURL ≠ nil {
+            readMe += [
+                "[_API Links_]"
+            ]
+        }
+
+        readMe += [
             "# [_Project_]"
         ]
 
@@ -71,6 +81,30 @@ struct ReadMe {
         return join(lines: readMe)
     }()
 
+    static let apiLinksMarkup: String = {
+        let urlString = Configuration.requiredDocumentationURL
+
+        guard let url = URL(string: urlString) else {
+            fatalError(message: [
+                "The configured “Documentation URL” is invalid.",
+                "",
+                urlString
+                ])
+        }
+
+        let operatingSystems = OperatingSystem.all.filter({ $0.isSupportedByProject }).map({ "\($0)" })
+        if Set(operatingSystems).contains(url.lastPathComponent) {
+
+            let root = url.deletingLastPathComponent().absoluteString
+            let links = operatingSystems.map() {
+                return "[\($0)](\(root)/\($0))"
+            }
+            return "APIs: \(links.joined(separator: " • "))"
+        } else {
+            return "[APIs: \(operatingSystems.joined(separator: " • "))](\(urlString))"
+        }
+    }()
+
     static let quotationMarkup: String = {
         var quotation = Configuration.requiredQuotation.replacingOccurrences(of: "\n", with: "<br>")
         if let url = Configuration.quotationURL {
@@ -99,6 +133,11 @@ struct ReadMe {
             "",
             Configuration.readMe
             ])
+
+        let apiLinks = key("API Links")
+        if body.contains(apiLinks) {
+            body = body.replacingOccurrences(of: apiLinks, with: apiLinksMarkup)
+        }
 
         body = body.replacingOccurrences(of: key("Project"), with: Configuration.projectName)
 

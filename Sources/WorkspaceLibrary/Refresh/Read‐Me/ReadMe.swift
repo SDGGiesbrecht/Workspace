@@ -167,6 +167,7 @@ struct ReadMe {
             }
 
             instructions += [
+                "",
                 "\(Configuration.projectName) can then be imported in source files:",
                 "",
                 "```swift",

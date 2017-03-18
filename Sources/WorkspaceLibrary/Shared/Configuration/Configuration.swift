@@ -546,6 +546,9 @@ struct Configuration {
     static var requiredDevelopmentNotes: String {
         return possibleStringValue(option: .developmentNotes) ?? ""
     }
+    static var relatedProjects: [String] {
+        return listValue(option: .relatedProjects)
+    }
 
     static var manageFileHeaders: Bool {
         return booleanValue(option: .manageFileHeaders)

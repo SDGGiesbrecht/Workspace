@@ -22,7 +22,12 @@ A read‐me is a `README.md` file that GitHub and [documentation generation](Doc
 
 ## Customization
 
-The default read‐me will automatically change to accommodate some configuration options, such as `Short Project Description`, `Quotation`, `Feature List`, etc.
+The default read‐me will automatically change to accommodate some [configuration](Configuring%20Workspace.md) options:
+
+- `Short Project Description` (Markdown)
+- `Quotation`, `Quotation URL` & `Citation` (Text)
+- `Feature List` (Markdown)
+- `Related Projects` (A list separated by line breaks. Each entry is one of two forms: (1) ` `Name`: `https://url.of/repository` `, or (2) `# `Section Heading` `.)
 
 The read‐me can be further customized by defining a template with the `Read‐Me` [configuration](Configuring%20Workspace.md) option.
 
@@ -31,7 +36,8 @@ The template for the read‐me works the same as the [template for file headers]
 The available dynamic elements are:
 
 - `Short Description`: The value of the configuration option `Short Project Description`.
-- `Quotation`: A combination of the configuration options `Quotation`, `Quotation URL` and `Citation`. (`Quotation URL` and `Citation` are optional.)
+- `Quotation`: The combined result of the configuration options `Quotation`, `Quotation URL` and `Citation`.
 - `Features`: The value of the configuration option `Feature List`.
+- `Related Projects`: A link to the results of the configuration option `Related Projects`.
 
 Customization can be especially useful when it is combined with [configuration sharing](Configuring%20Workspace.md#sharing-configurations-between-projects).

@@ -131,7 +131,6 @@ struct ReadMe {
     }()
 
     static let defaultInstallationInstructions: String? = {
-        print("default requested")
         if Configuration.projectType == .library {
 
             var instructions = [
@@ -174,6 +173,8 @@ struct ReadMe {
                 "import \(Configuration.moduleName)",
                 "```"
             ]
+            
+            return instructions
         }
 
         return nil

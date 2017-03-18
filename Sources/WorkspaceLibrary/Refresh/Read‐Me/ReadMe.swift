@@ -131,6 +131,7 @@ struct ReadMe {
     }()
 
     static let defaultInstallationInstructions: String? = {
+        print("default requested")
         if Configuration.projectType == .library {
 
             var instructions = [

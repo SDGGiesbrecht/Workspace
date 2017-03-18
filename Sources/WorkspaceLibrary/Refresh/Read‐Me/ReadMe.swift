@@ -28,6 +28,7 @@ struct ReadMe {
             chapter = chapter.replacingOccurrences(of: " ", with: "+")
             return "https://www.biblegateway.com/passage/?search=\(chapter)&version=\(Configuration.quotationOriginalKey);\(Configuration.quotationTranslationKey)"
         } else {
+            print("No chapter.")
             return Configuration.noValue
         }
     }()

@@ -173,8 +173,8 @@ struct ReadMe {
                 "import \(Configuration.moduleName)",
                 "```"
             ]
-            
-            return instructions
+
+            return join(lines: instructions)
         }
 
         return nil

@@ -43,6 +43,7 @@ enum Option : String, CustomStringConvertible {
     case quotationTestament = "Quotation Testament"
     case quotationTranslationKey = "Quotation Translation Key"
     case citation = "Citation"
+    case featureList = "FeatureList"
 
     case manageLicence = "Manage Licence"
     case licence = "Licence"
@@ -113,6 +114,7 @@ enum Option : String, CustomStringConvertible {
         .quotation,
         .quotationURL,
         .citation,
+        .featureList,
 
         .manageLicence,
         .licence,
@@ -202,6 +204,8 @@ enum Option : String, CustomStringConvertible {
         case .quotationTranslationKey:
             return Configuration.noValue
         case .citation:
+            return Configuration.noValue
+        case .featureList:
             return Configuration.noValue
 
         case .manageLicence:

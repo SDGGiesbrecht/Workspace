@@ -209,10 +209,7 @@ struct Configuration {
             } else if let url = line.contents(of: importStatementTokens, requireWholeStringToMatch: true) {
                 // Import statement
 
-                let repositoryName = Repository.nameOfLinkedRepository(atURL: url)
-                let otherConfiguration = require() { try File(at: Repository.linkedRepository(named: repositoryName).subfolderOrFile(configurationFilePath.string)) }
-
-                let otherFile = parse(configurationSource: otherConfiguration.contents)
+                let otherFile = parseConfigurationFile(fromLinkedRepositoryAt: url)
                 for (option, value) in otherFile {
                     result[option] = value
                 }
@@ -267,6 +264,14 @@ struct Configuration {
 
             return parse(configurationSource: file.contents)
         }
+    }
+
+    static func parseConfigurationFile(fromLinkedRepositoryAt url: String) -> [Option: String] {
+
+        let repositoryName = Repository.nameOfLinkedRepository(atURL: url)
+        let otherConfiguration = require() { try File(at: Repository.linkedRepository(named: repositoryName).subfolderOrFile(configurationFilePath.string)) }
+
+        return parse(configurationSource: otherConfiguration.contents)
     }
 
     // MARK: - Settings
@@ -456,6 +461,12 @@ struct Configuration {
     }
     static var readMe: String {
         return stringValue(option: .readMe)
+    }
+    static var documentationURL: String? {
+        return possibleStringValue(option: .documentationURL)
+    }
+    static var requiredDocumentationURL: String {
+        return stringValue(option: .documentationURL)
     }
     static var shortProjectDescription: String? {
         return possibleStringValue(option: .shortProjectDescription)

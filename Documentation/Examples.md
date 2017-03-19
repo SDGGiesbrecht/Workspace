@@ -56,6 +56,7 @@ To use an example in a symbol’s documentation, add one or more instances of `[
 /// Equality is symmetrical:
 ///
 /// ```swift
+/// (Workspace will automatically fill these in whenever the project is refreshed.)
 /// ```
 ///
 /// Equality is transitive:

@@ -33,7 +33,7 @@ The default read‐me will automatically change to accommodate some [configurati
     - `# Section Heading`
 - `Installation Instructions` (Markdown. Default instructions exist for library projects that have `Repository URL` and `Current Version` defined.)
 
-The default read‐me will also automatically include [usage examples](Examples#readme) if available.
+The default read‐me will also automatically include [usage examples](Examples.md#readme) if available.
 
 The read‐me can be further customized by defining a template with the `Read‐Me` [configuration](Configuring%20Workspace.md) option.
 
@@ -50,6 +50,6 @@ The available dynamic elements are:
 - `Repository URL`: The value of the configuration option `Repository URL`.
 - `Current Version`: The value of the configuration option `Current Version`.
 - `Next Major Version`: The major version following the value of `Current Version`.
-- `Example Usage`: See [Examples](examples#readme).
+- `Example Usage`: See [Examples](Examples.md#readme).
 
 Customization can be especially useful when it is combined with [configuration sharing](Configuring%20Workspace.md#sharing-configurations-between-projects).

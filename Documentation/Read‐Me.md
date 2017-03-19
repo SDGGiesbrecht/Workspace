@@ -24,14 +24,14 @@ A read‐me is a `README.md` file that GitHub and [documentation generation](Doc
 
 The default read‐me will automatically change to accommodate some [configuration](Configuring%20Workspace.md) options:
 
-- `Documentation URL` The root URL for API documentation. (As long as the last path component is `macOS`, `Linux`, `iOS`, `watchOS` or `tvOS`, Workspace will link to each individually by swapping out the last path component.)
+- `Documentation URL`: The root URL for API documentation. (As long as the last path component is `macOS`, `Linux`, `iOS`, `watchOS` or `tvOS`, Workspace will link to each individually by swapping out the last path component.)
 - `Short Project Description` (Markdown)
 - `Quotation`, `Quotation URL` & `Citation` (Text)
 - `Feature List` (Markdown)
-- `Related Projects` A list separated by line breaks. Each entry is one of two forms:
-    - ` `Name`: `https://url.of/repository` `
-    - `# `Section Heading` `
-- `Installation Instructions` Default instructions exist for library projects that have `Repository URL` and `Current Version` defined. (Markdown)
+- `Related Projects`: A list separated by line breaks. Each entry is one of two forms:
+    - `Name: https://url.of/repository`
+    - `# Section Heading`
+- `Installation Instructions` (Markdown. Default instructions exist for library projects that have `Repository URL` and `Current Version` defined.)
 
 The default read‐me will also automatically include [usage examples](Examples#readme) if available.
 

@@ -91,7 +91,9 @@ struct ReadMe {
                 "",
                 "## Example Usage",
                 "",
-                "[_Example Usage_]"
+                "```swift",
+                "[_Example Usage_]",
+                "```"
             ]
         }
 

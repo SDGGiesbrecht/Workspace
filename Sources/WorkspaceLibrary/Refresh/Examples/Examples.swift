@@ -63,7 +63,8 @@ struct Examples {
                     }
 
                     var indentEnd = startLineRange.lowerBound
-                    file.contents.advance(&indentEnd, past: CharacterSet.whitespaces)
+                    let startLinePrefix = file.contents.substring(with: startLineRange.lowerBound ..< range.lowerBound)
+                    startLinePrefix.advance(&indentEnd, past: CharacterSet.whitespaces)
                     let indent = file.contents.substring(with: startLineRange.lowerBound ..< indentEnd)
 
                     contents = contents.map() { (line: String) -> String in

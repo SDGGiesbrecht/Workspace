@@ -16,13 +16,13 @@
 
 Workspace can force example code to compile.
 
-When APIs change, it is easy to forget to update any examples in the documentation. Workspace allowing examples to be synchronized with real, compiled source code in a test module. That way, when an API change makes an example invalid, it will be caught by the compiler.
+When APIs change, it is easy to forget to update any examples in the documentation. Workspace allows examples to be synchronized with real, compiled source code in a test module. That way, when an API change makes an example invalid, it will be caught by the compiler.
 
 ## Defining Examples
 
 Examples can be defined anywhere in the project, but usually the best place for them is in a test module.
 
-To define an example, place it between `[_Define Example: `Identifier`_]` and `[_End_]`. Anything on the same line as either token will be ignored (such as `//`).
+To define an example, place it between `[_Define Example: Identifier_]` and `[_End_]`. Anything on the same line as either token will be ignored (such as `//`).
 
 ```swift
 func forTheSakeOfLeavingTheGlobalScope() {
@@ -47,7 +47,7 @@ func forTheSakeOfLeavingTheGlobalScope() {
 
 ## Symbol Documentation
 
-To use an example in a symbol’s documentation, add one or more instances of `[_Example `0`: `Indentifier`_]` to the line immediately preceding the documentation.
+To use an example in a symbol’s documentation, add one or more instances of `[_Example 0: Indentifier_]` to the line immediately preceding the documentation.
 
 ```swift
 // [_Example 1: Symmetry_] [_Example 2: Transitivity_]

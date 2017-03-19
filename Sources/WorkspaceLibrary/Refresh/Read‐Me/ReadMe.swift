@@ -86,6 +86,15 @@ struct ReadMe {
             ]
         }
 
+        if Examples.examples["Read‐Me"] ≠ nil {
+            readMe += [
+                "",
+                "## Example Usage",
+                "",
+                "[_Example Usage_]"
+            ]
+        }
+
         return join(lines: readMe)
     }()
 
@@ -238,6 +247,21 @@ struct ReadMe {
         let nextMajorVersion = key("Next Major Version")
         if body.contains(nextMajorVersion) {
             body = body.replacingOccurrences(of: nextMajorVersion, with: "\(Configuration.requiredCurrentVersion.nextMajorVersion)")
+        }
+
+        let exampleUsage = key("Example Usage")
+        if body.contains(exampleUsage) {
+            guard let readMeExample = Examples.examples["Read‐Me"] else {
+
+                fatalError(message: [
+                    "There is no definition for the example named “Read‐Me”.",
+                    "",
+                    "Available example definitions:",
+                    "",
+                    join(lines: Examples.examples.keys.sorted())
+                    ])
+            }
+            body = body.replacingOccurrences(of: exampleUsage, with: readMeExample)
         }
 
         var readMe = File(possiblyAt: readMePath)

@@ -68,7 +68,7 @@ struct Examples {
 
                     contents = contents.map() { (line: String) -> String in
                         var index = line.startIndex
-                        if file.contents.advance(&index, past: indent) {
+                        if line.advance(&index, past: indent) {
                             return line.substring(from: index)
                         } else {
                             return line

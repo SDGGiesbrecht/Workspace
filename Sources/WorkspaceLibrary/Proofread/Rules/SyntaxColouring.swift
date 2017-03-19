@@ -20,19 +20,29 @@ struct SyntaxColouring : Rule {
 
     static func check(file: File, status: inout Bool) {
 
-        var oddNumberedOccurrance = true
+        var oddNumberedOccurrenceInformation: [String: Bool] = [:]
 
         var index = file.contents.startIndex
         while let range = file.contents.range(of: "```", in: index ..< file.contents.endIndex) {
             index = range.upperBound
 
-            if oddNumberedOccurrance {
+            let lineRange = file.contents.lineRange(for: range)
+            let linePrefix = file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound)
+
+            var oddNumberedOccurrence: Bool
+            if let information = oddNumberedOccurrenceInformation[linePrefix] {
+                oddNumberedOccurrence = information
+            } else {
+                oddNumberedOccurrence = true
+            }
+
+            if oddNumberedOccurrence {
                 if file.contents.substring(from: range.upperBound).hasPrefix("\n") {
 
                     errorNotice(status: &status, file: file, range: range, replacement: nil, message: "Specify a language for syntax colouring, e.g. “```swift”.")
                 }
             }
-            oddNumberedOccurrance = ¬oddNumberedOccurrance
+            oddNumberedOccurrenceInformation[linePrefix] = ¬oddNumberedOccurrence
         }
     }
 }

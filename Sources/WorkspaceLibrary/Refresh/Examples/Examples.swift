@@ -27,12 +27,12 @@ struct Examples {
                 let startTokens = ("[_Define Example", "_]")
 
                 var index = file.contents.startIndex
-                while let range = file.contents.range(of: startTokens, in: index ..< file.contents.endIndex) {
-                    index = range.upperBound
+                while let startTokenRange = file.contents.range(of: startTokens, in: index ..< file.contents.endIndex) {
+                    index = startTokenRange.upperBound
 
-                    guard var identifier = file.contents.contents(of: startTokens, in: range) else {
+                    guard var identifier = file.contents.contents(of: startTokens, in: startTokenRange) else {
                         failTests(message: [
-                            "Failed to parse “\(file.contents.substring(with: range))”.",
+                            "Failed to parse “\(file.contents.substring(with: startTokenRange))”.",
                             "This may indicate a bug in Workspace."
                             ])
                     }
@@ -44,14 +44,14 @@ struct Examples {
                         identifier.unicodeScalars.removeFirst()
                     }
 
-                    guard let end = file.contents.range(of: "[_End_]", in: range.lowerBound ..< file.contents.endIndex) else {
+                    guard let end = file.contents.range(of: "[_End_]", in: startTokenRange.lowerBound ..< file.contents.endIndex) else {
                         failTests(message: [
-                            "Failed to find the end of “\(file.contents.substring(with: range))”.",
+                            "Failed to find the end of “\(file.contents.substring(with: startTokenRange))”.",
                             "This may indicate a bug in Workspace."
                             ])
                     }
 
-                    let startLineRange = file.contents.lineRange(for: range)
+                    let startLineRange = file.contents.lineRange(for: startTokenRange)
                     let endLineRange = file.contents.lineRange(for: end)
 
                     var contents = file.contents.substring(with: startLineRange.upperBound ..< endLineRange.lowerBound).linesArray
@@ -63,8 +63,7 @@ struct Examples {
                     }
 
                     var indentEnd = startLineRange.lowerBound
-                    let startLinePrefix = file.contents.substring(with: startLineRange.lowerBound ..< range.lowerBound)
-                    startLinePrefix.advance(&indentEnd, past: CharacterSet.whitespaces)
+                    file.contents.advance(&indentEnd, past: CharacterSet.whitespaces)
                     let indent = file.contents.substring(with: startLineRange.lowerBound ..< indentEnd)
 
                     contents = contents.map() { (line: String) -> String in

@@ -104,6 +104,11 @@ struct Documentation {
                     "\u{2D}\u{2D}github_url", github
                     ])
             }
+            if ¬Configuration.relatedProjects.isEmpty {
+                command.append(contentsOf: [
+                    "\u{2D}\u{2D}documentation=Related Projects.md"
+                    ])
+            }
 
             if let jazzyResult = runThirdPartyTool(
                 name: "Jazzy",

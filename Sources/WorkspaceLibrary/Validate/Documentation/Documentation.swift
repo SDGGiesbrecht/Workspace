@@ -263,6 +263,11 @@ struct Documentation {
                     }
                 }
 
+                while let relatedLink = source.range(of: "Related%20Projects.md") {
+                    let relatedLine = source.lineRange(for: relatedLink)
+                    source.removeSubrange(relatedLine)
+                }
+
                 file.contents = source
                 require() { try file.write() }
             }

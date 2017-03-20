@@ -14,6 +14,7 @@
 
 import SDGCaching
 import SDGLogic
+import SDGMathematics
 
 struct Configuration {
 
@@ -686,7 +687,15 @@ struct Configuration {
 
             func describe(option: Option, value: String?) -> String {
                 if let actualValue = value {
-                    return "\(option.key): \(actualValue)"
+                    if actualValue.linesArray.count ≤ 1 {
+                        return "\(option.key): \(actualValue)"
+                    } else {
+                        return join(lines: [
+                            "[_Begin \(option.key)_]",
+                            actualValue,
+                            "[_End_]"
+                            ])
+                    }
                 } else {
                     return "\(option.key): [Not specified.]"
                 }

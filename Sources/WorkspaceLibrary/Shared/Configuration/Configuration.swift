@@ -14,6 +14,7 @@
 
 import SDGCaching
 import SDGLogic
+import SDGMathematics
 
 struct Configuration {
 
@@ -209,10 +210,7 @@ struct Configuration {
             } else if let url = line.contents(of: importStatementTokens, requireWholeStringToMatch: true) {
                 // Import statement
 
-                let repositoryName = Repository.nameOfLinkedRepository(atURL: url)
-                let otherConfiguration = require() { try File(at: Repository.linkedRepository(named: repositoryName).subfolderOrFile(configurationFilePath.string)) }
-
-                let otherFile = parse(configurationSource: otherConfiguration.contents)
+                let otherFile = parseConfigurationFile(fromLinkedRepositoryAt: url)
                 for (option, value) in otherFile {
                     result[option] = value
                 }
@@ -267,6 +265,14 @@ struct Configuration {
 
             return parse(configurationSource: file.contents)
         }
+    }
+
+    static func parseConfigurationFile(fromLinkedRepositoryAt url: String) -> [Option: String] {
+
+        let repositoryName = Repository.nameOfLinkedRepository(atURL: url)
+        let otherConfiguration = require() { try File(at: Repository.linkedRepository(named: repositoryName).subfolderOrFile(configurationFilePath.string)) }
+
+        return parse(configurationSource: otherConfiguration.contents)
     }
 
     // MARK: - Settings
@@ -330,10 +336,9 @@ struct Configuration {
     }
 
     private static func possibleStringValue(option: Option) -> String? {
-        if let result = configurationFile[option] {
-            if result ≠ Configuration.noValue {
-                return result
-            }
+        let result = configurationFile[option] ?? option.defaultValue
+        if result ≠ Configuration.noValue {
+            return result
         }
         return nil
     }
@@ -366,6 +371,9 @@ struct Configuration {
         }
 
         return result
+    }
+    static var requiredOptions: [String] {
+        return listValue(option: .requireOptions)
     }
 
     static var supportMacOS: Bool {
@@ -452,6 +460,92 @@ struct Configuration {
 
     // Responsibilities
 
+    static var manageReadMe: Bool {
+        return booleanValue(option: .manageReadMe)
+    }
+    static var readMe: String {
+        return stringValue(option: .readMe)
+    }
+    static var documentationURL: String? {
+        return possibleStringValue(option: .documentationURL)
+    }
+    static var requiredDocumentationURL: String {
+        return stringValue(option: .documentationURL)
+    }
+    static var shortProjectDescription: String? {
+        return possibleStringValue(option: .shortProjectDescription)
+    }
+    static var requiredShortProjectDescription: String {
+        return stringValue(option: .shortProjectDescription)
+    }
+    static var quotation: String? {
+        return possibleStringValue(option: .quotation)
+    }
+    static var requiredQuotation: String {
+        return stringValue(option: .quotation)
+    }
+    static var quotationURL: String? {
+        return possibleStringValue(option: .quotationURL)
+    }
+    static var quotationChapter: String? {
+        return possibleStringValue(option: .quotationChapter)
+    }
+    static var quotationOriginalKey: String {
+        let value = stringValue(option: .quotationTestament)
+        let old = "Old"
+        let new = "New"
+        switch value {
+        case old:
+            return "WLC"
+        case new:
+            return "SBLGNT"
+        default:
+            invalidEnumValue(option: .quotationTestament, value: value, valid: [old, new])
+        }
+    }
+    static var citation: String? {
+        return possibleStringValue(option: .citation)
+    }
+    static var featureList: String? {
+        return possibleStringValue(option: .featureList)
+    }
+    static var requiredFeatureList: String {
+        return stringValue(option: .featureList)
+    }
+    static var installationInstructions: String? {
+        return possibleStringValue(option: .installationInstructions)
+    }
+    static var requiredInstallationInstructions: String {
+        return stringValue(option: .installationInstructions)
+    }
+    static var repositoryURL: String? {
+        return possibleStringValue(option: .repositoryURL)
+    }
+    static var requiredRepositoryURL: String {
+        return stringValue(option: .repositoryURL)
+    }
+    static var currentVersion: Version? {
+        if let version = possibleStringValue(option: .currentVersion) {
+            return Version(version)
+        } else {
+            return nil
+        }
+    }
+    static var requiredCurrentVersion: Version {
+        guard let result = Version(stringValue(option: .currentVersion)) else {
+            failTests(message: [
+                "Invalid version identifier: " + stringValue(option: .currentVersion)
+                ])
+        }
+        return result
+    }
+    static var otherReadMeContent: String? {
+        return possibleStringValue(option: .otherReadMeContent)
+    }
+    static var requiredOtherReadMeContent: String {
+        return stringValue(option: .otherReadMeContent)
+    }
+
     static var manageLicence: Bool {
         return booleanValue(option: .manageLicence)
     }
@@ -496,6 +590,9 @@ struct Configuration {
     }
     static var requiredDevelopmentNotes: String {
         return possibleStringValue(option: .developmentNotes) ?? ""
+    }
+    static var relatedProjects: [String] {
+        return listValue(option: .relatedProjects)
     }
 
     static var manageFileHeaders: Bool {
@@ -593,7 +690,15 @@ struct Configuration {
 
             func describe(option: Option, value: String?) -> String {
                 if let actualValue = value {
-                    return "\(option.key): \(actualValue)"
+                    if actualValue.linesArray.count ≤ 1 {
+                        return "\(option.key): \(actualValue)"
+                    } else {
+                        return join(lines: [
+                            "[_Begin \(option.key)_]",
+                            actualValue,
+                            "[_End_]"
+                            ])
+                    }
                 } else {
                     return "\(option.key): [Not specified.]"
                 }
@@ -643,6 +748,61 @@ struct Configuration {
 
         if manageLicence ∧ configurationFile[.licence] == nil {
             incompatibilityDetected(between: .manageLicence, and: .licence, documentation: .licence)
+        }
+
+        // Custom
+
+        let requiredEntries = requiredOptions
+        let requiredDefinitions = requiredEntries.map() { (entry: String) -> (option: Option, types: Set<ProjectType>) in
+
+            func option(forKey key: String) -> Option {
+                if let option = Option(key: key) {
+                    return option
+                } else {
+                    fatalError(message: [
+                        "Invalide option key in “Required Options”.",
+                        "",
+                        key,
+                        "",
+                        "Available Keys:",
+                        "",
+                        join(lines: Option.allPublic.map({ $0.key }))
+                        ])
+                }
+            }
+
+            let components = entry.components(separatedBy: ": ")
+
+            if components.count == 1 {
+                return (option: option(forKey: components[0]), types: Set(ProjectType.all))
+            } else {
+                guard let type = ProjectType(key: components[0]) else {
+                    fatalError(message: [
+                        "Invalid project type in “Required Options”:",
+                        "",
+                        components[0],
+                        "",
+                        "Available Types:",
+                        "",
+                        join(lines: ProjectType.all.map({ $0.key }))
+                        ])
+                }
+                return (option: option(forKey: components[1]), types: [type])
+            }
+        }
+        var required: [Option: Set<ProjectType>] = [:]
+        for (key, types) in requiredDefinitions {
+            if let existing = required[key] {
+                required[key] = existing.union(types)
+            } else {
+                required[key] = types
+            }
+        }
+
+        for (option, types) in required {
+            if types.contains(Configuration.projectType) {
+                incompatibilityDetected(between: option, and: .requireOptions, documentation: DocumentationLink.requiringOptions)
+            }
         }
 
         return succeeding

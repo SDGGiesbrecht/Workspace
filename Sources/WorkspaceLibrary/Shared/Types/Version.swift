@@ -30,6 +30,12 @@ struct Version : Comparable, CustomStringConvertible, Equatable, LosslessStringC
     var minor: Int
     var patch: Int
 
+    // MARK: - Usage
+
+    var nextMajorVersion: Version {
+        return Version(major + 1, 0, 0)
+    }
+
     // MARK: - Comparable
 
     static func < (lhs: Version, rhs: Version) -> Bool {

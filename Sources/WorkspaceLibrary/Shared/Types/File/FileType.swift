@@ -160,6 +160,7 @@ enum FileType : CustomStringConvertible {
 
     private static let htmlBlockComment = BlockCommentSyntax(start: "<\u{21}\u{2D}\u{2D}", end: "\u{2D}\u{2D}>", stylisticIndent: " ")
 
+    static let swiftDocumentationSyntax = FileSyntax(blockCommentSyntax: BlockCommentSyntax(start: "/*" + "*", end: "*/", stylisticIndent: " "), lineCommentSyntax: LineCommentSyntax(start: "///"))
     var syntax: FileSyntax {
         switch self {
         case .workspaceConfiguration:

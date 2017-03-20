@@ -25,6 +25,7 @@ enum Option : String, CustomStringConvertible {
     case automaticallyTakeOnNewResponsibilites = "Automatically Take On New Responsibilities"
 
     case projectType = "Project Type"
+    case requireOptions = "Require Options"
 
     case supportMacOS = "Support macOS"
     case supportLinux = "Support Linux"
@@ -33,6 +34,22 @@ enum Option : String, CustomStringConvertible {
     case supportTVOS = "Support tvOS"
 
     case skipSimulator = "Skip Simulator"
+
+    case manageReadMe = "Manage Read‐Me"
+    case readMe = "Read‐Me"
+    case documentationURL = "Documentation URL"
+    case shortProjectDescription = "Short Project Description"
+    case quotation = "Quotation"
+    case quotationURL = "Quotation URL"
+    case quotationChapter = "Quotation Chapter"
+    case quotationTestament = "Quotation Testament"
+    case citation = "Citation"
+    case featureList = "Feature List"
+    case relatedProjects = "Related Projects"
+    case installationInstructions = "Installation Instructions"
+    case repositoryURL = "Repository URL"
+    case currentVersion = "Current Version"
+    case otherReadMeContent = "Other Read‐Me Content"
 
     case manageLicence = "Manage Licence"
     case licence = "Licence"
@@ -88,6 +105,7 @@ enum Option : String, CustomStringConvertible {
         .automaticallyTakeOnNewResponsibilites,
 
         .projectType,
+        .requireOptions,
 
         .supportMacOS,
         .supportLinux,
@@ -96,6 +114,20 @@ enum Option : String, CustomStringConvertible {
         .supportTVOS,
 
         .skipSimulator,
+
+        .manageReadMe,
+        .readMe,
+        .documentationURL,
+        .shortProjectDescription,
+        .quotation,
+        .quotationURL,
+        .citation,
+        .featureList,
+        .relatedProjects,
+        .installationInstructions,
+        .repositoryURL,
+        .currentVersion,
+        .otherReadMeContent,
 
         .manageLicence,
         .licence,
@@ -153,6 +185,8 @@ enum Option : String, CustomStringConvertible {
 
         case .projectType:
             return ProjectType.library.key
+        case .requireOptions:
+            return Configuration.emptyListOptionValue
 
         case .supportMacOS:
             return Configuration.trueOptionValue
@@ -167,6 +201,37 @@ enum Option : String, CustomStringConvertible {
 
         case .skipSimulator:
             return Configuration.falseOptionValue
+
+        case .manageReadMe:
+            return Configuration.falseOptionValue
+        case .readMe:
+            return ReadMe.defaultReadMeTemplate
+        case .documentationURL:
+            return Configuration.noValue
+        case .shortProjectDescription:
+            return Configuration.noValue
+        case .quotation:
+            return Configuration.noValue
+        case .quotationURL:
+            return ReadMe.defaultQuotationURL
+        case .quotationChapter:
+            return Configuration.noValue
+        case .quotationTestament:
+            return Configuration.noValue
+        case .citation:
+            return Configuration.noValue
+        case .featureList:
+            return Configuration.noValue
+        case .relatedProjects:
+            return Configuration.emptyListOptionValue
+        case .installationInstructions:
+            return ReadMe.defaultInstallationInstructions ?? Configuration.noValue
+        case .repositoryURL:
+            return Configuration.noValue
+        case .currentVersion:
+            return Configuration.noValue
+        case .otherReadMeContent:
+            return Configuration.noValue
 
         case .manageLicence:
             return Configuration.falseOptionValue
@@ -257,6 +322,7 @@ enum Option : String, CustomStringConvertible {
 
     static let automaticResponsibilityDocumentationPage = DocumentationLink.responsibilities
     static let automaticRepsonsibilities: [(option: Option, automaticValue: String, documentationPage: DocumentationLink)] = [
+        (.manageReadMe, automaticValue: Configuration.trueOptionValue, DocumentationLink.readMe),
         (.manageLicence, automaticValue: Configuration.trueOptionValue, DocumentationLink.licence),
         (.manageContributingInstructions, automaticValue: Configuration.trueOptionValue, DocumentationLink.contributingInstructions),
         (.manageXcode, automaticValue: Configuration.trueOptionValue, DocumentationLink.xcode),

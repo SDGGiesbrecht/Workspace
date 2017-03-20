@@ -99,9 +99,14 @@ struct Documentation {
                            "\u{2D}\u{2D}module", Configuration.moduleName,
                            "\u{2D}\u{2D}copyright", copyright(folder: documentationFolder)
             ]
-            if let github = Configuration.projectWebsite {
+            if let github = Configuration.repositoryURL {
                 command.append(contentsOf: [
                     "\u{2D}\u{2D}github_url", github
+                    ])
+            }
+            if ¬Configuration.relatedProjects.isEmpty {
+                command.append(contentsOf: [
+                    "\u{2D}\u{2D}documentation=Related Projects.md"
                     ])
             }
 
@@ -256,6 +261,11 @@ struct Documentation {
                             source.replaceSubrange(`class`, with: "n")
                         }
                     }
+                }
+
+                while let relatedLink = source.range(of: "Related%20Projects.md") {
+                    let relatedLine = source.lineRange(for: relatedLink)
+                    source.removeSubrange(relatedLine)
                 }
 
                 file.contents = source

@@ -106,6 +106,15 @@ func runRefresh(andExit shouldExit: Bool) {
 
     Git.updateGitConfiguraiton()
 
+    if Configuration.manageReadMe {
+
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        printHeader(["Updating read‐me..."])
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+
+        ReadMe.refreshReadMe()
+    }
+
     if Configuration.manageLicence {
 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
@@ -151,6 +160,12 @@ func runRefresh(andExit shouldExit: Bool) {
 
         FileHeaders.refreshFileHeaders()
     }
+
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    printHeader(["Updating examples..."])
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+
+    Examples.refreshExamples()
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Normalizing Files..."])

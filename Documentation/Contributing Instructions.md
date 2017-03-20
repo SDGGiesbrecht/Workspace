@@ -26,6 +26,8 @@ Issue and pull request templates are markdown files in a `.github` folder that G
 
 ### Contributing Instructions
 
+The contributing instructions will automatically change to accommodate some configuration options, such as `Administrators`.
+
 The contributing instructions can be customized by defining a template with the `Contributing Instructions` [configuration](Configuring%20Workspace.md) option.
 
 The template for contributing instructions works the same as the [template for file headers](File%20Headers.md#customization).

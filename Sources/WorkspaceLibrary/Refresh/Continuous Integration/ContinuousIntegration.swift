@@ -161,13 +161,12 @@ struct ContinuousIntegration {
     }
 
     static func relinquishControl() {
+
         var configuration = File(possiblyAt: travisConfigurationPath)
-        if configuration.contents.contains(managementComment) {
-
+        if let range = configuration.contents.range(of: managementComment) {
             printHeader(["Cancelling continuous integration management..."])
-
-            print(["Deleting \(travisConfigurationPath)..."])
-            force() { try Repository.delete(travisConfigurationPath) }
+            configuration.contents.removeSubrange(range)
+            force() { try configuration.write() }
         }
     }
 

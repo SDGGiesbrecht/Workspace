@@ -79,7 +79,7 @@ struct UnitTests {
         }
 
         func runUnitTestsInSwiftPackageManager(operatingSystemName: String, buildToolName: String? = nil) {
-            printTestHeader(buildOnly: false, operatingSystemName: operatingSystemName)
+            printTestHeader(buildOnly: false, operatingSystemName: operatingSystemName, buildToolName: buildToolName)
             runUnitTests(buildOnly: false, operatingSystemName: operatingSystemName, script: ["swift", "test"], buildToolName: buildToolName)
         }
 
@@ -93,7 +93,7 @@ struct UnitTests {
                 buildOnly = true
             }
 
-            printTestHeader(buildOnly: buildOnly, operatingSystemName: operatingSystemName)
+            printTestHeader(buildOnly: buildOnly, operatingSystemName: operatingSystemName, buildToolName: buildToolName)
 
             let flag: String
             let flagValue: String

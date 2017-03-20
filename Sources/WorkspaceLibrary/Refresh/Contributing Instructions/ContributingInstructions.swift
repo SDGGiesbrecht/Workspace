@@ -217,15 +217,20 @@ struct ContributingInstructions {
 
     static func relinquishControl() {
 
+        var printedHeader = false
+
         for path in [contributingInstructionsPath, issueTemplatePath, pullRequestTemplatePath] {
 
             var file = File(possiblyAt: path)
-            if file.contents.contains(managementComment) {
+            if let range = file.contents.range(of: managementComment) {
 
-                printHeader(["Cancelling contributing instruction management..."])
+                if ¬printedHeader {
+                    printedHeader = true
+                    printHeader(["Cancelling contributing instruction management..."])
+                }
 
-                print(["Deleting \(path)..."])
-                force() { try Repository.delete(path) }
+                file.contents.removeSubrange(range)
+                force() { try file.write() }
             }
         }
     }

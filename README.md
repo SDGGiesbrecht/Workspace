@@ -44,6 +44,7 @@ A particular project can [configure](Documentation/Operating%20Systems.md) which
 - Be [configured](Documentation/Configuring%20Workspace.md) to opt in or out of any of the following features.
 - Have its configuration [shared](Documentation/Configuring%20Workspace.md#sharing-configurations-between-projects) between projects.
 - Automatically...
+    - Keep [read‐me](Documentation/Read‐Me.md) files uniform.
     - Keep [licence notices](Documentation/Licence.md) uniform.
     - Keep [contributing instructions](Documentation/Contributing%20Instructions.md) uniform, including issue and pull request templates.
     - Generate and maintain a local [Xcode project](Documentation/Xcode.md) (except on Linux).
@@ -54,6 +55,7 @@ A particular project can [configure](Documentation/Operating%20Systems.md) which
     - Prohibit [compiler warnings](Documentation/Compiler%20Warnings.md).
     - Run unit tests on each operating system (except watchOS).
     - Enforce [code coverage](Documentation/Code%20Coverage.md).
+    - Enforce validity of [example](Documentation/Examples.md) code.
     - Generate API [documentation](Documentation/Documentation%20Generation.md) (except from Linux). (Using [Jazzy](https://github.com/realm/jazzy))
     - Enforce [documentation coverage](Documentation/Documentation%20Generation.md#enforcement).
     - Configure [continuous integration](Documentation/Continuous%20Integration.md) for each operating system. ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))

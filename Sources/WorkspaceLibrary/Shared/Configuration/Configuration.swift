@@ -788,7 +788,7 @@ struct Configuration {
         }
 
         for (option, types) in required {
-            if ¬types.contains(Configuration.projectType) {
+            if types.contains(Configuration.projectType) {
                 incompatibilityDetected(between: option, and: .requireOptions, documentation: DocumentationLink.requiringOptions)
             }
         }

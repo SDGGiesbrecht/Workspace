@@ -371,6 +371,9 @@ struct Configuration {
 
         return result
     }
+    static var requiredOptions: [String] {
+        return listValue(option: .requireOptions)
+    }
 
     static var supportMacOS: Bool {
         return booleanValue(option: .supportMacOS)
@@ -733,6 +736,61 @@ struct Configuration {
 
         if manageLicence ∧ configurationFile[.licence] == nil {
             incompatibilityDetected(between: .manageLicence, and: .licence, documentation: .licence)
+        }
+
+        // Custom
+
+        let requiredEntries = requiredOptions
+        let requiredDefinitions = requiredEntries.map() { (entry: String) -> (option: Option, types: Set<ProjectType>) in
+
+            func option(forKey key: String) -> Option {
+                if let option = Option(key: key) {
+                    return option
+                } else {
+                    fatalError(message: [
+                        "Invalide option key in “Required Options”.",
+                        "",
+                        key,
+                        "",
+                        "Available Keys:",
+                        "",
+                        join(lines: Option.allPublic.map({ $0.key }))
+                        ])
+                }
+            }
+
+            let components = entry.components(separatedBy: ": ")
+
+            if components.count == 1 {
+                return (option: option(forKey: components[0]), types: Set(ProjectType.all))
+            } else {
+                guard let type = ProjectType(key: components[0]) else {
+                    fatalError(message: [
+                        "Invalid project type in “Required Options”:",
+                        "",
+                        components[0],
+                        "",
+                        "Available Types:",
+                        "",
+                        join(lines: ProjectType.all.map({ $0.key }))
+                        ])
+                }
+                return (option: option(forKey: components[1]), types: [type])
+            }
+        }
+        var required: [Option: Set<ProjectType>] = [:]
+        for (key, types) in requiredDefinitions {
+            if let existing = required[key] {
+                required[key] = existing.union(types)
+            } else {
+                required[key] = types
+            }
+        }
+
+        for (option, types) in required {
+            if ¬types.contains(Configuration.projectType) {
+                incompatibilityDetected(between: option, and: .requireOptions, documentation: DocumentationLink.requiringOptions)
+            }
         }
 
         return succeeding

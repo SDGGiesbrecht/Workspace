@@ -34,6 +34,7 @@ enum DocumentationLink : String, CustomStringConvertible {
     case platforms = "README.md#platforms"
     case setUp = "README.md#setup"
     case responsibilities = "Responsibilities.md"
+    case requiringOptions = "Configuring Workspace.md#requiring\u{2D}options"
     case git = "Git.md"
     case readMe = "Read‐Me.md"
     case licence = "Licence.md"

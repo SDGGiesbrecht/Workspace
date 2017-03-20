@@ -25,6 +25,7 @@ enum Option : String, CustomStringConvertible {
     case automaticallyTakeOnNewResponsibilites = "Automatically Take On New Responsibilities"
 
     case projectType = "Project Type"
+    case requireOptions = "Require Options"
 
     case supportMacOS = "Support macOS"
     case supportLinux = "Support Linux"
@@ -104,6 +105,7 @@ enum Option : String, CustomStringConvertible {
         .automaticallyTakeOnNewResponsibilites,
 
         .projectType,
+        .requireOptions,
 
         .supportMacOS,
         .supportLinux,
@@ -182,6 +184,8 @@ enum Option : String, CustomStringConvertible {
 
         case .projectType:
             return ProjectType.library.key
+        case .requireOptions:
+            return Configuration.emptyListOptionValue
 
         case .supportMacOS:
             return Configuration.trueOptionValue

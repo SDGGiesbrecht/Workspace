@@ -28,6 +28,7 @@ let rules: [Rule.Type] = [
     CompatibilityCharacters.self,
     AutoindentResilience.self,
     Mark.self,
+    WorkspaceUnicodeSyntax.self,
 
     // Documentation
     DocumentationOfExtensionContstraints.self,

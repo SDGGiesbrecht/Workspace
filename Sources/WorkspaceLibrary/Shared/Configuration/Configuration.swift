@@ -503,9 +503,6 @@ struct Configuration {
             invalidEnumValue(option: .quotationTestament, value: value, valid: [old, new])
         }
     }
-    static var quotationTranslationKey: String {
-        return stringValue(option: .quotationTranslationKey)
-    }
     static var citation: String? {
         return possibleStringValue(option: .citation)
     }
@@ -541,6 +538,12 @@ struct Configuration {
                 ])
         }
         return result
+    }
+    static var otherReadMeContent: String? {
+        return possibleStringValue(option: .otherReadMeContent)
+    }
+    static var requiredOtherReadMeContent: String {
+        return stringValue(option: .otherReadMeContent)
     }
 
     static var manageLicence: Bool {

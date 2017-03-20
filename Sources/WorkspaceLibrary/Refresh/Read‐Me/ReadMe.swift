@@ -26,15 +26,6 @@ struct ReadMe {
         return FileType.markdown.syntax.comment(contents: managementWarning)
     }()
 
-    static let defaultQuotationURL: String = {
-        if var chapter = Configuration.quotationChapter {
-            chapter = chapter.replacingOccurrences(of: " ", with: "+")
-            return "https://www.biblegateway.com/passage/?search=\(chapter)&version=\(Configuration.quotationOriginalKey);\(Configuration.quotationTranslationKey)"
-        } else {
-            return Configuration.noValue
-        }
-    }()
-
     static let defaultReadMeTemplate: String = {
         var readMe: [String] = []
 
@@ -97,7 +88,42 @@ struct ReadMe {
             ]
         }
 
+        if Configuration.otherReadMeContent ≠ nil {
+            readMe += [
+                "",
+                "[_Other_]"
+            ]
+        }
+
+        if Configuration.sdg {
+            readMe += [
+                "",
+                "## About",
+                "",
+                "The \(Configuration.projectName) project is maintained by Jeremy David Giesbrecht.",
+                "",
+                "If \(Configuration.projectName) saves you money, consider giving some of it as a [donation](PayPal.Me/JeremyGiesbrecht).",
+                "",
+                "If \(Configuration.projectName) saves you time, consider devoting some of it to [contributing](\(Configuration.requiredRepositoryURL)) back to the project.",
+                "",
+                format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.\nFor the worker is worthy of his wages.", url: formatQuotationURL(chapter: "10", originalKey: "SBLGNT"), citation: "\u{200E}ישוע/Yeshuʼa")
+            ]
+        }
+
         return join(lines: readMe)
+    }()
+
+    static func formatQuotationURL(chapter: String, originalKey: String) -> String {
+        let sanitizedChapter = chapter.replacingOccurrences(of: " ", with: "+")
+        return "https://www.biblegateway.com/passage/?search=\(sanitizedChapter)&version=\(originalKey);NIVUK"
+    }
+
+    static let defaultQuotationURL: String = {
+        if var chapter = Configuration.quotationChapter {
+            return formatQuotationURL(chapter: chapter, originalKey: Configuration.quotationOriginalKey)
+        } else {
+            return Configuration.noValue
+        }
     }()
 
     static let apiLinksMarkup: String = {
@@ -124,17 +150,21 @@ struct ReadMe {
         }
     }()
 
-    static let quotationMarkup: String = {
-        var quotation = Configuration.requiredQuotation.replacingOccurrences(of: "\n", with: "<br>")
-        if let url = Configuration.quotationURL {
-            quotation = "[\(quotation)](\(url))"
+    static func format(quotation: String, url possibleURL: String?, citation possibleCitation: String?) -> String {
+        var result = quotation.replacingOccurrences(of: "\n", with: "<br>")
+        if let url = possibleURL {
+            result = "[\(result)](\(url))"
         }
-        if let citation = Configuration.citation {
+        if let citation = possibleCitation {
             let indent = [String](repeating: "&nbsp;", count: 100).joined()
-            quotation += "<br>" + indent + "―" + citation
+            result += "<br>" + indent + "―" + citation
         }
+        return "> " + result
+    }
 
-        return "> " + quotation
+    static let quotationMarkup: String = {
+        return format(quotation: Configuration.requiredQuotation, url: Configuration.quotationURL, citation: Configuration.citation)
+
     }()
 
     static let relatedProjectsLinkMarkup: String = {
@@ -264,6 +294,11 @@ struct ReadMe {
                     ])
             }
             body = body.replacingOccurrences(of: exampleUsage, with: readMeExample)
+        }
+
+        let other = key("Other")
+        if body.contains(other) {
+            body = body.replacingOccurrences(of: other, with: Configuration.requiredOtherReadMeContent)
         }
 
         var readMe = File(possiblyAt: readMePath)

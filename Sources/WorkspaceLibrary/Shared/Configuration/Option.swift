@@ -43,13 +43,13 @@ enum Option : String, CustomStringConvertible {
     case quotationURL = "Quotation URL"
     case quotationChapter = "Quotation Chapter"
     case quotationTestament = "Quotation Testament"
-    case quotationTranslationKey = "Quotation Translation Key"
     case citation = "Citation"
     case featureList = "Feature List"
     case relatedProjects = "Related Projects"
     case installationInstructions = "Installation Instructions"
     case repositoryURL = "Repository URL"
     case currentVersion = "Current Version"
+    case otherReadMeContent = "Other Read‐Me Content"
 
     case manageLicence = "Manage Licence"
     case licence = "Licence"
@@ -127,6 +127,7 @@ enum Option : String, CustomStringConvertible {
         .installationInstructions,
         .repositoryURL,
         .currentVersion,
+        .otherReadMeContent,
 
         .manageLicence,
         .licence,
@@ -217,8 +218,6 @@ enum Option : String, CustomStringConvertible {
             return Configuration.noValue
         case .quotationTestament:
             return Configuration.noValue
-        case .quotationTranslationKey:
-            return Configuration.noValue
         case .citation:
             return Configuration.noValue
         case .featureList:
@@ -230,6 +229,8 @@ enum Option : String, CustomStringConvertible {
         case .repositoryURL:
             return Configuration.noValue
         case .currentVersion:
+            return Configuration.noValue
+        case .otherReadMeContent:
             return Configuration.noValue
 
         case .manageLicence:

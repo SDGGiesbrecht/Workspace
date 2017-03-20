@@ -293,19 +293,24 @@ struct ReadMe {
                 return line.substring(from: start)
             }
 
+            func sanitize(headerAnchor: String) -> String {
+                return headerAnchor.replacingOccurrences(of: " ", with: "‐")
+            }
+
             for line in Configuration.relatedProjects {
                 if line.hasPrefix("# ") {
                     let header = extractHeader(line: line)
                     projects += [
-                        "\u{2D} [\(header)](#\(header.replacingOccurrences(of: " ", with: "\u{2D}").lowercased()))"
+                        "\u{2D} [\(header)](#\(sanitize(headerAnchor: header)))"
                     ]
                 }
             }
             for line in Configuration.relatedProjects {
                 if line.hasPrefix("# ") {
+                    let header = extractHeader(line: line)
                     projects += [
                         "",
-                        "## \(extractHeader(line: line))"
+                        "## <a name=\u{22}\(sanitize(headerAnchor: header))\u{22}>\(header)</a>"
                     ]
                 } else {
                     guard let colon = line.range(of: ": ") else {

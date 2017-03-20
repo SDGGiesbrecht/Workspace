@@ -128,7 +128,6 @@ struct Examples {
 
                     let nextLineStart = file.contents.lineRange(for: range).upperBound
                     let commentRange = documentationSyntax.requireRangeOfFirstComment(in: nextLineStart ..< file.contents.endIndex, of: file)
-                    let indent = file.contents.substring(with: nextLineStart ..< commentRange.lowerBound)
 
                     var commentValue = documentationSyntax.requireContentsOfFirstComment(in: commentRange, of: file)
 
@@ -145,7 +144,7 @@ struct Examples {
                                 "```"
                                 ]))
 
-                            file.contents.replaceSubrange(commentRange, with: lineDocumentationSyntax.comment(contents: join(lines: commentValue.linesArray.map({ indent + $0 }))))
+                            file.contents.replaceSubrange(commentRange, with: lineDocumentationSyntax.comment(contents: commentValue))
 
                             break
                         }

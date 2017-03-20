@@ -35,10 +35,11 @@ struct LineCommentSyntax {
 
     // MARK: - Output
 
-    func comment(contents: String) -> String {
+    func comment(contents: String, indent: String = "") -> String {
 
         let spacing = stylisticSpacing ? " " : ""
 
+        var first = true
         var result: [String] = []
         for line in contents.lines {
             var modified = start
@@ -48,7 +49,13 @@ struct LineCommentSyntax {
             if let end = stylisticEnd {
                 modified += spacing + end
             }
-            result.append(modified)
+
+            if first {
+                first = false
+                result.append(modified)
+            } else {
+                result.append(indent + modified)
+            }
         }
 
         return join(lines: result)

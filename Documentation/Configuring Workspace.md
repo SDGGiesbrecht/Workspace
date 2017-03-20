@@ -54,10 +54,12 @@ A configuration file can require itself and any other configuration file that im
 
 A requirement can be confined to projects of a certain type.
 
-This is done with `Require Options`, a list separated by line breaks. Each entry is one of two forms:
+`Require Options` is a list separated by line breaks. Each entry is one of two forms:
 
 - `Option Name`
 - `Project Type: Option Name`
+
+For example:
 
 ```text
 [_Begin Require Options_]

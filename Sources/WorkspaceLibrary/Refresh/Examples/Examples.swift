@@ -120,6 +120,7 @@ struct Examples {
                         syntaxError()
                     }
                     let exampleName = details.substring(from: colon.upperBound)
+                    print(exampleName)
                     guard let example = examples[exampleName] else {
                         fatalError(message: [
                             "There are no examples named “\(exampleName)”."
@@ -134,7 +135,7 @@ struct Examples {
 
                     var countingExampleIndex = 0
                     var searchIndex = commentValue.startIndex
-                    while let exampleRange = commentValue.range(of: ("```", "```"), in: searchIndex ..< commentValue.endIndex) {
+                    exampleSearch: while let exampleRange = commentValue.range(of: ("```", "```"), in: searchIndex ..< commentValue.endIndex) {
                         searchIndex = exampleRange.upperBound
                         countingExampleIndex += 1
 
@@ -147,7 +148,7 @@ struct Examples {
 
                             file.contents.replaceSubrange(commentRange, with: lineDocumentationSyntax.comment(contents: commentValue, indent: indent))
 
-                            break
+                            break exampleSearch
                         }
                     }
                 }

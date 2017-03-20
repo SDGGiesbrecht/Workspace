@@ -22,7 +22,6 @@ Workspace automates management of Swift projects.
 - [Platforms](#platforms)
 - [What Workspace Can Do](#what-workspace-can-do)
 - [The Workspace Workflow](#the-workspace-workflow)
-- [Validate](#validate)
 - [Set‐Up](#setup)
   - [New Projects](#new-projects)
   - [Existing Projects](#existing-projects)
@@ -89,7 +88,7 @@ To refresh the workspace, double‐click the `Refresh Workspace` script for the 
 
 *...All done. I wonder if I broke anything while I was working? Hey! It looks like I can...*
 
-### <a name="validate">Validate Changes</a>
+### Validate Changes
 
 When the project seems ready for a push, merge, or pull request, validate the current state of the project by double‐clicking the `Validate Changes` script.
 

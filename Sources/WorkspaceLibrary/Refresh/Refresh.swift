@@ -161,6 +161,13 @@ func runRefresh(andExit shouldExit: Bool) {
         FileHeaders.refreshFileHeaders()
     }
 
+
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    printHeader(["Updating examples..."])
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+
+    Examples.refreshExamples()
+
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Normalizing Files..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

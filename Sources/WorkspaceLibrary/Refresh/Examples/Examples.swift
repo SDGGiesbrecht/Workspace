@@ -82,4 +82,78 @@ struct Examples {
 
         return list
     }()
+
+    static func refreshExamples() {
+
+        for path in Repository.sourceFiles {
+
+            if FileType(filePath: path) == .swift {
+                let documentationSyntax = FileType.swiftDocumentationSyntax
+                guard let lineDocumentationSyntax = documentationSyntax.lineCommentSyntax else {
+                    fatalError(message: [
+                        "Line documentation syntax missing.",
+                        "This may indicate a bug in Workspace."
+                        ])
+                }
+
+                var file = require() { try File(at: path) }
+
+                var index = file.contents.startIndex
+                while let range = file.contents.range(of: "[_Example", in: index ..< file.contents.endIndex) {
+                    index = range.upperBound
+
+                    func syntaxError() -> Never {
+                        fatalError(message: [
+                            "Syntax error in example:",
+                            "",
+                            file.contents.substring(with: file.contents.lineRange(for: range))
+                            ])
+                    }
+
+                    guard let details = file.contents.contents(of: ("[_Example ", "_]")) else {
+                        syntaxError()
+                    }
+                    guard let colon = details.range(of: ": ") else {
+                        syntaxError()
+                    }
+                    guard let exampleIndex = Int(details.substring(to: colon.lowerBound)) else {
+                        syntaxError()
+                    }
+                    let exampleName = details.substring(from: colon.upperBound)
+                    guard let example = examples[exampleName] else {
+                        fatalError(message: [
+                            "There are no examples named “\(exampleName)”."
+                            ])
+                    }
+
+                    let nextLineStart = file.contents.lineRange(for: range).upperBound
+                    let commentRange = documentationSyntax.requireRangeOfFirstComment(in: nextLineStart ..< file.contents.endIndex, of: file)
+                    let indent = file.contents.substring(with: nextLineStart ..< commentRange.lowerBound)
+
+                    var commentValue = documentationSyntax.requireContentsOfFirstComment(in: commentRange, of: file)
+
+                    var countingExampleIndex = 0
+                    var searchIndex = commentValue.startIndex
+                    while let exampleRange = commentValue.range(of: ("```", "```"), in: searchIndex ..< commentValue.endIndex) {
+                        searchIndex = exampleRange.upperBound
+                        countingExampleIndex += 1
+
+                        if countingExampleIndex == exampleIndex {
+                            commentValue.replaceSubrange(exampleRange, with: join(lines: [
+                                "```swift",
+                                example,
+                                "```"
+                                ]))
+
+                            file.contents.replaceSubrange(commentRange, with: lineDocumentationSyntax.comment(contents: join(lines: commentValue.linesArray.map({ indent + $0 }))))
+
+                            break
+                        }
+                    }
+                }
+
+                require() { try file.write() }
+            }
+        }
+    }
 }

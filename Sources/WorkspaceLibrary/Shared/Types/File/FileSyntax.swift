@@ -90,6 +90,50 @@ struct FileSyntax {
 
     // MARK: - Parsing
 
+    func requireRangeOfFirstComment(in range: Range<String.Index>, of file: File) -> Range<String.Index> {
+
+        let possibleBlock = blockCommentSyntax?.rangeOfFirstComment(in: range, of: file.contents)
+        let possibleLine = lineCommentSyntax?.rangeOfFirstComment(in: range, of: file.contents)
+
+        if let block = possibleBlock {
+            if let line = possibleLine {
+                if block.lowerBound < line.lowerBound {
+                    return block
+                } else {
+                    return line
+                }
+            } else {
+                return block
+            }
+        } else {
+            if let line = possibleLine {
+                return line
+            } else {
+                fatalError(message: [
+                    "No comments in...",
+                    file.path.string,
+                    "...in \(range)",
+                    "This may indicate a bug in Workspace."
+                    ])
+            }
+        }
+    }
+
+    func requireContentsOfFirstComment(in range: Range<String.Index>, of file: File) -> String {
+        if let block = blockCommentSyntax?.contentsOfFirstComment(in: range, of: file.contents) {
+            return block
+        } else if let line = lineCommentSyntax?.contentsOfFirstComment(in: range, of: file.contents) {
+            return line
+        } else {
+            fatalError(message: [
+                "No comments in...",
+                file.path.string,
+                "...in \(range)",
+                "This may indicate a bug in Workspace."
+                ])
+        }
+    }
+
     private static func advance(_ index: inout String.Index, pastLayoutSpacingIn string: String) {
         string.advance(&index, pastNewlinesWithLimit: 1)
         string.advance(&index, past: CharacterSet.whitespaces)

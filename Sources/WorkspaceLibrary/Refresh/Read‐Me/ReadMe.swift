@@ -83,7 +83,7 @@ struct ReadMe {
                 "## Example Usage",
                 "",
                 "```swift",
-                "[_Example Usage_]",
+                "[\u{5F}Example Usage_]",
                 "```"
             ]
         }

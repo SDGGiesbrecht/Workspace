@@ -99,7 +99,7 @@ struct Examples {
                 var file = require() { try File(at: path) }
 
                 var index = file.contents.startIndex
-                while let range = file.contents.range(of: "[_Example", in: index ..< file.contents.endIndex) {
+                while let range = file.contents.range(of: "[\u{5F}Example", in: index ..< file.contents.endIndex) {
                     index = range.upperBound
 
                     func syntaxError() -> Never {
@@ -110,7 +110,7 @@ struct Examples {
                             ])
                     }
 
-                    guard let details = file.contents.contents(of: ("[_Example ", "_]"), in: range.lowerBound ..< file.contents.endIndex) else {
+                    guard let details = file.contents.contents(of: ("[\u{5F}Example ", "_]"), in: range.lowerBound ..< file.contents.endIndex) else {
                         syntaxError()
                     }
                     guard let colon = details.range(of: ": ") else {

@@ -110,7 +110,7 @@ struct Examples {
                             ])
                     }
 
-                    guard let details = file.contents.contents(of: ("[_Example ", "_]")) else {
+                    guard let details = file.contents.contents(of: ("[_Example ", "_]"), in: range.lowerBound ..< file.contents.endIndex) else {
                         syntaxError()
                     }
                     guard let colon = details.range(of: ": ") else {
@@ -120,7 +120,6 @@ struct Examples {
                         syntaxError()
                     }
                     let exampleName = details.substring(from: colon.upperBound)
-                    print(exampleName)
                     guard let example = examples[exampleName] else {
                         fatalError(message: [
                             "There are no examples named “\(exampleName)”."

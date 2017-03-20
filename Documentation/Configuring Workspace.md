@@ -48,6 +48,26 @@ The referenced repository can be a real project or an otherwise empty repository
 
 Precedence rules still apply. The imported options can override any options before the import statement, and options that follow the import statement can override the imported options.
 
+## Requiring Options
+
+A configuration file can require itself and any other configuration file that imports it to define a particular option. This can be useful to make sure that default templates are consistently filled out with options, like `Project Website` or `Short Project Description`, that have to differ between projects.
+
+A requirement can be confined to projects of a certain type.
+
+This is done with `Require Options`, a list separated by line breaks. Each entry is one of two forms:
+
+- `Option Name`
+- `Project Type: Option Name`
+
+```text
+[_Begin Require Options_]
+Short Project Description
+Project Website
+Library: Repository URL
+Library: Current Version
+[_End_]
+```
+
 ## Available Options
 
 For information on the various available options, see the documentation for the particular feature:

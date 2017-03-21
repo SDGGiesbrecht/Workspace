@@ -102,11 +102,11 @@ struct ReadMe {
                 "",
                 "The \(Configuration.projectName) project is maintained by Jeremy David Giesbrecht.",
                 "",
-                "If \(Configuration.projectName) saves you money, consider giving some of it as a [donation](PayPal.Me/JeremyGiesbrecht).",
+                "If \(Configuration.projectName) saves you money, consider giving some of it as a [donation](https://paypal.me/JeremyGiesbrecht).",
                 "",
                 "If \(Configuration.projectName) saves you time, consider devoting some of it to [contributing](\(Configuration.requiredRepositoryURL)) back to the project.",
                 "",
-                format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.\nFor the worker is worthy of his wages.", url: formatQuotationURL(chapter: "10", originalKey: "SBLGNT"), citation: "\u{200E}ישוע/Yeshuʼa")
+                format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.\nFor the worker is worthy of his wages.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT"), citation: "\u{200E}ישוע/Yeshuʼa")
             ]
         }
 
@@ -177,7 +177,7 @@ struct ReadMe {
             var instructions = [
                 "## Importing",
                 "",
-                "\(Configuration.projectName) is indended for use with the [Swift Package Manager](https://swift.org/package-manager/).",
+                "\(Configuration.projectName) is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).",
                 ""
             ]
 

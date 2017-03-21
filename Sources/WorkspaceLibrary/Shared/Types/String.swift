@@ -99,6 +99,22 @@ extension String {
             return position ..< index(after: position)
         }
     }
+    
+    //#if os(Linux)
+    // [_Workaround: Linux has troube when this function is used on Unicode. (Swift 3.0.2)_]
+    func replacingOccurrences(of searchTerm: String, with replacement: String) -> String {
+        var result = self
+        
+        var index = result.startIndex
+        while let range = result.range(of: searchTerm, in: index ..< result.endIndex) {
+            index = range.upperBound
+            
+            result.replaceSubrange(range, with: replacement)
+        }
+        
+        return result
+    }
+    //#endif
 
     // MARK: - Splitting at Tokens
 

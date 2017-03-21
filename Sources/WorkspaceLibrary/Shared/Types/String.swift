@@ -99,20 +99,20 @@ extension String {
             return position ..< index(after: position)
         }
     }
-    
+
     //#if os(Linux)
     // [_Workaround: Linux has troube when this function is used on Unicode. (Swift 3.0.2)_]
     func replacingOccurrences(of searchTerm: String, with replacement: String) -> String {
         var result = self
-        
-        var index = result.startIndex
-        while let range = result.range(of: searchTerm, in: index ..< result.endIndex) {
-            index = range.upperBound
-            print(index)
-            
+
+        var index = 0
+        while let range = result.range(of: searchTerm, in: result.index(result.startIndex, offsetBy: index) ..< result.endIndex) {
+            index = result.distance(from: result.startIndex, to: range.lowerBound)
+            index += searchTerm.distance(from: searchTerm.startIndex, to: searchTerm.endIndex)
+
             result.replaceSubrange(range, with: replacement)
         }
-        
+
         return result
     }
     //#endif

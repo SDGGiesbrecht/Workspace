@@ -111,7 +111,7 @@ extension String {
         while let range = result.range(of: searchTerm, in: result.index(result.startIndex, offsetBy: index) ..< result.endIndex) {
             print("\(index)/\(result.distance(from: result.startIndex, to: result.endIndex))")
             index = result.distance(from: result.startIndex, to: range.lowerBound)
-            index += searchTerm.distance(from: searchTerm.startIndex, to: searchTerm.endIndex)
+            index += replacement.distance(from: searchTerm.startIndex, to: searchTerm.endIndex)
 
             result.replaceSubrange(range, with: replacement)
         }

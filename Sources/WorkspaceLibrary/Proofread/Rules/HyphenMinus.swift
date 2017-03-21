@@ -61,7 +61,7 @@ struct HyphenMinus : Rule {
 
                         case .workspaceConfiguration:
                             if ¬(file.contents.substring(with: file.contents.startIndex ..< range.lowerBound).contains("```shell") ∧ file.contents.substring(with: range.upperBound ..< file.contents.endIndex).contains("```")) /* Shell Script */
-                                ∧ ¬(file.contents.substring(to: range.lowerBound).contains("[_Feature List_]") ∧ file.contents.substring(to: range.upperBound).contains("[_End_]") ∧ file.contents.substring(to: range.lowerBound).hasSuffix("\n")) /* Feature List */ {
+                                ∧ ¬(file.contents.substring(to: range.lowerBound).contains("[_Begin Feature List_]") ∧ file.contents.substring(to: range.upperBound).contains("[_End_]") ∧ file.contents.substring(to: range.lowerBound).hasSuffix("\n")) /* Feature List */ {
                                 throwError()
                             }
 

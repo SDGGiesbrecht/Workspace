@@ -107,6 +107,7 @@ extension String {
 
         var index = 0
         while let range = result.range(of: searchTerm, in: result.index(result.startIndex, offsetBy: index) ..< result.endIndex) {
+            print("\(index)/\(result.distance(from: result.startIndex, to: result.endIndex))")
             index = result.distance(from: result.startIndex, to: range.lowerBound)
             index += searchTerm.distance(from: searchTerm.startIndex, to: searchTerm.endIndex)
 

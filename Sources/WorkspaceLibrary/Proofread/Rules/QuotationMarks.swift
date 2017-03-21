@@ -47,7 +47,9 @@ struct QuotationMarks : Rule {
                 switch fileType {
                 case .markdown, .workspaceConfiguration:
                     if ¬(filePrefix.contains("```") ∧ fileSuffix.contains("```")) /* Sample Code */
-                        ∧ ¬(linePrefix.contains("`") ∧ lineSuffix.contains("`")) {
+                        ∧ ¬(linePrefix.contains("`") ∧ lineSuffix.contains("`"))
+                        ∧ ¬linePrefix.hasSuffix("=") /* HTML Anchor */
+                        ∧ ¬lineSuffix.hasPrefix(">") {
                         throwError()
                     }
                 case .swift:

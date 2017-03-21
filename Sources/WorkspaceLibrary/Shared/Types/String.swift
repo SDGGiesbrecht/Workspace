@@ -108,6 +108,7 @@ extension String {
         var index = result.startIndex
         while let range = result.range(of: searchTerm, in: index ..< result.endIndex) {
             index = range.upperBound
+            print(index)
             
             result.replaceSubrange(range, with: replacement)
         }

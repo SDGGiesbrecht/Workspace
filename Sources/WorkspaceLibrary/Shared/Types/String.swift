@@ -103,15 +103,12 @@ extension String {
     //#if os(Linux)
     // [_Workaround: Linux has troube when this function is used on Unicode. (Swift 3.0.2)_]
     func replacingOccurrences(of searchTerm: String, with replacement: String) -> String {
-        print(searchTerm)
-        print(replacement)
         var result = self
 
         var index = 0
         while let range = result.range(of: searchTerm, in: result.index(result.startIndex, offsetBy: index) ..< result.endIndex) {
-            print("\(index)/\(result.distance(from: result.startIndex, to: result.endIndex))")
             index = result.distance(from: result.startIndex, to: range.lowerBound)
-            index += replacement.distance(from: searchTerm.startIndex, to: searchTerm.endIndex)
+            index += replacement.distance(from: replacement.startIndex, to: replacement.endIndex)
 
             result.replaceSubrange(range, with: replacement)
         }

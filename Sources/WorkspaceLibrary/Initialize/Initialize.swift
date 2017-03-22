@@ -237,6 +237,22 @@ func runInitialize(andExit shouldExit: Bool) {
     testsFile.body = join(lines: tests)
     require() { try testsFile.write() }
 
+    if packageType == .library {
+        var exampleFile = File(possiblyAt: RelativePath("Tests/\(testsName)/Examples/ReadMe.swift"))
+        let example = [
+            "// [\u{5F}Define Example: Read‐Me_]",
+            "import \(moduleName)",
+            "",
+            "func greet() {",
+            "    sayHello()",
+            "}",
+            "// [_End_]"
+
+        ]
+        exampleFile.body = join(lines: example)
+        require() { try exampleFile.write() }
+    }
+
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Configuring Workspace..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

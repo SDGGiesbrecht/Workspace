@@ -31,23 +31,6 @@ Workspace automates management of Swift projects.
 
 (For a list of related projecs, see [here](Related%20Projects.md).)
 
-## Example Usage
-
-```swift
-import MyInterpreterLibrary
-
-func practiceWithInterpreter() {
-
-    let interpreter = Interpreter(language: .german)
-
-    let greeting = "Hello, World!"
-    print(greeting)
-
-    interpreter.interpret(greeting)
-    // Prints, „Guten Tag, Welt!“
-}
-```
-
 ### Table of Contents
 - [Platforms](#platforms)
 - [What Workspace Can Do](#what-workspace-can-do)

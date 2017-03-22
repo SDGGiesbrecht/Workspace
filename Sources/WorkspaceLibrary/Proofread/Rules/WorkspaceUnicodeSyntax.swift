@@ -2,7 +2,7 @@
  WorkspaceUnicodeSyntax.swift
 
  This source file is part of the Workspace open source project.
- https://github.com/SDGGiesbrecht/Workspace
+ https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
 
@@ -34,9 +34,9 @@ struct WorkspaceUnicodeSyntax : Rule {
         // Define Example: Read‐Me
 
         var index = file.contents.startIndex
-        while let range = file.contents.range(of: "[_Define Example: Read\u{22}Me_]", in: index ..< file.contents.endIndex) {
+        while let range = file.contents.range(of: "[\u{5F}Define Example: Read\u{22}Me_]", in: index ..< file.contents.endIndex) {
             index = range.upperBound
-            errorNotice(status: &status, file: file, range: range, replacement: "[_Define Example: Read‐Me_]", message: "Did you mean “[_Define Example: Read\u{22}Me_]”?")
+            errorNotice(status: &status, file: file, range: range, replacement: "[\u{5F}Define Example: Read‐Me_]", message: "Did you mean “[\u{5F}Define Example: Read‐Me_]”?")
         }
     }
 }

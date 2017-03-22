@@ -2,7 +2,7 @@
  LinuxMain.swift
 
  This source file is part of the Workspace open source project.
- https://github.com/SDGGiesbrecht/Workspace
+ https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2016–2017 Jeremy David Giesbrecht and the Workspace project contributors.
 

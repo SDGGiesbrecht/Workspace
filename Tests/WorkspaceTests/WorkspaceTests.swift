@@ -643,6 +643,7 @@ class WorkspaceTests : XCTestCase {
             ".travis.yml",
 
             // Workspace Project
+            "Related Projects.md",
             "Documentation",
             "Resources"
             ]

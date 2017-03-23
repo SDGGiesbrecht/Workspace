@@ -152,8 +152,17 @@ func runInitialize(andExit shouldExit: Bool) {
         ]
     }
 
+    if packageType == .library {
+        source += [
+            "/// Says, “Hello, world!”.",
+            "public func sayHello() -> String {"
+        ]
+    } else {
+        source += [
+            "func sayHello() -> String {"
+        ]
+    }
     source += [
-        "func sayHello() -> String {",
         "    return \u{22}Hello, world!\u{22}",
         "}"
     ]

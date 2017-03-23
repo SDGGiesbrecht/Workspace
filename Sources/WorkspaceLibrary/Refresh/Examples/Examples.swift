@@ -2,7 +2,7 @@
  Examples.swift
 
  This source file is part of the Workspace open source project.
- https://github.com/SDGGiesbrecht/Workspace
+ https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
 
@@ -13,6 +13,8 @@
  */
 
 import Foundation
+
+import SDGLogic
 
 struct Examples {
     static let examples: [String: String] = {
@@ -54,28 +56,31 @@ struct Examples {
                     let startLineRange = file.contents.lineRange(for: startTokenRange)
                     let endLineRange = file.contents.lineRange(for: end)
 
-                    var contents = file.contents.substring(with: startLineRange.upperBound ..< endLineRange.lowerBound).linesArray
-                    while contents.first?.isWhitespace ?? false {
-                        contents.removeFirst()
-                    }
-                    while contents.last?.isWhitespace ?? false {
-                        contents.removeLast()
-                    }
+                    if startLineRange ≠ endLineRange {
 
-                    var indentEnd = startLineRange.lowerBound
-                    file.contents.advance(&indentEnd, past: CharacterSet.whitespaces)
-                    let indent = file.contents.substring(with: startLineRange.lowerBound ..< indentEnd)
-
-                    contents = contents.map() { (line: String) -> String in
-                        var index = line.startIndex
-                        if line.advance(&index, past: indent) {
-                            return line.substring(from: index)
-                        } else {
-                            return line
+                        var contents = file.contents.substring(with: startLineRange.upperBound ..< endLineRange.lowerBound).linesArray
+                        while contents.first?.isWhitespace ?? false {
+                            contents.removeFirst()
                         }
-                    }
+                        while contents.last?.isWhitespace ?? false {
+                            contents.removeLast()
+                        }
 
-                    list[identifier] = join(lines: contents)
+                        var indentEnd = startLineRange.lowerBound
+                        file.contents.advance(&indentEnd, past: CharacterSet.whitespaces)
+                        let indent = file.contents.substring(with: startLineRange.lowerBound ..< indentEnd)
+
+                        contents = contents.map() { (line: String) -> String in
+                            var index = line.startIndex
+                            if line.advance(&index, past: indent) {
+                                return line.substring(from: index)
+                            } else {
+                                return line
+                            }
+                        }
+
+                        list[identifier] = join(lines: contents)
+                    }
                 }
             }
         }

@@ -2,7 +2,7 @@
  Initialize.swift
 
  This source file is part of the Workspace open source project.
- https://github.com/SDGGiesbrecht/Workspace
+ https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
 
@@ -152,8 +152,17 @@ func runInitialize(andExit shouldExit: Bool) {
         ]
     }
 
+    if packageType == .library {
+        source += [
+            "/// Says, “Hello, world!”.",
+            "public func sayHello() -> String {"
+        ]
+    } else {
+        source += [
+            "func sayHello() -> String {"
+        ]
+    }
     source += [
-        "func sayHello() -> String {",
         "    return \u{22}Hello, world!\u{22}",
         "}"
     ]
@@ -236,6 +245,22 @@ func runInitialize(andExit shouldExit: Bool) {
     ]
     testsFile.body = join(lines: tests)
     require() { try testsFile.write() }
+
+    if packageType == .library {
+        var exampleFile = File(possiblyAt: RelativePath("Tests/\(testsName)/Examples/ReadMe.swift"))
+        let example = [
+            "// [\u{5F}Define Example: Read‐Me_]",
+            "import \(moduleName)",
+            "",
+            "func greet() {",
+            "    print(sayHello())",
+            "}",
+            "// [_End_]"
+
+        ]
+        exampleFile.body = join(lines: example)
+        require() { try exampleFile.write() }
+    }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Configuring Workspace..."])

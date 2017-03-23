@@ -2,7 +2,7 @@
  HyphenMinus.swift
 
  This source file is part of the Workspace open source project.
- https://github.com/SDGGiesbrecht/Workspace
+ https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
 
@@ -60,8 +60,13 @@ struct HyphenMinus : Rule {
                             }
 
                         case .workspaceConfiguration:
-                            if ¬(file.contents.substring(with: file.contents.startIndex ..< range.lowerBound).contains("```shell") ∧ file.contents.substring(with: range.upperBound ..< file.contents.endIndex).contains("```")) /* Shell Script */
-                                ∧ ¬(file.contents.substring(to: range.lowerBound).contains("[_Begin Feature List_]") ∧ file.contents.substring(from: range.upperBound).contains("[_End_]") ∧ file.contents.substring(to: range.lowerBound).hasSuffix("\n")) /* Feature List */ {
+                            let filePrefix = file.contents.substring(to: range.lowerBound)
+                            let fileSuffix = file.contents.substring(from: range.upperBound)
+
+                            if ¬(filePrefix.contains("```shell") ∧ fileSuffix.contains("```")) /* Shell Script */
+                                ∧ ¬(filePrefix.contains("[_Begin Feature List_]") ∧ fileSuffix.contains("[_End_]") ∧ filePrefix.hasSuffix("\n")) /* Feature List */
+                                ∧ ¬(filePrefix.contains("[_Begin Other Read‐Me Content_]") ∧ fileSuffix.contains("[_End_]") ∧ filePrefix.hasSuffix("\n") ∨ filePrefix.hasSuffix("\n  ")) /* Other Read‐Me Content */
+                                ∧ ¬(filePrefix.components(separatedBy: " ").last ?? "").contains("#") {
                                 throwError()
                             }
 

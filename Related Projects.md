@@ -22,7 +22,9 @@
 
 ## <a name="Command‐Line‐Tools">Command Line Tools</a>
 
-### [Workspace](https://github.com/SDGGiesbrecht/Workspace)
+### [Workspace](https://github.com/SDGGiesbrecht/Workspace#workspace)
+
+Workspace automates management of Swift projects.
 
 ## <a name="Foundation‐Level‐Libraries">Foundation Level Libraries</a>
 

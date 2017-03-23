@@ -253,7 +253,7 @@ func runInitialize(andExit shouldExit: Bool) {
             "import \(moduleName)",
             "",
             "func greet() {",
-            "    sayHello()",
+            "    print(sayHello())",
             "}",
             "// [_End_]"
 

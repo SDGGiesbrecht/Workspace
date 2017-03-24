@@ -799,12 +799,8 @@ struct Configuration {
             }
         }
 
-        for (option, types) in required {
-            if configurationFile[option] == nil {
-                if types.contains(Configuration.projectType) {
-                    incompatibilityDetected(between: option, and: .requireOptions, documentation: DocumentationLink.requiringOptions)
-                }
-            }
+        for (option, types) in required where configurationFile[option] == nil ∧ types.contains(Configuration.projectType) {
+            incompatibilityDetected(between: option, and: .requireOptions, documentation: DocumentationLink.requiringOptions)
         }
 
         return succeeding

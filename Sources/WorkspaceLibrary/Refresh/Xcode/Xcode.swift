@@ -109,12 +109,9 @@ struct Xcode {
                     ])
             }
             var frameworkLines = project.substring(with: frameworksList).linesArray
-            for index in frameworkLines.indices.reversed() {
-                let line = frameworkLines[index]
-                if ¬line.isWhitespace {
+            for index in frameworkLines.indices.reversed() where ¬frameworkLines[index].isWhitespace {
                     frameworkLines.remove(at: index)
                     break
-                }
             }
             project.replaceSubrange(frameworksList, with: join(lines: frameworkLines))
 

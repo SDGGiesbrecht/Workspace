@@ -98,10 +98,23 @@ struct DocumentationInheritance {
                     }
 
                     let nextLineStart = file.contents.lineRange(for: range).upperBound
-                    let commentRange = documentationSyntax.requireRangeOfFirstComment(in: nextLineStart ..< file.contents.endIndex, of: file)
-                    let indent = file.contents.substring(with: nextLineStart ..< commentRange.lowerBound)
+                    let nextLine = file.contents.lineRange(for: nextLineStart ..< file.contents.index(after: nextLineStart))
+                    if let commentRange = documentationSyntax.rangeOfFirstComment(in: nextLineStart ..< file.contents.endIndex, of: file),
+                        nextLine.contains(commentRange.lowerBound) {
 
-                    file.contents.replaceSubrange(commentRange, with: lineDocumentationSyntax.comment(contents: replacement, indent: indent))
+                        let indent = file.contents.substring(with: nextLineStart ..< commentRange.lowerBound)
+
+                        file.contents.replaceSubrange(commentRange, with: lineDocumentationSyntax.comment(contents: replacement, indent: indent))
+                    } else {
+                        var location = nextLineStart
+                        file.contents.advance(&location, past: CharacterSet.whitespaces)
+
+                        let indent = file.contents.substring(with: nextLineStart ..< location)
+
+                        let result = lineDocumentationSyntax.comment(contents: replacement, indent: indent) + "\n" + indent
+
+                        file.contents.replaceSubrange(location ..< location, with: result)
+                    }
                 }
 
                 require() { try file.write() }

@@ -90,8 +90,7 @@ struct FileSyntax {
 
     // MARK: - Parsing
 
-    func requireRangeOfFirstComment(in range: Range<String.Index>, of file: File) -> Range<String.Index> {
-
+    func rangeOfFirstComment(in range: Range<String.Index>, of file: File) -> Range<String.Index>? {
         let possibleBlock = blockCommentSyntax?.rangeOfFirstComment(in: range, of: file.contents)
         let possibleLine = lineCommentSyntax?.rangeOfFirstComment(in: range, of: file.contents)
 
@@ -109,13 +108,22 @@ struct FileSyntax {
             if let line = possibleLine {
                 return line
             } else {
-                fatalError(message: [
-                    "No comments in...",
-                    file.path.string,
-                    "...in \(range)",
-                    "This may indicate a bug in Workspace."
-                    ])
+                return nil
+
             }
+        }
+    }
+
+    func requireRangeOfFirstComment(in range: Range<String.Index>, of file: File) -> Range<String.Index> {
+        if let result = rangeOfFirstComment(in: range, of: file) {
+            return result
+        } else {
+            fatalError(message: [
+                "No comments in...",
+                file.path.string,
+                "...in \(range)",
+                "This may indicate a bug in Workspace."
+                ])
         }
     }
 

@@ -168,7 +168,7 @@ func runRefresh(andExit shouldExit: Bool) {
     Examples.refreshExamples()
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Normalizing Files..."])
+    printHeader(["Normalizing files..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     normalizeFiles()

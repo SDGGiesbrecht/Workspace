@@ -21,7 +21,8 @@ struct DocumentationInheritance {
 
         var list: [String: String] = [:]
 
-        for path in Repository.allFiles(at: RelativePath("Packages")) + Repository.sourceFiles {
+        for path in Repository.allFiles(at: RelativePath("Packages")).filter({
+        ¬$0.string.contains(".git") ∧ ¬$0.string.contains("/docs/") }) + Repository.sourceFiles {
             if FileType(filePath: path) == .swift {
                 let file = require() { try File(at: path) }
 

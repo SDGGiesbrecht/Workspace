@@ -168,6 +168,12 @@ func runRefresh(andExit shouldExit: Bool) {
     Examples.refreshExamples()
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    printHeader(["Updating inherited documentation..."])
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+
+    DocumentationInheritance.refreshDocumentation()
+
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Normalizing files..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 

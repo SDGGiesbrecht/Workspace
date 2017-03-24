@@ -31,6 +31,8 @@ protocol Rambler {
 }
 ```
 
+Workspace will only check Swift files for definitions.
+
 ## Inheriting Documentation
 
 To inherit for documentation defined elsewhere, place `[_Inherit Documentation: Identifier_]` where the documentation would go (or above it if it already exists). Anything on the same line will be ignored (such as `//`).
@@ -50,4 +52,4 @@ struct Teacher : Rambler {
 }
 ```
 
-Workspace can find definitions anywhere in the project or even in dependencies as long as their source is present in the `Packages` folder.
+Workspace can find definitions in any Swift file in the project or even in dependencies as long as the source is present in the `Packages` folder.

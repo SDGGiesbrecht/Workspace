@@ -25,7 +25,7 @@ struct DocumentationInheritance {
             if FileType(filePath: path) == .swift {
                 let file = require() { try File(at: path) }
 
-                let startTokens = ("[_Define Documentation", "_]")
+                let startTokens = ("[\u{5F}Define Documentation", "_]")
 
                 var index = file.contents.startIndex
                 while let startTokenRange = file.contents.range(of: startTokens, in: index ..< file.contents.endIndex) {

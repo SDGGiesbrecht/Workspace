@@ -58,7 +58,7 @@ enum Command : String, Comparable, CustomStringConvertible, LosslessStringConver
         case .refresh:
             runRefresh(andExit: shouldExit)
         case .proofread:
-            let _ = runProofread(andExit: shouldExit)
+            _ = runProofread(andExit: shouldExit)
         case .validate:
             runValidate(andExit: shouldExit)
         }

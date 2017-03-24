@@ -44,13 +44,12 @@ enum Localization : String {
     case germanGermany = "de\u{2D}DE"
     case frenchFrance = "fr\u{2D}FR"
 
-
     static let all: [Localization] = [
         .englishUnitedKingdom,
         .englishUnitedStates,
         .englishCanada,
         .germanGermany,
-        .frenchFrance,
+        .frenchFrance
     ]
 
     // MARK: - Properties
@@ -68,7 +67,6 @@ enum Localization : String {
             return ["de"]
         case .frenchFrance:
             return ["fr"]
-
 
         case .englishUnitedStates, .englishCanada:
             return []

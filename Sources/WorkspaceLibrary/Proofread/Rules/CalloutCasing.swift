@@ -32,8 +32,15 @@ struct CalloutCasing : Rule {
                     let nextIndex = range.upperBound.samePosition(in: file.contents.unicodeScalars)
                     let nextCharacter = file.contents.unicodeScalars[nextIndex]
                     if CharacterSet.lowercaseLetters.contains(nextCharacter) {
-                        let replacement = String(nextCharacter).uppercased()
-                        errorNotice(status: &status, file: file, range: range.upperBound ..< file.contents.index(after: range.upperBound), replacement: replacement, message: "Callouts should be capitalized.")
+
+                        var index = range.upperBound
+                        file.contents.advance(&index, past: CharacterSet.letters)
+                        let afterWord = file.contents.characters[index]
+                        if afterWord == ":" {
+
+                            let replacement = String(nextCharacter).uppercased()
+                            errorNotice(status: &status, file: file, range: range.upperBound ..< file.contents.index(after: range.upperBound), replacement: replacement, message: "Callouts should be capitalized.")
+                        }
                     }
                 }
             }

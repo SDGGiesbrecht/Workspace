@@ -36,7 +36,7 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
     for path in Repository.sourceFiles {
         let file = require() { try File(at: path) }
 
-        if let _ = file.fileType {
+        if file.fileType ≠ nil {
 
             var ruleSet: [Rule.Type]
             if Configuration.sdg {

@@ -24,7 +24,7 @@ struct Examples {
         for path in Repository.sourceFiles {
             let file = require() { try File(at: path) }
 
-            if let _ = file.fileType {
+            if file.fileType ≠ nil {
 
                 let startTokens = ("[_Define Example", "_]")
 

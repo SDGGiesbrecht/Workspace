@@ -72,6 +72,7 @@ A particular project can [configure](Documentation/Operating%20Systems.md) which
   - Run unit tests on each operating system (except watchOS).
   - Enforce [code coverage](Documentation/Code%20Coverage.md).
   - Enforce validity of [example](Documentation/Examples.md) code.
+  - Make symbols [inherit documentation](Documentation/Documentation%20Inheritance.md).
   - Generate API [documentation](Documentation/Documentation%20Generation.md) (except from Linux). (Using [Jazzy](https://github.com/realm/jazzy))
   - Enforce [documentation coverage](Documentation/Documentation%20Generation.md#enforcement).
   - Configure [continuous integration](Documentation/Continuous%20Integration.md) for each operating system. ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))

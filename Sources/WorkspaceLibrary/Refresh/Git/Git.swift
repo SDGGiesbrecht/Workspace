@@ -44,6 +44,7 @@ struct Git {
     static let ignoreEntriesForJazzy = [
         "/build",
         "undocumented.json",
+        // [_Workaround: Jazzy gzips undocumented.json. (jazzy --version 0.7.5)_]
         "*.tgz"
     ]
 

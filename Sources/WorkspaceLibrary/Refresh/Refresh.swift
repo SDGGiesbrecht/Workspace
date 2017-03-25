@@ -168,7 +168,13 @@ func runRefresh(andExit shouldExit: Bool) {
     Examples.refreshExamples()
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Normalizing Files..."])
+    printHeader(["Updating inherited documentation..."])
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+
+    DocumentationInheritance.refreshDocumentation()
+
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    printHeader(["Normalizing files..."])
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     normalizeFiles()

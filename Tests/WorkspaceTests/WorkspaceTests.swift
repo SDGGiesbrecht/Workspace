@@ -721,7 +721,7 @@ class WorkspaceTests : XCTestCase {
 
                 do {
 
-                    let _ = bash(["swift build"])
+                    _ = bash(["swift build"])
 
                     try Repository.delete(Repository.testZone)
 
@@ -751,7 +751,7 @@ class WorkspaceTests : XCTestCase {
                             }
 
                             // Normalize project state.
-                            let _ = bash(["../../.build/debug/workspace", "validate"], silent: true)
+                            _ = bash(["../../.build/debug/workspace", "validate"], silent: true)
 
                             // Commit normalized project state.
                             if ¬bash(["git", "add", "."], silent: true).succeeded {

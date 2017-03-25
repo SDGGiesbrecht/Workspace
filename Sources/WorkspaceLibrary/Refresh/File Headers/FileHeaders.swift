@@ -132,7 +132,7 @@ struct FileHeaders {
 
         for path in Repository.sourceFiles.filter({ shouldManageHeader(path: $0) }) {
 
-            if let _ = FileType(filePath: path)?.syntax {
+            if FileType(filePath: path)?.syntax ≠ nil {
 
                 var file = require() { try File(at: path) }
                 let oldHeader = file.header

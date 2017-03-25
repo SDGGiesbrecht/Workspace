@@ -121,7 +121,7 @@ struct LineCommentSyntax {
     func requireRangeOfFirstComment(in range: Range<String.Index>, of file: File) -> Range<String.Index> {
 
         guard let result = rangeOfFirstComment(in: range, of: file.contents) else {
-            let _ = file.requireRange(of: start, in: range) // Trigger error at File.
+            _ = file.requireRange(of: start, in: range) // Trigger error at File.
             unreachableLocation()
         }
 

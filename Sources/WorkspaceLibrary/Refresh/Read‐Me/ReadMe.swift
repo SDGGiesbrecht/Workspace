@@ -373,8 +373,10 @@ struct ReadMe {
                     possibleReadMeExample = Examples.examples["Read‐Me"]
                 }
                 guard let readMeExample = possibleReadMeExample else {
-                    var name = "Read‐Me \(localization)"
-                    if localization == nil {
+                    let name: String
+                    if let specific = localization {
+                        name = "Read‐Me \(specific)"
+                    } else {
                         name = "Read‐Me"
                     }
                     

@@ -242,6 +242,7 @@ struct ReadMe {
         if localizations.isEmpty {
             localizations.append(noLocalization)
         }
+        print(localizations)
 
         for localization in Configuration.localizations {
 

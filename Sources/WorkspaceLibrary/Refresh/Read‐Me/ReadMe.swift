@@ -368,7 +368,12 @@ struct ReadMe {
             
             let exampleUsage = key("Example Usage")
             if body.contains(exampleUsage) {
-                var possibleReadMeExample = Examples.examples["Read‐Me: \(localization)"]
+                var possibleReadMeExample: String?
+                    
+                if let specific = localization {
+                    possibleReadMeExample = Examples.examples["Read‐Me: \(specific)"]
+                }
+                
                 if possibleReadMeExample == nil ∧ localization == nil {
                     possibleReadMeExample = Examples.examples["Read‐Me: \(Configuration.developmentLocalization)"]
                     
@@ -383,7 +388,7 @@ struct ReadMe {
                     } else {
                         name = "Read‐Me"
                     }
-                    
+                    print(localization)
                     fatalError(message: [
                         "There is no definition for the example named “\(name)”.",
                         "",

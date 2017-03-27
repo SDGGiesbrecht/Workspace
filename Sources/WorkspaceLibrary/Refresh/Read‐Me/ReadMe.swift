@@ -284,7 +284,7 @@ struct ReadMe {
             
             let features = key("Features")
             if body.contains(features) {
-                body = body.replacingOccurrences(of: features, with: Configuration.requiredFeatureList)
+                body = body.replacingOccurrences(of: features, with: Configuration.requiredFeatureList(localization: localization))
             }
             
             let relatedProjectsLink = key("Related Projects")

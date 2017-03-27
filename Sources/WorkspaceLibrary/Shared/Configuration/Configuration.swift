@@ -587,11 +587,11 @@ struct Configuration {
     static var citation: String? {
         return possibleStringValue(option: .citation)
     }
-    static var featureList: String? {
-        return possibleStringValue(option: .featureList)
+    static func featureList(localization: String?) -> String? {
+        return localizedOptionValue(option: .featureList, localization: localization)
     }
-    static var requiredFeatureList: String {
-        return stringValue(option: .featureList)
+    static func requiredFeatureList(localization: String?) -> String {
+        return requiredLocalizedOptionValue(option: .featureList, localization: localization)
     }
     static var installationInstructions: String? {
         return possibleStringValue(option: .installationInstructions)

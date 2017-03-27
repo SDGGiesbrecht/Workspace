@@ -569,7 +569,7 @@ struct Configuration {
         return localizedOptionValue(option: .quotationTranslation, localization: localization)
     }
     static func quotationURL(localization: String?) -> String? {
-        return localizedOptionValue(option: .quotationURL, localization: localization)
+        return localizedOptionValue(option: .quotationURL, localization: localization) ?? ReadMe.defaultQuotationURL(localization: localization)
     }
     static var quotationChapter: String? {
         return possibleStringValue(option: .quotationChapter)

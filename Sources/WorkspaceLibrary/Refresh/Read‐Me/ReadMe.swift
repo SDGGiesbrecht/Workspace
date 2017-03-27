@@ -18,9 +18,12 @@ import SDGLogic
 
 struct ReadMe {
     
+    static func readMeFilename(localization: String?) -> String {
+        return "Read Me.md"
+    }
     static func readMePath(localization: String?) -> RelativePath {
         if let specific = localization {
-            return RelativePath("Documentation/\(specific)/Read Me.md")
+            return RelativePath("Documentation/\(specific)/\(readMeFilename(localization: localization))")
         } else {
             return RelativePath("README.md")
         }
@@ -47,6 +50,12 @@ struct ReadMe {
     
     static let defaultReadMeTemplate: String = {
         var readMe: [String] = []
+        
+        if ¬Configuration.localizations.isEmpty {
+            readMe += [
+                "[_Localization Links_]"
+            ]
+        }
         
         if Configuration.documentationURL ≠ nil {
             readMe += [
@@ -155,6 +164,23 @@ struct ReadMe {
         } else {
             return Configuration.noValue
         }
+    }
+    
+    static func localizationLinksMarkup(localization: String?) -> String {
+        var links: [String] = []
+        for targetLocalization in Configuration.localizations {
+            let link = targetLocalization
+            var url: String
+            if localization == nil {
+                url = readMeFilename(localization: targetLocalization)
+            } else {
+                url = readMeFilename(localization: targetLocalization)
+            }
+            url = url.replacingOccurrences(of: " ", with: "%20")
+            
+            links.append("[\(link)](\(url))")
+        }
+        return links.joined(separator: " • ")
     }
     
     static let apiLinksMarkup: String = {
@@ -279,6 +305,11 @@ struct ReadMe {
                 "",
                 Configuration.readMe
                 ])
+            
+            let localizationLinks = key("Localization Links")
+            if body.contains(localizationLinks) {
+                body = body.replacingOccurrences(of: localizationLinks, with: localizationLinksMarkup(localization: localization))
+            }
             
             let apiLinks = key("API Links")
             if body.contains(apiLinks) {

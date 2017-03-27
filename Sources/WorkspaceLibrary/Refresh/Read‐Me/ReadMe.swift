@@ -374,8 +374,9 @@ struct ReadMe {
                     possibleReadMeExample = Examples.examples["Read‐Me: \(specific)"]
                 }
                 
-                if possibleReadMeExample == nil ∧ localization == nil {
-                    possibleReadMeExample = Examples.examples["Read‐Me: \(Configuration.developmentLocalization)"]
+                if possibleReadMeExample == nil ∧ localization == nil,
+                    let development = Configuration.developmentLocalization {
+                    possibleReadMeExample = Examples.examples["Read‐Me: \(development)"]
                     
                     if possibleReadMeExample == nil {
                         possibleReadMeExample = Examples.examples["Read‐Me"]

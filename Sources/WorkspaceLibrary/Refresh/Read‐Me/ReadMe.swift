@@ -370,7 +370,11 @@ struct ReadMe {
             if body.contains(exampleUsage) {
                 var possibleReadMeExample = Examples.examples["Read‐Me: \(localization)"]
                 if possibleReadMeExample == nil ∧ localization == nil {
-                    possibleReadMeExample = Examples.examples["Read‐Me"]
+                    possibleReadMeExample = Examples.examples["Read‐Me: \(Configuration.developmentLocalization)"]
+                    
+                    if possibleReadMeExample == nil {
+                        possibleReadMeExample = Examples.examples["Read‐Me"]
+                    }
                 }
                 guard let readMeExample = possibleReadMeExample else {
                     let name: String

@@ -267,6 +267,10 @@ struct Documentation {
                     let relatedLine = source.lineRange(for: relatedLink)
                     source.removeSubrange(relatedLine)
                 }
+                while let relatedLink = source.range(of: "Read%20Me.md") {
+                    let relatedLine = source.lineRange(for: relatedLink)
+                    source.removeSubrange(relatedLine)
+                }
 
                 file.contents = source
                 require() { try file.write() }

@@ -106,7 +106,14 @@ struct ReadMe {
             ]
         }
         
-        if Examples.examples["Read‐Me"] ≠ nil {
+        var readMeExampleExists = false
+        for (key, _) in Examples.examples {
+            if key.hasPrefix("Read‐Me") {
+                readMeExampleExists = true
+                break
+            }
+        }
+        if readMeExampleExists {
             readMe += [
                 "",
                 "## Example Usage",
@@ -361,10 +368,18 @@ struct ReadMe {
             
             let exampleUsage = key("Example Usage")
             if body.contains(exampleUsage) {
-                guard let readMeExample = Examples.examples["Read‐Me"] else {
+                var possibleReadMeExample = Examples.examples["Read‐Me \(localization)"]
+                if possibleReadMeExample == nil ∧ localization == nil {
+                    possibleReadMeExample = Examples.examples["Read‐Me"]
+                }
+                guard let readMeExample = possibleReadMeExample else {
+                    var name = "Read‐Me \(localization)"
+                    if localization == nil {
+                        name = "Read‐Me"
+                    }
                     
                     fatalError(message: [
-                        "There is no definition for the example named “Read‐Me”.",
+                        "There is no definition for the example named “\(name)”.",
                         "",
                         "Available example definitions:",
                         "",

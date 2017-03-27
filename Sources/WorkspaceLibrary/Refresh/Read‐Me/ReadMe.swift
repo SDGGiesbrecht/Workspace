@@ -125,25 +125,37 @@ struct ReadMe {
                 "",
                 "If \(Configuration.projectName) saves you time, consider devoting some of it to [contributing](\(Configuration.requiredRepositoryURL)) back to the project.",
                 "",
-                format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.\nFor the worker is worthy of his wages.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT"), citation: "\u{200E}ישוע/Yeshuʼa")
+                format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.\nFor the worker is worthy of his wages.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: "🇬🇧 English"), citation: "\u{200E}ישוע/Yeshuʼa")
             ]
         }
         
         return join(lines: readMe)
     }()
     
-    static func formatQuotationURL(chapter: String, originalKey: String) -> String {
+    static func formatQuotationURL(chapter: String, originalKey: String, localization: String?) -> String {
+        var translationCode = "NIVUK"
+        if let specific = localization {
+            switch specific {
+            case "🇬🇧 English":
+                break
+            case "🇩🇪 Deutsch":
+                translationCode = "SCH2000"
+            default:
+                fatalError(message: ["\(specific) does not have a corresponding translation yet."])
+            }
+        }
+        
         let sanitizedChapter = chapter.replacingOccurrences(of: " ", with: "+")
-        return "https://www.biblegateway.com/passage/?search=\(sanitizedChapter)&version=\(originalKey);NIVUK"
+        return "https://www.biblegateway.com/passage/?search=\(sanitizedChapter)&version=\(originalKey);\(translationCode)"
     }
     
-    static let defaultQuotationURL: String = {
-        if var chapter = Configuration.quotationChapter {
-            return formatQuotationURL(chapter: chapter, originalKey: Configuration.quotationOriginalKey)
+    static func defaultQuotationURL(localization: String?) -> String {
+        if let chapter = Configuration.quotationChapter {
+            return formatQuotationURL(chapter: chapter, originalKey: Configuration.quotationOriginalKey, localization: localization)
         } else {
             return Configuration.noValue
         }
-    }()
+    }
     
     static let apiLinksMarkup: String = {
         let urlString = Configuration.requiredDocumentationURL
@@ -181,10 +193,10 @@ struct ReadMe {
         return "> " + result
     }
     
-    static let quotationMarkup: String = {
-        return format(quotation: Configuration.requiredQuotation, url: Configuration.quotationURL, citation: Configuration.citation)
+    static func quotationMarkup(localization: String?) -> String {
+        return format(quotation: Configuration.requiredQuotation, url: Configuration.quotationURL(localization: localization), citation: Configuration.citation(localization: localization))
         
-    }()
+    }
     
     static func relatedProjectsLinkMarkup(localization: String?) -> String {
         let path: String
@@ -279,7 +291,7 @@ struct ReadMe {
             
             let quotation = key("Quotation")
             if body.contains(quotation) {
-                body = body.replacingOccurrences(of: quotation, with: quotationMarkup)
+                body = body.replacingOccurrences(of: quotation, with: quotationMarkup(localization: localization))
             }
             
             let features = key("Features")

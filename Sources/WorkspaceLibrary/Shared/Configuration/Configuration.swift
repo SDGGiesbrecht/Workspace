@@ -565,8 +565,11 @@ struct Configuration {
     static var requiredQuotation: String {
         return stringValue(option: .quotation)
     }
-    static var quotationURL: String? {
-        return possibleStringValue(option: .quotationURL)
+    static func quotationTranslation(localization: String?) -> String? {
+        return localizedOptionValue(option: .quotationTranslation, localization: localization)
+    }
+    static func quotationURL(localization: String?) -> String? {
+        return localizedOptionValue(option: .quotationURL, localization: localization)
     }
     static var quotationChapter: String? {
         return possibleStringValue(option: .quotationChapter)
@@ -584,8 +587,8 @@ struct Configuration {
             invalidEnumValue(option: .quotationTestament, value: value, valid: [old, new])
         }
     }
-    static var citation: String? {
-        return possibleStringValue(option: .citation)
+    static func citation(localization: String?) -> String? {
+        return localizedOptionValue(option: .citation, localization: localization)
     }
     static func featureList(localization: String?) -> String? {
         return localizedOptionValue(option: .featureList, localization: localization)

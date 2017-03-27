@@ -42,6 +42,7 @@ enum Option : String, CustomStringConvertible {
     case documentationURL = "Documentation URL"
     case shortProjectDescription = "Short Project Description"
     case quotation = "Quotation"
+    case quotationTranslation = "Quotation Translation"
     case quotationURL = "Quotation URL"
     case quotationChapter = "Quotation Chapter"
     case quotationTestament = "Quotation Testament"
@@ -124,6 +125,7 @@ enum Option : String, CustomStringConvertible {
         .documentationURL,
         .shortProjectDescription,
         .quotation,
+        .quotationTranslation,
         .quotationURL,
         .citation,
         .featureList,
@@ -219,8 +221,10 @@ enum Option : String, CustomStringConvertible {
             return Configuration.noValue
         case .quotation:
             return Configuration.noValue
+        case .quotationTranslation:
+            return Configuration.noValue
         case .quotationURL:
-            return ReadMe.defaultQuotationURL
+            return Configuration.noValue
         case .quotationChapter:
             return Configuration.noValue
         case .quotationTestament:

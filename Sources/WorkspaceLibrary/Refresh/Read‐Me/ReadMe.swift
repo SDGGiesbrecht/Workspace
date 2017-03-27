@@ -179,7 +179,7 @@ struct ReadMe {
 
     }()
 
-    static func relatedProjectsLinkMarkup(localization: String) -> String {
+    static func relatedProjectsLinkMarkup(localization: String?) -> String {
         return "(For a list of related projecs, see [here](\(ReadMe.relatedProjectsPath(localization: localization).string.replacingOccurrences(of: " ", with: "%20"))).)"
     }
 

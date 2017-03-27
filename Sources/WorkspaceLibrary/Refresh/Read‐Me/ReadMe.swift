@@ -32,7 +32,11 @@ struct ReadMe {
         if let specific = localization {
             return RelativePath("Documentation/\(specific)/\(relatedProjectsFilename(localization: localization))")
         } else {
-            return RelativePath("Documentation/\(relatedProjectsFilename(localization: localization))")
+            if let development = Configuration.developmentLocalization {
+                return relatedProjectsPath(localization: development)
+            } else {
+                return RelativePath("Documentation/\(relatedProjectsFilename(localization: localization))")
+            }
         }
     }
     

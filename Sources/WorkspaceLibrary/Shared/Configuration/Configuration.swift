@@ -411,6 +411,9 @@ struct Configuration {
     static var localizations: [String] {
         return listValue(option: .localizations)
     }
+    static var developmentLocalization: String? {
+        return localizations.first
+    }
 
     // Project Names
 

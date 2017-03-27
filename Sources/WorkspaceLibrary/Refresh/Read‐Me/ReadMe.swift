@@ -18,8 +18,20 @@ import SDGLogic
 
 struct ReadMe {
 
-    static let readMePath = RelativePath("README.md")
-    static let relatedProjectsPath = RelativePath("Related Projects.md")
+    static func readMePath(localization: String?) -> RelativePath {
+        if let specific = localization {
+            return RelativePath("Documentation/\(specific)/Read Me.md")
+        } else {
+            return RelativePath("README.md")
+        }
+    }
+    static func relatedProjectsPath(localization: String?) -> RelativePath {
+        if let specific = localization {
+            return RelativePath("Documentation/\(specific)/Related Projects.md")
+        } else {
+            return RelativePath("Documentation/Related Projects.md")
+        }
+    }
 
     private static let managementComment: String = {
         let managementWarning = File.managmentWarning(section: false, documentation: .readMe)
@@ -167,9 +179,9 @@ struct ReadMe {
 
     }()
 
-    static let relatedProjectsLinkMarkup: String = {
-        return "(For a list of related projecs, see [here](\(ReadMe.relatedProjectsPath.string.replacingOccurrences(of: " ", with: "%20"))).)"
-    }()
+    static func relatedProjectsLinkMarkup(localization: String) -> String {
+        return "(For a list of related projecs, see [here](\(ReadMe.relatedProjectsPath(localization: localization).string.replacingOccurrences(of: " ", with: "%20"))).)"
+    }
 
     static let defaultInstallationInstructions: String? = {
         if Configuration.projectType == .library {
@@ -224,179 +236,189 @@ struct ReadMe {
 
     static func refreshReadMe() {
 
-        func key(_ name: String) -> String {
-            return "[_\(name)_]"
+        var localizations = Configuration.localizations.map() { Optional($0) }
+        if localizations.isEmpty {
+            localizations.append(nil)
         }
 
-        var body = join(lines: [
-            managementComment,
-            "",
-            Configuration.readMe
-            ])
+        for localization in Configuration.localizations {
 
-        let apiLinks = key("API Links")
-        if body.contains(apiLinks) {
-            body = body.replacingOccurrences(of: apiLinks, with: apiLinksMarkup)
-        }
-
-        body = body.replacingOccurrences(of: key("Project"), with: Configuration.projectName)
-
-        let shortDescription = key("Short Description")
-        if body.contains(shortDescription) {
-            body = body.replacingOccurrences(of: shortDescription, with: Configuration.requiredShortProjectDescription)
-        }
-
-        let quotation = key("Quotation")
-        if body.contains(quotation) {
-            body = body.replacingOccurrences(of: quotation, with: quotationMarkup)
-        }
-
-        let features = key("Features")
-        if body.contains(features) {
-            body = body.replacingOccurrences(of: features, with: Configuration.requiredFeatureList)
-        }
-
-        let relatedProjectsLink = key("Related Projects")
-        if body.contains(relatedProjectsLink) {
-            body = body.replacingOccurrences(of: relatedProjectsLink, with: relatedProjectsLinkMarkup)
-        }
-
-        let installationInsructions = key("Installation Instructions")
-        if body.contains(installationInsructions) {
-            body = body.replacingOccurrences(of: installationInsructions, with: Configuration.requiredInstallationInstructions)
-        }
-
-        let repositoryURL = key("Repository URL")
-        if body.contains(repositoryURL) {
-            body = body.replacingOccurrences(of: repositoryURL, with: Configuration.requiredRepositoryURL)
-        }
-
-        let currentVersion = key("Current Version")
-        if body.contains(currentVersion) {
-            body = body.replacingOccurrences(of: currentVersion, with: "\(Configuration.requiredCurrentVersion)")
-        }
-
-        let nextMajorVersion = key("Next Major Version")
-        if body.contains(nextMajorVersion) {
-            body = body.replacingOccurrences(of: nextMajorVersion, with: "\(Configuration.requiredCurrentVersion.nextMajorVersion)")
-        }
-
-        let exampleUsage = key("Example Usage")
-        if body.contains(exampleUsage) {
-            guard let readMeExample = Examples.examples["Read‐Me"] else {
-
-                fatalError(message: [
-                    "There is no definition for the example named “Read‐Me”.",
-                    "",
-                    "Available example definitions:",
-                    "",
-                    join(lines: Examples.examples.keys.sorted())
-                    ])
+            func key(_ name: String) -> String {
+                return "[_\(name)_]"
             }
-            body = body.replacingOccurrences(of: exampleUsage, with: readMeExample)
-        }
 
-        let other = key("Other")
-        if body.contains(other) {
-            body = body.replacingOccurrences(of: other, with: Configuration.requiredOtherReadMeContent)
-        }
-
-        var readMe = File(possiblyAt: readMePath)
-        readMe.body = body
-        require() { try readMe.write() }
-
-        if ¬Configuration.relatedProjects.isEmpty {
-
-            var projects: [String] = [
-                "# Related Projects",
+            var body = join(lines: [
+                managementComment,
                 "",
-                "### Table of Contents",
-                ""
-            ]
+                Configuration.readMe
+                ])
 
-            func extractHeader(line: String) -> String {
-                var start = line.startIndex
-                guard line.advance(&start, past: "# ") else {
+            let apiLinks = key("API Links")
+            if body.contains(apiLinks) {
+                body = body.replacingOccurrences(of: apiLinks, with: apiLinksMarkup)
+            }
+
+            body = body.replacingOccurrences(of: key("Project"), with: Configuration.projectName)
+
+            let shortDescription = key("Short Description")
+            if body.contains(shortDescription) {
+                body = body.replacingOccurrences(of: shortDescription, with: Configuration.requiredShortProjectDescription)
+            }
+
+            let quotation = key("Quotation")
+            if body.contains(quotation) {
+                body = body.replacingOccurrences(of: quotation, with: quotationMarkup)
+            }
+
+            let features = key("Features")
+            if body.contains(features) {
+                body = body.replacingOccurrences(of: features, with: Configuration.requiredFeatureList)
+            }
+
+            let relatedProjectsLink = key("Related Projects")
+            if body.contains(relatedProjectsLink) {
+                body = body.replacingOccurrences(of: relatedProjectsLink, with: relatedProjectsLinkMarkup(localization: localization))
+            }
+
+            let installationInsructions = key("Installation Instructions")
+            if body.contains(installationInsructions) {
+                body = body.replacingOccurrences(of: installationInsructions, with: Configuration.requiredInstallationInstructions)
+            }
+
+            let repositoryURL = key("Repository URL")
+            if body.contains(repositoryURL) {
+                body = body.replacingOccurrences(of: repositoryURL, with: Configuration.requiredRepositoryURL)
+            }
+
+            let currentVersion = key("Current Version")
+            if body.contains(currentVersion) {
+                body = body.replacingOccurrences(of: currentVersion, with: "\(Configuration.requiredCurrentVersion)")
+            }
+
+            let nextMajorVersion = key("Next Major Version")
+            if body.contains(nextMajorVersion) {
+                body = body.replacingOccurrences(of: nextMajorVersion, with: "\(Configuration.requiredCurrentVersion.nextMajorVersion)")
+            }
+
+            let exampleUsage = key("Example Usage")
+            if body.contains(exampleUsage) {
+                guard let readMeExample = Examples.examples["Read‐Me"] else {
+
                     fatalError(message: [
-                        "Error parsing section header:",
+                        "There is no definition for the example named “Read‐Me”.",
                         "",
-                        "\(line)",
+                        "Available example definitions:",
                         "",
-                        "This may indicate a bug in Workspace."
+                        join(lines: Examples.examples.keys.sorted())
                         ])
                 }
-                return line.substring(from: start)
+                body = body.replacingOccurrences(of: exampleUsage, with: readMeExample)
             }
 
-            func sanitize(headerAnchor: String) -> String {
-                return headerAnchor.replacingOccurrences(of: " ", with: "‐")
+            let other = key("Other")
+            if body.contains(other) {
+                body = body.replacingOccurrences(of: other, with: Configuration.requiredOtherReadMeContent)
             }
 
-            for line in Configuration.relatedProjects {
-                if line.hasPrefix("# ") {
-                    let header = extractHeader(line: line)
-                    projects += [
-                        "\u{2D} [\(header)](#\(sanitize(headerAnchor: header)))"
-                    ]
-                }
-            }
-            for line in Configuration.relatedProjects {
-                if line.hasPrefix("# ") {
-                    let header = extractHeader(line: line)
-                    projects += [
-                        "",
-                        "## <a name=\u{22}\(sanitize(headerAnchor: header))\u{22}>\(header)</a>"
-                    ]
-                } else {
-                    guard let colon = line.range(of: ": ") else {
+            var readMe = File(possiblyAt: readMePath(localization: localization))
+            readMe.body = body
+            require() { try readMe.write() }
+
+            if ¬Configuration.relatedProjects.isEmpty {
+
+                var projects: [String] = [
+                    "# Related Projects",
+                    "",
+                    "### Table of Contents",
+                    ""
+                ]
+
+                func extractHeader(line: String) -> String {
+                    var start = line.startIndex
+                    guard line.advance(&start, past: "# ") else {
                         fatalError(message: [
-                            "Syntax error:",
+                            "Error parsing section header:",
                             "",
-                            line,
+                            "\(line)",
                             "",
-                            "Expected a line of the form:",
-                            "",
-                            "Name: https://url.to/repository"
+                            "This may indicate a bug in Workspace."
                             ])
                     }
+                    return line.substring(from: start)
+                }
 
-                    let name = line.substring(to: colon.lowerBound)
-                    let url = line.substring(from: colon.upperBound)
-                    let configuration = Configuration.parseConfigurationFile(fromLinkedRepositoryAt: url)
+                func sanitize(headerAnchor: String) -> String {
+                    return headerAnchor.replacingOccurrences(of: " ", with: "‐")
+                }
 
-                    let link: String
-                    if let documentation = configuration[.documentationURL] {
-                        link = documentation
-                    } else {
-                        link = url
-                    }
-                    projects += [
-                        "",
-                        "### [\(name)](\(link))"
-                    ]
-
-                    if let shortDescription = configuration[.shortProjectDescription] {
+                for line in Configuration.relatedProjects {
+                    if line.hasPrefix("# ") {
+                        let header = extractHeader(line: line)
                         projects += [
-                            "",
-                            shortDescription
+                            "\u{2D} [\(header)](#\(sanitize(headerAnchor: header)))"
                         ]
                     }
                 }
-            }
+                for line in Configuration.relatedProjects {
+                    if line.hasPrefix("# ") {
+                        let header = extractHeader(line: line)
+                        projects += [
+                            "",
+                            "## <a name=\u{22}\(sanitize(headerAnchor: header))\u{22}>\(header)</a>"
+                        ]
+                    } else {
+                        guard let colon = line.range(of: ": ") else {
+                            fatalError(message: [
+                                "Syntax error:",
+                                "",
+                                line,
+                                "",
+                                "Expected a line of the form:",
+                                "",
+                                "Name: https://url.to/repository"
+                                ])
+                        }
 
-            var relatedProjects = File(possiblyAt: relatedProjectsPath)
-            relatedProjects.body = join(lines: projects)
-            require() { try relatedProjects.write() }
+                        let name = line.substring(to: colon.lowerBound)
+                        let url = line.substring(from: colon.upperBound)
+                        let configuration = Configuration.parseConfigurationFile(fromLinkedRepositoryAt: url)
+
+                        let link: String
+                        if let documentation = configuration[.documentationURL] {
+                            link = documentation
+                        } else {
+                            link = url
+                        }
+                        projects += [
+                            "",
+                            "### [\(name)](\(link))"
+                        ]
+
+                        if let shortDescription = configuration[.shortProjectDescription] {
+                            projects += [
+                                "",
+                                shortDescription
+                            ]
+                        }
+                    }
+                }
+
+                var relatedProjects = File(possiblyAt: relatedProjectsPath(localization: localization))
+                relatedProjects.body = join(lines: projects)
+                require() { try relatedProjects.write() }
+            }
         }
     }
 
     static func relinquishControl() {
 
-        var readMe = File(possiblyAt: readMePath)
-        if let range = readMe.contents.range(of: managementComment) {
-            printHeader(["Cancelling read‐me management..."])
-            readMe.contents.removeSubrange(range)
-            force() { try readMe.write() }
+        for localization in Configuration.localizations {
+            var readMe = File(possiblyAt: readMePath(localization: localization))
+            if let range = readMe.contents.range(of: managementComment) {
+                printHeader(["Cancelling read‐me management..."])
+                readMe.contents.removeSubrange(range)
+                force() { try readMe.write() }
+            }
         }
     }
 }

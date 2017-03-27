@@ -408,6 +408,10 @@ struct Configuration {
         }
     }
 
+    static var localizations: [String] {
+        return listValue(option: .localizations)
+    }
+
     // Project Names
 
     static var projectName: String {

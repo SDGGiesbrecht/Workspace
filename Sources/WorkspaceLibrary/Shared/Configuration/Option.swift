@@ -35,6 +35,8 @@ enum Option : String, CustomStringConvertible {
 
     case skipSimulator = "Skip Simulator"
 
+    case localizations = "Localizations"
+
     case manageReadMe = "Manage Read‐Me"
     case readMe = "Read‐Me"
     case documentationURL = "Documentation URL"
@@ -114,6 +116,8 @@ enum Option : String, CustomStringConvertible {
         .supportTVOS,
 
         .skipSimulator,
+
+        .localizations,
 
         .manageReadMe,
         .readMe,
@@ -201,6 +205,9 @@ enum Option : String, CustomStringConvertible {
 
         case .skipSimulator:
             return Configuration.falseOptionValue
+
+        case .localizations:
+            return Configuration.emptyListOptionValue
 
         case .manageReadMe:
             return Configuration.falseOptionValue

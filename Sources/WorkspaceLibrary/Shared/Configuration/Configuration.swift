@@ -394,7 +394,7 @@ struct Configuration {
         }
         return localized
     }
-    private static func localizedOptionValue(option: Option, localization: String?, configuration: [Option: String]? = nil) -> String? {
+    static func localizedOptionValue(option: Option, localization: String?, configuration: [Option: String]? = nil) -> String? {
         var file = configuration ?? configurationFile
         
         guard let localized = localizedOptionValues(option: option, configuration: file) else {

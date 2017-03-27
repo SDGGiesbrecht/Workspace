@@ -23,7 +23,7 @@ struct ReadMe {
     }
     static func readMePath(localization: String?) -> RelativePath {
         if let specific = localization {
-            return RelativePath("Documentation/\(specific)/\(readMeFilename(localization: localization)) [\(specific)].md")
+            return RelativePath("Documentation/\(specific)/\(readMeFilename(localization: localization))—\(specific).md")
         } else {
             return RelativePath("README.md")
         }
@@ -33,7 +33,7 @@ struct ReadMe {
     }
     static func relatedProjectsPath(localization: String?) -> RelativePath {
         if let specific = localization {
-            return RelativePath("Documentation/\(specific)/\(relatedProjectsFilename(localization: localization)) [\(specific)].md")
+            return RelativePath("Documentation/\(specific)/\(relatedProjectsFilename(localization: localization))—\(specific).md")
         } else {
             if let development = Configuration.developmentLocalization {
                 return relatedProjectsPath(localization: development)
@@ -454,7 +454,7 @@ struct ReadMe {
                             "### [\(name)](\(link))"
                         ]
                         
-                        if let shortDescription = configuration[.shortProjectDescription] {
+                        if let shortDescription = Configuration.localizedOptionValue(option: .shortProjectDescription, localization: localization, configuration: configuration) {
                             projects += [
                                 "",
                                 shortDescription

@@ -19,26 +19,26 @@ import SDGLogic
 struct ReadMe {
     
     static func readMeFilename(localization: String?) -> String {
-        return "Read Me"
+        return "Read Me.md"
     }
     static func readMePath(localization: String?) -> RelativePath {
         if let specific = localization {
-            return RelativePath("Documentation/\(specific) → \(readMeFilename(localization: localization)).md")
+            return RelativePath("Documentation/\(specific) → \(readMeFilename(localization: localization))")
         } else {
             return RelativePath("README.md")
         }
     }
     static func relatedProjectsFilename(localization: String?) -> String {
-        return "Related Projects"
+        return "Related Projects.md"
     }
     static func relatedProjectsPath(localization: String?) -> RelativePath {
         if let specific = localization {
-            return RelativePath("Documentation/\(specific) → \(relatedProjectsFilename(localization: localization)).md")
+            return RelativePath("Documentation/\(specific) → \(relatedProjectsFilename(localization: localization))")
         } else {
             if let development = Configuration.developmentLocalization {
                 return relatedProjectsPath(localization: development)
             } else {
-                return RelativePath("Documentation/\(relatedProjectsFilename(localization: localization)).md")
+                return RelativePath("Documentation/\(relatedProjectsFilename(localization: localization))")
             }
         }
     }

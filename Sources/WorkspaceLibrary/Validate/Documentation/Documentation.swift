@@ -106,7 +106,7 @@ struct Documentation {
             }
             if ¬Configuration.relatedProjects.isEmpty {
                 command.append(contentsOf: [
-                    "\u{2D}\u{2D}documentation=Documentation/**"
+                    "\u{2D}\u{2D}documentation=Documentation/*/*.md"
                     ])
             }
 

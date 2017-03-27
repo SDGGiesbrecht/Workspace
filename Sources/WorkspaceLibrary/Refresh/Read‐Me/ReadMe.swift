@@ -323,8 +323,6 @@ struct ReadMe {
 
             var readMe = File(possiblyAt: readMePath(localization: localization))
             readMe.body = body
-            print(readMe.path)
-            print(readMe.contents)
             require() { try readMe.write() }
 
             if ¬Configuration.relatedProjects.isEmpty {

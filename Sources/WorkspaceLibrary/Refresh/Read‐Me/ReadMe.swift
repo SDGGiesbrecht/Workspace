@@ -53,7 +53,8 @@ struct ReadMe {
         
         if ¬Configuration.localizations.isEmpty {
             readMe += [
-                "[_Localization Links_]"
+                "[_Localization Links_]",
+                "",
             ]
         }
         
@@ -172,7 +173,7 @@ struct ReadMe {
             let link = targetLocalization
             var url: String
             if localization == nil {
-                url = readMeFilename(localization: targetLocalization)
+                url = readMePath(localization: targetLocalization).string
             } else {
                 url = readMeFilename(localization: targetLocalization)
             }

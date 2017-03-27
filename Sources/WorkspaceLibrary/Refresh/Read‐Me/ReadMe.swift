@@ -194,6 +194,8 @@ struct ReadMe {
     }
     
     static func quotationMarkup(localization: String?) -> String {
+        print(localization)
+        print(Configuration.quotationURL(localization: localization))
         return format(quotation: Configuration.requiredQuotation, url: Configuration.quotationURL(localization: localization), citation: Configuration.citation(localization: localization))
         
     }

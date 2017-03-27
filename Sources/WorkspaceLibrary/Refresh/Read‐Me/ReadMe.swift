@@ -388,7 +388,6 @@ struct ReadMe {
                     } else {
                         name = "Read‐Me"
                     }
-                    print(localization)
                     fatalError(message: [
                         "There is no definition for the example named “\(name)”.",
                         "",

@@ -274,7 +274,7 @@ struct ReadMe {
             
             let shortDescription = key("Short Description")
             if body.contains(shortDescription) {
-                body = body.replacingOccurrences(of: shortDescription, with: Configuration.requiredShortProjectDescription)
+                body = body.replacingOccurrences(of: shortDescription, with: Configuration.requiredShortProjectDescription(localization: localization))
             }
             
             let quotation = key("Quotation")

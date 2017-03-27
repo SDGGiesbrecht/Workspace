@@ -30,6 +30,8 @@ struct Configuration {
 
         // MARK: - Settings
 
+        fileprivate var localizations: [String]?
+        
         fileprivate var automaticallyTakeOnNewResponsibilites: Bool?
     }
     private static var cache = Cache()
@@ -354,6 +356,76 @@ struct Configuration {
             return string.linesArray
         }
     }
+    
+    private static func parseLocalizations(_ string: String) -> [String: String]? {
+        var currentLocalization: String?
+        var result: [String: [String]] = [:]
+        for line in string.lines {
+            if let identifier = line.contents(of: ("[_", "_]"), requireWholeStringToMatch: true) {
+                currentLocalization = identifier
+            } else {
+                guard let localization = currentLocalization else {
+                    return nil
+                }
+                var text: [String]
+                if let existing = result[localization] {
+                    text = existing
+                } else {
+                    text = []
+                }
+                text.append(line)
+                result[localization] = text
+            }
+        }
+        var mapped: [String: String] = [:]
+        for (key, value) in result {
+            mapped[key] = join(lines: value)
+        }
+        return mapped
+    }
+    private static func localizedOptionValues(option: Option, configuration: [Option: String]? = nil) -> [String: String]? {
+        var file = configuration ?? configurationFile
+        
+        guard let string = file[option] else {
+            return nil
+        }
+        guard let localized = parseLocalizations(string) else {
+            return nil
+        }
+        return localized
+    }
+    private static func localizedOptionValue(option: Option, localization: String?, configuration: [Option: String]? = nil) -> String? {
+        var file = configuration ?? configurationFile
+        
+        guard let localized = localizedOptionValues(option: option, configuration: file) else {
+            return file[option]
+        }
+        guard let specific = localization else {
+            guard let development = developmentLocalization else {
+                return file[option]
+            }
+            return localized[development]
+        }
+        return localized[specific]
+    }
+    private static func requiredLocalizedOptionValue(option: Option, localization: String?) -> String {
+        guard let result = localizedOptionValue(option: option, localization: localization) else {
+            fatalError(message: [
+                "Missing configuration option:",
+                "",
+                option.key,
+                "",
+                "Localization:",
+                "",
+                localization ?? "[Unlocalized]",
+                "",
+                "Detected options:",
+                "",
+                join(lines: configurationFile.keys.map({ $0.key }).sorted())
+                ])
+        }
+        return result
+    }
 
     // Workspace Behaviour
 
@@ -409,7 +481,9 @@ struct Configuration {
     }
 
     static var localizations: [String] {
-        return listValue(option: .localizations)
+        return cachedResult(cache: &cache.localizations) {
+            return listValue(option: .localizations)
+        }
     }
     static var developmentLocalization: String? {
         return localizations.first
@@ -479,11 +553,11 @@ struct Configuration {
     static var requiredDocumentationURL: String {
         return stringValue(option: .documentationURL)
     }
-    static var shortProjectDescription: String? {
-        return possibleStringValue(option: .shortProjectDescription)
+    static func shortProjectDescription(localization: String?) -> String? {
+        return localizedOptionValue(option: .shortProjectDescription, localization: localization)
     }
-    static var requiredShortProjectDescription: String {
-        return stringValue(option: .shortProjectDescription)
+    static func requiredShortProjectDescription(localization: String?) -> String {
+        return requiredLocalizedOptionValue(option: .shortProjectDescription, localization: localization)
     }
     static var quotation: String? {
         return possibleStringValue(option: .quotation)

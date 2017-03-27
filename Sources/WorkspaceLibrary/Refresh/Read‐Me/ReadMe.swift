@@ -25,11 +25,14 @@ struct ReadMe {
             return RelativePath("README.md")
         }
     }
+    static func relatedProjectsFilename(localization: String?) -> String {
+        return "Related Projects.md"
+    }
     static func relatedProjectsPath(localization: String?) -> RelativePath {
         if let specific = localization {
-            return RelativePath("Documentation/\(specific)/Related Projects.md")
+            return RelativePath("Documentation/\(specific)/\(relatedProjectsFilename(localization: localization))")
         } else {
-            return RelativePath("Documentation/Related Projects.md")
+            return RelativePath("Documentation/\(relatedProjectsFilename(localization: localization))")
         }
     }
     
@@ -180,7 +183,13 @@ struct ReadMe {
     }()
     
     static func relatedProjectsLinkMarkup(localization: String?) -> String {
-        return "(For a list of related projecs, see [here](\(ReadMe.relatedProjectsPath(localization: localization).string.replacingOccurrences(of: " ", with: "%20"))).)"
+        let path: String
+        if localization ≠ nil {
+            path = relatedProjectsFilename(localization: localization)
+        } else {
+            path = ReadMe.relatedProjectsPath(localization: localization).string
+        }
+        return "(For a list of related projecs, see [here](\(path.replacingOccurrences(of: " ", with: "%20"))).)"
     }
     
     static let defaultInstallationInstructions: String? = {

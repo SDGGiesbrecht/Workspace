@@ -18,18 +18,20 @@ import SDGLogic
 
 struct ReadMe {
 
-    static func readMePath(localization: String?) -> RelativePath {
-        if let specific = localization {
-            return RelativePath("Documentation/\(specific)/Read Me.md")
-        } else {
+    static let noLocalization = "zxx"
+
+    static func readMePath(localization: String) -> RelativePath {
+        if localization == noLocalization {
             return RelativePath("README.md")
+        } else {
+            return RelativePath("Documentation/\(localization)/Read Me.md")
         }
     }
-    static func relatedProjectsPath(localization: String?) -> RelativePath {
-        if let specific = localization {
-            return RelativePath("Documentation/\(specific)/Related Projects.md")
-        } else {
+    static func relatedProjectsPath(localization: String) -> RelativePath {
+        if localization == noLocalization {
             return RelativePath("Documentation/Related Projects.md")
+        } else {
+            return RelativePath("Documentation/\(localization)/Related Projects.md")
         }
     }
 
@@ -236,9 +238,9 @@ struct ReadMe {
 
     static func refreshReadMe() {
 
-        var localizations = Configuration.localizations.map() { Optional($0) }
+        var localizations = Configuration.localizations
         if localizations.isEmpty {
-            localizations.append(nil)
+            localizations.append(noLocalization)
         }
 
         for localization in Configuration.localizations {

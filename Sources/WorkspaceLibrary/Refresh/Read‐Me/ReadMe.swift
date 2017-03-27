@@ -125,7 +125,7 @@ struct ReadMe {
                 "",
                 "If \(Configuration.projectName) saves you time, consider devoting some of it to [contributing](\(Configuration.requiredRepositoryURL)) back to the project.",
                 "",
-                format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.\nFor the worker is worthy of his wages.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: "🇬🇧 English"), citation: "\u{200E}ישוע/Yeshuʼa")
+                format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "For the worker is worthy of his wages.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: "🇬🇧 English"), citation: "\u{200E}ישוע/Yeshuʼa")
             ]
         }
         
@@ -181,8 +181,12 @@ struct ReadMe {
         }
     }()
     
-    static func format(quotation: String, url possibleURL: String?, citation possibleCitation: String?) -> String {
+    static func format(quotation: String, translation possibleTranslation: String?, url possibleURL: String?, citation possibleCitation: String?) -> String {
         var result = quotation.replacingOccurrences(of: "\n", with: "<br>")
+        if let translation = possibleTranslation {
+            result += "<br>"
+            result += translation.replacingOccurrences(of: "\n", with: "<br>")
+        }
         if let url = possibleURL {
             result = "[\(result)](\(url))"
         }
@@ -194,8 +198,7 @@ struct ReadMe {
     }
     
     static func quotationMarkup(localization: String?) -> String {
-        return format(quotation: Configuration.requiredQuotation, url: Configuration.quotationURL(localization: localization), citation: Configuration.citation(localization: localization))
-        
+        return format(quotation: Configuration.requiredQuotation, translation: Configuration.quotationTranslation(localization: localization), url: Configuration.quotationURL(localization: localization), citation: Configuration.citation(localization: localization))
     }
     
     static func relatedProjectsLinkMarkup(localization: String?) -> String {

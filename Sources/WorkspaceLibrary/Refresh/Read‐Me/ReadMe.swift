@@ -37,6 +37,14 @@ struct ReadMe {
         }
     }
     static func relatedProjectsFilename(localization: Localization?) -> String {
+        if let specific = localization?.supported {
+            switch specific {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Related Projects.md"
+            case .germanGermany:
+                return "Verwandte Projekte.md"
+            }
+        }
         return "Related Projects.md"
     }
     static func relatedProjectsPath(localization: Localization?) -> RelativePath {

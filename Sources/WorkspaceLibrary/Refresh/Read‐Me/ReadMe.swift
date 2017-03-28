@@ -525,7 +525,7 @@ struct ReadMe {
             
             let installationInsructions = key("Installation Instructions")
             if body.contains(installationInsructions) {
-                body = body.replacingOccurrences(of: installationInsructions, with: Configuration.requiredInstallationInstructions)
+                body = body.replacingOccurrences(of: installationInsructions, with: Configuration.requiredInstallationInstructions(localization: localization))
             }
             
             let repositoryURL = key("Repository URL")

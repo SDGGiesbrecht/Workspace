@@ -125,7 +125,7 @@ struct ReadMe {
             ]
         }
         
-        if ¬Configuration.relatedProjects.isEmpty {
+        if ¬Configuration.relatedProjects(localization: translation).isEmpty {
             readMe += [
                 "",
                 "[_Related Projects_]"
@@ -587,7 +587,7 @@ struct ReadMe {
             readMe.body = body
             require() { try readMe.write() }
             
-            if ¬Configuration.relatedProjects.isEmpty
+            if ¬Configuration.relatedProjects(localization: localization).isEmpty
                 ∧ (localization ≠ nil ∨ localizations.count == 1 /* Only unlocalized. */) {
                 
                 var projects: [String] = [
@@ -615,7 +615,7 @@ struct ReadMe {
                     return headerAnchor.replacingOccurrences(of: " ", with: "‐")
                 }
                 
-                for line in Configuration.relatedProjects {
+                for line in Configuration.relatedProjects(localization: localization) {
                     if line.hasPrefix("# ") {
                         let header = extractHeader(line: line)
                         projects += [
@@ -623,7 +623,7 @@ struct ReadMe {
                         ]
                     }
                 }
-                for line in Configuration.relatedProjects {
+                for line in Configuration.relatedProjects(localization: localization) {
                     if line.hasPrefix("# ") {
                         let header = extractHeader(line: line)
                         projects += [

@@ -346,15 +346,16 @@ struct Configuration {
     }
     
     static let emptyListOptionValue = ""
-    private static func listValue(option: Option) -> [String] {
-        
-        let string = stringValue(option: option)
-        
-        if string == "" {
+    private static func parseList(value: String) -> [String] {
+        if value == "" {
             return []
         } else {
-            return string.linesArray
+            return value.linesArray
         }
+    }
+    private static func listValue(option: Option) -> [String] {
+        let string = stringValue(option: option)
+        return parseList(value: string)
     }
     
     private static func parseLocalizations(_ string: String) -> [Localization: String]? {
@@ -692,8 +693,12 @@ struct Configuration {
     static var requiredDevelopmentNotes: String {
         return possibleStringValue(option: .developmentNotes) ?? ""
     }
-    static var relatedProjects: [String] {
-        return listValue(option: .relatedProjects)
+    static func relatedProjects(localization: Localization?) -> [String] {
+        if let result = localizedOptionValue(option: .relatedProjects, localization: localization) {
+            return parseList(value: result)
+        } else {
+            return listValue(option: .relatedProjects)
+        }
     }
     
     static var manageFileHeaders: Bool {

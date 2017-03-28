@@ -26,7 +26,7 @@ The default read‐me will automatically change to accommodate some [configurati
 
 - `Documentation URL`: The root URL for API documentation. (As long as the last path component is `macOS`, `Linux`, `iOS`, `watchOS` or `tvOS`, Workspace will link to each individually by swapping out the last path component.)
 - `Short Project Description` (Markdown)
-- `Quotation`, `Quotation URL` & `Citation` (Text)
+- `Quotation`, `Quotation Translation`, `Quotation URL` & `Citation` (Text)
 - `Feature List` (Markdown)
 - `Related Projects`: A list separated by line breaks. Each entry is one of two forms:
     - `Name: https://url.of/repository`
@@ -44,7 +44,7 @@ The available dynamic elements are:
 
 - `API Links`: The result of the configuration option `Documentation URL`.
 - `Short Description`: The value of the configuration option `Short Project Description`.
-- `Quotation`: The combined result of the configuration options `Quotation`, `Quotation URL` and `Citation`.
+- `Quotation`: The combined result of the configuration options `Quotation`, `Quotation Translation`, `Quotation URL` and `Citation`.
 - `Features`: The value of the configuration option `Feature List`.
 - `Related Projects`: A link to the results of the configuration option `Related Projects`.
 - `Installation Instructions`: The value of the configuration option `Installation Instructions`.
@@ -55,3 +55,34 @@ The available dynamic elements are:
 - `Other`: The value of the configuration option `Other Read‐Me Content`
 
 Customization can be especially useful when it is combined with [configuration sharing](Configuring%20Workspace.md#sharing-configurations-between-projects).
+
+## Localization
+
+The read‐me can be localized by listing localizations in the [configuration](Configuring%20Workspace.md) option `Localizations`:
+
+```workspace
+[_Begin Localizations_]
+en
+de
+[_End_]
+```
+
+Then some configuration options related to read‐me generation can be localized. The syntax is as follows:
+
+```workspace
+[_Begin Short Project Description_]
+[_en_]
+A project.
+[_de_]
+Ein Projekt.
+[_End_]
+```
+
+While any identifier can be used as a localization, Workspace currently only understands and adapts its templates for the following localizations:
+
+- `en-GB`/`en`
+- `en-US`
+- `en-CA`
+- `de-DE`/`de`
+
+If you speak a language not already on the list and you might be willing to help add it, you can mentioning it in an [issue](https://github.com/SDGGiesbrecht/Workspace/issues).

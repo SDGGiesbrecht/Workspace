@@ -30,6 +30,8 @@ struct Configuration {
 
         // MARK: - Settings
 
+        fileprivate var localizations: [Localization]?
+
         fileprivate var automaticallyTakeOnNewResponsibilites: Bool?
     }
     private static var cache = Cache()
@@ -344,15 +346,89 @@ struct Configuration {
     }
 
     static let emptyListOptionValue = ""
-    private static func listValue(option: Option) -> [String] {
-
-        let string = stringValue(option: option)
-
-        if string == "" {
+    private static func parseList(value: String) -> [String] {
+        if value == "" {
             return []
         } else {
-            return string.linesArray
+            return value.linesArray
         }
+    }
+    private static func listValue(option: Option) -> [String] {
+        let string = stringValue(option: option)
+        return parseList(value: string)
+    }
+
+    static func parseLocalizations(_ string: String) -> [Localization: String]? {
+        var currentLocalization: String?
+        var result: [String: [String]] = [:]
+        for line in string.lines {
+            if let identifier = line.contents(of: ("[_", "_]"), requireWholeStringToMatch: true) {
+                currentLocalization = identifier
+            } else {
+                guard let localization = currentLocalization else {
+                    return nil
+                }
+                var text: [String]
+                if let existing = result[localization] {
+                    text = existing
+                } else {
+                    text = []
+                }
+                text.append(line)
+                result[localization] = text
+            }
+        }
+        var mapped: [Localization: String] = [:]
+        for (key, value) in result {
+            mapped[Localization(code: key)] = join(lines: value)
+        }
+        return mapped
+    }
+    private static func localizedOptionValues(option: Option, configuration: [Option: String]? = nil) -> [Localization: String]? {
+        var file = configuration ?? configurationFile
+
+        guard let string = file[option] else {
+            return nil
+        }
+        guard let localized = parseLocalizations(string) else {
+            return nil
+        }
+        return localized
+    }
+    static func localizedOptionValue(option: Option, localization: Localization?, configuration: [Option: String]? = nil) -> String? {
+        var file = configuration ?? configurationFile
+
+        guard let localized = localizedOptionValues(option: option, configuration: file) else {
+            return file[option]
+        }
+        guard let specific = localization else {
+            guard let development = developmentLocalization else {
+                return file[option]
+            }
+            return localized[development]
+        }
+        return localized[specific]
+    }
+    private static func missingLocalizationError(option: Option, localization: Localization?) -> Never {
+        fatalError(message: [
+            "Missing configuration option:",
+            "",
+            option.key,
+            "",
+            "Localization:",
+            "",
+            localization?.code ?? "[Unlocalized]",
+            "",
+            "Detected options:",
+            "",
+            join(lines: configurationFile.keys.map({ $0.key }).sorted())
+            ])
+    }
+    private static func requiredLocalizedOptionValue(option: Option, localization: Localization?) -> String {
+        guard let result = localizedOptionValue(option: option, localization: localization) else {
+            missingLocalizationError(option: option, localization: localization)
+        }
+        return result
     }
 
     // Workspace Behaviour
@@ -405,6 +481,26 @@ struct Configuration {
             return false
         } else {
             return booleanValue(option: .skipSimulator)
+        }
+    }
+
+    static var localizations: [Localization] {
+        return cachedResult(cache: &cache.localizations) {
+            return listValue(option: .localizations).map { Localization(code: $0) }
+        }
+    }
+    static var developmentLocalization: Localization? {
+        return localizations.first
+    }
+    static func resolvedLocalization(for localization: Localization?) -> Localization {
+        if let specific = localization {
+            return specific
+        } else {
+            if let development = Configuration.developmentLocalization {
+                return development
+            } else {
+                return .supported(.englishCanada)
+            }
         }
     }
 
@@ -463,8 +559,8 @@ struct Configuration {
     static var manageReadMe: Bool {
         return booleanValue(option: .manageReadMe)
     }
-    static var readMe: String {
-        return stringValue(option: .readMe)
+    static func readMe(localization: Localization?) -> String {
+        return localizedOptionValue(option: .readMe, localization: localization) ?? ReadMe.defaultReadMeTemplate(localization: localization)
     }
     static var documentationURL: String? {
         return possibleStringValue(option: .documentationURL)
@@ -472,11 +568,11 @@ struct Configuration {
     static var requiredDocumentationURL: String {
         return stringValue(option: .documentationURL)
     }
-    static var shortProjectDescription: String? {
-        return possibleStringValue(option: .shortProjectDescription)
+    static func shortProjectDescription(localization: Localization?) -> String? {
+        return localizedOptionValue(option: .shortProjectDescription, localization: localization)
     }
-    static var requiredShortProjectDescription: String {
-        return stringValue(option: .shortProjectDescription)
+    static func requiredShortProjectDescription(localization: Localization?) -> String {
+        return requiredLocalizedOptionValue(option: .shortProjectDescription, localization: localization)
     }
     static var quotation: String? {
         return possibleStringValue(option: .quotation)
@@ -484,8 +580,11 @@ struct Configuration {
     static var requiredQuotation: String {
         return stringValue(option: .quotation)
     }
-    static var quotationURL: String? {
-        return possibleStringValue(option: .quotationURL)
+    static func quotationTranslation(localization: Localization?) -> String? {
+        return localizedOptionValue(option: .quotationTranslation, localization: localization)
+    }
+    static func quotationURL(localization: Localization?) -> String? {
+        return localizedOptionValue(option: .quotationURL, localization: localization) ?? ReadMe.defaultQuotationURL(localization: localization)
     }
     static var quotationChapter: String? {
         return possibleStringValue(option: .quotationChapter)
@@ -503,20 +602,23 @@ struct Configuration {
             invalidEnumValue(option: .quotationTestament, value: value, valid: [old, new])
         }
     }
-    static var citation: String? {
-        return possibleStringValue(option: .citation)
+    static func citation(localization: Localization?) -> String? {
+        return localizedOptionValue(option: .citation, localization: localization)
     }
-    static var featureList: String? {
-        return possibleStringValue(option: .featureList)
+    static func featureList(localization: Localization?) -> String? {
+        return localizedOptionValue(option: .featureList, localization: localization)
     }
-    static var requiredFeatureList: String {
-        return stringValue(option: .featureList)
+    static func requiredFeatureList(localization: Localization?) -> String {
+        return requiredLocalizedOptionValue(option: .featureList, localization: localization)
     }
-    static var installationInstructions: String? {
-        return possibleStringValue(option: .installationInstructions)
+    static func installationInstructions(localization: Localization?) -> String? {
+        return localizedOptionValue(option: .installationInstructions, localization: localization) ?? ReadMe.defaultInstallationInstructions(localization: localization)
     }
-    static var requiredInstallationInstructions: String {
-        return stringValue(option: .installationInstructions)
+    static func requiredInstallationInstructions(localization: Localization?) -> String {
+        guard let result = installationInstructions(localization: localization) else {
+            missingLocalizationError(option: .installationInstructions, localization: localization)
+        }
+        return result
     }
     static var repositoryURL: String? {
         return possibleStringValue(option: .repositoryURL)
@@ -591,8 +693,21 @@ struct Configuration {
     static var requiredDevelopmentNotes: String {
         return possibleStringValue(option: .developmentNotes) ?? ""
     }
-    static var relatedProjects: [String] {
-        return listValue(option: .relatedProjects)
+    static func relatedProjects(localization: Localization?) -> [String] {
+        if let result = localizedOptionValue(option: .relatedProjects, localization: localization) {
+            if result.contains("[_") { // The main project is not localized, but the linked configuration is.
+                if let parsedLocalizations = parseLocalizations(result) {
+                    if let english = parsedLocalizations[.supported(.englishCanada)] ?? parsedLocalizations[.supported(.englishUnitedStates)] {
+                        return parseList(value: english)
+                    } else {
+                        return parseList(value: parsedLocalizations.first?.value ?? "")
+                    }
+                }
+            }
+            return parseList(value: result)
+        } else {
+            return listValue(option: .relatedProjects)
+        }
     }
 
     static var manageFileHeaders: Bool {

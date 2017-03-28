@@ -12,64 +12,107 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-enum Localization : String {
+enum Localization : Hashable {
 
     // MARK: - Initialization
 
     init(code: String) {
-        if let localization = Localization(rawValue: code) {
-            self = localization
+        if let result = SupportedLocalization(code: code) {
+            self = .supported(result)
         } else {
-            for localization in Localization.all {
-                if localization.aliases.contains(code) {
-                    self = localization
-                    return
-                }
-            }
-
-            fatalError(message: [
-                "Sorry, the localization “\(code)” is not supported yet.",
-                "",
-                "You can request it at:",
-                "\(DocumentationLink.reportIssueLink)"
-                ])
+            self = .unsupported(code)
         }
     }
 
     // MARK: - Cases
 
-    case englishUnitedKingdom = "en\u{2D}GB"
-    case englishUnitedStates = "en\u{2D}US"
-    case englishCanada = "en\u{2D}CA"
-    case germanGermany = "de\u{2D}DE"
-    case frenchFrance = "fr\u{2D}FR"
-
-    static let all: [Localization] = [
-        .englishUnitedKingdom,
-        .englishUnitedStates,
-        .englishCanada,
-        .germanGermany,
-        .frenchFrance
-    ]
+    case supported(SupportedLocalization)
+    case unsupported(String)
 
     // MARK: - Properties
 
     var code: String {
-        return rawValue
+        switch self {
+        case .supported(let localization):
+            return localization.code
+        case .unsupported(let code):
+            return code
+        }
     }
 
-    var aliases: [String] {
+    var userFacingCode: String {
         switch self {
+        case .supported(let localization):
+            switch localization {
+            case .englishUnitedKingdom:
+                return "🇬🇧EN"
+            case .englishUnitedStates:
+                return "🇺🇸EN"
+            case .englishCanada:
+                return "🇨🇦EN"
+            case .germanGermany:
+                return "🇩🇪DE"
+            }
+        case .unsupported(let code):
+            return code
+        }
+    }
 
-        case .englishUnitedKingdom:
-            return ["en"]
-        case .germanGermany:
-            return ["de"]
-        case .frenchFrance:
-            return ["fr"]
+    var supported: SupportedLocalization? {
+        switch self {
+        case .supported(let result):
+            return result
+        case .unsupported(_):
+            return nil
+        }
+    }
 
-        case .englishUnitedStates, .englishCanada:
-            return []
+    // MARK: - Equatable
+
+    static func == (lhs: Localization, rhs: Localization) -> Bool {
+        return lhs.code == rhs.code
+    }
+
+    // MARK: - Hashable
+
+    var hashValue: Int {
+        return code.hashValue
+    }
+
+    // MARK: - Supported
+
+    enum SupportedLocalization : String {
+
+        // MARK: - Initialization
+
+        init?(code: String) {
+
+            if let result = SupportedLocalization(rawValue: code) {
+                self = result
+            } else if let result = SupportedLocalization.aliases[code] {
+                self = result
+            } else {
+                return nil
+            }
+        }
+
+        // MARK: - Cases
+
+        case englishUnitedKingdom = "en\u{2D}GB"
+        case englishUnitedStates = "en\u{2D}US"
+        case englishCanada = "en\u{2D}CA"
+
+        case germanGermany = "de\u{2D}DE"
+
+        private static let aliases: [String: SupportedLocalization] = [
+            "en": .englishUnitedKingdom,
+            "de": .germanGermany
+        ]
+
+        // MARK: - Properties
+
+        var code: String {
+            return rawValue
         }
     }
 }

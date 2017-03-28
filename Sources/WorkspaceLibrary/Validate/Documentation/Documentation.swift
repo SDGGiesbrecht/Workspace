@@ -104,11 +104,9 @@ struct Documentation {
                     "\u{2D}\u{2D}github_url", github
                     ])
             }
-            if ¬Configuration.relatedProjects.isEmpty {
-                command.append(contentsOf: [
-                    "\u{2D}\u{2D}documentation=Related Projects.md"
-                    ])
-            }
+            command.append(contentsOf: [
+                "\u{2D}\u{2D}documentation=Documentation/*.md"
+                ])
 
             if let jazzyResult = runThirdPartyTool(
                 name: "Jazzy",
@@ -263,8 +261,8 @@ struct Documentation {
                     }
                 }
 
-                while let relatedLink = source.range(of: "Related%20Projects.md") {
-                    let relatedLine = source.lineRange(for: relatedLink)
+                while let shouldRemove = source.range(of: ReadMe.skipInJazzy.replacingOccurrences(of: "\u{2D}\u{2D}", with: "&ndash;").replacingOccurrences(of: "<", with: "&lt;").replacingOccurrences(of: ">", with: "&gt;")) {
+                    let relatedLine = source.lineRange(for: shouldRemove)
                     source.removeSubrange(relatedLine)
                 }
 

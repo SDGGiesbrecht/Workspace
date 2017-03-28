@@ -35,11 +35,14 @@ enum Option : String, CustomStringConvertible {
 
     case skipSimulator = "Skip Simulator"
 
+    case localizations = "Localizations"
+
     case manageReadMe = "Manage Read‐Me"
     case readMe = "Read‐Me"
     case documentationURL = "Documentation URL"
     case shortProjectDescription = "Short Project Description"
     case quotation = "Quotation"
+    case quotationTranslation = "Quotation Translation"
     case quotationURL = "Quotation URL"
     case quotationChapter = "Quotation Chapter"
     case quotationTestament = "Quotation Testament"
@@ -115,11 +118,14 @@ enum Option : String, CustomStringConvertible {
 
         .skipSimulator,
 
+        .localizations,
+
         .manageReadMe,
         .readMe,
         .documentationURL,
         .shortProjectDescription,
         .quotation,
+        .quotationTranslation,
         .quotationURL,
         .citation,
         .featureList,
@@ -202,18 +208,23 @@ enum Option : String, CustomStringConvertible {
         case .skipSimulator:
             return Configuration.falseOptionValue
 
+        case .localizations:
+            return Configuration.emptyListOptionValue
+
         case .manageReadMe:
             return Configuration.falseOptionValue
         case .readMe:
-            return ReadMe.defaultReadMeTemplate
+            return Configuration.noValue
         case .documentationURL:
             return Configuration.noValue
         case .shortProjectDescription:
             return Configuration.noValue
         case .quotation:
             return Configuration.noValue
+        case .quotationTranslation:
+            return Configuration.noValue
         case .quotationURL:
-            return ReadMe.defaultQuotationURL
+            return Configuration.noValue
         case .quotationChapter:
             return Configuration.noValue
         case .quotationTestament:
@@ -225,7 +236,7 @@ enum Option : String, CustomStringConvertible {
         case .relatedProjects:
             return Configuration.emptyListOptionValue
         case .installationInstructions:
-            return ReadMe.defaultInstallationInstructions ?? Configuration.noValue
+            return Configuration.noValue
         case .repositoryURL:
             return Configuration.noValue
         case .currentVersion:

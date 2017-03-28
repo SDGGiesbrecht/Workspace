@@ -50,7 +50,8 @@ struct HyphenMinus : Rule {
                                 ∧ ¬file.contents.substring(to: range.lowerBound).hasSuffix("///     ")
                                 ∧ ¬line.contains("let ln2")
                                 ∧ ¬line.contains("Swift.SignedNumber")
-                                ∧ ¬line.contains("jazzy \u{2D}\u{2D}") {
+                                ∧ ¬line.contains("jazzy \u{2D}\u{2D}")
+                                ∧ ¬line.contains("[\u{5F}Define Example: Read‐Me:") {
                                 throwError()
                             }
 
@@ -66,7 +67,9 @@ struct HyphenMinus : Rule {
                             if ¬(filePrefix.contains("```shell") ∧ fileSuffix.contains("```")) /* Shell Script */
                                 ∧ ¬(filePrefix.contains("[_Begin Feature List_]") ∧ fileSuffix.contains("[_End_]") ∧ filePrefix.hasSuffix("\n")) /* Feature List */
                                 ∧ ¬(filePrefix.contains("[_Begin Other Read‐Me Content_]") ∧ fileSuffix.contains("[_End_]") ∧ filePrefix.hasSuffix("\n") ∨ filePrefix.hasSuffix("\n  ")) /* Other Read‐Me Content */
-                                ∧ ¬(filePrefix.components(separatedBy: " ").last ?? "").contains("#") {
+                                ∧ ¬(filePrefix.components(separatedBy: " ").last ?? "").contains("#")
+                                ∧ ¬(line.hasPrefix("[_") ∧ line.hasSuffix("_]"))
+                                ∧ ¬(filePrefix.contains("[_Begin Localizations_]") ∧ fileSuffix.contains("[_End_]")) {
                                 throwError()
                             }
 

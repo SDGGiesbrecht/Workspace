@@ -18,22 +18,22 @@ import SDGLogic
 
 struct ReadMe {
     
-    static func readMeFilename(localization: String?) -> String {
+    static func readMeFilename(localization: Localization?) -> String {
         return "Read Me.md"
     }
-    static func readMePath(localization: String?) -> RelativePath {
+    static func readMePath(localization: Localization?) -> RelativePath {
         if let specific = localization {
-            return RelativePath("Documentation/\(specific) → \(readMeFilename(localization: localization))")
+            return RelativePath("Documentation/\(specific.code) → \(readMeFilename(localization: localization))")
         } else {
             return RelativePath("README.md")
         }
     }
-    static func relatedProjectsFilename(localization: String?) -> String {
+    static func relatedProjectsFilename(localization: Localization?) -> String {
         return "Related Projects.md"
     }
-    static func relatedProjectsPath(localization: String?) -> RelativePath {
+    static func relatedProjectsPath(localization: Localization?) -> RelativePath {
         if let specific = localization {
-            return RelativePath("Documentation/\(specific) → \(relatedProjectsFilename(localization: localization))")
+            return RelativePath("Documentation/\(specific.code) → \(relatedProjectsFilename(localization: localization))")
         } else {
             if let development = Configuration.developmentLocalization {
                 return relatedProjectsPath(localization: development)
@@ -142,21 +142,26 @@ struct ReadMe {
                 "",
                 "If \(Configuration.projectName) saves you time, consider devoting some of it to [contributing](\(Configuration.requiredRepositoryURL)) back to the project.",
                 "",
-                format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "For the worker is worthy of his wages.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: "🇬🇧 English"), citation: "\u{200E}ישוע/Yeshuʼa")
+                format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "For the worker is worthy of his wages.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: .supported(.englishCanada)), citation: "\u{200E}ישוע/Yeshuʼa")
             ]
         }
         
         return join(lines: readMe)
     }()
     
-    static func formatQuotationURL(chapter: String, originalKey: String, localization: String?) -> String {
-        var translationCode = "NIVUK"
+    static func formatQuotationURL(chapter: String, originalKey: String, localization: Localization?) -> String {
+        var translationCode = "NIV"
         if let specific = localization {
             switch specific {
-            case "🇬🇧 English":
-                break
-            case "🇩🇪 Deutsch":
-                translationCode = "SCH2000"
+            case .supported(let supported):
+                switch supported {
+                case .englishUnitedKindom:
+                    translationCode = "NIVUK"
+                case .englishUnitedStates, .englishCanada:
+                    translationCode = "NIV"
+                case .germanGermany:
+                    translationCode = "SCH2000"
+                }
             default:
                 fatalError(message: ["\(specific) does not have a corresponding translation yet."])
             }
@@ -166,7 +171,7 @@ struct ReadMe {
         return "https://www.biblegateway.com/passage/?search=\(sanitizedChapter)&version=\(originalKey);\(translationCode)"
     }
     
-    static func defaultQuotationURL(localization: String?) -> String {
+    static func defaultQuotationURL(localization: Localization?) -> String {
         if let chapter = Configuration.quotationChapter {
             return formatQuotationURL(chapter: chapter, originalKey: Configuration.quotationOriginalKey, localization: localization)
         } else {
@@ -174,7 +179,7 @@ struct ReadMe {
         }
     }
     
-    static func localizationLinksMarkup(localization: String?) -> String {
+    static func localizationLinksMarkup(localization: Localization?) -> String {
         var links: [String] = []
         for targetLocalization in Configuration.localizations {
             let link = targetLocalization
@@ -231,11 +236,11 @@ struct ReadMe {
         return "> " + result
     }
     
-    static func quotationMarkup(localization: String?) -> String {
+    static func quotationMarkup(localization: Localization?) -> String {
         return format(quotation: Configuration.requiredQuotation, translation: Configuration.quotationTranslation(localization: localization), url: Configuration.quotationURL(localization: localization), citation: Configuration.citation(localization: localization))
     }
     
-    static func relatedProjectsLinkMarkup(localization: String?) -> String {
+    static func relatedProjectsLinkMarkup(localization: Localization?) -> String {
         let path: String
         if localization ≠ nil {
             path = relatedProjectsFilename(localization: localization)

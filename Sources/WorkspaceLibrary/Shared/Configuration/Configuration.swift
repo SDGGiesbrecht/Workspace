@@ -30,7 +30,7 @@ struct Configuration {
 
         // MARK: - Settings
 
-        fileprivate var localizations: [String]?
+        fileprivate var localizations: [Localization]?
         
         fileprivate var automaticallyTakeOnNewResponsibilites: Bool?
     }
@@ -357,7 +357,7 @@ struct Configuration {
         }
     }
     
-    private static func parseLocalizations(_ string: String) -> [String: String]? {
+    private static func parseLocalizations(_ string: String) -> [Localization: String]? {
         var currentLocalization: String?
         var result: [String: [String]] = [:]
         for line in string.lines {
@@ -377,13 +377,13 @@ struct Configuration {
                 result[localization] = text
             }
         }
-        var mapped: [String: String] = [:]
+        var mapped: [Localization: String] = [:]
         for (key, value) in result {
-            mapped[key] = join(lines: value)
+            mapped[Localization(code: key)] = join(lines: value)
         }
         return mapped
     }
-    private static func localizedOptionValues(option: Option, configuration: [Option: String]? = nil) -> [String: String]? {
+    private static func localizedOptionValues(option: Option, configuration: [Option: String]? = nil) -> [Localization: String]? {
         var file = configuration ?? configurationFile
         
         guard let string = file[option] else {
@@ -394,7 +394,7 @@ struct Configuration {
         }
         return localized
     }
-    static func localizedOptionValue(option: Option, localization: String?, configuration: [Option: String]? = nil) -> String? {
+    static func localizedOptionValue(option: Option, localization: Localization?, configuration: [Option: String]? = nil) -> String? {
         var file = configuration ?? configurationFile
         
         guard let localized = localizedOptionValues(option: option, configuration: file) else {
@@ -408,7 +408,7 @@ struct Configuration {
         }
         return localized[specific]
     }
-    private static func requiredLocalizedOptionValue(option: Option, localization: String?) -> String {
+    private static func requiredLocalizedOptionValue(option: Option, localization: Localization?) -> String {
         guard let result = localizedOptionValue(option: option, localization: localization) else {
             fatalError(message: [
                 "Missing configuration option:",
@@ -417,7 +417,7 @@ struct Configuration {
                 "",
                 "Localization:",
                 "",
-                localization ?? "[Unlocalized]",
+                localization?.code ?? "[Unlocalized]",
                 "",
                 "Detected options:",
                 "",
@@ -480,12 +480,12 @@ struct Configuration {
         }
     }
 
-    static var localizations: [String] {
+    static var localizations: [Localization] {
         return cachedResult(cache: &cache.localizations) {
-            return listValue(option: .localizations)
+            return listValue(option: .localizations).map { Localization(code: $0) }
         }
     }
-    static var developmentLocalization: String? {
+    static var developmentLocalization: Localization? {
         return localizations.first
     }
 
@@ -553,10 +553,10 @@ struct Configuration {
     static var requiredDocumentationURL: String {
         return stringValue(option: .documentationURL)
     }
-    static func shortProjectDescription(localization: String?) -> String? {
+    static func shortProjectDescription(localization: Localization?) -> String? {
         return localizedOptionValue(option: .shortProjectDescription, localization: localization)
     }
-    static func requiredShortProjectDescription(localization: String?) -> String {
+    static func requiredShortProjectDescription(localization: Localization?) -> String {
         return requiredLocalizedOptionValue(option: .shortProjectDescription, localization: localization)
     }
     static var quotation: String? {
@@ -565,10 +565,10 @@ struct Configuration {
     static var requiredQuotation: String {
         return stringValue(option: .quotation)
     }
-    static func quotationTranslation(localization: String?) -> String? {
+    static func quotationTranslation(localization: Localization?) -> String? {
         return localizedOptionValue(option: .quotationTranslation, localization: localization)
     }
-    static func quotationURL(localization: String?) -> String? {
+    static func quotationURL(localization: Localization?) -> String? {
         return localizedOptionValue(option: .quotationURL, localization: localization) ?? ReadMe.defaultQuotationURL(localization: localization)
     }
     static var quotationChapter: String? {
@@ -587,13 +587,13 @@ struct Configuration {
             invalidEnumValue(option: .quotationTestament, value: value, valid: [old, new])
         }
     }
-    static func citation(localization: String?) -> String? {
+    static func citation(localization: Localization?) -> String? {
         return localizedOptionValue(option: .citation, localization: localization)
     }
-    static func featureList(localization: String?) -> String? {
+    static func featureList(localization: Localization?) -> String? {
         return localizedOptionValue(option: .featureList, localization: localization)
     }
-    static func requiredFeatureList(localization: String?) -> String {
+    static func requiredFeatureList(localization: Localization?) -> String {
         return requiredLocalizedOptionValue(option: .featureList, localization: localization)
     }
     static var installationInstructions: String? {

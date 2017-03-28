@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-enum Localization {
+enum Localization : Hashable {
     
     // MARK: - Initialization
     
@@ -38,6 +38,18 @@ enum Localization {
         case .unsupported(let code):
             return code
         }
+    }
+    
+    // MARK: - Equatable
+    
+    static func == (lhs: Localization, rhs: Localization) -> Bool {
+        return lhs.code == rhs.code
+    }
+    
+    // MARK: - Hashable
+    
+    var hashValue: Int {
+        return code.hashValue
     }
     
     // MARK: - Supported

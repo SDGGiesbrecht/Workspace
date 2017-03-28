@@ -695,6 +695,8 @@ struct Configuration {
     }
     static func relatedProjects(localization: Localization?) -> [String] {
         if let result = localizedOptionValue(option: .relatedProjects, localization: localization) {
+            print("result")
+            print(result)
             return parseList(value: result)
         } else {
             return listValue(option: .relatedProjects)

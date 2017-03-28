@@ -694,7 +694,16 @@ struct ReadMe {
                             "### [\(name)](\(link))"
                         ]
                         
-                        if let shortDescription = Configuration.localizedOptionValue(option: .shortProjectDescription, localization: localization, configuration: configuration) {
+                        if var shortDescription = Configuration.localizedOptionValue(option: .shortProjectDescription, localization: localization, configuration: configuration) {
+                            if shortDescription.contains("[_") { // The main project is not localized, but the linked configuration is.
+                                if let parsedLocalizations = Configuration.parseLocalizations(shortDescription) {
+                                    if let english = parsedLocalizations[.supported(.englishCanada)] ?? parsedLocalizations[.supported(.englishUnitedStates)] {
+                                        shortDescription = english
+                                    } else {
+                                        shortDescription = parsedLocalizations.first?.value ?? ""
+                                    }
+                                }
+                            }
                             projects += [
                                 "",
                                 shortDescription

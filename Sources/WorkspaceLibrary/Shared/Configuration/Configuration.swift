@@ -358,7 +358,7 @@ struct Configuration {
         return parseList(value: string)
     }
     
-    private static func parseLocalizations(_ string: String) -> [Localization: String]? {
+    static func parseLocalizations(_ string: String) -> [Localization: String]? {
         var currentLocalization: String?
         var result: [String: [String]] = [:]
         for line in string.lines {

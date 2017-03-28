@@ -611,7 +611,7 @@ struct Configuration {
         return requiredLocalizedOptionValue(option: .featureList, localization: localization)
     }
     static func installationInstructions(localization: Localization?) -> String? {
-        return localizedOptionValue(option: .installationInstructions, localization: localization) ?? ReadMe.defaultReadMeTemplate(localization: localization)
+        return localizedOptionValue(option: .installationInstructions, localization: localization) ?? ReadMe.defaultInstallationInstructions(localization: localization)
     }
     static func requiredInstallationInstructions(localization: Localization?) -> String {
         guard let result = installationInstructions(localization: localization) else {

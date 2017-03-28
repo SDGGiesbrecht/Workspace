@@ -374,14 +374,15 @@ struct ReadMe {
             let exampleUsage = key("Example Usage")
             if body.contains(exampleUsage) {
                 var possibleReadMeExample: String?
-                    
-                if let specific = localization {
+                
+                if let specific = localization?.code {
                     possibleReadMeExample = Examples.examples["Read‐Me: \(specific)"]
                 }
                 
-                if possibleReadMeExample == nil ∧ localization == nil,
-                    let development = Configuration.developmentLocalization {
-                    possibleReadMeExample = Examples.examples["Read‐Me: \(development)"]
+                if possibleReadMeExample == nil ∧ localization == nil {
+                    if let development = Configuration.developmentLocalization?.code {
+                        possibleReadMeExample = Examples.examples["Read‐Me: \(development)"]
+                    }
                     
                     if possibleReadMeExample == nil {
                         possibleReadMeExample = Examples.examples["Read‐Me"]
@@ -389,7 +390,7 @@ struct ReadMe {
                 }
                 guard let readMeExample = possibleReadMeExample else {
                     let name: String
-                    if let specific = localization {
+                    if let specific = localization?.code {
                         name = "Read‐Me: \(specific)"
                     } else {
                         name = "Read‐Me"

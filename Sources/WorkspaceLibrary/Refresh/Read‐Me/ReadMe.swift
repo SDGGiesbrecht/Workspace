@@ -263,7 +263,7 @@ struct ReadMe {
             
             links.append("[\(link)](\(url))")
         }
-        return links.joined(separator: " • ")
+        return skipInJazzy + links.joined(separator: " • ")
     }
     
     static func apiLinksMarkup(localization: Localization?) -> String {
@@ -297,9 +297,9 @@ struct ReadMe {
             let links = operatingSystems.map() {
                 return "[\($0)](\(root)\($0))"
             }
-            return "\(skipInJazzy)\(apis) \(links.joined(separator: " • "))"
+            return "\(apis) \(links.joined(separator: " • "))"
         } else {
-            return "\(skipInJazzy)[\(apis) \(operatingSystems.joined(separator: " • "))](\(urlString))"
+            return "[\(apis) \(operatingSystems.joined(separator: " • "))](\(urlString))"
         }
     }
     

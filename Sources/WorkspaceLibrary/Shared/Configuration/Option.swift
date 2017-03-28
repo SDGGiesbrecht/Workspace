@@ -214,7 +214,7 @@ enum Option : String, CustomStringConvertible {
         case .manageReadMe:
             return Configuration.falseOptionValue
         case .readMe:
-            return ReadMe.defaultReadMeTemplate
+            return Configuration.noValue
         case .documentationURL:
             return Configuration.noValue
         case .shortProjectDescription:

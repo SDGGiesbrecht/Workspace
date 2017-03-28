@@ -263,7 +263,7 @@ struct Documentation {
                     }
                 }
 
-                while let shouldRemove = source.range(of: ReadMe.skipInJazzy) {
+                while let shouldRemove = source.range(of: ReadMe.skipInJazzy.replacingOccurrences(of: "\u{2D}\u{2D}", with: "–")) {
                     let relatedLine = source.lineRange(for: shouldRemove)
                     source.removeSubrange(relatedLine)
                 }

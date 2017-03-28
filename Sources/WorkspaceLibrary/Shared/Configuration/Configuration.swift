@@ -488,6 +488,17 @@ struct Configuration {
     static var developmentLocalization: Localization? {
         return localizations.first
     }
+    static func resolvedLocalization(for localization: Localization?) -> Localization {
+        if let specific = localization {
+            return specific
+        } else {
+            if let development = Configuration.developmentLocalization {
+                return development
+            } else {
+                return .supported(.englishCanada)
+            }
+        }
+    }
 
     // Project Names
 
@@ -544,8 +555,8 @@ struct Configuration {
     static var manageReadMe: Bool {
         return booleanValue(option: .manageReadMe)
     }
-    static var readMe: String {
-        return stringValue(option: .readMe)
+    static func readMe(localization: Localization?) -> String {
+        return localizedOptionValue(option: .readMe, localization: localization) ?? ReadMe.defaultReadMeTemplate(localization: localization)
     }
     static var documentationURL: String? {
         return possibleStringValue(option: .documentationURL)

@@ -66,7 +66,9 @@ struct ReadMe {
         return FileType.markdown.syntax.comment(contents: managementWarning)
     }()
     
-    static let defaultReadMeTemplate: String = {
+    static func defaultReadMeTemplate(localization: Localization?) -> String {
+        let translation = Configuration.resolvedLocalization(for: localization)
+        
         var readMe: [String] = []
         
         if ¬Configuration.localizations.isEmpty {
@@ -102,9 +104,22 @@ struct ReadMe {
         }
         
         if Configuration.featureList ≠ nil {
+            let features: String
+            switch translation {
+            case .supported(let specific):
+                switch specific {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    features = "Features"
+                case .germanGermany:
+                    features = "Merkmale"
+                }
+            default:
+                features = "Features"
+            }
+            
             readMe += [
                 "",
-                "## Features",
+                "## \(features)",
                 "",
                 "[_Features_]"
             ]
@@ -165,7 +180,7 @@ struct ReadMe {
         }
         
         return join(lines: readMe)
-    }()
+    }
     
     static func formatQuotationURL(chapter: String, originalKey: String, localization: Localization?) -> String {
         var translationCode = "NIV"
@@ -200,7 +215,7 @@ struct ReadMe {
     static func localizationLinksMarkup(localization: Localization?) -> String {
         var links: [String] = []
         for targetLocalization in Configuration.localizations {
-            let link = targetLocalization
+            let link = targetLocalization.userFacingCode
             var url: String
             if localization == nil {
                 url = readMePath(localization: targetLocalization).string
@@ -334,7 +349,7 @@ struct ReadMe {
             var body = join(lines: [
                 managementComment,
                 "",
-                Configuration.readMe
+                Configuration.readMe(localization: localization)
                 ])
             
             let localizationLinks = key("Localization Links")

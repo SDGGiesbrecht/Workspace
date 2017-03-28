@@ -1,13 +1,13 @@
 /*
  ReadMe.swift
- 
+
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
- 
+
  Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
- 
+
  Soli Deo gloria.
- 
+
  Licensed under the Apache Licence, Version 2.0.
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
@@ -17,9 +17,9 @@ import Foundation
 import SDGLogic
 
 struct ReadMe {
-    
+
     static let skipInJazzy = "<!\u{2D}\u{2D}Skip in Jazzy\u{2D}\u{2D}>"
-    
+
     static func readMeFilename(localization: Localization?) -> String {
         if let particular = localization {
             var name: String
@@ -72,49 +72,49 @@ struct ReadMe {
             }
         }
     }
-    
+
     private static let managementComment: String = {
         let managementWarning = File.managmentWarning(section: false, documentation: .readMe)
         return FileType.markdown.syntax.comment(contents: managementWarning)
     }()
-    
+
     static func defaultReadMeTemplate(localization: Localization?) -> String {
         let translation = Configuration.resolvedLocalization(for: localization)
-        
+
         var readMe: [String] = []
-        
+
         if ¬Configuration.localizations.isEmpty {
             readMe += [
                 "[_Localization Links_]",
-                "",
+                ""
             ]
         }
-        
+
         if Configuration.documentationURL ≠ nil {
             readMe += [
                 "[_API Links_]",
                 ""
             ]
         }
-        
+
         readMe += [
             "# [_Project_]"
         ]
-        
+
         if Configuration.shortProjectDescription(localization: localization) ≠ nil {
             readMe += [
                 "",
                 "[_Short Description_]"
             ]
         }
-        
+
         if Configuration.quotation ≠ nil {
             readMe += [
                 "",
                 "[_Quotation_]"
             ]
         }
-        
+
         if Configuration.featureList(localization: localization) ≠ nil {
             let features: String
             switch translation {
@@ -128,7 +128,7 @@ struct ReadMe {
             default:
                 features = "Features"
             }
-            
+
             readMe += [
                 "",
                 "## \(features)",
@@ -136,21 +136,21 @@ struct ReadMe {
                 "[_Features_]"
             ]
         }
-        
+
         if ¬Configuration.relatedProjects(localization: translation).isEmpty {
             readMe += [
                 "",
                 "[_Related Projects_]"
             ]
         }
-        
+
         if Configuration.installationInstructions(localization: localization) ≠ nil {
             readMe += [
                 "",
                 "[_Installation Instructions_]"
             ]
         }
-        
+
         var readMeExampleExists = false
         for (key, _) in Examples.examples {
             if key.hasPrefix("Read‐Me") {
@@ -171,7 +171,7 @@ struct ReadMe {
             default:
                 example = "Example Usage"
             }
-            
+
             readMe += [
                 "",
                 "## \(example)",
@@ -181,14 +181,14 @@ struct ReadMe {
                 "```"
             ]
         }
-        
+
         if Configuration.otherReadMeContent ≠ nil {
             readMe += [
                 "",
                 "[_Other_]"
             ]
         }
-        
+
         if Configuration.sdg {
             func english(translation: Localization) -> [String] {
                 return [
@@ -227,10 +227,10 @@ struct ReadMe {
                 readMe += english(translation: .supported(.englishCanada))
             }
         }
-        
+
         return join(lines: readMe)
     }
-    
+
     static func formatQuotationURL(chapter: String, originalKey: String, localization: Localization?) -> String {
         var translationCode = "NIV"
         if let specific = localization {
@@ -248,11 +248,11 @@ struct ReadMe {
                 fatalError(message: ["\(specific) does not have a corresponding translation yet."])
             }
         }
-        
+
         let sanitizedChapter = chapter.replacingOccurrences(of: " ", with: "+")
         return "https://www.biblegateway.com/passage/?search=\(sanitizedChapter)&version=\(originalKey);\(translationCode)"
     }
-    
+
     static func defaultQuotationURL(localization: Localization?) -> String {
         if let chapter = Configuration.quotationChapter {
             return formatQuotationURL(chapter: chapter, originalKey: Configuration.quotationOriginalKey, localization: localization)
@@ -260,7 +260,7 @@ struct ReadMe {
             return Configuration.noValue
         }
     }
-    
+
     static func localizationLinksMarkup(localization: Localization?) -> String {
         var links: [String] = []
         for targetLocalization in Configuration.localizations {
@@ -272,17 +272,17 @@ struct ReadMe {
                 url = readMeFilename(localization: targetLocalization)
             }
             url = url.replacingOccurrences(of: " ", with: "%20")
-            
+
             links.append("[\(link)](\(url))")
         }
         return links.joined(separator: " • ") + " " + skipInJazzy
     }
-    
+
     static func apiLinksMarkup(localization: Localization?) -> String {
         let translation = Configuration.resolvedLocalization(for: localization)
-        
+
         let urlString = Configuration.requiredDocumentationURL
-        
+
         guard let url = URL(string: urlString) else {
             fatalError(message: [
                 "The configured “Documentation URL” is invalid.",
@@ -290,7 +290,7 @@ struct ReadMe {
                 urlString
                 ])
         }
-        
+
         let apis: String
         switch translation {
         case .supported(let specific):
@@ -301,10 +301,10 @@ struct ReadMe {
         case .unsupported(_):
             return apiLinksMarkup(localization: .supported(.englishCanada))
         }
-        
+
         let operatingSystems = OperatingSystem.all.filter({ $0.isSupportedByProject }).map({ "\($0)" })
         if Set(operatingSystems).contains(url.linuxSafeLastPathComponent) {
-            
+
             let root = url.deletingLastPathComponent().absoluteString
             let links = operatingSystems.map() {
                 return "[\($0)](\(root)\($0))"
@@ -314,7 +314,7 @@ struct ReadMe {
             return "[\(apis) \(operatingSystems.joined(separator: " • "))](\(urlString))"
         }
     }
-    
+
     static func format(quotation: String, translation possibleTranslation: String?, url possibleURL: String?, citation possibleCitation: String?) -> String {
         var result = quotation.replacingOccurrences(of: "\n", with: "<br>")
         if let translation = possibleTranslation {
@@ -330,20 +330,20 @@ struct ReadMe {
         }
         return "> " + result
     }
-    
+
     static func quotationMarkup(localization: Localization?) -> String {
         return format(quotation: Configuration.requiredQuotation, translation: Configuration.quotationTranslation(localization: localization), url: Configuration.quotationURL(localization: localization), citation: Configuration.citation(localization: localization))
     }
-    
+
     static func relatedProjectsLinkMarkup(localization: Localization?) -> String {
-        
+
         let path: String
         if localization ≠ nil {
             path = relatedProjectsFilename(localization: localization)
         } else {
             path = ReadMe.relatedProjectsPath(localization: localization).string
         }
-        
+
         let translation = Configuration.resolvedLocalization(for: localization)
         switch translation {
         case .supported(let specific):
@@ -357,14 +357,14 @@ struct ReadMe {
             return relatedProjectsLinkMarkup(localization: .supported(.englishCanada))
         }
     }
-    
+
     static func defaultInstallationInstructions(localization: Localization?) -> String? {
-        
+
         if Configuration.projectType == .library {
             let translation = Configuration.resolvedLocalization(for: localization)
-            
+
             var instructions: [String] = []
-            
+
             switch translation {
             case .supported(let specific):
                 switch specific {
@@ -391,7 +391,7 @@ struct ReadMe {
                     ""
                 ]
             }
-            
+
             var dependencySummary: String
             switch translation {
             case .supported(let specific):
@@ -404,10 +404,10 @@ struct ReadMe {
             case .unsupported(_):
                 dependencySummary = "Simply add \(Configuration.projectName) as a dependency in `Package.swift`"
             }
-            
+
             if let repository = Configuration.repositoryURL,
                 let currentVersion = Configuration.currentVersion {
-                
+
                 let colon: String
                 switch translation {
                 case .supported(let specific):
@@ -418,7 +418,7 @@ struct ReadMe {
                 case .unsupported(_):
                     colon = ":"
                 }
-                
+
                 instructions += [
                     dependencySummary + colon,
                     "",
@@ -433,9 +433,9 @@ struct ReadMe {
                     ")",
                     "```"
                 ]
-                
+
             } else {
-                
+
                 switch translation {
                 case .supported(let specific):
                     switch specific {
@@ -450,7 +450,7 @@ struct ReadMe {
                     ]
                 }
             }
-            
+
             switch translation {
             case .supported(let specific):
                 switch specific {
@@ -471,103 +471,103 @@ struct ReadMe {
                     "\(Configuration.projectName) can then be imported in source files:"
                 ]
             }
-            
+
             instructions += [
                 "",
                 "```swift",
                 "import \(Configuration.moduleName)",
                 "```"
             ]
-            
+
             return join(lines: instructions)
         }
-        
+
         return nil
     }
-    
+
     static func refreshReadMe() {
-        
+
         var localizations = Configuration.localizations.map { Optional(
             $0) }
         localizations.append(nil)
-        
+
         for localization in localizations {
-            
+
             func key(_ name: String) -> String {
                 return "[_\(name)_]"
             }
-            
+
             var body = join(lines: [
                 managementComment,
                 "",
                 Configuration.readMe(localization: localization)
                 ])
-            
+
             let localizationLinks = key("Localization Links")
             if body.contains(localizationLinks) {
                 body = body.replacingOccurrences(of: localizationLinks, with: localizationLinksMarkup(localization: localization))
             }
-            
+
             let apiLinks = key("API Links")
             if body.contains(apiLinks) {
                 body = body.replacingOccurrences(of: apiLinks, with: apiLinksMarkup(localization: localization))
             }
-            
+
             body = body.replacingOccurrences(of: key("Project"), with: Configuration.projectName)
-            
+
             let shortDescription = key("Short Description")
             if body.contains(shortDescription) {
                 body = body.replacingOccurrences(of: shortDescription, with: Configuration.requiredShortProjectDescription(localization: localization))
             }
-            
+
             let quotation = key("Quotation")
             if body.contains(quotation) {
                 body = body.replacingOccurrences(of: quotation, with: quotationMarkup(localization: localization))
             }
-            
+
             let features = key("Features")
             if body.contains(features) {
                 body = body.replacingOccurrences(of: features, with: Configuration.requiredFeatureList(localization: localization))
             }
-            
+
             let relatedProjectsLink = key("Related Projects")
             if body.contains(relatedProjectsLink) {
                 body = body.replacingOccurrences(of: relatedProjectsLink, with: relatedProjectsLinkMarkup(localization: localization))
             }
-            
+
             let installationInsructions = key("Installation Instructions")
             if body.contains(installationInsructions) {
                 body = body.replacingOccurrences(of: installationInsructions, with: Configuration.requiredInstallationInstructions(localization: localization))
             }
-            
+
             let repositoryURL = key("Repository URL")
             if body.contains(repositoryURL) {
                 body = body.replacingOccurrences(of: repositoryURL, with: Configuration.requiredRepositoryURL)
             }
-            
+
             let currentVersion = key("Current Version")
             if body.contains(currentVersion) {
                 body = body.replacingOccurrences(of: currentVersion, with: "\(Configuration.requiredCurrentVersion)")
             }
-            
+
             let nextMajorVersion = key("Next Major Version")
             if body.contains(nextMajorVersion) {
                 body = body.replacingOccurrences(of: nextMajorVersion, with: "\(Configuration.requiredCurrentVersion.nextMajorVersion)")
             }
-            
+
             let exampleUsage = key("Example Usage")
             if body.contains(exampleUsage) {
                 var possibleReadMeExample: String?
-                
+
                 if let specific = localization?.code {
                     possibleReadMeExample = Examples.examples["Read‐Me: \(specific)"]
                 }
-                
+
                 if possibleReadMeExample == nil ∧ localization == nil {
                     if let development = Configuration.developmentLocalization?.code {
                         possibleReadMeExample = Examples.examples["Read‐Me: \(development)"]
                     }
-                    
+
                     if possibleReadMeExample == nil {
                         possibleReadMeExample = Examples.examples["Read‐Me"]
                     }
@@ -589,23 +589,23 @@ struct ReadMe {
                 }
                 body = body.replacingOccurrences(of: exampleUsage, with: readMeExample)
             }
-            
+
             let other = key("Other")
             if body.contains(other) {
                 body = body.replacingOccurrences(of: other, with: Configuration.requiredOtherReadMeContent)
             }
-            
+
             var readMe = File(possiblyAt: readMePath(localization: localization))
             readMe.body = body
             require() { try readMe.write() }
-            
+
             if ¬Configuration.relatedProjects(localization: localization).isEmpty
                 ∧ (localization ≠ nil ∨ localizations.count == 1 /* Only unlocalized. */) {
-                
+
                 let translation = Configuration.resolvedLocalization(for: localization)
-                
+
                 var projects: [String]
-                
+
                 switch translation {
                 case .supported(let specific):
                     switch specific {
@@ -632,7 +632,7 @@ struct ReadMe {
                         ""
                     ]
                 }
-                
+
                 func extractHeader(line: String) -> String {
                     var start = line.startIndex
                     guard line.advance(&start, past: "# ") else {
@@ -646,11 +646,11 @@ struct ReadMe {
                     }
                     return line.substring(from: start)
                 }
-                
+
                 func sanitize(headerAnchor: String) -> String {
                     return headerAnchor.replacingOccurrences(of: " ", with: "‐")
                 }
-                
+
                 for line in Configuration.relatedProjects(localization: localization) {
                     if line.hasPrefix("# ") {
                         let header = extractHeader(line: line)
@@ -678,11 +678,11 @@ struct ReadMe {
                                 "Name: https://url.to/repository"
                                 ])
                         }
-                        
+
                         let name = line.substring(to: colon.lowerBound)
                         let url = line.substring(from: colon.upperBound)
                         let configuration = Configuration.parseConfigurationFile(fromLinkedRepositoryAt: url)
-                        
+
                         let link: String
                         if let documentation = configuration[.documentationURL] {
                             link = documentation
@@ -693,7 +693,7 @@ struct ReadMe {
                             "",
                             "### [\(name)](\(link))"
                         ]
-                        
+
                         if var shortDescription = Configuration.localizedOptionValue(option: .shortProjectDescription, localization: localization, configuration: configuration) {
                             if shortDescription.contains("[_") { // The main project is not localized, but the linked configuration is.
                                 if let parsedLocalizations = Configuration.parseLocalizations(shortDescription) {
@@ -711,16 +711,16 @@ struct ReadMe {
                         }
                     }
                 }
-                
+
                 var relatedProjects = File(possiblyAt: relatedProjectsPath(localization: localization))
                 relatedProjects.body = join(lines: projects)
                 require() { try relatedProjects.write() }
             }
         }
     }
-    
+
     static func relinquishControl() {
-        
+
         for localization in Configuration.localizations {
             var readMe = File(possiblyAt: readMePath(localization: localization))
             if let range = readMe.contents.range(of: managementComment) {

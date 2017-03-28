@@ -17,8 +17,8 @@
 ### Table of Contents
 
 - [Command Line Tools](#Command‐Line‐Tools)
-- [Foundation Level Libraries](#Foundation‐Level‐Libraries)
-- [Language Level Libraries](#Language‐Level‐Libraries)
+- [Libraries at the Foundation Level](#Libraries‐at‐the‐Foundation‐Level)
+- [Libraries at the Language Level](#Libraries‐at‐the‐Language‐Level)
 
 ## <a name="Command‐Line‐Tools">Command Line Tools</a>
 
@@ -26,7 +26,7 @@
 
 Workspace automates management of Swift projects.
 
-## <a name="Foundation‐Level‐Libraries">Foundation Level Libraries</a>
+## <a name="Libraries‐at‐the‐Foundation‐Level">Libraries at the Foundation Level</a>
 
 ### [SDGLogic](https://sdggiesbrecht.github.io/SDGLogic/macOS)
 
@@ -36,7 +36,7 @@ SDGLogic extends support for Boolean logic.
 
 SDGMathematics extends support for mathematics.
 
-## <a name="Language‐Level‐Libraries">Language Level Libraries</a>
+## <a name="Libraries‐at‐the‐Language‐Level">Libraries at the Language Level</a>
 
 ### [SDGCaching](https://sdggiesbrecht.github.io/SDGCaching/macOS)
 

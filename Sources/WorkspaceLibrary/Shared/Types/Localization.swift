@@ -1,5 +1,5 @@
 /*
- Version.swift
+ Localization.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -13,9 +13,9 @@
  */
 
 enum Localization : Hashable {
-    
+
     // MARK: - Initialization
-    
+
     init(code: String) {
         if let result = SupportedLocalization(code: code) {
             self = .supported(result)
@@ -23,14 +23,14 @@ enum Localization : Hashable {
             self = .unsupported(code)
         }
     }
-    
+
     // MARK: - Cases
-    
+
     case supported(SupportedLocalization)
     case unsupported(String)
-    
+
     // MARK: - Properties
-    
+
     var code: String {
         switch self {
         case .supported(let localization):
@@ -39,7 +39,7 @@ enum Localization : Hashable {
             return code
         }
     }
-    
+
     var userFacingCode: String {
         switch self {
         case .supported(let localization):
@@ -57,7 +57,7 @@ enum Localization : Hashable {
             return code
         }
     }
-    
+
     var supported: SupportedLocalization? {
         switch self {
         case .supported(let result):
@@ -66,27 +66,27 @@ enum Localization : Hashable {
             return nil
         }
     }
-    
+
     // MARK: - Equatable
-    
+
     static func == (lhs: Localization, rhs: Localization) -> Bool {
         return lhs.code == rhs.code
     }
-    
+
     // MARK: - Hashable
-    
+
     var hashValue: Int {
         return code.hashValue
     }
-    
+
     // MARK: - Supported
-    
-    enum SupportedLocalization: String {
-        
+
+    enum SupportedLocalization : String {
+
         // MARK: - Initialization
-        
+
         init?(code: String) {
-            
+
             if let result = SupportedLocalization(rawValue: code) {
                 self = result
             } else if let result = SupportedLocalization.aliases[code] {
@@ -95,22 +95,22 @@ enum Localization : Hashable {
                 return nil
             }
         }
-        
+
         // MARK: - Cases
-        
-        case englishUnitedKingdom = "en-GB"
-        case englishUnitedStates = "en-US"
-        case englishCanada = "en-CA"
-        
-        case germanGermany = "de-DE"
-        
+
+        case englishUnitedKingdom = "en\u{2D}GB"
+        case englishUnitedStates = "en\u{2D}US"
+        case englishCanada = "en\u{2D}CA"
+
+        case germanGermany = "de\u{2D}DE"
+
         private static let aliases: [String: SupportedLocalization] = [
             "en": .englishUnitedKingdom,
             "de": .germanGermany
         ]
-        
+
         // MARK: - Properties
-        
+
         var code: String {
             return rawValue
         }

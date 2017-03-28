@@ -346,23 +346,69 @@ struct ReadMe {
         }
     }
     
-    static let defaultInstallationInstructions: String? = {
+    static func defaultInstallationInstructions(localization: Localization?) -> String? {
+        
         if Configuration.projectType == .library {
+            let translation = Configuration.resolvedLocalization(for: localization)
             
-            var instructions = [
-                "## Importing",
-                "",
-                "\(Configuration.projectName) is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).",
-                ""
-            ]
+            var instructions: [String] = []
             
-            var dependencySummary = "Simply add \(Configuration.projectName) as a dependency in `Package.swift`"
+            switch translation {
+            case .supported(let specific):
+                switch specific {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    instructions += [
+                        "## Importing",
+                        "",
+                        "\(Configuration.projectName) is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).",
+                        ""
+                    ]
+                case .germanGermany:
+                    instructions += [
+                        "## Einführung",
+                        "",
+                        "\(Configuration.projectName) ist für den Einsatz mit dem [Swift Package Manager](https://swift.org/package-manager/) vorgesehen.",
+                        ""
+                    ]
+                }
+            case .unsupported(_):
+                instructions += [
+                    "## Importing",
+                    "",
+                    "\(Configuration.projectName) is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).",
+                    ""
+                ]
+            }
+            
+            var dependencySummary: String
+            switch translation {
+            case .supported(let specific):
+                switch specific {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    dependencySummary = "Simply add \(Configuration.projectName) as a dependency in `Package.swift`"
+                case .germanGermany:
+                    dependencySummary = "Füge \(Configuration.projectName) einfach in der Abhängigkeitsliste in `Package.swift` zu"
+                }
+            case .unsupported(_):
+                dependencySummary = "Simply add \(Configuration.projectName) as a dependency in `Package.swift`"
+            }
             
             if let repository = Configuration.repositoryURL,
                 let currentVersion = Configuration.currentVersion {
                 
+                let colon: String
+                switch translation {
+                case .supported(let specific):
+                    switch specific {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .germanGermany:
+                        colon = ":"
+                    }
+                case .unsupported(_):
+                    colon = ":"
+                }
+                
                 instructions += [
-                    dependencySummary + ":",
+                    dependencySummary + colon,
                     "",
                     "```swift",
                     "let package = Package(",
@@ -377,14 +423,44 @@ struct ReadMe {
                 ]
                 
             } else {
+                
+                switch translation {
+                case .supported(let specific):
+                    switch specific {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .germanGermany:
+                        instructions += [
+                            dependencySummary + "."
+                        ]
+                    }
+                case .unsupported(_):
+                    instructions += [
+                        dependencySummary + "."
+                    ]
+                }
+            }
+            
+            switch translation {
+            case .supported(let specific):
+                switch specific {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    instructions += [
+                        "",
+                        "\(Configuration.projectName) can then be imported in source files:"
+                    ]
+                case .germanGermany:
+                    instructions += [
+                        "",
+                        "Dann kann \(Configuration.projectName) in Quelldateien eingeführt werden:"
+                    ]
+                }
+            case .unsupported(_):
                 instructions += [
-                    dependencySummary + "."
+                    "",
+                    "\(Configuration.projectName) can then be imported in source files:"
                 ]
             }
             
             instructions += [
-                "",
-                "\(Configuration.projectName) can then be imported in source files:",
                 "",
                 "```swift",
                 "import \(Configuration.moduleName)",
@@ -395,7 +471,7 @@ struct ReadMe {
         }
         
         return nil
-    }()
+    }
     
     static func refreshReadMe() {
         

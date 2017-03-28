@@ -236,7 +236,7 @@ enum Option : String, CustomStringConvertible {
         case .relatedProjects:
             return Configuration.emptyListOptionValue
         case .installationInstructions:
-            return ReadMe.defaultInstallationInstructions ?? Configuration.noValue
+            return Configuration.noValue
         case .repositoryURL:
             return Configuration.noValue
         case .currentVersion:

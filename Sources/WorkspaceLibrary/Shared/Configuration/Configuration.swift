@@ -607,8 +607,8 @@ struct Configuration {
     static func requiredFeatureList(localization: Localization?) -> String {
         return requiredLocalizedOptionValue(option: .featureList, localization: localization)
     }
-    static var installationInstructions: String? {
-        return possibleStringValue(option: .installationInstructions)
+    static func installationInstructions(localization: Localization?) -> String? {
+        return localizedOptionValue(option: .installationInstructions, localization: localization) ?? ReadMe.defaultReadMeTemplate(localization: localization)
     }
     static var requiredInstallationInstructions: String {
         return stringValue(option: .installationInstructions)

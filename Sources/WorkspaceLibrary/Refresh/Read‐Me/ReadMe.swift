@@ -147,9 +147,22 @@ struct ReadMe {
             }
         }
         if readMeExampleExists {
+            let example: String
+            switch translation {
+            case .supported(let specific):
+                switch specific {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    example = "Example Usage"
+                case .germanGermany:
+                    example = "Verwendungsbeispiel"
+                }
+            default:
+                example = "Example Usage"
+            }
+            
             readMe += [
                 "",
-                "## Example Usage",
+                "## \(example)",
                 "",
                 "```swift",
                 "[\u{5F}Example Usage_]",
@@ -165,18 +178,42 @@ struct ReadMe {
         }
         
         if Configuration.sdg {
-            readMe += [
-                "",
-                "## About",
-                "",
-                "The \(Configuration.projectName) project is maintained by Jeremy David Giesbrecht.",
-                "",
-                "If \(Configuration.projectName) saves you money, consider giving some of it as a [donation](https://paypal.me/JeremyGiesbrecht).",
-                "",
-                "If \(Configuration.projectName) saves you time, consider devoting some of it to [contributing](\(Configuration.requiredRepositoryURL)) back to the project.",
-                "",
-                format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "For the worker is worthy of his wages.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: .supported(.englishCanada)), citation: "\u{200E}ישוע/Yeshuʼa")
-            ]
+            func english(translation: Localization) -> [String] {
+                return [
+                    "",
+                    "## About",
+                    "",
+                    "The \(Configuration.projectName) project is maintained by Jeremy David Giesbrecht.",
+                    "",
+                    "If \(Configuration.projectName) saves you money, consider giving some of it as a [donation](https://paypal.me/JeremyGiesbrecht).",
+                    "",
+                    "If \(Configuration.projectName) saves you time, consider devoting some of it to [contributing](\(Configuration.requiredRepositoryURL)) back to the project.",
+                    "",
+                    format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "For the worker is worthy of his wages.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: localization), citation: "\u{200E}ישוע/Yeshuʼa")
+                ]
+            }
+            switch translation {
+            case .supported(let specific):
+                switch specific {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    readMe += english(translation: translation)
+                case .germanGermany:
+                    readMe += [
+                        "",
+                        "## Über",
+                        "",
+                        "Das \(Configuration.projectName)‐Projekt wird von Jeremy David Giesbrecht erhalten.",
+                        "",
+                        "Wenn \(Configuration.projectName) Ihnen Geld sparrt, denken Sie darüber, etwas davon zu [spenden](https://paypal.me/JeremyGiesbrecht).",
+                        "",
+                        "Wenn \(Configuration.projectName) Inhen Zeit sparrt, denken Sie darüber, etwas davon zu gebrauchen, um zum Projekt [beizutragen](\(Configuration.requiredRepositoryURL)).",
+                        "",
+                        format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "Denn der Arbeiter ist seines Lohns würdig.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: localization), citation: "\u{200E}ישוע/Yeshuʼa")
+                    ]
+                }
+            default:
+                readMe += english(translation: .supported(.englishCanada))
+            }
         }
         
         return join(lines: readMe)
@@ -229,7 +266,9 @@ struct ReadMe {
         return links.joined(separator: " • ")
     }
     
-    static let apiLinksMarkup: String = {
+    static func apiLinksMarkup(localization: Localization?) -> String {
+        let translation = Configuration.resolvedLocalization(for: localization)
+        
         let urlString = Configuration.requiredDocumentationURL
         
         guard let url = URL(string: urlString) else {
@@ -240,6 +279,17 @@ struct ReadMe {
                 ])
         }
         
+        let apis: String
+        switch translation {
+        case .supported(let specific):
+            switch specific {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .germanGermany:
+                apis = "APIs:"
+            }
+        case .unsupported(_):
+            return apiLinksMarkup(localization: .supported(.englishCanada))
+        }
+        
         let operatingSystems = OperatingSystem.all.filter({ $0.isSupportedByProject }).map({ "\($0)" })
         if Set(operatingSystems).contains(url.linuxSafeLastPathComponent) {
             
@@ -247,11 +297,11 @@ struct ReadMe {
             let links = operatingSystems.map() {
                 return "[\($0)](\(root)\($0))"
             }
-            return "\(skipInJazzy)APIs: \(links.joined(separator: " • "))"
+            return "\(skipInJazzy)\(apis) \(links.joined(separator: " • "))"
         } else {
-            return "\(skipInJazzy)[APIs: \(operatingSystems.joined(separator: " • "))](\(urlString))"
+            return "\(skipInJazzy)[\(apis) \(operatingSystems.joined(separator: " • "))](\(urlString))"
         }
-    }()
+    }
     
     static func format(quotation: String, translation possibleTranslation: String?, url possibleURL: String?, citation possibleCitation: String?) -> String {
         var result = quotation.replacingOccurrences(of: "\n", with: "<br>")
@@ -274,13 +324,26 @@ struct ReadMe {
     }
     
     static func relatedProjectsLinkMarkup(localization: Localization?) -> String {
+        
         let path: String
         if localization ≠ nil {
             path = relatedProjectsFilename(localization: localization)
         } else {
             path = ReadMe.relatedProjectsPath(localization: localization).string
         }
-        return "\(skipInJazzy)(For a list of related projecs, see [here](\(path.replacingOccurrences(of: " ", with: "%20"))).)"
+        
+        let translation = Configuration.resolvedLocalization(for: localization)
+        switch translation {
+        case .supported(let specific):
+            switch specific {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "\(skipInJazzy)(For a list of related projecs, see [here](\(path.replacingOccurrences(of: " ", with: "%20"))).)"
+            case .germanGermany:
+                return "\(skipInJazzy)(Für eine Liste verwandter Projekte, siehe [hier](\(path.replacingOccurrences(of: " ", with: "%20"))).)"
+            }
+        case .unsupported(_):
+            return relatedProjectsLinkMarkup(localization: .supported(.englishCanada))
+        }
     }
     
     static let defaultInstallationInstructions: String? = {
@@ -359,7 +422,7 @@ struct ReadMe {
             
             let apiLinks = key("API Links")
             if body.contains(apiLinks) {
-                body = body.replacingOccurrences(of: apiLinks, with: apiLinksMarkup)
+                body = body.replacingOccurrences(of: apiLinks, with: apiLinksMarkup(localization: localization))
             }
             
             body = body.replacingOccurrences(of: key("Project"), with: Configuration.projectName)

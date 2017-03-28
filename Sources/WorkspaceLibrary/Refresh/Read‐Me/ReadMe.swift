@@ -387,7 +387,7 @@ struct ReadMe {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     dependencySummary = "Simply add \(Configuration.projectName) as a dependency in `Package.swift`"
                 case .germanGermany:
-                    dependencySummary = "Füge \(Configuration.projectName) einfach in der Abhängigkeitsliste in `Package.swift` zu"
+                    dependencySummary = "Füge \(Configuration.projectName) einfach in der Abhängigkeitsliste in `Package.swift` hinzu"
                 }
             case .unsupported(_):
                 dependencySummary = "Simply add \(Configuration.projectName) as a dependency in `Package.swift`"

@@ -18,6 +18,8 @@ import SDGLogic
 
 struct ReadMe {
     
+    static let skipInJazzy = "<!\u{2D}\u{2D}Skip in Jazzy\u{2D}\u{2D}>"
+    
     static func readMeFilename(localization: Localization?) -> String {
         if let specific = localization?.supported {
             switch specific {
@@ -230,9 +232,9 @@ struct ReadMe {
             let links = operatingSystems.map() {
                 return "[\($0)](\(root)\($0))"
             }
-            return "APIs: \(links.joined(separator: " • "))"
+            return "\(skipInJazzy)APIs: \(links.joined(separator: " • "))"
         } else {
-            return "[APIs: \(operatingSystems.joined(separator: " • "))](\(urlString))"
+            return "\(skipInJazzy)[APIs: \(operatingSystems.joined(separator: " • "))](\(urlString))"
         }
     }()
     
@@ -263,7 +265,7 @@ struct ReadMe {
         } else {
             path = ReadMe.relatedProjectsPath(localization: localization).string
         }
-        return "(For a list of related projecs, see [here](\(path.replacingOccurrences(of: " ", with: "%20"))).)"
+        return "\(skipInJazzy)(For a list of related projecs, see [here](\(path.replacingOccurrences(of: " ", with: "%20"))).)"
     }
     
     static let defaultInstallationInstructions: String? = {

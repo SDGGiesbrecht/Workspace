@@ -263,12 +263,8 @@ struct Documentation {
                     }
                 }
 
-                while let relatedLink = source.range(of: "Related%20Projects.md") {
-                    let relatedLine = source.lineRange(for: relatedLink)
-                    source.removeSubrange(relatedLine)
-                }
-                while let relatedLink = source.range(of: "Read%20Me.md") {
-                    let relatedLine = source.lineRange(for: relatedLink)
+                while let shouldRemove = source.range(of: ReadMe.skipInJazzy) {
+                    let relatedLine = source.lineRange(for: shouldRemove)
                     source.removeSubrange(relatedLine)
                 }
 

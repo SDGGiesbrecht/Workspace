@@ -101,7 +101,7 @@ struct ReadMe {
             "# [_Project_]"
         ]
         
-        if Configuration.shortProjectDescription ≠ nil {
+        if Configuration.shortProjectDescription(localization: localization) ≠ nil {
             readMe += [
                 "",
                 "[_Short Description_]"
@@ -115,7 +115,7 @@ struct ReadMe {
             ]
         }
         
-        if Configuration.featureList ≠ nil {
+        if Configuration.featureList(localization: localization) ≠ nil {
             let features: String
             switch translation {
             case .supported(let specific):
@@ -144,7 +144,7 @@ struct ReadMe {
             ]
         }
         
-        if Configuration.installationInstructions ≠ nil {
+        if Configuration.installationInstructions(localization: localization) ≠ nil {
             readMe += [
                 "",
                 "[_Installation Instructions_]"

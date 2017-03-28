@@ -68,7 +68,8 @@ struct HyphenMinus : Rule {
                                 ∧ ¬(filePrefix.contains("[_Begin Feature List_]") ∧ fileSuffix.contains("[_End_]") ∧ filePrefix.hasSuffix("\n")) /* Feature List */
                                 ∧ ¬(filePrefix.contains("[_Begin Other Read‐Me Content_]") ∧ fileSuffix.contains("[_End_]") ∧ filePrefix.hasSuffix("\n") ∨ filePrefix.hasSuffix("\n  ")) /* Other Read‐Me Content */
                                 ∧ ¬(filePrefix.components(separatedBy: " ").last ?? "").contains("#")
-                                ∧ ¬(line.hasPrefix("[_") ∧ line.hasSuffix("_]")) {
+                                ∧ ¬(line.hasPrefix("[_") ∧ line.hasSuffix("_]")
+                                ∧ ¬(filePrefix.contains("[_Begin Localizations_]") ∧ fileSuffix.contains("[_End_]"))) {
                                 throwError()
                             }
 

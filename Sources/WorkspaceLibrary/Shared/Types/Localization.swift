@@ -40,6 +40,24 @@ enum Localization : Hashable {
         }
     }
     
+    var userFacingCode: String {
+        switch self {
+        case .supported(let localization):
+            switch localization {
+            case .englishUnitedKingdom:
+                return "🇬🇧EN"
+            case .englishUnitedStates:
+                return "🇺🇸EN"
+            case .englishCanada:
+                return "🇨🇦EN"
+            case .germanGermany:
+                return "🇩🇪DE"
+            }
+        case .unsupported(let code):
+            return code
+        }
+    }
+    
     var supported: SupportedLocalization? {
         switch self {
         case .supported(let result):

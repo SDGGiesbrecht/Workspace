@@ -21,37 +21,49 @@ struct ReadMe {
     static let skipInJazzy = "<!\u{2D}\u{2D}Skip in Jazzy\u{2D}\u{2D}>"
     
     static func readMeFilename(localization: Localization?) -> String {
-        if let specific = localization?.supported {
-            switch specific {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "Read Me.md"
-            case .germanGermany:
-                return "Lies mich.md"
+        if let particular = localization {
+            var name: String
+            if let specific = particular.supported {
+                switch specific {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    name = "Read Me.md"
+                case .germanGermany:
+                    name = "Lies mich.md"
+                }
+            } else {
+                name = "Read Me.md"
             }
+            return particular.userFacingCode + " " + name
         }
         return "Read Me.md"
     }
     static func readMePath(localization: Localization?) -> RelativePath {
-        if let specific = localization {
-            return RelativePath("Documentation/\(specific.userFacingCode) \(readMeFilename(localization: localization))")
+        if localization ≠ nil {
+            return RelativePath("Documentation/\(readMeFilename(localization: localization))")
         } else {
             return RelativePath("README.md")
         }
     }
     static func relatedProjectsFilename(localization: Localization?) -> String {
-        if let specific = localization?.supported {
-            switch specific {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "Related Projects.md"
-            case .germanGermany:
-                return "Verwandte Projekte.md"
+        if let particular = localization {
+            var name: String
+            if let specific = particular.supported {
+                switch specific {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    name = "Related Projects.md"
+                case .germanGermany:
+                    name = "Verwandte Projekte.md"
+                }
+            } else {
+                name = "Read Me.md"
             }
+            return particular.userFacingCode + " " + name
         }
         return "Related Projects.md"
     }
     static func relatedProjectsPath(localization: Localization?) -> RelativePath {
-        if let specific = localization {
-            return RelativePath("Documentation/\(specific.userFacingCode) \(relatedProjectsFilename(localization: localization))")
+        if localization ≠ nil {
+            return RelativePath("Documentation/\(relatedProjectsFilename(localization: localization))")
         } else {
             if let development = Configuration.developmentLocalization {
                 return relatedProjectsPath(localization: development)
@@ -263,7 +275,7 @@ struct ReadMe {
             
             links.append("[\(link)](\(url))")
         }
-        return skipInJazzy + links.joined(separator: " • ")
+        return links.joined(separator: " • ") + " " + skipInJazzy
     }
     
     static func apiLinksMarkup(localization: Localization?) -> String {
@@ -337,9 +349,9 @@ struct ReadMe {
         case .supported(let specific):
             switch specific {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "\(skipInJazzy)(For a list of related projecs, see [here](\(path.replacingOccurrences(of: " ", with: "%20"))).)"
+                return "(For a list of related projecs, see [here](\(path.replacingOccurrences(of: " ", with: "%20"))).)" + " " + skipInJazzy
             case .germanGermany:
-                return "\(skipInJazzy)(Für eine Liste verwandter Projekte, siehe [hier](\(path.replacingOccurrences(of: " ", with: "%20"))).)"
+                return "(Für eine Liste verwandter Projekte, siehe [hier](\(path.replacingOccurrences(of: " ", with: "%20"))).)" + " " + skipInJazzy
             }
         case .unsupported(_):
             return relatedProjectsLinkMarkup(localization: .supported(.englishCanada))

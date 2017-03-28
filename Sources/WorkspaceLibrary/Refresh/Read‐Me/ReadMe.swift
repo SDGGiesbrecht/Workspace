@@ -31,7 +31,7 @@ struct ReadMe {
     }
     static func readMePath(localization: Localization?) -> RelativePath {
         if let specific = localization {
-            return RelativePath("Documentation/\(specific.code) → \(readMeFilename(localization: localization))")
+            return RelativePath("Documentation/\(specific.userFacingCode) → \(readMeFilename(localization: localization))")
         } else {
             return RelativePath("README.md")
         }
@@ -49,7 +49,7 @@ struct ReadMe {
     }
     static func relatedProjectsPath(localization: Localization?) -> RelativePath {
         if let specific = localization {
-            return RelativePath("Documentation/\(specific.code) → \(relatedProjectsFilename(localization: localization))")
+            return RelativePath("Documentation/\(specific.userFacingCode) → \(relatedProjectsFilename(localization: localization))")
         } else {
             if let development = Configuration.developmentLocalization {
                 return relatedProjectsPath(localization: development)

@@ -695,7 +695,7 @@ struct Configuration {
     }
     static func relatedProjects(localization: Localization?) -> [String] {
         if let result = localizedOptionValue(option: .relatedProjects, localization: localization) {
-            if result.contains("[_") { //
+            if result.contains("[_") { // The main project is not localized, but the linked configuration is.
                 if let parsedLocalizations = parseLocalizations(result) {
                     if let english = parsedLocalizations[.supported(.englishCanada)] ?? parsedLocalizations[.supported(.englishUnitedStates)] {
                         return parseList(value: english)

@@ -590,12 +590,36 @@ struct ReadMe {
             if ¬Configuration.relatedProjects(localization: localization).isEmpty
                 ∧ (localization ≠ nil ∨ localizations.count == 1 /* Only unlocalized. */) {
                 
-                var projects: [String] = [
-                    "# Related Projects",
-                    "",
-                    "### Table of Contents",
-                    ""
-                ]
+                let translation = Configuration.resolvedLocalization(for: localization)
+                
+                var projects: [String]
+                
+                switch translation {
+                case .supported(let specific):
+                    switch specific {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        projects = [
+                            "# Related Projects",
+                            "",
+                            "### Table of Contents",
+                            ""
+                        ]
+                    case .germanGermany:
+                        projects = [
+                            "# Verwandte Projekte",
+                            "",
+                            "### Inhaltsverzeichnis",
+                            ""
+                        ]
+                    }
+                case .unsupported(_):
+                    projects = [
+                        "# Related Projects",
+                        "",
+                        "### Table of Contents",
+                        ""
+                    ]
+                }
                 
                 func extractHeader(line: String) -> String {
                     var start = line.startIndex

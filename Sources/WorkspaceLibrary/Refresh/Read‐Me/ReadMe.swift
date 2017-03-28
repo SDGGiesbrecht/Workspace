@@ -19,6 +19,14 @@ import SDGLogic
 struct ReadMe {
     
     static func readMeFilename(localization: Localization?) -> String {
+        if let specific = localization?.supported {
+            switch specific {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Read Me.md"
+            case .germanGermany:
+                return "Lies mich.md"
+            }
+        }
         return "Read Me.md"
     }
     static func readMePath(localization: Localization?) -> RelativePath {
@@ -155,7 +163,7 @@ struct ReadMe {
             switch specific {
             case .supported(let supported):
                 switch supported {
-                case .englishUnitedKindom:
+                case .englishUnitedKingdom:
                     translationCode = "NIVUK"
                 case .englishUnitedStates, .englishCanada:
                     translationCode = "NIV"

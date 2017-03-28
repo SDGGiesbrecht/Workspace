@@ -40,6 +40,15 @@ enum Localization : Hashable {
         }
     }
     
+    var supported: SupportedLocalization? {
+        switch self {
+        case .supported(let result):
+            return result
+        case .unsupported(_):
+            return nil
+        }
+    }
+    
     // MARK: - Equatable
     
     static func == (lhs: Localization, rhs: Localization) -> Bool {
@@ -71,14 +80,14 @@ enum Localization : Hashable {
         
         // MARK: - Cases
         
-        case englishUnitedKindom = "en-GB"
+        case englishUnitedKingdom = "en-GB"
         case englishUnitedStates = "en-US"
         case englishCanada = "en-CA"
         
         case germanGermany = "de-DE"
         
         private static let aliases: [String: SupportedLocalization] = [
-            "en": .englishUnitedKindom,
+            "en": .englishUnitedKingdom,
             "de": .germanGermany
         ]
         

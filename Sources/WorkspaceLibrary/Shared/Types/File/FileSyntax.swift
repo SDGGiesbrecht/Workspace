@@ -149,6 +149,10 @@ struct FileSyntax {
     }
 
     func headerStart(file: File) -> String.Index {
+        
+        if file.path.string.hasSuffix("Package.swift") {
+            print(file.syntax)
+        }
 
         var index = file.contents.startIndex
 

@@ -55,6 +55,7 @@ enum FileType : CustomStringConvertible {
         "dsidx",
         "nojekyll",
         "plist",
+        "pins",
         "png",
         "svg",
         "tgz"
@@ -101,6 +102,7 @@ enum FileType : CustomStringConvertible {
 
     // Source
     case swift
+    case swiftPackageManifest
 
     // Documentation
     case markdown
@@ -128,6 +130,7 @@ enum FileType : CustomStringConvertible {
         (Configuration.configurationFilePath.string, .workspaceConfiguration),
 
         // Source
+        ("Package.swift", .swiftPackageManifest),
         (".swift", .swift),
 
         // Documentation
@@ -160,23 +163,27 @@ enum FileType : CustomStringConvertible {
 
     private static let htmlBlockComment = BlockCommentSyntax(start: "<\u{21}\u{2D}\u{2D}", end: "\u{2D}\u{2D}>", stylisticIndent: " ")
 
+    private static let swiftBlockCommentSyntax = BlockCommentSyntax(start: "/*", end: "*/", stylisticIndent: " ")
+    private static let swiftLineCommentSyntax = LineCommentSyntax(start: "//")
     static let swiftDocumentationSyntax = FileSyntax(blockCommentSyntax: BlockCommentSyntax(start: "/*" + "*", end: "*/", stylisticIndent: " "), lineCommentSyntax: LineCommentSyntax(start: "///"))
     var syntax: FileSyntax {
         switch self {
         case .workspaceConfiguration:
             return Configuration.syntax
         case .swift, .css, .javaScript:
-            return FileSyntax(blockCommentSyntax: BlockCommentSyntax(start: "/*", end: "*/", stylisticIndent: " "), lineCommentSyntax: LineCommentSyntax(start: "//"))
+            return FileSyntax(blockCommentSyntax: FileType.swiftBlockCommentSyntax, lineCommentSyntax: FileType.swiftLineCommentSyntax)
+        case .swiftPackageManifest:
+            return FileSyntax(blockCommentSyntax: FileType.swiftBlockCommentSyntax, lineCommentSyntax: FileType.swiftLineCommentSyntax, requiredFirstLineToken: "// swift\u{2D}tools\u{2D}version:")
         case .markdown:
             return FileSyntax(blockCommentSyntax: FileType.htmlBlockComment, lineCommentSyntax: nil, semanticLineTerminalWhitespace: ["  "])
         case .gitignore, .yaml:
             return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"))
         case .shell:
-            return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"), requiredFirstLineTokens: (start: "#!", end: "sh"))
+            return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"), requiredFirstLineToken: "#!")
         case .json:
             return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: nil)
         case .html:
-            return FileSyntax(blockCommentSyntax: FileType.htmlBlockComment, lineCommentSyntax: nil, requiredFirstLineTokens: (start: "<\u{21}DOCTYPE", end: ">"))
+            return FileSyntax(blockCommentSyntax: FileType.htmlBlockComment, lineCommentSyntax: nil, requiredFirstLineToken: "<\u{21}DOCTYPE")
         }
     }
 
@@ -188,6 +195,8 @@ enum FileType : CustomStringConvertible {
             return "Workspace Configuration"
         case .swift:
             return "Swift"
+        case .swiftPackageManifest:
+            return "Swift Package Manifest"
         case .markdown:
             return "Markdown"
         case .gitignore:

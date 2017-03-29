@@ -82,7 +82,6 @@ For information on the various available options, see the documentation for the 
 - [Licence](Licence.md)
 - [Contributing Instructions](Contributing%20Instructions.md)
 - [Xcode](Xcode.md)
-- [Dependency Graph](Dependency%20Graph.md)
 - [File Headers](File%20Headers.md)
 - [Proofreading](Proofreading.md)
 - [Compiler Warnings](Compiler%20Warnings.md)

@@ -70,6 +70,7 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
             var lines = [
                 "excluded:",
                 // Swift Package Manager
+                "  \u{2D} .build",
                 "  \u{2D} Packages",
                 // Workspace
                 "  \u{2D} .Test Zone"
@@ -91,7 +92,7 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
             repositoryURL: "https://github.com/realm/SwiftLint",
             versionCheck: ["swiftlint", "version"],
             continuousIntegrationSetUp: [
-                ["brew", "upgrade", "swiftlint"]
+                ["brew", "outdated", "|", "grep", "\u{2D}q", "swiftlint", "\u{26}&", "brew", "upgrade", "swiftlint"]
             ],
             command: ["swiftlint", "lint", "\u{2D}\u{2D}strict"],
             updateInstructions: [

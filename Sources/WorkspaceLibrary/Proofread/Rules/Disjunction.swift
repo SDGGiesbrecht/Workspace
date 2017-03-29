@@ -39,7 +39,7 @@ struct Disjunction : Rule {
                 case .workspaceConfiguration, .json, .yaml, .gitignore, .shell, .html, .css, .javaScript:
                     throwError()
 
-                case .swift:
+                case .swift, .swiftPackageManifest:
                     if ¬isInAliasDefinition(for: "∨", at: range, in: file)
                         ∧ ¬isInConditionalCompilationStatement(at: range, in: file) {
                         throwError()

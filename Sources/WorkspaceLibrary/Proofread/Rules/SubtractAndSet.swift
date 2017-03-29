@@ -39,7 +39,7 @@ struct SubtractAndSet : Rule {
                 case .workspaceConfiguration, .markdown, .json, .yaml, .gitignore, .shell, .html, .css, .javaScript:
                     throwError()
 
-                case .swift:
+                case .swift, .swiftPackageManifest:
                     if ¬isInAliasDefinition(for: "−=", at: range, in: file)
                         ∧ ¬isInAliasDefinition(for: "subtractAndAssignAsFloatingPoint", at: range, in: file) {
                         throwError()

@@ -39,7 +39,7 @@ struct NotEqual : Rule {
                 case .workspaceConfiguration, .markdown, .json, .yaml, .gitignore, .html, .css, .javaScript:
                     throwError()
 
-                case .swift:
+                case .swift, .swiftPackageManifest:
                     if ¬isInAliasDefinition(for: "≠", at: range, in: file) {
                         throwError()
                     }

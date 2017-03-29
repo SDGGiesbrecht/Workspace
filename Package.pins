@@ -1,0 +1,24 @@
+{
+  "autoPin": true,
+  "pins": [
+    {
+      "package": "SDGCaching",
+      "reason": null,
+      "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCaching",
+      "version": "1.0.0"
+    },
+    {
+      "package": "SDGLogic",
+      "reason": null,
+      "repositoryURL": "https://github.com/SDGGiesbrecht/SDGLogic",
+      "version": "1.1.0"
+    },
+    {
+      "package": "SDGMathematics",
+      "reason": null,
+      "repositoryURL": "https://github.com/SDGGiesbrecht/SDGMathematics",
+      "version": "1.0.2"
+    }
+  ],
+  "version": 1
+}

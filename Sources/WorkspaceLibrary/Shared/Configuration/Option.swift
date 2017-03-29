@@ -66,8 +66,6 @@ enum Option : String, CustomStringConvertible {
 
     case manageXcode = "Manage Xcode"
 
-    case manageDependencyGraph = "Manage Dependency Graph"
-
     case manageFileHeaders = "Manage File Headers"
     case fileHeader = "File Header"
     case author = "Author"
@@ -146,8 +144,6 @@ enum Option : String, CustomStringConvertible {
         .developmentNotes,
 
         .manageXcode,
-
-        .manageDependencyGraph,
 
         .manageFileHeaders,
         .fileHeader,
@@ -265,9 +261,6 @@ enum Option : String, CustomStringConvertible {
         case .manageXcode:
             return Configuration.falseOptionValue
 
-        case .manageDependencyGraph:
-            return Configuration.falseOptionValue
-
         case .manageFileHeaders:
             return Configuration.falseOptionValue
         case .fileHeader:
@@ -337,7 +330,6 @@ enum Option : String, CustomStringConvertible {
         (.manageLicence, automaticValue: Configuration.trueOptionValue, DocumentationLink.licence),
         (.manageContributingInstructions, automaticValue: Configuration.trueOptionValue, DocumentationLink.contributingInstructions),
         (.manageXcode, automaticValue: Configuration.trueOptionValue, DocumentationLink.xcode),
-        (.manageDependencyGraph, automaticValue: Configuration.trueOptionValue, DocumentationLink.dependencyGraph),
         (.manageFileHeaders, automaticValue: Configuration.trueOptionValue, DocumentationLink.fileHeaders),
         (.generateDocumentation, automaticValue: Configuration.trueOptionValue, DocumentationLink.documentationGeneration),
         (.manageContinuousIntegration, automaticValue: Configuration.trueOptionValue, DocumentationLink.continuousIntegration)

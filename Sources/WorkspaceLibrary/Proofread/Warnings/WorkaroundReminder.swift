@@ -36,7 +36,8 @@ struct WorkaroundReminder : Warning {
                 if let problemVersion = Version(problemVersionString) {
 
                     let dependencies = cachedResult(cache: &dependencyList) {
-                        return DependencyGraph.loadDependencyList()
+                        // [_Workaround: Disabled dependency version detection. Needs to be updated for Swift 3.1_]
+                        return [:]
                     }
 
                     let dependency = parameters.joined(separator: " ")

@@ -42,7 +42,7 @@ struct HyphenMinus : Rule {
                         case .json, .html, .css, .javaScript:
                             throwError()
 
-                        case .swift:
+                        case .swift, .swiftPackageManifest:
                             if ¬isInAliasDefinition(for: "−", at: range, in: file)
                                 ∧ ¬file.contents.substring(from: range.upperBound).hasPrefix(">")
                                 ∧ ¬file.contents.substring(to: range.lowerBound).hasSuffix("// MARK\u{3A} ")
@@ -51,7 +51,8 @@ struct HyphenMinus : Rule {
                                 ∧ ¬line.contains("let ln2")
                                 ∧ ¬line.contains("Swift.SignedNumber")
                                 ∧ ¬line.contains("jazzy \u{2D}\u{2D}")
-                                ∧ ¬line.contains("[\u{5F}Define Example: Read‐Me:") {
+                                ∧ ¬line.contains("[\u{5F}Define Example: Read‐Me:")
+                                ∧ ¬line.contains("swift\u{2D}tools\u{2D}version") {
                                 throwError()
                             }
 

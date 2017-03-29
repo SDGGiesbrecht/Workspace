@@ -145,14 +145,6 @@ func runRefresh(andExit shouldExit: Bool) {
         ContinuousIntegration.relinquishControl()
     }
 
-    if Configuration.manageDependencyGraph {
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        printHeader(["Updating dependency graph..."])
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-
-        DependencyGraph.updateDependencyGraph()
-    }
-
     if Configuration.manageFileHeaders {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         printHeader(["Updating file headers..."])

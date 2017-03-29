@@ -85,4 +85,4 @@ While any identifier can be used as a localization, Workspace currently only und
 - `en-CA`
 - `de-DE`/`de`
 
-If you speak a language not already on the list and you might be willing to help add it, you can mentioning it in an [issue](https://github.com/SDGGiesbrecht/Workspace/issues).
+If you speak a language not already on the list and you might be willing to help add it, you can mention it in an [issue](https://github.com/SDGGiesbrecht/Workspace/issues).

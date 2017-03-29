@@ -624,6 +624,7 @@ class WorkspaceTests : XCTestCase {
             "Package.swift",
             "Sources",
             "Tests",
+            "Package.pins",
 
             // Workspace
             ".Workspace Configuration.txt",

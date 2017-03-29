@@ -41,7 +41,7 @@ struct Repository {
 
     private static let fileManager = FileManager.default
     private static let repositoryPath: AbsolutePath = AbsolutePath(fileManager.currentDirectoryPath)
-    static let folderName = URL(fileURLWithPath: repositoryPath.string).linuxSafeLastPathComponent
+    static let folderName = URL(fileURLWithPath: repositoryPath.string).lastPathComponent
     static let root: RelativePath = RelativePath("")
 
     // MARK: - Repository
@@ -434,7 +434,7 @@ struct Repository {
                 ])
         }
 
-        let name = urlObject.linuxSafeLastPathComponent
+        let name = urlObject.lastPathComponent
 
         let repository = Workspace.linkedRepositories.subfolderOrFile(name)
 

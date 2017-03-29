@@ -31,7 +31,7 @@ extension Path {
 
     var filename: String {
         let url = URL(fileURLWithPath: string)
-        return url.linuxSafeLastPathComponent
+        return url.lastPathComponent
     }
 
     var directory: String {

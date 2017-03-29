@@ -20,16 +20,16 @@ struct FileSyntax {
 
     // MARK: - Initialization
 
-    init(blockCommentSyntax: BlockCommentSyntax? = nil, lineCommentSyntax: LineCommentSyntax? = nil, requiredFirstLineTokens: (start: String, end: String)? = nil, semanticLineTerminalWhitespace: [String] = []) {
+    init(blockCommentSyntax: BlockCommentSyntax? = nil, lineCommentSyntax: LineCommentSyntax? = nil, requiredFirstLineToken: String? = nil, semanticLineTerminalWhitespace: [String] = []) {
         self.blockCommentSyntax = blockCommentSyntax
         self.lineCommentSyntax = lineCommentSyntax
-        self.requiredFirstLineTokens = requiredFirstLineTokens
+        self.requiredFirstLineToken = requiredFirstLineToken
         self.semanticLineTerminalWhitespace = semanticLineTerminalWhitespace
     }
 
     // MARK: - Properties
 
-    let requiredFirstLineTokens: (start: String, end: String)?
+    let requiredFirstLineToken: String?
 
     let blockCommentSyntax: BlockCommentSyntax?
     let lineCommentSyntax: LineCommentSyntax?
@@ -152,9 +152,12 @@ struct FileSyntax {
 
         var index = file.contents.startIndex
 
-        if let required = requiredFirstLineTokens {
+        if let required = requiredFirstLineToken {
 
-            index = file.requireRange(of: required).upperBound
+            if file.contents.hasPrefix(required),
+                let endOfLine = file.contents.range(of: "\n") {
+                index = endOfLine.lowerBound
+            }
             FileSyntax.advance(&index, pastLayoutSpacingIn: file.contents)
         }
 

@@ -742,10 +742,6 @@ struct Configuration {
         return stringValue(option: .xcodeTestTarget)
     }
 
-    static var manageDependencyGraph: Bool {
-        return booleanValue(option: .manageDependencyGraph)
-    }
-
     static var disableProofreadingRules: Set<String> {
         return Set(listValue(option: .disableProofreadingRules))
     }

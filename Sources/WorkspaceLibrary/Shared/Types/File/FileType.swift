@@ -130,8 +130,8 @@ enum FileType : CustomStringConvertible {
         (Configuration.configurationFilePath.string, .workspaceConfiguration),
 
         // Source
-        (".swift", .swift),
         ("Package.swift", .swiftPackageManifest),
+        (".swift", .swift),
 
         // Documentation
         (".md", .markdown),

@@ -450,7 +450,7 @@ class WorkspaceTests : XCTestCase {
 
             if fileExtension == ".sh" {
                 let expectedShell = join(lines: [
-                    "#\u{21}...sh",
+                    "#\u{21}...",
                     "",
                     "# File",
                     "#",

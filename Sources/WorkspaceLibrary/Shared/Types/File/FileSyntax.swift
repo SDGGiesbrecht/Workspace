@@ -149,7 +149,7 @@ struct FileSyntax {
     }
 
     func headerStart(file: File) -> String.Index {
-        
+
         var index = file.contents.startIndex
 
         if let required = requiredFirstLineToken {

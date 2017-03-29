@@ -362,9 +362,9 @@ class WorkspaceTests : XCTestCase {
             func inContext(headerSource: String) -> File {
 
                 var contents = ""
-                if let firstLine = syntax.requiredFirstLineTokens {
+                if let firstLine = syntax.requiredFirstLineToken {
                     let value = join(lines: [
-                        firstLine.start + "..." + firstLine.end,
+                        firstLine + "...",
                         "",
                         "" // First line of header.
                         ])
@@ -382,9 +382,9 @@ class WorkspaceTests : XCTestCase {
                 return File(_path: path, _contents: contents)
             }
             var contextString = ""
-            if let firstLine = syntax.requiredFirstLineTokens {
+            if let firstLine = syntax.requiredFirstLineToken {
                 contextString.append(join(lines: [
-                    firstLine.start + "..." + firstLine.end,
+                    firstLine + "...",
                     "",
                     "" // First line of header
                     ]))

@@ -55,6 +55,7 @@ enum FileType : CustomStringConvertible {
         "dsidx",
         "nojekyll",
         "plist",
+        "pins",
         "png",
         "svg",
         "tgz"

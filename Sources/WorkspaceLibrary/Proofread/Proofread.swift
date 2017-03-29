@@ -70,6 +70,7 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
             var lines = [
                 "excluded:",
                 // Swift Package Manager
+                "  \u{2D} .build",
                 "  \u{2D} Packages",
                 // Workspace
                 "  \u{2D} .Test Zone"

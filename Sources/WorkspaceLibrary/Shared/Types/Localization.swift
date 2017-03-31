@@ -52,6 +52,12 @@ enum Localization : Hashable {
                 return "🇨🇦EN"
             case .germanGermany:
                 return "🇩🇪DE"
+            case .frenchFrance:
+                return "🇫🇷FR"
+            case .greekGreece:
+                return "🇬🇷ΕΛ"
+            case .hebrewIsrael:
+                return "🇮🇱עב"
             }
         case .unsupported(let code):
             return code
@@ -104,9 +110,18 @@ enum Localization : Hashable {
 
         case germanGermany = "de\u{2D}DE"
 
+        case frenchFrance = "fr\u{2D}FR"
+
+        case greekGreece = "el\u{2D}GR"
+
+        case hebrewIsrael = "he\u{2D}IL"
+
         private static let aliases: [String: SupportedLocalization] = [
             "en": .englishUnitedKingdom,
-            "de": .germanGermany
+            "de": .germanGermany,
+            "fr": .frenchFrance,
+            "el": .greekGreece,
+            "he": .hebrewIsrael
         ]
 
         // MARK: - Properties

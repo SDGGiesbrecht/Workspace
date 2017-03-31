@@ -53,6 +53,7 @@ struct ContinuousIntegration {
             escapedCommand = escapedCommand.replacingOccurrences(of: "\u{22}", with: "\u{5C}\u{22}")
             return "        \u{2D} \u{22}\(escapedCommand)\u{22}"
         }
+        let updateRuby = runCommand("rvm use 2.3.1 \u{2D}\u{2D}install \u{2D}\u{2D}binary \u{2D}\u{2D}fuzzy")
 
         func runWorkspaceScript(_ name: String) -> String {
             var file = "./\(name) (macOS).command"
@@ -73,6 +74,7 @@ struct ContinuousIntegration {
                 "        \u{2D} \(jobKey)=\u{22}\(macOSJob)\u{22}",
                 "      osx_image: xcode8.3",
                 "      script:",
+                updateRuby,
                 runRefreshWorkspace,
                 runValidateChanges
                 ])
@@ -102,6 +104,7 @@ struct ContinuousIntegration {
                 "      language: objective\u{2D}c",
                 "      xcode_sdk: \(sdk)",
                 "      script:",
+                updateRuby,
                 runRefreshWorkspace,
                 runValidateChanges
                 ])
@@ -142,6 +145,7 @@ struct ContinuousIntegration {
                 "        \u{2D} \(jobKey)=\u{22}\(miscellaneousJob)\u{22}",
                 "      osx_image: xcode8.3",
                 "      script:",
+                updateRuby,
                 runRefreshWorkspace,
                 runValidateChanges
                 ])

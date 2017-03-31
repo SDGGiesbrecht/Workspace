@@ -29,6 +29,12 @@ struct ReadMe {
                     name = "Read Me.md"
                 case .germanGermany:
                     name = "Lies mich.md"
+                case .frenchFrance:
+                    name = "Lisez moi.md"
+                case .greekGreece:
+                    name = "Με διαβάστε.md"
+                case .hebrewIsrael:
+                    name = "קרא אותי.md"
                 }
             } else {
                 name = "Read Me.md"
@@ -53,9 +59,15 @@ struct ReadMe {
                     name = "Related Projects.md"
                 case .germanGermany:
                     name = "Verwandte Projekte.md"
+                case .frenchFrance:
+                    name = "Projets liés.md"
+                case .greekGreece:
+                    name = "Συγγενικά έργα.md"
+                case .hebrewIsrael:
+                    name = "מיזמים קשורים.md"
                 }
             } else {
-                name = "Read Me.md"
+                name = "Related Projects.md"
             }
             return particular.userFacingCode + " " + name
         }
@@ -124,6 +136,12 @@ struct ReadMe {
                     features = "Features"
                 case .germanGermany:
                     features = "Merkmale"
+                case .frenchFrance:
+                    features = "Fonctionnalités"
+                case .greekGreece:
+                    features = "Χαρακτηριστικά"
+                case .hebrewIsrael:
+                    features = "תכונות"
                 }
             default:
                 features = "Features"
@@ -167,6 +185,12 @@ struct ReadMe {
                     example = "Example Usage"
                 case .germanGermany:
                     example = "Verwendungsbeispiel"
+                case .frenchFrance:
+                    example = "Example d’utilisation"
+                case .greekGreece:
+                    example = "Παράδειγμα χρήσης"
+                case .hebrewIsrael:
+                    example = "דוגמת שימוש"
                 }
             default:
                 example = "Example Usage"
@@ -222,6 +246,46 @@ struct ReadMe {
                         "",
                         format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "Denn der Arbeiter ist seines Lohns würdig.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: localization), citation: "\u{200E}ישוע/Yeshuʼa")
                     ]
+                case .frenchFrance:
+                    readMe += [
+                        "",
+                        "## À propos",
+                        "",
+                        "Le projet \(Configuration.projectName) est maintenu par Jeremy David Giesbrecht.",
+                        "",
+                        "Si \(Configuration.projectName) vous permet d’économiser de l’argent, considérez à en [donner](https://paypal.me/JeremyGiesbrecht).",
+                        "",
+                        "Si \(Configuration.projectName) vous permet d’économiser du temps, considérez à en utiliser à [contribuer](\(Configuration.requiredRepositoryURL)) au projet.",
+                        "",
+                        format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "Car le travailleur est digne de son salaire.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: localization), citation: "\u{200E}ישוע/Yeshuʼa")
+                    ]
+                case .greekGreece:
+                    readMe += [
+                        "",
+                        "## Πληροφορίες",
+                        "",
+                        "Το \(Configuration.projectName) έργο διατηρείται από τον Τζέρεμι Ντάβιτ Γκίσμπρεχτ (Jeremy David Giesbrecht).",
+                        "",
+                        // οικονομώ
+                        "Αν το \(Configuration.projectName) οικονομάει το χρήματα σας, σκεφτείτε να [δορίζετε](https://paypal.me/JeremyGiesbrecht) μερικά από αυτά.",
+                        "",
+                        "Αν το \(Configuration.projectName) οικονομάει τον χρόνο σας, σκεφτείτε να τον κάνετε χρήτη μερικού από αυτό ώστε να [συνεισφέρετε](\(Configuration.requiredRepositoryURL)) του έργου.",
+                        "",
+                        format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: nil, url: "https://www.bible.com/bible/209/LUK.10.byz04", citation: "\u{200E}ישוע/Ιεσούα")
+                    ]
+                case .hebrewIsrael:
+                    readMe += [
+                        "",
+                        "## אודות",
+                        "",
+                        "⁨\(Configuration.projectName)⁩ המיזם מתוחזק על ידי ג׳רמי דוויט גיסברכט (⁧Jeremy David Giesbrecht⁩).",
+                        "",
+                        "אם ⁨\(Configuration.projectName)⁩ עוזר לך לחסוך כסף, תשקול [לתרום](https://paypal.me/JeremyGiesbrecht) את חלק מזה.",
+                        "",
+                        "אם ⁨\(Configuration.projectName)⁩ עוזר לך לחסוך זמן, תשקול להשתמש את חלק מזה [לתרום](\(Configuration.requiredRepositoryURL)) למיזם.",
+                        "",
+                        format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "כי ראוי הפועל לשכרו.", url: "https://www.bible.com/bible/380/LUK.10_1.HRNT", citation: "ישוע")
+                    ]
                 }
             default:
                 readMe += english(translation: .supported(.englishCanada))
@@ -243,6 +307,12 @@ struct ReadMe {
                     translationCode = "NIV"
                 case .germanGermany:
                     translationCode = "SCH2000"
+                case .frenchFrance:
+                    translationCode = "SG21"
+                case .greekGreece:
+                    fatalError(message: ["TGV is unavailable in side‐by‐side."])
+                case .hebrewIsrael:
+                    fatalError(message: ["Hebrew is unavailable in side‐by‐side."])
                 }
             default:
                 fatalError(message: ["\(specific) does not have a corresponding translation yet."])
@@ -295,8 +365,16 @@ struct ReadMe {
         switch translation {
         case .supported(let specific):
             switch specific {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .germanGermany:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 apis = "APIs:"
+            case .germanGermany:
+                apis = "SAPs:"
+            case .frenchFrance:
+                apis = "IPA :"
+            case .greekGreece:
+                apis = "ΔΠΕ:"
+            case .hebrewIsrael:
+                apis = "מת״י:"
             }
         case .unsupported(_):
             return apiLinksMarkup(localization: .supported(.englishCanada))
@@ -352,6 +430,13 @@ struct ReadMe {
                 return "(For a list of related projecs, see [here](\(path.replacingOccurrences(of: " ", with: "%20"))).)" + " " + skipInJazzy
             case .germanGermany:
                 return "(Für eine Liste verwandter Projekte, siehe [hier](\(path.replacingOccurrences(of: " ", with: "%20"))).)" + " " + skipInJazzy
+            case .frenchFrance:
+                return "(Pour une liste de projets lié, voir [ici](\(path.replacingOccurrences(of: " ", with: "%20"))).)" + " " + skipInJazzy
+            case .greekGreece:
+                return "(Για ένα κατάλογο συγγενικών έργων, δείτε [εδώ](\(path.replacingOccurrences(of: " ", with: "%20"))).)" + " " + skipInJazzy
+            case .hebrewIsrael:
+                return "(לרשימה של מיזמים קשורים, ראה [כאן](\(path.replacingOccurrences(of: " ", with: "%20"))).)" + " " + skipInJazzy
+
             }
         case .unsupported(_):
             return relatedProjectsLinkMarkup(localization: .supported(.englishCanada))
@@ -382,6 +467,27 @@ struct ReadMe {
                         "\(Configuration.projectName) ist für den Einsatz mit dem [Swift Package Manager](https://swift.org/package-manager/) vorgesehen.",
                         ""
                     ]
+                case .frenchFrance:
+                    instructions += [
+                        "## Importation",
+                        "",
+                        "\(Configuration.projectName) est prévu pour utilisation avec le [Swift Package Manager](https://swift.org/package-manager/).",
+                        ""
+                    ]
+                case .greekGreece:
+                    instructions += [
+                        "## Εισαγωγή",
+                        "",
+                        "\(Configuration.projectName) προορίζεται για χρήση με το [Swift Package Manager](https://swift.org/package-manager/).",
+                        ""
+                    ]
+                case .hebrewIsrael:
+                    instructions += [
+                        "## ליבא",
+                        "",
+                        "יש ל־⁨\(Configuration.projectName)⁩ מיועד של שימוש עם [Swift Package Manager](https://swift.org/package-manager/).",
+                        ""
+                    ]
                 }
             case .unsupported(_):
                 instructions += [
@@ -399,7 +505,14 @@ struct ReadMe {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     dependencySummary = "Simply add \(Configuration.projectName) as a dependency in `Package.swift`"
                 case .germanGermany:
-                    dependencySummary = "Füge \(Configuration.projectName) einfach in der Abhängigkeitsliste in `Package.swift` hinzu"
+                    dependencySummary = "Fügen Sie \(Configuration.projectName) einfach in der Abhängigkeitsliste in `Package.swift` hinzu"
+                case .frenchFrance:
+                    dependencySummary = "Ajoutez \(Configuration.projectName) simplement dans la liste des dépendances dans `Package.swift`"
+                case .greekGreece:
+                    dependencySummary = "Πρόσθεσε τον \(Configuration.projectName) απλά στο κατάλογο των εξαρτήσεων στο `Package.swift`"
+                case .hebrewIsrael:
+                    dependencySummary =
+                    "תוסיף את ⁨\(Configuration.projectName)⁩ בפשוט ברשימת תלות ב־`Package.swift`"
                 }
             case .unsupported(_):
                 dependencySummary = "Simply add \(Configuration.projectName) as a dependency in `Package.swift`"
@@ -412,8 +525,10 @@ struct ReadMe {
                 switch translation {
                 case .supported(let specific):
                     switch specific {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .germanGermany:
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .germanGermany, .greekGreece, .hebrewIsrael:
                         colon = ":"
+                    case .frenchFrance:
+                        colon = " :"
                     }
                 case .unsupported(_):
                     colon = ":"
@@ -439,7 +554,7 @@ struct ReadMe {
                 switch translation {
                 case .supported(let specific):
                     switch specific {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .germanGermany:
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .germanGermany, .frenchFrance, .greekGreece, .hebrewIsrael:
                         instructions += [
                             dependencySummary + "."
                         ]
@@ -463,6 +578,21 @@ struct ReadMe {
                     instructions += [
                         "",
                         "Dann kann \(Configuration.projectName) in Quelldateien eingeführt werden:"
+                    ]
+                case .frenchFrance:
+                    instructions += [
+                        "",
+                        "Puis \(Configuration.projectName) peut être importé dans des fichiers sources :"
+                    ]
+                case .greekGreece:
+                    instructions += [
+                        "",
+                        "Έπειτα \(Configuration.projectName) μπορεί να εισάγεται στα πηγαία αρχεία:"
+                    ]
+                case .hebrewIsrael:
+                    instructions += [
+                        "",
+                        "אז יכול ליבא את ⁨\(Configuration.projectName)⁩ בקבץי מקור:"
                     ]
                 }
             case .unsupported(_):
@@ -621,6 +751,27 @@ struct ReadMe {
                             "# Verwandte Projekte",
                             "",
                             "### Inhaltsverzeichnis",
+                            ""
+                        ]
+                    case .frenchFrance:
+                        projects = [
+                            "# Projets liés",
+                            "",
+                            "### Table de matières",
+                            ""
+                        ]
+                    case .greekGreece:
+                        projects = [
+                            "# Συγγενικά έργα",
+                            "",
+                            "### Πίνακας περιεχομένων",
+                            ""
+                        ]
+                    case .hebrewIsrael:
+                        projects = [
+                            "# מיזמים קשורים",
+                            "",
+                            "### תוכן העניינים",
                             ""
                         ]
                     }

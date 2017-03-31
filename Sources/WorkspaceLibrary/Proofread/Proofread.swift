@@ -92,7 +92,8 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
             repositoryURL: "https://github.com/realm/SwiftLint",
             versionCheck: ["swiftlint", "version"],
             continuousIntegrationSetUp: [
-                ["brew", "outdated", "|", "grep", "\u{2D}q", "swiftlint", "\u{26}&", "brew", "upgrade", "swiftlint"]
+                ["echo", "SwiftLint 0.17.0 is preloaded."]
+                // brew upgrade swiftlint
             ],
             command: ["swiftlint", "lint", "\u{2D}\u{2D}strict"],
             updateInstructions: [

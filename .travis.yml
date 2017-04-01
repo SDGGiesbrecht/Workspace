@@ -25,6 +25,8 @@ matrix:
         - JOB="macOS"
       osx_image: xcode8.3
       script:
+        - "rvm use 2.3.1 --install --binary --fuzzy"
+        - "gem install jazzy"
         - "bash ./Refresh\\ Workspace\\ \\(macOS\\).command"
         - "bash ./Validate\\ Changes\\ \\(macOS\\).command"
     - os: linux
@@ -41,6 +43,8 @@ matrix:
         - JOB="Misc."
       osx_image: xcode8.3
       script:
+        - "rvm use 2.3.1 --install --binary --fuzzy"
+        - "gem install jazzy"
         - "bash ./Refresh\\ Workspace\\ \\(macOS\\).command"
         - "bash ./Validate\\ Changes\\ \\(macOS\\).command"
 

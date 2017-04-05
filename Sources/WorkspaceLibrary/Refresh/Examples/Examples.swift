@@ -143,12 +143,21 @@ struct Examples {
                         searchIndex = exampleRange.upperBound
                         countingExampleIndex += 1
 
+                        let startLine = commentValue.lineRange(for: exampleRange.lowerBound ..< exampleRange.lowerBound)
+                        let internalIndent = commentValue.substring(with: startLine.lowerBound ..< exampleRange.lowerBound)
+
+                        var exampleLines = join(lines: [
+                            "```swift",
+                            example,
+                            "```"
+                            ]).linesArray
+
+                        for index in exampleLines.startIndex ..< exampleLines.endIndex where index ≠ exampleLines.startIndex {
+                            exampleLines[index] = internalIndent + exampleLines[index]
+                        }
+
                         if countingExampleIndex == exampleIndex {
-                            commentValue.replaceSubrange(exampleRange, with: join(lines: [
-                                "```swift",
-                                example,
-                                "```"
-                                ]))
+                            commentValue.replaceSubrange(exampleRange, with: join(lines: exampleLines))
 
                             file.contents.replaceSubrange(commentRange, with: lineDocumentationSyntax.comment(contents: commentValue, indent: indent))
 

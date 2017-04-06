@@ -47,6 +47,7 @@ struct HyphenMinus : Rule {
                                 ∧ ¬file.contents.substring(from: range.upperBound).hasPrefix(">")
                                 ∧ ¬file.contents.substring(to: range.lowerBound).hasSuffix("// MARK\u{3A} ")
                                 ∧ ¬file.contents.substring(to: range.lowerBound).hasSuffix("/// ")
+                                ∧ ¬file.contents.substring(to: range.lowerBound).hasSuffix("///   ")
                                 ∧ ¬file.contents.substring(to: range.lowerBound).hasSuffix("///     ")
                                 ∧ ¬line.contains("let ln2")
                                 ∧ ¬line.contains("Swift.SignedNumber")

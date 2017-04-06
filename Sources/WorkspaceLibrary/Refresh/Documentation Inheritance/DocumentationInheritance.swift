@@ -19,6 +19,8 @@ import SDGLogic
 struct DocumentationInheritance {
     static let documentation: [String: String] = {
 
+        requireBash(["swift", "package", "fetch"], silent: false)
+
         var list: [String: String] = [:]
 
         for path in (Repository.allFiles(at: RelativePath("Packages")) + Repository.allFiles(at: RelativePath(".build/checkouts"))).filter({

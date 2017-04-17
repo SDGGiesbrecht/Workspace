@@ -307,7 +307,7 @@ struct UnitTests {
                         sourceLines.unicodeScalars = String.UnicodeScalarView(sourceLines.unicodeScalars.filter({ ¬nullCharacters.contains($0) }))
 
                         var isExecutable = true
-                        if sourceLines == "}}" {
+                        if sourceLines.hasPrefix("}}") {
                             isExecutable = false
                         }
 

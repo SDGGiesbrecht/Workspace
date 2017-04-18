@@ -120,7 +120,7 @@ struct File {
 
     var headerStart: String.Index {
 
-        return cachedResult(cache: &cache.headerStart) {
+        return cached(in: &cache.headerStart) {
             () -> String.Index in
 
             if let parser = syntax {
@@ -133,7 +133,7 @@ struct File {
 
     var headerEnd: String.Index {
 
-        return cachedResult(cache: &cache.headerEnd) {
+        return cached(in: &cache.headerEnd) {
             () -> String.Index in
 
             if let parser = syntax {

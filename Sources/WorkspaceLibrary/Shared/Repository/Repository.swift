@@ -52,7 +52,7 @@ struct Repository {
     }
 
     static var moduleNames: [String] {
-        return cachedResult(cache: &cache.moduleNames) {
+        return cached(in: &cache.moduleNames) {
 
             do {
                 return try fileManager.contentsOfDirectory(atPath: "Sources").filter() { (module: String) -> Bool in
@@ -71,7 +71,7 @@ struct Repository {
     }
 
     static var allFiles: [RelativePath] {
-        return cachedResult(cache: &cache.allFiles) {
+        return cached(in: &cache.allFiles) {
             () -> [RelativePath] in
 
             guard let enumerator = fileManager.enumerator(atPath: repositoryPath.string) else {
@@ -94,7 +94,7 @@ struct Repository {
     }
 
     static var allRealFiles: [RelativePath] {
-        return cachedResult(cache: &cache.allRealFiles) {
+        return cached(in: &cache.allRealFiles) {
             () -> [RelativePath] in
 
             let result = allFiles.filter() { (path: RelativePath) -> Bool in
@@ -109,7 +109,7 @@ struct Repository {
 
     static var trackedFiles: [RelativePath] {
 
-        return cachedResult(cache: &cache.trackedFiles) {
+        return cached(in: &cache.trackedFiles) {
             () -> [RelativePath] in
 
             let ignoredSummary = requireBash(["git", "status", "\u{2D}\u{2D}ignored"], silent: true)
@@ -147,7 +147,7 @@ struct Repository {
 
     static var sourceFiles: [RelativePath] {
 
-        return cachedResult(cache: &cache.sourceFiles) {
+        return cached(in: &cache.sourceFiles) {
             () -> [RelativePath] in
 
             let result = trackedFiles.filter() { (path: RelativePath) -> Bool in
@@ -171,7 +171,7 @@ struct Repository {
     }
 
     static var printableListOfAllFiles: String {
-        return cachedResult(cache: &cache.printableListOfAllFiles) {
+        return cached(in: &cache.printableListOfAllFiles) {
             () -> String in
 
             return join(lines: allFiles.map({ $0.string }))
@@ -298,7 +298,7 @@ struct Repository {
     }
 
     static var packageDescription: File {
-        return cachedResult(cache: &cache.packageDescription) {
+        return cached(in: &cache.packageDescription) {
             () -> File in
 
             return File(possiblyAt: RelativePath("Package.swift"))

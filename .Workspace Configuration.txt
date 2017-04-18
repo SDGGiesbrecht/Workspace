@@ -29,11 +29,13 @@ Short Project Description: Workspace automates management of Swift projects.
 
 [_Begin Quotation_]
 Πᾶν ὅ τι ἐὰν ποιῆτε, ἐκ ψυχῆς ἐργάζεσθε, ὡς τῷ Κυρίῳ καὶ οὐκ ἀνθρώποις.
+[_End_]
+[_Begin Quotation Translation_]
 Whatever you do, work from the heart, as working for the Lord and not for men.
 [_End_]
 Quotation Chapter: Colossians 3
 Quotation Testament: New
-Citation: ‎שאול/Shaʼul of Tarsus
+Citation: ‎שאול/Shaʼul
 
 [_Begin Other Read‐Me Content_]
 ### Table of Contents

@@ -44,7 +44,7 @@ struct Configuration {
 
     static let configurationFilePath: RelativePath = ".Workspace Configuration.txt"
     static var file: File {
-        return cachedResult(cache: &cache.file) {
+        return cached(in: &cache.file) {
             () -> File in
 
             do {
@@ -262,7 +262,7 @@ struct Configuration {
     }
 
     private static var configurationFile: [Option: String] {
-        return cachedResult(cache: &cache.configurationFile) {
+        return cached(in: &cache.configurationFile) {
             () -> [Option: String] in
 
             return parse(configurationSource: file.contents)
@@ -485,7 +485,7 @@ struct Configuration {
     }
 
     static var localizations: [Localization] {
-        return cachedResult(cache: &cache.localizations) {
+        return cached(in: &cache.localizations) {
             return listValue(option: .localizations).map { Localization(code: $0) }
         }
     }
@@ -522,7 +522,7 @@ struct Configuration {
         }
     }
     static var packageName: String {
-        return cachedResult(cache: &cache.packageName) {
+        return cached(in: &cache.packageName) {
             () -> String in
 
             return stringValue(option: .packageName)

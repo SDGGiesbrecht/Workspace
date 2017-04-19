@@ -109,7 +109,7 @@ struct UnitTests {
                         ])
                 }
 
-                let devices = cachedResult(cache: &deviceList) {
+                let devices = cached(in: &deviceList) {
                     () -> [String: String] in
 
                     print(["Searching for simulator..."], in: nil, spaced: true)

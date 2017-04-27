@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import SDGMathematics
 
 struct Version : Comparable, CustomStringConvertible, Equatable, LosslessStringConvertible {
@@ -33,6 +34,9 @@ struct Version : Comparable, CustomStringConvertible, Equatable, LosslessStringC
     // MARK: - Usage
 
     var nextMajorVersion: Version {
+        guard major ≠ 0 else {
+            return Version(major, minor + 1, 0)
+        }
         return Version(major + 1, 0, 0)
     }
 

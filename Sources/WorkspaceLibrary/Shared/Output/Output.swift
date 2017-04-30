@@ -14,7 +14,7 @@
 
 import Foundation
 
-import SDGLogic
+import SDGCornerstone
 
 func inputSyntaxError(message: String) -> Never {
     let commands = join(lines: Command.allNames)

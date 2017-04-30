@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLogic
+import SDGCornerstone
 
 struct Disjunction : Rule {
 
@@ -24,7 +24,7 @@ struct Disjunction : Rule {
 
             var message = "Use “∨” instead."
             if fileType == .swift {
-                message += " (Import SDGLogic.)"
+                message += " (Import SDGCornerstone.)"
             }
 
             var index = file.contents.startIndex

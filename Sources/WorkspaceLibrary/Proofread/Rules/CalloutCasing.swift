@@ -14,7 +14,7 @@
 
 import Foundation
 
-import SDGLogic
+import SDGCornerstone
 
 struct CalloutCasing : Rule {
 

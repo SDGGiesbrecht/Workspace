@@ -14,7 +14,7 @@
 
 import Foundation
 
-import SDGLogic
+import SDGCornerstone
 
 func bash(_ arguments: [String], silent: Bool = false, dropOutput: Bool = false) -> (succeeded: Bool, output: String?, exitCode: ExitCode) {
 

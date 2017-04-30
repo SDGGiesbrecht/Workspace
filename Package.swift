@@ -24,9 +24,6 @@ let package = Package(
         Target(name: "WorkspaceTests", dependencies: ["WorkspaceLibrary"])
     ],
     dependencies: [
-        .Package(url: "https://github.com/SDGGiesbrecht/SDGCaching", versions: "2.0.0" ..< "3.0.0"),
-
-        .Package(url: "https://github.com/SDGGiesbrecht/SDGLogic", versions: "1.3.0" ..< "2.0.0"),
-        .Package(url: "https://github.com/SDGGiesbrecht/SDGMathematics", versions: "2.0.0" ..< "3.0.0")
-        ]
+        .Package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", versions: Version(0, 1, 0) ..< Version(0, 2, 0))
+    ]
 )

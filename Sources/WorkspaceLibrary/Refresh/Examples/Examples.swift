@@ -14,7 +14,7 @@
 
 import Foundation
 
-import SDGLogic
+import SDGCornerstone
 
 struct Examples {
     static let examples: [String: String] = {

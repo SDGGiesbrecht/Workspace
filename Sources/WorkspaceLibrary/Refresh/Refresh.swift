@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLogic
+import SDGCornerstone
 
 let instructionsAfterRefresh: String = {
     if Environment.operatingSystem == .macOS ∧ Configuration.manageXcode {

@@ -14,8 +14,7 @@
 
 import Foundation
 
-import SDGLogic
-import SDGMathematics
+import SDGCornerstone
 
 struct LineCommentSyntax {
 

@@ -14,10 +14,7 @@
 
 import Foundation
 
-import SDGCaching
-
-import SDGLogic
-import SDGMathematics
+import SDGCornerstone
 
 struct WorkaroundReminder : Warning {
 

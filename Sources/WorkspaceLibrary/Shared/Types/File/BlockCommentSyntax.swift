@@ -14,7 +14,7 @@
 
 import Foundation
 
-import SDGLogic
+import SDGCornerstone
 
 func join(lines: [String]) -> String {
     return lines.joined(separator: "\n")

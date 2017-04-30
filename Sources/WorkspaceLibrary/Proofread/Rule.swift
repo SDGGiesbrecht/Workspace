@@ -14,8 +14,7 @@
 
 import Foundation
 
-import SDGLogic
-import SDGMathematics
+import SDGCornerstone
 
 protocol Rule {
     static var name: String { get }

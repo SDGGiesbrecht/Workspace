@@ -2,22 +2,10 @@
   "autoPin": true,
   "pins": [
     {
-      "package": "SDGCaching",
+      "package": "SDGCornerstone",
       "reason": null,
-      "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCaching",
-      "version": "2.0.0"
-    },
-    {
-      "package": "SDGLogic",
-      "reason": null,
-      "repositoryURL": "https://github.com/SDGGiesbrecht/SDGLogic",
-      "version": "1.3.0"
-    },
-    {
-      "package": "SDGMathematics",
-      "reason": null,
-      "repositoryURL": "https://github.com/SDGGiesbrecht/SDGMathematics",
-      "version": "2.0.0"
+      "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCornerstone",
+      "version": "0.1.0"
     }
   ],
   "version": 1

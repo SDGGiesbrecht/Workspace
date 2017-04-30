@@ -12,9 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGCaching
-import SDGLogic
-import SDGMathematics
+import SDGCornerstone
 
 struct Configuration {
 

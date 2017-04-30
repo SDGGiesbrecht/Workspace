@@ -14,9 +14,7 @@
 
 import Foundation
 
-import SDGCaching
-
-import SDGLogic
+import SDGCornerstone
 
 struct UnitTests {
 

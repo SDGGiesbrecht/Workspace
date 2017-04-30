@@ -14,7 +14,7 @@
 
 import Foundation
 
-import SDGLogic
+import SDGCornerstone
 
 struct Not : Rule {
 
@@ -26,7 +26,7 @@ struct Not : Rule {
 
             var message = "Use “¬” instead."
             if fileType == .swift {
-                message += " (Import SDGLogic.)"
+                message += " (Import SDGCornerstone.)"
             }
 
             var index = file.contents.startIndex

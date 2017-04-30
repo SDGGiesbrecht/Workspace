@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLogic
+import SDGCornerstone
 
 struct DivideAndSet : Rule {
 
@@ -24,7 +24,7 @@ struct DivideAndSet : Rule {
 
             var message = "Use “÷=” instead."
             if fileType == .swift {
-                message = "Use “÷=” or “divideAccordingToEuclid(by:)” instead. (Import SDGLogic.)"
+                message = "Use “÷=” or “divideAccordingToEuclid(by:)” instead. (Import SDGCornerstone.)"
             }
 
             var index = file.contents.startIndex

@@ -14,7 +14,7 @@
 
 import Foundation
 
-import SDGLogic
+import SDGCornerstone
 
 func runProofread(andExit shouldExit: Bool) -> Bool {
 

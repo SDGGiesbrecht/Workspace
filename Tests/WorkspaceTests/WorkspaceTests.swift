@@ -799,7 +799,7 @@ class WorkspaceTests : XCTestCase {
                                 XCTFail("Failed to refresh “\(project.name)”.")
                             }
 
-                            if ¬allowedExitCodes.contains(bash(["../../.build/debug/workspace", "validate"]).exitCode) {
+                            if bash(["../../.build/debug/workspace", "validate"]).exitCode ∉ allowedExitCodes {
                                 XCTFail("Validation crashes for “\(project.name)”.")
                             }
                         }

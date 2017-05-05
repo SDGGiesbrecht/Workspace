@@ -77,7 +77,7 @@ struct LineCommentSyntax {
 
                 if let nextCharacter = string.substring(from: index).unicodeScalars.first {
 
-                    if CharacterSet.whitespacesAndNewlines.contains(nextCharacter) {
+                    if nextCharacter ∈ CharacterSet.whitespacesAndNewlines {
                         return true
                     }
                 }

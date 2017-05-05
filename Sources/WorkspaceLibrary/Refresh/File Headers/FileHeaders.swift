@@ -119,7 +119,7 @@ struct FileHeaders {
         skippedFiles.insert(".github/PULL_REQUEST_TEMPLATE.md")
 
         func shouldManageHeader(path: RelativePath) -> Bool {
-            if skippedFiles.contains(path.string) {
+            if path.string ∈ skippedFiles {
                 return false
             }
 

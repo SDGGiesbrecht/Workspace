@@ -902,13 +902,13 @@ struct Configuration {
         var required: [Option: Set<ProjectType>] = [:]
         for (key, types) in requiredDefinitions {
             if let existing = required[key] {
-                required[key] = existing.union(types)
+                required[key] = existing ∪ types
             } else {
                 required[key] = types
             }
         }
 
-        for (option, types) in required where configurationFile[option] == nil ∧ types.contains(Configuration.projectType) {
+        for (option, types) in required where configurationFile[option] == nil ∧ Configuration.projectType ∈ types {
             incompatibilityDetected(between: option, and: .requireOptions, documentation: DocumentationLink.requiringOptions)
         }
 

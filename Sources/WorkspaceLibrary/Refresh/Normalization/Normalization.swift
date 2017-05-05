@@ -14,6 +14,8 @@
 
 import Foundation
 
+import SDGCornerstone
+
 func normalizeFiles() {
 
     for path in Repository.sourceFiles {
@@ -34,7 +36,7 @@ func normalizeFiles() {
                     }
                 }
 
-                while let last = normalized.unicodeScalars.last, CharacterSet.whitespaces.contains(last) {
+                while let last = normalized.unicodeScalars.last, last ∈ CharacterSet.whitespaces {
                     normalized.unicodeScalars.removeLast()
                 }
 

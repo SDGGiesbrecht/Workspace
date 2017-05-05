@@ -47,7 +47,7 @@ struct Environment {
 
     private static func shouldDoJobSet(requiredEnvironments: Set<OperatingSystem>, isConfigured: Bool, jobKey: String) -> Bool {
 
-        let isPossible = requiredEnvironments.contains(operatingSystem)
+        let isPossible = operatingSystem ∈ requiredEnvironments
         let shouldRunSomewhere = isConfigured
 
         if isPossible ∧ shouldRunSomewhere {

@@ -40,7 +40,7 @@ struct QuotationMarks : Rule {
 
                 var linePrefixWithoutIndentation = linePrefix
                 while let first = linePrefixWithoutIndentation.unicodeScalars.first,
-                    CharacterSet.whitespaces.contains(first) {
+                    first ∈ CharacterSet.whitespaces {
                         linePrefixWithoutIndentation.unicodeScalars.removeFirst()
                 }
 

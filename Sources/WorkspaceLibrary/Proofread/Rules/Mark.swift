@@ -41,7 +41,7 @@ struct Mark : Rule {
             var errorEnd = range.upperBound
             if ¬after.hasPrefix(" \u{2D} ") {
                 errorExists = true
-                file.contents.advance(&errorEnd, past: CharacterSet.whitespaces.union(CharacterSet(charactersIn: "\u{2D}")))
+                file.contents.advance(&errorEnd, past: CharacterSet.whitespaces ∪ ["\u{2D}"])
             }
 
             if errorExists {

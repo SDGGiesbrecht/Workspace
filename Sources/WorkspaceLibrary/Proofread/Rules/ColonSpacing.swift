@@ -42,8 +42,8 @@ struct ColonSpacing : Rule {
 
                     if linePrefix.contains("[") ∧ lineSuffix.contains("]") /* Dictionary Literal */ {
                         protocolOrSuperclass = false
-                    } else if let startOfPreviousIdentifier = linePrefix.components(separatedBy: CharacterSet.whitespaces.union(CharacterSet.punctuationCharacters).union(CharacterSet.symbols)).filter({ ¬$0.isEmpty }).last?.unicodeScalars.first {
-                        protocolOrSuperclass = CharacterSet.uppercaseLetters.contains(startOfPreviousIdentifier)
+                    } else if let startOfPreviousIdentifier = linePrefix.components(separatedBy: (CharacterSet.whitespaces ∪ CharacterSet.punctuationCharacters) ∪ CharacterSet.symbols).filter({ ¬$0.isEmpty }).last?.unicodeScalars.first {
+                        protocolOrSuperclass = startOfPreviousIdentifier ∈ CharacterSet.uppercaseLetters
                     } else {
                         protocolOrSuperclass = false
                     }
@@ -70,7 +70,7 @@ struct ColonSpacing : Rule {
 
                     if let followingCharacter = file.contents.substring(from: range.upperBound).unicodeScalars.first {
 
-                        if ¬CharacterSet.whitespacesAndNewlines.contains(followingCharacter) {
+                        if followingCharacter ∉ CharacterSet.whitespacesAndNewlines {
 
                             if ¬lineSuffix.hasPrefix("]") /* Empty Dictionary Literal */
                                 ∧ ¬lineSuffix.hasPrefix("//") /* URL */ {

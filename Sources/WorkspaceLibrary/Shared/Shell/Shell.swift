@@ -147,7 +147,7 @@ func runThirdPartyTool(name: String, repositoryURL: String, versionCheck: [Strin
             fatalError(message: ["\(name) \(requiredVersion.version) could not be found."])
         } else {
 
-            if ¬missingTools.contains(name) {
+            if name ∉ missingTools {
                 missingTools.insert(name)
 
                 printWarning([

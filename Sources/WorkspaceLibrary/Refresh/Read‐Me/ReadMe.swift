@@ -381,7 +381,7 @@ struct ReadMe {
         }
 
         let operatingSystems = OperatingSystem.all.filter({ $0.isSupportedByProject }).map({ "\($0)" })
-        if Set(operatingSystems).contains(url.lastPathComponent) {
+        if url.lastPathComponent ∈ Set(operatingSystems) {
 
             let root = url.deletingLastPathComponent().absoluteString
             let links = operatingSystems.map() {

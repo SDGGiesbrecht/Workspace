@@ -46,10 +46,8 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
             }
             ruleSet += manualWarnings as [Rule.Type]
 
-            for rule in ruleSet {
-                if ¬Configuration.disableProofreadingRules.contains(rule.name) {
-                    rule.check(file: file, status: &overallSuccess)
-                }
+            for rule in ruleSet where rule.name ∉ Configuration.disableProofreadingRules {
+                rule.check(file: file, status: &overallSuccess)
             }
 
         }

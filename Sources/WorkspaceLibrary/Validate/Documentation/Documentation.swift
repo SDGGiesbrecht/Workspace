@@ -67,7 +67,7 @@ struct Documentation {
 
             CharacterSet(charactersIn: ".")
         ]
-        return sections.reduce(CharacterSet()) { $0.union($1) }
+        return sections.reduce(CharacterSet()) { $0 ∪ $1 }
     }()
 
     static func generate(individualSuccess: @escaping (String) -> Void, individualFailure: @escaping (String) -> Void) {
@@ -243,7 +243,7 @@ struct Documentation {
                             parseError()
                     }
 
-                    if CharacterSet.nonBaseCharacters.contains(first) {
+                    if first ∈ CharacterSet.nonBaseCharacters {
                         guard let division = source.range(of: "</span><span class=\u{22}err\u{22}>") else {
                             parseError()
                         }
@@ -253,7 +253,7 @@ struct Documentation {
                             parseError()
                         }
 
-                        if operatorCharacters.contains(first) {
+                        if first ∈ operatorCharacters {
                             source.replaceSubrange(`class`, with: "o")
                         } else {
                             source.replaceSubrange(`class`, with: "n")

@@ -74,7 +74,7 @@ struct FileSyntax {
         }
 
         var body = file.contents.substring(from: file.headerEnd)
-        while let firstCharacter = body.unicodeScalars.first, CharacterSet.whitespacesAndNewlines.contains(firstCharacter) {
+        while let firstCharacter = body.unicodeScalars.first, firstCharacter ∈ CharacterSet.whitespacesAndNewlines {
             body.unicodeScalars.removeFirst()
         }
         body = join(lines: [

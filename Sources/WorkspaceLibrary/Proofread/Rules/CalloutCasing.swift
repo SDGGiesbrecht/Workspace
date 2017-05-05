@@ -31,7 +31,7 @@ struct CalloutCasing : Rule {
                 if range.upperBound ≠ file.contents.endIndex {
                     let nextIndex = range.upperBound.samePosition(in: file.contents.unicodeScalars)
                     let nextCharacter = file.contents.unicodeScalars[nextIndex]
-                    if CharacterSet.lowercaseLetters.contains(nextCharacter) {
+                    if nextCharacter ∈ CharacterSet.lowercaseLetters {
 
                         var index = range.upperBound
                         file.contents.advance(&index, past: CharacterSet.letters)

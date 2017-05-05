@@ -88,7 +88,7 @@ extension String {
 
         var location = actualSearchRange.lowerBound.samePosition(in: unicodeScalars)
         let end = actualSearchRange.upperBound.samePosition(in: unicodeScalars)
-        while location < end ∧ ¬characters.contains(unicodeScalars[location]) {
+        while location < end ∧ unicodeScalars[location] ∉ characters {
             location = unicodeScalars.index(after: location)
         }
         if location == end {
@@ -109,10 +109,10 @@ extension String {
             index = result.distance(from: result.startIndex, to: range.lowerBound)
             index += replacement.distance(from: replacement.startIndex, to: replacement.endIndex)
 
-            result.replaceSubrange(range, with: replacement)
-        }
+        result.replaceSubrange(range, with: replacement)
+    }
 
-        return result
+    return result
     }
     #endif
 
@@ -244,7 +244,7 @@ extension String {
                 return true
             }
         }
-        while notAtLimit() ∧ index ≠ endIndex ∧ characters.contains(unicodeScalars[scalarIndex]) {
+        while notAtLimit() ∧ index ≠ endIndex ∧ unicodeScalars[scalarIndex] ∈ characters {
             advanceOne(&scalarIndex)
             iterationsCompleted += 1
         }
@@ -259,14 +259,10 @@ extension String {
 
     func advance(_ index: inout Index, past characters: CharacterSet, limit: Int? = nil) {
 
-        #if os(Linux)
-            // [_Workaround: Skip unavailable character set equality check on Linux. (Swift 3.0.2)_]
-        #else
-            assert(limit == nil ∨ characters ≠ CharacterSet.newlines, join(lines: [
-                "When counting newlines, CR + LF is not counted properly by String.advance(_:past:limit:).",
-                "Use String.advance(_:pastNewlinesWithLimit:) instead."
-                ]))
-        #endif
+        assert(limit == nil ∨ characters ≠ CharacterSet.newlines, join(lines: [
+            "When counting newlines, CR + LF is not counted properly by String.advance(_:past:limit:).",
+            "Use String.advance(_:pastNewlinesWithLimit:) instead."
+            ]))
 
         advance(&index, past: characters, limit: limit, advanceOne: { $0 = unicodeScalars.index(after: $0) })
     }
@@ -333,7 +329,7 @@ extension String {
         var message: [String] = [
             "A parse error occurred:",
             exerpt
-            ]
+        ]
 
         if let fileInfo = file {
             message.append(fileInfo.path.string)

@@ -255,7 +255,7 @@ struct UnitTests {
                         return
                 }
 
-                let nullCharacters = CharacterSet.whitespacesAndNewlines.union(CharacterSet.decimalDigits.union(CharacterSet(charactersIn: "|")))
+                let nullCharacters = (CharacterSet.whitespacesAndNewlines ∪ CharacterSet.decimalDigits) ∪ ["|"]
 
                 var overallCoverageSuccess = true
                 var overallIndex = coverageResults.startIndex

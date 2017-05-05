@@ -85,8 +85,8 @@ enum FileType : CustomStringConvertible {
                 identifier = filename
             }
 
-            if ¬FileType.binaryFileTypes.contains(identifier)
-                ∧ ¬Configuration.ignoreFileTypes.contains(identifier) {
+            if identifier ∉ FileType.binaryFileTypes
+                ∧ identifier ∉ Configuration.ignoreFileTypes {
                 if FileType.unsupportedTypesEncountered[identifier] == nil {
                     FileType.unsupportedTypesEncountered[identifier] = Repository.relative(filePath)
                 }

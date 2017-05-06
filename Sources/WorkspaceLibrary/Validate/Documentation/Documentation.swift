@@ -51,9 +51,9 @@ struct Documentation {
 
     static let operatorCharacters: CharacterSet = {
         let sections: [CharacterSet] = [
-            CharacterSet(charactersIn: "\u{2F}=\u{2D}+\u{21}\u{2A}%<>&|^~?"),
+            ["\u{2F}", "=", "\u{2D}", "+", "\u{21}", "\u{2A}", "%", "<", ">", "&", "|", "^", "~", "?"],
             CharacterSet(charactersIn: "\u{A1}" ..< "\u{A7}"),
-            CharacterSet(charactersIn: "©«¬®°±¶»¿×÷‖\u{2017}"),
+            ["©", "«", "¬", "®", "°", "±", "¶", "»", "¿", "×", "÷", "‖", "\u{2017}"],
             CharacterSet(charactersIn: "\u{2020}" ..< "\u{2027}"),
             CharacterSet(charactersIn: "\u{2030}" ..< "\u{203E}"),
             CharacterSet(charactersIn: "\u{2041}" ..< "\u{2053}"),
@@ -65,7 +65,7 @@ struct Documentation {
             CharacterSet(charactersIn: "\u{3001}" ..< "\u{3003}"),
             CharacterSet(charactersIn: "\u{3008}" ..< "\u{3030}"),
 
-            CharacterSet(charactersIn: ".")
+            ["."]
         ]
         return sections.reduce(CharacterSet()) { $0 ∪ $1 }
     }()

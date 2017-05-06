@@ -56,7 +56,7 @@ struct WorkaroundReminder : Warning {
 
                         if var currentVersionString = bash(parameters, silent: true).output {
 
-                            let versionCharacters = CharacterSet(charactersIn: "0123456789.")
+                            let versionCharacters: CharacterSet = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."]
                             while let first = currentVersionString.unicodeScalars.first,
                                 first ∉ versionCharacters {
                                 currentVersionString.unicodeScalars.removeFirst()

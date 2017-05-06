@@ -313,7 +313,8 @@ struct UnitTests {
                             "assertionFailure",
                             "preconditionFailure",
                             "fatalError",
-                            "primitiveMethod"
+                            "primitiveMethod",
+                            "unreachable"
                             ] + Configuration.codeCoverageExemptionTokensForPreviousLine
                         if noUntestableTokens {
                             for token in untestableTokensOnFollowingLine {

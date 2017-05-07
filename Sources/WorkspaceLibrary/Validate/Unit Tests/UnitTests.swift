@@ -312,7 +312,9 @@ struct UnitTests {
                         let untestableTokensOnFollowingLine = [
                             "assertionFailure",
                             "preconditionFailure",
-                            "fatalError"
+                            "fatalError",
+                            "primitiveMethod",
+                            "unreachable"
                             ] + Configuration.codeCoverageExemptionTokensForPreviousLine
                         if noUntestableTokens {
                             for token in untestableTokensOnFollowingLine {

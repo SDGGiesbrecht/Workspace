@@ -62,5 +62,7 @@ The built‐in previous‐line tokens are:
 - `assertionFailure`
 - `preconditionFailure`
 - `fatalError`
+- `primitiveMethod`
+- `unreachable`
 
 The [configuration](Configuring%20Workspace.md) option `Code Coverage Exemption Tokens for the Previous Line` can be used to add custom tokens. It is a list separated by line breaks.

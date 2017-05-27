@@ -376,7 +376,7 @@ struct ReadMe {
             case .hebrewIsrael:
                 apis = "מת״י:"
             }
-        case .unsupported(_):
+        case .unsupported:
             return apiLinksMarkup(localization: .supported(.englishCanada))
         }
 
@@ -438,7 +438,7 @@ struct ReadMe {
                 return "(לרשימה של מיזמים קשורים, ראה [כאן](\(path.replacingOccurrences(of: " ", with: "%20"))).)" + " " + skipInJazzy
 
             }
-        case .unsupported(_):
+        case .unsupported:
             return relatedProjectsLinkMarkup(localization: .supported(.englishCanada))
         }
     }
@@ -489,7 +489,7 @@ struct ReadMe {
                         ""
                     ]
                 }
-            case .unsupported(_):
+            case .unsupported:
                 instructions += [
                     "## Importing",
                     "",
@@ -514,7 +514,7 @@ struct ReadMe {
                     dependencySummary =
                     "תוסיף את ⁨\(Configuration.projectName)⁩ בפשוט ברשימת תלות ב־`Package.swift`"
                 }
-            case .unsupported(_):
+            case .unsupported:
                 dependencySummary = "Simply add \(Configuration.projectName) as a dependency in `Package.swift`"
             }
 
@@ -530,7 +530,7 @@ struct ReadMe {
                     case .frenchFrance:
                         colon = " :"
                     }
-                case .unsupported(_):
+                case .unsupported:
                     colon = ":"
                 }
 
@@ -559,7 +559,7 @@ struct ReadMe {
                             dependencySummary + "."
                         ]
                     }
-                case .unsupported(_):
+                case .unsupported:
                     instructions += [
                         dependencySummary + "."
                     ]
@@ -595,7 +595,7 @@ struct ReadMe {
                         "אז יכול ליבא את ⁨\(Configuration.projectName)⁩ בקבץי מקור:"
                     ]
                 }
-            case .unsupported(_):
+            case .unsupported:
                 instructions += [
                     "",
                     "\(Configuration.projectName) can then be imported in source files:"
@@ -775,7 +775,7 @@ struct ReadMe {
                             ""
                         ]
                     }
-                case .unsupported(_):
+                case .unsupported:
                     projects = [
                         "# Related Projects",
                         "",

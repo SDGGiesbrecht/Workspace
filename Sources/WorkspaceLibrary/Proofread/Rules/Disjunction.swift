@@ -36,8 +36,13 @@ struct Disjunction : Rule {
                 }
 
                 switch fileType {
-                case .workspaceConfiguration, .json, .yaml, .gitignore, .shell, .html, .css, .javaScript:
+                case .workspaceConfiguration, .json, .gitignore, .shell, .html, .css, .javaScript:
                     throwError()
+
+                case .yaml:
+                    if ¬file.contents.substring(from: range.upperBound).hasPrefix(" brew") {
+                        throwError()
+                    }
 
                 case .swift, .swiftPackageManifest:
                     if ¬isInAliasDefinition(for: "∨", at: range, in: file)

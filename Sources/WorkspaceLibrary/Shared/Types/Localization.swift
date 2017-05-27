@@ -68,7 +68,7 @@ enum Localization : Hashable {
         switch self {
         case .supported(let result):
             return result
-        case .unsupported(_):
+        case .unsupported:
             return nil
         }
     }

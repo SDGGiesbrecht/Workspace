@@ -59,6 +59,7 @@ struct ContinuousIntegration {
         // [_Workaround: Jazzy’s dependencies fail to install from within Xcode. (jazzy --version 0.7.5)_]
         let installJazzy = runCommand("gem install jazzy")
         // [_Workaround: Pipes are required to safely update SwiftLint. Shell functions currently do not support them._]
+        let updateHomebrew = runCommand("brew update")
         let updateSwiftLint = runCommand("brew outdated swiftlint \u{7C}\u{7C} brew upgrade swiftlint")
 
         func runWorkspaceScript(_ name: String) -> String {
@@ -155,6 +156,7 @@ struct ContinuousIntegration {
                 "      script:",
                 updateRuby,
                 installJazzy,
+                updateHomebrew,
                 updateSwiftLint,
                 runRefreshWorkspace,
                 runValidateChanges

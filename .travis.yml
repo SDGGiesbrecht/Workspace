@@ -45,6 +45,7 @@ matrix:
       script:
         - "rvm use 2.3.1 --install --binary --fuzzy"
         - "gem install jazzy"
+        - "brew update"
         - "brew outdated swiftlint || brew upgrade swiftlint"
         - "bash ./Refresh\\ Workspace\\ \\(macOS\\).command"
         - "bash ./Validate\\ Changes\\ \\(macOS\\).command"

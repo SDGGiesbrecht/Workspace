@@ -23,10 +23,12 @@ struct MissingImplementation : Rule {
     static func check(file: File, status: inout Bool) {
 
         var index = file.contents.startIndex
-        while let range = file.contents.range(of: "notImplementedYet", in: index ..< file.contents.endIndex) {
+        while let range = file.contents.range(of: "\u{6E}otImplementedYet", in: index ..< file.contents.endIndex) {
             index = range.upperBound
 
-            errorNotice(status: &status, file: file, range: range, replacement: nil, message: "Missing implementation.")
+            if ¬file.contents.substring(to: range.lowerBound).hasSuffix("func ") {
+                errorNotice(status: &status, file: file, range: range, replacement: nil, message: "Missing implementation.")
+            }
         }
     }
 }

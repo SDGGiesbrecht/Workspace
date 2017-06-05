@@ -23,6 +23,9 @@ protocol Rule {
 
 let rules: [Rule.Type] = [
 
+    // Intentional
+    MissingImplementation.self,
+
     // Functionality
     CompatibilityCharacters.self,
     AutoindentResilience.self,
@@ -30,7 +33,7 @@ let rules: [Rule.Type] = [
     WorkspaceUnicodeSyntax.self,
 
     // Documentation
-    DocumentationOfExtensionContstraints.self,
+    DocumentationOfExtensionConstraints.self,
     SyntaxColouring.self,
 
     // Style

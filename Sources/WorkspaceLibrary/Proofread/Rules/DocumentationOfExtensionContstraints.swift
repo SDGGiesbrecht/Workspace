@@ -14,7 +14,7 @@
 
 import SDGCornerstone
 
-struct DocumentationOfExtensionContstraints : Rule {
+struct DocumentationOfExtensionConstraints : Rule {
 
     static let name = "Documentation of Extension Constraints"
 

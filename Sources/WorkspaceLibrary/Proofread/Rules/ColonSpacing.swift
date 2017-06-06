@@ -42,6 +42,8 @@ struct ColonSpacing : Rule {
 
                     if linePrefix.contains("[") ∧ lineSuffix.contains("]") /* Dictionary Literal */ {
                         protocolOrSuperclass = false
+                    } else if linePrefix.hasSuffix("_") {
+                        protocolOrSuperclass = false
                     } else if let startOfPreviousIdentifier = linePrefix.components(separatedBy: (CharacterSet.whitespaces ∪ CharacterSet.punctuationCharacters) ∪ CharacterSet.symbols).filter({ ¬$0.isEmpty }).last?.unicodeScalars.first {
                         protocolOrSuperclass = startOfPreviousIdentifier ∈ CharacterSet.uppercaseLetters
                     } else {

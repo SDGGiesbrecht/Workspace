@@ -41,6 +41,7 @@ The built‐in same‐line tokens are:
 
 - `assert`
 - `precondition`
+- `fatalError`
 - `[_Exempt from Code Coverage_]`
 
 The [configuration](Configuring%20Workspace.md) option `Code Coverage Exemption Tokens for the Same Line` can be used to add custom tokens. It is a list separated by line breaks.

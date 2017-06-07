@@ -288,7 +288,8 @@ struct UnitTests {
                         let untestableTokensOnPreviousLine = [
                             "[_Exempt from Code Coverage_]",
                             "assert",
-                            "precondition"
+                            "precondition",
+                            "fatalError"
                             ] + Configuration.codeCoverageExemptionTokensForSameLine
                         var noUntestableTokens = true
                         for token in untestableTokensOnPreviousLine {

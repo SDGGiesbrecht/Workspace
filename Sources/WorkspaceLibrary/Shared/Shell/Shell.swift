@@ -134,7 +134,7 @@ func runThirdPartyTool(name: String, repositoryURL: String, versionCheck: [Strin
         }
     }
 
-    if let systemVersionLine = bash(versionCheck, silent: true).output?.linesArray.first,
+    if let systemVersionLine = (try? Shell.default.run(command: versionCheck, silently: true))?.linesArray.first,
         let systemVersionStart = systemVersionLine.range(of: CharacterSet.decimalDigits)?.lowerBound,
         let systemVersion = Version(systemVersionLine.substring(from: systemVersionStart)),
         systemVersion == requiredVersion.version {

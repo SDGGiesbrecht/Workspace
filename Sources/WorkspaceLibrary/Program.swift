@@ -16,6 +16,8 @@ import SDGCornerstone
 
 public func run() {
 
+    SDGCornerstone.initialize(mode: .commandLineTool, applicationIdentifier: "ca.solideogloria.Workspace")
+
     if Command.current ≠ Command.proofread {
         print("") // Line break after the input line.
     }

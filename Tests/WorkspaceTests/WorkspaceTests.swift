@@ -21,6 +21,14 @@ import XCTest
 
 class WorkspaceTests : XCTestCase {
 
+    static var initialized = false
+    override func setUp() {
+        if ¬WorkspaceTests.initialized {
+            defer { WorkspaceTests.initialized = true }
+            SDGCornerstone.initialize(mode: .commandLineTool, applicationIdentifier: "ca.solideogloria.Workspace.Tests")
+        }
+    }
+
     func testGeneralParsing() {
 
         let originalStringWithTokens = "()()()"

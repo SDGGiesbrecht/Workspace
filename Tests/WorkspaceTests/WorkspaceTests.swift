@@ -769,42 +769,6 @@ class WorkspaceTests : XCTestCase {
                         }
                     }
 
-                    let realProjects: [(name: String, url: String)] = [
-
-                        (name: "SDGCaching", url: "https://github.com/SDGGiesbrecht/SDGCaching"),
-
-                        (name: "SDGLogic", url: "https://github.com/SDGGiesbrecht/SDGLogic"),
-                        (name: "SDGMathematics", url: "https://github.com/SDGGiesbrecht/SDGMathematics")
-
-                        ]
-
-                    for project in realProjects {
-
-                        printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
-                        printHeader(["Testing Workspace with \(project.name)..."])
-                        printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
-
-                        Repository.performInDirectory(directory: Repository.testZone) {
-
-                            if ¬bash(["git", "clone", project.url]).succeeded {
-                                XCTFail("Failed to clone “\(project.name)”.")
-                            }
-                        }
-
-                        Repository.performInDirectory(directory: root(of: project.name)) {
-
-                            let allowedExitCodes: Set<ExitCode> = [ExitCode.succeeded, ExitCode.testsFailed]
-
-                            if ¬bash(["../../.build/debug/workspace", "refresh"]).succeeded {
-                                XCTFail("Failed to refresh “\(project.name)”.")
-                            }
-
-                            if bash(["../../.build/debug/workspace", "validate"]).exitCode ∉ allowedExitCodes {
-                                XCTFail("Validation crashes for “\(project.name)”.")
-                            }
-                        }
-                    }
-
                     printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])
                     printHeader(["Making sure Workspace passes its own tests..."])
                     printHeader(["••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••"])

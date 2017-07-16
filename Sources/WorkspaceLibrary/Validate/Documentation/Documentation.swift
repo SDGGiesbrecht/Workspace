@@ -93,7 +93,7 @@ struct Documentation {
                 xcodebuildArguments.append("SWIFT_ACTIVE_COMPILATION_CONDITIONS=\(extraCondition)")
             }
 
-            // [_Workaround: Jazzy produces symbols from unbuilt #if directives with no documentation. Removing them by skipping undocumented symbols. (jazzy --version 0.7.5)_]
+            // [_Workaround: Jazzy produces symbols from unbuilt #if directives with no documentation. Removing them by skipping undocumented symbols. (jazzy --version 0.8.3)_]
             var command = ["jazzy", "\u{2D}\u{2D}clean", "\u{2D}\u{2D}use\u{2D}safe\u{2D}filenames", "\u{2D}\u{2D}skip\u{2D}undocumented",
                            "\u{2D}\u{2D}output", documentationFolder,
                            "\u{2D}\u{2D}xcodebuild\u{2D}arguments", xcodebuildArguments.joined(separator: ","),
@@ -192,7 +192,7 @@ struct Documentation {
         }
 
         if Environment.shouldDoMiscellaneousJobs ∧ Configuration.supportLinux {
-            // [_Workaround: Generate Linux documentation on macOS instead. (jazzy --version 0.7.5)_]
+            // [_Workaround: Generate Linux documentation on macOS instead. (jazzy --version 0.8.3)_]
 
             generate(operatingSystemName: "Linux", sdk: "macosx", condition: "LinuxDocs")
         }

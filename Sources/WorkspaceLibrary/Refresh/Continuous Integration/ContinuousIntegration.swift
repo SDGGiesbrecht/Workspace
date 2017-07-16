@@ -54,10 +54,6 @@ struct ContinuousIntegration {
             return "        \u{2D} \u{22}\(escapedCommand)\u{22}"
         }
 
-        // [_Workaround: Jazzy behaves differently when linking against different versions of Ruby. (jazzy --version 0.7.5)_]
-        let updateRuby = runCommand("rvm use 2.3.1 \u{2D}\u{2D}install \u{2D}\u{2D}binary \u{2D}\u{2D}fuzzy")
-        // [_Workaround: Jazzy’s dependencies fail to install from within Xcode. (jazzy --version 0.7.5)_]
-        let installJazzy = runCommand("gem install jazzy")
         // [_Workaround: Pipes are required to safely update SwiftLint. Shell functions currently do not support them._]
         let updateHomebrew = runCommand("brew update")
         let updateSwiftLint = runCommand("brew outdated swiftlint \u{7C}\u{7C} brew upgrade swiftlint")
@@ -81,8 +77,6 @@ struct ContinuousIntegration {
                 "        \u{2D} \(jobKey)=\u{22}\(macOSJob)\u{22}",
                 "      osx_image: xcode8.3",
                 "      script:",
-                updateRuby,
-                installJazzy,
                 runRefreshWorkspace,
                 runValidateChanges
                 ])
@@ -112,8 +106,6 @@ struct ContinuousIntegration {
                 "      language: objective\u{2D}c",
                 "      xcode_sdk: \(sdk)",
                 "      script:",
-                updateRuby,
-                installJazzy,
                 runRefreshWorkspace,
                 runValidateChanges
                 ])
@@ -154,8 +146,6 @@ struct ContinuousIntegration {
                 "        \u{2D} \(jobKey)=\u{22}\(miscellaneousJob)\u{22}",
                 "      osx_image: xcode8.3",
                 "      script:",
-                updateRuby,
-                installJazzy,
                 updateHomebrew,
                 updateSwiftLint,
                 runRefreshWorkspace,

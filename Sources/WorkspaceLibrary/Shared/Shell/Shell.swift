@@ -138,12 +138,11 @@ func runThirdPartyTool(name: String, repositoryURL: String, versionCheck: [Strin
         let systemVersionStart = systemVersionLine.range(of: CharacterSet.decimalDigits)?.lowerBound,
         let systemVersion = Version(systemVersionLine.substring(from: systemVersionStart)),
         systemVersion == requiredVersion.version {
-        print("System version: \(systemVersion)")
 
+        // [_Workaround: Jazzy hangs when this uses SDGCornerstone’s shell._]
         return bash(command, dropOutput: dropOutput)
 
     } else {
-        print("Version check failed.")
 
         if Environment.isInContinuousIntegration {
             fatalError(message: ["\(name) \(requiredVersion.version) could not be found."])

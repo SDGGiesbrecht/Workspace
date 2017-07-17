@@ -730,7 +730,7 @@ class WorkspaceTests : XCTestCase {
 
                 do {
 
-                    _ = bash(["swift build"])
+                    _ = try Shell.default.run(command: ["swift build"])
 
                     try Repository.delete(Repository.testZone)
 

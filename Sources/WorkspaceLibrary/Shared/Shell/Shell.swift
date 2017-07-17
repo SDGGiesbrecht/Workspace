@@ -161,6 +161,4 @@ func runThirdPartyTool(name: String, repositoryURL: String, versionCheck: [Strin
             return nil
         }
     }
-
-    return bash(command, dropOutput: dropOutput)
 }

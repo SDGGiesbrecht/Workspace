@@ -39,38 +39,25 @@ struct UnitTests {
 
         func runUnitTests(buildOnly: Bool, operatingSystemName: String, script: [String], buildToolName: String? = nil) {
 
-            let result = bash(script)
-
-            if result.succeeded {
-                if Configuration.prohibitCompilerWarnings {
-                    if let log = result.output {
-                        var configuration = operatingSystemName
-                        if let tool = buildToolName {
-                            configuration += " with \(tool)"
-                        }
-                        if ¬log.contains(" warning: ") {
-                            individualSuccess("There are no compiler warnings for \(configuration).")
-                        } else {
-                            individualFailure("There are compiler warnings for \(configuration). (See above for details.)")
-                        }
-                    } else {
-                        fatalError(message: [
-                            "No build log detected.",
-                            "This may indicate a bug in Workspace."
-                            ])
-                    }
-                }
-            }
-
             var configuration = operatingSystemName
             if let tool = buildToolName {
                 configuration += " with \(tool)"
             }
 
-            if result.succeeded {
+            do {
+                let log = try Shell.default.run(command: script)
+
                 let phrase = buildOnly ? "Build succeeds for" : "Unit tests succeed on"
                 individualSuccess("\(phrase) \(configuration).")
-            } else {
+
+                if Configuration.prohibitCompilerWarnings {
+                    if ¬log.contains(" warning: ") {
+                        individualSuccess("There are no compiler warnings for \(configuration).")
+                    } else {
+                        individualFailure("There are compiler warnings for \(configuration). (See above for details.)")
+                    }
+                }
+            } catch {
                 let phrase = buildOnly ? "Build fails for" : "Unit tests fail on"
                 individualFailure("\(phrase) \(configuration). (See above for details.)")
             }

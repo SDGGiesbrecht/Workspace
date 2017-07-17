@@ -230,6 +230,7 @@ struct UnitTests {
                 }
                 let executableLocation = coverageDirectory + "Products/Debug" + directorySuffix + "/" + relativeExecutableLocation
 
+                // [_Workaround: This hangs when using SDGCornerstone’s shell._]
                 let shellResult = bash([
                     "xcrun", "llvm\u{2D}cov", "show", "\u{2D}show\u{2D}regions",
                     "\u{2D}instr\u{2D}profile", coverageData,

@@ -760,6 +760,7 @@ class WorkspaceTests : XCTestCase {
                             }
 
                             // Normalize project state.
+                            // [_Workaround: This hangs when using SDGCornerstone’s sell._]
                             _ = bash(["../../.build/debug/workspace", "validate"], silent: true)
 
                             // Commit normalized project state.

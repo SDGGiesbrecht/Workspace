@@ -99,7 +99,7 @@ struct UnitTests {
 
                     print(["Searching for simulator..."], in: nil, spaced: true)
 
-                    guard let deviceManifest = bash(["instruments", "\u{2D}s", "devices"]).output else {
+                    guard let deviceManifest = try? Shell.default.run(command: ["instruments", "\u{2D}s", "devices"]) else {
                         fatalError(message: ["Failed to get list of simulators."])
                     }
 

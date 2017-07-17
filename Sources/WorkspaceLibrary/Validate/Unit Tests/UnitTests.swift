@@ -172,7 +172,7 @@ struct UnitTests {
             // This hangs when using Shell.
             _ = bash(generateScript(buildOnly: buildOnly) + ["&"], silent: true)
             sleep(10)
-            _ = bash(["killall", "xcodebuild"], silent: true)
+            _ = try? Shell.default.run(command: ["killall", "xcodebuild"], silently: true)
 
             let script = generateScript(buildOnly: buildOnly)
             runUnitTests(buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: script, buildToolName: buildToolName)

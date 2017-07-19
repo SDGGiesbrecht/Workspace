@@ -139,8 +139,14 @@ func runThirdPartyTool(name: String, repositoryURL: String, versionCheck: [Strin
         let systemVersion = Version(systemVersionLine.substring(from: systemVersionStart)),
         systemVersion == requiredVersion.version {
 
-        // [_Workaround: Jazzy hangs when this uses SDGCornerstone’s shell._]
-        return bash(command, dropOutput: dropOutput)
+        do {
+            let output = try Shell.default.run(command: command)
+            return (succeeded: true, output: output, exitCode: ExitCode.succeeded)
+        } catch let error as Shell.Error {
+            return (succeeded: false, output: error.output + error.description, exitCode: ExitCode(error.code))
+        } catch {
+            unreachableLocation()
+        }
 
     } else {
 

@@ -22,6 +22,15 @@ func bash(_ arguments: [String], silent: Bool = false, dropOutput: Bool = false)
         Repository.resetCache()
     }
 
+    do {
+        let output = try Shell.default.run(command: arguments, silently: silent)
+        return (succeeded: true, output: output, exitCode: ExitCode.succeeded)
+    } catch let error as Shell.Error {
+        return (succeeded: false, output: error.output + error.description, exitCode: ExitCode(error.code))
+    } catch {
+        unreachableLocation()
+    }
+
     var argumentsString = arguments.map({ (string: String) -> String in
 
         if string.contains(" ") {

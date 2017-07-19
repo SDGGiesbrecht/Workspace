@@ -614,11 +614,11 @@ class WorkspaceTests : XCTestCase {
 
         let message = "Hello, world!"
         let output = requireBash(["echo", "\(message)"])
-        XCTAssert(output == message + "\n", join(lines: [
+        XCTAssert(output == message, join(lines: [
             "Shell failed:",
             output,
             "≠",
-            message + "\n"
+            message
             ]))
 
         XCTAssert(bash(["NotARealCommand"]).succeeded == false, "Schript should have failed.")

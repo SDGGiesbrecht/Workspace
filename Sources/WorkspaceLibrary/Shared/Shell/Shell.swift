@@ -105,6 +105,8 @@ func bash(_ arguments: [String], silent: Bool = false, dropOutput: Bool = false)
 private var missingTools: Set<String> = []
 func runThirdPartyTool(name: String, repositoryURL: String, versionCheck: [String], continuousIntegrationSetUp: [[String]], command: [String], updateInstructions: [String], dropOutput: Bool = false) -> (succeeded: Bool, output: String?, exitCode: ExitCode)? {
 
+    defer { Repository.resetCache() }
+
     let versions = requireBash(["git", "ls\u{2D}remote", "\u{2D}\u{2D}tags", repositoryURL], silent: true)
     var newest: (tag: String, version: Version)? = nil
     for line in versions.lines {

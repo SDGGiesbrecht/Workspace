@@ -229,14 +229,11 @@ struct UnitTests {
                 }
                 let executableLocation = coverageDirectory + "Products/Debug" + directorySuffix + "/" + relativeExecutableLocation
 
-                // [_Workaround: This hangs when using SDGCornerstone’s shell._]
-                let shellResult = bash([
+                guard let coverageResults = try? Shell.default.run(command: [
                     "xcrun", "llvm\u{2D}cov", "show", "\u{2D}show\u{2D}regions",
                     "\u{2D}instr\u{2D}profile", coverageData,
                     executableLocation
-                    ], silent: true)
-                guard shellResult.succeeded,
-                    let coverageResults = shellResult.output else {
+                    ], silently: true) else {
                         individualFailure("Code coverage information is unavailable for \(operatingSystem).")
                         return
                 }

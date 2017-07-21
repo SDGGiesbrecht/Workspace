@@ -20,60 +20,60 @@ struct ReadMe {
 
     static let skipInJazzy = "<!\u{2D}\u{2D}Skip in Jazzy\u{2D}\u{2D}>"
 
-    static func readMeFilename(localization: Localization?) -> String {
+    static func readMeFilename(localization: ArbitraryLocalization?) -> StrictString {
         if let particular = localization {
-            var name: String
-            if let specific = particular.supported {
+            var name: StrictString
+            if let specific = particular.compatible {
                 switch specific {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     name = "Read Me.md"
-                case .germanGermany:
+                case .deutschDeutschland:
                     name = "Lies mich.md"
-                case .frenchFrance:
+                case .françaisFrance:
                     name = "Lisez moi.md"
-                case .greekGreece:
+                case .ελληνικάΕλλάδα:
                     name = "Με διαβάστε.md"
-                case .hebrewIsrael:
+                case .עברית־ישראל:
                     name = "קרא אותי.md"
                 }
             } else {
                 name = "Read Me.md"
             }
-            return particular.userFacingCode + " " + name
+            return particular.icon + " " + name
         }
         return "Read Me.md"
     }
-    static func readMePath(localization: Localization?) -> RelativePath {
+    static func readMePath(localization: ArbitraryLocalization?) -> RelativePath {
         if localization ≠ nil {
             return RelativePath("Documentation/\(readMeFilename(localization: localization))")
         } else {
             return RelativePath("README.md")
         }
     }
-    static func relatedProjectsFilename(localization: Localization?) -> String {
+    static func relatedProjectsFilename(localization: ArbitraryLocalization?) -> StrictString {
         if let particular = localization {
-            var name: String
-            if let specific = particular.supported {
+            var name: StrictString
+            if let specific = particular.compatible {
                 switch specific {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     name = "Related Projects.md"
-                case .germanGermany:
+                case .deutschDeutschland:
                     name = "Verwandte Projekte.md"
-                case .frenchFrance:
+                case .françaisFrance:
                     name = "Projets liés.md"
-                case .greekGreece:
+                case .ελληνικάΕλλάδα:
                     name = "Συγγενικά έργα.md"
-                case .hebrewIsrael:
+                case .עברית־ישראל:
                     name = "מיזמים קשורים.md"
                 }
             } else {
                 name = "Related Projects.md"
             }
-            return particular.userFacingCode + " " + name
+            return particular.icon + " " + name
         }
         return "Related Projects.md"
     }
-    static func relatedProjectsPath(localization: Localization?) -> RelativePath {
+    static func relatedProjectsPath(localization: ArbitraryLocalization?) -> RelativePath {
         if localization ≠ nil {
             return RelativePath("Documentation/\(relatedProjectsFilename(localization: localization))")
         } else {
@@ -90,7 +90,7 @@ struct ReadMe {
         return FileType.markdown.syntax.comment(contents: managementWarning)
     }()
 
-    static func defaultReadMeTemplate(localization: Localization?) -> String {
+    static func defaultReadMeTemplate(localization: ArbitraryLocalization?) -> String {
         let translation = Configuration.resolvedLocalization(for: localization)
 
         var readMe: [String] = []
@@ -130,17 +130,17 @@ struct ReadMe {
         if Configuration.featureList(localization: localization) ≠ nil {
             let features: String
             switch translation {
-            case .supported(let specific):
+            case .compatible(let specific):
                 switch specific {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     features = "Features"
-                case .germanGermany:
+                case .deutschDeutschland:
                     features = "Merkmale"
-                case .frenchFrance:
+                case .françaisFrance:
                     features = "Fonctionnalités"
-                case .greekGreece:
+                case .ελληνικάΕλλάδα:
                     features = "Χαρακτηριστικά"
-                case .hebrewIsrael:
+                case .עברית־ישראל:
                     features = "תכונות"
                 }
             default:
@@ -179,17 +179,17 @@ struct ReadMe {
         if readMeExampleExists {
             let example: String
             switch translation {
-            case .supported(let specific):
+            case .compatible(let specific):
                 switch specific {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     example = "Example Usage"
-                case .germanGermany:
+                case .deutschDeutschland:
                     example = "Verwendungsbeispiel"
-                case .frenchFrance:
+                case .françaisFrance:
                     example = "Example d’utilisation"
-                case .greekGreece:
+                case .ελληνικάΕλλάδα:
                     example = "Παράδειγμα χρήσης"
-                case .hebrewIsrael:
+                case .עברית־ישראל:
                     example = "דוגמת שימוש"
                 }
             default:
@@ -214,7 +214,7 @@ struct ReadMe {
         }
 
         if Configuration.sdg {
-            func english(translation: Localization) -> [String] {
+            func english(translation: ArbitraryLocalization) -> [String] {
                 return [
                     "",
                     "## About",
@@ -229,11 +229,11 @@ struct ReadMe {
                 ]
             }
             switch translation {
-            case .supported(let specific):
+            case .compatible(let specific):
                 switch specific {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     readMe += english(translation: translation)
-                case .germanGermany:
+                case .deutschDeutschland:
                     readMe += [
                         "",
                         "## Über",
@@ -246,7 +246,7 @@ struct ReadMe {
                         "",
                         format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "Denn der Arbeiter ist seines Lohns würdig.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: localization), citation: "\u{200E}ישוע/Yeshuʼa")
                     ]
-                case .frenchFrance:
+                case .françaisFrance:
                     readMe += [
                         "",
                         "## À propos",
@@ -259,7 +259,7 @@ struct ReadMe {
                         "",
                         format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "Car le travailleur est digne de son salaire.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: localization), citation: "\u{200E}ישוע/Yeshuʼa")
                     ]
-                case .greekGreece:
+                case .ελληνικάΕλλάδα:
                     readMe += [
                         "",
                         "## Πληροφορίες",
@@ -273,7 +273,7 @@ struct ReadMe {
                         "",
                         format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: nil, url: "https://www.bible.com/bible/209/LUK.10.byz04", citation: "\u{200E}ישוע/Ιεσούα")
                     ]
-                case .hebrewIsrael:
+                case .עברית־ישראל:
                     readMe += [
                         "",
                         "## אודות",
@@ -288,30 +288,30 @@ struct ReadMe {
                     ]
                 }
             default:
-                readMe += english(translation: .supported(.englishCanada))
+                readMe += english(translation: .compatible(.englishCanada))
             }
         }
 
         return join(lines: readMe)
     }
 
-    static func formatQuotationURL(chapter: String, originalKey: String, localization: Localization?) -> String {
+    static func formatQuotationURL(chapter: String, originalKey: String, localization: ArbitraryLocalization?) -> String {
         var translationCode = "NIV"
         if let specific = localization {
             switch specific {
-            case .supported(let supported):
+            case .compatible(let supported):
                 switch supported {
                 case .englishUnitedKingdom:
                     translationCode = "NIVUK"
                 case .englishUnitedStates, .englishCanada:
                     translationCode = "NIV"
-                case .germanGermany:
+                case .deutschDeutschland:
                     translationCode = "SCH2000"
-                case .frenchFrance:
+                case .françaisFrance:
                     translationCode = "SG21"
-                case .greekGreece:
+                case .ελληνικάΕλλάδα:
                     fatalError(message: ["TGV is unavailable in side‐by‐side."])
-                case .hebrewIsrael:
+                case .עברית־ישראל:
                     fatalError(message: ["Hebrew is unavailable in side‐by‐side."])
                 }
             default:
@@ -323,7 +323,7 @@ struct ReadMe {
         return "https://www.biblegateway.com/passage/?search=\(sanitizedChapter)&version=\(originalKey);\(translationCode)"
     }
 
-    static func defaultQuotationURL(localization: Localization?) -> String {
+    static func defaultQuotationURL(localization: ArbitraryLocalization?) -> String {
         if let chapter = Configuration.quotationChapter {
             return formatQuotationURL(chapter: chapter, originalKey: Configuration.quotationOriginalKey, localization: localization)
         } else {
@@ -331,24 +331,24 @@ struct ReadMe {
         }
     }
 
-    static func localizationLinksMarkup(localization: Localization?) -> String {
+    static func localizationLinksMarkup(localization: ArbitraryLocalization?) -> String {
         var links: [String] = []
         for targetLocalization in Configuration.localizations {
-            let link = targetLocalization.userFacingCode
-            var url: String
+            let link = targetLocalization.icon
+            var url: StrictString
             if localization == nil {
-                url = readMePath(localization: targetLocalization).string
+                url = StrictString(readMePath(localization: targetLocalization).string)
             } else {
                 url = readMeFilename(localization: targetLocalization)
             }
-            url = url.replacingOccurrences(of: " ", with: "%20")
+            url.replaceMatches(for: " ".scalars, with: "%20".scalars)
 
             links.append("[\(link)](\(url))")
         }
         return links.joined(separator: " • ") + " " + skipInJazzy
     }
 
-    static func apiLinksMarkup(localization: Localization?) -> String {
+    static func apiLinksMarkup(localization: ArbitraryLocalization?) -> String {
         let translation = Configuration.resolvedLocalization(for: localization)
 
         let urlString = Configuration.requiredDocumentationURL
@@ -363,21 +363,21 @@ struct ReadMe {
 
         let apis: String
         switch translation {
-        case .supported(let specific):
+        case .compatible(let specific):
             switch specific {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 apis = "APIs:"
-            case .germanGermany:
+            case .deutschDeutschland:
                 apis = "SAPs:"
-            case .frenchFrance:
+            case .françaisFrance:
                 apis = "IPA :"
-            case .greekGreece:
+            case .ελληνικάΕλλάδα:
                 apis = "ΔΠΕ:"
-            case .hebrewIsrael:
+            case .עברית־ישראל:
                 apis = "מת״י:"
             }
-        case .unsupported:
-            return apiLinksMarkup(localization: .supported(.englishCanada))
+        case .unrecognized:
+            return apiLinksMarkup(localization: .compatible(.englishCanada))
         }
 
         let operatingSystems = OperatingSystem.all.filter({ $0.isSupportedByProject }).map({ "\($0)" })
@@ -409,41 +409,42 @@ struct ReadMe {
         return "> " + result
     }
 
-    static func quotationMarkup(localization: Localization?) -> String {
+    static func quotationMarkup(localization: ArbitraryLocalization?) -> String {
         return format(quotation: Configuration.requiredQuotation, translation: Configuration.quotationTranslation(localization: localization), url: Configuration.quotationURL(localization: localization), citation: Configuration.citation(localization: localization))
     }
 
-    static func relatedProjectsLinkMarkup(localization: Localization?) -> String {
+    static func relatedProjectsLinkMarkup(localization: ArbitraryLocalization?) -> String {
 
-        let path: String
+        var path: StrictString
         if localization ≠ nil {
             path = relatedProjectsFilename(localization: localization)
         } else {
-            path = ReadMe.relatedProjectsPath(localization: localization).string
+            path = StrictString(ReadMe.relatedProjectsPath(localization: localization).string)
         }
+        path.replaceMatches(for: " ".scalars, with: "%20".scalars)
 
         let translation = Configuration.resolvedLocalization(for: localization)
         switch translation {
-        case .supported(let specific):
+        case .compatible(let specific):
             switch specific {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "(For a list of related projecs, see [here](\(path.replacingOccurrences(of: " ", with: "%20"))).)" + " " + skipInJazzy
-            case .germanGermany:
-                return "(Für eine Liste verwandter Projekte, siehe [hier](\(path.replacingOccurrences(of: " ", with: "%20"))).)" + " " + skipInJazzy
-            case .frenchFrance:
-                return "(Pour une liste de projets lié, voir [ici](\(path.replacingOccurrences(of: " ", with: "%20"))).)" + " " + skipInJazzy
-            case .greekGreece:
-                return "(Για ένα κατάλογο συγγενικών έργων, δείτε [εδώ](\(path.replacingOccurrences(of: " ", with: "%20"))).)" + " " + skipInJazzy
-            case .hebrewIsrael:
-                return "(לרשימה של מיזמים קשורים, ראה [כאן](\(path.replacingOccurrences(of: " ", with: "%20"))).)" + " " + skipInJazzy
+                return "(For a list of related projecs, see [here](\(path)).)" + " " + skipInJazzy
+            case .deutschDeutschland:
+                return "(Für eine Liste verwandter Projekte, siehe [hier](\(path)).)" + " " + skipInJazzy
+            case .françaisFrance:
+                return "(Pour une liste de projets lié, voir [ici](\(path)).)" + " " + skipInJazzy
+            case .ελληνικάΕλλάδα:
+                return "(Για ένα κατάλογο συγγενικών έργων, δείτε [εδώ](\(path)).)" + " " + skipInJazzy
+            case .עברית־ישראל:
+                return "(לרשימה של מיזמים קשורים, ראה [כאן](\(path)).)" + " " + skipInJazzy
 
             }
-        case .unsupported:
-            return relatedProjectsLinkMarkup(localization: .supported(.englishCanada))
+        case .unrecognized:
+            return relatedProjectsLinkMarkup(localization: .compatible(.englishCanada))
         }
     }
 
-    static func defaultInstallationInstructions(localization: Localization?) -> String? {
+    static func defaultInstallationInstructions(localization: ArbitraryLocalization?) -> String? {
 
         if Configuration.projectType == .library {
             let translation = Configuration.resolvedLocalization(for: localization)
@@ -451,7 +452,7 @@ struct ReadMe {
             var instructions: [String] = []
 
             switch translation {
-            case .supported(let specific):
+            case .compatible(let specific):
                 switch specific {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     instructions += [
@@ -460,28 +461,28 @@ struct ReadMe {
                         "\(Configuration.projectName) is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).",
                         ""
                     ]
-                case .germanGermany:
+                case .deutschDeutschland:
                     instructions += [
                         "## Einführung",
                         "",
                         "\(Configuration.projectName) ist für den Einsatz mit dem [Swift Package Manager](https://swift.org/package-manager/) vorgesehen.",
                         ""
                     ]
-                case .frenchFrance:
+                case .françaisFrance:
                     instructions += [
                         "## Importation",
                         "",
                         "\(Configuration.projectName) est prévu pour utilisation avec le [Swift Package Manager](https://swift.org/package-manager/).",
                         ""
                     ]
-                case .greekGreece:
+                case .ελληνικάΕλλάδα:
                     instructions += [
                         "## Εισαγωγή",
                         "",
                         "\(Configuration.projectName) προορίζεται για χρήση με το [Swift Package Manager](https://swift.org/package-manager/).",
                         ""
                     ]
-                case .hebrewIsrael:
+                case .עברית־ישראל:
                     instructions += [
                         "## ליבא",
                         "",
@@ -489,7 +490,7 @@ struct ReadMe {
                         ""
                     ]
                 }
-            case .unsupported:
+            case .unrecognized:
                 instructions += [
                     "## Importing",
                     "",
@@ -500,21 +501,21 @@ struct ReadMe {
 
             var dependencySummary: String
             switch translation {
-            case .supported(let specific):
+            case .compatible(let specific):
                 switch specific {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     dependencySummary = "Simply add \(Configuration.projectName) as a dependency in `Package.swift`"
-                case .germanGermany:
+                case .deutschDeutschland:
                     dependencySummary = "Fügen Sie \(Configuration.projectName) einfach in der Abhängigkeitsliste in `Package.swift` hinzu"
-                case .frenchFrance:
+                case .françaisFrance:
                     dependencySummary = "Ajoutez \(Configuration.projectName) simplement dans la liste des dépendances dans `Package.swift`"
-                case .greekGreece:
+                case .ελληνικάΕλλάδα:
                     dependencySummary = "Πρόσθεσε τον \(Configuration.projectName) απλά στο κατάλογο των εξαρτήσεων στο `Package.swift`"
-                case .hebrewIsrael:
+                case .עברית־ישראל:
                     dependencySummary =
                     "תוסיף את ⁨\(Configuration.projectName)⁩ בפשוט ברשימת תלות ב־`Package.swift`"
                 }
-            case .unsupported:
+            case .unrecognized:
                 dependencySummary = "Simply add \(Configuration.projectName) as a dependency in `Package.swift`"
             }
 
@@ -523,14 +524,14 @@ struct ReadMe {
 
                 let colon: String
                 switch translation {
-                case .supported(let specific):
+                case .compatible(let specific):
                     switch specific {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .germanGermany, .greekGreece, .hebrewIsrael:
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .ελληνικάΕλλάδα, .עברית־ישראל:
                         colon = ":"
-                    case .frenchFrance:
+                    case .françaisFrance:
                         colon = " :"
                     }
-                case .unsupported:
+                case .unrecognized:
                     colon = ":"
                 }
 
@@ -552,14 +553,14 @@ struct ReadMe {
             } else {
 
                 switch translation {
-                case .supported(let specific):
+                case .compatible(let specific):
                     switch specific {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .germanGermany, .frenchFrance, .greekGreece, .hebrewIsrael:
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .françaisFrance, .ελληνικάΕλλάδα, .עברית־ישראל:
                         instructions += [
                             dependencySummary + "."
                         ]
                     }
-                case .unsupported:
+                case .unrecognized:
                     instructions += [
                         dependencySummary + "."
                     ]
@@ -567,35 +568,35 @@ struct ReadMe {
             }
 
             switch translation {
-            case .supported(let specific):
+            case .compatible(let specific):
                 switch specific {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     instructions += [
                         "",
                         "\(Configuration.projectName) can then be imported in source files:"
                     ]
-                case .germanGermany:
+                case .deutschDeutschland:
                     instructions += [
                         "",
                         "Dann kann \(Configuration.projectName) in Quelldateien eingeführt werden:"
                     ]
-                case .frenchFrance:
+                case .françaisFrance:
                     instructions += [
                         "",
                         "Puis \(Configuration.projectName) peut être importé dans des fichiers sources :"
                     ]
-                case .greekGreece:
+                case .ελληνικάΕλλάδα:
                     instructions += [
                         "",
                         "Έπειτα \(Configuration.projectName) μπορεί να εισάγεται στα πηγαία αρχεία:"
                     ]
-                case .hebrewIsrael:
+                case .עברית־ישראל:
                     instructions += [
                         "",
                         "אז יכול ליבא את ⁨\(Configuration.projectName)⁩ בקבץי מקור:"
                     ]
                 }
-            case .unsupported:
+            case .unrecognized:
                 instructions += [
                     "",
                     "\(Configuration.projectName) can then be imported in source files:"
@@ -737,7 +738,7 @@ struct ReadMe {
                 var projects: [String]
 
                 switch translation {
-                case .supported(let specific):
+                case .compatible(let specific):
                     switch specific {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         projects = [
@@ -746,28 +747,28 @@ struct ReadMe {
                             "### Table of Contents",
                             ""
                         ]
-                    case .germanGermany:
+                    case .deutschDeutschland:
                         projects = [
                             "# Verwandte Projekte",
                             "",
                             "### Inhaltsverzeichnis",
                             ""
                         ]
-                    case .frenchFrance:
+                    case .françaisFrance:
                         projects = [
                             "# Projets liés",
                             "",
                             "### Table de matières",
                             ""
                         ]
-                    case .greekGreece:
+                    case .ελληνικάΕλλάδα:
                         projects = [
                             "# Συγγενικά έργα",
                             "",
                             "### Πίνακας περιεχομένων",
                             ""
                         ]
-                    case .hebrewIsrael:
+                    case .עברית־ישראל:
                         projects = [
                             "# מיזמים קשורים",
                             "",
@@ -775,7 +776,7 @@ struct ReadMe {
                             ""
                         ]
                     }
-                case .unsupported:
+                case .unrecognized:
                     projects = [
                         "# Related Projects",
                         "",
@@ -848,7 +849,7 @@ struct ReadMe {
                         if var shortDescription = Configuration.localizedOptionValue(option: .shortProjectDescription, localization: localization, configuration: configuration) {
                             if shortDescription.contains("[_") { // The main project is not localized, but the linked configuration is.
                                 if let parsedLocalizations = Configuration.parseLocalizations(shortDescription) {
-                                    if let english = parsedLocalizations[.supported(.englishCanada)] ?? parsedLocalizations[.supported(.englishUnitedStates)] {
+                                    if let english = parsedLocalizations[.compatible(.englishCanada)] ?? parsedLocalizations[.compatible(.englishUnitedStates)] {
                                         shortDescription = english
                                     } else {
                                         shortDescription = parsedLocalizations.first?.value ?? ""

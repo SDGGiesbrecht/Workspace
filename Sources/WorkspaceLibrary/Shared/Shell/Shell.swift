@@ -16,82 +16,13 @@ import Foundation
 
 import SDGCornerstone
 
-func bash(_ arguments: [String], silent: Bool = false, dropOutput: Bool = false) -> (succeeded: Bool, output: String?, exitCode: ExitCode) {
-
-    defer {
-        Repository.resetCache()
-    }
-
-    var argumentsString = arguments.map({ (string: String) -> String in
-
-        if string.contains(" ") {
-            return "\u{22}" + string + "\u{22}"
-        } else {
-            return string
-        }
-    }).joined(separator: " ")
-
-    if ¬silent {
-        print("$ " + argumentsString)
-    }
-
-    let process = Process()
-    process.launchPath = "/bin/bash"
-
-    let standardOutput = Pipe()
-    if ¬dropOutput {
-        process.standardOutput = standardOutput
-    }
-
-    if ¬silent ∧ ¬dropOutput ∧ ¬Environment.isInXcode /* Fails in Xcode’s container. */ {
-        argumentsString = "set \u{2D}o pipefail; " + argumentsString + " | tee /dev/tty"
-    }
-    process.arguments = ["\u{2D}c", argumentsString]
-
-    process.launch()
-
-    var data = Data()
-    while process.isRunning {
-        if ¬dropOutput {
-            data.append(standardOutput.fileHandleForReading.availableData)
-        }
-    }
-
-    if ¬dropOutput {
-        data.append(standardOutput.fileHandleForReading.readDataToEndOfFile())
-    }
-
-    let output: String?
-    if dropOutput {
-        output = nil
-    } else if let utf8 = String(data: data, encoding: String.Encoding.utf8) {
-        output = utf8
-    } else if let latin1 = String(data: data, encoding: String.Encoding.isoLatin1) {
-        output = latin1
-    } else {
-        fatalError(message: [
-            "Cannot identify string encoding:",
-            "",
-            "\(data)"
-            ])
-    }
-
-    guard process.terminationStatus == ExitCode.succeeded else {
-        return (succeeded: false, output: output, exitCode: process.terminationStatus)
-    }
-
-    return (succeeded: true, output: output, exitCode: process.terminationStatus)
-}
-
 @discardableResult func requireBash(_ arguments: [String], silent: Bool = false) -> String {
-    let result = bash(arguments, silent: silent)
-    if result.succeeded {
-        if let output = result.output {
-            return output
-        } else {
-            return ""
-        }
-    } else {
+
+    defer { Repository.resetCache() }
+
+    do {
+        return try Shell.default.run(command: arguments, silently: silent)
+    } catch {
         fatalError(message: [
             "Command failed:",
             "",
@@ -104,6 +35,8 @@ func bash(_ arguments: [String], silent: Bool = false, dropOutput: Bool = false)
 
 private var missingTools: Set<String> = []
 func runThirdPartyTool(name: String, repositoryURL: String, versionCheck: [String], continuousIntegrationSetUp: [[String]], command: [String], updateInstructions: [String], dropOutput: Bool = false) -> (succeeded: Bool, output: String?, exitCode: ExitCode)? {
+
+    defer { Repository.resetCache() }
 
     let versions = requireBash(["git", "ls\u{2D}remote", "\u{2D}\u{2D}tags", repositoryURL], silent: true)
     var newest: (tag: String, version: Version)? = nil
@@ -134,12 +67,19 @@ func runThirdPartyTool(name: String, repositoryURL: String, versionCheck: [Strin
         }
     }
 
-    if let systemVersionLine = bash(versionCheck, silent: true).output?.linesArray.first,
+    if let systemVersionLine = (try? Shell.default.run(command: versionCheck, silently: true))?.linesArray.first,
         let systemVersionStart = systemVersionLine.range(of: CharacterSet.decimalDigits)?.lowerBound,
         let systemVersion = Version(systemVersionLine.substring(from: systemVersionStart)),
         systemVersion == requiredVersion.version {
 
-        return bash(command, dropOutput: dropOutput)
+        do {
+            let output = try Shell.default.run(command: command)
+            return (succeeded: true, output: output, exitCode: ExitCode.succeeded)
+        } catch let error as Shell.Error {
+            return (succeeded: false, output: error.output + error.description, exitCode: ExitCode(error.code))
+        } catch {
+            unreachableLocation()
+        }
 
     } else {
 
@@ -160,6 +100,4 @@ func runThirdPartyTool(name: String, repositoryURL: String, versionCheck: [Strin
             return nil
         }
     }
-
-    return bash(command, dropOutput: dropOutput)
 }

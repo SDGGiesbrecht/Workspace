@@ -54,7 +54,7 @@ struct WorkaroundReminder : Warning {
                     } else {
                         // Not a package dependency
 
-                        if var currentVersionString = bash(parameters, silent: true).output {
+                        if var currentVersionString = try? Shell.default.run(command: parameters, silently: true) {
 
                             let versionCharacters: CharacterSet = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."]
                             while let first = currentVersionString.unicodeScalars.first,

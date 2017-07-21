@@ -21,6 +21,14 @@ import XCTest
 
 class WorkspaceTests : XCTestCase {
 
+    static var initialized = false
+    override func setUp() {
+        if ¬WorkspaceTests.initialized {
+            defer { WorkspaceTests.initialized = true }
+            SDGCornerstone.initialize(mode: .commandLineTool, applicationIdentifier: "ca.solideogloria.Workspace.Tests")
+        }
+    }
+
     func testGeneralParsing() {
 
         let originalStringWithTokens = "()()()"
@@ -185,7 +193,7 @@ class WorkspaceTests : XCTestCase {
                 " Block",
                 " Comment",
                 " */"
-                ])
+            ])
 
         testComment(syntax: FileType.workspaceConfiguration, text: [
             "Block",
@@ -195,7 +203,7 @@ class WorkspaceTests : XCTestCase {
                 "    Block",
                 "    Comment",
                 "    ))"
-                ])
+            ])
     }
 
     func testLineComments() {
@@ -301,7 +309,7 @@ class WorkspaceTests : XCTestCase {
             ], consecutiveComment: [
                 "// Consecutive",
                 "// Comment"
-                ])
+            ])
 
         testComment(syntax: FileType.workspaceConfiguration, text: "Comment", comment: "(Comment)", consecutiveText: [
             "Consecutive",
@@ -309,7 +317,7 @@ class WorkspaceTests : XCTestCase {
             ], consecutiveComment: [
                 "(Consecutive)",
                 "(Comment)"
-                ])
+            ])
     }
 
     func testConfiguration() {
@@ -331,7 +339,7 @@ class WorkspaceTests : XCTestCase {
         let expectedConfiguration: [Option: String] = [
             .testOption: "Simple Value",
             .testLongOption: join(lines: ["Multiline", "Value"])
-            ]
+        ]
         let parsed = Configuration.parse(configurationSource: source)
 
         XCTAssert(parsed == expectedConfiguration, join(lines: [
@@ -555,7 +563,7 @@ class WorkspaceTests : XCTestCase {
                 "",
                 " Licence",
                 " */"
-                ])
+            ])
 
         testHeader(syntax: Configuration.configurationFilePath.string, header: [
             "File",
@@ -575,7 +583,7 @@ class WorkspaceTests : XCTestCase {
                 "",
                 "    Licence",
                 "    ))"
-                ])
+            ])
 
         testHeader(syntax: ".sh", header: [
             "File",
@@ -593,27 +601,7 @@ class WorkspaceTests : XCTestCase {
                 "# Copyright",
                 "#",
                 "# Licence"
-                ])
-    }
-
-    func testShell() {
-
-        var exitCodes: Set<Int32> = []
-        exitCodes.insert(ExitCode.succeeded)
-        exitCodes.insert(ExitCode.failed)
-        exitCodes.insert(ExitCode.testsFailed)
-        XCTAssert(exitCodes.count == 3, "Exit codes clash.")
-
-        let message = "Hello, world!"
-        let output = requireBash(["echo", "\(message)"])
-        XCTAssert(output == message + "\n", join(lines: [
-            "Shell failed:",
-            output,
-            "≠",
-            message + "\n"
-            ]))
-
-        XCTAssert(bash(["NotARealCommand"]).succeeded == false, "Schript should have failed.")
+            ])
     }
 
     func testGitIgnoreCoverage() {
@@ -647,7 +635,7 @@ class WorkspaceTests : XCTestCase {
             "Related Projects.md",
             "Documentation",
             "Resources"
-            ]
+        ]
 
         if ¬Environment.isInXcode ∧ ¬Configuration.nestedTest {
 
@@ -699,7 +687,7 @@ class WorkspaceTests : XCTestCase {
                 "Refresh Workspace (Linux).sh",
                 "Validate Changes (macOS).command",
                 "Validate Changes (Linux).sh"
-                ]
+            ]
 
             for file in executables {
                 do {
@@ -722,7 +710,7 @@ class WorkspaceTests : XCTestCase {
 
                 do {
 
-                    _ = bash(["swift build"])
+                    _ = try Shell.default.run(command: ["swift", "build"])
 
                     try Repository.delete(Repository.testZone)
 
@@ -730,7 +718,7 @@ class WorkspaceTests : XCTestCase {
                         (name: "New Library", flags: []),
                         (name: "New Application", flags: ["•type", "application"]),
                         (name: "New Executable", flags: ["•type", "executable"])
-                        ]
+                    ]
 
                     func root(of repository: String) -> RelativePath {
                         return Repository.testZone.subfolderOrFile(repository)
@@ -747,23 +735,31 @@ class WorkspaceTests : XCTestCase {
                         Repository.performInDirectory(directory: root(of: project.name)) {
 
                             // Test initialization.
-                            if ¬bash(["../../.build/debug/workspace", "initialize"] + project.flags).succeeded {
+                            do {
+                                try Shell.default.run(command: ["../../.build/debug/workspace", "initialize"] + project.flags)
+                            } catch {
                                 XCTFail("Failed to initialize test project “\(project.name)”.")
                             }
 
                             // Normalize project state.
-                            _ = bash(["../../.build/debug/workspace", "validate"], silent: true)
+                            _ = try? Shell.default.run(command: ["../../.build/debug/workspace", "validate"], silently: true)
 
                             // Commit normalized project state.
-                            if ¬bash(["git", "add", "."], silent: true).succeeded {
+                            do {
+                                try Shell.default.run(command: ["git", "add", "."], silently: true)
+                            } catch {
                                 XCTFail("Failed to add files to Git in test project “\(project.name)”.")
                             }
-                            if ¬bash(["git", "commit", "\u{2D}m", "Initialized state."], silent: true).succeeded {
+                            do {
+                                try Shell.default.run(command: ["git", "commit", "\u{2D}m", "Initialized state."], silently: true)
+                            } catch {
                                 XCTFail("Failed to commit files to Git in test project “\(project.name)”.")
                             }
 
                             // Test validation.
-                            if ¬bash(["../../.build/debug/workspace", "validate"]).succeeded {
+                            do {
+                                try Shell.default.run(command: ["../../.build/debug/workspace", "validate"])
+                            } catch {
                                 XCTFail("Validation fails for initialized project “\(project.name)”.")
                             }
                         }
@@ -783,11 +779,15 @@ class WorkspaceTests : XCTestCase {
 
                     Repository.performInDirectory(directory: root(of: testWorkspaceProject)) {
 
-                        if ¬bash(["../../.build/debug/workspace", "refresh"]).succeeded {
+                        do {
+                            try Shell.default.run(command: ["../../.build/debug/workspace", "refresh"])
+                        } catch {
                             XCTFail("Failed to refresh Workspace.")
                         }
 
-                        if ¬(bash(["../../.build/debug/workspace", "validate"]).exitCode == ExitCode.succeeded) {
+                        do {
+                            try Shell.default.run(command: ["../../.build/debug/workspace", "validate"])
+                        } catch {
                             XCTFail("Workspace fails its own validation.")
                         }
                     }
@@ -808,7 +808,6 @@ class WorkspaceTests : XCTestCase {
             ("testLineComments", testLineComments),
             ("testConfiguration", testConfiguration),
             ("testHeaders", testHeaders),
-            ("testShell", testShell),
             ("testGitIgnoreCoverage", testGitIgnoreCoverage),
             ("testDocumentationCoverage", testDocumentationCoverage),
             ("testExecutables", testExecutables),

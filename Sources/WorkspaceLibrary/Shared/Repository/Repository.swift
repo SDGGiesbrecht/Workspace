@@ -368,11 +368,8 @@ struct Repository {
             prepareForWrite(path: change.changeDestination)
 
             #if os(Linux)
-                // [_Workaround: Skip unavailable file copying by using shell on Linux. (Swift 3.0.2)_]
-                let result = bash(["cp", absolute(change.changeOrigin).string, absolute(change.changeDestination).string], silent: true)
-                if ¬result.succeeded {
-                    throw LinuxFileError(exitCode: result.exitCode)
-                }
+                // [_Workaround: Skip unavailable file copying by using shell on Linux. (Swift 3.1.0)_]
+                try Shell.default.run(command: ["cp", absolute(change.changeOrigin).string, absolute(change.changeDestination).string], silently: true)
             #else
                 try fileManager.copyItem(atPath: absolute(change.changeOrigin).string, toPath: absolute(change.changeDestination).string)
             #endif

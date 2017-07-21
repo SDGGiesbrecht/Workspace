@@ -877,7 +877,7 @@ struct ReadMe {
             if let range = readMe.contents.range(of: managementComment) {
                 printHeader(["Cancelling read‐me management..."])
                 readMe.contents.removeSubrange(range)
-                force() { try readMe.write() }
+                try? readMe.write()
             }
         }
     }

@@ -172,7 +172,7 @@ struct ContinuousIntegration {
         if let range = configuration.contents.range(of: managementComment) {
             printHeader(["Cancelling continuous integration management..."])
             configuration.contents.removeSubrange(range)
-            force() { try configuration.write() }
+            try? configuration.write()
         }
     }
 

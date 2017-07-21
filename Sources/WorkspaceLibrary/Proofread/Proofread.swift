@@ -109,7 +109,7 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
         }
 
         if ¬manualSwiftLintConfiguration {
-            force() { try Repository.delete(swiftLintConfigurationPath) }
+            try? Repository.delete(swiftLintConfigurationPath)
         }
 
     }

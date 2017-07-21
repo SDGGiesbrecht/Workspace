@@ -134,6 +134,6 @@ enum Licence : String {
         require() { try file.write() }
 
         // Delete alternate licence files to prevent duplicates.
-        force() { try Repository.delete(RelativePath("LICENSE.txt")) }
+        try? Repository.delete(RelativePath("LICENSE.txt"))
     }
 }

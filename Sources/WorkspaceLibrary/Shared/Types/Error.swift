@@ -25,13 +25,3 @@ func require<T>(operation: () throws -> T) -> T {
             ])
     }
 }
-
-func force(operation: () throws -> Void) {
-    do {
-        try operation()
-    } catch _ {
-        // Ignore failure.
-    }
-}
-
-let debug = _isDebugAssertConfiguration()

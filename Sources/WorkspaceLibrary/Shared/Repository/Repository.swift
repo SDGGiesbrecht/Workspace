@@ -332,9 +332,9 @@ struct Repository {
 
     private static func prepareForWrite<P : Path>(path: P) {
 
-        force() { try delete(path) }
+        try? delete(path)
 
-        force() { try fileManager.createDirectory(atPath: absolute(path).directory, withIntermediateDirectories: true, attributes: nil) }
+        try? fileManager.createDirectory(atPath: absolute(path).directory, withIntermediateDirectories: true, attributes: nil)
     }
 
     private static func performPathChange(from origin: RelativePath, to destination: RelativePath, copy: Bool, includeIgnoredFiles: Bool = false) throws {

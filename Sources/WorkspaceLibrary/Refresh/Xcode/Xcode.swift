@@ -47,7 +47,7 @@ struct Xcode {
     static func refreshXcodeProjects() {
 
         let path = RelativePath("\(Xcode.projectFilename)")
-        force() { try Repository.delete(path) }
+        try? Repository.delete(path)
 
         let script = ["swift", "package", "generate\u{2D}xcodeproj", "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage", "\u{2D}\u{2D}output", path.string]
         requireBash(script)

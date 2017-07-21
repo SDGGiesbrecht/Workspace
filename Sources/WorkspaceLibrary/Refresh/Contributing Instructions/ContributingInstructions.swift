@@ -212,7 +212,7 @@ struct ContributingInstructions {
 
         // Remove deprecated.
 
-        force() { try Repository.delete(deprecatedContributingInstructionsPath) }
+        try? Repository.delete(deprecatedContributingInstructionsPath)
     }
 
     static func relinquishControl() {
@@ -230,7 +230,7 @@ struct ContributingInstructions {
                 }
 
                 file.contents.removeSubrange(range)
-                force() { try file.write() }
+                try? file.write()
             }
         }
     }

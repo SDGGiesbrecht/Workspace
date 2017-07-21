@@ -24,5 +24,5 @@ public func run() {
 
     Command.current.run(andExit: true)
 
-    unreachableLocation()
+    unreachable()
 }

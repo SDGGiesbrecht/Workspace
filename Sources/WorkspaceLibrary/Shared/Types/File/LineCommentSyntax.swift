@@ -121,7 +121,7 @@ struct LineCommentSyntax {
 
         guard let result = rangeOfFirstComment(in: range, of: file.contents) else {
             _ = file.requireRange(of: start, in: range) // Trigger error at File.
-            unreachableLocation()
+            unreachable()
         }
 
         return result

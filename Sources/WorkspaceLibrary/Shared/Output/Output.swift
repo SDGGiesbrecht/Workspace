@@ -33,13 +33,6 @@ func inputSyntaxError(message: String) -> Never {
         ])
 }
 
-func unreachableLocation() -> Never {
-    fatalError(message: [
-        "This code should be unreachable.",
-        "There may be a bug in Workspace."
-        ])
-}
-
 func fatalError(message: [String]) -> Never {
     fail(message: message)
 }

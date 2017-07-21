@@ -78,7 +78,7 @@ func runThirdPartyTool(name: String, repositoryURL: String, versionCheck: [Strin
         } catch let error as Shell.Error {
             return (succeeded: false, output: error.output + error.description, exitCode: ExitCode(error.code))
         } catch {
-            unreachableLocation()
+            unreachable()
         }
 
     } else {

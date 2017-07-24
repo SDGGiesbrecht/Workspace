@@ -44,12 +44,7 @@ enum ArbitraryLocalization : Hashable {
     }
 
     var icon: StrictString {
-        switch self {
-        case .compatible(let localization):
-            return localization.icon
-        case .unrecognized(let code):
-            return StrictString(code)
-        }
+        return compatible?.icon ?? StrictString(code)
     }
 
     var compatible: CompatibleLocalization? {

@@ -31,27 +31,6 @@ enum CompatibleLocalization : String, Localization {
 
     case עברית־ישראל = "he\u{2D}IL"
 
-    // MARK: - Properties
-
-    var icon: StrictString {
-        switch self {
-        case .englishUnitedKingdom:
-            return "🇬🇧EN"
-        case .englishUnitedStates:
-            return "🇺🇸EN"
-        case .englishCanada:
-            return "🇨🇦EN"
-        case .deutschDeutschland:
-            return "🇩🇪DE"
-        case .françaisFrance:
-            return "🇫🇷FR"
-        case .ελληνικάΕλλάδα:
-            return "🇬🇷ΕΛ"
-        case .עברית־ישראל:
-            return "🇮🇱עב"
-        }
-    }
-
     // MARK: - Localization
 
     static let fallbackLocalization = CompatibleLocalization.englishCanada

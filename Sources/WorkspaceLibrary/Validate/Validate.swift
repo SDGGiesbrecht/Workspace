@@ -64,6 +64,9 @@ func runValidate(andExit shouldExit: Bool) {
         }
     }
 
+    // [_Warning: Remove when performance testing is done._]
+    succeed(message: ["Nothing after this is relevant."])
+
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Running unit tests...
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

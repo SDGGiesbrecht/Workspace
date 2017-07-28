@@ -43,53 +43,6 @@ class WorkspaceTests : XCTestCase {
             "≠",
             expectedReplacedTokenContents
             ]))
-
-        func testLineBreaking(text: [String]) {
-
-            for newline in ["\n", String.crLF] {
-
-                let parsed = text.joined(separator: newline).lines.map({ String($0.line) })
-                XCTAssert(parsed == text, join(lines: [
-                    "Failure parsing lines using \(newline.addingPercentEncoding(withAllowedCharacters: CharacterSet())!):",
-                    join(lines: text),
-                    "↓",
-                    join(lines: parsed)
-                    ]))
-            }
-        }
-
-        testLineBreaking(text: [
-            "Line 1",
-            "Line 2",
-            "Line 3"
-            ])
-
-        testLineBreaking(text: [
-            ""
-            ])
-
-        testLineBreaking(text: [
-            "Line 1",
-            "",
-            "Line 3"
-            ])
-
-        testLineBreaking(text: [
-            "",
-            "Line 2"
-            ])
-
-        testLineBreaking(text: [
-            "Line 1",
-            ""
-            ])
-
-        testLineBreaking(text: [
-            "Line 1",
-            "",
-            "",
-            "Line 4"
-            ])
     }
 
     func testLineNumbers() {

@@ -24,21 +24,6 @@ extension String {
         return "\u{D}\u{A}"
     }
 
-    var isMultiline: Bool {
-        var result: Bool = false
-        var firstLineRead: Bool = false
-        for _ in lines {
-
-            if ¬firstLineRead {
-                firstLineRead = true
-            } else {
-                result = true
-                break
-            }
-        }
-        return result
-    }
-
     var isWhitespace: Bool {
         var index = startIndex
         advance(&index, past: CharacterSet.whitespaces)

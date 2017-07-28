@@ -25,9 +25,7 @@ extension String {
     }
 
     var isWhitespace: Bool {
-        var index = startIndex
-        advance(&index, past: CharacterSet.whitespaces)
-        return index == endIndex
+        return ¬scalars.contains(where: { $0 ∉ CharacterSet.whitespaces })
     }
 
     // MARK: - Searching

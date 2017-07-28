@@ -117,7 +117,7 @@ struct Repository {
             if let header = ignoredSummary.range(of: "Ignored files:") {
 
                 let remainder = ignoredSummary.substring(from: header.upperBound)
-                for line in remainder.lines.dropFirst(3) {
+                for line in remainder.lines.lazy.dropFirst(3).map({ String($0.line) }) {
                     if line.isWhitespace {
                         break
                     } else {

@@ -40,7 +40,7 @@ struct LineCommentSyntax {
 
         var first = true
         var result: [String] = []
-        for line in contents.lines {
+        for line in contents.lines.map({ String($0.line) }) {
             var modified = start
             if ¬line.isWhitespace {
                 modified += spacing + line
@@ -142,7 +142,7 @@ struct LineCommentSyntax {
         }
 
         let comment = string.substring(with: range)
-        let lines = comment.lines.map() { (line: String) -> String in
+        let lines = comment.lines.map({ String($0.line) }).map() { (line: String) -> String in
 
             var index = line.startIndex
 

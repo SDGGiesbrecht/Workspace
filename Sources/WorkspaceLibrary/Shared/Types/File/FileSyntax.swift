@@ -64,7 +64,7 @@ struct FileSyntax {
 
         var first = file.contents.substring(to: file.headerStart)
         if ¬first.isEmpty {
-            var firstLines = first.linesArray
+            var firstLines = first.lines.map({ String($0.line) })
             while let last = firstLines.last, last.isWhitespace {
                 firstLines.removeLast()
             }
@@ -196,7 +196,7 @@ struct FileSyntax {
     func header(file: File) -> String {
         let markup = file.contents.substring(with: file.headerStart ..< file.headerEnd)
 
-        if markup.lines.filter({ ¬$0.isWhitespace }).isEmpty {
+        if markup.lines.map({ String($0.line) }).filter({ ¬$0.isWhitespace }).isEmpty {
             return markup
         }
 

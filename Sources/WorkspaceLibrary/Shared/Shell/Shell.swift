@@ -40,7 +40,7 @@ func runThirdPartyTool(name: String, repositoryURL: String, versionCheck: [Strin
 
     let versions = requireBash(["git", "ls\u{2D}remote", "\u{2D}\u{2D}tags", repositoryURL], silent: true)
     var newest: (tag: String, version: Version)? = nil
-    for line in versions.lines {
+    for line in versions.lines.map({ String($0.line) }) {
         if let tagPrefixRange = line.range(of: "refs/tags/") {
             let tag = line.substring(from: tagPrefixRange.upperBound)
             if let version = Version(tag) ?? Version(String(tag.characters.dropFirst())) {
@@ -67,9 +67,9 @@ func runThirdPartyTool(name: String, repositoryURL: String, versionCheck: [Strin
         }
     }
 
-    if let systemVersionLine = (try? Shell.default.run(command: versionCheck, silently: true))?.linesArray.first,
-        let systemVersionStart = systemVersionLine.range(of: CharacterSet.decimalDigits)?.lowerBound,
-        let systemVersion = Version(systemVersionLine.substring(from: systemVersionStart)),
+    if let systemVersionLine = (try? Shell.default.run(command: versionCheck, silently: true))?.lines.first?.line,
+        let systemVersionStart = String(systemVersionLine).range(of: CharacterSet.decimalDigits)?.lowerBound,
+        let systemVersion = Version(String(systemVersionLine).substring(from: systemVersionStart)),
         systemVersion == requiredVersion.version {
 
         do {

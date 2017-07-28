@@ -48,7 +48,7 @@ class WorkspaceTests : XCTestCase {
 
             for newline in ["\n", String.crLF] {
 
-                let parsed = text.joined(separator: newline).linesArray
+                let parsed = text.joined(separator: newline).lines.map({ String($0.line) })
                 XCTAssert(parsed == text, join(lines: [
                     "Failure parsing lines using \(newline.addingPercentEncoding(withAllowedCharacters: CharacterSet())!):",
                     join(lines: text),

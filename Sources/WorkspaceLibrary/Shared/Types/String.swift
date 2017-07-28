@@ -24,34 +24,6 @@ extension String {
         return "\u{D}\u{A}"
     }
 
-    var lines: UnfoldSequence<String, String?> {
-        return sequence(state: self, next: { (possibleRemainder: inout String?) -> String? in
-
-            guard let remainder = possibleRemainder else {
-                return nil
-            }
-
-            guard let endOfLine = remainder.rangeOfCharacter(from: CharacterSet.newlines) else {
-                // End of string
-
-                possibleRemainder = nil
-                return remainder
-            }
-
-            let line = remainder.substring(to: endOfLine.lowerBound)
-
-            var newRemainder = remainder.substring(from: endOfLine.lowerBound)
-            newRemainder.removeOneNewline(at: newRemainder.startIndex)
-
-            possibleRemainder = newRemainder
-            return line
-        })
-    }
-
-    var linesArray: [String] {
-        return [String](lines)
-    }
-
     var isMultiline: Bool {
         var result: Bool = false
         var firstLineRead: Bool = false
@@ -293,8 +265,7 @@ extension String {
     // MARK: - Errors
 
     func lineNumber(for index: String.UnicodeScalarView.Index) -> Int {
-        let before = substring(to: index.positionOfExtendedGraphemeCluster(in: self))
-        return before.linesArray.count
+        return lines.distance(from: lines.startIndex, to: index.line(in: lines)) + 1
     }
 
     func lineNumber(for index: String.Index) -> Int {

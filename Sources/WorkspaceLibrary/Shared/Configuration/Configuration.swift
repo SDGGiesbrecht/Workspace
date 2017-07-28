@@ -171,7 +171,7 @@ struct Configuration {
         var result: [Option: String] = [:]
         var currentMultilineOption: Option?
         var currentMultilineComment: [String]?
-        for line in configurationSource.lines {
+        for line in configurationSource.lines.map({ String($0.line) }) {
 
             if let option = currentMultilineOption {
                 // In multiline value
@@ -348,7 +348,7 @@ struct Configuration {
         if value == "" {
             return []
         } else {
-            return value.linesArray
+            return value.lines.map({ String($0.line) })
         }
     }
     private static func listValue(option: Option) -> [String] {
@@ -359,7 +359,7 @@ struct Configuration {
     static func parseLocalizations(_ string: String) -> [ArbitraryLocalization: String]? {
         var currentLocalization: String?
         var result: [String: [String]] = [:]
-        for line in string.lines {
+        for line in string.lines.lazy.map({ String($0.line) }) {
             if let identifier = line.contents(of: ("[_", "_]"), requireWholeStringToMatch: true) {
                 currentLocalization = identifier
             } else {
@@ -799,7 +799,7 @@ struct Configuration {
 
             func describe(option: Option, value: String?) -> String {
                 if let actualValue = value {
-                    if actualValue.linesArray.count ≤ 1 {
+                    if ¬actualValue.isMultiline {
                         return "\(option.key): \(actualValue)"
                     } else {
                         return join(lines: [

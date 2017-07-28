@@ -104,7 +104,7 @@ struct UnitTests {
                     }
 
                     var list: [String: (identifier: String, version: Version)] = [:]
-                    for entry in deviceManifest.lines {
+                    for entry in deviceManifest.lines.map({ String($0.line) }) {
 
                         if let identifier = entry.contents(of: ("[", "]")) {
 

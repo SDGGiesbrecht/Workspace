@@ -58,7 +58,7 @@ struct Examples {
 
                     if startLineRange ≠ endLineRange {
 
-                        var contents = file.contents.substring(with: startLineRange.upperBound ..< endLineRange.lowerBound).linesArray
+                        var contents = file.contents.substring(with: startLineRange.upperBound ..< endLineRange.lowerBound).lines.map({ String($0.line) })
                         while contents.first?.isWhitespace ?? false {
                             contents.removeFirst()
                         }
@@ -150,7 +150,7 @@ struct Examples {
                             "```swift",
                             example,
                             "```"
-                            ]).linesArray
+                            ]).lines.map({ String($0.line) })
 
                         for index in exampleLines.startIndex ..< exampleLines.endIndex where index ≠ exampleLines.startIndex {
                             exampleLines[index] = internalIndent + exampleLines[index]

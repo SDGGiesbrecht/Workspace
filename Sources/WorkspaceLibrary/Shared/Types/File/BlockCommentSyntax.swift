@@ -46,7 +46,7 @@ struct BlockCommentSyntax {
 
         let withEndToken = join(lines: [contents, end])
 
-        var lines = withEndToken.linesArray
+        var lines = withEndToken.lines.map({ String($0.line) })
 
         lines = lines.map() { (line: String) -> String in
 
@@ -119,7 +119,7 @@ struct BlockCommentSyntax {
 
         }
 
-        var lines = string.substring(with: range).linesArray
+        var lines = string.substring(with: range).lines.map({ String($0.line) })
         while let line = lines.first, line.isWhitespace {
             lines.removeFirst()
         }

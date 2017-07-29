@@ -28,25 +28,6 @@ extension String {
         return ¬scalars.contains(where: { $0 ∉ CharacterSet.whitespaces })
     }
 
-    // MARK: - Searching
-
-    #if os(Linux)
-    // [_Workaround: Linux has troube when this function is used on Unicode. (Swift 3.0.2)_]
-    func replacingOccurrences(of searchTerm: String, with replacement: String) -> String {
-        var result = self
-
-        var index = 0
-        while let range = result.range(of: searchTerm, in: result.index(result.startIndex, offsetBy: index) ..< result.endIndex) {
-            index = result.distance(from: result.startIndex, to: range.lowerBound)
-            index += replacement.distance(from: replacement.startIndex, to: replacement.endIndex)
-
-        result.replaceSubrange(range, with: replacement)
-    }
-
-    return result
-    }
-    #endif
-
     // MARK: - Splitting at Tokens
 
     func split(at token: String) -> (before: String, after: String)? {

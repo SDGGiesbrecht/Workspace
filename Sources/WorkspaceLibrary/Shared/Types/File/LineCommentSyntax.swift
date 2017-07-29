@@ -88,7 +88,7 @@ struct LineCommentSyntax {
 
     private func restOfLine(at index: String.Index, in range: Range<String.Index>, of string: String) -> Range<String.Index> {
 
-        if let newline = string.range(of: CharacterSet.newlines, in: index ..< range.upperBound) {
+        if let newline = string.scalars.firstMatch(for: ConditionalPattern(condition: { $0 ∈ CharacterSet.newlines }), in: (index ..< range.upperBound).sameRange(in: string.scalars))?.range.clusters(in: string.clusters) {
 
             return index ..< newline.lowerBound
         } else {

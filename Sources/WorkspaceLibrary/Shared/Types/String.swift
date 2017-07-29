@@ -30,22 +30,6 @@ extension String {
 
     // MARK: - Searching
 
-    func range(of characters: CharacterSet, in searchRange: Range<Index>? = nil) -> Range<Index>? {
-        let actualSearchRange = searchRange ?? startIndex ..< endIndex
-
-        var location = actualSearchRange.lowerBound.samePosition(in: unicodeScalars)
-        let end = actualSearchRange.upperBound.samePosition(in: unicodeScalars)
-        while location < end ∧ unicodeScalars[location] ∉ characters {
-            location = unicodeScalars.index(after: location)
-        }
-        if location == end {
-            return nil
-        } else {
-            let position = location.positionOfExtendedGraphemeCluster(in: self)
-            return position ..< index(after: position)
-        }
-    }
-
     #if os(Linux)
     // [_Workaround: Linux has troube when this function is used on Unicode. (Swift 3.0.2)_]
     func replacingOccurrences(of searchTerm: String, with replacement: String) -> String {

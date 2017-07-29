@@ -68,7 +68,7 @@ func runThirdPartyTool(name: String, repositoryURL: String, versionCheck: [Strin
     }
 
     if let systemVersionLine = (try? Shell.default.run(command: versionCheck, silently: true))?.lines.first?.line,
-        let systemVersionStart = String(systemVersionLine).range(of: CharacterSet.decimalDigits)?.lowerBound,
+        let systemVersionStart = String(systemVersionLine).scalars.firstMatch(for: ConditionalPattern(condition: { $0 ∈ CharacterSet.decimalDigits }))?.range.lowerBound.cluster(in: String(systemVersionLine).clusters),
         let systemVersion = Version(String(systemVersionLine).substring(from: systemVersionStart)),
         systemVersion == requiredVersion.version {
 

@@ -29,7 +29,7 @@ struct Examples {
                 let startTokens = ("[_Define Example", "_]")
 
                 var index = file.contents.startIndex
-                while let startTokenRange = file.contents.range(of: startTokens, in: index ..< file.contents.endIndex) {
+                while let startTokenRange = file.contents.scalars.firstNestingLevel(startingWith: startTokens.0.scalars, endingWith: startTokens.1.scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.container.range.clusters(in: file.contents.clusters) {
                     index = startTokenRange.upperBound
 
                     guard var identifier = file.contents.contents(of: startTokens, in: startTokenRange) else {
@@ -139,7 +139,9 @@ struct Examples {
 
                     var countingExampleIndex = 0
                     var searchIndex = commentValue.startIndex
-                    exampleSearch: while let exampleRange = commentValue.range(of: ("```", "```"), in: searchIndex ..< commentValue.endIndex) {
+                    exampleSearch: while let startRange = commentValue.scalars.firstMatch(for: "```".scalars, in: (searchIndex ..< commentValue.endIndex).sameRange(in: commentValue.scalars))?.range.clusters(in: commentValue.clusters), let endRange = commentValue.scalars.firstMatch(for: "```".scalars, in: (startRange.upperBound ..< commentValue.endIndex).sameRange(in: commentValue.scalars))?.range.clusters(in: commentValue.clusters) {
+                        let exampleRange = startRange.lowerBound ..< endRange.upperBound
+
                         searchIndex = exampleRange.upperBound
                         countingExampleIndex += 1
 

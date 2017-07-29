@@ -36,7 +36,7 @@ extension Warning {
         let marker = ("[_\(trigger)", "_]")
 
         var index = file.contents.startIndex
-        while let range = file.contents.range(of: marker, in: index ..< file.contents.endIndex) {
+        while let range = file.contents.scalars.firstNestingLevel(startingWith: marker.0.scalars, endingWith: marker.1.scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.container.range.clusters(in: file.contents.clusters) {
             index = range.upperBound
 
             guard let detailRange = file.contents.rangeOfContents(of: marker) else {

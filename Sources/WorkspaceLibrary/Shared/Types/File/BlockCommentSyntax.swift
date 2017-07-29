@@ -93,7 +93,7 @@ struct BlockCommentSyntax {
     }
 
     func rangeOfFirstComment(in range: Range<String.Index>, of string: String) -> Range<String.Index>? {
-        return string.range(of: (start, end), in: range)
+        return string.scalars.firstNestingLevel(startingWith: start.scalars, endingWith: end.scalars, in: range.sameRange(in: string.scalars))?.container.range.clusters(in: string.clusters)
     }
 
     func requireRangeOfFirstComment(in range: Range<String.Index>, of file: File) -> Range<String.Index> {

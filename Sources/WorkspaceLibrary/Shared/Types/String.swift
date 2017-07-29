@@ -30,10 +30,6 @@ extension String {
 
     // MARK: - Searching for Token Pairs
 
-    func range(of tokens: (start: String, end: String), in searchRange: Range<Index>? = nil, requireWholeStringToMatch: Bool = false) -> Range<String.Index>? {
-        return scalars.firstNestingLevel(startingWith: tokens.start.scalars, endingWith: tokens.end.scalars, in: searchRange?.sameRange(in: scalars))?.container.range.clusters(in: clusters)
-    }
-
     func rangeOfContents(of tokens: (start: String, end: String), in searchRange: Range<Index>? = nil, requireWholeStringToMatch: Bool = false) -> Range<String.Index>? {
         return scalars.firstNestingLevel(startingWith: tokens.start.scalars, endingWith: tokens.end.scalars, in: searchRange?.sameRange(in: scalars))?.contents.range.clusters(in: clusters)
     }

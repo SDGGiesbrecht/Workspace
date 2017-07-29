@@ -31,7 +31,7 @@ struct DocumentationInheritance {
                 let startTokens = ("[\u{5F}Define Documentation", "_]")
 
                 var index = file.contents.startIndex
-                while let startTokenRange = file.contents.range(of: startTokens, in: index ..< file.contents.endIndex) {
+                while let startTokenRange = file.contents.scalars.firstNestingLevel(startingWith: startTokens.0.scalars, endingWith: startTokens.1.scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.container.range.clusters(in: file.contents.clusters) {
                     index = startTokenRange.upperBound
 
                     guard var identifier = file.contents.contents(of: startTokens, in: startTokenRange) else {

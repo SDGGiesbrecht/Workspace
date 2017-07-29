@@ -226,7 +226,7 @@ struct Documentation {
                 var source = file.contents
 
                 let tokens = ("<span class=\u{22}err\u{22}>", "</span>")
-                while let error = source.range(of: tokens) {
+                while let error = source.scalars.firstNestingLevel(startingWith: tokens.0.scalars, endingWith: tokens.1.scalars)?.container.range.clusters(in: source.clusters) {
 
                     func parseError() -> Never {
                         fatalError(message: [

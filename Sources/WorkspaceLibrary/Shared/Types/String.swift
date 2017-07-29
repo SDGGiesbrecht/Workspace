@@ -31,7 +31,10 @@ extension String {
     // MARK: - Searching
 
     func range(of searchTerm: String, in searchRange: Range<Index>) -> Range<Index>? {
-        return range(of: searchTerm, options: String.CompareOptions.literal, range: searchRange)
+        guard let match = scalars.firstMatch(for: searchTerm.scalars, in: searchRange.sameRange(in: scalars)) else {
+            return nil
+        }
+        return match.range.clusters(in: clusters)
     }
 
     func range(of characters: CharacterSet, in searchRange: Range<Index>? = nil) -> Range<Index>? {

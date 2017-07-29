@@ -217,21 +217,24 @@ struct Configuration {
             } else if line == "" ∨ lineCommentSyntax.commentExists(at: line.startIndex, in: line) {
                 // Comment or whitespace
 
-            } else if let url = line.contents(of: importStatementTokens, requireWholeStringToMatch: true) {
+            } else if let url = line.scalars.firstNestingLevel(startingWith: importStatementTokens.0.scalars, endingWith: importStatementTokens.1.scalars),
+                url.container.range == line.scalars.bounds {
                 // Import statement
 
-                let otherFile = parseConfigurationFile(fromLinkedRepositoryAt: url)
+                let otherFile = parseConfigurationFile(fromLinkedRepositoryAt: String(url.contents.contents))
                 for (option, value) in otherFile {
                     result[option] = value
                 }
 
-            } else if let multilineOption = line.contents(of: startTokens, requireWholeStringToMatch: true) {
+            } else if let multilineOption = line.scalars.firstNestingLevel(startingWith: startTokens.0.scalars, endingWith: startTokens.1.scalars),
+                multilineOption.container.range == line.scalars.bounds
+                {
                 // Multiline option
 
-                if let option = Option(key: multilineOption) {
+                if let option = Option(key: String(multilineOption.contents.contents)) {
                     currentMultilineOption = option
                 } else {
-                    reportUnsupportedKey(multilineOption)
+                    reportUnsupportedKey(String(multilineOption.contents.contents))
                 }
 
             } else if let (optionKey, value) = split(line, at: colon) {
@@ -370,8 +373,9 @@ struct Configuration {
         var currentLocalization: String?
         var result: [String: [String]] = [:]
         for line in string.lines.lazy.map({ String($0.line) }) {
-            if let identifier = line.contents(of: ("[_", "_]"), requireWholeStringToMatch: true) {
-                currentLocalization = identifier
+            if let identifier = line.scalars.firstNestingLevel(startingWith: "[_".scalars, endingWith: "_]".scalars),
+                identifier.container.range == line.scalars.bounds {
+                currentLocalization = String(identifier.contents.contents)
             } else {
                 guard let localization = currentLocalization else {
                     return nil
@@ -523,8 +527,8 @@ struct Configuration {
     }
     static var defaultPackageName: String {
         let tokens = ("name: \u{22}", "\u{22}")
-        if let name = Repository.packageDescription.contents.contents(of: tokens) {
-            return name
+        if let name = Repository.packageDescription.contents.scalars.firstNestingLevel(startingWith: tokens.0.scalars, endingWith: tokens.1.scalars)?.contents.contents {
+            return String(name)
         } else {
             return packageName(forProjectName: Repository.folderName)
         }

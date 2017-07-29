@@ -106,7 +106,8 @@ struct UnitTests {
                     var list: [String: (identifier: String, version: Version)] = [:]
                     for entry in deviceManifest.lines.map({ String($0.line) }) {
 
-                        if let identifier = entry.contents(of: ("[", "]")) {
+                        if let identifierSubSequence = entry.scalars.firstNestingLevel(startingWith: "[".scalars, endingWith: "]".scalars)?.contents.contents {
+                            let identifier = String(identifierSubSequence)
 
                             var possibleName: String?
                             var possibleRemainder: String?
@@ -124,8 +125,8 @@ struct UnitTests {
 
                             if let name = possibleName,
                                 let remainder = possibleRemainder,
-                                let versionString = remainder.contents(of: ("(", ")")),
-                                let version = Version(versionString) {
+                                let versionString = remainder.scalars.firstNestingLevel(startingWith: "(".scalars, endingWith: ")".scalars)?.contents.contents,
+                                let version = Version(String(versionString)) {
 
                                 let oldVersion: Version
                                 if let existing = list[name] {
@@ -194,12 +195,13 @@ struct UnitTests {
                 }
 
                 let buildDirectoryKey = (" BUILD_DIR = ", "\n")
-                guard let buildDirectory = settings.contents(of: buildDirectoryKey) else {
+                guard let buildDirectorySubSequence = settings.scalars.firstNestingLevel(startingWith: buildDirectoryKey.0.scalars, endingWith: buildDirectoryKey.1.scalars)?.contents.contents else {
                     fatalError(message: [
                         "Failed to find “\(buildDirectoryKey.0)” in Xcode build settings.",
                         "This may indicate a bug in Workspace."
                         ])
                 }
+                let buildDirectory = String(buildDirectorySubSequence)
 
                 let irrelevantPathComponents = "Products"
                 guard let irrelevantRange = buildDirectory.range(of: irrelevantPathComponents) else {
@@ -214,13 +216,13 @@ struct UnitTests {
                 let coverageData = coverageDirectory + "Coverage.profdata"
 
                 let executableLocationKey = (" EXECUTABLE_PATH = \(Xcode.primaryProductName).", "\n")
-                guard let executableLocationSuffix = settings.contents(of: executableLocationKey) else {
+                guard let executableLocationSuffix = settings.scalars.firstNestingLevel(startingWith: executableLocationKey.0.scalars, endingWith: executableLocationKey.1.scalars)?.contents.contents else {
                     fatalError(message: [
                         "Failed to find “\(buildDirectoryKey.0)” in Xcode build settings.",
                         "This may indicate a bug in Workspace."
                         ])
                 }
-                let relativeExecutableLocation = Xcode.primaryProductName + "." + executableLocationSuffix
+                let relativeExecutableLocation = Xcode.primaryProductName + "." + String(executableLocationSuffix)
                 let directorySuffix: String
                 if let simulator = simulatorSDK {
                     directorySuffix = "\u{2D}" + simulator

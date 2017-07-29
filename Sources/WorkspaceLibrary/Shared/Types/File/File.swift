@@ -262,7 +262,12 @@ struct File {
 
     func requireContents(of tokens: (String, String), in searchRange: Range<String.Index>? = nil) -> String {
 
-        return require(search: { contents.contents(of: $0, in: searchRange) }, tokens: tokens, range: searchRange)
+        return require(search: {
+            guard let result = contents.scalars.firstNestingLevel(startingWith: $0.0.scalars, endingWith: $0.0.scalars, in: searchRange?.sameRange(in: contents.scalars))?.contents.contents else {
+                return nil
+            }
+            return String(result)
+        }, tokens: tokens, range: searchRange)
     }
 
     // MARK: - Writing

@@ -34,12 +34,13 @@ struct DocumentationInheritance {
                 while let startTokenRange = file.contents.scalars.firstNestingLevel(startingWith: startTokens.0.scalars, endingWith: startTokens.1.scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.container.range.clusters(in: file.contents.clusters) {
                     index = startTokenRange.upperBound
 
-                    guard var identifier = file.contents.contents(of: startTokens, in: startTokenRange) else {
+                    guard let identifierSubsequence = file.contents.scalars.firstNestingLevel(startingWith: startTokens.0.scalars, endingWith: startTokens.1.scalars, in: startTokenRange.sameRange(in: file.contents.scalars))?.contents.contents else {
                         failTests(message: [
                             "Failed to parse “\(file.contents.substring(with: startTokenRange))”.",
                             "This may indicate a bug in Workspace."
                             ])
                     }
+                    var identifier = String(identifierSubsequence)
 
                     if identifier.hasPrefix(":") {
                         identifier.unicodeScalars.removeFirst()
@@ -86,9 +87,10 @@ struct DocumentationInheritance {
                             ])
                     }
 
-                    guard let details = file.contents.contents(of: ("[\u{5F}Inherit Documentation", "_]"), in: range.lowerBound ..< file.contents.endIndex) else {
+                    guard let detailsSubSequence = file.contents.scalars.firstNestingLevel(startingWith: "[\u{5F}Inherit Documentation".scalars, endingWith: "_]".scalars, in: (range.lowerBound ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.contents.contents else {
                         syntaxError()
                     }
+                    let details = String(detailsSubSequence)
                     guard let colon = details.range(of: ": ") else {
                         syntaxError()
                     }

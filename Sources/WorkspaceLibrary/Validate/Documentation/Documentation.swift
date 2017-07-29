@@ -238,8 +238,8 @@ struct Documentation {
                             ])
                     }
 
-                    guard let contents = source.contents(of: tokens),
-                        let first = contents.unicodeScalars.first else {
+                    guard let contents = source.scalars.firstNestingLevel(startingWith: tokens.0.scalars, endingWith: tokens.1.scalars)?.contents.contents,
+                        let first = contents.first else {
                             parseError()
                     }
 

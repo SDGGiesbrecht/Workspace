@@ -30,16 +30,6 @@ extension String {
 
     // MARK: - Searching for Token Pairs
 
-    func contents(of tokens: (start: String, end: String), in searchRange: Range<Index>? = nil, requireWholeStringToMatch: Bool = false) -> String? {
-        guard let level = scalars.firstNestingLevel(startingWith: tokens.start.scalars, endingWith: tokens.end.scalars, in: searchRange?.sameRange(in: scalars)) else {
-            return nil
-        }
-        guard ¬requireWholeStringToMatch ∨ level.container.range == scalars.bounds else {
-            return nil
-        }
-        return String(level.contents.contents)
-    }
-
     mutating func replaceContentsOfEveryPair(of tokens: (start: String, end: String), with replacement: String, in searchRange: Range<Index>? = nil) {
 
         var possibleRemainder: Range<String.Index>? = searchRange ?? startIndex ..< endIndex

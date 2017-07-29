@@ -243,14 +243,14 @@ struct UnitTests {
                 var overallCoverageSuccess = true
                 var overallIndex = coverageResults.startIndex
                 let fileMarker = ".swift:"
-                while let range = coverageResults.range(of: fileMarker, in: overallIndex ..< coverageResults.endIndex) {
+                while let range = coverageResults.scalars.firstMatch(for: fileMarker.scalars, in: (overallIndex ..< coverageResults.endIndex).sameRange(in: coverageResults.scalars))?.range.clusters(in: coverageResults.clusters) {
                     overallIndex = range.upperBound
 
                     let fileRange = coverageResults.lineRange(for: range)
                     let file = coverageResults.substring(with: fileRange)
 
                     let end: String.Index
-                    if let next = coverageResults.range(of: fileMarker, in: fileRange.upperBound ..< coverageResults.endIndex) {
+                    if let next = coverageResults.scalars.firstMatch(for: fileMarker.scalars, in: (fileRange.upperBound ..< coverageResults.endIndex).sameRange(in: coverageResults.scalars))?.range.clusters(in: coverageResults.clusters) {
                         let nextFileRange = coverageResults.lineRange(for: next)
                         end = nextFileRange.lowerBound
                     } else {
@@ -258,7 +258,7 @@ struct UnitTests {
                     }
 
                     var index = overallIndex
-                    while let missingRange = coverageResults.range(of: "^0", in: index ..< end) {
+                    while let missingRange = coverageResults.scalars.firstMatch(for: "^0".scalars, in: (index ..< end).sameRange(in: coverageResults.scalars))?.range.clusters(in: coverageResults.clusters) {
                         index = missingRange.upperBound
 
                         let errorLineRange = coverageResults.lineRange(for: missingRange)

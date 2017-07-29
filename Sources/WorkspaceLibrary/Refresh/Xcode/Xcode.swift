@@ -71,7 +71,7 @@ struct Xcode {
 
             let productMarkerSearchString = "productName = \u{22}\(Xcode.primaryProductName)\u{22}"
             guard let productMarker = project.range(of: productMarkerSearchString),
-                let rangeOfProductType = project.range(of: ".framework", in: productMarker.upperBound ..< project.endIndex)else {
+                let rangeOfProductType = project.scalars.firstMatch(for: ".framework".scalars, in: (productMarker.upperBound ..< project.endIndex).sameRange(in: project.scalars))?.range.clusters(in: project.clusters) else {
                     fatalError(message: [
                         "Cannot find primary product in Xcode project.",
                         "Expected “.framework” after “\(productMarkerSearchString)”."
@@ -89,7 +89,7 @@ struct Xcode {
             var searchLocation = project.startIndex
             let frameworkPhaseSearchString = "isa = \u{22}PBXFrameworksBuildPhase\u{22}"
             let fileListTokens = ("files = (", ");")
-            while let frameworkPhase = project.range(of: frameworkPhaseSearchString, in: searchLocation ..< project.endIndex) {
+            while let frameworkPhase = project.scalars.firstMatch(for: frameworkPhaseSearchString.scalars, in: (searchLocation ..< project.endIndex).sameRange(in: project.scalars))?.range.clusters(in: project.clusters) {
                 searchLocation = frameworkPhase.upperBound
 
                 if let fileList = project.rangeOfContents(of: fileListTokens, in: frameworkPhase.upperBound ..< project.endIndex) {
@@ -180,7 +180,7 @@ struct Xcode {
 
             var searchRange = file.contents.startIndex ..< file.contents.endIndex
             var discoveredPhaseInsertLocation: String.Index?
-            while let possiblePhaseInsertLocation = file.contents.range(of: "buildPhases = (\n", in: searchRange)?.upperBound {
+            while let possiblePhaseInsertLocation = file.contents.scalars.firstMatch(for: "buildPhases = (\n".scalars, in: searchRange.sameRange(in: file.contents.scalars))?.range.upperBound.cluster(in: file.contents.clusters) {
                 searchRange = possiblePhaseInsertLocation ..< file.contents.endIndex
 
                 let name = file.requireContents(of: ("name = \u{22}", "\u{22};"), in: searchRange)

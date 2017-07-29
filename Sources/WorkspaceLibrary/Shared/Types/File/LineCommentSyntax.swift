@@ -98,7 +98,7 @@ struct LineCommentSyntax {
 
     func rangeOfFirstComment(in range: Range<String.Index>, of string: String) -> Range<String.Index>? {
 
-        guard let startRange = string.range(of: start, in: range) else {
+        guard let startRange = string.scalars.firstMatch(for: start.scalars, in: range.sameRange(in: string.scalars))?.range.clusters(in: string.clusters) else {
             return nil
         }
 

@@ -23,7 +23,7 @@ struct Mark : Rule {
     static func check(file: File, status: inout Bool) {
 
         var index = file.contents.startIndex
-        while let range = file.contents.range(of: "MARK\u{3A}", in: index ..< file.contents.endIndex) {
+        while let range = file.contents.scalars.firstMatch(for: "MARK\u{3A}".scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.range.clusters(in: file.contents.clusters) {
             index = range.upperBound
 
             let lineRange = file.contents.lineRange(for: range)

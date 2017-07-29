@@ -30,7 +30,7 @@ struct Not : Rule {
             }
 
             var index = file.contents.startIndex
-            while let range = file.contents.range(of: "!", in: index ..< file.contents.endIndex) {
+            while let range = file.contents.scalars.firstMatch(for: "!".scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.range.clusters(in: file.contents.clusters) {
                 index = range.upperBound
 
                 func throwError() {

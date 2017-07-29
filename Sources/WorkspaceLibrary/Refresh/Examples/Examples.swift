@@ -46,7 +46,7 @@ struct Examples {
                         identifier.unicodeScalars.removeFirst()
                     }
 
-                    guard let end = file.contents.range(of: "[_End_]", in: startTokenRange.lowerBound ..< file.contents.endIndex) else {
+                    guard let end = file.contents.scalars.firstMatch(for: "[_End_]".scalars, in: (startTokenRange.lowerBound ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.range.clusters(in: file.contents.clusters) else {
                         failTests(message: [
                             "Failed to find the end of “\(file.contents.substring(with: startTokenRange))”.",
                             "This may indicate a bug in Workspace."
@@ -104,7 +104,7 @@ struct Examples {
                 var file = require() { try File(at: path) }
 
                 var index = file.contents.startIndex
-                while let range = file.contents.range(of: "[\u{5F}Example", in: index ..< file.contents.endIndex) {
+                while let range = file.contents.scalars.firstMatch(for: "[\u{5F}Example".scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.range.clusters(in: file.contents.clusters) {
                     index = range.upperBound
 
                     func syntaxError() -> Never {

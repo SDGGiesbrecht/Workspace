@@ -234,7 +234,7 @@ struct File {
             rangeToSearch = contents.startIndex ..< contents.endIndex
         }
 
-        if let result = contents.range(of: searchTerm, in: rangeToSearch) {
+        if let result = contents.scalars.firstMatch(for: searchTerm.scalars, in: rangeToSearch.sameRange(in: contents.scalars))?.range.clusters(in: contents.clusters) {
             return result
         } else {
             missingContentError(content: searchTerm, range: rangeToSearch)

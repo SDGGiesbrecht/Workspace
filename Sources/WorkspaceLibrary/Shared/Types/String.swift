@@ -30,13 +30,6 @@ extension String {
 
     // MARK: - Searching
 
-    func range(of searchTerm: String, in searchRange: Range<Index>) -> Range<Index>? {
-        guard let match = scalars.firstMatch(for: searchTerm.scalars, in: searchRange.sameRange(in: scalars)) else {
-            return nil
-        }
-        return match.range.clusters(in: clusters)
-    }
-
     func range(of characters: CharacterSet, in searchRange: Range<Index>? = nil) -> Range<Index>? {
         let actualSearchRange = searchRange ?? startIndex ..< endIndex
 
@@ -90,11 +83,11 @@ extension String {
             actualSearchRange = startIndex ..< endIndex
         }
 
-        guard let startTokenRange = range(of: tokens.start, in: actualSearchRange) else {
+        guard let startTokenRange = scalars.firstMatch(for: tokens.start.scalars, in: actualSearchRange.sameRange(in: scalars))?.range.clusters(in: clusters) else {
             return nil
         }
 
-        guard let endTokenRange = range(of: tokens.end, in: startTokenRange.upperBound ..< actualSearchRange.upperBound) else {
+        guard let endTokenRange = scalars.firstMatch(for: tokens.end.scalars, in: (startTokenRange.upperBound ..< actualSearchRange.upperBound).sameRange(in: scalars))?.range.clusters(in: clusters) else {
             return nil
         }
 

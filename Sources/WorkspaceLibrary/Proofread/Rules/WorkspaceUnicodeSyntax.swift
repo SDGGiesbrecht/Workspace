@@ -25,7 +25,7 @@ struct WorkspaceUnicodeSyntax : Rule {
             // Manage Read‐Me & Read‐Me
 
             var index = file.contents.startIndex
-            while let range = file.contents.range(of: "Read\u{22}Me", in: index ..< file.contents.endIndex) {
+            while let range = file.contents.scalars.firstMatch(for: "Read\u{22}Me".scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.range.clusters(in: file.contents.clusters) {
                 index = range.upperBound
                 errorNotice(status: &status, file: file, range: range, replacement: "Manage Read‐Me", message: "Did you mean “Read‐Me”?")
             }
@@ -34,7 +34,7 @@ struct WorkspaceUnicodeSyntax : Rule {
         // Define Example: Read‐Me
 
         var index = file.contents.startIndex
-        while let range = file.contents.range(of: "[\u{5F}Define Example: Read\u{22}Me_]", in: index ..< file.contents.endIndex) {
+        while let range = file.contents.scalars.firstMatch(for: "[\u{5F}Define Example: Read\u{22}Me_]".scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.range.clusters(in: file.contents.clusters) {
             index = range.upperBound
             errorNotice(status: &status, file: file, range: range, replacement: "[\u{5F}Define Example: Read‐Me_]", message: "Did you mean “[\u{5F}Define Example: Read‐Me_]”?")
         }

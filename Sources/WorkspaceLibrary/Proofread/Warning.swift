@@ -39,7 +39,7 @@ extension Warning {
         while let range = file.contents.scalars.firstNestingLevel(startingWith: marker.0.scalars, endingWith: marker.1.scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.container.range.clusters(in: file.contents.clusters) {
             index = range.upperBound
 
-            guard let detailRange = file.contents.rangeOfContents(of: marker) else {
+            guard let detailRange = file.contents.scalars.firstNestingLevel(startingWith: marker.0.scalars, endingWith: marker.1.scalars)?.contents.range.clusters(in: file.contents.clusters) else {
                 fatalError(message: [
                     "Expected “\(marker.0)”...“\(marker.1)” in “\(file.contents.substring(with: range))”.",
                     "This may indicate a bug in Workspace."

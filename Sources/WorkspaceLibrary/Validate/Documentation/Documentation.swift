@@ -249,7 +249,7 @@ struct Documentation {
                         }
                         source.removeSubrange(division)
                     } else {
-                        guard let `class` = source.rangeOfContents(of: ("<span class=\u{22}", "\u{22}>"), in: error) else {
+                        guard let `class` = source.scalars.firstNestingLevel(startingWith: "<span class=\u{22}".scalars, endingWith: "\u{22}>".scalars, in: error.sameRange(in: source.scalars))?.contents.range.clusters(in: source.clusters) else {
                             parseError()
                         }
 

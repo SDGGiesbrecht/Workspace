@@ -92,7 +92,7 @@ struct Xcode {
             while let frameworkPhase = project.scalars.firstMatch(for: frameworkPhaseSearchString.scalars, in: (searchLocation ..< project.endIndex).sameRange(in: project.scalars))?.range.clusters(in: project.clusters) {
                 searchLocation = frameworkPhase.upperBound
 
-                if let fileList = project.rangeOfContents(of: fileListTokens, in: frameworkPhase.upperBound ..< project.endIndex) {
+                if let fileList = project.scalars.firstNestingLevel(startingWith: fileListTokens.0.scalars, endingWith: fileListTokens.1.scalars, in: (frameworkPhase.upperBound ..< project.endIndex).sameRange(in: project.scalars))?.contents.range.clusters(in: project.clusters) {
                     if let existing = possibleFrameworksList {
                         if project.distance(from: fileList.lowerBound, to: fileList.upperBound) > project.distance(from: existing.lowerBound, to: existing.upperBound) {
                             possibleFrameworksList = fileList

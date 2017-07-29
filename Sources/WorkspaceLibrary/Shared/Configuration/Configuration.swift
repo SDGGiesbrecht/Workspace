@@ -168,6 +168,16 @@ struct Configuration {
                 ])
         }
 
+        func split(_ string: String, at token: String) -> (before: String, after: String)? {
+            var result = string.components(separatedBy: token)
+            guard result.count > 1 else {
+                return nil
+            }
+            let before = result.removeFirst()
+            let after = result.joined(separator: token)
+            return (before, after)
+        }
+
         var result: [Option: String] = [:]
         var currentMultilineOption: Option?
         var currentMultilineComment: [String]?
@@ -224,7 +234,7 @@ struct Configuration {
                     reportUnsupportedKey(multilineOption)
                 }
 
-            } else if let (optionKey, value) = line.split(at: colon) {
+            } else if let (optionKey, value) = split(line, at: colon) {
                 // Simple option
 
                 if let option = Option(key: optionKey) {

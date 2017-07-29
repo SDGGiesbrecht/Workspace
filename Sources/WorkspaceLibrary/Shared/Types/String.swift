@@ -28,15 +28,6 @@ extension String {
         return ¬scalars.contains(where: { $0 ∉ CharacterSet.whitespaces })
     }
 
-    // MARK: - Splitting at Tokens
-
-    func split(at token: String) -> (before: String, after: String)? {
-        guard let tokenRange = range(of: token) else {
-            return nil
-        }
-        return (substring(to: tokenRange.lowerBound), substring(from: tokenRange.upperBound))
-    }
-
     // MARK: - Searching for Token Pairs
 
     private func ranges(of tokens: (start: String, end: String), in searchRange: Range<Index>? = nil, requireWholeStringToMatch: Bool = false) -> (start: Range<Index>, end: Range<Index>)? {

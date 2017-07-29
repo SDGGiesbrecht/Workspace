@@ -30,51 +30,12 @@ extension String {
 
     // MARK: - Searching for Token Pairs
 
-    private func ranges(of tokens: (start: String, end: String), in searchRange: Range<Index>? = nil, requireWholeStringToMatch: Bool = false) -> (start: Range<Index>, end: Range<Index>)? {
-
-        let actualSearchRange: Range<Index>
-        if let boundedSearch = searchRange {
-            actualSearchRange = boundedSearch
-        } else {
-            actualSearchRange = startIndex ..< endIndex
-        }
-
-        guard let startTokenRange = scalars.firstMatch(for: tokens.start.scalars, in: actualSearchRange.sameRange(in: scalars))?.range.clusters(in: clusters) else {
-            return nil
-        }
-
-        guard let endTokenRange = scalars.firstMatch(for: tokens.end.scalars, in: (startTokenRange.upperBound ..< actualSearchRange.upperBound).sameRange(in: scalars))?.range.clusters(in: clusters) else {
-            return nil
-        }
-
-        let result = (start: startTokenRange, end: endTokenRange)
-        if requireWholeStringToMatch {
-            if startTokenRange.lowerBound == startIndex ∧ endTokenRange.upperBound == endIndex {
-                return result
-            } else {
-                return nil
-            }
-        } else {
-            return result
-        }
-    }
-
     func range(of tokens: (start: String, end: String), in searchRange: Range<Index>? = nil, requireWholeStringToMatch: Bool = false) -> Range<String.Index>? {
-
-        guard let both = ranges(of: tokens, in: searchRange, requireWholeStringToMatch: requireWholeStringToMatch) else {
-            return nil
-        }
-
-        return both.start.lowerBound ..< both.end.upperBound
+        return scalars.firstNestingLevel(startingWith: tokens.start.scalars, endingWith: tokens.end.scalars, in: searchRange?.sameRange(in: scalars))?.container.range.clusters(in: clusters)
     }
 
     func rangeOfContents(of tokens: (start: String, end: String), in searchRange: Range<Index>? = nil, requireWholeStringToMatch: Bool = false) -> Range<String.Index>? {
-
-        guard let both = ranges(of: tokens, in: searchRange, requireWholeStringToMatch: requireWholeStringToMatch) else {
-            return nil
-        }
-
-        return both.start.upperBound ..< both.end.lowerBound
+        return scalars.firstNestingLevel(startingWith: tokens.start.scalars, endingWith: tokens.end.scalars, in: searchRange?.sameRange(in: scalars))?.contents.range.clusters(in: clusters)
     }
 
     func contents(of tokens: (start: String, end: String), in searchRange: Range<Index>? = nil, requireWholeStringToMatch: Bool = false) -> String? {

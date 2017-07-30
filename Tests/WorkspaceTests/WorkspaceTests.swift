@@ -29,22 +29,6 @@ class WorkspaceTests : XCTestCase {
         }
     }
 
-    func testGeneralParsing() {
-
-        let originalStringWithTokens = "()()()"
-        let expectedReplacedTokenContents = "(x)(x)(x)"
-        var stringWithTokens = originalStringWithTokens
-        stringWithTokens.replaceContentsOfEveryPair(of: ("(", ")"), with: "x")
-        XCTAssert(stringWithTokens == expectedReplacedTokenContents, join(lines: [
-            "Failure replacing token contents:",
-            originalStringWithTokens,
-            "↓",
-            stringWithTokens,
-            "≠",
-            expectedReplacedTokenContents
-            ]))
-    }
-
     func testLineNumbers() {
         let file = join(lines: [
             "Line 1: א",
@@ -755,7 +739,6 @@ class WorkspaceTests : XCTestCase {
 
     static var allTests: [(String, (WorkspaceTests) -> () throws -> Void)] {
         return [
-            ("testGeneralParsing", testGeneralParsing),
             ("testLineNumbers", testLineNumbers),
             ("testBlockComments", testBlockComments),
             ("testLineComments", testLineComments),

@@ -28,33 +28,6 @@ extension String {
         return ¬scalars.contains(where: { $0 ∉ CharacterSet.whitespaces })
     }
 
-    // MARK: - Searching for Token Pairs
-
-    mutating func replaceContentsOfEveryPair(of tokens: (start: String, end: String), with replacement: String, in searchRange: Range<Index>? = nil) {
-
-        var possibleRemainder: Range<String.Index>? = searchRange ?? startIndex ..< endIndex
-
-        while let remainder = possibleRemainder {
-            if let range = scalars.firstNestingLevel(startingWith: tokens.0.scalars, endingWith: tokens.1.scalars, in: remainder.sameRange(in: scalars))?.contents.range.clusters(in: clusters) {
-
-                replaceSubrange(range, with: replacement)
-
-                var location = range.lowerBound
-
-                if ¬advance(&location, past: replacement)
-                    ∨ ¬advance(&location, past: tokens.end) {
-                    fatalError(message: [
-                        "Failed to replace text.",
-                        "This may indicate a bug in Workspace."
-                        ])
-                }
-                possibleRemainder = location ..< endIndex
-            } else {
-                possibleRemainder = nil
-            }
-        }
-    }
-
     // MARK: - Moving Indices
 
     func advance(_ index: inout Index, past string: String) -> Bool {

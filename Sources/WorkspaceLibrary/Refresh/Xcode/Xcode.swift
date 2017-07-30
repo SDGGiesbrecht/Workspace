@@ -55,14 +55,25 @@ struct Xcode {
         // Allow dependencies to be found by the executable.
 
         var file = require() { try File(at: path.subfolderOrFile("project.pbxproj")) }
-        file.contents.replaceContentsOfEveryPair(of: ("LD_RUNPATH_SEARCH_PATHS = (", ");"), with: join(lines: [
+
+        let startToken = "LD_RUNPATH_SEARCH_PATHS = ("
+        let endToken = ");"
+        let illegal = endToken.scalars.first!
+        let paths = join(lines: [
             "",
             "$(inherited)",
             "@executable_path/Frameworks",
             "@loader_path/Frameworks",
             "@executable_path/../Frameworks",
             "@loader_path/../Frameworks"
-            ].map({ "\u{22}\($0)\u{22}," })))
+            ].map({ "\u{22}\($0)\u{22}," }))
+        let replacement = (startToken + paths + endToken).scalars
+
+        file.contents.scalars.replaceMatches(for: [
+            LiteralPattern(startToken.scalars),
+            ConditionalPattern(condition: { $0 ≠ illegal }),
+            LiteralPattern(startToken.scalars)
+        ], with: replacement)
 
         if Configuration.projectType == .application {
             var project = file.contents

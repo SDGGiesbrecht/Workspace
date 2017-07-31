@@ -73,12 +73,7 @@ extension Rule {
     static func errorNotice(status: inout Bool, file: File, range scalarRange: Range<String.UnicodeScalarView.Index>, replacement scalarReplacement: String?, message: String, noticeOnly: Bool = false) {
 
         // Scalars vs Clusters
-        let clusterStart = scalarRange.lowerBound.positionOfExtendedGraphemeCluster(in: file.contents)
-        var clusterEnd = scalarRange.upperBound.positionOfExtendedGraphemeCluster(in: file.contents)
-        if clusterEnd.samePosition(in: file.contents.unicodeScalars) ≠ scalarRange.upperBound {
-            clusterEnd = file.contents.index(after: clusterEnd) // Round ahead intead of back.
-        }
-        let clusterRange = clusterStart ..< clusterEnd
+        let clusterRange = scalarRange.clusters(in: file.contents.clusters)
 
         var clusterReplacement: String?
         if let replacement = scalarReplacement {

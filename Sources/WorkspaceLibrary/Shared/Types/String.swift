@@ -39,7 +39,7 @@ extension String {
     }
 
     func columnNumber(for index: String.UnicodeScalarView.Index) -> Int {
-        let location = index.positionOfExtendedGraphemeCluster(in: self)
+        let location = index.cluster(in: clusters)
         let line = lineRange(for: location ..< location)
         return distance(from: line.lowerBound, to: location) + 1
     }

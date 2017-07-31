@@ -110,14 +110,14 @@ struct DocumentationInheritance {
 
                         file.contents.replaceSubrange(commentRange, with: lineDocumentationSyntax.comment(contents: replacement, indent: indent))
                     } else {
-                        var location = nextLineStart
-                        file.contents.advance(&location, past: CharacterSet.whitespaces)
+                        var location = nextLineStart.samePosition(in: file.contents.scalars)
+                        file.contents.scalars.advance(&location, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
 
-                        let indent = file.contents.substring(with: nextLineStart ..< location)
+                        let indent = file.contents.substring(with: nextLineStart ..< location.cluster(in: file.contents.clusters))
 
                         let result = lineDocumentationSyntax.comment(contents: replacement, indent: indent) + "\n" + indent
 
-                        file.contents.replaceSubrange(location ..< location, with: result)
+                        file.contents.scalars.replaceSubrange(location ..< location, with: result.scalars)
                     }
                 }
 

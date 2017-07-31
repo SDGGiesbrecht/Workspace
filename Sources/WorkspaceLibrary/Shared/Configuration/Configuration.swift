@@ -227,8 +227,7 @@ struct Configuration {
                 }
 
             } else if let multilineOption = line.scalars.firstNestingLevel(startingWith: startTokens.0.scalars, endingWith: startTokens.1.scalars),
-                multilineOption.container.range == line.scalars.bounds
-                {
+                multilineOption.container.range == line.scalars.bounds {
                 // Multiline option
 
                 if let option = Option(key: String(multilineOption.contents.contents)) {

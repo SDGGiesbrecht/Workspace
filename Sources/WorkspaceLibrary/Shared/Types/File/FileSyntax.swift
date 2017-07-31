@@ -144,7 +144,11 @@ struct FileSyntax {
 
     private static func advance(_ index: inout String.Index, pastLayoutSpacingIn string: String) {
         string.advance(&index, pastNewlinesWithLimit: 1)
-        string.advance(&index, past: CharacterSet.whitespaces)
+
+        var scalar = index.samePosition(in: string.scalars)
+        string.scalars.advance(&scalar, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
+        index = scalar.cluster(in: string.clusters)
+
         string.advance(&index, pastNewlinesWithLimit: 1)
     }
 

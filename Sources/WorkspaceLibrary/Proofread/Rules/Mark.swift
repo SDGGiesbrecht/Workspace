@@ -36,12 +36,18 @@ struct Mark : Rule {
             if ¬before.hasSuffix(" // ") ∧ before ≠ "// " {
                 errorExists = true
                 errorStart = lineRange.lowerBound
-                file.contents.advance(&errorStart, past: CharacterSet.whitespaces)
+
+                var scalar = errorStart.samePosition(in: file.contents.scalars)
+                file.contents.scalars.advance(&scalar, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
+                errorStart = scalar.cluster(in: file.contents.clusters)
             }
             var errorEnd = range.upperBound
             if ¬after.hasPrefix(" \u{2D} ") {
                 errorExists = true
-                file.contents.advance(&errorEnd, past: CharacterSet.whitespaces ∪ ["\u{2D}"])
+
+                var scalar = errorEnd.samePosition(in: file.contents.scalars)
+                file.contents.scalars.advance(&scalar, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces ∪ ["\u{2D}"] })))
+                errorEnd = scalar.cluster(in: file.contents.clusters)
             }
 
             if errorExists {

@@ -59,12 +59,12 @@ struct FileHeaders {
         var oldStartDate: String?
         for symbol in ["©", "(C)", "(c)"] {
             for space in ["", " "] {
-                if let range = text.range(of: symbol + space) {
+                if let range = text.scalars.firstMatch(for: (symbol + space).scalars)?.range {
                     var numberEnd = range.upperBound
-                    text.advance(&numberEnd, past: CharacterSet.decimalDigits, limit: 4)
-                    let number = text.substring(with: range.upperBound ..< numberEnd)
-                    if number.unicodeScalars.count == 4 {
-                        oldStartDate = number
+                    text.scalars.advance(&numberEnd, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.decimalDigits })))
+                    let number = text.scalars[range.upperBound ..< numberEnd]
+                    if number.count == 4 {
+                        oldStartDate = String(number)
                         break
                     }
                 }

@@ -105,13 +105,19 @@ struct LineCommentSyntax {
         var resultEnd = restOfLine(at: startRange.lowerBound, in: range, of: string).upperBound
         var testIndex = resultEnd
         string.advance(&testIndex, pastNewlinesWithLimit: 1)
-        string.advance(&testIndex, past: CharacterSet.whitespaces)
+
+        var scalar = testIndex.samePosition(in: string.scalars)
+        string.scalars.advance(&scalar, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces})))
+        testIndex = scalar.cluster(in: string.clusters)
 
         while string.substring(from: testIndex).hasPrefix(start) {
             resultEnd = restOfLine(at: testIndex, in: range, of: string).upperBound
             testIndex = resultEnd
             string.advance(&testIndex, pastNewlinesWithLimit: 1)
-            string.advance(&testIndex, past: CharacterSet.whitespaces)
+
+            scalar = testIndex.samePosition(in: string.scalars)
+            string.scalars.advance(&scalar, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces})))
+            testIndex = scalar.cluster(in: string.clusters)
         }
 
         return startRange.lowerBound ..< resultEnd
@@ -144,18 +150,18 @@ struct LineCommentSyntax {
         let comment = string.substring(with: range)
         let lines = comment.lines.map({ String($0.line) }).map() { (line: String) -> String in
 
-            var index = line.startIndex
+            var index = line.scalars.startIndex
 
-            line.advance(&index, past: CharacterSet.whitespaces)
-            guard line.clusters.advance(&index, over: start.clusters) else {
-                line.parseError(at: index, in: nil)
+            line.scalars.advance(&index, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
+            guard line.scalars.advance(&index, over: start.scalars) else {
+                line.parseError(at: index.cluster(in: line.clusters), in: nil)
             }
 
             if stylisticSpacing {
-                line.advance(&index, past: CharacterSet.whitespaces, limit: 1)
+                line.scalars.advance(&index, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces }), count: 0 ..< 1 + 1))
             }
 
-            var result = line.substring(from: index)
+            var result = String(line.scalars.suffix(from: index))
             if let end = stylisticEnd {
                 if result.hasSuffix(end) {
                     result = result.substring(to: result.index(result.endIndex, offsetBy: −end.characters.count))

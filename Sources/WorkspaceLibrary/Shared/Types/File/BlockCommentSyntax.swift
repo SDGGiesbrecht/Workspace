@@ -129,22 +129,23 @@ struct BlockCommentSyntax {
         }
         lines.removeFirst()
 
-        var index = first.startIndex
-        first.advance(&index, past: CharacterSet.whitespaces)
-        let indent = first.distance(from: first.startIndex, to: index)
+        var index = first.scalars.startIndex
+        first.scalars.advance(&index, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
+        let indent = first.scalars.distance(from: first.scalars.startIndex, to: index)
 
-        var result = [first.substring(from: index)]
+        var result = [first.scalars.suffix(from: index)]
         for line in lines {
-            var indentIndex = line.startIndex
-            line.advance(&indentIndex, past: CharacterSet.whitespaces, limit: indent)
-            result.append(line.substring(from: indentIndex))
+            var indentIndex = line.scalars.startIndex
+            line.scalars.advance(&indentIndex, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces }), count: 0 ..< indent + 1))
+            result.append(line.scalars.suffix(from: indentIndex))
         }
 
-        while let last = result.last, last.isWhitespace {
-            result.removeLast()
+        var strings = result.map({ String($0) })
+        while let last = strings.last, last.isWhitespace {
+            strings.removeLast()
         }
 
-        return join(lines: result)
+        return join(lines: strings)
     }
 
     func firstComment(in string: String) -> String? {

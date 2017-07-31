@@ -43,16 +43,6 @@ extension String {
         index = scalar.cluster(in: clusters)
     }
 
-    func advance(_ index: inout Index, past characters: CharacterSet, limit: Int? = nil) {
-
-        assert(limit == nil ∨ characters ≠ CharacterSet.newlines, join(lines: [
-            "When counting newlines, CR + LF is not counted properly by String.advance(_:past:limit:).",
-            "Use String.advance(_:pastNewlinesWithLimit:) instead."
-            ]))
-
-        advance(&index, past: characters, limit: limit, advanceOne: { $0 = unicodeScalars.index(after: $0) })
-    }
-
     func advance(_ index: inout Index, pastNewlinesWithLimit limit: Int) {
 
         advance(&index, past: CharacterSet.newlines, limit: limit, advanceOne: { (mobileIndex: inout ScalarIndex) -> Void in

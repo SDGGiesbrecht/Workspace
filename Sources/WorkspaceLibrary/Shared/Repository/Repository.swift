@@ -121,9 +121,9 @@ struct Repository {
                     if line.isWhitespace {
                         break
                     } else {
-                        var start = line.startIndex
-                        line.advance(&start, past: CharacterSet.whitespaces)
-                        ignoredPaths.append(line.substring(from: start))
+                        var start = line.scalars.startIndex
+                        line.scalars.advance(&start, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
+                        ignoredPaths.append(String(line.scalars.suffix(from: start)))
                     }
                 }
 

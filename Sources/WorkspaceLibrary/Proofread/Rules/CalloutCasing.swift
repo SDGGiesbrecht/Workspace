@@ -33,8 +33,10 @@ struct CalloutCasing : Rule {
                     let nextCharacter = file.contents.unicodeScalars[nextIndex]
                     if nextCharacter ∈ CharacterSet.lowercaseLetters {
 
-                        var index = range.upperBound
-                        file.contents.advance(&index, past: CharacterSet.letters)
+                        var scalar = range.upperBound.samePosition(in: file.contents.scalars)
+                        file.contents.scalars.advance(&scalar, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.letters })))
+                        let index = scalar.cluster(in: file.contents.clusters)
+
                         let afterWord = file.contents.characters[index]
                         if afterWord == ":" {
 

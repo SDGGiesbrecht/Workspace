@@ -67,9 +67,9 @@ struct Examples {
                             contents.removeLast()
                         }
 
-                        var indentEnd = startLineRange.lowerBound
-                        file.contents.advance(&indentEnd, past: CharacterSet.whitespaces)
-                        let indent = file.contents.substring(with: startLineRange.lowerBound ..< indentEnd)
+                        var indentEnd = startLineRange.lowerBound.samePosition(in: file.contents.scalars)
+                        file.contents.scalars.advance(&indentEnd, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
+                        let indent = file.contents.substring(with: startLineRange.lowerBound ..< indentEnd.cluster(in: file.contents.clusters))
 
                         contents = contents.map() { (line: String) -> String in
                             var index = line.startIndex

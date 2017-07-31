@@ -28,44 +28,6 @@ extension String {
         return ¬scalars.contains(where: { $0 ∉ CharacterSet.whitespaces })
     }
 
-    // MARK: - Moving Indices
-
-    private func advance(_ index: inout Index, past characters: CharacterSet, limit: Int?, advanceOne: (inout UnicodeScalarView.Index) -> Void) {
-        var scalar = index.samePosition(in: scalars)
-
-        var count: CountableRange<Int>?
-        if let max = limit {
-            count = 0 ..< max + 1
-        }
-
-        scalars.advance(&scalar, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ characters }), count: count))
-
-        index = scalar.cluster(in: clusters)
-    }
-
-    func advance(_ index: inout Index, pastNewlinesWithLimit limit: Int) {
-
-        advance(&index, past: CharacterSet.newlines, limit: limit, advanceOne: { (mobileIndex: inout ScalarIndex) -> Void in
-
-            if substring(with: mobileIndex.positionOfExtendedGraphemeCluster(in: self) ..< endIndex).hasPrefix(String.crLF) {
-                mobileIndex = unicodeScalars.index(mobileIndex, offsetBy: 2)
-            } else {
-                mobileIndex = unicodeScalars.index(after: mobileIndex)
-            }
-        })
-    }
-
-    @discardableResult mutating func removeOneNewline(at index: Index) -> Bool {
-        var position = index
-        advance(&position, pastNewlinesWithLimit: 1)
-        if position ≠ index {
-            removeSubrange(index ..< position)
-            return true
-        } else {
-            return false
-        }
-    }
-
     // MARK: - Errors
 
     func lineNumber(for index: String.UnicodeScalarView.Index) -> Int {

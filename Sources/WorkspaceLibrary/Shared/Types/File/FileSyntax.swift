@@ -143,13 +143,18 @@ struct FileSyntax {
     }
 
     private static func advance(_ index: inout String.Index, pastLayoutSpacingIn string: String) {
-        string.advance(&index, pastNewlinesWithLimit: 1)
-
         var scalar = index.samePosition(in: string.scalars)
-        string.scalars.advance(&scalar, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
-        index = scalar.cluster(in: string.clusters)
 
-        string.advance(&index, pastNewlinesWithLimit: 1)
+        let newline = AlternativePatterns([
+            LiteralPattern("\u{D}\u{A}".scalars),
+            ConditionalPattern(condition: { $0 ∈ CharacterSet.newlines })
+            ])
+
+        string.scalars.advance(&scalar, over: RepetitionPattern(newline, count: 0 ..< 1 + 1))
+        string.scalars.advance(&scalar, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
+        string.scalars.advance(&scalar, over: RepetitionPattern(newline, count: 0 ..< 1 + 1))
+
+        index = scalar.cluster(in: string.clusters)
     }
 
     func headerStart(file: File) -> String.Index {

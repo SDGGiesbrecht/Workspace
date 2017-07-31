@@ -102,22 +102,23 @@ struct LineCommentSyntax {
             return nil
         }
 
+        let newline = AlternativePatterns([
+            LiteralPattern("\u{D}\u{A}".scalars),
+            ConditionalPattern(condition: { $0 ∈ CharacterSet.newlines })
+            ])
+
         var resultEnd = restOfLine(at: startRange.lowerBound, in: range, of: string).upperBound
-        var testIndex = resultEnd
-        string.advance(&testIndex, pastNewlinesWithLimit: 1)
+        var testIndex = resultEnd.samePosition(in: string.scalars)
+        string.scalars.advance(&testIndex, over: RepetitionPattern(newline, count: 0 ..< 1 + 1))
 
-        var scalar = testIndex.samePosition(in: string.scalars)
-        string.scalars.advance(&scalar, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces})))
-        testIndex = scalar.cluster(in: string.clusters)
+        string.scalars.advance(&testIndex, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces})))
 
-        while string.substring(from: testIndex).hasPrefix(start) {
-            resultEnd = restOfLine(at: testIndex, in: range, of: string).upperBound
-            testIndex = resultEnd
-            string.advance(&testIndex, pastNewlinesWithLimit: 1)
+        while string.scalars.suffix(from: testIndex).hasPrefix(start.scalars) {
+            resultEnd = restOfLine(at: testIndex.cluster(in: string.clusters), in: range, of: string).upperBound
+            testIndex = resultEnd.samePosition(in: string.scalars)
+            string.scalars.advance(&testIndex, over: RepetitionPattern(newline, count: 0 ..< 1 + 1))
 
-            scalar = testIndex.samePosition(in: string.scalars)
-            string.scalars.advance(&scalar, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces})))
-            testIndex = scalar.cluster(in: string.clusters)
+            string.scalars.advance(&testIndex, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces})))
         }
 
         return startRange.lowerBound ..< resultEnd

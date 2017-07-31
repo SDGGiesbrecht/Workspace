@@ -109,14 +109,14 @@ struct LineCommentSyntax {
 
         var resultEnd = restOfLine(at: startRange.lowerBound, in: range, of: string).upperBound
         var testIndex = resultEnd.samePosition(in: string.scalars)
-        string.scalars.advance(&testIndex, over: RepetitionPattern(newline, count: 0 ..< 1 + 1))
+        string.scalars.advance(&testIndex, over: RepetitionPattern(newline, count: 0 ... 1))
 
         string.scalars.advance(&testIndex, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces})))
 
         while string.scalars.suffix(from: testIndex).hasPrefix(start.scalars) {
             resultEnd = restOfLine(at: testIndex.cluster(in: string.clusters), in: range, of: string).upperBound
             testIndex = resultEnd.samePosition(in: string.scalars)
-            string.scalars.advance(&testIndex, over: RepetitionPattern(newline, count: 0 ..< 1 + 1))
+            string.scalars.advance(&testIndex, over: RepetitionPattern(newline, count: 0 ... 1))
 
             string.scalars.advance(&testIndex, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces})))
         }
@@ -159,7 +159,7 @@ struct LineCommentSyntax {
             }
 
             if stylisticSpacing {
-                line.scalars.advance(&index, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces }), count: 0 ..< 1 + 1))
+                line.scalars.advance(&index, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces }), count: 0 ... 1))
             }
 
             var result = String(line.scalars.suffix(from: index))

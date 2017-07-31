@@ -150,9 +150,9 @@ struct FileSyntax {
             ConditionalPattern(condition: { $0 ∈ CharacterSet.newlines })
             ])
 
-        string.scalars.advance(&scalar, over: RepetitionPattern(newline, count: 0 ..< 1 + 1))
+        string.scalars.advance(&scalar, over: RepetitionPattern(newline, count: 0 ... 1))
         string.scalars.advance(&scalar, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
-        string.scalars.advance(&scalar, over: RepetitionPattern(newline, count: 0 ..< 1 + 1))
+        string.scalars.advance(&scalar, over: RepetitionPattern(newline, count: 0 ... 1))
 
         index = scalar.cluster(in: string.clusters)
     }

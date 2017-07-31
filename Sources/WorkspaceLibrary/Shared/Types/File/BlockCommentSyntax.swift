@@ -136,7 +136,7 @@ struct BlockCommentSyntax {
         var result = [first.scalars.suffix(from: index)]
         for line in lines {
             var indentIndex = line.scalars.startIndex
-            line.scalars.advance(&indentIndex, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces }), count: 0 ..< indent + 1))
+            line.scalars.advance(&indentIndex, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces }), count: 0 ... indent))
             result.append(line.scalars.suffix(from: indentIndex))
         }
 

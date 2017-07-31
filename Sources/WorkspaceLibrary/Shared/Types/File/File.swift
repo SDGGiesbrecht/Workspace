@@ -197,7 +197,7 @@ struct File {
 
     func requireAdvance(index: inout String.Index, past string: String) {
 
-        guard contents.advance(&index, past: string) else {
+        guard contents.clusters.advance(&index, over: string.clusters) else {
 
             string.parseError(at: index, in: self)
         }

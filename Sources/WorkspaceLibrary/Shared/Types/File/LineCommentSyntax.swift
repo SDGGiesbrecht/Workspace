@@ -65,7 +65,7 @@ struct LineCommentSyntax {
     func commentExists(at location: String.Index, in string: String, countDocumentationMarkup: Bool = true) -> Bool {
 
         var index = location
-        if ¬string.advance(&index, past: start) {
+        if ¬string.clusters.advance(&index, over: start.clusters) {
             return false
         } else {
             // Comment
@@ -147,7 +147,7 @@ struct LineCommentSyntax {
             var index = line.startIndex
 
             line.advance(&index, past: CharacterSet.whitespaces)
-            guard line.advance(&index, past: start) else {
+            guard line.clusters.advance(&index, over: start.clusters) else {
                 line.parseError(at: index, in: nil)
             }
 

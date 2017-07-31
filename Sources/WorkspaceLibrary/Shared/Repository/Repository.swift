@@ -241,7 +241,7 @@ struct Repository {
 
             let root = Repository.absolute(Repository.root).string
             var startIndex = pathString.startIndex
-            if pathString.advance(&startIndex, past: root) {
+            if pathString.clusters.advance(&startIndex, over: root.clusters) {
                 return RelativePath(pathString.substring(from: startIndex))
             } else {
                 return nil

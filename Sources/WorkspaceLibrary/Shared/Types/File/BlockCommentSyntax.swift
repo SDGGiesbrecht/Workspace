@@ -71,7 +71,7 @@ struct BlockCommentSyntax {
     func startOfCommentExists(at location: String.Index, in string: String, countDocumentationMarkup: Bool = true) -> Bool {
 
         var index = location
-        if ¬string.advance(&index, past: start) {
+        if ¬string.clusters.advance(&index, over: start.clusters) {
             return false
         } else {
             // Block comment

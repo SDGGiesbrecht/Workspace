@@ -73,7 +73,7 @@ struct Examples {
 
                         contents = contents.map() { (line: String) -> String in
                             var index = line.startIndex
-                            if line.advance(&index, past: indent) {
+                            if line.clusters.advance(&index, over: indent.clusters) {
                                 return line.substring(from: index)
                             } else {
                                 return line

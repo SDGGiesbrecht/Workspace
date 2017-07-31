@@ -787,7 +787,7 @@ struct ReadMe {
 
                 func extractHeader(line: String) -> String {
                     var start = line.startIndex
-                    guard line.advance(&start, past: "# ") else {
+                    guard line.clusters.advance(&start, over: "# ".clusters) else {
                         fatalError(message: [
                             "Error parsing section header:",
                             "",

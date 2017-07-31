@@ -30,51 +30,17 @@ extension String {
 
     // MARK: - Moving Indices
 
-    func advance(_ index: inout Index, past string: String) -> Bool {
-
-        var indexCopy = index
-        var syncedIndex = string.startIndex
-        for (ownCharacter, stringCharacter) in zip(substring(from: index).characters.lazy, string.characters.lazy) {
-
-            if ownCharacter == stringCharacter {
-                indexCopy = self.index(after: indexCopy)
-                syncedIndex = string.index(after: syncedIndex)
-            } else {
-                return false
-            }
-        }
-        if syncedIndex ≠ string.endIndex {
-            // Not all of the string was present
-            return false
-        }
-
-        index = indexCopy
-        return true
-    }
-
     private func advance(_ index: inout Index, past characters: CharacterSet, limit: Int?, advanceOne: (inout UnicodeScalarView.Index) -> Void) {
+        var scalar = index.samePosition(in: scalars)
 
-        var scalarIndex = index.samePosition(in: unicodeScalars)
-
-        var iterationsCompleted = 0
-        func notAtLimit() -> Bool {
-            if let theLimit = limit {
-                return iterationsCompleted < theLimit
-            } else {
-                return true
-            }
-        }
-        while notAtLimit() ∧ index ≠ endIndex ∧ unicodeScalars[scalarIndex] ∈ characters {
-            advanceOne(&scalarIndex)
-            iterationsCompleted += 1
+        var count: CountableRange<Int>?
+        if let max = limit {
+            count = 0 ..< max + 1
         }
 
-        guard let converted = scalarIndex.samePosition(in: self) else {
+        scalars.advance(&scalar, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ characters }), count: count))
 
-            parseError(at: index, in: nil)
-        }
-
-        index = converted
+        index = scalar.cluster(in: clusters)
     }
 
     func advance(_ index: inout Index, past characters: CharacterSet, limit: Int? = nil) {

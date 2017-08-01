@@ -55,14 +55,25 @@ struct Xcode {
         // Allow dependencies to be found by the executable.
 
         var file = require() { try File(at: path.subfolderOrFile("project.pbxproj")) }
-        file.contents.replaceContentsOfEveryPair(of: ("LD_RUNPATH_SEARCH_PATHS = (", ");"), with: join(lines: [
+
+        let startToken = "LD_RUNPATH_SEARCH_PATHS = ("
+        let endToken = ");"
+        let illegal = endToken.scalars.first!
+        let paths = join(lines: [
             "",
             "$(inherited)",
             "@executable_path/Frameworks",
             "@loader_path/Frameworks",
             "@executable_path/../Frameworks",
             "@loader_path/../Frameworks"
-            ].map({ "\u{22}\($0)\u{22}," })))
+            ].map({ "\u{22}\($0)\u{22}," }))
+        let replacement = (startToken + paths + endToken).scalars
+
+        file.contents.scalars.replaceMatches(for: [
+            LiteralPattern(startToken.scalars),
+            ConditionalPattern(condition: { $0 ≠ illegal }),
+            LiteralPattern(startToken.scalars)
+        ], with: replacement)
 
         if Configuration.projectType == .application {
             var project = file.contents
@@ -71,7 +82,7 @@ struct Xcode {
 
             let productMarkerSearchString = "productName = \u{22}\(Xcode.primaryProductName)\u{22}"
             guard let productMarker = project.range(of: productMarkerSearchString),
-                let rangeOfProductType = project.range(of: ".framework", in: productMarker.upperBound ..< project.endIndex)else {
+                let rangeOfProductType = project.scalars.firstMatch(for: ".framework".scalars, in: (productMarker.upperBound ..< project.endIndex).sameRange(in: project.scalars))?.range.clusters(in: project.clusters) else {
                     fatalError(message: [
                         "Cannot find primary product in Xcode project.",
                         "Expected “.framework” after “\(productMarkerSearchString)”."
@@ -89,10 +100,10 @@ struct Xcode {
             var searchLocation = project.startIndex
             let frameworkPhaseSearchString = "isa = \u{22}PBXFrameworksBuildPhase\u{22}"
             let fileListTokens = ("files = (", ");")
-            while let frameworkPhase = project.range(of: frameworkPhaseSearchString, in: searchLocation ..< project.endIndex) {
+            while let frameworkPhase = project.scalars.firstMatch(for: frameworkPhaseSearchString.scalars, in: (searchLocation ..< project.endIndex).sameRange(in: project.scalars))?.range.clusters(in: project.clusters) {
                 searchLocation = frameworkPhase.upperBound
 
-                if let fileList = project.rangeOfContents(of: fileListTokens, in: frameworkPhase.upperBound ..< project.endIndex) {
+                if let fileList = project.scalars.firstNestingLevel(startingWith: fileListTokens.0.scalars, endingWith: fileListTokens.1.scalars, in: (frameworkPhase.upperBound ..< project.endIndex).sameRange(in: project.scalars))?.contents.range.clusters(in: project.clusters) {
                     if let existing = possibleFrameworksList {
                         if project.distance(from: fileList.lowerBound, to: fileList.upperBound) > project.distance(from: existing.lowerBound, to: existing.upperBound) {
                             possibleFrameworksList = fileList
@@ -108,7 +119,7 @@ struct Xcode {
                     "Expected “\(fileListTokens.0)”...“\(fileListTokens.1)” after “\(frameworkPhaseSearchString)”."
                     ])
             }
-            var frameworkLines = project.substring(with: frameworksList).linesArray
+            var frameworkLines = project.substring(with: frameworksList).lines.map({ String($0.line) })
             for index in frameworkLines.indices.reversed() where ¬frameworkLines[index].isWhitespace {
                     frameworkLines.remove(at: index)
                     break
@@ -180,7 +191,7 @@ struct Xcode {
 
             var searchRange = file.contents.startIndex ..< file.contents.endIndex
             var discoveredPhaseInsertLocation: String.Index?
-            while let possiblePhaseInsertLocation = file.contents.range(of: "buildPhases = (\n", in: searchRange)?.upperBound {
+            while let possiblePhaseInsertLocation = file.contents.scalars.firstMatch(for: "buildPhases = (\n".scalars, in: searchRange.sameRange(in: file.contents.scalars))?.range.upperBound.cluster(in: file.contents.clusters) {
                 searchRange = possiblePhaseInsertLocation ..< file.contents.endIndex
 
                 let name = file.requireContents(of: ("name = \u{22}", "\u{22};"), in: searchRange)

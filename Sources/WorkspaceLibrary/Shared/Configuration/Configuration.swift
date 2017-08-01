@@ -168,10 +168,20 @@ struct Configuration {
                 ])
         }
 
+        func split(_ string: String, at token: String) -> (before: String, after: String)? {
+            var result = string.components(separatedBy: token)
+            guard result.count > 1 else {
+                return nil
+            }
+            let before = result.removeFirst()
+            let after = result.joined(separator: token)
+            return (before, after)
+        }
+
         var result: [Option: String] = [:]
         var currentMultilineOption: Option?
         var currentMultilineComment: [String]?
-        for line in configurationSource.lines {
+        for line in configurationSource.lines.map({ String($0.line) }) {
 
             if let option = currentMultilineOption {
                 // In multiline value
@@ -207,24 +217,26 @@ struct Configuration {
             } else if line == "" ∨ lineCommentSyntax.commentExists(at: line.startIndex, in: line) {
                 // Comment or whitespace
 
-            } else if let url = line.contents(of: importStatementTokens, requireWholeStringToMatch: true) {
+            } else if let url = line.scalars.firstNestingLevel(startingWith: importStatementTokens.0.scalars, endingWith: importStatementTokens.1.scalars),
+                url.container.range == line.scalars.bounds {
                 // Import statement
 
-                let otherFile = parseConfigurationFile(fromLinkedRepositoryAt: url)
+                let otherFile = parseConfigurationFile(fromLinkedRepositoryAt: String(url.contents.contents))
                 for (option, value) in otherFile {
                     result[option] = value
                 }
 
-            } else if let multilineOption = line.contents(of: startTokens, requireWholeStringToMatch: true) {
+            } else if let multilineOption = line.scalars.firstNestingLevel(startingWith: startTokens.0.scalars, endingWith: startTokens.1.scalars),
+                multilineOption.container.range == line.scalars.bounds {
                 // Multiline option
 
-                if let option = Option(key: multilineOption) {
+                if let option = Option(key: String(multilineOption.contents.contents)) {
                     currentMultilineOption = option
                 } else {
-                    reportUnsupportedKey(multilineOption)
+                    reportUnsupportedKey(String(multilineOption.contents.contents))
                 }
 
-            } else if let (optionKey, value) = line.split(at: colon) {
+            } else if let (optionKey, value) = split(line, at: colon) {
                 // Simple option
 
                 if let option = Option(key: optionKey) {
@@ -348,7 +360,7 @@ struct Configuration {
         if value == "" {
             return []
         } else {
-            return value.linesArray
+            return value.lines.map({ String($0.line) })
         }
     }
     private static func listValue(option: Option) -> [String] {
@@ -359,9 +371,10 @@ struct Configuration {
     static func parseLocalizations(_ string: String) -> [ArbitraryLocalization: String]? {
         var currentLocalization: String?
         var result: [String: [String]] = [:]
-        for line in string.lines {
-            if let identifier = line.contents(of: ("[_", "_]"), requireWholeStringToMatch: true) {
-                currentLocalization = identifier
+        for line in string.lines.lazy.map({ String($0.line) }) {
+            if let identifier = line.scalars.firstNestingLevel(startingWith: "[_".scalars, endingWith: "_]".scalars),
+                identifier.container.range == line.scalars.bounds {
+                currentLocalization = String(identifier.contents.contents)
             } else {
                 guard let localization = currentLocalization else {
                     return nil
@@ -513,8 +526,8 @@ struct Configuration {
     }
     static var defaultPackageName: String {
         let tokens = ("name: \u{22}", "\u{22}")
-        if let name = Repository.packageDescription.contents.contents(of: tokens) {
-            return name
+        if let name = Repository.packageDescription.contents.scalars.firstNestingLevel(startingWith: tokens.0.scalars, endingWith: tokens.1.scalars)?.contents.contents {
+            return String(name)
         } else {
             return packageName(forProjectName: Repository.folderName)
         }
@@ -799,7 +812,7 @@ struct Configuration {
 
             func describe(option: Option, value: String?) -> String {
                 if let actualValue = value {
-                    if actualValue.linesArray.count ≤ 1 {
+                    if ¬actualValue.isMultiline {
                         return "\(option.key): \(actualValue)"
                     } else {
                         return join(lines: [

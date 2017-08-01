@@ -117,13 +117,13 @@ struct Repository {
             if let header = ignoredSummary.range(of: "Ignored files:") {
 
                 let remainder = ignoredSummary.substring(from: header.upperBound)
-                for line in remainder.lines.dropFirst(3) {
+                for line in remainder.lines.lazy.dropFirst(3).map({ String($0.line) }) {
                     if line.isWhitespace {
                         break
                     } else {
-                        var start = line.startIndex
-                        line.advance(&start, past: CharacterSet.whitespaces)
-                        ignoredPaths.append(line.substring(from: start))
+                        var start = line.scalars.startIndex
+                        line.scalars.advance(&start, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
+                        ignoredPaths.append(String(line.scalars.suffix(from: start)))
                     }
                 }
 
@@ -241,7 +241,7 @@ struct Repository {
 
             let root = Repository.absolute(Repository.root).string
             var startIndex = pathString.startIndex
-            if pathString.advance(&startIndex, past: root) {
+            if pathString.clusters.advance(&startIndex, over: root.clusters) {
                 return RelativePath(pathString.substring(from: startIndex))
             } else {
                 return nil

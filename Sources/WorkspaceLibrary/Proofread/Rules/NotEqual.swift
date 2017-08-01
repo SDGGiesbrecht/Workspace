@@ -28,7 +28,7 @@ struct NotEqual : Rule {
             }
 
             var index = file.contents.startIndex
-            while let range = file.contents.range(of: "\u{21}\u{3D}", in: index ..< file.contents.endIndex) {
+            while let range = file.contents.scalars.firstMatch(for: "\u{21}\u{3D}".scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.range.clusters(in: file.contents.clusters) {
                 index = range.upperBound
 
                 func throwError() {

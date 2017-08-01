@@ -25,7 +25,7 @@ struct WorkaroundReminder : Warning {
     static var dependencyList: [String: Version]?
 
     static func message(forDetails details: String) -> String? {
-        if let versionCheckRange = details.rangeOfContents(of: ("(", ")")) {
+        if let versionCheckRange = details.scalars.firstNestingLevel(startingWith: "(".scalars, endingWith: ")".scalars)?.contents.range.clusters(in: details.clusters) {
             let versionCheck = details.substring(with: versionCheckRange)
             var parameters = versionCheck.components(separatedBy: " ")
             if ¬parameters.isEmpty {
@@ -61,9 +61,9 @@ struct WorkaroundReminder : Warning {
                                 first ∉ versionCharacters {
                                 currentVersionString.unicodeScalars.removeFirst()
                             }
-                            var end = currentVersionString.startIndex
-                            currentVersionString.advance(&end, past: versionCharacters)
-                            currentVersionString = currentVersionString.substring(to: end)
+                            var end = currentVersionString.scalars.startIndex
+                            currentVersionString.scalars.advance(&end, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ versionCharacters })))
+                            currentVersionString = String(currentVersionString.scalars[currentVersionString.scalars.startIndex ..< end])
 
                             if let currentVersion = Version(currentVersionString) {
 

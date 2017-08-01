@@ -29,15 +29,16 @@ struct Examples {
                 let startTokens = ("[_Define Example", "_]")
 
                 var index = file.contents.startIndex
-                while let startTokenRange = file.contents.range(of: startTokens, in: index ..< file.contents.endIndex) {
+                while let startTokenRange = file.contents.scalars.firstNestingLevel(startingWith: startTokens.0.scalars, endingWith: startTokens.1.scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.container.range.clusters(in: file.contents.clusters) {
                     index = startTokenRange.upperBound
 
-                    guard var identifier = file.contents.contents(of: startTokens, in: startTokenRange) else {
+                    guard let identifierSubsequence = file.contents.scalars.firstNestingLevel(startingWith: startTokens.0.scalars, endingWith: startTokens.1.scalars, in: startTokenRange.sameRange(in: file.contents.scalars))?.contents.contents else {
                         failTests(message: [
                             "Failed to parse “\(file.contents.substring(with: startTokenRange))”.",
                             "This may indicate a bug in Workspace."
                             ])
                     }
+                    var identifier = String(identifierSubsequence)
 
                     if identifier.hasPrefix(":") {
                         identifier.unicodeScalars.removeFirst()
@@ -46,7 +47,7 @@ struct Examples {
                         identifier.unicodeScalars.removeFirst()
                     }
 
-                    guard let end = file.contents.range(of: "[_End_]", in: startTokenRange.lowerBound ..< file.contents.endIndex) else {
+                    guard let end = file.contents.scalars.firstMatch(for: "[_End_]".scalars, in: (startTokenRange.lowerBound ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.range.clusters(in: file.contents.clusters) else {
                         failTests(message: [
                             "Failed to find the end of “\(file.contents.substring(with: startTokenRange))”.",
                             "This may indicate a bug in Workspace."
@@ -58,7 +59,7 @@ struct Examples {
 
                     if startLineRange ≠ endLineRange {
 
-                        var contents = file.contents.substring(with: startLineRange.upperBound ..< endLineRange.lowerBound).linesArray
+                        var contents = file.contents.substring(with: startLineRange.upperBound ..< endLineRange.lowerBound).lines.map({ String($0.line) })
                         while contents.first?.isWhitespace ?? false {
                             contents.removeFirst()
                         }
@@ -66,13 +67,13 @@ struct Examples {
                             contents.removeLast()
                         }
 
-                        var indentEnd = startLineRange.lowerBound
-                        file.contents.advance(&indentEnd, past: CharacterSet.whitespaces)
-                        let indent = file.contents.substring(with: startLineRange.lowerBound ..< indentEnd)
+                        var indentEnd = startLineRange.lowerBound.samePosition(in: file.contents.scalars)
+                        file.contents.scalars.advance(&indentEnd, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
+                        let indent = file.contents.substring(with: startLineRange.lowerBound ..< indentEnd.cluster(in: file.contents.clusters))
 
                         contents = contents.map() { (line: String) -> String in
                             var index = line.startIndex
-                            if line.advance(&index, past: indent) {
+                            if line.clusters.advance(&index, over: indent.clusters) {
                                 return line.substring(from: index)
                             } else {
                                 return line
@@ -104,7 +105,7 @@ struct Examples {
                 var file = require() { try File(at: path) }
 
                 var index = file.contents.startIndex
-                while let range = file.contents.range(of: "[\u{5F}Example", in: index ..< file.contents.endIndex) {
+                while let range = file.contents.scalars.firstMatch(for: "[\u{5F}Example".scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.range.clusters(in: file.contents.clusters) {
                     index = range.upperBound
 
                     func syntaxError() -> Never {
@@ -115,9 +116,10 @@ struct Examples {
                             ])
                     }
 
-                    guard let details = file.contents.contents(of: ("[\u{5F}Example ", "_]"), in: range.lowerBound ..< file.contents.endIndex) else {
+                    guard let detailsSubsequence = file.contents.scalars.firstNestingLevel(startingWith: "[\u{5F}Example ".scalars, endingWith: "_]".scalars, in: (range.lowerBound ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.contents.contents else {
                         syntaxError()
                     }
+                    let details = String(detailsSubsequence)
                     guard let colon = details.range(of: ": ") else {
                         syntaxError()
                     }
@@ -139,7 +141,9 @@ struct Examples {
 
                     var countingExampleIndex = 0
                     var searchIndex = commentValue.startIndex
-                    exampleSearch: while let exampleRange = commentValue.range(of: ("```", "```"), in: searchIndex ..< commentValue.endIndex) {
+                    exampleSearch: while let startRange = commentValue.scalars.firstMatch(for: "```".scalars, in: (searchIndex ..< commentValue.endIndex).sameRange(in: commentValue.scalars))?.range.clusters(in: commentValue.clusters), let endRange = commentValue.scalars.firstMatch(for: "```".scalars, in: (startRange.upperBound ..< commentValue.endIndex).sameRange(in: commentValue.scalars))?.range.clusters(in: commentValue.clusters) {
+                        let exampleRange = startRange.lowerBound ..< endRange.upperBound
+
                         searchIndex = exampleRange.upperBound
                         countingExampleIndex += 1
 
@@ -150,7 +154,7 @@ struct Examples {
                             "```swift",
                             example,
                             "```"
-                            ]).linesArray
+                            ]).lines.map({ String($0.line) })
 
                         for index in exampleLines.startIndex ..< exampleLines.endIndex where index ≠ exampleLines.startIndex {
                             exampleLines[index] = internalIndent + exampleLines[index]

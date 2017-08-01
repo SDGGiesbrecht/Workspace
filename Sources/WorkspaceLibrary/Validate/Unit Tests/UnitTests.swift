@@ -104,14 +104,15 @@ struct UnitTests {
                     }
 
                     var list: [String: (identifier: String, version: Version)] = [:]
-                    for entry in deviceManifest.lines {
+                    for entry in deviceManifest.lines.map({ String($0.line) }) {
 
-                        if let identifier = entry.contents(of: ("[", "]")) {
+                        if let identifierSubSequence = entry.scalars.firstNestingLevel(startingWith: "[".scalars, endingWith: "]".scalars)?.contents.contents {
+                            let identifier = String(identifierSubSequence)
 
                             var possibleName: String?
                             var possibleRemainder: String?
                             if entry.contains("+") {
-                                if let nameRange = entry.rangeOfContents(of: ("+ ", " (")) {
+                                if let nameRange = entry.scalars.firstNestingLevel(startingWith: "+ ".scalars, endingWith: " (".scalars)?.contents.range.clusters(in: entry.clusters) {
                                     possibleName = entry[nameRange]
                                     possibleRemainder = entry.substring(from: nameRange.upperBound)
                                 }
@@ -124,8 +125,8 @@ struct UnitTests {
 
                             if let name = possibleName,
                                 let remainder = possibleRemainder,
-                                let versionString = remainder.contents(of: ("(", ")")),
-                                let version = Version(versionString) {
+                                let versionString = remainder.scalars.firstNestingLevel(startingWith: "(".scalars, endingWith: ")".scalars)?.contents.contents,
+                                let version = Version(String(versionString)) {
 
                                 let oldVersion: Version
                                 if let existing = list[name] {
@@ -194,12 +195,13 @@ struct UnitTests {
                 }
 
                 let buildDirectoryKey = (" BUILD_DIR = ", "\n")
-                guard let buildDirectory = settings.contents(of: buildDirectoryKey) else {
+                guard let buildDirectorySubSequence = settings.scalars.firstNestingLevel(startingWith: buildDirectoryKey.0.scalars, endingWith: buildDirectoryKey.1.scalars)?.contents.contents else {
                     fatalError(message: [
                         "Failed to find “\(buildDirectoryKey.0)” in Xcode build settings.",
                         "This may indicate a bug in Workspace."
                         ])
                 }
+                let buildDirectory = String(buildDirectorySubSequence)
 
                 let irrelevantPathComponents = "Products"
                 guard let irrelevantRange = buildDirectory.range(of: irrelevantPathComponents) else {
@@ -214,13 +216,13 @@ struct UnitTests {
                 let coverageData = coverageDirectory + "Coverage.profdata"
 
                 let executableLocationKey = (" EXECUTABLE_PATH = \(Xcode.primaryProductName).", "\n")
-                guard let executableLocationSuffix = settings.contents(of: executableLocationKey) else {
+                guard let executableLocationSuffix = settings.scalars.firstNestingLevel(startingWith: executableLocationKey.0.scalars, endingWith: executableLocationKey.1.scalars)?.contents.contents else {
                     fatalError(message: [
                         "Failed to find “\(buildDirectoryKey.0)” in Xcode build settings.",
                         "This may indicate a bug in Workspace."
                         ])
                 }
-                let relativeExecutableLocation = Xcode.primaryProductName + "." + executableLocationSuffix
+                let relativeExecutableLocation = Xcode.primaryProductName + "." + String(executableLocationSuffix)
                 let directorySuffix: String
                 if let simulator = simulatorSDK {
                     directorySuffix = "\u{2D}" + simulator
@@ -243,14 +245,14 @@ struct UnitTests {
                 var overallCoverageSuccess = true
                 var overallIndex = coverageResults.startIndex
                 let fileMarker = ".swift:"
-                while let range = coverageResults.range(of: fileMarker, in: overallIndex ..< coverageResults.endIndex) {
+                while let range = coverageResults.scalars.firstMatch(for: fileMarker.scalars, in: (overallIndex ..< coverageResults.endIndex).sameRange(in: coverageResults.scalars))?.range.clusters(in: coverageResults.clusters) {
                     overallIndex = range.upperBound
 
                     let fileRange = coverageResults.lineRange(for: range)
                     let file = coverageResults.substring(with: fileRange)
 
                     let end: String.Index
-                    if let next = coverageResults.range(of: fileMarker, in: fileRange.upperBound ..< coverageResults.endIndex) {
+                    if let next = coverageResults.scalars.firstMatch(for: fileMarker.scalars, in: (fileRange.upperBound ..< coverageResults.endIndex).sameRange(in: coverageResults.scalars))?.range.clusters(in: coverageResults.clusters) {
                         let nextFileRange = coverageResults.lineRange(for: next)
                         end = nextFileRange.lowerBound
                     } else {
@@ -258,7 +260,7 @@ struct UnitTests {
                     }
 
                     var index = overallIndex
-                    while let missingRange = coverageResults.range(of: "^0", in: index ..< end) {
+                    while let missingRange = coverageResults.scalars.firstMatch(for: "^0".scalars, in: (index ..< end).sameRange(in: coverageResults.scalars))?.range.clusters(in: coverageResults.clusters) {
                         index = missingRange.upperBound
 
                         let errorLineRange = coverageResults.lineRange(for: missingRange)

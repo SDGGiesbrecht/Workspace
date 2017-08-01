@@ -29,69 +29,6 @@ class WorkspaceTests : XCTestCase {
         }
     }
 
-    func testGeneralParsing() {
-
-        let originalStringWithTokens = "()()()"
-        let expectedReplacedTokenContents = "(x)(x)(x)"
-        var stringWithTokens = originalStringWithTokens
-        stringWithTokens.replaceContentsOfEveryPair(of: ("(", ")"), with: "x")
-        XCTAssert(stringWithTokens == expectedReplacedTokenContents, join(lines: [
-            "Failure replacing token contents:",
-            originalStringWithTokens,
-            "↓",
-            stringWithTokens,
-            "≠",
-            expectedReplacedTokenContents
-            ]))
-
-        func testLineBreaking(text: [String]) {
-
-            for newline in ["\n", String.crLF] {
-
-                let parsed = text.joined(separator: newline).linesArray
-                XCTAssert(parsed == text, join(lines: [
-                    "Failure parsing lines using \(newline.addingPercentEncoding(withAllowedCharacters: CharacterSet())!):",
-                    join(lines: text),
-                    "↓",
-                    join(lines: parsed)
-                    ]))
-            }
-        }
-
-        testLineBreaking(text: [
-            "Line 1",
-            "Line 2",
-            "Line 3"
-            ])
-
-        testLineBreaking(text: [
-            ""
-            ])
-
-        testLineBreaking(text: [
-            "Line 1",
-            "",
-            "Line 3"
-            ])
-
-        testLineBreaking(text: [
-            "",
-            "Line 2"
-            ])
-
-        testLineBreaking(text: [
-            "Line 1",
-            ""
-            ])
-
-        testLineBreaking(text: [
-            "Line 1",
-            "",
-            "",
-            "Line 4"
-            ])
-    }
-
     func testLineNumbers() {
         let file = join(lines: [
             "Line 1: א",
@@ -802,7 +739,6 @@ class WorkspaceTests : XCTestCase {
 
     static var allTests: [(String, (WorkspaceTests) -> () throws -> Void)] {
         return [
-            ("testGeneralParsing", testGeneralParsing),
             ("testLineNumbers", testLineNumbers),
             ("testBlockComments", testBlockComments),
             ("testLineComments", testLineComments),

@@ -30,7 +30,7 @@ struct Not : Rule {
             }
 
             var index = file.contents.startIndex
-            while let range = file.contents.range(of: "!", in: index ..< file.contents.endIndex) {
+            while let range = file.contents.scalars.firstMatch(for: "!".scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.range.clusters(in: file.contents.clusters) {
                 index = range.upperBound
 
                 func throwError() {
@@ -38,7 +38,7 @@ struct Not : Rule {
                 }
 
                 if let next = file.contents.substring(from: range.upperBound).unicodeScalars.first {
-                    if next ∉ CharacterSet.whitespacesAndNewlines ∪ ["\u{22}", ")", "*", ".", "/", "\u{5C}", "!", "„", "“", "”", "«", "»", "‚", "‘", "’", "‹", "›", ","]
+                    if next ∉ CharacterSet.whitespacesAndNewlines ∪ ["\u{22}", ")", "*", ".", "/", "\u{5C}", "!", "„", "“", "”", "«", "»", "‚", "‘", "’", "‹", "›", ",", "]"]
                         ∧ next ≠ "=" /* “Not Equal” rule */ {
 
                         switch fileType {

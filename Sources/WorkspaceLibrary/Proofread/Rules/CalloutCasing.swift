@@ -25,7 +25,7 @@ struct CalloutCasing : Rule {
         if file.fileType == .swift {
 
             var index = file.contents.startIndex
-            while let range = file.contents.range(of: "/// \u{2D} ", in: index ..< file.contents.endIndex) {
+            while let range = file.contents.scalars.firstMatch(for: "/// \u{2D} ".scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.range.clusters(in: file.contents.clusters) {
                 index = range.upperBound
 
                 if range.upperBound ≠ file.contents.endIndex {
@@ -33,8 +33,10 @@ struct CalloutCasing : Rule {
                     let nextCharacter = file.contents.unicodeScalars[nextIndex]
                     if nextCharacter ∈ CharacterSet.lowercaseLetters {
 
-                        var index = range.upperBound
-                        file.contents.advance(&index, past: CharacterSet.letters)
+                        var scalar = range.upperBound.samePosition(in: file.contents.scalars)
+                        file.contents.scalars.advance(&scalar, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.letters })))
+                        let index = scalar.cluster(in: file.contents.clusters)
+
                         let afterWord = file.contents.characters[index]
                         if afterWord == ":" {
 

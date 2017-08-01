@@ -63,7 +63,7 @@ struct Git {
 
             let existsAlready: Bool
             var managedRange: Range<String.Index>
-            if let section = body.range(of: (startToken, endToken)) {
+            if let section = body.scalars.firstNestingLevel(startingWith: startToken.scalars, endingWith: endToken.scalars)?.container.range.clusters(in: body.clusters) {
                 existsAlready = true
                 managedRange = section
             } else {

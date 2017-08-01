@@ -24,6 +24,6 @@ let package = Package(
         Target(name: "WorkspaceTests", dependencies: ["WorkspaceLibrary"])
     ],
     dependencies: [
-        .Package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", versions: Version(0, 3, 1) ..< Version(0, 4, 0))
+        .Package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", versions: Version(0, 4, 0) ..< Version(0, 5, 0))
     ]
 )

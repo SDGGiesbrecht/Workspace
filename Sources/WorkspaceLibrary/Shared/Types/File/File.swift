@@ -197,7 +197,7 @@ struct File {
 
     func requireAdvance(index: inout String.Index, past string: String) {
 
-        guard contents.advance(&index, past: string) else {
+        guard contents.clusters.advance(&index, over: string.clusters) else {
 
             string.parseError(at: index, in: self)
         }
@@ -234,7 +234,7 @@ struct File {
             rangeToSearch = contents.startIndex ..< contents.endIndex
         }
 
-        if let result = contents.range(of: searchTerm, in: rangeToSearch) {
+        if let result = contents.scalars.firstMatch(for: searchTerm.scalars, in: rangeToSearch.sameRange(in: contents.scalars))?.range.clusters(in: contents.clusters) {
             return result
         } else {
             missingContentError(content: searchTerm, range: rangeToSearch)
@@ -252,17 +252,22 @@ struct File {
 
     func requireRange(of tokens: (String, String), in searchRange: Range<String.Index>? = nil) -> Range<String.Index> {
 
-        return require(search: { contents.range(of: $0, in: searchRange) }, tokens: tokens, range: searchRange)
+        return require(search: { contents.scalars.firstNestingLevel(startingWith: $0.0.scalars, endingWith: $0.1.scalars, in: searchRange?.sameRange(in: contents.scalars))?.container.range.clusters(in: contents.clusters) }, tokens: tokens, range: searchRange)
     }
 
     func requireRangeOfContents(of tokens: (String, String), in searchRange: Range<String.Index>? = nil) -> Range<String.Index> {
 
-        return require(search: { contents.rangeOfContents(of: $0, in: searchRange) }, tokens: tokens, range: searchRange)
+        return require(search: { contents.scalars.firstNestingLevel(startingWith: $0.0.scalars, endingWith: $0.0.scalars, in: searchRange?.sameRange(in: contents.scalars))?.contents.range.clusters(in: contents.clusters) }, tokens: tokens, range: searchRange)
     }
 
     func requireContents(of tokens: (String, String), in searchRange: Range<String.Index>? = nil) -> String {
 
-        return require(search: { contents.contents(of: $0, in: searchRange) }, tokens: tokens, range: searchRange)
+        return require(search: {
+            guard let result = contents.scalars.firstNestingLevel(startingWith: $0.0.scalars, endingWith: $0.1.scalars, in: searchRange?.sameRange(in: contents.scalars))?.contents.contents else {
+                return nil
+            }
+            return String(result)
+        }, tokens: tokens, range: searchRange)
     }
 
     // MARK: - Writing

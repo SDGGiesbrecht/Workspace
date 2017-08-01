@@ -226,37 +226,36 @@ struct Documentation {
                 var source = file.contents
 
                 let tokens = ("<span class=\u{22}err\u{22}>", "</span>")
-                while let error = source.range(of: tokens) {
+                while let error = source.scalars.firstNestingLevel(startingWith: tokens.0.scalars, endingWith: tokens.1.scalars) {
 
                     func parseError() -> Never {
                         fatalError(message: [
                             "Error parsing HTML:",
                             "",
-                            source.substring(with: error),
+                            String(error.container.contents),
                             "",
                             "This may indicate a bug in Workspace."
                             ])
                     }
 
-                    guard let contents = source.contents(of: tokens),
-                        let first = contents.unicodeScalars.first else {
+                    guard let first = error.contents.contents.first else {
                             parseError()
                     }
 
                     if first ∈ CharacterSet.nonBaseCharacters {
-                        guard let division = source.range(of: "</span><span class=\u{22}err\u{22}>") else {
+                        guard let division = source.scalars.firstMatch(for: "</span><span class=\u{22}err\u{22}>".scalars) else {
                             parseError()
                         }
-                        source.removeSubrange(division)
+                        source.scalars.removeSubrange(division.range)
                     } else {
-                        guard let `class` = source.rangeOfContents(of: ("<span class=\u{22}", "\u{22}>"), in: error) else {
+                        guard let `class` = source.scalars.firstNestingLevel(startingWith: "<span class=\u{22}".scalars, endingWith: "\u{22}>".scalars, in: error.container.range)?.contents.range else {
                             parseError()
                         }
 
                         if first ∈ operatorCharacters {
-                            source.replaceSubrange(`class`, with: "o")
+                            source.scalars.replaceSubrange(`class`, with: "o".scalars)
                         } else {
-                            source.replaceSubrange(`class`, with: "n")
+                            source.scalars.replaceSubrange(`class`, with: "n".scalars)
                         }
                     }
                 }

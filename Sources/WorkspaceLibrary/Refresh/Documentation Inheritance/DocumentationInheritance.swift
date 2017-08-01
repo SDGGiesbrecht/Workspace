@@ -31,15 +31,16 @@ struct DocumentationInheritance {
                 let startTokens = ("[\u{5F}Define Documentation", "_]")
 
                 var index = file.contents.startIndex
-                while let startTokenRange = file.contents.range(of: startTokens, in: index ..< file.contents.endIndex) {
+                while let startTokenRange = file.contents.scalars.firstNestingLevel(startingWith: startTokens.0.scalars, endingWith: startTokens.1.scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.container.range.clusters(in: file.contents.clusters) {
                     index = startTokenRange.upperBound
 
-                    guard var identifier = file.contents.contents(of: startTokens, in: startTokenRange) else {
+                    guard let identifierSubsequence = file.contents.scalars.firstNestingLevel(startingWith: startTokens.0.scalars, endingWith: startTokens.1.scalars, in: startTokenRange.sameRange(in: file.contents.scalars))?.contents.contents else {
                         failTests(message: [
                             "Failed to parse “\(file.contents.substring(with: startTokenRange))”.",
                             "This may indicate a bug in Workspace."
                             ])
                     }
+                    var identifier = String(identifierSubsequence)
 
                     if identifier.hasPrefix(":") {
                         identifier.unicodeScalars.removeFirst()
@@ -75,7 +76,7 @@ struct DocumentationInheritance {
                 var file = require() { try File(at: path) }
 
                 var index = file.contents.startIndex
-                while let range = file.contents.range(of: "[\u{5F}Inherit Documentation", in: index ..< file.contents.endIndex) {
+                while let range = file.contents.scalars.firstMatch(for: "[\u{5F}Inherit Documentation".scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.range.clusters(in: file.contents.clusters) {
                     index = range.upperBound
 
                     func syntaxError() -> Never {
@@ -86,9 +87,10 @@ struct DocumentationInheritance {
                             ])
                     }
 
-                    guard let details = file.contents.contents(of: ("[\u{5F}Inherit Documentation", "_]"), in: range.lowerBound ..< file.contents.endIndex) else {
+                    guard let detailsSubSequence = file.contents.scalars.firstNestingLevel(startingWith: "[\u{5F}Inherit Documentation".scalars, endingWith: "_]".scalars, in: (range.lowerBound ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.contents.contents else {
                         syntaxError()
                     }
+                    let details = String(detailsSubSequence)
                     guard let colon = details.range(of: ": ") else {
                         syntaxError()
                     }
@@ -108,14 +110,14 @@ struct DocumentationInheritance {
 
                         file.contents.replaceSubrange(commentRange, with: lineDocumentationSyntax.comment(contents: replacement, indent: indent))
                     } else {
-                        var location = nextLineStart
-                        file.contents.advance(&location, past: CharacterSet.whitespaces)
+                        var location = nextLineStart.samePosition(in: file.contents.scalars)
+                        file.contents.scalars.advance(&location, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
 
-                        let indent = file.contents.substring(with: nextLineStart ..< location)
+                        let indent = file.contents.substring(with: nextLineStart ..< location.cluster(in: file.contents.clusters))
 
                         let result = lineDocumentationSyntax.comment(contents: replacement, indent: indent) + "\n" + indent
 
-                        file.contents.replaceSubrange(location ..< location, with: result)
+                        file.contents.scalars.replaceSubrange(location ..< location, with: result.scalars)
                     }
                 }
 

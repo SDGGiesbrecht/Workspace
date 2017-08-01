@@ -64,7 +64,7 @@ struct FileSyntax {
 
         var first = file.contents.substring(to: file.headerStart)
         if ¬first.isEmpty {
-            var firstLines = first.linesArray
+            var firstLines = first.lines.map({ String($0.line) })
             while let last = firstLines.last, last.isWhitespace {
                 firstLines.removeLast()
             }
@@ -143,9 +143,18 @@ struct FileSyntax {
     }
 
     private static func advance(_ index: inout String.Index, pastLayoutSpacingIn string: String) {
-        string.advance(&index, pastNewlinesWithLimit: 1)
-        string.advance(&index, past: CharacterSet.whitespaces)
-        string.advance(&index, pastNewlinesWithLimit: 1)
+        var scalar = index.samePosition(in: string.scalars)
+
+        let newline = AlternativePatterns([
+            LiteralPattern("\u{D}\u{A}".scalars),
+            ConditionalPattern(condition: { $0 ∈ CharacterSet.newlines })
+            ])
+
+        string.scalars.advance(&scalar, over: RepetitionPattern(newline, count: 0 ... 1))
+        string.scalars.advance(&scalar, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
+        string.scalars.advance(&scalar, over: RepetitionPattern(newline, count: 0 ... 1))
+
+        index = scalar.cluster(in: string.clusters)
     }
 
     func headerStart(file: File) -> String.Index {
@@ -196,7 +205,7 @@ struct FileSyntax {
     func header(file: File) -> String {
         let markup = file.contents.substring(with: file.headerStart ..< file.headerEnd)
 
-        if markup.lines.filter({ ¬$0.isWhitespace }).isEmpty {
+        if markup.lines.map({ String($0.line) }).filter({ ¬$0.isWhitespace }).isEmpty {
             return markup
         }
 

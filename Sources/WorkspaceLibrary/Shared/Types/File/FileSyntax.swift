@@ -143,7 +143,7 @@ struct FileSyntax {
     }
 
     private static func advance(_ index: inout String.Index, pastLayoutSpacingIn string: String) {
-        var scalar = index.samePosition(in: string.scalars)
+        var scalar: String.ScalarView.Index = index.samePosition(in: string.scalars)
 
         let newline = AlternativePatterns([
             LiteralPattern("\u{D}\u{A}".scalars),

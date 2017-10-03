@@ -113,7 +113,7 @@ struct UnitTests {
                             var possibleRemainder: String?
                             if entry.contains("+") {
                                 if let nameRange = entry.scalars.firstNestingLevel(startingWith: "+ ".scalars, endingWith: " (".scalars)?.contents.range.clusters(in: entry.clusters) {
-                                    possibleName = entry[nameRange]
+                                    possibleName = String(entry[nameRange])
                                     possibleRemainder = entry.substring(from: nameRange.upperBound)
                                 }
                             } else {

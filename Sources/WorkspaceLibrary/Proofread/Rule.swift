@@ -66,10 +66,6 @@ let sdgRules: [Rule.Type] = rules + [
 
 extension Rule {
 
-    static func errorNotice(status: inout Bool, file: File, range: Range<String.Index>, replacement: String?, message: String, noticeOnly: Bool = false) {
-        errorNotice(status: &status, file: file, range: range.lowerBound.samePosition(in: file.contents.unicodeScalars) ..< range.upperBound.samePosition(in: file.contents.unicodeScalars), replacement: replacement, message: message, noticeOnly: noticeOnly)
-    }
-
     static func errorNotice(status: inout Bool, file: File, range scalarRange: Range<String.UnicodeScalarView.Index>, replacement scalarReplacement: String?, message: String, noticeOnly: Bool = false) {
 
         // Scalars vs Clusters
@@ -89,7 +85,7 @@ extension Rule {
         let column = file.contents.columnNumber(for: clusterRange.lowerBound)
 
         let lineRange = file.contents.lineRange(for: clusterRange)
-        var line = file.contents[lineRange]
+        var line = String(file.contents[lineRange])
         if line.hasSuffix(String.crLF) {
             line.unicodeScalars.removeLast()
         }

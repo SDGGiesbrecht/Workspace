@@ -110,7 +110,7 @@ struct DocumentationInheritance {
 
                         file.contents.replaceSubrange(commentRange, with: lineDocumentationSyntax.comment(contents: replacement, indent: indent))
                     } else {
-                        var location = nextLineStart.samePosition(in: file.contents.scalars)
+                        var location: String.ScalarView.Index = nextLineStart.samePosition(in: file.contents.scalars)
                         file.contents.scalars.advance(&location, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
 
                         let indent = file.contents.substring(with: nextLineStart ..< location.cluster(in: file.contents.clusters))

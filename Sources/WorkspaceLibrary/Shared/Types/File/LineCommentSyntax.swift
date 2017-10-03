@@ -108,7 +108,7 @@ struct LineCommentSyntax {
             ])
 
         var resultEnd = restOfLine(at: startRange.lowerBound, in: range, of: string).upperBound
-        var testIndex = resultEnd.samePosition(in: string.scalars)
+        var testIndex: String.ScalarView.Index = resultEnd.samePosition(in: string.scalars)
         string.scalars.advance(&testIndex, over: RepetitionPattern(newline, count: 0 ... 1))
 
         string.scalars.advance(&testIndex, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces})))

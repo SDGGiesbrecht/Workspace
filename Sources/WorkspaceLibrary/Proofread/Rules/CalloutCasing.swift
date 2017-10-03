@@ -29,11 +29,11 @@ struct CalloutCasing : Rule {
                 index = range.upperBound
 
                 if range.upperBound ≠ file.contents.endIndex {
-                    let nextIndex = range.upperBound.samePosition(in: file.contents.unicodeScalars)
+                    let nextIndex: String.ScalarView.Index = range.upperBound.samePosition(in: file.contents.unicodeScalars)
                     let nextCharacter = file.contents.unicodeScalars[nextIndex]
                     if nextCharacter ∈ CharacterSet.lowercaseLetters {
 
-                        var scalar = range.upperBound.samePosition(in: file.contents.scalars)
+                        var scalar: String.ScalarView.Index = range.upperBound.samePosition(in: file.contents.scalars)
                         file.contents.scalars.advance(&scalar, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.letters })))
                         let index = scalar.cluster(in: file.contents.clusters)
 

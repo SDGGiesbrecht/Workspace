@@ -81,7 +81,7 @@ struct BlockCommentSyntax {
             } else {
                 // Make shure this isn’t documentation.
 
-                if let nextCharacter = string.substring(from: index).unicodeScalars.first {
+                if let nextCharacter = string[index...].unicodeScalars.first {
 
                     if nextCharacter ∈ CharacterSet.whitespacesAndNewlines {
                         return true
@@ -107,7 +107,7 @@ struct BlockCommentSyntax {
 
     func firstComment(in range: Range<String.Index>, of string: String) -> String? {
         if let range = rangeOfFirstComment(in: range, of: string) {
-            return string.substring(with: range)
+            return String(string[range])
         } else {
             return nil
         }
@@ -119,7 +119,7 @@ struct BlockCommentSyntax {
 
         }
 
-        var lines = string.substring(with: range).lines.map({ String($0.line) })
+        var lines = String(string[range]).lines.map({ String($0.line) })
         while let line = lines.first, line.isWhitespace {
             lines.removeFirst()
         }

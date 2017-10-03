@@ -46,8 +46,8 @@ struct NotEqual : Rule {
 
                 case .shell:
                     let lineRange = file.contents.lineRange(for: range)
-                    let linePrefix = file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound)
-                    let lineSuffix = file.contents.substring(with: range.upperBound ..< lineRange.upperBound)
+                    let linePrefix = String(file.contents[lineRange.lowerBound ..< range.lowerBound])
+                    let lineSuffix = String(file.contents[range.upperBound ..< lineRange.upperBound])
 
                     if ¬(linePrefix.contains("[") ∧ lineSuffix.contains("]")) {
                         throwError()

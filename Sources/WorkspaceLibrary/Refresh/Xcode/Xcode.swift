@@ -119,7 +119,7 @@ struct Xcode {
                     "Expected “\(fileListTokens.0)”...“\(fileListTokens.1)” after “\(frameworkPhaseSearchString)”."
                     ])
             }
-            var frameworkLines = project.substring(with: frameworksList).lines.map({ String($0.line) })
+            var frameworkLines = String(project[frameworksList]).lines.map({ String($0.line) })
             for index in frameworkLines.indices.reversed() where ¬frameworkLines[index].isWhitespace {
                     frameworkLines.remove(at: index)
                     break

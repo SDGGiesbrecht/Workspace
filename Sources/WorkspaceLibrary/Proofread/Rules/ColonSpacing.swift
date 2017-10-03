@@ -30,9 +30,9 @@ struct ColonSpacing : Rule {
                 index = range.upperBound
 
                 let lineRange = file.contents.lineRange(for: range)
-                let line = file.contents.substring(with: lineRange)
-                let linePrefix = file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound)
-                let lineSuffix = file.contents.substring(with: range.upperBound ..< lineRange.upperBound)
+                let line = String(file.contents[lineRange])
+                let linePrefix = String(file.contents[lineRange.lowerBound ..< range.lowerBound])
+                let lineSuffix = String(file.contents[range.upperBound ..< lineRange.upperBound])
 
                 if ¬(linePrefix.contains("\u{22}") ∧ lineSuffix.contains("\u{22}")) /* String Literal */
                     ∧ ¬linePrefix.contains("//") /* Comment */
@@ -50,7 +50,7 @@ struct ColonSpacing : Rule {
                         protocolOrSuperclass = false
                     }
 
-                    if let preceding = file.contents.substring(to: range.lowerBound).characters.last {
+                    if let preceding = String(file.contents[..<range.lowerBound]).characters.last {
 
                         if preceding == " " {
                             if ¬linePrefix.contains(" ? ") /* Ternary Conditional Operator */ {
@@ -70,7 +70,7 @@ struct ColonSpacing : Rule {
 
                     }
 
-                    if let followingCharacter = file.contents.substring(from: range.upperBound).unicodeScalars.first {
+                    if let followingCharacter = String(file.contents[range.upperBound...]).unicodeScalars.first {
 
                         if followingCharacter ∉ CharacterSet.whitespacesAndNewlines {
 

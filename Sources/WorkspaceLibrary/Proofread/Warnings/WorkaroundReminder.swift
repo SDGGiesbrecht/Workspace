@@ -26,7 +26,7 @@ struct WorkaroundReminder : Warning {
 
     static func message(forDetails details: String) -> String? {
         if let versionCheckRange = details.scalars.firstNestingLevel(startingWith: "(".scalars, endingWith: ")".scalars)?.contents.range.clusters(in: details.clusters) {
-            let versionCheck = details.substring(with: versionCheckRange)
+            let versionCheck = String(details[versionCheckRange])
             var parameters = versionCheck.components(separatedBy: " ")
             if ¬parameters.isEmpty {
                 let problemVersionString = parameters.removeLast()

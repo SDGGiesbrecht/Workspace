@@ -27,8 +27,8 @@ struct Mark : Rule {
             index = range.upperBound
 
             let lineRange = file.contents.lineRange(for: range)
-            let before = file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound)
-            let after = file.contents.substring(with: range.upperBound ..< lineRange.upperBound)
+            let before = String(file.contents[lineRange.lowerBound ..< range.lowerBound])
+            let after = String(file.contents[range.upperBound ..< lineRange.upperBound])
 
             var errorExists = false
 

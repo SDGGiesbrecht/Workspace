@@ -116,7 +116,7 @@ struct Repository {
             ]
             if let header = ignoredSummary.range(of: "Ignored files:") {
 
-                let remainder = ignoredSummary.substring(from: header.upperBound)
+                let remainder = String(ignoredSummary[header.upperBound...])
                 for line in remainder.lines.lazy.dropFirst(3).map({ String($0.line) }) {
                     if line.isWhitespace {
                         break
@@ -242,7 +242,7 @@ struct Repository {
             let root = Repository.absolute(Repository.root).string
             var startIndex = pathString.startIndex
             if pathString.clusters.advance(&startIndex, over: root.clusters) {
-                return RelativePath(pathString.substring(from: startIndex))
+                return RelativePath(String(pathString[startIndex...]))
             } else {
                 return nil
             }
@@ -349,7 +349,7 @@ struct Repository {
 
         let changes = files.map() { (changeOrigin: RelativePath) -> (changeOrigin: RelativePath, changeDestination: RelativePath) in
 
-            let relative = changeOrigin.string.substring(from: changeOrigin.string.index(changeOrigin.string.characters.startIndex, offsetBy: origin.string.characters.count))
+            let relative = String(changeOrigin.string[changeOrigin.string.index(changeOrigin.string.characters.startIndex, offsetBy: origin.string.characters.count)...])
 
             return (changeOrigin, RelativePath(destination.string + relative))
         }

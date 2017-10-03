@@ -129,9 +129,9 @@ extension Rule {
         let lineRange = file.contents.lineRange(for: location)
 
         if lineRange.lowerBound ≠ file.contents.startIndex,
-            file.contents.substring(with: file.contents.lineRange(for: file.contents.index(before: lineRange.lowerBound) ..< lineRange.lowerBound)).contains("func " + alias) {
+            file.contents[file.contents.lineRange(for: file.contents.index(before: lineRange.lowerBound) ..< lineRange.lowerBound)].contains("func " + alias) {
             return true
-        } else if file.contents.substring(with: lineRange).contains("RecommendedOver") {
+        } else if file.contents[lineRange].contains("RecommendedOver") {
             return true
         } else {
             return false
@@ -140,7 +140,7 @@ extension Rule {
 
     static func isInConditionalCompilationStatement(at location: Range<String.Index>, in file: File) -> Bool {
         let lineRange = file.contents.lineRange(for: location)
-        let line = file.contents.substring(with: lineRange)
+        let line = String(file.contents[lineRange])
         return line.contains("#if") ∨ line.contains("#elseif")
     }
 }

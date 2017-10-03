@@ -796,7 +796,7 @@ struct ReadMe {
                             "This may indicate a bug in Workspace."
                             ])
                     }
-                    return line.substring(from: start)
+                    return String(line[start...])
                 }
 
                 func sanitize(headerAnchor: String) -> String {
@@ -831,8 +831,8 @@ struct ReadMe {
                                 ])
                         }
 
-                        let name = line.substring(to: colon.lowerBound)
-                        let url = line.substring(from: colon.upperBound)
+                        let name = String(line[..<colon.lowerBound])
+                        let url = String(line[colon.upperBound...])
                         let configuration = Configuration.parseConfigurationFile(fromLinkedRepositoryAt: url)
 
                         let link: String

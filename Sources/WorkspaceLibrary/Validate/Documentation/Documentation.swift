@@ -29,7 +29,7 @@ struct Documentation {
         let existing = File(possiblyAt: RelativePath(folder).subfolderOrFile("index.html")).contents
         let searchArea: String
         if let footerStart = existing.range(of: "<section id=\u{22}footer\u{22}>")?.upperBound {
-            searchArea = existing.substring(from: footerStart)
+            searchArea = String(existing[footerStart...])
         } else {
             searchArea = ""
         }

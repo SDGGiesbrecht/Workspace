@@ -62,7 +62,7 @@ struct FileSyntax {
 
     func insert(header: String, into file: inout File) {
 
-        var first = file.contents.substring(to: file.headerStart)
+        var first = String(file.contents[..<file.headerStart])
         if ¬first.isEmpty {
             var firstLines = first.lines.map({ String($0.line) })
             while let last = firstLines.last, last.isWhitespace {
@@ -73,7 +73,7 @@ struct FileSyntax {
             first = join(lines: firstLines)
         }
 
-        var body = file.contents.substring(from: file.headerEnd)
+        var body = String(file.contents[file.headerEnd...])
         while let firstCharacter = body.unicodeScalars.first, firstCharacter ∈ CharacterSet.whitespacesAndNewlines {
             body.unicodeScalars.removeFirst()
         }
@@ -203,7 +203,7 @@ struct FileSyntax {
     }
 
     func header(file: File) -> String {
-        let markup = file.contents.substring(with: file.headerStart ..< file.headerEnd)
+        let markup = String(file.contents[file.headerStart ..< file.headerEnd])
 
         if markup.lines.map({ String($0.line) }).filter({ ¬$0.isWhitespace }).isEmpty {
             return markup

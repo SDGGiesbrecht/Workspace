@@ -49,7 +49,7 @@ extension String {
         var duplicate = self
         duplicate.insert(contentsOf: "[Here]".characters, at: index)
         let range = duplicate.lineRange(for: index ..< index)
-        let exerpt = duplicate.substring(with: range)
+        let exerpt = String(duplicate[range])
 
         var message: [String] = [
             "A parse error occurred:",

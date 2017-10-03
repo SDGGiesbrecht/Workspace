@@ -114,12 +114,12 @@ struct UnitTests {
                             if entry.contains("+") {
                                 if let nameRange = entry.scalars.firstNestingLevel(startingWith: "+ ".scalars, endingWith: " (".scalars)?.contents.range.clusters(in: entry.clusters) {
                                     possibleName = String(entry[nameRange])
-                                    possibleRemainder = entry.substring(from: nameRange.upperBound)
+                                    possibleRemainder = String(entry[nameRange.upperBound...])
                                 }
                             } else {
                                 if let nameEnd = entry.range(of: " (")?.lowerBound {
-                                    possibleName = entry.substring(to: nameEnd)
-                                    possibleRemainder = entry.substring(from: nameEnd)
+                                    possibleName = String(entry[..<nameEnd])
+                                    possibleRemainder = String(entry[nameEnd...])
                                 }
                             }
 
@@ -211,7 +211,7 @@ struct UnitTests {
                         ])
                 }
 
-                let rootPath = buildDirectory.substring(to: irrelevantRange.lowerBound)
+                let rootPath = String(buildDirectory[..<irrelevantRange.lowerBound])
                 let coverageDirectory = rootPath + "Intermediates/CodeCoverage/"
                 let coverageData = coverageDirectory + "Coverage.profdata"
 
@@ -249,7 +249,7 @@ struct UnitTests {
                     overallIndex = range.upperBound
 
                     let fileRange = coverageResults.lineRange(for: range)
-                    let file = coverageResults.substring(with: fileRange)
+                    let file = String(coverageResults[fileRange])
 
                     let end: String.Index
                     if let next = coverageResults.scalars.firstMatch(for: fileMarker.scalars, in: (fileRange.upperBound ..< coverageResults.endIndex).sameRange(in: coverageResults.scalars))?.range.clusters(in: coverageResults.clusters) {
@@ -264,11 +264,11 @@ struct UnitTests {
                         index = missingRange.upperBound
 
                         let errorLineRange = coverageResults.lineRange(for: missingRange)
-                        let errorLine = coverageResults.substring(with: errorLineRange)
+                        let errorLine = String(coverageResults[errorLineRange])
 
                         let previous = coverageResults.index(before: errorLineRange.lowerBound)
                         let sourceLineRange = coverageResults.lineRange(for: previous ..< previous)
-                        let sourceLine = coverageResults.substring(with: sourceLineRange)
+                        let sourceLine = String(coverageResults[sourceLineRange])
 
                         let untestableTokensOnPreviousLine = [
                             "[_Exempt from Code Coverage_]",
@@ -286,7 +286,7 @@ struct UnitTests {
 
                         let next = coverageResults.index(after: errorLineRange.upperBound)
                         let nextLineRange = coverageResults.lineRange(for: next ..< next)
-                        let nextLine = coverageResults.substring(with: nextLineRange)
+                        let nextLine = String(coverageResults[nextLineRange])
                         var sourceLines = sourceLine + nextLine
                         sourceLines.unicodeScalars = String.UnicodeScalarView(sourceLines.unicodeScalars.filter({ ¬nullCharacters.contains($0) }))
 

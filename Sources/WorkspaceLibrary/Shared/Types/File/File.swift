@@ -171,7 +171,7 @@ struct File {
 
     var body: String {
         get {
-            return contents.substring(from: headerEnd)
+            return String(contents[headerEnd...])
         }
         set {
             var new = newValue
@@ -180,7 +180,7 @@ struct File {
                 new.unicodeScalars.removeFirst()
             }
 
-            let headerSource = contents.substring(with: headerStart ..< headerEnd)
+            let headerSource = String(contents[headerStart ..< headerEnd])
             if ¬headerSource.hasSuffix("\n") {
                 new = "\n" + new
             }

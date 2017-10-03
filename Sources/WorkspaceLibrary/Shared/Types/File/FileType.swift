@@ -80,7 +80,7 @@ enum FileType : CustomStringConvertible {
 
             let identifier: String
             if let dotRange = filename.range(of: ".") {
-                identifier = filename.substring(from: dotRange.upperBound)
+                identifier = String(filename[dotRange.upperBound...])
             } else {
                 identifier = filename
             }

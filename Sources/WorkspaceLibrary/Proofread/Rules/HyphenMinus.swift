@@ -33,10 +33,10 @@ struct HyphenMinus : Rule {
                     }
 
                     let lineRange = file.contents.lineRange(for: range)
-                    let line = file.contents.substring(with: lineRange)
+                    let line = String(file.contents[lineRange])
 
                     if ¬line.contains("http")
-                        ∧ ¬file.contents.substring(from: range.upperBound).hasPrefix("=") /* “Subtract & Set” rule */ {
+                        ∧ ¬file.contents[range.upperBound...].hasPrefix("=") /* “Subtract & Set” rule */ {
                         switch fileType {
 
                         case .json, .html, .css, .javaScript:
@@ -44,11 +44,11 @@ struct HyphenMinus : Rule {
 
                         case .swift, .swiftPackageManifest:
                             if ¬isInAliasDefinition(for: "−", at: range, in: file)
-                                ∧ ¬file.contents.substring(from: range.upperBound).hasPrefix(">")
-                                ∧ ¬file.contents.substring(to: range.lowerBound).hasSuffix("// MARK\u{3A} ")
-                                ∧ ¬file.contents.substring(to: range.lowerBound).hasSuffix("/// ")
-                                ∧ ¬file.contents.substring(to: range.lowerBound).hasSuffix("///   ")
-                                ∧ ¬file.contents.substring(to: range.lowerBound).hasSuffix("///     ")
+                                ∧ ¬file.contents[range.upperBound...].hasPrefix(">")
+                                ∧ ¬file.contents[..<range.lowerBound].hasSuffix("// MARK\u{3A} ")
+                                ∧ ¬file.contents[..<range.lowerBound].hasSuffix("/// ")
+                                ∧ ¬file.contents[..<range.lowerBound].hasSuffix("///   ")
+                                ∧ ¬file.contents[..<range.lowerBound].hasSuffix("///     ")
                                 ∧ ¬line.contains("let ln2")
                                 ∧ ¬line.contains("Swift.SignedNumber")
                                 ∧ ¬line.contains("jazzy \u{2D}\u{2D}")
@@ -63,8 +63,8 @@ struct HyphenMinus : Rule {
                             }
 
                         case .workspaceConfiguration:
-                            let filePrefix = file.contents.substring(to: range.lowerBound)
-                            let fileSuffix = file.contents.substring(from: range.upperBound)
+                            let filePrefix = String(file.contents[..<range.lowerBound])
+                            let fileSuffix = String(file.contents[range.upperBound...])
 
                             if ¬(filePrefix.contains("```shell") ∧ fileSuffix.contains("```")) /* Shell Script */
                                 ∧ ¬(filePrefix.contains("[_Begin Feature List_]") ∧ fileSuffix.contains("[_End_]") ∧ filePrefix.hasSuffix("\n")) /* Feature List */
@@ -76,17 +76,17 @@ struct HyphenMinus : Rule {
                             }
 
                         case .markdown:
-                            if ¬file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound).isWhitespace
+                            if ¬String(file.contents[lineRange.lowerBound ..< range.lowerBound]).isWhitespace
                                 ∧ ¬line.contains("<\u{21}\u{2D}\u{2D}")
                                 ∧ ¬line.contains("\u{2D}\u{2D}>")
-                                ∧ ¬((file.contents.substring(to: range.lowerBound).contains("```shell") ∨ file.contents.substring(to: range.lowerBound).contains("```swift")) ∧ file.contents.substring(from: range.upperBound).contains("```"))
+                                ∧ ¬((file.contents[..<range.lowerBound].contains("```shell") ∨ file.contents[..<range.lowerBound].contains("```swift")) ∧ file.contents[range.upperBound...].contains("```"))
                                 ∧ ¬line.contains("](")
                                 ∧ ¬line.contains("`") {
                                 throwError()
                             }
 
                         case .yaml:
-                            if ¬file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound).isWhitespace
+                            if ¬String(file.contents[lineRange.lowerBound ..< range.lowerBound]).isWhitespace
                                 ∧ ¬file.path.string.hasSuffix(".travis.yml") {
                                 throwError()
                             }

@@ -75,7 +75,7 @@ struct LineCommentSyntax {
             } else {
                 // Make shure this isn’t documentation.
 
-                if let nextCharacter = string.substring(from: index).unicodeScalars.first {
+                if let nextCharacter = string[index...].unicodeScalars.first {
 
                     if nextCharacter ∈ CharacterSet.whitespacesAndNewlines {
                         return true
@@ -136,7 +136,7 @@ struct LineCommentSyntax {
 
     func firstComment(in range: Range<String.Index>, of string: String) -> String? {
         if let range = rangeOfFirstComment(in: range, of: string) {
-            return string.substring(with: range)
+            return String(string[range])
         } else {
             return nil
         }
@@ -148,7 +148,7 @@ struct LineCommentSyntax {
 
         }
 
-        let comment = string.substring(with: range)
+        let comment = String(string[range])
         let lines = comment.lines.map({ String($0.line) }).map() { (line: String) -> String in
 
             var index = line.scalars.startIndex
@@ -165,7 +165,7 @@ struct LineCommentSyntax {
             var result = String(line.scalars.suffix(from: index))
             if let end = stylisticEnd {
                 if result.hasSuffix(end) {
-                    result = result.substring(to: result.index(result.endIndex, offsetBy: −end.characters.count))
+                    result = String(result[..<result.index(result.endIndex, offsetBy: −end.characters.count)])
                 }
             }
             return result

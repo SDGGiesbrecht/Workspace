@@ -31,12 +31,12 @@ struct QuotationMarks : Rule {
                     errorNotice(status: &status, file: file, range: range, replacement: "[“/”/„/«/»/′′/״]", message: "Use quotation marks (“, ”, „, «, »), double prime (′′) or gershayim (״) instead.")
                 }
 
-                let filePrefix = file.contents.substring(to: range.lowerBound)
-                let fileSuffix = file.contents.substring(from: range.upperBound)
+                let filePrefix = String(file.contents[..<range.lowerBound])
+                let fileSuffix = String(file.contents[range.upperBound...])
 
                 let lineRange = file.contents.lineRange(for: range)
-                let linePrefix = file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound)
-                let lineSuffix = file.contents.substring(with: range.upperBound ..< lineRange.upperBound)
+                let linePrefix = String(file.contents[lineRange.lowerBound ..< range.lowerBound])
+                let lineSuffix = String(file.contents[range.upperBound ..< lineRange.upperBound])
 
                 var linePrefixWithoutIndentation = linePrefix
                 while let first = linePrefixWithoutIndentation.unicodeScalars.first,

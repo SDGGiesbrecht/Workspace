@@ -41,12 +41,12 @@ extension Warning {
 
             guard let detailRange = file.contents.scalars.firstNestingLevel(startingWith: marker.0.scalars, endingWith: marker.1.scalars)?.contents.range.clusters(in: file.contents.clusters) else {
                 fatalError(message: [
-                    "Expected “\(marker.0)”...“\(marker.1)” in “\(file.contents.substring(with: range))”.",
+                    "Expected “\(marker.0)”...“\(marker.1)” in “\(String(file.contents[range]))”.",
                     "This may indicate a bug in Workspace."
                     ])
             }
 
-            var details = file.contents.substring(with: detailRange)
+            var details = String(file.contents[detailRange])
             if details.hasPrefix(":") {
                 details.unicodeScalars.removeFirst()
             }

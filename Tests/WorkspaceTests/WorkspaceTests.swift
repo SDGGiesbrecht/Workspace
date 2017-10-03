@@ -550,6 +550,7 @@ class WorkspaceTests : XCTestCase {
             "Sources",
             "Tests",
             "Package.pins",
+            "Package.resolved",
 
             // Workspace
             ".Workspace Configuration.txt",

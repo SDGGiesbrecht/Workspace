@@ -29,7 +29,7 @@ struct Xcode {
     }
 
     static var defaultXcodeSchemeName: String {
-        return Configuration.packageName
+        return Configuration.packageName + "\u{2D}Package"
     }
 
     static var defaultPrimaryTargetName: String {

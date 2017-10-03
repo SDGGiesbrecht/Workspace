@@ -272,7 +272,10 @@ struct Configuration {
     }
 
     private static var configurationFile: [Option: String] {
-        return cached(in: &cache.configurationFile) {
+        var cacheCopy = cache
+        defer { cache = cacheCopy }
+
+        return cached(in: &cacheCopy.configurationFile) {
             () -> [Option: String] in
 
             return parse(configurationSource: file.contents)

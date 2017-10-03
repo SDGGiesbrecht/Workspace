@@ -92,7 +92,10 @@ struct Repository {
     }
 
     static var allRealFiles: [RelativePath] {
-        return cached(in: &cache.allRealFiles) {
+        var cacheCopy = cache
+        defer { cache = cacheCopy }
+
+        return cached(in: &cacheCopy.allRealFiles) {
             () -> [RelativePath] in
 
             let result = allFiles.filter() { (path: RelativePath) -> Bool in
@@ -106,8 +109,10 @@ struct Repository {
     }
 
     static var trackedFiles: [RelativePath] {
+        var cacheCopy = cache
+        defer { cache = cacheCopy }
 
-        return cached(in: &cache.trackedFiles) {
+        return cached(in: &cacheCopy.trackedFiles) {
             () -> [RelativePath] in
 
             let ignoredSummary = requireBash(["git", "status", "\u{2D}\u{2D}ignored"], silent: true)

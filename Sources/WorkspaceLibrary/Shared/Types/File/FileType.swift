@@ -58,6 +58,7 @@ enum FileType : CustomStringConvertible {
         "plist",
         "pins",
         "png",
+        "resolved",
         "svg",
         "tgz"
     ]

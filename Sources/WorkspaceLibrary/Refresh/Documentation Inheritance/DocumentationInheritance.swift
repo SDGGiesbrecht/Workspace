@@ -19,7 +19,7 @@ import SDGCornerstone
 struct DocumentationInheritance {
     static let documentation: [String: String] = {
 
-        requireBash(["swift", "package", "fetch"], silent: false)
+        requireBash(["swift", "package", "resolve"], silent: false)
 
         var list: [String: String] = [:]
 

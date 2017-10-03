@@ -16,14 +16,24 @@
 
 import PackageDescription
 
+let toolCommand = "workspace"
+let toolName = "Workspace"
+let library = toolName + "Library"
+let tests = toolName + "Tests"
+
+let sdgGiesbrecht = "https://github.com/SDGGiesbrecht/"
+let sdgCornerstone = "SDGCornerstone"
+
 let package = Package(
-    name: "Workspace",
-    targets: [
-        Target(name: "workspace", dependencies: ["WorkspaceLibrary"]),
-        Target(name: "WorkspaceLibrary"),
-        Target(name: "WorkspaceTests", dependencies: ["WorkspaceLibrary"])
-    ],
+    name: toolName,
     dependencies: [
-        .Package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", versions: Version(0, 4, 0) ..< Version(0, 5, 0))
+        .package(url: sdgGiesbrecht + sdgCornerstone, .exact(Version(0, 5, 0)))
+    ],
+    targets: [
+        .target(name: toolCommand, dependencies: [.targetItem(name: library)]),
+        .target(name: library, dependencies: [
+            .productItem(name: sdgCornerstone, package: sdgCornerstone)
+            ]),
+        .testTarget(name: tests, dependencies: [.targetItem(name: library)])
     ]
 )

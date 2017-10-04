@@ -149,8 +149,10 @@ struct Repository {
     }
 
     static var sourceFiles: [RelativePath] {
+        var cacheCopy = cache
+        defer { cache = cacheCopy }
 
-        return cached(in: &cache.sourceFiles) {
+        return cached(in: &cacheCopy.sourceFiles) {
             () -> [RelativePath] in
 
             let result = trackedFiles.filter() { (path: RelativePath) -> Bool in

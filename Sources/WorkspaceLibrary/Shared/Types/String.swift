@@ -34,26 +34,14 @@ extension String {
         return lines.distance(from: lines.startIndex, to: index.line(in: lines)) + 1
     }
 
-    func lineNumber(for index: String.Index) -> Int {
-        return lineNumber(for: index.samePosition(in: unicodeScalars))
-    }
-
     func columnNumber(for index: String.UnicodeScalarView.Index) -> Int {
         let location = index.cluster(in: clusters)
         let line = lineRange(for: location ..< location)
         return distance(from: line.lowerBound, to: location) + 1
     }
 
-    func columnNumber(for index: String.Index) -> Int {
-        return columnNumber(for: index.samePosition(in: unicodeScalars))
-    }
-
     func locationInformation(for index: String.UnicodeScalarView.Index) -> String {
         return "Line \(lineNumber(for: index)), Column \(columnNumber(for: index))"
-    }
-
-    func locationInformation(for index: String.CharacterView.Index) -> String {
-        return locationInformation(for: index.samePosition(in: unicodeScalars))
     }
 
     func parseError(at index: String.Index, in file: File?) -> Never {
@@ -61,7 +49,7 @@ extension String {
         var duplicate = self
         duplicate.insert(contentsOf: "[Here]".characters, at: index)
         let range = duplicate.lineRange(for: index ..< index)
-        let exerpt = duplicate.substring(with: range)
+        let exerpt = String(duplicate[range])
 
         var message: [String] = [
             "A parse error occurred:",

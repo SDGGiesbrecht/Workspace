@@ -550,6 +550,7 @@ class WorkspaceTests : XCTestCase {
             "Sources",
             "Tests",
             "Package.pins",
+            "Package.resolved",
 
             // Workspace
             ".Workspace Configuration.txt",
@@ -600,7 +601,7 @@ class WorkspaceTests : XCTestCase {
             for link in DocumentationLink.all {
                 var url = link.url
                 if let anchor = url.range(of: "#") {
-                    url = url.substring(to: anchor.lowerBound)
+                    url = String(url[..<anchor.lowerBound])
                 }
 
                 var exists = false

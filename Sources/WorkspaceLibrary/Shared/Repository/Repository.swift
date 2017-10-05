@@ -92,7 +92,10 @@ struct Repository {
     }
 
     static var allRealFiles: [RelativePath] {
-        return cached(in: &cache.allRealFiles) {
+        var cacheCopy = cache
+        defer { cache = cacheCopy }
+
+        return cached(in: &cacheCopy.allRealFiles) {
             () -> [RelativePath] in
 
             let result = allFiles.filter() { (path: RelativePath) -> Bool in
@@ -106,8 +109,10 @@ struct Repository {
     }
 
     static var trackedFiles: [RelativePath] {
+        var cacheCopy = cache
+        defer { cache = cacheCopy }
 
-        return cached(in: &cache.trackedFiles) {
+        return cached(in: &cacheCopy.trackedFiles) {
             () -> [RelativePath] in
 
             let ignoredSummary = requireBash(["git", "status", "\u{2D}\u{2D}ignored"], silent: true)
@@ -116,7 +121,7 @@ struct Repository {
             ]
             if let header = ignoredSummary.range(of: "Ignored files:") {
 
-                let remainder = ignoredSummary.substring(from: header.upperBound)
+                let remainder = String(ignoredSummary[header.upperBound...])
                 for line in remainder.lines.lazy.dropFirst(3).map({ String($0.line) }) {
                     if line.isWhitespace {
                         break
@@ -144,8 +149,10 @@ struct Repository {
     }
 
     static var sourceFiles: [RelativePath] {
+        var cacheCopy = cache
+        defer { cache = cacheCopy }
 
-        return cached(in: &cache.sourceFiles) {
+        return cached(in: &cacheCopy.sourceFiles) {
             () -> [RelativePath] in
 
             let result = trackedFiles.filter() { (path: RelativePath) -> Bool in
@@ -242,7 +249,7 @@ struct Repository {
             let root = Repository.absolute(Repository.root).string
             var startIndex = pathString.startIndex
             if pathString.clusters.advance(&startIndex, over: root.clusters) {
-                return RelativePath(pathString.substring(from: startIndex))
+                return RelativePath(String(pathString[startIndex...]))
             } else {
                 return nil
             }
@@ -349,7 +356,7 @@ struct Repository {
 
         let changes = files.map() { (changeOrigin: RelativePath) -> (changeOrigin: RelativePath, changeDestination: RelativePath) in
 
-            let relative = changeOrigin.string.substring(from: changeOrigin.string.index(changeOrigin.string.characters.startIndex, offsetBy: origin.string.characters.count))
+            let relative = String(changeOrigin.string[changeOrigin.string.index(changeOrigin.string.characters.startIndex, offsetBy: origin.string.characters.count)...])
 
             return (changeOrigin, RelativePath(destination.string + relative))
         }

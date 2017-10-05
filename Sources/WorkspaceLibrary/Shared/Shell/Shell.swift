@@ -42,7 +42,7 @@ func runThirdPartyTool(name: String, repositoryURL: String, versionCheck: [Strin
     var newest: (tag: String, version: Version)? = nil
     for line in versions.lines.map({ String($0.line) }) {
         if let tagPrefixRange = line.range(of: "refs/tags/") {
-            let tag = line.substring(from: tagPrefixRange.upperBound)
+            let tag = String(line[tagPrefixRange.upperBound...])
             if let version = Version(tag) ?? Version(String(tag.characters.dropFirst())) {
                 if let last = newest {
                     if version > last.version {
@@ -69,7 +69,7 @@ func runThirdPartyTool(name: String, repositoryURL: String, versionCheck: [Strin
 
     if let systemVersionLine = (try? Shell.default.run(command: versionCheck, silently: true))?.lines.first?.line,
         let systemVersionStart = String(systemVersionLine).scalars.firstMatch(for: ConditionalPattern(condition: { $0 ∈ CharacterSet.decimalDigits }))?.range.lowerBound.cluster(in: String(systemVersionLine).clusters),
-        let systemVersion = Version(String(systemVersionLine).substring(from: systemVersionStart)),
+        let systemVersion = Version(String(String(systemVersionLine)[systemVersionStart...])),
         systemVersion == requiredVersion.version {
 
         do {

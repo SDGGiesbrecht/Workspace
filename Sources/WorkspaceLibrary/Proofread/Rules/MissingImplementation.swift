@@ -26,7 +26,7 @@ struct MissingImplementation : Rule {
         while let range = file.contents.scalars.firstMatch(for: "\u{6E}otImplementedYet".scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.range.clusters(in: file.contents.clusters) {
             index = range.upperBound
 
-            if ¬file.contents.substring(to: range.lowerBound).hasSuffix("func ") {
+            if ¬file.contents[..<range.lowerBound].hasSuffix("func ") {
                 errorNotice(status: &status, file: file, range: range, replacement: nil, message: "Missing implementation.")
             }
         }

@@ -272,7 +272,10 @@ struct Configuration {
     }
 
     private static var configurationFile: [Option: String] {
-        return cached(in: &cache.configurationFile) {
+        var cacheCopy = cache
+        defer { cache = cacheCopy }
+
+        return cached(in: &cacheCopy.configurationFile) {
             () -> [Option: String] in
 
             return parse(configurationSource: file.contents)
@@ -496,7 +499,10 @@ struct Configuration {
     }
 
     static var localizations: [ArbitraryLocalization] {
-        return cached(in: &cache.localizations) {
+        var cacheCopy = cache
+        defer { cache = cacheCopy }
+
+        return cached(in: &cacheCopy.localizations) {
             return listValue(option: .localizations).map { ArbitraryLocalization(code: $0) }
         }
     }
@@ -533,7 +539,10 @@ struct Configuration {
         }
     }
     static var packageName: String {
-        return cached(in: &cache.packageName) {
+        var cacheCopy = cache
+        defer { cache = cacheCopy }
+
+        return cached(in: &cacheCopy.packageName) {
             () -> String in
 
             return stringValue(option: .packageName)

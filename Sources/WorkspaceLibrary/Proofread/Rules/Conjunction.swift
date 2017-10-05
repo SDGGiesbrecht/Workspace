@@ -51,7 +51,7 @@ struct Conjunction : Rule {
                     }
 
                 case .shell:
-                    if ¬file.contents.substring(with: file.contents.lineRange(for: range)).contains("REPOSITORY=") {
+                    if ¬file.contents[file.contents.lineRange(for: range)].contains("REPOSITORY=") {
                         throwError()
                     }
                 }

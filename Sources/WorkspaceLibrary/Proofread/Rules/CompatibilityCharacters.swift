@@ -27,7 +27,7 @@ struct CompatibilityCharacters : Rule {
             let next = file.contents.index(after: index)
 
             let characterRange = index ..< next
-            let character = file.contents[characterRange]
+            let character = String(file.contents[characterRange])
             let normalized = character.decomposedStringWithCompatibilityMapping
             if character ≠ normalized {
                 errorNotice(status: &status, file: file, range: characterRange, replacement: normalized, message: "“\(character)” may be lost in normalization; use “\(normalized)” instead.")

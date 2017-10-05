@@ -66,10 +66,6 @@ let sdgRules: [Rule.Type] = rules + [
 
 extension Rule {
 
-    static func errorNotice(status: inout Bool, file: File, range: Range<String.Index>, replacement: String?, message: String, noticeOnly: Bool = false) {
-        errorNotice(status: &status, file: file, range: range.lowerBound.samePosition(in: file.contents.unicodeScalars) ..< range.upperBound.samePosition(in: file.contents.unicodeScalars), replacement: replacement, message: message, noticeOnly: noticeOnly)
-    }
-
     static func errorNotice(status: inout Bool, file: File, range scalarRange: Range<String.UnicodeScalarView.Index>, replacement scalarReplacement: String?, message: String, noticeOnly: Bool = false) {
 
         // Scalars vs Clusters
@@ -89,7 +85,7 @@ extension Rule {
         let column = file.contents.columnNumber(for: clusterRange.lowerBound)
 
         let lineRange = file.contents.lineRange(for: clusterRange)
-        var line = file.contents[lineRange]
+        var line = String(file.contents[lineRange])
         if line.hasSuffix(String.crLF) {
             line.unicodeScalars.removeLast()
         }
@@ -133,9 +129,9 @@ extension Rule {
         let lineRange = file.contents.lineRange(for: location)
 
         if lineRange.lowerBound ≠ file.contents.startIndex,
-            file.contents.substring(with: file.contents.lineRange(for: file.contents.index(before: lineRange.lowerBound) ..< lineRange.lowerBound)).contains("func " + alias) {
+            file.contents[file.contents.lineRange(for: file.contents.index(before: lineRange.lowerBound) ..< lineRange.lowerBound)].contains("func " + alias) {
             return true
-        } else if file.contents.substring(with: lineRange).contains("RecommendedOver") {
+        } else if file.contents[lineRange].contains("RecommendedOver") {
             return true
         } else {
             return false
@@ -144,7 +140,7 @@ extension Rule {
 
     static func isInConditionalCompilationStatement(at location: Range<String.Index>, in file: File) -> Bool {
         let lineRange = file.contents.lineRange(for: location)
-        let line = file.contents.substring(with: lineRange)
+        let line = String(file.contents[lineRange])
         return line.contains("#if") ∨ line.contains("#elseif")
     }
 }

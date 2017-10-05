@@ -27,8 +27,8 @@ struct Mark : Rule {
             index = range.upperBound
 
             let lineRange = file.contents.lineRange(for: range)
-            let before = file.contents.substring(with: lineRange.lowerBound ..< range.lowerBound)
-            let after = file.contents.substring(with: range.upperBound ..< lineRange.upperBound)
+            let before = String(file.contents[lineRange.lowerBound ..< range.lowerBound])
+            let after = String(file.contents[range.upperBound ..< lineRange.upperBound])
 
             var errorExists = false
 
@@ -37,7 +37,7 @@ struct Mark : Rule {
                 errorExists = true
                 errorStart = lineRange.lowerBound
 
-                var scalar = errorStart.samePosition(in: file.contents.scalars)
+                var scalar: String.ScalarView.Index = errorStart.samePosition(in: file.contents.scalars)
                 file.contents.scalars.advance(&scalar, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
                 errorStart = scalar.cluster(in: file.contents.clusters)
             }
@@ -45,7 +45,7 @@ struct Mark : Rule {
             if ¬after.hasPrefix(" \u{2D} ") {
                 errorExists = true
 
-                var scalar = errorEnd.samePosition(in: file.contents.scalars)
+                var scalar: String.ScalarView.Index = errorEnd.samePosition(in: file.contents.scalars)
                 file.contents.scalars.advance(&scalar, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces ∪ ["\u{2D}"] })))
                 errorEnd = scalar.cluster(in: file.contents.clusters)
             }

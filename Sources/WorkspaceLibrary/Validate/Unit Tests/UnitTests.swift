@@ -113,13 +113,13 @@ struct UnitTests {
                             var possibleRemainder: String?
                             if entry.contains("+") {
                                 if let nameRange = entry.scalars.firstNestingLevel(startingWith: "+ ".scalars, endingWith: " (".scalars)?.contents.range.clusters(in: entry.clusters) {
-                                    possibleName = entry[nameRange]
-                                    possibleRemainder = entry.substring(from: nameRange.upperBound)
+                                    possibleName = String(entry[nameRange])
+                                    possibleRemainder = String(entry[nameRange.upperBound...])
                                 }
                             } else {
                                 if let nameEnd = entry.range(of: " (")?.lowerBound {
-                                    possibleName = entry.substring(to: nameEnd)
-                                    possibleRemainder = entry.substring(from: nameEnd)
+                                    possibleName = String(entry[..<nameEnd])
+                                    possibleRemainder = String(entry[nameEnd...])
                                 }
                             }
 
@@ -174,15 +174,11 @@ struct UnitTests {
             sleep(10)
             _ = try? Shell.default.run(command: ["killall", "xcodebuild"], silently: true)
 
-            let script = generateScript(buildOnly: buildOnly)
-            runUnitTests(buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: script, buildToolName: buildToolName)
-
-            if ¬buildOnly ∧ Configuration.enforceCodeCoverage {
-
-                // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-                printHeader(["Checking code coverage on \(operatingSystemName)..."])
-                // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-
+            let enforceCodeCoverage = ¬buildOnly ∧ Configuration.enforceCodeCoverage
+            var possibleSettings: String?
+            var possibleBuildDirectory: String?
+            var possibleCoverageDirectory: String?
+            if enforceCodeCoverage {
                 guard let settings = try? Shell.default.run(command: [
                     "xcodebuild", "\u{2D}showBuildSettings",
                     "\u{2D}target", Configuration.primaryXcodeTarget,
@@ -193,6 +189,7 @@ struct UnitTests {
                             "This may indicate a bug in Workspace."
                             ])
                 }
+                possibleSettings = settings
 
                 let buildDirectoryKey = (" BUILD_DIR = ", "\n")
                 guard let buildDirectorySubSequence = settings.scalars.firstNestingLevel(startingWith: buildDirectoryKey.0.scalars, endingWith: buildDirectoryKey.1.scalars)?.contents.contents else {
@@ -202,6 +199,7 @@ struct UnitTests {
                         ])
                 }
                 let buildDirectory = String(buildDirectorySubSequence)
+                possibleBuildDirectory = buildDirectory
 
                 let irrelevantPathComponents = "Products"
                 guard let irrelevantRange = buildDirectory.range(of: irrelevantPathComponents) else {
@@ -211,14 +209,35 @@ struct UnitTests {
                         ])
                 }
 
-                let rootPath = buildDirectory.substring(to: irrelevantRange.lowerBound)
-                let coverageDirectory = rootPath + "Intermediates/CodeCoverage/"
-                let coverageData = coverageDirectory + "Coverage.profdata"
+                let rootPath = String(buildDirectory[..<irrelevantRange.lowerBound])
+                let coverageDirectory = rootPath + "ProfileData/"
+                possibleCoverageDirectory = coverageDirectory
+
+                try? FileManager.default.removeItem(atPath: coverageDirectory)
+            }
+
+            let script = generateScript(buildOnly: buildOnly)
+            runUnitTests(buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: script, buildToolName: buildToolName)
+
+            if enforceCodeCoverage,
+                let settings = possibleSettings,
+                let buildDirectory = possibleBuildDirectory,
+                let coverageDirectory = possibleCoverageDirectory {
+
+                // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+                printHeader(["Checking code coverage on \(operatingSystemName)..."])
+                // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+
+                guard let uuid = (try? FileManager.default.contentsOfDirectory(atPath: coverageDirectory))?.first else {
+                    individualFailure("Code coverage information is unavailable for \(operatingSystem).")
+                    return
+                }
+                let coverageData = coverageDirectory + uuid + "/Coverage.profdata"
 
                 let executableLocationKey = (" EXECUTABLE_PATH = \(Xcode.primaryProductName).", "\n")
                 guard let executableLocationSuffix = settings.scalars.firstNestingLevel(startingWith: executableLocationKey.0.scalars, endingWith: executableLocationKey.1.scalars)?.contents.contents else {
                     fatalError(message: [
-                        "Failed to find “\(buildDirectoryKey.0)” in Xcode build settings.",
+                        "Failed to find “\(executableLocationKey.0)” in Xcode build settings.",
                         "This may indicate a bug in Workspace."
                         ])
                 }
@@ -229,7 +248,7 @@ struct UnitTests {
                 } else {
                     directorySuffix = ""
                 }
-                let executableLocation = coverageDirectory + "Products/Debug" + directorySuffix + "/" + relativeExecutableLocation
+                let executableLocation = buildDirectory + "/Debug" + directorySuffix + "/" + relativeExecutableLocation
 
                 guard let coverageResults = try? Shell.default.run(command: [
                     "xcrun", "llvm\u{2D}cov", "show", "\u{2D}show\u{2D}regions",
@@ -249,7 +268,7 @@ struct UnitTests {
                     overallIndex = range.upperBound
 
                     let fileRange = coverageResults.lineRange(for: range)
-                    let file = coverageResults.substring(with: fileRange)
+                    let file = String(coverageResults[fileRange])
 
                     let end: String.Index
                     if let next = coverageResults.scalars.firstMatch(for: fileMarker.scalars, in: (fileRange.upperBound ..< coverageResults.endIndex).sameRange(in: coverageResults.scalars))?.range.clusters(in: coverageResults.clusters) {
@@ -264,11 +283,11 @@ struct UnitTests {
                         index = missingRange.upperBound
 
                         let errorLineRange = coverageResults.lineRange(for: missingRange)
-                        let errorLine = coverageResults.substring(with: errorLineRange)
+                        let errorLine = String(coverageResults[errorLineRange])
 
                         let previous = coverageResults.index(before: errorLineRange.lowerBound)
                         let sourceLineRange = coverageResults.lineRange(for: previous ..< previous)
-                        let sourceLine = coverageResults.substring(with: sourceLineRange)
+                        let sourceLine = String(coverageResults[sourceLineRange])
 
                         let untestableTokensOnPreviousLine = [
                             "[_Exempt from Code Coverage_]",
@@ -286,7 +305,7 @@ struct UnitTests {
 
                         let next = coverageResults.index(after: errorLineRange.upperBound)
                         let nextLineRange = coverageResults.lineRange(for: next ..< next)
-                        let nextLine = coverageResults.substring(with: nextLineRange)
+                        let nextLine = String(coverageResults[nextLineRange])
                         var sourceLines = sourceLine + nextLine
                         sourceLines.unicodeScalars = String.UnicodeScalarView(sourceLines.unicodeScalars.filter({ ¬nullCharacters.contains($0) }))
 
@@ -351,7 +370,7 @@ struct UnitTests {
 
             // iOS
 
-            runUnitTestsInXcode(buildOnly: false, operatingSystem: .iOS, sdk: "iphoneos", simulatorSDK: "iphonesimulator", deviceKey: "iPhone 7")
+            runUnitTestsInXcode(buildOnly: false, operatingSystem: .iOS, sdk: "iphoneos", simulatorSDK: "iphonesimulator", deviceKey: "iPhone 8")
         }
 
         if Environment.shouldDoWatchOSJobs {
@@ -365,7 +384,7 @@ struct UnitTests {
 
             // tvOS
 
-            runUnitTestsInXcode(buildOnly: false, operatingSystem: .tvOS, sdk: "appletvos", simulatorSDK: "appletvsimulator", deviceKey: "Apple TV 1080p")
+            runUnitTestsInXcode(buildOnly: false, operatingSystem: .tvOS, sdk: "appletvos", simulatorSDK: "appletvsimulator", deviceKey: "Apple TV 4K")
         }
     }
 }

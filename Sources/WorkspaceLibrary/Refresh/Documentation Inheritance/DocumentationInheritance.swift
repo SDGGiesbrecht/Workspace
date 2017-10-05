@@ -19,7 +19,7 @@ import SDGCornerstone
 struct DocumentationInheritance {
     static let documentation: [String: String] = {
 
-        requireBash(["swift", "package", "fetch"], silent: false)
+        requireBash(["swift", "package", "resolve"], silent: false)
 
         var list: [String: String] = [:]
 
@@ -36,7 +36,7 @@ struct DocumentationInheritance {
 
                     guard let identifierSubsequence = file.contents.scalars.firstNestingLevel(startingWith: startTokens.0.scalars, endingWith: startTokens.1.scalars, in: startTokenRange.sameRange(in: file.contents.scalars))?.contents.contents else {
                         failTests(message: [
-                            "Failed to parse “\(file.contents.substring(with: startTokenRange))”.",
+                            "Failed to parse “\(String(file.contents[startTokenRange]))”.",
                             "This may indicate a bug in Workspace."
                             ])
                     }
@@ -83,7 +83,7 @@ struct DocumentationInheritance {
                         fatalError(message: [
                             "Syntax error in example:",
                             "",
-                            file.contents.substring(with: file.contents.lineRange(for: range))
+                            String(file.contents[file.contents.lineRange(for: range)])
                             ])
                     }
 
@@ -94,7 +94,7 @@ struct DocumentationInheritance {
                     guard let colon = details.range(of: ": ") else {
                         syntaxError()
                     }
-                    let documentationIdentifier = details.substring(from: colon.upperBound)
+                    let documentationIdentifier = String(details[colon.upperBound...])
                     guard let replacement = documentation[documentationIdentifier] else {
                         fatalError(message: [
                             "There are is no documenation named “\(documentationIdentifier)”."
@@ -106,14 +106,14 @@ struct DocumentationInheritance {
                     if let commentRange = documentationSyntax.rangeOfFirstComment(in: nextLineStart ..< file.contents.endIndex, of: file),
                         nextLine.contains(commentRange.lowerBound) {
 
-                        let indent = file.contents.substring(with: nextLineStart ..< commentRange.lowerBound)
+                        let indent = String(file.contents[nextLineStart ..< commentRange.lowerBound])
 
                         file.contents.replaceSubrange(commentRange, with: lineDocumentationSyntax.comment(contents: replacement, indent: indent))
                     } else {
-                        var location = nextLineStart.samePosition(in: file.contents.scalars)
+                        var location: String.ScalarView.Index = nextLineStart.samePosition(in: file.contents.scalars)
                         file.contents.scalars.advance(&location, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
 
-                        let indent = file.contents.substring(with: nextLineStart ..< location.cluster(in: file.contents.clusters))
+                        let indent = String(file.contents[nextLineStart ..< location.cluster(in: file.contents.clusters)])
 
                         let result = lineDocumentationSyntax.comment(contents: replacement, indent: indent) + "\n" + indent
 

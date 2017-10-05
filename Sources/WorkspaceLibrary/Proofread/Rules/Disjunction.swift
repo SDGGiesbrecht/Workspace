@@ -40,7 +40,7 @@ struct Disjunction : Rule {
                     throwError()
 
                 case .yaml:
-                    if ¬file.contents.substring(from: range.upperBound).hasPrefix(" brew") {
+                    if ¬file.contents[range.upperBound...].hasPrefix(" brew") {
                         throwError()
                     }
 

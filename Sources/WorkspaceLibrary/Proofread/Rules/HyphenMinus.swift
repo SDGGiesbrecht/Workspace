@@ -23,6 +23,7 @@ struct HyphenMinus : Rule {
         if let fileType = file.fileType {
 
             if ¬file.path.string.hasSuffix("/Numeric.swift"),
+                ¬file.path.string.hasSuffix("/SignedNumeric.swift"),
                 ¬file.path.string.hasSuffix("/Negatable.swift") {
 
                 var index = file.contents.startIndex

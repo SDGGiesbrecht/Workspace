@@ -22,26 +22,29 @@ struct Multiplication : Rule {
 
         if let fileType = file.fileType {
 
-            var message = "Use “×” instead."
-            if fileType == .swift {
-                message += " (Import SDGCornerstone.)"
-            }
+            if ¬file.path.string.hasSuffix("/Numeric.swift") {
 
-            var index = file.contents.startIndex
-            while let range = file.contents.scalars.firstMatch(for: " \u{2A} ".scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.range.clusters(in: file.contents.clusters) {
-                index = range.upperBound
-
-                func throwError() {
-                    errorNotice(status: &status, file: file, range: range, replacement: " × ", message: message)
+                var message = "Use “×” instead."
+                if fileType == .swift {
+                    message += " (Import SDGCornerstone.)"
                 }
 
-                switch fileType {
-                case .workspaceConfiguration, .markdown, .json, .yaml, .gitignore, .shell, .html, .css, .javaScript:
-                    throwError()
+                var index = file.contents.startIndex
+                while let range = file.contents.scalars.firstMatch(for: " \u{2A} ".scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.range.clusters(in: file.contents.clusters) {
+                    index = range.upperBound
 
-                case .swift, .swiftPackageManifest:
-                    if ¬isInAliasDefinition(for: "×", at: range, in: file) {
+                    func throwError() {
+                        errorNotice(status: &status, file: file, range: range, replacement: " × ", message: message)
+                    }
+
+                    switch fileType {
+                    case .workspaceConfiguration, .markdown, .json, .yaml, .gitignore, .shell, .html, .css, .javaScript:
                         throwError()
+
+                    case .swift, .swiftPackageManifest:
+                        if ¬isInAliasDefinition(for: "×", at: range, in: file) {
+                            throwError()
+                        }
                     }
                 }
             }

@@ -22,7 +22,8 @@ struct HyphenMinus : Rule {
 
         if let fileType = file.fileType {
 
-            if ¬file.path.string.hasSuffix("SignedNumber.swift") {
+            if ¬file.path.string.hasSuffix("/Numeric.swift"),
+                ¬file.path.string.hasSuffix("/Negatable.swift") {
 
                 var index = file.contents.startIndex
                 while let range = file.contents.scalars.firstMatch(for: "\u{2D}".scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.range.clusters(in: file.contents.clusters) {
@@ -50,7 +51,8 @@ struct HyphenMinus : Rule {
                                 ∧ ¬file.contents[..<range.lowerBound].hasSuffix("///   ")
                                 ∧ ¬file.contents[..<range.lowerBound].hasSuffix("///     ")
                                 ∧ ¬line.contains("let ln2")
-                                ∧ ¬line.contains("Swift.SignedNumber")
+                                ∧ ¬line.contains("Swift.Numeric")
+                                ∧ ¬line.contains("Swift.SignedNumeric")
                                 ∧ ¬line.contains("jazzy \u{2D}\u{2D}")
                                 ∧ ¬line.contains("[\u{5F}Define Example: Read‐Me:")
                                 ∧ ¬line.contains("swift\u{2D}tools\u{2D}version") {

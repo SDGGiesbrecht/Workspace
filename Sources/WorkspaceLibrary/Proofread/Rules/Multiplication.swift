@@ -37,12 +37,16 @@ struct Multiplication : Rule {
                         errorNotice(status: &status, file: file, range: range, replacement: " × ", message: message)
                     }
 
+                    let lineRange = file.contents.lineRange(for: range)
+                    let line = String(file.contents[lineRange])
+
                     switch fileType {
                     case .workspaceConfiguration, .markdown, .json, .yaml, .gitignore, .shell, .html, .css, .javaScript:
                         throwError()
 
                     case .swift, .swiftPackageManifest:
-                        if ¬isInAliasDefinition(for: "×", at: range, in: file) {
+                        if ¬isInAliasDefinition(for: "×", at: range, in: file)
+                            ∧ ¬line.contains("Swift.Numeric") {
                             throwError()
                         }
                     }

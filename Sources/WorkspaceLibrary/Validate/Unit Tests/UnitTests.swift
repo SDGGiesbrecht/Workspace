@@ -58,9 +58,9 @@ struct UnitTests {
                     })
 
                     if hasRealWarning {
-                        individualSuccess("There are no compiler warnings for \(configuration).")
-                    } else {
                         individualFailure("There are compiler warnings for \(configuration). (See above for details.)")
+                    } else {
+                        individualSuccess("There are no compiler warnings for \(configuration).")
                     }
                 }
             } catch {

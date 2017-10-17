@@ -16,8 +16,6 @@
 
 Project Type: Executable
 Generate Documentation: False
-([_Workaround: Workspace’s tests need to be refactored into the test module so that code coverage results become meaningful._])
-Enforce Code Coverage: False
 
 Project Website: https://github.com/SDGGiesbrecht/Workspace#workspace
 Documentation URL: https://github.com/SDGGiesbrecht/Workspace#workspace

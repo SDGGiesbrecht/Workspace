@@ -13,7 +13,6 @@
  */
 
 import XCTest
-import Foundation
 
 import SDGCornerstone
 import SDGCommandLine

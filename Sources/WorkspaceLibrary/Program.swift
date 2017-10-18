@@ -12,17 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGCornerstone
+import Foundation
+
+import SDGCommandLine
 
 public func run() {
-
-    SDGCornerstone.initialize(mode: .commandLineTool, applicationIdentifier: "ca.solideogloria.Workspace")
-
-    if WSCommand.current ≠ WSCommand.proofread {
-        print("") // Line break after the input line.
-    }
-
-    WSCommand.current.run(andExit: true)
-
-    unreachable()
+    SDGCommandLine.initialize(applicationIdentifier: "ca.solideogloria.Workspace", version: nil, packageURL: URL(string: "https://github.com/SDGGiesbrecht/Workspace"))
+    Workspace.command.executeAsMain()
 }

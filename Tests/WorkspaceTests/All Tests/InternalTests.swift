@@ -13,10 +13,10 @@
  */
 
 import Foundation
+import XCTest
 
 import SDGCornerstone
 
-import XCTest
 @testable import WorkspaceLibrary
 
 class InternalTests : TestCase {

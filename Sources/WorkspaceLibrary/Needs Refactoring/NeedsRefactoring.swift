@@ -1,10 +1,10 @@
 /*
- LinuxMain.swift
+ NeedsRefactoring.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2016–2017 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -12,10 +12,4 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import XCTest
-@testable import WorkspaceTests
-
-XCTMain([
-    testCase(APITests.allTests),
-    testCase(InternalTests.allTests)
-])
+// [_Workaround: Everything in this directory needs to be refactored._]

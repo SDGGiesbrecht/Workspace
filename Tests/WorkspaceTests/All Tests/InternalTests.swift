@@ -21,6 +21,16 @@ import XCTest
 
 class InternalTests : TestCase {
 
+    func testHelp() {
+        for localization in InterfaceLocalization.cases {
+            LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+                XCTAssertErrorFree() {
+                    try Workspace.command.execute(with: ["help"])
+                }
+            }
+        }
+    }
+
     func testGitIgnoreCoverage() {
         // [_Workaround: Can this be moved to API Tests?_]
 
@@ -124,6 +134,7 @@ class InternalTests : TestCase {
 
     static var allTests: [(String, (InternalTests) -> () throws -> Void)] {
         return [
+            ("testHelp", testHelp),
             ("testGitIgnoreCoverage", testGitIgnoreCoverage),
             ("testDocumentationCoverage", testDocumentationCoverage),
             ("testExecutables", testExecutables)

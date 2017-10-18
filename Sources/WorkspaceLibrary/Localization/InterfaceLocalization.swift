@@ -14,11 +14,15 @@
 
 import SDGCornerstone
 
-enum InterfaceLocalization : String, Localization {
+enum InterfaceLocalization : String, InputLocalization, Localization {
 
     // MARK: - Cases
 
     case englishCanada = "en\u{2D}CA"
+
+    static let cases: [InterfaceLocalization] = [
+        .englishCanada
+    ]
 
     // MARK: - Localization
 

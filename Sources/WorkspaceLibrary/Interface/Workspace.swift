@@ -15,6 +15,21 @@
 import SDGCornerstone
 import SDGCommandLine
 
-struct Workspace {
+public enum Workspace {
 
+    static let name = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        switch localization {
+        case .englishCanada:
+            return "workspace"
+        }
+    })
+
+    static let description = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        switch localization {
+        case .englishCanada:
+            return "automates management of Swift projects."
+        }
+    })
+
+    public static let command = Command(name: name, description: description, subcommands: [])
 }

@@ -2,12 +2,21 @@
   "object": {
     "pins": [
       {
+        "package": "SDGCommandLine",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCommandLine",
+        "state": {
+          "branch": "master",
+          "revision": "beec3bb0e93894fe9410193c4ece0858a3fa6b59",
+          "version": null
+        }
+      },
+      {
         "package": "SDGCornerstone",
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCornerstone",
         "state": {
           "branch": null,
-          "revision": "2a140ec24abb80ec9f61a9652551e82b4b53c2eb",
-          "version": "0.5.0"
+          "revision": "4f0ffc2ed92b81af84217219dfcd827077acab51",
+          "version": "0.6.0"
         }
       }
     ]

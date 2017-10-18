@@ -28,13 +28,13 @@ let sdgCommandLine = "SDGCommandLine"
 let package = Package(
     name: toolName,
     dependencies: [
-        .package(url: sdgGiesbrecht + sdgCornerstone, .exact(Version(0, 6, 0)))
-        .package(url: sdgGiesbrecht + sdgCornerstone, .exact(Version(0, 1, 0)))
+        .package(url: sdgGiesbrecht + sdgCornerstone, .exact(Version(0, 6, 0))),
+        .package(url: sdgGiesbrecht + sdgCommandLine, /*.exact(Version(0, 1, 0))*/ .branch("master")) // [_Warning: Needs to use a valid release._]
     ],
     targets: [
         .target(name: toolCommand, dependencies: [.targetItem(name: library)]),
         .target(name: library, dependencies: [
-            .productItem(name: sdgCornerstone, package: sdgCornerstone)
+            .productItem(name: sdgCornerstone, package: sdgCornerstone),
             .productItem(name: sdgCommandLine, package: sdgCommandLine)
             ]),
         .testTarget(name: tests, dependencies: [.targetItem(name: library)])

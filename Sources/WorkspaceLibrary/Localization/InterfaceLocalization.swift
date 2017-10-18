@@ -1,5 +1,5 @@
 /*
- Program.swift
+ InterfaceLocalization.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -14,15 +14,13 @@
 
 import SDGCornerstone
 
-public func run() {
+enum InterfaceLocalization : String, Localization {
 
-    SDGCornerstone.initialize(mode: .commandLineTool, applicationIdentifier: "ca.solideogloria.Workspace")
+    // MARK: - Cases
 
-    if WSCommand.current ≠ WSCommand.proofread {
-        print("") // Line break after the input line.
-    }
+    case englishCanada = "en\u{2D}CA"
 
-    WSCommand.current.run(andExit: true)
+    // MARK: - Localization
 
-    unreachable()
+    static let fallbackLocalization = InterfaceLocalization.englishCanada
 }

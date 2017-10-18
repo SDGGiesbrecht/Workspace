@@ -1,5 +1,5 @@
 /*
- CompatibleLocalization.swift
+ RecognizedLocalization.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -14,8 +14,7 @@
 
 import SDGCornerstone
 
-/// A localization that Workspace can interact with user content in.
-enum CompatibleLocalization : String, Localization {
+enum ContentLocalization : String, Localization {
 
     // MARK: - Cases
 
@@ -33,5 +32,5 @@ enum CompatibleLocalization : String, Localization {
 
     // MARK: - Localization
 
-    static let fallbackLocalization = CompatibleLocalization.englishCanada
+    static let fallbackLocalization = ContentLocalization.englishCanada
 }

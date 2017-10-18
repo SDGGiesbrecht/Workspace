@@ -1,5 +1,5 @@
 /*
- APILocalization.swift
+ Workspace.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -13,15 +13,8 @@
  */
 
 import SDGCornerstone
+import SDGCommandLine
 
-/// A localization of Workspace.
-enum APILocalization : String, Localization {
+struct Workspace {
 
-    // MARK: - Cases
-
-    case englishCanada = "en\u{2D}CA"
-
-    // MARK: - Localization
-
-    static let fallbackLocalization = APILocalization.englishCanada
 }

@@ -14,7 +14,7 @@
 
 import Foundation
 
-struct Workspace {
+extension Workspace {
 
     static let directory = AbsolutePath(NSHomeDirectory()).subfolderOrFile(".Workspace")
 

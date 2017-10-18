@@ -17,7 +17,7 @@ import Foundation
 import SDGCornerstone
 
 func inputSyntaxError(message: String) -> Never {
-    let commands = join(lines: Command.allNames)
+    let commands = join(lines: WSCommand.allNames)
     let flags = join(lines: Flag.allFlags)
 
     fatalError(message: [

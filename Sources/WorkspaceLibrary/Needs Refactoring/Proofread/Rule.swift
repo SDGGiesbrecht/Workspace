@@ -110,7 +110,7 @@ extension Rule {
         if ¬noticeOnly {
             status = false
         }
-        if Command.current ≠ Command.proofread {
+        if WSCommand.current ≠ WSCommand.proofread {
             let colour: OutputColour
             if noticeOnly {
                 colour = .yellow

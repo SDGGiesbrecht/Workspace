@@ -12,14 +12,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-enum Command : String, Comparable, CustomStringConvertible, LosslessStringConvertible {
+enum WSCommand : String, Comparable, CustomStringConvertible, LosslessStringConvertible {
 
     // MARK: - Initialization
 
-    static let current: Command = {
+    static let current: WSCommand = {
         if CommandLine.arguments.count > 1 {
             let name = CommandLine.arguments[1]
-            if let command = Command(name) {
+            if let command = WSCommand(name) {
                 return command
             } else {
                 inputSyntaxError(message: "Unrecognized command: “\(name)”.")
@@ -36,7 +36,7 @@ enum Command : String, Comparable, CustomStringConvertible, LosslessStringConver
     case proofread
     case validate
 
-    static let all: [Command] = [
+    static let all: [WSCommand] = [
         .initialize,
         .refresh,
         .proofread,
@@ -66,7 +66,7 @@ enum Command : String, Comparable, CustomStringConvertible, LosslessStringConver
 
     // MARK: - Comparable
 
-    static func < (lhs: Command, rhs: Command) -> Bool {
+    static func < (lhs: WSCommand, rhs: WSCommand) -> Bool {
         return lhs.name < rhs.name
     }
 

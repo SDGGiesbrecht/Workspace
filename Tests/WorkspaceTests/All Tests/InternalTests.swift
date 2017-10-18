@@ -114,7 +114,7 @@ class InternalTests : TestCase {
             for file in executables {
                 do {
                     let condition = try File(at: RelativePath("Resources/Scripts/\(file)")).isExecutable
-                    XCTAssert(condition, "Script is not longer executable: \(file)")
+                    XCTAssert(condition, "Script is no longer executable: \(file)")
                 } catch let error {
                     XCTFail("\(error.localizedDescription)")
                 }
@@ -126,7 +126,7 @@ class InternalTests : TestCase {
         return [
             ("testGitIgnoreCoverage", testGitIgnoreCoverage),
             ("testDocumentationCoverage", testDocumentationCoverage),
-            ("testExecutables", testExecutables),
+            ("testExecutables", testExecutables)
         ]
     }
 }

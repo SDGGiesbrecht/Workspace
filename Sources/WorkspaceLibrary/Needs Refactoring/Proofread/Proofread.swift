@@ -18,13 +18,13 @@ import SDGCornerstone
 
 func runProofread(andExit shouldExit: Bool) -> Bool {
 
-    if Command.current ≠ Command.proofread {
+    if WSCommand.current ≠ WSCommand.proofread {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         printHeader(["Proofreading \(Configuration.projectName)..."])
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     }
 
-    if Command.current == .proofread {
+    if WSCommand.current == .proofread {
         // So that SwiftLint’s trailing_whitespace doesn’t trigger.
         normalizeFiles()
     }

@@ -284,7 +284,7 @@ func runInitialize(andExit shouldExit: Bool) {
     // Refreshing
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    Command.refresh.run(andExit: false)
+    WSCommand.refresh.run(andExit: false)
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Summary

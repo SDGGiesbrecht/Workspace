@@ -20,7 +20,7 @@ enum ArbitraryLocalization : Hashable {
     // MARK: - Initialization
 
     init(code: String) {
-        if let result = CompatibleLocalization(exactly: code) {
+        if let result = ContentLocalization(exactly: code) {
             self = .compatible(result)
         } else {
             self = .unrecognized(code)
@@ -29,7 +29,7 @@ enum ArbitraryLocalization : Hashable {
 
     // MARK: - Cases
 
-    case compatible(CompatibleLocalization)
+    case compatible(ContentLocalization)
     case unrecognized(String)
 
     // MARK: - Properties
@@ -47,7 +47,7 @@ enum ArbitraryLocalization : Hashable {
         return compatible?.icon ?? StrictString(code)
     }
 
-    var compatible: CompatibleLocalization? {
+    var compatible: ContentLocalization? {
         switch self {
         case .compatible(let result):
             return result

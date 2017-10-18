@@ -29,7 +29,7 @@ let package = Package(
     name: toolName,
     dependencies: [
         .package(url: sdgGiesbrecht + sdgCornerstone, .exact(Version(0, 6, 0))),
-        .package(url: sdgGiesbrecht + sdgCommandLine, /*.exact(Version(0, 1, 0))*/ .branch("master")) // [_Warning: Needs to use a valid release._]
+        .package(url: sdgGiesbrecht + sdgCommandLine, .exact(Version(0, 1, 0)))
     ],
     targets: [
         .target(name: toolCommand, dependencies: [.targetItem(name: library)]),

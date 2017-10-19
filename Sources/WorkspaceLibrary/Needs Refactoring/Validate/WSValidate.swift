@@ -33,7 +33,7 @@ func runValidate(andExit shouldExit: Bool) {
         // Refreshing
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        WSCommand.refresh.run(andExit: false)
+        runRefresh(andExit: false)
 
     }
 

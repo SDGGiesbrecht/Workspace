@@ -68,7 +68,7 @@ struct Git {
                 managedRange = section
             } else {
                 existsAlready = false
-                if WSCommand.current == .initialize {
+                if CommandLine.arguments[1] == "initialize" {
                     managedRange = body.startIndex ..< body.endIndex
                 } else {
                     managedRange = body.startIndex ..< body.startIndex

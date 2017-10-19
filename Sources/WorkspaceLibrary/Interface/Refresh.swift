@@ -33,7 +33,7 @@ extension Workspace {
         })
 
         public static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, _, _ /*output: inout Command.Output*/) throws in
-            WSCommand.refresh.run(andExit: true)
+            runRefresh(andExit: true)
         })
     }
 }

@@ -32,8 +32,16 @@ public enum Workspace {
     })
 
     public static let command = Command(name: name, description: description, subcommands: [
+
+        // Primary Workflow
         Workspace.Refresh.command,
-        Workspace.Proofread.command,
-        Workspace.Validate.command
+        Workspace.Validate.command,
+
+        // New Projects
+        Workspace.Initialize.command,
+
+        // Individual Steps
+        Workspace.Proofread.command
+
         ])
 }

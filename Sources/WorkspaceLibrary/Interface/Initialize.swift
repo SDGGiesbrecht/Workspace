@@ -55,33 +55,39 @@ extension Workspace {
         private static let type = SDGCommandLine.Option(name: typeName, description: typeDescription, type: projectTypeArgument)
 
         private static let projectTypeArgumentName = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
-            // [_Workaround: This should be refactored directly into the ProjectType enumeration. (SDGCommandLine 0.1.0)_]
             switch localization {
             case .englishCanada:
                 return "project type"
             }
         })
 
-        private static let projectTypeArgument = ArgumentType.enumeration(name: projectTypeArgumentName, cases: [
-            // [_Workaround: This should be refactored directly into the ProjectType enumeration. (SDGCommandLine 0.1.0)_]
-            (value: ProjectType.library, label: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
-                switch localization {
-                case .englishCanada:
-                    return "library"
-                }
-            })),
-            (value: ProjectType.executable, label: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
-                switch localization {
-                case .englishCanada:
-                    return "executable"
-                }
-            })),
-            (value: ProjectType.application, label: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
-                switch localization {
-                case .englishCanada:
-                    return "application"
-                }
-            }))
-            ])
+        private static let projectTypeArgument = ArgumentType.enumeration(name: projectTypeArgumentName, cases: ProjectType.all.map() { (type: ProjectType) -> (value: ProjectType, label: UserFacingText<InterfaceLocalization, Void>) in
+
+            let label: UserFacingText<InterfaceLocalization, Void>
+            switch type {
+            case .library:
+                label = UserFacingText({ (localization: InterfaceLocalization, _) -> StrictString in
+                    switch localization {
+                    case .englishCanada:
+                        return "library"
+                    }
+                })
+            case .executable:
+                label = UserFacingText({ (localization: InterfaceLocalization, _) -> StrictString in
+                    switch localization {
+                    case .englishCanada:
+                        return "executable"
+                    }
+                })
+            case .application:
+                label = UserFacingText({ (localization: InterfaceLocalization, _) -> StrictString in
+                    switch localization {
+                    case .englishCanada:
+                        return "application"
+                    }
+                })
+            }
+            return (value: type, label: label)
+        })
     }
 }

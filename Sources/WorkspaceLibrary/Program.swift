@@ -16,7 +16,7 @@ import Foundation
 
 import SDGCommandLine
 
-public func run() {
+public func run() { // [_Exempt from Code Coverage_]
     SDGCommandLine.initialize(applicationIdentifier: "ca.solideogloria.Workspace", version: nil, packageURL: URL(string: "https://github.com/SDGGiesbrecht/Workspace"))
     Workspace.command.executeAsMain()
 }

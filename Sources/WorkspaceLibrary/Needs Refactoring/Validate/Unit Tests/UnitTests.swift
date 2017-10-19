@@ -264,80 +264,83 @@ struct UnitTests {
 
                 var overallCoverageSuccess = true
                 var overallIndex = coverageResults.startIndex
-                let fileMarker = ".swift:"
+                let fileMarker = ".swift\u{3A}"
                 while let range = coverageResults.scalars.firstMatch(for: fileMarker.scalars, in: (overallIndex ..< coverageResults.endIndex).sameRange(in: coverageResults.scalars))?.range.clusters(in: coverageResults.clusters) {
                     overallIndex = range.upperBound
 
                     let fileRange = coverageResults.lineRange(for: range)
                     let file = String(coverageResults[fileRange])
+                    if ¬file.contains("Needs Refactoring") ∧ ¬file.contains("case .swift:") {
+                        // [_Workaround: A temporary measure until refactoring is complete._]
 
-                    let end: String.Index
-                    if let next = coverageResults.scalars.firstMatch(for: fileMarker.scalars, in: (fileRange.upperBound ..< coverageResults.endIndex).sameRange(in: coverageResults.scalars))?.range.clusters(in: coverageResults.clusters) {
-                        let nextFileRange = coverageResults.lineRange(for: next)
-                        end = nextFileRange.lowerBound
-                    } else {
-                        end = coverageResults.endIndex
-                    }
-
-                    var index = overallIndex
-                    while let missingRange = coverageResults.scalars.firstMatch(for: "^0".scalars, in: (index ..< end).sameRange(in: coverageResults.scalars))?.range.clusters(in: coverageResults.clusters) {
-                        index = missingRange.upperBound
-
-                        let errorLineRange = coverageResults.lineRange(for: missingRange)
-                        let errorLine = String(coverageResults[errorLineRange])
-
-                        let previous = coverageResults.index(before: errorLineRange.lowerBound)
-                        let sourceLineRange = coverageResults.lineRange(for: previous ..< previous)
-                        let sourceLine = String(coverageResults[sourceLineRange])
-
-                        let untestableTokensOnPreviousLine = [
-                            "[_Exempt from Code Coverage_]",
-                            "assert",
-                            "precondition",
-                            "fatalError"
-                            ] + Configuration.codeCoverageExemptionTokensForSameLine
-                        var noUntestableTokens = true
-                        for token in untestableTokensOnPreviousLine {
-                            if sourceLine.contains(token) {
-                                noUntestableTokens = false
-                                break
-                            }
+                        let end: String.Index
+                        if let next = coverageResults.scalars.firstMatch(for: fileMarker.scalars, in: (fileRange.upperBound ..< coverageResults.endIndex).sameRange(in: coverageResults.scalars))?.range.clusters(in: coverageResults.clusters) {
+                            let nextFileRange = coverageResults.lineRange(for: next)
+                            end = nextFileRange.lowerBound
+                        } else {
+                            end = coverageResults.endIndex
                         }
 
-                        let next = coverageResults.index(after: errorLineRange.upperBound)
-                        let nextLineRange = coverageResults.lineRange(for: next ..< next)
-                        let nextLine = String(coverageResults[nextLineRange])
-                        var sourceLines = sourceLine + nextLine
-                        sourceLines.unicodeScalars = String.UnicodeScalarView(sourceLines.unicodeScalars.filter({ ¬nullCharacters.contains($0) }))
+                        var index = overallIndex
+                        while let missingRange = coverageResults.scalars.firstMatch(for: "^0".scalars, in: (index ..< end).sameRange(in: coverageResults.scalars))?.range.clusters(in: coverageResults.clusters) {
+                            index = missingRange.upperBound
 
-                        var isExecutable = true
-                        if sourceLines.hasPrefix("}}") {
-                            isExecutable = false
-                        }
+                            let errorLineRange = coverageResults.lineRange(for: missingRange)
+                            let errorLine = String(coverageResults[errorLineRange])
 
-                        let untestableTokensOnFollowingLine = [
-                            "assertionFailure",
-                            "preconditionFailure",
-                            "fatalError",
-                            "primitiveMethod",
-                            "unreachable"
-                            ] + Configuration.codeCoverageExemptionTokensForPreviousLine
-                        if noUntestableTokens {
-                            for token in untestableTokensOnFollowingLine {
-                                if nextLine.contains(token) {
+                            let previous = coverageResults.index(before: errorLineRange.lowerBound)
+                            let sourceLineRange = coverageResults.lineRange(for: previous ..< previous)
+                            let sourceLine = String(coverageResults[sourceLineRange])
+
+                            let untestableTokensOnPreviousLine = [
+                                "[_Exempt from Code Coverage_]",
+                                "assert",
+                                "precondition",
+                                "fatalError"
+                                ] + Configuration.codeCoverageExemptionTokensForSameLine
+                            var noUntestableTokens = true
+                            for token in untestableTokensOnPreviousLine {
+                                if sourceLine.contains(token) {
                                     noUntestableTokens = false
                                     break
                                 }
                             }
-                        }
 
-                        if noUntestableTokens ∧ isExecutable {
-                            overallCoverageSuccess = false
-                            print([
-                                file
-                                    + sourceLine
-                                    + errorLine
-                                ], in: .red, spaced: true)
+                            let next = coverageResults.index(after: errorLineRange.upperBound)
+                            let nextLineRange = coverageResults.lineRange(for: next ..< next)
+                            let nextLine = String(coverageResults[nextLineRange])
+                            var sourceLines = sourceLine + nextLine
+                            sourceLines.unicodeScalars = String.UnicodeScalarView(sourceLines.unicodeScalars.filter({ ¬nullCharacters.contains($0) }))
+
+                            var isExecutable = true
+                            if sourceLines.hasPrefix("}}") {
+                                isExecutable = false
+                            }
+
+                            let untestableTokensOnFollowingLine = [
+                                "assertionFailure",
+                                "preconditionFailure",
+                                "fatalError",
+                                "primitiveMethod",
+                                "unreachable"
+                                ] + Configuration.codeCoverageExemptionTokensForPreviousLine
+                            if noUntestableTokens {
+                                for token in untestableTokensOnFollowingLine {
+                                    if nextLine.contains(token) {
+                                        noUntestableTokens = false
+                                        break
+                                    }
+                                }
+                            }
+
+                            if noUntestableTokens ∧ isExecutable {
+                                overallCoverageSuccess = false
+                                print([
+                                    file
+                                        + sourceLine
+                                        + errorLine
+                                    ], in: .red, spaced: true)
+                            }
                         }
                     }
                 }

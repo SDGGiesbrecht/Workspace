@@ -1,5 +1,5 @@
 /*
- Refresh.swift
+ Proofread.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -16,24 +16,24 @@ import SDGCornerstone
 import SDGCommandLine
 
 extension Workspace {
-    internal enum Refresh {
+    internal enum Proofread {
 
         static let name = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
-                return "refresh"
+                return "proofread"
             }
         })
 
         static let description = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
-                return "refreshes the current Swift project by updating its components and readying it for development."
+                return "proofreads the project source for style violations."
             }
         })
 
         public static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, _, output: inout Command.Output) throws in
-            WSCommand.refresh.run(andExit: true)
+            WSCommand.proofread.run(andExit: true)
         })
     }
 }

@@ -32,8 +32,56 @@ extension Workspace {
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, _, _ /*output: inout Command.Output*/) throws in
+        static let command = Command(name: name, description: description, directArguments: [], options: [type], execution: { (_, _, _ /*output: inout Command.Output*/) throws in
             runInitialize(andExit: true)
         })
+
+        // Options
+
+        private static let typeName = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+            switch localization {
+            case .englishCanada:
+                return "type"
+            }
+        })
+
+        private static let typeDescription = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+            switch localization {
+            case .englishCanada:
+                return "The type of project to initialize."
+            }
+        })
+
+        private static let type = SDGCommandLine.Option(name: typeName, description: typeDescription, type: projectTypeArgument)
+
+        private static let projectTypeArgumentName = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+            // [_Workaround: This should be refactored directly into the ProjectType enumeration. (SDGCommandLine 0.1.0)_]
+            switch localization {
+            case .englishCanada:
+                return "project type"
+            }
+        })
+
+        private static let projectTypeArgument = ArgumentType.enumeration(name: projectTypeArgumentName, cases: [
+            // [_Workaround: This should be refactored directly into the ProjectType enumeration. (SDGCommandLine 0.1.0)_]
+            (value: ProjectType.library, label: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+                switch localization {
+                case .englishCanada:
+                    return "library"
+                }
+            })),
+            (value: ProjectType.executable, label: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+                switch localization {
+                case .englishCanada:
+                    return "executable"
+                }
+            })),
+            (value: ProjectType.application, label: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+                switch localization {
+                case .englishCanada:
+                    return "application"
+                }
+            }))
+            ])
     }
 }

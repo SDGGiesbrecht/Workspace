@@ -31,5 +31,7 @@ public enum Workspace {
         }
     })
 
-    public static let command = Command(name: name, description: description, subcommands: [])
+    public static let command = Command(name: name, description: description, subcommands: [
+        Workspace.Refresh.command
+        ])
 }

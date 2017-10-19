@@ -28,11 +28,11 @@ extension Workspace {
         static let description = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
-                return "refreshes the current Swift project by updating its components and readying it for development."
+                return "refreshes the current project by updating its components and readying it for development."
             }
         })
 
-        public static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, _, output: inout Command.Output) throws in
+        public static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, _, _ /*output: inout Command.Output*/) throws in
             WSCommand.refresh.run(andExit: true)
         })
     }

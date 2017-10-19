@@ -1,5 +1,5 @@
 /*
- Proofread.swift
+ Validate.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -16,24 +16,24 @@ import SDGCornerstone
 import SDGCommandLine
 
 extension Workspace {
-    internal enum Proofread {
+    internal enum Validate {
 
         static let name = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
-                return "proofread"
+                return "validate"
             }
         })
 
         static let description = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
-                return "proofreads the current project’s source for style violations."
+                return "validates the current project against a thorough battery of tests."
             }
         })
 
-        public static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, _, _ /* output: inout Command.Output */) throws in
-            WSCommand.proofread.run(andExit: true)
+        public static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, _, _ /*output: inout Command.Output*/) throws in
+            WSCommand.validate.run(andExit: true)
         })
     }
 }

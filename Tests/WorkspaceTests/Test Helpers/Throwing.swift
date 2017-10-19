@@ -26,7 +26,7 @@ private func description(of error: Error) -> String {
     }
 }
 
-internal func XCTAssertErrorFree(file: StaticString = #file, line: UInt = #line, _ expression: () throws -> Void) {
+func XCTAssertErrorFree(file: StaticString = #file, line: UInt = #line, _ expression: () throws -> Void) {
     do {
         try expression()
     } catch let error {
@@ -34,7 +34,7 @@ internal func XCTAssertErrorFree(file: StaticString = #file, line: UInt = #line,
     }
 }
 
-internal func XCTAssertThrows<E : Error>(_ error: E, file: StaticString = #file, line: UInt = #line, _ expression: () throws -> Void) {
+func XCTAssertThrows<E : Error>(_ error: E, file: StaticString = #file, line: UInt = #line, _ expression: () throws -> Void) {
     do {
         try expression()
         XCTFail("The expected error was never thrown:\n" + description(of: error), file: file, line: line)
@@ -43,7 +43,7 @@ internal func XCTAssertThrows<E : Error>(_ error: E, file: StaticString = #file,
     }
 }
 
-internal func XCTAssertThrowsError(containing searchTerm: StrictString, file: StaticString = #file, line: UInt = #line, _ expression: () throws -> Void) {
+func XCTAssertThrowsError(containing searchTerm: StrictString, file: StaticString = #file, line: UInt = #line, _ expression: () throws -> Void) {
     do {
         try expression()
         XCTFail("The expected error was never thrown:\n...\(searchTerm)...", file: file, line: line)

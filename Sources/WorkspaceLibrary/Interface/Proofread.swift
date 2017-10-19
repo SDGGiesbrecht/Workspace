@@ -16,23 +16,23 @@ import SDGCornerstone
 import SDGCommandLine
 
 extension Workspace {
-    internal enum Proofread {
+    enum Proofread {
 
-        static let name = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        private static let name = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "proofread"
             }
         })
 
-        static let description = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        private static let description = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "proofreads the current project’s source for style violations."
             }
         })
 
-        public static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, _, _ /* output: inout Command.Output */) throws in
+        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, _, _ /* output: inout Command.Output */) throws in
             _ = runProofread(andExit: true)
         })
     }

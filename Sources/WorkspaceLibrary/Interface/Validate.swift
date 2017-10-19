@@ -16,23 +16,23 @@ import SDGCornerstone
 import SDGCommandLine
 
 extension Workspace {
-    internal enum Validate {
+    enum Validate {
 
-        static let name = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        private static let name = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "validate"
             }
         })
 
-        static let description = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        private static let description = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "validates the current project against a thorough battery of tests."
             }
         })
 
-        public static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, _, _ /*output: inout Command.Output*/) throws in
+        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, _, _ /*output: inout Command.Output*/) throws in
             runValidate(andExit: true)
         })
     }

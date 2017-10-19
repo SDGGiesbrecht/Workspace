@@ -16,23 +16,23 @@ import SDGCornerstone
 import SDGCommandLine
 
 extension Workspace {
-    internal enum Initialize {
+    enum Initialize {
 
-        static let name = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        private static let name = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "initialize"
             }
         })
 
-        static let description = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        private static let description = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "initializes a new project in the current directory."
             }
         })
 
-        public static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, _, _ /*output: inout Command.Output*/) throws in
+        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, _, _ /*output: inout Command.Output*/) throws in
             runInitialize(andExit: true)
         })
     }

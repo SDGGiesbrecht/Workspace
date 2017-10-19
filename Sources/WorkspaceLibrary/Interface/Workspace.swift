@@ -33,6 +33,7 @@ public enum Workspace {
 
     public static let command = Command(name: name, description: description, subcommands: [
         Workspace.Refresh.command,
-        Workspace.Proofread.command
+        Workspace.Proofread.command,
+        Workspace.Validate.command
         ])
 }

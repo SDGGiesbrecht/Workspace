@@ -1,5 +1,5 @@
 /*
- Program.swift
+ APITests.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -12,11 +12,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+import XCTest
 
-import SDGCommandLine
+import WorkspaceLibrary
 
-public func run() { // [_Exempt from Code Coverage_]
-    SDGCommandLine.initialize(applicationIdentifier: "ca.solideogloria.Workspace", version: nil, packageURL: URL(string: "https://github.com/SDGGiesbrecht/Workspace"))
-    Workspace.command.executeAsMain()
+class APITests : TestCase {
+
+    static var allTests: [(String, (APITests) -> () throws -> Void)] {
+        return [
+        ]
+    }
 }

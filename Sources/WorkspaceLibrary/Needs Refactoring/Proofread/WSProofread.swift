@@ -1,5 +1,5 @@
 /*
- Proofread.swift
+ WSProofread.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -18,13 +18,13 @@ import SDGCornerstone
 
 func runProofread(andExit shouldExit: Bool) -> Bool {
 
-    if Command.current ≠ Command.proofread {
+    if CommandLine.arguments[1] ≠ "proofread" {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         printHeader(["Proofreading \(Configuration.projectName)..."])
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     }
 
-    if Command.current == .proofread {
+    if CommandLine.arguments[1] == "proofread" {
         // So that SwiftLint’s trailing_whitespace doesn’t trigger.
         normalizeFiles()
     }

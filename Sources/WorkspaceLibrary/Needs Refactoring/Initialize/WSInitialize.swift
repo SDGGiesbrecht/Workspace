@@ -1,5 +1,5 @@
 /*
- Initialize.swift
+ WSInitialize.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -284,7 +284,7 @@ func runInitialize(andExit shouldExit: Bool) {
     // Refreshing
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    Command.refresh.run(andExit: false)
+    runRefresh(andExit: false)
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Summary

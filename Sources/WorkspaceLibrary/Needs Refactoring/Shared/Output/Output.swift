@@ -54,10 +54,6 @@ func failTests(message: [String]) -> Never {
 
 // MARK: - Generic Printing
 
-func printHeader(_ message: [String]) {
-    print(message, in: .blue, spaced: true)
-}
-
 private var warnings: [[String]] = []
 func printWarning(_ message: [String]) {
     warnings.append(message)

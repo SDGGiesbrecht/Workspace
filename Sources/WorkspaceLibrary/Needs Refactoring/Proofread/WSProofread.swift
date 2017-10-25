@@ -15,12 +15,13 @@
 import Foundation
 
 import SDGCornerstone
+import SDGCommandLine
 
-func runProofread(andExit shouldExit: Bool) -> Bool {
+func runProofread(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: inout Command.Output) -> Bool {
 
     if CommandLine.arguments[1] ≠ "proofread" {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        printHeader(["Proofreading \(Configuration.projectName)..."])
+        print("Proofreading \(Configuration.projectName)...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     }
 

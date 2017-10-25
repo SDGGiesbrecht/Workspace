@@ -13,6 +13,7 @@
  */
 
 import SDGCornerstone
+import SDGCommandLine
 
 struct ContributingInstructions {
 
@@ -215,7 +216,7 @@ struct ContributingInstructions {
         try? Repository.delete(deprecatedContributingInstructionsPath)
     }
 
-    static func relinquishControl() {
+    static func relinquishControl(output: inout Command.Output) {
 
         var printedHeader = false
 
@@ -226,7 +227,7 @@ struct ContributingInstructions {
 
                 if ¬printedHeader {
                     printedHeader = true
-                    printHeader(["Cancelling contributing instruction management..."])
+                    print("Cancelling contributing instruction management...".formattedAsSectionHeader(), to: &output)
                 }
 
                 file.contents.removeSubrange(range)

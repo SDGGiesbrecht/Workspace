@@ -15,6 +15,7 @@
 import Foundation
 
 import SDGCornerstone
+import SDGCommandLine
 
 struct Documentation {
 
@@ -70,17 +71,17 @@ struct Documentation {
         return sections.reduce(CharacterSet()) { $0 ∪ $1 }
     }()
 
-    static func generate(individualSuccess: @escaping (String) -> Void, individualFailure: @escaping (String) -> Void) {
+    static func generate(individualSuccess: @escaping (String) -> Void, individualFailure: @escaping (String) -> Void, output: inout Command.Output) {
 
         Xcode.temporarilyDisableProofreading()
         defer {
             Xcode.reEnableProofreading()
         }
 
-        func generate(operatingSystemName: String, sdk: String, condition: String? = nil) {
+        func generate(operatingSystemName: String, sdk: String, output: inout Command.Output, condition: String? = nil) {
 
             // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-            printHeader(["Generating documentation for \(operatingSystemName)..."])
+            print("Generating documentation for \(operatingSystemName)...".formattedAsSectionHeader(), to: &output)
             // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
             let documentationFolder = "docs/\(operatingSystemName)"
@@ -136,7 +137,7 @@ struct Documentation {
                 if jazzyResult.succeeded ∧ Configuration.enforceDocumentationCoverage {
 
                     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-                    printHeader(["Checking documentation coverage for \(operatingSystemName)..."])
+                    print("Checking documentation coverage for \(operatingSystemName)...".formattedAsSectionHeader(), to: &output)
                     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
                     let undocumented = require() { try File(at: RelativePath("docs/\(operatingSystemName)/undocumented.json")) }
@@ -188,34 +189,34 @@ struct Documentation {
 
             // macOS
 
-            generate(operatingSystemName: "macOS", sdk: "macosx")
+            generate(operatingSystemName: "macOS", sdk: "macosx", output: &output)
         }
 
         if Environment.shouldDoMiscellaneousJobs ∧ Configuration.supportLinux {
             // [_Workaround: Generate Linux documentation on macOS instead. (jazzy --version 0.8.3)_]
 
-            generate(operatingSystemName: "Linux", sdk: "macosx", condition: "LinuxDocs")
+            generate(operatingSystemName: "Linux", sdk: "macosx", output: &output, condition: "LinuxDocs")
         }
 
         if Environment.shouldDoIOSJobs {
 
             // iOS
 
-            generate(operatingSystemName: "iOS", sdk: "iphoneos")
+            generate(operatingSystemName: "iOS", sdk: "iphoneos", output: &output)
         }
 
         if Environment.shouldDoWatchOSJobs {
 
             // watchOS
 
-            generate(operatingSystemName: "watchOS", sdk: "watchos")
+            generate(operatingSystemName: "watchOS", sdk: "watchos", output: &output)
         }
 
         if Environment.shouldDoTVOSJobs {
 
             // tvOS
 
-            generate(operatingSystemName: "tvOS", sdk: "appletvos")
+            generate(operatingSystemName: "tvOS", sdk: "appletvos", output: &output)
         }
 
         for path in Repository.trackedFiles(at: RelativePath("docs")) {

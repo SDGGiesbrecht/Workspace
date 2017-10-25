@@ -18,7 +18,7 @@ import SDGCommandLine
 func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: inout Command.Output) {
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Initializing workspace..."])
+    print("Initializing workspace...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     if ¬Repository.isEmpty {
@@ -38,13 +38,13 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Initializing git repository..."])
+    print("Initializing git repository...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     requireBash(["git", "init"])
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Generating Swift package..."])
+    print("Generating Swift package...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     let packageType = Flags.type
@@ -264,7 +264,7 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Configuring Workspace..."])
+    print("Configuring Workspace...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     var configuration = File(possiblyAt: Configuration.configurationFilePath)

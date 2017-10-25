@@ -39,13 +39,13 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Validating \(Configuration.projectName)..."])
+    print("Validating \(Configuration.projectName)...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     if Environment.shouldDoMiscellaneousJobs {
 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        printHeader(["Validating Workspace configuration..."])
+        print("Validating Workspace configuration...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
         if Configuration.validate() {
@@ -58,7 +58,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         // Proofreading...
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        if runProofread(andExit: false) {
+        if runProofread(andExit: false, arguments: arguments, options: options, output: &output) {
             individualSuccess(message: "Code passes proofreading.")
         } else {
             individualFailure(message: "Code fails proofreading. (See above for details.)")
@@ -69,7 +69,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
     // Running unit tests...
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    UnitTests.test(individualSuccess: individualSuccess, individualFailure: individualFailure)
+    UnitTests.test(individualSuccess: individualSuccess, individualFailure: individualFailure, output: &output)
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Generating documentation...
@@ -77,13 +77,13 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
 
     if Configuration.generateDocumentation ∧ Environment.operatingSystem == .macOS {
 
-        Documentation.generate(individualSuccess: individualSuccess, individualFailure: individualFailure)
+        Documentation.generate(individualSuccess: individualSuccess, individualFailure: individualFailure, output: &output)
     }
 
     if Environment.isInContinuousIntegration {
 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        printHeader(["Validating project state..."])
+        print("Validating project state...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
         requireBash(["git", "add", ".", "\u{2D}\u{2D}intent\u{2D}to\u{2D}add"], silent: true)
@@ -95,7 +95,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Summary"])
+    print("Summary".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     for (result, message) in summary {

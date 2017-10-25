@@ -42,6 +42,7 @@ extension Workspace.Refresh {
                     return "Refreshing resources..."
                 }
             }).resolved().formattedAsSectionHeader(), to: &output)
+
             notImplementedYet()
         })
     }

@@ -13,6 +13,7 @@
  */
 
 import SDGCornerstone
+import SDGCommandLine
 
 struct ContinuousIntegration {
 
@@ -166,11 +167,11 @@ struct ContinuousIntegration {
         require() { try travisConfiguration.write() }
     }
 
-    static func relinquishControl() {
+    static func relinquishControl(output: inout Command.Output) {
 
         var configuration = File(possiblyAt: travisConfigurationPath)
         if let range = configuration.contents.range(of: managementComment) {
-            printHeader(["Cancelling continuous integration management..."])
+            print("Cancelling continuous integration management...".formattedAsSectionHeader(), to: &output)
             configuration.contents.removeSubrange(range)
             try? configuration.write()
         }

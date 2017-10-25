@@ -26,11 +26,11 @@ let instructionsAfterRefresh: String = {
 func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: inout Command.Output) {
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Refreshing \(Configuration.projectName)..."])
+    print("Refreshing \(Configuration.projectName)...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Updating Workspace commands..."])
+    print("Updating Workspace commands...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     func copy(script: String) {
@@ -70,7 +70,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Updating Workspace configuration..."])
+    print("Updating Workspace configuration...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     var newResponsibilities: [(option: Option, value: String, comment: [String]?)] = []
@@ -102,7 +102,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Updating Git configuration..."])
+    print("Updating Git configuration...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     Git.updateGitConfiguraiton()
@@ -110,7 +110,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     if Configuration.manageReadMe {
 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        printHeader(["Updating read‐me..."])
+        print("Updating read‐me...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
         ReadMe.refreshReadMe()
@@ -119,7 +119,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     if Configuration.manageLicence {
 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        printHeader(["Updating licence..."])
+        print("Updating licence...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
         Licence.refreshLicence()
@@ -128,22 +128,22 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     if Configuration.manageContributingInstructions {
 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        printHeader(["Updating contributing instructions..."])
+        print("Updating contributing instructions...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
         ContributingInstructions.refreshContributingInstructions()
     } else {
-        ContributingInstructions.relinquishControl()
+        ContributingInstructions.relinquishControl(output: &output)
     }
 
     if Configuration.manageContinuousIntegration {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        printHeader(["Updating continuous integration configuration..."])
+        print("Updating continuous integration configuration...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
         ContinuousIntegration.refreshContinuousIntegrationConfiguration()
     } else {
-        ContinuousIntegration.relinquishControl()
+        ContinuousIntegration.relinquishControl(output: &output)
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
@@ -153,26 +153,26 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
 
     if Configuration.manageFileHeaders {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        printHeader(["Updating file headers..."])
+        print("Updating file headers...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
         FileHeaders.refreshFileHeaders()
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Updating examples..."])
+    print("Updating examples...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     Examples.refreshExamples()
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Updating inherited documentation..."])
+    print("Updating inherited documentation...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     DocumentationInheritance.refreshDocumentation()
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Normalizing files..."])
+    print("Normalizing files...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     normalizeFiles()
@@ -180,7 +180,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     if Configuration.manageXcode ∧ Environment.operatingSystem == .macOS {
 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        printHeader(["Refreshing Xcode project..."])
+        print("Refreshing Xcode project...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
         Xcode.refreshXcodeProjects()

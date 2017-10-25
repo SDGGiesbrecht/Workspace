@@ -15,6 +15,7 @@
 import Foundation
 
 import SDGCornerstone
+import SDGCommandLine
 
 struct ReadMe {
 
@@ -871,12 +872,12 @@ struct ReadMe {
         }
     }
 
-    static func relinquishControl() {
+    static func relinquishControl(output: inout Command.Output) {
 
         for localization in Configuration.localizations {
             var readMe = File(possiblyAt: readMePath(localization: localization))
             if let range = readMe.contents.range(of: managementComment) {
-                printHeader(["Cancelling read‐me management..."])
+                print("Cancelling read‐me management...".formattedAsSectionHeader(), to: &output)
                 readMe.contents.removeSubrange(range)
                 try? readMe.write()
             }

@@ -13,6 +13,7 @@
  */
 
 import SDGCornerstone
+import SDGCommandLine
 
 let instructionsAfterRefresh: String = {
     if Environment.operatingSystem == .macOS ∧ Configuration.manageXcode {
@@ -22,7 +23,7 @@ let instructionsAfterRefresh: String = {
     }
 }()
 
-func runRefresh(andExit shouldExit: Bool) {
+func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: inout Command.Output) {
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     printHeader(["Refreshing \(Configuration.projectName)..."])
@@ -144,6 +145,11 @@ func runRefresh(andExit shouldExit: Bool) {
     } else {
         ContinuousIntegration.relinquishControl()
     }
+
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    // Resources
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    require() { try Workspace.Refresh.Resources.command.execute(withArguments: arguments, options: options, output: &output) }
 
     if Configuration.manageFileHeaders {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

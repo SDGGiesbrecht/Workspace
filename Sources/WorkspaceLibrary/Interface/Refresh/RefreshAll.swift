@@ -1,5 +1,5 @@
 /*
- Refresh.swift
+ RefreshAll.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -15,25 +15,26 @@
 import SDGCornerstone
 import SDGCommandLine
 
-extension Workspace {
-    enum Refresh {
+extension Workspace.Refresh {
+
+    enum All {
 
         private static let name = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
-                return "refresh"
+                return "all"
             }
         })
 
         private static let description = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
-                return "refreshes the current project by updating its components and readying it for development."
+                return "performs all refreshment tasks."
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, _, _ /*output: inout Command.Output*/) throws in
-            runRefresh(andExit: true)
+        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (arguments: DirectArguments, options: Options, output: inout Command.Output) throws in
+            runRefresh(andExit: true, arguments: arguments, options: options, output: &output)
         })
     }
 }

@@ -1,5 +1,5 @@
 /*
- Validate.swift
+ Refresh.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -16,24 +16,25 @@ import SDGCornerstone
 import SDGCommandLine
 
 extension Workspace {
-    enum Validate {
+    enum Refresh {
 
         private static let name = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
-                return "validate"
+                return "refresh"
             }
         })
 
         private static let description = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
-                return "validates the current project against a thorough battery of tests."
+                return "refreshes the current project by updating its components and readying it for development."
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (arguments: DirectArguments, options: Options, output: inout Command.Output) throws in
-            runValidate(andExit: true, arguments: arguments, options: options, output: &output)
-        })
+        static let command = Command(name: name, description: description, subcommands: [
+            All.command,
+            Resources.command
+            ], defaultSubcommand: All.command)
     }
 }

@@ -1,5 +1,5 @@
 /*
- PackageRepository.swift
+ Options.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -12,20 +12,17 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGCornerstone
+import Foundation
+
 import SDGCommandLine
 
-extension PackageRepository {
+extension Options {
 
-    // MARK: - Structure
-
-    var targets: [Target] {
-        notImplementedYetAndCannotReturn()
-    }
-
-    // MARK: - Resources
-
-    func refreshResources() {
-        notImplementedYet()
+    static let project: PackageRepository = {
+        let url = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+        return PackageRepository(alreadyAt: url)
+    }()
+    var project: PackageRepository {
+        return Options.project
     }
 }

@@ -34,7 +34,7 @@ extension Workspace.Refresh {
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, _, output: inout Command.Output) throws in
+        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, options: Options, output: inout Command.Output) throws in
 
             print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
                 switch localization {
@@ -43,7 +43,7 @@ extension Workspace.Refresh {
                 }
             }).resolved().formattedAsSectionHeader(), to: &output)
 
-            notImplementedYet()
+            options.project.refreshResources()
         })
     }
 }

@@ -31,6 +31,7 @@ extension PackageRepository {
     private class Cache {
         fileprivate var allFiles: [URL]?
         fileprivate var trackedFiles: [URL]?
+        fileprivate var sourceFiles: [URL]?
     }
     private static var caches: [URL: Cache] = [:]
 
@@ -109,12 +110,30 @@ extension PackageRepository {
                 ignoredURLs = try Git.default.ignoredFiles(output: &output)
             }
             ignoredURLs.append(url(for: ".git"))
-            let ignoredPaths = ignoredURLs.map() { $0.path }
 
             return try allFiles().filter() { (url) in
-                let path = url.path
-                for ignoredPath in ignoredPaths {
-                    if path == ignoredPath ∨ path.hasPrefix(ignoredPath + "/") {
+                for ignoredURL in ignoredURLs {
+                    if url.is(in: ignoredURL) {
+                        return false
+                    }
+                }
+                return true
+            }
+        }
+    }
+
+    func sourceFiles(output: inout Command.Output) throws -> [URL] {
+        return try cached(in: &PackageRepository.caches[location, default: Cache()].sourceFiles) { () -> [URL] in
+
+            let generatedURLs = [
+                "docs",
+                "Refresh Workspace (macOS).command",
+                "Refresh Workspace (Linux).sh"
+                ].map({ URL(fileURLWithPath: $0) })
+
+            return try trackedFiles(output: &output).filter() { (url) in
+                for generatedURL in generatedURLs {
+                    if url.is(in: generatedURL) {
                         return false
                     }
                 }
@@ -126,7 +145,7 @@ extension PackageRepository {
     // MARK: - Resources
 
     func refreshResources(output: inout Command.Output) throws {
-        print(try trackedFiles(output: &output).map({ $0.path }))
+        print(try sourceFiles(output: &output).map({ $0.path }))
         notImplementedYet()
     }
 }

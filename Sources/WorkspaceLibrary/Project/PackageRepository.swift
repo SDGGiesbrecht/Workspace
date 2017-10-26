@@ -17,7 +17,14 @@ import Foundation
 import SDGCornerstone
 import SDGCommandLine
 
+internal typealias PackageRepository = _PackageRepository // Shared from SDGCornerstone.
 extension PackageRepository {
+
+    // MARK: - Initialization
+
+    internal init(alreadyAt location: URL) {
+        self.init(_alreadyAt: location) // Shared from SDGCommandLine.
+    }
 
     // MARK: - Cache
 
@@ -26,6 +33,20 @@ extension PackageRepository {
         fileprivate var trackedFiles: [URL]?
     }
     private static var caches: [URL: Cache] = [:]
+
+    func resetCache() {
+        PackageRepository.caches[location] = Cache()
+    }
+
+    // MARK: - Location
+
+    var location: URL {
+        return _location // Shared from SDGCommandLine.
+    }
+
+    func url(for relativePath: String) -> URL {
+        return _url(for: relativePath) // Shared from SDGCommandLine.
+    }
 
     // MARK: - Structure
 
@@ -66,7 +87,7 @@ extension PackageRepository {
                 if ¬(try url.resourceValues(forKeys: [.isDirectoryKey])).isDirectory!, // Skip directories.
                     url.lastPathComponent ≠ ".DS_Store", // Skip irrelevant operating system files.
                     ¬url.path.hasSuffix("~") {
-                    
+
                     result.append(url)
                 }
             }
@@ -78,58 +99,34 @@ extension PackageRepository {
             return result
         }
     }
-    
-    func trackedFiles() throws -> [URL] {
+
+    func trackedFiles(output: inout Command.Output) throws -> [URL] {
         return try cached(in: &PackageRepository.caches[location, default: Cache()].trackedFiles) {
             () -> [URL] in
-            
-            notImplementedYet()
-            return try allFiles()
-        }
-        /*
-        var cacheCopy = cache
-        defer { cache = cacheCopy }
-        
-        return cached(in: &cacheCopy.trackedFiles) {
-            () -> [RelativePath] in
-         
-            let ignoredSummary = requireBash(["git", "status", "\u{2D}\u{2D}ignored"], silent: true)
-            var ignoredPaths: [String] = [
-                ".git/"
-            ]
-            if let header = ignoredSummary.range(of: "Ignored files:") {
-         
-                let remainder = String(ignoredSummary[header.upperBound...])
-                for line in remainder.lines.lazy.dropFirst(3).map({ String($0.line) }) {
-                    if line.isWhitespace {
-                        break
-                    } else {
-                        var start = line.scalars.startIndex
-                        line.scalars.advance(&start, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
-                        ignoredPaths.append(String(line.scalars.suffix(from: start)))
-                    }
-                }
-         
+
+            var ignoredURLs: [URL] = []
+            try FileManager.default.do(in: location) {
+                ignoredURLs = try Git.default.ignoredFiles(output: &output)
             }
-         
-            let result = allRealFiles.filter() { (path: RelativePath) -> Bool in
-         
-                for ignored in ignoredPaths {
-                    if path.string.hasPrefix(ignored) {
+            ignoredURLs.append(url(for: ".git"))
+            let ignoredPaths = ignoredURLs.map() { $0.path }
+
+            return try allFiles().filter() { (url) in
+                let path = url.path
+                for ignoredPath in ignoredPaths {
+                    if path == ignoredPath ∨ path.hasPrefix(ignoredPath + "/") {
                         return false
                     }
                 }
                 return true
             }
-         
-            return result
-        }*/
+        }
     }
 
     // MARK: - Resources
 
-    func refreshResources() throws {
-        print(join(lines: try trackedFiles().map({ $0.path })))
+    func refreshResources(output: inout Command.Output) throws {
+        print(try trackedFiles(output: &output).map({ $0.path }))
         notImplementedYet()
     }
 }

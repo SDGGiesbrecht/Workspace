@@ -43,7 +43,7 @@ extension Workspace.Refresh {
                 }
             }).resolved().formattedAsSectionHeader(), to: &output)
 
-            try options.project.refreshResources()
+            try options.project.refreshResources(output: &output)
         })
     }
 }

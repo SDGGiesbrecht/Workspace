@@ -105,7 +105,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     print("Updating Git configuration...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    Git.updateGitConfiguraiton()
+    DGit.updateGitConfiguraiton()
 
     if Configuration.manageReadMe {
 

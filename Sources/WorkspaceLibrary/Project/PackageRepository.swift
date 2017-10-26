@@ -29,9 +29,12 @@ extension PackageRepository {
     // MARK: - Cache
 
     private class Cache {
+        fileprivate var targets: [URL]?
+        
         fileprivate var allFiles: [URL]?
         fileprivate var trackedFiles: [URL]?
         fileprivate var sourceFiles: [URL]?
+        fileprivate var resourceFiles: [URL]?
     }
     private static var caches: [URL: Cache] = [:]
 
@@ -52,7 +55,22 @@ extension PackageRepository {
     // MARK: - Structure
 
     var targets: [Target] {
-        notImplementedYetAndCannotReturn()
+        return try cached(in: &PackageRepository.caches[location, default: Cache()].targets) {
+             () -> [Target] in
+            notImplementedYetAndCannotReturn()
+        }
+    }
+    
+    func resourceDirectories() -> [URL] {
+        let resourceDirectoryName = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "Resources"
+            }
+        })
+        return InterfaceLocalization.cases.map() { (localization) in
+            return location.appendingPathComponent(String(resourceDirectoryName.resolved(for: localization)))
+        }
     }
 
     // MARK: - Files
@@ -143,9 +161,33 @@ extension PackageRepository {
     }
 
     // MARK: - Resources
+    
+    func resourceFiles(output: inout Command.Output) throws -> [URL] {
+        return try cached(in: &PackageRepository.caches[location, default: Cache()].sourceFiles) { () -> [URL] in
+            let locations = resourceDirectories()
+            return try sourceFiles(output: &output).filter() { (file) in
+                for directory in locations where file.is(in: directory) {
+                    return true
+                }
+                return false
+            }
+        }
+    }
+    
+    func target(for resource: URL) -> URL {
+        let path = resource.path(relativeTo: location).dropping(through: "/")
+        print(path)
+        
+        notImplementedYet()
+        return location
+    }
 
     func refreshResources(output: inout Command.Output) throws {
-        print(try sourceFiles(output: &output).map({ $0.path }))
-        notImplementedYet()
+        
+        for resource in try resourceFiles(output: &output) {
+            let targetURL = target(for: resource)
+            
+            notImplementedYetAndCannotReturn()
+        }
     }
 }

@@ -25,4 +25,16 @@ extension URL {
         let otherPath = other.path
         return path == otherPath ∨ path.hasPrefix(otherPath + "/")
     }
+
+    func path(relativeTo other: URL) -> String {
+        guard `is`(in: other) else {
+            return path
+        }
+        let otherLength = other.path.clusters.count
+        var relative = path.clusters.dropFirst(otherLength)
+        if relative.hasPrefix("/") {
+            relative = relative.dropFirst()
+        }
+        return String(relative)
+    }
 }

@@ -18,6 +18,16 @@ import SDGCornerstone
 
 struct Repository {
 
+    // MARK: - Bridging
+
+    static let packageRepository = PackageRepository(alreadyAt: URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
+
+    static func paths(from urls: [URL]) -> [RelativePath] {
+        return urls.map() { (url) in
+            return RelativePath(url.path(relativeTo: packageRepository.location))
+        }
+    }
+
     // MARK: - Configuration
 
     static let testZone: RelativePath = ".Test Zone"
@@ -70,26 +80,8 @@ struct Repository {
     }
 
     static var allFiles: [RelativePath] {
-        return cached(in: &cache.allFiles) {
-            () -> [RelativePath] in
-
-            guard let enumerator = fileManager.enumerator(atPath: repositoryPath.string) else {
-                fatalError(message: ["Cannot enumerate files in project."])
-            }
-
-            var result: [RelativePath] = []
-            while let path = enumerator.nextObject() as? String {
-
-                var isDirectory: ObjCBool = false
-                if fileManager.fileExists(atPath: path, isDirectory: &isDirectory) {
-
-                    if ¬isDirectory.boolValue {
-                        result.append(RelativePath(path))
-                    }
-                }
-            }
-            return result
-        }
+        let urls = require() { try packageRepository.allFiles() }
+        return paths(from: urls)
     }
 
     static var allRealFiles: [RelativePath] {

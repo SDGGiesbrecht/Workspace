@@ -29,8 +29,8 @@ extension PackageRepository {
     // MARK: - Cache
 
     private class Cache {
-        fileprivate var targets: [URL]?
-        
+        fileprivate var targets: [Target]?
+
         fileprivate var allFiles: [URL]?
         fileprivate var trackedFiles: [URL]?
         fileprivate var sourceFiles: [URL]?
@@ -57,10 +57,12 @@ extension PackageRepository {
     var targets: [Target] {
         return try cached(in: &PackageRepository.caches[location, default: Cache()].targets) {
              () -> [Target] in
+
+            let swift = SwiftTool.default
             notImplementedYetAndCannotReturn()
         }
     }
-    
+
     func resourceDirectories() -> [URL] {
         let resourceDirectoryName = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
             switch localization {
@@ -161,7 +163,9 @@ extension PackageRepository {
     }
 
     // MARK: - Resources
-    
+
+    // [_Warning: Resources need a way of opting out of headers. (.data. ?)_]
+
     func resourceFiles(output: inout Command.Output) throws -> [URL] {
         return try cached(in: &PackageRepository.caches[location, default: Cache()].sourceFiles) { () -> [URL] in
             let locations = resourceDirectories()
@@ -173,20 +177,20 @@ extension PackageRepository {
             }
         }
     }
-    
+
     func target(for resource: URL) -> URL {
         let path = resource.path(relativeTo: location).dropping(through: "/")
         print(path)
-        
+
         notImplementedYet()
         return location
     }
 
     func refreshResources(output: inout Command.Output) throws {
-        
+
         for resource in try resourceFiles(output: &output) {
             let targetURL = target(for: resource)
-            
+
             notImplementedYetAndCannotReturn()
         }
     }

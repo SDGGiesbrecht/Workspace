@@ -84,23 +84,6 @@ struct Repository {
         return paths(from: urls)
     }
 
-    static var allRealFiles: [RelativePath] {
-        var cacheCopy = cache
-        defer { cache = cacheCopy }
-
-        return cached(in: &cacheCopy.allRealFiles) {
-            () -> [RelativePath] in
-
-            let result = allFiles.filter() { (path: RelativePath) -> Bool in
-
-                return ¬path.string.hasSuffix(".DS_Store")
-
-            }
-
-            return result
-        }
-    }
-
     static var trackedFiles: [RelativePath] {
         var cacheCopy = cache
         defer { cache = cacheCopy }
@@ -127,7 +110,7 @@ struct Repository {
 
             }
 
-            let result = allRealFiles.filter() { (path: RelativePath) -> Bool in
+            let result = allFiles.filter() { (path: RelativePath) -> Bool in
 
                 for ignored in ignoredPaths {
                     if path.string.hasPrefix(ignored) {
@@ -177,7 +160,7 @@ struct Repository {
     }
 
     static var isEmpty: Bool {
-        return allRealFiles.isEmpty
+        return allFiles.isEmpty
     }
 
     private static func path(_ possiblePath: RelativePath, isIn path: RelativePath) -> Bool {

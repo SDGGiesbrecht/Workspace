@@ -24,4 +24,8 @@ extension SwiftTool {
     static let `default` = _default // Shared from SDGCommandLine.
 
     // MARK: - Usage
+
+    func targets(output: inout Command.Output) throws -> [(name: String, location: URL)] {
+        return try _targets(output: &output) // Shared from SDGCommandLine.
+    }
 }

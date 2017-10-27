@@ -29,7 +29,7 @@ extension PackageRepository {
     // MARK: - Cache
 
     private class Cache {
-        fileprivate var targets: [Target]?
+        fileprivate var targets: [String: Target]?
 
         fileprivate var allFiles: [URL]?
         fileprivate var trackedFiles: [URL]?
@@ -54,24 +54,32 @@ extension PackageRepository {
 
     // MARK: - Structure
 
-    var targets: [Target] {
+    func targets(output: inout Command.Output) throws -> [String: Target] {
         return try cached(in: &PackageRepository.caches[location, default: Cache()].targets) {
-             () -> [Target] in
+            () -> [String: Target] in
 
-            let swift = SwiftTool.default
-            notImplementedYetAndCannotReturn()
+            var list: [String: Target] = [:]
+            try FileManager.default.do(in: location) {
+                let targetInformation = try SwiftTool.default.targets(output: &output)
+                for (name, sourceDirectory) in targetInformation {
+                    list[name] = Target(name: name, sourceDirectory: sourceDirectory)
+                }
+            }
+            return list
         }
     }
 
+    static let resourceDirectoryName = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+        switch localization {
+        case .englishCanada:
+            return "Resources"
+        }
+    })
+
     func resourceDirectories() -> [URL] {
-        let resourceDirectoryName = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
-            switch localization {
-            case .englishCanada:
-                return "Resources"
-            }
-        })
+
         return InterfaceLocalization.cases.map() { (localization) in
-            return location.appendingPathComponent(String(resourceDirectoryName.resolved(for: localization)))
+            return location.appendingPathComponent(String(PackageRepository.resourceDirectoryName.resolved(for: localization)))
         }
     }
 
@@ -165,6 +173,7 @@ extension PackageRepository {
     // MARK: - Resources
 
     // [_Warning: Resources need a way of opting out of headers. (.data. ?)_]
+    // [_Workaround: Then licences can be restored to markdown files._]
 
     func resourceFiles(output: inout Command.Output) throws -> [URL] {
         return try cached(in: &PackageRepository.caches[location, default: Cache()].sourceFiles) { () -> [URL] in
@@ -178,19 +187,33 @@ extension PackageRepository {
         }
     }
 
-    func target(for resource: URL) -> URL {
+    func target(for resource: URL, output: inout Command.Output) throws -> Target {
         let path = resource.path(relativeTo: location).dropping(through: "/")
-        print(path)
-
-        notImplementedYet()
-        return location
+        guard let targetName = path.prefix(upTo: "/")?.contents else {
+            throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+                switch localization {
+                case .englishCanada:
+                    return StrictString("No target specified for resource:\n\(path)\nFiles must be in subdirectories named corresponding to the intended target.")
+                }
+            }))
+        }
+        guard let target = (try targets(output: &output))[String(targetName)] else {
+            throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+                switch localization {
+                case .englishCanada:
+                    return StrictString("No target named “\(targetName)”.\nResources must be in subdirectories named corresponding to the intended target.")
+                }
+            }))
+        }
+        return target
     }
 
     func refreshResources(output: inout Command.Output) throws {
 
         for resource in try resourceFiles(output: &output) {
-            let targetURL = target(for: resource)
-
+            let targetInformation = try target(for: resource, output: &output)
+            print(resource.path(relativeTo: location))
+            print(targetInformation.sourceDirectory.path(relativeTo: location))
             notImplementedYetAndCannotReturn()
         }
     }

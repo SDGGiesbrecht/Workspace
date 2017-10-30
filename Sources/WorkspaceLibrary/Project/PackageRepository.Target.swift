@@ -33,6 +33,18 @@ extension PackageRepository {
         let name: String
         let sourceDirectory: URL
 
+        // MARK: - Resources
+
+        func refresh(resources: [URL], from package: PackageRepository) {
+            var registeredNamespaces: Set<String> = []
+
+            for resource in resources.sorted() {
+                var pathComponents = resource.path(relativeTo: package.location).components(separatedBy: "/").dropFirst(2)
+                let fileName = pathComponents.removeLast()
+                print(pathComponents)
+            }
+        }
+
         // MARK: - Equatable
 
         static func == (lhs: Target, rhs: Target) -> Bool {

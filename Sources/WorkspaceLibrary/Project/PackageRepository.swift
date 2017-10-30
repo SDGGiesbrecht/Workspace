@@ -216,13 +216,8 @@ extension PackageRepository {
             targets[intendedTarget, default: []].append(resource)
         }
 
-        for (target, unsortedResources) in targets {
-            let resources = unsortedResources.sorted()
-
-            print(target.name)
-            print(resources.map({ $0.path(relativeTo: location) }))
+        for (target, resources) in targets {
+            target.refresh(resources: resources, from: self)
         }
-
-        notImplementedYet()
     }
 }

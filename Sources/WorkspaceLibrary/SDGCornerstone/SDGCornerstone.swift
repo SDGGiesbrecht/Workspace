@@ -18,7 +18,7 @@ import Foundation
 
 import SDGCornerstone
 
-extension URL {
+extension URL : Comparable {
 
     func `is`(in other: URL) -> Bool {
         let path = self.path
@@ -36,5 +36,11 @@ extension URL {
             relative = relative.dropFirst()
         }
         return String(relative)
+    }
+
+    // MARK: - Comparable
+
+    public static func < (lhs: URL, rhs: URL) -> Bool {
+        return lhs.absoluteString < rhs.absoluteString
     }
 }

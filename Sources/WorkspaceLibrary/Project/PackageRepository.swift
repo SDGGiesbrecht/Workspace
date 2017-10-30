@@ -210,11 +210,19 @@ extension PackageRepository {
 
     func refreshResources(output: inout Command.Output) throws {
 
+        var targets: [Target: [URL]] = [:]
         for resource in try resourceFiles(output: &output) {
-            let targetInformation = try target(for: resource, output: &output)
-            print(resource.path(relativeTo: location))
-            print(targetInformation.sourceDirectory.path(relativeTo: location))
-            notImplementedYetAndCannotReturn()
+            let intendedTarget = try target(for: resource, output: &output)
+            targets[intendedTarget, default: []].append(resource)
         }
+
+        for (target, unsortedResources) in targets {
+            let resources = unsortedResources.sorted()
+
+            print(target.name)
+            print(resources.map({ $0.path(relativeTo: location) }))
+        }
+
+        notImplementedYet()
     }
 }

@@ -19,7 +19,7 @@ import SDGCommandLine
 
 extension PackageRepository {
 
-    struct Target {
+    struct Target : Hashable {
 
         // MARK: - Initialization
 
@@ -32,5 +32,17 @@ extension PackageRepository {
 
         let name: String
         let sourceDirectory: URL
+
+        // MARK: - Equatable
+
+        static func == (lhs: Target, rhs: Target) -> Bool {
+            return (lhs.name, lhs.sourceDirectory) == (rhs.name, rhs.sourceDirectory)
+        }
+
+        // MARK: - Hashable
+
+        var hashValue: Int {
+            return name.hashValue
+        }
     }
 }

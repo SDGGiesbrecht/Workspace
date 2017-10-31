@@ -114,7 +114,7 @@ extension PackageRepository {
             return cached(in: &cache.headerEnd) {
                 () -> String.ScalarView.Index in
 
-                return fileType.syntax.headerStart(file: self)
+                return fileType.syntax.headerEnd(file: self)
             }
         }
 

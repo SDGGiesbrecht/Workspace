@@ -89,24 +89,14 @@ extension PackageRepository {
         private func add(components: ArraySlice<String>, to tree: inout [StrictString: Any], for resource: URL) {
             if ¬components.isEmpty {
                 if components.count == 1 {
-                    tree[variable(for: components.first!)] = resource
+                    tree[SwiftLanguage.default.identifier(for: StrictString(components.first!), casing: .variable)] = resource
                 } else {
-                    let name = namespace(for: components.first!)
+                    let name = SwiftLanguage.default.identifier(for: StrictString(components.first!), casing: .type)
                     var branch = tree[name] as? [StrictString: Any] ?? [:]
                     add(components: components.dropFirst(), to: &branch, for: resource)
                     tree[name] = branch
                 }
             }
-        }
-
-        private func namespace(for directoryName: String) -> StrictString {
-            // [_Warning: Move this to file on Swift source._]
-            return StrictString(directoryName)
-        }
-
-        private func variable(for fileName: String) -> StrictString {
-            // [_Warning: Move this to file on Swift source._]
-            return StrictString(fileName)
         }
 
         private func source(for namespaceTree: [StrictString: Any]) throws -> StrictString {

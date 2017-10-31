@@ -1,5 +1,5 @@
 /*
- Swift.swift
+ SwiftLanguage.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -12,20 +12,24 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+import SDGCornerstone
 
-import SDGCommandLine
-
-typealias SwiftTool = _Swift // Shared from SDGCommandLine.
-extension SwiftTool {
+struct SwiftLanguage {
 
     // MARK: - Static Properties
 
-    static let `default` = _default // Shared from SDGCommandLine.
+    static let `default` = SwiftLanguage()
 
-    // MARK: - Usage
+    // MARK: - Initialization
 
-    func targets(output: inout Command.Output) throws -> [(name: String, location: URL)] {
-        return try _targets(output: &output) // Shared from SDGCommandLine.
+    private init() {
+
+    }
+
+    // MARK: - Generating
+
+    func identifier(for string: StrictString, casing: Casing) -> StrictString {
+        notImplementedYet()
+        return string
     }
 }

@@ -37,7 +37,7 @@ struct ContinuousIntegration {
         return FileType.yaml.syntax.comment(contents: managementWarning)
     }()
 
-    static func refreshContinuousIntegrationConfiguration() {
+    static func refreshContinuousIntegrationConfiguration(output: inout Command.Output) {
 
         var travisConfiguration = File(possiblyAt: travisConfigurationPath)
 
@@ -164,7 +164,7 @@ struct ContinuousIntegration {
 
         let newBody = join(lines: updatedLines)
         travisConfiguration.body = newBody
-        require() { try travisConfiguration.write() }
+        require() { try travisConfiguration.write(output: &output) }
     }
 
     static func relinquishControl(output: inout Command.Output) {
@@ -173,7 +173,7 @@ struct ContinuousIntegration {
         if let range = configuration.contents.range(of: managementComment) {
             print("Cancelling continuous integration management...".formattedAsSectionHeader(), to: &output)
             configuration.contents.removeSubrange(range)
-            try? configuration.write()
+            try? configuration.write(output: &output)
         }
     }
 

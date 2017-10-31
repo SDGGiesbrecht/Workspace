@@ -73,9 +73,9 @@ struct Documentation {
 
     static func generate(individualSuccess: @escaping (String) -> Void, individualFailure: @escaping (String) -> Void, output: inout Command.Output) {
 
-        Xcode.temporarilyDisableProofreading()
+        Xcode.temporarilyDisableProofreading(output: &output)
         defer {
-            Xcode.reEnableProofreading()
+            Xcode.reEnableProofreading(output: &output)
         }
 
         func generate(operatingSystemName: String, sdk: String, output: inout Command.Output, condition: String? = nil) {
@@ -267,7 +267,7 @@ struct Documentation {
                 }
 
                 file.contents = source
-                require() { try file.write() }
+                require() { try file.write(output: &output) }
             }
         }
     }

@@ -15,8 +15,9 @@
 import Foundation
 
 import SDGCornerstone
+import SDGCommandLine
 
-func normalizeFiles() {
+func normalizeFiles(output: inout Command.Output) {
 
     for path in Repository.sourceFiles {
 
@@ -44,7 +45,7 @@ func normalizeFiles() {
             }
             file.contents = join(lines: normalizedLines)
 
-            require() { try file.write() }
+            require() { try file.write(output: &output) }
         }
     }
 }

@@ -27,7 +27,7 @@ func runProofread(andExit shouldExit: Bool, arguments: DirectArguments, options:
 
     if CommandLine.arguments[1] == "proofread" {
         // So that SwiftLint’s trailing_whitespace doesn’t trigger.
-        normalizeFiles()
+        normalizeFiles(output: &output)
     }
 
     // Workspace Rules
@@ -83,7 +83,7 @@ func runProofread(andExit shouldExit: Bool, arguments: DirectArguments, options:
             }
 
             file.contents = join(lines: lines)
-            require() { try file.write() }
+            require() { try file.write(output: &output) }
         }
 
         if let swiftLintResult = runThirdPartyTool(

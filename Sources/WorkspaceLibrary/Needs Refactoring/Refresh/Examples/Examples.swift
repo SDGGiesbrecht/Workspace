@@ -15,6 +15,7 @@
 import Foundation
 
 import SDGCornerstone
+import SDGCommandLine
 
 struct Examples {
     static let examples: [String: String] = {
@@ -89,7 +90,7 @@ struct Examples {
         return list
     }()
 
-    static func refreshExamples() {
+    static func refreshExamples(output: inout Command.Output) {
 
         for path in Repository.sourceFiles {
 
@@ -170,7 +171,7 @@ struct Examples {
                     }
                 }
 
-                require() { try file.write() }
+                require() { try file.write(output: &output) }
             }
         }
     }

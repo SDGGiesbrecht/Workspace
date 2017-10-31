@@ -13,6 +13,7 @@
  */
 
 import SDGCornerstone
+import SDGCommandLine
 
 enum Licence : String {
 
@@ -103,7 +104,7 @@ enum Licence : String {
 
     // MARK: - Licence Management
 
-    static func refreshLicence() {
+    static func refreshLicence(output: inout Command.Output) {
 
         guard let licence = Configuration.licence else {
 
@@ -131,7 +132,7 @@ enum Licence : String {
         text = text.replacingOccurrences(of: key("Authors"), with: authors)
 
         file.contents = text
-        require() { try file.write() }
+        require() { try file.write(output: &output) }
 
         // Delete alternate licence files to prevent duplicates.
         try? Repository.delete(RelativePath("LICENSE.txt"))

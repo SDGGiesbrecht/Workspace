@@ -21,9 +21,9 @@ struct UnitTests {
 
     static func test(individualSuccess: @escaping (String) -> Void, individualFailure: @escaping (String) -> Void, output: inout Command.Output) {
 
-        Xcode.temporarilyDisableProofreading()
+        Xcode.temporarilyDisableProofreading(output: &output)
         defer {
-            Xcode.reEnableProofreading()
+            Xcode.reEnableProofreading(output: &output)
         }
 
         func printTestHeader(buildOnly: Bool, operatingSystemName: String, buildToolName: String? = nil) {

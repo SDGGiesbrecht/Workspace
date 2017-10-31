@@ -13,6 +13,7 @@
  */
 
 import SDGCornerstone
+import SDGCommandLine
 
 struct Configuration {
 
@@ -122,10 +123,10 @@ struct Configuration {
         configuration.body = additions.joined() + configuration.body
     }
 
-    static func addEntries(entries: [(option: Option, value: String, comment: [String]?)]) {
+    static func addEntries(entries: [(option: Option, value: String, comment: [String]?)], output: inout Command.Output) {
         var configuration = file
         addEntries(entries: entries, to: &configuration)
-        require() { try configuration.write() }
+        require() { try configuration.write(output: &output) }
     }
 
     // MARK: - Properties

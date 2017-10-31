@@ -15,6 +15,7 @@
 import Foundation
 
 import SDGCornerstone
+import SDGCommandLine
 
 struct FileHeaders {
 
@@ -85,7 +86,7 @@ struct FileHeaders {
         return copyright
     }
 
-    static func refreshFileHeaders() {
+    static func refreshFileHeaders(output: inout Command.Output) {
 
         func key(_ name: String) -> String {
             return "[_\(name)_]"
@@ -152,7 +153,7 @@ struct FileHeaders {
                 }
 
                 file.header = header
-                require() { try file.write() }
+                require() { try file.write(output: &output) }
             }
         }
     }

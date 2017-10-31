@@ -217,7 +217,7 @@ extension PackageRepository {
         }
 
         for (target, resources) in targets {
-            target.refresh(resources: resources, from: self)
+            try target.refresh(resources: resources, from: self, output: &output)
         }
     }
 }

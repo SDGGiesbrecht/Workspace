@@ -35,14 +35,18 @@ extension PackageRepository {
 
         // MARK: - Resources
 
-        func refresh(resources: [URL], from package: PackageRepository) {
+        func refresh(resources: [URL], from package: PackageRepository, output: inout Command.Output) throws {
             var registeredNamespaces: Set<String> = []
+
+            var resourceFile = try TextFile(possiblyAt: sourceDirectory.appendingPathComponent("Resources.swift"))
 
             for resource in resources.sorted() {
                 var pathComponents = resource.path(relativeTo: package.location).components(separatedBy: "/").dropFirst(2)
                 let fileName = pathComponents.removeLast()
                 print(pathComponents)
             }
+
+            try resourceFile.writeChanges(for: package, output: &output)
         }
 
         // MARK: - Equatable

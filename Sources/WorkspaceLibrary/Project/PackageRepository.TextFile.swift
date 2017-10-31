@@ -24,9 +24,11 @@ extension PackageRepository {
         // MARK: - Initialization
 
         init(alreadyAt location: URL) throws {
+            let fileType = try FileType(url: location)
+
             let contents = try String(from: location)
             let executable = try location.resourceValues(forKeys: [.isExecutableKey]).isExecutable == true
-            try self.init(location: location, executable: executable, contents: contents, isNew: false)
+            self.init(location: location, fileType: fileType, executable: executable, contents: contents, isNew: false)
         }
 
         init(possiblyAt location: URL, executable: Bool = false) throws {
@@ -37,16 +39,17 @@ extension PackageRepository {
                     hasChanged = true
                 }
             } catch {
-                self = try TextFile(location: location, executable: executable, contents: "", isNew: true)
+                let fileType = try FileType(url: location)
+                self = TextFile(location: location, fileType: fileType, executable: executable, contents: "", isNew: true)
             }
         }
 
-        private init(location: URL, executable: Bool, contents: String, isNew: Bool) throws {
+        private init(location: URL, fileType: FileType, executable: Bool, contents: String, isNew: Bool) {
             self.location = location
             self.isExecutable = executable
             self._contents = contents
             self.hasChanged = isNew
-            self.fileType = try FileType(url: location)
+            self.fileType = fileType
         }
 
         // MARK: - Properties

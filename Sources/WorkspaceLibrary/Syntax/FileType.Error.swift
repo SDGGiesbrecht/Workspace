@@ -16,6 +16,6 @@ extension FileType {
 
     enum Error : Swift.Error {
 
-        case unrecognizedFileExtension
+        case unrecognizedFileExtension(String)
     }
 }

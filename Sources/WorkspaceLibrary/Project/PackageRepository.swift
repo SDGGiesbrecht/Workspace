@@ -176,7 +176,7 @@ extension PackageRepository {
     // [_Workaround: Then licences can be restored to markdown files._]
 
     func resourceFiles(output: inout Command.Output) throws -> [URL] {
-        return try cached(in: &PackageRepository.caches[location, default: Cache()].sourceFiles) { () -> [URL] in
+        return try cached(in: &PackageRepository.caches[location, default: Cache()].resourceFiles) { () -> [URL] in
             let locations = resourceDirectories()
             return try sourceFiles(output: &output).filter() { (file) in
                 for directory in locations where file.is(in: directory) {

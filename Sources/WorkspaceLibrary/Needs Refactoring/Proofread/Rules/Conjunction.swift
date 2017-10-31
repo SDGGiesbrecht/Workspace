@@ -54,6 +54,9 @@ struct Conjunction : Rule {
                     if ¬file.contents[file.contents.lineRange(for: range)].contains("REPOSITORY=") {
                         throwError()
                     }
+
+                case .xcodeProject:
+                    break
                 }
             }
         }

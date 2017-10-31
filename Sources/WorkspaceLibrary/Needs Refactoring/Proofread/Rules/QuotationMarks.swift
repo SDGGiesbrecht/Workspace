@@ -66,6 +66,9 @@ struct QuotationMarks : Rule {
                     }
                 case .gitignore, .json, .html, .css, .javaScript:
                     throwError()
+
+                case .xcodeProject:
+                    break
                 }
 
             }

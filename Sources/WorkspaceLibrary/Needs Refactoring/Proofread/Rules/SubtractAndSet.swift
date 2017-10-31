@@ -50,6 +50,9 @@ struct SubtractAndSet : Rule {
                             ∧ ¬line.contains("Swift.Numeric") {
                             throwError()
                         }
+
+                    case .xcodeProject:
+                        break
                     }
                 }
             }

@@ -56,6 +56,9 @@ struct Not : Rule {
                                 ∧ ¬isInConditionalCompilationStatement(at: range, in: file) {
                                 throwError()
                             }
+
+                        case .xcodeProject:
+                            break
                         }
                     }
                 }

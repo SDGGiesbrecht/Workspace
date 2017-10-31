@@ -49,6 +49,9 @@ struct MultiplyAndSet : Rule {
                             ∧ ¬line.contains("Swift.Numeric") {
                             throwError()
                         }
+
+                    case .xcodeProject:
+                        break
                     }
                 }
             }

@@ -53,6 +53,9 @@ struct NotEqual : Rule {
                         throwError()
                     }
 
+                case .xcodeProject:
+                    break
+
                 }
             }
         }

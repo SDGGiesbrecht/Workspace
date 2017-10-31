@@ -35,9 +35,8 @@ func runProofread(andExit shouldExit: Bool, arguments: DirectArguments, options:
     var overallSuccess = true
 
     for path in Repository.sourceFiles {
-        let file = require() { try File(at: path) }
 
-        if file.fileType ≠ nil {
+        if let file = try? File(at: path) {
 
             var ruleSet: [Rule.Type]
             if Configuration.sdg {
@@ -50,7 +49,6 @@ func runProofread(andExit shouldExit: Bool, arguments: DirectArguments, options:
             for rule in ruleSet where rule.name ∉ Configuration.disableProofreadingRules {
                 rule.check(file: file, status: &overallSuccess)
             }
-
         }
     }
 

@@ -26,11 +26,11 @@ Licence management can be especially useful when they are combined with [configu
 
 A particular licence can be selected with the [configuration](Configuring%20Workspace.md) option `Licence`. Possible values are:
 
-- `Apache 2.0` ([text](../Resources/Licences/Apache%202.0.md)) (Swift itself is under this licence.)
-- `MIT` ([text](../Resources/Licences/MIT.md))
-- `GNU General Public 3.0` ([text](../Resources/Licences/GNU%20General%20Public%203.0.md))
-- `Unlicense` ([text](../Resources/Licences/Unlicense.md)) (Public Domain)
-- `Copyright` ([text](../Resources/Licences/Copyright.md)) (No Permissions)
+- `Apache 2.0` ([text](../Resources/WorkspaceLibrary/Licences/Apache%202.0.md)) (Swift itself is under this licence.)
+- `MIT` ([text](../Resources/WorkspaceLibrary/Licences/MIT.md))
+- `GNU General Public 3.0` ([text](../Resources/WorkspaceLibrary/Licences/GNU%20General%20Public%203.0.md))
+- `Unlicense` ([text](../Resources/Licences/WorkspaceLibrary/Unlicense.md)) (Public Domain)
+- `Copyright` ([text](../Resources/Licences/WorkspaceLibrary/Copyright.md)) (No Permissions)
 
 For information about the various licences, see [choosealicense.com](https://choosealicense.com).
 

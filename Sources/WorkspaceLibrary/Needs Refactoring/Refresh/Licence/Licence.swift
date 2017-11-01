@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGCornerstone
 import SDGCommandLine
 
@@ -25,11 +27,11 @@ enum Licence : String {
 
     // MARK: - Cases
 
-    case apache2_0 = "Apache 2.0"
-    case mit = "MIT"
-    case gnuGeneralPublic3_0 = "GNU GeneralPublic3_0"
-    case unlicense = "Unlicense"
-    case copyright = "Copyright"
+    case apache2_0
+    case mit
+    case gnuGeneralPublic3_0
+    case unlicense
+    case copyright
 
     static let all: [Licence] = [
         .apache2_0,
@@ -45,27 +47,23 @@ enum Licence : String {
         return rawValue
     }
 
-    private var filenameWithoutExtension: String {
-        return rawValue
-    }
-
-    static let directory = Workspace.resources.subfolderOrFile("Licences")
-    static let projectDirectory = Workspace.projectResources.subfolderOrFile("Licences")
-
-    private func licenceData(fileExtension: String) -> String {
-
-        let path = Licence.directory.subfolderOrFile("\(filenameWithoutExtension).\(fileExtension)")
-        let file = require() { try File(at: path) }
-
-        return file.contents
-    }
-
-    var filename: String {
-        return filenameWithoutExtension + ".md"
-    }
-
     var text: String {
-        return licenceData(fileExtension: "md")
+        var source: String
+        switch self {
+        case .apache2_0:
+            source = Resources.Licences.apache2_0
+        case .mit:
+            source = Resources.Licences.mit
+        case .gnuGeneralPublic3_0:
+            source = Resources.Licences.gnuGeneralPublic3_0
+        case .unlicense:
+            source = Resources.Licences.unlicense
+        case .copyright:
+            source = Resources.Licences.copyright
+        }
+
+        var file = PackageRepository.TextFile(mockFileWithContents: source, fileType: FileType.markdown)
+        return file.body
     }
 
     private var noticeLines: [String] {

@@ -44,6 +44,11 @@ extension PackageRepository {
             }
         }
 
+        init(mockFileWithContents contents: String, fileType: FileType) {
+            let temporary = FileManager.default.url(in: .temporary, at: "Mock File")
+            self.init(location: temporary, fileType: fileType, executable: false, contents: contents, isNew: true)
+        }
+
         private init(location: URL, fileType: FileType, executable: Bool, contents: String, isNew: Bool) {
             self.location = location
             self.isExecutable = executable

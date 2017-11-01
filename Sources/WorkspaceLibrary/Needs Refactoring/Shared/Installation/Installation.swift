@@ -18,9 +18,6 @@ extension Workspace {
 
     static let directory = AbsolutePath(NSHomeDirectory()).subfolderOrFile(".Workspace")
 
-    static let repository = directory.subfolderOrFile("Workspace")
-
-    static let resources = repository.subfolderOrFile("Resources")
     static let projectResources = RelativePath("Resources")
 
     static let linkedRepositories = directory.subfolderOrFile("Linked Repositories")

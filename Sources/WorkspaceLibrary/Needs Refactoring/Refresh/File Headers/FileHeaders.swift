@@ -124,10 +124,6 @@ struct FileHeaders {
                 return false
             }
 
-            if Configuration.projectName == "Workspace" ∧ path.string.hasPrefix(Licence.projectDirectory.string) {
-                return false
-            }
-
             return true
         }
 

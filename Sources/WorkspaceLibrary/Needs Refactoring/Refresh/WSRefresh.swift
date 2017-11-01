@@ -33,40 +33,30 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     print("Updating Workspace commands...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    func copy(script: String) {
-        let origin = Workspace.resources.subfolderOrFile("Scripts/\(script)")
-
-        let updated = require() { try File(at: origin) }
-        if ¬updated.isExecutable {
-            fatalError(message: [
-                "\(script) is not executable.",
-                "There may be a bug in Workspace."
-                ])
-        }
-        var inRepository = File(possiblyAt: RelativePath(script), executable: true)
-
-        inRepository.contents = updated.contents
-        require() { try inRepository.write(output: &output) }
+    func write(scriptContents: String, to destination: String) {
+        var script = File(possiblyAt: RelativePath(destination), executable: true)
+        script.contents = scriptContents
+        require() { try script.write(output: &output) }
     }
 
     // Refresh Workspace
 
-    copy(script: "Refresh Workspace (macOS).command")
+    write(scriptContents: Resources.Scripts.refreshWorkspaceMacOS, to: "Refresh Workspace (macOS).command")
 
     if Configuration.supportLinux {
         // Checked into repository, so dependent on configuration.
 
-        copy(script: "Refresh Workspace (Linux).sh")
+        write(scriptContents: Resources.Scripts.refreshWorkspaceLinux, to: "Refresh Workspace (Linux).sh")
     }
 
     // Validate Changes
 
-    copy(script: "Validate Changes (macOS).command")
+    write(scriptContents: Resources.Scripts.validateChangesMacOS, to: "Validate Changes (macOS).command")
 
     if Environment.operatingSystem == .linux {
         // Not checked into repository, so dependent on environment.
 
-        copy(script: "Validate Changes (Linux).sh")
+        write(scriptContents: Resources.Scripts.validateChangesLinux, to: "Validate Changes (Linux).sh")
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

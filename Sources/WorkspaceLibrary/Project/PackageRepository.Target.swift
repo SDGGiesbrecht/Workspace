@@ -131,14 +131,25 @@ extension PackageRepository {
         }
 
         private func source(for resource: URL, named name: StrictString) throws -> StrictString {
+            let fileExtension = resource.pathExtension
+            let initializer: (StrictString, StrictString)
+            switch fileExtension {
+            case "md", "txt":
+                initializer = ("String(data: ", ", encoding: String.Encoding.utf8)!")
+            default:
+                initializer = ("", "")
+            }
+
             let data = try Data(from: resource)
             let string = data.base64EncodedString()
             var declaration: StrictString = "static let "
             declaration += name
-            declaration += " = Data(base64Encoded: \u{22}"
-            // [_Warning: Temporarily disabled._]
-            //declaration += string.scalars
-            declaration += "\u{22})"
+            declaration += " = "
+            declaration += initializer.0
+            declaration += "Data(base64Encoded: \u{22}"
+            declaration += string.scalars
+            declaration += "\u{22})!"
+            declaration += initializer.1
             return declaration
         }
 

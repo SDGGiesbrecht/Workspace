@@ -41,6 +41,7 @@ enum DocumentationLink : String, CustomStringConvertible {
     case contributingInstructions = "Contributing Instructions.md"
     case xcode = "Xcode.md"
     case fileHeaders = "File Headers.md"
+    case resources = "Resources.md"
     case documentationGeneration = "Documentation Generation.md"
     case continuousIntegration = "Continuous Integration.md"
     case ignoringFileTypes = "Ignoring File Types.md"
@@ -56,6 +57,7 @@ enum DocumentationLink : String, CustomStringConvertible {
             .contributingInstructions,
             .xcode,
             .fileHeaders,
+            .resources,
             .documentationGeneration,
             .continuousIntegration,
             .ignoringFileTypes

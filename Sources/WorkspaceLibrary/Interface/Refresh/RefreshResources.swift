@@ -30,7 +30,6 @@ extension Workspace.Refresh {
             switch localization {
             case .englishCanada:
                 return "regenerates code providing access to the project’s resources."
-                // [_Warning: Needs a link to more information._]
             }
         })
 

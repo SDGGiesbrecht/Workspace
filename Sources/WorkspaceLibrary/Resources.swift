@@ -18,17 +18,17 @@ internal enum Resources {}
 
 extension Resources {
     enum Licences {
-        static let Apache_2_0 = Data(base64Encoded: "")
-        static let Copyright = Data(base64Encoded: "")
-        static let GNU_General_Public_3_0 = Data(base64Encoded: "")
-        static let MIT = Data(base64Encoded: "")
-        static let Unlicense = Data(base64Encoded: "")
+        static let apache2_0 = Data(base64Encoded: "")
+        static let copyright = Data(base64Encoded: "")
+        static let gnuGeneralPublic3_0 = Data(base64Encoded: "")
+        static let mit = Data(base64Encoded: "")
+        static let unlicense = Data(base64Encoded: "")
     }
     enum Scripts {
-        static let Refresh_Workspace__Linux_ = Data(base64Encoded: "")
-        static let Refresh_Workspace__macOS_ = Data(base64Encoded: "")
-        static let Validate_Changes__Linux_ = Data(base64Encoded: "")
-        static let Validate_Changes__macOS_ = Data(base64Encoded: "")
+        static let refreshWorkspaceLinux = Data(base64Encoded: "")
+        static let refreshWorkspaceMacOS = Data(base64Encoded: "")
+        static let validateChangesLinux = Data(base64Encoded: "")
+        static let validateChangesMacOS = Data(base64Encoded: "")
     }
 
 }

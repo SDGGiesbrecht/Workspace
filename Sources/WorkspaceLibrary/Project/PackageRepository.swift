@@ -172,9 +172,6 @@ extension PackageRepository {
 
     // MARK: - Resources
 
-    // [_Warning: Resources need a way of opting out of headers. (.data. ?)_]
-    // [_Workaround: Then licences can be restored to markdown files._]
-
     func resourceFiles(output: inout Command.Output) throws -> [URL] {
         return try cached(in: &PackageRepository.caches[location, default: Cache()].resourceFiles) { () -> [URL] in
             let locations = resourceDirectories()

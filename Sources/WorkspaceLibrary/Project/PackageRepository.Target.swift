@@ -43,8 +43,10 @@ extension PackageRepository {
         }
 
         private func generateSource(for resources: [URL], of package: PackageRepository) throws -> StrictString {
+            var source: StrictString = "import Foundation\n\n"
+
             let enumName = Target.resourceNamespace.resolved(for: InterfaceLocalization.fallbackLocalization)
-            var source = "internal enum " + enumName + " {}\n"
+            source += "internal enum " + enumName + " {}\n"
 
             var registeredAliases: Set<StrictString> = [enumName]
             for alias in InterfaceLocalization.cases.map({ Target.resourceNamespace.resolved(for: $0) }) where alias ∉ registeredAliases {
@@ -126,7 +128,7 @@ extension PackageRepository {
         private func source(for resource: URL, named name: StrictString) throws -> StrictString {
             let data = try Data(from: resource)
             let string = data.base64EncodedString()
-            var declaration: StrictString = "let "
+            var declaration: StrictString = "static let "
             declaration += name
             declaration += " = Data(base64Encoded: \u{22}"
             declaration += string.scalars

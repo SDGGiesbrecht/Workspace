@@ -27,11 +27,11 @@ enum Licence : String {
 
     // MARK: - Cases
 
-    case apache2_0
-    case mit
-    case gnuGeneralPublic3_0
-    case unlicense
-    case copyright
+    case apache2_0 = "Apache 2.0"
+    case mit = "MIT"
+    case gnuGeneralPublic3_0 = "GNU General Public 3.0"
+    case unlicense = "Unlicense"
+    case copyright = "Copyright"
 
     static let all: [Licence] = [
         .apache2_0,

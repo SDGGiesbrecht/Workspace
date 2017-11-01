@@ -91,7 +91,7 @@ extension PackageRepository {
         private func add(components: ArraySlice<String>, to tree: inout [StrictString: Any], for resource: URL) {
             if ¬components.isEmpty {
                 if components.count == 1 {
-                    tree[SwiftLanguage.default.identifier(for: StrictString(components.first!), casing: .variable)] = resource
+                    tree[variableName(for: components.first!)] = resource
                 } else {
                     let name = SwiftLanguage.default.identifier(for: StrictString(components.first!), casing: .type)
                     var branch = tree[name] as? [StrictString: Any] ?? [:]
@@ -99,6 +99,11 @@ extension PackageRepository {
                     tree[name] = branch
                 }
             }
+        }
+
+        private func variableName(for fileName: String) -> StrictString {
+            let nameOnly = URL(fileURLWithPath: "/" + fileName).deletingPathExtension().lastPathComponent
+            return SwiftLanguage.default.identifier(for: StrictString(nameOnly), casing: .variable)
         }
 
         private func source(for namespaceTree: [StrictString: Any]) throws -> StrictString {
@@ -131,7 +136,8 @@ extension PackageRepository {
             var declaration: StrictString = "static let "
             declaration += name
             declaration += " = Data(base64Encoded: \u{22}"
-            declaration += string.scalars
+            // [_Warning: Temporarily disabled._]
+            //declaration += string.scalars
             declaration += "\u{22})"
             return declaration
         }

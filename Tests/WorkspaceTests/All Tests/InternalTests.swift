@@ -109,35 +109,11 @@ class InternalTests : TestCase {
         }
     }
 
-    func testExecutables() {
-        // [_Workaround: Can this be moved to API Tests?_]
-
-        if ¬Environment.isInXcode ∧ ¬Configuration.nestedTest {
-
-            let executables: [String] = [
-                "Refresh Workspace (macOS).command",
-                "Refresh Workspace (Linux).sh",
-                "Validate Changes (macOS).command",
-                "Validate Changes (Linux).sh"
-            ]
-
-            for file in executables {
-                do {
-                    let condition = try File(at: RelativePath("Resources/Scripts/\(file)")).isExecutable
-                    XCTAssert(condition, "Script is no longer executable: \(file)")
-                } catch let error {
-                    XCTFail("\(error.localizedDescription)")
-                }
-            }
-        }
-    }
-
     static var allTests: [(String, (InternalTests) -> () throws -> Void)] {
         return [
             ("testHelp", testHelp),
             ("testGitIgnoreCoverage", testGitIgnoreCoverage),
-            ("testDocumentationCoverage", testDocumentationCoverage),
-            ("testExecutables", testExecutables)
+            ("testDocumentationCoverage", testDocumentationCoverage)
         ]
     }
 }

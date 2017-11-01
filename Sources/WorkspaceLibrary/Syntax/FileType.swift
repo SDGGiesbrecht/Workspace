@@ -18,7 +18,7 @@ extension FileType {
 
     init(url: URL) throws {
         guard let type = FileType(filePath: AbsolutePath(url.path)) else {
-            throw Error.unrecognizedFileExtension(url.lastPathComponent) // [_Warning: Needs just the extension._]
+            throw Error.unrecognizedFileExtension(url.pathExtension)
         }
         self = type
     }

@@ -37,7 +37,7 @@ struct CalloutCasing : Rule {
                         file.contents.scalars.advance(&scalar, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.letters })))
                         let index = scalar.cluster(in: file.contents.clusters)
 
-                        let afterWord = file.contents.characters[index]
+                        let afterWord = file.contents.clusters[index]
                         if afterWord == ":" {
 
                             let replacement = String(nextCharacter).uppercased()

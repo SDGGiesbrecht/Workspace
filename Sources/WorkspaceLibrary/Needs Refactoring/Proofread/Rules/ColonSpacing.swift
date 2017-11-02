@@ -50,7 +50,7 @@ struct ColonSpacing : Rule {
                         protocolOrSuperclass = false
                     }
 
-                    if let preceding = String(file.contents[..<range.lowerBound]).characters.last {
+                    if let preceding = String(file.contents[..<range.lowerBound]).clusters.last {
 
                         if preceding == " " {
                             if ¬linePrefix.contains(" ? ") /* Ternary Conditional Operator */ {

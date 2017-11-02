@@ -289,7 +289,7 @@ struct Repository {
 
         let changes = files.map() { (changeOrigin: RelativePath) -> (changeOrigin: RelativePath, changeDestination: RelativePath) in
 
-            let relative = String(changeOrigin.string[changeOrigin.string.index(changeOrigin.string.characters.startIndex, offsetBy: origin.string.characters.count)...])
+            let relative = String(changeOrigin.string[changeOrigin.string.index(changeOrigin.string.clusters.startIndex, offsetBy: origin.string.clusters.count)...])
 
             return (changeOrigin, RelativePath(destination.string + relative))
         }

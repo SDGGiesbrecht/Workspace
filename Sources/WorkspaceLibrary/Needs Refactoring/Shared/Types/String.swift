@@ -47,7 +47,7 @@ extension String {
     func parseError(at index: String.Index, in file: File?) -> Never {
 
         var duplicate = self
-        duplicate.insert(contentsOf: "[Here]".characters, at: index)
+        duplicate.insert(contentsOf: "[Here]".clusters, at: index)
         let range = duplicate.lineRange(for: index ..< index)
         let exerpt = String(duplicate[range])
 

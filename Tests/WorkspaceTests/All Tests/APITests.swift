@@ -12,14 +12,30 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
 import XCTest
+
+import SDGCornerstone
 
 import WorkspaceLibrary
 
 class APITests : TestCase {
 
+    func testWorkflow() {
+        XCTAssertErrorFree {
+            let library = FileManager.default.url(in: .temporary, at: "My Library")
+            defer { FileManager.default.delete(.temporary) }
+
+            try FileManager.default.do(in: library) {
+                try Workspace.command.execute(with: ["initialize"])
+                try Workspace.command.execute(with: ["validate"])
+            }
+        }
+    }
+
     static var allTests: [(String, (APITests) -> () throws -> Void)] {
         return [
+            ("testWorkflow", testWorkflow)
         ]
     }
 }

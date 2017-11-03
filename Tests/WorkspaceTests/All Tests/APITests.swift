@@ -36,8 +36,8 @@ class APITests : TestCase {
                     XCTAssert(try String(from: project.location.appendingPathComponent("Sources/MyProject/Resources.swift")).contains("let dataResource ="), "Failed to generate code to access nested resources.")
                 }
 
+                // [_Workaround: This should eventually just run “validate” to make sure it passes other validation too._]]
                 try Workspace.command.execute(with: ["refresh", "resources"])
-
                 try Shell.default.run(command: ["swift", "build"]) // Generated code has valid syntax.
             }
         }

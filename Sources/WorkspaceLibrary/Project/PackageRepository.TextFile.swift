@@ -34,7 +34,7 @@ extension PackageRepository {
         init(possiblyAt location: URL, executable: Bool = false) throws {
             do {
                 self = try TextFile(alreadyAt: location)
-                if isExecutable ≠ executable {
+                if isExecutable ≠ executable { // [_Exempt from Code Coverage_] [_Workaround: Until “normalize” is testable._]
                     isExecutable = executable
                     hasChanged = true
                 }
@@ -44,7 +44,7 @@ extension PackageRepository {
             }
         }
 
-        init(mockFileWithContents contents: String, fileType: FileType) {
+        init(mockFileWithContents contents: String, fileType: FileType) { // [_Exempt from Code Coverage_] [_Workaround: Until “licence” is testable._]
             let temporary = FileManager.default.url(in: .temporary, at: "Mock File")
             self.init(location: temporary, fileType: fileType, executable: false, contents: contents, isNew: true)
         }
@@ -69,8 +69,8 @@ extension PackageRepository {
         let location: URL
 
         var isExecutable: Bool {
-            willSet {
-                if newValue ≠ isExecutable {
+            willSet { // [_Exempt from Code Coverage_] [_Workaround: Until “normalize” is testable._]
+                if newValue ≠ isExecutable { // [_Exempt from Code Coverage_] [_Workaround: Until “normalize” is testable._]
                     hasChanged = true
                 }
             }

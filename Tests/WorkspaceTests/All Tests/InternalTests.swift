@@ -21,12 +21,25 @@ import SDGCornerstone
 
 class InternalTests : TestCase {
 
-    func testHelp() {
-        for localization in InterfaceLocalization.cases {
-            LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-                XCTAssertErrorFree() {
-                    try Workspace.command.execute(with: ["help"])
+    func testDocumentationCoverage() {
+        // [_Workaround: Can this be moved to API Tests?_]
+
+        if ¬Environment.isInXcode ∧ ¬Configuration.nestedTest {
+            for link in DocumentationLink.all {
+                var url = link.url
+                if let anchor = url.range(of: "#") {
+                    url = String(url[..<anchor.lowerBound])
                 }
+
+                var exists = false
+                for file in Repository.trackedFiles {
+
+                    if url.hasSuffix(file.string) {
+                        exists = true
+                        break
+                    }
+                }
+                XCTAssert(exists, "Broken link: \(link.url)")
             }
         }
     }
@@ -86,34 +99,21 @@ class InternalTests : TestCase {
         }
     }
 
-    func testDocumentationCoverage() {
-        // [_Workaround: Can this be moved to API Tests?_]
-
-        if ¬Environment.isInXcode ∧ ¬Configuration.nestedTest {
-            for link in DocumentationLink.all {
-                var url = link.url
-                if let anchor = url.range(of: "#") {
-                    url = String(url[..<anchor.lowerBound])
+    func testHelp() {
+        for localization in InterfaceLocalization.cases {
+            LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+                XCTAssertErrorFree() {
+                    try Workspace.command.execute(with: ["help"])
                 }
-
-                var exists = false
-                for file in Repository.trackedFiles {
-
-                    if url.hasSuffix(file.string) {
-                        exists = true
-                        break
-                    }
-                }
-                XCTAssert(exists, "Broken link: \(link.url)")
             }
         }
     }
 
     static var allTests: [(String, (InternalTests) -> () throws -> Void)] {
         return [
-            ("testHelp", testHelp),
+            ("testDocumentationCoverage", testDocumentationCoverage),
             ("testGitIgnoreCoverage", testGitIgnoreCoverage),
-            ("testDocumentationCoverage", testDocumentationCoverage)
+            ("testHelp", testHelp)
         ]
     }
 }

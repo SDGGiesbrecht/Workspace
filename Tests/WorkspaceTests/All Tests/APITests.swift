@@ -23,12 +23,9 @@ class APITests : TestCase {
 
     func testWorkflow() {
         XCTAssertErrorFree {
-            let library = FileManager.default.url(in: .temporary, at: "My Library")
-            defer { FileManager.default.delete(.temporary) }
-
-            try FileManager.default.do(in: library) {
-                try Workspace.command.execute(with: ["initialize"])
-                try Workspace.command.execute(with: ["validate"])
+            try MockProject().do {
+                // [_Warning: This should eventually just do “validate”._]
+                try Workspace.command.execute(with: ["refresh", "resources"])
             }
         }
     }

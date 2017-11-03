@@ -25,11 +25,18 @@ class APITests : TestCase {
         XCTAssertErrorFree {
             let project = try MockProject()
             try project.do {
-                try "Text file.".save(to: project.location.appendingPathComponent("Resources/MyProject/Text Resource.txt"))
+                try "Text File".save(to: project.location.appendingPathComponent("Resources/MyProject/Text Resource.txt"))
+                defer {
+                    XCTAssert(try String(from: project.location.appendingPathComponent("Sources/MyProject/Resources.swift")).contains("let textResource ="), "Failed to generate code to access resources.")
+                }
+
+                try "Data File".save(to: project.location.appendingPathComponent("Resources/MyProject/Miscellaneous/Data Resource"))
+                defer {
+                    XCTAssert(try String(from: project.location.appendingPathComponent("Sources/MyProject/Resources.swift")).contains("enum Miscellaneous {"), "Failed to generate resource namespace.")
+                    XCTAssert(try String(from: project.location.appendingPathComponent("Sources/MyProject/Resources.swift")).contains("let dataResource ="), "Failed to generate code to access nested resources.")
+                }
 
                 try Workspace.command.execute(with: ["refresh", "resources"])
-
-                XCTAssert(try String(from: project.location.appendingPathComponent("Sources/MyProject/Resources.swift")).contains("let textResource ="), "Failed to generate code to access resources.")
 
                 try Shell.default.run(command: ["swift", "build"]) // Generated code has valid syntax.
             }

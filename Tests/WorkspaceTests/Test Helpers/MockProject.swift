@@ -21,7 +21,7 @@ class MockProject {
     // MARK: - Initialization
 
     init() throws {
-        location = FileManager.default.url(in: .temporary, at: "My Project")
+        location = FileManager.default.url(in: .temporary, at: "MyProject")
         print("Mock project: \(location.path)")
 
         try FileManager.default.do(in: location) {

@@ -21,10 +21,26 @@ import WorkspaceLibrary
 
 class APITests : TestCase {
 
+    func testResources() {
+        XCTAssertErrorFree {
+            let project = try MockProject()
+            try project.do {
+                try "Text file.".save(to: project.location.appendingPathComponent("Resources/MyProject/Text Resource.txt"))
+
+                try Workspace.command.execute(with: ["refresh", "resources"])
+
+                XCTAssert(try String(from: project.location.appendingPathComponent("Sources/MyProject/Resources.swift")).contains("let textResource ="), "Failed to generate code to access resources.")
+
+                try Shell.default.run(command: ["swift", "build"]) // Generated code has valid syntax.
+            }
+        }
+    }
+
     func testWorkflow() {
         XCTAssertErrorFree {
             try MockProject().do {
-                // [_Warning: This should eventually just do “validate”._]
+
+                // [_Workaround: This should eventually just do “validate”._]
                 try Workspace.command.execute(with: ["refresh", "resources"])
             }
         }

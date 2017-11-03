@@ -34,10 +34,9 @@ func fatalError(message: [String]) -> Never {
 
 // MARK: - Generic Exiting
 
-func succeed(message: [String]) -> Never {
+func succeed(message: [String]) {
     outputWarnings()
     print(message, in: .green, spaced: true)
-    exit(ExitCode.succeeded)
 }
 
 func fail(message: [String]) -> Never {

@@ -41,6 +41,22 @@ class APITests : TestCase {
                 try Shell.default.run(command: ["swift", "build"]) // Generated code must have valid syntax.
             }
         }
+
+        XCTAssertThrowsError(containing: "Text Resource.txt") {
+            let project = try MockProject()
+            try project.do {
+                try "Text File".save(to: project.location.appendingPathComponent("Resources/Text Resource.txt"))
+                try Workspace.command.execute(with: ["refresh", "resources"])
+            }
+        }
+
+        XCTAssertThrowsError(containing: "InvalidTarget") {
+            let project = try MockProject()
+            try project.do {
+                try "Text File".save(to: project.location.appendingPathComponent("Resources/InvalidTarget/Text Resource.txt"))
+                try Workspace.command.execute(with: ["refresh", "resources"])
+            }
+        }
     }
 
     func testWorkflow() {

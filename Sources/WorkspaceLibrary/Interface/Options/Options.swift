@@ -18,11 +18,8 @@ import SDGCommandLine
 
 extension Options {
 
-    static let project: PackageRepository = {
+    var project: PackageRepository {
         let url = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
         return PackageRepository(alreadyAt: url)
-    }()
-    var project: PackageRepository {
-        return Options.project
     }
 }

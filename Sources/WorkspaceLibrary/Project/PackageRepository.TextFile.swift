@@ -91,10 +91,10 @@ extension PackageRepository {
                 var new = newValue
 
                 // Ensure singular final newline
-                while new.hasSuffix("\n\n") {
+                while new.hasSuffix("\n\n") { // [_Exempt from Code Coverage_] [_Workaround: Until “normalize” is testable._]
                     new.scalars.removeLast()
                 }
-                if ¬new.hasSuffix("\n") {
+                if ¬new.hasSuffix("\n") { // [_Exempt from Code Coverage_] [_Workaround: Until “normalize” is testable._]
                     new.append("\n")
                 }
 
@@ -127,22 +127,22 @@ extension PackageRepository {
         }
 
         var header: String {
-            get {
+            get { // [_Exempt from Code Coverage_] [_Workaround: Until “headers” is testable._]
                 return fileType.syntax.header(file: self)
             }
-            set {
+            set { // [_Exempt from Code Coverage_] [_Workaround: Until “headers” is testable._]
                 fileType.syntax.insert(header: newValue, into: &self)
             }
         }
 
         var body: String {
-            get {
+            get { // [_Exempt from Code Coverage_] [_Workaround: Until “validate” is testable._]
                 return String(contents[headerEnd...])
             }
             set {
                 var new = newValue
                 // Remove unnecessary initial spacing
-                while new.hasPrefix("\n") {
+                while new.hasPrefix("\n") { // [_Exempt from Code Coverage_] [_Workaround: Until “validate” is testable._]
                     new.scalars.removeFirst()
                 }
 
@@ -171,7 +171,7 @@ extension PackageRepository {
                 }).resolved(using: location.path(relativeTo: repository.location)))
 
                 try contents.save(to: location)
-                if isExecutable {
+                if isExecutable { // [_Exempt from Code Coverage_] [_Workaround: Until “normalize” is testable._]
                     try FileManager.default.setAttributes([.posixPermissions: 0o777], ofItemAtPath: location.path)
                 }
 

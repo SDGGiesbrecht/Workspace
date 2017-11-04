@@ -30,10 +30,10 @@ class APITests : TestCase {
                     XCTAssert(try String(from: project.location.appendingPathComponent("Sources/MyProject/Resources.swift")).contains("let textResource ="), "Failed to generate code to access resources.")
                 }
 
-                try "Data File".save(to: project.location.appendingPathComponent("Resources/MyProject/Miscellaneous/Data Resource"))
+                try "Data File".save(to: project.location.appendingPathComponent("Resources/MyProject/Miscellaneous/1‐2‐3!.undefined"))
                 defer {
                     XCTAssert(try String(from: project.location.appendingPathComponent("Sources/MyProject/Resources.swift")).contains("enum Miscellaneous {"), "Failed to generate resource namespace.")
-                    XCTAssert(try String(from: project.location.appendingPathComponent("Sources/MyProject/Resources.swift")).contains("let dataResource ="), "Failed to generate code to access nested resources.")
+                    XCTAssert(try String(from: project.location.appendingPathComponent("Sources/MyProject/Resources.swift")).contains("let _1_2_3 ="), "Failed to generate code to access nested resources.")
                 }
 
                 // [_Workaround: This should eventually just run “validate” to make sure it passes other validation too._]]

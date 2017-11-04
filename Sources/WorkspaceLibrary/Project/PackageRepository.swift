@@ -90,7 +90,7 @@ extension PackageRepository {
             () -> [URL] in
 
             var failureReason: Error? // Thrown after enumeration stops. (See below.)
-            guard let enumerator = FileManager.default.enumerator(at: location, includingPropertiesForKeys: [.isDirectoryKey], options: [], errorHandler: { (_, error: Error) -> Bool in // [_Exempt from Code Coverage_] It is unknown what circumstances would actually cause an error.
+            guard let enumerator = FileManager.default.enumerator(at: location, includingPropertiesForKeys: [.isDirectoryKey, .isExecutableKey], options: [], errorHandler: { (_, error: Error) -> Bool in // [_Exempt from Code Coverage_] It is unknown what circumstances would actually cause an error.
                 failureReason = error
                 return false // Stop.
             }) else { // [_Exempt from Code Coverage_] It is unknown what circumstances would actually result in a `nil` enumerator being returned.

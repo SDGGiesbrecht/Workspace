@@ -94,9 +94,9 @@ extension PackageRepository {
                 failureReason = error
                 return false // Stop.
             }) else { // [_Exempt from Code Coverage_] It is unknown what circumstances would actually result in a `nil` enumerator being returned.
-                throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+                throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Code Coverage_]
                     switch localization {
-                    case .englishCanada:
+                    case .englishCanada: // [_Exempt from Code Coverage_]
                         return "Cannot enumerate the project files."
                     }
                 }))
@@ -178,7 +178,7 @@ extension PackageRepository {
             return try sourceFiles(output: &output).filter() { (file) in
                 for directory in locations where file.is(in: directory) {
                     return true
-                }
+                } // [_Exempt from Code Coverage_] [_Workaround: False coverage result. (Swift 4.0.2)_]
                 return false
             }
         }

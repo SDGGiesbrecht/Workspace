@@ -71,6 +71,7 @@ class APITests : TestCase {
 
     static var allTests: [(String, (APITests) -> () throws -> Void)] {
         return [
+            ("testResources", testResources),
             ("testWorkflow", testWorkflow)
         ]
     }

@@ -23,7 +23,6 @@ class MockProject {
     init() throws {
         let uuid = UUID().uuidString
         location = FileManager.default.url(in: .temporary, at: "\(uuid)/MyProject")
-        print("Mock project: \(location.path)")
 
         try FileManager.default.do(in: location) {
             // [_Workaround: This should use “workspace initialize”._]

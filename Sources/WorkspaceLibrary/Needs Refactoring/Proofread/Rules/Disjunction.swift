@@ -54,6 +54,9 @@ struct Disjunction : Rule {
                     if ¬isInConditionalCompilationStatement(at: range, in: file) {
                         throwError()
                     }
+
+                case .xcodeProject:
+                    break
                 }
             }
         }

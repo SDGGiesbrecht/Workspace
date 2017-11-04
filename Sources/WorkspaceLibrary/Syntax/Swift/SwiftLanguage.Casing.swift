@@ -1,5 +1,5 @@
 /*
- ObjCBool.swift
+ SwiftLanguage.Casing.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -12,14 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+extension SwiftLanguage {
 
-extension ObjCBool {
-
-    #if os(Linux)
-    // [_Workaround: Provide missing boolValue property on Linux. (Swift 3.0.2)_]
-    var boolValue: Bool {
-        return self
+    enum Casing {
+        case type
+        case variable
     }
-    #endif
 }

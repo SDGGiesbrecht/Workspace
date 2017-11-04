@@ -60,7 +60,7 @@ struct FileSyntax {
         return comment(contents: contents)
     }
 
-    func insert(header: String, into file: inout File) {
+    func insert(header: String, into file: inout PackageRepository.TextFile) {
 
         var first = String(file.contents[..<file.headerStart])
         if ¬first.isEmpty {
@@ -157,7 +157,7 @@ struct FileSyntax {
         index = scalar.cluster(in: string.clusters)
     }
 
-    func headerStart(file: File) -> String.Index {
+    func headerStart(file: PackageRepository.TextFile) -> String.Index {
 
         var index = file.contents.startIndex
 
@@ -173,7 +173,7 @@ struct FileSyntax {
         return index
     }
 
-    private func headerEndWithoutSpacing(file: File) -> String.Index {
+    private func headerEndWithoutSpacing(file: PackageRepository.TextFile) -> String.Index {
 
         let start = file.headerStart
 
@@ -181,7 +181,7 @@ struct FileSyntax {
 
             if blockSyntax.startOfCommentExists(at: start, in: file.contents, countDocumentationMarkup: false) {
 
-                return blockSyntax.requireRangeOfFirstComment(in: start ..< file.contents.endIndex, of: file).upperBound
+                return blockSyntax.requireRangeOfFirstComment(in: start ..< file.contents.endIndex, of: File(file)).upperBound
             }
         }
 
@@ -189,20 +189,20 @@ struct FileSyntax {
 
             if lineSyntax.commentExists(at: start, in: file.contents, countDocumentationMarkup: false) {
 
-                return lineSyntax.requireRangeOfFirstComment(in: start ..< file.contents.endIndex, of: file).upperBound
+                return lineSyntax.requireRangeOfFirstComment(in: start ..< file.contents.endIndex, of: File(file)).upperBound
             }
         }
 
         return start
     }
 
-    func headerEnd(file: File) -> String.Index {
+    func headerEnd(file: PackageRepository.TextFile) -> String.Index {
         var result = headerEndWithoutSpacing(file: file)
         FileSyntax.advance(&result, pastLayoutSpacingIn: file.contents)
         return result
     }
 
-    func header(file: File) -> String {
+    func header(file: PackageRepository.TextFile) -> String {
         let markup = String(file.contents[file.headerStart ..< file.headerEnd])
 
         if markup.lines.map({ String($0.line) }).filter({ ¬$0.isWhitespace }).isEmpty {
@@ -221,7 +221,7 @@ struct FileSyntax {
         }
 
         fatalError(message: [
-            "Malformed header in \(file.path.filename):",
+            "Malformed header in \(file.location.lastPathComponent):",
             "",
             "",
             markup,

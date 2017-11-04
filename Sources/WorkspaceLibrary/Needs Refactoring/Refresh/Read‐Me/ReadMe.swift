@@ -15,6 +15,7 @@
 import Foundation
 
 import SDGCornerstone
+import SDGCommandLine
 
 struct ReadMe {
 
@@ -616,7 +617,7 @@ struct ReadMe {
         return nil
     }
 
-    static func refreshReadMe() {
+    static func refreshReadMe(output: inout Command.Output) {
 
         var localizations = Configuration.localizations.map { Optional(
             $0) }
@@ -728,7 +729,7 @@ struct ReadMe {
 
             var readMe = File(possiblyAt: readMePath(localization: localization))
             readMe.body = body
-            require() { try readMe.write() }
+            require() { try readMe.write(output: &output) }
 
             if ¬Configuration.relatedProjects(localization: localization).isEmpty
                 ∧ (localization ≠ nil ∨ localizations.count == 1 /* Only unlocalized. */) {
@@ -866,19 +867,19 @@ struct ReadMe {
 
                 var relatedProjects = File(possiblyAt: relatedProjectsPath(localization: localization))
                 relatedProjects.body = join(lines: projects)
-                require() { try relatedProjects.write() }
+                require() { try relatedProjects.write(output: &output) }
             }
         }
     }
 
-    static func relinquishControl() {
+    static func relinquishControl(output: inout Command.Output) {
 
         for localization in Configuration.localizations {
             var readMe = File(possiblyAt: readMePath(localization: localization))
             if let range = readMe.contents.range(of: managementComment) {
-                printHeader(["Cancelling read‐me management..."])
+                print("Cancelling read‐me management...".formattedAsSectionHeader(), to: &output)
                 readMe.contents.removeSubrange(range)
-                try? readMe.write()
+                try? readMe.write(output: &output)
             }
         }
     }

@@ -62,6 +62,7 @@ A particular project can [configure](Documentation/Operating%20Systems.md) which
   - Keep [contributing instructions](Documentation/Contributing%20Instructions.md) uniform, including issue and pull request templates.
   - Generate and maintain a local [Xcode project](Documentation/Xcode.md) (except on Linux).
   - Keep [file headers](Documentation/File%20Headers.md) uniform and up to date.
+  - Embed [resources](Documentation/Resources.md) in package targets.
   - [Proofread](Documentation/Proofreading.md) source files for code style. (Including [SwiftLint](https://github.com/realm/SwiftLint))
   - Trigger [manual warnings](Documentation/Manual%20Warnings.md) in source code.
   - Prohibit [compiler warnings](Documentation/Compiler%20Warnings.md).

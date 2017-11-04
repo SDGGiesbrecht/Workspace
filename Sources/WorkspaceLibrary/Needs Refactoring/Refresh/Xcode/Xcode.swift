@@ -13,6 +13,7 @@
  */
 
 import SDGCornerstone
+import SDGCommandLine
 
 struct Xcode {
 
@@ -44,7 +45,7 @@ struct Xcode {
         return Configuration.testModuleName(forProjectName: Configuration.projectName)
     }
 
-    static func refreshXcodeProjects() {
+    static func refreshXcodeProjects(output: inout Command.Output) {
 
         let path = RelativePath("\(Xcode.projectFilename)")
         try? Repository.delete(path)
@@ -139,7 +140,7 @@ struct Xcode {
             file.contents = project
         }
 
-        require() { try file.write() }
+        require() { try file.write(output: &output) }
 
         if Configuration.projectType == .application {
 
@@ -149,11 +150,11 @@ struct Xcode {
 
             info.contents = info.contents.replacingOccurrences(of: "<key>NSPrincipalClass</key>\n  <string></string>", with: "<key>NSPrincipalClass</key>\n  <string>\(Configuration.moduleName).Application</string>")
 
-            require() { try info.write() }
+            require() { try info.write(output: &output) }
         }
     }
 
-    private static func modifyProject(condition shouldModify: (String) -> Bool, modification modify: (inout File) -> Void) {
+    private static func modifyProject(condition shouldModify: (String) -> Bool, modification modify: (inout File) -> Void, output: inout Command.Output) {
         let path = RelativePath("\(Xcode.projectFilename)/project.pbxproj")
 
         do {
@@ -162,7 +163,7 @@ struct Xcode {
             if shouldModify(file.contents) {
 
                 modify(&file)
-                require() { try file.write() }
+                require() { try file.write(output: &output) }
             }
         } catch {
             return
@@ -172,7 +173,7 @@ struct Xcode {
     static let scriptObjectName = "PROOFREAD"
     static let scriptActionEntry = scriptObjectName + ","
 
-    static func enableProofreading() {
+    static func enableProofreading(output: inout Command.Output) {
 
         modifyProject(condition: {
             return ¬$0.contains("workspace proofread")
@@ -218,28 +219,28 @@ struct Xcode {
                 scriptActionEntry,
                 "" // Final line break.
                 ]))
-        })
+        }, output: &output)
     }
 
     static let disabledScriptActionEntry = "/* " + scriptObjectName + " */"
 
-    static func temporarilyDisableProofreading() {
+    static func temporarilyDisableProofreading(output: inout Command.Output) {
 
         modifyProject(condition: { (_) -> Bool in
             return true
         }, modification: { (file: inout File) -> Void in
 
             file.contents = file.contents.replacingOccurrences(of: scriptActionEntry, with: disabledScriptActionEntry)
-        })
+        }, output: &output)
     }
 
-    static func reEnableProofreading() {
+    static func reEnableProofreading(output: inout Command.Output) {
 
         modifyProject(condition: { (_) -> Bool in
             return true
         }, modification: { (file: inout File) -> Void in
 
             file.contents = file.contents.replacingOccurrences(of: disabledScriptActionEntry, with: scriptActionEntry)
-        })
+        }, output: &output)
     }
 }

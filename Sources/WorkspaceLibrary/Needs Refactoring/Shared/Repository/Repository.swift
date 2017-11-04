@@ -18,6 +18,16 @@ import SDGCornerstone
 
 struct Repository {
 
+    // MARK: - Bridging
+
+    static let packageRepository = PackageRepository(alreadyAt: URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
+
+    static func paths(from urls: [URL]) -> [RelativePath] {
+        return urls.map() { (url) in
+            return RelativePath(url.path(relativeTo: packageRepository.location))
+        }
+    }
+
     // MARK: - Configuration
 
     static let testZone: RelativePath = ".Test Zone"
@@ -45,6 +55,7 @@ struct Repository {
     // MARK: - Repository
 
     static func resetCache() {
+        PackageRepository(alreadyAt: URL(fileURLWithPath:  FileManager.default.currentDirectoryPath)).resetCache()
         cache = Cache()
         Configuration.resetCache()
     }
@@ -69,43 +80,8 @@ struct Repository {
     }
 
     static var allFiles: [RelativePath] {
-        return cached(in: &cache.allFiles) {
-            () -> [RelativePath] in
-
-            guard let enumerator = fileManager.enumerator(atPath: repositoryPath.string) else {
-                fatalError(message: ["Cannot enumerate files in project."])
-            }
-
-            var result: [RelativePath] = []
-            while let path = enumerator.nextObject() as? String {
-
-                var isDirectory: ObjCBool = false
-                if fileManager.fileExists(atPath: path, isDirectory: &isDirectory) {
-
-                    if ¬isDirectory.boolValue {
-                        result.append(RelativePath(path))
-                    }
-                }
-            }
-            return result
-        }
-    }
-
-    static var allRealFiles: [RelativePath] {
-        var cacheCopy = cache
-        defer { cache = cacheCopy }
-
-        return cached(in: &cacheCopy.allRealFiles) {
-            () -> [RelativePath] in
-
-            let result = allFiles.filter() { (path: RelativePath) -> Bool in
-
-                return ¬path.string.hasSuffix(".DS_Store")
-
-            }
-
-            return result
-        }
+        let urls = require() { try packageRepository.allFiles() }
+        return paths(from: urls)
     }
 
     static var trackedFiles: [RelativePath] {
@@ -134,7 +110,7 @@ struct Repository {
 
             }
 
-            let result = allRealFiles.filter() { (path: RelativePath) -> Bool in
+            let result = allFiles.filter() { (path: RelativePath) -> Bool in
 
                 for ignored in ignoredPaths {
                     if path.string.hasPrefix(ignored) {
@@ -184,7 +160,7 @@ struct Repository {
     }
 
     static var isEmpty: Bool {
-        return allRealFiles.isEmpty
+        return allFiles.isEmpty
     }
 
     private static func path(_ possiblePath: RelativePath, isIn path: RelativePath) -> Bool {
@@ -259,49 +235,6 @@ struct Repository {
         }
     }
 
-    /// Use “File(at:)” instead.
-    static func _read<P : Path>(file path: P) throws -> (contents: String, isExecutable: Bool) {
-
-        let filePath = absolute(path).string
-
-        #if os(Linux)
-            // [_Workaround: Skip unavailable encoding detection on Linux. (Swift 3.0.2)_]
-            let contents = try String(contentsOfFile: filePath, encoding: String.Encoding.utf8)
-        #else
-            var encoding = String.Encoding.utf8
-            let contents = try String(contentsOfFile: filePath, usedEncoding: &encoding)
-        #endif
-
-        return (contents, fileManager.isExecutableFile(atPath: filePath))
-    }
-
-    /// Use File’s “write()” instead.
-    static func _write<P : Path>(file: String, to path: P, asExecutable executable: Bool) throws {
-
-        prepareForWrite(path: path)
-
-        try file.write(toFile: absolute(path).string, atomically: true, encoding: String.Encoding.utf8)
-        if executable {
-            #if os(Linux)
-                // [_Workaround: FileManager cannot change permissions on Linux. (Swift 3.0.2)_]
-                requireBash(["chmod", "+x", absolute(path).string], silent: true)
-            #else
-                try fileManager.setAttributes([.posixPermissions: 0o777], ofItemAtPath: absolute(path).string)
-            #endif
-        }
-
-        resetCache()
-
-        if executable {
-            if ¬(require() { try Repository._read(file: path) }).isExecutable {
-                fatalError(message: [
-                    "\(path) is no longer executable.",
-                    "There may be a bug in Workspace."
-                    ])
-            }
-        }
-    }
-
     static var packageDescription: File {
         return cached(in: &cache.packageDescription) {
             () -> File in
@@ -356,7 +289,7 @@ struct Repository {
 
         let changes = files.map() { (changeOrigin: RelativePath) -> (changeOrigin: RelativePath, changeDestination: RelativePath) in
 
-            let relative = String(changeOrigin.string[changeOrigin.string.index(changeOrigin.string.characters.startIndex, offsetBy: origin.string.characters.count)...])
+            let relative = String(changeOrigin.string[changeOrigin.string.index(changeOrigin.string.clusters.startIndex, offsetBy: origin.string.clusters.count)...])
 
             return (changeOrigin, RelativePath(destination.string + relative))
         }

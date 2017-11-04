@@ -13,6 +13,7 @@
  */
 
 import SDGCornerstone
+import SDGCommandLine
 
 struct ContributingInstructions {
 
@@ -166,7 +167,7 @@ struct ContributingInstructions {
         return join(lines: template)
     }()
 
-    static func refreshContributingInstructions() {
+    static func refreshContributingInstructions(output: inout Command.Output) {
 
         func key(_ name: String) -> String {
             return "[_\(name)_]"
@@ -200,22 +201,22 @@ struct ContributingInstructions {
 
         var contributing = File(possiblyAt: contributingInstructionsPath)
         contributing.body = body
-        require() { try contributing.write() }
+        require() { try contributing.write(output: &output) }
 
         var issue = File(possiblyAt: issueTemplatePath)
         issue.contents = Configuration.issueTemplate
-        require() { try issue.write() }
+        require() { try issue.write(output: &output) }
 
         var pullRequest = File(possiblyAt: pullRequestTemplatePath)
         pullRequest.contents = Configuration.pullRequestTemplate
-        require() { try pullRequest.write() }
+        require() { try pullRequest.write(output: &output) }
 
         // Remove deprecated.
 
         try? Repository.delete(deprecatedContributingInstructionsPath)
     }
 
-    static func relinquishControl() {
+    static func relinquishControl(output: inout Command.Output) {
 
         var printedHeader = false
 
@@ -226,11 +227,11 @@ struct ContributingInstructions {
 
                 if ¬printedHeader {
                     printedHeader = true
-                    printHeader(["Cancelling contributing instruction management..."])
+                    print("Cancelling contributing instruction management...".formattedAsSectionHeader(), to: &output)
                 }
 
                 file.contents.removeSubrange(range)
-                try? file.write()
+                try? file.write(output: &output)
             }
         }
     }

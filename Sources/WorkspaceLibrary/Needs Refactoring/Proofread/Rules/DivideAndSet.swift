@@ -44,6 +44,9 @@ struct DivideAndSet : Rule {
                         ∧ ¬isInAliasDefinition(for: "divideAccordingToEuclid", at: range, in: file) {
                         throwError()
                     }
+
+                case .xcodeProject:
+                    break
                 }
             }
         }

@@ -165,7 +165,7 @@ struct LineCommentSyntax {
             var result = String(line.scalars.suffix(from: index))
             if let end = stylisticEnd {
                 if result.hasSuffix(end) {
-                    result = String(result[..<result.index(result.endIndex, offsetBy: −end.characters.count)])
+                    result = String(result[..<result.index(result.endIndex, offsetBy: −end.clusters.count)])
                 }
             }
             return result

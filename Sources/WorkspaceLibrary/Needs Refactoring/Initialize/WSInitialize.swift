@@ -13,11 +13,12 @@
  */
 
 import SDGCornerstone
+import SDGCommandLine
 
-func runInitialize(andExit shouldExit: Bool) {
+func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: inout Command.Output) {
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Initializing workspace..."])
+    print("Initializing workspace...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     if ¬Repository.isEmpty {
@@ -37,13 +38,13 @@ func runInitialize(andExit shouldExit: Bool) {
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Initializing git repository..."])
+    print("Initializing git repository...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     requireBash(["git", "init"])
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Generating Swift package..."])
+    print("Generating Swift package...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     let packageType = Flags.type
@@ -83,7 +84,7 @@ func runInitialize(andExit shouldExit: Bool) {
 
     var packageDescriptionFile = File(possiblyAt: RelativePath("Package.swift"))
     packageDescriptionFile.body = join(lines: packageDescription)
-    require() { try packageDescriptionFile.write() }
+    require() { try packageDescriptionFile.write(output: &output) }
 
     var source: [String]
     var sourceFile: File
@@ -168,7 +169,7 @@ func runInitialize(andExit shouldExit: Bool) {
     ]
 
     sourceFile.body = join(lines: source)
-    require() { try sourceFile.write() }
+    require() { try sourceFile.write(output: &output) }
 
     if packageType == .executable {
         var mainFile = File(possiblyAt: RelativePath("Sources/\(executableName)/main.swift"))
@@ -183,7 +184,7 @@ func runInitialize(andExit shouldExit: Bool) {
             "\(executableLibraryName).run()"
         ]
         mainFile.body = join(lines: main)
-        require() { try mainFile.write() }
+        require() { try mainFile.write(output: &output) }
     }
 
     var linuxMainFile = File(possiblyAt: RelativePath("Tests/LinuxMain.swift"))
@@ -196,7 +197,7 @@ func runInitialize(andExit shouldExit: Bool) {
         "])"
     ]
     linuxMainFile.body = join(lines: linuxMain)
-    require() { try linuxMainFile.write() }
+    require() { try linuxMainFile.write(output: &output) }
 
     var testsFile = File(possiblyAt: RelativePath("Tests/\(testsName)/\(testsName).swift"))
     var tests = [
@@ -244,7 +245,7 @@ func runInitialize(andExit shouldExit: Bool) {
         "}"
     ]
     testsFile.body = join(lines: tests)
-    require() { try testsFile.write() }
+    require() { try testsFile.write(output: &output) }
 
     if packageType == .library {
         var exampleFile = File(possiblyAt: RelativePath("Tests/\(testsName)/Examples/ReadMe.swift"))
@@ -259,11 +260,11 @@ func runInitialize(andExit shouldExit: Bool) {
 
         ]
         exampleFile.body = join(lines: example)
-        require() { try exampleFile.write() }
+        require() { try exampleFile.write(output: &output) }
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Configuring Workspace..."])
+    print("Configuring Workspace...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     var configuration = File(possiblyAt: Configuration.configurationFilePath)
@@ -278,13 +279,13 @@ func runInitialize(andExit shouldExit: Bool) {
         (option: .disableProofreadingRules, value: join(lines: ["colon", "line_length", "leading_whitespace"]), comment: nil)
     ]
     Configuration.addEntries(entries: entries, to: &configuration)
-    require() { try configuration.write() }
+    require() { try configuration.write(output: &output) }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Refreshing
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    runRefresh(andExit: false)
+    runRefresh(andExit: false, arguments: arguments, options: options, output: &output)
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Summary

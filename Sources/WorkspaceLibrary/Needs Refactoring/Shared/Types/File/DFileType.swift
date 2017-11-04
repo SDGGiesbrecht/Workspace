@@ -1,5 +1,5 @@
 /*
- FileType.swift
+ DFileType.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -124,6 +124,9 @@ enum FileType : CustomStringConvertible {
     case css
     case javaScript
 
+    // Xcode
+    case xcodeProject
+
     // MARK: - Filename Suffixes
 
     private static let fileNameSuffixes: [(suffix: String, type: FileType)] = [
@@ -158,7 +161,10 @@ enum FileType : CustomStringConvertible {
 
         (".css", .css),
 
-        (".js", .javaScript)
+        (".js", .javaScript),
+
+        // Xcode
+        (".pbxproj", .xcodeProject)
     ]
 
     // MARK: - Syntax
@@ -186,6 +192,8 @@ enum FileType : CustomStringConvertible {
             return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: nil)
         case .html:
             return FileSyntax(blockCommentSyntax: FileType.htmlBlockComment, lineCommentSyntax: nil, requiredFirstLineToken: "<\u{21}DOCTYPE")
+        case .xcodeProject:
+            return FileSyntax(blockCommentSyntax: FileType.swiftBlockCommentSyntax, lineCommentSyntax: FileType.swiftLineCommentSyntax)
         }
     }
 
@@ -215,6 +223,8 @@ enum FileType : CustomStringConvertible {
             return "CSS"
         case .javaScript:
             return "JavaScript"
+        case .xcodeProject:
+            return "Xcode Project"
         }
     }
 }

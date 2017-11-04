@@ -43,7 +43,7 @@ func runThirdPartyTool(name: String, repositoryURL: String, versionCheck: [Strin
     for line in versions.lines.map({ String($0.line) }) {
         if let tagPrefixRange = line.range(of: "refs/tags/") {
             let tag = String(line[tagPrefixRange.upperBound...])
-            if let version = Version(tag) ?? Version(String(tag.characters.dropFirst())) {
+            if let version = Version(tag) ?? Version(String(tag.clusters.dropFirst())) {
                 if let last = newest {
                     if version > last.version {
                         newest = (tag: tag, version: version)

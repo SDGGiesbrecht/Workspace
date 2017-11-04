@@ -1,5 +1,5 @@
 /*
- Git.swift
+ DGit.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -15,8 +15,9 @@
 import Foundation
 
 import SDGCornerstone
+import SDGCommandLine
 
-struct Git {
+struct DGit {
 
     static let ignoreEntriesForMacOS = [
         ".DS_Store"
@@ -48,7 +49,7 @@ struct Git {
         "*.tgz"
     ]
 
-    static func updateGitConfiguraiton() {
+    static func updateGitConfiguraiton(output: inout Command.Output) {
 
         let startToken = "# [_Begin Workspace Section_]"
         let endToken = "# [_End Workspace Section]"
@@ -90,7 +91,7 @@ struct Git {
 
             body.replaceSubrange(managedRange, with: join(lines: updatedLines))
             updatedFile.body = body
-            require() {try updatedFile.write() }
+            require() {try updatedFile.write(output: &output) }
         }
 
         // .gitignore

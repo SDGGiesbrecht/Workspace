@@ -43,6 +43,9 @@ struct LessThanOrEqual : Rule {
                     if ¬isInAliasDefinition(for: "≤", at: range, in: file) {
                         throwError()
                     }
+
+                case .xcodeProject:
+                    break
                 }
             }
         }

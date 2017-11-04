@@ -32,8 +32,8 @@ extension Workspace {
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, _, _ /* output: inout Command.Output */) throws in
-            _ = runProofread(andExit: true)
+        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (arguments: DirectArguments, options: Options, output: inout Command.Output) throws in
+            _ = runProofread(andExit: true, arguments: arguments, options: options, output: &output)
         })
     }
 }

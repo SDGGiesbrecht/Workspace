@@ -93,6 +93,9 @@ struct HyphenMinus : Rule {
                                 ∧ ¬file.path.string.hasSuffix(".travis.yml") {
                                 throwError()
                             }
+
+                        case .xcodeProject:
+                            break
                         }
                     }
                 }

@@ -13,6 +13,7 @@
  */
 
 import SDGCornerstone
+import SDGCommandLine
 
 let instructionsAfterRefresh: String = {
     if Environment.operatingSystem == .macOS ∧ Configuration.manageXcode {
@@ -22,54 +23,44 @@ let instructionsAfterRefresh: String = {
     }
 }()
 
-func runRefresh(andExit shouldExit: Bool) {
+func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: inout Command.Output) {
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Refreshing \(Configuration.projectName)..."])
+    print("Refreshing \(Configuration.projectName)...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Updating Workspace commands..."])
+    print("Updating Workspace commands...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    func copy(script: String) {
-        let origin = Workspace.resources.subfolderOrFile("Scripts/\(script)")
-
-        let updated = require() { try File(at: origin) }
-        if ¬updated.isExecutable {
-            fatalError(message: [
-                "\(script) is not executable.",
-                "There may be a bug in Workspace."
-                ])
-        }
-        var inRepository = File(possiblyAt: RelativePath(script), executable: true)
-
-        inRepository.contents = updated.contents
-        require() { try inRepository.write() }
+    func write(scriptContents: String, to destination: String) {
+        var script = File(possiblyAt: RelativePath(destination), executable: true)
+        script.contents = scriptContents
+        require() { try script.write(output: &output) }
     }
 
     // Refresh Workspace
 
-    copy(script: "Refresh Workspace (macOS).command")
+    write(scriptContents: Resources.Scripts.refreshWorkspaceMacOS, to: "Refresh Workspace (macOS).command")
 
     if Configuration.supportLinux {
         // Checked into repository, so dependent on configuration.
 
-        copy(script: "Refresh Workspace (Linux).sh")
+        write(scriptContents: Resources.Scripts.refreshWorkspaceLinux, to: "Refresh Workspace (Linux).sh")
     }
 
     // Validate Changes
 
-    copy(script: "Validate Changes (macOS).command")
+    write(scriptContents: Resources.Scripts.validateChangesMacOS, to: "Validate Changes (macOS).command")
 
     if Environment.operatingSystem == .linux {
         // Not checked into repository, so dependent on environment.
 
-        copy(script: "Validate Changes (Linux).sh")
+        write(scriptContents: Resources.Scripts.validateChangesLinux, to: "Validate Changes (Linux).sh")
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Updating Workspace configuration..."])
+    print("Updating Workspace configuration...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     var newResponsibilities: [(option: Option, value: String, comment: [String]?)] = []
@@ -97,90 +88,95 @@ func runRefresh(andExit shouldExit: Bool) {
     }
 
     if Configuration.automaticallyTakeOnNewResponsibilites {
-        Configuration.addEntries(entries: newResponsibilities)
+        Configuration.addEntries(entries: newResponsibilities, output: &output)
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Updating Git configuration..."])
+    print("Updating Git configuration...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    Git.updateGitConfiguraiton()
+    DGit.updateGitConfiguraiton(output: &output)
 
     if Configuration.manageReadMe {
 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        printHeader(["Updating read‐me..."])
+        print("Updating read‐me...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        ReadMe.refreshReadMe()
+        ReadMe.refreshReadMe(output: &output)
     }
 
     if Configuration.manageLicence {
 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        printHeader(["Updating licence..."])
+        print("Updating licence...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        Licence.refreshLicence()
+        Licence.refreshLicence(output: &output)
     }
 
     if Configuration.manageContributingInstructions {
 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        printHeader(["Updating contributing instructions..."])
+        print("Updating contributing instructions...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        ContributingInstructions.refreshContributingInstructions()
+        ContributingInstructions.refreshContributingInstructions(output: &output)
     } else {
-        ContributingInstructions.relinquishControl()
+        ContributingInstructions.relinquishControl(output: &output)
     }
 
     if Configuration.manageContinuousIntegration {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        printHeader(["Updating continuous integration configuration..."])
+        print("Updating continuous integration configuration...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        ContinuousIntegration.refreshContinuousIntegrationConfiguration()
+        ContinuousIntegration.refreshContinuousIntegrationConfiguration(output: &output)
     } else {
-        ContinuousIntegration.relinquishControl()
+        ContinuousIntegration.relinquishControl(output: &output)
     }
+
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    // Resources
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    require() { try Workspace.Refresh.Resources.command.execute(withArguments: arguments, options: options, output: &output) }
 
     if Configuration.manageFileHeaders {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        printHeader(["Updating file headers..."])
+        print("Updating file headers...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        FileHeaders.refreshFileHeaders()
+        FileHeaders.refreshFileHeaders(output: &output)
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Updating examples..."])
+    print("Updating examples...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    Examples.refreshExamples()
+    Examples.refreshExamples(output: &output)
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Updating inherited documentation..."])
+    print("Updating inherited documentation...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    DocumentationInheritance.refreshDocumentation()
+    DocumentationInheritance.refreshDocumentation(output: &output)
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    printHeader(["Normalizing files..."])
+    print("Normalizing files...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    normalizeFiles()
+    normalizeFiles(output: &output)
 
     if Configuration.manageXcode ∧ Environment.operatingSystem == .macOS {
 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        printHeader(["Refreshing Xcode project..."])
+        print("Refreshing Xcode project...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        Xcode.refreshXcodeProjects()
+        Xcode.refreshXcodeProjects(output: &output)
     }
     if Environment.operatingSystem == .macOS {
-        Xcode.enableProofreading()
+        Xcode.enableProofreading(output: &output)
     }
 
     if shouldExit {

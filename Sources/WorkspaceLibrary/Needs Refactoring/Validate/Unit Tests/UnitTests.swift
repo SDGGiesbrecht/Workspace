@@ -15,14 +15,15 @@
 import Foundation
 
 import SDGCornerstone
+import SDGCommandLine
 
 struct UnitTests {
 
-    static func test(individualSuccess: @escaping (String) -> Void, individualFailure: @escaping (String) -> Void) {
+    static func test(individualSuccess: @escaping (String) -> Void, individualFailure: @escaping (String) -> Void, output: inout Command.Output) {
 
-        Xcode.temporarilyDisableProofreading()
+        Xcode.temporarilyDisableProofreading(output: &output)
         defer {
-            Xcode.reEnableProofreading()
+            Xcode.reEnableProofreading(output: &output)
         }
 
         func printTestHeader(buildOnly: Bool, operatingSystemName: String, buildToolName: String? = nil) {
@@ -33,7 +34,7 @@ struct UnitTests {
                 configuration += " with \(tool)"
             }
             // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-            printHeader(["\(verbPhrase) \(configuration)..."])
+            print("\(verbPhrase) \(configuration)...".formattedAsSectionHeader(), to: &output)
             // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         }
 
@@ -226,7 +227,7 @@ struct UnitTests {
                 let coverageDirectory = possibleCoverageDirectory {
 
                 // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-                printHeader(["Checking code coverage on \(operatingSystemName)..."])
+                print("Checking code coverage on \(operatingSystemName)...".formattedAsSectionHeader(), to: &output)
                 // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
                 guard let uuid = (try? FileManager.default.contentsOfDirectory(atPath: coverageDirectory))?.first else {

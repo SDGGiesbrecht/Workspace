@@ -12,7 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGCornerstone
+import SDGCommandLine
 
 struct File {
 
@@ -30,167 +33,71 @@ struct File {
 
     // MARK: - Initialization
 
+    init(_ textFile: PackageRepository.TextFile) {
+        self.textFile = textFile
+    }
+
     init<P : Path>(at path: P) throws {
-        let file = try Repository._read(file: path)
-        self = File(path: path, executable: file.isExecutable, contents: file.contents, isNew: false)
+        textFile = try PackageRepository.TextFile(alreadyAt: URL(fileURLWithPath: Repository.absolute(path).string))
     }
 
     init<P : Path>(possiblyAt path: P, executable: Bool = false) {
-        do {
-            self = try File(at: path)
-            if isExecutable ≠ executable {
-                isExecutable = executable
-                hasChanged = true
-            }
-        } catch {
-            self = File(path: path, executable: executable, contents: "", isNew: true)
-        }
-    }
-
-    /// For testing only
-    init<P : Path>(_path: P, _contents: String) {
-        self = File(path: _path, executable: false, contents: _contents, isNew: true)
-    }
-
-    private init<P : Path>(path: P, executable: Bool, contents: String, isNew: Bool) {
-        self.path = Repository.absolute(path)
-        self.isExecutable = executable
-        self._contents = contents
-        self.hasChanged = isNew
+        textFile = (try? PackageRepository.TextFile(possiblyAt: URL(fileURLWithPath: Repository.absolute(path).string), executable: executable))!
     }
 
     // MARK: - Properties
 
-    private class Cache {
-        fileprivate var headerStart: String.Index?
-        fileprivate var headerEnd: String.Index?
-    }
-    private var cache = Cache()
+    var textFile: PackageRepository.TextFile
 
-    private var hasChanged: Bool
-    let path: AbsolutePath
-
-    var isExecutable: Bool {
-        willSet {
-            if newValue ≠ isExecutable {
-                hasChanged = true
-            }
-        }
-    }
-
-    private var _contents: String {
-        willSet {
-            cache = Cache()
-        }
-    }
     var contents: String {
         get {
-            return _contents
+            return textFile.contents
         }
         set {
-            var new = newValue
-
-            // Ensure singular final newline
-            while new.hasSuffix("\n\n") {
-                new.unicodeScalars.removeLast()
-            }
-            if ¬new.hasSuffix("\n") {
-                new.append("\n")
-            }
-
-            // Check for changes
-            if ¬new.unicodeScalars.elementsEqual(contents.unicodeScalars) {
-                hasChanged = true
-                _contents = new
-            }
+            textFile.contents = newValue
         }
+    }
+
+    var path: AbsolutePath {
+        return AbsolutePath(textFile.location.path)
+    }
+
+    var isExecutable: Bool {
+        return textFile.isExecutable
     }
 
     var fileType: FileType? {
-        return FileType(filePath: path)
+        return FileType(filePath: AbsolutePath(textFile.location.path))
     }
 
     var syntax: FileSyntax? {
         return fileType?.syntax
     }
 
-    // MARK: - File Headers
-
-    var headerStart: String.Index {
-
-        return cached(in: &cache.headerStart) {
-            () -> String.Index in
-
-            if let parser = syntax {
-                return parser.headerStart(file: self)
-            } else {
-                return contents.startIndex
-            }
-        }
-    }
-
-    var headerEnd: String.Index {
-
-        return cached(in: &cache.headerEnd) {
-            () -> String.Index in
-
-            if let parser = syntax {
-
-                return parser.headerEnd(file: self)
-
-            } else {
-                return headerStart
-            }
-        }
-    }
-
-    func fatalFileTypeError() -> Never {
-        fatalError(message: [
-            "Unsupported file type:",
-            path.string,
-            "",
-            "This may indicate a bug in Workspace."
-            ])
-    }
+    // MARK: - File Header
 
     var header: String {
         get {
-            guard let parser = syntax else {
-                fatalFileTypeError()
-            }
-            return parser.header(file: self)
+            return textFile.header
         }
         set {
-            guard let constructor = syntax else {
-                fatalFileTypeError()
-            }
-            constructor.insert(header: newValue, into:
-                &self)
+            textFile.header = newValue
         }
     }
 
     var body: String {
         get {
-            return String(contents[headerEnd...])
+            return textFile.body
         }
         set {
-            var new = newValue
-            // Remove unnecessary initial spacing
-            while new.hasPrefix("\n") {
-                new.unicodeScalars.removeFirst()
-            }
-
-            let headerSource = String(contents[headerStart ..< headerEnd])
-            if ¬headerSource.hasSuffix("\n") {
-                new = "\n" + new
-            }
-            if ¬headerSource.hasSuffix("\n\n") {
-                new = "\n" + new
-            }
-
-            contents.replaceSubrange(headerEnd ..< contents.endIndex, with: new)
+            textFile.body = newValue
         }
+    }
 
+    // MARK: - Writing
+
+    func write(output: inout Command.Output) throws {
+        try textFile.writeChanges(for: Repository.packageRepository, output: &output)
     }
 
     // MARK: - Handling Parse Errors
@@ -268,19 +175,5 @@ struct File {
             }
             return String(result)
         }, tokens: tokens, range: searchRange)
-    }
-
-    // MARK: - Writing
-
-    func write() throws {
-        if hasChanged {
-            if let relative = Repository.relative(path) {
-                print("Writing to “\(relative)”...")
-            } else {
-                print("Writing to “\(path)”...")
-            }
-
-            try Repository._write(file: contents, to: path, asExecutable: isExecutable)
-        }
     }
 }

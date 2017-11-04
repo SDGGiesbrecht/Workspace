@@ -15,18 +15,19 @@
 import Foundation
 
 import SDGCornerstone
+import SDGCommandLine
 
-func runProofread(andExit shouldExit: Bool) -> Bool {
+func runProofread(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: inout Command.Output) -> Bool {
 
     if CommandLine.arguments[1] ≠ "proofread" {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        printHeader(["Proofreading \(Configuration.projectName)..."])
+        print("Proofreading \(Configuration.projectName)...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     }
 
     if CommandLine.arguments[1] == "proofread" {
         // So that SwiftLint’s trailing_whitespace doesn’t trigger.
-        normalizeFiles()
+        normalizeFiles(output: &output)
     }
 
     // Workspace Rules
@@ -34,9 +35,8 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
     var overallSuccess = true
 
     for path in Repository.sourceFiles {
-        let file = require() { try File(at: path) }
 
-        if file.fileType ≠ nil {
+        if let file = try? File(at: path) {
 
             var ruleSet: [Rule.Type]
             if Configuration.sdg {
@@ -49,7 +49,6 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
             for rule in ruleSet where rule.name ∉ Configuration.disableProofreadingRules {
                 rule.check(file: file, status: &overallSuccess)
             }
-
         }
     }
 
@@ -82,7 +81,7 @@ func runProofread(andExit shouldExit: Bool) -> Bool {
             }
 
             file.contents = join(lines: lines)
-            require() { try file.write() }
+            require() { try file.write(output: &output) }
         }
 
         if let swiftLintResult = runThirdPartyTool(

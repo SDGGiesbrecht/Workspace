@@ -15,6 +15,7 @@
 import Foundation
 
 import SDGCornerstone
+import SDGCommandLine
 
 struct DocumentationInheritance {
     static let documentation: [String: String] = {
@@ -60,7 +61,7 @@ struct DocumentationInheritance {
         return list
     }()
 
-    static func refreshDocumentation() {
+    static func refreshDocumentation(output: inout Command.Output) {
 
         for path in Repository.sourceFiles {
 
@@ -121,7 +122,7 @@ struct DocumentationInheritance {
                     }
                 }
 
-                require() { try file.write() }
+                require() { try file.write(output: &output) }
             }
         }
     }

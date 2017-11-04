@@ -117,7 +117,7 @@ extension PackageRepository {
                 #if os(Linux)
                     // [_Workaround: Linux has no implementation for resourcesValues(forKeys:) (Swift 4.0.2)_]
                     var objCBool: ObjCBool = false
-                    isDirectory = FileManager.default.fileExists(atPath: url.path, isDirectory: &objCBool) ∧ objCBool.boolValue
+                    isDirectory = FileManager.default.fileExists(atPath: url.path, isDirectory: &objCBool) ∧ objCBool
                 #else
                     isDirectory = (try url.resourceValues(forKeys: [.isDirectoryKey])).isDirectory!
                 #endif

@@ -27,7 +27,13 @@ extension PackageRepository {
             let fileType = try FileType(url: location)
 
             let contents = try String(from: location)
-            let executable = try location.resourceValues(forKeys: [.isExecutableKey]).isExecutable == true
+            let executable: Bool
+            #if os(Linux)
+                // [_Workaround: Linux has no implementation for resourcesValues(forKeys:) (Swift 4.0.2)_]
+                executable = FileManager.default.isExecutableFile(atPath: location.path)
+            #else
+                executable = try location.resourceValues(forKeys: [.isExecutableKey]).isExecutable == true
+            #endif
             self.init(location: location, fileType: fileType, executable: executable, contents: contents, isNew: false)
         }
 

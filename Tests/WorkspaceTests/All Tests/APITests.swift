@@ -38,7 +38,7 @@ class APITests : TestCase {
 
                 // [_Workaround: This should eventually just run “validate” to make sure it passes other validation too._]]
                 try Workspace.command.execute(with: ["refresh", "resources"])
-                try Shell.default.run(command: ["swift", "build"]) // Generated code has valid syntax.
+                try Shell.default.run(command: ["swift", "build"]) // Generated code must have valid syntax.
             }
         }
     }

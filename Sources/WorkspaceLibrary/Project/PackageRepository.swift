@@ -90,10 +90,10 @@ extension PackageRepository {
             () -> [URL] in
 
             var failureReason: Error? // Thrown after enumeration stops. (See below.)
-            guard let enumerator = FileManager.default.enumerator(at: location, includingPropertiesForKeys: [.isDirectoryKey], options: [], errorHandler: { (_, error: Error) -> Bool in
+            guard let enumerator = FileManager.default.enumerator(at: location, includingPropertiesForKeys: [.isDirectoryKey], options: [], errorHandler: { (_, error: Error) -> Bool in // [_Exempt from Code Coverage_] It is unknown what circumstances would actually cause an error.
                 failureReason = error
                 return false // Stop.
-            }) else {
+            }) else { // [_Exempt from Code Coverage_] It is unknown what circumstances would actually result in a `nil` enumerator being returned.
                 throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
                     switch localization {
                     case .englishCanada:
@@ -104,10 +104,10 @@ extension PackageRepository {
 
             var result: [URL] = []
             for object in enumerator {
-                guard let url = object as? URL else {
-                    throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+                guard let url = object as? URL else { // [_Exempt from Code Coverage_] It is unknown why something other than a URL would be returned.
+                    throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Code Coverage_]
                         switch localization {
-                        case .englishCanada:
+                        case .englishCanada: // [_Exempt from Code Coverage_]
                             return StrictString("Unexpected \(type(of: object)) encountered while enumerating project files.")
                         }
                     }))
@@ -121,7 +121,7 @@ extension PackageRepository {
                 }
             }
 
-            if let error = failureReason {
+            if let error = failureReason { // [_Exempt from Code Coverage_] It is unknown what circumstances would actually cause an error.
                 throw error
             }
 
@@ -161,7 +161,7 @@ extension PackageRepository {
 
             return try trackedFiles(output: &output).filter() { (url) in
                 for generatedURL in generatedURLs {
-                    if url.is(in: generatedURL) {
+                    if url.is(in: generatedURL) { // [_Exempt from Code Coverage_] [_Workaround: Until “workspace‐scripts” is testable._]
                         return false
                     }
                 }

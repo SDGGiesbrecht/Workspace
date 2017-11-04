@@ -113,7 +113,16 @@ extension PackageRepository {
                     }))
                 }
 
-                if ¬(try url.resourceValues(forKeys: [.isDirectoryKey])).isDirectory!, // Skip directories.
+                let isDirectory: Bool
+                #if os(Linux)
+                    // [_Workaround: Linux has no implementation for resourcesValues(forKeys:) (Swift 4.0.2)_]
+                    var objCBool: ObjCBool = false
+                    isDirectory = FileManager.default.fileExists(atPath: url.path, isDirectory: &objCBool) ∧ objCBool.boolValue
+                #else
+                    isDirectory = (try url.resourceValues(forKeys: [.isDirectoryKey])).isDirectory!
+                #endif
+
+                if ¬isDirectory, // Skip directories.
                     url.lastPathComponent ≠ ".DS_Store", // Skip irrelevant operating system files.
                     ¬url.path.hasSuffix("~") {
 

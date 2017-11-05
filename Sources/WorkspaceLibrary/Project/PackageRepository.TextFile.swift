@@ -178,7 +178,12 @@ extension PackageRepository {
 
                 try contents.save(to: location)
                 if isExecutable { // [_Exempt from Code Coverage_] [_Workaround: Until “normalize” is testable._]
-                    try FileManager.default.setAttributes([.posixPermissions: 0o777], ofItemAtPath: location.path)
+                    #if os(Linux)
+                        // [_Workaround: FileManager cannot change permissions on Linux. (Swift 4.0.2)_]
+                        try Shell.default.run(command: ["chmod", "+x", Shell.quote(location.path)], silently: true)
+                    #else
+                        try FileManager.default.setAttributes([.posixPermissions: 0o777], ofItemAtPath: location.path)
+                    #endif
                 }
 
                 repository.resetCache()

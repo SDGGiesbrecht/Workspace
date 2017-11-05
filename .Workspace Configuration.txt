@@ -212,3 +212,6 @@ This is to be expected, because the same project cannot simultaneously satisfy t
 
 Once that is the only error remaining, contact an administrator the same as if everything were passing and mention the reason for the false failure report.
 [_End_]
+
+([_Workaround: Until CI is updated._])
+Manage Continuous Integration: False

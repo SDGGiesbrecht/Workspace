@@ -15,6 +15,7 @@
 import Foundation
 
 import SDGCornerstone
+import SDGCommandLine
 
 @discardableResult func requireBash(_ arguments: [String], silent: Bool = false) -> String {
 

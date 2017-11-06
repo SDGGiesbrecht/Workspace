@@ -1,5 +1,5 @@
 /*
- Version.swift
+ main.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -12,17 +12,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGCornerstone
-import SDGCommandLine
+import WorkspaceLibrary
 
-extension Version {
-
-    // MARK: - Compatibility
-
-    var nextMajorVersion: Version {
-        guard major ≠ 0 else {
-            return Version(major, minor + 1, 0)
-        }
-        return Version(major + 1, 0, 0)
-    }
-}
+WorkspaceLibrary.run()

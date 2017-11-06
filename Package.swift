@@ -16,23 +16,27 @@
 
 import PackageDescription
 
-let toolCommand = "workspace"
-let toolName = "Workspace"
-let library = toolName + "Library"
-let tests = toolName + "Tests"
+let packageName = "Workspace"
+let tool = "workspace"
+let werkzeug = "arbeitsbereich"
+
+let library = packageName + "Library"
+let tests = packageName + "Tests"
 
 let sdgGiesbrecht = "https://github.com/SDGGiesbrecht/"
 let sdgCornerstone = "SDGCornerstone"
 let sdgCommandLine = "SDGCommandLine"
 
 let package = Package(
-    name: toolName,
+    name: packageName,
     dependencies: [
         .package(url: sdgGiesbrecht + sdgCornerstone, .exact(Version(0, 7, 1))),
         .package(url: sdgGiesbrecht + sdgCommandLine, .exact(Version(0, 1, 1)))
     ],
     targets: [
-        .target(name: toolCommand, dependencies: [.targetItem(name: library)]),
+        .target(name: tool, dependencies: [.targetItem(name: library)]),
+        .target(name: werkzeug, dependencies: [.targetItem(name: library)]),
+
         .target(name: library, dependencies: [
             .productItem(name: sdgCornerstone, package: sdgCornerstone),
             .productItem(name: sdgCommandLine, package: sdgCommandLine)

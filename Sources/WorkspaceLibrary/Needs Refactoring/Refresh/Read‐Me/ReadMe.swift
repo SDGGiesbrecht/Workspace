@@ -544,7 +544,7 @@ struct ReadMe {
                     "    ...",
                     "    dependencies: [",
                     "        ...",
-                    "        .Package(url: \u{22}\(repository)\u{22}, versions: \u{22}\(currentVersion)\u{22} ..< \u{22}\(currentVersion.nextMajorVersion)\u{22}),",
+                    "        .Package(url: \u{22}\(repository)\u{22}, versions: \u{22}\(currentVersion.string)\u{22} ..< \u{22}\(currentVersion.nextMajorVersion.string)\u{22}),",
                     "        ...",
                     "    ]",
                     ")",
@@ -679,12 +679,12 @@ struct ReadMe {
 
             let currentVersion = key("Current Version")
             if body.contains(currentVersion) {
-                body = body.replacingOccurrences(of: currentVersion, with: "\(Configuration.requiredCurrentVersion)")
+                body = body.replacingOccurrences(of: currentVersion, with: Configuration.requiredCurrentVersion.string)
             }
 
             let nextMajorVersion = key("Next Major Version")
             if body.contains(nextMajorVersion) {
-                body = body.replacingOccurrences(of: nextMajorVersion, with: "\(Configuration.requiredCurrentVersion.nextMajorVersion)")
+                body = body.replacingOccurrences(of: nextMajorVersion, with: Configuration.requiredCurrentVersion.nextMajorVersion.string)
             }
 
             let exampleUsage = key("Example Usage")

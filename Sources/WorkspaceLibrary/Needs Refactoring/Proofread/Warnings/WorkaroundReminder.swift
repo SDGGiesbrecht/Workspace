@@ -15,6 +15,7 @@
 import Foundation
 
 import SDGCornerstone
+import SDGCommandLine
 
 struct WorkaroundReminder : Warning {
 

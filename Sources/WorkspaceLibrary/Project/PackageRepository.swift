@@ -164,9 +164,9 @@ extension PackageRepository {
 
             let generatedURLs = [
                 "docs",
-                "Refresh Workspace (macOS).command",
-                "Refresh Workspace (Linux).sh"
-                ].map({ URL(fileURLWithPath: $0) })
+                Script.refreshMacOS.fileName,
+                Script.refreshLinux.fileName
+                ].map({ url(for: String($0)) })
 
             return try trackedFiles(output: &output).filter() { (url) in
                 for generatedURL in generatedURLs {

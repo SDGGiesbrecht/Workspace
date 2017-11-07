@@ -40,7 +40,7 @@ REPOSITORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 WORKSPACE="$HOME/.Workspace/Workspace"
 if [ ! -d "${WORKSPACE}/Sources" ]; then
 
-    # The following changes for testing continuous integration behaviour must be made after Validate Changes, but before committing.
+    # The following changes for testing continuous integration behaviour must be made after Validate, but before committing.
     # Travis CI’s cache must also be deleted. (The cache must be deleted again afterward in order to revert to normal behaviour.)
 
     # To test a fork of Workspace, replace the URL on the next line with that of the fork.

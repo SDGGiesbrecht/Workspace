@@ -58,8 +58,8 @@ class InternalTests : TestCase {
 
             // Workspace
             ".Workspace Configuration.txt",
-            "Refresh Workspace (macOS).command",
-            "Refresh Workspace (Linux).sh",
+            String(Script.refreshMacOS.fileName),
+            String(Script.refreshLinux.fileName),
 
             // Git
             ".gitignore",

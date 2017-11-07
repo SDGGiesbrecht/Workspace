@@ -109,10 +109,10 @@ struct FileHeaders {
             possibleLicence = Configuration.requiredLicence.notice
         }
 
-        let workspaceFiles: Set<String> = [
-            "Refresh Workspace (macOS).command",
-            "Refresh Workspace (Linux).sh"
-            ]
+        let workspaceFiles: Set<String> = Set([
+            Script.refreshMacOS.fileName,
+            Script.refreshLinux.fileName
+            ].map({ String($0) }))
 
         var skippedFiles: Set<String> = workspaceFiles
         skippedFiles.insert("LICENSE.md")

@@ -16,7 +16,7 @@
 
 ## Double‐Clicking Scripts
 
-Linux may require some additional set‐up before `Refresh Workspace (Linux).sh` works with a double‐click. This also applies to `Validate Changes (Linux).sh`.
+Linux may require some additional set‐up before `Refresh (Linux).sh` works with a double‐click. This also applies to `Validate (Linux).sh`.
 
 Solutions to common errors are found below.
 

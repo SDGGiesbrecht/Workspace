@@ -135,8 +135,8 @@ struct Repository {
 
                 let generatedPaths = [
                     "docs/",
-                    "Refresh Workspace (macOS).command",
-                    "Refresh Workspace (Linux).sh"
+                    String(Script.refreshMacOS.fileName),
+                    String(Script.refreshLinux.fileName)
                 ]
 
                 for generated in generatedPaths {

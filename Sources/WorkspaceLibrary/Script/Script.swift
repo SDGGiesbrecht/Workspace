@@ -43,7 +43,7 @@ enum Script : Int, IterableEnumeration {
         return StrictString(result)
     }
 
-    private var fileName: StrictString {
+    var fileName: StrictString {
         switch self {
         case .refreshMacOS:
             return "Refresh (macOS).command"

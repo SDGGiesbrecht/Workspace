@@ -67,8 +67,8 @@ struct ContinuousIntegration {
 
             return runCommand("bash \(file)")
         }
-        let runRefreshWorkspace = runWorkspaceScript("Refresh Workspace")
-        let runValidateChanges = runWorkspaceScript("Validate Changes")
+        let runRefreshWorkspace = runWorkspaceScript("Refresh")
+        let runValidateChanges = runWorkspaceScript("Validate")
 
         if Configuration.supportMacOS {
 

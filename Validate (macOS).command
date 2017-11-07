@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Refresh (macOS).command
+# Validate (macOS).command
 #
 # This source file is part of the Workspace open source project.
 # https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -39,20 +39,7 @@ REPOSITORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Get Workspace if necessary.
 WORKSPACE="$HOME/.Workspace/Workspace"
 if [ ! -d "${WORKSPACE}/Sources" ]; then
-
-    # The following changes for testing continuous integration behaviour must be made after Validate Changes, but before committing.
-    # Travis CI’s cache must also be deleted. (The cache must be deleted again afterward in order to revert to normal behaviour.)
-
-    # To test a fork of Workspace, replace the URL on the next line with that of the fork.
     git clone https://github.com/SDGGiesbrecht/Workspace "${WORKSPACE}"
-
-    # To test a development branch of Workspace, change this to a real branch name.
-    BRANCH="branch-name"
-
-    if [ "$BRANCH" != "branch-name" ]; then
-        cd "${WORKSPACE}"
-        git checkout -b "${BRANCH}" "origin/${BRANCH}"
-    fi
 fi
 
 # Update Workspace.
@@ -73,4 +60,4 @@ fi
 cd "${REPOSITORY}"
 
 # Run.
-~/.Workspace/Workspace/.build/release/workspace refresh
+~/.Workspace/Workspace/.build/release/workspace validate

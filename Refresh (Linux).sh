@@ -11,3 +11,8 @@
 #
 # Licensed under the Apache Licence, Version 2.0.
 # See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+
+set -e
+REPOSITORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "${REPOSITORY}"
+gnome-terminal -e "bash --login -c \"source ~/.bashrc; ./Refresh\ \(macOS\).command; exec bash\""

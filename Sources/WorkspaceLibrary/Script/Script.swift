@@ -111,7 +111,75 @@ enum Script : Int, IterableEnumeration {
         return "#!/bin/bash" + "\n\n"
     }
 
+    func stopOnFailure() -> StrictString {
+        return "set \u{2D}e"
+    }
+
+    func findRepository() -> StrictString {
+        // “REPOSITORY=\u{22}$(pwd)\u{22}”
+        // Does not work for double‐click on macOS, or as a command on macOS or Linux from a different directory.
+
+        // “REPOSITORY=\u{22}${0%/*}\u{22}”
+        // Does not work for double‐click on Linux or as a command on macOS or Linux from a different directory.
+
+        return "REPOSITORY=\u{22}$( cd \u{22}$( dirname \u{22}${BASH_SOURCE[0]}\u{22} )\u{22} \u{26}& pwd )\u{22}"
+    }
+
+    func enterRepository() -> StrictString {
+        return "cd \u{22}${REPOSITORY}\u{22}"
+    }
+
+    func openTerminal(andExecute script: StrictString) -> StrictString {
+        return "gnome\u{2D}terminal \u{2D}e \u{22}bash \u{2D}\u{2D}login \u{2D}c \u{5C}\u{22}source ~/.bashrc; ./" + script + "\u{5C} \u{5C}(macOS\u{5C}).command; exec bash\u{5C}\u{22}\u{22}"
+    }
+
+    func getWorkspace(andExecute command: StrictString) -> [StrictString] {
+
+        let version = StrictString(latestStableWorkspaceVersion.string)
+        let arguments: StrictString = command + " •use‐version " + version
+
+        let macOSCachePath: StrictString = "~/Library/Caches/ca.solideogloria.Workspace/Versions/" + version + "/"
+        let linuxCachePath: StrictString = "~/.cache/ca.solideogloria.Workspace/Versions/" + version + "/"
+
+        let buildLocation: StrictString = "/tmp/Workspace"
+
+        return [
+            ("if workspace version ; then") as StrictString,
+            ("    workspace " + arguments) as StrictString,
+            ("elif " + macOSCachePath + "workspace version ; then") as StrictString,
+            ("    " + macOSCachePath + "workspace " + arguments) as StrictString,
+            ("elif " + linuxCachePath + "workspace version ; then") as StrictString,
+            ("    " + linuxCachePath + "workspace " + arguments) as StrictString,
+            ("else") as StrictString,
+            ("    rm \u{2D}rf " + buildLocation) as StrictString,
+            ("    git clone https://github.com/SDGGiesbrecht/Workspace " + buildLocation) as StrictString,
+            ("    cd " + buildLocation) as StrictString,
+            ("    swift build \u{2D}\u{2D}configuration release") as StrictString,
+            ("    " + enterRepository()) as StrictString,
+            ("    " + buildLocation + "/.build/release/workspace " + arguments) as StrictString,
+            ("    rm \u{2D}rf " + buildLocation) as StrictString,
+            ("fi") as StrictString
+            ]
+    }
+
     func source() -> StrictString {
-        return ""
+        var lines: [StrictString] = [
+            stopOnFailure(),
+            findRepository(),
+            enterRepository()
+        ]
+
+        switch self {
+        case .refreshLinux:
+            lines.append(openTerminal(andExecute: "Refresh"))
+        case .validateLinux:
+            lines.append(openTerminal(andExecute: "Validate"))
+        case .refreshMacOS:
+            lines.append(contentsOf: getWorkspace(andExecute: "refresh"))
+        case .validateMacOS:
+            lines.append(contentsOf: getWorkspace(andExecute: "validate"))
+        }
+
+        return StrictString(lines.joined(separator: "\n".scalars))
     }
 }

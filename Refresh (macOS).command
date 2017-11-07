@@ -11,3 +11,22 @@
 #
 # Licensed under the Apache Licence, Version 2.0.
 # See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+
+set -e
+REPOSITORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd "${REPOSITORY}"
+if workspace version ; then
+    workspace refresh •use‐version 0.1.0
+elif ~/Library/Caches/ca.solideogloria.Workspace/Versions/0.1.0/workspace version ; then
+    ~/Library/Caches/ca.solideogloria.Workspace/Versions/0.1.0/workspace refresh •use‐version 0.1.0
+elif ~/.cache/ca.solideogloria.Workspace/Versions/0.1.0/workspace version ; then
+    ~/.cache/ca.solideogloria.Workspace/Versions/0.1.0/workspace refresh •use‐version 0.1.0
+else
+    rm -rf /tmp/Workspace
+    git clone https://github.com/SDGGiesbrecht/Workspace /tmp/Workspace
+    cd /tmp/Workspace
+    swift build --configuration release
+    cd "${REPOSITORY}"
+    /tmp/Workspace/.build/release/workspace refresh •use‐version 0.1.0
+    rm -rf /tmp/Workspace
+fi

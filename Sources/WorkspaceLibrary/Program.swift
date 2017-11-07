@@ -16,8 +16,8 @@ import Foundation
 
 import SDGCommandLine
 
-let latestStableVersion = Version(0, 1, 0)
-private let thisVersion: Version? = nil // Set this to lastestStableVersion for release commits, nil the rest of the time.
+let latestStableWorkspaceVersion = Version(0, 1, 0)
+private let thisVersion: Version? = nil // Set this to latestStableWorkspaceVersion for release commits, nil the rest of the time.
 
 public func run() { // [_Exempt from Code Coverage_]
     SDGCommandLine.initialize(applicationIdentifier: "ca.solideogloria.Workspace", version: thisVersion, packageURL: URL(string: "https://github.com/SDGGiesbrecht/Workspace"))

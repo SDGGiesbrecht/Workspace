@@ -13,6 +13,7 @@
  */
 
 import SDGCornerstone
+import SDGCommandLine
 
 enum Script : Int, IterableEnumeration {
 
@@ -25,20 +26,71 @@ enum Script : Int, IterableEnumeration {
 
     // MARK: - Properties
 
-    private var templateFile: String {
+    private var template: StrictString {
+        let result: String
         switch self {
         case .refreshMacOS:
-            return Resources.Scripts.refreshMacOS
+            result = Resources.Scripts.refreshMacOS
         case .refreshLinux:
-            return Resources.Scripts.refreshLinux
+            result = Resources.Scripts.refreshLinux
         case .validateMacOS:
-            return Resources.Scripts.validateMacOS
+            result = Resources.Scripts.validateMacOS
         case .validateLinux:
-            return Resources.Scripts.validateLinux
+            result = Resources.Scripts.validateLinux
+        }
+        return StrictString(result)
+    }
+    
+    private var fileName: StrictString {
+        switch self {
+        case .refreshMacOS:
+            return "Refresh (macOS).command"
+        case .refreshLinux:
+            return "Refresh (Linux).sh"
+        case .validateMacOS:
+            return "Validate (macOS).command"
+        case .validateLinux:
+            return "Validate (Linux).sh"
         }
     }
-
-    var template: StrictString {
-        return StrictString(templateFile)
+    
+    private var isRelevantOnCurrentDevice: Bool {
+        switch self {
+        case .refreshMacOS, .validateMacOS:
+            #if os(macOS)
+                return true
+            #elseif os(Linux)
+                return true // Linux scripts use the macOS ones internally.
+            #endif
+        case .refreshLinux, .validateLinux:
+            #if os(macOS)
+                return false
+            #elseif os(Linux)
+                return true
+            #endif
+        }
+    }
+    
+    private var isCheckedIn: Bool {
+        switch self {
+        case .refreshMacOS, .refreshLinux:
+            return true
+        case .validateMacOS, .validateLinux:
+            return false
+        }
+    }
+    
+    // MARK: - Refreshing
+    
+    static func refreshRelevantScripts(for project: PackageRepository, output: inout Command.Output) throws {
+        
+        for script in cases where script.isRelevantOnCurrentDevice ∨ script.isCheckedIn {
+            var source = StrictString(script.template)
+            
+            
+            var file = try PackageRepository.TextFile(possiblyAt: project.location.appendingPathComponent(String(script.fileName)), executable: true)
+            file.contents = String(source)
+            try file.writeChanges(for: project, output: &output)
+        }
     }
 }

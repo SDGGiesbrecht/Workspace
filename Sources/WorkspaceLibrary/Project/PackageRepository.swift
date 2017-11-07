@@ -182,37 +182,7 @@ extension PackageRepository {
     // MARK: - Scripts
 
     func refreshScripts(output: inout Command.Output) throws {
-
-        for script in Script.cases {
-            notImplementedYet()
-        }
-        notImplementedYet()
-        /*
-        func write(scriptContents: String, to destination: String) {
-            var script = File(possiblyAt: RelativePath(destination), executable: true)
-            script.contents = scriptContents
-            require() { try script.write(output: &output) }
-        }
-
-        // Refresh Workspace
-
-        write(scriptContents: Resources.Scripts.refreshWorkspaceMacOS, to: "Refresh Workspace (macOS).command")
-
-        if Configuration.supportLinux {
-            // Checked into repository, so dependent on configuration.
-
-            write(scriptContents: Resources.Scripts.refreshWorkspaceLinux, to: "Refresh Workspace (Linux).sh")
-        }
-
-        // Validate Changes
-
-        write(scriptContents: Resources.Scripts.validateChangesMacOS, to: "Validate Changes (macOS).command")
-
-        if Environment.operatingSystem == .linux {
-            // Not checked into repository, so dependent on environment.
-
-            write(scriptContents: Resources.Scripts.validateChangesLinux, to: "Validate Changes (Linux).sh")
-        }*/
+        try Script.refreshRelevantScripts(for: self, output: &output)
     }
 
     // MARK: - Resources

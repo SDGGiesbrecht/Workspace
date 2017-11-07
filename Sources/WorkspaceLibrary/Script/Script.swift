@@ -22,22 +22,22 @@ enum Script : Int, IterableEnumeration {
     case refreshLinux
     case validateMacOS
     case validateLinux
-    
+
     // MARK: - Properties
-    
+
     private var templateFile: String {
         switch self {
         case .refreshMacOS:
-            return Resources.Scripts.refreshWorkspaceMacOS
+            return Resources.Scripts.refreshMacOS
         case .refreshLinux:
-            return Resources.Scripts.refreshWorkspaceLinux
+            return Resources.Scripts.refreshLinux
         case .validateMacOS:
-            return Resources.Scripts.validateChangesMacOS
+            return Resources.Scripts.validateMacOS
         case .validateLinux:
-            return Resources.Scripts.validateChangesLinux
+            return Resources.Scripts.validateLinux
         }
     }
-    
+
     var template: StrictString {
         return StrictString(templateFile)
     }

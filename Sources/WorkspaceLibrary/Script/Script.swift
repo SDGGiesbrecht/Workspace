@@ -28,21 +28,6 @@ enum Script : Int, IterableEnumeration {
 
     // MARK: - Properties
 
-    private var template: StrictString {
-        let result: String
-        switch self {
-        case .refreshMacOS:
-            result = Resources.Scripts.refreshMacOS
-        case .refreshLinux:
-            result = Resources.Scripts.refreshLinux
-        case .validateMacOS:
-            result = Resources.Scripts.validateMacOS
-        case .validateLinux:
-            result = Resources.Scripts.validateLinux
-        }
-        return StrictString(result)
-    }
-
     var fileName: StrictString {
         switch self {
         case .refreshMacOS:
@@ -113,13 +98,20 @@ enum Script : Int, IterableEnumeration {
         }
 
         for script in cases where script.isRelevantOnCurrentDevice ∨ script.isCheckedIn {
-            var source = StrictString(script.template)
-
-
-
             var file = try PackageRepository.TextFile(possiblyAt: project.url(for: String(script.fileName)), executable: true)
-            file.contents = String(source)
+            file.contents.replaceSubrange(file.contents.startIndex ..< file.headerStart, with: String(script.shebang()))
+            file.body = String(script.source())
             try file.writeChanges(for: project, output: &output)
         }
+    }
+
+    // MARK: - Source
+
+    func shebang() -> StrictString {
+        return "#!/bin/bash" + "\n\n"
+    }
+
+    func source() -> StrictString {
+        return ""
     }
 }

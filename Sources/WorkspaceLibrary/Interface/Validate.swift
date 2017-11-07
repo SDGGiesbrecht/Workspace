@@ -28,12 +28,12 @@ extension Workspace {
         private static let description = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
-                return "validates the current project against a thorough battery of tests."
+                return "validates the project against a thorough battery of tests."
             }
         })
 
         static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (arguments: DirectArguments, options: Options, output: inout Command.Output) throws in
-            runValidate(andExit: true, arguments: arguments, options: options, output: &output)
+            try runValidate(andExit: true, arguments: arguments, options: options, output: &output)
         })
     }
 }

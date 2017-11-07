@@ -34,7 +34,7 @@ extension Workspace.Refresh {
         })
 
         static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (arguments: DirectArguments, options: Options, output: inout Command.Output) throws in
-            runRefresh(andExit: true, arguments: arguments, options: options, output: &output)
+            try runRefresh(andExit: true, arguments: arguments, options: options, output: &output)
         })
     }
 }

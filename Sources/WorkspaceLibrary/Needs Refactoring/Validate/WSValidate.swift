@@ -15,7 +15,7 @@
 import SDGCornerstone
 import SDGCommandLine
 
-func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: inout Command.Output) {
+func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: inout Command.Output) throws {
 
     var overallSuccess = true
 
@@ -34,7 +34,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         // Refreshing
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        runRefresh(andExit: false, arguments: arguments, options: options, output: &output)
+        try runRefresh(andExit: false, arguments: arguments, options: options, output: &output)
 
     }
 

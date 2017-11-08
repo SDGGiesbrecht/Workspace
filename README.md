@@ -34,6 +34,7 @@ Workspace automates management of Swift projects.
 ### Table of Contents
 - [Platforms](#platforms)
 - [What Workspace Can Do](#what-workspace-can-do)
+- [Installation](#installation)
 - [The Workspace Workflow](#the-workspace-workflow)
 - [Set‐Up](#setup)
   - [New Projects](#new-projects)
@@ -73,6 +74,18 @@ A particular project can [configure](Documentation/Operating%20Systems.md) which
   - Generate API [documentation](Documentation/Documentation%20Generation.md) (except from Linux). (Using [Jazzy](https://github.com/realm/jazzy))
   - Enforce [documentation coverage](Documentation/Documentation%20Generation.md#enforcement).
   - Configure [continuous integration](Documentation/Continuous%20Integration.md) for each operating system. ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))
+
+## Installation
+
+Run the following in a terminal to perform a full installation or update (on either macOS or Linux):
+
+```shell
+curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace https://github.com/SDGGiesbrecht/Workspace 0.1.0 "workspace help" workspace arbeitsbereich
+```
+
+This will install and register the `workspace` command for `bash`, `zsh` and `fish`.
+
+A full installation is only necessary necessary to use the command line interface. Contributors to a Workspace‐managed project can use the provided scripts without a permanent install. (See [The Workspace Workflow](#the-workspace-workflow).)
 
 ## The Workspace Workflow
 
@@ -121,14 +134,7 @@ When it finishes, it prints a summary of which tests passed and which tests fail
 
 ## Set‐Up
 
-For the following set‐up commands to work, the device needs to have run `Refresh` at least once already.
-
-This script can be used to trigger `Refresh`:
-```shell
-git clone https://github.com/SDGGiesbrecht/Workspace
-Workspace/Refresh\ \Workspace\ \(macOS\).command
-rm -rf Workspace
-```
+The following commands require a full install. (See [Installation](#installation).)
 
 ### New Projects
 
@@ -136,17 +142,17 @@ To have Workspace create a new Swift project from scratch, run one of the follow
 
 To create a [library](Documentation/Project%20Types.md) project:
 ```shell
-~/.Workspace/Workspace/.build/release/workspace initialize
+workspace initialize
 ```
 
 To create an [application](Documentation/Project%20Types.md) project:
 ```shell
-~/.Workspace/Workspace/.build/release/workspace initialize •type application
+workspace initialize •type application
 ```
 
 To create an [executable](Documentation/Project%20Types.md) project:
 ```shell
-~/.Workspace/Workspace/.build/release/workspace initialize •type executable
+workspace initialize •type executable
 ```
 
 When it creates a new project, Workspace will handle many responsibilities by default, behaving in a primarily opt‐out manner. This setting can be [changed](Documentation/Responsibilities.md).
@@ -156,7 +162,7 @@ When it creates a new project, Workspace will handle many responsibilities by de
 To have Workspace take responsibility for an existing project, run this command in the root of its repository:
 
 ```shell
-~/.Workspace/Workspace/.build/release/workspace refresh
+workspace refresh
 ```
 
 When it is added to an existing project, Workspace will refrain from most responsibilities by default, behaving in a primarily opt‐in manner. This setting can be [changed](Documentation/Responsibilities.md).

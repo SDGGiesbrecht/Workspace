@@ -52,6 +52,12 @@ extension PackageRepository {
         return _url(for: relativePath) // Shared from SDGCommandLine.
     }
 
+    // MARK: - Miscellaneous Properties
+
+    var isWorkspaceProject: Bool {
+        return location.lastPathComponent == "Workspace"
+    }
+
     // MARK: - Structure
 
     func targets(output: inout Command.Output) throws -> [String: Target] {

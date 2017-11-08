@@ -100,7 +100,10 @@ enum Script : Int, IterableEnumeration {
         for script in cases where script.isRelevantOnCurrentDevice ∨ script.isCheckedIn {
             var file = try PackageRepository.TextFile(possiblyAt: project.url(for: String(script.fileName)), executable: true)
             file.contents.replaceSubrange(file.contents.startIndex ..< file.headerStart, with: String(script.shebang()))
-            file.body = String(script.source())
+
+            let shouldSelfTest = project.location.lastPathComponent == "Workspace"
+
+            file.body = String(script.source(selfTest: shouldSelfTest))
             try file.writeChanges(for: project, output: &output)
         }
     }
@@ -133,40 +136,44 @@ enum Script : Int, IterableEnumeration {
         return "gnome\u{2D}terminal \u{2D}e \u{22}bash \u{2D}\u{2D}login \u{2D}c \u{5C}\u{22}source ~/.bashrc; ./" + script + "\u{5C} \u{5C}(macOS\u{5C}).command; exec bash\u{5C}\u{22}\u{22}"
     }
 
-    func getWorkspace(andExecute command: StrictString) -> [StrictString] {
+    func getWorkspace(andExecute command: StrictString, selfTest: Bool) -> [StrictString] {
 
-        let version = StrictString(latestStableWorkspaceVersion.string)
-        let arguments: StrictString = command + " •use‐version " + version
+        if selfTest {
+            return ["swift run workspace " + command]
+        } else {
+            let version = StrictString(latestStableWorkspaceVersion.string)
+            let arguments: StrictString = command + " •use‐version " + version
 
-        let macOSCachePath: StrictString = "~/Library/Caches/ca.solideogloria.Workspace/Versions/" + version + "/"
-        let linuxCachePath: StrictString = "~/.cache/ca.solideogloria.Workspace/Versions/" + version + "/"
+            let macOSCachePath: StrictString = "~/Library/Caches/ca.solideogloria.Workspace/Versions/" + version + "/"
+            let linuxCachePath: StrictString = "~/.cache/ca.solideogloria.Workspace/Versions/" + version + "/"
 
-        let buildLocation: StrictString = "/tmp/Workspace"
+            let buildLocation: StrictString = "/tmp/Workspace"
 
-        return [
-            ("if workspace version > /dev/null 2>&1 ; then") as StrictString,
-            ("    echo \u{22}Using system install of Workspace...\u{22}") as StrictString,
-            ("    workspace " + arguments) as StrictString,
-            ("elif " + macOSCachePath + "workspace version > /dev/null 2>&1 ; then") as StrictString,
-            ("    echo \u{22}Using cached build of Workspace...\u{22}") as StrictString,
-            ("    " + macOSCachePath + "workspace " + arguments) as StrictString,
-            ("elif " + linuxCachePath + "workspace version > /dev/null 2>&1 ; then") as StrictString,
-            ("    echo \u{22}Using cached build of Workspace...\u{22}") as StrictString,
-            ("    " + linuxCachePath + "workspace " + arguments) as StrictString,
-            ("else") as StrictString,
-            ("    echo \u{22}No cached build detected, fetching Workspace...\u{22}") as StrictString,
-            ("    rm \u{2D}rf " + buildLocation) as StrictString,
-            ("    git clone https://github.com/SDGGiesbrecht/Workspace " + buildLocation) as StrictString,
-            ("    cd " + buildLocation) as StrictString,
-            ("    swift build \u{2D}\u{2D}configuration release") as StrictString,
-            ("    " + enterRepository()) as StrictString,
-            ("    " + buildLocation + "/.build/release/workspace " + arguments) as StrictString,
-            ("    rm \u{2D}rf " + buildLocation) as StrictString,
-            ("fi") as StrictString
+            return [
+                ("if workspace version > /dev/null 2>&1 ; then") as StrictString,
+                ("    echo \u{22}Using system install of Workspace...\u{22}") as StrictString,
+                ("    workspace " + arguments) as StrictString,
+                ("elif " + macOSCachePath + "workspace version > /dev/null 2>&1 ; then") as StrictString,
+                ("    echo \u{22}Using cached build of Workspace...\u{22}") as StrictString,
+                ("    " + macOSCachePath + "workspace " + arguments) as StrictString,
+                ("elif " + linuxCachePath + "workspace version > /dev/null 2>&1 ; then") as StrictString,
+                ("    echo \u{22}Using cached build of Workspace...\u{22}") as StrictString,
+                ("    " + linuxCachePath + "workspace " + arguments) as StrictString,
+                ("else") as StrictString,
+                ("    echo \u{22}No cached build detected, fetching Workspace...\u{22}") as StrictString,
+                ("    rm \u{2D}rf " + buildLocation) as StrictString,
+                ("    git clone https://github.com/SDGGiesbrecht/Workspace " + buildLocation) as StrictString,
+                ("    cd " + buildLocation) as StrictString,
+                ("    swift build \u{2D}\u{2D}configuration release") as StrictString,
+                ("    " + enterRepository()) as StrictString,
+                ("    " + buildLocation + "/.build/release/workspace " + arguments) as StrictString,
+                ("    rm \u{2D}rf " + buildLocation) as StrictString,
+                ("fi") as StrictString
             ]
+        }
     }
 
-    func source() -> StrictString {
+    func source(selfTest: Bool) -> StrictString {
         var lines: [StrictString] = [
             stopOnFailure(),
             findRepository(),
@@ -179,9 +186,9 @@ enum Script : Int, IterableEnumeration {
         case .validateLinux:
             lines.append(openTerminal(andExecute: "Validate"))
         case .refreshMacOS:
-            lines.append(contentsOf: getWorkspace(andExecute: "refresh"))
+            lines.append(contentsOf: getWorkspace(andExecute: "refresh", selfTest: selfTest))
         case .validateMacOS:
-            lines.append(contentsOf: getWorkspace(andExecute: "validate"))
+            lines.append(contentsOf: getWorkspace(andExecute: "validate", selfTest: selfTest))
         }
 
         return StrictString(lines.joined(separator: "\n".scalars))

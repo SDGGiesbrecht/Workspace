@@ -185,6 +185,7 @@ struct Xcode {
                 "\(scriptObjectName) = {",
                 "    isa = PBXShellScriptBuildPhase;",
                 "    shellPath = /bin/bash;",
+                // [_Warning: This will no longer work._]
                 "    shellScript = \u{22}~/.Workspace/Workspace/.build/release/workspace proofread\u{22};",
                 "};",
                 "" // Final line break.

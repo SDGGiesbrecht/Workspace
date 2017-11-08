@@ -22,6 +22,7 @@ Proofreading will also automatically work within Xcode if Workspace has been put
 
 If Workspace is not in charge of Xcode, proofreading can still be activated by manually adding the following “run script” build phase:
 
+// [_Warning: This will no longer work._]
 ```shell
 ~/.Workspace/Workspace/.build/release/workspace proofread
 ```

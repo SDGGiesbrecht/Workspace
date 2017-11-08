@@ -144,13 +144,15 @@ enum Script : Int, IterableEnumeration {
         let buildLocation: StrictString = "/tmp/Workspace"
 
         return [
-            ("if workspace version ; then") as StrictString,
+            ("if workspace version > /dev/null ; then") as StrictString,
             ("    workspace " + arguments) as StrictString,
-            ("elif " + macOSCachePath + "workspace version ; then") as StrictString,
+            ("elif " + macOSCachePath + "workspace version > /dev/null ; then") as StrictString,
+            ("    echo \u{22}Workspace not installed, searching for cached version...\u{22}") as StrictString,
             ("    " + macOSCachePath + "workspace " + arguments) as StrictString,
-            ("elif " + linuxCachePath + "workspace version ; then") as StrictString,
+            ("elif " + linuxCachePath + "workspace version > /dev/null ; then") as StrictString,
             ("    " + linuxCachePath + "workspace " + arguments) as StrictString,
             ("else") as StrictString,
+            ("    echo \u{22}No cached version detected, fetching Workspace...\u{22}") as StrictString,
             ("    rm \u{2D}rf " + buildLocation) as StrictString,
             ("    git clone https://github.com/SDGGiesbrecht/Workspace " + buildLocation) as StrictString,
             ("    cd " + buildLocation) as StrictString,

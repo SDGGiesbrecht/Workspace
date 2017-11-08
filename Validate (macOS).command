@@ -15,13 +15,15 @@
 set -e
 REPOSITORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "${REPOSITORY}"
-if workspace version ; then
+if workspace version > /dev/null ; then
     workspace validate •use‐version 0.1.0
-elif ~/Library/Caches/ca.solideogloria.Workspace/Versions/0.1.0/workspace version ; then
+elif ~/Library/Caches/ca.solideogloria.Workspace/Versions/0.1.0/workspace version > /dev/null ; then
+    echo "Workspace not installed, searching for cached version..."
     ~/Library/Caches/ca.solideogloria.Workspace/Versions/0.1.0/workspace validate •use‐version 0.1.0
-elif ~/.cache/ca.solideogloria.Workspace/Versions/0.1.0/workspace version ; then
+elif ~/.cache/ca.solideogloria.Workspace/Versions/0.1.0/workspace version > /dev/null ; then
     ~/.cache/ca.solideogloria.Workspace/Versions/0.1.0/workspace validate •use‐version 0.1.0
 else
+    echo "No cached version detected, fetching Workspace..."
     rm -rf /tmp/Workspace
     git clone https://github.com/SDGGiesbrecht/Workspace /tmp/Workspace
     cd /tmp/Workspace

@@ -29,8 +29,8 @@ struct DGit {
         ]
 
     static let ignoreEntriesForWorkspace = [
-        "/Validate\\ Changes\\ (macOS).command",
-        "/Validate\\ Changes\\ (Linux).sh",
+        "/Validate\\ (macOS).command",
+        "/Validate\\ (Linux).sh",
         "/.Test\\ Zone"
         ]
 

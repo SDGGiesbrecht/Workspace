@@ -15,13 +15,13 @@
 set -e
 REPOSITORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "${REPOSITORY}"
-if workspace version > /dev/null ; then
+if workspace version > /dev/null 2>&1 ; then
     echo "Using system install of Workspace..."
     workspace refresh •use‐version 0.1.0
-elif ~/Library/Caches/ca.solideogloria.Workspace/Versions/0.1.0/workspace version > /dev/null ; then
+elif ~/Library/Caches/ca.solideogloria.Workspace/Versions/0.1.0/workspace version > /dev/null 2>&1 ; then
     "Using cached build of Workspace..."
     ~/Library/Caches/ca.solideogloria.Workspace/Versions/0.1.0/workspace refresh •use‐version 0.1.0
-elif ~/.cache/ca.solideogloria.Workspace/Versions/0.1.0/workspace version > /dev/null ; then
+elif ~/.cache/ca.solideogloria.Workspace/Versions/0.1.0/workspace version > /dev/null 2>&1 ; then
     "Using cached build of Workspace..."
     ~/.cache/ca.solideogloria.Workspace/Versions/0.1.0/workspace refresh •use‐version 0.1.0
 else

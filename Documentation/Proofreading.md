@@ -18,13 +18,19 @@ Workspace proofreads the project source during validation.
 
 ## In Xcode
 
-Proofreading will also automatically work within Xcode if Workspace has been put [in charge of Xcode](Xcode.md).
+Proofreading also works within Xcode, provided Workspace has been [fully installed](../README.md#installation) on the local device. (If not, proofreading will be skipped, and a link to installation instructions will be displayed.)
 
-If Workspace is not in charge of Xcode, proofreading can still be activated by manually adding the following “run script” build phase:
+Workspace will set this up automatically if it is [in charge of Xcode](Xcode.md).
 
-// [_Warning: This will no longer work._]
+If Workspace is not in charge of Xcode, proofreading can still be activated for a project by manually adding the following “run script” build phase:
+
 ```shell
-~/.Workspace/Workspace/.build/release/workspace proofread
+export PATH="$HOME/.SDG/Registry:$PATH"
+if which workspace > /dev/null ; then
+    workspace proofread •use‐version 0.1.0
+else
+    echo "warning: Install Workspace if you wish to receive in‐code reports of style errors for this project. See https://github.com/SDGGiesbrecht/Workspace"
+fi
 ```
 
 ## Disabling Rules

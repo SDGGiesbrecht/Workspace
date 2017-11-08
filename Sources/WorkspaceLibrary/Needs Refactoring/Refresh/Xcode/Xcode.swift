@@ -185,8 +185,7 @@ struct Xcode {
                 "\(scriptObjectName) = {",
                 "    isa = PBXShellScriptBuildPhase;",
                 "    shellPath = /bin/bash;",
-                // [_Warning: This will no longer work._]
-                "    shellScript = \u{22}~/.Workspace/Workspace/.build/release/workspace proofread\u{22};",
+                "    shellScript = \u{22}export PATH=\u{5C}\u{22}$HOME/.SDG/Registry:$PATH\u{5C}\u{22} ; if which workspace > /dev/null ; then workspace proofread •use‐version " + latestStableWorkspaceVersion.string + " ; else echo \u{5C}\u{22}warning: Install Workspace if you wish to receive in‐code reports of style errors for this project. See https://github.com/SDGGiesbrecht/Workspace\u{5C}\u{22} ; fi\u{22};",
                 "};",
                 "" // Final line break.
                 ]))

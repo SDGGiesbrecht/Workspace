@@ -85,7 +85,7 @@ curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/
 
 This will install and register the `workspace` command for `bash`, `zsh` and `fish`.
 
-A full installation is only necessary necessary to use the command line interface. Contributors to a Workspace‐managed project can use the provided scripts without a permanent install. (See [The Workspace Workflow](#the-workspace-workflow).)
+A full installation is only necessary in order to use the command line interface. Contributors to a Workspace‐managed project can use the provided scripts without a permanent install. (See [The Workspace Workflow](#the-workspace-workflow).)
 
 ## The Workspace Workflow
 

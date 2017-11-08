@@ -145,14 +145,16 @@ enum Script : Int, IterableEnumeration {
 
         return [
             ("if workspace version > /dev/null ; then") as StrictString,
+            ("    echo \u{22}Using system install of Workspace...\u{22}") as StrictString,
             ("    workspace " + arguments) as StrictString,
             ("elif " + macOSCachePath + "workspace version > /dev/null ; then") as StrictString,
-            ("    echo \u{22}Workspace not installed, searching for cached version...\u{22}") as StrictString,
+            ("    \u{22}Using cached build of Workspace...\u{22}") as StrictString,
             ("    " + macOSCachePath + "workspace " + arguments) as StrictString,
             ("elif " + linuxCachePath + "workspace version > /dev/null ; then") as StrictString,
+            ("    \u{22}Using cached build of Workspace...\u{22}") as StrictString,
             ("    " + linuxCachePath + "workspace " + arguments) as StrictString,
             ("else") as StrictString,
-            ("    echo \u{22}No cached version detected, fetching Workspace...\u{22}") as StrictString,
+            ("    echo \u{22}No cached build detected, fetching Workspace...\u{22}") as StrictString,
             ("    rm \u{2D}rf " + buildLocation) as StrictString,
             ("    git clone https://github.com/SDGGiesbrecht/Workspace " + buildLocation) as StrictString,
             ("    cd " + buildLocation) as StrictString,

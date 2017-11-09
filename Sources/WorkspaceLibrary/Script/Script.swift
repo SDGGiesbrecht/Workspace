@@ -180,7 +180,7 @@ enum Script : Int, IterableEnumeration {
         switch self {
         case .refreshLinux:
             lines.append(openTerminal(andExecute: "Refresh"))
-        case .validateLinux:
+        case .validateLinux: // [_Exempt from Code Coverage_] Unreachable from macOS.
             lines.append(openTerminal(andExecute: "Validate"))
         case .refreshMacOS:
             lines.append(contentsOf: getWorkspace(andExecute: "refresh", selfTest: selfTest))

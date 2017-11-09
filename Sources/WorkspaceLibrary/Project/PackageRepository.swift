@@ -17,7 +17,7 @@ import Foundation
 import SDGCornerstone
 import SDGCommandLine
 
-internal typealias PackageRepository = _PackageRepository // Shared from SDGCornerstone.
+internal typealias PackageRepository = _PackageRepository // Shared from SDGCommandLine.
 extension PackageRepository {
 
     // MARK: - Initialization

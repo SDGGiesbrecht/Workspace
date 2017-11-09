@@ -64,7 +64,37 @@ class APITests : TestCase {
             try MockProject().do {
 
                 // [_Workaround: This should eventually just do “validate”._]
+                try Workspace.command.execute(with: ["refresh", "scripts"])
                 try Workspace.command.execute(with: ["refresh", "resources"])
+            }
+        }
+    }
+
+    func testScripts() {
+        XCTAssertErrorFree {
+            try MockProject().do {
+                // Validate that generated scripts work.
+                try Workspace.command.execute(with: ["refresh", "scripts"])
+                XCTAssert(FileManager.default.isExecutableFile(atPath: "Refresh (macOS).command"), "Generated macOS refresh script is not executable.")
+                XCTAssert(FileManager.default.isExecutableFile(atPath: "Refresh (Linux).sh"), "Generated Linux refresh script is not executable.")
+                try Shell.default.run(command: ["./Refresh (macOS).command"])
+
+                try Workspace.command.execute(with: ["refresh", "scripts"])
+                XCTAssert(FileManager.default.isExecutableFile(atPath: "Validate (macOS).command"), "Generated macOS validate script is not executable.")
+                #if os(Linux)
+                XCTAssert(FileManager.default.isExecutableFile(atPath: "Validate (Linux).sh"), "Generated Linux validate script is not executable.")
+                #endif
+                #if os(Linux)
+                    // [_Workaround: Running this test on macOS currently causes mayhem because of the simulator (especially in continuous integration)._]
+                    try Shell.default.run(command: ["./Validate (macOS).command"])
+                #endif
+            }
+        }
+
+        XCTAssertErrorFree {
+            try FileManager.default.do(in: repositoryRoot) {
+                // Validate generation of self‐specific scripts.
+                try Workspace.command.execute(with: ["refresh", "scripts"])
             }
         }
     }
@@ -72,6 +102,7 @@ class APITests : TestCase {
     static var allTests: [(String, (APITests) -> () throws -> Void)] {
         return [
             ("testResources", testResources),
+            ("testScripts", testScripts),
             ("testWorkflow", testWorkflow)
         ]
     }

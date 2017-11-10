@@ -1,5 +1,5 @@
 /*
- Refresh.swift
+ RefreshScripts.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -15,27 +15,34 @@
 import SDGCornerstone
 import SDGCommandLine
 
-extension Workspace {
-    enum Refresh {
+extension Workspace.Refresh {
+
+    enum Scripts {
 
         private static let name = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
-                return "refresh"
+                return "scripts"
             }
         })
 
         private static let description = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
-                return "refreshes the project by updating its components and readying it for development."
+                return "regenerates the project’s refresh and validation scripts."
             }
         })
 
-        static let command = Command(name: name, description: description, subcommands: [
-            All.command,
-            Scripts.command,
-            Resources.command
-            ], defaultSubcommand: All.command)
+        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, options: Options, output: inout Command.Output) throws in
+
+            print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+                switch localization {
+                case .englishCanada:
+                    return "Refreshing scripts..."
+                }
+            }).resolved().formattedAsSectionHeader(), to: &output)
+
+            try options.project.refreshScripts(output: &output)
+        })
     }
 }

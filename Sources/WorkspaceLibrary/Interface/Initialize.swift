@@ -33,7 +33,7 @@ extension Workspace {
         })
 
         static let command = Command(name: name, description: description, directArguments: [], options: [type], execution: { (arguments: DirectArguments, options: Options, output: inout Command.Output) throws in
-            runInitialize(andExit: true, arguments: arguments, options: options, output: &output)
+            try runInitialize(andExit: true, arguments: arguments, options: options, output: &output)
         })
 
         // Options

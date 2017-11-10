@@ -15,7 +15,7 @@
 import SDGCornerstone
 import SDGCommandLine
 
-func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: inout Command.Output) {
+func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: inout Command.Output) throws {
 
     var overallSuccess = true
 
@@ -34,7 +34,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         // Refreshing
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        runRefresh(andExit: false, arguments: arguments, options: options, output: &output)
+        try runRefresh(andExit: false, arguments: arguments, options: options, output: &output)
 
     }
 
@@ -90,7 +90,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         if (try? Shell.default.run(command: ["git", "diff", "\u{2D}\u{2D}exit\u{2D}code", "\u{2D}\u{2D}", ".", "':(exclude)*.dsidx'"])) ≠ nil {
             individualSuccess(message: "The project is up to date.")
         } else {
-            individualFailure(message: "The project is out of date. (Please run “Validate Changes” before committing.)")
+            individualFailure(message: "The project is out of date. (Please run “Validate” before committing.)")
         }
     }
 

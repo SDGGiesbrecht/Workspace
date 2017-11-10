@@ -17,7 +17,7 @@ import Foundation
 import SDGCornerstone
 import SDGCommandLine
 
-internal typealias PackageRepository = _PackageRepository // Shared from SDGCornerstone.
+internal typealias PackageRepository = _PackageRepository // Shared from SDGCommandLine.
 extension PackageRepository {
 
     // MARK: - Initialization
@@ -50,6 +50,12 @@ extension PackageRepository {
 
     func url(for relativePath: String) -> URL {
         return _url(for: relativePath) // Shared from SDGCommandLine.
+    }
+
+    // MARK: - Miscellaneous Properties
+
+    var isWorkspaceProject: Bool {
+        return location.lastPathComponent == "Workspace"
     }
 
     // MARK: - Structure
@@ -164,9 +170,9 @@ extension PackageRepository {
 
             let generatedURLs = [
                 "docs",
-                "Refresh Workspace (macOS).command",
-                "Refresh Workspace (Linux).sh"
-                ].map({ URL(fileURLWithPath: $0) })
+                Script.refreshMacOS.fileName,
+                Script.refreshLinux.fileName
+                ].map({ url(for: String($0)) })
 
             return try trackedFiles(output: &output).filter() { (url) in
                 for generatedURL in generatedURLs {
@@ -177,6 +183,12 @@ extension PackageRepository {
                 return true
             }
         }
+    }
+
+    // MARK: - Scripts
+
+    func refreshScripts(output: inout Command.Output) throws {
+        try Script.refreshRelevantScripts(for: self, output: &output)
     }
 
     // MARK: - Resources

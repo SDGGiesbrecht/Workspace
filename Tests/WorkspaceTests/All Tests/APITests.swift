@@ -59,11 +59,35 @@ class APITests : TestCase {
         }
     }
 
+    func testScripts() {
+        XCTAssertErrorFree {
+            try MockProject().do {
+                // Validate that generated scripts work.
+                try Workspace.command.execute(with: ["refresh", "scripts"])
+                XCTAssert(FileManager.default.isExecutableFile(atPath: "Refresh (macOS).command"), "Generated macOS refresh script is not executable.")
+                XCTAssert(FileManager.default.isExecutableFile(atPath: "Refresh (Linux).sh"), "Generated Linux refresh script is not executable.")
+                XCTAssert(FileManager.default.isExecutableFile(atPath: "Validate (macOS).command"), "Generated macOS validate script is not executable.")
+                #if os(Linux)
+                    XCTAssert(FileManager.default.isExecutableFile(atPath: "Validate (Linux).sh"), "Generated Linux validate script is not executable.")
+                #endif
+                try Shell.default.run(command: ["./Refresh (macOS).command"])
+            }
+        }
+
+        XCTAssertErrorFree {
+            try FileManager.default.do(in: repositoryRoot) {
+                // Validate generation of self‐specific scripts.
+                try Workspace.command.execute(with: ["refresh", "scripts"])
+            }
+        }
+    }
+
     func testWorkflow() {
         XCTAssertErrorFree {
             try MockProject().do {
 
                 // [_Workaround: This should eventually just do “validate”._]
+                try Workspace.command.execute(with: ["refresh", "scripts"])
                 try Workspace.command.execute(with: ["refresh", "resources"])
             }
         }
@@ -72,6 +96,7 @@ class APITests : TestCase {
     static var allTests: [(String, (APITests) -> () throws -> Void)] {
         return [
             ("testResources", testResources),
+            ("testScripts", testScripts),
             ("testWorkflow", testWorkflow)
         ]
     }

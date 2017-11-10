@@ -15,7 +15,7 @@
 import SDGCornerstone
 import SDGCommandLine
 
-func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: inout Command.Output) {
+func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: inout Command.Output) throws {
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     print("Initializing workspace...".formattedAsSectionHeader(), to: &output)
@@ -285,7 +285,7 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
     // Refreshing
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    runRefresh(andExit: false, arguments: arguments, options: options, output: &output)
+    try runRefresh(andExit: false, arguments: arguments, options: options, output: &output)
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Summary

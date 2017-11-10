@@ -17,12 +17,12 @@ import Foundation
 import SDGCornerstone
 import SDGCommandLine
 
-internal typealias PackageRepository = _PackageRepository // Shared from SDGCommandLine.
+typealias PackageRepository = _PackageRepository // Shared from SDGCommandLine.
 extension PackageRepository {
 
     // MARK: - Initialization
 
-    internal init(alreadyAt location: URL) {
+    init(alreadyAt location: URL) {
         self.init(_alreadyAt: location) // Shared from SDGCommandLine.
     }
 

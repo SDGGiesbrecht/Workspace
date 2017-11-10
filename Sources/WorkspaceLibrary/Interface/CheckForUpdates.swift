@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGCornerstone
 import SDGCommandLine
 
@@ -50,9 +52,13 @@ extension Workspace {
             }
         })
 
-        @discardableResult static func checkForUpdates(output: inout Command.Output) throws -> Version? {
-            notImplementedYet()
-            return Version(2,0,0)
+        static func checkForUpdates(output: inout Command.Output) throws -> Version? {
+            let latestRemote = try Package(url: workspacePackageURL).latestVersion(output: &output)
+            if latestRemote ≠ latestStableWorkspaceVersion {
+                return latestRemote
+            } else {
+                return nil // Up to date.
+            }
         }
     }
 }

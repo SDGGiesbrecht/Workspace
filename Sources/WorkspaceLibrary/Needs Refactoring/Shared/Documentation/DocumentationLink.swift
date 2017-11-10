@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGCornerstone
+
 enum DocumentationLink : String, CustomStringConvertible {
 
     // MARK: - Configuration
@@ -21,18 +23,14 @@ enum DocumentationLink : String, CustomStringConvertible {
 
     private static let documentationFolder = "/blob/master/Documentation/"
     private var inDocumentationFolder: Bool {
-        switch self {
-        case .platforms, .setUp:
-            return false
-        default:
-            return true
-        }
+        return ¬rawValue.hasPrefix("#")
     }
 
     // MARK: - Cases
 
-    case platforms = "README.md#platforms"
-    case setUp = "README.md#setup"
+    case platforms = "#platforms"
+    case setUp = "#setup"
+    case installation = "#installation"
     case responsibilities = "Responsibilities.md"
     case requiringOptions = "Configuring Workspace.md#requiring\u{2D}options"
     case git = "Git.md"

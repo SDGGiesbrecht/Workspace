@@ -106,6 +106,8 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         }
     }
 
+    try Workspace.CheckForUpdates.checkForUpdates(output: &output)
+
     if shouldExit {
         if overallSuccess {
             succeed(message: ["It looks like this is ready for a pull request."])

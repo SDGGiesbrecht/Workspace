@@ -70,7 +70,6 @@ class APITests : TestCase {
                 #if os(Linux)
                     XCTAssert(FileManager.default.isExecutableFile(atPath: "Validate (Linux).sh"), "Generated Linux validate script is not executable.")
                 #endif
-                try Shell.default.run(command: ["./Refresh (macOS).command"])
             }
         }
 

@@ -16,8 +16,9 @@ import Foundation
 
 import SDGCommandLine
 
-let latestStableWorkspaceVersion = Version(0, 1, 0)
-private let thisVersion: Version? = nil // Set this to latestStableWorkspaceVersion for release commits, nil the rest of the time.
+// Do not forget to increment the version in the read‐me as well.
+let latestStableWorkspaceVersion = Version(0, 2, 0)
+private let thisVersion: Version? = latestStableWorkspaceVersion // Set this to latestStableWorkspaceVersion for release commits, nil the rest of the time.
 
 let workspacePackageURL = URL(string: "https://github.com/SDGGiesbrecht/Workspace")!
 

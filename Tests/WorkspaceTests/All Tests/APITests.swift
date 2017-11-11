@@ -93,8 +93,15 @@ class APITests : TestCase {
         }
     }
 
+    func testCheckForUpdates() {
+        XCTAssertErrorFree {
+            try Workspace.command.execute(with: ["check‐for‐updates"])
+        }
+    }
+
     static var allTests: [(String, (APITests) -> () throws -> Void)] {
         return [
+            ("testCheckForUpdates", testCheckForUpdates),
             ("testResources", testResources),
             ("testScripts", testScripts),
             ("testWorkflow", testWorkflow)

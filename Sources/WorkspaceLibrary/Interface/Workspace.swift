@@ -40,8 +40,10 @@ public enum Workspace {
         // New Projects
         Workspace.Initialize.command,
 
-        // Individual Steps
-        Workspace.Proofread.command
+        // Xcode Build Phase
+        Workspace.Proofread.command,
 
+        // Other
+        Workspace.CheckForUpdates.command
         ])
 }

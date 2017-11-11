@@ -106,6 +106,21 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         }
     }
 
+    if let update = try Workspace.CheckForUpdates.checkForUpdates(output: &output) {
+        print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+            switch localization {
+            case .englishCanada:
+                return StrictString(join(lines: [
+                    "This validation used Workspace \(latestStableWorkspaceVersion.string), which is no longer up to date.",
+                    "To update the version used by this project, run:",
+                    "$ workspace refresh scripts •use‐version \(update.string)",
+                    "(This requires a full installation. See the following link.)",
+                    "\(DocumentationLink.installation.url)"
+                    ]))
+            }
+        }).resolved().formattedAsWarning().separated(), to: &output)
+    }
+
     if shouldExit {
         if overallSuccess {
             succeed(message: ["It looks like this is ready for a pull request."])

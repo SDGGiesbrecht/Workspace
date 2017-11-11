@@ -24,22 +24,28 @@ class InternalTests : TestCase {
     func testDocumentationCoverage() {
         // [_Workaround: Can this be moved to API Tests?_]
 
-        if ¬Environment.isInXcode ∧ ¬Configuration.nestedTest {
-            for link in DocumentationLink.all {
-                var url = link.url
-                if let anchor = url.range(of: "#") {
-                    url = String(url[..<anchor.lowerBound])
-                }
+        XCTAssertErrorFree {
+            try FileManager.default.do(in: repositoryRoot) {
+                for link in DocumentationLink.all {
+                    var url = link.url
+                    if let anchor = url.range(of: "#") {
+                        url = String(url[..<anchor.lowerBound])
+                    }
 
-                var exists = false
-                for file in Repository.trackedFiles {
-
-                    if url.hasSuffix(file.string) {
-                        exists = true
+                    if ¬url.hasSuffix("master") { // Read‐me
                         break
                     }
+
+                    var exists = false
+                    for file in Repository.trackedFiles {
+
+                        if url.hasSuffix(file.string) {
+                            exists = true
+                            break
+                        }
+                    }
+                    XCTAssert(exists, "Broken link: \(link.url)")
                 }
-                XCTAssert(exists, "Broken link: \(link.url)")
             }
         }
     }
@@ -79,23 +85,25 @@ class InternalTests : TestCase {
             "Resources"
         ]
 
-        if ¬Environment.isInXcode ∧ ¬Configuration.nestedTest {
+        XCTAssertErrorFree {
+            try FileManager.default.do(in: repositoryRoot) {
 
-            let unexpected = Repository.trackedFiles.map({ $0.string }).filter() { (file: String) -> Bool in
+                let unexpected = Repository.trackedFiles.map({ $0.string }).filter() { (file: String) -> Bool in
 
-                for prefix in expectedPrefixes {
-                    if file.hasPrefix(prefix) {
-                        return false
+                    for prefix in expectedPrefixes {
+                        if file.hasPrefix(prefix) {
+                            return false
+                        }
                     }
+
+                    return true
                 }
 
-                return true
+                XCTAssert(unexpected.isEmpty, join(lines: [
+                    "Unexpected files are being tracked by Git:",
+                    join(lines: unexpected)
+                    ]))
             }
-
-            XCTAssert(unexpected.isEmpty, join(lines: [
-                "Unexpected files are being tracked by Git:",
-                join(lines: unexpected)
-                ]))
         }
     }
 

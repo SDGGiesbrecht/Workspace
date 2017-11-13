@@ -98,7 +98,7 @@ enum Script : Int, IterableEnumeration {
         }
 
         for script in cases where script.isRelevantOnCurrentDevice ∨ script.isCheckedIn {
-            var file = try PackageRepository.TextFile(possiblyAt: project.url(for: String(script.fileName)), executable: true)
+            var file = try TextFile(possiblyAt: project.url(for: String(script.fileName)), executable: true)
             file.contents.replaceSubrange(file.contents.startIndex ..< file.headerStart, with: String(script.shebang()))
             file.body = String(script.source(selfTest: project.isWorkspaceProject))
             try file.writeChanges(for: project, output: &output)

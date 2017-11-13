@@ -62,7 +62,7 @@ enum Licence : String {
             source = Resources.Licences.copyright
         }
 
-        var file = PackageRepository.TextFile(mockFileWithContents: source, fileType: FileType.markdown)
+        var file = TextFile(mockFileWithContents: source, fileType: FileType.markdown)
         return file.body
     }
 

@@ -48,7 +48,7 @@ struct Repository {
     // MARK: - Constants
 
     private static let fileManager = FileManager.default
-    private static let repositoryPath: AbsolutePath = AbsolutePath(fileManager.currentDirectoryPath)
+    static let repositoryPath: AbsolutePath = AbsolutePath(fileManager.currentDirectoryPath)
     static let folderName = URL(fileURLWithPath: repositoryPath.string).lastPathComponent
     static let root: RelativePath = RelativePath("")
 

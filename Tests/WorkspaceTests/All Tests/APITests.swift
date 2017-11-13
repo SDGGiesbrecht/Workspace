@@ -21,6 +21,12 @@ import WorkspaceLibrary
 
 class APITests : TestCase {
 
+    func testCheckForUpdates() {
+        XCTAssertErrorFree {
+            try Workspace.command.execute(with: ["check‐for‐updates"])
+        }
+    }
+
     func testResources() {
         XCTAssertErrorFree {
             let project = try MockProject()
@@ -89,12 +95,6 @@ class APITests : TestCase {
                 try Workspace.command.execute(with: ["refresh", "scripts"])
                 try Workspace.command.execute(with: ["refresh", "resources"])
             }
-        }
-    }
-
-    func testCheckForUpdates() {
-        XCTAssertErrorFree {
-            try Workspace.command.execute(with: ["check‐for‐updates"])
         }
     }
 

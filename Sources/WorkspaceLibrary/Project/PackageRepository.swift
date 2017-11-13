@@ -40,6 +40,7 @@ extension PackageRepository {
 
     func resetCache() {
         PackageRepository.caches[location] = Cache()
+        configuration.resetCache()
     }
 
     // MARK: - Location
@@ -50,6 +51,12 @@ extension PackageRepository {
 
     func url(for relativePath: String) -> URL {
         return _url(for: relativePath) // Shared from SDGCommandLine.
+    }
+
+    // MARK: - Configuration
+
+    var configuration: Configuration {
+        return Configuration(for: self)
     }
 
     // MARK: - Miscellaneous Properties

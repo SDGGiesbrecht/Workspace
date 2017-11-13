@@ -15,7 +15,13 @@
 import SDGCornerstone
 import SDGCommandLine
 
-struct Configuration {
+extension Configuration {
+
+    // MARK: - Static Properties
+
+    static var configurationFilePath: RelativePath {
+        return RelativePath(Configuration.fileName)
+    }
 
     // MARK: - Cache
 
@@ -23,8 +29,6 @@ struct Configuration {
 
         // MARK: - Properties
 
-        fileprivate var file: File?
-        fileprivate var configurationFile: [Option: String]?
         fileprivate var packageName: String?
 
         // MARK: - Settings
@@ -39,23 +43,6 @@ struct Configuration {
 
     static func resetCache() {
         cache = Cache()
-    }
-
-    static let configurationFilePath: RelativePath = ".Workspace Configuration.txt"
-    static var file: File {
-        return cached(in: &cache.file) {
-            () -> File in
-
-            do {
-                return try File(at: configurationFilePath)
-            } catch {
-                print([
-                    "Found no configuration file.",
-                    "Following the default configuration."
-                    ])
-                return File(possiblyAt: configurationFilePath)
-            }
-        }
     }
 
     private static let startTokens = (start: "[_Begin ", end: "_]")
@@ -124,7 +111,7 @@ struct Configuration {
     }
 
     static func addEntries(entries: [(option: Option, value: String, comment: [String]?)], output: inout Command.Output) {
-        var configuration = file
+        var configuration = File(possiblyAt: Configuration.configurationFilePath)
         addEntries(entries: entries, to: &configuration)
         require() { try configuration.write(output: &output) }
     }
@@ -273,20 +260,13 @@ struct Configuration {
     }
 
     private static var configurationFile: [Option: String] {
-        var cacheCopy = cache
-        defer { cache = cacheCopy }
-
-        return cached(in: &cacheCopy.configurationFile) {
-            () -> [Option: String] in
-
-            return parse(configurationSource: file.contents)
-        }
+        return require { try Repository.packageRepository.configuration.options() }
     }
 
     static func parseConfigurationFile(fromLinkedRepositoryAt url: String) -> [Option: String] {
 
         let repositoryName = Repository.nameOfLinkedRepository(atURL: url)
-        let otherConfiguration = require() { try File(at: Repository.linkedRepository(named: repositoryName).subfolderOrFile(configurationFilePath.string)) }
+        let otherConfiguration = require() { try File(at: Repository.linkedRepository(named: repositoryName).subfolderOrFile(Configuration.fileName)) }
 
         return parse(configurationSource: otherConfiguration.contents)
     }

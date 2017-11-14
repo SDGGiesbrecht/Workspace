@@ -208,6 +208,25 @@ extension PackageRepository {
         try Script.refreshRelevantScripts(for: self, output: &output)
     }
 
+    // MARK: - Continuous Integration
+
+    func refreshContinuousIntegration(output: inout Command.Output) throws {
+
+        notImplementedYet()
+
+        /*
+         if Configuration.manageContinuousIntegration {
+         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+         print("Updating continuous integration configuration...".formattedAsSectionHeader(), to: &output)
+         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+
+         ContinuousIntegration.refreshContinuousIntegrationConfiguration(output: &output)
+         } else {
+         ContinuousIntegration.relinquishControl(output: &output)
+         }
+         */
+    }
+
     // MARK: - Resources
 
     func resourceFiles(output: inout Command.Output) throws -> [URL] {

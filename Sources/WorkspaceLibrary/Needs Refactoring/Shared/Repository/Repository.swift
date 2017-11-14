@@ -343,21 +343,6 @@ struct Repository {
         try performPathChange(from: origin, into: destination, copy: false, includeIgnoredFiles: includeIgnoredFiles)
     }
 
-    static func performInDirectory<P : Path>(directory: P, action: () -> Void) {
-
-        func changeToDirectory(path: String) {
-            if ¬fileManager.changeCurrentDirectoryPath(path) {
-                fatalError(message: [
-                    "Failed to change working directory."
-                    ])
-            }
-        }
-
-        changeToDirectory(path: absolute(directory).string)
-        action()
-        changeToDirectory(path: repositoryPath.string)
-    }
-
     // MARK: - Linked Repositories
 
     static func nameOfLinkedRepository(atURL url: String) -> String {
@@ -375,12 +360,12 @@ struct Repository {
 
         if ¬fileManager.fileExists(atPath: absolute(repository).string) {
             prepareForWrite(path: repository)
-            performInDirectory(directory: Workspace.linkedRepositories) {
+            try? fileManager.do(in: URL(fileURLWithPath: Workspace.linkedRepositories.string)) {
                 requireBash(["git", "clone", url])
             }
         }
 
-        performInDirectory(directory: repository) {
+        try? fileManager.do(in: URL(fileURLWithPath: repository.string)) {
             requireBash(["git", "pull"], silent: true)
         }
 

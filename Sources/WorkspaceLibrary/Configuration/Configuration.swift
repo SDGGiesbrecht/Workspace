@@ -41,8 +41,8 @@ struct Configuration {
 
     func resetCache() {
         Configuration.caches[location] = Cache()
-        if location == Repository.packageRepository.configuration.location { // Temporary bridging.
-            Configuration.resetCache()
+        if BuildConfiguration.current == .debug {
+            print("(Debug notice: Configuration cache reset for “\(location)”)")
         }
     }
 
@@ -55,6 +55,9 @@ struct Configuration {
             let file: TextFile
             do {
                 file = try TextFile(alreadyAt: location)
+                if BuildConfiguration.current == .debug {
+                    print("(Debug notice: Loaded configuration at “\(location)”)")
+                }
             } catch {
                 print(UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
                     switch localization {

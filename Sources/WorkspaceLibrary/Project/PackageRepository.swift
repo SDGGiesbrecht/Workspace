@@ -41,6 +41,9 @@ extension PackageRepository {
     func resetCache() {
         PackageRepository.caches[location] = Cache()
         configuration.resetCache()
+        if BuildConfiguration.current == .debug {
+            print("(Debug notice: Repository cache reset for “\(location)”)")
+        }
     }
 
     // MARK: - Location
@@ -78,6 +81,11 @@ extension PackageRepository {
                     list[name] = Target(name: name, sourceDirectory: sourceDirectory)
                 }
             }
+
+            if BuildConfiguration.current == .debug {
+                print("(Debug notice: Loaded targets for “\(location)”)")
+            }
+
             return list
         }
     }
@@ -147,6 +155,10 @@ extension PackageRepository {
                 throw error
             }
 
+            if BuildConfiguration.current == .debug {
+                print("(Debug notice: Loaded file list for “\(location)”)")
+            }
+
             return result
         }
     }
@@ -161,7 +173,7 @@ extension PackageRepository {
             }
             ignoredURLs.append(url(for: ".git"))
 
-            return try allFiles().filter() { (url) in
+            let result = try allFiles().filter() { (url) in
                 for ignoredURL in ignoredURLs {
                     if url.is(in: ignoredURL) {
                         return false
@@ -169,6 +181,12 @@ extension PackageRepository {
                 }
                 return true
             }
+
+            if BuildConfiguration.current == .debug {
+                print("(Debug notice: Loaded tracked file list for “\(location)”)")
+            }
+
+            return result
         }
     }
 
@@ -181,7 +199,7 @@ extension PackageRepository {
                 Script.refreshLinux.fileName
                 ].map({ url(for: String($0)) })
 
-            return try trackedFiles(output: &output).filter() { (url) in
+            let result = try trackedFiles(output: &output).filter() { (url) in
                 for generatedURL in generatedURLs {
                     if url.is(in: generatedURL) { // [_Exempt from Code Coverage_] [_Workaround: Until “workspace‐scripts” is testable._]
                         return false
@@ -189,6 +207,12 @@ extension PackageRepository {
                 }
                 return true
             }
+
+            if BuildConfiguration.current == .debug {
+                print("(Debug notice: Loaded source list for “\(location)”)")
+            }
+
+            return result
         }
     }
 
@@ -203,12 +227,19 @@ extension PackageRepository {
     func resourceFiles(output: inout Command.Output) throws -> [URL] {
         return try cached(in: &PackageRepository.caches[location, default: Cache()].resourceFiles) { () -> [URL] in
             let locations = resourceDirectories()
-            return try sourceFiles(output: &output).filter() { (file) in
+
+            let result = try sourceFiles(output: &output).filter() { (file) in
                 for directory in locations where file.is(in: directory) {
                     return true
                 } // [_Exempt from Code Coverage_] [_Workaround: False coverage result. (Swift 4.0.2)_]
                 return false
             }
+
+            if BuildConfiguration.current == .debug {
+                print("(Debug notice: Loaded resource list for “\(location)”)")
+            }
+
+            return result
         }
     }
 

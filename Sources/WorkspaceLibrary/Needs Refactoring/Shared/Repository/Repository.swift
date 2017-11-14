@@ -55,9 +55,7 @@ struct Repository {
     // MARK: - Repository
 
     static func resetCache() {
-        packageRepository.resetCache()
         cache = Cache()
-        Configuration.resetCache()
     }
 
     static var moduleNames: [String] {
@@ -248,7 +246,7 @@ struct Repository {
     static func delete<P : Path>(_ path: P) throws {
 
         defer {
-            resetCache()
+            Repository.packageRepository.resetCache(debugReason: relative(path)?.string ?? "delete")
         }
 
         #if os(Linux)
@@ -319,7 +317,7 @@ struct Repository {
             }
         }
 
-        resetCache()
+        Repository.packageRepository.resetCache(debugReason: destination.string)
     }
 
     private static func performPathChange(from origin: RelativePath, into destination: RelativePath, copy: Bool, includeIgnoredFiles: Bool = false) throws {

@@ -34,15 +34,19 @@ struct Configuration {
 
     // MARK: - Cache
 
-    private class Cache {
+    private struct Cache {
         var options: [Option: String]?
     }
     private static var caches: [URL: Cache] = [:]
 
-    func resetCache() {
+    func resetCache(debugReason: String) {
         Configuration.caches[location] = Cache()
+        if location == Repository.packageRepository.configuration.location {
+            // [_Workaround: Temporary bridging._]
+            Configuration.resetCache()
+        }
         if BuildConfiguration.current == .debug {
-            print("(Debug notice: Configuration cache reset for “\(location)”)")
+            print("(Debug notice: Configuration cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”")
         }
     }
 
@@ -55,9 +59,6 @@ struct Configuration {
             let file: TextFile
             do {
                 file = try TextFile(alreadyAt: location)
-                if BuildConfiguration.current == .debug {
-                    print("(Debug notice: Loaded configuration at “\(location)”)")
-                }
             } catch {
                 print(UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
                     switch localization {

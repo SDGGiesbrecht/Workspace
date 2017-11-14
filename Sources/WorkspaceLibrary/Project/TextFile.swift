@@ -184,7 +184,10 @@ struct TextFile {
                 #endif
             }
 
-            repository.resetCache()
+            repository.resetCache(debugReason: location.lastPathComponent)
+            if location.lastPathComponent == Configuration.fileName {
+                repository.configuration.resetCache(debugReason: location.lastPathComponent)
+            }
         }
     }
 }

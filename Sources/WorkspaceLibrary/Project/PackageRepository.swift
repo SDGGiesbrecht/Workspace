@@ -28,21 +28,27 @@ extension PackageRepository {
 
     // MARK: - Cache
 
-    private class Cache {
-        fileprivate var targets: [String: Target]?
+    private struct Cache {
+        fileprivate class Properties {
+            fileprivate var targets: [String: Target]?
 
-        fileprivate var allFiles: [URL]?
-        fileprivate var trackedFiles: [URL]?
-        fileprivate var sourceFiles: [URL]?
-        fileprivate var resourceFiles: [URL]?
+            fileprivate var allFiles: [URL]?
+            fileprivate var trackedFiles: [URL]?
+            fileprivate var sourceFiles: [URL]?
+            fileprivate var resourceFiles: [URL]?
+        }
+        fileprivate var properties = Properties()
     }
     private static var caches: [URL: Cache] = [:]
 
-    func resetCache() {
+    func resetCache(debugReason: String) {
         PackageRepository.caches[location] = Cache()
-        configuration.resetCache()
+        if location == Repository.packageRepository.location {
+            // [_Workaround: Temporary bridging._]
+            Repository.resetCache()
+        }
         if BuildConfiguration.current == .debug {
-            print("(Debug notice: Repository cache reset for “\(location)”)")
+            print("(Debug notice: Repository cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)")
         }
     }
 
@@ -71,7 +77,7 @@ extension PackageRepository {
     // MARK: - Structure
 
     func targets(output: inout Command.Output) throws -> [String: Target] {
-        return try cached(in: &PackageRepository.caches[location, default: Cache()].targets) {
+        return try cached(in: &PackageRepository.caches[location, default: Cache()].properties.targets) {
             () -> [String: Target] in
 
             var list: [String: Target] = [:]
@@ -81,11 +87,6 @@ extension PackageRepository {
                     list[name] = Target(name: name, sourceDirectory: sourceDirectory)
                 }
             }
-
-            if BuildConfiguration.current == .debug {
-                print("(Debug notice: Loaded targets for “\(location)”)")
-            }
-
             return list
         }
     }
@@ -107,7 +108,7 @@ extension PackageRepository {
     // MARK: - Files
 
     func allFiles() throws -> [URL] {
-        return try cached(in: &PackageRepository.caches[location, default: Cache()].allFiles) {
+        return try cached(in: &PackageRepository.caches[location, default: Cache()].properties.allFiles) {
             () -> [URL] in
 
             var failureReason: Error? // Thrown after enumeration stops. (See below.)
@@ -154,17 +155,12 @@ extension PackageRepository {
             if let error = failureReason { // [_Exempt from Code Coverage_] It is unknown what circumstances would actually cause an error.
                 throw error
             }
-
-            if BuildConfiguration.current == .debug {
-                print("(Debug notice: Loaded file list for “\(location)”)")
-            }
-
             return result
         }
     }
 
     func trackedFiles(output: inout Command.Output) throws -> [URL] {
-        return try cached(in: &PackageRepository.caches[location, default: Cache()].trackedFiles) {
+        return try cached(in: &PackageRepository.caches[location, default: Cache()].properties.trackedFiles) {
             () -> [URL] in
 
             var ignoredURLs: [URL] = []
@@ -181,17 +177,12 @@ extension PackageRepository {
                 }
                 return true
             }
-
-            if BuildConfiguration.current == .debug {
-                print("(Debug notice: Loaded tracked file list for “\(location)”)")
-            }
-
             return result
         }
     }
 
     func sourceFiles(output: inout Command.Output) throws -> [URL] {
-        return try cached(in: &PackageRepository.caches[location, default: Cache()].sourceFiles) { () -> [URL] in
+        return try cached(in: &PackageRepository.caches[location, default: Cache()].properties.sourceFiles) { () -> [URL] in
 
             let generatedURLs = [
                 "docs",
@@ -207,11 +198,6 @@ extension PackageRepository {
                 }
                 return true
             }
-
-            if BuildConfiguration.current == .debug {
-                print("(Debug notice: Loaded source list for “\(location)”)")
-            }
-
             return result
         }
     }
@@ -225,7 +211,7 @@ extension PackageRepository {
     // MARK: - Resources
 
     func resourceFiles(output: inout Command.Output) throws -> [URL] {
-        return try cached(in: &PackageRepository.caches[location, default: Cache()].resourceFiles) { () -> [URL] in
+        return try cached(in: &PackageRepository.caches[location, default: Cache()].properties.resourceFiles) { () -> [URL] in
             let locations = resourceDirectories()
 
             let result = try sourceFiles(output: &output).filter() { (file) in
@@ -234,11 +220,6 @@ extension PackageRepository {
                 } // [_Exempt from Code Coverage_] [_Workaround: False coverage result. (Swift 4.0.2)_]
                 return false
             }
-
-            if BuildConfiguration.current == .debug {
-                print("(Debug notice: Loaded resource list for “\(location)”)")
-            }
-
             return result
         }
     }

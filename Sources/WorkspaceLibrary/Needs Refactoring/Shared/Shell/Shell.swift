@@ -19,7 +19,7 @@ import SDGCommandLine
 
 @discardableResult func requireBash(_ arguments: [String], silent: Bool = false) -> String {
 
-    defer { Repository.resetCache() }
+    defer { Repository.packageRepository.resetCache(debugReason: arguments.first ?? "bash") }
 
     do {
         return try Shell.default.run(command: arguments, silently: silent)
@@ -37,7 +37,7 @@ import SDGCommandLine
 private var missingTools: Set<String> = []
 func runThirdPartyTool(name: String, repositoryURL: String, versionCheck: [String], continuousIntegrationSetUp: [[String]], command: [String], updateInstructions: [String], dropOutput: Bool = false) -> (succeeded: Bool, output: String?, exitCode: ExitCode)? {
 
-    defer { Repository.resetCache() }
+    defer { Repository.packageRepository.resetCache(debugReason: name) }
 
     let versions = requireBash(["git", "ls\u{2D}remote", "\u{2D}\u{2D}tags", repositoryURL], silent: true)
     var newest: (tag: String, version: Version)? = nil

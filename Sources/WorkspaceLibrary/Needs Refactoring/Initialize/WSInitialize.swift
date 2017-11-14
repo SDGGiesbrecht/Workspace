@@ -47,7 +47,7 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
     print("Generating Swift package...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    let packageType = Flags.type
+    let packageType = options.projectType
     let projectName = Configuration.projectName
 
     let packageName = Configuration.packageName(forProjectName: projectName)

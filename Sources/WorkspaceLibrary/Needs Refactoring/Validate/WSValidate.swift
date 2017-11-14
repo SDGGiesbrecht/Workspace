@@ -42,7 +42,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
     print("Validating \(Configuration.projectName)...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    if Environment.shouldDoMiscellaneousJobs {
+    if options.job == .miscellaneous ∨ options.job == nil {
 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         print("Validating Workspace configuration...".formattedAsSectionHeader(), to: &output)
@@ -69,7 +69,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
     // Running unit tests...
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    UnitTests.test(individualSuccess: individualSuccess, individualFailure: individualFailure, output: &output)
+    UnitTests.test(job: options.job, individualSuccess: individualSuccess, individualFailure: individualFailure, output: &output)
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Generating documentation...
@@ -77,7 +77,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
 
     if Configuration.generateDocumentation ∧ Environment.operatingSystem == .macOS {
 
-        Documentation.generate(individualSuccess: individualSuccess, individualFailure: individualFailure, output: &output)
+        Documentation.generate(job: options.job, individualSuccess: individualSuccess, individualFailure: individualFailure, output: &output)
     }
 
     if Environment.isInContinuousIntegration {

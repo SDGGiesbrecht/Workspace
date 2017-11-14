@@ -89,7 +89,7 @@ struct ContributingInstructions {
         return join(lines: instructions)
     }()
 
-    static let defaultIssueTemplate: String = {
+    static func defaultIssueTemplate() throws -> String {
 
         var template = [
         "<\u{21}\u{2D}\u{2D} Reminder: \u{2D}\u{2D}>",
@@ -107,7 +107,7 @@ struct ContributingInstructions {
             ""
         ]
 
-        switch Configuration.projectType {
+        switch try Repository.packageRepository.configuration.projectType() {
         case .library:
             template += [
                 "```swift",
@@ -147,7 +147,7 @@ struct ContributingInstructions {
         ]
 
         return join(lines: template)
-    }()
+    }
 
     static let defaultPullRequestTemplate: String = {
 

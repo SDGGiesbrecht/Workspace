@@ -211,7 +211,7 @@ extension PackageRepository {
     // MARK: - Continuous Integration
 
     func refreshContinuousIntegration(output: inout Command.Output) throws {
-        notImplementedYet()
+        try ContinuousIntegration.refreshContinuousIntegration(for: self, output: &output)
     }
 
     // MARK: - Resources

@@ -432,41 +432,8 @@ extension Configuration {
 
     // Project Type
 
-    static var projectType: ProjectType {
-        let key = stringValue(option: .projectType)
-
-        guard let result = ProjectType(key: StrictString(key)) else {
-            invalidEnumValue(option: .projectType, value: key, valid: ProjectType.all.map({ $0.key }))
-        }
-
-        return result
-    }
     static var requiredOptions: [String] {
         return listValue(option: .requireOptions)
-    }
-
-    static var supportMacOS: Bool {
-        return booleanValue(option: .supportMacOS)
-    }
-
-    static var supportLinux: Bool {
-        return booleanValue(option: .supportLinux) ∧ projectType ≠ ProjectType.application
-    }
-
-    static var supportIOS: Bool {
-        return booleanValue(option: .supportIOS) ∧ projectType ≠ ProjectType.executable
-    }
-
-    static var supportWatchOS: Bool {
-        return booleanValue(option: .supportWatchOS) ∧ projectType ≠ ProjectType.application ∧ projectType ≠ ProjectType.executable
-    }
-
-    static var supportTVOS: Bool {
-        return booleanValue(option: .supportTVOS) ∧ projectType ≠ ProjectType.executable
-    }
-
-    static var supportOnlyLinux: Bool {
-        return ¬supportMacOS ∧ ¬supportIOS ∧ ¬supportWatchOS ∧ ¬supportTVOS
     }
 
     static var skipSimulators: Bool {
@@ -532,7 +499,7 @@ extension Configuration {
         return projectName.replacingOccurrences(of: " ", with: "")
     }
     static var defaultModuleName: String {
-        switch projectType {
+        switch (try? Repository.packageRepository.configuration.projectType())! {
         case .library, .application:
             return moduleName(forProjectName: projectName)
         default:
@@ -610,11 +577,11 @@ extension Configuration {
     static func requiredFeatureList(localization: ArbitraryLocalization?) -> String {
         return requiredLocalizedOptionValue(option: .featureList, localization: localization)
     }
-    static func installationInstructions(localization: ArbitraryLocalization?) -> String? {
-        return localizedOptionValue(option: .installationInstructions, localization: localization) ?? ReadMe.defaultInstallationInstructions(localization: localization)
+    static func installationInstructions(localization: ArbitraryLocalization?) throws -> String? {
+        return try localizedOptionValue(option: .installationInstructions, localization: localization) ?? (try ReadMe.defaultInstallationInstructions(localization: localization))
     }
     static func requiredInstallationInstructions(localization: ArbitraryLocalization?) -> String {
-        guard let result = installationInstructions(localization: localization) else {
+        guard let result = (try? installationInstructions(localization: localization))! else {
             missingLocalizationError(option: .installationInstructions, localization: localization)
         }
         return result
@@ -841,13 +808,13 @@ extension Configuration {
             }
         }
 
-        if projectType == .application {
+        if (try? Repository.packageRepository.configuration.projectType()) == .application {
 
             check(forIncompatibleOperatingSystem: .supportLinux)
             check(forIncompatibleOperatingSystem: .supportWatchOS)
         }
 
-        if projectType == .executable {
+        if (try? Repository.packageRepository.configuration.projectType()) == .executable {
 
             check(forIncompatibleOperatingSystem: .supportIOS)
             check(forIncompatibleOperatingSystem: .supportWatchOS)
@@ -863,7 +830,7 @@ extension Configuration {
         // Custom
 
         let requiredEntries = requiredOptions
-        let requiredDefinitions = requiredEntries.map() { (entry: String) -> (option: Option, types: Set<ProjectType>) in
+        let requiredDefinitions = requiredEntries.map() { (entry: String) -> (option: Option, types: Set<PackageRepository.Target.TargetType>) in
 
             func option(forKey key: String) -> Option {
                 if let option = Option(key: key) {
@@ -884,9 +851,9 @@ extension Configuration {
             let components = entry.components(separatedBy: ": ")
 
             if components.count == 1 {
-                return (option: option(forKey: components[0]), types: Set(ProjectType.all))
+                return (option: option(forKey: components[0]), types: Set(PackageRepository.Target.TargetType.cases))
             } else {
-                guard let type = ProjectType(key: StrictString(components[0])) else {
+                guard let type = PackageRepository.Target.TargetType(key: StrictString(components[0])) else {
                     fatalError(message: [
                         "Invalid project type in “Required Options”:",
                         "",
@@ -894,13 +861,13 @@ extension Configuration {
                         "",
                         "Available Types:",
                         "",
-                        join(lines: ProjectType.all.map({ String($0.key) }))
+                        join(lines: PackageRepository.Target.TargetType.cases.map({ String($0.key) }))
                         ])
                 }
                 return (option: option(forKey: components[1]), types: [type])
             }
         }
-        var required: [Option: Set<ProjectType>] = [:]
+        var required: [Option: Set<PackageRepository.Target.TargetType>] = [:]
         for (key, types) in requiredDefinitions {
             if let existing = required[key] {
                 required[key] = existing ∪ types
@@ -909,7 +876,7 @@ extension Configuration {
             }
         }
 
-        for (option, types) in required where configurationFile[option] == nil ∧ Configuration.projectType ∈ types {
+        for (option, types) in required where configurationFile[option] == nil ∧ (try? Repository.packageRepository.configuration.projectType())! ∈ types {
             incompatibilityDetected(between: option, and: .requireOptions, documentation: DocumentationLink.requiringOptions)
         }
 

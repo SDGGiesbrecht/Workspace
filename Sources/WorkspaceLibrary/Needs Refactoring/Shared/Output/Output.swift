@@ -16,18 +16,6 @@ import Foundation
 
 import SDGCornerstone
 
-func inputSyntaxError(message: String) -> Never {
-    let flags = join(lines: Flag.allFlags)
-
-    fatalError(message: [
-        message,
-        "",
-        "Available flags:",
-        "",
-        flags
-        ])
-}
-
 func fatalError(message: [String]) -> Never {
     fail(message: message)
 }

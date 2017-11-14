@@ -19,7 +19,7 @@ import SDGCommandLine
 
 struct UnitTests {
 
-    static func test(individualSuccess: @escaping (String) -> Void, individualFailure: @escaping (String) -> Void, output: inout Command.Output) {
+    static func test(job: ContinuousIntegration.Job?, individualSuccess: @escaping (String) -> Void, individualFailure: @escaping (String) -> Void, output: inout Command.Output) {
 
         Xcode.temporarilyDisableProofreading(output: &output)
         defer {
@@ -354,42 +354,35 @@ struct UnitTests {
             }
         }
 
-        if Environment.shouldDoMacOSJobs {
-
-            // macOS
-
-            if Configuration.projectType ≠ .application {
+        #if os(macOS)
+        if job == .macOSSwiftPackageManager ∨ job == nil {
+            if (try? Repository.packageRepository.configuration.projectType())! ≠ .application {
                 runUnitTestsInSwiftPackageManager(operatingSystemName: "macOS", buildToolName: "the Swift Package Manager")
             }
+        }
+        if job == .macOSXcode ∨ job == nil {
             runUnitTestsInXcode(buildOnly: false, operatingSystem: .macOS, sdk: "macosx", deviceKey: nil, buildToolName: "Xcode")
         }
+        #endif
 
-        if Environment.shouldDoLinuxJobs {
-
-            // Linux
-
+        #if os(Linux)
+        if job == .linux ∨ job == nil {
             runUnitTestsInSwiftPackageManager(operatingSystemName: "Linux")
         }
+        #endif
 
-        if Environment.shouldDoIOSJobs {
-
-            // iOS
-
+        #if os(macOS)
+        if job == .iOS ∨ job == nil {
             runUnitTestsInXcode(buildOnly: false, operatingSystem: .iOS, sdk: "iphoneos", simulatorSDK: "iphonesimulator", deviceKey: "iPhone 8")
         }
 
-        if Environment.shouldDoWatchOSJobs {
-
-            // watchOS
-
+        if job == .watchOS ∨ job == nil {
             runUnitTestsInXcode(buildOnly: true, operatingSystem: .watchOS, sdk: "watchos", deviceKey: "Apple Watch Series 2 \u{2D} 38mm")
         }
 
-        if Environment.shouldDoTVOSJobs {
-
-            // tvOS
-
+        if job == .tvOS ∨ job == nil {
             runUnitTestsInXcode(buildOnly: false, operatingSystem: .tvOS, sdk: "appletvos", simulatorSDK: "appletvsimulator", deviceKey: "Apple TV 4K")
         }
+        #endif
     }
 }

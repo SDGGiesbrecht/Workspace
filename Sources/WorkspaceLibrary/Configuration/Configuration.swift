@@ -110,7 +110,40 @@ struct Configuration {
         }
     }
 
+    private func string(for option: Option) throws -> String {
+        if let result = try options()[option] {
+            return result
+        } else {
+            if option.defaultValue ≠ Configuration.noValue {
+                return option.defaultValue
+            } else {
+                throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+                    switch localization {
+                    case .englishCanada:
+                        return StrictString(join(lines: [
+                            "Missing configuration option:",
+                            option.key
+                            ]))
+                    }
+                }))
+            }
+        }
+    }
+
     // MARK: - Options
+
+    func projectType() throws -> PackageRepository.Target.TargetType {
+        let key = try string(for: .projectType)
+        guard let result = PackageRepository.Target.TargetType(key: StrictString(key)) else {
+            throw Configuration.invalidEnumerationValue(option: .projectType, value: key, valid: PackageRepository.Target.TargetType.cases.map({ $0.key }))
+        }
+        return result
+    }
+
+    func supports(_ operatingSystem: OperatingSystem) throws -> Bool {
+        return try boolean(for: operatingSystem.supportOption)
+            ∧ (try projectType().isSupported(on: operatingSystem))
+    }
 
     func shouldManageContinuousIntegration() throws -> Bool {
         return try boolean(for: .manageContinuousIntegration)

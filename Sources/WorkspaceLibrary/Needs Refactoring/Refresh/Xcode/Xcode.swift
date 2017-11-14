@@ -33,8 +33,8 @@ struct Xcode {
         return Configuration.packageName + "\u{2D}Package"
     }
 
-    static var defaultPrimaryTargetName: String {
-        if Configuration.projectType == .executable {
+    static func defaultPrimaryTargetName() throws -> String {
+        if try Repository.packageRepository.configuration.projectType() == .executable {
             return Configuration.executableLibraryName(forProjectName: Configuration.projectName)
         } else {
             return Configuration.moduleName(forProjectName: Configuration.projectName)
@@ -45,7 +45,7 @@ struct Xcode {
         return Configuration.testModuleName(forProjectName: Configuration.projectName)
     }
 
-    static func refreshXcodeProjects(output: inout Command.Output) {
+    static func refreshXcodeProjects(output: inout Command.Output) throws {
 
         let path = RelativePath("\(Xcode.projectFilename)")
         try? Repository.delete(path)
@@ -76,7 +76,7 @@ struct Xcode {
             LiteralPattern(startToken.scalars)
         ], with: replacement)
 
-        if Configuration.projectType == .application {
+        if try Repository.packageRepository.configuration.projectType() == .application {
             var project = file.contents
 
             // Change product type from framework to application.
@@ -142,7 +142,7 @@ struct Xcode {
 
         require() { try file.write(output: &output) }
 
-        if Configuration.projectType == .application {
+        if try Repository.packageRepository.configuration.projectType() == .application {
 
             // Denote principal class in Info.plist for @NSApplicationMain to work.
 

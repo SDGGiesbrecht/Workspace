@@ -186,7 +186,7 @@ enum Option : String, CustomStringConvertible {
             return String(Configuration.falseOptionValue)
 
         case .projectType:
-            return String(ProjectType.library.key)
+            return String(PackageRepository.Target.TargetType.library.key)
         case .requireOptions:
             return Configuration.emptyListOptionValue
 
@@ -250,7 +250,7 @@ enum Option : String, CustomStringConvertible {
         case .contributingInstructions:
             return ContributingInstructions.defaultContributingInstructions
         case .issueTemplate:
-            return ContributingInstructions.defaultIssueTemplate
+            return (try? ContributingInstructions.defaultIssueTemplate())!
         case .pullRequestTemplate:
             return ContributingInstructions.defaultPullRequestTemplate
         case .administrators:
@@ -303,7 +303,7 @@ enum Option : String, CustomStringConvertible {
         case .xcodeSchemeName:
             return Xcode.defaultXcodeSchemeName
         case .primaryXcodeTarget:
-            return Xcode.defaultPrimaryTargetName
+            return (try? Xcode.defaultPrimaryTargetName())!
         case .xcodeTestTarget:
             return Xcode.defaultTestTargetName
 

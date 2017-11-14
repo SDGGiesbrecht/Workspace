@@ -52,7 +52,7 @@ extension Workspace {
             }
         })
 
-        private static let type = SDGCommandLine.Option(name: typeName, description: typeDescription, type: projectTypeArgument)
+        static let type = SDGCommandLine.Option(name: typeName, description: typeDescription, type: projectTypeArgument)
 
         private static let projectTypeArgumentName = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
@@ -61,7 +61,7 @@ extension Workspace {
             }
         })
 
-        private static let projectTypeArgument = ArgumentType.enumeration(name: projectTypeArgumentName, cases: ProjectType.all.map() { (type: ProjectType) -> (value: ProjectType, label: UserFacingText<InterfaceLocalization, Void>) in
+        private static let projectTypeArgument = ArgumentType.enumeration(name: projectTypeArgumentName, cases: PackageRepository.Target.TargetType.cases.map() { (type: PackageRepository.Target.TargetType) -> (value: PackageRepository.Target.TargetType, label: UserFacingText<InterfaceLocalization, Void>) in
 
             let label: UserFacingText<InterfaceLocalization, Void>
             switch type {

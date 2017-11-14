@@ -18,8 +18,16 @@ import SDGCommandLine
 
 extension Options {
 
+    var job: ContinuousIntegration.Job? {
+        return value(for: ContinuousIntegration.Job.option)
+    }
+
     var project: PackageRepository {
         let url = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
         return PackageRepository(alreadyAt: url)
+    }
+
+    var projectType: PackageRepository.Target.TargetType {
+        return value(for: Workspace.Initialize.type) ?? .library
     }
 }

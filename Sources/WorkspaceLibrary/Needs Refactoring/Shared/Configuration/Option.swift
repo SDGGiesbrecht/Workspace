@@ -183,32 +183,32 @@ enum Option : String, CustomStringConvertible {
     var defaultValue: String {
         switch self {
         case .automaticallyTakeOnNewResponsibilites:
-            return Configuration.falseOptionValue
+            return String(Configuration.falseOptionValue)
 
         case .projectType:
-            return ProjectType.library.key
+            return String(ProjectType.library.key)
         case .requireOptions:
             return Configuration.emptyListOptionValue
 
         case .supportMacOS:
-            return Configuration.trueOptionValue
+            return String(Configuration.trueOptionValue)
         case .supportLinux:
-            return Configuration.trueOptionValue
+            return String(Configuration.trueOptionValue)
         case .supportIOS:
-            return Configuration.trueOptionValue
+            return String(Configuration.trueOptionValue)
         case .supportWatchOS:
-            return Configuration.trueOptionValue
+            return String(Configuration.trueOptionValue)
         case .supportTVOS:
-            return Configuration.trueOptionValue
+            return String(Configuration.trueOptionValue)
 
         case .skipSimulator:
-            return Configuration.falseOptionValue
+            return String(Configuration.falseOptionValue)
 
         case .localizations:
-            return Configuration.emptyListOptionValue
+            return String(Configuration.emptyListOptionValue)
 
         case .manageReadMe:
-            return Configuration.falseOptionValue
+            return String(Configuration.falseOptionValue)
         case .readMe:
             return Configuration.noValue
         case .documentationURL:
@@ -241,12 +241,12 @@ enum Option : String, CustomStringConvertible {
             return Configuration.noValue
 
         case .manageLicence:
-            return Configuration.falseOptionValue
+            return String(Configuration.falseOptionValue)
         case .licence:
             return Configuration.noValue
 
         case .manageContributingInstructions:
-            return Configuration.falseOptionValue
+            return String(Configuration.falseOptionValue)
         case .contributingInstructions:
             return ContributingInstructions.defaultContributingInstructions
         case .issueTemplate:
@@ -259,10 +259,10 @@ enum Option : String, CustomStringConvertible {
             return Configuration.noValue
 
         case .manageXcode:
-            return Configuration.falseOptionValue
+            return String(Configuration.falseOptionValue)
 
         case .manageFileHeaders:
-            return Configuration.falseOptionValue
+            return String(Configuration.falseOptionValue)
         case .fileHeader:
             return FileHeaders.defaultFileHeader
 
@@ -275,24 +275,24 @@ enum Option : String, CustomStringConvertible {
             return Configuration.emptyListOptionValue
 
         case .prohibitCompilerWarnings:
-            return Configuration.trueOptionValue
+            return String(Configuration.trueOptionValue)
 
         case .enforceCodeCoverage:
-            return Configuration.trueOptionValue
+            return String(Configuration.trueOptionValue)
         case .codeCoverageExemptionTokensForSameLine:
             return Configuration.emptyListOptionValue
         case .codeCoverageExemptionTokensForPreviousLine:
             return Configuration.emptyListOptionValue
 
         case .generateDocumentation:
-            return Configuration.falseOptionValue
+            return String(Configuration.falseOptionValue)
         case .enforceDocumentationCoverage:
-            return Configuration.trueOptionValue
+            return String(Configuration.trueOptionValue)
         case .documentationCopyright:
             return FileHeaders.defaultCopyright + " All rights reserved."
 
         case .manageContinuousIntegration:
-            return Configuration.falseOptionValue
+            return String(Configuration.falseOptionValue)
 
         case .projectName:
             return Configuration.packageName
@@ -312,11 +312,11 @@ enum Option : String, CustomStringConvertible {
 
         // SDG
         case .sdg:
-            return Configuration.falseOptionValue
+            return String(Configuration.falseOptionValue)
 
         // Tests
         case .nestedTest:
-            return Configuration.falseOptionValue
+            return String(Configuration.falseOptionValue)
         case .testOption:
             return "Default Value"
         case .testLongOption:
@@ -326,13 +326,13 @@ enum Option : String, CustomStringConvertible {
 
     static let automaticResponsibilityDocumentationPage = DocumentationLink.responsibilities
     static let automaticRepsonsibilities: [(option: Option, automaticValue: String, documentationPage: DocumentationLink)] = [
-        (.manageReadMe, automaticValue: Configuration.trueOptionValue, DocumentationLink.readMe),
-        (.manageLicence, automaticValue: Configuration.trueOptionValue, DocumentationLink.licence),
-        (.manageContributingInstructions, automaticValue: Configuration.trueOptionValue, DocumentationLink.contributingInstructions),
-        (.manageXcode, automaticValue: Configuration.trueOptionValue, DocumentationLink.xcode),
-        (.manageFileHeaders, automaticValue: Configuration.trueOptionValue, DocumentationLink.fileHeaders),
-        (.generateDocumentation, automaticValue: Configuration.trueOptionValue, DocumentationLink.documentationGeneration),
-        (.manageContinuousIntegration, automaticValue: Configuration.trueOptionValue, DocumentationLink.continuousIntegration)
+        (.manageReadMe, automaticValue: String(Configuration.trueOptionValue), DocumentationLink.readMe),
+        (.manageLicence, automaticValue: String(Configuration.trueOptionValue), DocumentationLink.licence),
+        (.manageContributingInstructions, automaticValue: String(Configuration.trueOptionValue), DocumentationLink.contributingInstructions),
+        (.manageXcode, automaticValue: String(Configuration.trueOptionValue), DocumentationLink.xcode),
+        (.manageFileHeaders, automaticValue: String(Configuration.trueOptionValue), DocumentationLink.fileHeaders),
+        (.generateDocumentation, automaticValue: String(Configuration.trueOptionValue), DocumentationLink.documentationGeneration),
+        (.manageContinuousIntegration, automaticValue: String(Configuration.trueOptionValue), DocumentationLink.continuousIntegration)
         ]
 
     // MARK: - CustomStringConvertible

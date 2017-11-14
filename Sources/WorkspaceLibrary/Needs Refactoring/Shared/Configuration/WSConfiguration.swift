@@ -97,7 +97,7 @@ extension Configuration {
     }
 
     static func configurationFileEntry(option: Option, value: Bool, comment: [String]?) -> String {
-        return configurationFileEntry(option: option, value: value ? trueOptionValue : falseOptionValue, comment: comment)
+        return configurationFileEntry(option: option, value: String(value ? trueOptionValue : falseOptionValue), comment: comment)
     }
 
     static func addEntries(entries: [(option: Option, value: String, comment: [String]?)], to configuration: inout File) {
@@ -278,7 +278,7 @@ extension Configuration {
         return configurationFile[option] ≠ nil
     }
 
-    private static func invalidEnumValue(option: Option, value: String, valid: [String]) -> Never {
+    private static func invalidEnumValue(option: Option, value: String, valid: [StrictString]) -> Never {
         fatalError(message: [
             "Invalid option value:",
             "",
@@ -287,18 +287,16 @@ extension Configuration {
             "",
             "Valid values:",
             "",
-            join(lines: valid)
+            join(lines: valid.map({ String($0) }) )
             ])
     }
 
-    static let trueOptionValue = "True"
-    static let falseOptionValue = "False"
     private static func booleanValue(option: Option) -> Bool {
         if let value = configurationFile[option] {
             switch value {
-            case trueOptionValue:
+            case String(trueOptionValue):
                 return true
-            case falseOptionValue:
+            case String(falseOptionValue):
                 return false
             default:
                 invalidEnumValue(option: option, value: value, valid: [
@@ -307,7 +305,7 @@ extension Configuration {
                     ])
             }
         } else {
-            return option.defaultValue == trueOptionValue
+            return option.defaultValue == String(trueOptionValue)
         }
     }
 
@@ -437,7 +435,7 @@ extension Configuration {
     static var projectType: ProjectType {
         let key = stringValue(option: .projectType)
 
-        guard let result = ProjectType(key: key) else {
+        guard let result = ProjectType(key: StrictString(key)) else {
             invalidEnumValue(option: .projectType, value: key, valid: ProjectType.all.map({ $0.key }))
         }
 
@@ -592,12 +590,12 @@ extension Configuration {
     }
     static var quotationOriginalKey: String {
         let value = stringValue(option: .quotationTestament)
-        let old = "Old"
-        let new = "New"
+        let old: StrictString = "Old"
+        let new: StrictString = "New"
         switch value {
-        case old:
+        case String(old):
             return "WLC"
-        case new:
+        case String(new):
             return "SBLGNT"
         default:
             invalidEnumValue(option: .quotationTestament, value: value, valid: [old, new])
@@ -654,7 +652,7 @@ extension Configuration {
     }
     static var licence: Licence? {
         if let key = possibleStringValue(option: .licence) {
-            if let result = Licence(key: key) {
+            if let result = Licence(key: StrictString(key)) {
                 return result
             } else {
                 invalidEnumValue(option: .licence, value: key, valid: Licence.all.map({ $0.key }))
@@ -666,7 +664,7 @@ extension Configuration {
     static var requiredLicence: Licence {
         let key = stringValue(option: .licence)
 
-        if let result = Licence(key: key) {
+        if let result = Licence(key: StrictString(key)) {
             return result
         } else {
             invalidEnumValue(option: .licence, value: key, valid: Licence.all.map({ $0.key }))
@@ -838,7 +836,7 @@ extension Configuration {
         // Project Type vs Operating System
 
         func check(forIncompatibleOperatingSystem option: Option) {
-            if configurationFile[option] == Configuration.trueOptionValue {
+            if configurationFile[option] == String(Configuration.trueOptionValue) {
                 incompatibilityDetected(between: .projectType, and: option, documentation: .platforms)
             }
         }
@@ -888,7 +886,7 @@ extension Configuration {
             if components.count == 1 {
                 return (option: option(forKey: components[0]), types: Set(ProjectType.all))
             } else {
-                guard let type = ProjectType(key: components[0]) else {
+                guard let type = ProjectType(key: StrictString(components[0])) else {
                     fatalError(message: [
                         "Invalid project type in “Required Options”:",
                         "",
@@ -896,7 +894,7 @@ extension Configuration {
                         "",
                         "Available Types:",
                         "",
-                        join(lines: ProjectType.all.map({ $0.key }))
+                        join(lines: ProjectType.all.map({ String($0.key) }))
                         ])
                 }
                 return (option: option(forKey: components[1]), types: [type])

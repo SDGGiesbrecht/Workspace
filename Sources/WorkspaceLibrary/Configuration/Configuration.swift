@@ -15,6 +15,7 @@
 import Foundation
 
 import SDGCornerstone
+import SDGCommandLine
 
 struct Configuration {
 
@@ -55,6 +56,7 @@ struct Configuration {
     var location: URL
 
     func options() throws -> [Option: String] {
+        // [_Workaround: Should be private, but necessary for temporary bridging._]
         return try cached(in: &Configuration.caches[location, default: Cache()].options) { () -> [Option: String] in
             let file: TextFile
             do {
@@ -73,5 +75,44 @@ struct Configuration {
             }
             return Configuration.parse(configurationSource: file.contents)
         }
+    }
+
+    // MARK: - Types
+
+    private static func invalidEnumerationValue(option: Option, value: String, valid: [StrictString]) -> Command.Error {
+        return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return StrictString(join(lines: [
+                    "Invalid value for “\(option.key)”:",
+                    String(value),
+                    "Available values:"
+                    ] + valid.map({ String($0) }) ))
+            }
+        }))
+    }
+
+    static let trueOptionValue: StrictString = "True"
+    static let falseOptionValue: StrictString = "False"
+
+    private func boolean(for option: Option) throws -> Bool {
+        if let value = try options()[option] {
+            switch value {
+            case String(Configuration.trueOptionValue):
+                return true
+            case String(Configuration.falseOptionValue):
+                return false
+            default:
+                throw Configuration.invalidEnumerationValue(option: option, value: value, valid: [Configuration.trueOptionValue, Configuration.falseOptionValue])
+            }
+        } else {
+            return option.defaultValue == String(Configuration.trueOptionValue)
+        }
+    }
+
+    // MARK: - Options
+
+    func shouldManageContinuousIntegration() throws -> Bool {
+        return try boolean(for: .manageContinuousIntegration)
     }
 }

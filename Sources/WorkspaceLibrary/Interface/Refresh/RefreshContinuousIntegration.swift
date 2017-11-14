@@ -35,14 +35,21 @@ extension Workspace.Refresh {
 
         static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, options: Options, output: inout Command.Output) throws in
 
-            print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
-                switch localization {
-                case .englishCanada:
-                    return "Refreshing continuous integration configuration..."
-                }
-            }).resolved().formattedAsSectionHeader(), to: &output)
+            if try options.project.configuration.shouldManageContinuousIntegration() {
 
-            try options.project.refreshContinuousIntegration(output: &output)
+                print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+                    switch localization {
+                    case .englishCanada:
+                        return "Refreshing continuous integration configuration..."
+                    }
+                }).resolved().formattedAsSectionHeader(), to: &output)
+
+                try options.project.refreshContinuousIntegration(output: &output)
+
+            } else {
+                notImplementedYet()
+                //ContinuousIntegration.relinquishControl(output: &output)
+            }
         })
     }
 }

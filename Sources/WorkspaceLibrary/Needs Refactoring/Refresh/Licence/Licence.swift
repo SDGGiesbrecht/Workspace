@@ -21,8 +21,8 @@ enum Licence : String {
 
     // MARK: - Initialization
 
-    init?(key: String) {
-        self.init(rawValue: key)
+    init?(key: StrictString) {
+        self.init(rawValue: String(key))
     }
 
     // MARK: - Cases
@@ -43,8 +43,8 @@ enum Licence : String {
 
     // MARK: - Properties
 
-    var key: String {
-        return rawValue
+    var key: StrictString {
+        return StrictString(rawValue)
     }
 
     var text: String {

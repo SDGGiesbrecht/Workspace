@@ -12,12 +12,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGCornerstone
+
 enum ProjectType : String, CustomStringConvertible {
 
     // MARK: - Initialization
 
-    init?(key: String) {
-        self.init(rawValue: key)
+    init?(key: StrictString) {
+        self.init(rawValue: String(key))
     }
 
     init?(flag: String) {
@@ -47,13 +49,13 @@ enum ProjectType : String, CustomStringConvertible {
 
     // MARK: - Properties
 
-    var key: String {
-        return rawValue
+    var key: StrictString {
+        return StrictString(rawValue)
     }
 
     // MARK: - CustomStringConvertible
 
     var description: String {
-        return key
+        return String(key)
     }
 }

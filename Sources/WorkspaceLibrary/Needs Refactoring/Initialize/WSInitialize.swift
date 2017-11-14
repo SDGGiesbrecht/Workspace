@@ -274,8 +274,8 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
         Option.automaticResponsibilityDocumentationPage.url
         ]
     let entries: [(option: Option, value: String, comment: [String]?)] = [
-        (option: .automaticallyTakeOnNewResponsibilites, value: Configuration.trueOptionValue, comment: note),
-        (option: .projectType, value: packageType.key, comment: nil),
+        (option: .automaticallyTakeOnNewResponsibilites, value: String(Configuration.trueOptionValue), comment: note),
+        (option: .projectType, value: String(packageType.key), comment: nil),
         (option: .disableProofreadingRules, value: join(lines: ["colon", "line_length", "leading_whitespace"]), comment: nil)
     ]
     Configuration.addEntries(entries: entries, to: &configuration)

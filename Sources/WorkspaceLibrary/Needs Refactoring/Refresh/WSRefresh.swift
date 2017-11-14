@@ -25,9 +25,6 @@ let instructionsAfterRefresh: String = {
 
 func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: inout Command.Output) throws {
 
-    _ = Repository.repositoryPath // Make sure proper repository initializes.
-    print(Repository.repositoryPath)
-
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     print("Refreshing \(Configuration.projectName)...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

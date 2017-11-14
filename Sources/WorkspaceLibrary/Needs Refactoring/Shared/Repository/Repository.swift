@@ -55,7 +55,7 @@ struct Repository {
     // MARK: - Repository
 
     static func resetCache() {
-        PackageRepository(alreadyAt: URL(fileURLWithPath:  FileManager.default.currentDirectoryPath)).resetCache()
+        packageRepository.resetCache()
         cache = Cache()
         Configuration.resetCache()
     }

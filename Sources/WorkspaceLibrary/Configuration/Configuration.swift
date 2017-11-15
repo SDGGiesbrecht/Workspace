@@ -103,10 +103,10 @@ struct Configuration {
         } else {
             if option.defaultValue ≠ Configuration.noValue {
                 return option.defaultValue
-            } else {
-                throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+            } else { // [_Exempt from Code Coverage_] [_Workaround: Until read‐me is testable._]
+                throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Code Coverage_] [_Workaround: Until read‐me is testable._]
                     switch localization {
-                    case .englishCanada:
+                    case .englishCanada: // [_Exempt from Code Coverage_] [_Workaround: Until read‐me is testable._]
                         return StrictString(join(lines: [
                             "Missing configuration option:",
                             option.key

@@ -293,11 +293,11 @@ extension ContinuousIntegration {
 extension Optional where Wrapped == ContinuousIntegration.Job {
     // MARK: - where Wrapped == ContinuousIntegration.Job
 
-    func includes(job: ContinuousIntegration.Job) -> Bool {
+    func includes(job: ContinuousIntegration.Job) -> Bool { // [_Exempt from Code Coverage_] [_Workaround: Until unit‐tests is testable._]
         switch self {
-        case .none:
+        case .none: // [_Exempt from Code Coverage_] [_Workaround: Until unit‐tests is testable._]
             return true
-        case .some(let currentJob):
+        case .some(let currentJob): // [_Exempt from Code Coverage_] [_Workaround: Until unit‐tests is testable._]
             return currentJob == job
         }
     }

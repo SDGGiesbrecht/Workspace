@@ -95,10 +95,10 @@ struct TextFile {
             var new = newValue
 
             // Ensure singular final newline
-            while new.hasSuffix("\n\n") { // [_Exempt from Code Coverage_] [_Workaround: Until “normalize” is testable._]
+            while new.hasSuffix("\n\n") {
                 new.scalars.removeLast()
             }
-            if ¬new.hasSuffix("\n") { // [_Exempt from Code Coverage_] [_Workaround: Until “normalize” is testable._]
+            if ¬new.hasSuffix("\n") {
                 new.append("\n")
             }
 
@@ -175,7 +175,7 @@ struct TextFile {
             }).resolved(using: location.path(relativeTo: repository.location)))
 
             try contents.save(to: location)
-            if isExecutable { // [_Exempt from Code Coverage_] [_Workaround: Until “normalize” is testable._]
+            if isExecutable {
                 #if os(Linux)
                     // [_Workaround: FileManager cannot change permissions on Linux. (Swift 4.0.2)_]
                     try Shell.default.run(command: ["chmod", "+x", Shell.quote(location.path)], silently: true)
@@ -185,7 +185,7 @@ struct TextFile {
             }
 
             repository.resetCache(debugReason: location.lastPathComponent)
-            if location.lastPathComponent == Configuration.fileName {
+            if location.lastPathComponent == Configuration.fileName { // [_Exempt from Code Coverage_] [_Workaround: Until normalize is testable._]
                 repository.configuration.resetCache(debugReason: location.lastPathComponent)
             }
         }

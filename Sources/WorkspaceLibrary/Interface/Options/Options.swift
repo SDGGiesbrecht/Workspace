@@ -18,7 +18,7 @@ import SDGCommandLine
 
 extension Options {
 
-    var job: ContinuousIntegration.Job? {
+    var job: ContinuousIntegration.Job? { // [_Exempt from Code Coverage_] [_Workaround: Until unit‐tests is testable._]
         return value(for: ContinuousIntegration.Job.option)
     }
 
@@ -27,7 +27,7 @@ extension Options {
         return PackageRepository(alreadyAt: url)
     }
 
-    var projectType: PackageRepository.Target.TargetType {
+    var projectType: PackageRepository.Target.TargetType { // [_Exempt from Code Coverage_] [_Workaround: Until initialize is testable._]
         return value(for: Workspace.Initialize.type) ?? .library
     }
 }

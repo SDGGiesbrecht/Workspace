@@ -192,7 +192,7 @@ extension PackageRepository {
 
             let result = try trackedFiles(output: &output).filter() { (url) in
                 for generatedURL in generatedURLs {
-                    if url.is(in: generatedURL) { // [_Exempt from Code Coverage_] [_Workaround: Until “workspace‐scripts” is testable._]
+                    if url.is(in: generatedURL) {
                         return false
                     }
                 }

@@ -27,10 +27,11 @@ class APITests : TestCase {
         }
     }
 
-    func testContinuousIntegration() {
-        XCTAssertErrorFree {
-            try FileManager.default.do(in: repositoryRoot) {
-                // Validate generation of self‐specific configuration.
+    func testConfiguration() {
+        XCTAssertThrowsError(containing: "Invalid") {
+            let project = try MockProject()
+            try project.do {
+                try "Support macOS: Maybe".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
                 try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
             }
         }
@@ -111,6 +112,7 @@ class APITests : TestCase {
     static var allTests: [(String, (APITests) -> () throws -> Void)] {
         return [
             ("testCheckForUpdates", testCheckForUpdates),
+            ("testConfiguration", testConfiguration),
             ("testContinuousIntegration", testContinuousIntegration),
             ("testResources", testResources),
             ("testScripts", testScripts),

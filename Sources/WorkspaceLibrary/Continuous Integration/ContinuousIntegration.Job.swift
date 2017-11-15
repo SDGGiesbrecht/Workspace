@@ -248,7 +248,7 @@ extension ContinuousIntegration {
             }
         }
 
-        func script(for project: PackageRepository) -> [String] {
+        var script: [String] {
             var result: [String] = [
                 "    \u{2D} os: " + travisOperatingSystemKey,
                 "      env:",
@@ -280,17 +280,10 @@ extension ContinuousIntegration {
                     ])
             }
 
-            if project.isWorkspaceProject {
-                result.append(contentsOf: [
-                    ContinuousIntegration.commandEntry("swift run workspace refresh"),
-                    ContinuousIntegration.commandEntry("swift run workspace validate •job " + String(argumentName.resolved(for: .englishCanada)))
-                    ])
-            } else {
-                result.append(contentsOf: [
-                    ContinuousIntegration.commandEntry("bash \u{22}./Refresh (macOS).command\u{22}"),
-                    ContinuousIntegration.commandEntry("bash \u{22}./Validate (macOS).command\u{22} •job " + String(argumentName.resolved(for: .englishCanada)))
-                    ])
-            }
+            result.append(contentsOf: [
+                ContinuousIntegration.commandEntry("bash \u{22}./Refresh (macOS).command\u{22}"),
+                ContinuousIntegration.commandEntry("bash \u{22}./Validate (macOS).command\u{22} •job " + String(argumentName.resolved(for: .englishCanada)))
+                ])
 
             return result
         }

@@ -29,10 +29,6 @@ struct Configuration {
         self.location = repository.location.appendingPathComponent(Configuration.fileName)
     }
 
-    init(location: URL) {
-        self.location = location
-    }
-
     // MARK: - Cache
 
     private struct Cache {
@@ -40,13 +36,13 @@ struct Configuration {
     }
     private static var caches: [URL: Cache] = [:]
 
-    func resetCache(debugReason: String) {
+    func resetCache(debugReason: String) { // [_Exempt from Code Coverage_] [_Workaround: Until normalize is testable._]
         Configuration.caches[location] = Cache()
-        if location == Repository.packageRepository.configuration.location {
+        if location == Repository.packageRepository.configuration.location { // [_Exempt from Code Coverage_]
             // [_Workaround: Temporary bridging._]
             Configuration.resetCache()
         }
-        if BuildConfiguration.current == .debug {
+        if BuildConfiguration.current == .debug { // [_Exempt from Code Coverage_] [_Workaround: Until normalize is testable._]
             print("(Debug notice: Configuration cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”")
         }
     }
@@ -62,15 +58,6 @@ struct Configuration {
             do {
                 file = try TextFile(alreadyAt: location)
             } catch {
-                print(UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
-                    switch localization {
-                    case .englishCanada:
-                        return StrictString(join(lines: [
-                            "Found no configuration file.",
-                            "Following the default configuration."
-                        ]))
-                    }
-                }))
                 file = try TextFile(possiblyAt: location)
             }
             return Configuration.parse(configurationSource: file.contents)

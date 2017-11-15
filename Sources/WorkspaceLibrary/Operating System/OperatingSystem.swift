@@ -49,4 +49,44 @@ enum OperatingSystem: Int, IterableEnumeration {
             return .linux
         }
     }
+
+    var isolatedName: UserFacingText<InterfaceLocalization, Void> {
+        switch self {
+        case .macOS:
+            return UserFacingText({ (localization, _) in
+                switch localization {
+                case .englishCanada:
+                    return "macOS"
+                }
+            })
+        case .linux:
+            return UserFacingText({ (localization, _) in
+                switch localization {
+                case .englishCanada:
+                    return "Linux"
+                }
+            })
+        case .iOS:
+            return UserFacingText({ (localization, _) in
+                switch localization {
+                case .englishCanada:
+                    return "iOS"
+                }
+            })
+        case .watchOS:
+            return UserFacingText({ (localization, _) in
+                switch localization {
+                case .englishCanada:
+                    return "watchOS"
+                }
+            })
+        case .tvOS:
+            return UserFacingText({ (localization, _) in
+                switch localization {
+                case .englishCanada:
+                    return "tvOS"
+                }
+            })
+        }
+    }
 }

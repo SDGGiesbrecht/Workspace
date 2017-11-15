@@ -17,7 +17,7 @@ import SDGCommandLine
 
 extension ContinuousIntegration {
 
-    enum Job: Int, IterableEnumeration {
+    enum Job : Int, IterableEnumeration {
 
         // MARK: - Static Properties
 
@@ -52,67 +52,7 @@ extension ContinuousIntegration {
         })
 
         private static let argument = ArgumentType.enumeration(name: argumentName, cases: Job.cases.map() { (job: Job) -> (value: Job, label: UserFacingText<InterfaceLocalization, Void>) in
-
-            let label: UserFacingText<InterfaceLocalization, Void>
-            switch job {
-            case .macOSSwiftPackageManager:
-                label = UserFacingText({ (localization: InterfaceLocalization, _) -> StrictString in
-                    switch localization {
-                    case .englishCanada:
-                        return "macos‐swift‐package‐manager"
-                    }
-                })
-            case .macOSXcode:
-                label = UserFacingText({ (localization: InterfaceLocalization, _) -> StrictString in
-                    switch localization {
-                    case .englishCanada:
-                        return "macos‐xcode"
-                    }
-                })
-            case .linux:
-                label = UserFacingText({ (localization: InterfaceLocalization, _) -> StrictString in
-                    switch localization {
-                    case .englishCanada:
-                        return "linux"
-                    }
-                })
-            case .iOS:
-                label = UserFacingText({ (localization: InterfaceLocalization, _) -> StrictString in
-                    switch localization {
-                    case .englishCanada:
-                        return "ios"
-                    }
-                })
-            case .watchOS:
-                label = UserFacingText({ (localization: InterfaceLocalization, _) -> StrictString in
-                    switch localization {
-                    case .englishCanada:
-                        return "watchos"
-                    }
-                })
-            case .tvOS:
-                label = UserFacingText({ (localization: InterfaceLocalization, _) -> StrictString in
-                    switch localization {
-                    case .englishCanada:
-                        return "tvos"
-                    }
-                })
-            case .miscellaneous:
-                label = UserFacingText({ (localization: InterfaceLocalization, _) -> StrictString in
-                    switch localization {
-                    case .englishCanada:
-                        return "miscellaneous"
-                    }
-                })
-            case .documentation:
-                label = UserFacingText({ (localization: InterfaceLocalization, _) -> StrictString in
-                    switch localization {
-                    case .englishCanada:
-                        return "documentation"
-                    }
-                })
-            }
-            return (value: job, label: label)
+            return (value: job, label: job.argumentName)
         })
 
         // MARK: - Cases
@@ -127,6 +67,128 @@ extension ContinuousIntegration {
         case documentation
 
         // MARK: - Properties
+
+        var name: UserFacingText<InterfaceLocalization, Void> {
+            switch self {
+            case .macOSSwiftPackageManager:
+                return UserFacingText({ (localization, _) in
+                    switch localization {
+                    case .englishCanada:
+                        return "macOS + Swift Package Manager"
+                    }
+                })
+            case .macOSXcode:
+                return UserFacingText({ (localization, _) in
+                    switch localization {
+                    case .englishCanada:
+                        return "macOS + Xcode"
+                    }
+                })
+            case .linux:
+                return UserFacingText({ (localization, _) in
+                    switch localization {
+                    case .englishCanada:
+                        return "Linux"
+                    }
+                })
+            case .iOS:
+                return UserFacingText({ (localization, _) in
+                    switch localization {
+                    case .englishCanada:
+                        return "iOS"
+                    }
+                })
+            case .watchOS:
+                return UserFacingText({ (localization, _) in
+                    switch localization {
+                    case .englishCanada:
+                        return "watchOS"
+                    }
+                })
+            case .tvOS:
+                return UserFacingText({ (localization, _) in
+                    switch localization {
+                    case .englishCanada:
+                        return "tvOS"
+                    }
+                })
+            case .miscellaneous:
+                return UserFacingText({ (localization, _) in
+                    switch localization {
+                    case .englishCanada:
+                        return "Miscellaneous"
+                    }
+                })
+            case .documentation:
+                return UserFacingText({ (localization, _) in
+                    switch localization {
+                    case .englishCanada:
+                        return "Documentation"
+                    }
+                })
+            }
+        }
+
+        var argumentName:UserFacingText<InterfaceLocalization, Void> {
+            switch self {
+            case .macOSSwiftPackageManager:
+                return UserFacingText({ (localization, _) in
+                    switch localization {
+                    case .englishCanada:
+                        return "macos‐swift‐package‐manager"
+                    }
+                })
+            case .macOSXcode:
+                return UserFacingText({ (localization, _) in
+                    switch localization {
+                    case .englishCanada:
+                        return "macos‐xcode"
+                    }
+                })
+            case .linux:
+                return UserFacingText({ (localization, _) in
+                    switch localization {
+                    case .englishCanada:
+                        return "linux"
+                    }
+                })
+            case .iOS:
+                return UserFacingText({ (localization, _) in
+                    switch localization {
+                    case .englishCanada:
+                        return "ios"
+                    }
+                })
+            case .watchOS:
+                return UserFacingText({ (localization, _) in
+                    switch localization {
+                    case .englishCanada:
+                        return "watchos"
+                    }
+                })
+            case .tvOS:
+                return UserFacingText({ (localization, _) in
+                    switch localization {
+                    case .englishCanada:
+                        return "tvos"
+                    }
+                })
+            case .miscellaneous:
+                return UserFacingText({ (localization, _) in
+                    switch localization {
+                    case .englishCanada:
+                        return "miscellaneous"
+                    }
+                })
+            case .documentation:
+                return UserFacingText({ (localization, _) in
+                    switch localization {
+                    case .englishCanada:
+                        return "documentation"
+                    }
+                })
+            }
+        }
 
         func isRequired(by project: PackageRepository) throws -> Bool {
             switch self {
@@ -150,9 +212,87 @@ extension ContinuousIntegration {
             }
         }
 
-        var script: [String] {
-            notImplementedYet()
-            return []
+        var operatingSystem: OperatingSystem {
+            switch self {
+            case .macOSSwiftPackageManager, .macOSXcode, .iOS, .watchOS, .tvOS, .documentation:
+                // [_Workaround: Documentation can be switched to Linux when Jazzy supports it. (jazzy --version 0.9.0)_]
+                return .macOS
+            case .linux, .miscellaneous:
+                return .linux
+            }
+        }
+
+        var travisOperatingSystemKey: String {
+            switch operatingSystem {
+            case .macOS:
+                return "osx"
+            case .linux:
+                return "linux"
+            case .iOS, .watchOS, .tvOS:
+                unreachable()
+            }
+        }
+
+        var environmentLabel: String {
+            return String(Job.environmentVariableName.resolved(for: .englishCanada)) + "=\u{22}" + String(name.resolved(for: .englishCanada)) + "\u{22}"
+        }
+
+        var travisSDKKey: String? {
+            switch self {
+            case .macOSSwiftPackageManager, .macOSXcode, .linux, .watchOS, .miscellaneous, .documentation:
+                return nil
+            case .iOS:
+                return "iphonesimulator"
+            case .tvOS:
+                return "appletvsimulator"
+            }
+        }
+
+        func script(for project: PackageRepository) -> [String] {
+            var result: [String] = [
+                "    \u{2D} os: " + travisOperatingSystemKey,
+                "      env:",
+                "        \u{2D} " + environmentLabel
+            ]
+
+            switch operatingSystem {
+            case .macOS:
+                result.append("      osx_image: xcode9.1")
+            case .linux:
+                result.append("      dist: trusty")
+            case .iOS, .watchOS, .tvOS:
+                unreachable()
+            }
+
+            if let sdk = travisSDKKey {
+                result.append(contentsOf: [
+                    "      language: objective\u{2D}c",
+                    "      xcode_sdk: " + sdk
+                    ])
+            }
+
+            result.append("      script:")
+
+            if operatingSystem == .linux {
+                result.append(contentsOf: [
+                    ContinuousIntegration.commandEntry("export SWIFT_VERSION=4.0"),
+                    ContinuousIntegration.commandEntry("eval \u{22}$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\u{22}")
+                    ])
+            }
+
+            if project.isWorkspaceProject {
+                result.append(contentsOf: [
+                    ContinuousIntegration.commandEntry("swift run workspace refresh"),
+                    ContinuousIntegration.commandEntry("swift run workspace validate •job " + String(argumentName.resolved(for: .englishCanada)))
+                    ])
+            } else {
+                result.append(contentsOf: [
+                    ContinuousIntegration.commandEntry("bash \u{22}./Refresh (macOS).command\u{22}"),
+                    ContinuousIntegration.commandEntry("bash \u{22}./Validate (macOS).command\u{22} •job " + String(argumentName.resolved(for: .englishCanada)))
+                    ])
+            }
+
+            return result
         }
     }
 }

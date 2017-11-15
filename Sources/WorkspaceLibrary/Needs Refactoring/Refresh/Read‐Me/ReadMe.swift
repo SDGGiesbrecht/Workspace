@@ -381,7 +381,7 @@ struct ReadMe {
             return try apiLinksMarkup(localization: .compatible(.englishCanada))
         }
 
-        let operatingSystems = try OperatingSystem.cases.filter({ try Repository.packageRepository.configuration.supports($0) }).map({ "\($0)" })
+        let operatingSystems = try OperatingSystem.cases.filter({ try Repository.packageRepository.configuration.supports($0) }).map({ "\($0.isolatedName.resolved(for: .englishCanada))" })
         if url.lastPathComponent ∈ Set(operatingSystems) {
 
             let root = url.deletingLastPathComponent().absoluteString

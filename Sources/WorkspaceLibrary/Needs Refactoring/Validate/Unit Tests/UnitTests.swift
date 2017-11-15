@@ -369,7 +369,7 @@ struct UnitTests {
         #endif
 
         #if os(Linux)
-        if try options.job.involves(job: .linux)
+        if try options.job.includes(job: .linux)
             ∧ (try options.project.configuration.supports(.linux)) {
             runUnitTestsInSwiftPackageManager(operatingSystemName: "Linux")
         }

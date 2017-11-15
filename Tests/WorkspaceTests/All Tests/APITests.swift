@@ -113,7 +113,6 @@ class APITests : TestCase {
         return [
             ("testCheckForUpdates", testCheckForUpdates),
             ("testConfiguration", testConfiguration),
-            ("testContinuousIntegration", testContinuousIntegration),
             ("testResources", testResources),
             ("testScripts", testScripts),
             ("testWorkflow", testWorkflow)

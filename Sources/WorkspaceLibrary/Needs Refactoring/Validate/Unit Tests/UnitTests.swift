@@ -19,7 +19,7 @@ import SDGCommandLine
 
 struct UnitTests {
 
-    static func test(job: ContinuousIntegration.Job?, individualSuccess: @escaping (String) -> Void, individualFailure: @escaping (String) -> Void, output: inout Command.Output) {
+    static func test(options: Options, individualSuccess: @escaping (String) -> Void, individualFailure: @escaping (String) -> Void, output: inout Command.Output) throws {
 
         Xcode.temporarilyDisableProofreading(output: &output)
         defer {
@@ -355,32 +355,39 @@ struct UnitTests {
         }
 
         #if os(macOS)
-        if job == .macOSSwiftPackageManager ∨ job == nil {
+        if try options.job.includes(job: .macOSSwiftPackageManager)
+            ∧ (try options.project.configuration.supports(.macOS)) {
+
             if (try? Repository.packageRepository.configuration.projectType())! ≠ .application {
                 runUnitTestsInSwiftPackageManager(operatingSystemName: "macOS", buildToolName: "the Swift Package Manager")
             }
         }
-        if job == .macOSXcode ∨ job == nil {
+        if try options.job.includes(job: .macOSXcode)
+            ∧ (try options.project.configuration.supports(.macOS)) {
             runUnitTestsInXcode(buildOnly: false, operatingSystem: .macOS, sdk: "macosx", deviceKey: nil, buildToolName: "Xcode")
         }
         #endif
 
         #if os(Linux)
-        if job == .linux ∨ job == nil {
+        if try options.job.involves(job: .linux)
+            ∧ (try options.project.configuration.supports(.linux)) {
             runUnitTestsInSwiftPackageManager(operatingSystemName: "Linux")
         }
         #endif
 
         #if os(macOS)
-        if job == .iOS ∨ job == nil {
+        if try options.job.includes(job: .iOS)
+            ∧ (try options.project.configuration.supports(.iOS)) {
             runUnitTestsInXcode(buildOnly: false, operatingSystem: .iOS, sdk: "iphoneos", simulatorSDK: "iphonesimulator", deviceKey: "iPhone 8")
         }
 
-        if job == .watchOS ∨ job == nil {
+        if try options.job.includes(job: .watchOS)
+            ∧ (try options.project.configuration.supports(.watchOS)) {
             runUnitTestsInXcode(buildOnly: true, operatingSystem: .watchOS, sdk: "watchos", deviceKey: "Apple Watch Series 2 \u{2D} 38mm")
         }
 
-        if job == .tvOS ∨ job == nil {
+        if try options.job.includes(job: .tvOS)
+            ∧ (try options.project.configuration.supports(.tvOS)) {
             runUnitTestsInXcode(buildOnly: false, operatingSystem: .tvOS, sdk: "appletvos", simulatorSDK: "appletvsimulator", deviceKey: "Apple TV 4K")
         }
         #endif

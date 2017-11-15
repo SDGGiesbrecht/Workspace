@@ -36,7 +36,7 @@ extension Workspace {
             All.command,
             Scripts.command,
             ContinuousIntegration.command,
-            Resources.command,
+            Resources.command
             ], defaultSubcommand: All.command)
     }
 }

@@ -46,9 +46,6 @@ extension Workspace.Refresh {
 
                 try options.project.refreshContinuousIntegration(output: &output)
 
-            } else {
-                notImplementedYet()
-                //ContinuousIntegration.relinquishControl(output: &output)
             }
         })
     }

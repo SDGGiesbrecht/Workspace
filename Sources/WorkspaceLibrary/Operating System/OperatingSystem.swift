@@ -14,7 +14,7 @@
 
 import SDGCornerstone
 
-enum OperatingSystem: Int, IterableEnumeration {
+enum OperatingSystem : Int, IterableEnumeration {
 
     // MARK: - Cases
 

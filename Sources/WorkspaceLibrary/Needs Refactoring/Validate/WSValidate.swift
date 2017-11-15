@@ -69,7 +69,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
     // Running unit tests...
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    UnitTests.test(job: options.job, individualSuccess: individualSuccess, individualFailure: individualFailure, output: &output)
+    try UnitTests.test(options: options, individualSuccess: individualSuccess, individualFailure: individualFailure, output: &output)
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Generating documentation...

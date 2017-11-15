@@ -129,7 +129,7 @@ extension ContinuousIntegration {
             }
         }
 
-        var argumentName:UserFacingText<InterfaceLocalization, Void> {
+        var argumentName: UserFacingText<InterfaceLocalization, Void> {
             switch self {
             case .macOSSwiftPackageManager:
                 return UserFacingText({ (localization, _) in
@@ -293,6 +293,19 @@ extension ContinuousIntegration {
             }
 
             return result
+        }
+    }
+}
+
+extension Optional where Wrapped == ContinuousIntegration.Job {
+    // MARK: - where Wrapped == ContinuousIntegration.Job
+
+    func includes(job: ContinuousIntegration.Job) -> Bool {
+        switch self {
+        case .none:
+            return true
+        case .some(let currentJob):
+            return currentJob == job
         }
     }
 }

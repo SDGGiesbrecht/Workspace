@@ -62,10 +62,29 @@ class APITests : TestCase {
         XCTAssertErrorFree {
             let project = try MockProject()
             try project.do {
-                // Turned on
                 let configuration = project.location.appendingPathComponent(".travis.yml")
                 try "...".save(to: configuration)
                 try "Manage Continuous Integration: True\nGenerate Documentation: True".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
+                XCTAssert(try String(from: configuration).contains("cache"))
+            }
+        }
+        XCTAssertErrorFree {
+            let project = try MockProject(type: "Application")
+            try project.do {
+                let configuration = project.location.appendingPathComponent(".travis.yml")
+                try "...".save(to: configuration)
+                try "Project Type: Application\nManage Continuous Integration: True\nGenerate Documentation: True".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
+                XCTAssert(try String(from: configuration).contains("cache"))
+            }
+        }
+        XCTAssertErrorFree {
+            let project = try MockProject(type: "Executable")
+            try project.do {
+                let configuration = project.location.appendingPathComponent(".travis.yml")
+                try "...".save(to: configuration)
+                try "Project Type: Executable\nManage Continuous Integration: True\nGenerate Documentation: True".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
                 try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
                 XCTAssert(try String(from: configuration).contains("cache"))
             }

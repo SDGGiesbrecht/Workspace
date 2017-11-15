@@ -28,6 +28,6 @@ extension Options {
     }
 
     var projectType: PackageRepository.Target.TargetType { // [_Exempt from Code Coverage_] [_Workaround: Until initialize is testable._]
-        return value(for: Workspace.Initialize.type) ?? .library
+        return value(for: Workspace.Initialize.type) ?? .library // [_Exempt from Code Coverage_] [_Workaround: Until initialize is testable._]
     }
 }

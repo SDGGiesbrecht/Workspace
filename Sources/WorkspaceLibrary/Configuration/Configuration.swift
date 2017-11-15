@@ -41,7 +41,7 @@ struct Configuration {
         if location == Repository.packageRepository.configuration.location { // [_Exempt from Code Coverage_]
             // [_Workaround: Temporary bridging._]
             Configuration.resetCache()
-        }
+        } // [_Exempt from Code Coverage_] [_Workaround: Until normalize is testable._]
         if BuildConfiguration.current == .debug { // [_Exempt from Code Coverage_] [_Workaround: Until normalize is testable._]
             print("(Debug notice: Configuration cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”")
         }
@@ -124,6 +124,7 @@ struct Configuration {
         guard let result = PackageRepository.Target.TargetType(key: StrictString(key)) else {
             throw Configuration.invalidEnumerationValue(option: .projectType, value: key, valid: PackageRepository.Target.TargetType.cases.map({ $0.key }))
         }
+        print(result)
         return result
     }
 

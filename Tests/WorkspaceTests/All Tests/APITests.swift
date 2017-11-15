@@ -27,6 +27,15 @@ class APITests : TestCase {
         }
     }
 
+    func testContinuousIntegration() {
+        XCTAssertErrorFree {
+            try FileManager.default.do(in: repositoryRoot) {
+                // Validate generation of self‐specific configuration.
+                try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
+            }
+        }
+    }
+
     func testResources() {
         XCTAssertErrorFree {
             let project = try MockProject()
@@ -93,6 +102,7 @@ class APITests : TestCase {
 
                 // [_Workaround: This should eventually just do “validate”._]
                 try Workspace.command.execute(with: ["refresh", "scripts"])
+                try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
                 try Workspace.command.execute(with: ["refresh", "resources"])
             }
         }
@@ -101,6 +111,7 @@ class APITests : TestCase {
     static var allTests: [(String, (APITests) -> () throws -> Void)] {
         return [
             ("testCheckForUpdates", testCheckForUpdates),
+            ("testContinuousIntegration", testContinuousIntegration),
             ("testResources", testResources),
             ("testScripts", testScripts),
             ("testWorkflow", testWorkflow)

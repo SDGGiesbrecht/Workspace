@@ -148,4 +148,8 @@ struct Configuration {
     func shouldManageContinuousIntegration() throws -> Bool {
         return try boolean(for: .manageContinuousIntegration)
     }
+
+    func shouldGenerateDocumentation() throws -> Bool {
+        return try boolean(for: .generateDocumentation)
+    }
 }

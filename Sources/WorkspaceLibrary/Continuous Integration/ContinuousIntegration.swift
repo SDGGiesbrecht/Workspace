@@ -24,6 +24,18 @@ enum ContinuousIntegration {
             "  include:"
         ]
 
+        for job in Job.cases where try job.isRequired(by: project) {
+            travisConfiguration.append(contentsOf: job.script)
+        }
+
+        travisConfiguration.append(contentsOf: [
+            "",
+            "cache:",
+            "  directories:",
+            "  \u{2D} $HOME/Library/Caches/ca.solideogloria.Workspace",
+            "  \u{2D} $HOME/.cache/ca.solideogloria.Workspace"
+            ])
+
         var travisConfigurationFile = try TextFile(possiblyAt: project.url(for: ".travis.yml"))
         travisConfigurationFile.body = join(lines: travisConfiguration)
         print(travisConfigurationFile.body)
@@ -137,15 +149,7 @@ enum ContinuousIntegration {
                 runRefreshWorkspace,
                 runValidateChanges
                 ])
-        }
-
-        updatedLines.append(contentsOf: [
-            "",
-            "cache:",
-            "  directories:",
-            // Workspace
-            "  \u{2D} $HOME/.Workspace"
-            ])
+     }
     }
 
     static func relinquishControl(output: inout Command.Output) {
@@ -156,41 +160,5 @@ enum ContinuousIntegration {
             configuration.contents.removeSubrange(range)
             try? configuration.write(output: &output)
         }
-    }
-
-
-
-     // Job Factoring
-
-     private static func shouldDoJobSet(requiredEnvironments: Set<OperatingSystem>, isConfigured: Bool, jobKey: String) -> Bool {
-
-     let isPossible = operatingSystem ∈ requiredEnvironments
-     let shouldRunSomewhere = isConfigured
-
-     if isPossible ∧ shouldRunSomewhere {
-
-     // Decide where
-
-     let isLocal = ¬Environment.isInContinuousIntegration
-     let isCorrectJob = Environment.environmentVariable(ContinuousIntegration.jobKey) == jobKey
-
-     return isLocal ∨ isCorrectJob
-
-     } else {
-     return false
-     }
-     }
-
-     static let shouldDoMacOSJobs = shouldDoJobSet(requiredEnvironments: [.macOS], isConfigured: Configuration.supportMacOS, jobKey: ContinuousIntegration.macOSJob)
-
-     static let shouldDoLinuxJobs = shouldDoJobSet(requiredEnvironments: [.linux], isConfigured: Configuration.supportLinux, jobKey: ContinuousIntegration.linuxJob)
-
-     static let shouldDoIOSJobs = shouldDoJobSet(requiredEnvironments: [.macOS], isConfigured: Configuration.supportIOS, jobKey: ContinuousIntegration.iOSJob)
-
-     static let shouldDoWatchOSJobs = shouldDoJobSet(requiredEnvironments: [.macOS], isConfigured: Configuration.supportWatchOS, jobKey: ContinuousIntegration.watchOSJob)
-
-     static let shouldDoTVOSJobs = shouldDoJobSet(requiredEnvironments: [.macOS], isConfigured: Configuration.supportTVOS, jobKey: ContinuousIntegration.tvOSJob)
-
-     static let shouldDoMiscellaneousJobs = shouldDoJobSet(requiredEnvironments: ContinuousIntegration.operatingSystemsForMiscellaneousJobs, isConfigured: true, jobKey: ContinuousIntegration.miscellaneousJob)
-    */
+    }*/
 }

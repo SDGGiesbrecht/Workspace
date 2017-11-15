@@ -125,5 +125,34 @@ extension ContinuousIntegration {
         case tvOS
         case miscellaneous
         case documentation
+
+        // MARK: - Properties
+
+        func isRequired(by project: PackageRepository) throws -> Bool {
+            switch self {
+            case .macOSSwiftPackageManager:
+                return try project.configuration.supports(.macOS)
+                    ∧ ¬(try project.configuration.projectType() == .application)
+            case .macOSXcode:
+                return try project.configuration.supports(.macOS)
+            case .linux:
+                return try project.configuration.supports(.linux)
+            case .iOS:
+                return try project.configuration.supports(.iOS)
+            case .watchOS:
+                return try project.configuration.supports(.watchOS)
+            case .tvOS:
+                return try project.configuration.supports(.tvOS)
+            case .miscellaneous:
+                return true
+            case .documentation:
+                return try project.configuration.shouldGenerateDocumentation()
+            }
+        }
+
+        var script: [String] {
+            notImplementedYet()
+            return []
+        }
     }
 }

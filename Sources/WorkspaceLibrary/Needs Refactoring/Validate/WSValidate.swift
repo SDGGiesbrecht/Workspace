@@ -75,7 +75,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
     // Generating documentation...
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    if Configuration.generateDocumentation ∧ Environment.operatingSystem == .macOS {
+    if try options.project.configuration.shouldGenerateDocumentation() ∧ Environment.operatingSystem == .macOS {
 
         Documentation.generate(job: options.job, individualSuccess: individualSuccess, individualFailure: individualFailure, output: &output)
     }

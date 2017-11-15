@@ -726,9 +726,6 @@ extension Configuration {
         return listValue(option: .codeCoverageExemptionTokensForPreviousLine)
     }
 
-    static var generateDocumentation: Bool {
-        return booleanValue(option: .generateDocumentation)
-    }
     static var enforceDocumentationCoverage: Bool {
         return booleanValue(option: .enforceDocumentationCoverage)
     }

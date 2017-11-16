@@ -26,7 +26,7 @@ let instructionsAfterRefresh: String = {
 func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: inout Command.Output) throws {
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    print("Refreshing \(Configuration.projectName)...".formattedAsSectionHeader(), to: &output)
+    print("Refreshing \(try options.project.configuration.projectName())...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

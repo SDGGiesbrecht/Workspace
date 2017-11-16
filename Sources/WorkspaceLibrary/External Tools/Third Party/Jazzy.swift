@@ -14,6 +14,7 @@
 
 import Foundation
 
+import SDGCornerstone
 import SDGCommandLine
 
 class Jazzy : RubyGem {
@@ -21,6 +22,24 @@ class Jazzy : RubyGem {
     // MARK: - Static Properties
 
     static let `default` = Jazzy(version: Version(0, 9, 0))
+
+    override class var name: UserFacingText<InterfaceLocalization, Void> {
+        return UserFacingText({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "Jazzy"
+            }
+        })
+    }
+
+    override class var installationInstructionsURL: UserFacingText<InterfaceLocalization, Void> {
+        return UserFacingText({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "https://github.com/realm/jazzy"
+            }
+        })
+    }
 
     // MARK: - Initialization
 

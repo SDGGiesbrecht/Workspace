@@ -19,9 +19,11 @@ import SDGCommandLine
 
 class RubyGem : ThirdPartyTool {
 
+    // MARK: - Class Properties
+
     // MARK: - Execution
 
-    override class func execute(command: StrictString, version: Version, with arguments: [StrictString], versionCheck: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: inout Command.Output) throws {
+    final override class func execute(command: StrictString, version: Version, with arguments: [StrictString], versionCheck: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: inout Command.Output) throws {
 
         let commandString: [String] = [String(command), "_" + version.string + "_"]
         let versionCheckString = versionCheck.map({ String($0) })

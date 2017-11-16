@@ -41,7 +41,7 @@ class ThirdPartyTool {
 
     // MARK: - Execution
 
-    func execute(with arguments: [StrictString], output: inout Command.Output) throws {
+    final func execute(with arguments: [StrictString], output: inout Command.Output) throws {
         if let systemVersionString = try? Shell.default.run(command: ([String(command)] + versionCheck.map({ String($0) })), silently: true),
             let systemVersion = Version(firstIn: systemVersionString),
             systemVersion == version {

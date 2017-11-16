@@ -21,7 +21,7 @@ class SwiftPackage : ThirdPartyTool {
 
     // MARK: - Execution
 
-    override class func execute(command: StrictString, version: Version, with arguments: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: inout Command.Output) throws {
+    override class func execute(command: StrictString, version: Version, with arguments: [StrictString], versionCheck: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: inout Command.Output) throws {
         try Package(url: repositoryURL).execute(version, of: [command], with: arguments, cacheDirectory: cacheDirectory, output: &output)
     }
 }

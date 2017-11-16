@@ -21,7 +21,18 @@ class RubyGem : ThirdPartyTool {
 
     // MARK: - Execution
 
-    override class func execute(command: StrictString, version: Version, with arguments: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: inout Command.Output) throws {
-        primitiveMethod()
+    override class func execute(command: StrictString, version: Version, with arguments: [StrictString], versionCheck: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: inout Command.Output) throws {
+
+        let commandString: [String] = [String(command), "_" + version.string + "_"]
+        let versionCheckString = versionCheck.map({ String($0) })
+
+        if (try? Shell.default.run(command: commandString + versionCheckString, silently: true)) == nil {
+            try Shell.default.run(command: [
+                "gem", "install", String(command),
+                "\u{2D}\u{2D}version", version.string
+                ], alternatePrint: { print($0, to: &output) })
+        }
+
+        try Shell.default.run(command: commandString + arguments.map({ String($0) }), alternatePrint: { print($0, to: &output) })
     }
 }

@@ -49,10 +49,10 @@ class ThirdPartyTool {
             return
         }
 
-        try type(of: self).execute(command: command, version: version, with: arguments, repositoryURL: repositoryURL, cacheDirectory: ThirdPartyTool.toolsCache.appendingPathComponent(repositoryURL.lastPathComponent), output: &output)
+        try type(of: self).execute(command: command, version: version, with: arguments, versionCheck: versionCheck, repositoryURL: repositoryURL, cacheDirectory: ThirdPartyTool.toolsCache.appendingPathComponent(repositoryURL.lastPathComponent), output: &output)
     }
 
-    class func execute(command: StrictString, version: Version, with arguments: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: inout Command.Output) throws {
+    class func execute(command: StrictString, version: Version, with arguments: [StrictString], versionCheck: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: inout Command.Output) throws {
         primitiveMethod()
     }
 }

@@ -469,10 +469,6 @@ extension Configuration {
 
     // Project Names
 
-    static var projectName: String {
-        return stringValue(option: .projectName)
-    }
-
     static func packageName(forProjectName projectName: String) -> String {
         return projectName
     }
@@ -498,12 +494,12 @@ extension Configuration {
     static func moduleName(forProjectName projectName: String) -> String {
         return projectName.replacingOccurrences(of: " ", with: "")
     }
-    static var defaultModuleName: String {
+    static func defaultModuleName() throws -> String {
         switch (try? Repository.packageRepository.configuration.projectType())! {
         case .library, .application:
-            return moduleName(forProjectName: projectName)
+            return moduleName(forProjectName: String(try Repository.packageRepository.configuration.projectName()))
         default:
-            return executableLibraryName(forProjectName: projectName)
+            return executableLibraryName(forProjectName: String(try Repository.packageRepository.configuration.projectName()))
         }
     }
     static var moduleName: String {
@@ -585,9 +581,6 @@ extension Configuration {
             missingLocalizationError(option: .installationInstructions, localization: localization)
         }
         return result
-    }
-    static var repositoryURL: String? {
-        return possibleStringValue(option: .repositoryURL)
     }
     static var requiredRepositoryURL: String {
         return stringValue(option: .repositoryURL)
@@ -682,9 +675,6 @@ extension Configuration {
     static var fileHeader: String {
         return stringValue(option: .fileHeader)
     }
-    static var author: String? {
-        return possibleStringValue(option: .author)
-    }
     static var requiredAuthor: String {
         return stringValue(option: .author)
     }
@@ -728,9 +718,6 @@ extension Configuration {
 
     static var enforceDocumentationCoverage: Bool {
         return booleanValue(option: .enforceDocumentationCoverage)
-    }
-    static var documentationCopyright: String {
-        return stringValue(option: .documentationCopyright)
     }
 
     static var manageContinuousIntegration: Bool {

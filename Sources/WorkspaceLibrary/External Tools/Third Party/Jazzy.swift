@@ -49,4 +49,38 @@ class Jazzy : RubyGem {
                    version: version,
                    versionCheck: ["\u{2D}\u{2D}version"])
     }
+
+    // MARK: - Usage
+
+    func document(target: String, sdk: String, copyright: StrictString, gitHubURL: URL?, outputDirectory: URL, output: inout Command.Output) throws {
+
+        let buildDirectory = FileManager.default.url(in: .temporary, at: "Jazzy Build Artifacts")
+        defer { try? FileManager.default.removeItem(at: buildDirectory) }
+
+        var jazzyArguments: [String] = [
+            "\u{2D}\u{2D}module", target,
+            "\u{2D}\u{2D}copyright", String(copyright)
+        ]
+
+        if let gitHub = gitHubURL {
+            jazzyArguments.append(contentsOf: [
+                "\u{2D}\u{2D}github_url", Shell.quote(gitHub.absoluteString)
+                ])
+        }
+
+        jazzyArguments.append(contentsOf: [
+            "\u{2D}\u{2D}documentation=Documentation/*.md",
+            "\u{2D}\u{2D}clean",
+            "\u{2D}\u{2D}use\u{2D}safe\u{2D}filenames",
+            "\u{2D}\u{2D}output", Shell.quote(outputDirectory.path),
+            "\u{2D}\u{2D}xcodebuild\u{2D}arguments", [
+                "\u{2D}target", target,
+                "\u{2D}sdk", sdk,
+                "\u{2D}derivedDataPath", Shell.quote(buildDirectory.path)
+                ].joined(separator: ",")
+            ])
+
+        try executeInCompatibilityMode(with: [
+            ], output: &output)
+    }
 }

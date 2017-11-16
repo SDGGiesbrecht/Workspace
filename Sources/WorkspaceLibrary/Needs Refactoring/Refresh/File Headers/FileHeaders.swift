@@ -86,7 +86,7 @@ struct FileHeaders {
         return copyright
     }
 
-    static func refreshFileHeaders(output: inout Command.Output) {
+    static func refreshFileHeaders(output: inout Command.Output) throws {
 
         func key(_ name: String) -> String {
             return "[_\(name)_]"
@@ -131,7 +131,7 @@ struct FileHeaders {
                 var header = template
 
                 header = header.replacingOccurrences(of: key("Filename"), with: path.filename)
-                header = header.replacingOccurrences(of: key("Project"), with: Configuration.projectName)
+                header = header.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.configuration.projectName()))
                 if let website = possibleWebsite {
                     header = header.replacingOccurrences(of: key("Website"), with: website)
                 }

@@ -70,8 +70,8 @@ extension PackageRepository {
 
     // MARK: - Miscellaneous Properties
 
-    var isWorkspaceProject: Bool {
-        return location.lastPathComponent == "Workspace"
+    func isWorkspaceProject() throws -> Bool {
+        return try configuration.projectName() == "Workspace"
     }
 
     // MARK: - Structure
@@ -270,9 +270,8 @@ extension PackageRepository {
         try FileManager.default.do(in: location) {
             let libraryProducts = try SwiftTool.default.libraryProductTargets(output: &output)
             for product in libraryProducts {
-
+                try Documentation.document(target: product, for: self, output: &output)
             }
-            notImplementedYet()
         }
     }
 }

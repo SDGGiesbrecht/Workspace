@@ -520,7 +520,7 @@ struct ReadMe {
                 dependencySummary = "Simply add \(Configuration.projectName) as a dependency in `Package.swift`"
             }
 
-            if let repository = Configuration.repositoryURL,
+            if let repository = try Repository.packageRepository.configuration.repositoryURL(),
                 let currentVersion = Configuration.currentVersion {
 
                 let colon: String
@@ -544,7 +544,7 @@ struct ReadMe {
                     "    ...",
                     "    dependencies: [",
                     "        ...",
-                    "        .Package(url: \u{22}\(repository)\u{22}, versions: \u{22}\(currentVersion.string)\u{22} ..< \u{22}\(currentVersion.nextMajorVersion.string)\u{22}),",
+                    "        .Package(url: \u{22}\(repository.absoluteString)\u{22}, versions: \u{22}\(currentVersion.string)\u{22} ..< \u{22}\(currentVersion.nextMajorVersion.string)\u{22}),",
                     "        ...",
                     "    ]",
                     ")",
@@ -645,7 +645,7 @@ struct ReadMe {
                 body = body.replacingOccurrences(of: apiLinks, with: try apiLinksMarkup(localization: localization))
             }
 
-            body = body.replacingOccurrences(of: key("Project"), with: Configuration.projectName)
+            body = body.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.configuration.projectName()))
 
             let shortDescription = key("Short Description")
             if body.contains(shortDescription) {

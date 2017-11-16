@@ -102,7 +102,7 @@ enum Licence : String {
 
     // MARK: - Licence Management
 
-    static func refreshLicence(output: inout Command.Output) {
+    static func refreshLicence(output: inout Command.Output) throws {
 
         guard let licence = Configuration.licence else {
 
@@ -118,8 +118,9 @@ enum Licence : String {
 
         let copyright = FileHeaders.copyright(fromText: oldContents)
         var authors = "the \(Configuration.projectName) project contributors."
-        if let author = Configuration.author {
-            authors = "\(author) and " + authors
+        let configuration = Repository.packageRepository.configuration
+        if try configuration.optionIsDefined(.author) {
+            authors = "\(try configuration.author()) and " + authors
         }
 
         func key(_ key: String) -> String {

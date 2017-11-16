@@ -117,7 +117,19 @@ struct Configuration {
         }
     }
 
-    // MARK: - Options
+    private func possibleStringValue(option: Option) throws -> String? {
+        let result = try options()[option] ?? option.defaultValue
+        if result ≠ Configuration.noValue {
+            return result
+        }
+        return nil
+    }
+
+    func optionIsDefined(_ option: Option) throws -> Bool {
+        return try options()[option] ≠ nil
+    }
+
+    // MARK: - Options: Supported Environment
 
     func projectType() throws -> PackageRepository.Target.TargetType {
         let key = try string(for: .projectType)
@@ -131,6 +143,29 @@ struct Configuration {
         return try boolean(for: operatingSystem.supportOption)
             ∧ (try projectType().isSupported(on: operatingSystem))
     }
+
+    // MARK: - Options: Project Metadata
+
+    func projectName() throws -> StrictString {
+        // [_Warning: This should check the package description first._]
+        return StrictString(try string(for: .projectName))
+    }
+
+    func repositoryURL() throws -> URL? {
+        guard let string = try possibleStringValue(option: .repositoryURL) else {
+            return nil
+        }
+        return URL(string: string)
+    }
+
+    func documentationCopyright() throws -> Template {
+        return Template(source: StrictString(try string(for: .documentationCopyright)))
+    }
+    func author() throws -> StrictString {
+        return StrictString(try string(for: .author))
+    }
+
+    // MARK: - Options: Active Tasks
 
     func shouldManageContinuousIntegration() throws -> Bool {
         return try boolean(for: .manageContinuousIntegration)

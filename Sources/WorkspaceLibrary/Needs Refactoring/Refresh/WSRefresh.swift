@@ -88,7 +88,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
         print("Updating licence...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        Licence.refreshLicence(output: &output)
+        try Licence.refreshLicence(output: &output)
     }
 
     if Configuration.manageContributingInstructions {
@@ -97,7 +97,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
         print("Updating contributing instructions...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        ContributingInstructions.refreshContributingInstructions(output: &output)
+        try ContributingInstructions.refreshContributingInstructions(output: &output)
     } else {
         ContributingInstructions.relinquishControl(output: &output)
     }
@@ -117,7 +117,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
         print("Updating file headers...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        FileHeaders.refreshFileHeaders(output: &output)
+        try FileHeaders.refreshFileHeaders(output: &output)
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

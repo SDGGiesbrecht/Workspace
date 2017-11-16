@@ -27,9 +27,9 @@ let manualWarnings: [Warning.Type] = [
 
 extension Warning {
 
-    static func check(file: File, status: inout Bool) {
+    static func check(file: File, status: inout Bool) throws {
 
-        if Configuration.projectName == "Workspace" ∧ Repository.relative(file.path) == RelativePath("Documentation/Manual Warnings.md") {
+        if try Repository.packageRepository.isWorkspaceProject() ∧ Repository.relative(file.path) == RelativePath("Documentation/Manual Warnings.md") {
             return
         }
 

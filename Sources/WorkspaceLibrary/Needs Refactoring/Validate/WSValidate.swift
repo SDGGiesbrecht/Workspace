@@ -58,7 +58,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         // Proofreading...
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        if runProofread(andExit: false, arguments: arguments, options: options, output: &output) {
+        if try runProofread(andExit: false, arguments: arguments, options: options, output: &output) {
             individualSuccess(message: "Code passes proofreading.")
         } else {
             individualFailure(message: "Code fails proofreading. (See above for details.)")
@@ -77,7 +77,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
 
     if try options.project.configuration.shouldGenerateDocumentation() ∧ Environment.operatingSystem == .macOS {
 
-        Documentation.generate(job: options.job, individualSuccess: individualSuccess, individualFailure: individualFailure, output: &output)
+        WSDocumentation.generate(job: options.job, individualSuccess: individualSuccess, individualFailure: individualFailure, output: &output)
     }
 
     if Environment.isInContinuousIntegration {

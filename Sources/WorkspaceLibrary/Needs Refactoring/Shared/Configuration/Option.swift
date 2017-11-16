@@ -299,13 +299,13 @@ enum Option : String, CustomStringConvertible {
         case .packageName:
             return Configuration.defaultPackageName
         case .moduleName:
-            return Configuration.defaultModuleName
+            return (try? Configuration.defaultModuleName())!
         case .xcodeSchemeName:
             return Xcode.defaultXcodeSchemeName
         case .primaryXcodeTarget:
             return (try? Xcode.defaultPrimaryTargetName())!
         case .xcodeTestTarget:
-            return Xcode.defaultTestTargetName
+            return (try? Xcode.defaultTestTargetName())!
 
         case .ignoreFileTypes:
             return Configuration.emptyListOptionValue

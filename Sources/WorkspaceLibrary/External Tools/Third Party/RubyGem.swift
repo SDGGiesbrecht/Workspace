@@ -46,7 +46,7 @@ class RubyGem : ThirdPartyTool {
         }))
     }
 
-    final override class func execute(command: StrictString, version: Version, with arguments: [StrictString], versionCheck: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: inout Command.Output) throws {
+    final override class func execute(command: StrictString, version: Version, with arguments: [String], versionCheck: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: inout Command.Output) throws {
 
         let commandString: [String] = [String(command), "_" + version.string + "_"]
         let versionCheckString = versionCheck.map({ String($0) })
@@ -62,6 +62,6 @@ class RubyGem : ThirdPartyTool {
             }
         }
 
-        try Shell.default.run(command: commandString + arguments.map({ String($0) }), alternatePrint: { print($0, to: &output) })
+        try Shell.default.run(command: commandString + arguments, alternatePrint: { print($0, to: &output) })
     }
 }

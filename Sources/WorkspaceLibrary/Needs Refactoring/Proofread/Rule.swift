@@ -18,7 +18,7 @@ import SDGCornerstone
 
 protocol Rule {
     static var name: String { get }
-    static func check(file: File, status: inout Bool)
+    static func check(file: File, status: inout Bool) throws
 }
 
 let rules: [Rule.Type] = [

@@ -48,7 +48,7 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     let packageType = options.projectType
-    let projectName = Configuration.projectName
+    let projectName = String(try Repository.packageRepository.configuration.projectName())
 
     let packageName = Configuration.packageName(forProjectName: projectName)
     let moduleName = Configuration.moduleName(forProjectName: projectName)

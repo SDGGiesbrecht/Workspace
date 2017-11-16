@@ -42,17 +42,21 @@ class ThirdPartyTool {
     // MARK: - Execution
 
     final func execute(with arguments: [StrictString], output: inout Command.Output) throws {
+        try executeInCompatibilityMode(with: arguments.map({ String($0) }), output: &output)
+    }
+
+    final func executeInCompatibilityMode(with arguments: [String], output: inout Command.Output) throws {
         if let systemVersionString = try? Shell.default.run(command: ([String(command)] + versionCheck.map({ String($0) })), silently: true),
             let systemVersion = Version(firstIn: systemVersionString),
             systemVersion == version {
-            try Shell.default.run(command: ([command] + arguments).map({ String($0) }), alternatePrint: { print($0, to: &output) })
+            try Shell.default.run(command: [String(command)] + arguments, alternatePrint: { print($0, to: &output) })
             return
         }
 
         try type(of: self).execute(command: command, version: version, with: arguments, versionCheck: versionCheck, repositoryURL: repositoryURL, cacheDirectory: ThirdPartyTool.toolsCache.appendingPathComponent(repositoryURL.lastPathComponent), output: &output)
     }
 
-    class func execute(command: StrictString, version: Version, with arguments: [StrictString], versionCheck: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: inout Command.Output) throws {
+    class func execute(command: StrictString, version: Version, with arguments: [String], versionCheck: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: inout Command.Output) throws {
         primitiveMethod()
     }
 }

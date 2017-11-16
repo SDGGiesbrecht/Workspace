@@ -167,7 +167,7 @@ struct ContributingInstructions {
         return join(lines: template)
     }()
 
-    static func refreshContributingInstructions(output: inout Command.Output) {
+    static func refreshContributingInstructions(output: inout Command.Output) throws {
 
         func key(_ name: String) -> String {
             return "[_\(name)_]"
@@ -179,7 +179,7 @@ struct ContributingInstructions {
             Configuration.contributingInstructions
             ])
 
-        body = body.replacingOccurrences(of: key("Project"), with: Configuration.projectName)
+        body = body.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.configuration.projectName()))
 
         var administrators = Configuration.administrators
         var administratorList: String

@@ -263,4 +263,16 @@ extension PackageRepository {
             try target.refresh(resources: resources, from: self, output: &output)
         }
     }
+
+    // MARK: - Documentation
+
+    func document(output: inout Command.Output) throws {
+        try FileManager.default.do(in: location) {
+            let libraryProducts = try SwiftTool.default.libraryProductTargets(output: &output)
+            for product in libraryProducts {
+
+            }
+            notImplementedYet()
+        }
+    }
 }

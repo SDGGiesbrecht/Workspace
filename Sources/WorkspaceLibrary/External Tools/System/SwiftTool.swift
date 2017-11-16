@@ -25,6 +25,10 @@ extension SwiftTool {
 
     // MARK: - Usage
 
+    func libraryProductTargets(output: inout Command.Output) throws -> Set<String> {
+        return try _libraryProductTargets(output: &output) // Shared from SDGCommandLine.
+    }
+
     func targets(output: inout Command.Output) throws -> [(name: String, location: URL)] {
         return try _targets(output: &output) // Shared from SDGCommandLine.
     }

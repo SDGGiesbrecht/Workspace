@@ -153,7 +153,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     if shouldExit {
 
         succeed(message: [
-            "\(Configuration.projectName) is refreshed and ready.",
+            "\(try Repository.packageRepository.configuration.projectName()) is refreshed and ready.",
             instructionsAfterRefresh
             ])
     }

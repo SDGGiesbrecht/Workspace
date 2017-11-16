@@ -521,8 +521,8 @@ extension Configuration {
     static var manageReadMe: Bool {
         return booleanValue(option: .manageReadMe)
     }
-    static func readMe(localization: ArbitraryLocalization?) -> String {
-        return localizedOptionValue(option: .readMe, localization: localization) ?? ReadMe.defaultReadMeTemplate(localization: localization)
+    static func readMe(localization: ArbitraryLocalization?) throws -> String {
+        return try localizedOptionValue(option: .readMe, localization: localization) ?? ReadMe.defaultReadMeTemplate(localization: localization)
     }
     static var documentationURL: String? {
         return possibleStringValue(option: .documentationURL)

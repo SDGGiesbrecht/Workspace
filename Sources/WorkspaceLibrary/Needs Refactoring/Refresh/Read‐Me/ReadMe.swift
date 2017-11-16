@@ -91,7 +91,7 @@ struct ReadMe {
         return FileType.markdown.syntax.comment(contents: managementWarning)
     }()
 
-    static func defaultReadMeTemplate(localization: ArbitraryLocalization?) -> String {
+    static func defaultReadMeTemplate(localization: ArbitraryLocalization?) throws -> String {
         let translation = Configuration.resolvedLocalization(for: localization)
 
         var readMe: [String] = []
@@ -215,16 +215,16 @@ struct ReadMe {
         }
 
         if Configuration.sdg {
-            func english(translation: ArbitraryLocalization) -> [String] {
+            func english(translation: ArbitraryLocalization) throws -> [String] {
                 return [
                     "",
                     "## About",
                     "",
-                    "The \(Configuration.projectName) project is maintained by Jeremy David Giesbrecht.",
+                    "The \(try Repository.packageRepository.configuration.projectName()) project is maintained by Jeremy David Giesbrecht.",
                     "",
-                    "If \(Configuration.projectName) saves you money, consider giving some of it as a [donation](https://paypal.me/JeremyGiesbrecht).",
+                    "If \(try Repository.packageRepository.configuration.projectName()) saves you money, consider giving some of it as a [donation](https://paypal.me/JeremyGiesbrecht).",
                     "",
-                    "If \(Configuration.projectName) saves you time, consider devoting some of it to [contributing](\(Configuration.requiredRepositoryURL)) back to the project.",
+                    "If \(try Repository.packageRepository.configuration.projectName()) saves you time, consider devoting some of it to [contributing](\(Configuration.requiredRepositoryURL)) back to the project.",
                     "",
                     format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "For the worker is worthy of his wages.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: localization), citation: "\u{200E}ישוע/Yeshuʼa")
                 ]
@@ -233,17 +233,17 @@ struct ReadMe {
             case .compatible(let specific):
                 switch specific {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    readMe += english(translation: translation)
+                    readMe += try english(translation: translation)
                 case .deutschDeutschland:
                     readMe += [
                         "",
                         "## Über",
                         "",
-                        "Das \(Configuration.projectName)‐Projekt wird von Jeremy David Giesbrecht erhalten.",
+                        "Das \(try Repository.packageRepository.configuration.projectName())‐Projekt wird von Jeremy David Giesbrecht erhalten.",
                         "",
-                        "Wenn \(Configuration.projectName) Ihnen Geld sparrt, denken Sie darüber, etwas davon zu [spenden](https://paypal.me/JeremyGiesbrecht).",
+                        "Wenn \(try Repository.packageRepository.configuration.projectName()) Ihnen Geld sparrt, denken Sie darüber, etwas davon zu [spenden](https://paypal.me/JeremyGiesbrecht).",
                         "",
-                        "Wenn \(Configuration.projectName) Inhen Zeit sparrt, denken Sie darüber, etwas davon zu gebrauchen, um zum Projekt [beizutragen](\(Configuration.requiredRepositoryURL)).",
+                        "Wenn \(try Repository.packageRepository.configuration.projectName()) Inhen Zeit sparrt, denken Sie darüber, etwas davon zu gebrauchen, um zum Projekt [beizutragen](\(Configuration.requiredRepositoryURL)).",
                         "",
                         format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "Denn der Arbeiter ist seines Lohns würdig.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: localization), citation: "\u{200E}ישוע/Yeshuʼa")
                     ]
@@ -252,11 +252,11 @@ struct ReadMe {
                         "",
                         "## À propos",
                         "",
-                        "Le projet \(Configuration.projectName) est maintenu par Jeremy David Giesbrecht.",
+                        "Le projet \(try Repository.packageRepository.configuration.projectName()) est maintenu par Jeremy David Giesbrecht.",
                         "",
-                        "Si \(Configuration.projectName) vous permet d’économiser de l’argent, considérez à en [donner](https://paypal.me/JeremyGiesbrecht).",
+                        "Si \(try Repository.packageRepository.configuration.projectName()) vous permet d’économiser de l’argent, considérez à en [donner](https://paypal.me/JeremyGiesbrecht).",
                         "",
-                        "Si \(Configuration.projectName) vous permet d’économiser du temps, considérez à en utiliser à [contribuer](\(Configuration.requiredRepositoryURL)) au projet.",
+                        "Si \(try Repository.packageRepository.configuration.projectName()) vous permet d’économiser du temps, considérez à en utiliser à [contribuer](\(Configuration.requiredRepositoryURL)) au projet.",
                         "",
                         format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "Car le travailleur est digne de son salaire.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: localization), citation: "\u{200E}ישוע/Yeshuʼa")
                     ]
@@ -265,12 +265,12 @@ struct ReadMe {
                         "",
                         "## Πληροφορίες",
                         "",
-                        "Το \(Configuration.projectName) έργο διατηρείται από τον Τζέρεμι Ντάβιτ Γκίσμπρεχτ (Jeremy David Giesbrecht).",
+                        "Το \(try Repository.packageRepository.configuration.projectName()) έργο διατηρείται από τον Τζέρεμι Ντάβιτ Γκίσμπρεχτ (Jeremy David Giesbrecht).",
                         "",
                         // οικονομώ
-                        "Αν το \(Configuration.projectName) οικονομάει το χρήματα σας, σκεφτείτε να [δορίζετε](https://paypal.me/JeremyGiesbrecht) μερικά από αυτά.",
+                        "Αν το \(try Repository.packageRepository.configuration.projectName()) οικονομάει το χρήματα σας, σκεφτείτε να [δορίζετε](https://paypal.me/JeremyGiesbrecht) μερικά από αυτά.",
                         "",
-                        "Αν το \(Configuration.projectName) οικονομάει τον χρόνο σας, σκεφτείτε να τον κάνετε χρήτη μερικού από αυτό ώστε να [συνεισφέρετε](\(Configuration.requiredRepositoryURL)) του έργου.",
+                        "Αν το \(try Repository.packageRepository.configuration.projectName()) οικονομάει τον χρόνο σας, σκεφτείτε να τον κάνετε χρήτη μερικού από αυτό ώστε να [συνεισφέρετε](\(Configuration.requiredRepositoryURL)) του έργου.",
                         "",
                         format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: nil, url: "https://www.bible.com/bible/209/LUK.10.byz04", citation: "\u{200E}ישוע/Ιεσούα")
                     ]
@@ -279,17 +279,17 @@ struct ReadMe {
                         "",
                         "## אודות",
                         "",
-                        "⁨\(Configuration.projectName)⁩ המיזם מתוחזק על ידי ג׳רמי דוויט גיסברכט (⁧Jeremy David Giesbrecht⁩).",
+                        "⁨\(try Repository.packageRepository.configuration.projectName())⁩ המיזם מתוחזק על ידי ג׳רמי דוויט גיסברכט (⁧Jeremy David Giesbrecht⁩).",
                         "",
-                        "אם ⁨\(Configuration.projectName)⁩ עוזר לך לחסוך כסף, תשקול [לתרום](https://paypal.me/JeremyGiesbrecht) את חלק מזה.",
+                        "אם ⁨\(try Repository.packageRepository.configuration.projectName())⁩ עוזר לך לחסוך כסף, תשקול [לתרום](https://paypal.me/JeremyGiesbrecht) את חלק מזה.",
                         "",
-                        "אם ⁨\(Configuration.projectName)⁩ עוזר לך לחסוך זמן, תשקול להשתמש את חלק מזה [לתרום](\(Configuration.requiredRepositoryURL)) למיזם.",
+                        "אם ⁨\(try Repository.packageRepository.configuration.projectName())⁩ עוזר לך לחסוך זמן, תשקול להשתמש את חלק מזה [לתרום](\(Configuration.requiredRepositoryURL)) למיזם.",
                         "",
                         format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "כי ראוי הפועל לשכרו.", url: "https://www.bible.com/bible/380/LUK.10_1.HRNT", citation: "ישוע")
                     ]
                 }
             default:
-                readMe += english(translation: .compatible(.englishCanada))
+                readMe += try english(translation: .compatible(.englishCanada))
             }
         }
 
@@ -459,35 +459,35 @@ struct ReadMe {
                     instructions += [
                         "## Importing",
                         "",
-                        "\(Configuration.projectName) is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).",
+                        "\(try Repository.packageRepository.configuration.projectName()) is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).",
                         ""
                     ]
                 case .deutschDeutschland:
                     instructions += [
                         "## Einführung",
                         "",
-                        "\(Configuration.projectName) ist für den Einsatz mit dem [Swift Package Manager](https://swift.org/package-manager/) vorgesehen.",
+                        "\(try Repository.packageRepository.configuration.projectName()) ist für den Einsatz mit dem [Swift Package Manager](https://swift.org/package-manager/) vorgesehen.",
                         ""
                     ]
                 case .françaisFrance:
                     instructions += [
                         "## Importation",
                         "",
-                        "\(Configuration.projectName) est prévu pour utilisation avec le [Swift Package Manager](https://swift.org/package-manager/).",
+                        "\(try Repository.packageRepository.configuration.projectName()) est prévu pour utilisation avec le [Swift Package Manager](https://swift.org/package-manager/).",
                         ""
                     ]
                 case .ελληνικάΕλλάδα:
                     instructions += [
                         "## Εισαγωγή",
                         "",
-                        "\(Configuration.projectName) προορίζεται για χρήση με το [Swift Package Manager](https://swift.org/package-manager/).",
+                        "\(try Repository.packageRepository.configuration.projectName()) προορίζεται για χρήση με το [Swift Package Manager](https://swift.org/package-manager/).",
                         ""
                     ]
                 case .עברית־ישראל:
                     instructions += [
                         "## ליבא",
                         "",
-                        "יש ל־⁨\(Configuration.projectName)⁩ מיועד של שימוש עם [Swift Package Manager](https://swift.org/package-manager/).",
+                        "יש ל־⁨\(try Repository.packageRepository.configuration.projectName())⁩ מיועד של שימוש עם [Swift Package Manager](https://swift.org/package-manager/).",
                         ""
                     ]
                 }
@@ -495,7 +495,7 @@ struct ReadMe {
                 instructions += [
                     "## Importing",
                     "",
-                    "\(Configuration.projectName) is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).",
+                    "\(try Repository.packageRepository.configuration.projectName()) is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).",
                     ""
                 ]
             }
@@ -505,19 +505,19 @@ struct ReadMe {
             case .compatible(let specific):
                 switch specific {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    dependencySummary = "Simply add \(Configuration.projectName) as a dependency in `Package.swift`"
+                    dependencySummary = "Simply add \(try Repository.packageRepository.configuration.projectName()) as a dependency in `Package.swift`"
                 case .deutschDeutschland:
-                    dependencySummary = "Fügen Sie \(Configuration.projectName) einfach in der Abhängigkeitsliste in `Package.swift` hinzu"
+                    dependencySummary = "Fügen Sie \(try Repository.packageRepository.configuration.projectName()) einfach in der Abhängigkeitsliste in `Package.swift` hinzu"
                 case .françaisFrance:
-                    dependencySummary = "Ajoutez \(Configuration.projectName) simplement dans la liste des dépendances dans `Package.swift`"
+                    dependencySummary = "Ajoutez \(try Repository.packageRepository.configuration.projectName()) simplement dans la liste des dépendances dans `Package.swift`"
                 case .ελληνικάΕλλάδα:
-                    dependencySummary = "Πρόσθεσε τον \(Configuration.projectName) απλά στο κατάλογο των εξαρτήσεων στο `Package.swift`"
+                    dependencySummary = "Πρόσθεσε τον \(try Repository.packageRepository.configuration.projectName()) απλά στο κατάλογο των εξαρτήσεων στο `Package.swift`"
                 case .עברית־ישראל:
                     dependencySummary =
-                    "תוסיף את ⁨\(Configuration.projectName)⁩ בפשוט ברשימת תלות ב־`Package.swift`"
+                    "תוסיף את ⁨\(try Repository.packageRepository.configuration.projectName())⁩ בפשוט ברשימת תלות ב־`Package.swift`"
                 }
             case .unrecognized:
-                dependencySummary = "Simply add \(Configuration.projectName) as a dependency in `Package.swift`"
+                dependencySummary = "Simply add \(try Repository.packageRepository.configuration.projectName()) as a dependency in `Package.swift`"
             }
 
             if let repository = try Repository.packageRepository.configuration.repositoryURL(),
@@ -574,33 +574,33 @@ struct ReadMe {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     instructions += [
                         "",
-                        "\(Configuration.projectName) can then be imported in source files:"
+                        "\(try Repository.packageRepository.configuration.projectName()) can then be imported in source files:"
                     ]
                 case .deutschDeutschland:
                     instructions += [
                         "",
-                        "Dann kann \(Configuration.projectName) in Quelldateien eingeführt werden:"
+                        "Dann kann \(try Repository.packageRepository.configuration.projectName()) in Quelldateien eingeführt werden:"
                     ]
                 case .françaisFrance:
                     instructions += [
                         "",
-                        "Puis \(Configuration.projectName) peut être importé dans des fichiers sources :"
+                        "Puis \(try Repository.packageRepository.configuration.projectName()) peut être importé dans des fichiers sources :"
                     ]
                 case .ελληνικάΕλλάδα:
                     instructions += [
                         "",
-                        "Έπειτα \(Configuration.projectName) μπορεί να εισάγεται στα πηγαία αρχεία:"
+                        "Έπειτα \(try Repository.packageRepository.configuration.projectName()) μπορεί να εισάγεται στα πηγαία αρχεία:"
                     ]
                 case .עברית־ישראל:
                     instructions += [
                         "",
-                        "אז יכול ליבא את ⁨\(Configuration.projectName)⁩ בקבץי מקור:"
+                        "אז יכול ליבא את ⁨\(try Repository.packageRepository.configuration.projectName())⁩ בקבץי מקור:"
                     ]
                 }
             case .unrecognized:
                 instructions += [
                     "",
-                    "\(Configuration.projectName) can then be imported in source files:"
+                    "\(try Repository.packageRepository.configuration.projectName()) can then be imported in source files:"
                 ]
             }
 
@@ -632,7 +632,7 @@ struct ReadMe {
             var body = join(lines: [
                 managementComment,
                 "",
-                Configuration.readMe(localization: localization)
+                try Configuration.readMe(localization: localization)
                 ])
 
             let localizationLinks = key("Localization Links")

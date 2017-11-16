@@ -21,7 +21,7 @@ func runProofread(andExit shouldExit: Bool, arguments: DirectArguments, options:
 
     if CommandLine.arguments[1] ≠ "proofread" {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        print("Proofreading \(Configuration.projectName)...".formattedAsSectionHeader(), to: &output)
+        print("Proofreading \(try Repository.packageRepository.configuration.projectName())...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     }
 

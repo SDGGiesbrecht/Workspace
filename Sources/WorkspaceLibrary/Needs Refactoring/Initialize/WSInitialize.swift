@@ -292,6 +292,6 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     if shouldExit {
-        succeed(message: ["\(Configuration.projectName) has been initialized.", instructionsAfterRefresh])
+        succeed(message: ["\(try Repository.packageRepository.configuration.projectName()) has been initialized.", instructionsAfterRefresh])
     }
 }

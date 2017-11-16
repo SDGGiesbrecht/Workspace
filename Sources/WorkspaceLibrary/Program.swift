@@ -23,6 +23,10 @@ private let thisVersion: Version? = nil // Set this to latestStableWorkspaceVers
 let workspacePackageURL = URL(string: "https://github.com/SDGGiesbrecht/Workspace")!
 
 public func run() { // [_Exempt from Code Coverage_]
+
+    // [_Workaround: Make sure the correct repository gets loaded before moving into any other directory._]
+    _ = Repository.packageRepository
+
     SDGCommandLine.initialize(applicationIdentifier: "ca.solideogloria.Workspace", version: thisVersion, packageURL: workspacePackageURL)
     Workspace.command.executeAsMain()
 }

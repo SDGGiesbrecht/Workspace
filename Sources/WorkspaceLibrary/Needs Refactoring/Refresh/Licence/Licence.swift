@@ -117,7 +117,7 @@ enum Licence : String {
         let oldContents = file.contents
 
         let copyright = FileHeaders.copyright(fromText: oldContents)
-        var authors = "the \(Configuration.projectName) project contributors."
+        var authors = "the \(try Repository.packageRepository.configuration.projectName()) project contributors."
         let configuration = Repository.packageRepository.configuration
         if try configuration.optionIsDefined(.author) {
             authors = "\(try configuration.author()) and " + authors

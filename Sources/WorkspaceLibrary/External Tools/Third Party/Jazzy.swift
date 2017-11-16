@@ -11,3 +11,23 @@
  Licensed under the Apache Licence, Version 2.0.
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
+
+import Foundation
+
+import SDGCommandLine
+
+class Jazzy : RubyGem {
+
+    // MARK: - Static Properties
+
+    static let `default` = Jazzy(version: Version(0, 9, 0))
+
+    // MARK: - Initialization
+
+    init(version: Version) {
+        super.init(command: "jazzy",
+                   repositoryURL: URL(string: "https://github.com/realm/jazzy")!,
+                   version: version,
+                   versionCheck: ["\u{2D}\u{2D}version"])
+    }
+}

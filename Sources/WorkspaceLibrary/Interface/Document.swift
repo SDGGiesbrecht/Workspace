@@ -33,7 +33,14 @@ extension Workspace {
         })
 
         static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (arguments: DirectArguments, options: Options, output: inout Command.Output) throws in
-                notImplementedYet()
+
+            _ = try Jazzy.default.execute(with: ["\u{2D}\u{2D}version"], output: &output)
+            //_ = try Jazzy(version: Version(0, 8, 0)).execute(with: ["\u{2D}\u{2D}version"], output: &output)
+
+            _ = try SwiftLint.default.execute(with: ["version"], output: &output)
+            _ = try SwiftLint(version: Version(0, 23, 0)).execute(with: ["version"], output: &output)
+
+            notImplementedYet()
         })
     }
 }

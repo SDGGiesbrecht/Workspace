@@ -11,3 +11,23 @@
  Licensed under the Apache Licence, Version 2.0.
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
+
+import Foundation
+
+import SDGCommandLine
+
+class SwiftLint : SwiftPackage {
+
+    // MARK: - Static Properties
+
+    static let `default` = SwiftLint(version: Version(0, 24, 0))
+
+    // MARK: - Initialization
+
+    init(version: Version) {
+        super.init(command: "swiftlint",
+                   repositoryURL: URL(string: "https://github.com/realm/SwiftLint")!,
+                   version: version,
+                   versionCheck: ["version"])
+    }
+}

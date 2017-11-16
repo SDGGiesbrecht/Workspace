@@ -11,3 +11,17 @@
  Licensed under the Apache Licence, Version 2.0.
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
+
+import Foundation
+
+import SDGCornerstone
+import SDGCommandLine
+
+class RubyGem : ThirdPartyTool {
+
+    // MARK: - Execution
+
+    override class func execute(command: StrictString, version: Version, with arguments: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: inout Command.Output) throws {
+        primitiveMethod()
+    }
+}

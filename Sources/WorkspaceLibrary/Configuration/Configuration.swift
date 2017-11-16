@@ -124,7 +124,6 @@ struct Configuration {
         guard let result = PackageRepository.Target.TargetType(key: StrictString(key)) else {
             throw Configuration.invalidEnumerationValue(option: .projectType, value: key, valid: PackageRepository.Target.TargetType.cases.map({ $0.key }))
         }
-        print(result)
         return result
     }
 

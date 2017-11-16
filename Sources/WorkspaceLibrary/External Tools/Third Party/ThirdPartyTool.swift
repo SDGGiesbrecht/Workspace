@@ -35,8 +35,8 @@ class ThirdPartyTool {
     // MARK: - Properties
 
     private let command: StrictString
-    let repositoryURL: URL
-    let version: Version
+    private let repositoryURL: URL
+    private let version: Version
     private let versionCheck: [StrictString]
 
     // MARK: - Execution

@@ -79,7 +79,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
         print("Updating read‐me...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        ReadMe.refreshReadMe(output: &output)
+        try ReadMe.refreshReadMe(output: &output)
     }
 
     if Configuration.manageLicence {
@@ -102,15 +102,10 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
         ContributingInstructions.relinquishControl(output: &output)
     }
 
-    if Configuration.manageContinuousIntegration {
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        print("Updating continuous integration configuration...".formattedAsSectionHeader(), to: &output)
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-
-        ContinuousIntegration.refreshContinuousIntegrationConfiguration(output: &output)
-    } else {
-        ContinuousIntegration.relinquishControl(output: &output)
-    }
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    // Continuous Integration
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    try Workspace.Refresh.ContinuousIntegration.command.execute(withArguments: arguments, options: options, output: &output)
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Resources
@@ -149,7 +144,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
         print("Refreshing Xcode project...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        Xcode.refreshXcodeProjects(output: &output)
+        try Xcode.refreshXcodeProjects(output: &output)
     }
     if Environment.operatingSystem == .macOS {
         Xcode.enableProofreading(output: &output)

@@ -28,18 +28,28 @@ extension PackageRepository {
 
     // MARK: - Cache
 
-    private class Cache {
-        fileprivate var targets: [String: Target]?
+    private struct Cache {
+        fileprivate class Properties {
+            fileprivate var targets: [String: Target]?
 
-        fileprivate var allFiles: [URL]?
-        fileprivate var trackedFiles: [URL]?
-        fileprivate var sourceFiles: [URL]?
-        fileprivate var resourceFiles: [URL]?
+            fileprivate var allFiles: [URL]?
+            fileprivate var trackedFiles: [URL]?
+            fileprivate var sourceFiles: [URL]?
+            fileprivate var resourceFiles: [URL]?
+        }
+        fileprivate var properties = Properties()
     }
     private static var caches: [URL: Cache] = [:]
 
-    func resetCache() {
+    func resetCache(debugReason: String) {
         PackageRepository.caches[location] = Cache()
+        if location == Repository.packageRepository.location {
+            // [_Workaround: Temporary bridging._]
+            Repository.resetCache()
+        }
+        if BuildConfiguration.current == .debug {
+            print("(Debug notice: Repository cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)")
+        }
     }
 
     // MARK: - Location
@@ -52,6 +62,12 @@ extension PackageRepository {
         return _url(for: relativePath) // Shared from SDGCommandLine.
     }
 
+    // MARK: - Configuration
+
+    var configuration: Configuration {
+        return Configuration(for: self)
+    }
+
     // MARK: - Miscellaneous Properties
 
     var isWorkspaceProject: Bool {
@@ -61,7 +77,7 @@ extension PackageRepository {
     // MARK: - Structure
 
     func targets(output: inout Command.Output) throws -> [String: Target] {
-        return try cached(in: &PackageRepository.caches[location, default: Cache()].targets) {
+        return try cached(in: &PackageRepository.caches[location, default: Cache()].properties.targets) {
             () -> [String: Target] in
 
             var list: [String: Target] = [:]
@@ -92,7 +108,7 @@ extension PackageRepository {
     // MARK: - Files
 
     func allFiles() throws -> [URL] {
-        return try cached(in: &PackageRepository.caches[location, default: Cache()].allFiles) {
+        return try cached(in: &PackageRepository.caches[location, default: Cache()].properties.allFiles) {
             () -> [URL] in
 
             var failureReason: Error? // Thrown after enumeration stops. (See below.)
@@ -139,13 +155,12 @@ extension PackageRepository {
             if let error = failureReason { // [_Exempt from Code Coverage_] It is unknown what circumstances would actually cause an error.
                 throw error
             }
-
             return result
         }
     }
 
     func trackedFiles(output: inout Command.Output) throws -> [URL] {
-        return try cached(in: &PackageRepository.caches[location, default: Cache()].trackedFiles) {
+        return try cached(in: &PackageRepository.caches[location, default: Cache()].properties.trackedFiles) {
             () -> [URL] in
 
             var ignoredURLs: [URL] = []
@@ -154,7 +169,7 @@ extension PackageRepository {
             }
             ignoredURLs.append(url(for: ".git"))
 
-            return try allFiles().filter() { (url) in
+            let result = try allFiles().filter() { (url) in
                 for ignoredURL in ignoredURLs {
                     if url.is(in: ignoredURL) {
                         return false
@@ -162,11 +177,12 @@ extension PackageRepository {
                 }
                 return true
             }
+            return result
         }
     }
 
     func sourceFiles(output: inout Command.Output) throws -> [URL] {
-        return try cached(in: &PackageRepository.caches[location, default: Cache()].sourceFiles) { () -> [URL] in
+        return try cached(in: &PackageRepository.caches[location, default: Cache()].properties.sourceFiles) { () -> [URL] in
 
             let generatedURLs = [
                 "docs",
@@ -174,14 +190,15 @@ extension PackageRepository {
                 Script.refreshLinux.fileName
                 ].map({ url(for: String($0)) })
 
-            return try trackedFiles(output: &output).filter() { (url) in
+            let result = try trackedFiles(output: &output).filter() { (url) in
                 for generatedURL in generatedURLs {
-                    if url.is(in: generatedURL) { // [_Exempt from Code Coverage_] [_Workaround: Until “workspace‐scripts” is testable._]
+                    if url.is(in: generatedURL) {
                         return false
                     }
                 }
                 return true
             }
+            return result
         }
     }
 
@@ -191,17 +208,25 @@ extension PackageRepository {
         try Script.refreshRelevantScripts(for: self, output: &output)
     }
 
+    // MARK: - Continuous Integration
+
+    func refreshContinuousIntegration(output: inout Command.Output) throws {
+        try ContinuousIntegration.refreshContinuousIntegration(for: self, output: &output)
+    }
+
     // MARK: - Resources
 
     func resourceFiles(output: inout Command.Output) throws -> [URL] {
-        return try cached(in: &PackageRepository.caches[location, default: Cache()].resourceFiles) { () -> [URL] in
+        return try cached(in: &PackageRepository.caches[location, default: Cache()].properties.resourceFiles) { () -> [URL] in
             let locations = resourceDirectories()
-            return try sourceFiles(output: &output).filter() { (file) in
+
+            let result = try sourceFiles(output: &output).filter() { (file) in
                 for directory in locations where file.is(in: directory) {
                     return true
                 } // [_Exempt from Code Coverage_] [_Workaround: False coverage result. (Swift 4.0.2)_]
                 return false
             }
+            return result
         }
     }
 

@@ -60,7 +60,7 @@ struct FileSyntax {
         return comment(contents: contents)
     }
 
-    func insert(header: String, into file: inout PackageRepository.TextFile) {
+    func insert(header: String, into file: inout TextFile) {
 
         var first = String(file.contents[..<file.headerStart])
         if ¬first.isEmpty {
@@ -157,7 +157,7 @@ struct FileSyntax {
         index = scalar.cluster(in: string.clusters)
     }
 
-    func headerStart(file: PackageRepository.TextFile) -> String.Index {
+    func headerStart(file: TextFile) -> String.Index {
 
         var index = file.contents.startIndex
 
@@ -173,7 +173,7 @@ struct FileSyntax {
         return index
     }
 
-    private func headerEndWithoutSpacing(file: PackageRepository.TextFile) -> String.Index {
+    private func headerEndWithoutSpacing(file: TextFile) -> String.Index {
 
         let start = file.headerStart
 
@@ -196,13 +196,13 @@ struct FileSyntax {
         return start
     }
 
-    func headerEnd(file: PackageRepository.TextFile) -> String.Index {
+    func headerEnd(file: TextFile) -> String.Index {
         var result = headerEndWithoutSpacing(file: file)
         FileSyntax.advance(&result, pastLayoutSpacingIn: file.contents)
         return result
     }
 
-    func header(file: PackageRepository.TextFile) -> String {
+    func header(file: TextFile) -> String {
         let markup = String(file.contents[file.headerStart ..< file.headerEnd])
 
         if markup.lines.map({ String($0.line) }).filter({ ¬$0.isWhitespace }).isEmpty {

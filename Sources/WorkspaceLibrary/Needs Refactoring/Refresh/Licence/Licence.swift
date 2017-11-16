@@ -21,8 +21,8 @@ enum Licence : String {
 
     // MARK: - Initialization
 
-    init?(key: String) {
-        self.init(rawValue: key)
+    init?(key: StrictString) {
+        self.init(rawValue: String(key))
     }
 
     // MARK: - Cases
@@ -43,8 +43,8 @@ enum Licence : String {
 
     // MARK: - Properties
 
-    var key: String {
-        return rawValue
+    var key: StrictString {
+        return StrictString(rawValue)
     }
 
     var text: String {
@@ -62,7 +62,7 @@ enum Licence : String {
             source = Resources.Licences.copyright
         }
 
-        var file = PackageRepository.TextFile(mockFileWithContents: source, fileType: FileType.markdown)
+        var file = TextFile(mockFileWithContents: source, fileType: FileType.markdown)
         return file.body
     }
 

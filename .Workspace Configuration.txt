@@ -170,6 +170,3 @@ workspace refresh
 
 When it is added to an existing project, Workspace will refrain from most responsibilities by default, behaving in a primarily opt‐in manner. This setting can be [changed](Documentation/Responsibilities.md).
 [_End_]
-
-([_Workaround: Until CI is updated._])
-Manage Continuous Integration: False

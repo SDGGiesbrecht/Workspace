@@ -47,7 +47,7 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
     print("Generating Swift package...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    let packageType = Flags.type
+    let packageType = options.projectType
     let projectName = Configuration.projectName
 
     let packageName = Configuration.packageName(forProjectName: projectName)
@@ -274,8 +274,8 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
         Option.automaticResponsibilityDocumentationPage.url
         ]
     let entries: [(option: Option, value: String, comment: [String]?)] = [
-        (option: .automaticallyTakeOnNewResponsibilites, value: Configuration.trueOptionValue, comment: note),
-        (option: .projectType, value: packageType.key, comment: nil),
+        (option: .automaticallyTakeOnNewResponsibilites, value: String(Configuration.trueOptionValue), comment: note),
+        (option: .projectType, value: String(packageType.key), comment: nil),
         (option: .disableProofreadingRules, value: join(lines: ["colon", "line_length", "leading_whitespace"]), comment: nil)
     ]
     Configuration.addEntries(entries: entries, to: &configuration)

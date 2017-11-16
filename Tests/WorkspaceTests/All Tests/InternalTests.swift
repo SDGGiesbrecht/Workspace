@@ -16,6 +16,7 @@ import Foundation
 import XCTest
 
 import SDGCornerstone
+import SDGCommandLine
 
 @testable import WorkspaceLibrary
 
@@ -86,12 +87,14 @@ class InternalTests : TestCase {
         ]
 
         XCTAssertErrorFree {
-            try FileManager.default.do(in: repositoryRoot) {
+            _ = try Command(name: UserFacingText<InterfaceLocalization, Void>({ (_, _) in "" }), description: UserFacingText({ (_, _) in "" }), directArguments: [], options: [], execution: { (_, _, output: inout Command.Output) in
 
-                let unexpected = Repository.trackedFiles.map({ $0.string }).filter() { (file: String) -> Bool in
+                let tracked = try PackageRepository(alreadyAt: repositoryRoot).trackedFiles(output: &output)
+                let relative = tracked.map { $0.path(relativeTo: repositoryRoot) }
+                let unexpected = relative.filter { path in
 
                     for prefix in expectedPrefixes {
-                        if file.hasPrefix(prefix) {
+                        if path.hasPrefix(prefix) {
                             return false
                         }
                     }
@@ -103,7 +106,8 @@ class InternalTests : TestCase {
                     "Unexpected files are being tracked by Git:",
                     join(lines: unexpected)
                     ]))
-            }
+
+            }).execute(with: [])
         }
     }
 

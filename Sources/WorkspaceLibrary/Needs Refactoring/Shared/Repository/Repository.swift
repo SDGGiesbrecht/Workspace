@@ -48,16 +48,14 @@ struct Repository {
     // MARK: - Constants
 
     private static let fileManager = FileManager.default
-    private static let repositoryPath: AbsolutePath = AbsolutePath(fileManager.currentDirectoryPath)
+    static let repositoryPath: AbsolutePath = AbsolutePath(fileManager.currentDirectoryPath)
     static let folderName = URL(fileURLWithPath: repositoryPath.string).lastPathComponent
     static let root: RelativePath = RelativePath("")
 
     // MARK: - Repository
 
     static func resetCache() {
-        PackageRepository(alreadyAt: URL(fileURLWithPath:  FileManager.default.currentDirectoryPath)).resetCache()
         cache = Cache()
-        Configuration.resetCache()
     }
 
     static var moduleNames: [String] {
@@ -248,7 +246,7 @@ struct Repository {
     static func delete<P : Path>(_ path: P) throws {
 
         defer {
-            resetCache()
+            Repository.packageRepository.resetCache(debugReason: relative(path)?.string ?? "delete")
         }
 
         #if os(Linux)
@@ -319,7 +317,7 @@ struct Repository {
             }
         }
 
-        resetCache()
+        Repository.packageRepository.resetCache(debugReason: destination.string)
     }
 
     private static func performPathChange(from origin: RelativePath, into destination: RelativePath, copy: Bool, includeIgnoredFiles: Bool = false) throws {
@@ -343,21 +341,6 @@ struct Repository {
         try performPathChange(from: origin, into: destination, copy: false, includeIgnoredFiles: includeIgnoredFiles)
     }
 
-    static func performInDirectory<P : Path>(directory: P, action: () -> Void) {
-
-        func changeToDirectory(path: String) {
-            if ¬fileManager.changeCurrentDirectoryPath(path) {
-                fatalError(message: [
-                    "Failed to change working directory."
-                    ])
-            }
-        }
-
-        changeToDirectory(path: absolute(directory).string)
-        action()
-        changeToDirectory(path: repositoryPath.string)
-    }
-
     // MARK: - Linked Repositories
 
     static func nameOfLinkedRepository(atURL url: String) -> String {
@@ -375,12 +358,12 @@ struct Repository {
 
         if ¬fileManager.fileExists(atPath: absolute(repository).string) {
             prepareForWrite(path: repository)
-            performInDirectory(directory: Workspace.linkedRepositories) {
+            try? fileManager.do(in: URL(fileURLWithPath: Workspace.linkedRepositories.string)) {
                 requireBash(["git", "clone", url])
             }
         }
 
-        performInDirectory(directory: repository) {
+        try? fileManager.do(in: URL(fileURLWithPath: repository.string)) {
             requireBash(["git", "pull"], silent: true)
         }
 

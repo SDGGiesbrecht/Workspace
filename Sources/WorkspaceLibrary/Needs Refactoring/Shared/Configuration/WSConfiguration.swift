@@ -1,5 +1,5 @@
 /*
- Configuration.swift
+ WSConfiguration.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -15,7 +15,13 @@
 import SDGCornerstone
 import SDGCommandLine
 
-struct Configuration {
+extension Configuration {
+
+    // MARK: - Static Properties
+
+    static var configurationFilePath: RelativePath {
+        return RelativePath(Configuration.fileName)
+    }
 
     // MARK: - Cache
 
@@ -23,8 +29,6 @@ struct Configuration {
 
         // MARK: - Properties
 
-        fileprivate var file: File?
-        fileprivate var configurationFile: [Option: String]?
         fileprivate var packageName: String?
 
         // MARK: - Settings
@@ -39,23 +43,6 @@ struct Configuration {
 
     static func resetCache() {
         cache = Cache()
-    }
-
-    static let configurationFilePath: RelativePath = ".Workspace Configuration.txt"
-    static var file: File {
-        return cached(in: &cache.file) {
-            () -> File in
-
-            do {
-                return try File(at: configurationFilePath)
-            } catch {
-                print([
-                    "Found no configuration file.",
-                    "Following the default configuration."
-                    ])
-                return File(possiblyAt: configurationFilePath)
-            }
-        }
     }
 
     private static let startTokens = (start: "[_Begin ", end: "_]")
@@ -110,7 +97,7 @@ struct Configuration {
     }
 
     static func configurationFileEntry(option: Option, value: Bool, comment: [String]?) -> String {
-        return configurationFileEntry(option: option, value: value ? trueOptionValue : falseOptionValue, comment: comment)
+        return configurationFileEntry(option: option, value: String(value ? trueOptionValue : falseOptionValue), comment: comment)
     }
 
     static func addEntries(entries: [(option: Option, value: String, comment: [String]?)], to configuration: inout File) {
@@ -124,7 +111,7 @@ struct Configuration {
     }
 
     static func addEntries(entries: [(option: Option, value: String, comment: [String]?)], output: inout Command.Output) {
-        var configuration = file
+        var configuration = File(possiblyAt: Configuration.configurationFilePath)
         addEntries(entries: entries, to: &configuration)
         require() { try configuration.write(output: &output) }
     }
@@ -273,20 +260,13 @@ struct Configuration {
     }
 
     private static var configurationFile: [Option: String] {
-        var cacheCopy = cache
-        defer { cache = cacheCopy }
-
-        return cached(in: &cacheCopy.configurationFile) {
-            () -> [Option: String] in
-
-            return parse(configurationSource: file.contents)
-        }
+        return require { try Repository.packageRepository.configuration.options() }
     }
 
     static func parseConfigurationFile(fromLinkedRepositoryAt url: String) -> [Option: String] {
 
         let repositoryName = Repository.nameOfLinkedRepository(atURL: url)
-        let otherConfiguration = require() { try File(at: Repository.linkedRepository(named: repositoryName).subfolderOrFile(configurationFilePath.string)) }
+        let otherConfiguration = require() { try File(at: Repository.linkedRepository(named: repositoryName).subfolderOrFile(Configuration.fileName)) }
 
         return parse(configurationSource: otherConfiguration.contents)
     }
@@ -298,7 +278,7 @@ struct Configuration {
         return configurationFile[option] ≠ nil
     }
 
-    private static func invalidEnumValue(option: Option, value: String, valid: [String]) -> Never {
+    private static func invalidEnumValue(option: Option, value: String, valid: [StrictString]) -> Never {
         fatalError(message: [
             "Invalid option value:",
             "",
@@ -307,18 +287,16 @@ struct Configuration {
             "",
             "Valid values:",
             "",
-            join(lines: valid)
+            join(lines: valid.map({ String($0) }) )
             ])
     }
 
-    static let trueOptionValue = "True"
-    static let falseOptionValue = "False"
     private static func booleanValue(option: Option) -> Bool {
         if let value = configurationFile[option] {
             switch value {
-            case trueOptionValue:
+            case String(trueOptionValue):
                 return true
-            case falseOptionValue:
+            case String(falseOptionValue):
                 return false
             default:
                 invalidEnumValue(option: option, value: value, valid: [
@@ -327,7 +305,7 @@ struct Configuration {
                     ])
             }
         } else {
-            return option.defaultValue == trueOptionValue
+            return option.defaultValue == String(trueOptionValue)
         }
     }
 
@@ -454,41 +432,8 @@ struct Configuration {
 
     // Project Type
 
-    static var projectType: ProjectType {
-        let key = stringValue(option: .projectType)
-
-        guard let result = ProjectType(key: key) else {
-            invalidEnumValue(option: .projectType, value: key, valid: ProjectType.all.map({ $0.key }))
-        }
-
-        return result
-    }
     static var requiredOptions: [String] {
         return listValue(option: .requireOptions)
-    }
-
-    static var supportMacOS: Bool {
-        return booleanValue(option: .supportMacOS)
-    }
-
-    static var supportLinux: Bool {
-        return booleanValue(option: .supportLinux) ∧ projectType ≠ ProjectType.application
-    }
-
-    static var supportIOS: Bool {
-        return booleanValue(option: .supportIOS) ∧ projectType ≠ ProjectType.executable
-    }
-
-    static var supportWatchOS: Bool {
-        return booleanValue(option: .supportWatchOS) ∧ projectType ≠ ProjectType.application ∧ projectType ≠ ProjectType.executable
-    }
-
-    static var supportTVOS: Bool {
-        return booleanValue(option: .supportTVOS) ∧ projectType ≠ ProjectType.executable
-    }
-
-    static var supportOnlyLinux: Bool {
-        return ¬supportMacOS ∧ ¬supportIOS ∧ ¬supportWatchOS ∧ ¬supportTVOS
     }
 
     static var skipSimulators: Bool {
@@ -554,7 +499,7 @@ struct Configuration {
         return projectName.replacingOccurrences(of: " ", with: "")
     }
     static var defaultModuleName: String {
-        switch projectType {
+        switch (try? Repository.packageRepository.configuration.projectType())! {
         case .library, .application:
             return moduleName(forProjectName: projectName)
         default:
@@ -612,12 +557,12 @@ struct Configuration {
     }
     static var quotationOriginalKey: String {
         let value = stringValue(option: .quotationTestament)
-        let old = "Old"
-        let new = "New"
+        let old: StrictString = "Old"
+        let new: StrictString = "New"
         switch value {
-        case old:
+        case String(old):
             return "WLC"
-        case new:
+        case String(new):
             return "SBLGNT"
         default:
             invalidEnumValue(option: .quotationTestament, value: value, valid: [old, new])
@@ -632,11 +577,11 @@ struct Configuration {
     static func requiredFeatureList(localization: ArbitraryLocalization?) -> String {
         return requiredLocalizedOptionValue(option: .featureList, localization: localization)
     }
-    static func installationInstructions(localization: ArbitraryLocalization?) -> String? {
-        return localizedOptionValue(option: .installationInstructions, localization: localization) ?? ReadMe.defaultInstallationInstructions(localization: localization)
+    static func installationInstructions(localization: ArbitraryLocalization?) throws -> String? {
+        return try localizedOptionValue(option: .installationInstructions, localization: localization) ?? (try ReadMe.defaultInstallationInstructions(localization: localization))
     }
     static func requiredInstallationInstructions(localization: ArbitraryLocalization?) -> String {
-        guard let result = installationInstructions(localization: localization) else {
+        guard let result = (try? installationInstructions(localization: localization))! else {
             missingLocalizationError(option: .installationInstructions, localization: localization)
         }
         return result
@@ -674,7 +619,7 @@ struct Configuration {
     }
     static var licence: Licence? {
         if let key = possibleStringValue(option: .licence) {
-            if let result = Licence(key: key) {
+            if let result = Licence(key: StrictString(key)) {
                 return result
             } else {
                 invalidEnumValue(option: .licence, value: key, valid: Licence.all.map({ $0.key }))
@@ -686,7 +631,7 @@ struct Configuration {
     static var requiredLicence: Licence {
         let key = stringValue(option: .licence)
 
-        if let result = Licence(key: key) {
+        if let result = Licence(key: StrictString(key)) {
             return result
         } else {
             invalidEnumValue(option: .licence, value: key, valid: Licence.all.map({ $0.key }))
@@ -781,9 +726,6 @@ struct Configuration {
         return listValue(option: .codeCoverageExemptionTokensForPreviousLine)
     }
 
-    static var generateDocumentation: Bool {
-        return booleanValue(option: .generateDocumentation)
-    }
     static var enforceDocumentationCoverage: Bool {
         return booleanValue(option: .enforceDocumentationCoverage)
     }
@@ -858,18 +800,18 @@ struct Configuration {
         // Project Type vs Operating System
 
         func check(forIncompatibleOperatingSystem option: Option) {
-            if configurationFile[option] == Configuration.trueOptionValue {
+            if configurationFile[option] == String(Configuration.trueOptionValue) {
                 incompatibilityDetected(between: .projectType, and: option, documentation: .platforms)
             }
         }
 
-        if projectType == .application {
+        if (try? Repository.packageRepository.configuration.projectType()) == .application {
 
             check(forIncompatibleOperatingSystem: .supportLinux)
             check(forIncompatibleOperatingSystem: .supportWatchOS)
         }
 
-        if projectType == .executable {
+        if (try? Repository.packageRepository.configuration.projectType()) == .executable {
 
             check(forIncompatibleOperatingSystem: .supportIOS)
             check(forIncompatibleOperatingSystem: .supportWatchOS)
@@ -885,7 +827,7 @@ struct Configuration {
         // Custom
 
         let requiredEntries = requiredOptions
-        let requiredDefinitions = requiredEntries.map() { (entry: String) -> (option: Option, types: Set<ProjectType>) in
+        let requiredDefinitions = requiredEntries.map() { (entry: String) -> (option: Option, types: Set<PackageRepository.Target.TargetType>) in
 
             func option(forKey key: String) -> Option {
                 if let option = Option(key: key) {
@@ -906,9 +848,9 @@ struct Configuration {
             let components = entry.components(separatedBy: ": ")
 
             if components.count == 1 {
-                return (option: option(forKey: components[0]), types: Set(ProjectType.all))
+                return (option: option(forKey: components[0]), types: Set(PackageRepository.Target.TargetType.cases))
             } else {
-                guard let type = ProjectType(key: components[0]) else {
+                guard let type = PackageRepository.Target.TargetType(key: StrictString(components[0])) else {
                     fatalError(message: [
                         "Invalid project type in “Required Options”:",
                         "",
@@ -916,13 +858,13 @@ struct Configuration {
                         "",
                         "Available Types:",
                         "",
-                        join(lines: ProjectType.all.map({ $0.key }))
+                        join(lines: PackageRepository.Target.TargetType.cases.map({ String($0.key) }))
                         ])
                 }
                 return (option: option(forKey: components[1]), types: [type])
             }
         }
-        var required: [Option: Set<ProjectType>] = [:]
+        var required: [Option: Set<PackageRepository.Target.TargetType>] = [:]
         for (key, types) in requiredDefinitions {
             if let existing = required[key] {
                 required[key] = existing ∪ types
@@ -931,7 +873,7 @@ struct Configuration {
             }
         }
 
-        for (option, types) in required where configurationFile[option] == nil ∧ Configuration.projectType ∈ types {
+        for (option, types) in required where configurationFile[option] == nil ∧ (try? Repository.packageRepository.configuration.projectType())! ∈ types {
             incompatibilityDetected(between: option, and: .requireOptions, documentation: DocumentationLink.requiringOptions)
         }
 

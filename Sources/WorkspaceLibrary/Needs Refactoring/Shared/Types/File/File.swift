@@ -33,21 +33,21 @@ struct File {
 
     // MARK: - Initialization
 
-    init(_ textFile: PackageRepository.TextFile) {
+    init(_ textFile: TextFile) {
         self.textFile = textFile
     }
 
     init<P : Path>(at path: P) throws {
-        textFile = try PackageRepository.TextFile(alreadyAt: URL(fileURLWithPath: Repository.absolute(path).string))
+        textFile = try TextFile(alreadyAt: URL(fileURLWithPath: Repository.absolute(path).string))
     }
 
     init<P : Path>(possiblyAt path: P, executable: Bool = false) {
-        textFile = (try? PackageRepository.TextFile(possiblyAt: URL(fileURLWithPath: Repository.absolute(path).string), executable: executable))!
+        textFile = (try? TextFile(possiblyAt: URL(fileURLWithPath: Repository.absolute(path).string), executable: executable))!
     }
 
     // MARK: - Properties
 
-    var textFile: PackageRepository.TextFile
+    var textFile: TextFile
 
     var contents: String {
         get {

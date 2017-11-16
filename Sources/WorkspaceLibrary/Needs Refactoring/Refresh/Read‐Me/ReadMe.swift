@@ -163,7 +163,7 @@ struct ReadMe {
             ]
         }
 
-        if Configuration.installationInstructions(localization: localization) ≠ nil {
+        if (try? Configuration.installationInstructions(localization: localization))! ≠ nil {
             readMe += [
                 "",
                 "[_Installation Instructions_]"
@@ -349,7 +349,7 @@ struct ReadMe {
         return links.joined(separator: " • ") + " " + skipInJazzy
     }
 
-    static func apiLinksMarkup(localization: ArbitraryLocalization?) -> String {
+    static func apiLinksMarkup(localization: ArbitraryLocalization?) throws -> String {
         let translation = Configuration.resolvedLocalization(for: localization)
 
         let urlString = Configuration.requiredDocumentationURL
@@ -378,10 +378,10 @@ struct ReadMe {
                 apis = "מת״י:"
             }
         case .unrecognized:
-            return apiLinksMarkup(localization: .compatible(.englishCanada))
+            return try apiLinksMarkup(localization: .compatible(.englishCanada))
         }
 
-        let operatingSystems = OperatingSystem.all.filter({ $0.isSupportedByProject }).map({ "\($0)" })
+        let operatingSystems = try OperatingSystem.cases.filter({ try Repository.packageRepository.configuration.supports($0) }).map({ "\($0.isolatedName.resolved(for: .englishCanada))" })
         if url.lastPathComponent ∈ Set(operatingSystems) {
 
             let root = url.deletingLastPathComponent().absoluteString
@@ -445,9 +445,9 @@ struct ReadMe {
         }
     }
 
-    static func defaultInstallationInstructions(localization: ArbitraryLocalization?) -> String? {
+    static func defaultInstallationInstructions(localization: ArbitraryLocalization?) throws -> String? {
 
-        if Configuration.projectType == .library {
+        if try Repository.packageRepository.configuration.projectType() == .library {
             let translation = Configuration.resolvedLocalization(for: localization)
 
             var instructions: [String] = []
@@ -617,7 +617,7 @@ struct ReadMe {
         return nil
     }
 
-    static func refreshReadMe(output: inout Command.Output) {
+    static func refreshReadMe(output: inout Command.Output) throws {
 
         var localizations = Configuration.localizations.map { Optional(
             $0) }
@@ -642,7 +642,7 @@ struct ReadMe {
 
             let apiLinks = key("API Links")
             if body.contains(apiLinks) {
-                body = body.replacingOccurrences(of: apiLinks, with: apiLinksMarkup(localization: localization))
+                body = body.replacingOccurrences(of: apiLinks, with: try apiLinksMarkup(localization: localization))
             }
 
             body = body.replacingOccurrences(of: key("Project"), with: Configuration.projectName)

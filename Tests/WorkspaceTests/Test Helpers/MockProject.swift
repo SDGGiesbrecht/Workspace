@@ -20,7 +20,7 @@ class MockProject {
 
     // MARK: - Initialization
 
-    init() throws {
+    init(type: String? = nil) throws {
         let uuid = UUID().uuidString
         location = FileManager.default.url(in: .temporary, at: "\(uuid)/MyProject")
 
@@ -29,6 +29,10 @@ class MockProject {
 
             try Shell.default.run(command: ["swift", "package", "init"])
             try Shell.default.run(command: ["git", "init"])
+
+            if let projectType = type {
+                try ("Project Type: " + projectType).save(to: location.appendingPathComponent(".Workspace Configuration.txt"))
+            }
         }
     }
 

@@ -71,7 +71,7 @@ struct Documentation {
         return sections.reduce(CharacterSet()) { $0 ∪ $1 }
     }()
 
-    static func generate(individualSuccess: @escaping (String) -> Void, individualFailure: @escaping (String) -> Void, output: inout Command.Output) {
+    static func generate(job: ContinuousIntegration.Job?, individualSuccess: @escaping (String) -> Void, individualFailure: @escaping (String) -> Void, output: inout Command.Output) {
 
         Xcode.temporarilyDisableProofreading(output: &output)
         defer {
@@ -185,38 +185,8 @@ struct Documentation {
             }
         }
 
-        if Environment.shouldDoMacOSJobs {
-
-            // macOS
-
+        if job == .documentation ∨ job == nil {
             generate(operatingSystemName: "macOS", sdk: "macosx", output: &output)
-        }
-
-        if Environment.shouldDoMiscellaneousJobs ∧ Configuration.supportLinux {
-            // [_Workaround: Generate Linux documentation on macOS instead. (jazzy --version 0.8.3)_]
-
-            generate(operatingSystemName: "Linux", sdk: "macosx", output: &output, condition: "LinuxDocs")
-        }
-
-        if Environment.shouldDoIOSJobs {
-
-            // iOS
-
-            generate(operatingSystemName: "iOS", sdk: "iphoneos", output: &output)
-        }
-
-        if Environment.shouldDoWatchOSJobs {
-
-            // watchOS
-
-            generate(operatingSystemName: "watchOS", sdk: "watchos", output: &output)
-        }
-
-        if Environment.shouldDoTVOSJobs {
-
-            // tvOS
-
-            generate(operatingSystemName: "tvOS", sdk: "appletvos", output: &output)
         }
 
         for path in Repository.trackedFiles(at: RelativePath("docs")) {

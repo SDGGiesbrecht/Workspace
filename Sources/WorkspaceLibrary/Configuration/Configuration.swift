@@ -174,4 +174,10 @@ struct Configuration {
     func shouldGenerateDocumentation() throws -> Bool {
         return try boolean(for: .generateDocumentation)
     }
+
+    // MARK: - Options: Overrides
+
+    func xcodeScheme() throws -> String {
+        return try string(for: .xcodeSchemeName)
+    }
 }

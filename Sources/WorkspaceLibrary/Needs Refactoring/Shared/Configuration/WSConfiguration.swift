@@ -688,9 +688,6 @@ extension Configuration {
     static var manageXcode: Bool {
         return booleanValue(option: .manageXcode)
     }
-    static var xcodeSchemeName: String {
-        return stringValue(option: .xcodeSchemeName)
-    }
     static var primaryXcodeTarget: String {
         return stringValue(option: .primaryXcodeTarget)
     }

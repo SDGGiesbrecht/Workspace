@@ -42,7 +42,7 @@ enum Documentation {
         }
 
         let copyrightText = try copyright(for: outputDirectory, in: project)
-        try Jazzy.default.document(target: target, sdk: sdk, copyright: copyrightText, gitHubURL: try project.configuration.repositoryURL(), outputDirectory: outputDirectory, output: &output)
+        try Jazzy.default.document(target: target, scheme: try project.configuration.xcodeScheme(), sdk: sdk, copyright: copyrightText, gitHubURL: try project.configuration.repositoryURL(), outputDirectory: outputDirectory, output: &output)
 
         notImplementedYet()
         /*

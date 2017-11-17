@@ -52,9 +52,10 @@ class Jazzy : RubyGem {
 
     // MARK: - Usage
 
-    func document(target: String, sdk: String, copyright: StrictString, gitHubURL: URL?, outputDirectory: URL, output: inout Command.Output) throws {
+    func document(target: String, scheme: String, sdk: String, copyright: StrictString, gitHubURL: URL?, outputDirectory: URL, output: inout Command.Output) throws {
 
         let buildDirectory = FileManager.default.url(in: .temporary, at: "Jazzy Build Artifacts")
+        try? FileManager.default.removeItem(at: buildDirectory)
         defer { try? FileManager.default.removeItem(at: buildDirectory) }
 
         var jazzyArguments: [String] = [
@@ -74,10 +75,10 @@ class Jazzy : RubyGem {
             "\u{2D}\u{2D}use\u{2D}safe\u{2D}filenames",
             "\u{2D}\u{2D}output", Shell.quote(outputDirectory.path),
             "\u{2D}\u{2D}xcodebuild\u{2D}arguments", [
+                "\u{2D}scheme", scheme,
                 "\u{2D}target", target,
                 "\u{2D}sdk", sdk,
-                // [_Warning: This needs fixing._]
-                //"\u{2D}derivedDataPath", buildDirectory.path
+                "\u{2D}derivedDataPath", buildDirectory.path
                 ].joined(separator: ",")
             ])
 

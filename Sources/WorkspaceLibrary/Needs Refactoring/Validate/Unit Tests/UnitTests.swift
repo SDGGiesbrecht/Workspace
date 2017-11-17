@@ -77,7 +77,7 @@ struct UnitTests {
 
         var deviceList: [String: String]?
 
-        func runUnitTestsInXcode(buildOnly: Bool, operatingSystem: OperatingSystem, sdk: String, simulatorSDK: String? = nil, deviceKey: String?, buildToolName: String? = nil) {
+        func runUnitTestsInXcode(buildOnly: Bool, operatingSystem: OperatingSystem, sdk: String, simulatorSDK: String? = nil, deviceKey: String?, buildToolName: String? = nil) throws {
             let operatingSystemName = "\(operatingSystem)"
 
             var buildOnly = buildOnly
@@ -168,10 +168,10 @@ struct UnitTests {
                 flagValue = "id=\(deviceID)"
             }
 
-            func generateScript(buildOnly: Bool) -> [String] {
+            func generateScript(buildOnly: Bool) throws -> [String] {
                 return [
                     "xcodebuild", (buildOnly ? "build" : "test"),
-                    "\u{2D}scheme", Configuration.xcodeSchemeName,
+                    "\u{2D}scheme", try Repository.packageRepository.configuration.xcodeScheme(),
                     flag, flagValue
                 ]
             }
@@ -218,7 +218,7 @@ struct UnitTests {
                 try? FileManager.default.removeItem(atPath: coverageDirectory)
             }
 
-            let script = generateScript(buildOnly: buildOnly)
+            let script = try generateScript(buildOnly: buildOnly)
             runUnitTests(buildOnly: buildOnly, operatingSystemName: operatingSystemName, script: script, buildToolName: buildToolName)
 
             if enforceCodeCoverage,
@@ -364,7 +364,7 @@ struct UnitTests {
         }
         if try options.job.includes(job: .macOSXcode)
             ∧ (try options.project.configuration.supports(.macOS)) {
-            runUnitTestsInXcode(buildOnly: false, operatingSystem: .macOS, sdk: "macosx", deviceKey: nil, buildToolName: "Xcode")
+            try runUnitTestsInXcode(buildOnly: false, operatingSystem: .macOS, sdk: "macosx", deviceKey: nil, buildToolName: "Xcode")
         }
         #endif
 
@@ -378,17 +378,17 @@ struct UnitTests {
         #if os(macOS)
         if try options.job.includes(job: .iOS)
             ∧ (try options.project.configuration.supports(.iOS)) {
-            runUnitTestsInXcode(buildOnly: false, operatingSystem: .iOS, sdk: "iphoneos", simulatorSDK: "iphonesimulator", deviceKey: "iPhone 8")
+            try runUnitTestsInXcode(buildOnly: false, operatingSystem: .iOS, sdk: "iphoneos", simulatorSDK: "iphonesimulator", deviceKey: "iPhone 8")
         }
 
         if try options.job.includes(job: .watchOS)
             ∧ (try options.project.configuration.supports(.watchOS)) {
-            runUnitTestsInXcode(buildOnly: true, operatingSystem: .watchOS, sdk: "watchos", deviceKey: "Apple Watch Series 2 \u{2D} 38mm")
+            try runUnitTestsInXcode(buildOnly: true, operatingSystem: .watchOS, sdk: "watchos", deviceKey: "Apple Watch Series 2 \u{2D} 38mm")
         }
 
         if try options.job.includes(job: .tvOS)
             ∧ (try options.project.configuration.supports(.tvOS)) {
-            runUnitTestsInXcode(buildOnly: false, operatingSystem: .tvOS, sdk: "appletvos", simulatorSDK: "appletvsimulator", deviceKey: "Apple TV 4K")
+            try runUnitTestsInXcode(buildOnly: false, operatingSystem: .tvOS, sdk: "appletvos", simulatorSDK: "appletvsimulator", deviceKey: "Apple TV 4K")
         }
         #endif
     }

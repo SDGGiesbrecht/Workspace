@@ -52,7 +52,20 @@ class Jazzy : RubyGem {
 
     // MARK: - Usage
 
-    func document(target: String, scheme: String, sdk: String, copyright: StrictString, gitHubURL: URL?, outputDirectory: URL, output: inout Command.Output) throws {
+    func document(target: String, scheme: String, buildOperatingSystem: OperatingSystem, copyright: StrictString, gitHubURL: URL?, outputDirectory: URL, project: PackageRepository, output: inout Command.Output) throws {
+        let sdk: String
+        switch buildOperatingSystem {
+        case .macOS:
+            sdk = "macosx"
+        case .linux:
+            unreachable()
+        case .iOS:
+            sdk = "iphoneos"
+        case .watchOS:
+            sdk = "watchos"
+        case .tvOS:
+            sdk = "appletvos"
+        }
 
         let buildDirectory = FileManager.default.url(in: .temporary, at: "Jazzy Build Artifacts")
         try? FileManager.default.removeItem(at: buildDirectory)
@@ -83,5 +96,16 @@ class Jazzy : RubyGem {
             ])
 
         try executeInCompatibilityMode(with: jazzyArguments, output: &output)
+
+        // Workarounds
+        try preventJekyllInterference(in: outputDirectory, for: project, output: &output)
+    }
+
+    // MARK: - Workarounds
+
+    private func preventJekyllInterference(in directory: URL, for project: PackageRepository, output: inout Command.Output) throws {
+        let nojekyll = directory.appendingPathComponent(".nojekyll")
+        TextFile.reportWriteOperation(to: nojekyll, in: project, output: &output)
+        try Data().write(to: nojekyll)
     }
 }

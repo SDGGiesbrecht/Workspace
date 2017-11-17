@@ -27,28 +27,27 @@ enum Documentation {
 
         let outputDirectory = documentationDirectory(for: project).appendingPathComponent(target)
 
-        let macOSSDK = "macosx"
-        let sdk: String
+        let buildOperatingSystem: OperatingSystem
         if try project.configuration.supports(.macOS) {
-            sdk = macOSSDK
+            buildOperatingSystem = .macOS
         } else if try project.configuration.supports(.iOS) {
-            sdk = "iphoneos"
+            buildOperatingSystem = .iOS
         } else if try project.configuration.supports(.watchOS) {
-            sdk = "watchos"
+            buildOperatingSystem = .watchOS
         } else if try project.configuration.supports(.tvOS) {
-            sdk = "appletvos"
+            buildOperatingSystem = .tvOS
         } else {
-            sdk = macOSSDK
+            buildOperatingSystem = .macOS
         }
 
         let copyrightText = try copyright(for: outputDirectory, in: project)
-        try Jazzy.default.document(target: target, scheme: try project.configuration.xcodeScheme(), sdk: sdk, copyright: copyrightText, gitHubURL: try project.configuration.repositoryURL(), outputDirectory: outputDirectory, output: &output)
+        try FileManager.default.do(in: project.location) {
+            try Jazzy.default.document(target: target, scheme: try project.configuration.xcodeScheme(), buildOperatingSystem: buildOperatingSystem, copyright: copyrightText, gitHubURL: try project.configuration.repositoryURL(), outputDirectory: outputDirectory, project: project, output: &output)
+        }
         project.resetCache(debugReason: "jazzy")
 
         notImplementedYet()
         /*
-
-         requireBash(["touch", "docs/.nojekyll"])
 
          if jazzyResult.succeeded {
          individualSuccess("Generated documentation for \(operatingSystemName).")

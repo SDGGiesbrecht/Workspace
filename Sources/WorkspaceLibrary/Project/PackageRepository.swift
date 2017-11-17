@@ -91,6 +91,14 @@ extension PackageRepository {
         }
     }
 
+    func libraryProductTargets(output: inout Command.Output) throws -> Set<String> {
+        var result: Set<String> = []
+        try FileManager.default.do(in: location) {
+            result = try SwiftTool.default.libraryProductTargets(output: &output)
+        }
+        return result
+    }
+
     static let resourceDirectoryName = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
         switch localization {
         case .englishCanada:
@@ -267,11 +275,8 @@ extension PackageRepository {
     // MARK: - Documentation
 
     func document(output: inout Command.Output) throws {
-        try FileManager.default.do(in: location) {
-            let libraryProducts = try SwiftTool.default.libraryProductTargets(output: &output)
-            for product in libraryProducts {
-                try Documentation.document(target: product, for: self, output: &output)
-            }
+        for product in try libraryProductTargets(output: &output) {
+            try Documentation.document(target: product, for: self, output: &output)
         }
     }
 }

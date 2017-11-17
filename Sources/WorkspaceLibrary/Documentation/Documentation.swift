@@ -43,14 +43,10 @@ enum Documentation {
 
         let copyrightText = try copyright(for: outputDirectory, in: project)
         try Jazzy.default.document(target: target, scheme: try project.configuration.xcodeScheme(), sdk: sdk, copyright: copyrightText, gitHubURL: try project.configuration.repositoryURL(), outputDirectory: outputDirectory, output: &output)
+        project.resetCache(debugReason: "jazzy")
 
         notImplementedYet()
         /*
-
-         func generate(operatingSystemName: String, sdk: String, output: inout Command.Output, condition: String? = nil) {
-
-         if let github = Configuration.repositoryURL {
-         }
 
          requireBash(["touch", "docs/.nojekyll"])
 

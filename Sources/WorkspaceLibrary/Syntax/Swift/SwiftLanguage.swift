@@ -108,6 +108,53 @@ struct SwiftLanguage {
         return result
     }()
 
+    static let operatorHeadCharactersIncludingDot: CharacterSet = {
+        // From https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/LexicalStructure.html#//apple_ref/doc/uid/TP40014097-CH30-ID418
+
+        var result: CharacterSet = ["/", "=", "\u{2D}", "+", "!", "*", "%", "<", ">", "&", "|", "^", "~", "?"]
+
+        result.insert(charactersIn: Unicode.Scalar(0xA1) ... Unicode.Scalar(0xA7))
+
+        result.insert(Unicode.Scalar(0xA9))
+        result.insert(Unicode.Scalar(0xAB))
+
+        result.insert(Unicode.Scalar(0xAC))
+        result.insert(Unicode.Scalar(0xAE))
+
+        result.insert(charactersIn: Unicode.Scalar(0xB0) ... Unicode.Scalar(0xB1))
+        result.insert(Unicode.Scalar(0xB6))
+        result.insert(Unicode.Scalar(0xBB))
+        result.insert(Unicode.Scalar(0xBF))
+        result.insert(Unicode.Scalar(0xD7))
+        result.insert(Unicode.Scalar(0xF7))
+
+        result.insert(charactersIn: Unicode.Scalar(0x2016)! ... Unicode.Scalar(0x2017)!)
+        result.insert(charactersIn: Unicode.Scalar(0x2020)! ... Unicode.Scalar(0x2027)!)
+
+        result.insert(charactersIn: Unicode.Scalar(0x2030)! ... Unicode.Scalar(0x203E)!)
+
+        result.insert(charactersIn: Unicode.Scalar(0x2041)! ... Unicode.Scalar(0x2053)!)
+
+        result.insert(charactersIn: Unicode.Scalar(0x2055)! ... Unicode.Scalar(0x205E)!)
+
+        result.insert(charactersIn: Unicode.Scalar(0x2190)! ... Unicode.Scalar(0x23FF)!)
+
+        result.insert(charactersIn: Unicode.Scalar(0x2500)! ... Unicode.Scalar(0x2775)!)
+
+        result.insert(charactersIn: Unicode.Scalar(0x2794)! ... Unicode.Scalar(0x2BFF)!)
+
+        result.insert(charactersIn: Unicode.Scalar(0x2E00)! ... Unicode.Scalar(0x2E7F)!)
+
+        result.insert(charactersIn: Unicode.Scalar(0x3001)! ... Unicode.Scalar(0x3003)!)
+
+        result.insert(charactersIn: Unicode.Scalar(0x3008)! ... Unicode.Scalar(0x3030)!)
+
+        // The dot cannot be an operator on its own.
+        result.insert(".")
+
+        return result
+    }()
+
     private static let casedLetters =
         CharacterSet.lowercaseLetters
         ∪ CharacterSet.uppercaseLetters // Includes titlecase.

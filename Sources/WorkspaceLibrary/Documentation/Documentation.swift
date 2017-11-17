@@ -51,7 +51,6 @@ enum Documentation {
         try FileManager.default.do(in: project.location) {
             try Jazzy.default.document(target: target, scheme: try project.configuration.xcodeScheme(), buildOperatingSystem: buildOperatingSystem, copyright: copyrightText, gitHubURL: try project.configuration.repositoryURL(), outputDirectory: outputDirectory, project: project, output: &output)
         }
-        project.resetCache(debugReason: "jazzy")
 
         validationStatus.passStep(message: UserFacingText({ localization, _ in
             switch localization {
@@ -112,61 +111,6 @@ enum Documentation {
          }
          }
          }
-         }
-
-         if job == .documentation ∨ job == nil {
-         generate(operatingSystemName: "macOS", sdk: "macosx", output: &output)
-         }
-
-         for path in Repository.trackedFiles(at: RelativePath("docs")) {
-         if let fileType = FileType(filePath: path),
-         fileType == .html {
-
-         var file = require() { try File(at: path) }
-         var source = file.contents
-
-         let tokens = ("<span class=\u{22}err\u{22}>", "</span>")
-         while let error = source.scalars.firstNestingLevel(startingWith: tokens.0.scalars, endingWith: tokens.1.scalars) {
-
-         func parseError() -> Never {
-         fatalError(message: [
-         "Error parsing HTML:",
-         "",
-         String(error.container.contents),
-         "",
-         "This may indicate a bug in Workspace."
-         ])
-         }
-
-         guard let first = error.contents.contents.first else {
-         parseError()
-         }
-
-         if first ∈ CharacterSet.nonBaseCharacters {
-         guard let division = source.scalars.firstMatch(for: "</span><span class=\u{22}err\u{22}>".scalars) else {
-         parseError()
-         }
-         source.scalars.removeSubrange(division.range)
-         } else {
-         guard let `class` = source.scalars.firstNestingLevel(startingWith: "<span class=\u{22}".scalars, endingWith: "\u{22}>".scalars, in: error.container.range)?.contents.range else {
-         parseError()
-         }
-
-         if first ∈ operatorCharacters {
-         source.scalars.replaceSubrange(`class`, with: "o".scalars)
-         } else {
-         source.scalars.replaceSubrange(`class`, with: "n".scalars)
-         }
-         }
-         }
-
-         while let shouldRemove = source.range(of: ReadMe.skipInJazzy.replacingOccurrences(of: "\u{2D}\u{2D}", with: "&ndash;").replacingOccurrences(of: "<", with: "&lt;").replacingOccurrences(of: ">", with: "&gt;")) {
-         let relatedLine = source.lineRange(for: shouldRemove)
-         source.removeSubrange(relatedLine)
-         }
-
-         file.contents = source
-         require() { try file.write(output: &output) }
          }*/
     }
 

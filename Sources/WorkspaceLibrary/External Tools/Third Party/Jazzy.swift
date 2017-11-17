@@ -96,9 +96,11 @@ class Jazzy : RubyGem {
             ])
 
         try executeInCompatibilityMode(with: jazzyArguments, output: &output)
+        project.resetCache(debugReason: "jazzy")
 
         // Workarounds
         try preventJekyllInterference(in: outputDirectory, for: project, output: &output)
+        try fixSplitClusters(in: outputDirectory, for: project, output: &output)
     }
 
     // MARK: - Workarounds
@@ -107,5 +109,46 @@ class Jazzy : RubyGem {
         let nojekyll = directory.appendingPathComponent(".nojekyll")
         TextFile.reportWriteOperation(to: nojekyll, in: project, output: &output)
         try Data().write(to: nojekyll)
+        project.resetCache(debugReason: ".nojekyll")
+    }
+
+    private func fixSplitClusters(in directory: URL, for project: PackageRepository, output: inout Command.Output) throws {
+        for url in try project.trackedFiles(output: &output) {
+            if let type = try? FileType(url: url),
+                type == .html {
+
+                var file = try TextFile(alreadyAt: url)
+                var source = file.contents
+
+                while let error = source.scalars.firstNestingLevel(startingWith: "<span class=\u{22}err\u{22}>".scalars, endingWith: "</span>".scalars) {
+
+                    if let first = error.contents.contents.first {
+                        if first ∈ CharacterSet.nonBaseCharacters,
+                            let division = source.scalars.firstMatch(for: "</span><span class=\u{22}err\u{22}>".scalars)?.range {
+                            source.scalars.removeSubrange(division)
+                        } else if let `class` = source.scalars.firstNestingLevel(startingWith: "<span class=\u{22}".scalars, endingWith: "\u{22}>".scalars, in: error.container.range)?.contents.range {
+                            if first ∈ SwiftLanguage.operatorHeadCharactersIncludingDot {
+                                source.scalars.replaceSubrange(`class`, with: "o".scalars)
+                            } else {
+                                source.scalars.replaceSubrange(`class`, with: "n".scalars)
+                            }
+                        }
+                    }
+                }
+
+                try file.writeChanges(for: project, output: &output)
+            }
+
+            notImplementedYet()
+            /*
+             while let shouldRemove = source.range(of: ReadMe.skipInJazzy.replacingOccurrences(of: "\u{2D}\u{2D}", with: "&ndash;").replacingOccurrences(of: "<", with: "&lt;").replacingOccurrences(of: ">", with: "&gt;")) {
+             let relatedLine = source.lineRange(for: shouldRemove)
+             source.removeSubrange(relatedLine)
+             }
+
+             file.contents = source
+             require() { try file.write(output: &output) }
+             }*/
+        }
     }
 }

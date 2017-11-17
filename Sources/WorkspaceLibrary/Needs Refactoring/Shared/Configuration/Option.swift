@@ -285,7 +285,7 @@ enum Option : String, CustomStringConvertible {
             return Configuration.emptyListOptionValue
 
         case .generateDocumentation:
-            return String(Configuration.falseOptionValue)
+            return String(Configuration.trueOptionValue)
         case .enforceDocumentationCoverage:
             return String(Configuration.trueOptionValue)
         case .documentationCopyright:

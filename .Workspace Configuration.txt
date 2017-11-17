@@ -15,7 +15,6 @@
 [_Import https://github.com/SDGGiesbrecht/SDG_]
 
 Project Type: Executable
-Generate Documentation: False
 
 Project Website: https://github.com/SDGGiesbrecht/Workspace#workspace
 Documentation URL: https://github.com/SDGGiesbrecht/Workspace#workspace

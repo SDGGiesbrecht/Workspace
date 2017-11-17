@@ -25,6 +25,13 @@ enum Documentation {
 
     static func document(target: String, for project: PackageRepository, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
 
+        print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+            switch localization {
+            case .englishCanada:
+                return "Generating documentation for “" + StrictString(target) + "”..."
+            }
+        }).resolved().formattedAsSectionHeader(), to: &output)
+
         let outputDirectory = documentationDirectory(for: project).appendingPathComponent(target)
 
         let buildOperatingSystem: OperatingSystem
@@ -49,7 +56,7 @@ enum Documentation {
         validationStatus.passStep(message: UserFacingText({ localization, _ in
             switch localization {
             case .englishCanada:
-                return "Generated documentation for " + StrictString(target) + "."
+                return "Generated documentation for “" + StrictString(target) + "”."
             }
         }))
 

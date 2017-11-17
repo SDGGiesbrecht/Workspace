@@ -275,7 +275,7 @@ extension PackageRepository {
     // MARK: - Documentation
 
     func document(validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
-        for product in try libraryProductTargets(output: &output) {
+        for product in try libraryProductTargets(output: &output).sorted() {
             try Documentation.document(target: product, for: self, validationStatus: &validationStatus, output: &output)
         }
     }

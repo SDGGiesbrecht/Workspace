@@ -34,8 +34,18 @@ extension Workspace {
 
         static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (directArguments: DirectArguments, options: Options, output: inout Command.Output) throws in
 
+            guard try options.project.configuration.shouldGenerateDocumentation() else {
+                throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
+                    switch localization {
+                    case .englishCanada:
+                        return "The Workspace configuration prevents documentation generation."
+                    }
+                }))
+            }
+
             var validationStatus = ValidationStatus()
             try executeAsStep(directArguments: directArguments, options: options, validationStatus: &validationStatus, output: &output)
+
             guard validationStatus.validatedSomething else {
                 throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
                     switch localization {
@@ -51,15 +61,9 @@ extension Workspace {
         })
 
         static func executeAsStep(directArguments: DirectArguments, options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
-
-            print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
-                switch localization {
-                case .englishCanada:
-                    return "Generating documentation..."
-                }
-            }).resolved().formattedAsSectionHeader(), to: &output)
-
-            try options.project.document(validationStatus: &validationStatus, output: &output)
+            if try options.project.configuration.shouldGenerateDocumentation() {
+                try options.project.document(validationStatus: &validationStatus, output: &output)
+            }
         }
     }
 }

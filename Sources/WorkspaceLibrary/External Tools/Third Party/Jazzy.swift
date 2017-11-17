@@ -76,11 +76,11 @@ class Jazzy : RubyGem {
             "\u{2D}\u{2D}xcodebuild\u{2D}arguments", [
                 "\u{2D}target", target,
                 "\u{2D}sdk", sdk,
-                "\u{2D}derivedDataPath", Shell.quote(buildDirectory.path)
+                // [_Warning: This needs fixing._]
+                //"\u{2D}derivedDataPath", buildDirectory.path
                 ].joined(separator: ",")
             ])
 
-        try executeInCompatibilityMode(with: [
-            ], output: &output)
+        try executeInCompatibilityMode(with: jazzyArguments, output: &output)
     }
 }

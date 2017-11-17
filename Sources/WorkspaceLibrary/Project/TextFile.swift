@@ -164,7 +164,7 @@ struct TextFile {
     }
 
     // MARK: - Writing
-    
+
     static func reportWriteOperation(to location: URL, in repository: PackageRepository, output: inout Command.Output) {
         print(UserFacingText<InterfaceLocalization, String>({ (localization, path) in
             switch localization {

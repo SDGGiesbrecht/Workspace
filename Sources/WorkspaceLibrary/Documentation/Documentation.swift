@@ -23,7 +23,7 @@ enum Documentation {
         return project.location.appendingPathComponent("docs")
     }
 
-    static func document(target: String, for project: PackageRepository, output: inout Command.Output) throws {
+    static func document(target: String, for project: PackageRepository, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
 
         let outputDirectory = documentationDirectory(for: project).appendingPathComponent(target)
 
@@ -46,14 +46,15 @@ enum Documentation {
         }
         project.resetCache(debugReason: "jazzy")
 
+        validationStatus.passStep(message: UserFacingText({ localization, _ in
+            switch localization {
+            case .englishCanada:
+                return "Generated documentation for " + StrictString(target) + "."
+            }
+        }))
+
         notImplementedYet()
         /*
-
-         if jazzyResult.succeeded {
-         individualSuccess("Generated documentation for \(operatingSystemName).")
-         } else {
-         individualFailure("Failed to generate documentation for \(operatingSystemName).")
-         }
 
          if jazzyResult.succeeded ∧ Configuration.enforceDocumentationCoverage {
 

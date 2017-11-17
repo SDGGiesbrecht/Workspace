@@ -32,7 +32,26 @@ extension Workspace {
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (arguments: DirectArguments, options: Options, output: inout Command.Output) throws in
+        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (directArguments: DirectArguments, options: Options, output: inout Command.Output) throws in
+
+            var validationStatus = ValidationStatus()
+            try executeAsStep(directArguments: directArguments, options: options, validationStatus: &validationStatus, output: &output)
+            guard validationStatus.validatedSomething else {
+                throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
+                    switch localization {
+                    case .englishCanada:
+                        return StrictString(join(lines: [
+                            "Nothing to document.",
+                            "The package manifest does not define any library products."
+                            ]))
+                    }
+                }))
+            }
+            try validationStatus.reportOutcome(projectName: try options.project.configuration.projectName(), output: &output)
+        })
+
+        static func executeAsStep(directArguments: DirectArguments, options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+
             print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
                 switch localization {
                 case .englishCanada:
@@ -40,7 +59,7 @@ extension Workspace {
                 }
             }).resolved().formattedAsSectionHeader(), to: &output)
 
-            try options.project.document(output: &output)
-        })
+            try options.project.document(validationStatus: &validationStatus, output: &output)
+        }
     }
 }

@@ -274,9 +274,9 @@ extension PackageRepository {
 
     // MARK: - Documentation
 
-    func document(output: inout Command.Output) throws {
+    func document(validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
         for product in try libraryProductTargets(output: &output) {
-            try Documentation.document(target: product, for: self, output: &output)
+            try Documentation.document(target: product, for: self, validationStatus: &validationStatus, output: &output)
         }
     }
 }

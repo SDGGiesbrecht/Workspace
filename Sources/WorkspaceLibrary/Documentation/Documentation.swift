@@ -61,6 +61,15 @@ enum Documentation {
 
         notImplementedYet()
         /*
+         /*
+         while let shouldRemove = source.range(of: ReadMe.skipInJazzy.replacingOccurrences(of: "\u{2D}\u{2D}", with: "&ndash;").replacingOccurrences(of: "<", with: "&lt;").replacingOccurrences(of: ">", with: "&gt;")) {
+         let relatedLine = source.lineRange(for: shouldRemove)
+         source.removeSubrange(relatedLine)
+         }
+
+         file.contents = source
+         require() { try file.write(output: &output) }
+         }*/
 
          if jazzyResult.succeeded ∧ Configuration.enforceDocumentationCoverage {
 

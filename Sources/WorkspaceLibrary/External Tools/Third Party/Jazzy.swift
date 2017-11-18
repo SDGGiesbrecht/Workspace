@@ -98,8 +98,9 @@ class Jazzy : RubyGem {
         try executeInCompatibilityMode(with: jazzyArguments, output: &output)
         project.resetCache(debugReason: "jazzy")
 
-        // Workarounds
+        // [_Workaround: Jazzy is incompatible with Jekyll. (jazzy --version 0.9.0)_]
         try preventJekyllInterference(in: outputDirectory, for: project, output: &output)
+        // [_Workaround: Jazzy expects only ASCII. (jazzy --version 0.9.0)_]
         try fixSplitClusters(in: outputDirectory, for: project, output: &output)
     }
 
@@ -136,19 +137,9 @@ class Jazzy : RubyGem {
                     }
                 }
 
+                file.contents = source
                 try file.writeChanges(for: project, output: &output)
             }
-
-            notImplementedYet()
-            /*
-             while let shouldRemove = source.range(of: ReadMe.skipInJazzy.replacingOccurrences(of: "\u{2D}\u{2D}", with: "&ndash;").replacingOccurrences(of: "<", with: "&lt;").replacingOccurrences(of: ">", with: "&gt;")) {
-             let relatedLine = source.lineRange(for: shouldRemove)
-             source.removeSubrange(relatedLine)
-             }
-
-             file.contents = source
-             require() { try file.write(output: &output) }
-             }*/
         }
     }
 }

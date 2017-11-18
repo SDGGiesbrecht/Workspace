@@ -52,6 +52,24 @@ enum Documentation {
             try Jazzy.default.document(target: target, scheme: try project.configuration.xcodeScheme(), buildOperatingSystem: buildOperatingSystem, copyright: copyrightText, gitHubURL: try project.configuration.repositoryURL(), outputDirectory: outputDirectory, project: project, output: &output)
         }
 
+        for url in try project.trackedFiles(output: &output) where url.is(in: outputDirectory) {
+            if let type = try? FileType(url: url),
+                type == .html {
+
+                let transformedMarker = ReadMe.skipInJazzy.replacingOccurrences(of: "\u{2D}\u{2D}", with: "&ndash;").replacingOccurrences(of: "<", with: "&lt;").replacingOccurrences(of: ">", with: "&gt;")
+
+                var file = try TextFile(alreadyAt: url)
+                var source = file.contents
+                while let skipMarker = source.scalars.firstMatch(for: transformedMarker.scalars) {
+                    let line = skipMarker.range.lines(in: source.lines)
+                    source.lines.removeSubrange(line)
+                }
+
+                file.contents = source
+                try file.writeChanges(for: project, output: &output)
+            }
+        }
+
         validationStatus.passStep(message: UserFacingText({ localization, _ in
             switch localization {
             case .englishCanada:
@@ -61,15 +79,6 @@ enum Documentation {
 
         notImplementedYet()
         /*
-         /*
-         while let shouldRemove = source.range(of: ReadMe.skipInJazzy.replacingOccurrences(of: "\u{2D}\u{2D}", with: "&ndash;").replacingOccurrences(of: "<", with: "&lt;").replacingOccurrences(of: ">", with: "&gt;")) {
-         let relatedLine = source.lineRange(for: shouldRemove)
-         source.removeSubrange(relatedLine)
-         }
-
-         file.contents = source
-         require() { try file.write(output: &output) }
-         }*/
 
          if jazzyResult.succeeded ∧ Configuration.enforceDocumentationCoverage {
 

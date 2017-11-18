@@ -713,10 +713,6 @@ extension Configuration {
         return listValue(option: .codeCoverageExemptionTokensForPreviousLine)
     }
 
-    static var enforceDocumentationCoverage: Bool {
-        return booleanValue(option: .enforceDocumentationCoverage)
-    }
-
     static var manageContinuousIntegration: Bool {
         return booleanValue(option: .manageContinuousIntegration)
     }

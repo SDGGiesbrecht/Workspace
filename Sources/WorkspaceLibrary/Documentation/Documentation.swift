@@ -22,6 +22,29 @@ enum Documentation {
     static func documentationDirectory(for project: PackageRepository) -> URL {
         return project.location.appendingPathComponent("docs")
     }
+    static func documentationDirectory(for target: String, in project: PackageRepository) -> URL {
+        return documentationDirectory(for: project).appendingPathComponent(target)
+    }
+
+    private static func copyright(for directory: URL, in project: PackageRepository) throws -> StrictString {
+
+        let existing = try TextFile(possiblyAt: directory.appendingPathComponent("index.html")).contents
+        let searchArea: String
+        if let footerStart = existing.range(of: "<section id=\u{22}footer\u{22}>")?.upperBound {
+            searchArea = String(existing[footerStart...])
+        } else {
+            searchArea = ""
+        }
+        let dates = StrictString(FileHeaders.copyright(fromText: searchArea))
+
+        var template = try project.configuration.documentationCopyright()
+
+        template.insert(dates, for: "Copyright")
+        try template.insert(resultOf: { try project.configuration.author() }, for: "Author")
+        template.insert(try project.configuration.projectName(), for: "Project")
+
+        return template.text
+    }
 
     static func document(target: String, for project: PackageRepository, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
 
@@ -32,7 +55,7 @@ enum Documentation {
             }
         }).resolved().formattedAsSectionHeader(), to: &output)
 
-        let outputDirectory = documentationDirectory(for: project).appendingPathComponent(target)
+        let outputDirectory = documentationDirectory(for: target, in: project)
 
         let buildOperatingSystem: OperatingSystem
         if try project.configuration.supports(.macOS) {
@@ -76,79 +99,41 @@ enum Documentation {
                 return "Generated documentation for “" + StrictString(target) + "”."
             }
         }))
-
-        notImplementedYet()
-        /*
-
-         if jazzyResult.succeeded ∧ Configuration.enforceDocumentationCoverage {
-
-         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-         print("Checking documentation coverage for \(operatingSystemName)...".formattedAsSectionHeader(), to: &output)
-         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-
-         let undocumented = require() { try File(at: RelativePath("docs/\(operatingSystemName)/undocumented.json")) }
-
-         guard let jsonData = undocumented.contents.data(using: String.Encoding.utf8) else {
-         fatalError(message: [
-         "“undocumented.json” is not in UTF‐8.",
-         "This may indicate a bug in Workspace."
-         ])
-         }
-
-         do {
-         guard let jsonDictionary = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] else {
-         fatalError(message: [
-         "Failed to parse “undocumented.json” as a dictionary.",
-         "This may indicate a bug in Workspace."
-         ])
-         }
-
-         guard let warnings = jsonDictionary["warnings"] as? [Any] else {
-         fatalError(message: [
-         "Failed to parse “warnings” in “undocumented.json”.",
-         "This may indicate a bug in Workspace."
-         ])
-         }
-
-         for warning in warnings {
-         print(["\(warning)"], in: .red, spaced: true)
-         }
-
-         if warnings.isEmpty {
-         individualSuccess("Documentation coverage is complete for \(operatingSystemName).")
-         } else {
-         individualFailure("Documentation coverage is incomplete for \(operatingSystemName). (See above for details.)")
-         }
-
-         } catch let error {
-         fatalError(message: [
-         "An error occurred while parsing “undocumented.json”.",
-         "",
-         error.localizedDescription
-         ])
-         }
-         }
-         }
-         }*/
     }
 
-    private static func copyright(for directory: URL, in project: PackageRepository) throws -> StrictString {
+    static func validateDocumentationCoverage(for target: String, in project: PackageRepository, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
 
-        let existing = try TextFile(possiblyAt: directory.appendingPathComponent("index.html")).contents
-        let searchArea: String
-        if let footerStart = existing.range(of: "<section id=\u{22}footer\u{22}>")?.upperBound {
-            searchArea = String(existing[footerStart...])
-        } else {
-            searchArea = ""
+        print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+            switch localization {
+            case .englishCanada:
+                return "Checking documentation coverage for “" + StrictString(target) + "”..."
+            }
+        }).resolved().formattedAsSectionHeader(), to: &output)
+
+        let warnings = try Jazzy.default.warnings(outputDirectory: documentationDirectory(for: target, in: project))
+
+        for warning in warnings {
+            print(join(lines: [
+                warning.file.path(relativeTo: project.location),
+                String(warning.line.inDigits()),
+                warning.symbol
+                ]).formattedAsError(), to: &output)
         }
-        let dates = StrictString(FileHeaders.copyright(fromText: searchArea))
 
-        var template = try project.configuration.documentationCopyright()
-
-        template.insert(dates, for: "Copyright")
-        try template.insert(resultOf: { try project.configuration.author() }, for: "Author")
-        template.insert(try project.configuration.projectName(), for: "Project")
-
-        return template.text
+        if warnings.isEmpty {
+            validationStatus.passStep(message: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+                switch localization {
+                case .englishCanada:
+                    return "Documentation coverage is complete for “" + StrictString(target) + "”."
+                }
+            }))
+        } else {
+            validationStatus.failStep(message: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+                switch localization {
+                case .englishCanada:
+                    return "Documentation coverage is incomplete for “" + StrictString(target) + "”. (See above for details.)"
+                }
+            }))
+        }
     }
 }

@@ -174,6 +174,9 @@ struct Configuration {
     func shouldGenerateDocumentation() throws -> Bool {
         return try boolean(for: .generateDocumentation)
     }
+    func shouldEnforceDocumentationCoverage() throws -> Bool {
+        return try boolean(for: .enforceDocumentationCoverage)
+    }
 
     // MARK: - Options: Overrides
 

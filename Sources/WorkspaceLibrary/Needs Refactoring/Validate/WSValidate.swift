@@ -88,6 +88,12 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
 
     try Workspace.Document.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
 
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    // Checking documentation coverage...
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+
+    try Workspace.Validate.DocumentationCoverage.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
+
     if Environment.isInContinuousIntegration {
 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

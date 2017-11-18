@@ -104,6 +104,43 @@ class Jazzy : RubyGem {
         try fixSplitClusters(in: outputDirectory, for: project, output: &output)
     }
 
+    private func parseError(undocumented json: String) -> Command.Error {
+        return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
+            switch localization {
+            case .englishCanada: // [_Exempt from Code Coverage_]
+                return StrictString("Error loading list of undocumented symbols:\n\(json)")
+            }
+        }))
+    }
+
+    func warnings(outputDirectory: URL) throws -> [(file: URL, line: Int, symbol: String)] {
+
+        let json = try TextFile(alreadyAt: outputDirectory.appendingPathComponent(".undocumented.json")).contents
+
+        guard let information = (try JSONSerialization.jsonObject(with: json.file, options: []) as? PropertyListValue)?.as([String: Any].self) else { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
+            throw parseError(undocumented: json)
+        }
+
+        guard let warnings = (information["warnings"] as? PropertyListValue)?.as([Any].self) else { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
+            throw parseError(undocumented: json)
+        }
+
+        var result: [(file: URL, line: Int, symbol: String)] = []
+
+        for entry in warnings {
+            guard let warning = (entry as? PropertyListValue)?.as([String: Any].self),
+                let path = (warning["file"] as? PropertyListValue)?.as(String.self),
+                let line = (warning["line"] as? PropertyListValue)?.as(Int.self),
+                let symbol = (warning["symbol"] as? PropertyListValue)?.as(String.self) else {
+                throw parseError(undocumented: json)
+            }
+
+            result.append((file: URL(fileURLWithPath: path), line: line, symbol: symbol))
+        }
+
+        return result
+    }
+
     // MARK: - Workarounds
 
     private func preventJekyllInterference(in directory: URL, for project: PackageRepository, output: inout Command.Output) throws {

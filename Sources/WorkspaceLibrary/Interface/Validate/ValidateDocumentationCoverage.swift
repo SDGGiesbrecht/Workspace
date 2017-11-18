@@ -1,5 +1,5 @@
 /*
- Document.swift
+ ValidateDocumentationCoverage.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -15,54 +15,57 @@
 import SDGCornerstone
 import SDGCommandLine
 
-extension Workspace {
-    enum Document {
+extension Workspace.Validate {
+
+    enum DocumentationCoverage {
 
         private static let name = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
-                return "document"
+                return "documentation‐coverage"
             }
         })
 
         private static let description = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
-                return "generates API documentation for each library product."
+                return "validates documentation coverage, checking that every public symbol in every library product is documented."
             }
         })
 
         static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, options: Options, output: inout Command.Output) throws in
 
-            guard try options.project.configuration.shouldGenerateDocumentation() else {
+            guard try options.project.configuration.shouldEnforceDocumentationCoverage() else {
                 throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
                     switch localization {
                     case .englishCanada:
-                        return "The Workspace configuration prevents documentation generation."
+                        return "The Workspace configuration prevents documentation coverage enforcement."
                     }
                 }))
             }
 
             var validationStatus = ValidationStatus()
+
+            // Refresh documentation so that results are meaningful.
+            try Workspace.Document.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
+
             try executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
 
-            guard validationStatus.validatedSomething else {
-                throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
+            if ¬validationStatus.validatedSomething {
+                validationStatus.passStep(message: UserFacingText({(localization: InterfaceLocalization, _: Void) in
                     switch localization {
                     case .englishCanada:
-                        return StrictString(join(lines: [
-                            "Nothing to document.",
-                            "The package manifest does not define any library products."
-                            ]))
+                        return "No library products to document."
                     }
                 }))
             }
+
             try validationStatus.reportOutcome(projectName: try options.project.configuration.projectName(), output: &output)
         })
 
         static func executeAsStep(options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
-            if try options.project.configuration.shouldGenerateDocumentation() {
-                try options.project.document(validationStatus: &validationStatus, output: &output)
+            if try options.project.configuration.shouldEnforceDocumentationCoverage() {
+                try options.project.validateDocumentationCoverage(validationStatus: &validationStatus, output: &output)
             }
         }
     }

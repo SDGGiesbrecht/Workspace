@@ -286,4 +286,10 @@ extension PackageRepository {
             try Documentation.document(target: product, for: self, validationStatus: &validationStatus, output: &output)
         }
     }
+
+    func validateDocumentationCoverage(validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+        for product in try libraryProductTargets(output: &output).sorted() {
+            try Documentation.validateDocumentationCoverage(for: product, in: self, validationStatus: &validationStatus, output: &output)
+        }
+    }
 }

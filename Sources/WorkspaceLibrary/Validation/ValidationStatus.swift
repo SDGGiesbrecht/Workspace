@@ -59,14 +59,14 @@ struct ValidationStatus {
             print(UserFacingText({ (localization: InterfaceLocalization, _: Void) in
                 switch localization {
                 case .englishCanada:
-                    return projectName + " passes validation."
+                    return "“" + projectName + "” passes validation."
                 }
             }).resolved().formattedAsSuccess().separated(), to: &output)
         } else {
             throw Command.Error(description: UserFacingText({ (localization: InterfaceLocalization, _: Void) in
                 switch localization {
                 case .englishCanada:
-                    return projectName + " fails validation."
+                    return "“" + projectName + "” fails validation."
                 }
             }))
         }

@@ -103,10 +103,12 @@ enum Documentation {
 
     static func validateDocumentationCoverage(for target: String, in project: PackageRepository, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
 
+        let section = validationStatus.newSection()
+
         print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
-                return "Checking documentation coverage for “" + StrictString(target) + "”..."
+                return "Checking documentation coverage for “" + StrictString(target) + "”..." + section.anchor
             }
         }).resolved().formattedAsSectionHeader(), to: &output)
 
@@ -114,9 +116,9 @@ enum Documentation {
 
         for warning in warnings {
             print(join(lines: [
-                warning.file.path(relativeTo: project.location),
-                String(warning.line.inDigits()),
-                warning.symbol
+                warning.file.path(relativeTo: project.location) + ":" + String(warning.line.inDigits()),
+                warning.symbol,
+                ""
                 ]).formattedAsError(), to: &output)
         }
 
@@ -131,7 +133,7 @@ enum Documentation {
             validationStatus.failStep(message: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
                 switch localization {
                 case .englishCanada:
-                    return "Documentation coverage is incomplete for “" + StrictString(target) + "”. (See above for details.)"
+                    return "Documentation coverage is incomplete for “" + StrictString(target) + "”." + section.crossReference.resolved(for: localization)
                 }
             }))
         }

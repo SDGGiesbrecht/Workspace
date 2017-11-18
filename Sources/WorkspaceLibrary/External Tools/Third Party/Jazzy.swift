@@ -115,7 +115,7 @@ class Jazzy : RubyGem {
 
     func warnings(outputDirectory: URL) throws -> [(file: URL, line: Int, symbol: String)] {
 
-        let json = try TextFile(alreadyAt: outputDirectory.appendingPathComponent(".undocumented.json")).contents
+        let json = try TextFile(alreadyAt: outputDirectory.appendingPathComponent("undocumented.json")).contents
 
         guard let information = (try JSONSerialization.jsonObject(with: json.file, options: []) as? PropertyListValue)?.as([String: Any].self) else { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
             throw parseError(undocumented: json)

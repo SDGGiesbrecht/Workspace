@@ -37,8 +37,14 @@ struct ValidationStatus {
     var passing: Bool = true
 
     private var summary: [StrictString] = []
+    private var currentSection = 0
 
     // MARK: - Usage
+
+    mutating func newSection() -> ReportSection {
+        currentSection += 1
+        return ReportSection(number: currentSection)
+    }
 
     mutating func passStep(message: UserFacingText<InterfaceLocalization, Void>) {
         summary.append((ValidationStatus.passOrFailSymbol.resolved(using: true) + " " + message.resolved()).formattedAsSuccess())

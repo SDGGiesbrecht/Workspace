@@ -17,16 +17,7 @@ import SDGCommandLine
 
 func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: inout Command.Output) throws {
 
-    var overallSuccess = true
-
-    var summary: [(result: Bool, message: String)] = []
-    func individualSuccess(message: String) {
-        summary.append((result: true, message: message))
-    }
-    func individualFailure(message: String) {
-        summary.append((result: false, message: message))
-        overallSuccess = false
-    }
+    var validationStatus = ValidationStatus()
 
     if ¬Environment.isInContinuousIntegration {
 
@@ -49,9 +40,19 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
         if Configuration.validate() {
-            individualSuccess(message: "Workspace configuration validates.")
+            validationStatus.passStep(message: UserFacingText({ localization, _ in
+                switch localization {
+                case .englishCanada:
+                    return "Workspace configuration validates."
+                }
+            }))
         } else {
-            individualFailure(message: "Workspace configuration fails validation. (See above for details.)")
+            validationStatus.failStep(message: UserFacingText({ localization, _ in
+                switch localization {
+                case .englishCanada:
+                    return "Workspace configuration fails validation. (See above for details.)"
+                }
+            }))
         }
 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
@@ -59,9 +60,19 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
         if try runProofread(andExit: false, arguments: arguments, options: options, output: &output) {
-            individualSuccess(message: "Code passes proofreading.")
+            validationStatus.passStep(message: UserFacingText({ localization, _ in
+                switch localization {
+                case .englishCanada:
+                    return "Code passes proofreading."
+                }
+            }))
         } else {
-            individualFailure(message: "Code fails proofreading. (See above for details.)")
+            validationStatus.failStep(message: UserFacingText({ localization, _ in
+                switch localization {
+                case .englishCanada:
+                    return "Code fails proofreading. (See above for details.)"
+                }
+            }))
         }
     }
 
@@ -69,16 +80,13 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
     // Running unit tests...
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    try UnitTests.test(options: options, individualSuccess: individualSuccess, individualFailure: individualFailure, output: &output)
+    try UnitTests.test(options: options, validationStatus: &validationStatus, output: &output)
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Generating documentation...
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    if try options.project.configuration.shouldGenerateDocumentation() ∧ Environment.operatingSystem == .macOS {
-
-        WSDocumentation.generate(job: options.job, individualSuccess: individualSuccess, individualFailure: individualFailure, output: &output)
-    }
+    try Workspace.Document.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
 
     if Environment.isInContinuousIntegration {
 
@@ -88,23 +96,25 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
 
         requireBash(["git", "add", ".", "\u{2D}\u{2D}intent\u{2D}to\u{2D}add"], silent: true)
         if (try? Shell.default.run(command: ["git", "diff", "\u{2D}\u{2D}exit\u{2D}code", "\u{2D}\u{2D}", ".", "':(exclude)*.dsidx'"])) ≠ nil {
-            individualSuccess(message: "The project is up to date.")
+            validationStatus.passStep(message: UserFacingText({ localization, _ in
+                switch localization {
+                case .englishCanada:
+                    return "The project is up to date."
+                }
+            }))
         } else {
-            individualFailure(message: "The project is out of date. (Please run “Validate” before committing.)")
+            validationStatus.failStep(message: UserFacingText({ localization, _ in
+                switch localization {
+                case .englishCanada:
+                    return "The project is out of date. (Please run “Validate” before committing.)"
+                }
+            }))
         }
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     print("Summary".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-
-    for (result, message) in summary {
-        if result {
-            print(["✓ " + message], in: .green)
-        } else {
-            print(["✗ " + message], in: .red)
-        }
-    }
 
     if let update = try Workspace.CheckForUpdates.checkForUpdates(output: &output) {
         print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
@@ -121,12 +131,5 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         }).resolved().formattedAsWarning().separated(), to: &output)
     }
 
-    if shouldExit {
-        if overallSuccess {
-            succeed(message: ["It looks like this is ready for a pull request."])
-        } else {
-            failTests(message: ["It looks like there are a few things left to fix."])
-        }
-
-    }
+    try validationStatus.reportOutcome(projectName: try options.project.configuration.projectName(), output: &output)
 }

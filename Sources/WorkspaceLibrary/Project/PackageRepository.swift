@@ -31,6 +31,7 @@ extension PackageRepository {
     private struct Cache {
         fileprivate class Properties {
             fileprivate var targets: [String: Target]?
+            fileprivate var libraryProductTargets: Set<String>?
 
             fileprivate var allFiles: [URL]?
             fileprivate var trackedFiles: [URL]?
@@ -92,11 +93,13 @@ extension PackageRepository {
     }
 
     func libraryProductTargets(output: inout Command.Output) throws -> Set<String> {
-        var result: Set<String> = []
-        try FileManager.default.do(in: location) {
-            result = try SwiftTool.default.libraryProductTargets(output: &output)
+        return try cached(in: &PackageRepository.caches[location, default: Cache()].properties.libraryProductTargets) {
+            var result: Set<String> = []
+            try FileManager.default.do(in: location) {
+                result = try SwiftTool.default.libraryProductTargets(output: &output)
+            }
+            return result
         }
-        return result
     }
 
     static let resourceDirectoryName = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
@@ -273,6 +276,10 @@ extension PackageRepository {
     }
 
     // MARK: - Documentation
+
+    func hasTargetsToDocument(output: inout Command.Output) throws -> Bool {
+        return ¬(try libraryProductTargets(output: &output)).isEmpty
+    }
 
     func document(validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
         for product in try libraryProductTargets(output: &output).sorted() {

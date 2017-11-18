@@ -32,7 +32,7 @@ extension Workspace {
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (directArguments: DirectArguments, options: Options, output: inout Command.Output) throws in
+        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, options: Options, output: inout Command.Output) throws in
 
             guard try options.project.configuration.shouldGenerateDocumentation() else {
                 throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
@@ -44,7 +44,7 @@ extension Workspace {
             }
 
             var validationStatus = ValidationStatus()
-            try executeAsStep(directArguments: directArguments, options: options, validationStatus: &validationStatus, output: &output)
+            try executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
 
             guard validationStatus.validatedSomething else {
                 throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
@@ -60,7 +60,7 @@ extension Workspace {
             try validationStatus.reportOutcome(projectName: try options.project.configuration.projectName(), output: &output)
         })
 
-        static func executeAsStep(directArguments: DirectArguments, options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+        static func executeAsStep(options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
             if try options.project.configuration.shouldGenerateDocumentation() {
                 try options.project.document(validationStatus: &validationStatus, output: &output)
             }

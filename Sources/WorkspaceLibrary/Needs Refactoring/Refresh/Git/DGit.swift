@@ -102,7 +102,7 @@ struct DGit {
         if Configuration.manageXcode {
             updatedLines += ignoreEntriesForXcode
         }
-        if (try? Repository.packageRepository.configuration.shouldGenerateDocumentation())! {
+        if (try? Repository.packageRepository.configuration.shouldGenerateDocumentation())! ∧ (try? Repository.packageRepository.hasTargetsToDocument(output: &output))! {
             updatedLines += ignoreEntriesForJazzy
         }
 

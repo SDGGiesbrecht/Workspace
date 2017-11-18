@@ -19,7 +19,7 @@ import SDGCommandLine
 
 struct UnitTests {
 
-    static func test(options: Options, individualSuccess: @escaping (String) -> Void, individualFailure: @escaping (String) -> Void, output: inout Command.Output) throws {
+    static func test(options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
 
         Xcode.temporarilyDisableProofreading(output: &output)
         defer {
@@ -49,7 +49,7 @@ struct UnitTests {
                 let log = try Shell.default.run(command: script)
 
                 let phrase = buildOnly ? "Build succeeds for" : "Unit tests succeed on"
-                individualSuccess("\(phrase) \(configuration).")
+                validationStatus.passStep(message: UserFacingText<InterfaceLocalization, Void>({ _, _ in StrictString("\(phrase) \(configuration).") }))
 
                 if Configuration.prohibitCompilerWarnings {
                     let hasRealWarning = log.scalars.matches(for: " warning: ".scalars).contains(where: { (match: PatternMatch<String.ScalarView>) -> Bool in
@@ -59,14 +59,14 @@ struct UnitTests {
                     })
 
                     if hasRealWarning {
-                        individualFailure("There are compiler warnings for \(configuration). (See above for details.)")
+                        validationStatus.failStep(message: UserFacingText<InterfaceLocalization, Void>({ _, _ in StrictString("There are compiler warnings for \(configuration). (See above for details.)") }))
                     } else {
-                        individualSuccess("There are no compiler warnings for \(configuration).")
+                        validationStatus.passStep(message: UserFacingText<InterfaceLocalization, Void>({ _, _ in StrictString("There are no compiler warnings for \(configuration).") }))
                     }
                 }
             } catch {
                 let phrase = buildOnly ? "Build fails for" : "Unit tests fail on"
-                individualFailure("\(phrase) \(configuration). (See above for details.)")
+                validationStatus.failStep(message: UserFacingText<InterfaceLocalization, Void>({ _, _ in StrictString("\(phrase) \(configuration). (See above for details.)") }))
             }
         }
 
@@ -231,7 +231,7 @@ struct UnitTests {
                 // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
                 guard let uuid = (try? FileManager.default.contentsOfDirectory(atPath: coverageDirectory))?.first else {
-                    individualFailure("Code coverage information is unavailable for \(operatingSystem).")
+                    validationStatus.failStep(message: UserFacingText<InterfaceLocalization, Void>({ _, _ in StrictString("Code coverage information is unavailable for \(operatingSystem).") }))
                     return
                 }
                 let coverageData = coverageDirectory + uuid + "/Coverage.profdata"
@@ -257,7 +257,7 @@ struct UnitTests {
                     "\u{2D}instr\u{2D}profile", coverageData,
                     executableLocation
                     ], silently: true) else {
-                        individualFailure("Code coverage information is unavailable for \(operatingSystem).")
+                        validationStatus.failStep(message: UserFacingText<InterfaceLocalization, Void>({ _, _ in StrictString("Code coverage information is unavailable for \(operatingSystem).") }))
                         return
                 }
 
@@ -347,9 +347,9 @@ struct UnitTests {
                 }
 
                 if overallCoverageSuccess {
-                    individualSuccess("Code coverage is complete for \(operatingSystemName).")
+                    validationStatus.passStep(message: UserFacingText<InterfaceLocalization, Void>({ _, _ in StrictString("Code coverage is complete for \(operatingSystemName).") }))
                 } else {
-                    individualFailure("Code coverage is incomplete for \(operatingSystemName). (See above for details.)")
+                    validationStatus.failStep(message: UserFacingText<InterfaceLocalization, Void>({ _, _ in StrictString("Code coverage is incomplete for \(operatingSystemName). (See above for details.)") }))
                 }
             }
         }

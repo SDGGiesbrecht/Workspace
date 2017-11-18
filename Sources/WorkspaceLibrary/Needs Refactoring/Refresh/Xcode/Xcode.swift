@@ -209,9 +209,7 @@ struct Xcode {
                     Configuration.primaryXcodeTarget,
                     "Please configure the option...",
                     "\(Option.primaryXcodeTarget)",
-                    "...specifying one of the following:",
-                    "",
-                    join(lines: Repository.moduleNames)
+                    "...specifying a valid target name."
                     ])
             }
 

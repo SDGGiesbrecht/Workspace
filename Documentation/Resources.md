@@ -16,6 +16,10 @@
 
 Workspace can embed resources in Swift package targets.
 
+```shell
+$ workspace refresh resources
+```
+
 Workspace will find and embed any file located within a project’s `Resources` directory. The structure of the `Resources` directory reflects the targets and namespaces under which the resources will be available in Swift code. Immediate subdirectories must correspond to targets; optional deeper nested directories produce namespaces. For example, a project with the following file...
 
 ```text

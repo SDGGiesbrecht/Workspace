@@ -16,21 +16,26 @@
 
 Workspace can automatically generate API documentation using [Jazzy](https://github.com/realm/jazzy).
 
-This is controlled by the [configuration](Configuring%20Workspace.md) option `Generate Documentation`. The [default](Responsibilities.md#default-vs-automatic) value is `False`. The [automatic](Responsibilities.md#default-vs-automatic) value is `True`.
+This is controlled by the [configuration](Configuring%20Workspace.md) option `Generate Documentation`. The default value is `True`.
+
+```shell
+$ workspace document
+```
 
 The generated documentation will be placed in a `docs` folder at the project root. [These GitHub settings](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch) can be adjusted to automatically host the documentation directly from the repository.
 
-Each operating system receives its own subfolder. Link to the documentation like this:<br>
-`https://`username`.github.io/`repository`/macOS`<br>
-or<br>
-`https://`username`.github.io/`repository`/Linux`<br>
-etc.
+Each library product receives its own subfolder. Link to the documentation like this:<br>
+`https://`username`.github.io/`repository`/`Module<br>
 
 ## Enforcement
 
 Workspace can enforce documentation coverage.
 
 This is controlled by the [configuration](Configuring%20Workspace.md) option `Enforce Documentation Coverage`. The default value is `True`.
+
+```shell
+$ workspace validate documentation‐coverage
+```
 
 ## Customization
 
@@ -67,65 +72,14 @@ Jazzy can be further configured by placing a `.jazzy.yaml` file in the project r
 
 ## Linux
 
+<!-- [_Warning: Implement rule to check for LinuxDocs._] -->
+<!-- [_Warning: Implement rule to check for MARK‐ing #if._] -->
+
 Documentation generation is not supported *from* Linux because Jazzy does not run on Linux.
 
-However, documentation can still be generated *for* Linux from macOS, albeit with a little extra preparation.
+However, documentation can still be generated *for* Linux from macOS, provided the project can also be built on macOS.
 
-To do so, Workspace activates the conditional build flag `LinuxDocs` when it builds on macOS for the sake of Linux documentation.
-
-Conditional compilation involving public symbols must be done like this:
-
-```swift
-// For Linux:
-
-#if os(macOS) && LinuxDocs
-    /// Does penguin stuff.
-    public func doPenguinStuff() {
-        preconditionFailure()
-    }
-#elseif os(Linux)
-    /// Does penguin stuff.
-    public func doPenguinStuff() {
-        goForSwim()
-        slideOnIce()
-        watchAirplane()
-        fallOver()
-    }
-#endif
-
-// For macOS:
-
-#if os(macOS) && !LinuxDocs
-    /// Does apple stuff.
-    public func doAppleStuff() {
-        grow()
-        turnRed()
-        demonstrateGravity()
-        landOnNewton()
-    }
-#endif
-```
-
-Where there are no public symbols involved, conditional compilation can be done normally:
-```swift
-#if os(Linux)
-    import Glibc
-#else
-    import Darwin
-#endif
-
-/// Makes the operating system say, “hi”.
-func sayHi() {
-    let name: String
-    #if os(Linux)
-        name = "Linux"
-    #else
-        name = "macOS"
-    #endif
-
-    print("Hi! My name is \(name).")
-}
-```
+If necessary, even a project that does not really support macOS can use `#if os(Linux)` to enable a successful build.
 
 ## Special Thanks
 

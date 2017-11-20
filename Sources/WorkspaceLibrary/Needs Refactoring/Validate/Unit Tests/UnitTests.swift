@@ -21,9 +21,11 @@ struct UnitTests {
 
     static func test(options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
 
-        DXcode.temporarilyDisableProofreading(output: &output)
+        let primaryProductName = try Repository.packageRepository.targets(output: &output).first!.key
+
+        try DXcode.temporarilyDisableProofreading(output: &output)
         defer {
-            DXcode.reEnableProofreading(output: &output)
+            (try? DXcode.reEnableProofreading(output: &output))!
         }
 
         func printTestHeader(buildOnly: Bool, operatingSystemName: String, buildToolName: String? = nil) {
@@ -183,7 +185,7 @@ struct UnitTests {
             if enforceCodeCoverage {
                 guard let settings = try? Shell.default.run(command: [
                     "xcodebuild", "\u{2D}showBuildSettings",
-                    "\u{2D}target", Configuration.primaryXcodeTarget,
+                    "\u{2D}target", try Repository.packageRepository.targets(output: &output).first!.key,
                     "\u{2D}sdk", sdk
                     ], silently: true) else {
                         fatalError(message: [
@@ -236,14 +238,14 @@ struct UnitTests {
                 }
                 let coverageData = coverageDirectory + uuid + "/Coverage.profdata"
 
-                let executableLocationKey = (" EXECUTABLE_PATH = \(DXcode.primaryProductName).", "\n")
+                let executableLocationKey = (" EXECUTABLE_PATH = \(primaryProductName).", "\n")
                 guard let executableLocationSuffix = settings.scalars.firstNestingLevel(startingWith: executableLocationKey.0.scalars, endingWith: executableLocationKey.1.scalars)?.contents.contents else {
                     fatalError(message: [
                         "Failed to find “\(executableLocationKey.0)” in Xcode build settings.",
                         "This may indicate a bug in Workspace."
                         ])
                 }
-                let relativeExecutableLocation = DXcode.primaryProductName + "." + String(executableLocationSuffix)
+                let relativeExecutableLocation = primaryProductName + "." + String(executableLocationSuffix)
                 let directorySuffix: String
                 if let simulator = simulatorSDK {
                     directorySuffix = "\u{2D}" + simulator

@@ -172,7 +172,7 @@ extension PackageRepository {
 
                 if ¬isDirectory, // Skip directories.
                     url.lastPathComponent ≠ ".DS_Store", // Skip irrelevant operating system files.
-                    ¬url.path.hasSuffix("~") {
+                    ¬url.lastPathComponent.hasSuffix("~") {
 
                     result.append(url)
                 }
@@ -309,6 +309,14 @@ extension PackageRepository {
     }
 
     // MARK: - Xcode
+
+    func xcodeProjectFile() throws -> URL? {
+        var result: URL?
+        try FileManager.default.do(in: location) {
+            result = try Xcode.default.projectFile()
+        }
+        return result
+    }
 
     func xcodeScheme() throws -> String {
         notImplementedYetAndCannotReturn()

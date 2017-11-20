@@ -15,13 +15,13 @@
 import SDGCornerstone
 import SDGCommandLine
 
-let instructionsAfterRefresh: String = {
-    if Environment.operatingSystem == .macOS ∧ Configuration.manageXcode {
-        return "Open “\(DXcode.projectFilename)” to work on the project."
+func instructionsAfterRefresh() throws -> String {
+    if let xcodeProject = try Repository.packageRepository.xcodeProjectFile()?.lastPathComponent {
+        return "Open “\(xcodeProject)” to work on the project."
     } else {
         return ""
     }
-}()
+}
 
 func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: inout Command.Output) throws {
 
@@ -147,14 +147,14 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
         try DXcode.refreshXcodeProjects(output: &output)
     }
     if Environment.operatingSystem == .macOS {
-        DXcode.enableProofreading(output: &output)
+        try DXcode.enableProofreading(output: &output)
     }
 
     if shouldExit {
 
         succeed(message: [
             "\(try Repository.packageRepository.projectName(output: &output)) is refreshed and ready.",
-            instructionsAfterRefresh
+            try instructionsAfterRefresh()
             ])
     }
 }

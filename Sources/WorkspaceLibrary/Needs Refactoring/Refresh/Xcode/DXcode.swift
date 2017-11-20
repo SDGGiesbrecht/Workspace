@@ -1,5 +1,5 @@
 /*
- Xcode.swift
+ DXcode.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -19,15 +19,17 @@ struct DXcode {
 
     static func refreshXcodeProjects(output: inout Command.Output) throws {
 
-        let path = RelativePath("\(DXcode.projectFilename)")
-        try? Repository.delete(path)
-
-        let script = ["swift", "package", "generate\u{2D}xcodeproj", "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage", "\u{2D}\u{2D}output", path.string]
+        let script = ["swift", "package", "generate\u{2D}xcodeproj", "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage"]
         requireBash(script)
 
         // Allow dependencies to be found by the executable.
 
+        let path = RelativePath("\(try Repository.packageRepository.xcodeProjectFile()!.lastPathComponent)")
         var file = require() { try File(at: path.subfolderOrFile("project.pbxproj")) }
+
+        let primaryProductName = try Repository.packageRepository.targets(output: &output).first!.key
+        let applicationExecutableName = primaryProductName
+        let xcodeTestTarget = primaryProductName + "Tests"
 
         let startToken = "LD_RUNPATH_SEARCH_PATHS = ("
         let endToken = ");"
@@ -53,7 +55,7 @@ struct DXcode {
 
             // Change product type from framework to application.
 
-            let productMarkerSearchString = "productName = \u{22}\(DXcode.primaryProductName)\u{22}"
+            let productMarkerSearchString = "productName = \u{22}\(primaryProductName)\u{22}"
             guard let productMarker = project.range(of: productMarkerSearchString),
                 let rangeOfProductType = project.scalars.firstMatch(for: ".framework".scalars, in: (productMarker.upperBound ..< project.endIndex).sameRange(in: project.scalars))?.range.clusters(in: project.clusters) else {
                     fatalError(message: [
@@ -65,7 +67,7 @@ struct DXcode {
 
             // Application bundle name should be .app not .framework.
 
-            project = project.replacingOccurrences(of: "\(DXcode.primaryProductName).framework", with: "\(DXcode.primaryProductName).app")
+            project = project.replacingOccurrences(of: "\(primaryProductName).framework", with: "\(primaryProductName).app")
 
             // Remove .app from the list of frameworks that tests link against.
 
@@ -101,10 +103,10 @@ struct DXcode {
 
             // Provide test linking information.
 
-            let testMarker = "TARGET_NAME = \u{22}\(Configuration.xcodeTestTarget)\u{22};"
+            let testMarker = "TARGET_NAME = \u{22}\(xcodeTestTarget)\u{22};"
             let testInfo = [
-                "\u{22}TEST_HOST[sdk=macosx*]\u{22} = \u{22}$(BUILT_PRODUCTS_DIR)/\(Xcode.primaryProductName).app/Contents/MacOS/\(Xcode.applicationExecutableName)\u{22};",
-                "TEST_HOST = \u{22}$(BUILT_PRODUCTS_DIR)/\(DXcode.primaryProductName).app/\(Xcode.applicationExecutableName)\u{22};",
+                "\u{22}TEST_HOST[sdk=macosx*]\u{22} = \u{22}$(BUILT_PRODUCTS_DIR)/\(primaryProductName).app/Contents/MacOS/\(applicationExecutableName)\u{22};",
+                "TEST_HOST = \u{22}$(BUILT_PRODUCTS_DIR)/\(primaryProductName).app/\(applicationExecutableName)\u{22};",
                 "BUNDLE_LOADER = \u{22}$(TEST_HOST)\u{22};"
             ]
             project = project.replacingOccurrences(of: testMarker, with: join(lines: [testMarker] + testInfo))
@@ -118,7 +120,7 @@ struct DXcode {
 
             // Denote principal class in Info.plist for @NSApplicationMain to work.
 
-            var info = require() { try File(at: path.subfolderOrFile("\(Xcode.primaryProductName)_Info.plist")) }
+            var info = require() { try File(at: path.subfolderOrFile("\(primaryProductName)_Info.plist")) }
 
             info.contents = info.contents.replacingOccurrences(of: "<key>NSPrincipalClass</key>\n  <string></string>", with: "<key>NSPrincipalClass</key>\n  <string>\(Configuration.moduleName).Application</string>")
 
@@ -126,8 +128,9 @@ struct DXcode {
         }
     }
 
-    private static func modifyProject(condition shouldModify: (String) -> Bool, modification modify: (inout File) -> Void, output: inout Command.Output) {
-        let path = RelativePath("\(DXcode.projectFilename)/project.pbxproj")
+    private static func modifyProject(condition shouldModify: (String) -> Bool, modification modify: (inout File) -> Void, output: inout Command.Output) throws {
+
+        let path = RelativePath("\(try Repository.packageRepository.xcodeProjectFile()!.lastPathComponent)/project.pbxproj")
 
         do {
             var file = try File(at: path)
@@ -145,9 +148,11 @@ struct DXcode {
     static let scriptObjectName = "PROOFREAD"
     static let scriptActionEntry = scriptObjectName + ","
 
-    static func enableProofreading(output: inout Command.Output) {
+    static func enableProofreading(output: inout Command.Output) throws {
 
-        modifyProject(condition: {
+        let primaryXcodeTarget = try Repository.packageRepository.targets(output: &output).first!.key
+
+        try modifyProject(condition: {
             return ¬$0.contains("workspace proofread")
 
         }, modification: { (file: inout File) -> Void in
@@ -168,7 +173,7 @@ struct DXcode {
                 searchRange = possiblePhaseInsertLocation ..< file.contents.endIndex
 
                 let name = file.requireContents(of: ("name = \u{22}", "\u{22};"), in: searchRange)
-                if name == Configuration.primaryXcodeTarget {
+                if name == primaryXcodeTarget {
                     discoveredPhaseInsertLocation = possiblePhaseInsertLocation
                     break
                 }
@@ -178,10 +183,7 @@ struct DXcode {
 
                 fatalError(message: [
                     "Failed to find a target with the following name:",
-                    Configuration.primaryXcodeTarget,
-                    "Please configure the option...",
-                    "\(Option.primaryXcodeTarget)",
-                    "...specifying a valid target name."
+                    primaryXcodeTarget
                     ])
             }
 
@@ -194,9 +196,9 @@ struct DXcode {
 
     static let disabledScriptActionEntry = "/* " + scriptObjectName + " */"
 
-    static func temporarilyDisableProofreading(output: inout Command.Output) {
+    static func temporarilyDisableProofreading(output: inout Command.Output) throws {
 
-        modifyProject(condition: { (_) -> Bool in
+        try modifyProject(condition: { (_) -> Bool in
             return true
         }, modification: { (file: inout File) -> Void in
 
@@ -204,9 +206,9 @@ struct DXcode {
         }, output: &output)
     }
 
-    static func reEnableProofreading(output: inout Command.Output) {
+    static func reEnableProofreading(output: inout Command.Output) throws {
 
-        modifyProject(condition: { (_) -> Bool in
+        try modifyProject(condition: { (_) -> Bool in
             return true
         }, modification: { (file: inout File) -> Void in
 

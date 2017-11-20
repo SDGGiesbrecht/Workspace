@@ -76,7 +76,7 @@ enum Documentation {
 
         let copyrightText = try copyright(for: outputDirectory, in: project, output: &output)
         try FileManager.default.do(in: project.location) {
-            try Jazzy.default.document(target: target, scheme: try project.xcodeScheme(), buildOperatingSystem: buildOperatingSystem, copyright: copyrightText, gitHubURL: try project.configuration.repositoryURL(), outputDirectory: outputDirectory, project: project, output: &output)
+            try Jazzy.default.document(target: target, scheme: try project.xcodeScheme(output: &output), buildOperatingSystem: buildOperatingSystem, copyright: copyrightText, gitHubURL: try project.configuration.repositoryURL(), outputDirectory: outputDirectory, project: project, output: &output)
         }
 
         for url in try project.trackedFiles(output: &output) where url.is(in: outputDirectory) {

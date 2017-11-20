@@ -318,8 +318,12 @@ extension PackageRepository {
         return result
     }
 
-    func xcodeScheme() throws -> String {
-        notImplementedYetAndCannotReturn()
+    func xcodeScheme(output: inout Command.Output) throws -> String {
+        var result: String = ""
+        try FileManager.default.do(in: location) {
+            result = try Xcode.default.scheme(output: &output)
+        }
+        return result
     }
 
     // MARK: - Actions

@@ -321,4 +321,14 @@ extension PackageRepository {
     func xcodeScheme() throws -> String {
         notImplementedYetAndCannotReturn()
     }
+
+    // MARK: - Actions
+
+    func delete(_ location: URL, output: inout Command.Output) {
+        if FileManager.default.fileExists(atPath: location.path, isDirectory: nil) {
+            TextFile.reportDeleteOperation(from: location, in: self, output: &output)
+            try? FileManager.default.removeItem(at: location)
+            resetCache(debugReason: location.lastPathComponent)
+        }
+    }
 }

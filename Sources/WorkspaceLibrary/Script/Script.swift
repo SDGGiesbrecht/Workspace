@@ -94,7 +94,7 @@ enum Script : Int, IterableEnumeration {
     static func refreshRelevantScripts(for project: PackageRepository, output: inout Command.Output) throws {
 
         for deprecated in Script.deprecatedFileNames {
-            try? FileManager.default.removeItem(at: project.url(for: String(deprecated)))
+            project.delete(project.url(for: String(deprecated)), output: &output)
         }
 
         for script in cases where script.isRelevantOnCurrentDevice ∨ script.isCheckedIn {

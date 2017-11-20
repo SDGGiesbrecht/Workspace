@@ -31,7 +31,7 @@ let package = Package(
     name: packageName,
     dependencies: [
         .package(url: sdgGiesbrecht + sdgCornerstone, .exact(Version(0, 7, 1))),
-        .package(url: sdgGiesbrecht + sdgCommandLine, .exact(Version(0, 1, 2)))
+        .package(url: sdgGiesbrecht + sdgCommandLine, /*.exact(Version(0, 1, 2))*/ .branch("workspace")) // [_Warning: Do not merge like this._]
     ],
     targets: [
         .target(name: tool, dependencies: [.targetItem(name: library)]),

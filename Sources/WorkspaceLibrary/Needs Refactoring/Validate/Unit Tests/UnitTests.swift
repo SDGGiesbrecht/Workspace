@@ -21,7 +21,9 @@ struct UnitTests {
 
     static func test(options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
 
-        let primaryProductName = try Repository.packageRepository.targets(output: &output).first!.key
+        let allTargets = try Repository.packageRepository.targets(output: &output).keys
+        let primaryProductName = allTargets.first(where: { $0.scalars.first! ∈ CharacterSet.uppercaseLetters ∧ ¬$0.hasPrefix("Tests") })!
+        let primaryXcodeTarget = primaryProductName
 
         try DXcode.temporarilyDisableProofreading(output: &output)
         defer {
@@ -185,7 +187,7 @@ struct UnitTests {
             if enforceCodeCoverage {
                 guard let settings = try? Shell.default.run(command: [
                     "xcodebuild", "\u{2D}showBuildSettings",
-                    "\u{2D}target", try Repository.packageRepository.targets(output: &output).first!.key,
+                    "\u{2D}target", primaryXcodeTarget,
                     "\u{2D}sdk", sdk
                     ], silently: true) else {
                         fatalError(message: [

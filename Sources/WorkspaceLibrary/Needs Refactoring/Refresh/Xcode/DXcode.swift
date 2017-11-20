@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGCornerstone
 import SDGCommandLine
 
@@ -27,7 +29,8 @@ struct DXcode {
         let path = RelativePath("\(try Repository.packageRepository.xcodeProjectFile()!.lastPathComponent)")
         var file = require() { try File(at: path.subfolderOrFile("project.pbxproj")) }
 
-        let primaryProductName = try Repository.packageRepository.targets(output: &output).first!.key
+        let allTargets = try Repository.packageRepository.targets(output: &output).keys
+        let primaryProductName = allTargets.first(where: { $0.scalars.first! ∈ CharacterSet.uppercaseLetters ∧ ¬$0.hasPrefix("Tests") })!
         let applicationExecutableName = primaryProductName
         let xcodeTestTarget = primaryProductName + "Tests"
 
@@ -150,7 +153,8 @@ struct DXcode {
 
     static func enableProofreading(output: inout Command.Output) throws {
 
-        let primaryXcodeTarget = try Repository.packageRepository.targets(output: &output).first!.key
+        let allTargets = try Repository.packageRepository.targets(output: &output).keys
+        let primaryXcodeTarget = allTargets.first(where: { $0.scalars.first! ∈ CharacterSet.uppercaseLetters ∧ ¬$0.hasPrefix("Tests") })!
 
         try modifyProject(condition: {
             return ¬$0.contains("workspace proofread")

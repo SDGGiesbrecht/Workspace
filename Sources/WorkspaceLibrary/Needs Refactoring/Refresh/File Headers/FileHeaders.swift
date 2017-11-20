@@ -19,13 +19,13 @@ import SDGCommandLine
 
 struct FileHeaders {
 
-    static let defaultCopyright: String = {
-        if Configuration.optionIsDefined(.author) {
-            return "Copyright [_Copyright_] [_Author_] and the [_Project_] project contributors."
+    static func defaultCopyright(configuration: Configuration) throws -> Template {
+        if try configuration.optionIsDefined(.author) {
+            return Template(source: "Copyright [_Copyright_] [_Author_] and the [_Project_] project contributors.")
         } else {
-            return "Copyright [_Copyright_] the [_Project_] project contributors."
+            return Template(source: "Copyright [_Copyright_] the [_Project_] project contributors.")
         }
-    }()
+    }
 
     static let defaultFileHeader: String = {
         var defaultHeader: [String] = [
@@ -39,7 +39,7 @@ struct FileHeaders {
         defaultHeader.append(contentsOf: [
             ""
             ])
-        defaultHeader.append(defaultCopyright)
+        defaultHeader.append(String((try? defaultCopyright(configuration: Repository.packageRepository.configuration))!.text))
         if Configuration.sdg {
             defaultHeader.append(contentsOf: [
                 "",

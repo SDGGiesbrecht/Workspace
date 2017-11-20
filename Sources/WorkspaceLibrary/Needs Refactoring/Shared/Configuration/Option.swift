@@ -289,19 +289,19 @@ enum Option : String, CustomStringConvertible {
         case .enforceDocumentationCoverage:
             return String(Configuration.trueOptionValue)
         case .documentationCopyright:
-            return FileHeaders.defaultCopyright + " All rights reserved."
+            return String((try? Repository.packageRepository.configuration.documentationCopyright())!.text)
 
         case .manageContinuousIntegration:
             return String(Configuration.falseOptionValue)
 
         case .projectName:
-            return Configuration.packageName
+            return String((try? Repository.packageRepository.configuration.packageName())!)
         case .packageName:
             return Configuration.defaultPackageName
         case .moduleName:
             return (try? Configuration.defaultModuleName())!
         case .xcodeSchemeName:
-            return Xcode.defaultXcodeSchemeName
+            return (try? Repository.packageRepository.configuration.xcodeScheme())!
         case .primaryXcodeTarget:
             return (try? Xcode.defaultPrimaryTargetName())!
         case .xcodeTestTarget:

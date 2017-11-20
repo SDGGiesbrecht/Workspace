@@ -29,10 +29,6 @@ struct Xcode {
         return primaryProductName
     }
 
-    static var defaultXcodeSchemeName: String {
-        return Configuration.packageName + "\u{2D}Package"
-    }
-
     static func defaultPrimaryTargetName() throws -> String {
         if try Repository.packageRepository.configuration.projectType() == .executable {
             return Configuration.executableLibraryName(forProjectName: String(try Repository.packageRepository.configuration.projectName()))

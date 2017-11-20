@@ -480,16 +480,6 @@ extension Configuration {
             return packageName(forProjectName: Repository.folderName)
         }
     }
-    static var packageName: String {
-        var cacheCopy = cache
-        defer { cache = cacheCopy }
-
-        return cached(in: &cacheCopy.packageName) {
-            () -> String in
-
-            return stringValue(option: .packageName)
-        }
-    }
 
     static func moduleName(forProjectName projectName: String) -> String {
         return projectName.replacingOccurrences(of: " ", with: "")

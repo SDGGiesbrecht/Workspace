@@ -120,7 +120,7 @@ enum Licence : String {
         var authors = "the \(try Repository.packageRepository.configuration.projectName()) project contributors."
         let configuration = Repository.packageRepository.configuration
         if try configuration.optionIsDefined(.author) {
-            authors = "\(try configuration.author()) and " + authors
+            authors = "\(try Repository.packageRepository.configuration.requireAuthor()) and " + authors
         }
 
         func key(_ key: String) -> String {

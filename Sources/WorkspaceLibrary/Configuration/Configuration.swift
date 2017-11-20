@@ -66,7 +66,16 @@ struct Configuration {
 
     // MARK: - Types
 
-    private static func invalidEnumerationValue(option: Option, value: String, valid: [StrictString]) -> Command.Error {
+    private static func optionNotDefinedError(for option: Option) -> Command.Error {
+        return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "Option not defined: " + StrictString(option.key)
+            }
+        }))
+    }
+
+    private static func invalidEnumerationValueError(for option: Option, value: String, valid: [StrictString]) -> Command.Error {
         return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
             switch localization {
             case .englishCanada:
@@ -82,7 +91,7 @@ struct Configuration {
     static let trueOptionValue: StrictString = "True"
     static let falseOptionValue: StrictString = "False"
 
-    private func boolean(for option: Option) throws -> Bool {
+    private func boolean(for option: Option) throws -> Bool? {
         if let value = try options()[option] {
             switch value {
             case String(Configuration.trueOptionValue):
@@ -90,39 +99,15 @@ struct Configuration {
             case String(Configuration.falseOptionValue):
                 return false
             default:
-                throw Configuration.invalidEnumerationValue(option: option, value: value, valid: [Configuration.trueOptionValue, Configuration.falseOptionValue])
+                throw Configuration.invalidEnumerationValueError(for: option, value: value, valid: [Configuration.trueOptionValue, Configuration.falseOptionValue])
             }
         } else {
-            return option.defaultValue == String(Configuration.trueOptionValue)
+            return nil
         }
     }
 
-    private func string(for option: Option) throws -> String {
-        if let result = try options()[option] {
-            return result
-        } else {
-            if option.defaultValue ≠ Configuration.noValue {
-                return option.defaultValue
-            } else { // [_Exempt from Code Coverage_] [_Workaround: Until read‐me is testable._]
-                throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Code Coverage_] [_Workaround: Until read‐me is testable._]
-                    switch localization {
-                    case .englishCanada: // [_Exempt from Code Coverage_] [_Workaround: Until read‐me is testable._]
-                        return StrictString(join(lines: [
-                            "Missing configuration option:",
-                            option.key
-                            ]))
-                    }
-                }))
-            }
-        }
-    }
-
-    private func possibleStringValue(option: Option) throws -> String? {
-        let result = try options()[option] ?? option.defaultValue
-        if result ≠ Configuration.noValue {
-            return result
-        }
-        return nil
+    private func string(for option: Option) throws -> String? {
+        return try options()[option]
     }
 
     func optionIsDefined(_ option: Option) throws -> Bool {
@@ -132,55 +117,82 @@ struct Configuration {
     // MARK: - Options: Supported Environment
 
     func projectType() throws -> PackageRepository.Target.TargetType {
-        let key = try string(for: .projectType)
+        guard let key = try string(for: .projectType) else {
+            return .library
+        }
         guard let result = PackageRepository.Target.TargetType(key: StrictString(key)) else {
-            throw Configuration.invalidEnumerationValue(option: .projectType, value: key, valid: PackageRepository.Target.TargetType.cases.map({ $0.key }))
+            throw Configuration.invalidEnumerationValueError(for: .projectType, value: key, valid: PackageRepository.Target.TargetType.cases.map({ $0.key }))
         }
         return result
     }
 
     func supports(_ operatingSystem: OperatingSystem) throws -> Bool {
-        return try boolean(for: operatingSystem.supportOption)
+        return try (try boolean(for: operatingSystem.supportOption) ?? true)
             ∧ (try projectType().isSupported(on: operatingSystem))
     }
 
     // MARK: - Options: Project Metadata
 
     func projectName() throws -> StrictString {
-        // [_Warning: This should check the package description first._]
-        return StrictString(try string(for: .projectName))
+        if let defined = try string(for: .projectName) {
+            return StrictString(defined)
+        } else {
+            return StrictString(try packageName())
+        }
     }
 
     func repositoryURL() throws -> URL? {
-        guard let string = try possibleStringValue(option: .repositoryURL) else {
-            return nil
+        if let defined = try string(for: .repositoryURL) {
+            return URL(string: defined)
         }
-        return URL(string: string)
+        return nil
     }
 
     func documentationCopyright() throws -> Template {
-        return Template(source: StrictString(try string(for: .documentationCopyright)))
+        if let defined = try string(for: .documentationCopyright) {
+            return Template(source: StrictString(defined))
+        } else {
+            return try Documentation.defaultCopyrightTemplate(configuration: self)
+        }
     }
-    func author() throws -> StrictString {
-        return StrictString(try string(for: .author))
+    func requireAuthor() throws -> StrictString {
+        if let defined = try string(for: .author) {
+            return StrictString(defined)
+        } else {
+            throw Configuration.optionNotDefinedError(for: .author)
+        }
     }
 
     // MARK: - Options: Active Tasks
 
     func shouldManageContinuousIntegration() throws -> Bool {
-        return try boolean(for: .manageContinuousIntegration)
+        return try boolean(for: .manageContinuousIntegration) ?? false
     }
 
     func shouldGenerateDocumentation() throws -> Bool {
-        return try boolean(for: .generateDocumentation)
+        return try boolean(for: .generateDocumentation) ?? true
     }
     func shouldEnforceDocumentationCoverage() throws -> Bool {
-        return try boolean(for: .enforceDocumentationCoverage)
+        return try boolean(for: .enforceDocumentationCoverage) ?? true
     }
 
     // MARK: - Options: Overrides
 
+    func packageName() throws -> String {
+        if let defined = try string(for: .packageName) {
+            return defined
+        } else {
+            // [_Warning: This should parse Package.swift._]
+            notImplementedYetAndCannotReturn()
+        }
+    }
+
     func xcodeScheme() throws -> String {
-        return try string(for: .xcodeSchemeName)
+        if let defined = try string(for: .xcodeSchemeName) {
+            return defined
+        } else {
+            // [_Warning: This should be moved to SwiftTool._]
+            return try packageName() + "\u{2D}Package"
+        }
     }
 }

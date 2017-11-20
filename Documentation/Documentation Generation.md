@@ -72,9 +72,6 @@ Jazzy can be further configured by placing a `.jazzy.yaml` file in the project r
 
 ## Linux
 
-<!-- [_Warning: Implement rule to check for LinuxDocs._] -->
-<!-- [_Warning: Implement rule to check for MARK‐ing #if._] -->
-
 Documentation generation is not supported *from* Linux because Jazzy does not run on Linux.
 
 However, documentation can still be generated *for* Linux from macOS, provided the project can also be built on macOS.

@@ -24,6 +24,9 @@ protocol Rule {
 
 let rules: [Rule.Type] = [
 
+    // Deprecated Symbols
+    DeprecatedLinuxDocumentation.self,
+
     // Intentional
     MissingImplementation.self,
 
@@ -35,6 +38,7 @@ let rules: [Rule.Type] = [
 
     // Documentation
     DocumentationOfExtensionConstraints.self,
+    DocumentationOfCompilationConditions.self,
     SyntaxColouring.self,
 
     // Style

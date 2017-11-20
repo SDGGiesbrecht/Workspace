@@ -20,7 +20,7 @@ typealias SystemTool = _ExternalTool // Shared from SDGCommandLine.
 extension SystemTool {
 
     internal func execute(with arguments: [StrictString], output: inout Command.Output, silently: Bool = false) throws -> StrictString {
-        return try _execute(with: arguments, output: &output, silently:silently) // Shared from SDGCommandLine.
+        return try _execute(with: arguments, output: &output, silently: silently) // Shared from SDGCommandLine.
     }
     internal func executeInCompatibilityMode(with arguments: [String], output: inout Command.Output, silently: Bool = false) throws -> String {
         return try _executeInCompatibilityMode(with: arguments, output: &output, silently: silently) // Shared from SDGCommandLine.

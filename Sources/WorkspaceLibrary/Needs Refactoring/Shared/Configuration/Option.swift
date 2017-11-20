@@ -87,13 +87,6 @@ enum Option : String, CustomStringConvertible {
 
     case manageContinuousIntegration = "Manage Continuous Integration"
 
-    case projectName = "Project Name"
-    case packageName = "Package Name"
-    case moduleName = "Module Name"
-    case xcodeSchemeName = "Xcode Scheme Name"
-    case primaryXcodeTarget = "Primary Xcode Target"
-    case xcodeTestTarget = "Xcode Test Target"
-
     case ignoreFileTypes = "Ignore File Types"
 
     // SDG
@@ -165,13 +158,6 @@ enum Option : String, CustomStringConvertible {
 
         .manageContinuousIntegration,
         .enforceDocumentationCoverage,
-
-        .projectName,
-        .packageName,
-        .moduleName,
-        .xcodeSchemeName,
-        .primaryXcodeTarget,
-        .xcodeTestTarget,
 
         .ignoreFileTypes
         ]
@@ -295,19 +281,6 @@ enum Option : String, CustomStringConvertible {
 
         case .manageContinuousIntegration:
             return String(Configuration.falseOptionValue)
-
-        case .projectName:
-            unreachable()
-        case .packageName:
-            return Configuration.defaultPackageName
-        case .moduleName:
-            unreachable()
-        case .xcodeSchemeName:
-            unreachable()
-        case .primaryXcodeTarget:
-            unreachable()
-        case .xcodeTestTarget:
-            unreachable()
 
         case .ignoreFileTypes:
             return Configuration.emptyListOptionValue

@@ -15,35 +15,11 @@
 import SDGCornerstone
 import SDGCommandLine
 
-struct Xcode {
-
-    static var projectFilename: String {
-        return Configuration.defaultPackageName + ".xcodeproj"
-    }
-
-    static var primaryProductName: String {
-        return Configuration.moduleName
-    }
-
-    static var applicationExecutableName: String {
-        return primaryProductName
-    }
-
-    static func defaultPrimaryTargetName(output: inout Command.Output) throws -> String {
-        if try Repository.packageRepository.configuration.projectType() == .executable {
-            return Configuration.executableLibraryName(forProjectName: String(try Repository.packageRepository.projectName(output: &output)))
-        } else {
-            return Configuration.moduleName(forProjectName: String(try Repository.packageRepository.projectName(output: &output)))
-        }
-    }
-
-    static func defaultTestTargetName(output: inout Command.Output) throws -> String {
-        return Configuration.testModuleName(forProjectName: String(try Repository.packageRepository.projectName(output: &output)))
-    }
+struct DXcode {
 
     static func refreshXcodeProjects(output: inout Command.Output) throws {
 
-        let path = RelativePath("\(Xcode.projectFilename)")
+        let path = RelativePath("\(DXcode.projectFilename)")
         try? Repository.delete(path)
 
         let script = ["swift", "package", "generate\u{2D}xcodeproj", "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage", "\u{2D}\u{2D}output", path.string]
@@ -77,7 +53,7 @@ struct Xcode {
 
             // Change product type from framework to application.
 
-            let productMarkerSearchString = "productName = \u{22}\(Xcode.primaryProductName)\u{22}"
+            let productMarkerSearchString = "productName = \u{22}\(DXcode.primaryProductName)\u{22}"
             guard let productMarker = project.range(of: productMarkerSearchString),
                 let rangeOfProductType = project.scalars.firstMatch(for: ".framework".scalars, in: (productMarker.upperBound ..< project.endIndex).sameRange(in: project.scalars))?.range.clusters(in: project.clusters) else {
                     fatalError(message: [
@@ -89,7 +65,7 @@ struct Xcode {
 
             // Application bundle name should be .app not .framework.
 
-            project = project.replacingOccurrences(of: "\(Xcode.primaryProductName).framework", with: "\(Xcode.primaryProductName).app")
+            project = project.replacingOccurrences(of: "\(DXcode.primaryProductName).framework", with: "\(DXcode.primaryProductName).app")
 
             // Remove .app from the list of frameworks that tests link against.
 
@@ -128,7 +104,7 @@ struct Xcode {
             let testMarker = "TARGET_NAME = \u{22}\(Configuration.xcodeTestTarget)\u{22};"
             let testInfo = [
                 "\u{22}TEST_HOST[sdk=macosx*]\u{22} = \u{22}$(BUILT_PRODUCTS_DIR)/\(Xcode.primaryProductName).app/Contents/MacOS/\(Xcode.applicationExecutableName)\u{22};",
-                "TEST_HOST = \u{22}$(BUILT_PRODUCTS_DIR)/\(Xcode.primaryProductName).app/\(Xcode.applicationExecutableName)\u{22};",
+                "TEST_HOST = \u{22}$(BUILT_PRODUCTS_DIR)/\(DXcode.primaryProductName).app/\(Xcode.applicationExecutableName)\u{22};",
                 "BUNDLE_LOADER = \u{22}$(TEST_HOST)\u{22};"
             ]
             project = project.replacingOccurrences(of: testMarker, with: join(lines: [testMarker] + testInfo))
@@ -151,7 +127,7 @@ struct Xcode {
     }
 
     private static func modifyProject(condition shouldModify: (String) -> Bool, modification modify: (inout File) -> Void, output: inout Command.Output) {
-        let path = RelativePath("\(Xcode.projectFilename)/project.pbxproj")
+        let path = RelativePath("\(DXcode.projectFilename)/project.pbxproj")
 
         do {
             var file = try File(at: path)

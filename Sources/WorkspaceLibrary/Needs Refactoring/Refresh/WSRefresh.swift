@@ -17,7 +17,7 @@ import SDGCommandLine
 
 let instructionsAfterRefresh: String = {
     if Environment.operatingSystem == .macOS ∧ Configuration.manageXcode {
-        return "Open “\(Xcode.projectFilename)” to work on the project."
+        return "Open “\(DXcode.projectFilename)” to work on the project."
     } else {
         return ""
     }
@@ -144,10 +144,10 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
         print("Refreshing Xcode project...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        try Xcode.refreshXcodeProjects(output: &output)
+        try DXcode.refreshXcodeProjects(output: &output)
     }
     if Environment.operatingSystem == .macOS {
-        Xcode.enableProofreading(output: &output)
+        DXcode.enableProofreading(output: &output)
     }
 
     if shouldExit {

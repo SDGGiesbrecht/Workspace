@@ -492,9 +492,6 @@ extension Configuration {
             return executableLibraryName(forProjectName: String(try Repository.packageRepository.projectName(output: &output)))
         }
     }
-    static var moduleName: String {
-        return stringValue(option: .moduleName)
-    }
 
     static func executableName(forProjectName projectName: String) -> String {
         return moduleName(forProjectName: projectName).lowercased()
@@ -678,12 +675,6 @@ extension Configuration {
 
     static var manageXcode: Bool {
         return booleanValue(option: .manageXcode)
-    }
-    static var primaryXcodeTarget: String {
-        return stringValue(option: .primaryXcodeTarget)
-    }
-    static var xcodeTestTarget: String {
-        return stringValue(option: .xcodeTestTarget)
     }
 
     static var disableProofreadingRules: Set<String> {

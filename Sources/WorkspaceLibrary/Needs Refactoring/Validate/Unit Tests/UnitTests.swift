@@ -21,9 +21,9 @@ struct UnitTests {
 
     static func test(options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
 
-        Xcode.temporarilyDisableProofreading(output: &output)
+        DXcode.temporarilyDisableProofreading(output: &output)
         defer {
-            Xcode.reEnableProofreading(output: &output)
+            DXcode.reEnableProofreading(output: &output)
         }
 
         func printTestHeader(buildOnly: Bool, operatingSystemName: String, buildToolName: String? = nil) {
@@ -236,14 +236,14 @@ struct UnitTests {
                 }
                 let coverageData = coverageDirectory + uuid + "/Coverage.profdata"
 
-                let executableLocationKey = (" EXECUTABLE_PATH = \(Xcode.primaryProductName).", "\n")
+                let executableLocationKey = (" EXECUTABLE_PATH = \(DXcode.primaryProductName).", "\n")
                 guard let executableLocationSuffix = settings.scalars.firstNestingLevel(startingWith: executableLocationKey.0.scalars, endingWith: executableLocationKey.1.scalars)?.contents.contents else {
                     fatalError(message: [
                         "Failed to find “\(executableLocationKey.0)” in Xcode build settings.",
                         "This may indicate a bug in Workspace."
                         ])
                 }
-                let relativeExecutableLocation = Xcode.primaryProductName + "." + String(executableLocationSuffix)
+                let relativeExecutableLocation = DXcode.primaryProductName + "." + String(executableLocationSuffix)
                 let directorySuffix: String
                 if let simulator = simulatorSDK {
                     directorySuffix = "\u{2D}" + simulator

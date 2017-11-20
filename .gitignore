@@ -26,8 +26,5 @@
 /Validate\ (Linux).sh
 /.Test\ Zone
 /*.xcodeproj
-/build
-undocumented.json
-*.tgz
 
 # [_End Workspace Section]

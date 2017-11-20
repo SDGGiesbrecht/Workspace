@@ -22,7 +22,8 @@ extension Xcode {
 
     // MARK: - Static Properties
 
-    static let `default` = Xcode(version: Version(9, 0))
+    static let defaultVersion = Version(9, 1)
+    static let `default` = Xcode(version: defaultVersion)
 
     // MARK: - Initialization
 

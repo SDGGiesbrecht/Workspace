@@ -52,23 +52,18 @@ class InternalTests : TestCase {
     }
 
     func testExternalToolVersions() {
-        var shouldTest = true //ProcessInfo.processInfo.environment["CONTINUOUS_INTEGRATION"] ≠ nil
+        let shouldTest = ProcessInfo.processInfo.environment["CONTINUOUS_INTEGRATION"] ≠ nil
             ∨ ProcessInfo.processInfo.environment["CI"] ≠ nil
             ∨ ProcessInfo.processInfo.environment["TRAVIS"] ≠ nil
 
         if shouldTest {
             XCTAssertErrorFree({
-                let tools: [SystemTool] = [
-                    Xcode.default
-                ]
-                for tool in tools {
-                    Command(name: UserFacingText<InterfaceLocalization, Void>({ (_, _) in ""}), description: UserFacingText<InterfaceLocalization, Void>({ (_, _) in ""}), directArguments: [], options: [], execution: { (_, _, output: inout Command.Output) in
-
-                        try tool.checkVersion(output: &output)
-                        XCTAssert(¬output.output.contains(StrictString("").formattedAsWarning().prefix(3)), "\(output.output)")
-
-                    }).execute(with: [])
+                var versionString = Xcode.defaultVersion.string
+                if versionString.hasSuffix(".0") {
+                    versionString.scalars.removeLast(2)
                 }
+                
+                XCTAssert(try Shell.default.run(command: ["xcodebuild", "\u{2D}version"]).scalars.contains(versionString.scalars), "Xcode is out of date.")
             })
         }
     }

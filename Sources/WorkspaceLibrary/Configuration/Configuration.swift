@@ -133,14 +133,6 @@ struct Configuration {
 
     // MARK: - Options: Project Metadata
 
-    func projectName() throws -> StrictString {
-        if let defined = try string(for: .projectName) {
-            return StrictString(defined)
-        } else {
-            return StrictString(try packageName())
-        }
-    }
-
     func repositoryURL() throws -> URL? {
         if let defined = try string(for: .repositoryURL) {
             return URL(string: defined)
@@ -174,25 +166,5 @@ struct Configuration {
     }
     func shouldEnforceDocumentationCoverage() throws -> Bool {
         return try boolean(for: .enforceDocumentationCoverage) ?? true
-    }
-
-    // MARK: - Options: Overrides
-
-    func packageName() throws -> String {
-        if let defined = try string(for: .packageName) {
-            return defined
-        } else {
-            // [_Warning: This should parse Package.swift._]
-            notImplementedYetAndCannotReturn()
-        }
-    }
-
-    func xcodeScheme() throws -> String {
-        if let defined = try string(for: .xcodeSchemeName) {
-            return defined
-        } else {
-            // [_Warning: This should be moved to SwiftTool._]
-            return try packageName() + "\u{2D}Package"
-        }
     }
 }

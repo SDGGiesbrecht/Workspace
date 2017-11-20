@@ -171,7 +171,7 @@ struct UnitTests {
             func generateScript(buildOnly: Bool) throws -> [String] {
                 return [
                     "xcodebuild", (buildOnly ? "build" : "test"),
-                    "\u{2D}scheme", try Repository.packageRepository.configuration.xcodeScheme(),
+                    "\u{2D}scheme", try Repository.packageRepository.xcodeScheme(),
                     flag, flagValue
                 ]
             }

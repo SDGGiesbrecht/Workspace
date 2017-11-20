@@ -21,7 +21,7 @@ func runProofread(andExit shouldExit: Bool, arguments: DirectArguments, options:
 
     if CommandLine.arguments[1] ≠ "proofread" {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        print("Proofreading \(try Repository.packageRepository.configuration.projectName())...".formattedAsSectionHeader(), to: &output)
+        print("Proofreading \(try Repository.packageRepository.projectName(output: &output))...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     }
 
@@ -47,7 +47,7 @@ func runProofread(andExit shouldExit: Bool, arguments: DirectArguments, options:
             ruleSet += manualWarnings as [Rule.Type]
 
             for rule in ruleSet where rule.name ∉ Configuration.disableProofreadingRules {
-                try rule.check(file: file, status: &overallSuccess)
+                try rule.check(file: file, status: &overallSuccess, output: &output)
             }
         }
     }

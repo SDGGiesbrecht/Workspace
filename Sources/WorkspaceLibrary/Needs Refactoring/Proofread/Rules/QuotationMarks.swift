@@ -15,12 +15,13 @@
 import Foundation
 
 import SDGCornerstone
+import SDGCommandLine
 
 struct QuotationMarks : Rule {
 
     static let name = "Quotation Marks"
 
-    static func check(file: File, status: inout Bool) {
+    static func check(file: File, status: inout Bool, output: inout Command.Output) {
 
         if let fileType = file.fileType {
             var index = file.contents.startIndex

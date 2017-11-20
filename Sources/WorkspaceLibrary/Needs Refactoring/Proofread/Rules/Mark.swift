@@ -15,12 +15,13 @@
 import Foundation
 
 import SDGCornerstone
+import SDGCommandLine
 
 struct Mark : Rule {
 
     static let name = "Mark"
 
-    static func check(file: File, status: inout Bool) {
+    static func check(file: File, status: inout Bool, output: inout Command.Output) {
 
         var index = file.contents.startIndex
         while let range = file.contents.scalars.firstMatch(for: "MARK\u{3A}".scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.range.clusters(in: file.contents.clusters) {

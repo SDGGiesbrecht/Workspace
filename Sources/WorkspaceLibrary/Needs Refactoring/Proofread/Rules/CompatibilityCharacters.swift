@@ -15,12 +15,13 @@
 import Foundation
 
 import SDGCornerstone
+import SDGCommandLine
 
 struct CompatibilityCharacters : Rule {
 
     static let name = "Compatibility Characters"
 
-    static func check(file: File, status: inout Bool) {
+    static func check(file: File, status: inout Bool, output: inout Command.Output) {
 
         var index = file.contents.startIndex
         while index ≠ file.contents.endIndex {

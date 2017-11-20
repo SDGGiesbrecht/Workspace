@@ -30,6 +30,7 @@ extension PackageRepository {
 
     private struct Cache {
         fileprivate class Properties {
+            fileprivate var packageName: String?
             fileprivate var targets: [String: Target]?
             fileprivate var libraryProductTargets: Set<String>?
 
@@ -71,11 +72,25 @@ extension PackageRepository {
 
     // MARK: - Miscellaneous Properties
 
-    func isWorkspaceProject() throws -> Bool {
-        return try configuration.projectName() == "Workspace"
+    func isWorkspaceProject(output: inout Command.Output) throws -> Bool {
+        return try projectName(output: &output) == "Workspace"
     }
 
     // MARK: - Structure
+
+    func projectName(output: inout Command.Output) throws -> StrictString {
+        return StrictString(try packageName(output: &output))
+    }
+
+    func packageName(output: inout Command.Output) throws -> String {
+        return try cached(in: &PackageRepository.caches[location, default: Cache()].properties.packageName) {
+            var name = ""
+            try FileManager.default.do(in: location) {
+                name = try SwiftTool.default.packageName(output: &output)
+            }
+            return name
+        }
+    }
 
     func targets(output: inout Command.Output) throws -> [String: Target] {
         return try cached(in: &PackageRepository.caches[location, default: Cache()].properties.targets) {
@@ -291,5 +306,11 @@ extension PackageRepository {
         for product in try libraryProductTargets(output: &output).sorted() {
             try Documentation.validateDocumentationCoverage(for: product, in: self, validationStatus: &validationStatus, output: &output)
         }
+    }
+
+    // MARK: - Xcode
+
+    func xcodeScheme() throws -> String {
+        notImplementedYetAndCannotReturn()
     }
 }

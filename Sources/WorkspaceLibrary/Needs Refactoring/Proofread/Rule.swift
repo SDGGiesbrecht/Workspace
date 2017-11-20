@@ -15,10 +15,11 @@
 import Foundation
 
 import SDGCornerstone
+import SDGCommandLine
 
 protocol Rule {
     static var name: String { get }
-    static func check(file: File, status: inout Bool) throws
+    static func check(file: File, status: inout Bool, output: inout Command.Output) throws
 }
 
 let rules: [Rule.Type] = [

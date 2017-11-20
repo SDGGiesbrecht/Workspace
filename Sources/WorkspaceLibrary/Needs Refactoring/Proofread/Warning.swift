@@ -13,6 +13,7 @@
  */
 
 import SDGCornerstone
+import SDGCommandLine
 
 protocol Warning : Rule {
     static var trigger: String { get }
@@ -27,9 +28,9 @@ let manualWarnings: [Warning.Type] = [
 
 extension Warning {
 
-    static func check(file: File, status: inout Bool) throws {
+    static func check(file: File, status: inout Bool, output: inout Command.Output) throws {
 
-        if try Repository.packageRepository.isWorkspaceProject() ∧ Repository.relative(file.path) == RelativePath("Documentation/Manual Warnings.md") {
+        if try Repository.packageRepository.isWorkspaceProject(output: &output) ∧ Repository.relative(file.path) == RelativePath("Documentation/Manual Warnings.md") {
             return
         }
 

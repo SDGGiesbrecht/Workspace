@@ -30,7 +30,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    print("Validating \(try Repository.packageRepository.configuration.projectName())...".formattedAsSectionHeader(), to: &output)
+    print("Validating \(try Repository.packageRepository.projectName(output: &output))...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     if options.job == .miscellaneous ∨ options.job == nil {
@@ -137,5 +137,5 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         }).resolved().formattedAsWarning().separated(), to: &output)
     }
 
-    try validationStatus.reportOutcome(projectName: try options.project.configuration.projectName(), output: &output)
+    try validationStatus.reportOutcome(projectName: try options.project.projectName(output: &output), output: &output)
 }

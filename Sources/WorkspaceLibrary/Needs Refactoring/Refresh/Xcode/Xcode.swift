@@ -29,16 +29,16 @@ struct Xcode {
         return primaryProductName
     }
 
-    static func defaultPrimaryTargetName() throws -> String {
+    static func defaultPrimaryTargetName(output: inout Command.Output) throws -> String {
         if try Repository.packageRepository.configuration.projectType() == .executable {
-            return Configuration.executableLibraryName(forProjectName: String(try Repository.packageRepository.configuration.projectName()))
+            return Configuration.executableLibraryName(forProjectName: String(try Repository.packageRepository.projectName(output: &output)))
         } else {
-            return Configuration.moduleName(forProjectName: String(try Repository.packageRepository.configuration.projectName()))
+            return Configuration.moduleName(forProjectName: String(try Repository.packageRepository.projectName(output: &output)))
         }
     }
 
-    static func defaultTestTargetName() throws -> String {
-        return Configuration.testModuleName(forProjectName: String(try Repository.packageRepository.configuration.projectName()))
+    static func defaultTestTargetName(output: inout Command.Output) throws -> String {
+        return Configuration.testModuleName(forProjectName: String(try Repository.packageRepository.projectName(output: &output)))
     }
 
     static func refreshXcodeProjects(output: inout Command.Output) throws {

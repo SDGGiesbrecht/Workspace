@@ -13,12 +13,13 @@
  */
 
 import SDGCornerstone
+import SDGCommandLine
 
 struct AutoindentResilience : Rule {
 
     static let name = "Autoindent Resilience"
 
-    static func check(file: File, status: inout Bool) {
+    static func check(file: File, status: inout Bool, output: inout Command.Output) {
 
         if file.fileType == .swift {
 

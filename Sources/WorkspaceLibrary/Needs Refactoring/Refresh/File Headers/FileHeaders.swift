@@ -131,7 +131,8 @@ struct FileHeaders {
                 var header = template
 
                 header = header.replacingOccurrences(of: key("Filename"), with: path.filename)
-                header = header.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.configuration.projectName()))
+                header = header.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.projectName(output:
+                    &output)))
                 if let website = possibleWebsite {
                     header = header.replacingOccurrences(of: key("Website"), with: website)
                 }

@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGCornerstone
+
 enum Option : String, CustomStringConvertible {
 
     // MARK: - Initialization
@@ -295,17 +297,17 @@ enum Option : String, CustomStringConvertible {
             return String(Configuration.falseOptionValue)
 
         case .projectName:
-            return String((try? Repository.packageRepository.configuration.packageName())!)
+            unreachable()
         case .packageName:
             return Configuration.defaultPackageName
         case .moduleName:
-            return (try? Configuration.defaultModuleName())!
+            unreachable()
         case .xcodeSchemeName:
-            return (try? Repository.packageRepository.configuration.xcodeScheme())!
+            unreachable()
         case .primaryXcodeTarget:
-            return (try? Xcode.defaultPrimaryTargetName())!
+            unreachable()
         case .xcodeTestTarget:
-            return (try? Xcode.defaultTestTargetName())!
+            unreachable()
 
         case .ignoreFileTypes:
             return Configuration.emptyListOptionValue

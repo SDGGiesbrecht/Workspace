@@ -179,7 +179,7 @@ struct ContributingInstructions {
             Configuration.contributingInstructions
             ])
 
-        body = body.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.configuration.projectName()))
+        body = body.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.projectName(output: &output)))
 
         var administrators = Configuration.administrators
         var administratorList: String

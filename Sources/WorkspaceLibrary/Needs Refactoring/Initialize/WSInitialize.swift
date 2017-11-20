@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGCornerstone
 import SDGCommandLine
 
@@ -48,7 +50,7 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     let packageType = options.projectType
-    let projectName = String(try Repository.packageRepository.configuration.projectName())
+    let projectName = URL(fileURLWithPath: FileManager.default.currentDirectoryPath).lastPathComponent
 
     let packageName = Configuration.packageName(forProjectName: projectName)
     let moduleName = Configuration.moduleName(forProjectName: projectName)
@@ -292,6 +294,6 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     if shouldExit {
-        succeed(message: ["\(try Repository.packageRepository.configuration.projectName()) has been initialized.", instructionsAfterRefresh])
+        succeed(message: ["\(try Repository.packageRepository.projectName(output: &output)) has been initialized.", instructionsAfterRefresh])
     }
 }

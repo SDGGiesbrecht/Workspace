@@ -57,7 +57,7 @@ extension Workspace {
                     }
                 }))
             }
-            try validationStatus.reportOutcome(projectName: try options.project.configuration.projectName(), output: &output)
+            try validationStatus.reportOutcome(projectName: try options.project.projectName(output: &output), output: &output)
         })
 
         static func executeAsStep(options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {

@@ -30,7 +30,7 @@ enum Documentation {
         return Template(source: try FileHeaders.defaultCopyright(configuration: configuration).text + " All rights reserved.")
     }
 
-    private static func copyright(for directory: URL, in project: PackageRepository) throws -> StrictString {
+    private static func copyright(for directory: URL, in project: PackageRepository, output: inout Command.Output) throws -> StrictString {
 
         let existing = try TextFile(possiblyAt: directory.appendingPathComponent("index.html")).contents
         let searchArea: String
@@ -45,7 +45,7 @@ enum Documentation {
 
         template.insert(dates, for: "Copyright")
         try template.insert(resultOf: { try project.configuration.requireAuthor() }, for: "Author")
-        template.insert(try project.configuration.projectName(), for: "Project")
+        template.insert(try project.projectName(output: &output), for: "Project")
 
         return template.text
     }
@@ -74,9 +74,9 @@ enum Documentation {
             buildOperatingSystem = .macOS
         }
 
-        let copyrightText = try copyright(for: outputDirectory, in: project)
+        let copyrightText = try copyright(for: outputDirectory, in: project, output: &output)
         try FileManager.default.do(in: project.location) {
-            try Jazzy.default.document(target: target, scheme: try project.configuration.xcodeScheme(), buildOperatingSystem: buildOperatingSystem, copyright: copyrightText, gitHubURL: try project.configuration.repositoryURL(), outputDirectory: outputDirectory, project: project, output: &output)
+            try Jazzy.default.document(target: target, scheme: try project.xcodeScheme(), buildOperatingSystem: buildOperatingSystem, copyright: copyrightText, gitHubURL: try project.configuration.repositoryURL(), outputDirectory: outputDirectory, project: project, output: &output)
         }
 
         for url in try project.trackedFiles(output: &output) where url.is(in: outputDirectory) {

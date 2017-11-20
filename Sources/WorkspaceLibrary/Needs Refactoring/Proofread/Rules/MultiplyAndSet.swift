@@ -13,12 +13,13 @@
  */
 
 import SDGCornerstone
+import SDGCommandLine
 
 struct MultiplyAndSet : Rule {
 
     static let name = "Multiply & Set"
 
-    static func check(file: File, status: inout Bool) {
+    static func check(file: File, status: inout Bool, output: inout Command.Output) {
 
         if ¬file.path.string.hasSuffix("/Numeric.swift") {
 

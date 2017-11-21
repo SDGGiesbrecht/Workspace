@@ -390,7 +390,12 @@ struct ReadMe {
             }
             return "\(apis) \(links.joined(separator: " • "))"
         } else {
-            return "[\(apis) \(libraries.sorted().joined(separator: " • "))](\(urlString))"
+            if libraries.isEmpty {
+                return ""
+            } else {
+                return "[\(apis) \(libraries.sorted().joined(separator: " • "))](\(urlString))"
+            }
+
         }
     }
 

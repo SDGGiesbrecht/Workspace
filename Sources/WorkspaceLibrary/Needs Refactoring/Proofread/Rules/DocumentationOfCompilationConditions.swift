@@ -28,8 +28,11 @@ struct DocumentationOfCompilationConditions : Rule {
                 index = range.upperBound
 
                 let lineRange = file.contents.lineRange(for: range)
+                let line = String(file.contents[lineRange])
 
-                if lineRange.upperBound ≠ file.contents.endIndex {
+                if ¬line.contains("MARK"),
+                    lineRange.upperBound ≠ file.contents.endIndex,
+                    String(file.contents.suffix(from: lineRange.upperBound)).scalars.prefix(upTo: "#".scalars)?.contents.contains("public".scalars) ?? false {
 
                     let nextCharacterRange = lineRange.upperBound ..< file.contents.index(after: lineRange.upperBound)
                     let nextLineRange = file.contents.lineRange(for: nextCharacterRange)
@@ -46,8 +49,11 @@ struct DocumentationOfCompilationConditions : Rule {
                 index = range.upperBound
 
                 let lineRange = file.contents.lineRange(for: range)
+                let line = String(file.contents[lineRange])
 
-                if lineRange.upperBound ≠ file.contents.endIndex {
+                if ¬line.contains("MARK"),
+                    lineRange.upperBound ≠ file.contents.endIndex,
+                    String(file.contents.suffix(from: lineRange.upperBound)).scalars.prefix(upTo: "#".scalars)?.contents.contains("public".scalars) ?? false {
 
                     let nextCharacterRange = lineRange.upperBound ..< file.contents.index(after: lineRange.upperBound)
                     let nextLineRange = file.contents.lineRange(for: nextCharacterRange)

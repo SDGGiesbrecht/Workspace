@@ -21,7 +21,7 @@
  !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!!
  -->
 
-[APIs: macOS • Linux](https://github.com/SDGGiesbrecht/Workspace#workspace)
+
 
 # Workspace
 

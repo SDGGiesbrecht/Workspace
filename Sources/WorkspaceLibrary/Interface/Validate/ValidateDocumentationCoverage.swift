@@ -35,6 +35,10 @@ extension Workspace.Validate {
 
         static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, options: Options, output: inout Command.Output) throws in
 
+            #if os(Linux)
+                throw linuxJazzyError()
+            #endif
+
             guard try options.project.configuration.shouldEnforceDocumentationCoverage() else {
                 throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
                     switch localization {

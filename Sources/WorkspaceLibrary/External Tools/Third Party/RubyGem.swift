@@ -40,7 +40,7 @@ class RubyGem : ThirdPartyTool {
                 return StrictString(join(lines: [
                     "Failed to install " + englishName + " " + version.string + ".",
                     "Please install " + englishName + " " + version.string + " manually.",
-                    "See: " + url
+                    "See " + url.in(Underline.underlined)
                     ]))
             }
         }))

@@ -32,8 +32,7 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
             Repository.printableListOfAllFiles,
             "",
             "This command is only for use in empty folders.",
-            "For more information, see:",
-            DocumentationLink.setUp.url
+            "For more information, see \(DocumentationLink.setUp.url.in(Underline.underlined))"
             ]
 
         fatalError(message: message)

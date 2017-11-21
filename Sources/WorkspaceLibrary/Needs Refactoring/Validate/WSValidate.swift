@@ -131,7 +131,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
                     "To update the version used by this project, run:",
                     "$ workspace refresh scripts •use‐version \(update.string)",
                     "(This requires a full installation. See the following link.)",
-                    "\(DocumentationLink.installation.url)"
+                    "\(DocumentationLink.installation.url.in(Underline.underlined))"
                     ]))
             }
         }).resolved().formattedAsWarning().separated(), to: &output)

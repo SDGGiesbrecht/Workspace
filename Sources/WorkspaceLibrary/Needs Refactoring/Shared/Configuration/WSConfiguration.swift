@@ -750,8 +750,7 @@ extension Configuration {
 
             if let link = documentation {
                 description.append(contentsOf: [
-                    "For more information, see:",
-                    link.url
+                    "For more information, see \(link.url.in(Underline.underlined))"
                     ])
             }
 

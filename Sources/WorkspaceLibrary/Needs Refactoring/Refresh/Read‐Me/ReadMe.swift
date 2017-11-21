@@ -349,7 +349,7 @@ struct ReadMe {
         return links.joined(separator: " • ") + " " + skipInJazzy
     }
 
-    static func apiLinksMarkup(localization: ArbitraryLocalization?) throws -> String {
+    static func apiLinksMarkup(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String {
         let translation = Configuration.resolvedLocalization(for: localization)
 
         let urlString = Configuration.requiredDocumentationURL
@@ -378,19 +378,19 @@ struct ReadMe {
                 apis = "מת״י:"
             }
         case .unrecognized:
-            return try apiLinksMarkup(localization: .compatible(.englishCanada))
+            return try apiLinksMarkup(localization: .compatible(.englishCanada), output: &output)
         }
 
-        let operatingSystems = try OperatingSystem.cases.filter({ try Repository.packageRepository.configuration.supports($0) }).map({ "\($0.isolatedName.resolved(for: .englishCanada))" })
-        if url.lastPathComponent ∈ Set(operatingSystems) {
+        let libraries = try Repository.packageRepository.libraryProductTargets(output: &output)
+        if url.lastPathComponent ∈ libraries {
 
             let root = url.deletingLastPathComponent().absoluteString
-            let links = operatingSystems.map() {
+            let links = libraries.sorted().map() {
                 return "[\($0)](\(root)\($0))"
             }
             return "\(apis) \(links.joined(separator: " • "))"
         } else {
-            return "[\(apis) \(operatingSystems.joined(separator: " • "))](\(urlString))"
+            return "[\(apis) \(libraries.sorted().joined(separator: " • "))](\(urlString))"
         }
     }
 
@@ -642,7 +642,7 @@ struct ReadMe {
 
             let apiLinks = key("API Links")
             if body.contains(apiLinks) {
-                body = body.replacingOccurrences(of: apiLinks, with: try apiLinksMarkup(localization: localization))
+                body = body.replacingOccurrences(of: apiLinks, with: try apiLinksMarkup(localization: localization, output: &output))
             }
 
             body = body.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.projectName(output: &output)))

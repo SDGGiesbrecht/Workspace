@@ -40,44 +40,4 @@ enum OperatingSystem : Int, IterableEnumeration {
             return .supportTVOS
         }
     }
-
-    var isolatedName: UserFacingText<InterfaceLocalization, Void> { // [_Exempt from Code Coverage_] [_Workaround: Until read‐me is testable._]
-        switch self {
-        case .macOS: // [_Exempt from Code Coverage_] [_Workaround: Until read‐me is testable._]
-            return UserFacingText({ (localization, _) in // [_Exempt from Code Coverage_] [_Workaround: Until read‐me is testable._]
-                switch localization {
-                case .englishCanada: // [_Exempt from Code Coverage_] [_Workaround: Until read‐me is testable._]
-                    return "macOS"
-                }
-            })
-        case .linux: // [_Exempt from Code Coverage_] [_Workaround: Until read‐me is testable._]
-            return UserFacingText({ (localization, _) in // [_Exempt from Code Coverage_] [_Workaround: Until read‐me is testable._]
-                switch localization {
-                case .englishCanada: // [_Exempt from Code Coverage_] [_Workaround: Until read‐me is testable._]
-                    return "Linux"
-                }
-            })
-        case .iOS: // [_Exempt from Code Coverage_] [_Workaround: Until read‐me is testable._]
-            return UserFacingText({ (localization, _) in // [_Exempt from Code Coverage_] [_Workaround: Until read‐me is testable._]
-                switch localization {
-                case .englishCanada: // [_Exempt from Code Coverage_] [_Workaround: Until read‐me is testable._]
-                    return "iOS"
-                }
-            })
-        case .watchOS: // [_Exempt from Code Coverage_] [_Workaround: Until read‐me is testable._]
-            return UserFacingText({ (localization, _) in // [_Exempt from Code Coverage_] [_Workaround: Until read‐me is testable._]
-                switch localization {
-                case .englishCanada: // [_Exempt from Code Coverage_] [_Workaround: Until read‐me is testable._]
-                    return "watchOS"
-                }
-            })
-        case .tvOS: // [_Exempt from Code Coverage_] [_Workaround: Until read‐me is testable._]
-            return UserFacingText({ (localization, _) in // [_Exempt from Code Coverage_] [_Workaround: Until read‐me is testable._]
-                switch localization {
-                case .englishCanada: // [_Exempt from Code Coverage_] [_Workaround: Until read‐me is testable._]
-                    return "tvOS"
-                }
-            })
-        }
-    }
 }

@@ -51,7 +51,7 @@ class InternalTests : TestCase {
         }
     }
 
-    func testExternalToolVersions() {
+    func testSystemToolVersions() {
         let shouldTest = ProcessInfo.processInfo.environment["CONTINUOUS_INTEGRATION"] ≠ nil
             ∨ ProcessInfo.processInfo.environment["CI"] ≠ nil
             ∨ ProcessInfo.processInfo.environment["TRAVIS"] ≠ nil
@@ -145,7 +145,7 @@ class InternalTests : TestCase {
     static var allTests: [(String, (InternalTests) -> () throws -> Void)] {
         return [
             ("testDocumentationCoverage", testDocumentationCoverage),
-            ("testExternalToolVersions", testExternalToolVersions),
+            ("testSystemToolVersions", testSystemToolVersions),
             ("testGitIgnoreCoverage", testGitIgnoreCoverage),
             ("testHelp", testHelp)
         ]

@@ -66,10 +66,10 @@ struct Configuration {
 
     // MARK: - Types
 
-    private static func optionNotDefinedError(for option: Option) -> Command.Error {
-        return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    private static func optionNotDefinedError(for option: Option) -> Command.Error { // [_Exempt from Code Coverage_] [_Workaround: Until licence is testable._]
+        return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Code Coverage_] [_Workaround: Until licence is testable._]
             switch localization {
-            case .englishCanada:
+            case .englishCanada: // [_Exempt from Code Coverage_] [_Workaround: Until licence is testable._]
                 return "Option not defined: " + StrictString(option.key)
             }
         }))
@@ -110,7 +110,7 @@ struct Configuration {
         return try options()[option]
     }
 
-    func optionIsDefined(_ option: Option) throws -> Bool {
+    func optionIsDefined(_ option: Option) throws -> Bool { // [_Exempt from Code Coverage_] [_Workaround: Until licence is testable._]
         return try options()[option] ≠ nil
     }
 

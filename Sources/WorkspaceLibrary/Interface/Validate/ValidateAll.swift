@@ -33,7 +33,9 @@ extension Workspace.Validate {
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (arguments: DirectArguments, options: Options, output: inout Command.Output) throws in
+        static let command = Command(name: name, description: description, directArguments: [], options: [
+            ContinuousIntegration.Job.option
+            ], execution: { (arguments: DirectArguments, options: Options, output: inout Command.Output) throws in
             try runValidate(andExit: true, arguments: arguments, options: options, output: &output)
         })
     }

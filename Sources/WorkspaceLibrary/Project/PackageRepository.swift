@@ -308,6 +308,8 @@ extension PackageRepository {
         }
     }
 
+    #if !os(Linux)
+
     // MARK: - Xcode
 
     func xcodeProjectFile() throws -> URL? {
@@ -325,6 +327,8 @@ extension PackageRepository {
         }
         return result
     }
+
+    #endif
 
     // MARK: - Actions
 

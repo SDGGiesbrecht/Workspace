@@ -58,12 +58,16 @@ class InternalTests : TestCase {
 
         if shouldTest {
             XCTAssertErrorFree({
-                var versionString = Xcode.defaultVersion.string
-                if versionString.hasSuffix(".0") {
-                    versionString.scalars.removeLast(2)
-                }
 
-                XCTAssert(try Shell.default.run(command: ["xcodebuild", "\u{2D}version"]).scalars.contains(versionString.scalars), "Xcode is out of date.")
+                #if !os(Linux)
+                    var versionString = Xcode.defaultVersion.string
+                    if versionString.hasSuffix(".0") {
+                        versionString.scalars.removeLast(2)
+                    }
+
+                    XCTAssert(try Shell.default.run(command: ["xcodebuild", "\u{2D}version"]).scalars.contains(versionString.scalars), "Xcode is out of date.")
+                #endif
+
             })
         }
     }

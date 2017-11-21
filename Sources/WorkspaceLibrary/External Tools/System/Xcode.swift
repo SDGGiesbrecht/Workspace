@@ -12,59 +12,63 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+#if !os(Linux)
 
-import SDGCornerstone
-import SDGCommandLine
+    import Foundation
 
-typealias Xcode = _Xcode // Shared from SDGCommandLine.
-extension Xcode {
+    import SDGCornerstone
+    import SDGCommandLine
 
-    // MARK: - Static Properties
+    typealias Xcode = _Xcode // Shared from SDGCommandLine.
+    extension Xcode {
 
-    static let defaultVersion = Version(9, 1)
-    static let `default` = Xcode(version: defaultVersion)
+        // MARK: - Static Properties
 
-    // MARK: - Initialization
+        static let defaultVersion = Version(9, 1)
+        static let `default` = Xcode(version: defaultVersion)
 
-    convenience init(version: Version) {
-        self.init(_version: version)
-    }
+        // MARK: - Initialization
 
-    // MARK: - Usage
+        convenience init(version: Version) {
+            self.init(_version: version)
+        }
 
-    private func parseError(projectInformation: String) -> Command.Error {
-        return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Xcode.
-            switch localization {
-            case .englishCanada: // [_Exempt from Code Coverage_]
-                return StrictString("Error loading Xcode project:\n\(projectInformation)")
+        // MARK: - Usage
+
+        private func parseError(projectInformation: String) -> Command.Error {
+            return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Xcode.
+                switch localization {
+                case .englishCanada: // [_Exempt from Code Coverage_]
+                    return StrictString("Error loading Xcode project:\n\(projectInformation)")
+                }
+            }))
+        }
+
+        func projectFile() throws -> URL? {
+            let files = try FileManager.default.contentsOfDirectory(at: URL(fileURLWithPath: FileManager.default.currentDirectoryPath), includingPropertiesForKeys: [], options: [])
+
+            for file in files where file.pathExtension == "xcodeproj" {
+                return file
             }
-        }))
-    }
 
-    func projectFile() throws -> URL? {
-        let files = try FileManager.default.contentsOfDirectory(at: URL(fileURLWithPath: FileManager.default.currentDirectoryPath), includingPropertiesForKeys: [], options: [])
-
-        for file in files where file.pathExtension == "xcodeproj" {
-            return file
+            return nil
         }
 
-        return nil
+        func scheme(output: inout Command.Output) throws -> String {
+            let information = try executeInCompatibilityMode(with: ["\u{2D}list"], output: &output, silently: true)
+
+            guard let schemesHeader = information.scalars.firstMatch(for: "Schemes:".scalars)?.range else {
+                throw parseError(projectInformation: information)
+            }
+            let schemesHeaderLine = schemesHeader.lines(in: information.lines)
+            let nextLine = schemesHeaderLine.upperBound
+            guard nextLine ≠ information.lines.endIndex else {
+                throw parseError(projectInformation: information)
+            }
+            let line = information.lines[nextLine].line
+
+            return String(line.filter({ $0 ∉ CharacterSet.whitespaces }))
+        }
     }
 
-    func scheme(output: inout Command.Output) throws -> String {
-        let information = try executeInCompatibilityMode(with: ["\u{2D}list"], output: &output, silently: true)
-
-        guard let schemesHeader = information.scalars.firstMatch(for: "Schemes:".scalars)?.range else {
-            throw parseError(projectInformation: information)
-        }
-        let schemesHeaderLine = schemesHeader.lines(in: information.lines)
-        let nextLine = schemesHeaderLine.upperBound
-        guard nextLine ≠ information.lines.endIndex else {
-            throw parseError(projectInformation: information)
-        }
-        let line = information.lines[nextLine].line
-
-        return String(line.filter({ $0 ∉ CharacterSet.whitespaces }))
-    }
-}
+#endif

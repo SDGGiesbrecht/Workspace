@@ -231,8 +231,10 @@ class APITests : TestCase {
                 try Workspace.command.execute(with: ["refresh", "scripts"])
                 try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
                 try Workspace.command.execute(with: ["refresh", "resources"])
-                try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
-                try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
+                #if !os(Linux)
+                    try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
+                    try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
+                #endif
             }
         }
 
@@ -243,8 +245,10 @@ class APITests : TestCase {
                 try Workspace.command.execute(with: ["refresh", "scripts"])
                 try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
                 try Workspace.command.execute(with: ["refresh", "resources"])
-                try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
-                try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
+                #if !os(Linux)
+                    try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
+                    try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
+                #endif
             }
         }
 
@@ -255,8 +259,10 @@ class APITests : TestCase {
                 try Workspace.command.execute(with: ["refresh", "scripts"])
                 try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
                 try Workspace.command.execute(with: ["refresh", "resources"])
-                try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
-                try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
+                #if !os(Linux)
+                    try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
+                    try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
+                #endif
             }
         }
 
@@ -267,8 +273,10 @@ class APITests : TestCase {
                 try Workspace.command.execute(with: ["refresh", "scripts"])
                 try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
                 try Workspace.command.execute(with: ["refresh", "resources"])
-                try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
-                try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
+                #if !os(Linux)
+                    try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
+                    try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
+                #endif
             }
         }
     }

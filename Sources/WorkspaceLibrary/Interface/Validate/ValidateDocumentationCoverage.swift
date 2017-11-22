@@ -65,7 +65,7 @@ extension Workspace.Validate {
             }
 
             try validationStatus.reportOutcome(projectName: try options.project.projectName(output: &output), output: &output)
-            
+
             #endif
         })
 

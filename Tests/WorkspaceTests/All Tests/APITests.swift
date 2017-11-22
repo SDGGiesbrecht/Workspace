@@ -107,8 +107,28 @@ class APITests : TestCase {
                 let project = try MockProject(type: "Library")
                 try project.do {
                     try "Documentation Copyright: ©0001 John Doe\nSupport macOS: False\nSupport iOS: False".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                    try [
+                        "/// ...",
+                        "infix operator ≠",
+                        "/// ...",
+                        "infix operator ¬",
+                        "extension Bool {",
+                        "    /// ...",
+                        "    public static func ≠(lhs: Bool, rhs: Bool) -> Bool {",
+                        "        return true",
+                        "    }",
+                        "    /// ...",
+                        "    public static func ¬(lhs: Bool, rhs: Bool) -> Bool {",
+                        "        return true",
+                        "    }",
+                        "    /// ...",
+                        "    public static func אבג() {}",
+                        "}"
+                        ].joined(separator: "\n").save(to: project.location.appendingPathComponent("Sources/MyProject/Unicode.swift"))
                     try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
                     try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
+                    let page = try String(from: project.location.appendingPathComponent("docs/MyProject/Extensions/Bool.html"))
+                    XCTAssert(¬page.contains("\u{22}err\u{22}"), "Failed to clean up Jazzy output.")
                 }
             }
 
@@ -130,10 +150,10 @@ class APITests : TestCase {
                 }
             }
 
-            XCTAssertThrowsError(containing: "doSomethingSneaky") {
+            XCTAssertThrowsError(containing: "fails validation") {
                 let project = try MockProject(type: "Library")
                 try project.do {
-                    try "public func doSomethingSneaky() {}".save(to: project.location.appendingPathComponent("Sources/MyProject/Undocumented.swift"))
+                    try "public func undocumentedFunction() {}".save(to: project.location.appendingPathComponent("Sources/MyProject/Undocumented.swift"))
                     try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
                     try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
                 }
@@ -181,8 +201,10 @@ class APITests : TestCase {
 
     func testScripts() {
         XCTAssertErrorFree {
-            try MockProject().do {
+            let project = try MockProject()
+            try project.do {
                 // Validate that generated scripts work.
+                try "Deprecated".save(to: project.location.appendingPathComponent("Refresh Workspace (macOS).command"))
                 try Workspace.command.execute(with: ["refresh", "scripts"])
                 XCTAssert(FileManager.default.isExecutableFile(atPath: "Refresh (macOS).command"), "Generated macOS refresh script is not executable.")
                 XCTAssert(FileManager.default.isExecutableFile(atPath: "Refresh (Linux).sh"), "Generated Linux refresh script is not executable.")

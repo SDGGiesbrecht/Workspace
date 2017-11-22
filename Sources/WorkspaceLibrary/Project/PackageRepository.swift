@@ -312,11 +312,11 @@ extension PackageRepository {
 
     // MARK: - Xcode
 
-    func xcodeProjectFile() throws -> URL? {
+    func xcodeProjectFile() throws -> URL? { // [_Exempt from Code Coverage_] [_Workaround: Until refresh Xcode is testable._]
         var result: URL?
-        try FileManager.default.do(in: location) {
+        try FileManager.default.do(in: location) { // [_Exempt from Code Coverage_] [_Workaround: Until refresh Xcode is testable._]
             result = try Xcode.default.projectFile()
-        }
+        } // [_Exempt from Code Coverage_] [_Workaround: Until refresh Xcode is testable._]
         return result
     }
 

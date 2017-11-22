@@ -49,7 +49,7 @@
 
             for file in files where file.pathExtension == "xcodeproj" { // [_Exempt from Code Coverage_] [_Workaround: Until refresh Xcode project is testable._]
                 return file
-            }
+            } // [_Exempt from Code Coverage_] [_Workaround: Until refresh Xcode project is testable._]
 
             return nil
         }

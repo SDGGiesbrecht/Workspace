@@ -51,7 +51,7 @@ class ThirdPartyTool {
             systemVersion == version {
             try Shell.default.run(command: [String(command)] + arguments, alternatePrint: { print($0, to: &output) })
             return
-        }
+        } // [_Exempt from Code Coverage_] Unreachable except with incompatible versions of tools.
 
         try type(of: self).execute(command: command, version: version, with: arguments, versionCheck: versionCheck, repositoryURL: repositoryURL, cacheDirectory: ThirdPartyTool.toolsCache.appendingPathComponent(repositoryURL.lastPathComponent), output: &output)
     }

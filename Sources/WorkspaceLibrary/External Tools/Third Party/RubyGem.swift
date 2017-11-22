@@ -31,10 +31,10 @@ class RubyGem : ThirdPartyTool {
 
     // MARK: - Execution
 
-    private class func installationError(version: Version) -> Command.Error {
-        return Command.Error(description: UserFacingText({ (localization: InterfaceLocalization, _: Void) in
+    private class func installationError(version: Version) -> Command.Error { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
+        return Command.Error(description: UserFacingText({ (localization: InterfaceLocalization, _: Void) in // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
             switch localization {
-            case .englishCanada:
+            case .englishCanada: // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
                 let englishName = String(name.resolved(for: localization))
                 let url = String(installationInstructionsURL.resolved(for: localization))
                 return StrictString(join(lines: [
@@ -51,13 +51,13 @@ class RubyGem : ThirdPartyTool {
         let commandString: [String] = [String(command), "_" + version.string + "_"]
         let versionCheckString = versionCheck.map({ String($0) })
 
-        if (try? Shell.default.run(command: commandString + versionCheckString, silently: true)) == nil {
-            do {
+        if (try? Shell.default.run(command: commandString + versionCheckString, silently: true)) == nil { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
+            do { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
                 try Shell.default.run(command: [
                     "gem", "install", String(command),
                     "\u{2D}\u{2D}version", version.string
                     ], alternatePrint: { print($0, to: &output) })
-            } catch {
+            } catch { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
                 throw installationError(version: version)
             }
         }

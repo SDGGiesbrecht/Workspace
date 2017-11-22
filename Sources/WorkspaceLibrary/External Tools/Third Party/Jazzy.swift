@@ -130,7 +130,7 @@ import SDGCommandLine
             }))
         }
 
-        func warnings(outputDirectory: URL) throws -> [(file: URL, line: Int, symbol: String)] {
+        func warnings(outputDirectory: URL) throws -> [(file: URL, line: Int?, symbol: String)] {
 
             let json = try TextFile(alreadyAt: outputDirectory.appendingPathComponent("undocumented.json")).contents
 
@@ -142,15 +142,15 @@ import SDGCommandLine
                 throw parseError(undocumented: json)
             }
 
-            var result: [(file: URL, line: Int, symbol: String)] = []
+            var result: [(file: URL, line: Int?, symbol: String)] = []
 
             for entry in warnings {
                 guard let warning = (entry as? PropertyListValue)?.as([String: Any].self),
                     let path = (warning["file"] as? PropertyListValue)?.as(String.self),
-                    let line = (warning["line"] as? PropertyListValue)?.as(Int.self),
                     let symbol = (warning["symbol"] as? PropertyListValue)?.as(String.self) else {
                         throw parseError(undocumented: json)
                 }
+                let line = (warning["line"] as? PropertyListValue)?.as(Int.self) // Occasionally “null” for some reason.
 
                 result.append((file: URL(fileURLWithPath: path), line: line, symbol: symbol))
             }

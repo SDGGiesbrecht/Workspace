@@ -122,7 +122,7 @@ enum Documentation {
 
         for warning in warnings {
             print(join(lines: [
-                warning.file.path(relativeTo: project.location) + ":" + String(warning.line.inDigits()),
+                warning.file.path(relativeTo: project.location) + ":" + String(warning.line?.inDigits() ?? ""),
                 warning.symbol,
                 ""
                 ]).formattedAsError(), to: &output)

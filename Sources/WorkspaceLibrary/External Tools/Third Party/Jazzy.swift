@@ -147,8 +147,8 @@ import SDGCommandLine
             for entry in warnings {
                 guard let warning = (entry as? PropertyListValue)?.as([String: Any].self),
                     let path = (warning["file"] as? PropertyListValue)?.as(String.self),
-                    let symbol = (warning["symbol"] as? PropertyListValue)?.as(String.self) else {
-                        throw parseError(undocumented: json) // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
+                    let symbol = (warning["symbol"] as? PropertyListValue)?.as(String.self) else { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
+                        throw parseError(undocumented: json)
                 }
                 let line = (warning["line"] as? PropertyListValue)?.as(Int.self) // Occasionally “null” for some reason.
 

@@ -41,8 +41,8 @@ class ThirdPartyTool {
 
     // MARK: - Execution
 
-    final func execute(with arguments: [StrictString], output: inout Command.Output) throws {
-        try executeInCompatibilityMode(with: arguments.map({ String($0) }), output: &output)
+    final func execute(with arguments: [StrictString], output: inout Command.Output) throws { // [_Exempt from Code Coverage_] [_Workaround: Until proofread is testable._]
+        try executeInCompatibilityMode(with: arguments.map({ String($0) }), output: &output) // [_Exempt from Code Coverage_] [_Workaround: Until proofread is testable._]
     }
 
     final func executeInCompatibilityMode(with arguments: [String], output: inout Command.Output) throws {

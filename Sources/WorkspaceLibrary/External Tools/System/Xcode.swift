@@ -35,7 +35,7 @@
 
         // MARK: - Usage
 
-        private func parseError(projectInformation: String) -> Command.Error {
+        private func parseError(projectInformation: String) -> Command.Error { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Xcode.
             return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Xcode.
                 switch localization {
                 case .englishCanada: // [_Exempt from Code Coverage_]
@@ -44,10 +44,10 @@
             }))
         }
 
-        func projectFile() throws -> URL? {
+        func projectFile() throws -> URL? { // [_Exempt from Code Coverage_] [_Workaround: Until refresh Xcode project is testable._]
             let files = try FileManager.default.contentsOfDirectory(at: URL(fileURLWithPath: FileManager.default.currentDirectoryPath), includingPropertiesForKeys: [], options: [])
 
-            for file in files where file.pathExtension == "xcodeproj" {
+            for file in files where file.pathExtension == "xcodeproj" { // [_Exempt from Code Coverage_] [_Workaround: Until refresh Xcode project is testable._]
                 return file
             }
 
@@ -57,12 +57,12 @@
         func scheme(output: inout Command.Output) throws -> String {
             let information = try executeInCompatibilityMode(with: ["\u{2D}list"], output: &output, silently: true)
 
-            guard let schemesHeader = information.scalars.firstMatch(for: "Schemes:".scalars)?.range else {
+            guard let schemesHeader = information.scalars.firstMatch(for: "Schemes:".scalars)?.range else { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Xcode.
                 throw parseError(projectInformation: information)
             }
             let schemesHeaderLine = schemesHeader.lines(in: information.lines)
             let nextLine = schemesHeaderLine.upperBound
-            guard nextLine ≠ information.lines.endIndex else {
+            guard nextLine ≠ information.lines.endIndex else { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Xcode.
                 throw parseError(projectInformation: information)
             }
             let line = information.lines[nextLine].line

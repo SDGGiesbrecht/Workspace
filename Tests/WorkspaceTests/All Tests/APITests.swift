@@ -96,7 +96,26 @@ class APITests : TestCase {
             XCTAssertErrorFree {
                 let project = try MockProject(type: "Library")
                 try project.do {
-                    try "Repository URL: https://github.com/user/project\nAuthor: John Doe".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                    try "Repository URL: https://github.com/user/project\nAuthor: John Doe\nSupport macOS: False".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                    try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
+                    try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
+                    try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
+                }
+            }
+
+            XCTAssertErrorFree {
+                let project = try MockProject(type: "Library")
+                try project.do {
+                    try "Documentation Copyright: ©0001 John Doe\nSupport macOS: False\nSupport iOS: False".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                    try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
+                    try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
+                }
+            }
+
+            XCTAssertThrowsError(containing: "not defined") {
+                let project = try MockProject(type: "Library")
+                try project.do {
+                    try "Documentation Copyright: [_Author_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
                     try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
                     try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
                 }
@@ -105,7 +124,16 @@ class APITests : TestCase {
             XCTAssertErrorFree {
                 let project = try MockProject(type: "Library")
                 try project.do {
-                    try "Documentation Copyright: ©0001 John Doe".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                    try "Support macOS: False\nSupport iOS: False\nSupport watchOS: False".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                    try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
+                    try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
+                }
+            }
+
+            XCTAssertThrowsError(containing: "doSomethingSneaky") {
+                let project = try MockProject(type: "Library")
+                try project.do {
+                    try "public func doSomethingSneaky() {}".save(to: project.location.appendingPathComponent("Sources/MyProject/Undocumented.swift"))
                     try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
                     try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
                 }

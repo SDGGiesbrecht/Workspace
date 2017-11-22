@@ -40,19 +40,19 @@ import SDGCommandLine
 
         static let `default` = Jazzy(version: Version(0, 9, 0))
 
-        override class var name: UserFacingText<InterfaceLocalization, Void> {
-            return UserFacingText({ (localization, _) in
+        override class var name: UserFacingText<InterfaceLocalization, Void> { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
+            return UserFacingText({ (localization, _) in // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
                 switch localization {
-                case .englishCanada:
+                case .englishCanada: // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
                     return "Jazzy"
                 }
             })
         }
 
-        override class var installationInstructionsURL: UserFacingText<InterfaceLocalization, Void> {
-            return UserFacingText({ (localization, _) in
+        override class var installationInstructionsURL: UserFacingText<InterfaceLocalization, Void> { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
+            return UserFacingText({ (localization, _) in // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
                 switch localization {
-                case .englishCanada:
+                case .englishCanada: // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
                     return "https://github.com/realm/jazzy"
                 }
             })
@@ -121,7 +121,7 @@ import SDGCommandLine
             try fixSplitClusters(in: outputDirectory, for: project, output: &output)
         }
 
-        private func parseError(undocumented json: String) -> Command.Error {
+        private func parseError(undocumented json: String) -> Command.Error { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
             return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
                 switch localization {
                 case .englishCanada: // [_Exempt from Code Coverage_]

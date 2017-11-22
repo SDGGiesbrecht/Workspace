@@ -89,7 +89,7 @@ enum Documentation {
 
                 var file = try TextFile(alreadyAt: url)
                 var source = file.contents
-                while let skipMarker = source.scalars.firstMatch(for: transformedMarker.scalars) {
+                while let skipMarker = source.scalars.firstMatch(for: transformedMarker.scalars) { // [_Exempt from Code Coverage_] [_Workaround: Until read‐me is testable._]
                     let line = skipMarker.range.lines(in: source.lines)
                     source.lines.removeSubrange(line)
                 }

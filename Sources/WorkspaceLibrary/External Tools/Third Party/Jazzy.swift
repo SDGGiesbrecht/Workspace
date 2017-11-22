@@ -41,18 +41,18 @@ import SDGCommandLine
         static let `default` = Jazzy(version: Version(0, 9, 0))
 
         override class var name: UserFacingText<InterfaceLocalization, Void> { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
-            return UserFacingText({ (localization, _) in // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
+            return UserFacingText({ (localization, _) in // [_Exempt from Code Coverage_]
                 switch localization {
-                case .englishCanada: // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
+                case .englishCanada: // [_Exempt from Code Coverage_]
                     return "Jazzy"
                 }
             })
         }
 
         override class var installationInstructionsURL: UserFacingText<InterfaceLocalization, Void> { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
-            return UserFacingText({ (localization, _) in // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
+            return UserFacingText({ (localization, _) in // [_Exempt from Code Coverage_]
                 switch localization {
-                case .englishCanada: // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
+                case .englishCanada: // [_Exempt from Code Coverage_]
                     return "https://github.com/realm/jazzy"
                 }
             })
@@ -122,7 +122,7 @@ import SDGCommandLine
         }
 
         private func parseError(undocumented json: String) -> Command.Error { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
-            return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
+            return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Code Coverage_]
                 switch localization {
                 case .englishCanada: // [_Exempt from Code Coverage_]
                     return StrictString("Error loading list of undocumented symbols:\n\(json)")
@@ -148,7 +148,7 @@ import SDGCommandLine
                 guard let warning = (entry as? PropertyListValue)?.as([String: Any].self),
                     let path = (warning["file"] as? PropertyListValue)?.as(String.self),
                     let symbol = (warning["symbol"] as? PropertyListValue)?.as(String.self) else {
-                        throw parseError(undocumented: json)
+                        throw parseError(undocumented: json) // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
                 }
                 let line = (warning["line"] as? PropertyListValue)?.as(Int.self) // Occasionally “null” for some reason.
 
@@ -184,7 +184,7 @@ import SDGCommandLine
                             } else if let `class` = source.scalars.firstNestingLevel(startingWith: "<span class=\u{22}".scalars, endingWith: "\u{22}>".scalars, in: error.container.range)?.contents.range {
                                 if first ∈ SwiftLanguage.operatorHeadCharactersIncludingDot {
                                     source.scalars.replaceSubrange(`class`, with: "o".scalars)
-                                } else {
+                                } else { // [_Exempt from Code Coverage_] Possibly no longer occurs in Jazzy output.
                                     source.scalars.replaceSubrange(`class`, with: "n".scalars)
                                 }
                             }

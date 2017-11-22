@@ -36,7 +36,7 @@
         // MARK: - Usage
 
         private func parseError(projectInformation: String) -> Command.Error { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Xcode.
-            return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Xcode.
+            return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Code Coverage_]
                 switch localization {
                 case .englishCanada: // [_Exempt from Code Coverage_]
                     return StrictString("Error loading Xcode project:\n\(projectInformation)")

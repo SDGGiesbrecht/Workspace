@@ -82,17 +82,21 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
 
     try UnitTests.test(options: options, validationStatus: &validationStatus, output: &output)
 
-    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    // Generating documentation...
-    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    #if !os(Linux)
 
-    try Workspace.Document.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        // Generating documentation...
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    // Checking documentation coverage...
-    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        try Workspace.Document.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
 
-    try Workspace.Validate.DocumentationCoverage.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        // Checking documentation coverage...
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+
+        try Workspace.Validate.DocumentationCoverage.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
+
+    #endif
 
     if Environment.isInContinuousIntegration {
 

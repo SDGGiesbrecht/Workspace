@@ -36,32 +36,34 @@ extension Workspace {
 
             #if os(Linux)
                 throw linuxJazzyError()
+            #else
+
+                guard try options.project.configuration.shouldGenerateDocumentation() else {
+                    throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
+                        switch localization {
+                        case .englishCanada:
+                            return "The Workspace configuration prevents documentation generation."
+                        }
+                    }))
+                }
+
+                var validationStatus = ValidationStatus()
+                try executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
+
+                guard validationStatus.validatedSomething else {
+                    throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
+                        switch localization {
+                        case .englishCanada:
+                            return StrictString(join(lines: [
+                                "Nothing to document.",
+                                "The package manifest does not define any library products."
+                                ]))
+                        }
+                    }))
+                }
+                try validationStatus.reportOutcome(projectName: try options.project.projectName(output: &output), output: &output)
+
             #endif
-
-            guard try options.project.configuration.shouldGenerateDocumentation() else {
-                throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
-                    switch localization {
-                    case .englishCanada:
-                        return "The Workspace configuration prevents documentation generation."
-                    }
-                }))
-            }
-
-            var validationStatus = ValidationStatus()
-            try executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
-
-            guard validationStatus.validatedSomething else {
-                throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
-                    switch localization {
-                    case .englishCanada:
-                        return StrictString(join(lines: [
-                            "Nothing to document.",
-                            "The package manifest does not define any library products."
-                            ]))
-                    }
-                }))
-            }
-            try validationStatus.reportOutcome(projectName: try options.project.projectName(output: &output), output: &output)
         })
 
         static func executeAsStep(options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {

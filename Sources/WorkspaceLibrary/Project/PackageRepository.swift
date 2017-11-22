@@ -296,6 +296,7 @@ extension PackageRepository {
         return ¬(try libraryProductTargets(output: &output)).isEmpty
     }
 
+    #if !os(Linux)
     func document(validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
         for product in try libraryProductTargets(output: &output).sorted() {
             try Documentation.document(target: product, for: self, validationStatus: &validationStatus, output: &output)
@@ -307,6 +308,7 @@ extension PackageRepository {
             try Documentation.validateDocumentationCoverage(for: product, in: self, validationStatus: &validationStatus, output: &output)
         }
     }
+    #endif
 
     #if !os(Linux)
 

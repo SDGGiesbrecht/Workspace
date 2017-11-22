@@ -50,6 +50,8 @@ enum Documentation {
         return template.text
     }
 
+    #if !os(Linux)
+
     static func document(target: String, for project: PackageRepository, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
 
         print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
@@ -142,4 +144,6 @@ enum Documentation {
             }))
         }
     }
+
+    #endif
 }

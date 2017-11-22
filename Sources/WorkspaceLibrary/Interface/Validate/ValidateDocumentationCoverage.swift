@@ -37,7 +37,7 @@ extension Workspace.Validate {
 
             #if os(Linux)
                 throw linuxJazzyError()
-            #endif
+            #else
 
             guard try options.project.configuration.shouldEnforceDocumentationCoverage() else {
                 throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
@@ -65,12 +65,16 @@ extension Workspace.Validate {
             }
 
             try validationStatus.reportOutcome(projectName: try options.project.projectName(output: &output), output: &output)
+            
+            #endif
         })
 
+        #if !os(Linux)
         static func executeAsStep(options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
             if try options.project.configuration.shouldEnforceDocumentationCoverage() {
                 try options.project.validateDocumentationCoverage(validationStatus: &validationStatus, output: &output)
             }
         }
+        #endif
     }
 }

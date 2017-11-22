@@ -16,11 +16,15 @@ import SDGCornerstone
 import SDGCommandLine
 
 func instructionsAfterRefresh() throws -> String {
-    if let xcodeProject = try Repository.packageRepository.xcodeProjectFile()?.lastPathComponent {
-        return "Open “\(xcodeProject)” to work on the project."
-    } else {
+    #if os(Linux)
         return ""
-    }
+    #else
+        if let xcodeProject = try Repository.packageRepository.xcodeProjectFile()?.lastPathComponent {
+            return "Open “\(xcodeProject)” to work on the project."
+        } else {
+            return ""
+        }
+    #endif
 }
 
 func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: inout Command.Output) throws {
@@ -138,17 +142,19 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
 
     normalizeFiles(output: &output)
 
-    if Configuration.manageXcode ∧ Environment.operatingSystem == .macOS {
+    #if !os(Linux)
+        if Configuration.manageXcode ∧ Environment.operatingSystem == .macOS {
 
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        print("Refreshing Xcode project...".formattedAsSectionHeader(), to: &output)
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+            print("Refreshing Xcode project...".formattedAsSectionHeader(), to: &output)
+            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        try DXcode.refreshXcodeProjects(output: &output)
-    }
-    if Environment.operatingSystem == .macOS {
-        try DXcode.enableProofreading(output: &output)
-    }
+            try DXcode.refreshXcodeProjects(output: &output)
+        }
+        if Environment.operatingSystem == .macOS {
+            try DXcode.enableProofreading(output: &output)
+        }
+    #endif
 
     if shouldExit {
 

@@ -66,10 +66,12 @@ extension Workspace {
             #endif
         })
 
+        #if !os(Linux)
         static func executeAsStep(options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
             if try options.project.configuration.shouldGenerateDocumentation() {
                 try options.project.document(validationStatus: &validationStatus, output: &output)
             }
         }
+        #endif
     }
 }

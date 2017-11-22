@@ -114,15 +114,15 @@ class APITests : TestCase {
                         "infix operator ¬",
                         "extension Bool {",
                         "    /// ...",
-                        "    public static func ≠(lhs: Bool, rhs: Bool) -> Bool {",
+                        "    \u{70}ublic static func ≠(lhs: Bool, rhs: Bool) -> Bool {",
                         "        return true",
                         "    }",
                         "    /// ...",
-                        "    public static func ¬(lhs: Bool, rhs: Bool) -> Bool {",
+                        "    \u{70}ublic static func ¬(lhs: Bool, rhs: Bool) -> Bool {",
                         "        return true",
                         "    }",
                         "    /// ...",
-                        "    public static func אבג() {}",
+                        "    \u{70}ublic static func אבג() {}",
                         "}"
                         ].joined(separator: "\n").save(to: project.location.appendingPathComponent("Sources/MyProject/Unicode.swift"))
                     try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
@@ -153,7 +153,7 @@ class APITests : TestCase {
             XCTAssertThrowsError(containing: "fails validation") {
                 let project = try MockProject(type: "Library")
                 try project.do {
-                    try "public func undocumentedFunction() {}".save(to: project.location.appendingPathComponent("Sources/MyProject/Undocumented.swift"))
+                    try "\u{70}ublic func undocumentedFunction() {}".save(to: project.location.appendingPathComponent("Sources/MyProject/Undocumented.swift"))
                     try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
                     try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
                 }

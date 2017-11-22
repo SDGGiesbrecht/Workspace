@@ -5,9 +5,9 @@
         "package": "SDGCommandLine",
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCommandLine",
         "state": {
-          "branch": "workspace",
-          "revision": "ef99457dd2b27ed91177fac5f70725b69d8f9388",
-          "version": null
+          "branch": null,
+          "revision": "039e36144770832ac35ff206b579489e27fe12ce",
+          "version": "0.1.3"
         }
       },
       {

@@ -94,13 +94,13 @@ enum Script : Int, IterableEnumeration {
     static func refreshRelevantScripts(for project: PackageRepository, output: inout Command.Output) throws {
 
         for deprecated in Script.deprecatedFileNames {
-            try? FileManager.default.removeItem(at: project.url(for: String(deprecated)))
+            project.delete(project.url(for: String(deprecated)), output: &output)
         }
 
         for script in cases where script.isRelevantOnCurrentDevice ∨ script.isCheckedIn {
             var file = try TextFile(possiblyAt: project.url(for: String(script.fileName)), executable: true)
             file.contents.replaceSubrange(file.contents.startIndex ..< file.headerStart, with: String(script.shebang()))
-            file.body = String(script.source(for: project))
+            file.body = String(try script.source(for: project, output: &output))
             try file.writeChanges(for: project, output: &output)
         }
     }
@@ -133,10 +133,10 @@ enum Script : Int, IterableEnumeration {
         return "gnome\u{2D}terminal \u{2D}e \u{22}bash \u{2D}\u{2D}login \u{2D}c \u{5C}\u{22}source ~/.bashrc; ./" + script + "\u{5C} \u{5C}(macOS\u{5C}).command; exec bash\u{5C}\u{22}\u{22}"
     }
 
-    func getWorkspace(andExecute command: StrictString, for project: PackageRepository) -> [StrictString] {
+    func getWorkspace(andExecute command: StrictString, for project: PackageRepository, output: inout Command.Output) throws -> [StrictString] {
         let command = command.appending(contentsOf: " $1 $2")
 
-        if project.isWorkspaceProject {
+        if try project.isWorkspaceProject(output: &output) {
             return ["swift run workspace " + command]
         } else {
             let version = StrictString(latestStableWorkspaceVersion.string)
@@ -171,7 +171,7 @@ enum Script : Int, IterableEnumeration {
         }
     }
 
-    func source(for project: PackageRepository) -> StrictString {
+    func source(for project: PackageRepository, output: inout Command.Output) throws -> StrictString {
         var lines: [StrictString] = [
             stopOnFailure(),
             findRepository(),
@@ -184,9 +184,9 @@ enum Script : Int, IterableEnumeration {
         case .validateLinux: // [_Exempt from Code Coverage_] Unreachable from macOS.
             lines.append(openTerminal(andExecute: "Validate"))
         case .refreshMacOS:
-            lines.append(contentsOf: getWorkspace(andExecute: "refresh", for: project))
+            lines.append(contentsOf: try getWorkspace(andExecute: "refresh", for: project, output: &output))
         case .validateMacOS:
-            lines.append(contentsOf: getWorkspace(andExecute: "validate", for: project))
+            lines.append(contentsOf: try getWorkspace(andExecute: "validate", for: project, output: &output))
         }
 
         return StrictString(lines.joined(separator: "\n".scalars))

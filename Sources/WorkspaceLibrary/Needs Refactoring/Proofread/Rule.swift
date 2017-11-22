@@ -15,13 +15,17 @@
 import Foundation
 
 import SDGCornerstone
+import SDGCommandLine
 
 protocol Rule {
     static var name: String { get }
-    static func check(file: File, status: inout Bool)
+    static func check(file: File, status: inout Bool, output: inout Command.Output) throws
 }
 
 let rules: [Rule.Type] = [
+
+    // Deprecated Symbols
+    DeprecatedLinuxDocumentation.self,
 
     // Intentional
     MissingImplementation.self,
@@ -34,6 +38,7 @@ let rules: [Rule.Type] = [
 
     // Documentation
     DocumentationOfExtensionConstraints.self,
+    DocumentationOfCompilationConditions.self,
     SyntaxColouring.self,
 
     // Style
@@ -141,6 +146,6 @@ extension Rule {
     static func isInConditionalCompilationStatement(at location: Range<String.Index>, in file: File) -> Bool {
         let lineRange = file.contents.lineRange(for: location)
         let line = String(file.contents[lineRange])
-        return line.contains("#if") ∨ line.contains("#elseif")
+        return line.contains("\u{23}if") ∨ line.contains("\u{23}elseif")
     }
 }

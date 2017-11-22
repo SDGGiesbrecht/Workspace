@@ -32,10 +32,9 @@ extension Workspace {
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [
-            ContinuousIntegration.Job.option
-            ], execution: { (arguments: DirectArguments, options: Options, output: inout Command.Output) throws in
-            try runValidate(andExit: true, arguments: arguments, options: options, output: &output)
-        })
+        static let command = Command(name: name, description: description, subcommands: [
+            All.command,
+            DocumentationCoverage.command
+            ], defaultSubcommand: All.command)
     }
 }

@@ -30,7 +30,9 @@ extension PackageRepository {
 
     private struct Cache {
         fileprivate class Properties {
+            fileprivate var packageName: String?
             fileprivate var targets: [String: Target]?
+            fileprivate var libraryProductTargets: Set<String>?
 
             fileprivate var allFiles: [URL]?
             fileprivate var trackedFiles: [URL]?
@@ -70,11 +72,25 @@ extension PackageRepository {
 
     // MARK: - Miscellaneous Properties
 
-    var isWorkspaceProject: Bool {
-        return location.lastPathComponent == "Workspace"
+    func isWorkspaceProject(output: inout Command.Output) throws -> Bool {
+        return try projectName(output: &output) == "Workspace"
     }
 
     // MARK: - Structure
+
+    func projectName(output: inout Command.Output) throws -> StrictString {
+        return StrictString(try packageName(output: &output))
+    }
+
+    func packageName(output: inout Command.Output) throws -> String {
+        return try cached(in: &PackageRepository.caches[location, default: Cache()].properties.packageName) {
+            var name = ""
+            try FileManager.default.do(in: location) {
+                name = try SwiftTool.default.packageName(output: &output)
+            }
+            return name
+        }
+    }
 
     func targets(output: inout Command.Output) throws -> [String: Target] {
         return try cached(in: &PackageRepository.caches[location, default: Cache()].properties.targets) {
@@ -88,6 +104,16 @@ extension PackageRepository {
                 }
             }
             return list
+        }
+    }
+
+    func libraryProductTargets(output: inout Command.Output) throws -> Set<String> {
+        return try cached(in: &PackageRepository.caches[location, default: Cache()].properties.libraryProductTargets) {
+            var result: Set<String> = []
+            try FileManager.default.do(in: location) {
+                result = try SwiftTool.default.libraryProductTargets(output: &output)
+            }
+            return result
         }
     }
 
@@ -146,7 +172,7 @@ extension PackageRepository {
 
                 if ¬isDirectory, // Skip directories.
                     url.lastPathComponent ≠ ".DS_Store", // Skip irrelevant operating system files.
-                    ¬url.path.hasSuffix("~") {
+                    ¬url.lastPathComponent.hasSuffix("~") {
 
                     result.append(url)
                 }
@@ -261,6 +287,58 @@ extension PackageRepository {
 
         for (target, resources) in targets {
             try target.refresh(resources: resources, from: self, output: &output)
+        }
+    }
+
+    // MARK: - Documentation
+
+    func hasTargetsToDocument(output: inout Command.Output) throws -> Bool {
+        return ¬(try libraryProductTargets(output: &output)).isEmpty
+    }
+
+    #if !os(Linux)
+    func document(validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+        for product in try libraryProductTargets(output: &output).sorted() {
+            try Documentation.document(target: product, for: self, validationStatus: &validationStatus, output: &output)
+        }
+    }
+
+    func validateDocumentationCoverage(validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+        for product in try libraryProductTargets(output: &output).sorted() {
+            try Documentation.validateDocumentationCoverage(for: product, in: self, validationStatus: &validationStatus, output: &output)
+        }
+    }
+    #endif
+
+    #if !os(Linux)
+
+    // MARK: - Xcode
+
+    func xcodeProjectFile() throws -> URL? { // [_Exempt from Code Coverage_] [_Workaround: Until refresh Xcode is testable._]
+        var result: URL?
+        try FileManager.default.do(in: location) { // [_Exempt from Code Coverage_] [_Workaround: Until refresh Xcode is testable._]
+            result = try Xcode.default.projectFile()
+        } // [_Exempt from Code Coverage_] [_Workaround: Until refresh Xcode is testable._]
+        return result
+    }
+
+    func xcodeScheme(output: inout Command.Output) throws -> String {
+        var result: String = ""
+        try FileManager.default.do(in: location) {
+            result = try Xcode.default.scheme(output: &output)
+        }
+        return result
+    }
+
+    #endif
+
+    // MARK: - Actions
+
+    func delete(_ location: URL, output: inout Command.Output) {
+        if FileManager.default.fileExists(atPath: location.path, isDirectory: nil) {
+            TextFile.reportDeleteOperation(from: location, in: self, output: &output)
+            try? FileManager.default.removeItem(at: location)
+            resetCache(debugReason: location.lastPathComponent)
         }
     }
 }

@@ -15,12 +15,13 @@
 import Foundation
 
 import SDGCornerstone
+import SDGCommandLine
 
 struct CalloutCasing : Rule {
 
     static let name = "Callout Casing"
 
-    static func check(file: File, status: inout Bool) {
+    static func check(file: File, status: inout Bool, output: inout Command.Output) {
 
         if file.fileType == .swift {
 

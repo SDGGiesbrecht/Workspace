@@ -36,6 +36,7 @@ public enum Workspace {
         // Primary Workflow
         Workspace.Refresh.command,
         Workspace.Validate.command,
+        Workspace.Document.command,
 
         // New Projects
         Workspace.Initialize.command,

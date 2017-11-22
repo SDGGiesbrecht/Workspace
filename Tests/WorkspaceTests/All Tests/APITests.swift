@@ -91,6 +91,76 @@ class APITests : TestCase {
         }
     }
 
+    func testDocumentation() {
+        #if !os(Linux)
+            XCTAssertErrorFree {
+                let project = try MockProject(type: "Library")
+                try project.do {
+                    try "Repository URL: https://github.com/user/project\nAuthor: John Doe\nSupport macOS: False".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                    try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
+                    try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
+                    try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
+                }
+            }
+
+            XCTAssertErrorFree {
+                let project = try MockProject(type: "Library")
+                try project.do {
+                    try "Documentation Copyright: ©0001 John Doe\nSupport macOS: False\nSupport iOS: False".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                    try [
+                        "/// ...",
+                        "infix operator ≠",
+                        "/// ...",
+                        "infix operator ¬",
+                        "extension Bool {",
+                        "    /// ...",
+                        "    \u{70}ublic static func ≠(lhs: Bool, rhs: Bool) -> Bool {",
+                        "        return true",
+                        "    }",
+                        "    /// ...",
+                        "    \u{70}ublic static func ¬(lhs: Bool, rhs: Bool) -> Bool {",
+                        "        return true",
+                        "    }",
+                        "    /// ...",
+                        "    \u{70}ublic static func אבג() {}",
+                        "}"
+                        ].joined(separator: "\n").save(to: project.location.appendingPathComponent("Sources/MyProject/Unicode.swift"))
+                    try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
+                    try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
+                    let page = try String(from: project.location.appendingPathComponent("docs/MyProject/Extensions/Bool.html"))
+                    XCTAssert(¬page.contains("\u{22}err\u{22}"), "Failed to clean up Jazzy output.")
+                }
+            }
+
+            XCTAssertThrowsError(containing: "not defined") {
+                let project = try MockProject(type: "Library")
+                try project.do {
+                    try "Documentation Copyright: [_Author_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                    try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
+                    try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
+                }
+            }
+
+            XCTAssertErrorFree {
+                let project = try MockProject(type: "Library")
+                try project.do {
+                    try "Support macOS: False\nSupport iOS: False\nSupport watchOS: False".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                    try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
+                    try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
+                }
+            }
+
+            XCTAssertThrowsError(containing: "fails validation") {
+                let project = try MockProject(type: "Library")
+                try project.do {
+                    try "\u{70}ublic func undocumentedFunction() {}".save(to: project.location.appendingPathComponent("Sources/MyProject/Undocumented.swift"))
+                    try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
+                    try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
+                }
+            }
+        #endif
+    }
+
     func testResources() {
         XCTAssertErrorFree {
             let project = try MockProject()
@@ -131,8 +201,10 @@ class APITests : TestCase {
 
     func testScripts() {
         XCTAssertErrorFree {
-            try MockProject().do {
+            let project = try MockProject()
+            try project.do {
                 // Validate that generated scripts work.
+                try "Deprecated".save(to: project.location.appendingPathComponent("Refresh Workspace (macOS).command"))
                 try Workspace.command.execute(with: ["refresh", "scripts"])
                 XCTAssert(FileManager.default.isExecutableFile(atPath: "Refresh (macOS).command"), "Generated macOS refresh script is not executable.")
                 XCTAssert(FileManager.default.isExecutableFile(atPath: "Refresh (Linux).sh"), "Generated Linux refresh script is not executable.")
@@ -159,6 +231,10 @@ class APITests : TestCase {
                 try Workspace.command.execute(with: ["refresh", "scripts"])
                 try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
                 try Workspace.command.execute(with: ["refresh", "resources"])
+                #if !os(Linux)
+                    try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
+                    try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
+                #endif
             }
         }
 
@@ -169,6 +245,10 @@ class APITests : TestCase {
                 try Workspace.command.execute(with: ["refresh", "scripts"])
                 try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
                 try Workspace.command.execute(with: ["refresh", "resources"])
+                #if !os(Linux)
+                    try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
+                    try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
+                #endif
             }
         }
 
@@ -179,6 +259,10 @@ class APITests : TestCase {
                 try Workspace.command.execute(with: ["refresh", "scripts"])
                 try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
                 try Workspace.command.execute(with: ["refresh", "resources"])
+                #if !os(Linux)
+                    try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
+                    try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
+                #endif
             }
         }
 
@@ -189,6 +273,10 @@ class APITests : TestCase {
                 try Workspace.command.execute(with: ["refresh", "scripts"])
                 try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
                 try Workspace.command.execute(with: ["refresh", "resources"])
+                #if !os(Linux)
+                    try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
+                    try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
+                #endif
             }
         }
     }
@@ -198,6 +286,7 @@ class APITests : TestCase {
             ("testCheckForUpdates", testCheckForUpdates),
             ("testConfiguration", testConfiguration),
             ("testContinuousIntegration", testContinuousIntegration),
+            ("testDocumentation", testDocumentation),
             ("testResources", testResources),
             ("testScripts", testScripts),
             ("testWorkflow", testWorkflow)

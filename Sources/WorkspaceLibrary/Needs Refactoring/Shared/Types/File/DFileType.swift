@@ -13,6 +13,7 @@
  */
 
 import SDGCornerstone
+import SDGCommandLine
 
 enum FileType : CustomStringConvertible {
 
@@ -39,10 +40,10 @@ enum FileType : CustomStringConvertible {
 
             warning.append(contentsOf: [
                 "All such files were skipped.",
-                "If these are standard file types, please report them at:",
-                DocumentationLink.reportIssueLink,
-                "To silence this warning for non‐standard file types, see:",
-                DocumentationLink.ignoringFileTypes.url
+                "If these are standard file types, please report them at",
+                DocumentationLink.reportIssueLink.in(Underline.underlined),
+                "To silence this warning for non‐standard file types, see",
+                DocumentationLink.ignoringFileTypes.url.in(Underline.underlined)
                 ])
 
             return warning

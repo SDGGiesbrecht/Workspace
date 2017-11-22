@@ -17,11 +17,11 @@ import Foundation
 import SDGCornerstone
 import SDGCommandLine
 
-func runProofread(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: inout Command.Output) -> Bool {
+func runProofread(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: inout Command.Output) throws -> Bool {
 
     if CommandLine.arguments[1] ≠ "proofread" {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        print("Proofreading \(Configuration.projectName)...".formattedAsSectionHeader(), to: &output)
+        print("Proofreading \(try Repository.packageRepository.projectName(output: &output))...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     }
 
@@ -47,7 +47,7 @@ func runProofread(andExit shouldExit: Bool, arguments: DirectArguments, options:
             ruleSet += manualWarnings as [Rule.Type]
 
             for rule in ruleSet where rule.name ∉ Configuration.disableProofreadingRules {
-                rule.check(file: file, status: &overallSuccess)
+                try rule.check(file: file, status: &overallSuccess, output: &output)
             }
         }
     }

@@ -19,13 +19,13 @@ import SDGCommandLine
 
 struct FileHeaders {
 
-    static let defaultCopyright: String = {
-        if Configuration.optionIsDefined(.author) {
-            return "Copyright [_Copyright_] [_Author_] and the [_Project_] project contributors."
+    static func defaultCopyright(configuration: Configuration) throws -> Template {
+        if try configuration.optionIsDefined(.author) {
+            return Template(source: "Copyright [_Copyright_] [_Author_] and the [_Project_] project contributors.")
         } else {
-            return "Copyright [_Copyright_] the [_Project_] project contributors."
+            return Template(source: "Copyright [_Copyright_] the [_Project_] project contributors.")
         }
-    }()
+    }
 
     static let defaultFileHeader: String = {
         var defaultHeader: [String] = [
@@ -39,7 +39,7 @@ struct FileHeaders {
         defaultHeader.append(contentsOf: [
             ""
             ])
-        defaultHeader.append(defaultCopyright)
+        defaultHeader.append(String((try? defaultCopyright(configuration: Repository.packageRepository.configuration))!.text))
         if Configuration.sdg {
             defaultHeader.append(contentsOf: [
                 "",
@@ -86,7 +86,7 @@ struct FileHeaders {
         return copyright
     }
 
-    static func refreshFileHeaders(output: inout Command.Output) {
+    static func refreshFileHeaders(output: inout Command.Output) throws {
 
         func key(_ name: String) -> String {
             return "[_\(name)_]"
@@ -131,7 +131,8 @@ struct FileHeaders {
                 var header = template
 
                 header = header.replacingOccurrences(of: key("Filename"), with: path.filename)
-                header = header.replacingOccurrences(of: key("Project"), with: Configuration.projectName)
+                header = header.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.projectName(output:
+                    &output)))
                 if let website = possibleWebsite {
                     header = header.replacingOccurrences(of: key("Website"), with: website)
                 }

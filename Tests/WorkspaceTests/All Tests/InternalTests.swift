@@ -51,6 +51,25 @@ class InternalTests : TestCase {
         }
     }
 
+    func testSystemToolVersions() {
+        let shouldTest = ProcessInfo.processInfo.environment["CONTINUOUS_INTEGRATION"] ≠ nil
+            ∨ ProcessInfo.processInfo.environment["CI"] ≠ nil
+            ∨ ProcessInfo.processInfo.environment["TRAVIS"] ≠ nil
+
+        if shouldTest {
+            XCTAssertErrorFree({
+                #if !os(Linux)
+                    var versionString = Xcode.defaultVersion.string
+                    if versionString.hasSuffix(".0") {
+                        versionString.scalars.removeLast(2)
+                    }
+
+                    XCTAssert(try Shell.default.run(command: ["xcodebuild", "\u{2D}version"]).scalars.contains(versionString.scalars), "Xcode is out of date.")
+                #endif
+            })
+        }
+    }
+
     func testGitIgnoreCoverage() {
         // [_Workaround: Can this be moved to API Tests?_]
 
@@ -124,6 +143,7 @@ class InternalTests : TestCase {
     static var allTests: [(String, (InternalTests) -> () throws -> Void)] {
         return [
             ("testDocumentationCoverage", testDocumentationCoverage),
+            ("testSystemToolVersions", testSystemToolVersions),
             ("testGitIgnoreCoverage", testGitIgnoreCoverage),
             ("testHelp", testHelp)
         ]

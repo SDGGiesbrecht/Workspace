@@ -24,7 +24,7 @@ enum ContinuousIntegration {
             "  include:"
         ]
 
-        for job in Job.cases where try job.isRequired(by: project) {
+        for job in Job.cases where try job.isRequired(by: project, output: &output) {
             travisConfiguration.append(contentsOf: job.script)
         }
 

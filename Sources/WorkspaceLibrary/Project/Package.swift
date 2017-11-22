@@ -14,6 +14,7 @@
 
 import Foundation
 
+import SDGCornerstone
 import SDGCommandLine
 
 typealias Package = _Package // Shared from SDGCommandLine.
@@ -33,5 +34,11 @@ extension Package {
 
     func versions(output: inout Command.Output) throws -> Set<Version> {
         return try Git.default.versions(of: self, output: &output)
+    }
+
+    // MARK: - Usage
+
+    func execute(_ version: Version, of executableNames: Set<StrictString>, with arguments: [StrictString], cacheDirectory: URL, output: inout Command.Output) throws { // [_Exempt from Code Coverage_] [_Workaround: Until proofread is testable._]
+        try _execute(version, of: executableNames, with: arguments, cacheDirectory: cacheDirectory, output: &output) // Shared from SDGCommandLine
     }
 }

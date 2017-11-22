@@ -469,10 +469,6 @@ extension Configuration {
 
     // Project Names
 
-    static var projectName: String {
-        return stringValue(option: .projectName)
-    }
-
     static func packageName(forProjectName projectName: String) -> String {
         return projectName
     }
@@ -484,30 +480,17 @@ extension Configuration {
             return packageName(forProjectName: Repository.folderName)
         }
     }
-    static var packageName: String {
-        var cacheCopy = cache
-        defer { cache = cacheCopy }
-
-        return cached(in: &cacheCopy.packageName) {
-            () -> String in
-
-            return stringValue(option: .packageName)
-        }
-    }
 
     static func moduleName(forProjectName projectName: String) -> String {
         return projectName.replacingOccurrences(of: " ", with: "")
     }
-    static var defaultModuleName: String {
+    static func defaultModuleName(output: inout Command.Output) throws -> String {
         switch (try? Repository.packageRepository.configuration.projectType())! {
         case .library, .application:
-            return moduleName(forProjectName: projectName)
+            return moduleName(forProjectName: String(try Repository.packageRepository.projectName(output: &output)))
         default:
-            return executableLibraryName(forProjectName: projectName)
+            return executableLibraryName(forProjectName: String(try Repository.packageRepository.projectName(output: &output)))
         }
-    }
-    static var moduleName: String {
-        return stringValue(option: .moduleName)
     }
 
     static func executableName(forProjectName projectName: String) -> String {
@@ -525,8 +508,8 @@ extension Configuration {
     static var manageReadMe: Bool {
         return booleanValue(option: .manageReadMe)
     }
-    static func readMe(localization: ArbitraryLocalization?) -> String {
-        return localizedOptionValue(option: .readMe, localization: localization) ?? ReadMe.defaultReadMeTemplate(localization: localization)
+    static func readMe(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String {
+        return try localizedOptionValue(option: .readMe, localization: localization) ?? ReadMe.defaultReadMeTemplate(localization: localization, output: &output)
     }
     static var documentationURL: String? {
         return possibleStringValue(option: .documentationURL)
@@ -577,17 +560,15 @@ extension Configuration {
     static func requiredFeatureList(localization: ArbitraryLocalization?) -> String {
         return requiredLocalizedOptionValue(option: .featureList, localization: localization)
     }
-    static func installationInstructions(localization: ArbitraryLocalization?) throws -> String? {
-        return try localizedOptionValue(option: .installationInstructions, localization: localization) ?? (try ReadMe.defaultInstallationInstructions(localization: localization))
+    static func installationInstructions(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String? {
+        return try localizedOptionValue(option: .installationInstructions, localization: localization) ?? (try ReadMe.defaultInstallationInstructions(localization: localization, output:
+            &output))
     }
-    static func requiredInstallationInstructions(localization: ArbitraryLocalization?) -> String {
-        guard let result = (try? installationInstructions(localization: localization))! else {
+    static func requiredInstallationInstructions(localization: ArbitraryLocalization?, output: inout Command.Output) -> String {
+        guard let result = (try? installationInstructions(localization: localization, output: &output))! else {
             missingLocalizationError(option: .installationInstructions, localization: localization)
         }
         return result
-    }
-    static var repositoryURL: String? {
-        return possibleStringValue(option: .repositoryURL)
     }
     static var requiredRepositoryURL: String {
         return stringValue(option: .repositoryURL)
@@ -682,9 +663,6 @@ extension Configuration {
     static var fileHeader: String {
         return stringValue(option: .fileHeader)
     }
-    static var author: String? {
-        return possibleStringValue(option: .author)
-    }
     static var requiredAuthor: String {
         return stringValue(option: .author)
     }
@@ -697,15 +675,6 @@ extension Configuration {
 
     static var manageXcode: Bool {
         return booleanValue(option: .manageXcode)
-    }
-    static var xcodeSchemeName: String {
-        return stringValue(option: .xcodeSchemeName)
-    }
-    static var primaryXcodeTarget: String {
-        return stringValue(option: .primaryXcodeTarget)
-    }
-    static var xcodeTestTarget: String {
-        return stringValue(option: .xcodeTestTarget)
     }
 
     static var disableProofreadingRules: Set<String> {
@@ -724,13 +693,6 @@ extension Configuration {
     }
     static var codeCoverageExemptionTokensForPreviousLine: [String] {
         return listValue(option: .codeCoverageExemptionTokensForPreviousLine)
-    }
-
-    static var enforceDocumentationCoverage: Bool {
-        return booleanValue(option: .enforceDocumentationCoverage)
-    }
-    static var documentationCopyright: String {
-        return stringValue(option: .documentationCopyright)
     }
 
     static var manageContinuousIntegration: Bool {
@@ -788,8 +750,7 @@ extension Configuration {
 
             if let link = documentation {
                 description.append(contentsOf: [
-                    "For more information, see:",
-                    link.url
+                    "For more information, see \(link.url.in(Underline.underlined))"
                     ])
             }
 

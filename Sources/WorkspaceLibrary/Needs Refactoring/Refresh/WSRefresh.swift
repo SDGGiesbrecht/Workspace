@@ -15,18 +15,22 @@
 import SDGCornerstone
 import SDGCommandLine
 
-let instructionsAfterRefresh: String = {
-    if Environment.operatingSystem == .macOS ∧ Configuration.manageXcode {
-        return "Open “\(Xcode.projectFilename)” to work on the project."
-    } else {
+func instructionsAfterRefresh() throws -> String {
+    #if os(Linux)
         return ""
-    }
-}()
+    #else
+        if let xcodeProject = try Repository.packageRepository.xcodeProjectFile()?.lastPathComponent {
+            return "Open “\(xcodeProject)” to work on the project."
+        } else {
+            return ""
+        }
+    #endif
+}
 
 func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: inout Command.Output) throws {
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    print("Refreshing \(Configuration.projectName)...".formattedAsSectionHeader(), to: &output)
+    print("Refreshing \(try options.project.projectName(output: &output))...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
@@ -88,7 +92,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
         print("Updating licence...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        Licence.refreshLicence(output: &output)
+        try Licence.refreshLicence(output: &output)
     }
 
     if Configuration.manageContributingInstructions {
@@ -97,7 +101,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
         print("Updating contributing instructions...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        ContributingInstructions.refreshContributingInstructions(output: &output)
+        try ContributingInstructions.refreshContributingInstructions(output: &output)
     } else {
         ContributingInstructions.relinquishControl(output: &output)
     }
@@ -117,7 +121,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
         print("Updating file headers...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        FileHeaders.refreshFileHeaders(output: &output)
+        try FileHeaders.refreshFileHeaders(output: &output)
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
@@ -138,23 +142,25 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
 
     normalizeFiles(output: &output)
 
-    if Configuration.manageXcode ∧ Environment.operatingSystem == .macOS {
+    #if !os(Linux)
+        if Configuration.manageXcode ∧ Environment.operatingSystem == .macOS {
 
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        print("Refreshing Xcode project...".formattedAsSectionHeader(), to: &output)
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+            print("Refreshing Xcode project...".formattedAsSectionHeader(), to: &output)
+            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        try Xcode.refreshXcodeProjects(output: &output)
-    }
-    if Environment.operatingSystem == .macOS {
-        Xcode.enableProofreading(output: &output)
-    }
+            try DXcode.refreshXcodeProjects(output: &output)
+        }
+        if Environment.operatingSystem == .macOS {
+            try DXcode.enableProofreading(output: &output)
+        }
+    #endif
 
     if shouldExit {
 
         succeed(message: [
-            "\(Configuration.projectName) is refreshed and ready.",
-            instructionsAfterRefresh
+            "\(try Repository.packageRepository.projectName(output: &output)) is refreshed and ready.",
+            try instructionsAfterRefresh()
             ])
     }
 }

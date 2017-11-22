@@ -165,14 +165,27 @@ struct TextFile {
 
     // MARK: - Writing
 
+    static func reportWriteOperation(to location: URL, in repository: PackageRepository, output: inout Command.Output) {
+        print(UserFacingText<InterfaceLocalization, String>({ (localization, path) in
+            switch localization {
+            case .englishCanada:
+                return StrictString("Writing to “\(path)”...")
+            }
+        }).resolved(using: location.path(relativeTo: repository.location)), to: &output)
+    }
+
+    static func reportDeleteOperation(from location: URL, in repository: PackageRepository, output: inout Command.Output) {
+        print(UserFacingText<InterfaceLocalization, String>({ (localization, path) in
+            switch localization {
+            case .englishCanada:
+                return StrictString("Deleting “\(path)”...")
+            }
+        }).resolved(using: location.path(relativeTo: repository.location)), to: &output)
+    }
+
     func writeChanges(for repository: PackageRepository, output: inout Command.Output) throws {
         if hasChanged {
-            print(UserFacingText<InterfaceLocalization, String>({ (localization, path) in
-                switch localization {
-                case .englishCanada:
-                    return StrictString("Writing to “\(path)”...")
-                }
-            }).resolved(using: location.path(relativeTo: repository.location)))
+            TextFile.reportWriteOperation(to: location, in: repository, output: &output)
 
             try contents.save(to: location)
             if isExecutable {

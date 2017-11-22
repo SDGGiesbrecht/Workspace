@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGCornerstone
 import SDGCommandLine
 
@@ -30,8 +32,7 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
             Repository.printableListOfAllFiles,
             "",
             "This command is only for use in empty folders.",
-            "For more information, see:",
-            DocumentationLink.setUp.url
+            "For more information, see \(DocumentationLink.setUp.url.in(Underline.underlined))"
             ]
 
         fatalError(message: message)
@@ -48,7 +49,7 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     let packageType = options.projectType
-    let projectName = Configuration.projectName
+    let projectName = URL(fileURLWithPath: FileManager.default.currentDirectoryPath).lastPathComponent
 
     let packageName = Configuration.packageName(forProjectName: projectName)
     let moduleName = Configuration.moduleName(forProjectName: projectName)
@@ -97,10 +98,10 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
     case .application:
         sourceFile = File(possiblyAt: RelativePath("Sources/\(moduleName)/\(moduleName).swift"))
         source = [
-            "#if os(macOS)",
+            "\u{23}if os(macOS)",
             "    import AppKit",
             "    typealias SystemApplication = AppKit.NSApplication",
-            "#else",
+            "\u{23}else",
             "    import UIKit",
             "    typealias SystemApplication = UIKit.UIApplication",
             "#endif",
@@ -111,7 +112,7 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
             "        super.init()",
             "        delegate = applicationDelegate",
             "    }",
-            "    #if os(macOS)",
+            "    \u{23}if os(macOS)",
             "        required init?(coder: NSCoder) { // [_Exempt from Code Coverage_]",
             "            super.init(coder: coder)",
             "            delegate = applicationDelegate",
@@ -119,13 +120,13 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
             "    #endif",
             "}",
             "",
-            "#if os(macOS)",
+            "\u{23}if os(macOS)",
             "    @NSApplicationMain class \(moduleName) : NSObject, NSApplicationDelegate {",
             "        func applicationDidFinishLaunching(_ aNotification: Notification) {",
             "            applicationDidFinishLaunching()",
             "        }",
             "    }",
-            "#else",
+            "\u{23}else",
             "    @UIApplicationMain class \(moduleName) : NSObject, UIApplicationDelegate {",
             "        func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]? = nil) -> Bool {",
             "            applicationDidFinishLaunching()",
@@ -292,6 +293,6 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     if shouldExit {
-        succeed(message: ["\(Configuration.projectName) has been initialized.", instructionsAfterRefresh])
+        succeed(message: ["\(try Repository.packageRepository.projectName(output: &output)) has been initialized.", try instructionsAfterRefresh()])
     }
 }

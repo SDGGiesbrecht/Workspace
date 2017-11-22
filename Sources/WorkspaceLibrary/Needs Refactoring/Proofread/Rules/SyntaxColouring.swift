@@ -13,12 +13,13 @@
  */
 
 import SDGCornerstone
+import SDGCommandLine
 
 struct SyntaxColouring : Rule {
 
     static let name = "Syntax Colouring"
 
-    static func check(file: File, status: inout Bool) {
+    static func check(file: File, status: inout Bool, output: inout Command.Output) {
 
         var oddNumberedOccurrenceInformation: [String: Bool] = [:]
 

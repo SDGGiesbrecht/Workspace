@@ -39,7 +39,7 @@ extension Workspace {
                 print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
                     switch localization {
                     case .englishCanada:
-                        return StrictString("Workspace \(update.string) is available.\nFor update instructions, see:\n\(DocumentationLink.installation.url)")
+                        return StrictString("Workspace \(update.string) is available.\nFor update instructions, see \(DocumentationLink.installation.url.in(Underline.underlined))")
                     }
                 }).resolved(), to: &output)
             } else {

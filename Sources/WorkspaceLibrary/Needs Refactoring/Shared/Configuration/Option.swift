@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGCornerstone
+
 enum Option : String, CustomStringConvertible {
 
     // MARK: - Initialization
@@ -85,13 +87,6 @@ enum Option : String, CustomStringConvertible {
 
     case manageContinuousIntegration = "Manage Continuous Integration"
 
-    case projectName = "Project Name"
-    case packageName = "Package Name"
-    case moduleName = "Module Name"
-    case xcodeSchemeName = "Xcode Scheme Name"
-    case primaryXcodeTarget = "Primary Xcode Target"
-    case xcodeTestTarget = "Xcode Test Target"
-
     case ignoreFileTypes = "Ignore File Types"
 
     // SDG
@@ -163,13 +158,6 @@ enum Option : String, CustomStringConvertible {
 
         .manageContinuousIntegration,
         .enforceDocumentationCoverage,
-
-        .projectName,
-        .packageName,
-        .moduleName,
-        .xcodeSchemeName,
-        .primaryXcodeTarget,
-        .xcodeTestTarget,
 
         .ignoreFileTypes
         ]
@@ -285,27 +273,14 @@ enum Option : String, CustomStringConvertible {
             return Configuration.emptyListOptionValue
 
         case .generateDocumentation:
-            return String(Configuration.falseOptionValue)
+            return String(Configuration.trueOptionValue)
         case .enforceDocumentationCoverage:
             return String(Configuration.trueOptionValue)
         case .documentationCopyright:
-            return FileHeaders.defaultCopyright + " All rights reserved."
+            return String((try? Repository.packageRepository.configuration.documentationCopyright())!.text)
 
         case .manageContinuousIntegration:
             return String(Configuration.falseOptionValue)
-
-        case .projectName:
-            return Configuration.packageName
-        case .packageName:
-            return Configuration.defaultPackageName
-        case .moduleName:
-            return Configuration.defaultModuleName
-        case .xcodeSchemeName:
-            return Xcode.defaultXcodeSchemeName
-        case .primaryXcodeTarget:
-            return (try? Xcode.defaultPrimaryTargetName())!
-        case .xcodeTestTarget:
-            return Xcode.defaultTestTargetName
 
         case .ignoreFileTypes:
             return Configuration.emptyListOptionValue

@@ -190,7 +190,7 @@ extension ContinuousIntegration {
             }
         }
 
-        func isRequired(by project: PackageRepository) throws -> Bool {
+        func isRequired(by project: PackageRepository, output: inout Command.Output) throws -> Bool {
             switch self {
             case .macOSSwiftPackageManager:
                 return try project.configuration.supports(.macOS)
@@ -208,7 +208,7 @@ extension ContinuousIntegration {
             case .miscellaneous:
                 return true
             case .documentation:
-                return try project.configuration.shouldGenerateDocumentation()
+                return try project.configuration.shouldGenerateDocumentation() ∧ project.hasTargetsToDocument(output: &output)
             }
         }
 

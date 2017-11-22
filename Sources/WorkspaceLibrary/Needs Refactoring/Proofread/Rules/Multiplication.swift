@@ -13,12 +13,13 @@
  */
 
 import SDGCornerstone
+import SDGCommandLine
 
 struct Multiplication : Rule {
 
     static let name = "Multiplication"
 
-    static func check(file: File, status: inout Bool) {
+    static func check(file: File, status: inout Bool, output: inout Command.Output) {
 
         if let fileType = file.fileType {
 

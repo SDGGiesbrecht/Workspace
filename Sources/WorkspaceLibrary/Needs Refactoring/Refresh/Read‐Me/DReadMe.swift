@@ -21,29 +21,6 @@ struct DReadMe {
 
     static let skipInJazzy = "<!\u{2D}\u{2D}Skip in Jazzy\u{2D}\u{2D}>"
 /*
-    static func readMeFilename(localization: ArbitraryLocalization?) -> StrictString {
-        if let particular = localization {
-            var name: StrictString
-            if let specific = particular.compatible {
-                switch specific {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    name = "Read Me.md"
-                case .deutschDeutschland:
-                    name = "Lies mich.md"
-                case .françaisFrance:
-                    name = "Lisez moi.md"
-                case .ελληνικάΕλλάδα:
-                    name = "Με διαβάστε.md"
-                case .עברית־ישראל:
-                    name = "קרא אותי.md"
-                }
-            } else {
-                name = "Read Me.md"
-            }
-            return particular.icon + " " + name
-        }
-        return "Read Me.md"
-    }
     static func readMePath(localization: ArbitraryLocalization?) -> RelativePath {
         if localization ≠ nil {
             return RelativePath("Documentation/\(readMeFilename(localization: localization))")

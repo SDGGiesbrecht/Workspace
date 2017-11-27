@@ -42,6 +42,7 @@ The template for the read‐me works the same as the [template for file headers]
 
 The available dynamic elements are:
 
+-`Localization Links`: Links to the read‐me in other languages.
 - `API Links`: The result of the configuration option `Documentation URL`.
 - `Short Description`: The value of the configuration option `Short Project Description`.
 - `Quotation`: The combined result of the configuration options `Quotation`, `Quotation Translation`, `Quotation URL` and `Citation`.

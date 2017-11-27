@@ -204,11 +204,11 @@ struct Configuration {
         }
     }
 
-    func readMe(for localization: String) throws -> Template {
+    func readMe(for localization: String, project: PackageRepository) throws -> Template {
         if let defined = try localizedTemplate(for: localization, from: .readMe) {
             return defined
         } else {
-            notImplementedYetAndCannotReturn()
+            return try ReadMe.defaultReadMeTemplate(for: localization, project: project)
         }
     }
 

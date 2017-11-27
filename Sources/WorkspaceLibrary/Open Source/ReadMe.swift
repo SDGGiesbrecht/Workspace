@@ -44,91 +44,302 @@ enum ReadMe {
         }).resolved(), for: localization, in: project)
     }
 
+    // MARK: - Templates
+
+    static func defaultReadMeTemplate(for localization: String, project: PackageRepository) throws -> Template {
+        var readMe: [String] = [
+            "[_Localization Links_]",
+            "",
+        ]
+
+        notImplementedYet()
+
+        return Template(source: StrictString(join(lines: readMe)))
+    }
+
+    /*
+    static func defaultReadMeTemplate(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String {
+
+        if Configuration.documentationURL ≠ nil {
+            readMe += [
+                "[_API Links_]",
+                ""
+            ]
+        }
+
+        readMe += [
+            "# [_Project_]"
+        ]
+
+        if Configuration.shortProjectDescription(localization: localization) ≠ nil {
+            readMe += [
+                "",
+                "[_Short Description_]"
+            ]
+        }
+
+        if Configuration.quotation ≠ nil {
+            readMe += [
+                "",
+                "[_Quotation_]"
+            ]
+        }
+
+        if Configuration.featureList(localization: localization) ≠ nil {
+            let features: String
+            switch translation {
+            case .compatible(let specific):
+                switch specific {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    features = "Features"
+                case .deutschDeutschland:
+                    features = "Merkmale"
+                case .françaisFrance:
+                    features = "Fonctionnalités"
+                case .ελληνικάΕλλάδα:
+                    features = "Χαρακτηριστικά"
+                case .עברית־ישראל:
+                    features = "תכונות"
+                }
+            default:
+                features = "Features"
+            }
+
+            readMe += [
+                "",
+                "## \(features)",
+                "",
+                "[_Features_]"
+            ]
+        }
+
+        if ¬Configuration.relatedProjects(localization: translation).isEmpty {
+            readMe += [
+                "",
+                "[_Related Projects_]"
+            ]
+        }
+
+        if (try? Configuration.installationInstructions(localization: localization, output: &output))! ≠ nil {
+            readMe += [
+                "",
+                "[_Installation Instructions_]"
+            ]
+        }
+
+        var readMeExampleExists = false
+        for (key, _) in Examples.examples {
+            if key.hasPrefix("Read‐Me") {
+                readMeExampleExists = true
+                break
+            }
+        }
+        if readMeExampleExists {
+            let example: String
+            switch translation {
+            case .compatible(let specific):
+                switch specific {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    example = "Example Usage"
+                case .deutschDeutschland:
+                    example = "Verwendungsbeispiel"
+                case .françaisFrance:
+                    example = "Example d’utilisation"
+                case .ελληνικάΕλλάδα:
+                    example = "Παράδειγμα χρήσης"
+                case .עברית־ישראל:
+                    example = "דוגמת שימוש"
+                }
+            default:
+                example = "Example Usage"
+            }
+
+            readMe += [
+                "",
+                "## \(example)",
+                "",
+                "```swift",
+                "[\u{5F}Example Usage_]",
+                "```"
+            ]
+        }
+
+        if Configuration.otherReadMeContent ≠ nil {
+            readMe += [
+                "",
+                "[_Other_]"
+            ]
+        }
+
+        if Configuration.sdg {
+            func english(translation: ArbitraryLocalization) throws -> [String] {
+                return [
+                    "",
+                    "## About",
+                    "",
+                    "The \(try Repository.packageRepository.projectName(output: &output)) project is maintained by Jeremy David Giesbrecht.",
+                    "",
+                    "If \(try Repository.packageRepository.projectName(output: &output)) saves you money, consider giving some of it as a [donation](https://paypal.me/JeremyGiesbrecht).",
+                    "",
+                    "If \(try Repository.packageRepository.projectName(output: &output)) saves you time, consider devoting some of it to [contributing](\(Configuration.requiredRepositoryURL)) back to the project.",
+                    "",
+                    format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "For the worker is worthy of his wages.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: localization), citation: "\u{200E}ישוע/Yeshuʼa")
+                ]
+            }
+            switch translation {
+            case .compatible(let specific):
+                switch specific {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    readMe += try english(translation: translation)
+                case .deutschDeutschland:
+                    readMe += [
+                        "",
+                        "## Über",
+                        "",
+                        "Das \(try Repository.packageRepository.projectName(output: &output))‐Projekt wird von Jeremy David Giesbrecht erhalten.",
+                        "",
+                        "Wenn \(try Repository.packageRepository.projectName(output: &output)) Ihnen Geld sparrt, denken Sie darüber, etwas davon zu [spenden](https://paypal.me/JeremyGiesbrecht).",
+                        "",
+                        "Wenn \(try Repository.packageRepository.projectName(output: &output)) Inhen Zeit sparrt, denken Sie darüber, etwas davon zu gebrauchen, um zum Projekt [beizutragen](\(Configuration.requiredRepositoryURL)).",
+                        "",
+                        format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "Denn der Arbeiter ist seines Lohns würdig.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: localization), citation: "\u{200E}ישוע/Yeshuʼa")
+                    ]
+                case .françaisFrance:
+                    readMe += [
+                        "",
+                        "## À propos",
+                        "",
+                        "Le projet \(try Repository.packageRepository.projectName(output: &output)) est maintenu par Jeremy David Giesbrecht.",
+                        "",
+                        "Si \(try Repository.packageRepository.projectName(output: &output)) vous permet d’économiser de l’argent, considérez à en [donner](https://paypal.me/JeremyGiesbrecht).",
+                        "",
+                        "Si \(try Repository.packageRepository.projectName(output: &output)) vous permet d’économiser du temps, considérez à en utiliser à [contribuer](\(Configuration.requiredRepositoryURL)) au projet.",
+                        "",
+                        format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "Car le travailleur est digne de son salaire.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: localization), citation: "\u{200E}ישוע/Yeshuʼa")
+                    ]
+                case .ελληνικάΕλλάδα:
+                    readMe += [
+                        "",
+                        "## Πληροφορίες",
+                        "",
+                        "Το \(try Repository.packageRepository.projectName(output: &output)) έργο διατηρείται από τον Τζέρεμι Ντάβιτ Γκίσμπρεχτ (Jeremy David Giesbrecht).",
+                        "",
+                        // οικονομώ
+                        "Αν το \(try Repository.packageRepository.projectName(output: &output)) οικονομάει το χρήματα σας, σκεφτείτε να [δορίζετε](https://paypal.me/JeremyGiesbrecht) μερικά από αυτά.",
+                        "",
+                        "Αν το \(try Repository.packageRepository.projectName(output: &output)) οικονομάει τον χρόνο σας, σκεφτείτε να τον κάνετε χρήτη μερικού από αυτό ώστε να [συνεισφέρετε](\(Configuration.requiredRepositoryURL)) του έργου.",
+                        "",
+                        format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: nil, url: "https://www.bible.com/bible/209/LUK.10.byz04", citation: "\u{200E}ישוע/Ιεσούα")
+                    ]
+                case .עברית־ישראל:
+                    readMe += [
+                        "",
+                        "## אודות",
+                        "",
+                        "⁨\(try Repository.packageRepository.projectName(output: &output))⁩ המיזם מתוחזק על ידי ג׳רמי דוויט גיסברכט (⁧Jeremy David Giesbrecht⁩).",
+                        "",
+                        "אם ⁨\(try Repository.packageRepository.projectName(output: &output))⁩ עוזר לך לחסוך כסף, תשקול [לתרום](https://paypal.me/JeremyGiesbrecht) את חלק מזה.",
+                        "",
+                        "אם ⁨\(try Repository.packageRepository.projectName(output: &output))⁩ עוזר לך לחסוך זמן, תשקול להשתמש את חלק מזה [לתרום](\(Configuration.requiredRepositoryURL)) למיזם.",
+                        "",
+                        format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "כי ראוי הפועל לשכרו.", url: "https://www.bible.com/bible/380/LUK.10_1.HRNT", citation: "ישוע")
+                    ]
+                }
+            default:
+                readMe += try english(translation: .compatible(.englishCanada))
+            }
+        }
+
+        return join(lines: readMe)
+    }*/
+
     // MARK: - Refreshment
 
     private static func refreshReadMe(at location: URL, for localization: String, in project: PackageRepository, output: inout Command.Output) throws {
-        var readMe = try project.configuration.readMe(for: localization)
+        var readMe = try project.configuration.readMe(for: localization, project: project)
+
+        notImplementedYet()
 
         var file = try TextFile(possiblyAt: location)
         file.body = String(readMe.text)
         try file.writeChanges(for: project, output: &output)
     }
-    
+
     /*static func refreshReadMe(output: inout Command.Output) throws {
-     
+
      for localization in localizations {
-     
+
      var body = join(lines: [
      managementComment,
      "",
      try Configuration.readMe(localization: localization, output: &output)
      ])
-     
+
      let localizationLinks = key("Localization Links")
      if body.contains(localizationLinks) {
      body = body.replacingOccurrences(of: localizationLinks, with: localizationLinksMarkup(localization: localization))
      }
-     
+
      let apiLinks = key("API Links")
      if body.contains(apiLinks) {
      body = body.replacingOccurrences(of: apiLinks, with: try apiLinksMarkup(localization: localization, output: &output))
      }
-     
+
      body = body.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.projectName(output: &output)))
-     
+
      let shortDescription = key("Short Description")
      if body.contains(shortDescription) {
      body = body.replacingOccurrences(of: shortDescription, with: Configuration.requiredShortProjectDescription(localization: localization))
      }
-     
+
      let quotation = key("Quotation")
      if body.contains(quotation) {
      body = body.replacingOccurrences(of: quotation, with: quotationMarkup(localization: localization))
      }
-     
+
      let features = key("Features")
      if body.contains(features) {
      body = body.replacingOccurrences(of: features, with: Configuration.requiredFeatureList(localization: localization))
      }
-     
+
      let relatedProjectsLink = key("Related Projects")
      if body.contains(relatedProjectsLink) {
      body = body.replacingOccurrences(of: relatedProjectsLink, with: relatedProjectsLinkMarkup(localization: localization))
      }
-     
+
      let installationInsructions = key("Installation Instructions")
      if body.contains(installationInsructions) {
      body = body.replacingOccurrences(of: installationInsructions, with: Configuration.requiredInstallationInstructions(localization: localization, output: &output))
      }
-     
+
      let repositoryURL = key("Repository URL")
      if body.contains(repositoryURL) {
      body = body.replacingOccurrences(of: repositoryURL, with: Configuration.requiredRepositoryURL)
      }
-     
+
      let currentVersion = key("Current Version")
      if body.contains(currentVersion) {
      body = body.replacingOccurrences(of: currentVersion, with: Configuration.requiredCurrentVersion.string)
      }
-     
+
      let nextMajorVersion = key("Next Major Version")
      if body.contains(nextMajorVersion) {
      body = body.replacingOccurrences(of: nextMajorVersion, with: Configuration.requiredCurrentVersion.nextMajorVersion.string)
      }
-     
+
      let exampleUsage = key("Example Usage")
      if body.contains(exampleUsage) {
      var possibleReadMeExample: String?
-     
+
      if let specific = localization?.code {
      possibleReadMeExample = Examples.examples["Read‐Me: \(specific)"]
      }
-     
+
      if possibleReadMeExample == nil ∧ localization == nil {
      if let development = Configuration.developmentLocalization?.code {
      possibleReadMeExample = Examples.examples["Read‐Me: \(development)"]
      }
-     
+
      if possibleReadMeExample == nil {
      possibleReadMeExample = Examples.examples["Read‐Me"]
      }
@@ -150,19 +361,19 @@ enum ReadMe {
      }
      body = body.replacingOccurrences(of: exampleUsage, with: readMeExample)
      }
-     
+
      let other = key("Other")
      if body.contains(other) {
      body = body.replacingOccurrences(of: other, with: Configuration.requiredOtherReadMeContent)
      }
-     
+
      if ¬Configuration.relatedProjects(localization: localization).isEmpty
      ∧ (localization ≠ nil ∨ localizations.count == 1 /* Only unlocalized. */) {
-     
+
      let translation = Configuration.resolvedLocalization(for: localization)
-     
+
      var projects: [String]
-     
+
      switch translation {
      case .compatible(let specific):
      switch specific {
@@ -210,7 +421,7 @@ enum ReadMe {
      ""
      ]
      }
-     
+
      func extractHeader(line: String) -> String {
      var start = line.startIndex
      guard line.clusters.advance(&start, over: "# ".clusters) else {
@@ -224,11 +435,11 @@ enum ReadMe {
      }
      return String(line[start...])
      }
-     
+
      func sanitize(headerAnchor: String) -> String {
      return headerAnchor.replacingOccurrences(of: " ", with: "‐")
      }
-     
+
      for line in Configuration.relatedProjects(localization: localization) {
      if line.hasPrefix("# ") {
      let header = extractHeader(line: line)
@@ -256,11 +467,11 @@ enum ReadMe {
      "Name: https://url.to/repository"
      ])
      }
-     
+
      let name = String(line[..<colon.lowerBound])
      let url = String(line[colon.upperBound...])
      let configuration = Configuration.parseConfigurationFile(fromLinkedRepositoryAt: url)
-     
+
      let link: String
      if let documentation = configuration[.documentationURL] {
      link = documentation
@@ -271,7 +482,7 @@ enum ReadMe {
      "",
      "### [\(name)](\(link))"
      ]
-     
+
      if var shortDescription = Configuration.localizedOptionValue(option: .shortProjectDescription, localization: localization, configuration: configuration) {
      if shortDescription.contains("[_") { // The main project is not localized, but the linked configuration is.
      if let parsedLocalizations = Configuration.parseLocalizations(shortDescription) {
@@ -289,7 +500,7 @@ enum ReadMe {
      }
      }
      }
-     
+
      var relatedProjects = File(possiblyAt: relatedProjectsPath(localization: localization))
      relatedProjects.body = join(lines: projects)
      require() { try relatedProjects.write(output: &output) }

@@ -43,9 +43,24 @@ enum Documentation {
 
         var template = try project.configuration.documentationCopyright()
 
-        template.insert(dates, for: "Copyright")
-        try template.insert(resultOf: { try project.configuration.requireAuthor() }, for: "Author")
-        template.insert(try project.projectName(output: &output), for: "Project")
+        template.insert(dates, for: UserFacingText({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "Copyright"
+            }
+        }))
+        try template.insert(resultOf: { try project.configuration.requireAuthor() }, for: UserFacingText({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "Author"
+            }
+        }))
+        template.insert(try project.projectName(output: &output), for: UserFacingText({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "Project"
+            }
+        }))
 
         return template.text
     }

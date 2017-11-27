@@ -21,10 +21,14 @@ enum ReadMe {
 
     // MARK: - Locations
 
+    private static func documentationDirectory(for project: PackageRepository) -> URL {
+        return project.url(for: "Documentation")
+    }
+
     private static func locationOfDocumentationFile(named name: StrictString, for localization: String, in project: PackageRepository) -> URL {
         let icon = ContentLocalization.icon(for: localization) ?? StrictString("[" + localization + "]")
         let fileName: StrictString = icon + " " + name + ".md"
-        return project.url(for: "Documentation/" + String(fileName))
+        return documentationDirectory(for: project).appendingPathComponent(String(fileName))
     }
 
     private static func readMeLocation(for project: PackageRepository, localization: String) -> URL {
@@ -46,15 +50,37 @@ enum ReadMe {
 
     // MARK: - Templates
 
+    static let skipInJazzy: StrictString = "<!\u{2D}\u{2D}Skip in Jazzy\u{2D}\u{2D}>"
+
+    static func localizationLinksMarkup(for project: PackageRepository, fromProjectRoot: Bool) throws -> StrictString {
+        var links: [StrictString] = []
+        for targetLocalization in try project.configuration.localizations() {
+            let linkText = ContentLocalization.icon(for: targetLocalization) ?? StrictString("[" + targetLocalization + "]")
+            let absoluteURL = readMeLocation(for: project, localization: targetLocalization)
+            var relativeURL: StrictString
+            if fromProjectRoot {
+                relativeURL = StrictString(absoluteURL.path(relativeTo: project.location))
+            } else {
+                relativeURL = StrictString(absoluteURL.path(relativeTo: documentationDirectory(for: project)))
+            }
+            relativeURL.replaceMatches(for: " ".scalars, with: "%20".scalars)
+
+            var link: StrictString = "[" + linkText + "]"
+            link += "(" + relativeURL + ")"
+            links.append(link)
+        }
+        return StrictString(links.joined(separator: " • ".scalars)) + " " + skipInJazzy
+    }
+
     static func defaultReadMeTemplate(for localization: String, project: PackageRepository) throws -> Template {
-        var readMe: [String] = [
+        var readMe: [StrictString] = [
             "[_Localization Links_]",
-            "",
+            ""
         ]
 
         notImplementedYet()
 
-        return Template(source: StrictString(join(lines: readMe)))
+        return Template(source: StrictString(readMe.joined(separator: "\n".scalars)))
     }
 
     /*
@@ -255,8 +281,15 @@ enum ReadMe {
 
     // MARK: - Refreshment
 
-    private static func refreshReadMe(at location: URL, for localization: String, in project: PackageRepository, output: inout Command.Output) throws {
+    private static func refreshReadMe(at location: URL, for localization: String, in project: PackageRepository, atProjectRoot: Bool, output: inout Command.Output) throws {
         var readMe = try project.configuration.readMe(for: localization, project: project)
+
+        readMe.insert(try localizationLinksMarkup(for: project, fromProjectRoot: atProjectRoot), for: UserFacingText({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "Localization Links"
+            }
+        }))
 
         notImplementedYet()
 
@@ -265,15 +298,7 @@ enum ReadMe {
         try file.writeChanges(for: project, output: &output)
     }
 
-    /*static func refreshReadMe(output: inout Command.Output) throws {
-
-     for localization in localizations {
-
-     var body = join(lines: [
-     managementComment,
-     "",
-     try Configuration.readMe(localization: localization, output: &output)
-     ])
+    /*
 
      let localizationLinks = key("Localization Links")
      if body.contains(localizationLinks) {
@@ -513,12 +538,12 @@ enum ReadMe {
         for localization in localizations {
             let setting = LocalizationSetting(orderOfPrecedence: [localization] + localizations)
             try setting.do {
-                try refreshReadMe(at: readMeLocation(for: project, localization: localization), for: localization, in: project, output: &output)
+                try refreshReadMe(at: readMeLocation(for: project, localization: localization), for: localization, in: project, atProjectRoot: false, output: &output)
             }
 
             if localization == localizations.first {
                 try setting.do {
-                    try refreshReadMe(at: project.url(for: "README.md"), for: localization, in: project, output: &output)
+                    try refreshReadMe(at: project.url(for: "README.md"), for: localization, in: project, atProjectRoot: true, output: &output)
                 }
             }
         }

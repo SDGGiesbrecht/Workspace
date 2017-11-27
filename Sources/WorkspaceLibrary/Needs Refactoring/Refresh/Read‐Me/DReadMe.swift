@@ -99,23 +99,6 @@ struct DReadMe {
         }
     }
 
-    static func localizationLinksMarkup(localization: ArbitraryLocalization?) throws -> String {
-        var links: [String] = []
-        for targetLocalization in try Repository.packageRepository.configuration.localizations() {
-            let link = targetLocalization.icon
-            var url: StrictString
-            if localization == nil {
-                url = StrictString(readMePath(localization: targetLocalization).string)
-            } else {
-                url = readMeFilename(localization: targetLocalization)
-            }
-            url.replaceMatches(for: " ".scalars, with: "%20".scalars)
-
-            links.append("[\(link)](\(url))")
-        }
-        return links.joined(separator: " • ") + " " + skipInJazzy
-    }
-
     static func apiLinksMarkup(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String {
         let translation = Configuration.resolvedLocalization(for: localization)
 

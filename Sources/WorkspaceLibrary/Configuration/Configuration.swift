@@ -194,6 +194,12 @@ struct Configuration {
         }
         return nil
     }
+    func requireDocumentationURL() throws -> URL {
+        guard let defined = try documentationURL() else {
+            throw Configuration.optionNotDefinedError(for: .documentationURL)
+        }
+        return defined
+    }
 
     func documentationCopyright() throws -> Template {
         if let defined = try string(for: .documentationCopyright) {

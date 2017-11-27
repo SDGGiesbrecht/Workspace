@@ -72,8 +72,36 @@ enum ReadMe {
         return StrictString(links.joined(separator: " • ".scalars)) + " " + skipInJazzy
     }
 
+    static func apiLinksMarkup(for project: PackageRepository, output: inout Command.Output) throws -> StrictString {
+
+        let baseURL = try project.configuration.requireDocumentationURL()
+        let label = UserFacingText<ContentLocalization, Void>({ (localization, _) in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "APIs:"
+            case .deutschDeutschland:
+                return "SAPs"
+            case .françaisFrance:
+                return "IPA :"
+            case .ελληνικάΕλλάδα:
+                return "ΔΠΕ:"
+            case .עברית־ישראל:
+                return "מת״י:"
+            }
+        }).resolved() + " "
+
+        let links = try Repository.packageRepository.libraryProductTargets(output: &output).sorted().map { (name: String) -> StrictString in
+
+            var link: StrictString = "[" + StrictString(name) + "]"
+            link += "(" + StrictString(baseURL.appendingPathComponent(name).absoluteString) + ")"
+            return link
+        }
+
+        return label + " " + StrictString(links.joined(separator: " • ".scalars))
+    }
+
     static func defaultReadMeTemplate(for localization: String, project: PackageRepository) throws -> Template {
-        
+
         var readMe: [StrictString] = [
             "[_Localization Links_]",
             ""
@@ -84,7 +112,7 @@ enum ReadMe {
                 ""
             ]
         }
-        
+
         notImplementedYet()
 
         return Template(source: StrictString(readMe.joined(separator: "\n".scalars)))
@@ -290,6 +318,12 @@ enum ReadMe {
                 return "Localization Links"
             }
         }))
+        try readMe.insert(resultOf: { try apiLinksMarkup(for: project, output: &output) }, for: UserFacingText({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "API Links"
+            }
+        }))
 
         notImplementedYet()
 
@@ -299,11 +333,6 @@ enum ReadMe {
     }
 
     /*
-
-     let localizationLinks = key("Localization Links")
-     if body.contains(localizationLinks) {
-     body = body.replacingOccurrences(of: localizationLinks, with: localizationLinksMarkup(localization: localization))
-     }
 
      let apiLinks = key("API Links")
      if body.contains(apiLinks) {

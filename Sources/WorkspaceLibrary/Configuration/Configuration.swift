@@ -35,6 +35,7 @@ struct Configuration {
         fileprivate class Properties {
             fileprivate var options: [Option: String]?
             fileprivate var localizations: [String]?
+            fileprivate var localizedOptions: [Option: [String: String]] = [:]
         }
         fileprivate var properties = Properties()
     }
@@ -113,6 +114,22 @@ struct Configuration {
     private func string(for option: Option) throws -> String? {
         return try options()[option]
     }
+    private func localizedString(for localization: String, from option: Option) throws -> String? {
+        let localized = try cached(in: &Configuration.caches[location, default: Cache()].properties.localizedOptions[option]) {
+            guard let defined = try string(for: option) else {
+                return [:]
+            }
+            return try Configuration.parseLocalizations(defined, for: option)
+        }
+        return localized[localization]
+    }
+
+    private func localizedTemplate(for localization: String, from option: Option) throws -> Template? {
+        guard let source = try localizedString(for: localization, from: option) else {
+            return nil
+        }
+        return Template(source: StrictString(source))
+    }
 
     private func list(for option: Option) throws -> [String] {
         guard let string = try string(for: option) else {
@@ -142,6 +159,27 @@ struct Configuration {
             ∧ (try projectType().isSupported(on: operatingSystem))
     }
 
+    // MARK: - Options: Localizations
+
+    func localizations() throws -> [String] {
+        return try cached(in: &Configuration.caches[location, default: Cache()].properties.localizations) {
+
+            let result = try list(for: .localizations)
+            if result.isEmpty {
+                throw Configuration.optionNotDefinedError(for: .localizations)
+            }
+            return result.map() { (entry) -> String in
+                return InterfaceLocalization.code(for: StrictString(entry)) ?? entry
+            }
+        }
+    }
+    func developmentLocalization() throws -> String {
+        guard let result = try localizations().first else {
+            unreachable()
+        }
+        return result
+    }
+
     // MARK: - Options: Project Metadata
 
     func repositoryURL() throws -> URL? {
@@ -166,23 +204,12 @@ struct Configuration {
         }
     }
 
-    func localizations() throws -> [String] {
-        return try cached(in: &Configuration.caches[location, default: Cache()].properties.localizations) {
-
-            let result = try list(for: .localizations)
-            if result.isEmpty {
-                throw Configuration.optionNotDefinedError(for: .localizations)
-            }
-            return result.map() { (entry) -> String in
-                return InterfaceLocalization.code(for: StrictString(entry)) ?? entry
-            }
+    func readMe(for localization: String) throws -> Template {
+        if let defined = try localizedTemplate(for: localization, from: .readMe) {
+            return defined
+        } else {
+            notImplementedYetAndCannotReturn()
         }
-    }
-    func developmentLocalization() throws -> String {
-        guard let result = try localizations().first else {
-            unreachable()
-        }
-        return result
     }
 
     // MARK: - Options: Active Tasks

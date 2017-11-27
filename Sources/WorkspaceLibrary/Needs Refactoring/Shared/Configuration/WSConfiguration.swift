@@ -350,7 +350,45 @@ extension Configuration {
         return parseList(value: string)
     }
 
-    static func parseLocalizations(_ string: String) -> [ArbitraryLocalization: String]? {
+    static func parseLocalizations(_ string: String, for option: Option) throws -> [String: String] {
+        var currentLocalization: String?
+        var result: [String: [String]] = [:]
+        for line in string.lines.lazy.map({ String($0.line) }) {
+            if let identifier = line.scalars.firstNestingLevel(startingWith: "[_".scalars, endingWith: "_]".scalars),
+                identifier.container.range == line.scalars.bounds {
+                var code = String(identifier.contents.contents)
+                if let fromIcon = ContentLocalization.code(for: StrictString(code)) {
+                    code = fromIcon
+                }
+                currentLocalization = code
+            } else {
+                guard let localization = currentLocalization else {
+                    throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+                        switch localization {
+                        case .englishCanada:
+                            return StrictString(join(lines: [
+                                "Localization syntax error in configuration option: \(option.key)"
+                                ]))
+                        }
+                    }))
+                }
+                var text: [String]
+                if let existing = result[localization] {
+                    text = existing
+                } else {
+                    text = []
+                }
+                text.append(line)
+                result[localization] = text
+            }
+        }
+        var mapped: [String: String] = [:]
+        for (key, value) in result {
+            mapped[key] = join(lines: value)
+        }
+        return mapped
+    }
+    private static func parseLocalizations(_ string: String) -> [ArbitraryLocalization: String]? {
         var currentLocalization: String?
         var result: [String: [String]] = [:]
         for line in string.lines.lazy.map({ String($0.line) }) {

@@ -32,7 +32,11 @@ struct Configuration {
     // MARK: - Cache
 
     private struct Cache {
-        var options: [Option: String]?
+        fileprivate class Properties {
+            fileprivate var options: [Option: String]?
+            fileprivate var localizations: [String]?
+        }
+        fileprivate var properties = Properties()
     }
     private static var caches: [URL: Cache] = [:]
 
@@ -53,7 +57,7 @@ struct Configuration {
 
     func options() throws -> [Option: String] {
         // [_Workaround: Should be private, but necessary for temporary bridging._]
-        return try cached(in: &Configuration.caches[location, default: Cache()].options) { () -> [Option: String] in
+        return try cached(in: &Configuration.caches[location, default: Cache()].properties.options) { () -> [Option: String] in
             let file: TextFile
             do {
                 file = try TextFile(alreadyAt: location)
@@ -163,11 +167,16 @@ struct Configuration {
     }
 
     func localizations() throws -> [String] {
-        let result = try list(for: .localizations)
-        if result.isEmpty {
-            throw Configuration.optionNotDefinedError(for: .localizations)
+        return try cached(in: &Configuration.caches[location, default: Cache()].properties.localizations) {
+
+            let result = try list(for: .localizations)
+            if result.isEmpty {
+                throw Configuration.optionNotDefinedError(for: .localizations)
+            }
+            return result.map() { (entry) -> String in
+                return InterfaceLocalization.code(for: StrictString(entry)) ?? entry
+            }
         }
-        return result
     }
     func developmentLocalization() throws -> String {
         guard let result = try localizations().first else {

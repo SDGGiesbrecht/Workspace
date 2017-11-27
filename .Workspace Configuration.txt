@@ -20,6 +20,10 @@ Project Website: https://github.com/SDGGiesbrecht/Workspace#workspace
 Documentation URL: https://github.com/SDGGiesbrecht/Workspace#workspace
 Repository URL: https://github.com/SDGGiesbrecht/Workspace
 
+[_Begin Localizations_]
+🇨🇦EN
+[_End_]
+
 Short Project Description: Workspace automates management of Swift projects.
 
 [_Begin Quotation_]

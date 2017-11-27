@@ -18,6 +18,9 @@ import SDGCommandLine
 enum ReadMe {
 
     static func refreshReadMe(for project: PackageRepository, output: inout Command.Output) throws {
-        notImplementedYet()
+        for localization in try project.configuration.localizations() {
+            print(localization)
+            notImplementedYet()
+        }
     }
 }

@@ -17,7 +17,7 @@ import Foundation
 import SDGCornerstone
 import SDGCommandLine
 
-struct ReadMe {
+struct DReadMe {
 
     static let skipInJazzy = "<!\u{2D}\u{2D}Skip in Jazzy\u{2D}\u{2D}>"
 
@@ -425,7 +425,7 @@ struct ReadMe {
         if localization ≠ nil {
             path = relatedProjectsFilename(localization: localization)
         } else {
-            path = StrictString(ReadMe.relatedProjectsPath(localization: localization).string)
+            path = StrictString(DReadMe.relatedProjectsPath(localization: localization).string)
         }
         path.replaceMatches(for: " ".scalars, with: "%20".scalars)
 

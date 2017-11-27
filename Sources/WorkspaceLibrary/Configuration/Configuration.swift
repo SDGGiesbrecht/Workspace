@@ -157,6 +157,10 @@ struct Configuration {
 
     // MARK: - Options: Active Tasks
 
+    func shouldManageReadMe() throws -> Bool {
+        return try boolean(for: .manageReadMe) ?? false
+    }
+
     func shouldManageContinuousIntegration() throws -> Bool {
         return try boolean(for: .manageContinuousIntegration) ?? false
     }

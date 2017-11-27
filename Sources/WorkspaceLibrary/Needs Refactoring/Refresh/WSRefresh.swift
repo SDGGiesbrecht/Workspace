@@ -77,14 +77,10 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
 
     DGit.updateGitConfiguraiton(output: &output)
 
-    if Configuration.manageReadMe {
-
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        print("Updating read‐me...".formattedAsSectionHeader(), to: &output)
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-
-        try ReadMe.refreshReadMe(output: &output)
-    }
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    // Read‐Me
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    try Workspace.Refresh.ReadMe.command.execute(withArguments: arguments, options: options, output: &output)
 
     if Configuration.manageLicence {
 

@@ -85,7 +85,7 @@ enum Documentation {
             if let type = try? FileType(url: url),
                 type == .html {
 
-                let transformedMarker = ReadMe.skipInJazzy.replacingOccurrences(of: "\u{2D}\u{2D}", with: "&ndash;").replacingOccurrences(of: "<", with: "&lt;").replacingOccurrences(of: ">", with: "&gt;")
+                let transformedMarker = DReadMe.skipInJazzy.replacingOccurrences(of: "\u{2D}\u{2D}", with: "&ndash;").replacingOccurrences(of: "<", with: "&lt;").replacingOccurrences(of: ">", with: "&gt;")
 
                 var file = try TextFile(alreadyAt: url)
                 var source = file.contents

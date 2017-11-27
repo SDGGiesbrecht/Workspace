@@ -35,6 +35,7 @@ extension Workspace {
         static let command = Command(name: name, description: description, subcommands: [
             All.command,
             Scripts.command,
+            ReadMe.command,
             ContinuousIntegration.command,
             Resources.command
             ], defaultSubcommand: All.command)

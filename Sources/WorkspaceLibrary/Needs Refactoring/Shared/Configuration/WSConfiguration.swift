@@ -509,7 +509,7 @@ extension Configuration {
         return booleanValue(option: .manageReadMe)
     }
     static func readMe(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String {
-        return try localizedOptionValue(option: .readMe, localization: localization) ?? ReadMe.defaultReadMeTemplate(localization: localization, output: &output)
+        return try localizedOptionValue(option: .readMe, localization: localization) ?? DReadMe.defaultReadMeTemplate(localization: localization, output: &output)
     }
     static var documentationURL: String? {
         return possibleStringValue(option: .documentationURL)
@@ -533,7 +533,7 @@ extension Configuration {
         return localizedOptionValue(option: .quotationTranslation, localization: localization)
     }
     static func quotationURL(localization: ArbitraryLocalization?) -> String? {
-        return localizedOptionValue(option: .quotationURL, localization: localization) ?? ReadMe.defaultQuotationURL(localization: localization)
+        return localizedOptionValue(option: .quotationURL, localization: localization) ?? DReadMe.defaultQuotationURL(localization: localization)
     }
     static var quotationChapter: String? {
         return possibleStringValue(option: .quotationChapter)
@@ -561,7 +561,7 @@ extension Configuration {
         return requiredLocalizedOptionValue(option: .featureList, localization: localization)
     }
     static func installationInstructions(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String? {
-        return try localizedOptionValue(option: .installationInstructions, localization: localization) ?? (try ReadMe.defaultInstallationInstructions(localization: localization, output:
+        return try localizedOptionValue(option: .installationInstructions, localization: localization) ?? (try DReadMe.defaultInstallationInstructions(localization: localization, output:
             &output))
     }
     static func requiredInstallationInstructions(localization: ArbitraryLocalization?, output: inout Command.Output) -> String {

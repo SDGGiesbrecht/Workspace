@@ -17,7 +17,6 @@
 Project Type: Executable
 
 Project Website: https://github.com/SDGGiesbrecht/Workspace#workspace
-Documentation URL: https://github.com/SDGGiesbrecht/Workspace#workspace
 Repository URL: https://github.com/SDGGiesbrecht/Workspace
 
 [_Begin Localizations_]

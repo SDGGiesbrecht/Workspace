@@ -188,6 +188,12 @@ struct Configuration {
         }
         return nil
     }
+    func documentationURL() throws -> URL? {
+        if let defined = try string(for: .documentationURL) {
+            return URL(string: defined)
+        }
+        return nil
+    }
 
     func documentationCopyright() throws -> Template {
         if let defined = try string(for: .documentationCopyright) {

@@ -73,11 +73,18 @@ enum ReadMe {
     }
 
     static func defaultReadMeTemplate(for localization: String, project: PackageRepository) throws -> Template {
+        
         var readMe: [StrictString] = [
             "[_Localization Links_]",
             ""
         ]
-
+        if try project.configuration.optionIsDefined(.documentationURL) {
+            readMe += [
+                "[_API Links_]",
+                ""
+            ]
+        }
+        
         notImplementedYet()
 
         return Template(source: StrictString(readMe.joined(separator: "\n".scalars)))
@@ -85,13 +92,6 @@ enum ReadMe {
 
     /*
     static func defaultReadMeTemplate(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String {
-
-        if Configuration.documentationURL ≠ nil {
-            readMe += [
-                "[_API Links_]",
-                ""
-            ]
-        }
 
         readMe += [
             "# [_Project_]"

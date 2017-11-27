@@ -537,19 +537,6 @@ extension Configuration {
 
     // Responsibilities
 
-    static var manageReadMe: Bool {
-        return booleanValue(option: .manageReadMe)
-    }
-    static func readMe(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String {
-        notImplementedYetAndCannotReturn()
-        //return try localizedOptionValue(option: .readMe, localization: localization) ?? DReadMe.defaultReadMeTemplate(localization: localization, output: &output)
-    }
-    static var documentationURL: String? {
-        return possibleStringValue(option: .documentationURL)
-    }
-    static var requiredDocumentationURL: String {
-        return stringValue(option: .documentationURL)
-    }
     static func shortProjectDescription(localization: ArbitraryLocalization?) -> String? {
         return localizedOptionValue(option: .shortProjectDescription, localization: localization)
     }

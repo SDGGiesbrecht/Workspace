@@ -20,7 +20,7 @@ import SDGCommandLine
 struct DReadMe {
 
     static let skipInJazzy = "<!\u{2D}\u{2D}Skip in Jazzy\u{2D}\u{2D}>"
-
+/*
     static func readMeFilename(localization: ArbitraryLocalization?) -> StrictString {
         if let particular = localization {
             var name: StrictString
@@ -75,15 +75,17 @@ struct DReadMe {
         return "Related Projects.md"
     }
     static func relatedProjectsPath(localization: ArbitraryLocalization?) -> RelativePath {
+        notImplementedYetAndCannotReturn()
+        /*
         if localization ≠ nil {
             return RelativePath("Documentation/\(relatedProjectsFilename(localization: localization))")
         } else {
-            if let development = Configuration.developmentLocalization {
+            if let development = try Repository.packageRepository.configuration.developmentLocalization() {
                 return relatedProjectsPath(localization: development)
             } else {
                 return RelativePath("Documentation/\(relatedProjectsFilename(localization: localization))")
             }
-        }
+        }*/
     }
 
     private static let managementComment: String = {
@@ -96,7 +98,7 @@ struct DReadMe {
 
         var readMe: [String] = []
 
-        if ¬Configuration.localizations.isEmpty {
+        if ¬(try Repository.packageRepository.configuration.localizations().isEmpty) {
             readMe += [
                 "[_Localization Links_]",
                 ""
@@ -332,9 +334,9 @@ struct DReadMe {
         }
     }
 
-    static func localizationLinksMarkup(localization: ArbitraryLocalization?) -> String {
+    static func localizationLinksMarkup(localization: ArbitraryLocalization?) throws -> String {
         var links: [String] = []
-        for targetLocalization in Configuration.localizations {
+        for targetLocalization in try Repository.packageRepository.configuration.localizations() {
             let link = targetLocalization.icon
             var url: StrictString
             if localization == nil {
@@ -887,5 +889,5 @@ struct DReadMe {
                 try? readMe.write(output: &output)
             }
         }
-    }
+    }*/
 }

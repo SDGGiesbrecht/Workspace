@@ -389,6 +389,8 @@ extension Configuration {
         return localized
     }
     static func localizedOptionValue(option: Option, localization: ArbitraryLocalization?, configuration: [Option: String]? = nil) -> String? {
+        notImplementedYetAndCannotReturn()
+        /*
         var file = configuration ?? configurationFile
 
         guard let localized = localizedOptionValues(option: option, configuration: file) else {
@@ -401,6 +403,7 @@ extension Configuration {
             return localized[development]
         }
         return localized[specific]
+ */
     }
     private static func missingLocalizationError(option: Option, localization: ArbitraryLocalization?) -> Never {
         fatalError(message: [
@@ -444,27 +447,18 @@ extension Configuration {
         }
     }
 
-    static var localizations: [ArbitraryLocalization] {
-        var cacheCopy = cache
-        defer { cache = cacheCopy }
-
-        return cached(in: &cacheCopy.localizations) {
-            return listValue(option: .localizations).map { ArbitraryLocalization(code: $0) }
-        }
-    }
-    static var developmentLocalization: ArbitraryLocalization? {
-        return localizations.first
-    }
     static func resolvedLocalization(for localization: ArbitraryLocalization?) -> ArbitraryLocalization {
+        notImplementedYetAndCannotReturn()
+        /*
         if let specific = localization {
             return specific
         } else {
-            if let development = Configuration.developmentLocalization {
+            if let development = Repository.packageRepository.configuration.developmentLocalization {
                 return development
             } else {
                 return .compatible(.englishCanada)
             }
-        }
+        }*/
     }
 
     // Project Names
@@ -509,7 +503,8 @@ extension Configuration {
         return booleanValue(option: .manageReadMe)
     }
     static func readMe(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String {
-        return try localizedOptionValue(option: .readMe, localization: localization) ?? DReadMe.defaultReadMeTemplate(localization: localization, output: &output)
+        notImplementedYetAndCannotReturn()
+        //return try localizedOptionValue(option: .readMe, localization: localization) ?? DReadMe.defaultReadMeTemplate(localization: localization, output: &output)
     }
     static var documentationURL: String? {
         return possibleStringValue(option: .documentationURL)
@@ -533,7 +528,8 @@ extension Configuration {
         return localizedOptionValue(option: .quotationTranslation, localization: localization)
     }
     static func quotationURL(localization: ArbitraryLocalization?) -> String? {
-        return localizedOptionValue(option: .quotationURL, localization: localization) ?? DReadMe.defaultQuotationURL(localization: localization)
+        notImplementedYetAndCannotReturn()
+        //return localizedOptionValue(option: .quotationURL, localization: localization) ?? DReadMe.defaultQuotationURL(localization: localization)
     }
     static var quotationChapter: String? {
         return possibleStringValue(option: .quotationChapter)
@@ -561,8 +557,8 @@ extension Configuration {
         return requiredLocalizedOptionValue(option: .featureList, localization: localization)
     }
     static func installationInstructions(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String? {
-        return try localizedOptionValue(option: .installationInstructions, localization: localization) ?? (try DReadMe.defaultInstallationInstructions(localization: localization, output:
-            &output))
+        notImplementedYetAndCannotReturn()
+        //return try localizedOptionValue(option: .installationInstructions, localization: localization) ?? (try DReadMe.defaultInstallationInstructions(localization: localization, output: &output))
     }
     static func requiredInstallationInstructions(localization: ArbitraryLocalization?, output: inout Command.Output) -> String {
         guard let result = (try? installationInstructions(localization: localization, output: &output))! else {

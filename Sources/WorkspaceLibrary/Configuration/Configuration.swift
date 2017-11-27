@@ -70,7 +70,7 @@ struct Configuration {
         return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Code Coverage_] [_Workaround: Until licence is testable._]
             switch localization {
             case .englishCanada: // [_Exempt from Code Coverage_] [_Workaround: Until licence is testable._]
-                return "Option not defined: " + StrictString(option.key)
+                return "Configuration option not defined: " + StrictString(option.key)
             }
         }))
     }
@@ -108,6 +108,13 @@ struct Configuration {
 
     private func string(for option: Option) throws -> String? {
         return try options()[option]
+    }
+
+    private func list(for option: Option) throws -> [String] {
+        guard let string = try string(for: option) else {
+            return []
+        }
+        return string.lines.map({ String($0.line) })
     }
 
     func optionIsDefined(_ option: Option) throws -> Bool { // [_Exempt from Code Coverage_] [_Workaround: Until licence is testable._]
@@ -153,6 +160,20 @@ struct Configuration {
         } else {
             throw Configuration.optionNotDefinedError(for: .author)
         }
+    }
+
+    func localizations() throws -> [String] {
+        let result = try list(for: .localizations)
+        if result.isEmpty {
+            throw Configuration.optionNotDefinedError(for: .localizations)
+        }
+        return result
+    }
+    func developmentLocalization() throws -> String {
+        guard let result = try localizations().first else {
+            unreachable()
+        }
+        return result
     }
 
     // MARK: - Options: Active Tasks

@@ -237,7 +237,7 @@ extension PackageRepository {
     // MARK: - Continuous Integration
 
     func refreshReadMe(output: inout Command.Output) throws {
-        notImplementedYetAndCannotReturn()
+        try ReadMe.refreshReadMe(for: self, output: &output)
     }
 
     // MARK: - Continuous Integration

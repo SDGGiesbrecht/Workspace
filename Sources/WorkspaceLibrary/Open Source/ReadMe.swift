@@ -12,6 +12,12 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGCornerstone
+import SDGCommandLine
+
 enum ReadMe {
 
+    static func refreshReadMe(for project: PackageRepository, output: inout Command.Output) throws {
+        notImplementedYet()
+    }
 }

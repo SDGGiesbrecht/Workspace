@@ -91,14 +91,6 @@ struct DReadMe {
         return "https://www.biblegateway.com/passage/?search=\(sanitizedChapter)&version=\(originalKey);\(translationCode)"
     }
 
-    static func defaultQuotationURL(localization: ArbitraryLocalization?) -> String {
-        if let chapter = Configuration.quotationChapter {
-            return formatQuotationURL(chapter: chapter, originalKey: Configuration.quotationOriginalKey, localization: localization)
-        } else {
-            return Configuration.noValue
-        }
-    }
-
     static func relatedProjectsLinkMarkup(localization: ArbitraryLocalization?) -> String {
 
         var path: StrictString

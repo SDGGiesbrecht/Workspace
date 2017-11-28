@@ -106,12 +106,24 @@ enum ReadMe {
         return label + " " + StrictString(links.joined(separator: " • ".scalars))
     }
 
+    static func defaultQuotationURL(localization: String, project: PackageRepository) throws -> URL? {
+        notImplementedYet()
+        return nil
+    }
+    /*static func defaultQuotationURL(localization: ArbitraryLocalization?) -> String {
+        if let chapter = Configuration.quotationChapter {
+            return formatQuotationURL(chapter: chapter, originalKey: Configuration.quotationOriginalKey, localization: localization)
+        } else {
+            return Configuration.noValue
+        }
+    }*/
+
     static func quotationMarkup(localization: String, project: PackageRepository) throws -> StrictString {
         var result = [try project.configuration.requireQuotation()]
         if let translation = try project.configuration.quotationTranslation(localization: localization) {
             result += [translation]
         }
-        if let url = try project.configuration.quotationURL(localization: localization) {
+        if let url = try project.configuration.quotationURL(localization: localization, project: project) {
             let components: [StrictString] = ["[", result.joinAsLines(), "](", StrictString(url.absoluteString), ")"]
             result = [components.joined()]
         }

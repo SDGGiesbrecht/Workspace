@@ -112,8 +112,8 @@ import SDGCommandLine
                     ].joined(separator: ",")
                 ])
 
+            defer { project.resetCache(debugReason: "jazzy") }
             try executeInCompatibilityMode(with: jazzyArguments, output: &output)
-            project.resetCache(debugReason: "jazzy")
 
             // [_Workaround: Jazzy is incompatible with Jekyll. (jazzy --version 0.9.0)_]
             try preventJekyllInterference(in: outputDirectory, for: project, output: &output)
@@ -164,7 +164,6 @@ import SDGCommandLine
             let nojekyll = directory.appendingPathComponent(".nojekyll")
             TextFile.reportWriteOperation(to: nojekyll, in: project, output: &output)
             try Data().write(to: nojekyll)
-            project.resetCache(debugReason: ".nojekyll")
         }
 
         private func fixSplitClusters(in directory: URL, for project: PackageRepository, output: inout Command.Output) throws {

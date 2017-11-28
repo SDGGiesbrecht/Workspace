@@ -246,9 +246,9 @@ struct Configuration {
     func quotationTranslation(localization: String) throws -> StrictString? {
         return try localizedStrictString(for: localization, from: .quotationTranslation)
     }
-    func quotationURL(localization: String) throws -> URL? {
+    func quotationURL(localization: String, project: PackageRepository) throws -> URL? {
         guard let url = try localizedString(for: localization, from: .quotationURL) else {
-            return nil
+            return try ReadMe.defaultQuotationURL(localization: localization, project: project)
         }
         return URL(string: url)
     }

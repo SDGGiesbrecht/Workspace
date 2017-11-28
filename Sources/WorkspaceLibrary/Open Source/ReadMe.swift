@@ -72,6 +72,12 @@ enum ReadMe {
         return StrictString(links.joined(separator: " • ".scalars)) + " " + skipInJazzy
     }
 
+    static func operatingSystemList(for project: PackageRepository) throws -> StrictString {
+        let supported = try OperatingSystem.cases.filter({ try project.configuration.supports($0) })
+        let list = supported.map({ $0.isolatedName.resolved() }).joined(separator: " • ".scalars)
+        return StrictString(list)
+    }
+
     static func apiLinksMarkup(for project: PackageRepository, output: inout Command.Output) throws -> StrictString {
 
         let baseURL = try project.configuration.requireDocumentationURL()
@@ -106,12 +112,17 @@ enum ReadMe {
             "[_Localization Links_]",
             ""
         ]
+        readMe += [
+            "[_Operating System List_]",
+            ""
+        ]
         if try project.configuration.optionIsDefined(.documentationURL) {
             readMe += [
                 "[_API Links_]",
                 ""
             ]
         }
+
         readMe += ["# [_Project_]"]
         if try project.configuration.optionIsDefined(.shortProjectDescription) {
             readMe += [
@@ -312,6 +323,12 @@ enum ReadMe {
             switch localization {
             case .englishCanada:
                 return "Localization Links"
+            }
+        }))
+        readMe.insert(try operatingSystemList(for: project), for: UserFacingText({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "Operating System List"
             }
         }))
         try readMe.insert(resultOf: { try apiLinksMarkup(for: project, output: &output) }, for: UserFacingText({ (localization, _) in

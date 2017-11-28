@@ -24,7 +24,8 @@ A read‐me is a `README.md` file that GitHub and [documentation generation](Doc
 
 The default read‐me will automatically change to accommodate some [configuration](Configuring%20Workspace.md) options:
 
-- `Documentation URL`: The root URL for API documentation. (As long as the last path component is `macOS`, `Linux`, `iOS`, `watchOS` or `tvOS`, Workspace will link to each individually by swapping out the last path component.)
+- `Support macOS`, `Support Linux`, etc.
+- `Documentation URL`: The root URL for API documentation. (The directory for the package, not for an individual module. Workspace will link to each module individually.)
 - `Short Project Description` (Markdown)
 - `Quotation`, `Quotation Translation`, `Quotation URL` & `Citation` (Text)
 - `Feature List` (Markdown)
@@ -43,6 +44,7 @@ The template for the read‐me works the same as the [template for file headers]
 The available dynamic elements are:
 
 -`Localization Links`: Links to the read‐me in other languages.
+-`Operating System List`: Icons for the supported operating systems.
 - `API Links`: The result of the configuration option `Documentation URL`.
 - `Short Description`: The value of the configuration option `Short Project Description`.
 - `Quotation`: The combined result of the configuration options `Quotation`, `Quotation Translation`, `Quotation URL` and `Citation`.
@@ -81,13 +83,13 @@ Ein Projekt.
 
 While any identifier can be used as a localization, Workspace currently only understands and adapts its templates for the following localizations:
 
-- `en-GB`/`en`
-- `en-US`
-- `en-CA`
-- `de-DE`/`de`*
-- `fr-FR`/`fr`*
-- `el-GR`/`el`*
-- `he-IL`/`he`*
+- `🇬🇧EN`/`en-GB`/`en`
+    - `🇺🇸EN`/`en-US`
+    - `🇨🇦EN`/`en-CA`
+- `🇩🇪DE`/`de-DE`/`de`*
+- `🇫🇷FR`/`fr-FR`/`fr`*
+- `🇬🇷ΕΛ`/`el-GR`/`el`*
+- `🇮🇱עב`/`he-IL`/`he`*
 
 *The text in languages marked with an asterisk was not produced by a native speaker and may contain errors. Corrections and style improvements would be welcome. (Mention it in an [issue](https://github.com/SDGGiesbrecht/Workspace/issues).)
 

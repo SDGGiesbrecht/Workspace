@@ -40,4 +40,66 @@ enum OperatingSystem : Int, IterableEnumeration {
             return .supportTVOS
         }
     }
+
+    // MARK: - Name
+
+    var isolatedName: UserFacingText<ContentLocalization, Void> {
+        switch self {
+        case .macOS:
+            return UserFacingText({ (localization, _) in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .françaisFrance:
+                    return "macOS"
+                case .ελληνικάΕλλάδα:
+                    return "Μακ‐Ο‐Ες"
+                case .עברית־ישראל:
+                    return "מק־או־אס"
+                }
+            })
+        case .linux:
+            return UserFacingText({ (localization, _) in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .françaisFrance:
+                    return "Linux"
+                case .ελληνικάΕλλάδα:
+                    return "Λίνουξ"
+                case .עברית־ישראל:
+                    return "לינוקס"
+                }
+            })
+        case .iOS:
+            return UserFacingText({ (localization, _) in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .françaisFrance:
+                    return "iOS"
+                case .ελληνικάΕλλάδα:
+                    return "Αι‐Ο‐Ες"
+                case .עברית־ישראל:
+                    return "איי־או־אס"
+                }
+            })
+        case .watchOS:
+            return UserFacingText({ (localization, _) in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .françaisFrance:
+                    return "watchOS"
+                case .ελληνικάΕλλάδα:
+                    return "Ουατσ‐Ο‐Ες"
+                case .עברית־ישראל:
+                    return "וץ׳־או־אס"
+                }
+            })
+        case .tvOS:
+            return UserFacingText({ (localization, _) in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .françaisFrance:
+                    return "tvOS"
+                case .ελληνικάΕλλάδα:
+                    return "Τι‐Βι‐Ο‐Ες"
+                case .עברית־ישראל:
+                    return "טי־וי־או־אס"
+                }
+            })
+        }
+    }
 }

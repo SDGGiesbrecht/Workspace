@@ -130,13 +130,13 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
-                return StrictString(join(lines: [
-                    "This validation used Workspace \(latestStableWorkspaceVersion.string), which is no longer up to date.",
+                return [
+                    StrictString("This validation used Workspace \(latestStableWorkspaceVersion.string), which is no longer up to date."),
                     "To update the version used by this project, run:",
-                    "$ workspace refresh scripts •use‐version \(update.string)",
+                    StrictString("$ workspace refresh scripts •use‐version \(update.string)"),
                     "(This requires a full installation. See the following link.)",
-                    "\(DocumentationLink.installation.url.in(Underline.underlined))"
-                    ]))
+                    StrictString("\(DocumentationLink.installation.url.in(Underline.underlined))")
+                    ].joinAsLines()
             }
         }).resolved().formattedAsWarning().separated(), to: &output)
     }

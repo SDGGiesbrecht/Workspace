@@ -54,10 +54,10 @@ extension Workspace {
                     throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
                         switch localization {
                         case .englishCanada:
-                            return StrictString(join(lines: [
+                            return [
                                 "Nothing to document.",
                                 "The package manifest does not define any library products."
-                                ]))
+                                ].joinAsLines()
                         }
                     }))
                 }

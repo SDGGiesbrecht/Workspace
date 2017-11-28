@@ -64,17 +64,17 @@ extension Configuration {
 
         let entry: String
         if value.isMultiline {
-            entry = join(lines: [
+            entry = [
                 startMultilineOption(option: option),
                 value,
                 endToken
-                ])
+                ].joinAsLines()
         } else {
             entry = option.key + colon + value
         }
 
         if let array = comment {
-            let note = join(lines: array)
+            let note = array.joinAsLines()
 
             let commentedNote: String
             if note.isMultiline {
@@ -86,10 +86,10 @@ extension Configuration {
                 commentedNote = lineCommentSyntax.comment(contents: note)
 
             }
-            return join(lines: [
+            return [
                 commentedNote,
                 entry
-                ])
+                ].joinAsLines()
 
         } else {
             return entry
@@ -126,7 +126,7 @@ extension Configuration {
                 "",
                 "Supported keys:",
                 "",
-                join(lines: Option.allPublic.map({ $0.key }))
+                Option.allPublic.map({ $0.key }).joinAsLines()
                 ])
         }
 
@@ -134,7 +134,7 @@ extension Configuration {
             fatalError(message: [
                 "Syntax error!",
                 "",
-                join(lines: description),
+                description.joinAsLines(),
                 "",
                 "Valid syntax:",
                 "",
@@ -246,7 +246,7 @@ extension Configuration {
         if let comment = currentMultilineComment {
             syntaxError(description: [
                 "Unterminated Comment:",
-                join(lines: comment)
+                comment.joinAsLines()
                 ])
         }
         if let option = currentMultilineOption {
@@ -287,7 +287,7 @@ extension Configuration {
             "",
             "Valid values:",
             "",
-            join(lines: valid.map({ String($0) }) )
+            String(valid.joinAsLines())
             ])
     }
 
@@ -323,7 +323,7 @@ extension Configuration {
                     "",
                     "Detected options:",
                     "",
-                    join(lines: configurationFile.keys.map({ $0.key }).sorted())
+                    configurationFile.keys.map({ $0.key }).sorted().joinAsLines()
                     ])
             }
         }
@@ -366,9 +366,9 @@ extension Configuration {
                     throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
                         switch localization {
                         case .englishCanada:
-                            return StrictString(join(lines: [
-                                "Localization syntax error in configuration option: \(option.key)"
-                                ]))
+                            return [
+                                StrictString("Localization syntax error in configuration option: \(option.key)")
+                                ].joinAsLines()
                         }
                     }))
                 }
@@ -384,7 +384,7 @@ extension Configuration {
         }
         var mapped: [String: String] = [:]
         for (key, value) in result {
-            mapped[key] = join(lines: value)
+            mapped[key] = value.joinAsLines()
         }
         return mapped
     }
@@ -411,7 +411,7 @@ extension Configuration {
         }
         var mapped: [ArbitraryLocalization: String] = [:]
         for (key, value) in result {
-            mapped[ArbitraryLocalization(code: key)] = join(lines: value)
+            mapped[ArbitraryLocalization(code: key)] = value.joinAsLines()
         }
         return mapped
     }
@@ -455,7 +455,7 @@ extension Configuration {
             "",
             "Detected options:",
             "",
-            join(lines: configurationFile.keys.map({ $0.key }).sorted())
+            configurationFile.keys.map({ $0.key }).sorted().joinAsLines()
             ])
     }
     private static func requiredLocalizedOptionValue(option: Option, localization: ArbitraryLocalization?) -> String {
@@ -735,11 +735,11 @@ extension Configuration {
                     if ¬actualValue.isMultiline {
                         return "\(option.key): \(actualValue)"
                     } else {
-                        return join(lines: [
+                        return [
                             "[_Begin \(option.key)_]",
                             actualValue,
                             "[_End_]"
-                            ])
+                            ].joinAsLines()
                     }
                 } else {
                     return "\(option.key): [Not specified.]"
@@ -807,7 +807,7 @@ extension Configuration {
                         "",
                         "Available Keys:",
                         "",
-                        join(lines: Option.allPublic.map({ $0.key }))
+                        Option.allPublic.map({ $0.key }).joinAsLines()
                         ])
                 }
             }
@@ -825,7 +825,7 @@ extension Configuration {
                         "",
                         "Available Types:",
                         "",
-                        join(lines: PackageRepository.Target.TargetType.cases.map({ String($0.key) }))
+                        String(PackageRepository.Target.TargetType.cases.map({ $0.key }).joinAsLines())
                         ])
                 }
                 return (option: option(forKey: components[1]), types: [type])

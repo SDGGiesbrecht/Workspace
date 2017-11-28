@@ -81,7 +81,7 @@ struct Examples {
                                 }
                             }
 
-                            list[identifier] = join(lines: contents)
+                            list[identifier] = contents.joinAsLines()
                         }
                     }
                 }
@@ -152,18 +152,18 @@ struct Examples {
                         let startLine = commentValue.lineRange(for: exampleRange.lowerBound ..< exampleRange.lowerBound)
                         let internalIndent = String(commentValue[startLine.lowerBound ..< exampleRange.lowerBound])
 
-                        var exampleLines = join(lines: [
+                        var exampleLines = [
                             "```swift",
                             example,
                             "```"
-                            ]).lines.map({ String($0.line) })
+                            ].joinAsLines().lines.map({ String($0.line) })
 
                         for index in exampleLines.startIndex ..< exampleLines.endIndex where index ≠ exampleLines.startIndex {
                             exampleLines[index] = internalIndent + exampleLines[index]
                         }
 
                         if countingExampleIndex == exampleIndex {
-                            commentValue.replaceSubrange(exampleRange, with: join(lines: exampleLines))
+                            commentValue.replaceSubrange(exampleRange, with: exampleLines.joinAsLines())
 
                             file.contents.replaceSubrange(commentRange, with: lineDocumentationSyntax.comment(contents: commentValue, indent: indent))
 

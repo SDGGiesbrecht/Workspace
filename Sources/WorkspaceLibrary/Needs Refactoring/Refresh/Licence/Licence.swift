@@ -97,7 +97,7 @@ enum Licence : String {
     }
 
     var notice: String {
-        return join(lines: noticeLines)
+        return noticeLines.joinAsLines()
     }
 
     // MARK: - Licence Management

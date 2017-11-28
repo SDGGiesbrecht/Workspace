@@ -111,7 +111,7 @@ enum ReadMe {
         if let translation = try project.configuration.quotationTranslation(localization: localization) {
             result += [translation]
         }
-        
+
         notImplementedYet()
         return StrictString(result.joined(separator: "\n".scalars)).replacingMatches(for: "\n".scalars, with: "<br>".scalars)
     }

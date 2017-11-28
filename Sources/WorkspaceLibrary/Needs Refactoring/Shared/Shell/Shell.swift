@@ -94,7 +94,7 @@ func runThirdPartyTool(name: String, repositoryURL: String, versionCheck: [Strin
                 printWarning([
                     "Some tests were skipped because \(name) \(requiredVersion.version) could not be found.",
                     repositoryURL,
-                    join(lines: updateInstructions)
+                    updateInstructions.joinAsLines()
                     ])
             }
 

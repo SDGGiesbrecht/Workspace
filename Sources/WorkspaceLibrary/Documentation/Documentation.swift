@@ -136,11 +136,11 @@ enum Documentation {
         let warnings = try Jazzy.default.warnings(outputDirectory: documentationDirectory(for: target, in: project))
 
         for warning in warnings {
-            print(join(lines: [
+            print([
                 warning.file.path(relativeTo: project.location) + ":" + String(warning.line?.inDigits() ?? ""),
                 warning.symbol,
                 ""
-                ]).formattedAsError(), to: &output)
+                ].joinAsLines().formattedAsError(), to: &output)
         }
 
         if warnings.isEmpty {

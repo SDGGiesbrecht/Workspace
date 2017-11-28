@@ -52,7 +52,7 @@ struct FileHeaders {
                 "[_Licence_]"
                 ])
         }
-        return join(lines: defaultHeader)
+        return defaultHeader.joinAsLines()
     }()
 
     static func copyright(fromText text: String) -> String {

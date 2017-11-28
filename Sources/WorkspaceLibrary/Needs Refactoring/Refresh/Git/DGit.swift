@@ -94,7 +94,7 @@ struct DGit {
                 updatedLines += [""]
             }
 
-            body.replaceSubrange(managedRange, with: join(lines: updatedLines))
+            body.replaceSubrange(managedRange, with: updatedLines.joinAsLines())
             updatedFile.body = body
             require() {try updatedFile.write(output: &output) }
         }

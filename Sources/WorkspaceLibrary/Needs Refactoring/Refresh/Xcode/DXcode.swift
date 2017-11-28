@@ -38,14 +38,14 @@
             let startToken = "LD_RUNPATH_SEARCH_PATHS = ("
             let endToken = ");"
             let illegal = endToken.scalars.first!
-            let paths = join(lines: [
+            let paths = [
                 "",
                 "$(inherited)",
                 "@executable_path/Frameworks",
                 "@loader_path/Frameworks",
                 "@executable_path/../Frameworks",
                 "@loader_path/../Frameworks"
-                ].map({ "\u{22}\($0)\u{22}," }))
+                ].map({ "\u{22}\($0)\u{22}," }).joinAsLines()
             let replacement = (startToken + paths + endToken).scalars
 
             file.contents.scalars.replaceMatches(for: [
@@ -103,7 +103,7 @@
                     frameworkLines.remove(at: index)
                     break
                 }
-                project.replaceSubrange(frameworksList, with: join(lines: frameworkLines))
+                project.replaceSubrange(frameworksList, with: frameworkLines.joinAsLines())
 
                 // Provide test linking information.
 
@@ -113,7 +113,7 @@
                     "TEST_HOST = \u{22}$(BUILT_PRODUCTS_DIR)/\(primaryProductName).app/\(applicationExecutableName)\u{22};",
                     "BUNDLE_LOADER = \u{22}$(TEST_HOST)\u{22};"
                 ]
-                project = project.replacingOccurrences(of: testMarker, with: join(lines: [testMarker] + testInfo))
+                project = project.replacingOccurrences(of: testMarker, with: ([testMarker] + testInfo).joinAsLines())
 
                 file.contents = project
             }
@@ -163,14 +163,14 @@
             }, modification: { (file: inout File) -> Void in
 
                 let scriptInsertLocation = file.requireRange(of: "objects = {\n").upperBound
-                file.contents.replaceSubrange(scriptInsertLocation ..< scriptInsertLocation, with: join(lines: [
+                file.contents.replaceSubrange(scriptInsertLocation ..< scriptInsertLocation, with: [
                     "\(scriptObjectName) = {",
                     "    isa = PBXShellScriptBuildPhase;",
                     "    shellPath = /bin/bash;",
                     "    shellScript = \u{22}export PATH=\u{5C}\u{22}$HOME/.SDG/Registry:$PATH\u{5C}\u{22} ; if which workspace > /dev/null ; then workspace proofread •use‐version " + latestStableWorkspaceVersion.string + " ; else echo \u{5C}\u{22}warning: Install Workspace if you wish to receive in‐code reports of style errors for this project. See https://github.com/SDGGiesbrecht/Workspace\u{5C}\u{22} ; fi\u{22};",
                     "};",
                     "" // Final line break.
-                    ]))
+                    ].joinAsLines())
 
                 var searchRange = file.contents.startIndex ..< file.contents.endIndex
                 var discoveredPhaseInsertLocation: String.Index?
@@ -192,10 +192,10 @@
                         ])
                 }
 
-                file.contents.replaceSubrange(phaseInsertLocation ..< phaseInsertLocation, with: join(lines: [
+                file.contents.replaceSubrange(phaseInsertLocation ..< phaseInsertLocation, with: [
                     scriptActionEntry,
                     "" // Final line break.
-                    ]))
+                    ].joinAsLines())
             }, output: &output)
         }
 

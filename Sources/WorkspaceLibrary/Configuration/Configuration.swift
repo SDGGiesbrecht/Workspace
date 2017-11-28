@@ -84,11 +84,11 @@ struct Configuration {
         return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
             switch localization {
             case .englishCanada:
-                return StrictString(join(lines: [
-                    "Invalid value for “\(option.key)”:",
-                    String(value),
+                return ([
+                    StrictString("Invalid value for “\(option.key)”:"),
+                    StrictString(value),
                     "Available values:"
-                    ] + valid.map({ String($0) }) ))
+                    ] + valid).joinAsLines()
             }
         }))
     }

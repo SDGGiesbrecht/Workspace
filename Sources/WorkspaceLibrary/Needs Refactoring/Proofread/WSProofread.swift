@@ -76,11 +76,11 @@ func runProofread(andExit shouldExit: Bool, arguments: DirectArguments, options:
             if ¬disabled.isEmpty {
                 lines += [
                     "disabled_rules:",
-                    join(lines: disabled)
+                    disabled.joinAsLines()
                 ]
             }
 
-            file.contents = join(lines: lines)
+            file.contents = lines.joinAsLines()
             require() { try file.write(output: &output) }
         }
 

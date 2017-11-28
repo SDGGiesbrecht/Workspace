@@ -537,12 +537,6 @@ extension Configuration {
 
     // Responsibilities
 
-    static var quotation: String? {
-        return possibleStringValue(option: .quotation)
-    }
-    static var requiredQuotation: String {
-        return stringValue(option: .quotation)
-    }
     static func quotationTranslation(localization: ArbitraryLocalization?) -> String? {
         return localizedOptionValue(option: .quotationTranslation, localization: localization)
     }

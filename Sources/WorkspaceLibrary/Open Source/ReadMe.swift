@@ -106,6 +106,32 @@ enum ReadMe {
         return label + " " + StrictString(links.joined(separator: " • ".scalars))
     }
 
+    static func quotationMarkup(localization: String, project: PackageRepository) throws -> StrictString {
+        notImplementedYetAndCannotReturn()
+    }
+
+    /*
+    static func quotationMarkup(localization: ArbitraryLocalization?) -> String {
+        return format(quotation: Configuration.requiredQuotation, translation: Configuration.quotationTranslation(localization: localization), url: Configuration.quotationURL(localization: localization), citation: Configuration.citation(localization: localization))
+    }
+
+static func format(quotation: String, translation possibleTranslation: String?, url possibleURL: String?, citation possibleCitation: String?) -> String {
+        var result = quotation.replacingOccurrences(of: "\n", with: "<br>")
+        if let translation = possibleTranslation {
+            result += "<br>"
+            result += translation.replacingOccurrences(of: "\n", with: "<br>")
+        }
+        if let url = possibleURL {
+            result = "[\(result)](\(url))"
+        }
+        if let citation = possibleCitation {
+            let indent = [String](repeating: "&nbsp;", count: 100).joined()
+            result += "<br>" + indent + "―" + citation
+        }
+        return "> " + result
+    }
+*/
+
     static func defaultReadMeTemplate(for localization: String, project: PackageRepository) throws -> Template {
 
         var readMe: [StrictString] = [
@@ -130,6 +156,12 @@ enum ReadMe {
                 "[_Short Description_]"
             ]
         }
+        if try project.configuration.optionIsDefined(.quotation) {
+            readMe += [
+                "",
+                "[_Quotation_]"
+            ]
+        }
 
         notImplementedYet()
 
@@ -138,13 +170,6 @@ enum ReadMe {
 
     /*
     static func defaultReadMeTemplate(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String {
-
-        if Configuration.quotation ≠ nil {
-            readMe += [
-                "",
-                "[_Quotation_]"
-            ]
-        }
 
         if Configuration.featureList(localization: localization) ≠ nil {
             let features: String
@@ -349,6 +374,12 @@ enum ReadMe {
                 return "Short Description"
             }
         }))
+        try readMe.insert(resultOf: { try quotationMarkup(localization: localization, project: project) }, for: UserFacingText({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "Quotation"
+            }
+        }))
 
         notImplementedYet()
 
@@ -358,11 +389,6 @@ enum ReadMe {
     }
 
     /*
-
-     let quotation = key("Quotation")
-     if body.contains(quotation) {
-     body = body.replacingOccurrences(of: quotation, with: quotationMarkup(localization: localization))
-     }
 
      let features = key("Features")
      if body.contains(features) {

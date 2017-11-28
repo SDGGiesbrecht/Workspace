@@ -114,6 +114,12 @@ struct Configuration {
     private func string(for option: Option) throws -> String? {
         return try options()[option]
     }
+    private func strictString(for option: Option) throws -> StrictString? {
+        guard let defined = try string(for: option) else {
+            return nil
+        }
+        return StrictString(defined)
+    }
     private func localizedString(for localization: String, from option: Option) throws -> String? {
         let localized = try cached(in: &Configuration.caches[location, default: Cache()].properties.localizedOptions[option]) {
             guard let defined = try string(for: option) else {
@@ -123,12 +129,18 @@ struct Configuration {
         }
         return localized[localization]
     }
-
-    private func localizedTemplate(for localization: String, from option: Option) throws -> Template? {
-        guard let source = try localizedString(for: localization, from: option) else {
+    private func localizedStrictString(for localization: String, from option: Option) throws -> StrictString? {
+        guard let defined = try localizedString(for: localization, from: option) else {
             return nil
         }
-        return Template(source: StrictString(source))
+        return StrictString(defined)
+    }
+
+    private func localizedTemplate(for localization: String, from option: Option) throws -> Template? {
+        guard let source = try localizedStrictString(for: localization, from: option) else {
+            return nil
+        }
+        return Template(source: source)
     }
 
     private func list(for option: Option) throws -> [String] {
@@ -200,26 +212,36 @@ struct Configuration {
         }
         return defined
     }
-    func requireShortProjectDescription(for localization: String, project: PackageRepository) throws -> StrictString {
-        guard let defined = try localizedString(for: localization, from: .shortProjectDescription) else {
-            throw Configuration.optionNotDefinedError(for: .shortProjectDescription)
-        }
-        return StrictString(defined)
-    }
 
     func documentationCopyright() throws -> Template {
-        if let defined = try string(for: .documentationCopyright) {
-            return Template(source: StrictString(defined))
+        if let defined = try strictString(for: .documentationCopyright) {
+            return Template(source: defined)
         } else {
             return try Documentation.defaultCopyrightTemplate(configuration: self)
         }
     }
     func requireAuthor() throws -> StrictString {
-        if let defined = try string(for: .author) {
-            return StrictString(defined)
+        if let defined = try strictString(for: .author) {
+            return defined
         } else {
             throw Configuration.optionNotDefinedError(for: .author)
         }
+    }
+
+    func requireShortProjectDescription(for localization: String, project: PackageRepository) throws -> StrictString {
+        guard let defined = try localizedStrictString(for: localization, from: .shortProjectDescription) else {
+            throw Configuration.optionNotDefinedError(for: .shortProjectDescription)
+        }
+        return defined
+    }
+    func quotation() throws -> StrictString? {
+        return try strictString(for: .quotation)
+    }
+    func requireQuotation() throws -> StrictString {
+        guard let defined = try quotation() else {
+            throw Configuration.optionNotDefinedError(for: .quotation)
+        }
+        return defined
     }
 
     func readMe(for localization: String, project: PackageRepository) throws -> Template {

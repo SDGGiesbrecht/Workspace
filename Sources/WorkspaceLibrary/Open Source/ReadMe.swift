@@ -113,6 +113,12 @@ enum ReadMe {
             ]
         }
         readMe += ["# [_Project_]"]
+        if try project.configuration.optionIsDefined(.shortProjectDescription) {
+            readMe += [
+                "",
+                "[_Short Description_]"
+            ]
+        }
 
         notImplementedYet()
 
@@ -121,13 +127,6 @@ enum ReadMe {
 
     /*
     static func defaultReadMeTemplate(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String {
-
-        if Configuration.shortProjectDescription(localization: localization) ≠ nil {
-            readMe += [
-                "",
-                "[_Short Description_]"
-            ]
-        }
 
         if Configuration.quotation ≠ nil {
             readMe += [
@@ -327,6 +326,12 @@ enum ReadMe {
                 return "Project"
             }
         }))
+        try readMe.insert(resultOf: { try project.configuration.requireShortProjectDescription(for: localization, project: project) }, for: UserFacingText({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "Short Description"
+            }
+        }))
 
         notImplementedYet()
 
@@ -336,11 +341,6 @@ enum ReadMe {
     }
 
     /*
-
-     let shortDescription = key("Short Description")
-     if body.contains(shortDescription) {
-     body = body.replacingOccurrences(of: shortDescription, with: Configuration.requiredShortProjectDescription(localization: localization))
-     }
 
      let quotation = key("Quotation")
      if body.contains(quotation) {

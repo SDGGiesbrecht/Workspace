@@ -537,12 +537,6 @@ extension Configuration {
 
     // Responsibilities
 
-    static func shortProjectDescription(localization: ArbitraryLocalization?) -> String? {
-        return localizedOptionValue(option: .shortProjectDescription, localization: localization)
-    }
-    static func requiredShortProjectDescription(localization: ArbitraryLocalization?) -> String {
-        return requiredLocalizedOptionValue(option: .shortProjectDescription, localization: localization)
-    }
     static var quotation: String? {
         return possibleStringValue(option: .quotation)
     }

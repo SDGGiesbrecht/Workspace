@@ -200,6 +200,12 @@ struct Configuration {
         }
         return defined
     }
+    func requireShortProjectDescription(for localization: String, project: PackageRepository) throws -> StrictString {
+        guard let defined = try localizedString(for: localization, from: .shortProjectDescription) else {
+            throw Configuration.optionNotDefinedError(for: .shortProjectDescription)
+        }
+        return StrictString(defined)
+    }
 
     func documentationCopyright() throws -> Template {
         if let defined = try string(for: .documentationCopyright) {

@@ -88,7 +88,7 @@ enum ReadMe {
             case .עברית־ישראל:
                 return "מת״י:"
             }
-        }).resolved() + " "
+        }).resolved()
 
         let links = try Repository.packageRepository.libraryProductTargets(output: &output).sorted().map { (name: String) -> StrictString in
 
@@ -112,6 +112,7 @@ enum ReadMe {
                 ""
             ]
         }
+        readMe += ["# [_Project_]"]
 
         notImplementedYet()
 
@@ -120,10 +121,6 @@ enum ReadMe {
 
     /*
     static func defaultReadMeTemplate(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String {
-
-        readMe += [
-            "# [_Project_]"
-        ]
 
         if Configuration.shortProjectDescription(localization: localization) ≠ nil {
             readMe += [
@@ -324,6 +321,12 @@ enum ReadMe {
                 return "API Links"
             }
         }))
+        readMe.insert(try project.projectName(output: &output), for: UserFacingText({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "Project"
+            }
+        }))
 
         notImplementedYet()
 
@@ -333,13 +336,6 @@ enum ReadMe {
     }
 
     /*
-
-     let apiLinks = key("API Links")
-     if body.contains(apiLinks) {
-     body = body.replacingOccurrences(of: apiLinks, with: try apiLinksMarkup(localization: localization, output: &output))
-     }
-
-     body = body.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.projectName(output: &output)))
 
      let shortDescription = key("Short Description")
      if body.contains(shortDescription) {

@@ -107,16 +107,21 @@ enum ReadMe {
     }
 
     static func quotationMarkup(localization: String, project: PackageRepository) throws -> StrictString {
-        notImplementedYetAndCannotReturn()
+        var result = [try project.configuration.requireQuotation()]
+        if let translation = try project.configuration.quotationTranslation(localization: localization) {
+            result += [translation]
+        }
+        
+        notImplementedYet()
+        return StrictString(result.joined(separator: "\n".scalars)).replacingMatches(for: "\n".scalars, with: "<br>".scalars)
     }
 
     /*
     static func quotationMarkup(localization: ArbitraryLocalization?) -> String {
-        return format(quotation: Configuration.requiredQuotation, translation: Configuration.quotationTranslation(localization: localization), url: Configuration.quotationURL(localization: localization), citation: Configuration.citation(localization: localization))
+        return format(translation: Configuration.quotationTranslation(localization: localization), url: Configuration.quotationURL(localization: localization), citation: Configuration.citation(localization: localization))
     }
 
 static func format(quotation: String, translation possibleTranslation: String?, url possibleURL: String?, citation possibleCitation: String?) -> String {
-        var result = quotation.replacingOccurrences(of: "\n", with: "<br>")
         if let translation = possibleTranslation {
             result += "<br>"
             result += translation.replacingOccurrences(of: "\n", with: "<br>")

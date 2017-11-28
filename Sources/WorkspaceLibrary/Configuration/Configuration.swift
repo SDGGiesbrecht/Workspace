@@ -243,6 +243,9 @@ struct Configuration {
         }
         return defined
     }
+    func quotationTranslation(localization: String) throws -> StrictString? {
+        return try localizedStrictString(for: localization, from: .quotationTranslation)
+    }
 
     func readMe(for localization: String, project: PackageRepository) throws -> Template {
         if let defined = try localizedTemplate(for: localization, from: .readMe) {

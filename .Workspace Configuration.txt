@@ -32,6 +32,7 @@ Workspace automates management of Swift projects.
 Πᾶν ὅ τι ἐὰν ποιῆτε, ἐκ ψυχῆς ἐργάζεσθε, ὡς τῷ Κυρίῳ καὶ οὐκ ἀνθρώποις.
 [_End_]
 [_Begin Quotation Translation_]
+[_🇨🇦EN_]
 Whatever you do, work from the heart, as working for the Lord and not for men.
 [_End_]
 Quotation Chapter: Colossians 3

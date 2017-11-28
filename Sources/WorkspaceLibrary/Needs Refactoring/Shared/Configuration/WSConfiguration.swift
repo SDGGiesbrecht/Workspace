@@ -537,9 +537,6 @@ extension Configuration {
 
     // Responsibilities
 
-    static func quotationTranslation(localization: ArbitraryLocalization?) -> String? {
-        return localizedOptionValue(option: .quotationTranslation, localization: localization)
-    }
     static func quotationURL(localization: ArbitraryLocalization?) -> String? {
         notImplementedYetAndCannotReturn()
         //return localizedOptionValue(option: .quotationURL, localization: localization) ?? DReadMe.defaultQuotationURL(localization: localization)

@@ -537,26 +537,6 @@ extension Configuration {
 
     // Responsibilities
 
-    static func quotationURL(localization: ArbitraryLocalization?) -> String? {
-        notImplementedYetAndCannotReturn()
-        //return localizedOptionValue(option: .quotationURL, localization: localization) ?? DReadMe.defaultQuotationURL(localization: localization)
-    }
-    static var quotationChapter: String? {
-        return possibleStringValue(option: .quotationChapter)
-    }
-    static var quotationOriginalKey: String {
-        let value = stringValue(option: .quotationTestament)
-        let old: StrictString = "Old"
-        let new: StrictString = "New"
-        switch value {
-        case String(old):
-            return "WLC"
-        case String(new):
-            return "SBLGNT"
-        default:
-            invalidEnumValue(option: .quotationTestament, value: value, valid: [old, new])
-        }
-    }
     static func citation(localization: ArbitraryLocalization?) -> String? {
         return localizedOptionValue(option: .citation, localization: localization)
     }

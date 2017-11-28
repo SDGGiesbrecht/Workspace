@@ -63,34 +63,6 @@ struct DReadMe {
         return FileType.markdown.syntax.comment(contents: managementWarning)
     }()
 
-    static func formatQuotationURL(chapter: String, originalKey: String, localization: ArbitraryLocalization?) -> String {
-        var translationCode = "NIV"
-        if let specific = localization {
-            switch specific {
-            case .compatible(let supported):
-                switch supported {
-                case .englishUnitedKingdom:
-                    translationCode = "NIVUK"
-                case .englishUnitedStates, .englishCanada:
-                    translationCode = "NIV"
-                case .deutschDeutschland:
-                    translationCode = "SCH2000"
-                case .françaisFrance:
-                    translationCode = "SG21"
-                case .ελληνικάΕλλάδα:
-                    fatalError(message: ["TGV is unavailable in side‐by‐side."])
-                case .עברית־ישראל:
-                    fatalError(message: ["Hebrew is unavailable in side‐by‐side."])
-                }
-            default:
-                fatalError(message: ["\(specific) does not have a corresponding translation yet."])
-            }
-        }
-
-        let sanitizedChapter = chapter.replacingOccurrences(of: " ", with: "+")
-        return "https://www.biblegateway.com/passage/?search=\(sanitizedChapter)&version=\(originalKey);\(translationCode)"
-    }
-
     static func relatedProjectsLinkMarkup(localization: ArbitraryLocalization?) -> String {
 
         var path: StrictString

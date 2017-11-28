@@ -106,17 +106,41 @@ enum ReadMe {
         return label + " " + StrictString(links.joined(separator: " • ".scalars))
     }
 
-    static func defaultQuotationURL(localization: String, project: PackageRepository) throws -> URL? {
-        notImplementedYet()
-        return nil
-    }
-    /*static func defaultQuotationURL(localization: ArbitraryLocalization?) -> String {
-        if let chapter = Configuration.quotationChapter {
-            return formatQuotationURL(chapter: chapter, originalKey: Configuration.quotationOriginalKey, localization: localization)
-        } else {
-            return Configuration.noValue
+    static func key(for testament: StrictString) throws -> StrictString {
+        let old: StrictString = "תנ״ך"
+        let new: StrictString = "ΚΔ"
+        switch testament {
+        case old:
+            return "WLC"
+        case new:
+            return "SBLGNT"
+        default:
+            throw Configuration.invalidEnumerationValueError(for: .quotationTestament, value: String(testament), valid: [old, new])
         }
-    }*/
+    }
+
+    static func defaultQuotationURL(localization: String, project: PackageRepository) throws -> URL? {
+        guard let chapter = try project.configuration.quotationChapter() else {
+            return nil
+        }
+        let translationCode = UserFacingText<ContentLocalization, Void>({ (localization, _) in
+            switch localization {
+            case .englishUnitedKingdom,
+                 .ελληνικάΕλλάδα, .עברית־ישראל /* No side‐by‐side available. */:
+                return "NIVUK"
+            case .englishUnitedStates, .englishCanada:
+                return "NIV"
+            case .deutschDeutschland:
+                return "SCH2000"
+            case .françaisFrance:
+                return "SG21"
+            }
+        }).resolved()
+
+        let sanitizedChapter = chapter.replacingMatches(for: " ".scalars, with: "+".scalars)
+        let originalKey = try key(for: try project.configuration.requireQuotationTestament())
+        return URL(string: "https://www.biblegateway.com/passage/?search=\(sanitizedChapter)&version=\(originalKey);\(translationCode)")
+    }
 
     static func quotationMarkup(localization: String, project: PackageRepository) throws -> StrictString {
         var result = [try project.configuration.requireQuotation()]

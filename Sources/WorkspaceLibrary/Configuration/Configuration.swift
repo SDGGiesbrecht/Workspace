@@ -80,7 +80,7 @@ struct Configuration {
         }))
     }
 
-    private static func invalidEnumerationValueError(for option: Option, value: String, valid: [StrictString]) -> Command.Error {
+    static func invalidEnumerationValueError(for option: Option, value: String, valid: [StrictString]) -> Command.Error {
         return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
             switch localization {
             case .englishCanada:
@@ -251,6 +251,15 @@ struct Configuration {
             return try ReadMe.defaultQuotationURL(localization: localization, project: project)
         }
         return URL(string: url)
+    }
+    func quotationChapter() throws -> StrictString? {
+        return try strictString(for: .quotationChapter)
+    }
+    func requireQuotationTestament() throws -> StrictString {
+        guard let value = try strictString(for: .quotationTestament) else {
+            throw Configuration.optionNotDefinedError(for: .quotationTestament)
+        }
+        return value
     }
 
     func readMe(for localization: String, project: PackageRepository) throws -> Template {

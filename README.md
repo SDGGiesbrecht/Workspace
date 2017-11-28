@@ -12,15 +12,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  -->
 
-<!--
- !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!!
- This file is managed by Workspace.
- Manual changes will not persist.
- For more information, see:
- https://github.com/SDGGiesbrecht/Workspace/blob/master/Documentation/Read‐Me.md
- !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!!
- -->
-
 [🇨🇦EN](Documentation/🇨🇦EN%20Read%20Me.md) <!--Skip in Jazzy-->
 
 # Workspace

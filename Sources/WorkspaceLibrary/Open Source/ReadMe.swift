@@ -111,6 +111,10 @@ enum ReadMe {
         if let translation = try project.configuration.quotationTranslation(localization: localization) {
             result += [translation]
         }
+        if let url = try project.configuration.quotationURL(localization: localization) {
+            let components: [StrictString] = ["[", result.joinAsLines(), "](", StrictString(url.absoluteString), ")"]
+            result = [components.joined()]
+        }
 
         notImplementedYet()
         return StrictString(result.joined(separator: "\n".scalars)).replacingMatches(for: "\n".scalars, with: "<br>".scalars)
@@ -122,10 +126,6 @@ enum ReadMe {
     }
 
 static func format(quotation: String, translation possibleTranslation: String?, url possibleURL: String?, citation possibleCitation: String?) -> String {
-        if let translation = possibleTranslation {
-            result += "<br>"
-            result += translation.replacingOccurrences(of: "\n", with: "<br>")
-        }
         if let url = possibleURL {
             result = "[\(result)](\(url))"
         }

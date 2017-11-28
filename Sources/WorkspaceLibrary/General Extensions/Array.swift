@@ -15,14 +15,20 @@
 import SDGCornerstone
 
 extension Array where Element : StringFamily {
+    // MARK: - where Element : StringFamily
 
-    func joinAsLines() -> Element {
+    func joined(separator: Element = "") -> Element {
+        // [_Workaround: This function should be moved to SDGCornerstone._]
         guard var result = self.first else {
             return ""
         }
         for line in self.dropFirst() {
-            result += "\n" + line
+            result += separator + line
         }
         return result
+    }
+
+    func joinAsLines() -> Element {
+        return joined(separator: "\n")
     }
 }

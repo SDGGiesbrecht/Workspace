@@ -38,10 +38,10 @@ Workspace automates management of Swift projects.
   - [Inherited documentation](Documentation%20Inheritance.md)
   - [Xcode project generation](Xcode.md)
 - Automates open source details:
-  - [file headers](File%20Headers.md)
-  - [read‐me files](Read‐Me.md)
-  - [licence notices](Licence.md)
-  - [contributing instructions](Contributing%20Instructions.md)
+  - [File headers](File%20Headers.md)
+  - [Read‐me files](Read‐Me.md)
+  - [Licence notices](Licence.md)
+  - [Contributing instructions](Contributing%20Instructions.md)
 - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
 - Manages projects for macOS, Linux, iOS, watchOS and tvOS.
 - [Configurable](Configuring%20Workspace.md)

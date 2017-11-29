@@ -58,10 +58,10 @@ Quotation Testament: ΚΔ
   - [Inherited documentation](Documentation/Documentation%20Inheritance.md)
   - [Xcode project generation](Documentation/Xcode.md)
 - Automates open source details:
-  - [file headers](Documentation/File%20Headers.md)
-  - [read‐me files](Documentation/Read‐Me.md)
-  - [licence notices](Documentation/Licence.md)
-  - [contributing instructions](Documentation/Contributing%20Instructions.md)
+  - [File headers](Documentation/File%20Headers.md)
+  - [Read‐me files](Documentation/Read‐Me.md)
+  - [Licence notices](Documentation/Licence.md)
+  - [Contributing instructions](Documentation/Contributing%20Instructions.md)
 - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
 - Manages projects for macOS, Linux, iOS, watchOS and tvOS.
 - [Configurable](Documentation/Configuring%20Workspace.md)

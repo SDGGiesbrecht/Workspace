@@ -180,7 +180,7 @@ enum ReadMe {
         let link = UserFacingText<ContentLocalization, Void>({ (localization, _) in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return StrictString("(For a list of related projecs, see [here](\(relativeURL)).)")
+                return StrictString("(For a list of related projects, see [here](\(relativeURL)).)")
             case .deutschDeutschland:
                 return StrictString("(Für eine Liste verwandter Projekte, siehe [hier](\(relativeURL)).)")
             case .françaisFrance:

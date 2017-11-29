@@ -68,9 +68,8 @@ Quotation Testament: ΚΔ
   -  Configurations can be [shared](Documentation/Configuring%20Workspace.md#sharing-configurations-between-projects) between projects.
 [_End_]
 
-[_Begin Other Read‐Me Content_]
+[_Begin Installation Instructions_]
 [_🇨🇦EN_]
-
 ## Installation
 
 Run the following in a terminal to perform a full installation or update (on either macOS or Linux):
@@ -82,6 +81,10 @@ curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/
 This will install and register the `workspace` command for `bash`, `zsh` and `fish`.
 
 A full installation is only necessary in order to use the command line interface. Contributors to a Workspace‐managed project can use the provided scripts without a permanent install. (See [The Workspace Workflow](#the-workspace-workflow).)
+[_End_]
+
+[_Begin Other Read‐Me Content_]
+[_🇨🇦EN_]
 
 ## The Workspace Workflow
 

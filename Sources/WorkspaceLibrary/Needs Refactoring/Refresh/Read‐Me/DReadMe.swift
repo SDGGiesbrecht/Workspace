@@ -21,78 +21,12 @@ struct DReadMe {
 
     static let skipInJazzy = "<!\u{2D}\u{2D}Skip in Jazzy\u{2D}\u{2D}>"
 /*
-    static func relatedProjectsFilename(localization: ArbitraryLocalization?) -> StrictString {
-        if let particular = localization {
-            var name: StrictString
-            if let specific = particular.compatible {
-                switch specific {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    name = "Related Projects.md"
-                case .deutschDeutschland:
-                    name = "Verwandte Projekte.md"
-                case .françaisFrance:
-                    name = "Projets liés.md"
-                case .ελληνικάΕλλάδα:
-                    name = "Συγγενικά έργα.md"
-                case .עברית־ישראל:
-                    name = "מיזמים קשורים.md"
-                }
-            } else {
-                name = "Related Projects.md"
-            }
-            return particular.icon + " " + name
-        }
-        return "Related Projects.md"
-    }
-    static func relatedProjectsPath(localization: ArbitraryLocalization?) -> RelativePath {
-        notImplementedYetAndCannotReturn()
-        /*
-        if localization ≠ nil {
-            return RelativePath("Documentation/\(relatedProjectsFilename(localization: localization))")
-        } else {
-            if let development = try Repository.packageRepository.configuration.developmentLocalization() {
-                return relatedProjectsPath(localization: development)
-            } else {
-                return RelativePath("Documentation/\(relatedProjectsFilename(localization: localization))")
-            }
-        }*/
-    }
+
 
     private static let managementComment: String = {
         let managementWarning = File.managmentWarning(section: false, documentation: .readMe)
         return FileType.markdown.syntax.comment(contents: managementWarning)
     }()
-
-    static func relatedProjectsLinkMarkup(localization: ArbitraryLocalization?) -> String {
-
-        var path: StrictString
-        if localization ≠ nil {
-            path = relatedProjectsFilename(localization: localization)
-        } else {
-            path = StrictString(DReadMe.relatedProjectsPath(localization: localization).string)
-        }
-        path.replaceMatches(for: " ".scalars, with: "%20".scalars)
-
-        let translation = Configuration.resolvedLocalization(for: localization)
-        switch translation {
-        case .compatible(let specific):
-            switch specific {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "(For a list of related projecs, see [here](\(path)).)" + " " + skipInJazzy
-            case .deutschDeutschland:
-                return "(Für eine Liste verwandter Projekte, siehe [hier](\(path)).)" + " " + skipInJazzy
-            case .françaisFrance:
-                return "(Pour une liste de projets lié, voir [ici](\(path)).)" + " " + skipInJazzy
-            case .ελληνικάΕλλάδα:
-                return "(Για ένα κατάλογο συγγενικών έργων, δείτε [εδώ](\(path)).)" + " " + skipInJazzy
-            case .עברית־ישראל:
-                return "(לרשימה של מיזמים קשורים, ראה [כאן](\(path)).)" + " " + skipInJazzy
-
-            }
-        case .unrecognized:
-            return relatedProjectsLinkMarkup(localization: .compatible(.englishCanada))
-        }
-    }
 
     static func defaultInstallationInstructions(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String? {
 

@@ -190,6 +190,30 @@ enum ReadMe {
             ]
         }
 
+        if try project.configuration.optionIsDefined(.featureList) {
+            let header = UserFacingText<ContentLocalization, Void>({ (localization, _) in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Features"
+                case .deutschDeutschland:
+                    return "Merkmale"
+                case .françaisFrance:
+                    return "Fonctionnalités"
+                case .ελληνικάΕλλάδα:
+                    return "Χαρακτηριστικά"
+                case .עברית־ישראל:
+                    return "תכונות"
+                }
+            }).resolved()
+
+            readMe += [
+                "",
+                StrictString("## ") + header,
+                "",
+                "[_Features_]"
+            ]
+        }
+
         notImplementedYet()
 
         return Template(source: StrictString(readMe.joined(separator: "\n".scalars)))
@@ -197,34 +221,6 @@ enum ReadMe {
 
     /*
     static func defaultReadMeTemplate(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String {
-
-        if Configuration.featureList(localization: localization) ≠ nil {
-            let features: String
-            switch translation {
-            case .compatible(let specific):
-                switch specific {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    features = "Features"
-                case .deutschDeutschland:
-                    features = "Merkmale"
-                case .françaisFrance:
-                    features = "Fonctionnalités"
-                case .ελληνικάΕλλάδα:
-                    features = "Χαρακτηριστικά"
-                case .עברית־ישראל:
-                    features = "תכונות"
-                }
-            default:
-                features = "Features"
-            }
-
-            readMe += [
-                "",
-                "## \(features)",
-                "",
-                "[_Features_]"
-            ]
-        }
 
         if ¬Configuration.relatedProjects(localization: translation).isEmpty {
             readMe += [
@@ -407,6 +403,12 @@ enum ReadMe {
                 return "Quotation"
             }
         }))
+        try readMe.insert(resultOf: { try project.configuration.requireFeatureList(for: localization) }, for: UserFacingText({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "Features"
+            }
+        }))
 
         notImplementedYet()
 
@@ -416,11 +418,6 @@ enum ReadMe {
     }
 
     /*
-
-     let features = key("Features")
-     if body.contains(features) {
-     body = body.replacingOccurrences(of: features, with: Configuration.requiredFeatureList(localization: localization))
-     }
 
      let relatedProjectsLink = key("Related Projects")
      if body.contains(relatedProjectsLink) {

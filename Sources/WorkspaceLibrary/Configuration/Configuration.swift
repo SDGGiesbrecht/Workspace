@@ -267,6 +267,12 @@ struct Configuration {
     func citation(localization: String) throws -> StrictString? {
         return try localizedStrictString(for: localization, from: .citation)
     }
+    func requireFeatureList(for localization: String) throws -> StrictString {
+        guard let defined = try localizedStrictString(for: localization, from: .featureList) else {
+            throw Configuration.optionNotDefinedError(for: .featureList)
+        }
+        return defined
+    }
 
     func readMe(for localization: String, project: PackageRepository) throws -> Template {
         if let defined = try localizedTemplate(for: localization, from: .readMe) {

@@ -413,8 +413,16 @@ enum ReadMe {
 
         notImplementedYet()
 
+        var body = String(readMe.text)
+        /*if ¬atProjectRoot {
+            // Fix links according to location.
+            let prefix = "]("
+            let searchTerm: String = prefix + documentationDirectory(for: project).path(relativeTo: project.location) + "/"
+            body.scalars.replaceMatches(for: searchTerm.scalars, with: prefix.scalars)
+        }*/
+
         var file = try TextFile(possiblyAt: location)
-        file.body = String(readMe.text)
+        file.body = body
         try file.writeChanges(for: project, output: &output)
     }
 
@@ -642,6 +650,6 @@ enum ReadMe {
         }
         
         let documentation = documentationDirectory(for: project)
-        try FileManager.default.createSymbolicLink(at: documentation.appendingPathComponent(documentationDirectoryName), withDestinationURL: documentation)
+        try FileManager.default.createSymbolicLink(at: documentation.appendingPathComponent(documentationDirectoryName), withDestinationURL: URL(string: "./")!)
     }
 }

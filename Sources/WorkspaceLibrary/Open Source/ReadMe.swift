@@ -21,8 +21,9 @@ enum ReadMe {
 
     // MARK: - Locations
 
+    private static let documentationDirectoryName = "Documentation"
     private static func documentationDirectory(for project: PackageRepository) -> URL {
-        return project.url(for: "Documentation")
+        return project.url(for: documentationDirectoryName)
     }
 
     private static func locationOfDocumentationFile(named name: StrictString, for localization: String, in project: PackageRepository) -> URL {
@@ -639,5 +640,8 @@ enum ReadMe {
                 }
             }
         }
+        
+        let documentation = documentationDirectory(for: project)
+        try FileManager.default.createSymbolicLink(at: documentation.appendingPathComponent(documentationDirectoryName), withDestinationURL: documentation)
     }
 }

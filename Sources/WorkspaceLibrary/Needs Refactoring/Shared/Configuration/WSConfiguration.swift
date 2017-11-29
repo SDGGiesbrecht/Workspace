@@ -537,9 +537,6 @@ extension Configuration {
 
     // Responsibilities
 
-    static func citation(localization: ArbitraryLocalization?) -> String? {
-        return localizedOptionValue(option: .citation, localization: localization)
-    }
     static func featureList(localization: ArbitraryLocalization?) -> String? {
         return localizedOptionValue(option: .featureList, localization: localization)
     }

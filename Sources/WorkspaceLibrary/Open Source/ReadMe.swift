@@ -151,27 +151,13 @@ enum ReadMe {
             let components: [StrictString] = ["[", result.joinAsLines(), "](", StrictString(url.absoluteString), ")"]
             result = [components.joined()]
         }
-
-        notImplementedYet()
-        return StrictString(result.joined(separator: "\n".scalars)).replacingMatches(for: "\n".scalars, with: "<br>".scalars)
-    }
-
-    /*
-    static func quotationMarkup(localization: ArbitraryLocalization?) -> String {
-        return format(translation: Configuration.quotationTranslation(localization: localization), url: Configuration.quotationURL(localization: localization), citation: Configuration.citation(localization: localization))
-    }
-
-static func format(quotation: String, translation possibleTranslation: String?, url possibleURL: String?, citation possibleCitation: String?) -> String {
-        if let url = possibleURL {
-            result = "[\(result)](\(url))"
+        if let citation = try project.configuration.citation(localization: localization) {
+            let indent = StrictString([String](repeating: "&nbsp;", count: 100).joined())
+            result += [indent + "―" + citation]
         }
-        if let citation = possibleCitation {
-            let indent = [String](repeating: "&nbsp;", count: 100).joined()
-            result += "<br>" + indent + "―" + citation
-        }
-        return "> " + result
+
+        return StrictString("> ") + StrictString(result.joined(separator: "\n".scalars)).replacingMatches(for: "\n".scalars, with: "<br>".scalars)
     }
-*/
 
     static func defaultReadMeTemplate(for localization: String, project: PackageRepository) throws -> Template {
 

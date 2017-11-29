@@ -25,24 +25,24 @@ Workspace automates management of Swift projects.
 ## Features
 
 - Provides rigorous validation:
-  - [Test coverage](Documentation/Code%20Coverage.md)
-  - [Compiler warnings](Documentation/Compiler%20Warnings.md)
-  - [Documentation coverage](Documentation/Documentation%20Generation.md#enforcement)
-  - [Example validation](Documentation/Examples.md)
-  - [Style proofreading](Documentation/Proofreading.md) (including [SwiftLint](https://github.com/realm/SwiftLint))
-  - [Reminders](Documentation/Manual%20Warnings.md)
-  - [Continuous integration set‐up](Documentation/Continuous%20Integration.md) ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))
-- Generates API [documentation](Documentation/Documentation%20Generation.md) (except from Linux). (Using [Jazzy](https://github.com/realm/jazzy))
+  - [Test coverage](Code%20Coverage.md)
+  - [Compiler warnings](Compiler%20Warnings.md)
+  - [Documentation coverage](Documentation%20Generation.md#enforcement)
+  - [Example validation](Examples.md)
+  - [Style proofreading](Proofreading.md) (including [SwiftLint](https://github.com/realm/SwiftLint))
+  - [Reminders](Manual%20Warnings.md)
+  - [Continuous integration set‐up](Continuous%20Integration.md) ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))
+- Generates API [documentation](Documentation%20Generation.md) (except from Linux). (Using [Jazzy](https://github.com/realm/jazzy))
 - Automates code maintenance:
-  - [Embedded resources](Documentation/Resources.md)
-  - [Inherited documentation](Documentation/Documentation%20Inheritance.md)
-  - [Xcode project generation](Documentation/Xcode.md)
+  - [Embedded resources](Resources.md)
+  - [Inherited documentation](Documentation%20Inheritance.md)
+  - [Xcode project generation](Xcode.md)
 - Automates open source details:
-  - [file headers](Documentation/File%20Headers.md)
-  - [read‐me files](Documentation/Read‐Me.md)
-  - [licence notices](Documentation/Licence.md)
-  - [contributing instructions](Documentation/Contributing%20Instructions.md)
+  - [file headers](File%20Headers.md)
+  - [read‐me files](Read‐Me.md)
+  - [licence notices](Licence.md)
+  - [contributing instructions](Contributing%20Instructions.md)
 - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
 - Manages projects for macOS, Linux, iOS, watchOS and tvOS.
-- [Configurable](Documentation/Configuring%20Workspace.md)
-  -  Configurations can be [shared](Documentation/Configuring%20Workspace.md#sharing-configurations-between-projects) between projects.
+- [Configurable](Configuring%20Workspace.md)
+  -  Configurations can be [shared](Configuring%20Workspace.md#sharing-configurations-between-projects) between projects.

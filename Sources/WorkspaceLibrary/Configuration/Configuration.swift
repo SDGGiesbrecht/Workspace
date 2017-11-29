@@ -273,12 +273,25 @@ struct Configuration {
         }
         return defined
     }
+    func installationInstructions(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template? {
+        if let defined = try localizedTemplate(for: localization, from: .installationInstructions) {
+            return defined
+        } else {
+            return try ReadMe.defaultInstallationInstructions(localization: localization, project: project, output: &output)
+        }
+    }
+    func requireInstallationInstructions(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template {
+        guard let defined = try installationInstructions(for: localization, project: project, output: &output) else {
+            throw Configuration.optionNotDefinedError(for: .installationInstructions)
+        }
+        return defined
+    }
 
-    func readMe(for localization: String, project: PackageRepository) throws -> Template {
+    func readMe(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template {
         if let defined = try localizedTemplate(for: localization, from: .readMe) {
             return defined
         } else {
-            return try ReadMe.defaultReadMeTemplate(for: localization, project: project)
+            return try ReadMe.defaultReadMeTemplate(for: localization, project: project, output: &output)
         }
     }
 

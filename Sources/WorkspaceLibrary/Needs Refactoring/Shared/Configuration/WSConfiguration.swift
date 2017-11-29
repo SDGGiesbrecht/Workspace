@@ -543,16 +543,6 @@ extension Configuration {
     static func requiredFeatureList(localization: ArbitraryLocalization?) -> String {
         return requiredLocalizedOptionValue(option: .featureList, localization: localization)
     }
-    static func installationInstructions(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String? {
-        notImplementedYetAndCannotReturn()
-        //return try localizedOptionValue(option: .installationInstructions, localization: localization) ?? (try DReadMe.defaultInstallationInstructions(localization: localization, output: &output))
-    }
-    static func requiredInstallationInstructions(localization: ArbitraryLocalization?, output: inout Command.Output) -> String {
-        guard let result = (try? installationInstructions(localization: localization, output: &output))! else {
-            missingLocalizationError(option: .installationInstructions, localization: localization)
-        }
-        return result
-    }
     static var requiredRepositoryURL: String {
         return stringValue(option: .repositoryURL)
     }

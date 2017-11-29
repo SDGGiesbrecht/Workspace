@@ -195,7 +195,190 @@ enum ReadMe {
         return link + " " + skipInJazzy
     }
 
-    static func defaultReadMeTemplate(for localization: String, project: PackageRepository) throws -> Template {
+    static func defaultInstallationInstructions(localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template? {
+        let libraries = try project.libraryProductTargets(output: &output).sorted()
+        if ¬libraries.isEmpty {
+            notImplementedYet()
+            return nil
+        } else {
+            // [_Workaround: This should provide installation instructions for executables too._]
+            return nil
+        }
+    }
+
+    /*static func defaultInstallationInstructions(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String? {
+
+        if try Repository.packageRepository.configuration.projectType() == .library {
+            let translation = Configuration.resolvedLocalization(for: localization)
+
+            var instructions: [String] = []
+
+            switch translation {
+            case .compatible(let specific):
+                switch specific {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    instructions += [
+                        "## Importing",
+                        "",
+                        "\(try Repository.packageRepository.projectName(output: &output)) is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).",
+                        ""
+                    ]
+                case .deutschDeutschland:
+                    instructions += [
+                        "## Einführung",
+                        "",
+                        "\(try Repository.packageRepository.projectName(output: &output)) ist für den Einsatz mit dem [Swift Package Manager](https://swift.org/package-manager/) vorgesehen.",
+                        ""
+                    ]
+                case .françaisFrance:
+                    instructions += [
+                        "## Importation",
+                        "",
+                        "\(try Repository.packageRepository.projectName(output: &output)) est prévu pour utilisation avec le [Swift Package Manager](https://swift.org/package-manager/).",
+                        ""
+                    ]
+                case .ελληνικάΕλλάδα:
+                    instructions += [
+                        "## Εισαγωγή",
+                        "",
+                        "\(try Repository.packageRepository.projectName(output: &output)) προορίζεται για χρήση με το [Swift Package Manager](https://swift.org/package-manager/).",
+                        ""
+                    ]
+                case .עברית־ישראל:
+                    instructions += [
+                        "## ליבא",
+                        "",
+                        "יש ל־⁨\(try Repository.packageRepository.projectName(output: &output))⁩ מיועד של שימוש עם [Swift Package Manager](https://swift.org/package-manager/).",
+                        ""
+                    ]
+                }
+            case .unrecognized:
+                instructions += [
+                    "## Importing",
+                    "",
+                    "\(try Repository.packageRepository.projectName(output: &output)) is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).",
+                    ""
+                ]
+            }
+
+            var dependencySummary: String
+            switch translation {
+            case .compatible(let specific):
+                switch specific {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    dependencySummary = "Simply add \(try Repository.packageRepository.projectName(output: &output)) as a dependency in `Package.swift`"
+                case .deutschDeutschland:
+                    dependencySummary = "Fügen Sie \(try Repository.packageRepository.projectName(output: &output)) einfach in der Abhängigkeitsliste in `Package.swift` hinzu"
+                case .françaisFrance:
+                    dependencySummary = "Ajoutez \(try Repository.packageRepository.projectName(output: &output)) simplement dans la liste des dépendances dans `Package.swift`"
+                case .ελληνικάΕλλάδα:
+                    dependencySummary = "Πρόσθεσε τον \(try Repository.packageRepository.projectName(output: &output)) απλά στο κατάλογο των εξαρτήσεων στο `Package.swift`"
+                case .עברית־ישראל:
+                    dependencySummary =
+                    "תוסיף את ⁨\(try Repository.packageRepository.projectName(output: &output))⁩ בפשוט ברשימת תלות ב־`Package.swift`"
+                }
+            case .unrecognized:
+                dependencySummary = "Simply add \(try Repository.packageRepository.projectName(output: &output)) as a dependency in `Package.swift`"
+            }
+
+            if let repository = try Repository.packageRepository.configuration.repositoryURL(),
+                let currentVersion = Configuration.currentVersion {
+
+                let colon: String
+                switch translation {
+                case .compatible(let specific):
+                    switch specific {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .ελληνικάΕλλάδα, .עברית־ישראל:
+                        colon = ":"
+                    case .françaisFrance:
+                        colon = " :"
+                    }
+                case .unrecognized:
+                    colon = ":"
+                }
+
+                instructions += [
+                    dependencySummary + colon,
+                    "",
+                    "```swift",
+                    "let package = Package(",
+                    "    ...",
+                    "    dependencies: [",
+                    "        ...",
+                    "        .Package(url: \u{22}\(repository.absoluteString)\u{22}, versions: \u{22}\(currentVersion.string)\u{22} ..< \u{22}\(currentVersion.nextMajorVersion.string)\u{22}),",
+                    "        ...",
+                    "    ]",
+                    ")",
+                    "```"
+                ]
+
+            } else {
+
+                switch translation {
+                case .compatible(let specific):
+                    switch specific {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .françaisFrance, .ελληνικάΕλλάδα, .עברית־ישראל:
+                        instructions += [
+                            dependencySummary + "."
+                        ]
+                    }
+                case .unrecognized:
+                    instructions += [
+                        dependencySummary + "."
+                    ]
+                }
+            }
+
+            switch translation {
+            case .compatible(let specific):
+                switch specific {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    instructions += [
+                        "",
+                        "\(try Repository.packageRepository.projectName(output: &output)) can then be imported in source files:"
+                    ]
+                case .deutschDeutschland:
+                    instructions += [
+                        "",
+                        "Dann kann \(try Repository.packageRepository.projectName(output: &output)) in Quelldateien eingeführt werden:"
+                    ]
+                case .françaisFrance:
+                    instructions += [
+                        "",
+                        "Puis \(try Repository.packageRepository.projectName(output: &output)) peut être importé dans des fichiers sources :"
+                    ]
+                case .ελληνικάΕλλάδα:
+                    instructions += [
+                        "",
+                        "Έπειτα \(try Repository.packageRepository.projectName(output: &output)) μπορεί να εισάγεται στα πηγαία αρχεία:"
+                    ]
+                case .עברית־ישראל:
+                    instructions += [
+                        "",
+                        "אז יכול ליבא את ⁨\(try Repository.packageRepository.projectName(output: &output))⁩ בקבץי מקור:"
+                    ]
+                }
+            case .unrecognized:
+                instructions += [
+                    "",
+                    "\(try Repository.packageRepository.projectName(output: &output)) can then be imported in source files:"
+                ]
+            }
+
+            instructions += [
+                "",
+                "```swift",
+                "import \(Configuration.moduleName)",
+                "```"
+            ]
+
+            return join(lines: instructions)
+        }
+
+        return nil
+    }*/
+
+    static func defaultReadMeTemplate(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template {
 
         var readMe: [StrictString] = [
             "[_Localization Links_]",
@@ -256,6 +439,13 @@ enum ReadMe {
             ]
         }
 
+        if (try project.configuration.installationInstructions(for: localization, project: project, output: &output)) ≠ nil {
+            readMe += [
+                "",
+                "[_Installation Instructions_]"
+            ]
+        }
+
         notImplementedYet()
 
         return Template(source: StrictString(readMe.joined(separator: "\n".scalars)))
@@ -263,13 +453,6 @@ enum ReadMe {
 
     /*
     static func defaultReadMeTemplate(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String {
-
-        if (try? Configuration.installationInstructions(localization: localization, output: &output))! ≠ nil {
-            readMe += [
-                "",
-                "[_Installation Instructions_]"
-            ]
-        }
 
         var readMeExampleExists = false
         for (key, _) in Examples.examples {
@@ -400,7 +583,7 @@ enum ReadMe {
     // MARK: - Refreshment
 
     private static func refreshReadMe(at location: URL, for localization: String, in project: PackageRepository, atProjectRoot: Bool, output: inout Command.Output) throws {
-        var readMe = try project.configuration.readMe(for: localization, project: project)
+        var readMe = try project.configuration.readMe(for: localization, project: project, output: &output)
 
         readMe.insert(try localizationLinksMarkup(for: project, fromProjectRoot: atProjectRoot), for: UserFacingText({ (localization, _) in
             switch localization {
@@ -452,6 +635,13 @@ enum ReadMe {
             }
         }))
 
+        try readMe.insert(resultOf: { try project.configuration.requireInstallationInstructions(for: localization, project: project, output: &output).text }, for: UserFacingText({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "Installation Instructions"
+            }
+        }))
+
         notImplementedYet()
 
         var body = String(readMe.text)
@@ -468,11 +658,6 @@ enum ReadMe {
     }
 
     /*
-
-     let installationInsructions = key("Installation Instructions")
-     if body.contains(installationInsructions) {
-     body = body.replacingOccurrences(of: installationInsructions, with: Configuration.requiredInstallationInstructions(localization: localization, output: &output))
-     }
 
      let repositoryURL = key("Repository URL")
      if body.contains(repositoryURL) {

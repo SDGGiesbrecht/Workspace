@@ -31,15 +31,17 @@ struct Configuration {
 
     // MARK: - Cache
 
-    private struct Cache {
-        fileprivate class Properties {
-            fileprivate var options: [Option: String]?
-            fileprivate var localizations: [String]?
-            fileprivate var localizedOptions: [Option: [String: String]] = [:]
-        }
-        fileprivate var properties = Properties()
+    private class Cache {
+        fileprivate var options: [Option: String]?
+        fileprivate var localizations: [String]?
+        fileprivate var localizedOptions: [Option: [String: String]] = [:]
     }
     private static var caches: [URL: Cache] = [:]
+    private var cache: Cache {
+        return cached(in: &Configuration.caches[location]) {
+            return Cache()
+        }
+    }
 
     func resetCache(debugReason: String) { // [_Exempt from Code Coverage_] [_Workaround: Until normalize is testable._]
         Configuration.caches[location] = Cache()
@@ -58,7 +60,7 @@ struct Configuration {
 
     func options() throws -> [Option: String] {
         // [_Workaround: Should be private, but necessary for temporary bridging._]
-        return try cached(in: &Configuration.caches[location, default: Cache()].properties.options) { () -> [Option: String] in
+        let result = try cached(in: &cache.options) { () -> [Option: String] in
             let file: TextFile
             do {
                 file = try TextFile(alreadyAt: location)
@@ -67,6 +69,7 @@ struct Configuration {
             }
             return Configuration.parse(configurationSource: file.contents)
         }
+        return result
     }
 
     // MARK: - Types
@@ -121,7 +124,7 @@ struct Configuration {
         return StrictString(defined)
     }
     private func localizedString(for localization: String, from option: Option) throws -> String? {
-        let localized = try cached(in: &Configuration.caches[location, default: Cache()].properties.localizedOptions[option]) {
+        let localized = try cached(in: &cache.localizedOptions[option]) {
             guard let defined = try string(for: option) else {
                 return [:]
             }
@@ -174,7 +177,7 @@ struct Configuration {
     // MARK: - Options: Localizations
 
     func localizations() throws -> [String] {
-        return try cached(in: &Configuration.caches[location, default: Cache()].properties.localizations) {
+        return try cached(in: &cache.localizations) {
 
             let result = try list(for: .localizations)
             if result.isEmpty {

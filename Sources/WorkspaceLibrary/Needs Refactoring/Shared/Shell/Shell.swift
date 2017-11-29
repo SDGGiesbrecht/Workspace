@@ -19,7 +19,11 @@ import SDGCommandLine
 
 @discardableResult func requireBash(_ arguments: [String], silent: Bool = false) -> String {
 
-    defer { Repository.packageRepository.resetCache(debugReason: arguments.first ?? "bash") }
+    defer {
+        if arguments.first ≠ "git" {
+            Repository.packageRepository.resetCache(debugReason: "‘\(arguments.joined(separator: " "))’ in ‘\(URL(fileURLWithPath: FileManager.default.currentDirectoryPath).lastPathComponent)’")
+        }
+    }
 
     do {
         return try Shell.default.run(command: arguments, silently: silent)

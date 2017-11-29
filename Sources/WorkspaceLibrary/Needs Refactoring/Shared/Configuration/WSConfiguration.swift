@@ -537,30 +537,6 @@ extension Configuration {
 
     // Responsibilities
 
-    static func featureList(localization: ArbitraryLocalization?) -> String? {
-        return localizedOptionValue(option: .featureList, localization: localization)
-    }
-    static func requiredFeatureList(localization: ArbitraryLocalization?) -> String {
-        return requiredLocalizedOptionValue(option: .featureList, localization: localization)
-    }
-    static var requiredRepositoryURL: String {
-        return stringValue(option: .repositoryURL)
-    }
-    static var currentVersion: Version? {
-        if let version = possibleStringValue(option: .currentVersion) {
-            return Version(version)
-        } else {
-            return nil
-        }
-    }
-    static var requiredCurrentVersion: Version {
-        guard let result = Version(stringValue(option: .currentVersion)) else {
-            failTests(message: [
-                "Invalid version identifier: " + stringValue(option: .currentVersion)
-                ])
-        }
-        return result
-    }
     static var otherReadMeContent: String? {
         return possibleStringValue(option: .otherReadMeContent)
     }

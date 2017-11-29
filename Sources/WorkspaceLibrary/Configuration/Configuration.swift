@@ -197,6 +197,13 @@ struct Configuration {
 
     // MARK: - Options: Project Metadata
 
+    func currentVersion() throws -> Version? {
+        guard let defined = try string(for: .currentVersion) else {
+            return nil
+        }
+        return Version(defined)
+    }
+
     func repositoryURL() throws -> URL? {
         if let defined = try string(for: .repositoryURL) {
             return URL(string: defined)

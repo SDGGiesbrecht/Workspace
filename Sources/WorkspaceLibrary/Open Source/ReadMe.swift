@@ -196,187 +196,205 @@ enum ReadMe {
     }
 
     static func defaultInstallationInstructions(localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template? {
+        var result: [StrictString] = []
+
         let libraries = try project.libraryProductTargets(output: &output).sorted()
         if ¬libraries.isEmpty {
-            notImplementedYet()
+            result += [
+                "## " + UserFacingText<ContentLocalization, Void>({ (localization, _) in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "Importing"
+                    case .deutschDeutschland:
+                        return "Einführung"
+                    case .françaisFrance:
+                        return "Importation"
+                    case .ελληνικάΕλλάδα:
+                        return "Εισαγωγή"
+                    case .עברית־ישראל:
+                        return "ליבא"
+                    }
+                }).resolved(),
+                "",
+                UserFacingText<ContentLocalization, StrictString>({ (localization, package) in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return StrictString("`\(package)` is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).")
+                    case .deutschDeutschland:
+                        return StrictString("`\(package)` ist für den Einsatz mit dem [Swift‐Paketverwalter](https://swift.org/package-manager/) vorgesehen.")
+                    case .françaisFrance:
+                        return StrictString("`\(package)` est prévu pour utilisation avec le [Gestionnaire de paquets Swift](https://swift.org/package-manager/).")
+                    case .ελληνικάΕλλάδα:
+                        return StrictString("`\(package)` προορίζεται για χρήση με τον [διαχειριστή πακέτων του Σουιφτ](https://swift.org/package-manager/).")
+                    case .עברית־ישראל:
+                        /*א*/ return StrictString("יש ל־`\(package)` מיועד של שימוש עם [מנהל חבילת סוויפט](https://swift.org/package-manager/).")
+                    }
+                }).resolved(using: StrictString(try project.packageName(output: &output))),
+                ""
+            ]
+
+            let dependencySummary: StrictString = UserFacingText<ContentLocalization, StrictString>({ (localization, package) in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return StrictString("Simply add `\(package)` as a dependency in `Package.swift`")
+                case .deutschDeutschland:
+                    return StrictString("Fügen Sie `\(package)` einfach in der Abhängigkeitsliste in `Package.swift` hinzu")
+                case .françaisFrance:
+                    return StrictString("Ajoutez `\(package)` simplement dans la liste des dépendances dans `Package.swift`")
+                case .ελληνικάΕλλάδα:
+                    return StrictString("Πρόσθεσε τον `\(package)` απλά στο κατάλογο των εξαρτήσεων στο `Package.swift`")
+                case .עברית־ישראל:
+                    /*א*/ return StrictString("תוסיף את `\(package)` בפשוט ברשימת תלות ב־`Package.swift`")
+                }
+            }).resolved(using: StrictString(try project.packageName(output: &output)))
+
+            if let repository = try project.configuration.repositoryURL(),
+                let currentVersion = try project.configuration.currentVersion() {
+                var versionSpecification: String
+                if currentVersion.major == 0 {
+                    versionSpecification = ".upToNextMinor(from: Version(\(currentVersion.major), \(currentVersion.minor), \(currentVersion.patch)))"
+                } else {
+                    versionSpecification = "from: Version(\(currentVersion.major), \(currentVersion.minor), \(currentVersion.patch))"
+                }
+
+                result += [
+                    dependencySummary + UserFacingText<ContentLocalization, Void>({ (localization, _) in
+                        switch localization {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .ελληνικάΕλλάδα, .עברית־ישראל:
+                            return ":"
+                        case .françaisFrance:
+                            return " :"
+                        }
+                    }).resolved(),
+                    "",
+                    "```swift",
+                    StrictString("let ") + UserFacingText<ContentLocalization, Void>({ (localization, _) in
+                        switch localization {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "package"
+                        case .deutschDeutschland:
+                            return "paket"
+                        case .françaisFrance:
+                            return "paquet"
+                        case .ελληνικάΕλλάδα:
+                            return "πακέτο"
+                        case .עברית־ישראל:
+                            return "חבילה"
+                        }
+                    }).resolved() + " = Package(",
+                    (StrictString("    name: \u{22}") + UserFacingText<ContentLocalization, Void>({ (localization, _) in
+                        switch localization {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "MyPackage"
+                        case .deutschDeutschland:
+                            return "MeinPaket"
+                        case .françaisFrance:
+                            return "MonPaquet"
+                        case .ελληνικάΕλλάδα:
+                            return "ΠακέτοΜου"
+                        case .עברית־ישראל:
+                            return "חבילה־שלי"
+                        }
+                    }).resolved() + StrictString("\u{22},")) as StrictString,
+                    "    dependencies: [",
+                    StrictString("        .package(url: \u{22}\(repository.absoluteString)\u{22}, \(versionSpecification)),"),
+                    "    ],",
+                    "    targets: [",
+                    (StrictString("        .target(name: \u{22}") + UserFacingText<ContentLocalization, Void>({ (localization, _) in
+                        switch localization {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "MyTarget"
+                        case .deutschDeutschland:
+                            return "MeinZiel"
+                        case .françaisFrance:
+                            return "MaCible"
+                        case .ελληνικάΕλλάδα:
+                            return "ΣτόχοςΜου"
+                        case .עברית־ישראל:
+                            return "מטרה־שלי"
+                        }
+                    }).resolved() + StrictString("\u{22}, dependencies: [")) as StrictString,
+                    ]
+                for library in libraries {
+                    result += [StrictString("            .productItem(name: \u{22}\(library)\u{22}, package: \u{22}\(try project.packageName(output: &output))\u{22}),")]
+                }
+                result += [
+                    "        ])",
+                    "    ]",
+                    ")",
+                    "```"
+                ]
+            } else {
+                result += [dependencySummary + UserFacingText<ContentLocalization, Void>({ (localization, _) in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .françaisFrance, .ελληνικάΕλλάδα, .עברית־ישראל:
+                        return "."
+                    }
+                }).resolved()]
+            }
+        }
+
+        notImplementedYet()
+
+        // [_Workaround: This should provide installation instructions for executables too._]
+
+        if result == [] {
             return nil
         } else {
-            // [_Workaround: This should provide installation instructions for executables too._]
-            return nil
+            return Template(source: result.joinAsLines())
         }
     }
 
     /*static func defaultInstallationInstructions(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String? {
 
-        if try Repository.packageRepository.configuration.projectType() == .library {
-            let translation = Configuration.resolvedLocalization(for: localization)
+     switch translation {
+     case .compatible(let specific):
+     switch specific {
+     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+     instructions += [
+     "",
+     "\(try Repository.packageRepository.projectName(output: &output)) can then be imported in source files:"
+     ]
+     case .deutschDeutschland:
+     instructions += [
+     "",
+     "Dann kann \(try Repository.packageRepository.projectName(output: &output)) in Quelldateien eingeführt werden:"
+     ]
+     case .françaisFrance:
+     instructions += [
+     "",
+     "Puis \(try Repository.packageRepository.projectName(output: &output)) peut être importé dans des fichiers sources :"
+     ]
+     case .ελληνικάΕλλάδα:
+     instructions += [
+     "",
+     "Έπειτα \(try Repository.packageRepository.projectName(output: &output)) μπορεί να εισάγεται στα πηγαία αρχεία:"
+     ]
+     case .עברית־ישראל:
+     instructions += [
+     "",
+     "אז יכול ליבא את ⁨\(try Repository.packageRepository.projectName(output: &output))⁩ בקבץי מקור:"
+     ]
+     }
+     case .unrecognized:
+     instructions += [
+     "",
+     "\(try Repository.packageRepository.projectName(output: &output)) can then be imported in source files:"
+     ]
+     }
 
-            var instructions: [String] = []
+     instructions += [
+     "",
+     "```swift",
+     "import \(Configuration.moduleName)",
+     "```"
+     ]
 
-            switch translation {
-            case .compatible(let specific):
-                switch specific {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    instructions += [
-                        "## Importing",
-                        "",
-                        "\(try Repository.packageRepository.projectName(output: &output)) is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).",
-                        ""
-                    ]
-                case .deutschDeutschland:
-                    instructions += [
-                        "## Einführung",
-                        "",
-                        "\(try Repository.packageRepository.projectName(output: &output)) ist für den Einsatz mit dem [Swift Package Manager](https://swift.org/package-manager/) vorgesehen.",
-                        ""
-                    ]
-                case .françaisFrance:
-                    instructions += [
-                        "## Importation",
-                        "",
-                        "\(try Repository.packageRepository.projectName(output: &output)) est prévu pour utilisation avec le [Swift Package Manager](https://swift.org/package-manager/).",
-                        ""
-                    ]
-                case .ελληνικάΕλλάδα:
-                    instructions += [
-                        "## Εισαγωγή",
-                        "",
-                        "\(try Repository.packageRepository.projectName(output: &output)) προορίζεται για χρήση με το [Swift Package Manager](https://swift.org/package-manager/).",
-                        ""
-                    ]
-                case .עברית־ישראל:
-                    instructions += [
-                        "## ליבא",
-                        "",
-                        "יש ל־⁨\(try Repository.packageRepository.projectName(output: &output))⁩ מיועד של שימוש עם [Swift Package Manager](https://swift.org/package-manager/).",
-                        ""
-                    ]
-                }
-            case .unrecognized:
-                instructions += [
-                    "## Importing",
-                    "",
-                    "\(try Repository.packageRepository.projectName(output: &output)) is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).",
-                    ""
-                ]
-            }
+     return join(lines: instructions)
+     }
 
-            var dependencySummary: String
-            switch translation {
-            case .compatible(let specific):
-                switch specific {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    dependencySummary = "Simply add \(try Repository.packageRepository.projectName(output: &output)) as a dependency in `Package.swift`"
-                case .deutschDeutschland:
-                    dependencySummary = "Fügen Sie \(try Repository.packageRepository.projectName(output: &output)) einfach in der Abhängigkeitsliste in `Package.swift` hinzu"
-                case .françaisFrance:
-                    dependencySummary = "Ajoutez \(try Repository.packageRepository.projectName(output: &output)) simplement dans la liste des dépendances dans `Package.swift`"
-                case .ελληνικάΕλλάδα:
-                    dependencySummary = "Πρόσθεσε τον \(try Repository.packageRepository.projectName(output: &output)) απλά στο κατάλογο των εξαρτήσεων στο `Package.swift`"
-                case .עברית־ישראל:
-                    dependencySummary =
-                    "תוסיף את ⁨\(try Repository.packageRepository.projectName(output: &output))⁩ בפשוט ברשימת תלות ב־`Package.swift`"
-                }
-            case .unrecognized:
-                dependencySummary = "Simply add \(try Repository.packageRepository.projectName(output: &output)) as a dependency in `Package.swift`"
-            }
-
-            if let repository = try Repository.packageRepository.configuration.repositoryURL(),
-                let currentVersion = Configuration.currentVersion {
-
-                let colon: String
-                switch translation {
-                case .compatible(let specific):
-                    switch specific {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .ελληνικάΕλλάδα, .עברית־ישראל:
-                        colon = ":"
-                    case .françaisFrance:
-                        colon = " :"
-                    }
-                case .unrecognized:
-                    colon = ":"
-                }
-
-                instructions += [
-                    dependencySummary + colon,
-                    "",
-                    "```swift",
-                    "let package = Package(",
-                    "    ...",
-                    "    dependencies: [",
-                    "        ...",
-                    "        .Package(url: \u{22}\(repository.absoluteString)\u{22}, versions: \u{22}\(currentVersion.string)\u{22} ..< \u{22}\(currentVersion.nextMajorVersion.string)\u{22}),",
-                    "        ...",
-                    "    ]",
-                    ")",
-                    "```"
-                ]
-
-            } else {
-
-                switch translation {
-                case .compatible(let specific):
-                    switch specific {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .françaisFrance, .ελληνικάΕλλάδα, .עברית־ישראל:
-                        instructions += [
-                            dependencySummary + "."
-                        ]
-                    }
-                case .unrecognized:
-                    instructions += [
-                        dependencySummary + "."
-                    ]
-                }
-            }
-
-            switch translation {
-            case .compatible(let specific):
-                switch specific {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    instructions += [
-                        "",
-                        "\(try Repository.packageRepository.projectName(output: &output)) can then be imported in source files:"
-                    ]
-                case .deutschDeutschland:
-                    instructions += [
-                        "",
-                        "Dann kann \(try Repository.packageRepository.projectName(output: &output)) in Quelldateien eingeführt werden:"
-                    ]
-                case .françaisFrance:
-                    instructions += [
-                        "",
-                        "Puis \(try Repository.packageRepository.projectName(output: &output)) peut être importé dans des fichiers sources :"
-                    ]
-                case .ελληνικάΕλλάδα:
-                    instructions += [
-                        "",
-                        "Έπειτα \(try Repository.packageRepository.projectName(output: &output)) μπορεί να εισάγεται στα πηγαία αρχεία:"
-                    ]
-                case .עברית־ישראל:
-                    instructions += [
-                        "",
-                        "אז יכול ליבא את ⁨\(try Repository.packageRepository.projectName(output: &output))⁩ בקבץי מקור:"
-                    ]
-                }
-            case .unrecognized:
-                instructions += [
-                    "",
-                    "\(try Repository.packageRepository.projectName(output: &output)) can then be imported in source files:"
-                ]
-            }
-
-            instructions += [
-                "",
-                "```swift",
-                "import \(Configuration.moduleName)",
-                "```"
-            ]
-
-            return join(lines: instructions)
-        }
-
-        return nil
-    }*/
+     return nil
+     }*/
 
     static func defaultReadMeTemplate(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template {
 
@@ -452,133 +470,133 @@ enum ReadMe {
     }
 
     /*
-    static func defaultReadMeTemplate(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String {
+     static func defaultReadMeTemplate(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String {
 
-        var readMeExampleExists = false
-        for (key, _) in Examples.examples {
-            if key.hasPrefix("Read‐Me") {
-                readMeExampleExists = true
-                break
-            }
-        }
-        if readMeExampleExists {
-            let example: String
-            switch translation {
-            case .compatible(let specific):
-                switch specific {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    example = "Example Usage"
-                case .deutschDeutschland:
-                    example = "Verwendungsbeispiel"
-                case .françaisFrance:
-                    example = "Example d’utilisation"
-                case .ελληνικάΕλλάδα:
-                    example = "Παράδειγμα χρήσης"
-                case .עברית־ישראל:
-                    example = "דוגמת שימוש"
-                }
-            default:
-                example = "Example Usage"
-            }
+     var readMeExampleExists = false
+     for (key, _) in Examples.examples {
+     if key.hasPrefix("Read‐Me") {
+     readMeExampleExists = true
+     break
+     }
+     }
+     if readMeExampleExists {
+     let example: String
+     switch translation {
+     case .compatible(let specific):
+     switch specific {
+     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+     example = "Example Usage"
+     case .deutschDeutschland:
+     example = "Verwendungsbeispiel"
+     case .françaisFrance:
+     example = "Example d’utilisation"
+     case .ελληνικάΕλλάδα:
+     example = "Παράδειγμα χρήσης"
+     case .עברית־ישראל:
+     example = "דוגמת שימוש"
+     }
+     default:
+     example = "Example Usage"
+     }
 
-            readMe += [
-                "",
-                "## \(example)",
-                "",
-                "```swift",
-                "[\u{5F}Example Usage_]",
-                "```"
-            ]
-        }
+     readMe += [
+     "",
+     "## \(example)",
+     "",
+     "```swift",
+     "[\u{5F}Example Usage_]",
+     "```"
+     ]
+     }
 
-        if Configuration.otherReadMeContent ≠ nil {
-            readMe += [
-                "",
-                "[_Other_]"
-            ]
-        }
+     if Configuration.otherReadMeContent ≠ nil {
+     readMe += [
+     "",
+     "[_Other_]"
+     ]
+     }
 
-        if Configuration.sdg {
-            func english(translation: ArbitraryLocalization) throws -> [String] {
-                return [
-                    "",
-                    "## About",
-                    "",
-                    "The \(try Repository.packageRepository.projectName(output: &output)) project is maintained by Jeremy David Giesbrecht.",
-                    "",
-                    "If \(try Repository.packageRepository.projectName(output: &output)) saves you money, consider giving some of it as a [donation](https://paypal.me/JeremyGiesbrecht).",
-                    "",
-                    "If \(try Repository.packageRepository.projectName(output: &output)) saves you time, consider devoting some of it to [contributing](\(Configuration.requiredRepositoryURL)) back to the project.",
-                    "",
-                    format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "For the worker is worthy of his wages.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: localization), citation: "\u{200E}ישוע/Yeshuʼa")
-                ]
-            }
-            switch translation {
-            case .compatible(let specific):
-                switch specific {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    readMe += try english(translation: translation)
-                case .deutschDeutschland:
-                    readMe += [
-                        "",
-                        "## Über",
-                        "",
-                        "Das \(try Repository.packageRepository.projectName(output: &output))‐Projekt wird von Jeremy David Giesbrecht erhalten.",
-                        "",
-                        "Wenn \(try Repository.packageRepository.projectName(output: &output)) Ihnen Geld sparrt, denken Sie darüber, etwas davon zu [spenden](https://paypal.me/JeremyGiesbrecht).",
-                        "",
-                        "Wenn \(try Repository.packageRepository.projectName(output: &output)) Inhen Zeit sparrt, denken Sie darüber, etwas davon zu gebrauchen, um zum Projekt [beizutragen](\(Configuration.requiredRepositoryURL)).",
-                        "",
-                        format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "Denn der Arbeiter ist seines Lohns würdig.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: localization), citation: "\u{200E}ישוע/Yeshuʼa")
-                    ]
-                case .françaisFrance:
-                    readMe += [
-                        "",
-                        "## À propos",
-                        "",
-                        "Le projet \(try Repository.packageRepository.projectName(output: &output)) est maintenu par Jeremy David Giesbrecht.",
-                        "",
-                        "Si \(try Repository.packageRepository.projectName(output: &output)) vous permet d’économiser de l’argent, considérez à en [donner](https://paypal.me/JeremyGiesbrecht).",
-                        "",
-                        "Si \(try Repository.packageRepository.projectName(output: &output)) vous permet d’économiser du temps, considérez à en utiliser à [contribuer](\(Configuration.requiredRepositoryURL)) au projet.",
-                        "",
-                        format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "Car le travailleur est digne de son salaire.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: localization), citation: "\u{200E}ישוע/Yeshuʼa")
-                    ]
-                case .ελληνικάΕλλάδα:
-                    readMe += [
-                        "",
-                        "## Πληροφορίες",
-                        "",
-                        "Το \(try Repository.packageRepository.projectName(output: &output)) έργο διατηρείται από τον Τζέρεμι Ντάβιτ Γκίσμπρεχτ (Jeremy David Giesbrecht).",
-                        "",
-                        // οικονομώ
-                        "Αν το \(try Repository.packageRepository.projectName(output: &output)) οικονομάει το χρήματα σας, σκεφτείτε να [δορίζετε](https://paypal.me/JeremyGiesbrecht) μερικά από αυτά.",
-                        "",
-                        "Αν το \(try Repository.packageRepository.projectName(output: &output)) οικονομάει τον χρόνο σας, σκεφτείτε να τον κάνετε χρήτη μερικού από αυτό ώστε να [συνεισφέρετε](\(Configuration.requiredRepositoryURL)) του έργου.",
-                        "",
-                        format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: nil, url: "https://www.bible.com/bible/209/LUK.10.byz04", citation: "\u{200E}ישוע/Ιεσούα")
-                    ]
-                case .עברית־ישראל:
-                    readMe += [
-                        "",
-                        "## אודות",
-                        "",
-                        "⁨\(try Repository.packageRepository.projectName(output: &output))⁩ המיזם מתוחזק על ידי ג׳רמי דוויט גיסברכט (⁧Jeremy David Giesbrecht⁩).",
-                        "",
-                        "אם ⁨\(try Repository.packageRepository.projectName(output: &output))⁩ עוזר לך לחסוך כסף, תשקול [לתרום](https://paypal.me/JeremyGiesbrecht) את חלק מזה.",
-                        "",
-                        "אם ⁨\(try Repository.packageRepository.projectName(output: &output))⁩ עוזר לך לחסוך זמן, תשקול להשתמש את חלק מזה [לתרום](\(Configuration.requiredRepositoryURL)) למיזם.",
-                        "",
-                        format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "כי ראוי הפועל לשכרו.", url: "https://www.bible.com/bible/380/LUK.10_1.HRNT", citation: "ישוע")
-                    ]
-                }
-            default:
-                readMe += try english(translation: .compatible(.englishCanada))
-            }
-        }
+     if Configuration.sdg {
+     func english(translation: ArbitraryLocalization) throws -> [String] {
+     return [
+     "",
+     "## About",
+     "",
+     "The \(try Repository.packageRepository.projectName(output: &output)) project is maintained by Jeremy David Giesbrecht.",
+     "",
+     "If \(try Repository.packageRepository.projectName(output: &output)) saves you money, consider giving some of it as a [donation](https://paypal.me/JeremyGiesbrecht).",
+     "",
+     "If \(try Repository.packageRepository.projectName(output: &output)) saves you time, consider devoting some of it to [contributing](\(Configuration.requiredRepositoryURL)) back to the project.",
+     "",
+     format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "For the worker is worthy of his wages.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: localization), citation: "\u{200E}ישוע/Yeshuʼa")
+     ]
+     }
+     switch translation {
+     case .compatible(let specific):
+     switch specific {
+     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+     readMe += try english(translation: translation)
+     case .deutschDeutschland:
+     readMe += [
+     "",
+     "## Über",
+     "",
+     "Das \(try Repository.packageRepository.projectName(output: &output))‐Projekt wird von Jeremy David Giesbrecht erhalten.",
+     "",
+     "Wenn \(try Repository.packageRepository.projectName(output: &output)) Ihnen Geld sparrt, denken Sie darüber, etwas davon zu [spenden](https://paypal.me/JeremyGiesbrecht).",
+     "",
+     "Wenn \(try Repository.packageRepository.projectName(output: &output)) Inhen Zeit sparrt, denken Sie darüber, etwas davon zu gebrauchen, um zum Projekt [beizutragen](\(Configuration.requiredRepositoryURL)).",
+     "",
+     format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "Denn der Arbeiter ist seines Lohns würdig.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: localization), citation: "\u{200E}ישוע/Yeshuʼa")
+     ]
+     case .françaisFrance:
+     readMe += [
+     "",
+     "## À propos",
+     "",
+     "Le projet \(try Repository.packageRepository.projectName(output: &output)) est maintenu par Jeremy David Giesbrecht.",
+     "",
+     "Si \(try Repository.packageRepository.projectName(output: &output)) vous permet d’économiser de l’argent, considérez à en [donner](https://paypal.me/JeremyGiesbrecht).",
+     "",
+     "Si \(try Repository.packageRepository.projectName(output: &output)) vous permet d’économiser du temps, considérez à en utiliser à [contribuer](\(Configuration.requiredRepositoryURL)) au projet.",
+     "",
+     format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "Car le travailleur est digne de son salaire.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: localization), citation: "\u{200E}ישוע/Yeshuʼa")
+     ]
+     case .ελληνικάΕλλάδα:
+     readMe += [
+     "",
+     "## Πληροφορίες",
+     "",
+     "Το \(try Repository.packageRepository.projectName(output: &output)) έργο διατηρείται από τον Τζέρεμι Ντάβιτ Γκίσμπρεχτ (Jeremy David Giesbrecht).",
+     "",
+     // οικονομώ
+     "Αν το \(try Repository.packageRepository.projectName(output: &output)) οικονομάει το χρήματα σας, σκεφτείτε να [δορίζετε](https://paypal.me/JeremyGiesbrecht) μερικά από αυτά.",
+     "",
+     "Αν το \(try Repository.packageRepository.projectName(output: &output)) οικονομάει τον χρόνο σας, σκεφτείτε να τον κάνετε χρήτη μερικού από αυτό ώστε να [συνεισφέρετε](\(Configuration.requiredRepositoryURL)) του έργου.",
+     "",
+     format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: nil, url: "https://www.bible.com/bible/209/LUK.10.byz04", citation: "\u{200E}ישוע/Ιεσούα")
+     ]
+     case .עברית־ישראל:
+     readMe += [
+     "",
+     "## אודות",
+     "",
+     "⁨\(try Repository.packageRepository.projectName(output: &output))⁩ המיזם מתוחזק על ידי ג׳רמי דוויט גיסברכט (⁧Jeremy David Giesbrecht⁩).",
+     "",
+     "אם ⁨\(try Repository.packageRepository.projectName(output: &output))⁩ עוזר לך לחסוך כסף, תשקול [לתרום](https://paypal.me/JeremyGiesbrecht) את חלק מזה.",
+     "",
+     "אם ⁨\(try Repository.packageRepository.projectName(output: &output))⁩ עוזר לך לחסוך זמן, תשקול להשתמש את חלק מזה [לתרום](\(Configuration.requiredRepositoryURL)) למיזם.",
+     "",
+     format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "כי ראוי הפועל לשכרו.", url: "https://www.bible.com/bible/380/LUK.10_1.HRNT", citation: "ישוע")
+     ]
+     }
+     default:
+     readMe += try english(translation: .compatible(.englishCanada))
+     }
+     }
 
-        return join(lines: readMe)
-    }*/
+     return join(lines: readMe)
+     }*/
 
     // MARK: - Refreshment
 

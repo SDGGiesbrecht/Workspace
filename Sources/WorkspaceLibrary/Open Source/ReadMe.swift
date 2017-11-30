@@ -413,6 +413,47 @@ enum ReadMe {
         }
     }
 
+    static func defaultExampleUsageTemplate(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template? {
+        let prefixes = InterfaceLocalization.cases.map { (localization) in
+            return UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+                switch localization {
+                case .englishCanada:
+                    return "Read‐Me"
+                }
+            }).resolved(for: localization)
+        }
+        var suffixes = [localization]
+        if let icon = ContentLocalization.icon(for: localization) {
+            suffixes += [String(icon)]
+        }
+
+        var source: [StrictString] = []
+
+        let examples = Examples.examples
+        for (key, _) in examples {
+            for prefix in prefixes {
+                for suffix in suffixes {
+                    if key.hasPrefix(String(prefix + " "))
+                        ∧ key.hasSuffix(" " + suffix) {
+                        source += [
+                            "",
+                            "[\u{5F}Example: " + StrictString(key) + "_]"
+                        ]
+                    }
+                }
+            }
+        }
+
+        while source.first?.isEmpty == true {
+            source.removeFirst()
+        }
+        if source.isEmpty {
+            return nil
+        } else {
+            return Template(source: source.joinAsLines())
+        }
+    }
+
     static func defaultReadMeTemplate(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template {
 
         var readMe: [StrictString] = [
@@ -481,6 +522,30 @@ enum ReadMe {
             ]
         }
 
+        if (try project.configuration.exampleUsage(for: localization, project: project, output: &output)) ≠ nil {
+            let header = UserFacingText<ContentLocalization, Void>({ (localization, _) in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Example Usage"
+                case .deutschDeutschland:
+                    return "Verwendungsbeispiele"
+                case .françaisFrance:
+                    return "Examples d’utilisation"
+                case .ελληνικάΕλλάδα:
+                    return "Παράδειγματα χρήσης"
+                case .עברית־ישראל:
+                    return "דוגמות שימוש"
+                }
+            }).resolved()
+
+            readMe += [
+                "",
+                StrictString("## ") + header,
+                "",
+                "[\u{5F}Example Usage_]"
+            ]
+        }
+
         notImplementedYet()
 
         return Template(source: StrictString(readMe.joined(separator: "\n".scalars)))
@@ -488,43 +553,6 @@ enum ReadMe {
 
     /*
      static func defaultReadMeTemplate(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String {
-
-     var readMeExampleExists = false
-     for (key, _) in Examples.examples {
-     if key.hasPrefix("Read‐Me") {
-     readMeExampleExists = true
-     break
-     }
-     }
-     if readMeExampleExists {
-     let example: String
-     switch translation {
-     case .compatible(let specific):
-     switch specific {
-     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-     example = "Example Usage"
-     case .deutschDeutschland:
-     example = "Verwendungsbeispiel"
-     case .françaisFrance:
-     example = "Example d’utilisation"
-     case .ελληνικάΕλλάδα:
-     example = "Παράδειγμα χρήσης"
-     case .עברית־ישראל:
-     example = "דוגמת שימוש"
-     }
-     default:
-     example = "Example Usage"
-     }
-
-     readMe += [
-     "",
-     "## \(example)",
-     "",
-     "```swift",
-     "[\u{5F}Example Usage_]",
-     "```"
-     ]
-     }
 
      if Configuration.otherReadMeContent ≠ nil {
      readMe += [
@@ -676,8 +704,36 @@ enum ReadMe {
                 return "Installation Instructions"
             }
         }))
+        try readMe.insert(resultOf: { StrictString(try project.configuration.requireRepositoryURL().absoluteString) }, for: UserFacingText({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "Repository URL"
+            }
+        }))
+        try readMe.insert(resultOf: { StrictString(try project.configuration.requireCurrentVersion().string) }, for: UserFacingText({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "Current Version"
+            }
+        }))
+
+        try readMe.insert(resultOf: { try project.configuration.requireExampleUsage(for: localization, project: project, output: &output).text }, for: UserFacingText({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "Example Usage"
+            }
+        }))
 
         notImplementedYet()
+
+        for (key, example) in Examples.examples {
+            readMe.insert(StrictString(example), for: UserFacingText({ (localization, _) in
+                switch localization {
+                case .englishCanada:
+                    return StrictString("Example: \(key)")
+                }
+            }))
+        }
 
         var body = String(readMe.text)
         if ¬atProjectRoot {
@@ -693,56 +749,6 @@ enum ReadMe {
     }
 
     /*
-
-     let repositoryURL = key("Repository URL")
-     if body.contains(repositoryURL) {
-     body = body.replacingOccurrences(of: repositoryURL, with: Configuration.requiredRepositoryURL)
-     }
-
-     let currentVersion = key("Current Version")
-     if body.contains(currentVersion) {
-     body = body.replacingOccurrences(of: currentVersion, with: Configuration.requiredCurrentVersion.string)
-     }
-
-     let nextMajorVersion = key("Next Major Version")
-     if body.contains(nextMajorVersion) {
-     body = body.replacingOccurrences(of: nextMajorVersion, with: Configuration.requiredCurrentVersion.nextMajorVersion.string)
-     }
-
-     let exampleUsage = key("Example Usage")
-     if body.contains(exampleUsage) {
-     var possibleReadMeExample: String?
-
-     if let specific = localization?.code {
-     possibleReadMeExample = Examples.examples["Read‐Me: \(specific)"]
-     }
-
-     if possibleReadMeExample == nil ∧ localization == nil {
-     if let development = Configuration.developmentLocalization?.code {
-     possibleReadMeExample = Examples.examples["Read‐Me: \(development)"]
-     }
-
-     if possibleReadMeExample == nil {
-     possibleReadMeExample = Examples.examples["Read‐Me"]
-     }
-     }
-     guard let readMeExample = possibleReadMeExample else {
-     let name: String
-     if let specific = localization?.code {
-     name = "Read‐Me: \(specific)"
-     } else {
-     name = "Read‐Me"
-     }
-     fatalError(message: [
-     "There is no definition for the example named “\(name)”.",
-     "",
-     "Available example definitions:",
-     "",
-     join(lines: Examples.examples.keys.sorted())
-     ])
-     }
-     body = body.replacingOccurrences(of: exampleUsage, with: readMeExample)
-     }
 
      let other = key("Other")
      if body.contains(other) {

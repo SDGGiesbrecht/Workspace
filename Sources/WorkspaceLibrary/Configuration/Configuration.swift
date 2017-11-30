@@ -203,12 +203,24 @@ struct Configuration {
         }
         return Version(defined)
     }
+    func requireCurrentVersion() throws -> Version {
+        guard let defined = try currentVersion() else {
+            throw Configuration.optionNotDefinedError(for: .currentVersion)
+        }
+        return defined
+    }
 
     func repositoryURL() throws -> URL? {
         if let defined = try string(for: .repositoryURL) {
             return URL(string: defined)
         }
         return nil
+    }
+    func requireRepositoryURL() throws -> URL {
+        guard let defined = try repositoryURL() else {
+            throw Configuration.optionNotDefinedError(for: .repositoryURL)
+        }
+        return defined
     }
     func documentationURL() throws -> URL? {
         if let defined = try string(for: .documentationURL) {
@@ -290,6 +302,19 @@ struct Configuration {
     func requireInstallationInstructions(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template {
         guard let defined = try installationInstructions(for: localization, project: project, output: &output) else {
             throw Configuration.optionNotDefinedError(for: .installationInstructions)
+        }
+        return defined
+    }
+    func exampleUsage(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template? {
+        if let defined = try localizedTemplate(for: localization, from: .exampleUsage) {
+            return defined
+        } else {
+            return try ReadMe.defaultExampleUsageTemplate(for: localization, project: project, output: &output)
+        }
+    }
+    func requireExampleUsage(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template {
+        guard let defined = try exampleUsage(for: localization, project: project, output: &output) else {
+            throw Configuration.optionNotDefinedError(for: .exampleUsage)
         }
         return defined
     }

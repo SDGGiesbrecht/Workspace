@@ -57,8 +57,8 @@ The available dynamic elements are:
 - `Installation Instructions`: The value of the configuration option `Installation Instructions`.
 - `Repository URL`: The value of the configuration option `Repository URL`.
 - `Current Version`: The value of the configuration option `Current Version`.
-- `Next Major Version`: The major version following the value of `Current Version`.
-- `Example Usage`: See [Examples](Examples.md#readme).
+- `Example Usage`: The value of the configuration option `Example Usage`.
+- `[_Example: `Identifier`_]`: A particular [example](Examples.md).
 - `Other`: The value of the configuration option `Other Read‐Me Content`
 
 Customization can be especially useful when it is combined with [configuration sharing](Configuring%20Workspace.md#sharing-configurations-between-projects).

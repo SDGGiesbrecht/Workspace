@@ -54,6 +54,7 @@ enum Option : String, CustomStringConvertible {
     case installationInstructions = "Installation Instructions"
     case repositoryURL = "Repository URL"
     case currentVersion = "Current Version"
+    case exampleUsage = "Example Usage"
     case otherReadMeContent = "Other Read‐Me Content"
 
     case manageLicence = "Manage Licence"
@@ -126,6 +127,7 @@ enum Option : String, CustomStringConvertible {
         .installationInstructions,
         .repositoryURL,
         .currentVersion,
+        .exampleUsage,
         .otherReadMeContent,
 
         .manageLicence,
@@ -224,6 +226,8 @@ enum Option : String, CustomStringConvertible {
         case .repositoryURL:
             return Configuration.noValue
         case .currentVersion:
+            return Configuration.noValue
+        case .exampleUsage:
             return Configuration.noValue
         case .otherReadMeContent:
             return Configuration.noValue

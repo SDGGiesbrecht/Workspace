@@ -70,10 +70,10 @@ func == (lhs: Thing, rhs: Thing) -> Bool {
 
 ## Read‐Me
 
-If [read‐me management](Read‐Me.md) is enabled, Workspace will look for an example named `Read‐Me` to include in the read‐me. The same example is available to custom read‐me templates as a [dynamic element](Read‐Me.md#customization).
+If [read‐me management](Read‐Me.md) is enabled, Workspace will look for an example identifiers beginning with `Read‐Me ` and ending with a localization key, and will include them in the read‐me. Arbitrary examples can also be included in read‐me templates as [dynamic elements](Read‐Me.md#customization).
 
 ```swift
-// [&#x5F;Define Example: Read‐Me_]
+// [&#x5F;Define Example: Read‐Me 🇨🇦EN_]
 import MyInterpreterLibrary
 
 func practiceWithInterpreter() {

@@ -332,7 +332,7 @@ enum ReadMe {
                     }
                 }).resolved()]
             }
-            
+
             result += [
                 "",
                 UserFacingText<ContentLocalization, StrictString>({ (localization, package) in

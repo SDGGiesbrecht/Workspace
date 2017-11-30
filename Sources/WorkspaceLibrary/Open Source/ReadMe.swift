@@ -240,7 +240,7 @@ enum ReadMe {
                 "",
                 "```shell",
                 StrictString("curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s \(package) \u{22}\(repository.absoluteString)\u{22} \(version.string) \u{22}\(executableTargets.first!) help\u{22} " + executableTargets.joined(separator: " ")),
-                "```",
+                "```"
             ]
         }
 
@@ -359,7 +359,7 @@ enum ReadMe {
                         case .עברית־ישראל:
                             return "מטרה־שלי"
                         }
-                    }).resolved() + StrictString("\u{22}, dependencies: [")) as StrictString,
+                    }).resolved() + StrictString("\u{22}, dependencies: [")) as StrictString
                 ]
                 for library in libraries {
                     result += [StrictString("            .productItem(name: \u{22}\(library)\u{22}, package: \u{22}\(try project.packageName(output: &output))\u{22}),")]

@@ -727,7 +727,11 @@ enum ReadMe {
         notImplementedYet()
 
         for (key, example) in Examples.examples {
-            readMe.insert(StrictString(example), for: UserFacingText({ (localization, _) in
+            readMe.insert([
+                "```swift",
+                StrictString(example),
+                "```"
+                ].joinAsLines(), for: UserFacingText({ (localization, _) in
                 switch localization {
                 case .englishCanada:
                     return StrictString("Example: \(key)")

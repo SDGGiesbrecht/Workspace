@@ -332,6 +332,32 @@ enum ReadMe {
                     }
                 }).resolved()]
             }
+            
+            result += [
+                "",
+                UserFacingText<ContentLocalization, StrictString>({ (localization, package) in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return StrictString("`\(package)` can then be imported in source files:")
+                    case .deutschDeutschland:
+                        return StrictString("Dann kann `\(package)` in Quelldateien eingeführt werden:")
+                    case .françaisFrance:
+                        return StrictString("Puis `\(package)` peut être importé dans des fichiers sources :")
+                    case .ελληνικάΕλλάδα:
+                        return StrictString("Έπειτα `\(package)` μπορεί να εισάγεται στα πηγαία αρχεία:")
+                    case .עברית־ישראל:
+                        /*א*/ return StrictString("אז יכול ליבא את `\(package)` בקבץי מקור:")
+                    }
+                }).resolved(using: StrictString(try project.packageName(output: &output))),
+                "",
+                "```swift"
+                ]
+            for library in libraries {
+                result += [StrictString("import \(library)")]
+            }
+            result += [
+                "```"
+            ]
         }
 
         notImplementedYet()
@@ -344,57 +370,6 @@ enum ReadMe {
             return Template(source: result.joinAsLines())
         }
     }
-
-    /*static func defaultInstallationInstructions(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String? {
-
-     switch translation {
-     case .compatible(let specific):
-     switch specific {
-     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-     instructions += [
-     "",
-     "\(try Repository.packageRepository.projectName(output: &output)) can then be imported in source files:"
-     ]
-     case .deutschDeutschland:
-     instructions += [
-     "",
-     "Dann kann \(try Repository.packageRepository.projectName(output: &output)) in Quelldateien eingeführt werden:"
-     ]
-     case .françaisFrance:
-     instructions += [
-     "",
-     "Puis \(try Repository.packageRepository.projectName(output: &output)) peut être importé dans des fichiers sources :"
-     ]
-     case .ελληνικάΕλλάδα:
-     instructions += [
-     "",
-     "Έπειτα \(try Repository.packageRepository.projectName(output: &output)) μπορεί να εισάγεται στα πηγαία αρχεία:"
-     ]
-     case .עברית־ישראל:
-     instructions += [
-     "",
-     "אז יכול ליבא את ⁨\(try Repository.packageRepository.projectName(output: &output))⁩ בקבץי מקור:"
-     ]
-     }
-     case .unrecognized:
-     instructions += [
-     "",
-     "\(try Repository.packageRepository.projectName(output: &output)) can then be imported in source files:"
-     ]
-     }
-
-     instructions += [
-     "",
-     "```swift",
-     "import \(Configuration.moduleName)",
-     "```"
-     ]
-
-     return join(lines: instructions)
-     }
-
-     return nil
-     }*/
 
     static func defaultReadMeTemplate(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template {
 

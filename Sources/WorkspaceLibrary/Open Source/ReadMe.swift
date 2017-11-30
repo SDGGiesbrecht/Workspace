@@ -1,13 +1,13 @@
 /*
  ReadMe.swift
- 
+
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
- 
+
  Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
- 
+
  Soli Deo gloria.
- 
+
  Licensed under the Apache Licence, Version 2.0.
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
@@ -18,20 +18,20 @@ import SDGCornerstone
 import SDGCommandLine
 
 enum ReadMe {
-    
+
     // MARK: - Locations
-    
+
     private static let documentationDirectoryName = "Documentation"
     private static func documentationDirectory(for project: PackageRepository) -> URL {
         return project.url(for: documentationDirectoryName)
     }
-    
+
     private static func locationOfDocumentationFile(named name: StrictString, for localization: String, in project: PackageRepository) -> URL {
         let icon = ContentLocalization.icon(for: localization) ?? StrictString("[" + localization + "]")
         let fileName: StrictString = icon + " " + name + ".md"
         return documentationDirectory(for: project).appendingPathComponent(String(fileName))
     }
-    
+
     private static func readMeLocation(for project: PackageRepository, localization: String) -> URL {
         return locationOfDocumentationFile(named: UserFacingText<ContentLocalization, Void>({ (localization, _) in
             switch localization {
@@ -48,7 +48,7 @@ enum ReadMe {
             }
         }).resolved(), for: localization, in: project)
     }
-    
+
     private static func relatedProjectsLocation(for project: PackageRepository, localization: String) -> URL {
         return locationOfDocumentationFile(named: UserFacingText<ContentLocalization, Void>({ (localization, _) in
             switch localization {
@@ -65,11 +65,11 @@ enum ReadMe {
             }
         }).resolved(), for: localization, in: project)
     }
-    
+
     // MARK: - Templates
-    
+
     static let skipInJazzy: StrictString = "<!\u{2D}\u{2D}Skip in Jazzy\u{2D}\u{2D}>"
-    
+
     static func localizationLinksMarkup(for project: PackageRepository, fromProjectRoot: Bool) throws -> StrictString {
         var links: [StrictString] = []
         for targetLocalization in try project.configuration.localizations() {
@@ -77,22 +77,22 @@ enum ReadMe {
             let absoluteURL = readMeLocation(for: project, localization: targetLocalization)
             var relativeURL = StrictString(absoluteURL.path(relativeTo: project.location))
             relativeURL.replaceMatches(for: " ".scalars, with: "%20".scalars)
-            
+
             var link: StrictString = "[" + linkText + "]"
             link += "(" + relativeURL + ")"
             links.append(link)
         }
         return StrictString(links.joined(separator: " • ".scalars)) + " " + skipInJazzy
     }
-    
+
     static func operatingSystemList(for project: PackageRepository) throws -> StrictString {
         let supported = try OperatingSystem.cases.filter({ try project.configuration.supports($0) })
         let list = supported.map({ $0.isolatedName.resolved() }).joined(separator: " • ".scalars)
         return StrictString(list)
     }
-    
+
     static func apiLinksMarkup(for project: PackageRepository, output: inout Command.Output) throws -> StrictString {
-        
+
         let baseURL = try project.configuration.requireDocumentationURL()
         let label = UserFacingText<ContentLocalization, Void>({ (localization, _) in
             switch localization {
@@ -108,17 +108,17 @@ enum ReadMe {
                 return "מת״י:"
             }
         }).resolved()
-        
+
         let links = try Repository.packageRepository.libraryProductTargets(output: &output).sorted().map { (name: String) -> StrictString in
-            
+
             var link: StrictString = "[" + StrictString(name) + "]"
             link += "(" + StrictString(baseURL.appendingPathComponent(name).absoluteString) + ")"
             return link
         }
-        
+
         return label + " " + StrictString(links.joined(separator: " • ".scalars))
     }
-    
+
     static func key(for testament: StrictString) throws -> StrictString {
         let old: StrictString = "תנ״ך"
         let new: StrictString = "ΚΔ"
@@ -131,7 +131,7 @@ enum ReadMe {
             throw Configuration.invalidEnumerationValueError(for: .quotationTestament, value: String(testament), valid: [old, new])
         }
     }
-    
+
     static func defaultQuotationURL(localization: String, project: PackageRepository) throws -> URL? {
         guard let chapter = try project.configuration.quotationChapter() else {
             return nil
@@ -149,12 +149,12 @@ enum ReadMe {
                 return "SG21"
             }
         }).resolved()
-        
+
         let sanitizedChapter = chapter.replacingMatches(for: " ".scalars, with: "+".scalars)
         let originalKey = try key(for: try project.configuration.requireQuotationTestament())
         return URL(string: "https://www.biblegateway.com/passage/?search=\(sanitizedChapter)&version=\(originalKey);\(translationCode)")
     }
-    
+
     static func quotationMarkup(localization: String, project: PackageRepository) throws -> StrictString {
         var result = [try project.configuration.requireQuotation()]
         if let translation = try project.configuration.quotationTranslation(localization: localization) {
@@ -168,15 +168,15 @@ enum ReadMe {
             let indent = StrictString([String](repeating: "&nbsp;", count: 100).joined())
             result += [indent + "―" + citation]
         }
-        
+
         return StrictString("> ") + StrictString(result.joined(separator: "\n".scalars)).replacingMatches(for: "\n".scalars, with: "<br>".scalars)
     }
-    
+
     static func relatedProjectsLinkMarkup(for project: PackageRepository, localization: String) -> StrictString {
         let absoluteURL = relatedProjectsLocation(for: project, localization: localization)
         var relativeURL = StrictString(absoluteURL.path(relativeTo: project.location))
         relativeURL.replaceMatches(for: " ".scalars, with: "%20".scalars)
-        
+
         let link = UserFacingText<ContentLocalization, Void>({ (localization, _) in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -189,24 +189,24 @@ enum ReadMe {
                 return StrictString("(Για ένα κατάλογο συγγενικών έργων, δείτε [εδώ](\(relativeURL)).)")
             case .עברית־ישראל:
                 return StrictString("(לרשימה של מיזמים קשורים, ראה [כאן](\(relativeURL)).)")
-                
+
             }
         }).resolved()
         return link + " " + skipInJazzy
     }
-    
+
     static func defaultInstallationInstructions(localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template? {
         var result: [StrictString] = []
-        
+
         if try project.isWorkspaceProject(output: &output),
             // [_Workaround: This should check for executable targets in general._]
             let repository = try project.configuration.repositoryURL(),
             let version = try project.configuration.currentVersion() {
             let package = StrictString(try project.packageName(output: &output))
-            
+
             // [_Workaround: This should check for executable targets in general._]
             let executableTargets = ["workspace", "arbeitsbereich"].sorted()
-            
+
             result += [
                 "## " + UserFacingText<ContentLocalization, Void>({ (localization, _) in
                     switch localization {
@@ -243,7 +243,7 @@ enum ReadMe {
                 "```",
             ]
         }
-        
+
         let libraries = try project.libraryProductTargets(output: &output).sorted()
         if ¬libraries.isEmpty {
             result += [
@@ -278,7 +278,7 @@ enum ReadMe {
                 }).resolved(using: StrictString(try project.packageName(output: &output))),
                 ""
             ]
-            
+
             let dependencySummary: StrictString = UserFacingText<ContentLocalization, StrictString>({ (localization, package) in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -293,7 +293,7 @@ enum ReadMe {
                     /*א*/ return StrictString("תוסיף את `\(package)` בפשוט ברשימת תלות ב־`Package.swift`")
                 }
             }).resolved(using: StrictString(try project.packageName(output: &output)))
-            
+
             if let repository = try project.configuration.repositoryURL(),
                 let currentVersion = try project.configuration.currentVersion() {
                 var versionSpecification: String
@@ -302,7 +302,7 @@ enum ReadMe {
                 } else {
                     versionSpecification = "from: Version(\(currentVersion.major), \(currentVersion.minor), \(currentVersion.patch))"
                 }
-                
+
                 result += [
                     dependencySummary + UserFacingText<ContentLocalization, Void>({ (localization, _) in
                         switch localization {
@@ -378,7 +378,7 @@ enum ReadMe {
                     }
                 }).resolved()]
             }
-            
+
             result += [
                 "",
                 UserFacingText<ContentLocalization, StrictString>({ (localization, package) in
@@ -405,16 +405,16 @@ enum ReadMe {
                 "```"
             ]
         }
-        
+
         if result == [] {
             return nil
         } else {
             return Template(source: result.joinAsLines())
         }
     }
-    
+
     static func defaultReadMeTemplate(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template {
-        
+
         var readMe: [StrictString] = [
             "[_Localization Links_]",
             ""
@@ -429,7 +429,7 @@ enum ReadMe {
                 ""
             ]
         }
-        
+
         readMe += ["# [_Project_]"]
         if try project.configuration.optionIsDefined(.shortProjectDescription) {
             readMe += [
@@ -443,7 +443,7 @@ enum ReadMe {
                 "[_Quotation_]"
             ]
         }
-        
+
         if try project.configuration.optionIsDefined(.featureList) {
             let header = UserFacingText<ContentLocalization, Void>({ (localization, _) in
                 switch localization {
@@ -459,7 +459,7 @@ enum ReadMe {
                     return "תכונות"
                 }
             }).resolved()
-            
+
             readMe += [
                 "",
                 StrictString("## ") + header,
@@ -473,22 +473,22 @@ enum ReadMe {
                 "[_Related Projects_]"
             ]
         }
-        
+
         if (try project.configuration.installationInstructions(for: localization, project: project, output: &output)) ≠ nil {
             readMe += [
                 "",
                 "[_Installation Instructions_]"
             ]
         }
-        
+
         notImplementedYet()
-        
+
         return Template(source: StrictString(readMe.joined(separator: "\n".scalars)))
     }
-    
+
     /*
      static func defaultReadMeTemplate(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String {
-     
+
      var readMeExampleExists = false
      for (key, _) in Examples.examples {
      if key.hasPrefix("Read‐Me") {
@@ -515,7 +515,7 @@ enum ReadMe {
      default:
      example = "Example Usage"
      }
-     
+
      readMe += [
      "",
      "## \(example)",
@@ -525,14 +525,14 @@ enum ReadMe {
      "```"
      ]
      }
-     
+
      if Configuration.otherReadMeContent ≠ nil {
      readMe += [
      "",
      "[_Other_]"
      ]
      }
-     
+
      if Configuration.sdg {
      func english(translation: ArbitraryLocalization) throws -> [String] {
      return [
@@ -611,15 +611,15 @@ enum ReadMe {
      readMe += try english(translation: .compatible(.englishCanada))
      }
      }
-     
+
      return join(lines: readMe)
      }*/
-    
+
     // MARK: - Refreshment
-    
+
     private static func refreshReadMe(at location: URL, for localization: String, in project: PackageRepository, atProjectRoot: Bool, output: inout Command.Output) throws {
         var readMe = try project.configuration.readMe(for: localization, project: project, output: &output)
-        
+
         readMe.insert(try localizationLinksMarkup(for: project, fromProjectRoot: atProjectRoot), for: UserFacingText({ (localization, _) in
             switch localization {
             case .englishCanada:
@@ -656,7 +656,7 @@ enum ReadMe {
                 return "Quotation"
             }
         }))
-        
+
         try readMe.insert(resultOf: { try project.configuration.requireFeatureList(for: localization) }, for: UserFacingText({ (localization, _) in
             switch localization {
             case .englishCanada:
@@ -669,16 +669,16 @@ enum ReadMe {
                 return "Related Projects"
             }
         }))
-        
+
         try readMe.insert(resultOf: { try project.configuration.requireInstallationInstructions(for: localization, project: project, output: &output).text }, for: UserFacingText({ (localization, _) in
             switch localization {
             case .englishCanada:
                 return "Installation Instructions"
             }
         }))
-        
+
         notImplementedYet()
-        
+
         var body = String(readMe.text)
         if ¬atProjectRoot {
             // Fix links according to location.
@@ -686,42 +686,42 @@ enum ReadMe {
             let searchTerm: String = prefix + documentationDirectory(for: project).path(relativeTo: project.location) + "/"
             body.scalars.replaceMatches(for: searchTerm.scalars, with: prefix.scalars)
         }
-        
+
         var file = try TextFile(possiblyAt: location)
         file.body = body
         try file.writeChanges(for: project, output: &output)
     }
-    
+
     /*
-     
+
      let repositoryURL = key("Repository URL")
      if body.contains(repositoryURL) {
      body = body.replacingOccurrences(of: repositoryURL, with: Configuration.requiredRepositoryURL)
      }
-     
+
      let currentVersion = key("Current Version")
      if body.contains(currentVersion) {
      body = body.replacingOccurrences(of: currentVersion, with: Configuration.requiredCurrentVersion.string)
      }
-     
+
      let nextMajorVersion = key("Next Major Version")
      if body.contains(nextMajorVersion) {
      body = body.replacingOccurrences(of: nextMajorVersion, with: Configuration.requiredCurrentVersion.nextMajorVersion.string)
      }
-     
+
      let exampleUsage = key("Example Usage")
      if body.contains(exampleUsage) {
      var possibleReadMeExample: String?
-     
+
      if let specific = localization?.code {
      possibleReadMeExample = Examples.examples["Read‐Me: \(specific)"]
      }
-     
+
      if possibleReadMeExample == nil ∧ localization == nil {
      if let development = Configuration.developmentLocalization?.code {
      possibleReadMeExample = Examples.examples["Read‐Me: \(development)"]
      }
-     
+
      if possibleReadMeExample == nil {
      possibleReadMeExample = Examples.examples["Read‐Me"]
      }
@@ -743,19 +743,19 @@ enum ReadMe {
      }
      body = body.replacingOccurrences(of: exampleUsage, with: readMeExample)
      }
-     
+
      let other = key("Other")
      if body.contains(other) {
      body = body.replacingOccurrences(of: other, with: Configuration.requiredOtherReadMeContent)
      }
-     
+
      if ¬Configuration.relatedProjects(localization: localization).isEmpty
      ∧ (localization ≠ nil ∨ localizations.count == 1 /* Only unlocalized. */) {
-     
+
      let translation = Configuration.resolvedLocalization(for: localization)
-     
+
      var projects: [String]
-     
+
      switch translation {
      case .compatible(let specific):
      switch specific {
@@ -803,7 +803,7 @@ enum ReadMe {
      ""
      ]
      }
-     
+
      func extractHeader(line: String) -> String {
      var start = line.startIndex
      guard line.clusters.advance(&start, over: "# ".clusters) else {
@@ -817,11 +817,11 @@ enum ReadMe {
      }
      return String(line[start...])
      }
-     
+
      func sanitize(headerAnchor: String) -> String {
      return headerAnchor.replacingOccurrences(of: " ", with: "‐")
      }
-     
+
      for line in Configuration.relatedProjects(localization: localization) {
      if line.hasPrefix("# ") {
      let header = extractHeader(line: line)
@@ -849,11 +849,11 @@ enum ReadMe {
      "Name: https://url.to/repository"
      ])
      }
-     
+
      let name = String(line[..<colon.lowerBound])
      let url = String(line[colon.upperBound...])
      let configuration = Configuration.parseConfigurationFile(fromLinkedRepositoryAt: url)
-     
+
      let link: String
      if let documentation = configuration[.documentationURL] {
      link = documentation
@@ -864,7 +864,7 @@ enum ReadMe {
      "",
      "### [\(name)](\(link))"
      ]
-     
+
      if var shortDescription = Configuration.localizedOptionValue(option: .shortProjectDescription, localization: localization, configuration: configuration) {
      if shortDescription.contains("[_") { // The main project is not localized, but the linked configuration is.
      if let parsedLocalizations = Configuration.parseLocalizations(shortDescription) {
@@ -882,14 +882,14 @@ enum ReadMe {
      }
      }
      }
-     
+
      var relatedProjects = File(possiblyAt: relatedProjectsPath(localization: localization))
      relatedProjects.body = join(lines: projects)
      require() { try relatedProjects.write(output: &output) }
      }
      }
      }*/
-    
+
     static func refreshReadMe(for project: PackageRepository, output: inout Command.Output) throws {
         let localizations = try project.configuration.localizations()
         for localization in localizations {
@@ -897,7 +897,7 @@ enum ReadMe {
             try setting.do {
                 try refreshReadMe(at: readMeLocation(for: project, localization: localization), for: localization, in: project, atProjectRoot: false, output: &output)
             }
-            
+
             if localization == localizations.first {
                 try setting.do {
                     try refreshReadMe(at: project.url(for: "README.md"), for: localization, in: project, atProjectRoot: true, output: &output)

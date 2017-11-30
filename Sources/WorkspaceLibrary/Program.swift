@@ -16,7 +16,7 @@ import Foundation
 
 import SDGCommandLine
 
-// Do not forget to increment the version in the read‐me as well.
+// Do not forget to increment the version in “.Workspace Configuration.txt” as well.
 let latestStableWorkspaceVersion = Version(0, 3, 0)
 private let thisVersion: Version? = nil // Set this to latestStableWorkspaceVersion for release commits, nil the rest of the time.
 

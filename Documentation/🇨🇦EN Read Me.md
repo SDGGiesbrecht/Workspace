@@ -50,13 +50,3 @@ Workspace automates management of Swift projects.
 (For a list of related projects, see [here](🇨🇦EN%20Related%20Projects.md).) <!--Skip in Jazzy-->
 
 ## Installation
-
-Run the following in a terminal to perform a full installation or update (on either macOS or Linux):
-
-```shell
-curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace https://github.com/SDGGiesbrecht/Workspace 0.3.0 "workspace help" workspace arbeitsbereich
-```
-
-This will install and register the `workspace` command for `bash`, `zsh` and `fish`.
-
-A full installation is only necessary in order to use the command line interface. Contributors to a Workspace‐managed project can use the provided scripts without a permanent install. (See [The Workspace Workflow](#the-workspace-workflow).)

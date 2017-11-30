@@ -198,6 +198,29 @@ enum ReadMe {
     static func defaultInstallationInstructions(localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template? {
         var result: [StrictString] = []
 
+        if try project.isWorkspaceProject(output: &output) {
+            let executableTargets = ["workspace", "arbeitsbereich"]
+            // [_Workaround: This should check for executable targets in general._]
+            
+            result += [
+                "## " + UserFacingText<ContentLocalization, Void>({ (localization, _) in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "Installation"
+                    case .deutschDeutschland:
+                        return "Installation"
+                    case .françaisFrance:
+                        return "Installation"
+                    case .ελληνικάΕλλάδα:
+                        return "Εγκατάσταση"
+                    case .עברית־ישראל:
+                        return "התקנה"
+                    }
+                }).resolved(),
+                "",
+            ]
+        }
+
         let libraries = try project.libraryProductTargets(output: &output).sorted()
         if ¬libraries.isEmpty {
             result += [
@@ -359,10 +382,6 @@ enum ReadMe {
                 "```"
             ]
         }
-
-        notImplementedYet()
-
-        // [_Workaround: This should provide installation instructions for executables too._]
 
         if result == [] {
             return nil

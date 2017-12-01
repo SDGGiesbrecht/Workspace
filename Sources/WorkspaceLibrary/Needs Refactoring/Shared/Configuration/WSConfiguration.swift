@@ -537,13 +537,6 @@ extension Configuration {
 
     // Responsibilities
 
-    static var otherReadMeContent: String? {
-        return possibleStringValue(option: .otherReadMeContent)
-    }
-    static var requiredOtherReadMeContent: String {
-        return stringValue(option: .otherReadMeContent)
-    }
-
     static var manageLicence: Bool {
         return booleanValue(option: .manageLicence)
     }

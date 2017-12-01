@@ -256,6 +256,9 @@ struct Configuration {
         }
         return defined
     }
+
+    // MARK: - Options: Read‐Me
+
     func quotation() throws -> StrictString? {
         return try strictString(for: .quotation)
     }
@@ -315,6 +318,19 @@ struct Configuration {
     func requireExampleUsage(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template {
         guard let defined = try exampleUsage(for: localization, project: project, output: &output) else {
             throw Configuration.optionNotDefinedError(for: .exampleUsage)
+        }
+        return defined
+    }
+    func otherReadMeContent(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template? {
+        if let defined = try localizedTemplate(for: localization, from: .otherReadMeContent) {
+            return defined
+        } else {
+            return try ReadMe.defaultExampleUsageTemplate(for: localization, project: project, output: &output)
+        }
+    }
+    func requireOtherReadMeContent(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template {
+        guard let defined = try otherReadMeContent(for: localization, project: project, output: &output) else {
+            throw Configuration.optionNotDefinedError(for: .otherReadMeContent)
         }
         return defined
     }

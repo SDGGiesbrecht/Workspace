@@ -73,7 +73,6 @@ Quotation Testament: ΚΔ
 
 [_Begin Other Read‐Me Content_]
 [_🇨🇦EN_]
-
 ## The Workspace Workflow
 
 *The Workspace project is managed by... Workspace! So let’s try it out by following along using the Workspace project itself.*

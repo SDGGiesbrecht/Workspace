@@ -546,6 +546,13 @@ enum ReadMe {
             ]
         }
 
+        if (try project.configuration.otherReadMeContent(for: localization, project: project, output: &output)) ≠ nil {
+            readMe += [
+                "",
+                "[_Other_]"
+            ]
+        }
+
         notImplementedYet()
 
         return Template(source: StrictString(readMe.joined(separator: "\n".scalars)))
@@ -553,13 +560,6 @@ enum ReadMe {
 
     /*
      static func defaultReadMeTemplate(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String {
-
-     if Configuration.otherReadMeContent ≠ nil {
-     readMe += [
-     "",
-     "[_Other_]"
-     ]
-     }
 
      if Configuration.sdg {
      func english(translation: ArbitraryLocalization) throws -> [String] {
@@ -648,6 +648,38 @@ enum ReadMe {
     private static func refreshReadMe(at location: URL, for localization: String, in project: PackageRepository, atProjectRoot: Bool, output: inout Command.Output) throws {
         var readMe = try project.configuration.readMe(for: localization, project: project, output: &output)
 
+        // Section Elements
+
+        try readMe.insert(resultOf: { try project.configuration.requireFeatureList(for: localization) }, for: UserFacingText({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "Features"
+            }
+        }))
+
+        try readMe.insert(resultOf: { try project.configuration.requireInstallationInstructions(for: localization, project: project, output: &output).text }, for: UserFacingText({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "Installation Instructions"
+            }
+        }))
+
+        try readMe.insert(resultOf: { try project.configuration.requireExampleUsage(for: localization, project: project, output: &output).text }, for: UserFacingText({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "Example Usage"
+            }
+        }))
+
+        try readMe.insert(resultOf: { try project.configuration.requireOtherReadMeContent(for: localization, project: project, output: &output).text }, for: UserFacingText({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "Other"
+            }
+        }))
+
+        // Line Elements
+
         readMe.insert(try localizationLinksMarkup(for: project, fromProjectRoot: atProjectRoot), for: UserFacingText({ (localization, _) in
             switch localization {
             case .englishCanada:
@@ -666,12 +698,6 @@ enum ReadMe {
                 return "API Links"
             }
         }))
-        readMe.insert(try project.projectName(output: &output), for: UserFacingText({ (localization, _) in
-            switch localization {
-            case .englishCanada:
-                return "Project"
-            }
-        }))
         try readMe.insert(resultOf: { try project.configuration.requireShortProjectDescription(for: localization, project: project) }, for: UserFacingText({ (localization, _) in
             switch localization {
             case .englishCanada:
@@ -684,13 +710,6 @@ enum ReadMe {
                 return "Quotation"
             }
         }))
-
-        try readMe.insert(resultOf: { try project.configuration.requireFeatureList(for: localization) }, for: UserFacingText({ (localization, _) in
-            switch localization {
-            case .englishCanada:
-                return "Features"
-            }
-        }))
         readMe.insert(resultOf: { relatedProjectsLinkMarkup(for: project, localization: localization) }, for: UserFacingText({ (localization, _) in
             switch localization {
             case .englishCanada:
@@ -698,10 +717,12 @@ enum ReadMe {
             }
         }))
 
-        try readMe.insert(resultOf: { try project.configuration.requireInstallationInstructions(for: localization, project: project, output: &output).text }, for: UserFacingText({ (localization, _) in
+        // Word Elements
+
+        readMe.insert(try project.projectName(output: &output), for: UserFacingText({ (localization, _) in
             switch localization {
             case .englishCanada:
-                return "Installation Instructions"
+                return "Project"
             }
         }))
         try readMe.insert(resultOf: { StrictString(try project.configuration.requireRepositoryURL().absoluteString) }, for: UserFacingText({ (localization, _) in
@@ -714,13 +735,6 @@ enum ReadMe {
             switch localization {
             case .englishCanada:
                 return "Current Version"
-            }
-        }))
-
-        try readMe.insert(resultOf: { try project.configuration.requireExampleUsage(for: localization, project: project, output: &output).text }, for: UserFacingText({ (localization, _) in
-            switch localization {
-            case .englishCanada:
-                return "Example Usage"
             }
         }))
 
@@ -753,11 +767,6 @@ enum ReadMe {
     }
 
     /*
-
-     let other = key("Other")
-     if body.contains(other) {
-     body = body.replacingOccurrences(of: other, with: Configuration.requiredOtherReadMeContent)
-     }
 
      if ¬Configuration.relatedProjects(localization: localization).isEmpty
      ∧ (localization ≠ nil ∨ localizations.count == 1 /* Only unlocalized. */) {

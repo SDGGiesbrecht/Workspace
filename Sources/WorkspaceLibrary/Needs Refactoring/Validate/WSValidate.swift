@@ -104,10 +104,11 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         print("Validating project state...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        // [_Workaround: This should ignore “Related Projects” and its localizations, since they are externally defined._]
+        // [_Workaround: Related projects need to be locked at least for CI._]
+        let allowedDifferences = ["':(exclude)Documentation'"]
 
         requireBash(["git", "add", ".", "\u{2D}\u{2D}intent\u{2D}to\u{2D}add"], silent: true)
-        if (try? Shell.default.run(command: ["git", "diff", "\u{2D}\u{2D}exit\u{2D}code", "\u{2D}\u{2D}", ".", "':(exclude)*.dsidx'"])) ≠ nil {
+        if (try? Shell.default.run(command: ["git", "diff", "\u{2D}\u{2D}exit\u{2D}code", "\u{2D}\u{2D}", ".", "':(exclude)*.dsidx'"] + allowedDifferences)) ≠ nil {
             validationStatus.passStep(message: UserFacingText({ localization, _ in
                 switch localization {
                 case .englishCanada:

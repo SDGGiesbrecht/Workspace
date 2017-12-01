@@ -49,7 +49,7 @@ enum ReadMe {
         }).resolved(), for: localization, in: project)
     }
 
-    private static func relatedProjectsLocation(for project: PackageRepository, localization: String) -> URL {
+    static func relatedProjectsLocation(for project: PackageRepository, localization: String) -> URL {
         return locationOfDocumentationFile(named: UserFacingText<ContentLocalization, Void>({ (localization, _) in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -70,7 +70,7 @@ enum ReadMe {
 
     static let skipInJazzy: StrictString = "<!\u{2D}\u{2D}Skip in Jazzy\u{2D}\u{2D}>"
 
-    static func localizationLinksMarkup(for project: PackageRepository, fromProjectRoot: Bool) throws -> StrictString {
+    private static func localizationLinksMarkup(for project: PackageRepository, fromProjectRoot: Bool) throws -> StrictString {
         var links: [StrictString] = []
         for targetLocalization in try project.configuration.localizations() {
             let linkText = ContentLocalization.icon(for: targetLocalization) ?? StrictString("[" + targetLocalization + "]")
@@ -85,13 +85,13 @@ enum ReadMe {
         return StrictString(links.joined(separator: " • ".scalars)) + " " + skipInJazzy
     }
 
-    static func operatingSystemList(for project: PackageRepository) throws -> StrictString {
+    private static func operatingSystemList(for project: PackageRepository) throws -> StrictString {
         let supported = try OperatingSystem.cases.filter({ try project.configuration.supports($0) })
         let list = supported.map({ $0.isolatedName.resolved() }).joined(separator: " • ".scalars)
         return StrictString(list)
     }
 
-    static func apiLinksMarkup(for project: PackageRepository, output: inout Command.Output) throws -> StrictString {
+    private static func apiLinksMarkup(for project: PackageRepository, output: inout Command.Output) throws -> StrictString {
 
         let baseURL = try project.configuration.requireDocumentationURL()
         let label = UserFacingText<ContentLocalization, Void>({ (localization, _) in
@@ -119,7 +119,7 @@ enum ReadMe {
         return label + " " + StrictString(links.joined(separator: " • ".scalars))
     }
 
-    static func key(for testament: StrictString) throws -> StrictString {
+    private static func key(for testament: StrictString) throws -> StrictString {
         let old: StrictString = "תנ״ך"
         let new: StrictString = "ΚΔ"
         switch testament {
@@ -155,7 +155,7 @@ enum ReadMe {
         return URL(string: "https://www.biblegateway.com/passage/?search=\(sanitizedChapter)&version=\(originalKey);\(translationCode)")
     }
 
-    static func quotationMarkup(localization: String, project: PackageRepository) throws -> StrictString {
+    private static func quotationMarkup(localization: String, project: PackageRepository) throws -> StrictString {
         var result = [try project.configuration.requireQuotation()]
         if let translation = try project.configuration.quotationTranslation(localization: localization) {
             result += [translation]
@@ -172,7 +172,7 @@ enum ReadMe {
         return StrictString("> ") + StrictString(result.joined(separator: "\n".scalars)).replacingMatches(for: "\n".scalars, with: "<br>".scalars)
     }
 
-    static func relatedProjectsLinkMarkup(for project: PackageRepository, localization: String) -> StrictString {
+    private static func relatedProjectsLinkMarkup(for project: PackageRepository, localization: String) -> StrictString {
         let absoluteURL = relatedProjectsLocation(for: project, localization: localization)
         var relativeURL = StrictString(absoluteURL.path(relativeTo: project.location))
         relativeURL.replaceMatches(for: " ".scalars, with: "%20".scalars)

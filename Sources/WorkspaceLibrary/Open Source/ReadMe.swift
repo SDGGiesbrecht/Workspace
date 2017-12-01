@@ -725,7 +725,7 @@ enum ReadMe {
                     case .עברית־ישראל:
                         return "מיזמים קשורים"
                     }
-                }).resolved(),
+                }).resolved()
             ]
 
             for url in relatedProjectURLs {

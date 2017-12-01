@@ -33,8 +33,6 @@ extension Configuration {
 
         // MARK: - Settings
 
-        fileprivate var localizations: [ArbitraryLocalization]?
-
         fileprivate var automaticallyTakeOnNewResponsibilites: Bool?
     }
     private static var cache = Cache()
@@ -389,82 +387,6 @@ extension Configuration {
         }
         return mapped
     }
-    private static func parseLocalizations(_ string: String) -> [ArbitraryLocalization: String]? {
-        var currentLocalization: String?
-        var result: [String: [String]] = [:]
-        for line in string.lines.lazy.map({ String($0.line) }) {
-            if let identifier = line.scalars.firstNestingLevel(startingWith: "[_".scalars, endingWith: "_]".scalars),
-                identifier.container.range == line.scalars.bounds {
-                currentLocalization = String(identifier.contents.contents)
-            } else {
-                guard let localization = currentLocalization else {
-                    return nil
-                }
-                var text: [String]
-                if let existing = result[localization] {
-                    text = existing
-                } else {
-                    text = []
-                }
-                text.append(line)
-                result[localization] = text
-            }
-        }
-        var mapped: [ArbitraryLocalization: String] = [:]
-        for (key, value) in result {
-            mapped[ArbitraryLocalization(code: key)] = value.joinAsLines()
-        }
-        return mapped
-    }
-    private static func localizedOptionValues(option: Option, configuration: [Option: String]? = nil) -> [ArbitraryLocalization: String]? {
-        var file = configuration ?? configurationFile
-
-        guard let string = file[option] else {
-            return nil
-        }
-        guard let localized = parseLocalizations(string) else {
-            return nil
-        }
-        return localized
-    }
-    static func localizedOptionValue(option: Option, localization: ArbitraryLocalization?, configuration: [Option: String]? = nil) -> String? {
-        notImplementedYetAndCannotReturn()
-        /*
-        var file = configuration ?? configurationFile
-
-        guard let localized = localizedOptionValues(option: option, configuration: file) else {
-            return file[option]
-        }
-        guard let specific = localization else {
-            guard let development = developmentLocalization else {
-                return file[option]
-            }
-            return localized[development]
-        }
-        return localized[specific]
- */
-    }
-    private static func missingLocalizationError(option: Option, localization: ArbitraryLocalization?) -> Never {
-        fatalError(message: [
-            "Missing configuration option:",
-            "",
-            option.key,
-            "",
-            "Localization:",
-            "",
-            localization?.code ?? "[Unlocalized]",
-            "",
-            "Detected options:",
-            "",
-            configurationFile.keys.map({ $0.key }).sorted().joinAsLines()
-            ])
-    }
-    private static func requiredLocalizedOptionValue(option: Option, localization: ArbitraryLocalization?) -> String {
-        guard let result = localizedOptionValue(option: option, localization: localization) else {
-            missingLocalizationError(option: option, localization: localization)
-        }
-        return result
-    }
 
     // Workspace Behaviour
 
@@ -484,20 +406,6 @@ extension Configuration {
         } else {
             return booleanValue(option: .skipSimulator)
         }
-    }
-
-    static func resolvedLocalization(for localization: ArbitraryLocalization?) -> ArbitraryLocalization {
-        notImplementedYetAndCannotReturn()
-        /*
-        if let specific = localization {
-            return specific
-        } else {
-            if let development = Repository.packageRepository.configuration.developmentLocalization {
-                return development
-            } else {
-                return .compatible(.englishCanada)
-            }
-        }*/
     }
 
     // Project Names

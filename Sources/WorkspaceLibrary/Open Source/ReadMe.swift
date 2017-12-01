@@ -577,95 +577,8 @@ enum ReadMe {
             ]
         }
 
-        notImplementedYet()
-
         return Template(source: StrictString(readMe.joined(separator: "\n".scalars)))
     }
-
-    /*
-     static func defaultReadMeTemplate(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String {
-
-     if Configuration.sdg {
-     func english(translation: ArbitraryLocalization) throws -> [String] {
-     return [
-     "",
-     "## About",
-     "",
-     "The \(try Repository.packageRepository.projectName(output: &output)) project is maintained by Jeremy David Giesbrecht.",
-     "",
-     "If \(try Repository.packageRepository.projectName(output: &output)) saves you money, consider giving some of it as a [donation](https://paypal.me/JeremyGiesbrecht).",
-     "",
-     "If \(try Repository.packageRepository.projectName(output: &output)) saves you time, consider devoting some of it to [contributing](\(Configuration.requiredRepositoryURL)) back to the project.",
-     "",
-     format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "For the worker is worthy of his wages.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: localization), citation: "\u{200E}ישוע/Yeshuʼa")
-     ]
-     }
-     switch translation {
-     case .compatible(let specific):
-     switch specific {
-     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-     readMe += try english(translation: translation)
-     case .deutschDeutschland:
-     readMe += [
-     "",
-     "## Über",
-     "",
-     "Das \(try Repository.packageRepository.projectName(output: &output))‐Projekt wird von Jeremy David Giesbrecht erhalten.",
-     "",
-     "Wenn \(try Repository.packageRepository.projectName(output: &output)) Ihnen Geld sparrt, denken Sie darüber, etwas davon zu [spenden](https://paypal.me/JeremyGiesbrecht).",
-     "",
-     "Wenn \(try Repository.packageRepository.projectName(output: &output)) Inhen Zeit sparrt, denken Sie darüber, etwas davon zu gebrauchen, um zum Projekt [beizutragen](\(Configuration.requiredRepositoryURL)).",
-     "",
-     format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "Denn der Arbeiter ist seines Lohns würdig.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: localization), citation: "\u{200E}ישוע/Yeshuʼa")
-     ]
-     case .françaisFrance:
-     readMe += [
-     "",
-     "## À propos",
-     "",
-     "Le projet \(try Repository.packageRepository.projectName(output: &output)) est maintenu par Jeremy David Giesbrecht.",
-     "",
-     "Si \(try Repository.packageRepository.projectName(output: &output)) vous permet d’économiser de l’argent, considérez à en [donner](https://paypal.me/JeremyGiesbrecht).",
-     "",
-     "Si \(try Repository.packageRepository.projectName(output: &output)) vous permet d’économiser du temps, considérez à en utiliser à [contribuer](\(Configuration.requiredRepositoryURL)) au projet.",
-     "",
-     format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "Car le travailleur est digne de son salaire.", url: formatQuotationURL(chapter: "Luke 10", originalKey: "SBLGNT", localization: localization), citation: "\u{200E}ישוע/Yeshuʼa")
-     ]
-     case .ελληνικάΕλλάδα:
-     readMe += [
-     "",
-     "## Πληροφορίες",
-     "",
-     "Το \(try Repository.packageRepository.projectName(output: &output)) έργο διατηρείται από τον Τζέρεμι Ντάβιτ Γκίσμπρεχτ (Jeremy David Giesbrecht).",
-     "",
-     // οικονομώ
-     "Αν το \(try Repository.packageRepository.projectName(output: &output)) οικονομάει το χρήματα σας, σκεφτείτε να [δορίζετε](https://paypal.me/JeremyGiesbrecht) μερικά από αυτά.",
-     "",
-     "Αν το \(try Repository.packageRepository.projectName(output: &output)) οικονομάει τον χρόνο σας, σκεφτείτε να τον κάνετε χρήτη μερικού από αυτό ώστε να [συνεισφέρετε](\(Configuration.requiredRepositoryURL)) του έργου.",
-     "",
-     format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: nil, url: "https://www.bible.com/bible/209/LUK.10.byz04", citation: "\u{200E}ישוע/Ιεσούα")
-     ]
-     case .עברית־ישראל:
-     readMe += [
-     "",
-     "## אודות",
-     "",
-     "⁨\(try Repository.packageRepository.projectName(output: &output))⁩ המיזם מתוחזק על ידי ג׳רמי דוויט גיסברכט (⁧Jeremy David Giesbrecht⁩).",
-     "",
-     "אם ⁨\(try Repository.packageRepository.projectName(output: &output))⁩ עוזר לך לחסוך כסף, תשקול [לתרום](https://paypal.me/JeremyGiesbrecht) את חלק מזה.",
-     "",
-     "אם ⁨\(try Repository.packageRepository.projectName(output: &output))⁩ עוזר לך לחסוך זמן, תשקול להשתמש את חלק מזה [לתרום](\(Configuration.requiredRepositoryURL)) למיזם.",
-     "",
-     format(quotation: "Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.", translation: "כי ראוי הפועל לשכרו.", url: "https://www.bible.com/bible/380/LUK.10_1.HRNT", citation: "ישוע")
-     ]
-     }
-     default:
-     readMe += try english(translation: .compatible(.englishCanada))
-     }
-     }
-
-     return join(lines: readMe)
-     }*/
 
     // MARK: - Refreshment
 
@@ -769,19 +682,17 @@ enum ReadMe {
             }
         }))
 
-        notImplementedYet()
-
         for (key, example) in Examples.examples {
             readMe.insert([
                 "```swift",
                 StrictString(example),
                 "```"
                 ].joinAsLines(), for: UserFacingText({ (localization, _) in
-                switch localization {
-                case .englishCanada:
-                    return StrictString("Example: \(key)")
-                }
-            }))
+                    switch localization {
+                    case .englishCanada:
+                        return StrictString("Example: \(key)")
+                    }
+                }))
         }
 
         var body = String(readMe.text)
@@ -797,148 +708,47 @@ enum ReadMe {
         try file.writeChanges(for: project, output: &output)
     }
 
-    /*
+    private static func refreshRelatedProjects(at location: URL, for localization: String, in project: PackageRepository, output: inout Command.Output) throws {
 
-     if ¬Configuration.relatedProjects(localization: localization).isEmpty
-     ∧ (localization ≠ nil ∨ localizations.count == 1 /* Only unlocalized. */) {
+        if let relatedProjectURLs = try project.configuration.relatedProjects() {
+            var markdown: [StrictString] = [
+                StrictString("# ") + UserFacingText<ContentLocalization, Void>({ (localization, _) in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "Related Projects"
+                    case .deutschDeutschland:
+                        return "Verwandte Projekte"
+                    case .françaisFrance:
+                        return "Projets liés"
+                    case .ελληνικάΕλλάδα:
+                        return "Συγγενικά έργα"
+                    case .עברית־ישראל:
+                        return "מיזמים קשורים"
+                    }
+                }).resolved(),
+            ]
 
-     let translation = Configuration.resolvedLocalization(for: localization)
+            for url in relatedProjectURLs {
 
-     var projects: [String]
+                let name = "..."
+                notImplementedYet() // Needs to clone repository and get the name.
 
-     switch translation {
-     case .compatible(let specific):
-     switch specific {
-     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-     projects = [
-     "# Related Projects",
-     "",
-     "### Table of Contents",
-     ""
-     ]
-     case .deutschDeutschland:
-     projects = [
-     "# Verwandte Projekte",
-     "",
-     "### Inhaltsverzeichnis",
-     ""
-     ]
-     case .françaisFrance:
-     projects = [
-     "# Projets liés",
-     "",
-     "### Table de matières",
-     ""
-     ]
-     case .ελληνικάΕλλάδα:
-     projects = [
-     "# Συγγενικά έργα",
-     "",
-     "### Πίνακας περιεχομένων",
-     ""
-     ]
-     case .עברית־ישראל:
-     projects = [
-     "# מיזמים קשורים",
-     "",
-     "### תוכן העניינים",
-     ""
-     ]
-     }
-     case .unrecognized:
-     projects = [
-     "# Related Projects",
-     "",
-     "### Table of Contents",
-     ""
-     ]
-     }
+                markdown += [
+                    "",
+                    StrictString("### [\(name)](\(url.absoluteString))")
+                ]
 
-     func extractHeader(line: String) -> String {
-     var start = line.startIndex
-     guard line.clusters.advance(&start, over: "# ".clusters) else {
-     fatalError(message: [
-     "Error parsing section header:",
-     "",
-     "\(line)",
-     "",
-     "This may indicate a bug in Workspace."
-     ])
-     }
-     return String(line[start...])
-     }
+                notImplementedYet() // Needs to get short description.
+            }
 
-     func sanitize(headerAnchor: String) -> String {
-     return headerAnchor.replacingOccurrences(of: " ", with: "‐")
-     }
-
-     for line in Configuration.relatedProjects(localization: localization) {
-     if line.hasPrefix("# ") {
-     let header = extractHeader(line: line)
-     projects += [
-     "\u{2D} [\(header)](#\(sanitize(headerAnchor: header)))"
-     ]
-     }
-     }
-     for line in Configuration.relatedProjects(localization: localization) {
-     if line.hasPrefix("# ") {
-     let header = extractHeader(line: line)
-     projects += [
-     "",
-     "## <a name=\u{22}\(sanitize(headerAnchor: header))\u{22}>\(header)</a>"
-     ]
-     } else {
-     guard let colon = line.range(of: ": ") else {
-     fatalError(message: [
-     "Syntax error:",
-     "",
-     line,
-     "",
-     "Expected a line of the form:",
-     "",
-     "Name: https://url.to/repository"
-     ])
-     }
-
-     let name = String(line[..<colon.lowerBound])
-     let url = String(line[colon.upperBound...])
-     let configuration = Configuration.parseConfigurationFile(fromLinkedRepositoryAt: url)
-
-     let link: String
-     if let documentation = configuration[.documentationURL] {
-     link = documentation
-     } else {
-     link = url
-     }
-     projects += [
-     "",
-     "### [\(name)](\(link))"
-     ]
-
-     if var shortDescription = Configuration.localizedOptionValue(option: .shortProjectDescription, localization: localization, configuration: configuration) {
-     if shortDescription.contains("[_") { // The main project is not localized, but the linked configuration is.
-     if let parsedLocalizations = Configuration.parseLocalizations(shortDescription) {
-     if let english = parsedLocalizations[.compatible(.englishCanada)] ?? parsedLocalizations[.compatible(.englishUnitedStates)] {
-     shortDescription = english
-     } else {
-     shortDescription = parsedLocalizations.first?.value ?? ""
-     }
-     }
-     }
-     projects += [
-     "",
-     shortDescription
-     ]
-     }
-     }
-     }
-
-     var relatedProjects = File(possiblyAt: relatedProjectsPath(localization: localization))
-     relatedProjects.body = join(lines: projects)
-     require() { try relatedProjects.write(output: &output) }
-     }
-     }
-     }*/
+            let body = String(markdown.joinAsLines())
+            var file = try TextFile(possiblyAt: location)
+            file.body = body
+            try file.writeChanges(for: project, output: &output)
+        } else {
+            project.delete(location, output: &output)
+        }
+    }
 
     static func refreshReadMe(for project: PackageRepository, output: inout Command.Output) throws {
         let localizations = try project.configuration.localizations()
@@ -946,6 +756,7 @@ enum ReadMe {
             let setting = LocalizationSetting(orderOfPrecedence: [localization] + localizations)
             try setting.do {
                 try refreshReadMe(at: readMeLocation(for: project, localization: localization), for: localization, in: project, atProjectRoot: false, output: &output)
+                try refreshRelatedProjects(at: relatedProjectsLocation(for: project, localization: localization), for: localization, in: project, output: &output)
             }
 
             if localization == localizations.first {
@@ -954,5 +765,8 @@ enum ReadMe {
                 }
             }
         }
+
+        // Deprecated file locations.
+        project.delete(project.url(for: "Documentation/Related Projects.md"), output: &output)
     }
 }

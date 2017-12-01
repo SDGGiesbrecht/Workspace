@@ -220,6 +220,7 @@ extension Configuration {
 
                 if let option = Option(key: String(multilineOption.contents.contents)) {
                     currentMultilineOption = option
+                    result[option] = nil
                 } else {
                     reportUnsupportedKey(String(multilineOption.contents.contents))
                 }
@@ -581,22 +582,6 @@ extension Configuration {
     }
     static var requiredDevelopmentNotes: String {
         return possibleStringValue(option: .developmentNotes) ?? ""
-    }
-    static func relatedProjects(localization: ArbitraryLocalization?) -> [String] {
-        if let result = localizedOptionValue(option: .relatedProjects, localization: localization) {
-            if result.contains("[_") { // The main project is not localized, but the linked configuration is.
-                if let parsedLocalizations = parseLocalizations(result) {
-                    if let english = parsedLocalizations[.compatible(.englishCanada)] ?? parsedLocalizations[.compatible(.englishUnitedStates)] {
-                        return parseList(value: english)
-                    } else {
-                        return parseList(value: parsedLocalizations.first?.value ?? "")
-                    }
-                }
-            }
-            return parseList(value: result)
-        } else {
-            return listValue(option: .relatedProjects)
-        }
     }
 
     static var manageFileHeaders: Bool {

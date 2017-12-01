@@ -642,7 +642,7 @@ enum ReadMe {
                 return "API Links"
             }
         }))
-        try readMe.insert(resultOf: { try project.configuration.requireShortProjectDescription(for: localization, project: project) }, for: UserFacingText({ (localization, _) in
+        try readMe.insert(resultOf: { try project.configuration.requireShortProjectDescription(for: localization) }, for: UserFacingText({ (localization, _) in
             switch localization {
             case .englishCanada:
                 return "Short Description"
@@ -730,15 +730,26 @@ enum ReadMe {
 
             for url in relatedProjectURLs {
 
-                let name = "..."
-                notImplementedYet() // Needs to clone repository and get the name.
+                let package = Repository.linkedRepository(from: url)
+                let name: StrictString
+                if let packageName = try? package.projectName(output: &output) {
+                    name = packageName
+                } else {
+                    name = StrictString(url.lastPathComponent)
+                }
 
                 markdown += [
                     "",
                     StrictString("### [\(name)](\(url.absoluteString))")
                 ]
 
-                notImplementedYet() // Needs to get short description.
+                if let succeeded = try? package.configuration.shortProjectDescription(for: localization),
+                    let description = succeeded {
+                    markdown += [
+                        "",
+                        description
+                    ]
+                }
             }
 
             let body = String(markdown.joinAsLines())

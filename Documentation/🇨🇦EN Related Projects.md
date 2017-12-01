@@ -14,8 +14,8 @@
 
 # Related Projects
 
-### [...](https://github.com/SDGGiesbrecht/Workspace)
+### [Workspace](https://github.com/SDGGiesbrecht/Workspace)
 
-### [...](https://github.com/SDGGiesbrecht/SDGCommandLine)
+### [SDGCommandLine](https://github.com/SDGGiesbrecht/SDGCommandLine)
 
-### [...](https://github.com/SDGGiesbrecht/SDGCornerstone)
+### [SDGCornerstone](https://github.com/SDGGiesbrecht/SDGCornerstone)

@@ -323,6 +323,13 @@ struct Repository {
 
     // MARK: - Linked Repositories
 
+    static func linkedRepository(from url: URL) -> PackageRepository {
+        let name = Repository.nameOfLinkedRepository(atURL: url.absoluteString)
+        let repositoryLocation = URL(fileURLWithPath: linkedRepository(named: name).string)
+        let repository = PackageRepository(alreadyAt: repositoryLocation)
+        return repository
+    }
+
     static func nameOfLinkedRepository(atURL url: String) -> String {
         guard let urlObject = URL(string: url) else {
             fatalError(message: [

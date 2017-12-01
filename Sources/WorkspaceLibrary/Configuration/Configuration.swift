@@ -249,9 +249,11 @@ struct Configuration {
             throw Configuration.optionNotDefinedError(for: .author)
         }
     }
-
-    func requireShortProjectDescription(for localization: String, project: PackageRepository) throws -> StrictString {
-        guard let defined = try localizedStrictString(for: localization, from: .shortProjectDescription) else {
+    func shortProjectDescription(for localization: String) throws -> StrictString? {
+        return try localizedStrictString(for: localization, from: .shortProjectDescription)
+    }
+    func requireShortProjectDescription(for localization: String) throws -> StrictString {
+        guard let defined = try shortProjectDescription(for: localization) else {
             throw Configuration.optionNotDefinedError(for: .shortProjectDescription)
         }
         return defined
@@ -357,7 +359,6 @@ struct Configuration {
         guard ¬result.isEmpty else {
             return nil
         }
-        print(result)
         return try result.map { (entry) in
             guard let url = URL(string: entry) else {
                 throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in

@@ -112,8 +112,8 @@ import SDGCommandLine
                     ].joined(separator: ",")
                 ])
 
-            defer { project.resetCache(debugReason: "jazzy") }
             try executeInCompatibilityMode(with: jazzyArguments, output: &output)
+            project.resetCache(debugReason: "jazzy")
 
             // [_Workaround: Jazzy is incompatible with Jekyll. (jazzy --version 0.9.0)_]
             try preventJekyllInterference(in: outputDirectory, for: project, output: &output)

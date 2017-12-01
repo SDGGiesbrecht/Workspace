@@ -334,6 +334,15 @@ struct Configuration {
         }
         return defined
     }
+    func readMeAboutSectionTemplate(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template? {
+        return try localizedTemplate(for: localization, from: .readMeAboutSection)
+    }
+    func requireReadMeAboutSectionTemplate(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template {
+        guard let defined = try readMeAboutSectionTemplate(for: localization, project: project, output: &output) else {
+            throw Configuration.optionNotDefinedError(for: .readMeAboutSection)
+        }
+        return defined
+    }
 
     func readMe(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template {
         if let defined = try localizedTemplate(for: localization, from: .readMe) {

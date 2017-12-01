@@ -546,10 +546,34 @@ enum ReadMe {
             ]
         }
 
-        if (try project.configuration.otherReadMeContent(for: localization, project: project, output: &output)) ≠ nil {
+        if try project.configuration.optionIsDefined(.otherReadMeContent) {
             readMe += [
                 "",
                 "[_Other_]"
+            ]
+        }
+
+        if try project.configuration.optionIsDefined(.readMeAboutSection) {
+            let header = UserFacingText<ContentLocalization, Void>({ (localization, _) in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "About"
+                case .deutschDeutschland:
+                    return "Über"
+                case .françaisFrance:
+                    return "À propos"
+                case .ελληνικάΕλλάδα:
+                    return "Πληροφορίες"
+                case .עברית־ישראל:
+                    return "אודות"
+                }
+            }).resolved()
+
+            readMe += [
+                "",
+                StrictString("## ") + header,
+                "",
+                "[_About_]"
             ]
         }
 
@@ -675,6 +699,13 @@ enum ReadMe {
             switch localization {
             case .englishCanada:
                 return "Other"
+            }
+        }))
+
+        try readMe.insert(resultOf: { try project.configuration.requireReadMeAboutSectionTemplate(for: localization, project: project, output: &output).text }, for: UserFacingText({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "About"
             }
         }))
 

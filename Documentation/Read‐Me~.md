@@ -60,7 +60,6 @@ The available dynamic elements are:
 - `Example Usage`: The value of the configuration option `Example Usage`.
 - `[_Example: `Identifier`_]`: A particular [example](Examples.md).
 - `Other`: The value of the configuration option `Other Read‐Me Content`
-- `About`: The value of the configuration option `Read‐Me About Section`
 
 Customization can be especially useful when it is combined with [configuration sharing](Configuring%20Workspace.md#sharing-configurations-between-projects).
 

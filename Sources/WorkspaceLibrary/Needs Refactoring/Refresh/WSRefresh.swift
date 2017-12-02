@@ -124,7 +124,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     print("Updating examples...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    Examples.refreshExamples(output: &output)
+    try Examples.refreshExamples(output: &output)
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     print("Updating inherited documentation...".formattedAsSectionHeader(), to: &output)

@@ -18,6 +18,7 @@ func require<T>(operation: () throws -> T) -> T {
     do {
         return try operation()
     } catch let error {
+
         fatalError(message: [
             "An error occurred:",
             "",

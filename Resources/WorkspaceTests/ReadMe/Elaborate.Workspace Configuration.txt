@@ -25,11 +25,29 @@ Manage Read‐Me: True
 
 [_Begin Localizations_]
 🇨🇦EN
+🇬🇧EN
+🇺🇸EN
+🇩🇪DE
+🇫🇷FR
+🇬🇷ΕΛ
+🇮🇱עב
 [_End_]
 
 [_Begin Short Project Description_]
 [_🇨🇦EN_]
 MyProject does stuff.
+[_🇬🇧EN_]
+...
+[_🇺🇸EN_]
+...
+[_🇩🇪DE_]
+...
+[_🇫🇷FR_]
+...
+[_🇬🇷ΕΛ_]
+...
+[_🇮🇱עב_]
+...
 [_End_]
 
 [_Begin Quotation_]
@@ -39,6 +57,18 @@ MyProject does stuff.
 [_Begin Quotation Translation_]
 [_🇨🇦EN_]
 “...”
+[_🇬🇧EN_]
+...
+[_🇺🇸EN_]
+...
+[_🇩🇪DE_]
+...
+[_🇫🇷FR_]
+...
+[_🇬🇷ΕΛ_]
+...
+[_🇮🇱עב_]
+...
 [_End_]
 
 Quotation Testament: תנ״ך
@@ -47,6 +77,18 @@ Quotation Chapter: Chapter 1
 [_Begin Citation_]
 [_🇨🇦EN_]
 someone
+[_🇬🇧EN_]
+...
+[_🇺🇸EN_]
+...
+[_🇩🇪DE_]
+...
+[_🇫🇷FR_]
+...
+[_🇬🇷ΕΛ_]
+...
+[_🇮🇱עב_]
+...
 [_End_]
 
 [_Begin Feature List_]
@@ -54,11 +96,35 @@ someone
 - Stuff.
 - More stuff.
 - Even more stuff.
+[_🇬🇧EN_]
+...
+[_🇺🇸EN_]
+...
+[_🇩🇪DE_]
+...
+[_🇫🇷FR_]
+...
+[_🇬🇷ΕΛ_]
+...
+[_🇮🇱עב_]
+...
 [_End_]
 
 [_Begin Read‐Me About Section_]
 [_🇨🇦EN_]
 This project is just a test.
+[_🇬🇧EN_]
+...
+[_🇺🇸EN_]
+...
+[_🇩🇪DE_]
+...
+[_🇫🇷FR_]
+...
+[_🇬🇷ΕΛ_]
+...
+[_🇮🇱עב_]
+...
 [_End_]
 
 [_Begin Related Projects_]

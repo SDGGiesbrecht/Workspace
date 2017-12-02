@@ -92,8 +92,9 @@ class APITests : TestCase {
     }
 
     func testDocumentation() {
+
         #if !os(Linux)
-            XCTAssertErrorFree {
+            XCTAssertErrorFree { // Failures here when inside Xcode are irrelevant. (Xcode bypasses shell login scripts necessary to find Jazzy and other Ruby gems.)
                 let project = try MockProject(type: "Library")
                 try project.do {
                     try "Repository URL: https://github.com/user/project\nAuthor: John Doe\nSupport macOS: False".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
@@ -103,7 +104,7 @@ class APITests : TestCase {
                 }
             }
 
-            XCTAssertErrorFree {
+            XCTAssertErrorFree { // Failures here when inside Xcode are irrelevant. (Xcode bypasses shell login scripts necessary to find Jazzy and other Ruby gems.)
                 let project = try MockProject(type: "Library")
                 try project.do {
                     try "Documentation Copyright: ©0001 John Doe\nSupport macOS: False\nSupport iOS: False".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
@@ -141,7 +142,7 @@ class APITests : TestCase {
                 }
             }
 
-            XCTAssertErrorFree {
+            XCTAssertErrorFree { // Failures here when inside Xcode are irrelevant. (Xcode bypasses shell login scripts necessary to find Jazzy and other Ruby gems.)
                 let project = try MockProject(type: "Library")
                 try project.do {
                     try "Support macOS: False\nSupport iOS: False\nSupport watchOS: False".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
@@ -150,7 +151,7 @@ class APITests : TestCase {
                 }
             }
 
-            XCTAssertThrowsError(containing: "fails validation") {
+            XCTAssertThrowsError(containing: "fails validation") { // Failures here when inside Xcode are irrelevant. (Xcode bypasses shell login scripts necessary to find Jazzy and other Ruby gems.)
                 let project = try MockProject(type: "Library")
                 try project.do {
                     try "\u{70}ublic func undocumentedFunction() {}".save(to: project.location.appendingPathComponent("Sources/MyProject/Undocumented.swift"))
@@ -165,9 +166,24 @@ class APITests : TestCase {
         XCTAssertErrorFree {
             let project = try MockProject()
             try project.do {
+
+                try Resources.ReadMe.skeletonWorkspaceConfiguration.save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                defer {
+                    XCTAssertEqual(try String(from: project.location.appendingPathComponent("README.md")), "\n" + String(LineView<String>(Resources.ReadMe.skeletonReadMe.lines.dropFirst(13))))
+                }
+
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
+
+        XCTAssertErrorFree {
+            let project = try MockProject()
+            try project.do {
+
                 try Resources.ReadMe.elaborateWorkspaceConfiguration.save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
                 defer {
                     XCTAssertEqual(try String(from: project.location.appendingPathComponent("README.md")), "\n" + String(LineView<String>(Resources.ReadMe.elaborateReadMe.lines.dropFirst(13))))
+                    XCTAssertEqual(try String(from: project.location.appendingPathComponent("Documentation/🇬🇷ΕΛ Με διαβάστε.md")), "\n" + String(LineView<String>(Resources.ReadMe.elaborateΜεΔιαβάστε.lines.dropFirst(13))))
                 }
 
                 try Workspace.command.execute(with: ["refresh", "read‐me"])
@@ -238,7 +254,7 @@ class APITests : TestCase {
     }
 
     func testWorkflow() {
-        XCTAssertErrorFree {
+        XCTAssertErrorFree { // Failures here when inside Xcode are irrelevant. (Xcode bypasses shell login scripts necessary to find Jazzy and other Ruby gems.)
             try MockProject().do {
 
                 // [_Workaround: This should eventually just do “validate”._]
@@ -253,7 +269,7 @@ class APITests : TestCase {
             }
         }
 
-        XCTAssertErrorFree {
+        XCTAssertErrorFree { // Failures here when inside Xcode are irrelevant. (Xcode bypasses shell login scripts necessary to find Jazzy and other Ruby gems.)
             try MockProject(type: "Library").do {
 
                 // [_Workaround: This should eventually just do “validate”._]
@@ -268,7 +284,7 @@ class APITests : TestCase {
             }
         }
 
-        XCTAssertErrorFree {
+        XCTAssertErrorFree { // Failures here when inside Xcode are irrelevant. (Xcode bypasses shell login scripts necessary to find Jazzy and other Ruby gems.)
             try MockProject(type: "Application").do {
 
                 // [_Workaround: This should eventually just do “validate”._]
@@ -283,7 +299,7 @@ class APITests : TestCase {
             }
         }
 
-        XCTAssertErrorFree {
+        XCTAssertErrorFree { // Failures here when inside Xcode are irrelevant. (Xcode bypasses shell login scripts necessary to find Jazzy and other Ruby gems.)
             try MockProject(type: "Executable").do {
 
                 // [_Workaround: This should eventually just do “validate”._]

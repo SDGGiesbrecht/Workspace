@@ -29,14 +29,16 @@ extension PackageRepository {
     // MARK: - Cache
 
     private class Cache {
-            fileprivate var packageName: String?
-            fileprivate var targets: [String: Target]?
-            fileprivate var libraryProductTargets: Set<String>?
+        fileprivate var packageName: String?
+        fileprivate var targets: [String: Target]?
+        fileprivate var libraryProductTargets: Set<String>?
 
-            fileprivate var allFiles: [URL]?
-            fileprivate var trackedFiles: [URL]?
-            fileprivate var sourceFiles: [URL]?
-            fileprivate var resourceFiles: [URL]?
+        fileprivate var allFiles: [URL]?
+        fileprivate var trackedFiles: [URL]?
+        fileprivate var sourceFiles: [URL]?
+        fileprivate var resourceFiles: [URL]?
+
+        fileprivate var examples: [String: String]?
     }
     private static var caches: [URL: Cache] = [:]
     private var cache: Cache {
@@ -236,7 +238,7 @@ extension PackageRepository {
         try Script.refreshRelevantScripts(for: self, output: &output)
     }
 
-    // MARK: - Continuous Integration
+    // MARK: - Read‐Me
 
     func refreshReadMe(output: inout Command.Output) throws {
         try ReadMe.refreshReadMe(for: self, output: &output)
@@ -295,6 +297,14 @@ extension PackageRepository {
 
         for (target, resources) in targets {
             try target.refresh(resources: resources, from: self, output: &output)
+        }
+    }
+
+    // MARK: - Examples
+
+    func examples(output: inout Command.Output) throws -> [String: String] {
+        return try cached(in: &cache.examples) {
+            return try Examples.examples(in: self, output: &output)
         }
     }
 

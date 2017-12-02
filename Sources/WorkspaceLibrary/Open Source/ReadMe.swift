@@ -33,20 +33,24 @@ enum ReadMe {
     }
 
     private static func readMeLocation(for project: PackageRepository, localization: String) -> URL {
-        return locationOfDocumentationFile(named: UserFacingText<ContentLocalization, Void>({ (localization, _) in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "Read Me"
-            case .deutschDeutschland:
-                return "Lies mich"
-            case .françaisFrance:
-                return "Lisez moi"
-            case .ελληνικάΕλλάδα:
-                return "Με διαβάστε"
-            case .עברית־ישראל:
-                return "קרא אותי"
-            }
-        }).resolved(), for: localization, in: project)
+        var result: URL?
+        LocalizationSetting(orderOfPrecedence: [localization]).do {
+            result = locationOfDocumentationFile(named: UserFacingText<ContentLocalization, Void>({ (localization, _) in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Read Me"
+                case .deutschDeutschland:
+                    return "Lies mich"
+                case .françaisFrance:
+                    return "Lisez moi"
+                case .ελληνικάΕλλάδα:
+                    return "Με διαβάστε"
+                case .עברית־ישראל:
+                    return "קרא אותי"
+                }
+            }).resolved(), for: localization, in: project)
+        }
+        return result!
     }
 
     static func relatedProjectsLocation(for project: PackageRepository, localization: String) -> URL {
@@ -109,7 +113,7 @@ enum ReadMe {
             }
         }).resolved()
 
-        let links = try Repository.packageRepository.libraryProductTargets(output: &output).sorted().map { (name: String) -> StrictString in
+        let links = try project.libraryProductTargets(output: &output).sorted().map { (name: String) -> StrictString in
 
             var link: StrictString = "[" + StrictString(name) + "]"
             link += "(" + StrictString(baseURL.appendingPathComponent(name).absoluteString) + ")"
@@ -429,8 +433,7 @@ enum ReadMe {
 
         var source: [StrictString] = []
 
-        let examples = Examples.examples
-        for (key, _) in examples {
+        for (key, _) in try project.examples(output: &output) {
             for prefix in prefixes {
                 for suffix in suffixes {
                     if key.hasPrefix(String(prefix + " "))
@@ -682,7 +685,7 @@ enum ReadMe {
             }
         }))
 
-        for (key, example) in Examples.examples {
+        for (key, example) in try project.examples(output: &output) {
             readMe.insert([
                 "```swift",
                 StrictString(example),

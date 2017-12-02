@@ -229,6 +229,7 @@ class APITests : TestCase {
 
                 // [_Workaround: This should eventually just do “validate”._]
                 try Workspace.command.execute(with: ["refresh", "scripts"])
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
                 try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
                 try Workspace.command.execute(with: ["refresh", "resources"])
                 #if !os(Linux)
@@ -243,6 +244,7 @@ class APITests : TestCase {
 
                 // [_Workaround: This should eventually just do “validate”._]
                 try Workspace.command.execute(with: ["refresh", "scripts"])
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
                 try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
                 try Workspace.command.execute(with: ["refresh", "resources"])
                 #if !os(Linux)
@@ -257,6 +259,7 @@ class APITests : TestCase {
 
                 // [_Workaround: This should eventually just do “validate”._]
                 try Workspace.command.execute(with: ["refresh", "scripts"])
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
                 try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
                 try Workspace.command.execute(with: ["refresh", "resources"])
                 #if !os(Linux)
@@ -271,6 +274,7 @@ class APITests : TestCase {
 
                 // [_Workaround: This should eventually just do “validate”._]
                 try Workspace.command.execute(with: ["refresh", "scripts"])
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
                 try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
                 try Workspace.command.execute(with: ["refresh", "resources"])
                 #if !os(Linux)

@@ -154,6 +154,13 @@
 
         static func enableProofreading(output: inout Command.Output) throws {
 
+            let script: String
+            if try Repository.packageRepository.isWorkspaceProject(output: &output) {
+                script = "swift run workspace proofread"
+            } else {
+                script = "export PATH=\u{5C}\u{22}$HOME/.SDG/Registry:$PATH\u{5C}\u{22} ; if which workspace > /dev/null ; then workspace proofread •use‐version " + latestStableWorkspaceVersion.string + " ; else echo \u{5C}\u{22}warning: Install Workspace if you wish to receive in‐code reports of style errors for this project. See https://github.com/SDGGiesbrecht/Workspace\u{5C}\u{22} ; fi"
+            }
+
             let allTargets = try Repository.packageRepository.targets(output: &output).keys
             let primaryXcodeTarget = allTargets.first(where: { $0.scalars.first! ∈ CharacterSet.uppercaseLetters ∧ ¬$0.hasPrefix("Tests") })!
 
@@ -167,7 +174,7 @@
                     "\(scriptObjectName) = {",
                     "    isa = PBXShellScriptBuildPhase;",
                     "    shellPath = /bin/bash;",
-                    "    shellScript = \u{22}export PATH=\u{5C}\u{22}$HOME/.SDG/Registry:$PATH\u{5C}\u{22} ; if which workspace > /dev/null ; then workspace proofread •use‐version " + latestStableWorkspaceVersion.string + " ; else echo \u{5C}\u{22}warning: Install Workspace if you wish to receive in‐code reports of style errors for this project. See https://github.com/SDGGiesbrecht/Workspace\u{5C}\u{22} ; fi\u{22};",
+                    "    shellScript = \u{22}\(script)\u{22};",
                     "};",
                     "" // Final line break.
                     ].joinAsLines())

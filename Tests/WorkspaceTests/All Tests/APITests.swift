@@ -161,6 +161,20 @@ class APITests : TestCase {
         #endif
     }
 
+    func testReadMe() {
+        XCTAssertErrorFree {
+            let project = try MockProject()
+            try project.do {
+                try Resources.ReadMe.elaborateWorkspaceConfiguration.save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                defer {
+                    XCTAssertEqual(try String(from: project.location.appendingPathComponent("README.md")), "\n" + String(LineView<String>(Resources.ReadMe.elaborateReadMe.lines.dropFirst(13))))
+                }
+
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
+    }
+
     func testResources() {
         XCTAssertErrorFree {
             let project = try MockProject()
@@ -291,6 +305,7 @@ class APITests : TestCase {
             ("testConfiguration", testConfiguration),
             ("testContinuousIntegration", testContinuousIntegration),
             ("testDocumentation", testDocumentation),
+            ("testReadMe", testReadMe),
             ("testResources", testResources),
             ("testScripts", testScripts),
             ("testWorkflow", testWorkflow)

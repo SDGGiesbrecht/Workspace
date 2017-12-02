@@ -601,7 +601,7 @@ enum ReadMe {
             }
         }))
 
-        try readMe.insert(resultOf: { try project.configuration.requireExampleUsage(for: localization, project: project, output: &output).text }, for: UserFacingText({ (localization, _) in
+        try readMe.insert(resultOf: { let result = try project.configuration.requireExampleUsage(for: localization, project: project, output: &output).text; print(result); return result }, for: UserFacingText({ (localization, _) in
             switch localization {
             case .englishCanada:
                 return "Example Usage"

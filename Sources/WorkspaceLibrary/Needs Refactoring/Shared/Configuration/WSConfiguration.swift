@@ -354,7 +354,8 @@ extension Configuration {
         var result: [String: [String]] = [:]
         for line in string.lines.lazy.map({ String($0.line) }) {
             if let identifier = line.scalars.firstNestingLevel(startingWith: "[_".scalars, endingWith: "_]".scalars),
-                identifier.container.range == line.scalars.bounds {
+                identifier.container.range == line.scalars.bounds,
+                ¬line.contains(" ") {
                 var code = String(identifier.contents.contents)
                 if let fromIcon = ContentLocalization.code(for: StrictString(code)) {
                     code = fromIcon

@@ -164,6 +164,7 @@ class APITests : TestCase {
 
     func testReadMe() {
         XCTAssertErrorFree {
+            // Simple
             let project = try MockProject()
             try project.do {
 
@@ -177,6 +178,7 @@ class APITests : TestCase {
         }
 
         XCTAssertErrorFree {
+            // Elaborate
             let project = try MockProject()
             try project.do {
 
@@ -191,9 +193,19 @@ class APITests : TestCase {
         }
 
         XCTAssertThrowsError(containing: "Localization") {
+            // No localizations configured.
             let project = try MockProject()
             try project.do {
                 try "Manage Read‐Me: True".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
+
+        XCTAssertThrowsError(containing: "Current Version") {
+            // Dynamic element that does not exist.
+            let project = try MockProject()
+            try project.do {
+                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n[_Current Version_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
                 try Workspace.command.execute(with: ["refresh", "read‐me"])
             }
         }

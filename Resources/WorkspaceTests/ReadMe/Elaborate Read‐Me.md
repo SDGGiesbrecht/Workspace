@@ -58,6 +58,10 @@ let package = Package(
 import MyProject
 ```
 
+## Other
+
+...
+
 ## About
 
 This project is just a test.

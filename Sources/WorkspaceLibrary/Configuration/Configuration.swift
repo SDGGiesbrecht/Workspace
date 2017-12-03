@@ -206,7 +206,7 @@ struct Configuration {
     func requireCurrentVersion() throws -> Version {
         guard let defined = try currentVersion() else {
             throw Configuration.optionNotDefinedError(for: .currentVersion)
-        }
+        } // [_Exempt from Code Coverage_] False positive with Xcode 9.
         return defined
     }
 

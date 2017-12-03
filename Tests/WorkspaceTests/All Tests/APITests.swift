@@ -189,6 +189,14 @@ class APITests : TestCase {
                 try Workspace.command.execute(with: ["refresh", "read‐me"])
             }
         }
+
+        XCTAssertThrowsError(containing: "Localization") {
+            let project = try MockProject()
+            try project.do {
+                try "Manage Read‐Me: True".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
     }
 
     func testResources() {

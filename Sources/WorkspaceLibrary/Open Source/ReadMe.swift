@@ -773,7 +773,7 @@ enum ReadMe {
                 try refreshRelatedProjects(at: relatedProjectsLocation(for: project, localization: localization), for: localization, in: project, output: &output)
             }
 
-            if localization == localizations.first {
+            if localization == (try project.configuration.developmentLocalization()) {
                 try setting.do {
                     try refreshReadMe(at: project.url(for: "README.md"), for: localization, in: project, atProjectRoot: true, output: &output)
                 }

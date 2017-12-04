@@ -167,7 +167,7 @@ class APITests : TestCase {
 
     func testReadMe() {
         XCTAssertErrorFree {
-            // Simple
+            // Skeleton
             let project = try MockProject()
             try project.do {
 
@@ -181,11 +181,32 @@ class APITests : TestCase {
         }
 
         XCTAssertErrorFree {
+            // Partial
+            let project = try MockProject()
+            try project.do {
+
+                try Resources.ReadMe.partialWorkspaceConfiguration.save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                defer {
+                    XCTAssertEqual(try String(from: project.location.appendingPathComponent("README.md")), "\n" + String(LineView<String>(Resources.ReadMe.partialReadMe.lines.dropFirst(13))))
+                }
+
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
+
+        XCTAssertErrorFree {
             // Elaborate
             let project = try MockProject()
             try project.do {
 
                 try Resources.ReadMe.elaborateWorkspaceConfiguration.save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try [
+                    "// [\u{5F}Define Example: Read‐Me 🇨🇦EN_]", "doSomething()", "// [_End_]",
+                    "// [\u{5F}Define Example: Read‐Me 🇩🇪DE_]", "...", "// [_End_]",
+                    "// [\u{5F}Define Example: Read‐Me 🇫🇷FR_]", "...", "// [_End_]",
+                    "// [\u{5F}Define Example: Read‐Me 🇬🇷ΕΛ_]", "...", "// [_End_]",
+                    "// [\u{5F}Define Example: Read‐Me 🇮🇱עב_]", "...", "// [_End_]"
+                    ].joined(separator: "\n").save(to: project.location.appendingPathComponent("Sources/MyProject/Example.swift"))
                 defer {
                     XCTAssertEqual(try String(from: project.location.appendingPathComponent("README.md")), "\n" + String(LineView<String>(Resources.ReadMe.elaborateReadMe.lines.dropFirst(13))))
                     XCTAssertEqual(try String(from: project.location.appendingPathComponent("Documentation/🇬🇷ΕΛ Με διαβάστε.md")), "\n" + String(LineView<String>(Resources.ReadMe.elaborateΜεΔιαβάστε.lines.dropFirst(13))))
@@ -259,6 +280,13 @@ class APITests : TestCase {
             let project = try MockProject()
             try project.do {
                 try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n [_Quotation_]\n[_End_]\nQuotation: ...\nQuotation Chapter: Genesis 1".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
+        XCTAssertThrowsError(containing: "Quotation Testament") {
+            let project = try MockProject()
+            try project.do {
+                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n [_Quotation_]\n[_End_]\nQuotation: ...\nQuotation Chapter: Genesis 1\nQuotation Testament: ...".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
                 try Workspace.command.execute(with: ["refresh", "read‐me"])
             }
         }

@@ -216,13 +216,13 @@ enum ReadMe {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Installation"
-                    case .deutschDeutschland:
+                    case .deutschDeutschland: // [_Exempt from Code Coverage_] Until generalized.
                         return "Installation"
-                    case .françaisFrance:
+                    case .françaisFrance: // [_Exempt from Code Coverage_] Until generalized.
                         return "Installation"
-                    case .ελληνικάΕλλάδα:
+                    case .ελληνικάΕλλάδα: // [_Exempt from Code Coverage_] Until generalized.
                         return "Εγκατάσταση"
-                    case .עברית־ישראל:
+                    case .עברית־ישראל: // [_Exempt from Code Coverage_] Until generalized.
                         return "התקנה"
                     }
                 }).resolved(),
@@ -231,13 +231,13 @@ enum ReadMe {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return StrictString("Paste the following into a terminal to install or update `\(package)`:")
-                    case .deutschDeutschland:
+                    case .deutschDeutschland: // [_Exempt from Code Coverage_] Until generalized.
                         return StrictString("Setze folgendes in ein Terminal ein, um `\(package)` zu installieren oder aktualisieren:")
-                    case .françaisFrance:
+                    case .françaisFrance: // [_Exempt from Code Coverage_] Until generalized.
                         return StrictString("Collez le suivant dans un terminal pour installer `\(package)` ou mettre `\(package)` à jour:")
-                    case .ελληνικάΕλλάδα:
+                    case .ελληνικάΕλλάδα: // [_Exempt from Code Coverage_] Until generalized.
                         return StrictString("Κόλλα αυτό σε ένα τερματικό για να εγκαταστήσετε ή ενημέρωσετε `\(package)`:")
-                    case .עברית־ישראל:
+                    case .עברית־ישראל: // [_Exempt from Code Coverage_] Until generalized.
                         /*א*/ return StrictString("הדבק או הדביקי את זה במסוף להתקין או לעדכן את `\(package)`:")
                     }
                 }).resolved(),
@@ -410,7 +410,7 @@ enum ReadMe {
             ]
         }
 
-        if result == [] {
+        if result == [] { // [_Exempt from Code Coverage_] [_Workaround: Until application targets are supported again._]
             return nil
         } else {
             return Template(source: result.joinAsLines())
@@ -737,7 +737,7 @@ enum ReadMe {
                 let name: StrictString
                 if let packageName = try? package.projectName(output: &output) {
                     name = packageName
-                } else {
+                } else { // [_Exempt from Code Coverage_] Only reachable with a non‐package repository.
                     name = StrictString(url.lastPathComponent)
                 }
 
@@ -747,7 +747,7 @@ enum ReadMe {
                 ]
 
                 if let succeeded = try? package.configuration.shortProjectDescription(for: localization),
-                    let description = succeeded {
+                    let description = succeeded { // [_Exempt from Code Coverage_] Until Workspace’s configuration is centralized again.
                     markdown += [
                         "",
                         description

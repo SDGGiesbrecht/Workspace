@@ -58,6 +58,12 @@ let package = Package(
 import MyProject
 ```
 
+## Example Usage
+
+```swift
+doSomething()
+```
+
 ## Other
 
 ...

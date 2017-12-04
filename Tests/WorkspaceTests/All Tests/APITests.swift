@@ -220,7 +220,6 @@ class APITests : TestCase {
         XCTAssertThrowsError(containing: "Current Version") {
             let project = try MockProject()
             try project.do {
-
                 try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n[_Current Version_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
                 try Workspace.command.execute(with: ["refresh", "read‐me"])
             }
@@ -228,71 +227,56 @@ class APITests : TestCase {
         XCTAssertThrowsError(containing: "Repository URL") {
             let project = try MockProject()
             try project.do {
-
                 try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n[_Repository URL_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
-                try Workspace.command.execute(with: ["refresh", "read‐me"])
-            }
-        }
-        XCTAssertThrowsError(containing: "Documentation URL") {
-            let project = try MockProject()
-            try project.do {
-                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n[_Documentation URL_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
                 try Workspace.command.execute(with: ["refresh", "read‐me"])
             }
         }
         XCTAssertThrowsError(containing: "Short Project Description") {
             let project = try MockProject()
             try project.do {
-                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n[_Short Project Description_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n[_Short Description_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
                 try Workspace.command.execute(with: ["refresh", "read‐me"])
             }
         }
         XCTAssertThrowsError(containing: "Quotation") {
             let project = try MockProject()
             try project.do {
-                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n[_Quotation_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n [_Quotation_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
                 try Workspace.command.execute(with: ["refresh", "read‐me"])
             }
         }
         XCTAssertThrowsError(containing: "Quotation Testament") {
             let project = try MockProject()
             try project.do {
-                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n[_Quotation_]\n[_End_]\nQuotation Chapter: Genesis 1".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n [_Quotation_]\n[_End_]\nQuotation: ...\nQuotation Chapter: Genesis 1".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
                 try Workspace.command.execute(with: ["refresh", "read‐me"])
             }
         }
         XCTAssertThrowsError(containing: "Feature List") {
             let project = try MockProject()
             try project.do {
-                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n[_Feature List_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
-                try Workspace.command.execute(with: ["refresh", "read‐me"])
-            }
-        }
-        XCTAssertThrowsError(containing: "Installation Instructions") {
-            let project = try MockProject()
-            try project.do {
-                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n[_Installation Instructions_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n [_Features_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
                 try Workspace.command.execute(with: ["refresh", "read‐me"])
             }
         }
         XCTAssertThrowsError(containing: "Example Usage") {
             let project = try MockProject()
             try project.do {
-                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n[_Example Usage_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n[\u{5F}Example Usage_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
                 try Workspace.command.execute(with: ["refresh", "read‐me"])
             }
         }
         XCTAssertThrowsError(containing: "Other Read‐Me Content") {
             let project = try MockProject()
             try project.do {
-                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n[_Other_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n [_Other_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
                 try Workspace.command.execute(with: ["refresh", "read‐me"])
             }
         }
         XCTAssertThrowsError(containing: "About") {
             let project = try MockProject()
             try project.do {
-                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n[_About_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n [_About_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
                 try Workspace.command.execute(with: ["refresh", "read‐me"])
             }
         }
@@ -301,7 +285,7 @@ class APITests : TestCase {
         XCTAssertThrowsError(containing: "URL") {
             let project = try MockProject()
             try project.do {
-                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Related Projects_]\\n\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Related Projects_]\n\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
                 try Workspace.command.execute(with: ["refresh", "read‐me"])
             }
         }

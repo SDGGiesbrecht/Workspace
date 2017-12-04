@@ -27,7 +27,7 @@ macOS • Linux • iOS • watchOS • tvOS
 Simply add `MyProject` as a dependency in `Package.swift`:
 
 ```swift
-    let package = Package(
+let package = Package(
     name: "MyPackage",
     dependencies: [
         .package(url: "https://somewhere.com", .upToNextMinor(from: Version(0, 1, 0))),

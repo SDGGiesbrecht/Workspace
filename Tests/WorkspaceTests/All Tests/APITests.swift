@@ -205,7 +205,8 @@ class APITests : TestCase {
                     "// [\u{5F}Define Example: Read‐Me 🇩🇪DE_]", "...", "// [_End_]",
                     "// [\u{5F}Define Example: Read‐Me 🇫🇷FR_]", "...", "// [_End_]",
                     "// [\u{5F}Define Example: Read‐Me 🇬🇷ΕΛ_]", "...", "// [_End_]",
-                    "// [\u{5F}Define Example: Read‐Me 🇮🇱עב_]", "...", "// [_End_]"
+                    "// [\u{5F}Define Example: Read‐Me 🇮🇱עב_]", "...", "// [_End_]",
+                    ""
                     ].joined(separator: "\n").save(to: project.location.appendingPathComponent("Sources/MyProject/Example.swift"))
                 defer {
                     XCTAssertEqual(try String(from: project.location.appendingPathComponent("README.md")), "\n" + String(LineView<String>(Resources.ReadMe.elaborateReadMe.lines.dropFirst(13))))

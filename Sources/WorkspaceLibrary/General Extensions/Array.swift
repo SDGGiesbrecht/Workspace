@@ -19,7 +19,7 @@ extension Array where Element : StringFamily {
 
     func joined(separator: Element = "") -> Element {
         // [_Workaround: This function should be moved to SDGCornerstone._]
-        guard var result = self.first else {
+        guard var result = self.first else { // [_Exempt from Code Coverage_] Temporary any way.
             return ""
         }
         for line in self.dropFirst() {

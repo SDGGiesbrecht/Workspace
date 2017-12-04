@@ -107,7 +107,7 @@ class APITests : TestCase {
             XCTAssertErrorFree { // Failures here when inside Xcode are irrelevant. (Xcode bypasses shell login scripts necessary to find Jazzy and other Ruby gems.)
                 let project = try MockProject(type: "Library")
                 try project.do {
-                    try "Documentation Copyright: ©0001 John Doe\nSupport macOS: False\nSupport iOS: False".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                    try "Documentation Copyright: ©0001 John Doe\nSupport macOS: False\nSupport iOS: False\nManage Read‐Me: True\nLocalizations: en".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
                     try [
                         "/// ...",
                         "infix operator ≠",
@@ -126,10 +126,13 @@ class APITests : TestCase {
                         "    \u{70}ublic static func אבג() {}",
                         "}"
                         ].joined(separator: "\n").save(to: project.location.appendingPathComponent("Sources/MyProject/Unicode.swift"))
+                    try Workspace.command.execute(with: ["refresh", "read‐me"])
                     try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
                     try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
                     let page = try String(from: project.location.appendingPathComponent("docs/MyProject/Extensions/Bool.html"))
                     XCTAssert(¬page.contains("\u{22}err\u{22}"), "Failed to clean up Jazzy output.")
+                    let index = try String(from: project.location.appendingPathComponent("docs/MyProject/index.html"))
+                    XCTAssert(¬index.contains("Skip in Jazzy"), "Failed to remove read‐me–only content.")
                 }
             }
 
@@ -293,6 +296,13 @@ class APITests : TestCase {
             let project = try MockProject()
             try project.do {
                 try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Related Projects_]\n\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
+
+        XCTAssertErrorFree {
+            try FileManager.default.do(in: repositoryRoot) {
+                // Validate self‐specific details.
                 try Workspace.command.execute(with: ["refresh", "read‐me"])
             }
         }

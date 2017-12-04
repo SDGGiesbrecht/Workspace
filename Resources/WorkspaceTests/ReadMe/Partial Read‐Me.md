@@ -30,7 +30,7 @@ Simply add `MyProject` as a dependency in `Package.swift`:
     let package = Package(
     name: "MyPackage",
     dependencies: [
-        .package(url: "https://somewhere.com", .upToNextMinor(Version(0, 1, 0))),
+        .package(url: "https://somewhere.com", .upToNextMinor(from: Version(0, 1, 0))),
     ],
     targets: [
         .target(name: "MyTarget", dependencies: [

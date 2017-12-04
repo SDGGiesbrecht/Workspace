@@ -13,16 +13,24 @@
     ))
 
 Manage Read‐Me: True
+Current Version: 1.2.3
+Repository URL: https://github.com/User/Repository
 
 [_Begin Localizations_]
 🇨🇦EN
+[_End_]
+
+Quotation: Blah blah blah...
+[_Begin Quotation URL_]
+[_🇨🇦EN_]
+http://somewhere.com
 [_End_]
 
 [_Begin Installation Instructions_]
 [_🇨🇦EN_]
 ## Installation
 
-Build from source.
+Build from source at tag `[_Current Version_]` of `[_Repository URL_]`.
 [_End_]
 
 [_Begin Example Usage_]

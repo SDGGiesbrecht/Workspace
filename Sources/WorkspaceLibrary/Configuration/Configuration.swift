@@ -206,7 +206,7 @@ struct Configuration {
     func requireCurrentVersion() throws -> Version {
         guard let defined = try currentVersion() else {
             throw Configuration.optionNotDefinedError(for: .currentVersion)
-        } // [_Exempt from Code Coverage_] False positive with Xcode 9.
+        }
         return defined
     }
 
@@ -301,7 +301,7 @@ struct Configuration {
         if let defined = try localizedTemplate(for: localization, from: .installationInstructions) {
             return defined
         } else {
-            return try ReadMe.defaultInstallationInstructions(localization: localization, project: project, output: &output)
+            return try ReadMe.defaultInstallationInstructionsTemplate(localization: localization, project: project, output: &output)
         }
     }
     func requireInstallationInstructions(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template {

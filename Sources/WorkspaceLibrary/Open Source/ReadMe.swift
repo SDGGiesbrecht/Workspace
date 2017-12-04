@@ -199,7 +199,7 @@ enum ReadMe {
         return link + " " + skipInJazzy
     }
 
-    static func defaultInstallationInstructions(localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template? {
+    static func defaultInstallationInstructionsTemplate(localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template? {
         var result: [StrictString] = []
 
         if try project.isWorkspaceProject(output: &output),

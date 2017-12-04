@@ -217,6 +217,13 @@ class APITests : TestCase {
         }
 
         // Dynamic elements that do not exist.
+        XCTAssertThrowsError(containing: "Documentation URL") {
+            let project = try MockProject()
+            try project.do {
+                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n[_API Links_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
         XCTAssertThrowsError(containing: "Current Version") {
             let project = try MockProject()
             try project.do {

@@ -16,6 +16,8 @@
 
 ### [Workspace](https://github.com/SDGGiesbrecht/Workspace)
 
+Workspace automates management of Swift projects.
+
 ### [SDGCommandLine](https://github.com/SDGGiesbrecht/SDGCommandLine)
 
 ### [SDGCornerstone](https://github.com/SDGGiesbrecht/SDGCornerstone)

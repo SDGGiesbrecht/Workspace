@@ -1,0 +1,41 @@
+((
+    Custom.Workspace Configuration.txt
+
+    This source file is part of the Workspace open source project.
+    https://github.com/SDGGiesbrecht/Workspace#workspace
+
+    Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
+
+    Soli Deo gloria.
+
+    Licensed under the Apache Licence, Version 2.0.
+    See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+    ))
+
+Manage Read‐Me: True
+Current Version: 1.2.3
+Repository URL: https://github.com/User/Repository
+
+[_Begin Localizations_]
+🇨🇦EN
+[_End_]
+
+Quotation: Blah blah blah...
+[_Begin Quotation URL_]
+[_🇨🇦EN_]
+http://somewhere.com
+[_End_]
+
+[_Begin Installation Instructions_]
+[_🇨🇦EN_]
+## Installation
+
+Build from source at tag `[_Current Version_]` of `[_Repository URL_]`.
+[_End_]
+
+[_Begin Example Usage_]
+[_🇨🇦EN_]
+```swift
+let x = something()
+```
+[_End_]

@@ -1,5 +1,5 @@
 <!--
- README.md
+ 🇨🇦EN Read Me.md
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  -->
 
-[🇨🇦EN](Documentation/🇨🇦EN%20Read%20Me.md) <!--Skip in Jazzy-->
+[🇨🇦EN](🇨🇦EN%20Read%20Me.md) <!--Skip in Jazzy-->
 
 macOS • Linux
 
@@ -25,29 +25,29 @@ Workspace automates management of Swift projects.
 ## Features
 
 - Provides rigorous validation:
-  - [Test coverage](Documentation/Code%20Coverage.md)
-  - [Compiler warnings](Documentation/Compiler%20Warnings.md)
-  - [Documentation coverage](Documentation/Documentation%20Generation.md#enforcement)
-  - [Example validation](Documentation/Examples.md)
-  - [Style proofreading](Documentation/Proofreading.md) (including [SwiftLint](https://github.com/realm/SwiftLint))
-  - [Reminders](Documentation/Manual%20Warnings.md)
-  - [Continuous integration set‐up](Documentation/Continuous%20Integration.md) ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))
-- Generates API [documentation](Documentation/Documentation%20Generation.md) (except from Linux). (Using [Jazzy](https://github.com/realm/jazzy))
+  - [Test coverage](Code%20Coverage.md)
+  - [Compiler warnings](Compiler%20Warnings.md)
+  - [Documentation coverage](Documentation%20Generation.md#enforcement)
+  - [Example validation](Examples.md)
+  - [Style proofreading](Proofreading.md) (including [SwiftLint](https://github.com/realm/SwiftLint))
+  - [Reminders](Manual%20Warnings.md)
+  - [Continuous integration set‐up](Continuous%20Integration.md) ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))
+- Generates API [documentation](Documentation%20Generation.md) (except from Linux). (Using [Jazzy](https://github.com/realm/jazzy))
 - Automates code maintenance:
-  - [Embedded resources](Documentation/Resources.md)
-  - [Inherited documentation](Documentation/Documentation%20Inheritance.md)
-  - [Xcode project generation](Documentation/Xcode.md)
+  - [Embedded resources](Resources.md)
+  - [Inherited documentation](Documentation%20Inheritance.md)
+  - [Xcode project generation](Xcode.md)
 - Automates open source details:
-  - [File headers](Documentation/File%20Headers.md)
-  - [Read‐me files](Documentation/Read‐Me.md)
-  - [Licence notices](Documentation/Licence.md)
-  - [Contributing instructions](Documentation/Contributing%20Instructions.md)
+  - [File headers](File%20Headers.md)
+  - [Read‐me files](Read‐Me.md)
+  - [Licence notices](Licence.md)
+  - [Contributing instructions](Contributing%20Instructions.md)
 - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
 - Manages projects for macOS, Linux, iOS, watchOS and tvOS.
-- [Configurable](Documentation/Configuring%20Workspace.md)
-  -  Configurations can be [shared](Documentation/Configuring%20Workspace.md#sharing-configurations-between-projects) between projects.
+- [Configurable](Configuring%20Workspace.md)
+  -  Configurations can be [shared](Configuring%20Workspace.md#sharing-configurations-between-projects) between projects.
 
-(For a list of related projects, see [here](Documentation/🇨🇦EN%20Related%20Projects.md).) <!--Skip in Jazzy-->
+(For a list of related projects, see [here](🇨🇦EN%20Related%20Projects.md).) <!--Skip in Jazzy-->
 
 ## Installation
 
@@ -75,7 +75,7 @@ git clone https://github.com/SDGGiesbrecht/Workspace
 
 ### Refresh the Workspace
 
-To refresh the workspace, double‐click the `Refresh` script for the corresponding operating system. (If you are on Linux and double‐clicking fails or opens a text file, see [here](Documentation/Linux%20Notes.md#doubleclicking-scripts).)
+To refresh the workspace, double‐click the `Refresh` script for the corresponding operating system. (If you are on Linux and double‐clicking fails or opens a text file, see [here](Linux%20Notes.md#doubleclicking-scripts).)
 
 `Refresh` opens a terminal window, and in it Workspace reports its actions while it sets the project folder up for development.
 
@@ -114,28 +114,28 @@ To have Workspace take responsibility for an existing project, run this command 
 workspace refresh
 ```
 
-When it is added to an existing project, Workspace will refrain from most responsibilities by default, behaving in a primarily opt‐in manner. This setting can be [changed](Documentation/Responsibilities.md).
+When it is added to an existing project, Workspace will refrain from most responsibilities by default, behaving in a primarily opt‐in manner. This setting can be [changed](Responsibilities.md).
 
 ### New Projects
 
 To have Workspace create a new Swift project from scratch, run one of the following commands in an empty folder:
 
-To create a [library](Documentation/Project%20Types.md) project:
+To create a [library](Project%20Types.md) project:
 ```shell
 workspace initialize
 ```
 
-To create an [application](Documentation/Project%20Types.md) project:
+To create an [application](Project%20Types.md) project:
 ```shell
 workspace initialize •type application
 ```
 
-To create an [executable](Documentation/Project%20Types.md) project:
+To create an [executable](Project%20Types.md) project:
 ```shell
 workspace initialize •type executable
 ```
 
-When it creates a new project, Workspace will handle many responsibilities by default, behaving in a primarily opt‐out manner. This setting can be [changed](Documentation/Responsibilities.md).
+When it creates a new project, Workspace will handle many responsibilities by default, behaving in a primarily opt‐out manner. This setting can be [changed](Responsibilities.md).
 
 ## About
 

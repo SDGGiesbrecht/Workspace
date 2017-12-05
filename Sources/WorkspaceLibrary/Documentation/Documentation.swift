@@ -43,9 +43,24 @@ enum Documentation {
 
         var template = try project.configuration.documentationCopyright()
 
-        template.insert(dates, for: "Copyright")
-        try template.insert(resultOf: { try project.configuration.requireAuthor() }, for: "Author")
-        template.insert(try project.projectName(output: &output), for: "Project")
+        template.insert(dates, for: UserFacingText({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "Copyright"
+            }
+        }))
+        try template.insert(resultOf: { try project.configuration.requireAuthor() }, for: UserFacingText({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "Author"
+            }
+        }))
+        template.insert(try project.projectName(output: &output), for: UserFacingText({ (localization, _) in
+            switch localization {
+            case .englishCanada:
+                return "Project"
+            }
+        }))
 
         return template.text
     }
@@ -81,15 +96,14 @@ enum Documentation {
             try Jazzy.default.document(target: target, scheme: try project.xcodeScheme(output: &output), buildOperatingSystem: buildOperatingSystem, copyright: copyrightText, gitHubURL: try project.configuration.repositoryURL(), outputDirectory: outputDirectory, project: project, output: &output)
         }
 
+        let transformedMarker = ReadMe.skipInJazzy.replacingMatches(for: "\u{2D}\u{2D}".scalars, with: "&ndash;".scalars).replacingMatches(for: "<".scalars, with: "&lt;".scalars).replacingMatches(for: ">".scalars, with: "&gt;".scalars)
         for url in try project.trackedFiles(output: &output) where url.is(in: outputDirectory) {
             if let type = try? FileType(url: url),
                 type == .html {
 
-                let transformedMarker = ReadMe.skipInJazzy.replacingOccurrences(of: "\u{2D}\u{2D}", with: "&ndash;").replacingOccurrences(of: "<", with: "&lt;").replacingOccurrences(of: ">", with: "&gt;")
-
                 var file = try TextFile(alreadyAt: url)
                 var source = file.contents
-                while let skipMarker = source.scalars.firstMatch(for: transformedMarker.scalars) { // [_Exempt from Code Coverage_] [_Workaround: Until read‐me is testable._]
+                while let skipMarker = source.scalars.firstMatch(for: transformedMarker.scalars) {
                     let line = skipMarker.range.lines(in: source.lines)
                     source.lines.removeSubrange(line)
                 }
@@ -121,11 +135,11 @@ enum Documentation {
         let warnings = try Jazzy.default.warnings(outputDirectory: documentationDirectory(for: target, in: project))
 
         for warning in warnings {
-            print(join(lines: [
+            print([
                 warning.file.path(relativeTo: project.location) + ":" + String(warning.line?.inDigits() ?? ""),
                 warning.symbol,
                 ""
-                ]).formattedAsError(), to: &output)
+                ].joinAsLines().formattedAsError(), to: &output)
         }
 
         if warnings.isEmpty {

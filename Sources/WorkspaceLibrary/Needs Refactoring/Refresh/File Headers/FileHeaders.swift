@@ -52,7 +52,7 @@ struct FileHeaders {
                 "[_Licence_]"
                 ])
         }
-        return join(lines: defaultHeader)
+        return defaultHeader.joinAsLines()
     }()
 
     static func copyright(fromText text: String) -> String {
@@ -130,7 +130,7 @@ struct FileHeaders {
                 let oldHeader = file.header
                 var header = template
 
-                header = header.replacingOccurrences(of: key("Filename"), with: path.filename)
+                header = header.replacingOccurrences(of: key("Filename"), with: String(StrictString(path.filename)))
                 header = header.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.projectName(output:
                     &output)))
                 if let website = possibleWebsite {

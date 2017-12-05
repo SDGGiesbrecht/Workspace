@@ -35,13 +35,13 @@ class RubyGem : ThirdPartyTool {
         return Command.Error(description: UserFacingText({ (localization: InterfaceLocalization, _: Void) in // [_Exempt from Code Coverage_]
             switch localization {
             case .englishCanada: // [_Exempt from Code Coverage_]
-                let englishName = String(name.resolved(for: localization))
-                let url = String(installationInstructionsURL.resolved(for: localization))
-                return StrictString(join(lines: [
-                    "Failed to install " + englishName + " " + version.string + ".",
-                    "Please install " + englishName + " " + version.string + " manually.",
-                    "See " + url.in(Underline.underlined)
-                    ]))
+                let englishName = name.resolved(for: localization)
+                let url = installationInstructionsURL.resolved(for: localization)
+                return [
+                    StrictString("Failed to install \(englishName) \(version.string)."),
+                    StrictString("Please install \(englishName) \(version.string) manually."),
+                    StrictString("See \(url.in(Underline.underlined))")
+                    ].joinAsLines()
             }
         }))
     }

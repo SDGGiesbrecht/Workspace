@@ -43,7 +43,7 @@ func normalizeFiles(output: inout Command.Output) {
 
                 return normalized + semanticWhitespace
             }
-            file.contents = join(lines: normalizedLines)
+            file.contents = normalizedLines.joinAsLines()
 
             require() { try file.write(output: &output) }
         }

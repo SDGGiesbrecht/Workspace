@@ -1,5 +1,5 @@
-/*
- Error.swift
+<!--
+ 🇨🇦EN Related Projects.md
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -10,19 +10,12 @@
 
  Licensed under the Apache Licence, Version 2.0.
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
- */
+ -->
 
-import SDGCornerstone
+# Related Projects
 
-func require<T>(operation: () throws -> T) -> T {
-    do {
-        return try operation()
-    } catch let error {
+### [Workspace](https://github.com/SDGGiesbrecht/Workspace)
 
-        fatalError(message: [
-            "An error occurred:",
-            "",
-            error.localizedDescription
-            ])
-    }
-}
+### [SDGCommandLine](https://github.com/SDGGiesbrecht/SDGCommandLine)
+
+### [SDGCornerstone](https://github.com/SDGGiesbrecht/SDGCornerstone)

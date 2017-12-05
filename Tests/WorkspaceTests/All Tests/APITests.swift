@@ -92,8 +92,9 @@ class APITests : TestCase {
     }
 
     func testDocumentation() {
+
         #if !os(Linux)
-            XCTAssertErrorFree {
+            XCTAssertErrorFree { // Failures here when inside Xcode are irrelevant. (Xcode bypasses shell login scripts necessary to find Jazzy and other Ruby gems.)
                 let project = try MockProject(type: "Library")
                 try project.do {
                     try "Repository URL: https://github.com/user/project\nAuthor: John Doe\nSupport macOS: False".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
@@ -103,10 +104,10 @@ class APITests : TestCase {
                 }
             }
 
-            XCTAssertErrorFree {
+            XCTAssertErrorFree { // Failures here when inside Xcode are irrelevant. (Xcode bypasses shell login scripts necessary to find Jazzy and other Ruby gems.)
                 let project = try MockProject(type: "Library")
                 try project.do {
-                    try "Documentation Copyright: ©0001 John Doe\nSupport macOS: False\nSupport iOS: False".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                    try "Documentation Copyright: ©0001 John Doe\nSupport macOS: False\nSupport iOS: False\nManage Read‐Me: True\nLocalizations: en".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
                     try [
                         "/// ...",
                         "infix operator ≠",
@@ -125,10 +126,13 @@ class APITests : TestCase {
                         "    \u{70}ublic static func אבג() {}",
                         "}"
                         ].joined(separator: "\n").save(to: project.location.appendingPathComponent("Sources/MyProject/Unicode.swift"))
+                    try Workspace.command.execute(with: ["refresh", "read‐me"])
                     try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
                     try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
                     let page = try String(from: project.location.appendingPathComponent("docs/MyProject/Extensions/Bool.html"))
                     XCTAssert(¬page.contains("\u{22}err\u{22}"), "Failed to clean up Jazzy output.")
+                    let index = try String(from: project.location.appendingPathComponent("docs/MyProject/index.html"))
+                    XCTAssert(¬index.contains("Skip in Jazzy"), "Failed to remove read‐me–only content.")
                 }
             }
 
@@ -141,7 +145,7 @@ class APITests : TestCase {
                 }
             }
 
-            XCTAssertErrorFree {
+            XCTAssertErrorFree { // Failures here when inside Xcode are irrelevant. (Xcode bypasses shell login scripts necessary to find Jazzy and other Ruby gems.)
                 let project = try MockProject(type: "Library")
                 try project.do {
                     try "Support macOS: False\nSupport iOS: False\nSupport watchOS: False".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
@@ -150,7 +154,7 @@ class APITests : TestCase {
                 }
             }
 
-            XCTAssertThrowsError(containing: "fails validation") {
+            XCTAssertThrowsError(containing: "fails validation") { // Failures here when inside Xcode are irrelevant. (Xcode bypasses shell login scripts necessary to find Jazzy and other Ruby gems.)
                 let project = try MockProject(type: "Library")
                 try project.do {
                     try "\u{70}ublic func undocumentedFunction() {}".save(to: project.location.appendingPathComponent("Sources/MyProject/Undocumented.swift"))
@@ -159,6 +163,178 @@ class APITests : TestCase {
                 }
             }
         #endif
+    }
+
+    func testReadMe() {
+        XCTAssertErrorFree {
+            // Skeleton
+            let project = try MockProject()
+            try project.do {
+
+                try Resources.ReadMe.skeletonWorkspaceConfiguration.save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                defer {
+                    XCTAssertEqual(try String(from: project.location.appendingPathComponent("README.md")), "\n" + String(LineView<String>(Resources.ReadMe.skeletonReadMe.lines.dropFirst(13))))
+                }
+
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
+
+        XCTAssertErrorFree {
+            // Partial
+            let project = try MockProject()
+            try project.do {
+
+                try Resources.ReadMe.partialWorkspaceConfiguration.save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                defer {
+                    XCTAssertEqual(try String(from: project.location.appendingPathComponent("README.md")), "\n" + String(LineView<String>(Resources.ReadMe.partialReadMe.lines.dropFirst(13))))
+                }
+
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
+
+        XCTAssertErrorFree {
+            // Elaborate
+            let project = try MockProject()
+            try project.do {
+
+                try Resources.ReadMe.elaborateWorkspaceConfiguration.save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try [
+                    "// [\u{5F}Define Example: Read‐Me 🇨🇦EN_]", "doSomething()", "// [_End_]",
+                    "// [\u{5F}Define Example: Read‐Me 🇩🇪DE_]", "...", "// [_End_]",
+                    "// [\u{5F}Define Example: Read‐Me 🇫🇷FR_]", "...", "// [_End_]",
+                    "// [\u{5F}Define Example: Read‐Me 🇬🇷ΕΛ_]", "...", "// [_End_]",
+                    "// [\u{5F}Define Example: Read‐Me 🇮🇱עב_]", "...", "// [_End_]",
+                    ""
+                    ].joined(separator: "\n").save(to: project.location.appendingPathComponent("Sources/MyProject/Example.swift"))
+                defer {
+                    XCTAssertEqual(try String(from: project.location.appendingPathComponent("README.md")), "\n" + String(LineView<String>(Resources.ReadMe.elaborateReadMe.lines.dropFirst(13))))
+                    XCTAssertEqual(try String(from: project.location.appendingPathComponent("Documentation/🇬🇷ΕΛ Με διαβάστε.md")), "\n" + String(LineView<String>(Resources.ReadMe.elaborateΜεΔιαβάστε.lines.dropFirst(13))))
+                }
+
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
+
+        XCTAssertErrorFree {
+            // Custom Installation
+            let project = try MockProject()
+            try project.do {
+
+                try Resources.ReadMe.customWorkspaceConfiguration.save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                defer {
+                    XCTAssertEqual(try String(from: project.location.appendingPathComponent("README.md")), "\n" + String(LineView<String>(Resources.ReadMe.customReadMe.lines.dropFirst(13))))
+                }
+
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
+
+        // No localizations configured.
+        XCTAssertThrowsError(containing: "Localization") {
+            let project = try MockProject()
+            try project.do {
+
+                try "Manage Read‐Me: True".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
+
+        // Dynamic elements that do not exist.
+        XCTAssertThrowsError(containing: "Documentation URL") {
+            let project = try MockProject()
+            try project.do {
+                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n[_API Links_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
+        XCTAssertThrowsError(containing: "Current Version") {
+            let project = try MockProject()
+            try project.do {
+                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n[_Current Version_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
+        XCTAssertThrowsError(containing: "Repository URL") {
+            let project = try MockProject()
+            try project.do {
+                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n[_Repository URL_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
+        XCTAssertThrowsError(containing: "Short Project Description") {
+            let project = try MockProject()
+            try project.do {
+                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n[_Short Description_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
+        XCTAssertThrowsError(containing: "Quotation") {
+            let project = try MockProject()
+            try project.do {
+                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n [_Quotation_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
+        XCTAssertThrowsError(containing: "Quotation Testament") {
+            let project = try MockProject()
+            try project.do {
+                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n [_Quotation_]\n[_End_]\nQuotation: ...\nQuotation Chapter: Genesis 1".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
+        XCTAssertThrowsError(containing: "Quotation Testament") {
+            let project = try MockProject()
+            try project.do {
+                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n [_Quotation_]\n[_End_]\nQuotation: ...\nQuotation Chapter: Genesis 1\nQuotation Testament: ...".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
+        XCTAssertThrowsError(containing: "Feature List") {
+            let project = try MockProject()
+            try project.do {
+                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n [_Features_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
+        XCTAssertThrowsError(containing: "Example Usage") {
+            let project = try MockProject()
+            try project.do {
+                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n[\u{5F}Example Usage_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
+        XCTAssertThrowsError(containing: "Other Read‐Me Content") {
+            let project = try MockProject()
+            try project.do {
+                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n [_Other_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
+        XCTAssertThrowsError(containing: "About") {
+            let project = try MockProject()
+            try project.do {
+                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Read‐Me_]\n[_en_]\n [_About_]\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
+
+        // Invalid related project.
+        XCTAssertThrowsError(containing: "URL") {
+            let project = try MockProject()
+            try project.do {
+                try "Manage Read‐Me: True\nLocalizations: en\n[_Begin Related Projects_]\n\n[_End_]".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
+
+        XCTAssertErrorFree {
+            try FileManager.default.do(in: repositoryRoot) {
+                // Validate self‐specific details.
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
+            }
+        }
     }
 
     func testResources() {
@@ -224,11 +400,12 @@ class APITests : TestCase {
     }
 
     func testWorkflow() {
-        XCTAssertErrorFree {
+        XCTAssertErrorFree { // Failures here when inside Xcode are irrelevant. (Xcode bypasses shell login scripts necessary to find Jazzy and other Ruby gems.)
             try MockProject().do {
 
                 // [_Workaround: This should eventually just do “validate”._]
                 try Workspace.command.execute(with: ["refresh", "scripts"])
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
                 try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
                 try Workspace.command.execute(with: ["refresh", "resources"])
                 #if !os(Linux)
@@ -238,11 +415,12 @@ class APITests : TestCase {
             }
         }
 
-        XCTAssertErrorFree {
+        XCTAssertErrorFree { // Failures here when inside Xcode are irrelevant. (Xcode bypasses shell login scripts necessary to find Jazzy and other Ruby gems.)
             try MockProject(type: "Library").do {
 
                 // [_Workaround: This should eventually just do “validate”._]
                 try Workspace.command.execute(with: ["refresh", "scripts"])
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
                 try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
                 try Workspace.command.execute(with: ["refresh", "resources"])
                 #if !os(Linux)
@@ -252,11 +430,12 @@ class APITests : TestCase {
             }
         }
 
-        XCTAssertErrorFree {
+        XCTAssertErrorFree { // Failures here when inside Xcode are irrelevant. (Xcode bypasses shell login scripts necessary to find Jazzy and other Ruby gems.)
             try MockProject(type: "Application").do {
 
                 // [_Workaround: This should eventually just do “validate”._]
                 try Workspace.command.execute(with: ["refresh", "scripts"])
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
                 try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
                 try Workspace.command.execute(with: ["refresh", "resources"])
                 #if !os(Linux)
@@ -266,11 +445,12 @@ class APITests : TestCase {
             }
         }
 
-        XCTAssertErrorFree {
+        XCTAssertErrorFree { // Failures here when inside Xcode are irrelevant. (Xcode bypasses shell login scripts necessary to find Jazzy and other Ruby gems.)
             try MockProject(type: "Executable").do {
 
                 // [_Workaround: This should eventually just do “validate”._]
                 try Workspace.command.execute(with: ["refresh", "scripts"])
+                try Workspace.command.execute(with: ["refresh", "read‐me"])
                 try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
                 try Workspace.command.execute(with: ["refresh", "resources"])
                 #if !os(Linux)
@@ -287,6 +467,7 @@ class APITests : TestCase {
             ("testConfiguration", testConfiguration),
             ("testContinuousIntegration", testContinuousIntegration),
             ("testDocumentation", testDocumentation),
+            ("testReadMe", testReadMe),
             ("testResources", testResources),
             ("testScripts", testScripts),
             ("testWorkflow", testWorkflow)

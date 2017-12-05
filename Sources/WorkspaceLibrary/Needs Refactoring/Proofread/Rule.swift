@@ -125,7 +125,7 @@ extension Rule {
             print(output, in: colour, spaced: true)
         } else {
             let standardError = FileHandle.standardError
-            standardError.write(join(lines: output).data(using: String.Encoding.utf8)!)
+            standardError.write(output.joinAsLines().data(using: String.Encoding.utf8)!)
         }
     }
 

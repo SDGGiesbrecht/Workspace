@@ -70,7 +70,7 @@ func print(_ message: [String]) {
 }
 
 func print(_ message: [String], in colour: OutputColour?, spaced: Bool = false) {
-    var output = join(lines: message)
+    var output = message.joinAsLines()
     if let textColour = colour {
         output = "\(textColour.start)\(output)\(OutputColour.end)"
     }

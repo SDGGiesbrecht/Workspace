@@ -1,0 +1,164 @@
+((
+    Elaborate.Workspace Configuration.txt
+
+    This source file is part of the Workspace open source project.
+    https://github.com/SDGGiesbrecht/Workspace#workspace
+
+    Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
+
+    Soli Deo gloria.
+
+    Licensed under the Apache Licence, Version 2.0.
+    See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+    ))
+
+Current Version: 1.2.3
+
+Project Website: project.example.com
+Documentation URL: documentation.example.com
+Repository URL: https://github.com/User/Project
+
+Author: Someone
+Administrators: Someone
+
+Manage Read‐Me: True
+
+[_Begin Localizations_]
+🇨🇦EN
+🇬🇧EN
+🇺🇸EN
+🇩🇪DE
+🇫🇷FR
+🇬🇷ΕΛ
+🇮🇱עב
+zxx
+[_End_]
+
+[_Begin Short Project Description_]
+[_🇨🇦EN_]
+MyProject does stuff.
+[_🇬🇧EN_]
+...
+[_🇺🇸EN_]
+...
+[_🇩🇪DE_]
+...
+[_🇫🇷FR_]
+...
+[_🇬🇷ΕΛ_]
+...
+[_🇮🇱עב_]
+...
+[_zxx_]
+...
+[_End_]
+
+[_Begin Quotation_]
+« ... »
+[_End_]
+
+[_Begin Quotation Translation_]
+[_🇨🇦EN_]
+“...”
+[_🇬🇧EN_]
+...
+[_🇺🇸EN_]
+...
+[_🇩🇪DE_]
+...
+[_🇫🇷FR_]
+...
+[_🇬🇷ΕΛ_]
+...
+[_🇮🇱עב_]
+...
+[_zxx_]
+...
+[_End_]
+
+Quotation Testament: תנ״ך
+Quotation Chapter: Chapter 1
+
+[_Begin Citation_]
+[_🇨🇦EN_]
+someone
+[_🇬🇧EN_]
+...
+[_🇺🇸EN_]
+...
+[_🇩🇪DE_]
+...
+[_🇫🇷FR_]
+...
+[_🇬🇷ΕΛ_]
+...
+[_🇮🇱עב_]
+...
+[_zxx_]
+...
+[_End_]
+
+[_Begin Feature List_]
+[_🇨🇦EN_]
+- Stuff.
+- More stuff.
+- Even more stuff.
+[_🇬🇧EN_]
+...
+[_🇺🇸EN_]
+...
+[_🇩🇪DE_]
+...
+[_🇫🇷FR_]
+...
+[_🇬🇷ΕΛ_]
+...
+[_🇮🇱עב_]
+...
+[_zxx_]
+...
+[_End_]
+
+[_Begin Other Read‐Me Content_]
+[_🇨🇦EN_]
+## Other
+
+...
+[_🇬🇧EN_]
+...
+[_🇺🇸EN_]
+...
+[_🇩🇪DE_]
+...
+[_🇫🇷FR_]
+...
+[_🇬🇷ΕΛ_]
+...
+[_🇮🇱עב_]
+...
+[_zxx_]
+...
+[_End_]
+
+[_Begin Read‐Me About Section_]
+[_🇨🇦EN_]
+This project is just a test.
+[_🇬🇧EN_]
+...
+[_🇺🇸EN_]
+...
+[_🇩🇪DE_]
+...
+[_🇫🇷FR_]
+...
+[_🇬🇷ΕΛ_]
+...
+[_🇮🇱עב_]
+...
+[_zxx_]
+...
+[_End_]
+
+[_Begin Related Projects_]
+https://github.com/SDGGiesbrecht/Workspace
+[_End_]

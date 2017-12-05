@@ -86,7 +86,7 @@ struct ContributingInstructions {
                 ])
         }
 
-        return join(lines: instructions)
+        return instructions.joinAsLines()
     }()
 
     static func defaultIssueTemplate() throws -> String {
@@ -146,7 +146,7 @@ struct ContributingInstructions {
             "It might work to do something like..."
         ]
 
-        return join(lines: template)
+        return template.joinAsLines()
     }
 
     static let defaultPullRequestTemplate: String = {
@@ -164,7 +164,7 @@ struct ContributingInstructions {
             "I **refuse to license** this under the [project licence](../blob/master/LICENSE.md)."
         ]
 
-        return join(lines: template)
+        return template.joinAsLines()
     }()
 
     static func refreshContributingInstructions(output: inout Command.Output) throws {
@@ -173,11 +173,11 @@ struct ContributingInstructions {
             return "[_\(name)_]"
         }
 
-        var body = join(lines: [
+        var body = [
             managementComment,
             "",
             Configuration.contributingInstructions
-            ])
+            ].joinAsLines()
 
         body = body.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.projectName(output: &output)))
 

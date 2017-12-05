@@ -39,7 +39,7 @@ struct FileSyntax {
     // MARK: - Output
 
     func comment(contents: [String]) -> String {
-        return comment(contents: join(lines: contents))
+        return comment(contents: contents.joinAsLines())
     }
 
     func comment(contents: String) -> String {
@@ -70,18 +70,18 @@ struct FileSyntax {
             }
             firstLines.append("")
             firstLines.append("") // Header starts in this line.
-            first = join(lines: firstLines)
+            first = firstLines.joinAsLines()
         }
 
         var body = String(file.contents[file.headerEnd...])
         while let firstCharacter = body.unicodeScalars.first, firstCharacter ∈ CharacterSet.whitespacesAndNewlines {
             body.unicodeScalars.removeFirst()
         }
-        body = join(lines: [
+        body = [
             "", // Line at end of header
             "",
             "" // Body starts in this line
-            ]) + body
+            ].joinAsLines() + body
 
         let contents = first + generateHeader(contents: header) + body
 

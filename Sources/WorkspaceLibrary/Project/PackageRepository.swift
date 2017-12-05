@@ -28,20 +28,24 @@ extension PackageRepository {
 
     // MARK: - Cache
 
-    private struct Cache {
-        fileprivate class Properties {
-            fileprivate var packageName: String?
-            fileprivate var targets: [String: Target]?
-            fileprivate var libraryProductTargets: Set<String>?
+    private class Cache {
+        fileprivate var packageName: String?
+        fileprivate var targets: [String: Target]?
+        fileprivate var libraryProductTargets: Set<String>?
 
-            fileprivate var allFiles: [URL]?
-            fileprivate var trackedFiles: [URL]?
-            fileprivate var sourceFiles: [URL]?
-            fileprivate var resourceFiles: [URL]?
-        }
-        fileprivate var properties = Properties()
+        fileprivate var allFiles: [URL]?
+        fileprivate var trackedFiles: [URL]?
+        fileprivate var sourceFiles: [URL]?
+        fileprivate var resourceFiles: [URL]?
+
+        fileprivate var examples: [String: String]?
     }
     private static var caches: [URL: Cache] = [:]
+    private var cache: Cache {
+        return cached(in: &PackageRepository.caches[location]) {
+            return Cache()
+        }
+    }
 
     func resetCache(debugReason: String) {
         PackageRepository.caches[location] = Cache()
@@ -83,7 +87,7 @@ extension PackageRepository {
     }
 
     func packageName(output: inout Command.Output) throws -> String {
-        return try cached(in: &PackageRepository.caches[location, default: Cache()].properties.packageName) {
+        return try cached(in: &cache.packageName) {
             var name = ""
             try FileManager.default.do(in: location) {
                 name = try SwiftTool.default.packageName(output: &output)
@@ -93,7 +97,7 @@ extension PackageRepository {
     }
 
     func targets(output: inout Command.Output) throws -> [String: Target] {
-        return try cached(in: &PackageRepository.caches[location, default: Cache()].properties.targets) {
+        return try cached(in: &cache.targets) {
             () -> [String: Target] in
 
             var list: [String: Target] = [:]
@@ -108,7 +112,7 @@ extension PackageRepository {
     }
 
     func libraryProductTargets(output: inout Command.Output) throws -> Set<String> {
-        return try cached(in: &PackageRepository.caches[location, default: Cache()].properties.libraryProductTargets) {
+        return try cached(in: &cache.libraryProductTargets) {
             var result: Set<String> = []
             try FileManager.default.do(in: location) {
                 result = try SwiftTool.default.libraryProductTargets(output: &output)
@@ -134,7 +138,7 @@ extension PackageRepository {
     // MARK: - Files
 
     func allFiles() throws -> [URL] {
-        return try cached(in: &PackageRepository.caches[location, default: Cache()].properties.allFiles) {
+        return try cached(in: &cache.allFiles) {
             () -> [URL] in
 
             var failureReason: Error? // Thrown after enumeration stops. (See below.)
@@ -186,7 +190,7 @@ extension PackageRepository {
     }
 
     func trackedFiles(output: inout Command.Output) throws -> [URL] {
-        return try cached(in: &PackageRepository.caches[location, default: Cache()].properties.trackedFiles) {
+        return try cached(in: &cache.trackedFiles) {
             () -> [URL] in
 
             var ignoredURLs: [URL] = []
@@ -208,7 +212,7 @@ extension PackageRepository {
     }
 
     func sourceFiles(output: inout Command.Output) throws -> [URL] {
-        return try cached(in: &PackageRepository.caches[location, default: Cache()].properties.sourceFiles) { () -> [URL] in
+        return try cached(in: &cache.sourceFiles) { () -> [URL] in
 
             let generatedURLs = [
                 "docs",
@@ -234,6 +238,12 @@ extension PackageRepository {
         try Script.refreshRelevantScripts(for: self, output: &output)
     }
 
+    // MARK: - Read‐Me
+
+    func refreshReadMe(output: inout Command.Output) throws {
+        try ReadMe.refreshReadMe(for: self, output: &output)
+    }
+
     // MARK: - Continuous Integration
 
     func refreshContinuousIntegration(output: inout Command.Output) throws {
@@ -243,7 +253,7 @@ extension PackageRepository {
     // MARK: - Resources
 
     func resourceFiles(output: inout Command.Output) throws -> [URL] {
-        return try cached(in: &PackageRepository.caches[location, default: Cache()].properties.resourceFiles) { () -> [URL] in
+        return try cached(in: &cache.resourceFiles) { () -> [URL] in
             let locations = resourceDirectories()
 
             let result = try sourceFiles(output: &output).filter() { (file) in
@@ -287,6 +297,14 @@ extension PackageRepository {
 
         for (target, resources) in targets {
             try target.refresh(resources: resources, from: self, output: &output)
+        }
+    }
+
+    // MARK: - Examples
+
+    func examples(output: inout Command.Output) throws -> [String: String] {
+        return try cached(in: &cache.examples) {
+            return try Examples.examples(in: self, output: &output)
         }
     }
 

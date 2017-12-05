@@ -22,6 +22,9 @@ struct DGit {
     static let ignoreEntriesForMacOS = [
         ".DS_Store"
         ]
+    static let ignoreEntriesForLinux = [
+        "*~"
+    ]
 
     static let ignoreEntriesForSwiftProjectManager = [
         "/.build",
@@ -35,11 +38,13 @@ struct DGit {
         ]
 
     static let requiredIgnoreEntries = ignoreEntriesForMacOS
+        + ignoreEntriesForLinux
         + ignoreEntriesForSwiftProjectManager
         + ignoreEntriesForWorkspace
 
     static let ignoreEntriesForXcode = [
-        "/*.xcodeproj"
+        "/*.xcodeproj",
+        "*.profraw"
         ]
 
     static let ignoreEntriesForJazzy = [
@@ -89,7 +94,7 @@ struct DGit {
                 updatedLines += [""]
             }
 
-            body.replaceSubrange(managedRange, with: join(lines: updatedLines))
+            body.replaceSubrange(managedRange, with: updatedLines.joinAsLines())
             updatedFile.body = body
             require() {try updatedFile.write(output: &output) }
         }

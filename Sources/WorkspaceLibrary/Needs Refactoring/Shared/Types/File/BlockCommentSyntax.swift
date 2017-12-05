@@ -16,10 +16,6 @@ import Foundation
 
 import SDGCornerstone
 
-func join(lines: [String]) -> String {
-    return lines.joined(separator: "\n")
-}
-
 struct BlockCommentSyntax {
 
     // MARK: - Initialization
@@ -39,12 +35,12 @@ struct BlockCommentSyntax {
     // MARK: - Output
 
     func comment(contents: [String]) -> String {
-        return comment(contents: join(lines: contents))
+        return comment(contents: contents.joinAsLines())
     }
 
     func comment(contents: String) -> String {
 
-        let withEndToken = join(lines: [contents, end])
+        let withEndToken = [contents, end].joinAsLines()
 
         var lines = withEndToken.lines.map({ String($0.line) })
 
@@ -61,9 +57,9 @@ struct BlockCommentSyntax {
             }
         }
 
-        lines = [start, join(lines: lines)]
+        lines = [start, lines.joinAsLines()]
 
-        return join(lines: lines)
+        return lines.joinAsLines()
     }
 
     // MARK: - Parsing
@@ -145,7 +141,7 @@ struct BlockCommentSyntax {
             strings.removeLast()
         }
 
-        return join(lines: strings)
+        return strings.joinAsLines()
     }
 
     func firstComment(in string: String) -> String? {

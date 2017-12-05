@@ -33,8 +33,6 @@ extension Configuration {
 
         // MARK: - Settings
 
-        fileprivate var localizations: [ArbitraryLocalization]?
-
         fileprivate var automaticallyTakeOnNewResponsibilites: Bool?
     }
     private static var cache = Cache()
@@ -64,17 +62,17 @@ extension Configuration {
 
         let entry: String
         if value.isMultiline {
-            entry = join(lines: [
+            entry = [
                 startMultilineOption(option: option),
                 value,
                 endToken
-                ])
+                ].joinAsLines()
         } else {
             entry = option.key + colon + value
         }
 
         if let array = comment {
-            let note = join(lines: array)
+            let note = array.joinAsLines()
 
             let commentedNote: String
             if note.isMultiline {
@@ -86,10 +84,10 @@ extension Configuration {
                 commentedNote = lineCommentSyntax.comment(contents: note)
 
             }
-            return join(lines: [
+            return [
                 commentedNote,
                 entry
-                ])
+                ].joinAsLines()
 
         } else {
             return entry
@@ -126,7 +124,7 @@ extension Configuration {
                 "",
                 "Supported keys:",
                 "",
-                join(lines: Option.allPublic.map({ $0.key }))
+                Option.allPublic.map({ $0.key }).joinAsLines()
                 ])
         }
 
@@ -134,7 +132,7 @@ extension Configuration {
             fatalError(message: [
                 "Syntax error!",
                 "",
-                join(lines: description),
+                description.joinAsLines(),
                 "",
                 "Valid syntax:",
                 "",
@@ -220,6 +218,7 @@ extension Configuration {
 
                 if let option = Option(key: String(multilineOption.contents.contents)) {
                     currentMultilineOption = option
+                    result[option] = nil
                 } else {
                     reportUnsupportedKey(String(multilineOption.contents.contents))
                 }
@@ -246,7 +245,7 @@ extension Configuration {
         if let comment = currentMultilineComment {
             syntaxError(description: [
                 "Unterminated Comment:",
-                join(lines: comment)
+                comment.joinAsLines()
                 ])
         }
         if let option = currentMultilineOption {
@@ -287,7 +286,7 @@ extension Configuration {
             "",
             "Valid values:",
             "",
-            join(lines: valid.map({ String($0) }) )
+            String(valid.joinAsLines())
             ])
     }
 
@@ -323,7 +322,7 @@ extension Configuration {
                     "",
                     "Detected options:",
                     "",
-                    join(lines: configurationFile.keys.map({ $0.key }).sorted())
+                    configurationFile.keys.map({ $0.key }).sorted().joinAsLines()
                     ])
             }
         }
@@ -350,16 +349,28 @@ extension Configuration {
         return parseList(value: string)
     }
 
-    static func parseLocalizations(_ string: String) -> [ArbitraryLocalization: String]? {
+    static func parseLocalizations(_ string: String, for option: Option) throws -> [String: String] {
         var currentLocalization: String?
         var result: [String: [String]] = [:]
         for line in string.lines.lazy.map({ String($0.line) }) {
             if let identifier = line.scalars.firstNestingLevel(startingWith: "[_".scalars, endingWith: "_]".scalars),
-                identifier.container.range == line.scalars.bounds {
-                currentLocalization = String(identifier.contents.contents)
+                identifier.container.range == line.scalars.bounds,
+                ¬line.contains(" ") {
+                var code = String(identifier.contents.contents)
+                if let fromIcon = ContentLocalization.code(for: StrictString(code)) {
+                    code = fromIcon
+                }
+                currentLocalization = code
             } else {
                 guard let localization = currentLocalization else {
-                    return nil
+                    throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+                        switch localization {
+                        case .englishCanada:
+                            return [
+                                StrictString("Localization syntax error in configuration option: \(option.key)")
+                                ].joinAsLines()
+                        }
+                    }))
                 }
                 var text: [String]
                 if let existing = result[localization] {
@@ -371,57 +382,11 @@ extension Configuration {
                 result[localization] = text
             }
         }
-        var mapped: [ArbitraryLocalization: String] = [:]
+        var mapped: [String: String] = [:]
         for (key, value) in result {
-            mapped[ArbitraryLocalization(code: key)] = join(lines: value)
+            mapped[key] = value.joinAsLines()
         }
         return mapped
-    }
-    private static func localizedOptionValues(option: Option, configuration: [Option: String]? = nil) -> [ArbitraryLocalization: String]? {
-        var file = configuration ?? configurationFile
-
-        guard let string = file[option] else {
-            return nil
-        }
-        guard let localized = parseLocalizations(string) else {
-            return nil
-        }
-        return localized
-    }
-    static func localizedOptionValue(option: Option, localization: ArbitraryLocalization?, configuration: [Option: String]? = nil) -> String? {
-        var file = configuration ?? configurationFile
-
-        guard let localized = localizedOptionValues(option: option, configuration: file) else {
-            return file[option]
-        }
-        guard let specific = localization else {
-            guard let development = developmentLocalization else {
-                return file[option]
-            }
-            return localized[development]
-        }
-        return localized[specific]
-    }
-    private static func missingLocalizationError(option: Option, localization: ArbitraryLocalization?) -> Never {
-        fatalError(message: [
-            "Missing configuration option:",
-            "",
-            option.key,
-            "",
-            "Localization:",
-            "",
-            localization?.code ?? "[Unlocalized]",
-            "",
-            "Detected options:",
-            "",
-            join(lines: configurationFile.keys.map({ $0.key }).sorted())
-            ])
-    }
-    private static func requiredLocalizedOptionValue(option: Option, localization: ArbitraryLocalization?) -> String {
-        guard let result = localizedOptionValue(option: option, localization: localization) else {
-            missingLocalizationError(option: option, localization: localization)
-        }
-        return result
     }
 
     // Workspace Behaviour
@@ -441,29 +406,6 @@ extension Configuration {
             return false
         } else {
             return booleanValue(option: .skipSimulator)
-        }
-    }
-
-    static var localizations: [ArbitraryLocalization] {
-        var cacheCopy = cache
-        defer { cache = cacheCopy }
-
-        return cached(in: &cacheCopy.localizations) {
-            return listValue(option: .localizations).map { ArbitraryLocalization(code: $0) }
-        }
-    }
-    static var developmentLocalization: ArbitraryLocalization? {
-        return localizations.first
-    }
-    static func resolvedLocalization(for localization: ArbitraryLocalization?) -> ArbitraryLocalization {
-        if let specific = localization {
-            return specific
-        } else {
-            if let development = Configuration.developmentLocalization {
-                return development
-            } else {
-                return .compatible(.englishCanada)
-            }
         }
     }
 
@@ -504,96 +446,6 @@ extension Configuration {
     }
 
     // Responsibilities
-
-    static var manageReadMe: Bool {
-        return booleanValue(option: .manageReadMe)
-    }
-    static func readMe(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String {
-        return try localizedOptionValue(option: .readMe, localization: localization) ?? ReadMe.defaultReadMeTemplate(localization: localization, output: &output)
-    }
-    static var documentationURL: String? {
-        return possibleStringValue(option: .documentationURL)
-    }
-    static var requiredDocumentationURL: String {
-        return stringValue(option: .documentationURL)
-    }
-    static func shortProjectDescription(localization: ArbitraryLocalization?) -> String? {
-        return localizedOptionValue(option: .shortProjectDescription, localization: localization)
-    }
-    static func requiredShortProjectDescription(localization: ArbitraryLocalization?) -> String {
-        return requiredLocalizedOptionValue(option: .shortProjectDescription, localization: localization)
-    }
-    static var quotation: String? {
-        return possibleStringValue(option: .quotation)
-    }
-    static var requiredQuotation: String {
-        return stringValue(option: .quotation)
-    }
-    static func quotationTranslation(localization: ArbitraryLocalization?) -> String? {
-        return localizedOptionValue(option: .quotationTranslation, localization: localization)
-    }
-    static func quotationURL(localization: ArbitraryLocalization?) -> String? {
-        return localizedOptionValue(option: .quotationURL, localization: localization) ?? ReadMe.defaultQuotationURL(localization: localization)
-    }
-    static var quotationChapter: String? {
-        return possibleStringValue(option: .quotationChapter)
-    }
-    static var quotationOriginalKey: String {
-        let value = stringValue(option: .quotationTestament)
-        let old: StrictString = "Old"
-        let new: StrictString = "New"
-        switch value {
-        case String(old):
-            return "WLC"
-        case String(new):
-            return "SBLGNT"
-        default:
-            invalidEnumValue(option: .quotationTestament, value: value, valid: [old, new])
-        }
-    }
-    static func citation(localization: ArbitraryLocalization?) -> String? {
-        return localizedOptionValue(option: .citation, localization: localization)
-    }
-    static func featureList(localization: ArbitraryLocalization?) -> String? {
-        return localizedOptionValue(option: .featureList, localization: localization)
-    }
-    static func requiredFeatureList(localization: ArbitraryLocalization?) -> String {
-        return requiredLocalizedOptionValue(option: .featureList, localization: localization)
-    }
-    static func installationInstructions(localization: ArbitraryLocalization?, output: inout Command.Output) throws -> String? {
-        return try localizedOptionValue(option: .installationInstructions, localization: localization) ?? (try ReadMe.defaultInstallationInstructions(localization: localization, output:
-            &output))
-    }
-    static func requiredInstallationInstructions(localization: ArbitraryLocalization?, output: inout Command.Output) -> String {
-        guard let result = (try? installationInstructions(localization: localization, output: &output))! else {
-            missingLocalizationError(option: .installationInstructions, localization: localization)
-        }
-        return result
-    }
-    static var requiredRepositoryURL: String {
-        return stringValue(option: .repositoryURL)
-    }
-    static var currentVersion: Version? {
-        if let version = possibleStringValue(option: .currentVersion) {
-            return Version(version)
-        } else {
-            return nil
-        }
-    }
-    static var requiredCurrentVersion: Version {
-        guard let result = Version(stringValue(option: .currentVersion)) else {
-            failTests(message: [
-                "Invalid version identifier: " + stringValue(option: .currentVersion)
-                ])
-        }
-        return result
-    }
-    static var otherReadMeContent: String? {
-        return possibleStringValue(option: .otherReadMeContent)
-    }
-    static var requiredOtherReadMeContent: String {
-        return stringValue(option: .otherReadMeContent)
-    }
 
     static var manageLicence: Bool {
         return booleanValue(option: .manageLicence)
@@ -639,22 +491,6 @@ extension Configuration {
     }
     static var requiredDevelopmentNotes: String {
         return possibleStringValue(option: .developmentNotes) ?? ""
-    }
-    static func relatedProjects(localization: ArbitraryLocalization?) -> [String] {
-        if let result = localizedOptionValue(option: .relatedProjects, localization: localization) {
-            if result.contains("[_") { // The main project is not localized, but the linked configuration is.
-                if let parsedLocalizations = parseLocalizations(result) {
-                    if let english = parsedLocalizations[.compatible(.englishCanada)] ?? parsedLocalizations[.compatible(.englishUnitedStates)] {
-                        return parseList(value: english)
-                    } else {
-                        return parseList(value: parsedLocalizations.first?.value ?? "")
-                    }
-                }
-            }
-            return parseList(value: result)
-        } else {
-            return listValue(option: .relatedProjects)
-        }
     }
 
     static var manageFileHeaders: Bool {
@@ -729,11 +565,11 @@ extension Configuration {
                     if ¬actualValue.isMultiline {
                         return "\(option.key): \(actualValue)"
                     } else {
-                        return join(lines: [
+                        return [
                             "[_Begin \(option.key)_]",
                             actualValue,
                             "[_End_]"
-                            ])
+                            ].joinAsLines()
                     }
                 } else {
                     return "\(option.key): [Not specified.]"
@@ -801,7 +637,7 @@ extension Configuration {
                         "",
                         "Available Keys:",
                         "",
-                        join(lines: Option.allPublic.map({ $0.key }))
+                        Option.allPublic.map({ $0.key }).joinAsLines()
                         ])
                 }
             }
@@ -819,7 +655,7 @@ extension Configuration {
                         "",
                         "Available Types:",
                         "",
-                        join(lines: PackageRepository.Target.TargetType.cases.map({ String($0.key) }))
+                        String(PackageRepository.Target.TargetType.cases.map({ $0.key }).joinAsLines())
                         ])
                 }
                 return (option: option(forKey: components[1]), types: [type])

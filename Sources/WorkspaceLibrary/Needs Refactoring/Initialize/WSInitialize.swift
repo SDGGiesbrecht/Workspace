@@ -84,7 +84,7 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
     ]
 
     var packageDescriptionFile = File(possiblyAt: RelativePath("Package.swift"))
-    packageDescriptionFile.body = join(lines: packageDescription)
+    packageDescriptionFile.body = packageDescription.joinAsLines()
     require() { try packageDescriptionFile.write(output: &output) }
 
     var source: [String]
@@ -169,7 +169,7 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
         "}"
     ]
 
-    sourceFile.body = join(lines: source)
+    sourceFile.body = source.joinAsLines()
     require() { try sourceFile.write(output: &output) }
 
     if packageType == .executable {
@@ -184,7 +184,7 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
             "",
             "\(executableLibraryName).run()"
         ]
-        mainFile.body = join(lines: main)
+        mainFile.body = main.joinAsLines()
         require() { try mainFile.write(output: &output) }
     }
 
@@ -197,7 +197,7 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
         "    testCase(\(testsName).allTests)",
         "])"
     ]
-    linuxMainFile.body = join(lines: linuxMain)
+    linuxMainFile.body = linuxMain.joinAsLines()
     require() { try linuxMainFile.write(output: &output) }
 
     var testsFile = File(possiblyAt: RelativePath("Tests/\(testsName)/\(testsName).swift"))
@@ -245,7 +245,7 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
         "    }",
         "}"
     ]
-    testsFile.body = join(lines: tests)
+    testsFile.body = tests.joinAsLines()
     require() { try testsFile.write(output: &output) }
 
     if packageType == .library {
@@ -260,7 +260,7 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
             "// [_End_]"
 
         ]
-        exampleFile.body = join(lines: example)
+        exampleFile.body = example.joinAsLines()
         require() { try exampleFile.write(output: &output) }
     }
 
@@ -277,7 +277,7 @@ func runInitialize(andExit shouldExit: Bool, arguments: DirectArguments, options
     let entries: [(option: Option, value: String, comment: [String]?)] = [
         (option: .automaticallyTakeOnNewResponsibilites, value: String(Configuration.trueOptionValue), comment: note),
         (option: .projectType, value: String(packageType.key), comment: nil),
-        (option: .disableProofreadingRules, value: join(lines: ["colon", "line_length", "leading_whitespace"]), comment: nil)
+        (option: .disableProofreadingRules, value: ["colon", "line_length", "leading_whitespace"].joinAsLines(), comment: nil)
     ]
     Configuration.addEntries(entries: entries, to: &configuration)
     require() { try configuration.write(output: &output) }

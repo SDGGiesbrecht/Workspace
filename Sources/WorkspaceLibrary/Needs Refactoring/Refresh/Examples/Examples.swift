@@ -18,80 +18,78 @@ import SDGCornerstone
 import SDGCommandLine
 
 struct Examples {
-    static let examples: [String: String] = {
+
+    static func examples(in project: PackageRepository, output: inout Command.Output) throws -> [String: String] {
 
         var list: [String: String] = [:]
 
-        for path in Repository.sourceFiles {
-            if let file = try? File(at: path) {
+        for url in try project.sourceFiles(output: &output) {
+            if let file = try? TextFile(alreadyAt: url) {
 
-                if file.fileType ≠ nil {
+                let startTokens = ("[_Define Example", "_]")
 
-                    let startTokens = ("[_Define Example", "_]")
+                var index = file.contents.startIndex
+                while let startTokenRange = file.contents.scalars.firstNestingLevel(startingWith: startTokens.0.scalars, endingWith: startTokens.1.scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.container.range.clusters(in: file.contents.clusters) {
+                    index = startTokenRange.upperBound
 
-                    var index = file.contents.startIndex
-                    while let startTokenRange = file.contents.scalars.firstNestingLevel(startingWith: startTokens.0.scalars, endingWith: startTokens.1.scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.container.range.clusters(in: file.contents.clusters) {
-                        index = startTokenRange.upperBound
+                    guard let identifierSubsequence = file.contents.scalars.firstNestingLevel(startingWith: startTokens.0.scalars, endingWith: startTokens.1.scalars, in: startTokenRange.sameRange(in: file.contents.scalars))?.contents.contents else {
+                        failTests(message: [
+                            "Failed to parse “\(String(file.contents[startTokenRange]))”.",
+                            "This may indicate a bug in Workspace."
+                            ])
+                    }
+                    var identifier = String(identifierSubsequence)
 
-                        guard let identifierSubsequence = file.contents.scalars.firstNestingLevel(startingWith: startTokens.0.scalars, endingWith: startTokens.1.scalars, in: startTokenRange.sameRange(in: file.contents.scalars))?.contents.contents else {
-                            failTests(message: [
-                                "Failed to parse “\(String(file.contents[startTokenRange]))”.",
-                                "This may indicate a bug in Workspace."
-                                ])
+                    if identifier.hasPrefix(":") {
+                        identifier.unicodeScalars.removeFirst()
+                    }
+                    if identifier.hasPrefix(" ") {
+                        identifier.unicodeScalars.removeFirst()
+                    }
+
+                    guard let end = file.contents.scalars.firstMatch(for: "[_End_]".scalars, in: (startTokenRange.lowerBound ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.range.clusters(in: file.contents.clusters) else {
+                        failTests(message: [
+                            "Failed to find the end of “\(String(file.contents[startTokenRange]))”.",
+                            "This may indicate a bug in Workspace."
+                            ])
+                    }
+
+                    let startLineRange = file.contents.lineRange(for: startTokenRange)
+                    let endLineRange = file.contents.lineRange(for: end)
+
+                    if startLineRange ≠ endLineRange {
+
+                        var contents = String(file.contents[startLineRange.upperBound ..< endLineRange.lowerBound]).lines.map({ String($0.line) })
+                        while contents.first?.isWhitespace ?? false {
+                            contents.removeFirst()
                         }
-                        var identifier = String(identifierSubsequence)
-
-                        if identifier.hasPrefix(":") {
-                            identifier.unicodeScalars.removeFirst()
-                        }
-                        if identifier.hasPrefix(" ") {
-                            identifier.unicodeScalars.removeFirst()
+                        while contents.last?.isWhitespace ?? false {
+                            contents.removeLast()
                         }
 
-                        guard let end = file.contents.scalars.firstMatch(for: "[_End_]".scalars, in: (startTokenRange.lowerBound ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.range.clusters(in: file.contents.clusters) else {
-                            failTests(message: [
-                                "Failed to find the end of “\(String(file.contents[startTokenRange]))”.",
-                                "This may indicate a bug in Workspace."
-                                ])
-                        }
+                        var indentEnd: String.ScalarView.Index = startLineRange.lowerBound.samePosition(in: file.contents.scalars)
+                        file.contents.scalars.advance(&indentEnd, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
+                        let indent = String(file.contents[startLineRange.lowerBound ..< indentEnd.cluster(in: file.contents.clusters)])
 
-                        let startLineRange = file.contents.lineRange(for: startTokenRange)
-                        let endLineRange = file.contents.lineRange(for: end)
-
-                        if startLineRange ≠ endLineRange {
-
-                            var contents = String(file.contents[startLineRange.upperBound ..< endLineRange.lowerBound]).lines.map({ String($0.line) })
-                            while contents.first?.isWhitespace ?? false {
-                                contents.removeFirst()
+                        contents = contents.map() { (line: String) -> String in
+                            var index = line.startIndex
+                            if line.clusters.advance(&index, over: indent.clusters) {
+                                return String(line[index...])
+                            } else {
+                                return line
                             }
-                            while contents.last?.isWhitespace ?? false {
-                                contents.removeLast()
-                            }
-
-                            var indentEnd: String.ScalarView.Index = startLineRange.lowerBound.samePosition(in: file.contents.scalars)
-                            file.contents.scalars.advance(&indentEnd, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
-                            let indent = String(file.contents[startLineRange.lowerBound ..< indentEnd.cluster(in: file.contents.clusters)])
-
-                            contents = contents.map() { (line: String) -> String in
-                                var index = line.startIndex
-                                if line.clusters.advance(&index, over: indent.clusters) {
-                                    return String(line[index...])
-                                } else {
-                                    return line
-                                }
-                            }
-
-                            list[identifier] = join(lines: contents)
                         }
+
+                        list[identifier] = contents.joinAsLines()
                     }
                 }
             }
         }
 
         return list
-    }()
+    }
 
-    static func refreshExamples(output: inout Command.Output) {
+    static func refreshExamples(output: inout Command.Output) throws {
 
         for path in Repository.sourceFiles {
 
@@ -129,7 +127,7 @@ struct Examples {
                         syntaxError()
                     }
                     let exampleName = String(details[colon.upperBound...])
-                    guard let example = examples[exampleName] else {
+                    guard let example = try Repository.packageRepository.examples(output: &output)[exampleName] else {
                         fatalError(message: [
                             "There are no examples named “\(exampleName)”."
                             ])
@@ -152,18 +150,18 @@ struct Examples {
                         let startLine = commentValue.lineRange(for: exampleRange.lowerBound ..< exampleRange.lowerBound)
                         let internalIndent = String(commentValue[startLine.lowerBound ..< exampleRange.lowerBound])
 
-                        var exampleLines = join(lines: [
+                        var exampleLines = [
                             "```swift",
                             example,
                             "```"
-                            ]).lines.map({ String($0.line) })
+                            ].joinAsLines().lines.map({ String($0.line) })
 
                         for index in exampleLines.startIndex ..< exampleLines.endIndex where index ≠ exampleLines.startIndex {
                             exampleLines[index] = internalIndent + exampleLines[index]
                         }
 
                         if countingExampleIndex == exampleIndex {
-                            commentValue.replaceSubrange(exampleRange, with: join(lines: exampleLines))
+                            commentValue.replaceSubrange(exampleRange, with: exampleLines.joinAsLines())
 
                             file.contents.replaceSubrange(commentRange, with: lineDocumentationSyntax.comment(contents: commentValue, indent: indent))
 

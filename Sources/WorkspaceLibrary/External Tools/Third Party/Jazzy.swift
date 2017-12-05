@@ -23,11 +23,11 @@ import SDGCommandLine
         return Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
             switch localization {
             case .englishCanada:
-                return StrictString(join(lines: [
+                return StrictString([
                     "Workspace cannot perform documentation tasks from Linux, because Jazzy does not run on Linux.",
                     "You can file a request with Jazzy:",
                     "https://github.com/realm/jazzy/issues".in(Underline.underlined)
-                    ]))
+                    ].joinAsLines())
             }
         }))
     }
@@ -164,7 +164,6 @@ import SDGCommandLine
             let nojekyll = directory.appendingPathComponent(".nojekyll")
             TextFile.reportWriteOperation(to: nojekyll, in: project, output: &output)
             try Data().write(to: nojekyll)
-            project.resetCache(debugReason: ".nojekyll")
         }
 
         private func fixSplitClusters(in directory: URL, for project: PackageRepository, output: inout Command.Output) throws {

@@ -104,8 +104,11 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         print("Validating project state...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
+        // [_Workaround: Related projects need to be locked at least for CI._]
+        let allowedDifferences = ["':(exclude)Documentation'"]
+
         requireBash(["git", "add", ".", "\u{2D}\u{2D}intent\u{2D}to\u{2D}add"], silent: true)
-        if (try? Shell.default.run(command: ["git", "diff", "\u{2D}\u{2D}exit\u{2D}code", "\u{2D}\u{2D}", ".", "':(exclude)*.dsidx'"])) ≠ nil {
+        if (try? Shell.default.run(command: ["git", "diff", "\u{2D}\u{2D}exit\u{2D}code", "\u{2D}\u{2D}", ".", "':(exclude)*.dsidx'"] + allowedDifferences)) ≠ nil {
             validationStatus.passStep(message: UserFacingText({ localization, _ in
                 switch localization {
                 case .englishCanada:
@@ -130,13 +133,13 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
-                return StrictString(join(lines: [
-                    "This validation used Workspace \(latestStableWorkspaceVersion.string), which is no longer up to date.",
+                return [
+                    StrictString("This validation used Workspace \(latestStableWorkspaceVersion.string), which is no longer up to date."),
                     "To update the version used by this project, run:",
-                    "$ workspace refresh scripts •use‐version \(update.string)",
+                    StrictString("$ workspace refresh scripts •use‐version \(update.string)"),
                     "(This requires a full installation. See the following link.)",
-                    "\(DocumentationLink.installation.url.in(Underline.underlined))"
-                    ]))
+                    StrictString("\(DocumentationLink.installation.url.in(Underline.underlined))")
+                    ].joinAsLines()
             }
         }).resolved().formattedAsWarning().separated(), to: &output)
     }

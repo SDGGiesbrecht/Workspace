@@ -43,7 +43,7 @@ struct WorkaroundReminder : Warning {
                     if dependency == swift {
                         var newDetails = details
                         let script = "swift \u{2D}\u{2D}version"
-                        newDetails.replaceSubrange(versionCheckRange, with: "\(script) \(problemVersion)")
+                        newDetails.replaceSubrange(versionCheckRange, with: "\(script) \(problemVersion.string)")
                             return message(forDetails: newDetails)?.replacingOccurrences(of: script, with: swift)
                     }
                     if let currentVersion = dependencies[dependency] {
@@ -55,24 +55,13 @@ struct WorkaroundReminder : Warning {
                     } else {
                         // Not a package dependency
 
-                        if var currentVersionString = try? Shell.default.run(command: parameters, silently: true) {
+                        if let currentVersionString = try? Shell.default.run(command: parameters, silently: true),
+                            let currentVersion = Version(firstIn: currentVersionString) {
 
-                            let versionCharacters: CharacterSet = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."]
-                            while let first = currentVersionString.unicodeScalars.first,
-                                first ∉ versionCharacters {
-                                currentVersionString.unicodeScalars.removeFirst()
-                            }
-                            var end = currentVersionString.scalars.startIndex
-                            currentVersionString.scalars.advance(&end, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ versionCharacters })))
-                            currentVersionString = String(currentVersionString.scalars[currentVersionString.scalars.startIndex ..< end])
+                            dependencyList?[dependency] = currentVersion // Cache shell result
 
-                            if let currentVersion = Version(currentVersionString) {
-
-                                dependencyList?[dependency] = currentVersion // Cache shell result
-
-                                if currentVersion ≤ problemVersion {
-                                    return nil
-                                }
+                            if currentVersion ≤ problemVersion {
+                                return nil
                             }
                         }
                     }

@@ -25,7 +25,7 @@ extension SwiftTool {
 
     // MARK: - Usage
 
-    public func packageStructure(output: inout Command.Output) throws -> (name: String, libraryProductTargets: [String], targets: [(name: String, location: URL)]) {
+    func packageStructure(output: inout Command.Output) throws -> (name: String, libraryProductTargets: [String], targets: [(name: String, location: URL)]) {
         return try _packageStructure(output: &output) // Shared from SDGCommandLine.
     }
 }

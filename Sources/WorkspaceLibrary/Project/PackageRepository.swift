@@ -30,10 +30,8 @@ extension PackageRepository {
 
     private class Cache {
         fileprivate var packageStructure: (name: String, libraryProductTargets: [String], targets: [(name: String, location: URL)])?
-        fileprivate var packageName: String?
         fileprivate var targets: [Target]?
         fileprivate var targetsByName: [String: Target]?
-        fileprivate var libraryProductTargets: [String]?
 
         fileprivate var allFiles: [URL]?
         fileprivate var trackedFiles: [URL]?
@@ -99,9 +97,7 @@ extension PackageRepository {
     }
 
     func packageName(output: inout Command.Output) throws -> String {
-        return try cached(in: &cache.packageName) {
-            return try packageStructure(output: &output).name
-        }
+        return try packageStructure(output: &output).name
     }
 
     func targets(output: inout Command.Output) throws -> [Target] {
@@ -122,9 +118,7 @@ extension PackageRepository {
     }
 
     func libraryProductTargets(output: inout Command.Output) throws -> [String] {
-        return try cached(in: &cache.libraryProductTargets) {
-            return try packageStructure(output: &output).libraryProductTargets
-        }
+        return try packageStructure(output: &output).libraryProductTargets
     }
 
     static let resourceDirectoryName = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in

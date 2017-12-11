@@ -202,14 +202,11 @@ enum ReadMe {
     static func defaultInstallationInstructionsTemplate(localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template? {
         var result: [StrictString] = []
 
-        if try project.isWorkspaceProject(output: &output),
-            // [_Workaround: This should check for executable targets in general._]
+        let tools = try project.executableTargets(output: &output)
+        if ¬tools.isEmpty,
             let repository = try project.configuration.repositoryURL(),
             let version = try project.configuration.currentVersion() {
             let package = StrictString(try project.packageName(output: &output))
-
-            // [_Workaround: This should check for executable targets in general._]
-            let executableTargets = ["workspace", "arbeitsbereich"].sorted()
 
             result += [
                 "## " + UserFacingText<ContentLocalization, Void>({ (localization, _) in
@@ -243,7 +240,7 @@ enum ReadMe {
                 }).resolved(),
                 "",
                 "```shell",
-                StrictString("curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s \(package) \u{22}\(repository.absoluteString)\u{22} \(version.string) \u{22}\(executableTargets.first!) help\u{22} " + executableTargets.joined(separator: " ")),
+                StrictString("curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s \(package) \u{22}\(repository.absoluteString)\u{22} \(version.string) \u{22}\(tools.first!) help\u{22} " + tools.joined(separator: " ")),
                 "```"
             ]
         }

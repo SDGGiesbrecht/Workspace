@@ -121,6 +121,10 @@ extension PackageRepository {
         return try packageStructure(output: &output).libraryProductTargets
     }
 
+    func executableTargets(output: inout Command.Output) throws -> [String] {
+        return try packageStructure(output: &output).executableProducts
+    }
+
     static let resourceDirectoryName = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
         switch localization {
         case .englishCanada:

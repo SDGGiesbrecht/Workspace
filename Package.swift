@@ -29,13 +29,16 @@ let sdgCommandLine = "SDGCommandLine"
 
 let package = Package(
     name: packageName,
+    products: [
+        .executable(name: tool, targets: [tool]),
+        .executable(name: werkzeug, targets: [tool])
+    ],
     dependencies: [
         .package(url: sdgGiesbrecht + sdgCornerstone, .exact(Version(0, 7, 1))),
         .package(url: sdgGiesbrecht + sdgCommandLine, .exact(Version(0, 1, 3)))
     ],
     targets: [
         .target(name: tool, dependencies: [.targetItem(name: library)]),
-        .target(name: werkzeug, dependencies: [.targetItem(name: library)]),
 
         .target(name: library, dependencies: [
             .productItem(name: sdgCornerstone, package: sdgCornerstone),

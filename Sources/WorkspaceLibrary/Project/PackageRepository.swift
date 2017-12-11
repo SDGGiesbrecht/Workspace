@@ -29,7 +29,7 @@ extension PackageRepository {
     // MARK: - Cache
 
     private class Cache {
-        fileprivate var packageStructure: (name: String, libraryProductTargets: [String], targets: [(name: String, location: URL)])?
+        fileprivate var packageStructure: (name: String, libraryProductTargets: [String], executableProducts: [String], targets: [(name: String, location: URL)])?
         fileprivate var targets: [Target]?
         fileprivate var targetsByName: [String: Target]?
 
@@ -82,9 +82,9 @@ extension PackageRepository {
 
     // MARK: - Structure
 
-    private func packageStructure(output: inout Command.Output) throws ->  (name: String, libraryProductTargets: [String], targets: [(name: String, location: URL)]) {
+    private func packageStructure(output: inout Command.Output) throws ->  (name: String, libraryProductTargets: [String], executableProducts: [String], targets: [(name: String, location: URL)]) {
         return try cached(in: &cache.packageStructure) {
-            var result: (name: String, libraryProductTargets: [String], targets: [(name: String, location: URL)])?
+            var result: (name: String, libraryProductTargets: [String], executableProducts: [String], targets: [(name: String, location: URL)])?
             try FileManager.default.do(in: location) {
                 result = try SwiftTool.default.packageStructure(output: &output)
             }

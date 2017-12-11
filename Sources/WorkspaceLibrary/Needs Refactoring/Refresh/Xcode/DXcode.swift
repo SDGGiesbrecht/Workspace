@@ -30,7 +30,7 @@
             let path = RelativePath("\(try Repository.packageRepository.xcodeProjectFile()!.lastPathComponent)")
             var file = require() { try File(at: path.subfolderOrFile("project.pbxproj")) }
 
-            let allTargets = try Repository.packageRepository.targets(output: &output).keys
+            let allTargets = try Repository.packageRepository.targets(output: &output).map { $0.name }
             let primaryProductName = allTargets.first(where: { $0.scalars.first! ∈ CharacterSet.uppercaseLetters ∧ ¬$0.hasPrefix("Tests") })!
             let applicationExecutableName = primaryProductName
             let xcodeTestTarget = primaryProductName + "Tests"
@@ -161,7 +161,7 @@
                 script = "export PATH=\u{5C}\u{22}$HOME/.SDG/Registry:$PATH\u{5C}\u{22} ; if which workspace > /dev/null ; then workspace proofread •use‐version " + latestStableWorkspaceVersion.string + " ; else echo \u{5C}\u{22}warning: Install Workspace if you wish to receive in‐code reports of style errors for this project. See https://github.com/SDGGiesbrecht/Workspace\u{5C}\u{22} ; fi"
             }
 
-            let allTargets = try Repository.packageRepository.targets(output: &output).keys
+            let allTargets = try Repository.packageRepository.targets(output: &output).map { $0.name }
             let primaryXcodeTarget = allTargets.first(where: { $0.scalars.first! ∈ CharacterSet.uppercaseLetters ∧ ¬$0.hasPrefix("Tests") })!
 
             try modifyProject(condition: {

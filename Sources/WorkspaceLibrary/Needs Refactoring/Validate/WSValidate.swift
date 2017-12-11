@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGCornerstone
 import SDGCommandLine
 
@@ -106,8 +108,20 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         print("Validating project state...".formattedAsSectionHeader(), to: &output)
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        // [_Workaround: Related projects need to be locked at least for CI._]
-        let allowedDifferences = ["':(exclude)Documentation'"]
+        var allowedDifferences: [String] = []
+        for localization in try options.project.configuration.localizations() {
+            var relatedProjects = ReadMe.relatedProjectsLocation(for: options.project, localization: localization).lastPathComponent
+            allowedDifferences.append(relatedProjects)
+            relatedProjects.scalars.replaceMatches(for: ".md".scalars, with: ".html".scalars)
+            relatedProjects.scalars.replaceMatches(for: " ".scalars, with: "\u{2D}".scalars)
+            relatedProjects.scalars.replaceMatches(for: ConditionalPattern(condition: { $0 ∉
+                (CharacterSet(charactersIn: Unicode.Scalar(0x00) ..< Unicode.Scalar(0x80))
+                    ∩ CharacterSet.alphanumerics)
+                ∪ ["\u{2D}", "."]
+            }), with: "".scalars)
+            allowedDifferences.append(relatedProjects.lowercased())
+        }
+        allowedDifferences = allowedDifferences.map { "':(exclude)*\($0.components(separatedBy: " ").last!)'" }
 
         requireBash(["git", "add", ".", "\u{2D}\u{2D}intent\u{2D}to\u{2D}add"], silent: true)
         if (try? Shell.default.run(command: ["git", "diff", "\u{2D}\u{2D}exit\u{2D}code", "\u{2D}\u{2D}", ".", "':(exclude)*.dsidx'"] + allowedDifferences)) ≠ nil {

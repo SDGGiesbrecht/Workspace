@@ -113,7 +113,7 @@ enum ReadMe {
             }
         }).resolved()
 
-        let links = try project.libraryProductTargets(output: &output).sorted().map { (name: String) -> StrictString in
+        let links = try project.libraryProductTargets(output: &output).map { (name: String) -> StrictString in
 
             var link: StrictString = "[" + StrictString(name) + "]"
             link += "(" + StrictString(baseURL.appendingPathComponent(name).absoluteString) + ")"
@@ -213,13 +213,13 @@ enum ReadMe {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Installation"
-                    case .deutschDeutschland: // [_Exempt from Code Coverage_] Until generalized.
+                    case .deutschDeutschland:
                         return "Installation"
-                    case .françaisFrance: // [_Exempt from Code Coverage_] Until generalized.
+                    case .françaisFrance:
                         return "Installation"
-                    case .ελληνικάΕλλάδα: // [_Exempt from Code Coverage_] Until generalized.
+                    case .ελληνικάΕλλάδα:
                         return "Εγκατάσταση"
-                    case .עברית־ישראל: // [_Exempt from Code Coverage_] Until generalized.
+                    case .עברית־ישראל:
                         return "התקנה"
                     }
                 }).resolved(),
@@ -228,13 +228,13 @@ enum ReadMe {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return StrictString("Paste the following into a terminal to install or update `\(package)`:")
-                    case .deutschDeutschland: // [_Exempt from Code Coverage_] Until generalized.
+                    case .deutschDeutschland:
                         return StrictString("Setze folgendes in ein Terminal ein, um `\(package)` zu installieren oder aktualisieren:")
-                    case .françaisFrance: // [_Exempt from Code Coverage_] Until generalized.
+                    case .françaisFrance:
                         return StrictString("Collez le suivant dans un terminal pour installer `\(package)` ou mettre `\(package)` à jour:")
-                    case .ελληνικάΕλλάδα: // [_Exempt from Code Coverage_] Until generalized.
+                    case .ελληνικάΕλλάδα:
                         return StrictString("Κόλλα αυτό σε ένα τερματικό για να εγκαταστήσετε ή ενημέρωσετε `\(package)`:")
-                    case .עברית־ישראל: // [_Exempt from Code Coverage_] Until generalized.
+                    case .עברית־ישראל:
                         /*א*/ return StrictString("הדבק או הדביקי את זה במסוף להתקין או לעדכן את `\(package)`:")
                     }
                 }).resolved(),
@@ -245,7 +245,7 @@ enum ReadMe {
             ]
         }
 
-        let libraries = try project.libraryProductTargets(output: &output).sorted()
+        let libraries = try project.libraryProductTargets(output: &output)
         if ¬libraries.isEmpty {
             result += [
                 "## " + UserFacingText<ContentLocalization, Void>({ (localization, _) in

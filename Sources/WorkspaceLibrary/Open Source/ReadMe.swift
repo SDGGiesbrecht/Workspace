@@ -203,10 +203,13 @@ enum ReadMe {
         var result: [StrictString] = []
 
         let tools = try project.executableTargets(output: &output)
+        var includedInstallationSection = false
         if ¬tools.isEmpty,
             let repository = try project.configuration.repositoryURL(),
             let version = try project.configuration.currentVersion() {
             let package = StrictString(try project.packageName(output: &output))
+
+            includedInstallationSection = true
 
             result += [
                 "## " + UserFacingText<ContentLocalization, Void>({ (localization, _) in
@@ -247,6 +250,10 @@ enum ReadMe {
 
         let libraries = try project.libraryProductTargets(output: &output)
         if ¬libraries.isEmpty {
+            if includedInstallationSection {
+                result += [""]
+            }
+
             result += [
                 "## " + UserFacingText<ContentLocalization, Void>({ (localization, _) in
                     switch localization {

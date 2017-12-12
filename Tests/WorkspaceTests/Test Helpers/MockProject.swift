@@ -28,6 +28,27 @@ class MockProject {
             // [_Workaround: This should use “workspace initialize”._]
 
             try Shell.default.run(command: ["swift", "package", "init"])
+            if type == "Executable" {
+                try [
+                    "// swift-tools-version:4.0",
+                    "",
+                    "import PackageDescription",
+                    "",
+                    "let package = Package(",
+                    "    name: \u{22}MyProject\u{22},",
+                    "    products: [",
+                    "        .library(name: \u{22}MyProject\u{22}, targets: [\u{22}MyProject\u{22}]),",
+                    "        .executable(name: \u{22}tool\u{22}, targets: [\u{22}tool\u{22}]),",
+                    "    ],",
+                    "    targets: [",
+                    "        .target(name: \u{22}MyProject\u{22}, dependencies: []),",
+                    "        .target(name: \u{22}tool\u{22}, dependencies: []),",
+                    "        .testTarget(name: \u{22}MyProjectTests\u{22}, dependencies: [\u{22}MyProject\u{22}])",
+                    "    ]",
+                    ")"
+                    ].joined(separator: "\n").save(to: location.appendingPathComponent("Package.swift"))
+                try "print(\u{22}Hello, world!\u{22})".save(to: location.appendingPathComponent("Sources/tool/main.swift"))
+            }
             try Shell.default.run(command: ["git", "init"])
 
             if let projectType = type {

@@ -196,7 +196,7 @@ class APITests : TestCase {
 
         XCTAssertErrorFree {
             // Elaborate
-            let project = try MockProject()
+            let project = try MockProject(type: "Executable")
             try project.do {
 
                 try Resources.ReadMe.elaborateWorkspaceConfiguration.save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))

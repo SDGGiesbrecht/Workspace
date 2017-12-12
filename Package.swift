@@ -34,7 +34,7 @@ let package = Package(
         .executable(name: werkzeug, targets: [tool])
     ],
     dependencies: [
-        .package(url: sdgGiesbrecht + sdgCornerstone, .exact(Version(0, 7, 1))),
+        .package(url: sdgGiesbrecht + sdgCornerstone, .exact(Version(0, 7, 2))),
         .package(url: sdgGiesbrecht + sdgCommandLine, .exact(Version(0, 1, 3)))
     ],
     targets: [

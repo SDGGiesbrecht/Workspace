@@ -19,7 +19,7 @@ typealias SystemTool = _ExternalTool // Shared from SDGCommandLine.
 
 extension SystemTool {
 
-    internal func executeInCompatibilityMode(with arguments: [String], output: inout Command.Output, silently: Bool = false) throws -> String {
-        return try _executeInCompatibilityMode(with: arguments, output: &output, silently: silently) // Shared from SDGCommandLine.
+    internal func executeInCompatibilityMode(with arguments: [String], output: inout Command.Output, silently: Bool = false, autoquote: Bool = true) throws -> String {
+        return try _executeInCompatibilityMode(with: arguments, output: &output, silently: silently, autoquote: autoquote) // Shared from SDGCommandLine.
     }
 }

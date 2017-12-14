@@ -5,18 +5,18 @@
         "package": "SDGCommandLine",
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCommandLine",
         "state": {
-          "branch": "executables",
-          "revision": "21a5bb5cb3f64a6d8294e7c32e1fd5efd459d40c",
-          "version": null
+          "branch": null,
+          "revision": "93b8ecc5e26de3113de43fd39478b077008e26a9",
+          "version": "0.1.4"
         }
       },
       {
         "package": "SDGCornerstone",
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCornerstone",
         "state": {
-          "branch": "autoquote‐override",
-          "revision": "8e9f65483bddd148801305c39f045ff5486a4a2d",
-          "version": null
+          "branch": null,
+          "revision": "c1799688ccc498367d2159b1394887b4ca27da61",
+          "version": "0.7.3"
         }
       }
     ]

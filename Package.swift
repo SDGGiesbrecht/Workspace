@@ -34,8 +34,8 @@ let package = Package(
         .executable(name: werkzeug, targets: [tool])
     ],
     dependencies: [
-    .package(url: sdgGiesbrecht + sdgCornerstone, .branch("autoquote‐override")), //.exact(Version(0, 7, 3))), // [_Warning: Do not merge._]
-        .package(url: sdgGiesbrecht + sdgCommandLine, .branch("executables")) //.exact(Version(0, 1, 3))) // [_Warning: Do not merge._]
+    .package(url: sdgGiesbrecht + sdgCornerstone, .exact(Version(0, 7, 3))),
+        .package(url: sdgGiesbrecht + sdgCommandLine, .exact(Version(0, 1, 4)))
     ],
     targets: [
         .target(name: tool, dependencies: [.targetItem(name: library)]),

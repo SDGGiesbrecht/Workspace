@@ -14,6 +14,8 @@
 
 Current Version: 1.2.3
 
+Project Type: Executable
+
 Project Website: project.example.com
 Documentation URL: documentation.example.com
 Repository URL: https://github.com/User/Project

@@ -36,7 +36,7 @@ The default read‐me will automatically change to accommodate some [configurati
 - `Related Projects`: A list separated by line breaks. Each entry is one of two forms:
     - `Name: https://url.of/repository`
     - `# Section Heading`
-- `Installation Instructions` (Markdown. Default instructions exist for library projects that have `Repository URL` and `Current Version` defined.)
+- `Installation Instructions` (Markdown. Default instructions exist for executable and library products if `Repository URL` and `Current Version` defined.)
 - `Other Read‐Me Content` (Markdown)
 
 The default read‐me will also automatically include [usage examples](Examples.md#readme) if available.

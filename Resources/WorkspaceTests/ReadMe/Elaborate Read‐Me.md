@@ -14,7 +14,7 @@
 
 [🇨🇦EN](Documentation/🇨🇦EN%20Read%20Me.md) • [🇬🇧EN](Documentation/🇬🇧EN%20Read%20Me.md) • [🇺🇸EN](Documentation/🇺🇸EN%20Read%20Me.md) • [🇩🇪DE](Documentation/🇩🇪DE%20Lies%20mich.md) • [🇫🇷FR](Documentation/🇫🇷FR%20Lisez%20moi.md) • [🇬🇷ΕΛ](Documentation/🇬🇷ΕΛ%20Με%20διαβάστε.md) • [🇮🇱עב](Documentation/🇮🇱עב%20קרא%20אותי.md) • [[zxx]](Documentation/[zxx]%20Read%20Me.md) <!--Skip in Jazzy-->
 
-macOS • Linux • iOS • watchOS • tvOS
+macOS • Linux
 
 APIs: [MyProject](documentation.example.com/MyProject)
 
@@ -31,6 +31,14 @@ MyProject does stuff.
 - Even more stuff.
 
 (For a list of related projects, see [here](Documentation/🇨🇦EN%20Related%20Projects.md).) <!--Skip in Jazzy-->
+
+## Installation
+
+Paste the following into a terminal to install or update `MyProject`:
+
+```shell
+curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s MyProject "https://github.com/User/Project" 1.2.3 "tool help" tool
+```
 
 ## Importing
 

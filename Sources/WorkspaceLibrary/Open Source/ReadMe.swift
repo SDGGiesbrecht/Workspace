@@ -113,7 +113,7 @@ enum ReadMe {
             }
         }).resolved()
 
-        let links = try project.libraryProductTargets(output: &output).sorted().map { (name: String) -> StrictString in
+        let links = try project.libraryProductTargets(output: &output).map { (name: String) -> StrictString in
 
             var link: StrictString = "[" + StrictString(name) + "]"
             link += "(" + StrictString(baseURL.appendingPathComponent(name).absoluteString) + ")"
@@ -202,27 +202,27 @@ enum ReadMe {
     static func defaultInstallationInstructionsTemplate(localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template? {
         var result: [StrictString] = []
 
-        if try project.isWorkspaceProject(output: &output),
-            // [_Workaround: This should check for executable targets in general._]
+        let tools = try project.executableTargets(output: &output)
+        var includedInstallationSection = false
+        if ¬tools.isEmpty,
             let repository = try project.configuration.repositoryURL(),
             let version = try project.configuration.currentVersion() {
             let package = StrictString(try project.packageName(output: &output))
 
-            // [_Workaround: This should check for executable targets in general._]
-            let executableTargets = ["workspace", "arbeitsbereich"].sorted()
+            includedInstallationSection = true
 
             result += [
                 "## " + UserFacingText<ContentLocalization, Void>({ (localization, _) in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Installation"
-                    case .deutschDeutschland: // [_Exempt from Code Coverage_] Until generalized.
+                    case .deutschDeutschland:
                         return "Installation"
-                    case .françaisFrance: // [_Exempt from Code Coverage_] Until generalized.
+                    case .françaisFrance:
                         return "Installation"
-                    case .ελληνικάΕλλάδα: // [_Exempt from Code Coverage_] Until generalized.
+                    case .ελληνικάΕλλάδα:
                         return "Εγκατάσταση"
-                    case .עברית־ישראל: // [_Exempt from Code Coverage_] Until generalized.
+                    case .עברית־ישראל:
                         return "התקנה"
                     }
                 }).resolved(),
@@ -231,25 +231,29 @@ enum ReadMe {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return StrictString("Paste the following into a terminal to install or update `\(package)`:")
-                    case .deutschDeutschland: // [_Exempt from Code Coverage_] Until generalized.
+                    case .deutschDeutschland:
                         return StrictString("Setze folgendes in ein Terminal ein, um `\(package)` zu installieren oder aktualisieren:")
-                    case .françaisFrance: // [_Exempt from Code Coverage_] Until generalized.
+                    case .françaisFrance:
                         return StrictString("Collez le suivant dans un terminal pour installer `\(package)` ou mettre `\(package)` à jour:")
-                    case .ελληνικάΕλλάδα: // [_Exempt from Code Coverage_] Until generalized.
+                    case .ελληνικάΕλλάδα:
                         return StrictString("Κόλλα αυτό σε ένα τερματικό για να εγκαταστήσετε ή ενημέρωσετε `\(package)`:")
-                    case .עברית־ישראל: // [_Exempt from Code Coverage_] Until generalized.
+                    case .עברית־ישראל:
                         /*א*/ return StrictString("הדבק או הדביקי את זה במסוף להתקין או לעדכן את `\(package)`:")
                     }
                 }).resolved(),
                 "",
                 "```shell",
-                StrictString("curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s \(package) \u{22}\(repository.absoluteString)\u{22} \(version.string) \u{22}\(executableTargets.first!) help\u{22} " + executableTargets.joined(separator: " ")),
+                StrictString("curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s \(package) \u{22}\(repository.absoluteString)\u{22} \(version.string) \u{22}\(tools.first!) help\u{22} " + tools.joined(separator: " ")),
                 "```"
             ]
         }
 
-        let libraries = try project.libraryProductTargets(output: &output).sorted()
+        let libraries = try project.libraryProductTargets(output: &output)
         if ¬libraries.isEmpty {
+            if includedInstallationSection {
+                result += [""]
+            }
+
             result += [
                 "## " + UserFacingText<ContentLocalization, Void>({ (localization, _) in
                     switch localization {

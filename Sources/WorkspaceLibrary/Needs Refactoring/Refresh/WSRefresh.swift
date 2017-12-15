@@ -29,9 +29,6 @@ func instructionsAfterRefresh() throws -> String {
 
 func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: inout Command.Output) throws {
 
-    // [_Workaround: Prevents resolution from breaking JSON parsing. (SDGCommandLine 0.1.3)_]
-    try Shell.default.run(command: ["swift", "package", "resolve"])
-
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     print("Refreshing \(try options.project.projectName(output: &output))...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

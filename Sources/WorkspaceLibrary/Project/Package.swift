@@ -29,7 +29,7 @@ extension Package {
     // MARK: - Properties
 
     func latestVersion(output: inout Command.Output) throws -> Version? {
-        return try versions(output: &output).sorted().last
+        return try versions(output: &output).max()
     }
 
     func versions(output: inout Command.Output) throws -> Set<Version> {

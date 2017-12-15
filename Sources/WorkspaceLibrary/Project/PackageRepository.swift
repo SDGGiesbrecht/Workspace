@@ -29,9 +29,9 @@ extension PackageRepository {
     // MARK: - Cache
 
     private class Cache {
-        fileprivate var packageName: String?
-        fileprivate var targets: [String: Target]?
-        fileprivate var libraryProductTargets: Set<String>?
+        fileprivate var packageStructure: (name: String, libraryProductTargets: [String], executableProducts: [String], targets: [(name: String, location: URL)])?
+        fileprivate var targets: [Target]?
+        fileprivate var targetsByName: [String: Target]?
 
         fileprivate var allFiles: [URL]?
         fileprivate var trackedFiles: [URL]?
@@ -82,43 +82,47 @@ extension PackageRepository {
 
     // MARK: - Structure
 
+    private func packageStructure(output: inout Command.Output) throws ->  (name: String, libraryProductTargets: [String], executableProducts: [String], targets: [(name: String, location: URL)]) {
+        return try cached(in: &cache.packageStructure) {
+            var result: (name: String, libraryProductTargets: [String], executableProducts: [String], targets: [(name: String, location: URL)])?
+            try FileManager.default.do(in: location) {
+                result = try SwiftTool.default.packageStructure(output: &output)
+            }
+            return result!
+        }
+    }
+
     func projectName(output: inout Command.Output) throws -> StrictString {
         return StrictString(try packageName(output: &output))
     }
 
     func packageName(output: inout Command.Output) throws -> String {
-        return try cached(in: &cache.packageName) {
-            var name = ""
-            try FileManager.default.do(in: location) {
-                name = try SwiftTool.default.packageName(output: &output)
-            }
-            return name
-        }
+        return try packageStructure(output: &output).name
     }
 
-    func targets(output: inout Command.Output) throws -> [String: Target] {
+    func targets(output: inout Command.Output) throws -> [Target] {
         return try cached(in: &cache.targets) {
-            () -> [String: Target] in
-
-            var list: [String: Target] = [:]
-            try FileManager.default.do(in: location) {
-                let targetInformation = try SwiftTool.default.targets(output: &output)
-                for (name, sourceDirectory) in targetInformation {
-                    list[name] = Target(name: name, sourceDirectory: sourceDirectory)
-                }
+            let targetInformation = try packageStructure(output: &output).targets
+            return targetInformation.map { Target(name: $0.name, sourceDirectory: $0.location) }
+        }
+    }
+    func targetsByName(output: inout Command.Output) throws -> [String: Target] {
+        return try cached(in: &cache.targetsByName) {
+            let ordered = try targets(output: &output)
+            var byName: [String: Target] = [:]
+            for target in ordered {
+                byName[target.name] = target
             }
-            return list
+            return byName
         }
     }
 
-    func libraryProductTargets(output: inout Command.Output) throws -> Set<String> {
-        return try cached(in: &cache.libraryProductTargets) {
-            var result: Set<String> = []
-            try FileManager.default.do(in: location) {
-                result = try SwiftTool.default.libraryProductTargets(output: &output)
-            }
-            return result
-        }
+    func libraryProductTargets(output: inout Command.Output) throws -> [String] {
+        return try packageStructure(output: &output).libraryProductTargets
+    }
+
+    func executableTargets(output: inout Command.Output) throws -> [String] {
+        return try packageStructure(output: &output).executableProducts
     }
 
     static let resourceDirectoryName = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
@@ -276,7 +280,7 @@ extension PackageRepository {
                 }
             }))
         }
-        guard let target = (try targets(output: &output))[String(targetName)] else {
+        guard let target = (try targetsByName(output: &output))[String(targetName)] else {
             throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
                 switch localization {
                 case .englishCanada:
@@ -316,13 +320,13 @@ extension PackageRepository {
 
     #if !os(Linux)
     func document(validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
-        for product in try libraryProductTargets(output: &output).sorted() {
+        for product in try libraryProductTargets(output: &output) {
             try Documentation.document(target: product, for: self, validationStatus: &validationStatus, output: &output)
         }
     }
 
     func validateDocumentationCoverage(validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
-        for product in try libraryProductTargets(output: &output).sorted() {
+        for product in try libraryProductTargets(output: &output) {
             try Documentation.validateDocumentationCoverage(for: product, in: self, validationStatus: &validationStatus, output: &output)
         }
     }

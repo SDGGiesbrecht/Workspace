@@ -26,7 +26,7 @@ extension Git {
     // MARK: - Usage
 
     func versions(of package: Package, output: inout Command.Output) throws -> Set<Version> {
-        return try _versions(of: package, output: &output)
+        return try _versions(of: package, output: &output) // Shared from SDGCommandLine.
     }
 
     func ignoredFiles(output: inout Command.Output) throws -> [URL] {

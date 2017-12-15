@@ -14,7 +14,7 @@
 
 [🇨🇦EN](🇨🇦EN%20Read%20Me.md) • [🇬🇧EN](🇬🇧EN%20Read%20Me.md) • [🇺🇸EN](🇺🇸EN%20Read%20Me.md) • [🇩🇪DE](🇩🇪DE%20Lies%20mich.md) • [🇫🇷FR](🇫🇷FR%20Lisez%20moi.md) • [🇬🇷ΕΛ](🇬🇷ΕΛ%20Με%20διαβάστε.md) • [🇮🇱עב](🇮🇱עב%20קרא%20אותי.md) • [[zxx]]([zxx]%20Read%20Me.md) <!--Skip in Jazzy-->
 
-Μακ‐Ο‐Ες • Λίνουξ • Αι‐Ο‐Ες • Ουατσ‐Ο‐Ες • Τι‐Βι‐Ο‐Ες
+Μακ‐Ο‐Ες • Λίνουξ
 
 ΔΠΕ: [MyProject](documentation.example.com/MyProject)
 
@@ -29,6 +29,14 @@
 ...
 
 (Για ένα κατάλογο συγγενικών έργων, δείτε [εδώ](🇬🇷ΕΛ%20Συγγενικά%20έργα.md).) <!--Skip in Jazzy-->
+
+## Εγκατάσταση
+
+Κόλλα αυτό σε ένα τερματικό για να εγκαταστήσετε ή ενημέρωσετε `MyProject`:
+
+```shell
+curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s MyProject "https://github.com/User/Project" 1.2.3 "tool help" tool
+```
 
 ## Εισαγωγή
 

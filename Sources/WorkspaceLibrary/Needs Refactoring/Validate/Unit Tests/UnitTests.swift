@@ -21,7 +21,7 @@ struct UnitTests {
 
     static func test(options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
 
-        let allTargets = try Repository.packageRepository.targets(output: &output).keys
+        let allTargets = try Repository.packageRepository.targets(output: &output).map { $0.name }
         let primaryProductName = allTargets.first(where: { $0.scalars.first! ∈ CharacterSet.uppercaseLetters ∧ ¬$0.hasSuffix("Tests") })!
         let primaryXcodeTarget = primaryProductName
 

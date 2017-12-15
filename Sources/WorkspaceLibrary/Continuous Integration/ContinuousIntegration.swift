@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGCornerstone
 import SDGCommandLine
 
 enum ContinuousIntegration {
@@ -24,8 +25,18 @@ enum ContinuousIntegration {
             "  include:"
         ]
 
+        let encryptedTravisDeploymentKey = try project.configuration.encryptedTravisDeploymentKey()
         for job in Job.cases where try job.isRequired(by: project, output: &output) {
-            travisConfiguration.append(contentsOf: job.script)
+            travisConfiguration.append(contentsOf: job.script(encryptedTravisDeploymentKey: encryptedTravisDeploymentKey))
+        }
+        
+        if encryptedTravisDeploymentKey ≠ nil {
+            travisConfiguration.append(contentsOf: [
+                "",
+                "stages:",
+                "  \u{2D} name: deploy",
+                "    if: branch = master"
+                ])
         }
 
         travisConfiguration.append(contentsOf: [

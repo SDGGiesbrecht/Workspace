@@ -66,6 +66,8 @@ extension ContinuousIntegration {
         case miscellaneous
         case documentation
 
+        case deployment
+
         // MARK: - Properties
 
         var name: UserFacingText<InterfaceLocalization, Void> {
@@ -124,6 +126,13 @@ extension ContinuousIntegration {
                     switch localization {
                     case .englishCanada:
                         return "Documentation"
+                    }
+                })
+            case .deployment:
+                return UserFacingText({ (localization, _) in
+                    switch localization {
+                    case .englishCanada:
+                        return "Deployment"
                     }
                 })
             }
@@ -187,6 +196,13 @@ extension ContinuousIntegration {
                         return "documentation"
                     }
                 })
+            case .deployment:
+                return UserFacingText({ (localization, _) in
+                    switch localization {
+                    case .englishCanada:
+                        return "deployment"
+                    }
+                })
             }
         }
 
@@ -209,12 +225,14 @@ extension ContinuousIntegration {
                 return true
             case .documentation:
                 return try project.configuration.shouldGenerateDocumentation() ∧ project.hasTargetsToDocument(output: &output)
+            case .deployment:
+                return (try project.configuration.encryptedTravisDeploymentKey()) ≠ nil
             }
         }
 
         var operatingSystem: OperatingSystem {
             switch self {
-            case .macOSSwiftPackageManager, .macOSXcode, .iOS, .watchOS, .tvOS, .documentation:
+            case .macOSSwiftPackageManager, .macOSXcode, .iOS, .watchOS, .tvOS, .documentation, .deployment:
                 // [_Workaround: Documentation can be switched to Linux when Jazzy supports it. (jazzy --version 0.9.0)_]
                 return .macOS
             case .linux, .miscellaneous:
@@ -239,7 +257,7 @@ extension ContinuousIntegration {
 
         var travisSDKKey: String? {
             switch self {
-            case .macOSSwiftPackageManager, .macOSXcode, .linux, .watchOS, .miscellaneous, .documentation:
+            case .macOSSwiftPackageManager, .macOSXcode, .linux, .watchOS, .miscellaneous, .documentation, .deployment:
                 return nil
             case .iOS:
                 return "iphonesimulator"
@@ -248,12 +266,17 @@ extension ContinuousIntegration {
             }
         }
 
-        var script: [String] {
+        func script(encryptedTravisDeploymentKey: String?) -> [String] {
             var result: [String] = [
                 "    \u{2D} os: " + travisOperatingSystemKey,
                 "      env:",
                 "        \u{2D} " + environmentLabel
             ]
+            if self == .deployment,
+                let key = encryptedTravisDeploymentKey {
+                result.prepend("    \u{2D} stage: deploy")
+                result += ["        \u{2D} secure: \u{22}" + key + "\u{22}"]
+            }
 
             switch operatingSystem {
             case .macOS:
@@ -296,7 +319,12 @@ extension Optional where Wrapped == ContinuousIntegration.Job {
     func includes(job: ContinuousIntegration.Job) -> Bool { // [_Exempt from Code Coverage_] [_Workaround: Until unit‐tests is testable._]
         switch self {
         case .none: // [_Exempt from Code Coverage_] [_Workaround: Until unit‐tests is testable._]
-            return true
+            switch job {
+            case .macOSSwiftPackageManager, .macOSXcode, .linux, .iOS, .watchOS, .tvOS, .miscellaneous, .documentation:
+                return true
+            case .deployment:
+                return false
+            }
         case .some(let currentJob): // [_Exempt from Code Coverage_] [_Workaround: Until unit‐tests is testable._]
             return currentJob == job
         }

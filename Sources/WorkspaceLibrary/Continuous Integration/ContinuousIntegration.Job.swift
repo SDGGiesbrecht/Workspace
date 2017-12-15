@@ -248,7 +248,7 @@ extension ContinuousIntegration {
             }
         }
 
-        func script(encryptedTravisDeploymentKey: String?) -> [String] {
+        var script: [String] {
             var result: [String] = [
                 "    \u{2D} os: " + travisOperatingSystemKey,
                 "      env:",

@@ -25,12 +25,11 @@ enum ContinuousIntegration {
             "  include:"
         ]
 
-        let encryptedTravisDeploymentKey = try project.configuration.encryptedTravisDeploymentKey()
         for job in Job.cases where try job.isRequired(by: project, output: &output) {
-            travisConfiguration.append(contentsOf: job.script(encryptedTravisDeploymentKey: encryptedTravisDeploymentKey))
+            travisConfiguration.append(contentsOf: job.script)
         }
 
-        if encryptedTravisDeploymentKey ≠ nil {
+        if let deploymentKey = try project.configuration.encryptedTravisDeploymentKey() {
             travisConfiguration.append(contentsOf: [
                 "",
                 "deploy:",
@@ -40,6 +39,10 @@ enum ContinuousIntegration {
                 "    branch: master",
                 "  github_token: $GITHUB_TOKEN",
                 "  skip_cleanup: true",
+                "",
+                "env:",
+                "  global:",
+                "    secure: \u{22}" + deploymentKey + "\u{22}"
                 ])
         }
 

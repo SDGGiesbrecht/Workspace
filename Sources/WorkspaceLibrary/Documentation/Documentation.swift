@@ -19,11 +19,11 @@ import SDGCommandLine
 
 enum Documentation {
 
-    static func documentationDirectory(for project: PackageRepository) -> URL {
+    static func defaultDocumentationDirectory(for project: PackageRepository) -> URL {
         return project.location.appendingPathComponent("docs")
     }
-    static func documentationDirectory(for target: String, in project: PackageRepository) -> URL {
-        return documentationDirectory(for: project).appendingPathComponent(target)
+    static func subdirectory(for target: String, in documentationDirectory: URL) -> URL {
+        return documentationDirectory.appendingPathComponent(target)
     }
 
     static func defaultCopyrightTemplate(configuration: Configuration) throws -> Template {
@@ -67,7 +67,7 @@ enum Documentation {
 
     #if !os(Linux)
 
-    static func document(target: String, for project: PackageRepository, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+    static func document(target: String, for project: PackageRepository, outputDirectory: URL, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
 
         print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
@@ -76,7 +76,7 @@ enum Documentation {
             }
         }).resolved().formattedAsSectionHeader(), to: &output)
 
-        let outputDirectory = documentationDirectory(for: target, in: project)
+        let outputSubdirectory = subdirectory(for: target, in: outputDirectory)
 
         let buildOperatingSystem: OperatingSystem
         if try project.configuration.supports(.macOS) {
@@ -91,13 +91,13 @@ enum Documentation {
             buildOperatingSystem = .macOS
         }
 
-        let copyrightText = try copyright(for: outputDirectory, in: project, output: &output)
+        let copyrightText = try copyright(for: outputSubdirectory, in: project, output: &output)
         try FileManager.default.do(in: project.location) {
-            try Jazzy.default.document(target: target, scheme: try project.xcodeScheme(output: &output), buildOperatingSystem: buildOperatingSystem, copyright: copyrightText, gitHubURL: try project.configuration.repositoryURL(), outputDirectory: outputDirectory, project: project, output: &output)
+            try Jazzy.default.document(target: target, scheme: try project.xcodeScheme(output: &output), buildOperatingSystem: buildOperatingSystem, copyright: copyrightText, gitHubURL: try project.configuration.repositoryURL(), outputDirectory: outputSubdirectory, project: project, output: &output)
         }
 
         let transformedMarker = ReadMe.skipInJazzy.replacingMatches(for: "\u{2D}\u{2D}".scalars, with: "&ndash;".scalars).replacingMatches(for: "<".scalars, with: "&lt;".scalars).replacingMatches(for: ">".scalars, with: "&gt;".scalars)
-        for url in try project.trackedFiles(output: &output) where url.is(in: outputDirectory) {
+        for url in try project.trackedFiles(output: &output) where url.is(in: outputSubdirectory) {
             if let type = try? FileType(url: url),
                 type == .html {
 
@@ -121,7 +121,7 @@ enum Documentation {
         }))
     }
 
-    static func validateDocumentationCoverage(for target: String, in project: PackageRepository, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+    static func validateDocumentationCoverage(for target: String, in project: PackageRepository, outputDirectory: URL, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
 
         let section = validationStatus.newSection()
 
@@ -132,7 +132,7 @@ enum Documentation {
             }
         }).resolved().formattedAsSectionHeader(), to: &output)
 
-        let warnings = try Jazzy.default.warnings(outputDirectory: documentationDirectory(for: target, in: project))
+        let warnings = try Jazzy.default.warnings(outputDirectory: subdirectory(for: target, in: outputDirectory))
 
         for warning in warnings {
             print([

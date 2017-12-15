@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGCornerstone
 import SDGCommandLine
 
@@ -49,11 +51,7 @@ extension Workspace.Validate {
             }
 
             var validationStatus = ValidationStatus()
-
-            // Refresh documentation so that results are meaningful.
-            try Workspace.Document.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
-
-            try executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
+            try executeAsStepDocumentingFirst(options: options, validationStatus: &validationStatus, output: &output)
 
             if ¬validationStatus.validatedSomething {
                 validationStatus.passStep(message: UserFacingText({(localization: InterfaceLocalization, _: Void) in
@@ -70,9 +68,36 @@ extension Workspace.Validate {
         })
 
         #if !os(Linux)
-        static func executeAsStep(options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+        static func executeAsStepDocumentingFirst(options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
             if try options.project.configuration.shouldEnforceDocumentationCoverage() {
-                try options.project.validateDocumentationCoverage(validationStatus: &validationStatus, output: &output)
+
+                // Refresh documentation so that results are meaningful.
+                let outputDirectory: URL
+                let outputIsTemporary: Bool
+                if options.project.configuration.encryptedTravisDeploymentKey ≠ nil {
+                    outputDirectory = FileManager.default.url(in: .temporary, at: "Documentation")
+                    outputIsTemporary = true
+                } else {
+                    outputDirectory = Documentation.defaultDocumentationDirectory(for: options.project)
+                    outputIsTemporary = false
+                }
+                defer {
+                    if outputIsTemporary {
+                        try? FileManager.default.removeItem(at: outputDirectory)
+                    }
+                }
+
+                try Workspace.Document.executeAsStep(outputDirectory: outputDirectory, options: options, validationStatus: &validationStatus, output: &output)
+
+                try options.project.validateDocumentationCoverage(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: &output)
+            }
+        }
+        #endif
+
+        #if !os(Linux)
+        static func executeAsStep(outputDirectory: URL, options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+            if try options.project.configuration.shouldEnforceDocumentationCoverage() {
+                try options.project.validateDocumentationCoverage(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: &output)
             }
         }
         #endif

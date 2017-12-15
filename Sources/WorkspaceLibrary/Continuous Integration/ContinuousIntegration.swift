@@ -29,7 +29,7 @@ enum ContinuousIntegration {
         for job in Job.cases where try job.isRequired(by: project, output: &output) {
             travisConfiguration.append(contentsOf: job.script(encryptedTravisDeploymentKey: encryptedTravisDeploymentKey))
         }
-        
+
         if encryptedTravisDeploymentKey ≠ nil {
             travisConfiguration.append(contentsOf: [
                 "",

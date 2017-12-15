@@ -319,15 +319,15 @@ extension PackageRepository {
     }
 
     #if !os(Linux)
-    func document(validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+    func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
         for product in try libraryProductTargets(output: &output) {
-            try Documentation.document(target: product, for: self, validationStatus: &validationStatus, output: &output)
+            try Documentation.document(target: product, for: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: &output)
         }
     }
 
-    func validateDocumentationCoverage(validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+    func validateDocumentationCoverage(outputDirectory: URL, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
         for product in try libraryProductTargets(output: &output) {
-            try Documentation.validateDocumentationCoverage(for: product, in: self, validationStatus: &validationStatus, output: &output)
+            try Documentation.validateDocumentationCoverage(for: product, in: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: &output)
         }
     }
     #endif

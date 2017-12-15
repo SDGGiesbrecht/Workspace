@@ -33,9 +33,13 @@ enum ContinuousIntegration {
         if encryptedTravisDeploymentKey ≠ nil {
             travisConfiguration.append(contentsOf: [
                 "",
-                "stages:",
-                "  \u{2D} name: deploy",
-                "    if: branch = master"
+                "deploy:",
+                "  provider: pages",
+                "  local_dir: " + Documentation.defaultDocumentationDirectoryName,
+                "  on:",
+                "    branch: master",
+                "  github_token: $GITHUB_TOKEN",
+                "  skip_cleanup: true",
                 ])
         }
 

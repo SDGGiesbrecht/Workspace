@@ -19,8 +19,9 @@ import SDGCommandLine
 
 enum Documentation {
 
+    static let defaultDocumentationDirectoryName = "docs" // Matches GitHub Pages.
     static func defaultDocumentationDirectory(for project: PackageRepository) -> URL {
-        return project.location.appendingPathComponent("docs")
+        return project.location.appendingPathComponent(defaultDocumentationDirectoryName)
     }
     static func subdirectory(for target: String, in documentationDirectory: URL) -> URL {
         return documentationDirectory.appendingPathComponent(target)

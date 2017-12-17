@@ -33,7 +33,7 @@ enum ContinuousIntegration {
             travisConfiguration.append(contentsOf: [
                 "",
                 "stages:",
-                "  - name: deploy",
+                "  \u{2D} name: deploy",
                 "    if: branch = master"
                 ])
         }

@@ -333,9 +333,9 @@ extension Optional where Wrapped == ContinuousIntegration.Job {
         switch self {
         case .none: // [_Exempt from Code Coverage_] [_Workaround: Until unit‐tests is testable._]
             switch job {
-            case .macOSSwiftPackageManager, .macOSXcode, .linux, .iOS, .watchOS, .tvOS, .miscellaneous, .documentation:
+            case .macOSSwiftPackageManager, .macOSXcode, .linux, .iOS, .watchOS, .tvOS, .miscellaneous, .documentation: // [_Exempt from Code Coverage_] [_Workaround: Until unit‐tests is testable._]
                 return true
-            case .deployment:
+            case .deployment: // [_Exempt from Code Coverage_] [_Workaround: Until unit‐tests is testable._]
                 return false
             }
         case .some(let currentJob): // [_Exempt from Code Coverage_] [_Workaround: Until unit‐tests is testable._]

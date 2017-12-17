@@ -89,7 +89,7 @@ extension Workspace.Validate {
 
                 try Workspace.Document.executeAsStep(outputDirectory: outputDirectory, options: options, validationStatus: &validationStatus, output: &output)
 
-                try options.project.validateDocumentationCoverage(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: &output)
+                try executeAsStep(outputDirectory: outputDirectory, options: options, validationStatus: &validationStatus, output: &output)
             }
         }
         #endif

@@ -287,7 +287,7 @@ extension ContinuousIntegration {
                     "        provider: pages",
                     "        local_dir: " + Documentation.defaultDocumentationDirectoryName,
                     "        github_token: $GITHUB_TOKEN",
-                    "        skip_cleanup: true",
+                    "        skip_cleanup: true"
                     ])
             }
 

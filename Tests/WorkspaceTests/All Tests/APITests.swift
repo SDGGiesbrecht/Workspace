@@ -97,7 +97,7 @@ class APITests : TestCase {
             XCTAssertErrorFree { // Failures here when inside Xcode are irrelevant. (Xcode bypasses shell login scripts necessary to find Jazzy and other Ruby gems.)
                 let project = try MockProject(type: "Library")
                 try project.do {
-                    try "Repository URL: https://github.com/user/project\nAuthor: John Doe\nSupport macOS: False\nEncrypted Travis Deployment Key: ...".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
+                    try "Repository URL: https://github.com/user/project\nAuthor: John Doe\nSupport macOS: False\nEncrypted Travis Deployment Key: ...\nOriginal Documentation Copyright Year: 2000".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
                     try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
                     try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
                 }

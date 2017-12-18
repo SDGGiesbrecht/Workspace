@@ -242,6 +242,9 @@ struct Configuration {
             return try Documentation.defaultCopyrightTemplate(configuration: self)
         }
     }
+    func originalDocumentationCopyrightYear() throws -> StrictString? {
+        return try strictString(for: .originalDocumentationCopyrightYear)
+    }
     func requireAuthor() throws -> StrictString {
         if let defined = try strictString(for: .author) {
             return defined

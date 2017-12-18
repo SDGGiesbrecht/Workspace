@@ -621,6 +621,12 @@ extension Configuration {
             incompatibilityDetected(between: .manageLicence, and: .licence, documentation: .licence)
         }
 
+        // Documentation Deployment
+
+        if optionIsDefined(.encryptedTravisDeploymentKey) ∧ ¬optionIsDefined(.originalDocumentationCopyrightYear) {
+            incompatibilityDetected(between: .encryptedTravisDeploymentKey, and: .originalDocumentationCopyrightYear, documentation: DocumentationLink.documentationGeneration)
+        }
+
         // Custom
 
         let requiredEntries = requiredOptions

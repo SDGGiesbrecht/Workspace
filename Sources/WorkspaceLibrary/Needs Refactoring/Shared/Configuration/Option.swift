@@ -86,6 +86,7 @@ enum Option : String, CustomStringConvertible {
     case generateDocumentation = "Generate Documentation"
     case enforceDocumentationCoverage = "Enforce Documentation Coverage"
     case documentationCopyright = "Documentation Copyright"
+    case originalDocumentationCopyrightYear = "Original Documentation Copyright Year"
     case encryptedTravisDeploymentKey = "Encrypted Travis Deployment Key"
 
     case manageContinuousIntegration = "Manage Continuous Integration"
@@ -160,6 +161,7 @@ enum Option : String, CustomStringConvertible {
 
         .generateDocumentation,
         .documentationCopyright,
+        .originalDocumentationCopyrightYear,
         .encryptedTravisDeploymentKey,
 
         .manageContinuousIntegration,
@@ -288,6 +290,8 @@ enum Option : String, CustomStringConvertible {
             return String(Configuration.trueOptionValue)
         case .documentationCopyright:
             return String((try? Repository.packageRepository.configuration.documentationCopyright())!.text)
+        case .originalDocumentationCopyrightYear:
+            return Configuration.noValue
         case .encryptedTravisDeploymentKey:
             return Configuration.noValue
 

@@ -388,4 +388,7 @@ struct Configuration {
     func shouldEnforceDocumentationCoverage() throws -> Bool {
         return try boolean(for: .enforceDocumentationCoverage) ?? true
     }
+    func encryptedTravisDeploymentKey() throws -> String? {
+        return try string(for: .encryptedTravisDeploymentKey)
+    }
 }

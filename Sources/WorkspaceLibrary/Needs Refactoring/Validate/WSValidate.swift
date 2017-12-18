@@ -86,58 +86,53 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
 
     #if !os(Linux)
         if options.job.includes(job: .documentation) {
+            try Workspace.Validate.DocumentationCoverage.executeAsStepDocumentingFirst(options: options, validationStatus: &validationStatus, output: &output)
+        }
 
-            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-            // Generating documentation...
-            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-
-            try Workspace.Document.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
-
-            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-            // Checking documentation coverage...
-            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-
-            try Workspace.Validate.DocumentationCoverage.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
-
+        if options.job.includes(job: .deployment) {
+            try Workspace.Document.executeAsStep(outputDirectory: Documentation.defaultDocumentationDirectory(for: options.project), options: options, validationStatus: &validationStatus, output: &output)
         }
     #endif
 
     if Environment.isInContinuousIntegration {
 
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        print("Validating project state...".formattedAsSectionHeader(), to: &output)
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        if options.job ≠ ContinuousIntegration.Job.deployment {
 
-        var allowedDifferences: [String] = []
-        for localization in try options.project.configuration.localizations() {
-            var relatedProjects = ReadMe.relatedProjectsLocation(for: options.project, localization: localization).lastPathComponent
-            allowedDifferences.append(relatedProjects)
-            relatedProjects.scalars.replaceMatches(for: ".md".scalars, with: ".html".scalars)
-            relatedProjects.scalars.replaceMatches(for: " ".scalars, with: "\u{2D}".scalars)
-            relatedProjects.scalars.replaceMatches(for: ConditionalPattern(condition: { $0 ∉
-                (CharacterSet(charactersIn: Unicode.Scalar(0x00) ..< Unicode.Scalar(0x80))
-                    ∩ CharacterSet.alphanumerics)
-                ∪ ["\u{2D}", "."]
-            }), with: "".scalars)
-            allowedDifferences.append(relatedProjects.lowercased())
-        }
-        allowedDifferences = allowedDifferences.map { "':(exclude)*\($0.components(separatedBy: " ").last!)'" }
+            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+            print("Validating project state...".formattedAsSectionHeader(), to: &output)
+            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        requireBash(["git", "add", ".", "\u{2D}\u{2D}intent\u{2D}to\u{2D}add"], silent: true)
-        if (try? Shell.default.run(command: ["git", "diff", "\u{2D}\u{2D}exit\u{2D}code", "\u{2D}\u{2D}", ".", "':(exclude)*.dsidx'"] + allowedDifferences)) ≠ nil {
-            validationStatus.passStep(message: UserFacingText({ localization, _ in
-                switch localization {
-                case .englishCanada:
-                    return "The project is up to date."
-                }
-            }))
-        } else {
-            validationStatus.failStep(message: UserFacingText({ localization, _ in
-                switch localization {
-                case .englishCanada:
-                    return "The project is out of date. (Please run “Validate” before committing.)"
-                }
-            }))
+            var allowedDifferences: [String] = []
+            for localization in try options.project.configuration.localizations() {
+                var relatedProjects = ReadMe.relatedProjectsLocation(for: options.project, localization: localization).lastPathComponent
+                allowedDifferences.append(relatedProjects)
+                relatedProjects.scalars.replaceMatches(for: ".md".scalars, with: ".html".scalars)
+                relatedProjects.scalars.replaceMatches(for: " ".scalars, with: "\u{2D}".scalars)
+                relatedProjects.scalars.replaceMatches(for: ConditionalPattern(condition: { $0 ∉
+                    (CharacterSet(charactersIn: Unicode.Scalar(0x00) ..< Unicode.Scalar(0x80))
+                        ∩ CharacterSet.alphanumerics)
+                    ∪ ["\u{2D}", "."]
+                }), with: "".scalars)
+                allowedDifferences.append(relatedProjects.lowercased())
+            }
+            allowedDifferences = allowedDifferences.map { "':(exclude)*\($0.components(separatedBy: " ").last!)'" }
+
+            requireBash(["git", "add", ".", "\u{2D}\u{2D}intent\u{2D}to\u{2D}add"], silent: true)
+            if (try? Shell.default.run(command: ["git", "diff", "\u{2D}\u{2D}exit\u{2D}code", "\u{2D}\u{2D}", ".", "':(exclude)*.dsidx'"] + allowedDifferences)) ≠ nil {
+                validationStatus.passStep(message: UserFacingText({ localization, _ in
+                    switch localization {
+                    case .englishCanada:
+                        return "The project is up to date."
+                    }
+                }))
+            } else {
+                validationStatus.failStep(message: UserFacingText({ localization, _ in
+                    switch localization {
+                    case .englishCanada:
+                        return "The project is out of date. (Please run “Validate” before committing.)"
+                    }
+                }))
+            }
         }
     }
 

@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGCornerstone
 import SDGCommandLine
 
@@ -48,7 +50,8 @@ extension Workspace {
                 }
 
                 var validationStatus = ValidationStatus()
-                try executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
+                let outputDirectory = Documentation.defaultDocumentationDirectory(for: options.project)
+                try executeAsStep(outputDirectory: outputDirectory, options: options, validationStatus: &validationStatus, output: &output)
 
                 guard validationStatus.validatedSomething else {
                     throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
@@ -67,9 +70,9 @@ extension Workspace {
         })
 
         #if !os(Linux)
-        static func executeAsStep(options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+        static func executeAsStep(outputDirectory: URL, options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
             if try options.project.configuration.shouldGenerateDocumentation() {
-                try options.project.document(validationStatus: &validationStatus, output: &output)
+                try options.project.document(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: &output)
             }
         }
         #endif

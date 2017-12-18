@@ -29,16 +29,6 @@ enum ContinuousIntegration {
             travisConfiguration.append(contentsOf: try job.script(configuration: project.configuration))
         }
 
-        if try project.configuration.encryptedTravisDeploymentKey() ≠ nil {
-            travisConfiguration.append(contentsOf: [
-                "",
-                "stages:",
-                "  \u{2D} test",
-                "  \u{2D} name: deploy",
-                "    if: branch = master and (not type = pull_request)"
-                ])
-        }
-
         travisConfiguration.append(contentsOf: [
             "",
             "cache:",

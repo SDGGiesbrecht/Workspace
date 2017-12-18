@@ -279,10 +279,9 @@ extension ContinuousIntegration {
                     unreachable()
                 }
 
-                result[0].scalars.replaceMatches(for: "\u{2D} os".scalars, with: "  os".scalars)
-                result.prepend("    \u{2D} stage: deploy")
                 result.append(contentsOf: [
                     "        \u{2D} secure: \u{22}" + key + "\u{22}",
+                    "      if: branch = master and (not type = pull_request)",
                     "",
                     "      deploy:",
                     "        provider: pages",

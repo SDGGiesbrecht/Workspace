@@ -15,7 +15,7 @@
 [_Import https://github.com/SDGGiesbrecht/SDG_]
 
 (Do not forget to increment the version in “Program.swift” as well.)
-Current Version: 0.4.3
+Current Version: 0.4.4
 
 Project Type: Executable
 

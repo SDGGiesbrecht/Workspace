@@ -279,9 +279,9 @@ extension ContinuousIntegration {
                     unreachable()
                 }
 
-                result.prepend("    \u{2D} stage: deploy")
                 result.append(contentsOf: [
                     "        \u{2D} secure: \u{22}" + key + "\u{22}",
+                    "      if: branch = master and (not type = pull_request)",
                     "",
                     "      deploy:",
                     "        provider: pages",

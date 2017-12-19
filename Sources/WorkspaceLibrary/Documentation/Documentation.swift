@@ -35,7 +35,9 @@ enum Documentation {
 
         let existing = try TextFile(possiblyAt: directory.appendingPathComponent("index.html")).contents
         let searchArea: String
-        if let footerStart = existing.range(of: "<section id=\u{22}footer\u{22}>")?.upperBound {
+        if let override = try project.configuration.originalDocumentationCopyrightYear() {
+            searchArea = "©" + String(override)
+        } else if let footerStart = existing.range(of: "<section id=\u{22}footer\u{22}>")?.upperBound {
             searchArea = String(existing[footerStart...])
         } else {
             searchArea = ""

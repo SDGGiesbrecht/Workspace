@@ -22,7 +22,7 @@ This is controlled by the [configuration](Configuring%20Workspace.md) option `Ge
 $ workspace document
 ```
 
-The generated documentation will be placed in a `docs` folder at the project root. [These GitHub settings](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch) can be adjusted to automatically host the documentation directly from the repository.
+By default, the generated documentation will be placed in a `docs` folder at the project root. [These GitHub settings](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch) can be adjusted to automatically host the documentation directly from the repository. (If you wish to avoid checking generated files into `master`, see [Deployment](#deployment) for a more advanced method.)
 
 Each library product receives its own subfolder. Link to the documentation like this:<br>
 `https://`username`.github.io/`repository`/`Module<br>
@@ -69,6 +69,25 @@ Copyright dates are determined by searching the contents of `index.html` at the 
 ### Advanced
 
 Jazzy can be further configured by placing a `.jazzy.yaml` file in the project root. For more information see [Jazzy’s own documentation](https://github.com/realm/jazzy).
+
+## Deployment
+
+Projects with [continuous integration](Continuous%20Integration.md) management active can avoid checking generated files into `master`.
+
+With the following set‐up, Workspace will only generate documentation in continuous integration and stop generating it locally. (If needed for coverage checks, Workspace may still do so in a temporary directory.) The generated documentation will be automatically published to GitHub Pages via the `gh-pages` branch, making the `docs` directory unnecessary.
+
+Requirements:
+
+1. A GitHub [access token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/).
+2. The Travis gem. `$ gem install travis`
+
+Set‐Up:
+
+1. Navigate to a local clone of the repository. `$ cd `[path]` `.
+2. Encrypt the access token: `$ travis encrypt "GITHUB_TOKEN=`[token]`"`
+3. [Configure](Configuring%20Workspace.md) `Encrypted Travis Deployment Key: `[the encrypted key]` `
+4. [Configure](Configuring%20Workspace.md) `Original Documentation Copyright Year: `[year]` ` (because this way it cannot be retrieved from older documentation).
+5. Set GitHub Pages to [serve from the `gh-pages` branch](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#enabling-github-pages-to-publish-your-site-from-master-or-gh-pages).
 
 ## Linux
 

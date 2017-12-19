@@ -375,7 +375,11 @@ struct Configuration {
         }
     }
 
-    // MARK: - Options: Active Tasks
+    // MARK: - Options: Active Management Tasks
+
+    func shouldProvideScripts() throws -> Bool {
+        return try boolean(for: .provideScripts) ?? true // Unlikely to overwrite a user file, and necessary for version locking and continuous integration management.
+    }
 
     func shouldManageReadMe() throws -> Bool {
         return try boolean(for: .manageReadMe) ?? false
@@ -386,12 +390,15 @@ struct Configuration {
     }
 
     func shouldGenerateDocumentation() throws -> Bool {
-        return try boolean(for: .generateDocumentation) ?? true
-    }
-    func shouldEnforceDocumentationCoverage() throws -> Bool {
-        return try boolean(for: .enforceDocumentationCoverage) ?? true
+        return try boolean(for: .generateDocumentation) ?? false
     }
     func encryptedTravisDeploymentKey() throws -> String? {
         return try string(for: .encryptedTravisDeploymentKey)
+    }
+    
+    // MARK: - Options: Active Checks
+    
+    func shouldEnforceDocumentationCoverage() throws -> Bool {
+        return try boolean(for: .enforceDocumentationCoverage) ?? true
     }
 }

@@ -16,7 +16,7 @@
 
 Workspace can automatically generate API documentation using [Jazzy](https://github.com/realm/jazzy).
 
-This is controlled by the [configuration](Configuring%20Workspace.md) option `Generate Documentation`. The default value is `True`.
+This is controlled by the [configuration](Configuring%20Workspace.md) option `Generate Documentation`. The default value is `False`.
 
 ```shell
 $ workspace document

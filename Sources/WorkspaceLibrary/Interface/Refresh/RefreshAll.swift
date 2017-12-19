@@ -29,7 +29,7 @@ extension Workspace.Refresh {
         private static let description = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
-                return "performs all refreshment tasks."
+                return "performs all configured refreshment tasks."
             }
         })
 

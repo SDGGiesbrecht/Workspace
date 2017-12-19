@@ -35,17 +35,14 @@ extension Workspace.Refresh {
 
         static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, options: Options, output: inout Command.Output) throws in
 
-            if try options.project.configuration.shouldManageReadMe() {
+            print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+                switch localization {
+                case .englishCanada:
+                    return "Refreshing read‐me..."
+                }
+            }).resolved().formattedAsSectionHeader(), to: &output)
 
-                print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
-                    switch localization {
-                    case .englishCanada:
-                        return "Refreshing read‐me..."
-                    }
-                }).resolved().formattedAsSectionHeader(), to: &output)
-
-                try options.project.refreshReadMe(output: &output)
-            }
+            try options.project.refreshReadMe(output: &output)
         })
     }
 }

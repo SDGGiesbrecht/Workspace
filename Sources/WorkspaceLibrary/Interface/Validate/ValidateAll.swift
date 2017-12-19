@@ -29,7 +29,7 @@ extension Workspace.Validate {
         private static let description = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
-                return "performs all validation checks."
+                return "performs all configured validation checks."
             }
         })
 

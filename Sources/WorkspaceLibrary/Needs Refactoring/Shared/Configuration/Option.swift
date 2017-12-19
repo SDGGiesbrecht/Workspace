@@ -39,6 +39,7 @@ enum Option : String, CustomStringConvertible {
 
     case localizations = "Localizations"
 
+    case provideScripts = "Provide Scripts"
     case manageReadMe = "Manage Read‐Me"
     case readMe = "Read‐Me"
     case documentationURL = "Documentation URL"
@@ -202,6 +203,9 @@ enum Option : String, CustomStringConvertible {
 
         case .localizations:
             return String(Configuration.emptyListOptionValue)
+
+        case .provideScripts:
+            return String(Configuration.trueOptionValue)
 
         case .manageReadMe:
             return String(Configuration.falseOptionValue)

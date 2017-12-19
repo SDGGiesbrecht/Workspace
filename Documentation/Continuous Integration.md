@@ -18,6 +18,10 @@ Workspace can automatically configure projects for continuous integration with [
 
 This is controlled by the [configuration](Configuring%20Workspace.md) option `Manage Continuous Integration`. The [default](Responsibilities.md#default-vs-automatic) value is `False`. The [automatic](Responsibilities.md#default-vs-automatic) value is `True`.
 
+```shell
+$ workspace refresh continuous‐integration
+```
+
 Workspace will create and maintain a `.travis.yml` file at the project root, which configures Travis CI to run all the tests from `Validate` (and several additional ones) on every [operating system](Operating%20Systems.md) supported by the project. (watchOS does not support unit tests.)
 
 **Note**: Workspace cannot turn Travis CI on. It is still necessary to log into [Travis CI](https://travis-ci.org) and activate it for the project’s repository.

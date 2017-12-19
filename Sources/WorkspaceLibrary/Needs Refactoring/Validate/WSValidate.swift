@@ -86,10 +86,16 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
 
     #if !os(Linux)
         if options.job.includes(job: .documentation) {
-            try Workspace.Validate.DocumentationCoverage.executeAsStepDocumentingFirst(options: options, validationStatus: &validationStatus, output: &output)
+            if try options.project.configuration.shouldEnforceDocumentationCoverage() {
+                try Workspace.Validate.DocumentationCoverage.executeAsStepDocumentingFirst(options: options, validationStatus: &validationStatus, output: &output)
+            } else if try options.project.configuration.shouldGenerateDocumentation()
+                ∧ (try options.project.configuration.encryptedTravisDeploymentKey() == nil) {
+                try Workspace.Document.executeAsStep(outputDirectory: Documentation.defaultDocumentationDirectory(for: options.project), options: options, validationStatus: &validationStatus, output: &output)
+            }
         }
 
-        if options.job.includes(job: .deployment) {
+        if try options.job.includes(job: .deployment)
+            ∧ (try options.project.configuration.shouldGenerateDocumentation()) {
             try Workspace.Document.executeAsStep(outputDirectory: Documentation.defaultDocumentationDirectory(for: options.project), options: options, validationStatus: &validationStatus, output: &output)
         }
     #endif

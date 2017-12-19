@@ -59,8 +59,6 @@ curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/
 
 ## The Workspace Workflow
 
-(Note: Only the simplest workflow has been described here. Workspace’s command line interface provides much more fine‐grained control, and the scripts mentioned here can be [removed](Scripts.md) if desired.)
-
 *The Workspace project is managed by... Workspace! So let’s try it out by following along using the Workspace project itself.*
 
 ### When the Repository Is Cloned

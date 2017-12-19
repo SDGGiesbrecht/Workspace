@@ -395,9 +395,9 @@ struct Configuration {
     func encryptedTravisDeploymentKey() throws -> String? {
         return try string(for: .encryptedTravisDeploymentKey)
     }
-    
+
     // MARK: - Options: Active Checks
-    
+
     func shouldEnforceDocumentationCoverage() throws -> Bool {
         return try boolean(for: .enforceDocumentationCoverage) ?? true
     }

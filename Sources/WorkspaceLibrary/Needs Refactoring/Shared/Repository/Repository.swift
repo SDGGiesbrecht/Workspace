@@ -15,6 +15,7 @@
 import Foundation
 
 import SDGCornerstone
+import SDGCommandLine
 
 struct Repository {
 
@@ -28,6 +29,14 @@ struct Repository {
         }
     }
 
+    static var standInOutput: Command.Output = {
+        var result: Command.Output?
+        try! Command(name: UserFacingText<InterfaceLocalization, Void>({ _, _ in "" }), description: UserFacingText<InterfaceLocalization, Void>({ _, _ in "" }), directArguments: [], options: [], execution: { (_, _, output: inout Command.Output) in
+            result = output
+        }).execute(with: [])
+        return result!
+    }()
+
     // MARK: - Configuration
 
     static let testZone: RelativePath = ".Test Zone"
@@ -35,10 +44,6 @@ struct Repository {
     // MARK: - Cache
 
     private struct Cache {
-        fileprivate var allFiles: [RelativePath]?
-        fileprivate var allRealFiles: [RelativePath]?
-        fileprivate var trackedFiles: [RelativePath]?
-        fileprivate var sourceFiles: [RelativePath]?
         fileprivate var printableListOfAllFiles: String?
         fileprivate var packageDescription: File?
     }
@@ -63,70 +68,13 @@ struct Repository {
     }
 
     static var trackedFiles: [RelativePath] {
-        var cacheCopy = cache
-        defer { cache = cacheCopy }
-
-        return cached(in: &cacheCopy.trackedFiles) {
-            () -> [RelativePath] in
-
-            let ignoredSummary = requireBash(["git", "status", "\u{2D}\u{2D}ignored"], silent: true)
-            var ignoredPaths: [String] = [
-                ".git/"
-            ]
-            if let header = ignoredSummary.range(of: "Ignored files:") {
-
-                let remainder = String(ignoredSummary[header.upperBound...])
-                for line in remainder.lines.lazy.dropFirst(3).map({ String($0.line) }) {
-                    if line.isWhitespace {
-                        break
-                    } else {
-                        var start = line.scalars.startIndex
-                        line.scalars.advance(&start, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
-                        ignoredPaths.append(String(line.scalars.suffix(from: start)))
-                    }
-                }
-
-            }
-
-            let result = allFiles.filter() { (path: RelativePath) -> Bool in
-
-                for ignored in ignoredPaths {
-                    if path.string.hasPrefix(ignored) {
-                        return false
-                    }
-                }
-                return true
-            }
-
-            return result
-        }
+        let urls = require() { try packageRepository.trackedFiles(output: &standInOutput) }
+        return paths(from: urls)
     }
 
     static var sourceFiles: [RelativePath] {
-        var cacheCopy = cache
-        defer { cache = cacheCopy }
-
-        return cached(in: &cacheCopy.sourceFiles) {
-            () -> [RelativePath] in
-
-            let result = trackedFiles.filter() { (path: RelativePath) -> Bool in
-
-                let generatedPaths = [
-                    "docs/",
-                    String(Script.refreshMacOS.fileName),
-                    String(Script.refreshLinux.fileName)
-                ]
-
-                for generated in generatedPaths {
-                    if path.string.hasPrefix(generated) {
-                        return false
-                    }
-                }
-                return true
-            }
-
-            return result
-        }
+        let urls = require() { try packageRepository.sourceFiles(output: &standInOutput) }
+        return paths(from: urls)
     }
 
     static var printableListOfAllFiles: String {

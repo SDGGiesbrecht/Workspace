@@ -220,7 +220,7 @@ extension PackageRepository {
                 Script.refreshLinux.fileName,
 
                 "Tests/Mock Projects" // To prevent treating them as Workspace source files for headers, etc.
-                ].map({ location.appendingPathComponent(String($0)) })
+                ].map({ location.appendingPathComponent( String($0)) })
 
             let result = try trackedFiles(output: &output).filter() { (url) in
                 for generatedURL in generatedURLs {

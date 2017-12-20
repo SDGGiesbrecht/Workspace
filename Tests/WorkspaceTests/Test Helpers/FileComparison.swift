@@ -1,0 +1,37 @@
+/*
+ FileComparison.swift
+
+ This source file is part of the Workspace open source project.
+ https://github.com/SDGGiesbrecht/Workspace#workspace
+
+ Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
+
+ Soli Deo gloria.
+
+ Licensed under the Apache Licence, Version 2.0.
+ See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+ */
+
+import Foundation
+import XCTest
+
+import SDGCornerstone
+import SDGCommandLine
+
+func checkForDifferences(in contentLabel: String, at location: URL, for mockProject: URL) {
+    do {
+        try Shell.default.run(command: [
+            "git", "add", Shell.quote(location.path),
+            "\u{2D}\u{2D}intent\u{2D}to\u{2D}add"
+            ])
+        try Shell.default.run(command: [
+            "git", "diff",
+            "\u{2D}\u{2D}exit\u{2D}code",
+            Shell.quote(location.path)
+            ])
+    } catch let error as Shell.Error {
+        XCTFail("\n\nThe \(contentLabel) for mock project “\(mockProject.lastPathComponent)” changed.\n\nIf the following changes are intended, commit them to update the test expectations:\n$ git add \u{22}\(location.path(relativeTo: repositoryRoot))\u{22}\n$ git commit \u{2D}m ...\n\n" + error.output)
+    } catch let error {
+        XCTFail(error.localizedDescription)
+    }
+}

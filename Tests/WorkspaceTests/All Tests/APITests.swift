@@ -415,6 +415,19 @@ class APITests : TestCase {
     }
 
     func testWorkflow() {
+        let developer = URL(fileURLWithPath: "/tmp/Developer")
+        try? FileManager.default.removeItem(at: developer)
+        defer { try? FileManager.default.removeItem(at: developer) }
+        let dependency = developer.appendingPathComponent("Dependency")
+        XCTAssertErrorFree {
+            try FileManager.default.do(in: dependency) {
+                try Shell.default.run(command: ["swift", "package", "init"])
+                try Shell.default.run(command: ["git", "init"])
+                try Shell.default.run(command: ["git", "add", "."])
+                try Shell.default.run(command: ["git", "commit", "\u{2D}m", "Initialized."])
+                try Shell.default.run(command: ["git", "tag", "1.0.0"])
+            }
+        }
 
         let mockProjectsDirectory = repositoryRoot.appendingPathComponent("Tests/Mock Projects")
         let beforeDirectory = mockProjectsDirectory.appendingPathComponent("Before")
@@ -469,7 +482,7 @@ class APITests : TestCase {
 
                             if project.lastPathComponent ≠ "Default" {
                                 XCTAssertErrorFree {
-                                    output += "\n$ workspace refresh resources\n"
+                                    output += "\n$ workspace validate documentation‐coverage\n"
                                     output += try Workspace.command.execute(with: ["refresh", "resources"])
                                 }
                             }

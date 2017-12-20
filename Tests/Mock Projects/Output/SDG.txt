@@ -1,0 +1,48 @@
+
+$ workspace refresh scripts
+
+[34m[1mRefreshing scripts...[22m[39m
+
+
+$ swift package resolve
+Fetching file:///tmp/Developer/Dependency
+Cloning file:///tmp/Developer/Dependency
+Resolving file:///tmp/Developer/Dependency at 1.0.0
+
+Writing to “Refresh (macOS).command”...
+Writing to “Refresh (Linux).sh”...
+
+$ swift package resolve
+
+Writing to “Validate (macOS).command”...
+$ workspace refresh read‐me
+
+[34m[1mRefreshing read‐me...[22m[39m
+
+
+$ swift package resolve
+
+Writing to “Documentation/🇨🇦EN Read Me.md”...
+
+$ swift package resolve
+
+Writing to “Documentation/🇨🇦EN Related Projects.md”...
+
+$ swift package resolve
+
+Writing to “README.md”...
+$ workspace refresh continuous‐integration
+
+[34m[1mRefreshing continuous integration configuration...[22m[39m
+
+
+$ swift package resolve
+
+Writing to “.travis.yml”...
+$ workspace refresh resources
+
+[34m[1mRefreshing resources...[22m[39m
+
+$ workspace refresh resources
+
+[34m[1mRefreshing resources...[22m[39m

@@ -18,7 +18,7 @@ import XCTest
 import SDGCornerstone
 import SDGCommandLine
 
-func checkForDifferences(in contentLabel: String, at location: URL, for mockProject: URL) {
+func checkForDifferences(in contentLabel: String, at location: URL, for mockProject: URL, file: StaticString = #file, line: UInt = #line) {
     do {
         try Shell.default.run(command: [
             "git", "add", Shell.quote(location.path),
@@ -30,8 +30,8 @@ func checkForDifferences(in contentLabel: String, at location: URL, for mockProj
             Shell.quote(location.path)
             ])
     } catch let error as Shell.Error {
-        XCTFail("\n\nThe \(contentLabel) for mock project “\(mockProject.lastPathComponent)” changed.\n\nIf the following changes are intended, commit them to update the test expectations:\n$ git add \u{22}\(location.path(relativeTo: repositoryRoot))\u{22}\n$ git commit \u{2D}m ...\n\n" + error.output)
+        XCTFail("\n\nThe \(contentLabel) for mock project “\(mockProject.lastPathComponent)” changed.\n\nIf the following changes are intended, commit them to update the test expectations:\n$ git add \u{22}\(location.path(relativeTo: repositoryRoot))\u{22}\n$ git commit \u{2D}m ...\n\n" + error.output, file: file, line: line)
     } catch let error {
-        XCTFail(error.localizedDescription)
+        XCTFail(error.localizedDescription, file: file, line: line)
     }
 }

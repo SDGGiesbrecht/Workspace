@@ -64,10 +64,6 @@ extension PackageRepository {
         return _location // Shared from SDGCommandLine.
     }
 
-    func url(for relativePath: String) -> URL {
-        return _url(for: relativePath) // Shared from SDGCommandLine.
-    }
-
     // MARK: - Configuration
 
     var configuration: Configuration {
@@ -201,7 +197,7 @@ extension PackageRepository {
             try FileManager.default.do(in: location) {
                 ignoredURLs = try Git.default.ignoredFiles(output: &output)
             }
-            ignoredURLs.append(url(for: ".git"))
+            ignoredURLs.append(location.appendingPathComponent(".git"))
 
             let result = try allFiles().filter() { (url) in
                 for ignoredURL in ignoredURLs {
@@ -221,8 +217,10 @@ extension PackageRepository {
             let generatedURLs = [
                 "docs",
                 Script.refreshMacOS.fileName,
-                Script.refreshLinux.fileName
-                ].map({ url(for: String($0)) })
+                Script.refreshLinux.fileName,
+
+                "Tests/Mock Projects" // To prevent treating them as Workspace source files for headers, etc.
+                ].map({ location.appendingPathComponent(String($0)) })
 
             let result = try trackedFiles(output: &output).filter() { (url) in
                 for generatedURL in generatedURLs {

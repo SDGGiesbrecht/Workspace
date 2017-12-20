@@ -37,7 +37,7 @@ enum ContinuousIntegration {
             "  \u{2D} $HOME/.cache/ca.solideogloria.Workspace"
             ])
 
-        var travisConfigurationFile = try TextFile(possiblyAt: project.url(for: ".travis.yml"))
+        var travisConfigurationFile = try TextFile(possiblyAt: project.location.appendingPathComponent(".travis.yml"))
         travisConfigurationFile.body = travisConfiguration.joinAsLines()
         try travisConfigurationFile.writeChanges(for: project, output: &output)
     }

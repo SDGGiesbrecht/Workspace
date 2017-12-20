@@ -31,7 +31,7 @@ struct Repository {
 
     static var standInOutput: Command.Output = {
         var result: Command.Output?
-        try! Command(name: UserFacingText<InterfaceLocalization, Void>({ _, _ in "" }), description: UserFacingText<InterfaceLocalization, Void>({ _, _ in "" }), directArguments: [], options: [], execution: { (_, _, output: inout Command.Output) in
+        _ = try? Command(name: UserFacingText<InterfaceLocalization, Void>({ _, _ in "" }), description: UserFacingText<InterfaceLocalization, Void>({ _, _ in "" }), directArguments: [], options: [], execution: { (_, _, output: inout Command.Output) in
             result = output
         }).execute(with: [])
         return result!

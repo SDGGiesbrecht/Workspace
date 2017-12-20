@@ -16,6 +16,7 @@ import Foundation
 import XCTest
 
 import SDGCornerstone
+import SDGCommandLine
 
 import WorkspaceLibrary
 
@@ -415,6 +416,13 @@ class APITests : TestCase {
     }
 
     func testWorkflow() {
+        // Get version checks over with.
+        XCTAssertErrorFree {
+            _ = try _Git._default._execute(with: ["\u{2D}\u{2D}version"], output: &Command.Output.mock, silently: true, autoquote: true)
+            _ = try _Swift._default._execute(with: ["\u{2D}\u{2D}version"], output: &Command.Output.mock, silently: true, autoquote: true)
+        }
+
+        // Make a depencency available.
         let developer = URL(fileURLWithPath: "/tmp/Developer")
         try? FileManager.default.removeItem(at: developer)
         defer { try? FileManager.default.removeItem(at: developer) }
@@ -429,6 +437,7 @@ class APITests : TestCase {
             }
         }
 
+        // Test on mock projects
         let mockProjectsDirectory = repositoryRoot.appendingPathComponent("Tests/Mock Projects")
         let beforeDirectory = mockProjectsDirectory.appendingPathComponent("Before")
         XCTAssertErrorFree {
@@ -490,21 +499,11 @@ class APITests : TestCase {
                             XCTAssertErrorFree {
                                 try? FileManager.default.removeItem(at: resultLocation)
                                 try FileManager.default.copy(project, to: resultLocation)
+                                // Remove variable files.
+                                try? FileManager.default.removeItem(at: resultLocation.appendingPathComponent("Package.resolved"))
                             }
                             checkForDifferences(in: "repository", at: resultLocation, for: project)
 
-                            output = StrictString(LineView(output.lines.map({ lineData in
-                                let line = lineData.line
-
-                                // Swift version check will vary.
-                                if line.hasPrefix("Apple Swift version ".scalars)
-                                    ∨ line.hasPrefix("Target: x86_64".scalars)
-                                    ∨ line.hasPrefix("\u{1B}[33m\u{1B}[1mExpected Swift ".scalars) {
-                                    return Line(line: "[...]", newline: StrictString(lineData.newline))
-                                } else {
-                                    return lineData
-                                }
-                            })))
                             XCTAssertErrorFree { try output.save(to: outputLocation) }
                             checkForDifferences(in: "output", at: outputLocation, for: project)
                         }

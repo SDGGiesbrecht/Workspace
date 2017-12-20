@@ -414,14 +414,6 @@ extension Configuration {
     static func packageName(forProjectName projectName: String) -> String {
         return projectName
     }
-    static var defaultPackageName: String {
-        let tokens = ("name: \u{22}", "\u{22}")
-        if let name = Repository.packageDescription.contents.scalars.firstNestingLevel(startingWith: tokens.0.scalars, endingWith: tokens.1.scalars)?.contents.contents {
-            return String(name)
-        } else {
-            return packageName(forProjectName: Repository.folderName)
-        }
-    }
 
     static func moduleName(forProjectName projectName: String) -> String {
         return projectName.replacingOccurrences(of: " ", with: "")

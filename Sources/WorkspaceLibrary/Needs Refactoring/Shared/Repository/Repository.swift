@@ -45,7 +45,6 @@ struct Repository {
 
     private struct Cache {
         fileprivate var printableListOfAllFiles: String?
-        fileprivate var packageDescription: File?
     }
     private static var cache = Cache()
 
@@ -158,14 +157,6 @@ struct Repository {
 
         } else {
             unsupportedPathType()
-        }
-    }
-
-    static var packageDescription: File {
-        return cached(in: &cache.packageDescription) {
-            () -> File in
-
-            return File(possiblyAt: RelativePath("Package.swift"))
         }
     }
 

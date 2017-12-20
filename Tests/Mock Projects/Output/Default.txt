@@ -4,12 +4,6 @@ $ workspace refresh scripts
 [34m[1mRefreshing scripts...[22m[39m
 
 
-$ swift --version
-[...]
-[...]
-
-[...]
-
 $ swift package resolve
 
 Writing to “Refresh (macOS).command”...

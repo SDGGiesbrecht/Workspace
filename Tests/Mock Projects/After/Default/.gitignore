@@ -1,0 +1,9 @@
+.DS_Store
+*~
+/.build
+/Packages
+/Validate\ (macOS).command
+/Validate\ (Linux).sh
+/.Test\ Zone
+/*.xcodeproj
+*.profraw

@@ -1,7 +1,7 @@
 
 $ workspace refresh scripts
 
-[34m[1mRefreshing scripts...[22m[39m
+Refreshing scripts...
 
 
 $ swift package resolve
@@ -14,7 +14,7 @@ $ swift package resolve
 Writing to “Validate (macOS).command”...
 $ workspace refresh resources
 
-[34m[1mRefreshing resources...[22m[39m
+Refreshing resources...
 
 $ workspace validate documentation‐coverage
 

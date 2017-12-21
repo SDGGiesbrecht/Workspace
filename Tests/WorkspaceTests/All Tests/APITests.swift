@@ -33,80 +33,14 @@ class APITests : TestCase {
          XCTAssertThrowsError(containing: "Invalid") {
          let project = try MockProject()
          try project.do {
-         try "Manage Continuous Integration: Maybe".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
-         try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
-         }
-         }
-         XCTAssertThrowsError(containing: "Invalid") {
-         let project = try MockProject()
-         try project.do {
          try "Project Type: Something\nManage Continuous Integration: True".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
          try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
          }
          }*/
     }
 
-    func testContinuousIntegration() {
-        /* [_Warning: Restore._]
-
-         // Inactive.
-         XCTAssertErrorFree {
-         let project = try MockProject()
-         try project.do {
-         let configuration = project.location.appendingPathComponent(".travis.yml")
-         try "...".save(to: configuration)
-         try "Manage Continuous Integration: False".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
-         try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
-         XCTAssertEqual(try String(from: configuration), "...")
-         }
-         }
-
-         // Active.
-         XCTAssertErrorFree {
-         let project = try MockProject()
-         try project.do {
-         let configuration = project.location.appendingPathComponent(".travis.yml")
-         try "...".save(to: configuration)
-         try "Manage Continuous Integration: True\nGenerate Documentation: True\nEncrypted Travis Deployment Key: ...".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
-         try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
-         XCTAssert(try String(from: configuration).contains("cache"))
-         }
-         }
-         XCTAssertErrorFree {
-         let project = try MockProject(type: "Application")
-         try project.do {
-         let configuration = project.location.appendingPathComponent(".travis.yml")
-         try "...".save(to: configuration)
-         try "Project Type: Application\nManage Continuous Integration: True\nGenerate Documentation: True".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
-         try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
-         XCTAssert(try String(from: configuration).contains("cache"))
-         }
-         }
-         XCTAssertErrorFree {
-         let project = try MockProject(type: "Executable")
-         try project.do {
-         let configuration = project.location.appendingPathComponent(".travis.yml")
-         try "...".save(to: configuration)
-         try "Project Type: Executable\nManage Continuous Integration: True\nGenerate Documentation: True".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
-         try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
-         XCTAssert(try String(from: configuration).contains("cache"))
-         }
-         }
-         */
-    }
-
     func testDocumentation() {
         /* [_Warning: Restore._]
-
-         #if !os(Linux)
-         XCTAssertErrorFree { // Failures here when inside Xcode are irrelevant. (Xcode bypasses shell login scripts necessary to find Jazzy and other Ruby gems.)
-         let project = try MockProject(type: "Library")
-         try project.do {
-         try "Repository URL: https://github.com/user/project\nAuthor: John Doe\nSupport macOS: False\nEncrypted Travis Deployment Key: ...\nOriginal Documentation Copyright Year: 2000".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
-         try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
-         try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
-         }
-         }
 
          XCTAssertErrorFree { // Failures here when inside Xcode are irrelevant. (Xcode bypasses shell login scripts necessary to find Jazzy and other Ruby gems.)
          let project = try MockProject(type: "Library")
@@ -416,11 +350,8 @@ class APITests : TestCase {
     }
 
     func testWorkflow() {
-        // Get version checks over with.
-        XCTAssertErrorFree {
-            _ = try _Git._default._execute(with: ["\u{2D}\u{2D}version"], output: &Command.Output.mock, silently: true, autoquote: true)
-            _ = try _Swift._default._execute(with: ["\u{2D}\u{2D}version"], output: &Command.Output.mock, silently: true, autoquote: true)
-        }
+        // Get version checks over with, so that they are not in the output.
+        triggerVersionChecks()
 
         // Make a depencency available.
         let developer = URL(fileURLWithPath: "/tmp/Developer")
@@ -437,12 +368,14 @@ class APITests : TestCase {
             }
         }
 
-        // Test on mock projects
+        // Test on mock projects.
         let mockProjectsDirectory = repositoryRoot.appendingPathComponent("Tests/Mock Projects")
         let beforeDirectory = mockProjectsDirectory.appendingPathComponent("Before")
         XCTAssertErrorFree {
             for project in try FileManager.default.contentsOfDirectory(at: beforeDirectory, includingPropertiesForKeys: nil, options: [])
                 where project.lastPathComponent ≠ ".DS_Store" {
+                    print("\n\nTesting on “\(project.lastPathComponent)”...\n\n".formattedAsSectionHeader())
+
                     let expectedToFail = (try? project.appendingPathComponent("✗").checkResourceIsReachable()) == true
 
                     let resultLocation = mockProjectsDirectory.appendingPathComponent("After/" + project.lastPathComponent)
@@ -473,12 +406,12 @@ class APITests : TestCase {
                                     output += "\n$ workspace refresh scripts\n"
                                     output += try Workspace.command.execute(with: ["refresh", "scripts", "•no‐colour"])
 
-                                    if project.lastPathComponent ∉ Set(["Default", "InvalidConfigurationEnumerationValue"]) {
+                                    if project.lastPathComponent ∉ Set(["InvalidConfigurationEnumerationValue"]) {
                                         output += "\n$ workspace refresh read‐me\n"
                                         output += try Workspace.command.execute(with: ["refresh", "read‐me", "•no‐colour"])
                                     }
 
-                                    if project.lastPathComponent ∉ Set(["Default", "InvalidConfigurationEnumerationValue"]) {
+                                    if project.lastPathComponent ∉ Set(["InvalidConfigurationEnumerationValue"]) {
                                         output += "\n$ workspace refresh continuous‐integration\n"
                                         output += try Workspace.command.execute(with: ["refresh", "continuous‐integration", "•no‐colour"])
                                     }
@@ -486,10 +419,12 @@ class APITests : TestCase {
                                     output += "\n$ workspace refresh resources\n"
                                     output += try Workspace.command.execute(with: ["refresh", "resources", "•no‐colour"])
 
-                                    try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
+                                    #if !os(Linux)
+                                        try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
 
-                                    output += "\n$ workspace validate documentation‐coverage\n"
-                                    output += try Workspace.command.execute(with: ["validate", "documentation‐coverage", "•no‐colour"])
+                                        output += "\n$ workspace validate documentation‐coverage\n"
+                                        output += try Workspace.command.execute(with: ["validate", "documentation‐coverage", "•no‐colour"])
+                                    #endif
                                 } catch let error as Command.Error {
                                     output += "\n" + error.describe()
                                 } catch let error {
@@ -501,14 +436,14 @@ class APITests : TestCase {
                                     output += try Workspace.command.execute(with: ["refresh", "scripts", "•no‐colour"])
                                 }
 
-                                if project.lastPathComponent ≠ "Default" {
+                                if project.lastPathComponent ∉ Set(["Default", "NoMacOS"]) {
                                     XCTAssertErrorFree {
                                         output += "\n$ workspace refresh read‐me\n"
                                         output += try Workspace.command.execute(with: ["refresh", "read‐me", "•no‐colour"])
                                     }
                                 }
 
-                                if project.lastPathComponent ≠ "Default" {
+                                if project.lastPathComponent ∉ Set(["Default", "NoMacOS"]) {
                                     XCTAssertErrorFree {
                                         output += "\n$ workspace refresh continuous‐integration\n"
                                         output += try Workspace.command.execute(with: ["refresh", "continuous‐integration", "•no‐colour"])
@@ -520,14 +455,16 @@ class APITests : TestCase {
                                     output += try Workspace.command.execute(with: ["refresh", "resources", "•no‐colour"])
                                 }
 
-                                XCTAssertErrorFree {
-                                    try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
-                                }
+                                #if !os(Linux)
+                                    XCTAssertErrorFree {
+                                        try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
+                                    }
+                                #endif
 
-                                if project.lastPathComponent ≠ "Default" {
+                                if project.lastPathComponent ∉ Set(["Default"]) {
                                     XCTAssertErrorFree {
                                         output += "\n$ workspace validate documentation‐coverage\n"
-                                        output += try Workspace.command.execute(with: ["refresh", "resources", "•no‐colour"])
+                                        output += try Workspace.command.execute(with: ["validate", "documentation‐coverage", "•no‐colour"])
                                     }
                                 }
 
@@ -539,6 +476,12 @@ class APITests : TestCase {
                                 }
                                 checkForDifferences(in: "repository", at: resultLocation, for: project)
                             }
+
+                            output.replaceMatches(for: [
+                                LiteralPattern("/Users/".scalars),
+                                RepetitionPattern(ConditionalPattern(condition: { $0 ≠ "/" }), consumption: .lazy),
+                                LiteralPattern("/".scalars)
+                                ], with: "[...]".scalars)
 
                             XCTAssertErrorFree { try output.save(to: outputLocation) }
                             checkForDifferences(in: "output", at: outputLocation, for: project)
@@ -614,7 +557,6 @@ class APITests : TestCase {
         return [
             ("testCheckForUpdates", testCheckForUpdates),
             ("testConfiguration", testConfiguration),
-            ("testContinuousIntegration", testContinuousIntegration),
             ("testDocumentation", testDocumentation),
             ("testReadMe", testReadMe),
             ("testResources", testResources),

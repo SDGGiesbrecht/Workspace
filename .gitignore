@@ -21,12 +21,13 @@
 
 .DS_Store
 *~
-/.build
-/Packages
-/Validate\ (macOS).command
-/Validate\ (Linux).sh
-/.Test\ Zone
-/*.xcodeproj
+.build
+Packages
 *.profraw
+Validate\ (macOS).command
+Validate\ (Linux).sh
+undocumented.json
+*.tgz
+*.xcodeproj
 
 # [_End Workspace Section]

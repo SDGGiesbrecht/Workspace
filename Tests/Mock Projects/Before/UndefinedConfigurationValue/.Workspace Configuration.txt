@@ -1,0 +1,3 @@
+Manage Read‐Me: True
+Localizations: en
+Read‐Me: [_Feature List_]

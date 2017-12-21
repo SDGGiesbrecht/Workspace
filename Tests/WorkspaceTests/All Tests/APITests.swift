@@ -453,6 +453,7 @@ class APITests : TestCase {
                                     try FileManager.default.copy(project, to: resultLocation)
                                     // Remove variable files.
                                     try? FileManager.default.removeItem(at: resultLocation.appendingPathComponent("Package.resolved"))
+                                    try? FileManager.default.removeItem(at: resultLocation.appendingPathComponent("docs/\(project.lastPathComponent)/docsets"))
                                 }
                                 checkForDifferences(in: "repository", at: resultLocation, for: project)
                             }

@@ -185,7 +185,7 @@ extension PackageRepository {
             if let error = failureReason { // [_Exempt from Code Coverage_] It is unknown what circumstances would actually cause an error.
                 throw error
             }
-            return result
+            return result.sorted() // So that output order is consistent.
         }
     }
 

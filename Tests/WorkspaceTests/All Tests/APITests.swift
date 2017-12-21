@@ -477,11 +477,13 @@ class APITests : TestCase {
                                 checkForDifferences(in: "repository", at: resultLocation, for: project)
                             }
 
-                            output.replaceMatches(for: [
-                                LiteralPattern("/Users/".scalars),
-                                RepetitionPattern(ConditionalPattern(condition: { $0 ≠ "/" }), consumption: .lazy),
-                                LiteralPattern("/".scalars)
-                                ], with: "[...]".scalars)
+                            let replacement = "[...]".scalars
+                            // Remove varying repository location.
+                            output.replaceMatches(for: repositoryRoot.path.scalars, with: replacement)
+                            // Remove varying temporary directory.
+                            output.replaceMatches(for: FileManager.default.url(in: .temporary, at: "Temporary").deletingLastPathComponent().path.scalars, with: replacement)
+                            output.replaceMatches(for: "`..".scalars, with: "`".scalars)
+                            output.replaceMatches(for: "/..".scalars, with: [])
 
                             XCTAssertErrorFree { try output.save(to: outputLocation) }
                             checkForDifferences(in: "output", at: outputLocation, for: project)

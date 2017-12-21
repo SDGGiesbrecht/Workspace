@@ -1,0 +1,44 @@
+
+$ workspace refresh scripts
+
+Refreshing scripts...
+
+
+$ swift package resolve
+
+Writing to “Refresh (macOS).command”...
+Writing to “Refresh (Linux).sh”...
+
+$ swift package resolve
+
+Writing to “Validate (macOS).command”...
+$ workspace refresh resources
+
+Refreshing resources...
+
+$ workspace validate documentation‐coverage
+
+$ swift package resolve
+
+
+Generating documentation for “NoMacOSOrIOS”...
+
+
+$ jazzy --module NoMacOSOrIOS --copyright "Copyright ©2017 the NoMacOSOrIOS project contributors. All rights reserved." --documentation=Documentation/*.md --clean --use-safe-filenames --output "[...]/Tests/Mock Projects/Before/NoMacOSOrIOS/docs/NoMacOSOrIOS" --xcodebuild-arguments "-scheme,NoMacOSOrIOS-Package,-target,NoMacOSOrIOS,-sdk,watchos,-derivedDataPath,[...]/Jazzy Build Artifacts"
+0% documentation coverage with 0 undocumented symbols
+skipped 1 private, fileprivate, or internal symbol (use `--min-acl` to specify a different minimum ACL)
+jam out ♪♫ to your fresh new docs in `docs/NoMacOSOrIOS`
+
+Writing to “docs/NoMacOSOrIOS/.nojekyll”...
+
+$ swift package resolve
+
+
+Checking documentation coverage for “NoMacOSOrIOS”... (§1)
+
+
+✓ Generated documentation for “NoMacOSOrIOS”.
+✓ Documentation coverage is complete for “NoMacOSOrIOS”.
+
+
+“NoMacOSOrIOS” passes validation.

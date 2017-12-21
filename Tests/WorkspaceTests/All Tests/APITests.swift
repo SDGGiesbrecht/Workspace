@@ -443,6 +443,8 @@ class APITests : TestCase {
         XCTAssertErrorFree {
             for project in try FileManager.default.contentsOfDirectory(at: beforeDirectory, includingPropertiesForKeys: nil, options: [])
                 where project.lastPathComponent ≠ ".DS_Store" {
+                    let expectedToFail = (try? project.appendingPathComponent("✗").checkResourceIsReachable()) == true
+
                     let resultLocation = mockProjectsDirectory.appendingPathComponent("After/" + project.lastPathComponent)
                     let outputLocation = mockProjectsDirectory.appendingPathComponent("Output/" + project.lastPathComponent + ".txt")
 
@@ -465,44 +467,78 @@ class APITests : TestCase {
 
                             // [_Workaround: This should eventually just do “workspace validate”._]
                             var output: StrictString = ""
-                            XCTAssertErrorFree {
-                                output += "\n$ workspace refresh scripts\n"
-                                output += try Workspace.command.execute(with: ["refresh", "scripts"])
-                            }
 
-                            if project.lastPathComponent ≠ "Default" {
-                                XCTAssertErrorFree {
-                                    output += "\n$ workspace refresh read‐me\n"
-                                    output += try Workspace.command.execute(with: ["refresh", "read‐me"])
-                                }
-                            }
+                            if expectedToFail {
+                                do {
+                                    output += "\n$ workspace refresh scripts\n"
+                                    output += try Workspace.command.execute(with: ["refresh", "scripts", "•no‐colour"])
 
-                            if project.lastPathComponent ≠ "Default" {
-                                XCTAssertErrorFree {
-                                    output += "\n$ workspace refresh continuous‐integration\n"
-                                    output += try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
-                                }
-                            }
+                                    if project.lastPathComponent ∉ Set(["Default", "InvalidConfigurationEnumerationValue"]) {
+                                        output += "\n$ workspace refresh read‐me\n"
+                                        output += try Workspace.command.execute(with: ["refresh", "read‐me", "•no‐colour"])
+                                    }
 
-                            XCTAssertErrorFree {
-                                output += "\n$ workspace refresh resources\n"
-                                output += try Workspace.command.execute(with: ["refresh", "resources"])
-                            }
+                                    if project.lastPathComponent ∉ Set(["Default", "InvalidConfigurationEnumerationValue"]) {
+                                        output += "\n$ workspace refresh continuous‐integration\n"
+                                        output += try Workspace.command.execute(with: ["refresh", "continuous‐integration", "•no‐colour"])
+                                    }
 
-                            if project.lastPathComponent ≠ "Default" {
-                                XCTAssertErrorFree {
+                                    output += "\n$ workspace refresh resources\n"
+                                    output += try Workspace.command.execute(with: ["refresh", "resources", "•no‐colour"])
+
+                                    try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
+
                                     output += "\n$ workspace validate documentation‐coverage\n"
-                                    output += try Workspace.command.execute(with: ["refresh", "resources"])
+                                    output += try Workspace.command.execute(with: ["validate", "documentation‐coverage", "•no‐colour"])
+                                } catch let error as Command.Error {
+                                    output += "\n" + error.describe()
+                                } catch let error {
+                                    XCTFail("Unexpected error: \(error)")
                                 }
-                            }
+                            } else {
+                                XCTAssertErrorFree {
+                                    output += "\n$ workspace refresh scripts\n"
+                                    output += try Workspace.command.execute(with: ["refresh", "scripts", "•no‐colour"])
+                                }
 
-                            XCTAssertErrorFree {
-                                try? FileManager.default.removeItem(at: resultLocation)
-                                try FileManager.default.copy(project, to: resultLocation)
-                                // Remove variable files.
-                                try? FileManager.default.removeItem(at: resultLocation.appendingPathComponent("Package.resolved"))
+                                if project.lastPathComponent ≠ "Default" {
+                                    XCTAssertErrorFree {
+                                        output += "\n$ workspace refresh read‐me\n"
+                                        output += try Workspace.command.execute(with: ["refresh", "read‐me", "•no‐colour"])
+                                    }
+                                }
+
+                                if project.lastPathComponent ≠ "Default" {
+                                    XCTAssertErrorFree {
+                                        output += "\n$ workspace refresh continuous‐integration\n"
+                                        output += try Workspace.command.execute(with: ["refresh", "continuous‐integration", "•no‐colour"])
+                                    }
+                                }
+
+                                XCTAssertErrorFree {
+                                    output += "\n$ workspace refresh resources\n"
+                                    output += try Workspace.command.execute(with: ["refresh", "resources", "•no‐colour"])
+                                }
+
+                                XCTAssertErrorFree {
+                                    try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
+                                }
+
+                                if project.lastPathComponent ≠ "Default" {
+                                    XCTAssertErrorFree {
+                                        output += "\n$ workspace validate documentation‐coverage\n"
+                                        output += try Workspace.command.execute(with: ["refresh", "resources", "•no‐colour"])
+                                    }
+                                }
+
+                                XCTAssertErrorFree {
+                                    try? FileManager.default.removeItem(at: resultLocation)
+                                    try FileManager.default.copy(project, to: resultLocation)
+                                    // Remove variable files.
+                                    try? FileManager.default.removeItem(at: resultLocation.appendingPathComponent("Package.resolved"))
+                                }
+                                checkForDifferences(in: "repository", at: resultLocation, for: project)
                             }
-                            checkForDifferences(in: "repository", at: resultLocation, for: project)
 
                             XCTAssertErrorFree { try output.save(to: outputLocation) }
                             checkForDifferences(in: "output", at: outputLocation, for: project)

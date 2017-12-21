@@ -1,12 +1,12 @@
 import XCTest
-@testable import Default
+@testable import NoMacOS
 
-class DefaultTests: XCTestCase {
+class NoMacOSTests: XCTestCase {
     func testExample() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
-        XCTAssertEqual(Default().text, "Hello, World!")
+        XCTAssertEqual(NoMacOS().text, "Hello, World!")
     }
 
 

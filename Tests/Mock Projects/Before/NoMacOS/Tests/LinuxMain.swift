@@ -1,6 +1,6 @@
 import XCTest
-@testable import DefaultTests
+@testable import NoMacOSTests
 
 XCTMain([
-    testCase(DefaultTests.allTests),
+    testCase(NoMacOSTests.allTests),
 ])

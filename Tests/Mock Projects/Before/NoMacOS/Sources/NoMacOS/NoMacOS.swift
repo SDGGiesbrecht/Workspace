@@ -1,3 +1,3 @@
-struct Default {
+struct NoMacOS {
     var text = "Hello, World!"
 }

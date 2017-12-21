@@ -1,7 +1,6 @@
 Manage Read‐Me: True
-Localizations: en
-
+Localizations: 🇬🇧EN
 [_Begin Read‐Me_]
-[_en_]
+[_🇬🇧EN_]
 [_Feature List_]
 [_End_]

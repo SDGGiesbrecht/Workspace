@@ -42,39 +42,6 @@ class APITests : TestCase {
     func testDocumentation() {
         /* [_Warning: Restore._]
 
-         XCTAssertErrorFree { // Failures here when inside Xcode are irrelevant. (Xcode bypasses shell login scripts necessary to find Jazzy and other Ruby gems.)
-         let project = try MockProject(type: "Library")
-         try project.do {
-         try "Documentation Copyright: ©0001 John Doe\nSupport macOS: False\nSupport iOS: False\nManage Read‐Me: True\nLocalizations: en".save(to: project.location.appendingPathComponent(".Workspace Configuration.txt"))
-         try [
-         "/// ...",
-         "infix operator ≠",
-         "/// ...",
-         "infix operator ¬",
-         "extension Bool {",
-         "    /// ...",
-         "    \u{70}ublic static func ≠(lhs: Bool, rhs: Bool) -> Bool {",
-         "        return true",
-         "    }",
-         "    /// ...",
-         "    \u{70}ublic static func ¬(lhs: Bool, rhs: Bool) -> Bool {",
-         "        return true",
-         "    }",
-         "    /// ...",
-         "    \u{70}ublic static func אבג() {}",
-         "}"
-         ].joined(separator: "\n").save(to: project.location.appendingPathComponent("Sources/MyProject/Unicode.swift"))
-         try Workspace.command.execute(with: ["refresh", "read‐me"])
-         try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
-         try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
-         try Workspace.command.execute(with: ["validate", "documentation‐coverage"])
-         let page = try String(from: project.location.appendingPathComponent("docs/MyProject/Extensions/Bool.html"))
-         XCTAssert(¬page.contains("\u{22}err\u{22}"), "Failed to clean up Jazzy output.")
-         let index = try String(from: project.location.appendingPathComponent("docs/MyProject/index.html"))
-         XCTAssert(¬index.contains("Skip in Jazzy"), "Failed to remove read‐me–only content.")
-         }
-         }
-
          XCTAssertThrowsError(containing: "not defined") {
          let project = try MockProject(type: "Library")
          try project.do {
@@ -436,14 +403,14 @@ class APITests : TestCase {
                                     output += try Workspace.command.execute(with: ["refresh", "scripts", "•no‐colour"])
                                 }
 
-                                if project.lastPathComponent ∉ Set(["Default", "NoMacOS"]) {
+                                if project.lastPathComponent ∉ Set(["Default", "NoMacOS", "UnicodeSource"]) {
                                     XCTAssertErrorFree {
                                         output += "\n$ workspace refresh read‐me\n"
                                         output += try Workspace.command.execute(with: ["refresh", "read‐me", "•no‐colour"])
                                     }
                                 }
 
-                                if project.lastPathComponent ∉ Set(["Default", "NoMacOS"]) {
+                                if project.lastPathComponent ∉ Set(["Default", "NoMacOS", "UnicodeSource"]) {
                                     XCTAssertErrorFree {
                                         output += "\n$ workspace refresh continuous‐integration\n"
                                         output += try Workspace.command.execute(with: ["refresh", "continuous‐integration", "•no‐colour"])
@@ -465,8 +432,21 @@ class APITests : TestCase {
                                     XCTAssertErrorFree {
                                         output += "\n$ workspace validate documentation‐coverage\n"
                                         output += try Workspace.command.execute(with: ["validate", "documentation‐coverage", "•no‐colour"])
+
+                                        if project.lastPathComponent ∉ Set(["Default", "SDG"]) {
+                                            let index = try String(from: project.appendingPathComponent("docs/\(project.lastPathComponent)/index.html"))
+                                            XCTAssert(¬index.contains("Skip in Jazzy"), "Failed to remove read‐me–only content.")
+
+                                            if project.lastPathComponent == "UnicodeSource" {
+                                                let page = try String(from: project.appendingPathComponent("docs/UnicodeSource/Extensions/Bool.html"))
+                                                XCTAssert(¬page.contains("\u{22}err\u{22}"), "Failed to clean up Jazzy output.")
+                                            }
+                                        }
                                     }
                                 }
+
+
+
 
                                 XCTAssertErrorFree {
                                     try? FileManager.default.removeItem(at: resultLocation)

@@ -1,0 +1,44 @@
+
+$ workspace refresh scripts
+
+Refreshing scripts...
+
+
+$ swift package resolve
+
+Writing to “Refresh (macOS).command”...
+Writing to “Refresh (Linux).sh”...
+
+$ swift package resolve
+
+Writing to “Validate (macOS).command”...
+$ workspace refresh resources
+
+Refreshing resources...
+
+$ workspace validate documentation‐coverage
+
+$ swift package resolve
+
+
+Generating documentation for “NoMacOS”...
+
+
+$ jazzy --module NoMacOS --copyright "Copyright ©2017 the NoMacOS project contributors. All rights reserved." --documentation=Documentation/*.md --clean --use-safe-filenames --output "[...]/Tests/Mock Projects/Before/NoMacOS/docs/NoMacOS" --xcodebuild-arguments "-scheme,NoMacOS-Package,-target,NoMacOS,-sdk,iphoneos,-derivedDataPath,[...]/Jazzy Build Artifacts"
+0% documentation coverage with 0 undocumented symbols
+skipped 1 private, fileprivate, or internal symbol (use `--min-acl` to specify a different minimum ACL)
+jam out ♪♫ to your fresh new docs in `docs/NoMacOS`
+
+Writing to “docs/NoMacOS/.nojekyll”...
+
+$ swift package resolve
+
+
+Checking documentation coverage for “NoMacOS”... (§1)
+
+
+✓ Generated documentation for “NoMacOS”.
+✓ Documentation coverage is complete for “NoMacOS”.
+
+
+“NoMacOS” passes validation.

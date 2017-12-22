@@ -90,7 +90,7 @@ class APITests : TestCase {
                                         output += try Workspace.command.execute(with: ["refresh", "read‐me", "•no‐colour"])
                                     }
 
-                                    if project.lastPathComponent ∉ Set(["FailingDocumentationCoverage", "InvalidConfigurationEnumerationValue",
+                                    if project.lastPathComponent ∉ Set(["FailingDocumentationCoverage", "InvalidConfigurationEnumerationValue", "InvalidProjectType",
                                                                             "NoLocalizations", "UndefinedConfigurationValue"]) {
                                         output += "\n$ workspace refresh continuous‐integration\n"
                                         output += try Workspace.command.execute(with: ["refresh", "continuous‐integration", "•no‐colour"])

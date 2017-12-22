@@ -14,10 +14,4 @@ $ swift package resolve
 Writing to “Validate (macOS).command”...
 $ workspace refresh read‐me
 
-$ workspace refresh continuous‐integration
-
-$ workspace refresh resources
-
-Refreshing resources...
-
-$ workspace validate documentation‐coverage
+Configuration option not defined: Repository URL

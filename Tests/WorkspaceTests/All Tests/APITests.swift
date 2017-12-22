@@ -123,7 +123,7 @@ class APITests : TestCase {
                                     }
                                 }
 
-                                if project.lastPathComponent ∉ Set(["Default", "ExecutableProjectType", "NoMacOS", "NoMacOSOrIOS", "NoMacOSOrIOSOrWatchOS", "UnicodeSource"]) {
+                                if project.lastPathComponent ∉ Set(["CustomReadMe", "Default", "ExecutableProjectType", "NoMacOS", "NoMacOSOrIOS", "NoMacOSOrIOSOrWatchOS", "PartialReadMe", "UnicodeSource"]) {
                                     XCTAssertErrorFree {
                                         output += "\n$ workspace refresh continuous‐integration\n"
                                         output += try Workspace.command.execute(with: ["refresh", "continuous‐integration", "•no‐colour"])
@@ -145,7 +145,7 @@ class APITests : TestCase {
                                     output += "\n$ workspace validate documentation‐coverage\n"
                                     output += try Workspace.command.execute(with: ["validate", "documentation‐coverage", "•no‐colour"])
 
-                                    if project.lastPathComponent ∉ Set(["CustomReadMe", "Default", "ExecutableProjectType", "SDG"]) {
+                                    if project.lastPathComponent ∉ Set(["CustomReadMe", "Default", "ExecutableProjectType", "PartialReadMe", "SDG"]) {
                                         let index = try String(from: project.appendingPathComponent("docs/\(project.lastPathComponent)/index.html"))
                                         XCTAssert(¬index.contains("Skip in Jazzy"), "Failed to remove read‐me–only content.")
 

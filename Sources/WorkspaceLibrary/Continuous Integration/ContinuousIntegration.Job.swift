@@ -293,7 +293,7 @@ extension ContinuousIntegration {
 
             switch operatingSystem {
             case .macOS:
-                result.append("      osx_image: xcode9.1")
+                result.append("      osx_image: xcode9.2")
             case .linux:
                 result.append("      dist: trusty")
             case .iOS, .watchOS, .tvOS:

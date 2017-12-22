@@ -1,0 +1,3 @@
+Manage Read‐Me: True
+
+Read‐Me: [_Repository URL_]

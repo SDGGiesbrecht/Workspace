@@ -377,16 +377,16 @@ struct Configuration {
 
     // MARK: - Options: Active Management Tasks
 
-    func shouldProvideScripts() throws -> Bool {
-        return try boolean(for: .provideScripts) ?? true // Unlikely to overwrite a user file, and necessary for version locking and continuous integration management.
+    func shouldProvideScripts() throws -> Bool { // [_Exempt from Code Coverage_] [_Workaround: Until refresh is testable._]
+        return try boolean(for: .provideScripts) ?? true // Unlikely to overwrite a user file, and necessary for version locking and continuous integration management. // [_Exempt from Code Coverage_] [_Workaround: Until refresh is testable._]
     }
 
-    func shouldManageReadMe() throws -> Bool {
-        return try boolean(for: .manageReadMe) ?? false
+    func shouldManageReadMe() throws -> Bool { // [_Exempt from Code Coverage_] [_Workaround: Until refresh is testable._]
+        return try boolean(for: .manageReadMe) ?? false // [_Exempt from Code Coverage_] [_Workaround: Until refresh is testable._]
     }
 
-    func shouldManageContinuousIntegration() throws -> Bool {
-        return try boolean(for: .manageContinuousIntegration) ?? false
+    func shouldManageContinuousIntegration() throws -> Bool { // [_Exempt from Code Coverage_] [_Workaround: Until refresh is testable._]
+        return try boolean(for: .manageContinuousIntegration) ?? false // [_Exempt from Code Coverage_] [_Workaround: Until refresh is testable._]
     }
 
     func shouldGenerateDocumentation() throws -> Bool {
@@ -398,7 +398,7 @@ struct Configuration {
 
     // MARK: - Options: Active Checks
 
-    func shouldEnforceDocumentationCoverage() throws -> Bool {
-        return try boolean(for: .enforceDocumentationCoverage) ?? true
+    func shouldEnforceDocumentationCoverage() throws -> Bool { // [_Exempt from Code Coverage_] [_Workaround: Until validate is testable._]
+        return try boolean(for: .enforceDocumentationCoverage) ?? true // [_Exempt from Code Coverage_] [_Workaround: Until validate is testable._]
     }
 }

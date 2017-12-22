@@ -1,0 +1,13 @@
+Manage Read‐Me: True
+Localizations: en
+
+[_Begin Quotation_]
+« ... »
+[_End_]
+
+[_Begin Quotation Translation_]
+[_en_]
+“...”
+[__]
+
+Quotation Chapter: 1

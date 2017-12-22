@@ -8,6 +8,6 @@ Localizations: en
 [_Begin Quotation Translation_]
 [_en_]
 “...”
-[__]
+[_End_]
 
 Quotation Chapter: 1

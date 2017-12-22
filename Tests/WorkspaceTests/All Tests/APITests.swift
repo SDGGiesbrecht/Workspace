@@ -90,7 +90,8 @@ class APITests : TestCase {
                                         output += try Workspace.command.execute(with: ["refresh", "read‐me", "•no‐colour"])
                                     }
 
-                                    if project.lastPathComponent ∉ Set(["FailingDocumentationCoverage", "InvalidConfigurationEnumerationValue", "UndefinedConfigurationValue"]) {
+                                    if project.lastPathComponent ∉ Set(["FailingDocumentationCoverage", "InvalidConfigurationEnumerationValue",
+                                                                            "NoLocalizations", "UndefinedConfigurationValue"]) {
                                         output += "\n$ workspace refresh continuous‐integration\n"
                                         output += try Workspace.command.execute(with: ["refresh", "continuous‐integration", "•no‐colour"])
                                     }
@@ -156,7 +157,7 @@ class APITests : TestCase {
                                         }
                                     }
                                 }
-                                
+
                                 XCTAssert(FileManager.default.isExecutableFile(atPath: "Refresh (macOS).command"), "Generated macOS refresh script is not executable.")
                                 XCTAssert(FileManager.default.isExecutableFile(atPath: "Refresh (Linux).sh"), "Generated Linux refresh script is not executable.")
                                 XCTAssert(FileManager.default.isExecutableFile(atPath: "Validate (macOS).command"), "Generated macOS validate script is not executable.")

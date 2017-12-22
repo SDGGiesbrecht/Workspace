@@ -16,14 +16,14 @@ matrix:
     - os: osx
       env:
         - JOB="macOS + Swift Package Manager"
-      osx_image: xcode9.1
+      osx_image: xcode9.2
       script:
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job macos‐swift‐package‐manager"
     - os: osx
       env:
         - JOB="macOS + Xcode"
-      osx_image: xcode9.1
+      osx_image: xcode9.2
       script:
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job macos‐xcode"

@@ -123,7 +123,7 @@ class APITests : TestCase {
                                     }
                                 }
 
-                                if project.lastPathComponent ∉ Set(["Default", "NoMacOS", "NoMacOSOrIOS", "NoMacOSOrIOSOrWatchOS", "UnicodeSource"]) {
+                                if project.lastPathComponent ∉ Set(["Default", "ExecutableProjectType", "NoMacOS", "NoMacOSOrIOS", "NoMacOSOrIOSOrWatchOS", "UnicodeSource"]) {
                                     XCTAssertErrorFree {
                                         output += "\n$ workspace refresh continuous‐integration\n"
                                         output += try Workspace.command.execute(with: ["refresh", "continuous‐integration", "•no‐colour"])
@@ -141,19 +141,17 @@ class APITests : TestCase {
                                     }
                                 #endif
 
-                                if project.lastPathComponent ∉ Set(["Default"]) {
-                                    XCTAssertErrorFree {
-                                        output += "\n$ workspace validate documentation‐coverage\n"
-                                        output += try Workspace.command.execute(with: ["validate", "documentation‐coverage", "•no‐colour"])
+                                XCTAssertErrorFree {
+                                    output += "\n$ workspace validate documentation‐coverage\n"
+                                    output += try Workspace.command.execute(with: ["validate", "documentation‐coverage", "•no‐colour"])
 
-                                        if project.lastPathComponent ∉ Set(["Default", "SDG"]) {
-                                            let index = try String(from: project.appendingPathComponent("docs/\(project.lastPathComponent)/index.html"))
-                                            XCTAssert(¬index.contains("Skip in Jazzy"), "Failed to remove read‐me–only content.")
+                                    if project.lastPathComponent ∉ Set(["Default", "ExecutableProjectType", "SDG"]) {
+                                        let index = try String(from: project.appendingPathComponent("docs/\(project.lastPathComponent)/index.html"))
+                                        XCTAssert(¬index.contains("Skip in Jazzy"), "Failed to remove read‐me–only content.")
 
-                                            if project.lastPathComponent == "UnicodeSource" {
-                                                let page = try String(from: project.appendingPathComponent("docs/UnicodeSource/Extensions/Bool.html"))
-                                                XCTAssert(¬page.contains("\u{22}err\u{22}"), "Failed to clean up Jazzy output.")
-                                            }
+                                        if project.lastPathComponent == "UnicodeSource" {
+                                            let page = try String(from: project.appendingPathComponent("docs/UnicodeSource/Extensions/Bool.html"))
+                                            XCTAssert(¬page.contains("\u{22}err\u{22}"), "Failed to clean up Jazzy output.")
                                         }
                                     }
                                 }

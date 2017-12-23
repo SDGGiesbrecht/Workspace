@@ -1,0 +1,29 @@
+
+$ workspace refresh scripts
+
+Refreshing scripts...
+
+
+$ swift package resolve
+
+Writing to “Refresh (macOS).command”...
+Writing to “Refresh (Linux).sh”...
+
+$ swift package resolve
+
+Writing to “Validate (macOS).command”...
+$ workspace refresh continuous‐integration
+
+Refreshing continuous integration configuration...
+
+
+$ swift package resolve
+
+Writing to “.travis.yml”...
+$ workspace refresh resources
+
+Refreshing resources...
+
+$ workspace validate documentation‐coverage
+
+Configuration option not defined: Author

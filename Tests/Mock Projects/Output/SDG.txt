@@ -76,35 +76,26 @@ $ swift package resolve
 Writing to “.travis.yml”...
 $ workspace refresh resources
 
-Refreshing resources...
-
-
-$ swift package resolve
-
-Writing to “Sources/SDG/Resources.swift”...
 $ workspace validate documentation‐coverage
 
-$ swift package resolve
+Generating documentation for “Library”...
 
 
-Generating documentation for “SDG”...
-
-
-$ jazzy --module SDG --copyright "Copyright ©2017 John Doe and the SDG project contributors. All rights reserved." --github_url "https://github.com/JohnDoe/SDG" --documentation=Documentation/*.md --clean --use-safe-filenames --output "[...]/Documentation/SDG" --xcodebuild-arguments "-scheme,SDG-Package,-target,SDG,-sdk,macosx,-derivedDataPath,[...]/Jazzy Build Artifacts"
+$ jazzy --module Library --copyright "Copyright ©2017 John Doe and the SDG project contributors. All rights reserved." --github_url "https://github.com/JohnDoe/SDG" --documentation=Documentation/*.md --clean --use-safe-filenames --output "[...]/Documentation/Library" --xcodebuild-arguments "-scheme,SDG-Package,-target,Library,-sdk,macosx,-derivedDataPath,[...]/Jazzy Build Artifacts"
 0% documentation coverage with 0 undocumented symbols
-skipped 3 private, fileprivate, or internal symbols (use `--min-acl` to specify a different minimum ACL)
-jam out ♪♫ to your fresh new docs in `[...]/Documentation/SDG`
+skipped 1 private, fileprivate, or internal symbol (use `--min-acl` to specify a different minimum ACL)
+jam out ♪♫ to your fresh new docs in `[...]/Documentation/Library`
 
-Writing to “[...]/Documentation/SDG/.nojekyll”...
+Writing to “[...]/Documentation/Library/.nojekyll”...
 
 $ swift package resolve
 
 
-Checking documentation coverage for “SDG”... (§1)
+Checking documentation coverage for “Library”... (§1)
 
 
-✓ Generated documentation for “SDG”.
-✓ Documentation coverage is complete for “SDG”.
+✓ Generated documentation for “Library”.
+✓ Documentation coverage is complete for “Library”.
 
 
 “SDG” passes validation.

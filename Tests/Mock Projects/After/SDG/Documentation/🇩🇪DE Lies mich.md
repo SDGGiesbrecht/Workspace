@@ -4,7 +4,7 @@
 
 macOS • Linux • iOS • watchOS • tvOS
 
-SAPs [SDG](https://example.github.io/SDG/SDG)
+SAPs [Library](https://example.github.io/SDG/Library)
 
 # SDG
 
@@ -17,6 +17,14 @@ SAPs [SDG](https://example.github.io/SDG/SDG)
 ...
 
 (Für eine Liste verwandter Projekte, siehe [hier](🇩🇪DE%20Verwandte%20Projekte.md).) <!--Skip in Jazzy-->
+
+## Installation
+
+Setze folgendes in ein Terminal ein, um `SDG` zu installieren oder aktualisieren:
+
+```shell
+curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s SDG "https://github.com/JohnDoe/SDG" 1.0.0 "tool help" tool
+```
 
 ## Einführung
 
@@ -32,7 +40,7 @@ let paket = Package(
     ],
     targets: [
         .target(name: "MeinZiel", dependencies: [
-            .productItem(name: "SDG", package: "SDG"),
+            .productItem(name: "Library", package: "SDG"),
         ])
     ]
 )
@@ -41,7 +49,7 @@ let paket = Package(
 Dann kann `SDG` in Quelldateien eingeführt werden:
 
 ```swift
-import SDG
+import Library
 ```
 
 ...

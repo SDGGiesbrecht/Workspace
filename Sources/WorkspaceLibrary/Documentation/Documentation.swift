@@ -139,7 +139,7 @@ enum Documentation {
 
         for warning in warnings {
             print([
-                warning.file.path(relativeTo: project.location) + ":" + String(warning.line?.inDigits() ?? ""),
+                warning.file.path(relativeTo: project.location) + ":" + String(warning.line?.inDigits() ?? ""), // [_Exempt from Code Coverage_] It is unknown what would cause a missing line number.
                 warning.symbol,
                 ""
                 ].joinAsLines().formattedAsError(), to: &output)

@@ -4,7 +4,7 @@
 
 macOS • Linux • iOS • watchOS • tvOS
 
-APIs: [SDG](https://example.github.io/SDG/SDG)
+APIs: [Library](https://example.github.io/SDG/Library)
 
 # SDG
 
@@ -20,6 +20,14 @@ This project does stuff.
 
 (For a list of related projects, see [here](Documentation/🇨🇦EN%20Related%20Projects.md).) <!--Skip in Jazzy-->
 
+## Installation
+
+Paste the following into a terminal to install or update `SDG`:
+
+```shell
+curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s SDG "https://github.com/JohnDoe/SDG" 1.0.0 "tool help" tool
+```
+
 ## Importing
 
 `SDG` is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).
@@ -34,7 +42,7 @@ let package = Package(
     ],
     targets: [
         .target(name: "MyTarget", dependencies: [
-            .productItem(name: "SDG", package: "SDG"),
+            .productItem(name: "Library", package: "SDG"),
         ])
     ]
 )
@@ -43,7 +51,7 @@ let package = Package(
 `SDG` can then be imported in source files:
 
 ```swift
-import SDG
+import Library
 ```
 
 ## Other

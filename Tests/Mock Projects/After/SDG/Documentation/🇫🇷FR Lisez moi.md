@@ -4,7 +4,7 @@
 
 macOS • Linux • iOS • watchOS • tvOS
 
-IPA : [SDG](https://example.github.io/SDG/SDG)
+IPA : [Library](https://example.github.io/SDG/Library)
 
 # SDG
 
@@ -17,6 +17,14 @@ IPA : [SDG](https://example.github.io/SDG/SDG)
 ...
 
 (Pour une liste de projets lié, voir [ici](🇫🇷FR%20Projets%20liés.md).) <!--Skip in Jazzy-->
+
+## Installation
+
+Collez le suivant dans un terminal pour installer `SDG` ou mettre `SDG` à jour:
+
+```shell
+curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s SDG "https://github.com/JohnDoe/SDG" 1.0.0 "tool help" tool
+```
 
 ## Importation
 
@@ -32,7 +40,7 @@ let paquet = Package(
     ],
     targets: [
         .target(name: "MaCible", dependencies: [
-            .productItem(name: "SDG", package: "SDG"),
+            .productItem(name: "Library", package: "SDG"),
         ])
     ]
 )
@@ -41,7 +49,7 @@ let paquet = Package(
 Puis `SDG` peut être importé dans des fichiers sources :
 
 ```swift
-import SDG
+import Library
 ```
 
 ...

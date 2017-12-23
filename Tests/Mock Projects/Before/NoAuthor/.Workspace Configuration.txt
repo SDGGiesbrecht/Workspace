@@ -1,7 +1,5 @@
-Manage Read‐Me: True
-Localizations: en
+Generate Documentation: True
 
-[_Begin Read‐Me_]
-[_en_]
- [_Author_]
+[_Begin Documentation Copyright_]
+[_Author_]
 [_End_]

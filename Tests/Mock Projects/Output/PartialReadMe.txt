@@ -64,7 +64,7 @@ $ swift package resolve
 Generating documentation for “PartialReadMe”...
 
 
-$ jazzy --module PartialReadMe --copyright "Copyright ©2017 the PartialReadMe project contributors. All rights reserved." --github_url "https://somewhere.com" --documentation=Documentation/*.md --clean --use-safe-filenames --output "[...]/Documentation/PartialReadMe" --xcodebuild-arguments "-scheme,PartialReadMe-Package,-target,PartialReadMe,-sdk,macosx,-derivedDataPath,[...]/Jazzy Build Artifacts"
+$ jazzy --module PartialReadMe --copyright "Copyright ©2018 the PartialReadMe project contributors. All rights reserved." --github_url "https://somewhere.com" --documentation=Documentation/*.md --clean --use-safe-filenames --output "[...]/Documentation/PartialReadMe" --xcodebuild-arguments "-scheme,PartialReadMe-Package,-target,PartialReadMe,-sdk,macosx,-derivedDataPath,[...]/Jazzy Build Artifacts"
 0% documentation coverage with 0 undocumented symbols
 skipped 1 private, fileprivate, or internal symbol (use `--min-acl` to specify a different minimum ACL)
 jam out ♪♫ to your fresh new docs in `[...]/Documentation/PartialReadMe`

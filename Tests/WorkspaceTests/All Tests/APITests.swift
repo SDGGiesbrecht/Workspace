@@ -85,7 +85,9 @@ class APITests : TestCase {
                                     output += "\n$ workspace refresh scripts\n"
                                     output += try Workspace.command.execute(with: ["refresh", "scripts", "•no‐colour"])
 
-                                    if project.lastPathComponent ∉ Set(["FailingDocumentationCoverage", "InvalidConfigurationEnumerationValue", "NoAuthor"]) {
+                                    if project.lastPathComponent ∉ Set(["FailingDocumentationCoverage", "InvalidConfigurationEnumerationValue", "InvalidResourceDirectory",
+                                                                            "InvalidTarget",
+                                                                            "NoAuthor"]) {
                                         output += "\n$ workspace refresh read‐me\n"
                                         output += try Workspace.command.execute(with: ["refresh", "read‐me", "•no‐colour"])
                                     }

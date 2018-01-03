@@ -2,3 +2,5 @@ Project Type: Executable
 
 Manage Read‐Me: True
 Localizations: en
+
+Quotation: Blah blah blah...

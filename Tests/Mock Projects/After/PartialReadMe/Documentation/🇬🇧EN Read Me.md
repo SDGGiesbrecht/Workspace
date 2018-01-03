@@ -6,7 +6,7 @@ macOS • Linux • iOS • watchOS • tvOS
 
 # PartialReadMe
 
-> Blah blah blah...
+> [Blah blah blah...](https://www.biblegateway.com/passage/?search=Chapter+1&version=SBLGNT;NIVUK)
 
 ## Importing
 

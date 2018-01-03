@@ -52,6 +52,12 @@ let package = Package(
 import Library
 ```
 
+## Example Usage
+
+```swift
+// 🇬🇧EN
+```
+
 ...
 
 ## About

@@ -52,6 +52,12 @@ Puis `SDG` peut être importé dans des fichiers sources :
 import Library
 ```
 
+## Examples d’utilisation
+
+```swift
+// 🇫🇷FR
+```
+
 ...
 
 ## À propos

@@ -14,3 +14,35 @@ class SDGTests: XCTestCase {
         ("testExample", testExample),
     ]
 }
+
+// [_Define Example: Read‐Me 🇨🇦EN_]
+// 🇨🇦EN
+// [_End_]
+
+// [_Define Example: Read‐Me 🇬🇧EN_]
+// 🇬🇧EN
+// [_End_]
+
+// [_Define Example: Read‐Me 🇺🇸EN_]
+// 🇺🇸EN
+// [_End_]
+
+// [_Define Example: Read‐Me 🇩🇪DE_]
+// 🇩🇪DE
+// [_End_]
+
+// [_Define Example: Read‐Me 🇫🇷FR_]
+// 🇫🇷FR
+// [_End_]
+
+// [_Define Example: Read‐Me 🇬🇷ΕΛ_]
+// 🇬🇷ΕΛ
+// [_End_]
+
+// [_Define Example: Read‐Me 🇮🇱עב_]
+// 🇮🇱עב
+// [_End_]
+
+// [_Define Example: Read‐Me zxx_]
+// zxx
+// [_End_]

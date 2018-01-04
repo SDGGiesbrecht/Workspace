@@ -28,6 +28,14 @@ class APITests : TestCase {
         }
     }
 
+    func testSelfSpecificScripts() {
+        XCTAssertErrorFree {
+            try FileManager.default.do(in: repositoryRoot) {
+                try Workspace.command.execute(with: ["refresh", "scripts"])
+            }
+        }
+    }
+
     func testWorkflow() {
         // Get version checks over with, so that they are not in the output.
         triggerVersionChecks()

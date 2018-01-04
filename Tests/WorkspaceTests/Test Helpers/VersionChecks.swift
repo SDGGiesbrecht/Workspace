@@ -21,9 +21,13 @@ func triggerVersionChecks() {
     XCTAssertErrorFree {
         _ = try Git.default._execute(with: ["\u{2D}\u{2D}version"], output: &Command.Output.mock, silently: false, autoquote: true)
         _ = try SwiftTool.default._execute(with: ["\u{2D}\u{2D}version"], output: &Command.Output.mock, silently: false, autoquote: true)
+        #if !os(Linux)
         _ = try Xcode.default.executeInCompatibilityMode(with: ["\u{2D}version"], output: &Command.Output.mock)
+        #endif
 
         _ = try SwiftLint.default.execute(with: ["version"], output: &Command.Output.mock)
+        #if !os(Linux)
         _ = try Jazzy.default.execute(with: ["\u{2D}\u{2D}version"], output: &Command.Output.mock)
+        #endif
     }
 }

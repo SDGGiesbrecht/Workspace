@@ -65,8 +65,13 @@ class APITests : TestCase {
 
                     let expectedToFail = (try? project.appendingPathComponent("✗").checkResourceIsReachable()) == true
 
-                    let resultLocation = mockProjectsDirectory.appendingPathComponent("After/" + project.lastPathComponent)
-                    let outputLocation = mockProjectsDirectory.appendingPathComponent("Output/" + project.lastPathComponent + ".txt")
+                    #if os(Linux)
+                        let resultLocation = mockProjectsDirectory.appendingPathComponent("After (Linux)/" + project.lastPathComponent)
+                        let outputLocation = mockProjectsDirectory.appendingPathComponent("Output (Linux)/" + project.lastPathComponent + ".txt")
+                    #else
+                        let resultLocation = mockProjectsDirectory.appendingPathComponent("After/" + project.lastPathComponent)
+                        let outputLocation = mockProjectsDirectory.appendingPathComponent("Output/" + project.lastPathComponent + ".txt")
+                    #endif
 
                     // Ensure proper starting state.
                     func revertToStartingState() {

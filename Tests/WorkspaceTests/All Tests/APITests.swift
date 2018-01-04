@@ -154,22 +154,22 @@ class APITests : TestCase {
                                     XCTAssertErrorFree {
                                         try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
                                     }
-                                #endif
 
-                                XCTAssertErrorFree {
-                                    output += "\n$ workspace validate documentation‐coverage\n"
-                                    output += try Workspace.command.execute(with: ["validate", "documentation‐coverage", "•no‐colour"])
+                                    XCTAssertErrorFree {
+                                        output += "\n$ workspace validate documentation‐coverage\n"
+                                        output += try Workspace.command.execute(with: ["validate", "documentation‐coverage", "•no‐colour"])
 
-                                    if project.lastPathComponent ∉ Set(["ApplicationProjectType", "CustomReadMe", "Default", "ExecutableProjectType", "PartialReadMe", "SDG"]) {
-                                        let index = try String(from: project.appendingPathComponent("docs/\(project.lastPathComponent)/index.html"))
-                                        XCTAssert(¬index.contains("Skip in Jazzy"), "Failed to remove read‐me–only content.")
+                                        if project.lastPathComponent ∉ Set(["ApplicationProjectType", "CustomReadMe", "Default", "ExecutableProjectType", "PartialReadMe", "SDG"]) {
+                                            let index = try String(from: project.appendingPathComponent("docs/\(project.lastPathComponent)/index.html"))
+                                            XCTAssert(¬index.contains("Skip in Jazzy"), "Failed to remove read‐me–only content.")
 
-                                        if project.lastPathComponent == "UnicodeSource" {
-                                            let page = try String(from: project.appendingPathComponent("docs/UnicodeSource/Extensions/Bool.html"))
-                                            XCTAssert(¬page.contains("\u{22}err\u{22}"), "Failed to clean up Jazzy output.")
+                                            if project.lastPathComponent == "UnicodeSource" {
+                                                let page = try String(from: project.appendingPathComponent("docs/UnicodeSource/Extensions/Bool.html"))
+                                                XCTAssert(¬page.contains("\u{22}err\u{22}"), "Failed to clean up Jazzy output.")
+                                            }
                                         }
                                     }
-                                }
+                                #endif
 
                                 XCTAssert(FileManager.default.isExecutableFile(atPath: "Refresh (macOS).command"), "Generated macOS refresh script is not executable.")
                                 XCTAssert(FileManager.default.isExecutableFile(atPath: "Refresh (Linux).sh"), "Generated Linux refresh script is not executable.")

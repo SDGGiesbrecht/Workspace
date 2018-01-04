@@ -65,10 +65,8 @@ class APITests : TestCase {
 
                     let expectedToFail = (try? project.appendingPathComponent("✗").checkResourceIsReachable()) == true
 
-                    #if os(Linux)
-                        let resultLocation = mockProjectsDirectory.appendingPathComponent("After (Linux)/" + project.lastPathComponent)
-                        let outputLocation = mockProjectsDirectory.appendingPathComponent("Output (Linux)/" + project.lastPathComponent + ".txt")
-                    #else
+                    #if !os(Linux)
+                        // [_Workaround: Linux differs due to absence of Jazzy._]
                         let resultLocation = mockProjectsDirectory.appendingPathComponent("After/" + project.lastPathComponent)
                         let outputLocation = mockProjectsDirectory.appendingPathComponent("Output/" + project.lastPathComponent + ".txt")
                     #endif
@@ -178,26 +176,32 @@ class APITests : TestCase {
                                     XCTAssert(FileManager.default.isExecutableFile(atPath: "Validate (Linux).sh"), "Generated Linux validate script is not executable.")
                                 #endif
 
-                                XCTAssertErrorFree {
-                                    try? FileManager.default.removeItem(at: resultLocation)
-                                    try FileManager.default.copy(project, to: resultLocation)
-                                    // Remove variable files.
-                                    try? FileManager.default.removeItem(at: resultLocation.appendingPathComponent("Package.resolved"))
-                                    try? FileManager.default.removeItem(at: resultLocation.appendingPathComponent("docs/\(project.lastPathComponent)/docsets"))
-                                }
-                                checkForDifferences(in: "repository", at: resultLocation, for: project)
+                                #if !os(Linux)
+                                    // [_Workaround: Linux differs due to absence of Jazzy._]
+                                    XCTAssertErrorFree {
+                                        try? FileManager.default.removeItem(at: resultLocation)
+                                        try FileManager.default.copy(project, to: resultLocation)
+                                        // Remove variable files.
+                                        try? FileManager.default.removeItem(at: resultLocation.appendingPathComponent("Package.resolved"))
+                                        try? FileManager.default.removeItem(at: resultLocation.appendingPathComponent("docs/\(project.lastPathComponent)/docsets"))
+                                    }
+                                    checkForDifferences(in: "repository", at: resultLocation, for: project)
+                                #endif
                             }
 
-                            let replacement = "[...]".scalars
-                            // Remove varying repository location.
-                            output.replaceMatches(for: repositoryRoot.path.scalars, with: replacement)
-                            // Remove varying temporary directory.
-                            output.replaceMatches(for: FileManager.default.url(in: .temporary, at: "Temporary").deletingLastPathComponent().path.scalars, with: replacement)
-                            output.replaceMatches(for: "`..".scalars, with: "`".scalars)
-                            output.replaceMatches(for: "/..".scalars, with: [])
+                            #if !os(Linux)
+                                // [_Workaround: Linux differs due to absence of Jazzy._]
+                                let replacement = "[...]".scalars
+                                // Remove varying repository location.
+                                output.replaceMatches(for: repositoryRoot.path.scalars, with: replacement)
+                                // Remove varying temporary directory.
+                                output.replaceMatches(for: FileManager.default.url(in: .temporary, at: "Temporary").deletingLastPathComponent().path.scalars, with: replacement)
+                                output.replaceMatches(for: "`..".scalars, with: "`".scalars)
+                                output.replaceMatches(for: "/..".scalars, with: [])
 
-                            XCTAssertErrorFree { try output.save(to: outputLocation) }
-                            checkForDifferences(in: "output", at: outputLocation, for: project)
+                                XCTAssertErrorFree { try output.save(to: outputLocation) }
+                                checkForDifferences(in: "output", at: outputLocation, for: project)
+                            #endif
                         }
                     }
             }

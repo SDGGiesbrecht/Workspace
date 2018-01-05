@@ -102,40 +102,15 @@ When it finishes, it prints a summary of which tests passed and which tests fail
 
 *Wow! That was so much easier than doing it all manually!*
 
-## Set‐Up
+## Applying Workspace to a Project
 
-The following commands require a full install. (See [Installation](#installation).)
-
-### Existing Projects
-
-To have Workspace take responsibility for an existing project, run this command in the root of its repository:
+To apply Workspace to a project, run the following command in the root of the project’s repository. (This requires a full install. See [Installation](#installation).)
 
 ```shell
-workspace refresh
+$ workspace refresh
 ```
 
-When it is added to an existing project, Workspace will refrain from most responsibilities by default, behaving in a primarily opt‐in manner. This setting can be [changed](Documentation/Responsibilities.md).
-
-### New Projects
-
-To have Workspace create a new Swift project from scratch, run one of the following commands in an empty folder:
-
-To create a [library](Documentation/Project%20Types.md) project:
-```shell
-workspace initialize
-```
-
-To create an [application](Documentation/Project%20Types.md) project:
-```shell
-workspace initialize •type application
-```
-
-To create an [executable](Documentation/Project%20Types.md) project:
-```shell
-workspace initialize •type executable
-```
-
-When it creates a new project, Workspace will handle many responsibilities by default, behaving in a primarily opt‐out manner. This setting can be [changed](Documentation/Responsibilities.md).
+By default, Workspace refrains from tasks which would involve modifying project files. Such tasks must be activated with a [configuration](Documentation/Configuring%20Workspace.md) file.
 
 ## About
 

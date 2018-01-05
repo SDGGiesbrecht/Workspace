@@ -16,7 +16,7 @@
 
 Workspace can manage the project’s read‐me.
 
-This is controlled by the [configuration](Configuring%20Workspace.md) option `Manage Read‐Me`. The [default](Responsibilities.md#default-vs-automatic) value is `False`.
+This is controlled by the [configuration](Configuring%20Workspace.md) option `Manage Read‐Me`. The default value is `False`.
 
 ```shell
 $ workspace refresh read‐me

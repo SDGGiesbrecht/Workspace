@@ -16,7 +16,7 @@
 
 Workspace provides workflow scripts to reduce refreshment and validation to a simple double‐click. These scripts will also ensure that the same version of Workspace gets used for the project on every machine it is cloned to.
 
-This is controlled by the [configuration](Configuring%20Workspace.md) option `Provide Scripts`. The [default](Responsibilities.md#default-vs-automatic) value is `True`.
+This is controlled by the [configuration](Configuring%20Workspace.md) option `Provide Scripts`. The default value is `True`.
 
 ```shell
 $ workspace refresh scripts

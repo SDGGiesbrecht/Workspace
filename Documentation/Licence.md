@@ -16,7 +16,7 @@
 
 Workspace can automatically manage a project’s licence, making sure the main licence file (`LICENSE.md`) and the short notices in each [file header](File%20Headers.md) remain uniform.
 
-Management of the main licence file is controlled by the [configuration](Configuring%20Workspace.md) option `Manage Licence`. The [default](Responsibilities.md#default-vs-automatic) value is `False`. The [automatic](Responsibilities.md#default-vs-automatic) value is `True`.
+Management of the main licence file is controlled by the [configuration](Configuring%20Workspace.md) option `Manage Licence`. The default value is `False`.
 
 For the short notices in [file headers](File%20Headers.md), `Manage Licence` is not necessary. As long as a license has been [selected](#selecting-a-licence), the default header will display a licence notice, and a `Licence` dynamic element will be available for [custom headers](File%20Headers.md#customization).
 

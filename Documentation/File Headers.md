@@ -16,7 +16,7 @@
 
 Workspace can keep all the file headers in a project uniform and up to date.
 
-This is controlled by the [configuration](Configuring%20Workspace.md) option `Manage File Headers`. The [default](Responsibilities.md#default-vs-automatic) value is `False`. The [automatic](Responsibilities.md#default-vs-automatic) value is `True`.
+This is controlled by the [configuration](Configuring%20Workspace.md) option `Manage File Headers`. The default value is `False`.
 
 A file header is a commented section at the top of each file in a project. Typical uses for file headers include:
 

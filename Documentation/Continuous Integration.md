@@ -16,7 +16,7 @@
 
 Workspace can automatically configure projects for continuous integration with [Travis CI](https://travis-ci.org).
 
-This is controlled by the [configuration](Configuring%20Workspace.md) option `Manage Continuous Integration`. The [default](Responsibilities.md#default-vs-automatic) value is `False`. The [automatic](Responsibilities.md#default-vs-automatic) value is `True`.
+This is controlled by the [configuration](Configuring%20Workspace.md) option `Manage Continuous Integration`. The default value is `False`.
 
 ```shell
 $ workspace refresh continuous‐integration

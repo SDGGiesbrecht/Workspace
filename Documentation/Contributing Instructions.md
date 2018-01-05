@@ -16,7 +16,7 @@
 
 Workspace can manage the project’s contributing instructions, issue template and pull request template.
 
-This is controlled by the [configuration](Configuring%20Workspace.md) option `Manage Contributing Instructions`. The [default](Responsibilities.md#default-vs-automatic) value is `False`. The [automatic](Responsibilities.md#default-vs-automatic) value is `True`.
+This is controlled by the [configuration](Configuring%20Workspace.md) option `Manage Contributing Instructions`. The default value is `False`.
 
 Contributing instructions are instructions in a `CONTRIBUTING.md` file that GitHub directs contributors to read.
 

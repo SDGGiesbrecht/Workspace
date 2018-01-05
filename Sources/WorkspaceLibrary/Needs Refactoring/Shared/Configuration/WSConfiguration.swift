@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -414,14 +414,6 @@ extension Configuration {
     static func packageName(forProjectName projectName: String) -> String {
         return projectName
     }
-    static var defaultPackageName: String {
-        let tokens = ("name: \u{22}", "\u{22}")
-        if let name = Repository.packageDescription.contents.scalars.firstNestingLevel(startingWith: tokens.0.scalars, endingWith: tokens.1.scalars)?.contents.contents {
-            return String(name)
-        } else {
-            return packageName(forProjectName: Repository.folderName)
-        }
-    }
 
     static func moduleName(forProjectName projectName: String) -> String {
         return projectName.replacingOccurrences(of: " ", with: "")
@@ -446,6 +438,10 @@ extension Configuration {
     }
 
     // Responsibilities
+
+    static var provideScripts: Bool {
+        return booleanValue(option: .provideScripts)
+    }
 
     static var manageLicence: Bool {
         return booleanValue(option: .manageLicence)
@@ -619,6 +615,12 @@ extension Configuration {
 
         if manageLicence ∧ configurationFile[.licence] == nil {
             incompatibilityDetected(between: .manageLicence, and: .licence, documentation: .licence)
+        }
+
+        // CI requires scripts
+
+        if manageContinuousIntegration ∧ ¬provideScripts {
+            incompatibilityDetected(between: .manageContinuousIntegration, and: .provideScripts, documentation: DocumentationLink.continuousIntegration)
         }
 
         // Documentation Deployment

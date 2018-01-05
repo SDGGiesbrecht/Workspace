@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -27,32 +27,34 @@ struct DGit {
     ]
 
     static let ignoreEntriesForSwiftProjectManager = [
-        "/.build",
-        "/Packages"
+        ".build",
+        "Packages"
         ]
 
     static let ignoreEntriesForWorkspace = [
-        "/Validate\\ (macOS).command",
-        "/Validate\\ (Linux).sh",
-        "/.Test\\ Zone"
+        "Validate\\ (macOS).command",
+        "Validate\\ (Linux).sh"
         ]
-
-    static let requiredIgnoreEntries = ignoreEntriesForMacOS
-        + ignoreEntriesForLinux
-        + ignoreEntriesForSwiftProjectManager
-        + ignoreEntriesForWorkspace
 
     static let ignoreEntriesForXcode = [
-        "/*.xcodeproj",
         "*.profraw"
-        ]
+    ]
+    static let dependentIgnoreEntriesForXcode = [
+        "*.xcodeproj"
+    ]
 
     static let ignoreEntriesForJazzy = [
-        "/build",
         "undocumented.json",
         // [_Workaround: Jazzy gzips undocumented.json. (jazzy --version 0.7.5)_]
         "*.tgz"
     ]
+
+    static let requiredIgnoreEntries = ignoreEntriesForMacOS
+        + ignoreEntriesForLinux
+        + ignoreEntriesForSwiftProjectManager
+        + ignoreEntriesForXcode
+        + ignoreEntriesForWorkspace
+        + ignoreEntriesForJazzy
 
     static func updateGitConfiguraiton(output: inout Command.Output) {
 
@@ -105,10 +107,7 @@ struct DGit {
 
         var updatedLines: [String] = requiredIgnoreEntries
         if Configuration.manageXcode {
-            updatedLines += ignoreEntriesForXcode
-        }
-        if (try? Repository.packageRepository.configuration.shouldGenerateDocumentation())! ∧ (try? Repository.packageRepository.hasTargetsToDocument(output: &output))! {
-            updatedLines += ignoreEntriesForJazzy
+            updatedLines += dependentIgnoreEntriesForXcode
         }
 
         replaceManagedSection(in: gitIgnore, with: updatedLines)

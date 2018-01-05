@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -23,7 +23,7 @@ enum ReadMe {
 
     private static let documentationDirectoryName = "Documentation"
     private static func documentationDirectory(for project: PackageRepository) -> URL {
-        return project.url(for: documentationDirectoryName)
+        return project.location.appendingPathComponent(documentationDirectoryName)
     }
 
     private static func locationOfDocumentationFile(named name: StrictString, for localization: String, in project: PackageRepository) -> URL {
@@ -779,12 +779,12 @@ enum ReadMe {
 
             if localization == (try project.configuration.developmentLocalization()) {
                 try setting.do {
-                    try refreshReadMe(at: project.url(for: "README.md"), for: localization, in: project, atProjectRoot: true, output: &output)
+                    try refreshReadMe(at: project.location.appendingPathComponent("README.md"), for: localization, in: project, atProjectRoot: true, output: &output)
                 }
             }
         }
 
         // Deprecated file locations.
-        project.delete(project.url(for: "Documentation/Related Projects.md"), output: &output)
+        project.delete(project.location.appendingPathComponent("Documentation/Related Projects.md"), output: &output)
     }
 }

@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -40,15 +40,6 @@ extension Workspace {
                 throw linuxJazzyError()
             #else
 
-                guard try options.project.configuration.shouldGenerateDocumentation() else {
-                    throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
-                        switch localization {
-                        case .englishCanada:
-                            return "The Workspace configuration prevents documentation generation."
-                        }
-                    }))
-                }
-
                 var validationStatus = ValidationStatus()
                 let outputDirectory = Documentation.defaultDocumentationDirectory(for: options.project)
                 try executeAsStep(outputDirectory: outputDirectory, options: options, validationStatus: &validationStatus, output: &output)
@@ -71,9 +62,7 @@ extension Workspace {
 
         #if !os(Linux)
         static func executeAsStep(outputDirectory: URL, options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
-            if try options.project.configuration.shouldGenerateDocumentation() {
-                try options.project.document(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: &output)
-            }
+            try options.project.document(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: &output)
         }
         #endif
     }

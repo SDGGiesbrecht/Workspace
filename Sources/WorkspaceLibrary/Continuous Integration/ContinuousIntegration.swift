@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -37,7 +37,7 @@ enum ContinuousIntegration {
             "  \u{2D} $HOME/.cache/ca.solideogloria.Workspace"
             ])
 
-        var travisConfigurationFile = try TextFile(possiblyAt: project.url(for: ".travis.yml"))
+        var travisConfigurationFile = try TextFile(possiblyAt: project.location.appendingPathComponent(".travis.yml"))
         travisConfigurationFile.body = travisConfiguration.joinAsLines()
         try travisConfigurationFile.writeChanges(for: project, output: &output)
     }

@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -35,17 +35,14 @@ extension Workspace.Refresh {
 
         static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, options: Options, output: inout Command.Output) throws in
 
-            if try options.project.configuration.shouldManageReadMe() {
+            print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+                switch localization {
+                case .englishCanada:
+                    return "Refreshing read‐me..."
+                }
+            }).resolved().formattedAsSectionHeader(), to: &output)
 
-                print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
-                    switch localization {
-                    case .englishCanada:
-                        return "Refreshing read‐me..."
-                    }
-                }).resolved().formattedAsSectionHeader(), to: &output)
-
-                try options.project.refreshReadMe(output: &output)
-            }
+            try options.project.refreshReadMe(output: &output)
         })
     }
 }

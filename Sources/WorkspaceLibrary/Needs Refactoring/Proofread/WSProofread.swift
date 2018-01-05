@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -69,8 +69,8 @@ func runProofread(andExit shouldExit: Bool, arguments: DirectArguments, options:
                 // Swift Package Manager
                 "  \u{2D} .build",
                 "  \u{2D} Packages",
-                // Workspace
-                "  \u{2D} .Test Zone"
+                // Workspace Project
+                "  \u{2D} \u{22}Tests/Mock Projects\u{22}"
             ]
             let disabled = Configuration.disableProofreadingRules.sorted().map({ "  \u{2D} " + $0 })
             if ¬disabled.isEmpty {

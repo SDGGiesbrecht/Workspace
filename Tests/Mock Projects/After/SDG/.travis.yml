@@ -1,0 +1,89 @@
+
+
+language: generic
+matrix:
+  include:
+    - os: osx
+      env:
+        - JOB="macOS + Swift Package Manager"
+      osx_image: xcode9.2
+      script:
+        - "bash \"./Refresh (macOS).command\""
+        - "bash \"./Validate (macOS).command\" •job macos‐swift‐package‐manager"
+    - os: osx
+      env:
+        - JOB="macOS + Xcode"
+      osx_image: xcode9.2
+      script:
+        - "bash \"./Refresh (macOS).command\""
+        - "bash \"./Validate (macOS).command\" •job macos‐xcode"
+    - os: linux
+      env:
+        - JOB="Linux"
+      dist: trusty
+      script:
+        - "export SWIFT_VERSION=4.0"
+        - "eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\""
+        - "bash \"./Refresh (macOS).command\""
+        - "bash \"./Validate (macOS).command\" •job linux"
+    - os: osx
+      env:
+        - JOB="iOS"
+      osx_image: xcode9.2
+      language: objective-c
+      xcode_sdk: iphonesimulator
+      script:
+        - "bash \"./Refresh (macOS).command\""
+        - "bash \"./Validate (macOS).command\" •job ios"
+    - os: osx
+      env:
+        - JOB="watchOS"
+      osx_image: xcode9.2
+      script:
+        - "bash \"./Refresh (macOS).command\""
+        - "bash \"./Validate (macOS).command\" •job watchos"
+    - os: osx
+      env:
+        - JOB="tvOS"
+      osx_image: xcode9.2
+      language: objective-c
+      xcode_sdk: appletvsimulator
+      script:
+        - "bash \"./Refresh (macOS).command\""
+        - "bash \"./Validate (macOS).command\" •job tvos"
+    - os: linux
+      env:
+        - JOB="Miscellaneous"
+      dist: trusty
+      script:
+        - "export SWIFT_VERSION=4.0"
+        - "eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\""
+        - "bash \"./Refresh (macOS).command\""
+        - "bash \"./Validate (macOS).command\" •job miscellaneous"
+    - os: osx
+      env:
+        - JOB="Documentation"
+      osx_image: xcode9.2
+      script:
+        - "bash \"./Refresh (macOS).command\""
+        - "bash \"./Validate (macOS).command\" •job documentation"
+    - os: osx
+      env:
+        - JOB="Deployment"
+        - secure: "0123456789abcdef"
+      if: branch = master and (not type = pull_request)
+
+      deploy:
+        provider: pages
+        local_dir: docs
+        github_token: $GITHUB_TOKEN
+        skip_cleanup: true
+      osx_image: xcode9.2
+      script:
+        - "bash \"./Refresh (macOS).command\""
+        - "bash \"./Validate (macOS).command\" •job deployment"
+
+cache:
+  directories:
+  - $HOME/Library/Caches/ca.solideogloria.Workspace
+  - $HOME/.cache/ca.solideogloria.Workspace

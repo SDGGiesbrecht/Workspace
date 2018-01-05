@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -139,7 +139,7 @@ enum Documentation {
 
         for warning in warnings {
             print([
-                warning.file.path(relativeTo: project.location) + ":" + String(warning.line?.inDigits() ?? ""),
+                warning.file.path(relativeTo: project.location) + ":" + String(warning.line?.inDigits() ?? ""), // [_Exempt from Code Coverage_] It is unknown what would cause a missing line number.
                 warning.symbol,
                 ""
                 ].joinAsLines().formattedAsError(), to: &output)

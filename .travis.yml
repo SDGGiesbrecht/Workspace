@@ -3,7 +3,7 @@
 # This source file is part of the Workspace open source project.
 # https://github.com/SDGGiesbrecht/Workspace#workspace
 #
-# Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
+# Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
 #
 # Soli Deo gloria.
 #
@@ -16,14 +16,14 @@ matrix:
     - os: osx
       env:
         - JOB="macOS + Swift Package Manager"
-      osx_image: xcode9.1
+      osx_image: xcode9.2
       script:
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job macos‐swift‐package‐manager"
     - os: osx
       env:
         - JOB="macOS + Xcode"
-      osx_image: xcode9.1
+      osx_image: xcode9.2
       script:
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job macos‐xcode"

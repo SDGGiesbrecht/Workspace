@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -293,7 +293,7 @@ extension ContinuousIntegration {
 
             switch operatingSystem {
             case .macOS:
-                result.append("      osx_image: xcode9.1")
+                result.append("      osx_image: xcode9.2")
             case .linux:
                 result.append("      dist: trusty")
             case .iOS, .watchOS, .tvOS:

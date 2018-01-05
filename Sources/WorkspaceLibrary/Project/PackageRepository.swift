@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -62,10 +62,6 @@ extension PackageRepository {
 
     var location: URL {
         return _location // Shared from SDGCommandLine.
-    }
-
-    func url(for relativePath: String) -> URL {
-        return _url(for: relativePath) // Shared from SDGCommandLine.
     }
 
     // MARK: - Configuration
@@ -189,7 +185,7 @@ extension PackageRepository {
             if let error = failureReason { // [_Exempt from Code Coverage_] It is unknown what circumstances would actually cause an error.
                 throw error
             }
-            return result
+            return result.sorted() // So that output order is consistent.
         }
     }
 
@@ -201,7 +197,7 @@ extension PackageRepository {
             try FileManager.default.do(in: location) {
                 ignoredURLs = try Git.default.ignoredFiles(output: &output)
             }
-            ignoredURLs.append(url(for: ".git"))
+            ignoredURLs.append(location.appendingPathComponent(".git"))
 
             let result = try allFiles().filter() { (url) in
                 for ignoredURL in ignoredURLs {
@@ -221,8 +217,10 @@ extension PackageRepository {
             let generatedURLs = [
                 "docs",
                 Script.refreshMacOS.fileName,
-                Script.refreshLinux.fileName
-                ].map({ url(for: String($0)) })
+                Script.refreshLinux.fileName,
+
+                "Tests/Mock Projects" // To prevent treating them as Workspace source files for headers, etc.
+                ].map({ location.appendingPathComponent( String($0)) })
 
             let result = try trackedFiles(output: &output).filter() { (url) in
                 for generatedURL in generatedURLs {

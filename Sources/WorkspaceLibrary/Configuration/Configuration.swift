@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -375,23 +375,30 @@ struct Configuration {
         }
     }
 
-    // MARK: - Options: Active Tasks
+    // MARK: - Options: Active Management Tasks
 
-    func shouldManageReadMe() throws -> Bool {
-        return try boolean(for: .manageReadMe) ?? false
+    func shouldProvideScripts() throws -> Bool { // [_Exempt from Code Coverage_] [_Workaround: Until refresh is testable._]
+        return try boolean(for: .provideScripts) ?? true // Unlikely to overwrite a user file, and necessary for version locking and continuous integration management. // [_Exempt from Code Coverage_] [_Workaround: Until refresh is testable._]
     }
 
-    func shouldManageContinuousIntegration() throws -> Bool {
-        return try boolean(for: .manageContinuousIntegration) ?? false
+    func shouldManageReadMe() throws -> Bool { // [_Exempt from Code Coverage_] [_Workaround: Until refresh is testable._]
+        return try boolean(for: .manageReadMe) ?? false // [_Exempt from Code Coverage_] [_Workaround: Until refresh is testable._]
+    }
+
+    func shouldManageContinuousIntegration() throws -> Bool { // [_Exempt from Code Coverage_] [_Workaround: Until refresh is testable._]
+        return try boolean(for: .manageContinuousIntegration) ?? false // [_Exempt from Code Coverage_] [_Workaround: Until refresh is testable._]
     }
 
     func shouldGenerateDocumentation() throws -> Bool {
-        return try boolean(for: .generateDocumentation) ?? true
-    }
-    func shouldEnforceDocumentationCoverage() throws -> Bool {
-        return try boolean(for: .enforceDocumentationCoverage) ?? true
+        return try boolean(for: .generateDocumentation) ?? false
     }
     func encryptedTravisDeploymentKey() throws -> String? {
         return try string(for: .encryptedTravisDeploymentKey)
+    }
+
+    // MARK: - Options: Active Checks
+
+    func shouldEnforceDocumentationCoverage() throws -> Bool { // [_Exempt from Code Coverage_] [_Workaround: Until validate is testable._]
+        return try boolean(for: .enforceDocumentationCoverage) ?? true // [_Exempt from Code Coverage_] [_Workaround: Until validate is testable._]
     }
 }

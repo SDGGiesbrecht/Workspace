@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -24,7 +24,7 @@
 
         // MARK: - Static Properties
 
-        static let defaultVersion = Version(9, 1)
+        static let defaultVersion = Version(9, 2)
         static let `default` = Xcode(version: defaultVersion)
 
         // MARK: - Initialization

@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -36,8 +36,9 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Scripts
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-
-    try Workspace.Refresh.Scripts.command.execute(withArguments: arguments, options: options, output: &output)
+    if try options.project.configuration.shouldProvideScripts() {
+        try Workspace.Refresh.Scripts.command.execute(withArguments: arguments, options: options, output: &output)
+    }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     print("Updating Workspace configuration...".formattedAsSectionHeader(), to: &output)
@@ -80,7 +81,9 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Read‐Me
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    try Workspace.Refresh.ReadMe.command.execute(withArguments: arguments, options: options, output: &output)
+    if try options.project.configuration.shouldManageReadMe() {
+        try Workspace.Refresh.ReadMe.command.execute(withArguments: arguments, options: options, output: &output)
+    }
 
     if Configuration.manageLicence {
 
@@ -105,7 +108,9 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Continuous Integration
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    try Workspace.Refresh.ContinuousIntegration.command.execute(withArguments: arguments, options: options, output: &output)
+    if try options.project.configuration.shouldManageContinuousIntegration() {
+        try Workspace.Refresh.ContinuousIntegration.command.execute(withArguments: arguments, options: options, output: &output)
+    }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Resources

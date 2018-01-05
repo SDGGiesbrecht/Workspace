@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -94,11 +94,11 @@ enum Script : Int, IterableEnumeration {
     static func refreshRelevantScripts(for project: PackageRepository, output: inout Command.Output) throws {
 
         for deprecated in Script.deprecatedFileNames {
-            project.delete(project.url(for: String(deprecated)), output: &output)
+            project.delete(project.location.appendingPathComponent(String(deprecated)), output: &output)
         }
 
         for script in cases where script.isRelevantOnCurrentDevice ∨ script.isCheckedIn {
-            var file = try TextFile(possiblyAt: project.url(for: String(script.fileName)), executable: true)
+            var file = try TextFile(possiblyAt: project.location.appendingPathComponent(String(script.fileName)), executable: true)
             file.contents.replaceSubrange(file.contents.startIndex ..< file.headerStart, with: String(script.shebang()))
             file.body = String(try script.source(for: project, output: &output))
             try file.writeChanges(for: project, output: &output)

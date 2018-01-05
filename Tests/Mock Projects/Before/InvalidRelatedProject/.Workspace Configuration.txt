@@ -1,0 +1,6 @@
+Manage Read‐Me: True
+Localizations: en
+
+[_Begin Related Projects_]
+
+[_End_]

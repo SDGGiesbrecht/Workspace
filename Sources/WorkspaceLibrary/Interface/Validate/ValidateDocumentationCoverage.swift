@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -41,64 +41,52 @@ extension Workspace.Validate {
                 throw linuxJazzyError()
             #else
 
-            guard try options.project.configuration.shouldEnforceDocumentationCoverage() else {
-                throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
-                    switch localization {
-                    case .englishCanada:
-                        return "The Workspace configuration prevents documentation coverage enforcement."
-                    }
-                }))
-            }
+                var validationStatus = ValidationStatus()
+                try executeAsStepDocumentingFirst(options: options, validationStatus: &validationStatus, output: &output)
 
-            var validationStatus = ValidationStatus()
-            try executeAsStepDocumentingFirst(options: options, validationStatus: &validationStatus, output: &output)
+                if ¬validationStatus.validatedSomething {
+                    validationStatus.passStep(message: UserFacingText({(localization: InterfaceLocalization, _: Void) in
+                        switch localization {
+                        case .englishCanada:
+                            return "No library products to document."
+                        }
+                    }))
+                }
 
-            if ¬validationStatus.validatedSomething {
-                validationStatus.passStep(message: UserFacingText({(localization: InterfaceLocalization, _: Void) in
-                    switch localization {
-                    case .englishCanada:
-                        return "No library products to document."
-                    }
-                }))
-            }
-
-            try validationStatus.reportOutcome(projectName: try options.project.projectName(output: &output), output: &output)
+                try validationStatus.reportOutcome(projectName: try options.project.projectName(output: &output), output: &output)
 
             #endif
         })
 
         #if !os(Linux)
         static func executeAsStepDocumentingFirst(options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
-            if try options.project.configuration.shouldEnforceDocumentationCoverage() {
 
-                // Refresh documentation so that results are meaningful.
-                let outputDirectory: URL
-                let outputIsTemporary: Bool
-                if try options.project.configuration.encryptedTravisDeploymentKey() ≠ nil {
-                    outputDirectory = FileManager.default.url(in: .temporary, at: "Documentation")
-                    outputIsTemporary = true
-                } else {
-                    outputDirectory = Documentation.defaultDocumentationDirectory(for: options.project)
-                    outputIsTemporary = false
-                }
-                defer {
-                    if outputIsTemporary {
-                        try? FileManager.default.removeItem(at: outputDirectory)
-                    }
-                }
-
-                try Workspace.Document.executeAsStep(outputDirectory: outputDirectory, options: options, validationStatus: &validationStatus, output: &output)
-
-                try executeAsStep(outputDirectory: outputDirectory, options: options, validationStatus: &validationStatus, output: &output)
+            // Refresh documentation so that results are meaningful.
+            let outputDirectory: URL
+            let outputIsTemporary: Bool
+            if try options.project.configuration.encryptedTravisDeploymentKey() ≠ nil
+                ∨ ¬(try options.project.configuration.shouldGenerateDocumentation()) {
+                outputDirectory = FileManager.default.url(in: .temporary, at: "Documentation")
+                outputIsTemporary = true
+            } else {
+                outputDirectory = Documentation.defaultDocumentationDirectory(for: options.project)
+                outputIsTemporary = false
             }
+            defer {
+                if outputIsTemporary {
+                    try? FileManager.default.removeItem(at: outputDirectory)
+                }
+            }
+
+            try Workspace.Document.executeAsStep(outputDirectory: outputDirectory, options: options, validationStatus: &validationStatus, output: &output)
+
+            try executeAsStep(outputDirectory: outputDirectory, options: options, validationStatus: &validationStatus, output: &output)
         }
         #endif
 
         #if !os(Linux)
         static func executeAsStep(outputDirectory: URL, options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
-            if try options.project.configuration.shouldEnforceDocumentationCoverage() {
-                try options.project.validateDocumentationCoverage(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: &output)
-            }
+            try options.project.validateDocumentationCoverage(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: &output)
         }
         #endif
     }

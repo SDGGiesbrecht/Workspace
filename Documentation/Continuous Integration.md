@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -17,6 +17,10 @@
 Workspace can automatically configure projects for continuous integration with [Travis CI](https://travis-ci.org).
 
 This is controlled by the [configuration](Configuring%20Workspace.md) option `Manage Continuous Integration`. The [default](Responsibilities.md#default-vs-automatic) value is `False`. The [automatic](Responsibilities.md#default-vs-automatic) value is `True`.
+
+```shell
+$ workspace refresh continuous‐integration
+```
 
 Workspace will create and maintain a `.travis.yml` file at the project root, which configures Travis CI to run all the tests from `Validate` (and several additional ones) on every [operating system](Operating%20Systems.md) supported by the project. (watchOS does not support unit tests.)
 

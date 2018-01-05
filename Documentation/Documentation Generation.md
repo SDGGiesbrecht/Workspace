@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2017 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -16,7 +16,7 @@
 
 Workspace can automatically generate API documentation using [Jazzy](https://github.com/realm/jazzy).
 
-This is controlled by the [configuration](Configuring%20Workspace.md) option `Generate Documentation`. The default value is `True`.
+This is controlled by the [configuration](Configuring%20Workspace.md) option `Generate Documentation`. The default value is `False`.
 
 ```shell
 $ workspace document

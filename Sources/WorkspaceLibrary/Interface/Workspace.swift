@@ -38,9 +38,6 @@ public enum Workspace {
         Workspace.Validate.command,
         Workspace.Document.command,
 
-        // New Projects
-        Workspace.Initialize.command,
-
         // Xcode Build Phase
         Workspace.Proofread.command,
 

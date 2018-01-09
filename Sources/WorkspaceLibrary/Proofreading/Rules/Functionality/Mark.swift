@@ -26,12 +26,12 @@ struct Mark : Rule {
         }
     })
     
-    static let expectedSyntax: StrictString = "// MAR\u{4B}: \u{2D}"
+    static let expectedSyntax: StrictString = "// MAR\u{4B}: \u{2D} "
     
     static let message = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
         switch localization {
         case .englishCanada:
-            return StrictString("Did you mean “\(expectedSyntax)”?")
+            return StrictString("Incomplete heading syntax. Use “\(expectedSyntax)”.")
         }
     })
     

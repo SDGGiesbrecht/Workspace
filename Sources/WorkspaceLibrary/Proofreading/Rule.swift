@@ -33,6 +33,14 @@ extension Rule {
         return file.contents.lines[line.lowerBound].line
     }
     
+    static func line(before match: PatternMatch<String.ScalarView>, in file: TextFile) -> String.ScalarView.SubSequence? {
+        let line = lineRange(for: match, in: file)
+        guard line.lowerBound ≠ file.contents.lines.startIndex else {
+            return nil
+        }
+        return file.contents.lines[file.contents.lines.index(before: line.lowerBound)].line
+    }
+    
     static func line(after match: PatternMatch<String.ScalarView>, in file: TextFile) -> String.ScalarView.SubSequence? {
         let line = lineRange(for: match, in: file)
         guard line.upperBound ≠ file.contents.lines.endIndex else {
@@ -45,6 +53,20 @@ extension Rule {
         let line = lineRange(for: match, in: file)
         let range = line.sameRange(in: file.contents.scalars)!.lowerBound ..< match.range.lowerBound
         return file.contents.scalars[range]
+    }
+    
+    static func upToEndOfLine(from match: PatternMatch<String.ScalarView>, in file: TextFile) -> String.ScalarView.SubSequence {
+        let line = lineRange(for: match, in: file)
+        let range = match.range.upperBound ..< line.sameRange(in: file.contents.scalars)!.upperBound
+        return file.contents.scalars[range]
+    }
+    
+    static func fromStartOfFile(to match: PatternMatch<String.ScalarView>, in file: TextFile) -> String.ScalarView.SubSequence {
+        return file.contents.scalars[..<match.range.lowerBound]
+    }
+    
+    static func upToEndOfFile(from match: PatternMatch<String.ScalarView>, in file: TextFile) -> String.ScalarView.SubSequence {
+        return file.contents.scalars[match.range.upperBound...]
     }
     
     static func from(_ match: PatternMatch<String.ScalarView>, toNext searchTerm: StrictString, in file: TextFile) -> String.ScalarView.SubSequence? {

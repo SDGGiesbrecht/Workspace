@@ -37,6 +37,8 @@ func runProofread(andExit shouldExit: Bool, arguments: DirectArguments, options:
     for path in Repository.sourceFiles {
 
         if let file = try? File(at: path) {
+            
+            // [_Warning: Should filter file types. e.g. .xcodeProject._]
 
             var ruleSet: [Rule.Type]
             if Configuration.sdg {

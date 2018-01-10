@@ -21,27 +21,16 @@ let rules: [Rule.Type] = [
     DocumentationOfCompilationConditions.self,
     SyntaxColouring.self,
     
-    // ••••••• Unicode •••••••
-    // Rules which catch poor usage inherited from ASCII limitations.
+    // ••••••• Text Style •••••••
+    // Rules which enforce consistent text style.
+    Unicode.self,
     
-    // General
-    QuotationMarks.self,
-    HyphenMinus.self,
-    // Logic
-    NotEqual.self,
-    Not.self,
-    Conjunction.self,
-    Disjunction.self,
-    // Mathematics
-    LessThanOrEqual.self,
-    GreaterThanOrEqual.self,
-    SubtractAndSet.self,
     Multiplication.self,
     MultiplyAndSet.self,
     Division.self,
     DivideAndSet.self,
     
-    // ••••••• Code Style •••••••
+    // ••••••• Source Code Style •••••••
     // Rules which enforce consistent source code style.
     ColonSpacing.self,
     CalloutCasing.self,

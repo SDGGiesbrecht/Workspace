@@ -336,5 +336,27 @@ struct Unicode : Rule {
                     return "Use the multiplication sign (×)."
                 }
               }), status: status, output: &output)
+        
+        check(file, for: " \u{2F} ",
+              replacement: " ÷ ",
+              allowInConditionalCompilationStatement: true,
+              allowedAliasDefinitions: ["÷", "divide"],
+              message: UserFacingText<InterfaceLocalization, Void>({ localization, _ in
+                switch localization {
+                case .englishCanada:
+                    return "Use the division sign (÷)."
+                }
+              }), status: status, output: &output)
+        
+        check(file, for: " \u{2F}=",
+              replacement: " ÷=",
+              allowInConditionalCompilationStatement: true,
+              allowedAliasDefinitions: ["÷", "divide"],
+              message: UserFacingText<InterfaceLocalization, Void>({ localization, _ in
+                switch localization {
+                case .englishCanada:
+                    return "Use the division sign (÷)."
+                }
+              }), status: status, output: &output)
     }
 }

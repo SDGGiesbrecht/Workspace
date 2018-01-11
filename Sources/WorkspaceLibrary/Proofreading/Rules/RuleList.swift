@@ -25,11 +25,6 @@ let rules: [Rule.Type] = [
     // Rules which enforce consistent text style.
     Unicode.self,
     
-    Multiplication.self,
-    MultiplyAndSet.self,
-    Division.self,
-    DivideAndSet.self,
-    
     // ••••••• Source Code Style •••••••
     // Rules which enforce consistent source code style.
     ColonSpacing.self,

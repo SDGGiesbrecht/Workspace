@@ -23,7 +23,7 @@ let rules: [Rule.Type] = [
     
     // ••••••• Text Style •••••••
     // Rules which enforce consistent text style.
-    Unicode.self,
+    UnicodeRule.self,
     
     // ••••••• Source Code Style •••••••
     // Rules which enforce consistent source code style.

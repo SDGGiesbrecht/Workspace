@@ -4,7 +4,7 @@ import Foundation
 import SDGCornerstone
 import SDGCommandLine
 
-struct Unicode : Rule {
+struct UnicodeRule : Rule {
     
     static let name = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
         switch localization {

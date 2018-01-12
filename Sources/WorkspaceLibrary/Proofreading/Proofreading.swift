@@ -16,8 +16,8 @@ enum Proofreading {
         }
 
         for url in try project.sourceFiles(output: &output)
-            where try FileType(url: url) ≠ nil
-                ∧ (try FileType(url: url) ≠ .xcodeProject) {
+            where (try? FileType(url: url)) ≠ nil
+                ∧ (try? FileType(url: url)) ≠ .xcodeProject {
             let file = try TextFile(alreadyAt: url)
 
             for rule in activeRules {

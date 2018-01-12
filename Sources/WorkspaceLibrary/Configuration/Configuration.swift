@@ -397,6 +397,11 @@ struct Configuration {
     }
 
     // MARK: - Options: Active Checks
+    
+    func disabledProofreadingRules() throws -> Set<StrictString> {
+        let array = try list(for: .disableProofreadingRules)
+        return Set(array.map({ StrictString($0) }))
+    }
 
     func shouldEnforceDocumentationCoverage() throws -> Bool { // [_Exempt from Code Coverage_] [_Workaround: Until validate is testable._]
         return try boolean(for: .enforceDocumentationCoverage) ?? true // [_Exempt from Code Coverage_] [_Workaround: Until validate is testable._]

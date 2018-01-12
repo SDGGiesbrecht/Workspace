@@ -31,9 +31,63 @@ extension Workspace {
                 return "proofreads the current project’s source for style violations."
             }
         })
+        
+        static let runAsXcodeBuildPhase = SDGCommandLine.Option(name: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+            switch localization {
+            case .englishCanada:
+                return "xcode"
+            }
+        }), description: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+            switch localization {
+            case .englishCanada:
+                return "behaves as an xcode build phase."
+            }
+        }), type: ArgumentType.boolean)
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (arguments: DirectArguments, options: Options, output: inout Command.Output) throws in
-            _ = try runProofread(andExit: true, arguments: arguments, options: options, output: &output)
+        static let command = Command(name: name, description: description, directArguments: [], options: [runAsXcodeBuildPhase], execution: { (arguments: DirectArguments, options: Options, output: inout Command.Output) throws in
+            var validationStatus = ValidationStatus()
+            try executeAsStep(normalizingFirst: true, options: options, validationStatus: &validationStatus, output: &output)
+            try validationStatus.reportOutcome(projectName: try options.project.projectName(output: &output), output: &output)
         })
+        
+        static func executeAsStep(normalizingFirst: Bool, options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+            
+            // [_Warning: Needs refactoring._]
+            normalizeFiles(output: &output) // So that SwiftLint’s trailing_whitespace doesn’t trigger.
+            
+            let section = validationStatus.newSection()
+            
+            if ¬options.runAsXcodeBuildPhase {
+                print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+                    switch localization {
+                    case .englishCanada:
+                        return StrictString("Proofreading source code...") + section.anchor
+                    }
+                }).resolved().formattedAsSectionHeader(), to: &output)
+            }
+            
+            let reporter: ProofreadingReporter
+            if options.runAsXcodeBuildPhase {
+                reporter = XcodeProofreadingReporter.default
+            } else {
+                reporter = CommandLineProofreadingReporter.default
+            }
+            
+            if try Proofreading.proofread(project: options.project, reporter: reporter, output: &output) {
+                validationStatus.passStep(message: UserFacingText({(localization: InterfaceLocalization, _: Void) in
+                    switch localization {
+                    case .englishCanada:
+                        return "Source code passes proofreading."
+                    }
+                }))
+            } else {
+                validationStatus.failStep(message: UserFacingText({(localization: InterfaceLocalization, _: Void) in
+                    switch localization {
+                    case .englishCanada:
+                        return StrictString("Source code fails proofreading.") + section.crossReference.resolved(for: localization)
+                    }
+                }))
+            }
+        }
     }
 }

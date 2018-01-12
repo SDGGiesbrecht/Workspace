@@ -61,21 +61,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         // Proofreading...
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        if try runProofread(andExit: false, arguments: arguments, options: options, output: &output) {
-            validationStatus.passStep(message: UserFacingText({ localization, _ in
-                switch localization {
-                case .englishCanada:
-                    return "Code passes proofreading."
-                }
-            }))
-        } else {
-            validationStatus.failStep(message: UserFacingText({ localization, _ in
-                switch localization {
-                case .englishCanada:
-                    return "Code fails proofreading. (See above for details.)"
-                }
-            }))
-        }
+        try Workspace.Proofread.executeAsStep(normalizingFirst: false, options: options, validationStatus: &validationStatus, output: &output)
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

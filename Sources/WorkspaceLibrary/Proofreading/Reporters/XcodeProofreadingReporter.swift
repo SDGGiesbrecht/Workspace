@@ -9,7 +9,7 @@ class XcodeProofreadingReporter : ProofreadingReporter {
     
     // MARK: - Initialization
     
-    init() {
+    private init() {
         
     }
     

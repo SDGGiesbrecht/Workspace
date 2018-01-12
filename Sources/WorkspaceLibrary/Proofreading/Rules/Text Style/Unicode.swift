@@ -213,7 +213,7 @@ struct UnicodeRule : Rule {
                             case "\u{27}":
                                 error = "U+0027"
                             default:
-                                error = StrictString("“\(error)”")
+                                error = StrictString("“\(StrictString(match.contents))”")
                             }
                             return error + " is obsolete."
                         }
@@ -231,7 +231,7 @@ struct UnicodeRule : Rule {
               allowInSampleCode: true,
               allowInMarkdownList: true,
               allowInURLs: true,
-              allowedAliasDefinitions: ["−"], ["subtract"],
+              allowedAliasDefinitions: ["−", "subtract"],
               allowedDefaultImplementations: ["Negatable", "Numeric", "SignedNumeric"],
               allowInReturnArrow: true,
               allowInHTMLComment: true,

@@ -21,6 +21,10 @@ extension Options {
     var job: ContinuousIntegration.Job? { // [_Exempt from Code Coverage_] [_Workaround: Until unit‐tests is testable._]
         return value(for: ContinuousIntegration.Job.option)
     }
+    
+    var runAsXcodeBuildPhase: Bool {
+        return value(for: Workspace.Proofread.runAsXcodeBuildPhase)
+    }
 
     var project: PackageRepository {
         let url = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)

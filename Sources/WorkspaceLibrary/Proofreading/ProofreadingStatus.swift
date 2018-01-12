@@ -12,7 +12,7 @@ class ProofreadingStatus {
     // MARK: - Properties
     
     private let reporter: ProofreadingReporter
-    private var passing: Bool = true
+    internal private(set) var passing: Bool = true
     
     // MARK: - Usage
     

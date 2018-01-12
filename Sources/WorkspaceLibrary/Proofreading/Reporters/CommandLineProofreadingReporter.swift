@@ -1,7 +1,7 @@
 
 import SDGCommandLine
 
-class CommandLineProofreadingReporter {
+class CommandLineProofreadingReporter : ProofreadingReporter {
     
     // MARK: - Static Properties
     
@@ -9,7 +9,7 @@ class CommandLineProofreadingReporter {
     
     // MARK: - Initialization
     
-    init() {
+    private init() {
         
     }
     

@@ -23,14 +23,14 @@ struct DeprecatedLinuxDocumentation : Rule {
             return "Deprecated Linux Documentation"
         }
     })
-    
+
     static let message = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
         switch localization {
         case .englishCanada:
             return "Special compilation conditions are no longer necessary for Linux documentation."
         }
     })
-    
+
     static func check(file: TextFile, status: ProofreadingStatus, output: inout Command.Output) {
         for match in file.contents.scalars.matches(for: "\u{4C}inuxDocs".scalars) {
             reportViolation(in: file, at: match.range, message: message, status: status, output: &output)

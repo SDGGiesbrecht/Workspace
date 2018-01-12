@@ -23,7 +23,7 @@ struct ParametersStyle : Rule {
             return "Parameter Style"
         }
     })
-    
+
     static let message = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
         switch localization {
         case .englishCanada:

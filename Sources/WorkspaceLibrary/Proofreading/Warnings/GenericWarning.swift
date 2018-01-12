@@ -22,14 +22,14 @@ struct GenericWarning : Warning {
             return "Manual Warning"
         }
     })
-    
+
     static let trigger = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
         switch localization {
         case .englishCanada:
             return "Warning"
         }
     })
-    
+
     static func message(for details: StrictString) -> UserFacingText<InterfaceLocalization, Void>? {
         return UserFacingText({ _, _ in details })
     }

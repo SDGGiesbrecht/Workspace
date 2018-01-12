@@ -397,7 +397,7 @@ struct Configuration {
     }
 
     // MARK: - Options: Active Checks
-    
+
     func disabledProofreadingRules() throws -> Set<StrictString> {
         let array = try list(for: .disableProofreadingRules)
         return Set(array.map({ StrictString($0) }))

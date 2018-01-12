@@ -5,14 +5,14 @@ import SDGCornerstone
 import SDGCommandLine
 
 struct UnicodeRule : Rule {
-    
+
     static let name = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
         switch localization {
         case .englishCanada:
             return "Unicode"
         }
     })
-    
+
     static func check(_ file: TextFile, for obsolete: String, replacement: StrictString? = nil,
                       allowTrailing: Bool = false,
                       allowInSwiftSource: Bool = false,
@@ -29,15 +29,15 @@ struct UnicodeRule : Rule {
                       allowInFloatLiteral: Bool = false,
                       allowInToolsVersion: Bool = false,
                       message: UserFacingText<InterfaceLocalization, Void>, status: ProofreadingStatus, output: inout Command.Output) {
-        
+
         for protocolName in allowedDefaultImplementations {
             if file.location.lastPathComponent == protocolName + ".swift" {
                 return
             }
         }
-        
+
         for match in file.contents.scalars.matches(for: obsolete.scalars) {
-            
+
             if allowTrailing {
                 if match.range.upperBound ≠ file.contents.scalars.endIndex {
                     if file.contents.scalars[match.range.upperBound] ∈ CharacterSet.whitespacesAndNewlines ∪ [
@@ -50,7 +50,7 @@ struct UnicodeRule : Rule {
                     }
                 }
             }
-            
+
             if allowInSwiftSource {
                 switch file.fileType {
                 case .swift, .swiftPackageManifest:
@@ -62,12 +62,12 @@ struct UnicodeRule : Rule {
                     break
                 }
             }
-            
+
             if allowInShellSource {
                 if fromStartOfLine(to: match, in: file).contains("[\u{5F}Workaround".scalars) {
                     continue
                 }
-                
+
                 switch file.fileType {
                 case .shell, .yaml:
                     if ¬fromStartOfLine(to: match, in: file).contains("#".scalars) /* Not a comment */ {
@@ -81,7 +81,7 @@ struct UnicodeRule : Rule {
                     break
                 }
             }
-            
+
             if allowInSampleCode {
                 switch file.fileType {
                 case .markdown, .swift, .workspaceConfiguration:
@@ -97,7 +97,7 @@ struct UnicodeRule : Rule {
                     break
                 }
             }
-            
+
             if allowInMarkdownList {
                 switch file.fileType {
                 case .markdown, .yaml:
@@ -124,7 +124,7 @@ struct UnicodeRule : Rule {
                     break
                 }
             }
-            
+
             if allowInURLs {
                 if line(of: match, in: file).contains("http".scalars) {
                     continue
@@ -138,13 +138,13 @@ struct UnicodeRule : Rule {
                     break
                 }
             }
-            
+
             if allowInConditionalCompilationStatement {
                 if line(of: match, in: file).contains("\u{23}if".scalars) ∧ line(of: match, in: file).contains("\u{23}elseif".scalars) {
                     continue
                 }
             }
-            
+
             for alias in allowedAliasDefinitions {
                 if line(before: match, in: file).contains(("func " + String(alias)).scalars) {
                     continue
@@ -152,13 +152,13 @@ struct UnicodeRule : Rule {
                     continue
                 }
             }
-            
+
             for implementation in allowedDefaultImplementations {
                 if line(of: match, in: file).contains(implementation.scalars) {
                     continue
                 }
             }
-            
+
             if allowInReturnArrow {
                 switch file.fileType {
                 case .swift, .swiftPackageManifest:
@@ -169,20 +169,20 @@ struct UnicodeRule : Rule {
                     break
                 }
             }
-            
+
             if allowInHTMLComment {
                 if line(of: match, in: file).contains("<\u{21}\u{2D}\u{2D}".scalars)
                     ∨ line(of: match, in: file).contains("\u{2D}\u{2D}>".scalars) {
                     continue
                 }
             }
-            
+
             if allowInHeading {
                 if fromStartOfFile(to: match, in: file).hasSuffix("MAR\u{4B}: ".scalars) {
                     continue
                 }
             }
-            
+
             if allowInFloatLiteral {
                 if file.fileType == .swift {
                     if fromStartOfLine(to: match, in: file).contains("let ln2".scalars) {
@@ -190,7 +190,7 @@ struct UnicodeRule : Rule {
                     }
                 }
             }
-            
+
             if allowInToolsVersion {
                 if file.fileType == .swiftPackageManifest {
                     if lineRange(for: match, in: file).lowerBound == file.contents.lines.startIndex {
@@ -198,7 +198,7 @@ struct UnicodeRule : Rule {
                     }
                 }
             }
-            
+
             reportViolation(in: file, at: match.range, message:
                 UserFacingText<InterfaceLocalization, Void>({ localization, _ in
                     let obsoleteMessage = UserFacingText<InterfaceLocalization, Void>({ localization, _ in
@@ -218,14 +218,14 @@ struct UnicodeRule : Rule {
                             return error + " is obsolete."
                         }
                     })
-                    
+
                     return obsoleteMessage.resolved(for: localization) + " " + message.resolved(for: localization)
             }), status: status, output: &output)
         }
     }
-    
+
     static func check(file: TextFile, status: ProofreadingStatus, output: inout Command.Output) {
-        
+
         check(file, for: "\u{2D}",
               allowInShellSource: true,
               allowInSampleCode: true,
@@ -245,7 +245,7 @@ struct UnicodeRule : Rule {
                     return "Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–)."
                 }
               }), status: status, output: &output)
-        
+
         check(file, for: "\u{22}",
               allowInSwiftSource: true,
               allowInShellSource: true,
@@ -257,7 +257,7 @@ struct UnicodeRule : Rule {
                 return "Use quotation marks (“, ”) or double prime (′′)."
             }
         }), status: status, output: &output)
-        
+
         check(file, for: "\u{21}\u{3D}",
               replacement: "≠",
               allowInShellSource: true,
@@ -268,7 +268,7 @@ struct UnicodeRule : Rule {
                     return "Use the not equal sign (≠)."
                 }
               }), status: status, output: &output)
-        
+
         check(file, for: "!",
               replacement: "¬",
               allowTrailing: true,
@@ -280,7 +280,7 @@ struct UnicodeRule : Rule {
                     return "Use the not sign (¬)."
                 }
               }), status: status, output: &output)
-        
+
         check(file, for: "&\u{26}",
               replacement: "∧",
               allowInConditionalCompilationStatement: true,
@@ -291,7 +291,7 @@ struct UnicodeRule : Rule {
                     return "Use the conjunction sign (∧)."
                 }
               }), status: status, output: &output)
-        
+
         check(file, for: "\u{7C}|",
               replacement: "∨",
               allowInConditionalCompilationStatement: true,
@@ -302,7 +302,7 @@ struct UnicodeRule : Rule {
                     return "Use the disjunction sign (∨)."
                 }
               }), status: status, output: &output)
-        
+
         check(file, for: "\u{3C}=",
               replacement: "≤",
               allowInConditionalCompilationStatement: true,
@@ -313,7 +313,7 @@ struct UnicodeRule : Rule {
                     return "Use the less‐than‐or‐equal sign (≤)."
                 }
               }), status: status, output: &output)
-        
+
         check(file, for: "\u{3E}=",
               replacement: "≥",
               allowInConditionalCompilationStatement: true,
@@ -324,7 +324,7 @@ struct UnicodeRule : Rule {
                     return "Use the greater‐than‐or‐equal sign (≥)."
                 }
               }), status: status, output: &output)
-        
+
         check(file, for: " \u{2A}",
               replacement: " ×",
               allowInConditionalCompilationStatement: true,
@@ -336,7 +336,7 @@ struct UnicodeRule : Rule {
                     return "Use the multiplication sign (×)."
                 }
               }), status: status, output: &output)
-        
+
         check(file, for: " \u{2F} ",
               replacement: " ÷ ",
               allowInConditionalCompilationStatement: true,
@@ -347,7 +347,7 @@ struct UnicodeRule : Rule {
                     return "Use the division sign (÷)."
                 }
               }), status: status, output: &output)
-        
+
         check(file, for: " \u{2F}=",
               replacement: " ÷=",
               allowInConditionalCompilationStatement: true,

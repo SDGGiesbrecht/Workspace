@@ -25,7 +25,7 @@ struct CompatibilityCharacters : Rule {
             return "Compatibility Characters"
         }
     })
-    
+
     static func check(file: TextFile, status: ProofreadingStatus, output: inout Command.Output) {
         for index in file.contents.scalars.indices {
             let scalar = file.contents.scalars[index]

@@ -23,14 +23,14 @@ struct MissingImplementation : Rule {
             return "Missing Implementation"
         }
     })
-    
+
     static let message = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
         switch localization {
         case .englishCanada:
             return "Missing implementation."
         }
     })
-    
+
     static func check(file: TextFile, status: ProofreadingStatus, output: inout Command.Output) {
         for match in file.contents.scalars.matches(for: "\u{6E}otImplementedYet".scalars) {
             reportViolation(in: file, at: match.range, message: message, status: status, output: &output)

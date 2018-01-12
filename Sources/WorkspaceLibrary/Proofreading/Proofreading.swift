@@ -3,10 +3,10 @@ import SDGCornerstone
 import SDGCommandLine
 
 enum Proofreading {
-    
+
     static func proofread(project: PackageRepository, reporter: ProofreadingReporter, output: inout Command.Output) throws -> Bool {
         let status = ProofreadingStatus(reporter: reporter)
-        
+
         let disabledRules: Set<StrictString> = try project.configuration.disabledProofreadingRules()
         let activeRules = (rules + manualWarnings as [Rule.Type]).filter { rule in
             for name in InterfaceLocalization.cases.lazy.map({ rule.name.resolved(for: $0) }) where  name ∈ disabledRules {
@@ -14,38 +14,38 @@ enum Proofreading {
             }
             return true
         }
-        
+
         for url in try project.sourceFiles(output: &output)
             where try FileType(url: url) ≠ nil
                 ∧ (try FileType(url: url) ≠ .xcodeProject) {
             let file = try TextFile(alreadyAt: url)
-            
+
             for rule in activeRules {
                 rule.check(file: file, status: status, output: &output)
             }
         }
-        
+
         proofreadWithSwiftLint(project: project, status: status, output: &output)
-        
+
         return status.passing
     }
-    
+
     private static func proofreadWithSwiftLint(project: PackageRepository, status: ProofreadingStatus, output: inout Command.Output) {
-        
+
         // [_Warning: Not finished._]
-        
+
         /*
-        
+
         if Environment.operatingSystem == .macOS {
             // [_Workaround: SwiftLint fails to build with the Swift Package Manager. Using homebrew instead. (swiftlint version 0.16.1)_]
-            
+
             let swiftLintConfigurationPath = RelativePath(".swiftlint.yml")
             var manualSwiftLintConfiguration = false
             if Repository.sourceFiles.contains(swiftLintConfigurationPath) {
                 manualSwiftLintConfiguration = true
             } else {
                 var file = File(possiblyAt: swiftLintConfigurationPath)
-                
+
                 var lines = [
                     "excluded:",
                     // Swift Package Manager
@@ -61,11 +61,11 @@ enum Proofreading {
                         disabled.joinAsLines()
                     ]
                 }
-                
+
                 file.contents = lines.joinAsLines()
                 require() { try file.write(output: &output) }
             }
-            
+
             if let swiftLintResult = runThirdPartyTool(
                 name: "SwiftLint",
                 repositoryURL: "https://github.com/realm/SwiftLint",
@@ -83,24 +83,24 @@ enum Proofreading {
                     "brew upgrade swiftlint"
                 ],
                 dropOutput: true) {
-                
+
                 if ¬swiftLintResult.succeeded {
                     overallSuccess = false
                 }
             }
-            
+
             if ¬manualSwiftLintConfiguration {
                 try? Repository.delete(swiftLintConfigurationPath)
             }
-            
+
         }
-        
+
         // End
-        
+
         if shouldExit {
             exit(ExitCode.succeeded)
         }
-        
+
         return overallSuccess
  */
     }

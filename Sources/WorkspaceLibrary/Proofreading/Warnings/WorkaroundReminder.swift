@@ -18,31 +18,31 @@ import SDGCornerstone
 import SDGCommandLine
 
 struct WorkaroundReminder : Warning {
-    
+
     static let noticeOnly = true
-    
+
     static let name = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
         switch localization {
         case .englishCanada:
             return "Workaround Reminder"
         }
     })
-    
+
     static let trigger = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
         switch localization {
         case .englishCanada:
             return "Workaround"
         }
     })
-    
+
     static func message(for details: StrictString) -> UserFacingText<InterfaceLocalization, Void>? {
         if let versionCheck = details.scalars.firstNestingLevel(startingWith: "(".scalars, endingWith: ")".scalars) {
             var parameters = versionCheck.contents.contents.components(separatedBy: " ".scalars)
             if ¬parameters.isEmpty,
                 let problemVersion = Version(String(StrictString(parameters.removeLast().contents))) {
-                
+
                 let dependency = parameters.map({ StrictString($0.contents) }).joined(separator: " ")
-                
+
                 if dependency == "Swift" {
                     var newDetails = details
                     let script: StrictString = "swift \u{2D}\u{2D}version"
@@ -59,7 +59,7 @@ struct WorkaroundReminder : Warning {
                 }
             }
         }
-        
+
         return UserFacingText({ localization, _ in
             let label: StrictString
             switch localization {
@@ -69,13 +69,13 @@ struct WorkaroundReminder : Warning {
             return label + details
         })
     }
-    
+
     private static var dependencyVersionCache: [StrictString: Version?] = [:]
     private static func currentVersion(of dependency: StrictString) -> Version? {
         return cached(in: &dependencyVersionCache[dependency], {
-            
+
             // [_Warning: Should check dependency graph first._]
-            
+
             if let shellOutput = try? Shell.default.run(command: String(dependency).components(separatedBy: " "), silently: true),
                 let version = Version(firstIn: shellOutput) {
                 return version

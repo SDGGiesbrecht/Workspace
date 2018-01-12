@@ -31,7 +31,7 @@ extension Workspace {
                 return "proofreads the current project’s source for style violations."
             }
         })
-        
+
         static let runAsXcodeBuildPhase = SDGCommandLine.Option(name: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
@@ -49,14 +49,14 @@ extension Workspace {
             try executeAsStep(normalizingFirst: true, options: options, validationStatus: &validationStatus, output: &output)
             try validationStatus.reportOutcome(projectName: try options.project.projectName(output: &output), output: &output)
         })
-        
+
         static func executeAsStep(normalizingFirst: Bool, options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
-            
+
             // [_Warning: Needs refactoring._]
             normalizeFiles(output: &output) // So that SwiftLint’s trailing_whitespace doesn’t trigger.
-            
+
             let section = validationStatus.newSection()
-            
+
             if ¬options.runAsXcodeBuildPhase {
                 print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
                     switch localization {
@@ -65,14 +65,14 @@ extension Workspace {
                     }
                 }).resolved().formattedAsSectionHeader(), to: &output)
             }
-            
+
             let reporter: ProofreadingReporter
             if options.runAsXcodeBuildPhase {
                 reporter = XcodeProofreadingReporter.default
             } else {
                 reporter = CommandLineProofreadingReporter.default
             }
-            
+
             if try Proofreading.proofread(project: options.project, reporter: reporter, output: &output) {
                 validationStatus.passStep(message: UserFacingText({(localization: InterfaceLocalization, _: Void) in
                     switch localization {

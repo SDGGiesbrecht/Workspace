@@ -18,7 +18,7 @@ import SDGCornerstone
 import SDGCommandLine
 
 struct CalloutCasing : Rule {
-    
+
     static let name = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
         switch localization {
         case .englishCanada:
@@ -32,18 +32,18 @@ struct CalloutCasing : Rule {
             return "Callouts should be capitalized."
         }
     })
-    
+
     static func check(file: TextFile, status: ProofreadingStatus, output: inout Command.Output) {
         if file.fileType == .swift {
             for match in file.contents.scalars.matches(for: "/// \u{2D} ".scalars) {
                 if let next = upToEndOfFile(from: match, in: file).first,
                     next ∈ CharacterSet.lowercaseLetters {
-                    
+
                     var endOfWord = match.range.upperBound
                     file.contents.scalars.advance(&endOfWord, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.letters })))
                     if endOfWord ≠ file.contents.scalars.endIndex,
                         file.contents.scalars[endOfWord] == ":" {
-                        
+
                         let replacement = StrictString(String(next).uppercased())
                         reportViolation(in: file, at: match.range, replacementSuggestion: replacement, message: message, status: status, output: &output)
                     }

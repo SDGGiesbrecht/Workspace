@@ -1,13 +1,13 @@
 /*
  ColonSpacing.swift
- 
+
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
- 
+
  Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
- 
+
  Soli Deo gloria.
- 
+
  Licensed under the Apache Licence, Version 2.0.
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
@@ -18,57 +18,57 @@ import SDGCornerstone
 import SDGCommandLine
 
 struct ColonSpacing : Rule {
-    
+
     static let name = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
         switch localization {
         case .englishCanada:
             return "Colon Spacing"
         }
     })
-    
+
     static let precedingMessage = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
         switch localization {
         case .englishCanada:
             return "Colons should not be preceded by spaces."
         }
     })
-    
+
     static let conformanceMessage = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
         switch localization {
         case .englishCanada:
             return "Colons should be preceded by spaces when denoting protocols or superclasses."
         }
     })
-    
+
     static let followingMessage = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
         switch localization {
         case .englishCanada:
             return "Colons should not be preceded by spaces."
         }
     })
-    
+
     static func check(file: TextFile, status: ProofreadingStatus, output: inout Command.Output) {
         if file.fileType == .swift {
-            
+
             for match in file.contents.scalars.matches(for: ":".scalars) {
-                
+
                 if fromStartOfLine(to: match, in: file).contains("\u{22}") ∧ upToEndOfLine(from: match, in: file).contains("\u{22}") {
                     // String Literal
                     continue
                 }
-                
+
                 if fromStartOfLine(to: match, in: file).contains("//".scalars) {
                     // Comment
                     continue
                 }
-                
+
                 if line(of: match, in: file).contains(":nodoc:".scalars) {
                     // Jazzy Keyword
                     continue
                 }
-                
+
                 let protocolOrSuperclass: Bool
-                
+
                 if fromStartOfLine(to: match, in: file).contains("[") ∧ upToEndOfLine(from: match, in: file).contains("]") {
                     // Dictionary Literal
                     protocolOrSuperclass = false
@@ -79,26 +79,26 @@ struct ColonSpacing : Rule {
                 } else {
                     protocolOrSuperclass = false
                 }
-                
+
                 if let preceding = file.contents.scalars[..<match.range.lowerBound].last {
                     if preceding == " " {
                         if ¬protocolOrSuperclass,
                             ¬fromStartOfLine(to: match, in: file).contains(" ? ".scalars) /* Ternary Conditional Operator */ {
-                            
+
                             let precedingIndex = file.contents.scalars.index(before: match.range.lowerBound)
                             let errorRange = precedingIndex ..< match.range.upperBound
-                            
+
                             reportViolation(in: file, at: errorRange, replacementSuggestion: ":", message: precedingMessage, status: status, output: &output)
                         }
                     } else if protocolOrSuperclass {
                         reportViolation(in: file, at: match.range, replacementSuggestion: " :", message: conformanceMessage, status: status, output: &output)
                     }
                 }
-                
+
                 if let following = file.contents.scalars[match.range.upperBound...].first,
                     following ∉ CharacterSet.whitespacesAndNewlines,
                     following ≠ "]" /* Empty Dictionary Literal */ {
-                    
+
                     reportViolation(in: file, at: match.range, message: followingMessage, status: status, output: &output)
                 }
             }

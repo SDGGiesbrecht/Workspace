@@ -16,32 +16,32 @@ import SDGCornerstone
 import SDGCommandLine
 
 struct SyntaxColouring : Rule {
-    
+
     static let name = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
         switch localization {
         case .englishCanada:
             return "Syntax Colouring"
         }
     })
-    
+
     static let message = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
         switch localization {
         case .englishCanada:
             return "Language specifier missing. Specify a language for syntax colouring."
         }
     })
-    
+
     static func check(file: TextFile, status: ProofreadingStatus, output: inout Command.Output) {
-        
+
         var occurrenceCount: [String: Bool] = [:]
-        
+
         for match in file.contents.scalars.matches(for: "```".scalars) {
             let indent = String(fromStartOfLine(to: match, in: file))
-            
+
             var isOdd = occurrenceCount[indent] ?? false
             isOdd¬=
             occurrenceCount[indent] = isOdd
-            
+
             if isOdd ∧ file.contents.scalars[match.range.upperBound...].hasPrefix("\n".scalars) {
                 reportViolation(in: file, at: match.range, message: message, status: status, output: &output)
             }

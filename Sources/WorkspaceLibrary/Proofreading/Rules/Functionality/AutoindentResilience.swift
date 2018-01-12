@@ -16,21 +16,21 @@ import SDGCornerstone
 import SDGCommandLine
 
 struct AutoindentResilience : Rule {
-    
+
     static let name = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
         switch localization {
         case .englishCanada:
             return "Autoindent Resilience"
         }
     })
-    
+
     static let message = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
         switch localization {
         case .englishCanada:
             return "“/*\u{2A}” may not survive autoindent (⌃I). Use “///” instead."
         }
     })
-    
+
     static func check(file: TextFile, status: ProofreadingStatus, output: inout Command.Output) {
         if file.fileType == .swift {
             for match in file.contents.scalars.matches(for: "/*\u{2A}".scalars) {

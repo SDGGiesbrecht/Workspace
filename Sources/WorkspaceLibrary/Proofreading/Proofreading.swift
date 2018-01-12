@@ -20,6 +20,8 @@ enum Proofreading {
                 ∧ (try? FileType(url: url)) ≠ .xcodeProject {
             let file = try TextFile(alreadyAt: url)
 
+            print(file.location.path(relativeTo: project.location).in(FontWeight.bold), to: &output)
+
             for rule in activeRules {
                 rule.check(file: file, status: status, output: &output)
             }

@@ -1,4 +1,5 @@
 
+import SDGCornerstone
 import SDGCommandLine
 
 class ProofreadingStatus {
@@ -17,7 +18,9 @@ class ProofreadingStatus {
     // MARK: - Usage
 
     func report(violation: StyleViolation, to output: inout Command.Output) {
-        passing = false
+        if ¬violation.noticeOnly {
+            passing = false
+        }
         reporter.report(violation: violation, to: &output)
     }
 }

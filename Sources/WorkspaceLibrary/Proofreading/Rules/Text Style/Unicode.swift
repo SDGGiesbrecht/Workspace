@@ -54,7 +54,8 @@ struct UnicodeRule : Rule {
             if allowInSwiftSource {
                 switch file.fileType {
                 case .swift, .swiftPackageManifest:
-                    if ¬fromStartOfLine(to: match, in: file).contains("//".scalars) /* Not a comment */
+                    if (¬fromStartOfLine(to: match, in: file).contains("//".scalars) /* Not a comment */
+                        ∨ fromStartOfLine(to: match, in: file).contains("://".scalars) /* URL mistaken for a comment */)
                         ∧ ¬fromStartOfFile(to: match, in: file).hasSuffix("\u{5C}".scalars) /* Not a string literal (escaped) */ {
                         continue
                     }
@@ -69,7 +70,7 @@ struct UnicodeRule : Rule {
                 }
 
                 switch file.fileType {
-                case .shell, .yaml:
+                case .shell, .yaml, .gitignore:
                     if ¬fromStartOfLine(to: match, in: file).contains("#".scalars) /* Not a comment */ {
                         continue
                     }
@@ -140,7 +141,7 @@ struct UnicodeRule : Rule {
             }
 
             if allowInConditionalCompilationStatement {
-                if line(of: match, in: file).contains("\u{23}if".scalars) ∧ line(of: match, in: file).contains("\u{23}elseif".scalars) {
+                if line(of: match, in: file).contains("\u{23}if".scalars) ∨ line(of: match, in: file).contains("\u{23}elseif".scalars) {
                     continue
                 }
             }
@@ -199,7 +200,7 @@ struct UnicodeRule : Rule {
                 }
             }
 
-            reportViolation(in: file, at: match.range, message:
+            reportViolation(in: file, at: match.range, replacementSuggestion: replacement, message:
                 UserFacingText<InterfaceLocalization, Void>({ localization, _ in
                     let obsoleteMessage = UserFacingText<InterfaceLocalization, Void>({ localization, _ in
                         switch localization {
@@ -274,6 +275,7 @@ struct UnicodeRule : Rule {
               allowTrailing: true,
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["¬"],
+              allowInHTMLComment: true,
               message: UserFacingText<InterfaceLocalization, Void>({ localization, _ in
                 switch localization {
                 case .englishCanada:
@@ -325,8 +327,20 @@ struct UnicodeRule : Rule {
                 }
               }), status: status, output: &output)
 
-        check(file, for: " \u{2A}",
-              replacement: " ×",
+        check(file, for: " \u{2A} ",
+              replacement: " × ",
+              allowInConditionalCompilationStatement: true,
+              allowedAliasDefinitions: ["×"],
+              allowedDefaultImplementations: ["Numeric"],
+              message: UserFacingText<InterfaceLocalization, Void>({ localization, _ in
+                switch localization {
+                case .englishCanada:
+                    return "Use the multiplication sign (×)."
+                }
+              }), status: status, output: &output)
+
+        check(file, for: "\u{2A}=",
+              replacement: "×=",
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["×"],
               allowedDefaultImplementations: ["Numeric"],
@@ -348,8 +362,8 @@ struct UnicodeRule : Rule {
                 }
               }), status: status, output: &output)
 
-        check(file, for: " \u{2F}=",
-              replacement: " ÷=",
+        check(file, for: "\u{2F}=",
+              replacement: "÷=",
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["÷", "divide"],
               message: UserFacingText<InterfaceLocalization, Void>({ localization, _ in

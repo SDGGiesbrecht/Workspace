@@ -43,7 +43,7 @@ struct ColonSpacing : Rule {
     static let followingMessage = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
         switch localization {
         case .englishCanada:
-            return "Colons should not be preceded by spaces."
+            return "Colons should be followed by spaces."
         }
     })
 
@@ -96,10 +96,12 @@ struct ColonSpacing : Rule {
                 }
 
                 if let following = file.contents.scalars[match.range.upperBound...].first,
-                    following ∉ CharacterSet.whitespacesAndNewlines,
-                    following ≠ "]" /* Empty Dictionary Literal */ {
+                    following ∉ CharacterSet.whitespacesAndNewlines ∪ [
+                        "]" /* Empty Dictionary Literal */,
+                        "/" /* URL */
+                    ] {
 
-                    reportViolation(in: file, at: match.range, message: followingMessage, status: status, output: &output)
+                    reportViolation(in: file, at: match.range, replacementSuggestion: ": ", message: followingMessage, status: status, output: &output)
                 }
             }
         }

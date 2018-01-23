@@ -29,7 +29,7 @@ $ swift package resolve
 Generating documentation for “ApplicationProjectType”...
 
 
-$ jazzy --module ApplicationProjectType --copyright "Copyright ©2018 the ApplicationProjectType project contributors. All rights reserved." --documentation=Documentation/*.md --clean --use-safe-filenames --output "[...]/Documentation/ApplicationProjectType" --xcodebuild-arguments "-scheme,ApplicationProjectType-Package,-target,ApplicationProjectType,-sdk,macosx,-derivedDataPath,[...]/Jazzy Build Artifacts"
+$ jazzy _0.9.0_ --module ApplicationProjectType --copyright "Copyright ©2018 the ApplicationProjectType project contributors. All rights reserved." --documentation=Documentation/*.md --clean --use-safe-filenames --output "[...]/Documentation/ApplicationProjectType" --xcodebuild-arguments "-scheme,ApplicationProjectType-Package,-target,ApplicationProjectType,-sdk,macosx,-derivedDataPath,[...]/Jazzy Build Artifacts"
 0% documentation coverage with 0 undocumented symbols
 skipped 1 private, fileprivate, or internal symbol (use `--min-acl` to specify a different minimum ACL)
 jam out ♪♫ to your fresh new docs in `[...]/Documentation/ApplicationProjectType`

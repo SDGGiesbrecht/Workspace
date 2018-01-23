@@ -198,7 +198,7 @@ struct TextFile {
             }
 
             repository.resetCache(debugReason: location.lastPathComponent)
-            if location.lastPathComponent == Configuration.fileName { // [_Exempt from Code Coverage_] [_Workaround: Until normalize is testable._]
+            if location.lastPathComponent == Configuration.fileName {
                 repository.configuration.resetCache(debugReason: location.lastPathComponent)
             }
         }

@@ -43,13 +43,13 @@ struct Configuration {
         }
     }
 
-    func resetCache(debugReason: String) { // [_Exempt from Code Coverage_] [_Workaround: Until normalize is testable._]
+    func resetCache(debugReason: String) {
         Configuration.caches[location] = Cache()
         if location == Repository.packageRepository.configuration.location { // [_Exempt from Code Coverage_]
             // [_Workaround: Temporary bridging._]
             Configuration.resetCache()
-        } // [_Exempt from Code Coverage_] [_Workaround: Until normalize is testable._]
-        if BuildConfiguration.current == .debug { // [_Exempt from Code Coverage_] [_Workaround: Until normalize is testable._]
+        }
+        if BuildConfiguration.current == .debug {
             print("(Debug notice: Configuration cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”")
         }
     }

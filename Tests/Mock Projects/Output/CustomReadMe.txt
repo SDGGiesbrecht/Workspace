@@ -36,7 +36,7 @@ $ swift package resolve
 Generating documentation for “CustomReadMe”...
 
 
-$ jazzy --module CustomReadMe --copyright "Customized copyright string." --github_url "https://github.com/User/Repository" --documentation=Documentation/*.md --clean --use-safe-filenames --output "[...]/Tests/Mock Projects/Before/CustomReadMe/docs/CustomReadMe" --xcodebuild-arguments "-scheme,CustomReadMe-Package,-target,CustomReadMe,-sdk,macosx,-derivedDataPath,[...]/Jazzy Build Artifacts"
+$ jazzy _0.9.0_ --module CustomReadMe --copyright "Customized copyright string." --github_url "https://github.com/User/Repository" --documentation=Documentation/*.md --clean --use-safe-filenames --output "[...]/Tests/Mock Projects/Before/CustomReadMe/docs/CustomReadMe" --xcodebuild-arguments "-scheme,CustomReadMe-Package,-target,CustomReadMe,-sdk,macosx,-derivedDataPath,[...]/Jazzy Build Artifacts"
 0% documentation coverage with 0 undocumented symbols
 skipped 1 private, fileprivate, or internal symbol (use `--min-acl` to specify a different minimum ACL)
 jam out ♪♫ to your fresh new docs in `docs/CustomReadMe`

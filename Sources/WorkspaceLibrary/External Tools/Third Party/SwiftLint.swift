@@ -24,7 +24,7 @@ class SwiftLint : SwiftPackage {
 
     // MARK: - Initialization
 
-    init(version: Version) { // [_Exempt from Code Coverage_] [_Workaround: Until proofread is testable._]
+    init(version: Version) {
         super.init(command: "swiftlint",
                    repositoryURL: URL(string: "https://github.com/realm/SwiftLint")!,
                    version: version,

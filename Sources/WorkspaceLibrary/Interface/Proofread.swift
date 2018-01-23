@@ -47,7 +47,7 @@ extension Workspace {
         static let command = Command(name: name, description: description, directArguments: [], options: [runAsXcodeBuildPhase], execution: { (arguments: DirectArguments, options: Options, output: inout Command.Output) throws in
             var validationStatus = ValidationStatus()
             try executeAsStep(normalizingFirst: true, options: options, validationStatus: &validationStatus, output: &output)
-            
+
             if ¬options.runAsXcodeBuildPhase { // Xcode should keep building anyway.
                 try validationStatus.reportOutcome(projectName: try options.project.projectName(output: &output), output: &output)
             }

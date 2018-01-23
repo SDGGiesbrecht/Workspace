@@ -27,7 +27,7 @@ class XcodeProofreadingReporter : ProofreadingReporter {
     }
 
     // MARK: - ProofreadingReporter
-    
+
     func reportParsing(file: String, to output: inout Command.Output) {
         // Unneeded.
     }
@@ -35,19 +35,19 @@ class XcodeProofreadingReporter : ProofreadingReporter {
     func report(violation: StyleViolation, to output: inout Command.Output) {
 
         // [_Warning: Needs updating and testing once build succeeds again._]
-        
+
         let file = violation.file.contents
         let lines = file.lines
-        
+
         let path = violation.file.location.path
-        
+
         let lineIndex = violation.range.lowerBound.line(in: lines)
         let lineNumber: Int = lines.distance(from: lines.startIndex, to: lineIndex) + 1
-        
+
         let utf16LineStart = lineIndex.samePosition(in: file.clusters).samePosition(in: file.utf16)!
         let utf16ViolationStart = violation.range.lowerBound.samePosition(in: file.utf16)!
         let column: Int = file.utf16.distance(from: utf16LineStart, to: utf16ViolationStart) + 1
-        
+
         print("\(path):\(lineNumber):\(column): warning: \(violation.message.resolved()) (\(violation.ruleIdentifier.resolved()))", to: &output)
     }
 }

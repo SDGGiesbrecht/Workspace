@@ -28,6 +28,10 @@ class CommandLineProofreadingReporter : ProofreadingReporter {
     }
 
     // MARK: - ProofreadingReporter
+    
+    func reportParsing(file: String, to output: inout Command.Output) {
+        print(file.in(FontWeight.bold), to: &output)
+    }
 
     func report(violation: StyleViolation, to output: inout Command.Output) {
 

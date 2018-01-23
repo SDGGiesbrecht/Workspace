@@ -156,8 +156,8 @@
 
             let script: String
             if try Repository.packageRepository.isWorkspaceProject(output: &output) {
-                script = "swift run workspace proofread"
-            } else {
+                script = "swift run workspace proofread •xcode"
+            } else { // [_Warning: This needs to add the •xcode flag._]
                 script = "export PATH=\u{5C}\u{22}$HOME/.SDG/Registry:$PATH\u{5C}\u{22} ; if which workspace > /dev/null ; then workspace proofread •use‐version " + latestStableWorkspaceVersion.string + " ; else echo \u{5C}\u{22}warning: Install Workspace if you wish to receive in‐code reports of style errors for this project. See https://github.com/SDGGiesbrecht/Workspace\u{5C}\u{22} ; fi"
             }
 

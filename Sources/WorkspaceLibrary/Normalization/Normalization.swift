@@ -12,11 +12,16 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
-
 import SDGCornerstone
 import SDGCommandLine
 
+enum Normalization {
+    
+    static func normalize(project: PackageRepository, output: inout Command.Output) throws {
+        notImplementedYet()
+    }
+}
+/*
 func normalizeFiles(output: inout Command.Output) {
 
     for path in Repository.sourceFiles {
@@ -49,3 +54,4 @@ func normalizeFiles(output: inout Command.Output) {
         }
     }
 }
+ */

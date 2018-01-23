@@ -27,6 +27,10 @@ class XcodeProofreadingReporter : ProofreadingReporter {
     }
 
     // MARK: - ProofreadingReporter
+    
+    func reportParsing(file: String, to output: inout Command.Output) {
+        // Unneeded.
+    }
 
     func report(violation: StyleViolation, to output: inout Command.Output) {
 

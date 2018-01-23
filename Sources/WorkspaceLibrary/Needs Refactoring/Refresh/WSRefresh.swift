@@ -138,10 +138,10 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     DocumentationInheritance.refreshDocumentation(output: &output)
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    print("Normalizing files...".formattedAsSectionHeader(), to: &output)
+    // Normalization
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    normalizeFiles(output: &output)
+    try Workspace.Normalize.executeAsStep(options: options, output: &output)
 
     #if !os(Linux)
         if Configuration.manageXcode ∧ Environment.operatingSystem == .macOS {

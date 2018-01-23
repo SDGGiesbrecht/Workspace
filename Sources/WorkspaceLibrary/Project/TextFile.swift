@@ -38,7 +38,7 @@ struct TextFile {
     init(possiblyAt location: URL, executable: Bool = false) throws {
         do {
             self = try TextFile(alreadyAt: location)
-            if isExecutable ≠ executable { // [_Exempt from Code Coverage_] [_Workaround: Until “normalize” is testable._]
+            if isExecutable ≠ executable {
                 isExecutable = executable
                 hasChanged = true
             }
@@ -73,8 +73,8 @@ struct TextFile {
     let location: URL
 
     var isExecutable: Bool {
-        willSet { // [_Exempt from Code Coverage_] [_Workaround: Until “normalize” is testable._]
-            if newValue ≠ isExecutable { // [_Exempt from Code Coverage_] [_Workaround: Until “normalize” is testable._]
+        willSet {
+            if newValue ≠ isExecutable {
                 hasChanged = true
             }
         }

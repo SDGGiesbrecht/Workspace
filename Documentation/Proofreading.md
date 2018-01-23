@@ -27,7 +27,7 @@ If Workspace is not in charge of Xcode, proofreading can still be activated for 
 ```shell
 export PATH="$HOME/.SDG/Registry:$PATH"
 if which workspace > /dev/null ; then
-    workspace proofread •use‐version 0.1.0
+    workspace proofread •xcode •use‐version 0.5.0
 else
     echo "warning: Install Workspace if you wish to receive in‐code reports of style errors for this project. See https://github.com/SDGGiesbrecht/Workspace"
 fi

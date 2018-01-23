@@ -55,7 +55,6 @@ extension Workspace {
 
         static func executeAsStep(normalizingFirst: Bool, options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
 
-            // [_Warning: Needs refactoring._]
             try Workspace.Normalize.executeAsStep(options: options, output: &output) // So that SwiftLint’s trailing_whitespace doesn’t trigger.
 
             let section = validationStatus.newSection()

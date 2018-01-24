@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGCornerstone
 import SDGCommandLine
 
@@ -40,83 +42,27 @@ enum Proofreading {
             }
         }
 
-        proofreadWithSwiftLint(project: project, status: status, output: &output)
+        try proofreadWithSwiftLint(project: project, status: status, forXcode: reporter is XcodeProofreadingReporter, output: &output)
 
         return status.passing
     }
 
-    private static func proofreadWithSwiftLint(project: PackageRepository, status: ProofreadingStatus, output: inout Command.Output) {
+    private static func proofreadWithSwiftLint(project: PackageRepository, status: ProofreadingStatus, forXcode: Bool, output: inout Command.Output) throws {
 
-        // [_Warning: Not finished._]
+        try FileManager.default.do(in: project.location) {
 
-        /*
-
-        if Environment.operatingSystem == .macOS {
-            // [_Workaround: SwiftLint fails to build with the Swift Package Manager. Using homebrew instead. (swiftlint version 0.16.1)_]
-
-            let swiftLintConfigurationPath = RelativePath(".swiftlint.yml")
-            var manualSwiftLintConfiguration = false
-            if Repository.sourceFiles.contains(swiftLintConfigurationPath) {
-                manualSwiftLintConfiguration = true
+            let configuration: URL?
+            if SwiftLint.default.isConfigured() {
+                configuration = nil
             } else {
-                var file = File(possiblyAt: swiftLintConfigurationPath)
-
-                var lines = [
-                    "excluded:",
-                    // Swift Package Manager
-                    "  \u{2D} .build",
-                    "  \u{2D} Packages",
-                    // Workspace Project
-                    "  \u{2D} \u{22}Tests/Mock Projects\u{22}"
-                ]
-                let disabled = Configuration.disableProofreadingRules.sorted().map({ "  \u{2D} " + $0 })
-                if ¬disabled.isEmpty {
-                    lines += [
-                        "disabled_rules:",
-                        disabled.joinAsLines()
-                    ]
-                }
-
-                file.contents = lines.joinAsLines()
-                require() { try file.write(output: &output) }
+                let standard = FileManager.default.url(in: .cache, at: "SwiftLint/Configuration.yml")
+                configuration = standard
+                try SwiftLint.default.standardConfiguration().save(to: standard)
             }
 
-            if let swiftLintResult = runThirdPartyTool(
-                name: "SwiftLint",
-                repositoryURL: "https://github.com/realm/SwiftLint",
-                versionCheck: ["swiftlint", "version"],
-                continuousIntegrationSetUp: [
-                    ["echo", "SwiftLint already updated."]
-                ],
-                command: ["swiftlint", "lint", "\u{2D}\u{2D}strict"],
-                updateInstructions: [
-                    "Command to install Homebrew (https://brew.sh):",
-                    "/usr/bin/ruby -e \u{22}$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)\u{22}",
-                    "Command to install SwiftLint:",
-                    "brew install swiftlint",
-                    "Command to update SwiftLint:",
-                    "brew upgrade swiftlint"
-                ],
-                dropOutput: true) {
-
-                if ¬swiftLintResult.succeeded {
-                    overallSuccess = false
-                }
+            if ¬(try SwiftLint.default.proofread(withConfiguration: configuration, forXcode: forXcode, output: &output)) {
+                status.failExternalPhase()
             }
-
-            if ¬manualSwiftLintConfiguration {
-                try? Repository.delete(swiftLintConfigurationPath)
-            }
-
         }
-
-        // End
-
-        if shouldExit {
-            exit(ExitCode.succeeded)
-        }
-
-        return overallSuccess
- */
     }
 }

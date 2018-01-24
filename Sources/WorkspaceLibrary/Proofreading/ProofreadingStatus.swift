@@ -36,4 +36,8 @@ class ProofreadingStatus {
         }
         reporter.report(violation: violation, to: &output)
     }
+
+    func failExternalPhase() {
+        passing = false
+    }
 }

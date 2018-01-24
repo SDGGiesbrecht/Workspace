@@ -34,8 +34,6 @@ class XcodeProofreadingReporter : ProofreadingReporter {
 
     func report(violation: StyleViolation, to output: inout Command.Output) {
 
-        // [_Warning: Needs updating and testing once build succeeds again._]
-
         let file = violation.file.contents
         let lines = file.lines
 

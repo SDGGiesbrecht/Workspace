@@ -36,6 +36,11 @@ struct WorkaroundReminder : Warning {
     })
 
     static func message(for details: StrictString) -> UserFacingText<InterfaceLocalization, Void>? {
+        // [_Warning: Restore before merging._]
+        if BuildConfiguration.current == .debug {
+            return nil
+        }
+
         if let versionCheck = details.scalars.firstNestingLevel(startingWith: "(".scalars, endingWith: ")".scalars) {
             var parameters = versionCheck.contents.contents.components(separatedBy: " ".scalars)
             if ¬parameters.isEmpty,

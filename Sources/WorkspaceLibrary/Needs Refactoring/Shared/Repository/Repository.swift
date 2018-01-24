@@ -24,7 +24,7 @@ struct Repository {
     static let packageRepository = PackageRepository(alreadyAt: URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
 
     static func paths(from urls: [URL]) -> [RelativePath] {
-        return urls.map() { (url) in
+        return urls.map { (url) in
             return RelativePath(url.path(relativeTo: packageRepository.location))
         }
     }
@@ -62,17 +62,17 @@ struct Repository {
     }
 
     static var allFiles: [RelativePath] {
-        let urls = require() { try packageRepository.allFiles() }
+        let urls = require { try packageRepository.allFiles() }
         return paths(from: urls)
     }
 
     static var trackedFiles: [RelativePath] {
-        let urls = require() { try packageRepository.trackedFiles(output: &standInOutput) }
+        let urls = require { try packageRepository.trackedFiles(output: &standInOutput) }
         return paths(from: urls)
     }
 
     static var sourceFiles: [RelativePath] {
-        let urls = require() { try packageRepository.sourceFiles(output: &standInOutput) }
+        let urls = require { try packageRepository.sourceFiles(output: &standInOutput) }
         return paths(from: urls)
     }
 
@@ -108,14 +108,14 @@ struct Repository {
     }
 
     static func allFiles(at path: RelativePath) -> [RelativePath] {
-        return allFiles.filter() { (possiblePath: RelativePath) -> Bool in
+        return allFiles.filter { (possiblePath: RelativePath) -> Bool in
 
             return Repository.path(possiblePath, isIn: path)
         }
     }
 
     static func trackedFiles(at path: RelativePath) -> [RelativePath] {
-        return trackedFiles.filter() { (possiblePath: RelativePath) -> Bool in
+        return trackedFiles.filter { (possiblePath: RelativePath) -> Bool in
 
             return Repository.path(possiblePath, isIn: path)
         }
@@ -204,7 +204,7 @@ struct Repository {
             files = trackedFiles(at: origin)
         }
 
-        let changes = files.map() { (changeOrigin: RelativePath) -> (changeOrigin: RelativePath, changeDestination: RelativePath) in
+        let changes = files.map { (changeOrigin: RelativePath) -> (changeOrigin: RelativePath, changeDestination: RelativePath) in
 
             let relative = String(changeOrigin.string[changeOrigin.string.index(changeOrigin.string.clusters.startIndex, offsetBy: origin.string.clusters.count)...])
 

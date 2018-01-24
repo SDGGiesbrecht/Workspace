@@ -100,7 +100,7 @@ extension Configuration {
 
     static func addEntries(entries: [(option: Option, value: String, comment: [String]?)], to configuration: inout File) {
 
-        let additions = entries.map() { (entry: (option: Option, value: String, comment: [String]?)) -> String in
+        let additions = entries.map { (entry: (option: Option, value: String, comment: [String]?)) -> String in
 
             return Configuration.configurationFileEntry(option: entry.option, value: entry.value, comment: entry.comment) + "\n\n"
         }
@@ -111,7 +111,7 @@ extension Configuration {
     static func addEntries(entries: [(option: Option, value: String, comment: [String]?)], output: inout Command.Output) {
         var configuration = File(possiblyAt: Configuration.configurationFilePath)
         addEntries(entries: entries, to: &configuration)
-        require() { try configuration.write(output: &output) }
+        require { try configuration.write(output: &output) }
     }
 
     // MARK: - Properties
@@ -265,7 +265,7 @@ extension Configuration {
     static func parseConfigurationFile(fromLinkedRepositoryAt url: String) -> [Option: String] {
 
         let repositoryName = Repository.nameOfLinkedRepository(atURL: url)
-        let otherConfiguration = require() { try File(at: Repository.linkedRepository(named: repositoryName).subfolderOrFile(Configuration.fileName)) }
+        let otherConfiguration = require { try File(at: Repository.linkedRepository(named: repositoryName).subfolderOrFile(Configuration.fileName)) }
 
         return parse(configurationSource: otherConfiguration.contents)
     }
@@ -632,7 +632,7 @@ extension Configuration {
         // Custom
 
         let requiredEntries = requiredOptions
-        let requiredDefinitions = requiredEntries.map() { (entry: String) -> (option: Option, types: Set<PackageRepository.Target.TargetType>) in
+        let requiredDefinitions = requiredEntries.map { (entry: String) -> (option: Option, types: Set<PackageRepository.Target.TargetType>) in
 
             func option(forKey key: String) -> Option {
                 if let option = Option(key: key) {

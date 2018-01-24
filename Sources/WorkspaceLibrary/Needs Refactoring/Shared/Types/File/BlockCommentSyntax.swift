@@ -44,7 +44,7 @@ struct BlockCommentSyntax {
 
         var lines = withEndToken.lines.map({ String($0.line) })
 
-        lines = lines.map() { (line: String) -> String in
+        lines = lines.map { (line: String) -> String in
 
             if let indent = stylisticIndent {
                 if line.isWhitespace {

@@ -56,7 +56,7 @@ The dependency can be specified three different ways.
 // [_Workaround: There is a problem with Swift. (Swift 3.0.2)_]
 ```
 
-- Arbitrary dependencies can be specified by bash commands that output a version number. Workspace will look for the first group of the characters `0`–`9` and `.` in the command output. Only simple commands are supported; commands cannot contain quotation marks.
+- Arbitrary dependencies can be specified by shell commands that output a version number. Workspace will look for the first group of the characters `0`–`9` and `.` in the command output. Only simple commands are supported; commands cannot contain quotation marks.
 ```swift
 // [_Workaround: There is a problem with Git. (git --version 2.10.1)_]
 ```

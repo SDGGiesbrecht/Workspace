@@ -26,7 +26,7 @@ struct Mark : Rule {
         }
     })
 
-    static let expectedSyntax: StrictString = "// MAR\u{4B}: \u{2D} "
+    static let expectedSyntax: StrictString = "/\u{2F} MAR\u{4B}: \u{2D} "
 
     static let message = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
         switch localization {
@@ -50,7 +50,7 @@ struct Mark : Rule {
 
                 if ¬file.contents.scalars[..<match.range.lowerBound].hasSuffix(CompositePattern([
                     NotPattern(LiteralPattern("/".scalars)),
-                    LiteralPattern("// ".scalars)
+                    LiteralPattern("/\u{2F} ".scalars)
                     ])) {
                     errorExists = true
 
@@ -68,7 +68,7 @@ struct Mark : Rule {
 
                 if ¬file.contents.scalars[match.range.upperBound...].hasPrefix(CompositePattern([
                     LiteralPattern(": \u{2D} ".scalars),
-                    NotPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })),
+                    NotPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces }))
                     ])) {
                     errorExists = true
 
@@ -76,7 +76,7 @@ struct Mark : Rule {
                         RepetitionPattern(LiteralPattern(":".scalars), count: 0 ... 1),
                         RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })),
                         RepetitionPattern(LiteralPattern("\u{2D}".scalars), count: 0 ... 1),
-                        RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })),
+                        RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces }))
                         ]))
                 }
 

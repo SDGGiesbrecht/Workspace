@@ -98,7 +98,7 @@ struct DGit {
 
             body.replaceSubrange(managedRange, with: updatedLines.joinAsLines())
             updatedFile.body = body
-            require() {try updatedFile.write(output: &output) }
+            require {try updatedFile.write(output: &output) }
         }
 
         // .gitignore

@@ -68,7 +68,7 @@ class CommandLineProofreadingReporter : ProofreadingReporter {
         let message = [
             String(lineMessage),
             String(description),
-            display,
+            display
             ].joinAsLines()
 
         print(message, to: &output)

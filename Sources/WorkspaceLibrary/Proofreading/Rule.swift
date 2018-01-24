@@ -86,17 +86,3 @@ extension Rule {
         return file.contents.scalars[match.range.upperBound...].prefix(upTo: String(searchTerm).scalars)?.contents
     }
 }
-
-// [_Warning: These should be in their own file for now and eventually moved to SDGCornerstone._]
-
-extension Optional where Wrapped : Collection, Wrapped.Element : Equatable {
-
-    public func contains<C : Collection>(_ pattern: C) -> Bool where C.Element == Wrapped.Element {
-        switch self {
-        case .some(let wrapped):
-            return wrapped.contains(LiteralPattern(pattern))
-        case .none:
-            return false
-        }
-    }
-}

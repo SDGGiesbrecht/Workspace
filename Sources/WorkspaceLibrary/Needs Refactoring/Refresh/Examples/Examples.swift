@@ -71,7 +71,7 @@ struct Examples {
                         file.contents.scalars.advance(&indentEnd, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
                         let indent = String(file.contents[startLineRange.lowerBound ..< indentEnd.cluster(in: file.contents.clusters)])
 
-                        contents = contents.map() { (line: String) -> String in
+                        contents = contents.map { (line: String) -> String in
                             var index = line.startIndex
                             if line.clusters.advance(&index, over: indent.clusters) {
                                 return String(line[index...])
@@ -102,7 +102,7 @@ struct Examples {
                         ])
                 }
 
-                var file = require() { try File(at: path) }
+                var file = require { try File(at: path) }
 
                 var index = file.contents.startIndex
                 while let range = file.contents.scalars.firstMatch(for: "[\u{5F}Example".scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.range.clusters(in: file.contents.clusters) {
@@ -170,7 +170,7 @@ struct Examples {
                     }
                 }
 
-                require() { try file.write(output: &output) }
+                require { try file.write(output: &output) }
             }
         }
     }

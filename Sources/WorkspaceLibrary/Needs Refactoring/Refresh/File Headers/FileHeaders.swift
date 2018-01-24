@@ -126,7 +126,7 @@ struct FileHeaders {
 
             if FileType(filePath: path)?.syntax ≠ nil {
 
-                var file = require() { try File(at: path) }
+                var file = require { try File(at: path) }
                 let oldHeader = file.header
                 var header = template
 
@@ -145,7 +145,7 @@ struct FileHeaders {
                 }
 
                 file.header = header
-                require() { try file.write(output: &output) }
+                require { try file.write(output: &output) }
             }
         }
     }

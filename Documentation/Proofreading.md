@@ -16,6 +16,10 @@
 
 Workspace proofreads the project source during validation.
 
+```shell
+$ workspace proofread
+```
+
 ## In Xcode
 
 Proofreading also works within Xcode, provided Workspace has been [fully installed](../README.md#installation) on the local device. (If not, proofreading will be skipped, and a link to installation instructions will be displayed.)
@@ -45,9 +49,9 @@ A rule can be disabled by adding the name of the rule to the [configuration](Con
 
 Workspace’s proofreading includes [SwiftLint](https://github.com/realm/SwiftLint).
 
-By default, Workspace provides SwiftLint with a configuration that corresponds to its own. In this mode, SwiftLint rules can be treated as though they were Workspace rules. For example, they can be disabled the by listing them under `Disable Proofreading Rules`.
+By default, Workspace provides SwiftLint with a standard configuration that interoperates well with Workspace and the Swift Package Manager.
 
-However, SwiftLint can instead be configured manually by placing a `.swiftlint.yml` file in the project root. In this mode, Workspace will no longer apply its own configuration to SwiftLint. That means, for example, that disabling SwiftLint rules by listing them under `Disable Proofreading Rules` will no longer work. For more information about `.swiftlint.yml`, see [SwiftLint’s own documentation](https://github.com/realm/SwiftLint).
+However, SwiftLint can instead be configured manually by placing a `.swiftlint.yml` file in the project root. If such a file is present, Workspace will not apply its own configuration to SwiftLint. For more information about `.swiftlint.yml`, see [SwiftLint’s own documentation](https://github.com/realm/SwiftLint).
 
 ## Special Thanks
 

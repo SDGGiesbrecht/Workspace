@@ -43,10 +43,8 @@ struct UnicodeRule : Rule {
                       allowInToolsVersion: Bool = false,
                       message: UserFacingText<InterfaceLocalization, Void>, status: ProofreadingStatus, output: inout Command.Output) {
 
-        for protocolName in allowedDefaultImplementations {
-            if file.location.lastPathComponent == protocolName + ".swift" {
-                return
-            }
+        for protocolName in allowedDefaultImplementations where file.location.lastPathComponent == protocolName + ".swift" {
+            return
         }
 
         for match in file.contents.scalars.matches(for: obsolete.scalars) {
@@ -67,8 +65,7 @@ struct UnicodeRule : Rule {
             if allowInSwiftSource {
                 switch file.fileType {
                 case .swift, .swiftPackageManifest:
-                    if (¬fromStartOfLine(to: match, in: file).contains("//".scalars) /* Not a comment */
-                        ∨ fromStartOfLine(to: match, in: file).contains("://".scalars) /* URL mistaken for a comment */)
+                    if ¬fromStartOfLine(to: match, in: file).contains("/\u{2F} ".scalars) /* Not a comment */
                         ∧ ¬fromStartOfFile(to: match, in: file).hasSuffix("\u{5C}".scalars) /* Not a string literal (escaped) */ {
                         continue
                     }

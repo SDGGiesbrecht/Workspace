@@ -51,7 +51,7 @@ extension ContinuousIntegration {
             }
         })
 
-        private static let argument = ArgumentType.enumeration(name: argumentName, cases: Job.cases.map() { (job: Job) -> (value: Job, label: UserFacingText<InterfaceLocalization, Void>) in
+        private static let argument = ArgumentType.enumeration(name: argumentName, cases: Job.cases.map { (job: Job) -> (value: Job, label: UserFacingText<InterfaceLocalization, Void>) in
             return (value: job, label: job.argumentName)
         })
 

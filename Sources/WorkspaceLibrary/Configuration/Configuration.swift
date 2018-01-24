@@ -183,7 +183,7 @@ struct Configuration {
             if result.isEmpty {
                 throw Configuration.optionNotDefinedError(for: .localizations)
             }
-            return result.map() { (entry) -> String in
+            return result.map { (entry) -> String in
                 return InterfaceLocalization.code(for: StrictString(entry)) ?? entry
             }
         }

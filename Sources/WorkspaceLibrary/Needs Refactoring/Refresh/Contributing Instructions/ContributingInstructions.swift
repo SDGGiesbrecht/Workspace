@@ -201,15 +201,15 @@ struct ContributingInstructions {
 
         var contributing = File(possiblyAt: contributingInstructionsPath)
         contributing.body = body
-        require() { try contributing.write(output: &output) }
+        require { try contributing.write(output: &output) }
 
         var issue = File(possiblyAt: issueTemplatePath)
         issue.contents = Configuration.issueTemplate
-        require() { try issue.write(output: &output) }
+        require { try issue.write(output: &output) }
 
         var pullRequest = File(possiblyAt: pullRequestTemplatePath)
         pullRequest.contents = Configuration.pullRequestTemplate
-        require() { try pullRequest.write(output: &output) }
+        require { try pullRequest.write(output: &output) }
 
         // Remove deprecated.
 

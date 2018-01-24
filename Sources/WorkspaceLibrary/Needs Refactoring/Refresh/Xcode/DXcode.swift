@@ -28,7 +28,7 @@
             // Allow dependencies to be found by the executable.
 
             let path = RelativePath("\(try Repository.packageRepository.xcodeProjectFile()!.lastPathComponent)")
-            var file = require() { try File(at: path.subfolderOrFile("project.pbxproj")) }
+            var file = require { try File(at: path.subfolderOrFile("project.pbxproj")) }
 
             let allTargets = try Repository.packageRepository.targets(output: &output).map { $0.name }
             let primaryProductName = allTargets.first(where: { $0.scalars.first! ∈ CharacterSet.uppercaseLetters ∧ ¬$0.hasPrefix("Tests") })!
@@ -118,17 +118,17 @@
                 file.contents = project
             }
 
-            require() { try file.write(output: &output) }
+            require { try file.write(output: &output) }
 
             if try Repository.packageRepository.configuration.projectType() == .application {
 
                 // Denote principal class in Info.plist for @NSApplicationMain to work.
 
-                var info = require() { try File(at: path.subfolderOrFile("\(primaryProductName)_Info.plist")) }
+                var info = require { try File(at: path.subfolderOrFile("\(primaryProductName)_Info.plist")) }
 
                 info.contents = info.contents.replacingOccurrences(of: "<key>NSPrincipalClass</key>\n  <string></string>", with: "<key>NSPrincipalClass</key>\n  <string>\(Configuration.moduleName).Application</string>")
 
-                require() { try info.write(output: &output) }
+                require { try info.write(output: &output) }
             }
         }
 
@@ -142,7 +142,7 @@
                 if shouldModify(file.contents) {
 
                     modify(&file)
-                    require() { try file.write(output: &output) }
+                    require { try file.write(output: &output) }
                 }
             } catch {
                 return

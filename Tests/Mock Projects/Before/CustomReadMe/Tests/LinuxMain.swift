@@ -2,5 +2,5 @@ import XCTest
 @testable import CustomReadMeTests
 
 XCTMain([
-    testCase(CustomReadMeTests.allTests),
+    testCase(CustomReadMeTests.allTests)
 ])

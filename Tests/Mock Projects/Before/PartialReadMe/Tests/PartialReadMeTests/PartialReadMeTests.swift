@@ -9,8 +9,7 @@ class PartialReadMeTests : XCTestCase {
         XCTAssertEqual(PartialReadMe().text, "Hello, World!")
     }
 
-
     static var allTests = [
-        ("testExample", testExample),
+        ("testExample", testExample)
     ]
 }

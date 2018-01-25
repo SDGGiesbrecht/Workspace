@@ -9,8 +9,7 @@ class NoMacOSTests : XCTestCase {
         XCTAssertEqual(NoMacOS().text, "Hello, World!")
     }
 
-
     static var allTests = [
-        ("testExample", testExample),
+        ("testExample", testExample)
     ]
 }

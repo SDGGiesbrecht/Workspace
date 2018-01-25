@@ -9,8 +9,7 @@ class NoLocalizationsTests : XCTestCase {
         XCTAssertEqual(NoLocalizations().text, "Hello, World!")
     }
 
-
     static var allTests = [
-        ("testExample", testExample),
+        ("testExample", testExample)
     ]
 }

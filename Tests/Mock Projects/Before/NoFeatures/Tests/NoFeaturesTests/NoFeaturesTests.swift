@@ -9,8 +9,7 @@ class NoFeaturesTests : XCTestCase {
         XCTAssertEqual(NoFeatures().text, "Hello, World!")
     }
 
-
     static var allTests = [
-        ("testExample", testExample),
+        ("testExample", testExample)
     ]
 }

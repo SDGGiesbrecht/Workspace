@@ -9,8 +9,7 @@ class InvalidResourceDirectoryTests : XCTestCase {
         XCTAssertEqual(InvalidResourceDirectory().text, "Hello, World!")
     }
 
-
     static var allTests = [
-        ("testExample", testExample),
+        ("testExample", testExample)
     ]
 }

@@ -9,8 +9,7 @@ class FailingDocumentationCoverageTests : XCTestCase {
         XCTAssertEqual(FailingDocumentationCoverage().text, "Hello, World!")
     }
 
-
     static var allTests = [
-        ("testExample", testExample),
+        ("testExample", testExample)
     ]
 }

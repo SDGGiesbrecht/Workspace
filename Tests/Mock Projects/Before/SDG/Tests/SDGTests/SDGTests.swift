@@ -9,9 +9,8 @@ class SDGTests : XCTestCase {
         XCTAssertEqual(SDG().text, "Hello, World!")
     }
 
-
     static var allTests = [
-        ("testExample", testExample),
+        ("testExample", testExample)
     ]
 }
 

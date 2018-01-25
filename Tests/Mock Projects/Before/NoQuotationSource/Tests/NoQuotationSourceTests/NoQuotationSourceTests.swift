@@ -9,8 +9,7 @@ class NoQuotationSourceTests : XCTestCase {
         XCTAssertEqual(NoQuotationSource().text, "Hello, World!")
     }
 
-
     static var allTests = [
-        ("testExample", testExample),
+        ("testExample", testExample)
     ]
 }

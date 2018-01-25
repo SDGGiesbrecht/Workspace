@@ -9,8 +9,7 @@ class NoRepositoryURLTests : XCTestCase {
         XCTAssertEqual(NoRepositoryURL().text, "Hello, World!")
     }
 
-
     static var allTests = [
-        ("testExample", testExample),
+        ("testExample", testExample)
     ]
 }

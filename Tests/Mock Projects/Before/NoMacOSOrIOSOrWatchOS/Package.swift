@@ -8,7 +8,7 @@ let package = Package(
         // Products define the executables and libraries produced by a package, and make them visible to other packages.
         .library(
             name: "NoMacOSOrIOSOrWatchOS",
-            targets: ["NoMacOSOrIOSOrWatchOS"]),
+            targets: ["NoMacOSOrIOSOrWatchOS"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -21,6 +21,6 @@ let package = Package(
             dependencies: []),
         .testTarget(
             name: "NoMacOSOrIOSOrWatchOSTests",
-            dependencies: ["NoMacOSOrIOSOrWatchOS"]),
+            dependencies: ["NoMacOSOrIOSOrWatchOS"])
     ]
 )

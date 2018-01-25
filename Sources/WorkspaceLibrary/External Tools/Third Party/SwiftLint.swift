@@ -34,6 +34,22 @@ class SwiftLint : SwiftPackage {
 
     // MARK: - Usage
 
+    private func findSourceKit() {
+        #if os(Linux)
+            let sourceKitVariable = "LINUX_SOURCEKIT_LIB_PATH"
+            if ProcessInfo.processInfo.environment[sourceKitVariable] == nil {
+                do {
+                    let swiftInstall = try Shell.default.run(command: ["which", "swift"], silently: true)
+                    let swift = URL(fileURLWithPath: swiftInstall)
+                    let user = swift.deletingLastPathComponent().deletingLastPathComponent()
+                    let sourceKit = user.appendingPathComponent("lib/libsourcekitdInProc.so")
+
+                    setenv(sourceKitVariable, sourceKit.path, 0 /* overwrite: false */)
+                } catch {}
+            }
+        #endif
+    }
+
     func isConfigured() -> Bool {
         var url = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
         url.appendPathComponent(".swiftlint.yml")
@@ -45,6 +61,8 @@ class SwiftLint : SwiftPackage {
     }
 
     func proofread(withConfiguration configuration: URL?, forXcode: Bool, output: inout Command.Output) throws -> Bool {
+        findSourceKit()
+
         do {
             var arguments = [
                 "lint",

@@ -41,6 +41,9 @@ public enum Workspace {
         // Xcode Build Phase
         Workspace.Proofread.command,
 
+        // Individual Steps
+        Workspace.Normalize.command,
+
         // Other
         Workspace.CheckForUpdates.command
         ])

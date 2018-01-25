@@ -91,7 +91,7 @@ $ swift package resolve
 Generating documentation for “Library”...
 
 
-$ jazzy _0.9.0_ --module Library --copyright "Copyright ©2017–2018 John Doe and the SDG project contributors. All rights reserved." --github_url "https://github.com/JohnDoe/SDG" --documentation=Documentation/*.md --clean --use-safe-filenames --output "[...]/Documentation/Library" --xcodebuild-arguments "-scheme,SDG-Package,-target,Library,-sdk,macosx,-derivedDataPath,[...]/Jazzy Build Artifacts"
+$ jazzy --module Library --copyright "Copyright ©2017–2018 John Doe and the SDG project contributors. All rights reserved." --github_url "https://github.com/JohnDoe/SDG" --documentation=Documentation/*.md --clean --use-safe-filenames --output "[...]/Documentation/Library" --xcodebuild-arguments "-scheme,SDG-Package,-target,Library,-sdk,macosx,-derivedDataPath,[...]/Jazzy Build Artifacts"
 0% documentation coverage with 0 undocumented symbols
 skipped 6 private, fileprivate, or internal symbols (use `--min-acl` to specify a different minimum ACL)
 jam out ♪♫ to your fresh new docs in `[...]/Documentation/Library`

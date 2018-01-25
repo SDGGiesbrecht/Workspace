@@ -31,7 +31,7 @@ struct DeprecatedLinuxDocumentation : Rule {
         }
     })
 
-    static func check(file: TextFile, status: ProofreadingStatus, output: inout Command.Output) {
+    static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: inout Command.Output) {
         for match in file.contents.scalars.matches(for: "\u{4C}inuxDocs".scalars) {
             reportViolation(in: file, at: match.range, message: message, status: status, output: &output)
         }

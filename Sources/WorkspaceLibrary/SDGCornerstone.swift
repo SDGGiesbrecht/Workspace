@@ -14,7 +14,7 @@
 
 import SDGCornerstone
 
-// [_Workaround: Everything in this file should be in moved to SDGCornerstone._]
+// [_Workaround: Everything in this file should be in moved to SDGCornerstone. (SDGCornerstone 0.7.3)_]
 
 extension Optional where Wrapped : Collection, Wrapped.Element : Equatable {
     // MARK: - where Wrapped : Collection, Wrapped.Element : Equatable

@@ -38,7 +38,7 @@ enum Proofreading {
             reporter.reportParsing(file: file.location.path(relativeTo: project.location), to: &output)
 
             for rule in activeRules {
-                rule.check(file: file, status: status, output: &output)
+                try rule.check(file: file, in: project, status: status, output: &output)
             }
         }
 

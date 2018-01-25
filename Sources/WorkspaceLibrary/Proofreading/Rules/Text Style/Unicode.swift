@@ -235,7 +235,7 @@ struct UnicodeRule : Rule {
         }
     }
 
-    static func check(file: TextFile, status: ProofreadingStatus, output: inout Command.Output) {
+    static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: inout Command.Output) {
 
         check(file, for: "\u{2D}",
               allowInShellSource: true,

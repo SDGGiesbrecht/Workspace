@@ -41,7 +41,7 @@ struct DocumentationOfCompilationConditions : Rule {
         }
     }
 
-    static func check(file: TextFile, status: ProofreadingStatus, output: inout Command.Output) {
+    static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: inout Command.Output) {
         if file.fileType == .swift {
             check(file: file, for: "\u{23}if", status: status, output: &output)
             check(file: file, for: "\u{23}else", status: status, output: &output)

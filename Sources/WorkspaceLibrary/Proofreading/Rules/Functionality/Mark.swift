@@ -35,7 +35,7 @@ struct Mark : Rule {
         }
     })
 
-    static func check(file: TextFile, status: ProofreadingStatus, output: inout Command.Output) {
+    static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: inout Command.Output) {
         for match in file.contents.scalars.matches(for: "MAR\u{4B}".scalars) {
 
             var errorExists = false

@@ -13,6 +13,7 @@
  */
 
 import SDGCornerstone
+import SDGCommandLine
 
 struct GenericWarning : Warning {
 
@@ -30,7 +31,7 @@ struct GenericWarning : Warning {
         }
     })
 
-    static func message(for details: StrictString) -> UserFacingText<InterfaceLocalization, Void>? {
+    static func message(for details: StrictString, in project: PackageRepository, output: inout Command.Output) -> UserFacingText<InterfaceLocalization, Void>? {
         return UserFacingText({ _, _ in details })
     }
 }

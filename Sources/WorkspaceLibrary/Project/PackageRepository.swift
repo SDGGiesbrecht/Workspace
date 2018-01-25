@@ -32,6 +32,7 @@ extension PackageRepository {
         fileprivate var packageStructure: (name: String, libraryProductTargets: [String], executableProducts: [String], targets: [(name: String, location: URL)])?
         fileprivate var targets: [Target]?
         fileprivate var targetsByName: [String: Target]?
+        fileprivate var dependencies: [StrictString: Version]?
 
         fileprivate var allFiles: [URL]?
         fileprivate var trackedFiles: [URL]?
@@ -132,6 +133,16 @@ extension PackageRepository {
 
         return InterfaceLocalization.cases.map { (localization) in
             return location.appendingPathComponent(String(PackageRepository.resourceDirectoryName.resolved(for: localization)))
+        }
+    }
+
+    func dependencies(output: inout Command.Output) throws -> [StrictString: Version] {
+        return try cached(in: &cache.dependencies) {
+            var result: [StrictString: Version]?
+            try FileManager.default.do(in: location) {
+                result = try SwiftTool.default.dependencies(output: &output)
+            }
+            return result!
         }
     }
 

@@ -18,7 +18,7 @@ import SDGCommandLine
 protocol Rule {
     static var name: UserFacingText<InterfaceLocalization, Void> { get }
     static var noticeOnly: Bool { get }
-    static func check(file: TextFile, status: ProofreadingStatus, output: inout Command.Output)
+    static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: inout Command.Output) throws
 }
 
 extension Rule {

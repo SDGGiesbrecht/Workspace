@@ -35,7 +35,7 @@ struct WorkaroundReminder : Warning {
         }
     })
 
-    static func message(for details: StrictString) -> UserFacingText<InterfaceLocalization, Void>? {
+    static func message(for details: StrictString, in project: PackageRepository, output: inout Command.Output) throws -> UserFacingText<InterfaceLocalization, Void>? {
 
         if let versionCheck = details.scalars.firstNestingLevel(startingWith: "(".scalars, endingWith: ")".scalars) {
             var parameters = versionCheck.contents.contents.components(separatedBy: " ".scalars)
@@ -48,11 +48,11 @@ struct WorkaroundReminder : Warning {
                     var newDetails = details
                     let script: StrictString = "swift \u{2D}\u{2D}version"
                     newDetails.replaceSubrange(versionCheck.contents.range, with: "\(script) \(problemVersion.string)".scalars)
-                    if message(for: newDetails) == nil {
+                    if try message(for: newDetails, in: project, output: &output) == nil {
                         return nil
                     }
                 } else {
-                    if let current = currentVersion(of: dependency) {
+                    if let current = try currentVersion(of: dependency, for: project, output: &output) {
                         if current ≤ problemVersion {
                             return nil
                         }
@@ -72,17 +72,18 @@ struct WorkaroundReminder : Warning {
     }
 
     private static var dependencyVersionCache: [StrictString: Version?] = [:]
-    private static func currentVersion(of dependency: StrictString) -> Version? {
-        return cached(in: &dependencyVersionCache[dependency], {
-
-            // [_Warning: Should check dependency graph first._]
-
-            if let shellOutput = try? Shell.default.run(command: String(dependency).components(separatedBy: " "), silently: true),
-                let version = Version(firstIn: shellOutput) {
-                return version
-            } else {
-                return nil
-            }
-        })
+    private static func currentVersion(of dependency: StrictString, for project: PackageRepository, output: inout Command.Output) throws -> Version? {
+        if let version = try project.dependencies(output: &output)[dependency] {
+            return version
+        } else {
+            return cached(in: &dependencyVersionCache[dependency], {
+                if let shellOutput = try? Shell.default.run(command: String(dependency).components(separatedBy: " "), silently: true),
+                    let version = Version(firstIn: shellOutput) {
+                    return version
+                } else {
+                    return nil
+                }
+            })
+        }
     }
 }

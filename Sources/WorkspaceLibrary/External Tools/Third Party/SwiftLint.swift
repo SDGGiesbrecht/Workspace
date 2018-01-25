@@ -21,7 +21,7 @@ class SwiftLint : SwiftPackage {
 
     // MARK: - Static Properties
 
-    static let `default` = SwiftLint(version: Version(0, 24, 0))
+    static let `default` = SwiftLint(version: Version(0, 24, 2))
 
     // MARK: - Initialization
 

@@ -114,7 +114,12 @@ class APITests : TestCase {
 
                                     #if !os(Linux)
                                         try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
+                                    #endif
 
+                                    output += "\n$ workspace proofread\n"
+                                    output += try Workspace.command.execute(with: ["proofread", "•no‐colour"])
+
+                                    #if !os(Linux)
                                         output += "\n$ workspace validate documentation‐coverage\n"
                                         output += try Workspace.command.execute(with: ["validate", "documentation‐coverage", "•no‐colour"])
                                     #endif
@@ -152,7 +157,14 @@ class APITests : TestCase {
                                     XCTAssertErrorFree {
                                         try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
                                     }
+                                #endif
 
+                                XCTAssertErrorFree {
+                                    output += "\n$ workspace proofread\n"
+                                    output += try Workspace.command.execute(with: ["proofread", "•no‐colour"])
+                                }
+
+                                #if !os(Linux)
                                     XCTAssertErrorFree {
                                         output += "\n$ workspace validate documentation‐coverage\n"
                                         output += try Workspace.command.execute(with: ["validate", "documentation‐coverage", "•no‐colour"])

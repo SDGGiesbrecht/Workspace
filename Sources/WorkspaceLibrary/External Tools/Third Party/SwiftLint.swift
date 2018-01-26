@@ -85,9 +85,15 @@ class SwiftLint : SwiftPackage {
 
             try executeInCompatibilityMode(with: arguments, output: &output)
             return true
-        } catch _ as Shell.Error { // SwiftLint exited with failure.
-            return false
-        } catch let error { // Failed to set up SwiftLint.
+        } catch let error as Shell.Error {
+            if error.code ∈ Set<Int>([
+                2, // Error level violation.
+                3 // Warning level violation in strict mode.
+                ]) {
+                return false // SwiftLint reported a violation.
+            }
+            throw error // Error in SwiftLint set‐up.
+        } catch let error {
             throw error
         }
     }

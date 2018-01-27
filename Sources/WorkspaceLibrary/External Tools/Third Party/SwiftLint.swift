@@ -34,49 +34,6 @@ class SwiftLint : SwiftPackage {
 
     // MARK: - Usage
 
-    private func findSourceKit() {
-        #if os(Linux)
-            let sourceKitVariable = "LINUX_SOURCEKIT_LIB_PATH"
-            if ProcessInfo.processInfo.environment[sourceKitVariable] == nil {
-                do {
-                    let relativeToUser = "lib/libsourcekitdInProc.so"
-                    var sourceKit: URL?
-
-                    let swiftInstall = try Shell.default.run(command: ["which", "swift"], silently: true)
-                    let swift = URL(fileURLWithPath: swiftInstall)
-
-                    // Standard Install
-                    let user = swift.deletingLastPathComponent().deletingLastPathComponent()
-                    let standardSourceKit = user.appendingPathComponent(relativeToUser)
-                    if try standardSourceKit.checkResourceIsReachable() {
-                        sourceKit = standardSourceKit
-                    } else {
-
-                        // Swift Version Manager
-                        let manager = swift.deletingLastPathComponent().deletingLastPathComponent()
-                        if let versionString = try? Shell.default.run(command: ["swiftenv", "version"]),
-                            let version = Version(versionString) {
-                            let directory: String
-                            if version.patch == 0 {
-                                directory = String(version.string.dropLast().dropLast())
-                            } else {
-                                directory = version.string
-                            }
-                            let versionedSourceKit = manager.appendingPathComponent("versions/\(directory)/usr/" + relativeToUser)
-                            if try versionedSourceKit.checkResourceIsReachable() {
-                                sourceKit = versionedSourceKit
-                            }
-                        }
-                    }
-
-                    if let found = sourceKit {
-                        setenv(sourceKitVariable, found.path, 0 /* overwrite: false */)
-                    }
-                } catch {}
-            }
-        #endif
-    }
-
     func isConfigured() -> Bool {
         var url = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
         url.appendPathComponent(".swiftlint.yml")
@@ -88,7 +45,6 @@ class SwiftLint : SwiftPackage {
     }
 
     func proofread(withConfiguration configuration: URL?, forXcode: Bool, output: inout Command.Output) throws -> Bool {
-        findSourceKit()
 
         do {
             var arguments = [

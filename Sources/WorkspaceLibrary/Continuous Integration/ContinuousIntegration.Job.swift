@@ -234,10 +234,11 @@ extension ContinuousIntegration {
 
         var operatingSystem: OperatingSystem {
             switch self {
-            case .macOSSwiftPackageManager, .macOSXcode, .iOS, .watchOS, .tvOS, .documentation, .deployment:
-                // [_Workaround: Documentation can be switched to Linux when Jazzy supports it. (jazzy --version 0.9.0)_]
+            case .macOSSwiftPackageManager, .macOSXcode, .iOS, .watchOS, .tvOS, .miscellaneous, .documentation, .deployment:
+                // [_Workaround: Miscellaneous can be switched to Linux when SwiftLint supports it adequately. (swiftlint version 0.24.2)_]
+                // [_Workaround: Documentation can be switched to Linux when Jazzy supports it. (jazzy --version 0.9.1)_]
                 return .macOS
-            case .linux, .miscellaneous:
+            case .linux:
                 return .linux
             }
         }

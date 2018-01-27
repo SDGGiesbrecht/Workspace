@@ -25,8 +25,8 @@ func triggerVersionChecks() {
         _ = try Xcode.default.executeInCompatibilityMode(with: ["\u{2D}version"], output: &Command.Output.mock)
         #endif
 
-        _ = try SwiftLint.default.execute(with: ["version"], output: &Command.Output.mock)
         #if !os(Linux)
+        _ = try SwiftLint.default.execute(with: ["version"], output: &Command.Output.mock)
         _ = try Jazzy.default.execute(with: ["\u{2D}\u{2D}version"], output: &Command.Output.mock)
         #endif
     }

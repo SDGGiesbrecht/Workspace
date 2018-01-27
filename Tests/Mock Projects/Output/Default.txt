@@ -16,10 +16,32 @@ $ workspace refresh resources
 
 Refreshing resources...
 
-$ workspace validate documentation‐coverage
+$ workspace proofread
+
+Normalizing files...
+
+
+Proofreading source code... (§1)
+
+.gitignore
+Package.swift
+README.md
+Sources/Default/Default.swift
+Tests/DefaultTests/DefaultTests.swift
+Tests/LinuxMain.swift
+
+$ swiftlint lint --strict --config /Users/Jeremy/Library/Caches/ca.solideogloria.Workspace.Tests.debug/SwiftLint/Configuration.yml --reporter emoji
+
 
 $ swift package resolve
 
+
+✓ Source code passes proofreading.
+
+
+“Default” passes validation.
+
+$ workspace validate documentation‐coverage
 
 Generating documentation for “Default”...
 

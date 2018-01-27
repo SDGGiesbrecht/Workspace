@@ -16,6 +16,31 @@ $ workspace refresh resources
 
 Refreshing resources...
 
+$ workspace proofread
+
+Normalizing files...
+
+
+Proofreading source code... (§1)
+
+.gitignore
+Package.swift
+README.md
+Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
+Tests/FailingDocumentationCoverageTests/FailingDocumentationCoverageTests.swift
+Tests/LinuxMain.swift
+
+$ swiftlint lint --strict --config /Users/Jeremy/Library/Caches/ca.solideogloria.Workspace.Tests.debug/SwiftLint/Configuration.yml --reporter emoji
+
+
+$ swift package resolve
+
+
+✓ Source code passes proofreading.
+
+
+“FailingDocumentationCoverage” passes validation.
+
 $ workspace validate documentation‐coverage
 
 “FailingDocumentationCoverage” fails validation.

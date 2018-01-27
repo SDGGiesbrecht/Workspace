@@ -55,7 +55,7 @@ enum Proofreading {
                 try Shell.default.run(command: ["swiftlint", "version"], silently: true)
                 // Use SwiftLint if it has been manually installed...
             } catch {
-                return true // ...otherwise skip.
+                return // ...otherwise skip.
             }
         #endif
 

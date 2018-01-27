@@ -39,12 +39,39 @@ class SwiftLint : SwiftPackage {
             let sourceKitVariable = "LINUX_SOURCEKIT_LIB_PATH"
             if ProcessInfo.processInfo.environment[sourceKitVariable] == nil {
                 do {
+                    let relativeToUser = "lib/libsourcekitdInProc.so"
+                    var sourceKit: URL?
+
                     let swiftInstall = try Shell.default.run(command: ["which", "swift"], silently: true)
                     let swift = URL(fileURLWithPath: swiftInstall)
-                    let user = swift.deletingLastPathComponent().deletingLastPathComponent()
-                    let sourceKit = user.appendingPathComponent("lib/libsourcekitdInProc.so")
 
-                    setenv(sourceKitVariable, sourceKit.path, 0 /* overwrite: false */)
+                    // Standard Install
+                    let user = swift.deletingLastPathComponent().deletingLastPathComponent()
+                    let standardSourceKit = user.appendingPathComponent(relativeToUser)
+                    if try standardSourceKit.checkResourceIsReachable() {
+                        sourceKit = standardSourceKit
+                    } else {
+
+                        // Swift Version Manager
+                        let manager = swift.deletingLastPathComponent().deletingLastPathComponent()
+                        if let versionString = try? Shell.default.run(command: ["swiftenv", "version"]),
+                            let version = Version(versionString) {
+                            let directory: String
+                            if version.patch == 0 {
+                                directory = String(version.string.dropLast().dropLast())
+                            } else {
+                                directory = version.string
+                            }
+                            let versionedSourceKit = manager.appendingPathComponent("versions/\(directory)/usr/" + relativeToUser)
+                            if try versionedSourceKit.checkResourceIsReachable() {
+                                sourceKit = versionedSourceKit
+                            }
+                        }
+                    }
+
+                    if let found = sourceKit {
+                        setenv(sourceKitVariable, found.path, 0 /* overwrite: false */)
+                    }
                 } catch {}
             }
         #endif

@@ -16,10 +16,33 @@ $ workspace refresh resources
 
 Refreshing resources...
 
-$ workspace validate documentation‐coverage
+$ workspace proofread
+
+Normalizing files...
+
+
+Proofreading source code... (§1)
+
+.Workspace Configuration.txt
+.gitignore
+Package.swift
+README.md
+Sources/NoMacOS/NoMacOS.swift
+Tests/LinuxMain.swift
+Tests/NoMacOSTests/NoMacOSTests.swift
+
+$ swiftlint lint --strict --config /Users/Jeremy/Library/Caches/ca.solideogloria.Workspace.Tests.debug/SwiftLint/Configuration.yml --reporter emoji
+
 
 $ swift package resolve
 
+
+✓ Source code passes proofreading.
+
+
+“NoMacOS” passes validation.
+
+$ workspace validate documentation‐coverage
 
 Generating documentation for “NoMacOS”...
 

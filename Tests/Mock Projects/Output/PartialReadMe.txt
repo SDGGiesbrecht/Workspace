@@ -56,10 +56,42 @@ $ workspace refresh resources
 
 Refreshing resources...
 
-$ workspace validate documentation‐coverage
+$ workspace proofread
+
+Normalizing files...
+
+Writing to “.Workspace Configuration.txt”...
+
+Proofreading source code... (§1)
+
+.Workspace Configuration.txt
+.gitignore
+Documentation/[zxx] Read Me.md
+Documentation/🇨🇦EN Read Me.md
+Documentation/🇩🇪DE Lies mich.md
+Documentation/🇫🇷FR Lisez moi.md
+Documentation/🇬🇧EN Read Me.md
+Documentation/🇬🇷ΕΛ Με διαβάστε.md
+Documentation/🇮🇱עב קרא אותי.md
+Documentation/🇺🇸EN Read Me.md
+Package.swift
+README.md
+Sources/PartialReadMe/PartialReadMe.swift
+Tests/LinuxMain.swift
+Tests/PartialReadMeTests/PartialReadMeTests.swift
+
+$ swiftlint lint --strict --config /Users/Jeremy/Library/Caches/ca.solideogloria.Workspace.Tests.debug/SwiftLint/Configuration.yml --reporter emoji
+
 
 $ swift package resolve
 
+
+✓ Source code passes proofreading.
+
+
+“PartialReadMe” passes validation.
+
+$ workspace validate documentation‐coverage
 
 Generating documentation for “PartialReadMe”...
 

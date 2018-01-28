@@ -83,10 +83,52 @@ Refreshing resources...
 $ swift package resolve
 
 Writing to “Sources/Library/Resources.swift”...
-$ workspace validate documentation‐coverage
+$ workspace proofread
+
+Normalizing files...
+
+
+Proofreading source code... (§1)
+
+.Workspace Configuration.txt
+.gitignore
+.travis.yml
+Documentation/[zxx] Read Me.md
+Documentation/[zxx] Related Projects.md
+Documentation/🇨🇦EN Read Me.md
+Documentation/🇨🇦EN Related Projects.md
+Documentation/🇩🇪DE Lies mich.md
+Documentation/🇩🇪DE Verwandte Projekte.md
+Documentation/🇫🇷FR Lisez moi.md
+Documentation/🇫🇷FR Projets liés.md
+Documentation/🇬🇧EN Read Me.md
+Documentation/🇬🇧EN Related Projects.md
+Documentation/🇬🇷ΕΛ Με διαβάστε.md
+Documentation/🇬🇷ΕΛ Συγγενικά έργα.md
+Documentation/🇮🇱עב מיזמים קשורים.md
+Documentation/🇮🇱עב קרא אותי.md
+Documentation/🇺🇸EN Read Me.md
+Documentation/🇺🇸EN Related Projects.md
+Package.swift
+README.md
+Sources/Library/Resources.swift
+Sources/Library/SDG.swift
+Sources/tool/main.swift
+Tests/LinuxMain.swift
+Tests/SDGTests/SDGTests.swift
+
+$ swiftlint lint --strict --config /Users/Jeremy/Library/Caches/ca.solideogloria.Workspace.Tests.debug/SwiftLint/Configuration.yml --reporter emoji
+
 
 $ swift package resolve
 
+
+✓ Source code passes proofreading.
+
+
+“SDG” passes validation.
+
+$ workspace validate documentation‐coverage
 
 Generating documentation for “Library”...
 

@@ -15,6 +15,15 @@ Writing to “Refresh (Linux).sh”...
 $ swift package resolve
 
 Writing to “Validate (macOS).command”...
-$ workspace refresh read‐me
+$ workspace refresh continuous‐integration
 
-Configuration option not defined: Localizations
+Refreshing continuous integration configuration...
+
+Writing to “.travis.yml”...
+$ workspace refresh resources
+
+Refreshing resources...
+
+$ workspace proofread
+
+“BadStyle” fails validation.

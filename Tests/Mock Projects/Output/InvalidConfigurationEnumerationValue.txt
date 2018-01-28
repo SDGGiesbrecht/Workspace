@@ -6,10 +6,41 @@ Refreshing scripts...
 
 $ swift package resolve
 
+Writing to “Refresh (macOS).command”...
+Writing to “Refresh (Linux).sh”...
+
+$ swift package resolve
+
 Writing to “Validate (macOS).command”...
 $ workspace refresh resources
 
 Refreshing resources...
+
+$ workspace proofread
+
+Normalizing files...
+
+
+Proofreading source code... (§1)
+
+.Workspace Configuration.txt
+.gitignore
+Package.swift
+README.md
+Sources/InvalidConfigurationEnumerationValue/InvalidConfigurationEnumerationValue.swift
+Tests/InvalidConfigurationEnumerationValueTests/InvalidConfigurationEnumerationValueTests.swift
+Tests/LinuxMain.swift
+
+$ swiftlint lint --strict --config /Users/Jeremy/Library/Caches/ca.solideogloria.Workspace.Tests.debug/SwiftLint/Configuration.yml --reporter emoji
+
+
+$ swift package resolve
+
+
+✓ Source code passes proofreading.
+
+
+“InvalidConfigurationEnumerationValue” passes validation.
 
 $ workspace validate documentation‐coverage
 

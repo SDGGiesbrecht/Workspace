@@ -1,0 +1,20 @@
+
+$ workspace refresh scripts
+
+Refreshing scripts...
+
+
+$ swift package resolve
+Fetching file:///tmp/Developer/Dependency
+Cloning file:///tmp/Developer/Dependency
+Resolving file:///tmp/Developer/Dependency at 1.0.0
+
+Writing to “Refresh (macOS).command”...
+Writing to “Refresh (Linux).sh”...
+
+$ swift package resolve
+
+Writing to “Validate (macOS).command”...
+$ workspace refresh read‐me
+
+Configuration option not defined: Localizations

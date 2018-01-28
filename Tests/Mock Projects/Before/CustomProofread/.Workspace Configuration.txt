@@ -1,1 +1,1 @@
-Disabled Proofreading Rules: Unicode
+Disable Proofreading Rules: Unicode

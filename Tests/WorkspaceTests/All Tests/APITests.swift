@@ -177,7 +177,7 @@ class APITests : TestCase {
                                         output += "\n$ workspace validate documentation‐coverage\n"
                                         output += try Workspace.command.execute(with: ["validate", "documentation‐coverage", "•no‐colour"])
 
-                                        if project.lastPathComponent ∉ Set(["ApplicationProjectType", "CustomReadMe", "Default", "ExecutableProjectType", "PartialReadMe", "SDG"]) {
+                                        if project.lastPathComponent ∉ Set(["ApplicationProjectType", "CustomProofread", "CustomReadMe", "Default", "ExecutableProjectType", "PartialReadMe", "SDG"]) {
                                             let index = try String(from: project.appendingPathComponent("docs/\(project.lastPathComponent)/index.html"))
                                             XCTAssert(¬index.contains("Skip in Jazzy"), "Failed to remove read‐me–only content.")
 

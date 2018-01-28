@@ -122,10 +122,15 @@ class APITests : TestCase {
                                         output += try Workspace.command.execute(with: ["validate", "documentation‐coverage", "•no‐colour"])
                                     #endif
                                     
+                                } catch let error as Command.Error {
+                                    output += "\n" + error.describe()
+                                } catch let error {
+                                    XCTFail("Unexpected error: \(error)")
+                                }
+                                do {
                                     output += "\n\n⁂\n\n"
                                     output += "\n$ workspace proofread •xcode\n"
                                     output += try Workspace.command.execute(with: ["proofread", "•xcode"])
-                                    
                                 } catch let error as Command.Error {
                                     output += "\n" + error.describe()
                                 } catch let error {

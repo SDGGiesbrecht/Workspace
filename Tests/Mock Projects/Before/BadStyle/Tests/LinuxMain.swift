@@ -2,5 +2,5 @@ import XCTest
 @testable import BadStyleTests
 
 XCTMain([
-    testCase(BadStyleTests.allTests),
+    testCase(BadStyleTests.allTests)
 ])

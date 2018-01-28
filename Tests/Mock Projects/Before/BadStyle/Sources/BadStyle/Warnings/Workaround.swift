@@ -1,3 +1,4 @@
+// Header
 
 // [_Workaround: This should trigger. The workaround may no longer be necessary. (Dependency 0.9.9)_]
 // [_Workaround: This should be silent. The workaround is still necessary. (Dependency 1.0.0)_]

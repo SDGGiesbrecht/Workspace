@@ -96,7 +96,7 @@ class APITests : TestCase {
                                     output += "\n$ workspace refresh scripts\n"
                                     output += try Workspace.command.execute(with: ["refresh", "scripts", "•no‐colour"])
 
-                                    if project.lastPathComponent ∉ Set(["BadStyle", "CustomProofread", "FailingDocumentationCoverage", "InvalidConfigurationEnumerationValue", "InvalidResourceDirectory", "InvalidTarget", "NoAuthor"]) {
+                                    if project.lastPathComponent ∉ Set(["BadStyle", "FailingDocumentationCoverage", "InvalidConfigurationEnumerationValue", "InvalidResourceDirectory", "InvalidTarget", "NoAuthor"]) {
                                         output += "\n$ workspace refresh read‐me\n"
                                         output += try Workspace.command.execute(with: ["refresh", "read‐me", "•no‐colour"])
                                     }
@@ -142,7 +142,7 @@ class APITests : TestCase {
                                     output += try Workspace.command.execute(with: ["refresh", "scripts", "•no‐colour"])
                                 }
 
-                                if project.lastPathComponent ∉ Set(["ApplicationProjectType", "Default", "NoMacOS", "NoMacOSOrIOS", "NoMacOSOrIOSOrWatchOS", "UnicodeSource"]) {
+                                if project.lastPathComponent ∉ Set(["ApplicationProjectType", "CustomProofread", "Default", "NoMacOS", "NoMacOSOrIOS", "NoMacOSOrIOSOrWatchOS", "UnicodeSource"]) {
                                     XCTAssertErrorFree {
                                         output += "\n$ workspace refresh read‐me\n"
                                         output += try Workspace.command.execute(with: ["refresh", "read‐me", "•no‐colour"])

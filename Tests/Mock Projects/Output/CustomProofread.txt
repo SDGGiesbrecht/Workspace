@@ -12,8 +12,6 @@ Writing to “Refresh (Linux).sh”...
 $ swift package resolve
 
 Writing to “Validate (macOS).command”...
-$ workspace refresh read‐me
-
 $ workspace refresh continuous‐integration
 
 Refreshing continuous integration configuration...
@@ -30,7 +28,7 @@ $ workspace validate documentation‐coverage
 Generating documentation for “CustomProofread”...
 
 
-$ jazzy --module CustomProofread --copyright "Copyright ©2018 the CustomSwiftLint project contributors. All rights reserved." --documentation=Documentation/*.md --clean --use-safe-filenames --output "[...]/Documentation/CustomProofread" --xcodebuild-arguments "-scheme,CustomSwiftLint-Package,-target,CustomProofread,-sdk,macosx,-derivedDataPath,[...]/Jazzy Build Artifacts"
+$ jazzy --module CustomProofread --copyright "Copyright ©2018 the CustomProofread project contributors. All rights reserved." --documentation=Documentation/*.md --clean --use-safe-filenames --output "[...]/Documentation/CustomProofread" --xcodebuild-arguments "-scheme,CustomProofread-Package,-target,CustomProofread,-sdk,macosx,-derivedDataPath,[...]/Jazzy Build Artifacts"
 0% documentation coverage with 0 undocumented symbols
 skipped 1 private, fileprivate, or internal symbol (use `--min-acl` to specify a different minimum ACL)
 jam out ♪♫ to your fresh new docs in `[...]/Documentation/CustomProofread`
@@ -47,4 +45,4 @@ Checking documentation coverage for “CustomProofread”... (§1)
 ✓ Documentation coverage is complete for “CustomProofread”.
 
 
-“CustomSwiftLint” passes validation.
+“CustomProofread” passes validation.

@@ -1,2 +1,3 @@
+// Header
 
-let x = true && true // This should be allowed because the Unicode rule is disabled.
+let xyz = true && true // This should be allowed because the Unicode rule is disabled.

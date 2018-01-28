@@ -21,3 +21,10 @@ $ workspace refresh resources
 
 No target named “InvalidModule”.
 Resources must be in subdirectories named corresponding to the intended target.
+
+⁂
+
+
+$ workspace proofread •xcode
+
+$ swiftlint lint --strict --config /Users/Jeremy/Library/Caches/ca.solideogloria.Workspace.Tests.debug/SwiftLint/Configuration.yml --quiet

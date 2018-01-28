@@ -20,3 +20,10 @@ Available values:
 Library
 Application
 Executable
+
+⁂
+
+
+$ workspace proofread •xcode
+
+$ swiftlint lint --strict --config /Users/Jeremy/Library/Caches/ca.solideogloria.Workspace.Tests.debug/SwiftLint/Configuration.yml --quiet

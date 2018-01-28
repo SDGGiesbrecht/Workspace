@@ -23,6 +23,34 @@ Refreshing resources...
 
 $ workspace proofread
 
+Normalizing files...
+
+Writing to “.Workspace Configuration.txt”...
+Writing to “.swiftlint.yml”...
+
+Proofreading source code... (§1)
+
+.Workspace Configuration.txt
+.gitignore
+.swiftlint.yml
+.travis.yml
+Package.swift
+README.md
+Sources/CustomProofread/CustomProofread.swift
+Tests/CustomProofreadTests/CustomProofreadTests.swift
+Tests/LinuxMain.swift
+
+$ swiftlint lint --strict --reporter emoji
+
+
+$ swift package resolve
+
+
+✓ Source code passes proofreading.
+
+
+“CustomProofread” passes validation.
+
 $ workspace validate documentation‐coverage
 
 Generating documentation for “CustomProofread”...

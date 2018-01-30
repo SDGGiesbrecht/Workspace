@@ -158,9 +158,9 @@ struct UnicodeRule : Rule {
 
             for alias in allowedAliasDefinitions {
                 if line(before: match, in: file).contains(("func " + String(alias)).scalars) {
-                    continue
+                    continue matchesLoop
                 } else if line(of: match, in: file).contains("RecommendedOver".scalars) {
-                    continue
+                    continue matchesLoop
                 }
             }
 

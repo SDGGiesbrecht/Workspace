@@ -51,7 +51,7 @@ $ workspace proofread •xcode
 [...]/Tests/Mock Projects/Before/BadStyle/Sources/BadStyle/Rules/Source Code Style/ParameterStyle.swift:5:1: warning: Parameters should be grouped under a single callout. (Parameter Style)
 [...]/Tests/Mock Projects/Before/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:9:49: warning: U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (Unicode)
 [...]/Tests/Mock Projects/Before/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:17:24: warning: U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (Unicode)
-[...]/Tests/Mock Projects/Before/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:23:14: warning: U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (Unicode)
+[...]/Tests/Mock Projects/Before/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:19:16: warning: U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (Unicode)
 [...]/Tests/Mock Projects/Before/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:5:4: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
 [...]/Tests/Mock Projects/Before/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:5:58: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
 [...]/Tests/Mock Projects/Before/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:30:4: warning: U+0027 is obsolete. Use an apostrophe (’), quotation marks (‘, ’), degrees (°) or prime (′). (Unicode)

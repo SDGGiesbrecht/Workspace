@@ -295,7 +295,7 @@ struct UnicodeRule : Rule {
               replacement: "¬",
               allowTrailing: true,
               allowInConditionalCompilationStatement: true,
-              allowedAliasDefinitions: ["¬"],
+              allowedAliasDefinitions: ["¬", "≠"],
               allowInHTMLComment: true,
               message: UserFacingText<InterfaceLocalization, Void>({ localization, _ in
                 switch localization {

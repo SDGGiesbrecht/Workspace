@@ -34,7 +34,9 @@ struct DocumentationOfCompilationConditions : Rule {
     static let markSearchToken = "MAR\u{4B}".scalars
 
     static func check(file: TextFile, for conditionalCompilationToken: String, status: ProofreadingStatus, output: inout Command.Output) {
-        for match in file.contents.scalars.matches(for: conditionalCompilationToken.scalars) where ¬line(after: match, in: file).contains(markSearchToken)
+        for match in file.contents.scalars.matches(for: conditionalCompilationToken.scalars) where
+            ¬line(of: match, in: file).contains(markSearchToken)
+            ∧ ¬line(after: match, in: file).contains(markSearchToken)
             ∧ from(match, toNext: "#e" /* “else” or “end”, but not “if” */, in: file).contains("public".scalars) {
 
                 reportViolation(in: file, at: match.range, message: message, status: status, output: &output)

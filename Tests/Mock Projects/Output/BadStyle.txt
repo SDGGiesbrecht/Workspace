@@ -73,5 +73,5 @@ $ workspace proofread •xcode
 [...]/Tests/Mock Projects/Before/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:13:4: warning: Workaround: This malformed version check should trigger. (echo oops 1.0.0) (Workaround Reminder)
 [...]/Tests/Mock Projects/Before/BadStyle/Tests/BadStyleTests/BadStyleTests.swift:4:20: warning: Colons should be preceded by spaces when denoting protocols or superclasses. (Colon Spacing)
 
-$ swiftlint lint --strict --config /Users/Jeremy/Library/Caches/ca.solideogloria.Workspace.Tests.debug/SwiftLint/Configuration.yml --quiet
+$ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --quiet
 [...]/Tests/Mock Projects/Before/BadStyle/Sources/BadStyle/SwiftLint.swift:3:10: warning: Operator Usage Whitespace Violation: Operators should be surrounded by a single whitespace when they are being used. (operator_usage_whitespace)

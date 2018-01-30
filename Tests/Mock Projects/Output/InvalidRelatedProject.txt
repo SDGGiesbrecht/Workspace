@@ -21,4 +21,4 @@ $ workspace refresh read‐me
 
 $ workspace proofread •xcode
 
-$ swiftlint lint --strict --config /Users/Jeremy/Library/Caches/ca.solideogloria.Workspace.Tests.debug/SwiftLint/Configuration.yml --quiet
+$ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --quiet

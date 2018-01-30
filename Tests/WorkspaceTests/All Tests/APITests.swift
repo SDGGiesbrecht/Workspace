@@ -211,9 +211,14 @@ class APITests : TestCase {
 
                             #if !os(Linux)
                                 // [_Workaround: Linux differs due to absence of Jazzy._]
+
                                 let replacement = "[...]".scalars
                                 // Remove varying repository location.
                                 output.replaceMatches(for: repositoryRoot.path.scalars, with: replacement)
+                                // Remove varying cache directory.
+                                output.replaceMatches(for: FileManager.default.url(in: .cache, at: "Cache").deletingLastPathComponent().path.scalars, with: replacement)
+                                // Remove varying SwiftLint location.
+                                output.replaceMatches(for: "\u{22}[...]/Tools/SwiftLint/swiftlint\u{22}".scalars, with: "swiftlint".scalars)
                                 // Remove varying temporary directory.
                                 output.replaceMatches(for: FileManager.default.url(in: .temporary, at: "Temporary").deletingLastPathComponent().path.scalars, with: replacement)
                                 output.replaceMatches(for: "`..".scalars, with: "`".scalars)

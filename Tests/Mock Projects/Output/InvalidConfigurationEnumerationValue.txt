@@ -31,7 +31,7 @@ Sources/InvalidConfigurationEnumerationValue/InvalidConfigurationEnumerationValu
 Tests/InvalidConfigurationEnumerationValueTests/InvalidConfigurationEnumerationValueTests.swift
 Tests/LinuxMain.swift
 
-$ swiftlint lint --strict --config /Users/Jeremy/Library/Caches/ca.solideogloria.Workspace.Tests.debug/SwiftLint/Configuration.yml --reporter emoji
+$ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --reporter emoji
 
 
 $ swift package resolve
@@ -55,4 +55,4 @@ False
 
 $ workspace proofread •xcode
 
-$ swiftlint lint --strict --config /Users/Jeremy/Library/Caches/ca.solideogloria.Workspace.Tests.debug/SwiftLint/Configuration.yml --quiet
+$ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --quiet

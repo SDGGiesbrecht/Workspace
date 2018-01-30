@@ -45,7 +45,7 @@ Sources/CustomReadMe/CustomReadMe.swift
 Tests/CustomReadMeTests/CustomReadMeTests.swift
 Tests/LinuxMain.swift
 
-$ swiftlint lint --strict --config /Users/Jeremy/Library/Caches/ca.solideogloria.Workspace.Tests.debug/SwiftLint/Configuration.yml --reporter emoji
+$ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --reporter emoji
 
 
 $ swift package resolve

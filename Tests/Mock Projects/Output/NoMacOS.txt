@@ -31,7 +31,7 @@ Sources/NoMacOS/NoMacOS.swift
 Tests/LinuxMain.swift
 Tests/NoMacOSTests/NoMacOSTests.swift
 
-$ swiftlint lint --strict --config /Users/Jeremy/Library/Caches/ca.solideogloria.Workspace.Tests.debug/SwiftLint/Configuration.yml --reporter emoji
+$ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --reporter emoji
 
 
 $ swift package resolve

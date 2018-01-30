@@ -26,4 +26,4 @@ Available values:
 $ workspace proofread •xcode
 Writing to “.Workspace Configuration.txt”...
 
-$ swiftlint lint --strict --config /Users/Jeremy/Library/Caches/ca.solideogloria.Workspace.Tests.debug/SwiftLint/Configuration.yml --quiet
+$ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --quiet

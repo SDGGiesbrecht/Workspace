@@ -80,7 +80,7 @@ Sources/PartialReadMe/PartialReadMe.swift
 Tests/LinuxMain.swift
 Tests/PartialReadMeTests/PartialReadMeTests.swift
 
-$ swiftlint lint --strict --config /Users/Jeremy/Library/Caches/ca.solideogloria.Workspace.Tests.debug/SwiftLint/Configuration.yml --reporter emoji
+$ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --reporter emoji
 
 
 $ swift package resolve

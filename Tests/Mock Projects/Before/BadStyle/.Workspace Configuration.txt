@@ -1,0 +1,3 @@
+[_Begin Other Read‐Me Content_]
+- A markdown list should be allowed.
+[_End_]

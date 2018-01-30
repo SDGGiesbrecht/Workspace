@@ -149,7 +149,7 @@ struct LineCommentSyntax {
         }
 
         let comment = String(string[range])
-        let lines = comment.lines.map({ String($0.line) }).map() { (line: String) -> String in
+        let lines = comment.lines.map({ String($0.line) }).map { (line: String) -> String in
 
             var index = line.scalars.startIndex
 

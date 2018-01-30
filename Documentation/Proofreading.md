@@ -16,18 +16,22 @@
 
 Workspace proofreads the project source during validation.
 
+```shell
+$ workspace proofread
+```
+
 ## In Xcode
 
 Proofreading also works within Xcode, provided Workspace has been [fully installed](../README.md#installation) on the local device. (If not, proofreading will be skipped, and a link to installation instructions will be displayed.)
 
 Workspace will set this up automatically if it is [in charge of Xcode](Xcode.md).
 
-If Workspace is not in charge of Xcode, proofreading can still be activated for a project by manually adding the following “run script” build phase:
+If Workspace is not in charge of Xcode, proofreading can still be activated for a project by manually adding the following “run script” build phase (replacing `0.0.0` with a valid version):
 
 ```shell
 export PATH="$HOME/.SDG/Registry:$PATH"
 if which workspace > /dev/null ; then
-    workspace proofread •use‐version 0.1.0
+    workspace proofread •xcode •use‐version 0.0.0
 else
     echo "warning: Install Workspace if you wish to receive in‐code reports of style errors for this project. See https://github.com/SDGGiesbrecht/Workspace"
 fi
@@ -45,9 +49,9 @@ A rule can be disabled by adding the name of the rule to the [configuration](Con
 
 Workspace’s proofreading includes [SwiftLint](https://github.com/realm/SwiftLint).
 
-By default, Workspace provides SwiftLint with a configuration that corresponds to its own. In this mode, SwiftLint rules can be treated as though they were Workspace rules. For example, they can be disabled the by listing them under `Disable Proofreading Rules`.
+By default, Workspace provides SwiftLint with a standard configuration that interoperates well with Workspace and the Swift Package Manager.
 
-However, SwiftLint can instead be configured manually by placing a `.swiftlint.yml` file in the project root. In this mode, Workspace will no longer apply its own configuration to SwiftLint. That means, for example, that disabling SwiftLint rules by listing them under `Disable Proofreading Rules` will no longer work. For more information about `.swiftlint.yml`, see [SwiftLint’s own documentation](https://github.com/realm/SwiftLint).
+However, SwiftLint can instead be configured manually by placing a `.swiftlint.yml` file in the project root. If such a file is present, Workspace will not apply its own configuration to SwiftLint. For more information about `.swiftlint.yml`, see [SwiftLint’s own documentation](https://github.com/realm/SwiftLint).
 
 ## Special Thanks
 

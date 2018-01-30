@@ -114,7 +114,7 @@ class InternalTests : TestCase {
     func testHelp() {
         for localization in InterfaceLocalization.cases {
             LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-                XCTAssertErrorFree() {
+                XCTAssertErrorFree {
                     try Workspace.command.execute(with: ["help"])
                 }
             }

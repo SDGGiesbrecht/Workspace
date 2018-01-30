@@ -61,21 +61,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         // Proofreading...
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        if try runProofread(andExit: false, arguments: arguments, options: options, output: &output) {
-            validationStatus.passStep(message: UserFacingText({ localization, _ in
-                switch localization {
-                case .englishCanada:
-                    return "Code passes proofreading."
-                }
-            }))
-        } else {
-            validationStatus.failStep(message: UserFacingText({ localization, _ in
-                switch localization {
-                case .englishCanada:
-                    return "Code fails proofreading. (See above for details.)"
-                }
-            }))
-        }
+        try Workspace.Proofread.executeAsStep(normalizingFirst: false, options: options, validationStatus: &validationStatus, output: &output)
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
@@ -121,10 +107,10 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
                 }), with: "".scalars)
                 allowedDifferences.append(relatedProjects.lowercased())
             }
-            allowedDifferences = allowedDifferences.map { "':(exclude)*\($0.components(separatedBy: " ").last!)'" }
+            allowedDifferences = allowedDifferences.map { "\u{27}:(exclude)*\($0.components(separatedBy: " ").last!)\u{27}" }
 
             requireBash(["git", "add", ".", "\u{2D}\u{2D}intent\u{2D}to\u{2D}add"], silent: true)
-            if (try? Shell.default.run(command: ["git", "diff", "\u{2D}\u{2D}exit\u{2D}code", "\u{2D}\u{2D}", ".", "':(exclude)*.dsidx'"] + allowedDifferences)) ≠ nil {
+            if (try? Shell.default.run(command: ["git", "diff", "\u{2D}\u{2D}exit\u{2D}code", "\u{2D}\u{2D}", ".", "\u{27}:(exclude)*.dsidx\u{27}"] + allowedDifferences)) ≠ nil {
                 validationStatus.passStep(message: UserFacingText({ localization, _ in
                     switch localization {
                     case .englishCanada:

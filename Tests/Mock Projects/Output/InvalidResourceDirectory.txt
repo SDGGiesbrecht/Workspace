@@ -22,3 +22,10 @@ $ workspace refresh resources
 No target specified for resource:
 Resource.txt
 Files must be in subdirectories named corresponding to the intended target.
+
+⁂
+
+
+$ workspace proofread •xcode
+
+$ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --quiet

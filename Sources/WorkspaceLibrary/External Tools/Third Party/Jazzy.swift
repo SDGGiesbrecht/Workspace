@@ -38,7 +38,7 @@ import SDGCommandLine
 
         // MARK: - Static Properties
 
-        static let `default` = Jazzy(version: Version(0, 9, 0))
+        static let `default` = Jazzy(version: Version(0, 9, 1))
 
         override class var name: UserFacingText<InterfaceLocalization, Void> { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
             return UserFacingText({ (localization, _) in // [_Exempt from Code Coverage_]

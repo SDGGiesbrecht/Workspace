@@ -1,7 +1,7 @@
 import XCTest
 @testable import NoFeatures
 
-class NoFeaturesTests: XCTestCase {
+class NoFeaturesTests : XCTestCase {
     func testExample() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
@@ -9,8 +9,7 @@ class NoFeaturesTests: XCTestCase {
         XCTAssertEqual(NoFeatures().text, "Hello, World!")
     }
 
-
     static var allTests = [
-        ("testExample", testExample),
+        ("testExample", testExample)
     ]
 }

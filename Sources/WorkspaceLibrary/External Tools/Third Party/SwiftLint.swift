@@ -14,20 +14,70 @@
 
 import Foundation
 
+import SDGCornerstone
 import SDGCommandLine
 
 class SwiftLint : SwiftPackage {
 
     // MARK: - Static Properties
 
-    static let `default` = SwiftLint(version: Version(0, 24, 0))
+    static let `default` = SwiftLint(version: Version(0, 24, 2))
 
     // MARK: - Initialization
 
-    init(version: Version) { // [_Exempt from Code Coverage_] [_Workaround: Until proofread is testable._]
+    init(version: Version) {
         super.init(command: "swiftlint",
                    repositoryURL: URL(string: "https://github.com/realm/SwiftLint")!,
                    version: version,
                    versionCheck: ["version"])
+    }
+
+    // MARK: - Usage
+
+    func isConfigured() -> Bool {
+        var url = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+        url.appendPathComponent(".swiftlint.yml")
+        return FileManager.default.isReadableFile(atPath: url.path)
+    }
+
+    func standardConfiguration() -> StrictString {
+        return StrictString(Resources.SwiftLint.standardConfiguration)
+    }
+
+    func proofread(withConfiguration configuration: URL?, forXcode: Bool, output: inout Command.Output) throws -> Bool {
+
+        do {
+            var arguments = [
+                "lint",
+                "\u{2D}\u{2D}strict"
+            ]
+            if let config = configuration?.path {
+                arguments += [
+                    "\u{2D}\u{2D}config", config
+                ]
+            }
+            if forXcode {
+                arguments += [
+                    "\u{2D}\u{2D}quiet"
+                ]
+            } else {
+                arguments += [
+                    "\u{2D}\u{2D}reporter", "emoji"
+                ]
+            }
+
+            try executeInCompatibilityMode(with: arguments, output: &output)
+            return true
+        } catch let error as Shell.Error {
+            if error.code ∈ Set<Int>([
+                2, // Error level violation.
+                3 // Warning level violation in strict mode.
+                ]) {
+                return false // SwiftLint reported a violation.
+            } // [_Exempt from Code Coverage_]
+            throw error // Error in SwiftLint set‐up.
+        } catch let error { // [_Exempt from Code Coverage_]
+            throw error // Error in SwiftLint set‐up.
+        }
     }
 }

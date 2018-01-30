@@ -15,3 +15,10 @@ Writing to “Validate (macOS).command”...
 $ workspace refresh read‐me
 
 Configuration option not defined: Repository URL
+
+⁂
+
+
+$ workspace proofread •xcode
+
+$ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --quiet

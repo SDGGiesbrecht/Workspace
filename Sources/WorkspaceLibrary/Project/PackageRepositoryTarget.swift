@@ -137,7 +137,7 @@ struct PackageRepositoryTarget : Hashable {
         let fileExtension = resource.pathExtension
         let initializer: (StrictString, StrictString)
         switch fileExtension {
-        case "command", "md", "sh", "txt":
+        case "command", "md", "sh", "txt", "yml":
             initializer = ("String(data: ", ", encoding: String.Encoding.utf8)!")
         default:
             initializer = ("", "")

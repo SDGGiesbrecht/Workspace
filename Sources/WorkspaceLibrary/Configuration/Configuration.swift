@@ -43,13 +43,13 @@ struct Configuration {
         }
     }
 
-    func resetCache(debugReason: String) { // [_Exempt from Code Coverage_] [_Workaround: Until normalize is testable._]
+    func resetCache(debugReason: String) {
         Configuration.caches[location] = Cache()
         if location == Repository.packageRepository.configuration.location { // [_Exempt from Code Coverage_]
             // [_Workaround: Temporary bridging._]
             Configuration.resetCache()
-        } // [_Exempt from Code Coverage_] [_Workaround: Until normalize is testable._]
-        if BuildConfiguration.current == .debug { // [_Exempt from Code Coverage_] [_Workaround: Until normalize is testable._]
+        }
+        if BuildConfiguration.current == .debug {
             print("(Debug notice: Configuration cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”")
         }
     }
@@ -183,7 +183,7 @@ struct Configuration {
             if result.isEmpty {
                 throw Configuration.optionNotDefinedError(for: .localizations)
             }
-            return result.map() { (entry) -> String in
+            return result.map { (entry) -> String in
                 return InterfaceLocalization.code(for: StrictString(entry)) ?? entry
             }
         }
@@ -397,6 +397,11 @@ struct Configuration {
     }
 
     // MARK: - Options: Active Checks
+
+    func disabledProofreadingRules() throws -> Set<StrictString> {
+        let array = try list(for: .disableProofreadingRules)
+        return Set(array.map({ StrictString($0) }))
+    }
 
     func shouldEnforceDocumentationCoverage() throws -> Bool { // [_Exempt from Code Coverage_] [_Workaround: Until validate is testable._]
         return try boolean(for: .enforceDocumentationCoverage) ?? true // [_Exempt from Code Coverage_] [_Workaround: Until validate is testable._]

@@ -24,6 +24,40 @@ $ workspace refresh resources
 
 Refreshing resources...
 
+$ workspace proofread
+
+Normalizing files...
+
+
+Proofreading source code... (§1)
+
+.Workspace Configuration.txt
+.gitignore
+.travis.yml
+Package.swift
+README.md
+Sources/NoAuthor/NoAuthor.swift
+Tests/LinuxMain.swift
+Tests/NoAuthorTests/NoAuthorTests.swift
+
+$ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --reporter emoji
+
+
+$ swift package resolve
+
+
+✓ Source code passes proofreading.
+
+
+“NoAuthor” passes validation.
+
 $ workspace validate documentation‐coverage
 
 Configuration option not defined: Author
+
+⁂
+
+
+$ workspace proofread •xcode
+
+$ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --quiet

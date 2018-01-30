@@ -17,7 +17,7 @@ import Foundation
 extension FileType {
 
     init(url: URL) throws {
-        guard let type = FileType(filePath: AbsolutePath(url.path)) else { // [_Exempt from Code Coverage_] [_Workaround: Until “normalize” is testable._]
+        guard let type = FileType(filePath: AbsolutePath(url.path)) else {
             throw Error.unrecognizedFileExtension(url.pathExtension)
         }
         self = type

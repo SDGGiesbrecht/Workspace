@@ -15,3 +15,10 @@ Writing to “Validate (macOS).command”...
 $ workspace refresh read‐me
 
 Configuration option not defined: Other Read‐Me Content
+
+⁂
+
+
+$ workspace proofread •xcode
+
+$ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --quiet

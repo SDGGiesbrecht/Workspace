@@ -19,3 +19,11 @@ Invalid value for “Quotation Testament”:
 Available values:
 תנ״ך
 ΚΔ
+
+⁂
+
+
+$ workspace proofread •xcode
+Writing to “.Workspace Configuration.txt”...
+
+$ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --quiet

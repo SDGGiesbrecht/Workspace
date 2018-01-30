@@ -14,6 +14,7 @@
 
 import Foundation
 
+import SDGCornerstone
 import SDGCommandLine
 
 typealias SwiftTool = _Swift // Shared from SDGCommandLine.
@@ -27,5 +28,9 @@ extension SwiftTool {
 
     func packageStructure(output: inout Command.Output) throws -> (name: String, libraryProductTargets: [String], executableProducts: [String], targets: [(name: String, location: URL)]) {
         return try _packageStructure(output: &output) // Shared from SDGCommandLine.
+    }
+
+    func dependencies(output: inout Command.Output) throws -> [StrictString: Version] {
+        return try _dependencies(output: &output) // Shared from SDGCommandLine.
     }
 }

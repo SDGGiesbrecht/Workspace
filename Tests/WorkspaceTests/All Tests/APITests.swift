@@ -96,9 +96,7 @@ class APITests : TestCase {
                                     output += "\n$ workspace refresh scripts\n"
                                     output += try Workspace.command.execute(with: ["refresh", "scripts", "•no‐colour"])
 
-                                    if project.lastPathComponent ∉ Set(["FailingDocumentationCoverage", "InvalidConfigurationEnumerationValue", "InvalidResourceDirectory",
-                                                                            "InvalidTarget",
-                                                                            "NoAuthor"]) {
+                                    if project.lastPathComponent ∉ Set(["BadStyle", "FailingDocumentationCoverage", "InvalidConfigurationEnumerationValue", "InvalidResourceDirectory", "InvalidTarget", "NoAuthor"]) {
                                         output += "\n$ workspace refresh read‐me\n"
                                         output += try Workspace.command.execute(with: ["refresh", "read‐me", "•no‐colour"])
                                     }
@@ -114,10 +112,25 @@ class APITests : TestCase {
 
                                     #if !os(Linux)
                                         try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
+                                    #endif
 
+                                    output += "\n$ workspace proofread\n"
+                                    output += try Workspace.command.execute(with: ["proofread", "•no‐colour"])
+
+                                    #if !os(Linux)
                                         output += "\n$ workspace validate documentation‐coverage\n"
                                         output += try Workspace.command.execute(with: ["validate", "documentation‐coverage", "•no‐colour"])
                                     #endif
+
+                                } catch let error as Command.Error {
+                                    output += "\n" + error.describe()
+                                } catch let error {
+                                    XCTFail("Unexpected error: \(error)")
+                                }
+                                do {
+                                    output += "\n\n⁂\n\n"
+                                    output += "\n$ workspace proofread •xcode\n"
+                                    output += try Workspace.command.execute(with: ["proofread", "•xcode"])
                                 } catch let error as Command.Error {
                                     output += "\n" + error.describe()
                                 } catch let error {
@@ -129,7 +142,7 @@ class APITests : TestCase {
                                     output += try Workspace.command.execute(with: ["refresh", "scripts", "•no‐colour"])
                                 }
 
-                                if project.lastPathComponent ∉ Set(["ApplicationProjectType", "Default", "NoMacOS", "NoMacOSOrIOS", "NoMacOSOrIOSOrWatchOS", "UnicodeSource"]) {
+                                if project.lastPathComponent ∉ Set(["ApplicationProjectType", "CustomProofread", "Default", "NoMacOS", "NoMacOSOrIOS", "NoMacOSOrIOSOrWatchOS", "UnicodeSource"]) {
                                     XCTAssertErrorFree {
                                         output += "\n$ workspace refresh read‐me\n"
                                         output += try Workspace.command.execute(with: ["refresh", "read‐me", "•no‐colour"])
@@ -152,12 +165,19 @@ class APITests : TestCase {
                                     XCTAssertErrorFree {
                                         try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
                                     }
+                                #endif
 
+                                XCTAssertErrorFree {
+                                    output += "\n$ workspace proofread\n"
+                                    output += try Workspace.command.execute(with: ["proofread", "•no‐colour"])
+                                }
+
+                                #if !os(Linux)
                                     XCTAssertErrorFree {
                                         output += "\n$ workspace validate documentation‐coverage\n"
                                         output += try Workspace.command.execute(with: ["validate", "documentation‐coverage", "•no‐colour"])
 
-                                        if project.lastPathComponent ∉ Set(["ApplicationProjectType", "CustomReadMe", "Default", "ExecutableProjectType", "PartialReadMe", "SDG"]) {
+                                        if project.lastPathComponent ∉ Set(["ApplicationProjectType", "CustomProofread", "CustomReadMe", "Default", "ExecutableProjectType", "PartialReadMe", "SDG"]) {
                                             let index = try String(from: project.appendingPathComponent("docs/\(project.lastPathComponent)/index.html"))
                                             XCTAssert(¬index.contains("Skip in Jazzy"), "Failed to remove read‐me–only content.")
 
@@ -191,9 +211,14 @@ class APITests : TestCase {
 
                             #if !os(Linux)
                                 // [_Workaround: Linux differs due to absence of Jazzy._]
+
                                 let replacement = "[...]".scalars
                                 // Remove varying repository location.
                                 output.replaceMatches(for: repositoryRoot.path.scalars, with: replacement)
+                                // Remove varying cache directory.
+                                output.replaceMatches(for: FileManager.default.url(in: .cache, at: "Cache").deletingLastPathComponent().path.scalars, with: replacement)
+                                // Remove varying SwiftLint location.
+                                output.replaceMatches(for: "\u{22}[...]/Tools/SwiftLint/swiftlint\u{22}".scalars, with: "swiftlint".scalars)
                                 // Remove varying temporary directory.
                                 output.replaceMatches(for: FileManager.default.url(in: .temporary, at: "Temporary").deletingLastPathComponent().path.scalars, with: replacement)
                                 output.replaceMatches(for: "`..".scalars, with: "`".scalars)

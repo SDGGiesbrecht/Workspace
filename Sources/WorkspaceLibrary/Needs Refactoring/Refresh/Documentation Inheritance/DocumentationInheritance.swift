@@ -27,7 +27,7 @@ struct DocumentationInheritance {
         for path in (Repository.allFiles(at: RelativePath("Packages")) + Repository.allFiles(at: RelativePath(".build/checkouts"))).filter({
         ¬$0.string.contains(".git") ∧ ¬$0.string.contains("/docs/") }) + Repository.sourceFiles {
             if FileType(filePath: path) == .swift {
-                let file = require() { try File(at: path) }
+                let file = require { try File(at: path) }
 
                 let startTokens = ("[\u{5F}Define Documentation", "_]")
 
@@ -74,7 +74,7 @@ struct DocumentationInheritance {
                         ])
                 }
 
-                var file = require() { try File(at: path) }
+                var file = require { try File(at: path) }
 
                 var index = file.contents.startIndex
                 while let range = file.contents.scalars.firstMatch(for: "[\u{5F}Inherit Documentation".scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.range.clusters(in: file.contents.clusters) {
@@ -122,7 +122,7 @@ struct DocumentationInheritance {
                     }
                 }
 
-                require() { try file.write(output: &output) }
+                require { try file.write(output: &output) }
             }
         }
     }

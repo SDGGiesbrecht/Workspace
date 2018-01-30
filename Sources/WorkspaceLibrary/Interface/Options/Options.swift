@@ -22,6 +22,10 @@ extension Options {
         return value(for: ContinuousIntegration.Job.option)
     }
 
+    var runAsXcodeBuildPhase: Bool {
+        return value(for: Workspace.Proofread.runAsXcodeBuildPhase)
+    }
+
     var project: PackageRepository {
         let url = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
         return PackageRepository(alreadyAt: url)

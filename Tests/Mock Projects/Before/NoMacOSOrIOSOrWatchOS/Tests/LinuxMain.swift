@@ -2,5 +2,5 @@ import XCTest
 @testable import NoMacOSOrIOSOrWatchOSTests
 
 XCTMain([
-    testCase(NoMacOSOrIOSOrWatchOSTests.allTests),
+    testCase(NoMacOSOrIOSOrWatchOSTests.allTests)
 ])

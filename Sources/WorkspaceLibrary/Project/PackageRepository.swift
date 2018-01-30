@@ -32,6 +32,7 @@ extension PackageRepository {
         fileprivate var packageStructure: (name: String, libraryProductTargets: [String], executableProducts: [String], targets: [(name: String, location: URL)])?
         fileprivate var targets: [Target]?
         fileprivate var targetsByName: [String: Target]?
+        fileprivate var dependencies: [StrictString: Version]?
 
         fileprivate var allFiles: [URL]?
         fileprivate var trackedFiles: [URL]?
@@ -78,7 +79,7 @@ extension PackageRepository {
 
     // MARK: - Structure
 
-    private func packageStructure(output: inout Command.Output) throws ->  (name: String, libraryProductTargets: [String], executableProducts: [String], targets: [(name: String, location: URL)]) {
+    private func packageStructure(output: inout Command.Output) throws -> (name: String, libraryProductTargets: [String], executableProducts: [String], targets: [(name: String, location: URL)]) {
         return try cached(in: &cache.packageStructure) {
             var result: (name: String, libraryProductTargets: [String], executableProducts: [String], targets: [(name: String, location: URL)])?
             try FileManager.default.do(in: location) {
@@ -130,8 +131,18 @@ extension PackageRepository {
 
     func resourceDirectories() -> [URL] {
 
-        return InterfaceLocalization.cases.map() { (localization) in
+        return InterfaceLocalization.cases.map { (localization) in
             return location.appendingPathComponent(String(PackageRepository.resourceDirectoryName.resolved(for: localization)))
+        }
+    }
+
+    func dependencies(output: inout Command.Output) throws -> [StrictString: Version] {
+        return try cached(in: &cache.dependencies) {
+            var result: [StrictString: Version]?
+            try FileManager.default.do(in: location) {
+                result = try SwiftTool.default.dependencies(output: &output)
+            }
+            return result!
         }
     }
 
@@ -199,7 +210,7 @@ extension PackageRepository {
             }
             ignoredURLs.append(location.appendingPathComponent(".git"))
 
-            let result = try allFiles().filter() { (url) in
+            let result = try allFiles().filter { (url) in
                 for ignoredURL in ignoredURLs {
                     if url.is(in: ignoredURL) {
                         return false
@@ -222,7 +233,7 @@ extension PackageRepository {
                 "Tests/Mock Projects" // To prevent treating them as Workspace source files for headers, etc.
                 ].map({ location.appendingPathComponent( String($0)) })
 
-            let result = try trackedFiles(output: &output).filter() { (url) in
+            let result = try trackedFiles(output: &output).filter { (url) in
                 for generatedURL in generatedURLs {
                     if url.is(in: generatedURL) {
                         return false
@@ -258,7 +269,7 @@ extension PackageRepository {
         return try cached(in: &cache.resourceFiles) { () -> [URL] in
             let locations = resourceDirectories()
 
-            let result = try sourceFiles(output: &output).filter() { (file) in
+            let result = try sourceFiles(output: &output).filter { (file) in
                 for directory in locations where file.is(in: directory) {
                     return true
                 } // [_Exempt from Code Coverage_] [_Workaround: False coverage result. (Swift 4.0.2)_]

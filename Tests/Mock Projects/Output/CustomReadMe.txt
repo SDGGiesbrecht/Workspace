@@ -28,10 +28,35 @@ $ workspace refresh resources
 
 Refreshing resources...
 
-$ workspace validate documentation‐coverage
+$ workspace proofread
+
+Normalizing files...
+
+Writing to “.Workspace Configuration.txt”...
+
+Proofreading source code... (§1)
+
+.Workspace Configuration.txt
+.gitignore
+Documentation/🇬🇧EN Read Me.md
+Package.swift
+README.md
+Sources/CustomReadMe/CustomReadMe.swift
+Tests/CustomReadMeTests/CustomReadMeTests.swift
+Tests/LinuxMain.swift
+
+$ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --reporter emoji
+
 
 $ swift package resolve
 
+
+✓ Source code passes proofreading.
+
+
+“CustomReadMe” passes validation.
+
+$ workspace validate documentation‐coverage
 
 Generating documentation for “CustomReadMe”...
 

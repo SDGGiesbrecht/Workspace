@@ -182,7 +182,7 @@ enum FileType : CustomStringConvertible {
         case .swift, .css, .javaScript:
             return FileSyntax(blockCommentSyntax: FileType.swiftBlockCommentSyntax, lineCommentSyntax: FileType.swiftLineCommentSyntax)
         case .swiftPackageManifest:
-            return FileSyntax(blockCommentSyntax: FileType.swiftBlockCommentSyntax, lineCommentSyntax: FileType.swiftLineCommentSyntax, requiredFirstLineToken: "// swift\u{2D}tools\u{2D}version:")
+            return FileSyntax(blockCommentSyntax: FileType.swiftBlockCommentSyntax, lineCommentSyntax: FileType.swiftLineCommentSyntax, requiredFirstLineToken: "/\u{2F} swift\u{2D}tools\u{2D}version:")
         case .markdown:
             return FileSyntax(blockCommentSyntax: FileType.htmlBlockComment, lineCommentSyntax: nil, semanticLineTerminalWhitespace: ["  "])
         case .gitignore, .yaml:

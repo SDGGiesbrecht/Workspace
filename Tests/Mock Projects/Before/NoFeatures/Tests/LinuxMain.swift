@@ -2,5 +2,5 @@ import XCTest
 @testable import NoFeaturesTests
 
 XCTMain([
-    testCase(NoFeaturesTests.allTests),
+    testCase(NoFeaturesTests.allTests)
 ])

@@ -67,9 +67,11 @@ $ workspace proofread •xcode
 [...]/Tests/Mock Projects/Before/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:47:58: warning: “*=” is obsolete. Use the multiplication sign (×). (Unicode)
 [...]/Tests/Mock Projects/Before/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:48:51: warning: “ / ” is obsolete. Use the division sign (÷). (Unicode)
 [...]/Tests/Mock Projects/Before/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:49:52: warning: “/=” is obsolete. Use the division sign (÷). (Unicode)
+[...]/Tests/Mock Projects/Before/BadStyle/Sources/BadStyle/Warnings/Warning.swift:3:4: warning: This should trigger a warning. (Manual Warning)
 [...]/Tests/Mock Projects/Before/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:3:4: warning: Workaround: This should trigger. The workaround may no longer be necessary. (Dependency 0.9.9) (Workaround Reminder)
 [...]/Tests/Mock Projects/Before/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:6:4: warning: Workaround: This should trigger. The workaround may no longer be necessary. (Swift 3) (Workaround Reminder)
 [...]/Tests/Mock Projects/Before/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:9:4: warning: Workaround: This should trigger. The workaround may no longer be necessary. (echo 1.0.0 0.9.9) (Workaround Reminder)
+[...]/Tests/Mock Projects/Before/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:12:4: warning: Workaround: This should trigger no matter what. (Workaround Reminder)
 [...]/Tests/Mock Projects/Before/BadStyle/Tests/BadStyleTests/BadStyleTests.swift:4:20: warning: Colons should be preceded by spaces when denoting protocols or superclasses. (Colon Spacing)
 
 $ swiftlint lint --strict --config /Users/Jeremy/Library/Caches/ca.solideogloria.Workspace.Tests.debug/SwiftLint/Configuration.yml --quiet

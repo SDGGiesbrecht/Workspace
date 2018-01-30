@@ -62,11 +62,6 @@ struct ColonSpacing : Rule {
                     continue
                 }
 
-                if line(of: match, in: file).contains(":nodoc:".scalars) {
-                    // Jazzy Keyword
-                    continue
-                }
-
                 let protocolOrSuperclass: Bool
 
                 if fromStartOfLine(to: match, in: file).contains("[") ∧ upToEndOfLine(from: match, in: file).contains("]") {

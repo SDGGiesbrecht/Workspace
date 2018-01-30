@@ -51,7 +51,7 @@ extension _Swift {
         for dictionary in dependencies {
             guard let dependency = (dictionary as? PropertyListValue)?.as([String: Any].self),
                 let name = (dependency["name"] as? PropertyListValue)?.as(String.self),
-                let versionString = (dependency["version"] as? PropertyListValue)?.as(String.self) else {
+                let versionString = (dependency["version"] as? PropertyListValue)?.as(String.self) else { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Swift.
                     throw parseError(packageDescription: json)
             }
 

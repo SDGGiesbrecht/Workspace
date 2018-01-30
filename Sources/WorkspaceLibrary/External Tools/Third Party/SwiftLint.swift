@@ -76,8 +76,8 @@ class SwiftLint : SwiftPackage {
                 return false // SwiftLint reported a violation.
             } // [_Exempt from Code Coverage_]
             throw error // Error in SwiftLint set‐up.
-        } catch let error {
-            throw error
+        } catch let error { // [_Exempt from Code Coverage_]
+            throw error // Error in SwiftLint set‐up.
         }
     }
 }

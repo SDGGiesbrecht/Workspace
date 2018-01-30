@@ -21,7 +21,7 @@ class SwiftPackage : ThirdPartyTool {
 
     // MARK: - Execution
 
-    final override class func execute(command: StrictString, version: Version, with arguments: [String], versionCheck: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: inout Command.Output) throws {
-        try Package(url: repositoryURL).execute(version, of: [command], with: arguments.map({ StrictString($0) }), cacheDirectory: cacheDirectory, output: &output)
+    final override class func execute(command: StrictString, version: Version, with arguments: [String], versionCheck: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: inout Command.Output) throws { // [_Exempt from Code Coverage_] Unreachable except with incompatible version of SwiftLint.
+        try Package(url: repositoryURL).execute(version, of: [command], with: arguments.map({ StrictString($0) }), cacheDirectory: cacheDirectory, output: &output) // [_Exempt from Code Coverage_] Unreachable except with incompatible version of SwiftLint.
     }
 }

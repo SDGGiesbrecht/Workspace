@@ -38,7 +38,7 @@ struct TextFile {
     init(possiblyAt location: URL, executable: Bool = false) throws {
         do {
             self = try TextFile(alreadyAt: location)
-            if isExecutable ≠ executable {
+            if isExecutable ≠ executable { // [_Exempt from Code Coverage_] Unreachable except with corrupt files.
                 isExecutable = executable
                 hasChanged = true
             }
@@ -73,7 +73,7 @@ struct TextFile {
     let location: URL
 
     var isExecutable: Bool {
-        willSet {
+        willSet { // [_Exempt from Code Coverage_] Unreachable except with corrupt files.
             if newValue ≠ isExecutable {
                 hasChanged = true
             }

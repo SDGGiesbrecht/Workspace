@@ -121,7 +121,7 @@ class APITests : TestCase {
                                         output += "\n$ workspace validate documentation‐coverage\n"
                                         output += try Workspace.command.execute(with: ["validate", "documentation‐coverage", "•no‐colour"])
                                     #endif
-                                    
+
                                 } catch let error as Command.Error {
                                     output += "\n" + error.describe()
                                 } catch let error {

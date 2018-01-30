@@ -128,3 +128,6 @@ $ workspace refresh
 
 By default, Workspace refrains from tasks which would involve modifying project files. Such tasks must be activated with a [configuration](Documentation/Configuring%20Workspace.md) file.
 [_End_]
+
+(Proofreading output for Xcode mimics compiler errors. Testing involves producing such output.)
+Prohibit Compiler Warnings: False

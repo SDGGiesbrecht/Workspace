@@ -38,7 +38,7 @@ extension Package {
 
     // MARK: - Usage
 
-    func execute(_ version: Version, of executableNames: Set<StrictString>, with arguments: [StrictString], cacheDirectory: URL, output: inout Command.Output) throws {
+    func execute(_ version: Version, of executableNames: Set<StrictString>, with arguments: [StrictString], cacheDirectory: URL, output: inout Command.Output) throws { // [_Exempt from Code Coverage_] Unreachable except with incompatible versions of tools.
         try _execute(version, of: executableNames, with: arguments, cacheDirectory: cacheDirectory, output: &output) // Shared from SDGCommandLine
     }
 }

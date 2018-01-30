@@ -1,7 +1,7 @@
 // Header
 
 struct Conformance: Equatable { // This colon should trigger. It should be spaced.
-    static func == (lhs : Conformance, rhs : Conformance) -> Bool { // These colons should trigger. They should not be spaced.
+    static func == (lhs : Conformance, rhs:Conformance) -> Bool { // These colons should trigger. They need respacing.
         return false
     }
 

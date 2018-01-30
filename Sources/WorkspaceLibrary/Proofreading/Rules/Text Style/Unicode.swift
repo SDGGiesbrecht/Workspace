@@ -269,6 +269,17 @@ struct UnicodeRule : Rule {
             }
         }), status: status, output: &output)
 
+        check(file, for: "\u{27}",
+              allowInShellSource: true,
+              allowInSampleCode: true,
+              message: UserFacingText<InterfaceLocalization, Void>({ localization, _ in
+                switch localization {
+                // Note to localizers: Adapt the recommendations for the target localization.
+                case .englishCanada:
+                    return "Use an apostrophe (’), quotation marks (‘, ’), degrees (°) or prime (′)."
+                }
+              }), status: status, output: &output)
+
         check(file, for: "\u{21}\u{3D}",
               replacement: "≠",
               allowInShellSource: true,

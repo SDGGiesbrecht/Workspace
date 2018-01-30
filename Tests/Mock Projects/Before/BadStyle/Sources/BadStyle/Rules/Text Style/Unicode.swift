@@ -12,8 +12,15 @@
 
 /// Generic strokes may be necessary in inline shell source `swift -version`.
 
+/// Blah blah blah...
+///
+/// - RecommendedOver: -
 func −(lhs: Int, rhs: Int) -> Int {
     return lhs − rhs // Generic strokes must be allowed when aliasing them.
+}
+
+func useNumeric() -> Int {
+    return 1 - 2 // Swift.Numeric must be usable when commented on.
 }
 
 let ln2: Float80 = 0x1.62E42FEFA39EF358p-1 // Generic stroke must be allowed in float literals.

@@ -16,7 +16,7 @@
 ///
 /// - RecommendedOver: -
 func −(lhs: Int, rhs: Int) -> Int {
-    return lhs − rhs // Generic strokes must be allowed when aliasing them.
+    return lhs - rhs // Generic strokes must be allowed when aliasing them.
 }
 
 func useNumeric() -> Int {

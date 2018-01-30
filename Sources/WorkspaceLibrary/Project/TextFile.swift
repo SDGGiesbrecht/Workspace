@@ -73,8 +73,8 @@ struct TextFile {
     let location: URL
 
     var isExecutable: Bool {
-        willSet {
-            if newValue ≠ isExecutable { // [_Exempt from Code Coverage_] Unreachable except with corrupt files.
+        willSet { // [_Exempt from Code Coverage_] Unreachable except with corrupt files.
+            if newValue ≠ isExecutable { // [_Exempt from Code Coverage_]
                 hasChanged = true
             }
         }

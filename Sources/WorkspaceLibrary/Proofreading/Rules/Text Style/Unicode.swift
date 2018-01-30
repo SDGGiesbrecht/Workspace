@@ -47,7 +47,7 @@ struct UnicodeRule : Rule {
             return
         }
 
-        for match in file.contents.scalars.matches(for: obsolete.scalars) {
+        matchesLoop: for match in file.contents.scalars.matches(for: obsolete.scalars) {
 
             if allowTrailing {
                 if match.range.upperBound ≠ file.contents.scalars.endIndex {
@@ -166,7 +166,7 @@ struct UnicodeRule : Rule {
 
             for implementation in allowedDefaultImplementations {
                 if line(of: match, in: file).contains(implementation.scalars) {
-                    continue
+                    continue matchesLoop
                 }
             }
 

@@ -133,7 +133,7 @@ enum FileType : CustomStringConvertible {
     private static let fileNameSuffixes: [(suffix: String, type: FileType)] = [
 
         // Workspace
-        (Configuration.configurationFilePath.string, .workspaceConfiguration),
+        (".Workspace Configuration.txt", .workspaceConfiguration),
 
         // Source
         ("Package.swift", .swiftPackageManifest),

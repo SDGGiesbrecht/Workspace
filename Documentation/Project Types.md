@@ -24,8 +24,6 @@ Currently supported project types:
     - Swift Module (when built by the Swift Package Manager)
     - Framework Bundle* (when built by Xcode)
 - `Application` (macOS, iOS, tvOS)
-    - Cocoa (Touch) Application Bundle*
+    - Cocoa (Touch) Application Bundle
 - `Executable` (macOS, Linux)
     - Command Line Tool
-
-*Bundled resources are not supported.

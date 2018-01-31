@@ -24,8 +24,6 @@ enum Option : String, CustomStringConvertible {
 
     // MARK: - Cases
 
-    case automaticallyTakeOnNewResponsibilites = "Automatically Take On New Responsibilities"
-
     case projectType = "Project Type"
     case requireOptions = "Require Options"
 
@@ -103,8 +101,6 @@ enum Option : String, CustomStringConvertible {
     case testLongOption = "Test Long Option"
 
     static let allPublic: [Option] = [
-        .automaticallyTakeOnNewResponsibilites,
-
         .projectType,
         .requireOptions,
 
@@ -179,8 +175,6 @@ enum Option : String, CustomStringConvertible {
 
     var defaultValue: String {
         switch self {
-        case .automaticallyTakeOnNewResponsibilites:
-            return String(Configuration.falseOptionValue)
 
         case .projectType:
             return String(PackageRepository.Target.TargetType.library.key)
@@ -318,17 +312,6 @@ enum Option : String, CustomStringConvertible {
             return "Default\nValue"
         }
     }
-
-    static let automaticResponsibilityDocumentationPage = DocumentationLink.responsibilities
-    static let automaticRepsonsibilities: [(option: Option, automaticValue: String, documentationPage: DocumentationLink)] = [
-        (.manageReadMe, automaticValue: String(Configuration.trueOptionValue), DocumentationLink.readMe),
-        (.manageLicence, automaticValue: String(Configuration.trueOptionValue), DocumentationLink.licence),
-        (.manageContributingInstructions, automaticValue: String(Configuration.trueOptionValue), DocumentationLink.contributingInstructions),
-        (.manageXcode, automaticValue: String(Configuration.trueOptionValue), DocumentationLink.xcode),
-        (.manageFileHeaders, automaticValue: String(Configuration.trueOptionValue), DocumentationLink.fileHeaders),
-        (.generateDocumentation, automaticValue: String(Configuration.trueOptionValue), DocumentationLink.documentationGeneration),
-        (.manageContinuousIntegration, automaticValue: String(Configuration.trueOptionValue), DocumentationLink.continuousIntegration)
-        ]
 
     // MARK: - CustomStringConvertible
 

@@ -50,10 +50,6 @@ extension PackageRepository {
 
     func resetCache(debugReason: String) {
         PackageRepository.caches[location] = Cache()
-        if location == Repository.packageRepository.location {
-            // [_Workaround: Temporary bridging._]
-            Repository.resetCache()
-        }
         if BuildConfiguration.current == .debug {
             print("(Debug notice: Repository cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)")
         }

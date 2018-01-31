@@ -41,38 +41,6 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    print("Updating Workspace configuration...".formattedAsSectionHeader(), to: &output)
-    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-
-    var newResponsibilities: [(option: Option, value: String, comment: [String]?)] = []
-
-    for (option, automaticValue, documentationPage) in Option.automaticRepsonsibilities {
-
-        if ¬Configuration.optionIsDefined(option) {
-
-            if Configuration.automaticallyTakeOnNewResponsibilites {
-                newResponsibilities.append((option: option, value: automaticValue, comment: [
-                    "Workspace took responsibility for this automatically.",
-                    "(Because “\(Option.automaticallyTakeOnNewResponsibilites.key)” is “\(Configuration.trueOptionValue)”)",
-                    "For more information about “\(option.key)”, see:",
-                    documentationPage.url
-                    ]))
-            } else {
-                printWarning([
-                    "The configuration option “\(option.key)” is now available.",
-                    "For more information, see:",
-                    documentationPage.url,
-                    "(To silence this notice, set “\(option.key)” to “\(option.defaultValue)”)"
-                    ])
-            }
-        }
-    }
-
-    if Configuration.automaticallyTakeOnNewResponsibilites {
-        Configuration.addEntries(entries: newResponsibilities, output: &output)
-    }
-
-    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     print("Updating Git configuration...".formattedAsSectionHeader(), to: &output)
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 

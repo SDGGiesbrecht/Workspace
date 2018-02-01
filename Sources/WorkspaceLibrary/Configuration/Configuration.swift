@@ -399,7 +399,19 @@ struct Configuration {
         return Set(array.map({ StrictString($0) }))
     }
 
+    func shouldProhibitCompilerWarnings() throws -> Bool {
+        return try boolean(for: .prohibitCompilerWarnings) ?? true
+    }
+
+    func shouldEnforceTestCoverage() throws -> Bool {
+        return try boolean(for: .enforceTestCoverage) ?? true
+    }
+
     func shouldEnforceDocumentationCoverage() throws -> Bool { // [_Exempt from Code Coverage_] [_Workaround: Until validate is testable._]
         return try boolean(for: .enforceDocumentationCoverage) ?? true // [_Exempt from Code Coverage_] [_Workaround: Until validate is testable._]
+    }
+
+    func shouldSkipSimulator() throws -> Bool {
+        return try boolean(for: .skipSimulator) ?? false
     }
 }

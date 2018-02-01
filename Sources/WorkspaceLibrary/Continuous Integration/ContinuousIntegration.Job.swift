@@ -69,6 +69,33 @@ extension ContinuousIntegration {
 
         // MARK: - Properties
 
+        var englishOperatingSystemName: StrictString {
+            switch self {
+            case .macOSSwiftPackageManager, .macOSXcode:
+                return "macOS"
+            case .linux:
+                return "Linux"
+            case .iOS:
+                return "iOS"
+            case .watchOS:
+                return "watchOS"
+            case .tvOS:
+                return "tvOS"
+            case .miscellaneous, .documentation, .deployment:
+                unreachable()
+            }
+        }
+        var englishBuildSystemName: StrictString? {
+            switch self {
+            case .macOSSwiftPackageManager:
+                return "the Swift Package Manager"
+            case .macOSXcode:
+                return "Xcode"
+            case .linux, .iOS, .watchOS, .tvOS, .miscellaneous, .documentation, .deployment:
+                return nil
+            }
+        }
+
         var name: UserFacingText<InterfaceLocalization, Void> {
             switch self {
             case .macOSSwiftPackageManager:

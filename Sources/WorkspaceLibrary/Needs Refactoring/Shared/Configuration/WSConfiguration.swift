@@ -363,14 +363,6 @@ extension Configuration {
         return listValue(option: .requireOptions)
     }
 
-    static var skipSimulators: Bool {
-        if Environment.isInContinuousIntegration {
-            return false
-        } else {
-            return booleanValue(option: .skipSimulator)
-        }
-    }
-
     // Project Names
 
     static func moduleName(forProjectName projectName: String) -> String {
@@ -451,13 +443,13 @@ extension Configuration {
     }
 
     static var enforceCodeCoverage: Bool {
-        return booleanValue(option: .enforceCodeCoverage)
+        return booleanValue(option: .enforceTestCoverage)
     }
-    static var codeCoverageExemptionTokensForSameLine: [String] {
-        return listValue(option: .codeCoverageExemptionTokensForSameLine)
+    static var testCoverageExemptionTokensForSameLine: [String] {
+        return listValue(option: .testCoverageExemptionTokensForSameLine)
     }
-    static var codeCoverageExemptionTokensForPreviousLine: [String] {
-        return listValue(option: .codeCoverageExemptionTokensForPreviousLine)
+    static var testCoverageExemptionTokensForPreviousLine: [String] {
+        return listValue(option: .testCoverageExemptionTokensForPreviousLine)
     }
 
     static var manageContinuousIntegration: Bool {

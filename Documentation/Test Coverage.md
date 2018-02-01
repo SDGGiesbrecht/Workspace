@@ -1,5 +1,5 @@
 <!--
- Code Coverage.md
+ Test Coverage.md
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -12,15 +12,19 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  -->
 
-# Code Coverage
+# Test Coverage
 
-Workspace can enforce code coverage.
+Workspace can enforce test coverage.
 
-This is controlled by the [configuration](Configuring%20Workspace.md) option `Enforce Code Coverage`. The default value is `True`.
+This is controlled by the [configuration](Configuring%20Workspace.md) option `Enforce Test Coverage`. The default value is `True`.
+
+```shell
+$ workspace validate test‐coverage
+```
 
 ## Exemptions
 
-Some code paths should never occur or cannot be tested. These code paths can be exempted from code coverage requirements. There are two categories: [same‐line exemptions](#sameline-exemptions) and [previous‐line exemptions](#previousline-exemptions).
+Some code paths should never occur or cannot be tested. These code paths can be exempted from test coverage requirements. There are two categories: [same‐line exemptions](#sameline-exemptions) and [previous‐line exemptions](#previousline-exemptions).
 
 ### Same‐Line Exemptions
 
@@ -32,7 +36,7 @@ assert(x == y, "There is a problem: \(problem)")
 // The string interpolation cannot be covered by tests...
 // ...but the “assert” token causes it to be exempt.
 
-func untestableFunction() { // [_Exempt from Code Coverage_]
+func untestableFunction() { // [_Exempt from Test Coverage_]
     // This is also exempt.
 }
 ```
@@ -42,9 +46,9 @@ The built‐in same‐line tokens are:
 - `assert`
 - `precondition`
 - `fatalError`
-- `[_Exempt from Code Coverage_]`
+- `[_Exempt from Test Coverage_]`
 
-The [configuration](Configuring%20Workspace.md) option `Code Coverage Exemption Tokens for the Same Line` can be used to add custom tokens. It is a list separated by line breaks.
+The [configuration](Configuring%20Workspace.md) option `Test Coverage Exemption Tokens for the Same Line` can be used to add custom tokens. It is a list separated by line breaks.
 
 ### Previous‐Line Exemptions
 
@@ -66,4 +70,4 @@ The built‐in previous‐line tokens are:
 - `primitiveMethod`
 - `unreachable`
 
-The [configuration](Configuring%20Workspace.md) option `Code Coverage Exemption Tokens for the Previous Line` can be used to add custom tokens. It is a list separated by line breaks.
+The [configuration](Configuring%20Workspace.md) option `Test Coverage Exemption Tokens for the Previous Line` can be used to add custom tokens. It is a list separated by line breaks.

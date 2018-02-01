@@ -1,5 +1,5 @@
 /*
- UnitTests.swift
+ Tests.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -17,7 +17,81 @@ import Foundation
 import SDGCornerstone
 import SDGCommandLine
 
-struct UnitTests {
+struct Tests {
+
+    static let coverageJobs: Set<ContinuousIntegration.Job> = [
+        .macOSXcode,
+        .iOS,
+        .tvOS
+    ]
+    static let testJobs: Set<ContinuousIntegration.Job> = coverageJobs ∪ [
+        .macOSSwiftPackageManager,
+        .macOSXcode,
+        .linux,
+        .iOS,
+        .tvOS
+    ]
+    static let buildJobs: Set<ContinuousIntegration.Job> = testJobs ∪ [
+        .watchOS
+    ]
+
+    static let simulatorJobs: Set<ContinuousIntegration.Job> = [
+        .iOS,
+        .tvOS
+    ]
+
+    static func build(for job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+
+        let section = validationStatus.newSection()
+
+        print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+            switch localization {
+            case .englishCanada:
+                var name = job.englishOperatingSystemName
+                if let tool = job.englishBuildSystemName {
+                    name += " with " + tool
+                }
+                return StrictString("Verifying build for \(name)... ") + section.anchor
+            }
+        }).resolved().formattedAsSectionHeader(), to: &output)
+
+        notImplementedYet()
+    }
+
+    static func test(on job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+
+        let section = validationStatus.newSection()
+
+        print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+            switch localization {
+            case .englishCanada:
+                var name = job.englishOperatingSystemName
+                if let tool = job.englishBuildSystemName {
+                    name += " with " + tool
+                }
+                return StrictString("Testing on \(name)...") + section.anchor
+            }
+        }).resolved().formattedAsSectionHeader(), to: &output)
+
+        notImplementedYet()
+    }
+
+    static func validateCodeCoverage(on job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+
+        let section = validationStatus.newSection()
+
+        print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+            switch localization {
+            case .englishCanada:
+                let name = job.englishOperatingSystemName
+                return StrictString("Checking code coverage for \(name)...") + section.anchor
+            }
+        }).resolved().formattedAsSectionHeader(), to: &output)
+
+        notImplementedYet()
+    }
+
+    /*
 
     static func test(options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
 
@@ -400,4 +474,5 @@ struct UnitTests {
             }
         #endif
     }
+    */
 }

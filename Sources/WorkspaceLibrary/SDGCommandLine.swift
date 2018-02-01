@@ -61,4 +61,22 @@ extension _Swift {
         }
         return result
     }
+
+    @discardableResult func _build(output: inout Command.Output) throws -> Bool {
+        let log = try _execute(with: ["build"], output: &output, silently: false, autoquote: true)
+        if log.contains(" warning:".scalars) {
+            return false
+        } else {
+            return true
+        }
+    }
+
+    func _test(output: inout Command.Output) -> Bool {
+        do {
+            let _: Void = try _test(output: &output) // Shared from SDGCommandLine.
+            return true
+        } catch {
+            return false
+        }
+    }
 }

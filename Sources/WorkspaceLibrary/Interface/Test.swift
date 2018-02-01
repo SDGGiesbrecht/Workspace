@@ -51,12 +51,13 @@ extension Workspace {
             for job in ContinuousIntegration.Job.cases
                 where try options.job.includes(job: job) ∧ (try Validate.Build.job(job, isRelevantTo: options.project, andAvailableJobs: Tests.testJobs, output: &output)) {
 
-                    if options.job == nil, // Not in continuous integration.
+                    if try options.project.configuration.shouldSkipSimulator(),
+                        options.job == nil, // Not in continuous integration.
                         job ∈ Tests.simulatorJobs {
                         continue
                     }
 
-                    try Tests.test(on: job, validationStatus: &validationStatus, output: &output)
+                    try Tests.test(options.project, on: job, validationStatus: &validationStatus, output: &output)
             }
         }
     }

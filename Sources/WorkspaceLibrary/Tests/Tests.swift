@@ -26,10 +26,7 @@ struct Tests {
     ]
     static let testJobs: Set<ContinuousIntegration.Job> = coverageJobs ∪ [
         .macOSSwiftPackageManager,
-        .macOSXcode,
         .linux,
-        .iOS,
-        .tvOS
     ]
     static let buildJobs: Set<ContinuousIntegration.Job> = testJobs ∪ [
         .watchOS
@@ -40,50 +37,151 @@ struct Tests {
         .tvOS
     ]
 
-    static func build(for job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+    private static func englishName(for job: ContinuousIntegration.Job) -> StrictString {
+        var result = job.englishTargetOperatingSystemName
+        if let tool = job.englishTargetBuildSystemName {
+            result += " with " + tool
+        }
+        return result
+    }
+
+    private static func buildSDK(for job: ContinuousIntegration.Job) -> Xcode.SDK {
+        switch job {
+        case .macOSXcode:
+            return .macOS
+        case .iOS:
+            return .iOS
+        case .watchOS:
+            return .watchOS
+        case .tvOS:
+            return .tvOS
+        case .macOSSwiftPackageManager, .linux, .miscellaneous, .documentation, .deployment:
+            unreachable()
+        }
+    }
+
+    private static func testSDK(for job: ContinuousIntegration.Job) -> Xcode.SDK {
+        switch job {
+        case .macOSXcode:
+            return .macOS
+        case .iOS:
+            return .iOSSimulator
+        case .tvOS:
+            return .tvOSSimulator
+        case .macOSSwiftPackageManager, .linux, .watchOS, .miscellaneous, .documentation, .deployment:
+            unreachable()
+        }
+    }
+
+    static func build(_ project: PackageRepository, for job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
 
         let section = validationStatus.newSection()
 
         print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
-                var name = job.englishOperatingSystemName
-                if let tool = job.englishBuildSystemName {
-                    name += " with " + tool
-                }
-                return StrictString("Verifying build for \(name)... ") + section.anchor
+                return "Checking build for " + englishName(for: job) + "..." + section.anchor
             }
         }).resolved().formattedAsSectionHeader(), to: &output)
 
-        notImplementedYet()
+        try FileManager.default.do(in: project.location) {
+            do {
+
+                let buildCommand: (inout Command.Output) throws -> Bool
+                switch job {
+                case .macOSSwiftPackageManager, .linux:
+                    buildCommand = SwiftTool.default.build
+                case .macOSXcode, .iOS, .watchOS, .tvOS:
+                    let scheme = try Xcode.default.scheme(output: &output)
+                    buildCommand = { output in
+                        return try Xcode.default.build(scheme: scheme, for: buildSDK(for: job), output: &output)
+                    }
+                case .miscellaneous, .documentation, .deployment:
+                    unreachable()
+                }
+
+                if try buildCommand(&output) {
+                    validationStatus.passStep(message: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+                        switch localization {
+                        case .englishCanada:
+                            return "There are no compiler warnings for " + englishName(for: job) + "."
+                        }
+                    }))
+                } else {
+                    validationStatus.failStep(message: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+                        switch localization {
+                        case .englishCanada:
+                            return "There are compiler warnings for " + englishName(for: job) + "." + section.crossReference.resolved(for: localization)
+                        }
+                    }))
+                }
+            } catch {
+                validationStatus.failStep(message: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+                    switch localization {
+                    case .englishCanada:
+                        return "Build failed for " + englishName(for: job) + "." + section.crossReference.resolved(for: localization)
+                    }
+                }))
+            }
+        }
     }
 
-    static func test(on job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+    static func test(_ project: PackageRepository, on job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
 
         let section = validationStatus.newSection()
 
         print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
-                var name = job.englishOperatingSystemName
-                if let tool = job.englishBuildSystemName {
+                var name = job.englishTargetOperatingSystemName
+                if let tool = job.englishTargetBuildSystemName {
                     name += " with " + tool
                 }
-                return StrictString("Testing on \(name)...") + section.anchor
+                return "Testing on " + englishName(for: job) + "..." + section.anchor
             }
         }).resolved().formattedAsSectionHeader(), to: &output)
 
-        notImplementedYet()
+        try FileManager.default.do(in: project.location) {
+
+            let testCommand: (inout Command.Output) -> Bool
+            switch job {
+            case .macOSSwiftPackageManager, .linux:
+                testCommand = SwiftTool.default.test
+            case .macOSXcode, .iOS, .watchOS, .tvOS:
+                let scheme = try Xcode.default.scheme(output: &output)
+                testCommand = { output in
+                    return Xcode.default.test(scheme: scheme, on: testSDK(for: job), output: &output)
+                }
+            case .miscellaneous, .documentation, .deployment:
+                unreachable()
+            }
+
+            if testCommand(&output) {
+                validationStatus.passStep(message: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+                    switch localization {
+                    case .englishCanada:
+                        return "Tests pass on " + englishName(for: job) + "."
+                    }
+                }))
+            } else {
+                validationStatus.failStep(message: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+                    switch localization {
+                    case .englishCanada:
+                        return "Tests fail on " + englishName(for: job) + "." + section.crossReference.resolved(for: localization)
+                    }
+                }))
+            }
+        }
     }
 
-    static func validateCodeCoverage(on job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+    static func validateCodeCoverage(for project: PackageRepository, on job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
 
         let section = validationStatus.newSection()
 
         print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
             switch localization {
             case .englishCanada:
-                let name = job.englishOperatingSystemName
+                let name = job.englishTargetOperatingSystemName
                 return StrictString("Checking code coverage for \(name)...") + section.anchor
             }
         }).resolved().formattedAsSectionHeader(), to: &output)
@@ -106,67 +204,11 @@ struct Tests {
         }
         #endif
 
-        func printTestHeader(buildOnly: Bool, operatingSystemName: String, buildToolName: String? = nil) {
-
-            let verbPhrase = buildOnly ? "Verifying build for" : "Running unit tests on"
-            var configuration = operatingSystemName
-            if let tool = buildToolName {
-                configuration += " with \(tool)"
-            }
-            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-            print("\(verbPhrase) \(configuration)...".formattedAsSectionHeader(), to: &output)
-            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        }
-
-        func runUnitTests(buildOnly: Bool, operatingSystemName: String, script: [String], buildToolName: String? = nil) {
-
-            var configuration = operatingSystemName
-            if let tool = buildToolName {
-                configuration += " with \(tool)"
-            }
-
-            do {
-                let log = try Shell.default.run(command: script)
-
-                let phrase = buildOnly ? "Build succeeds for" : "Unit tests succeed on"
-                validationStatus.passStep(message: UserFacingText<InterfaceLocalization, Void>({ _, _ in StrictString("\(phrase) \(configuration).") }))
-
-                if Configuration.prohibitCompilerWarnings {
-                    let hasRealWarning = log.scalars.matches(for: " warning: ".scalars).contains(where: { (match: PatternMatch<String.ScalarView>) -> Bool in
-                        let remainder = log[match.range.upperBound...]
-                        return ¬remainder.hasPrefix("directory not found for option \u{27}\u{2D}F/Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/Library/Frameworks\u{27}")
-                        // The above false positive occurs when a project generated by the Swift Package Manager attempts to build for watchOS.
-                    })
-
-                    if hasRealWarning {
-                        validationStatus.failStep(message: UserFacingText<InterfaceLocalization, Void>({ _, _ in StrictString("There are compiler warnings for \(configuration). (See above for details.)") }))
-                    } else {
-                        validationStatus.passStep(message: UserFacingText<InterfaceLocalization, Void>({ _, _ in StrictString("There are no compiler warnings for \(configuration).") }))
-                    }
-                }
-            } catch {
-                let phrase = buildOnly ? "Build fails for" : "Unit tests fail on"
-                validationStatus.failStep(message: UserFacingText<InterfaceLocalization, Void>({ _, _ in StrictString("\(phrase) \(configuration). (See above for details.)") }))
-            }
-        }
-
-        func runUnitTestsInSwiftPackageManager(operatingSystemName: String, buildToolName: String? = nil) {
-            printTestHeader(buildOnly: false, operatingSystemName: operatingSystemName, buildToolName: buildToolName)
-            runUnitTests(buildOnly: false, operatingSystemName: operatingSystemName, script: ["swift", "test"], buildToolName: buildToolName)
-        }
-
         var deviceList: [String: String]?
 
         #if !os(Linux)
             func runUnitTestsInXcode(buildOnly: Bool, operatingSystem: OperatingSystem, sdk: String, simulatorSDK: String? = nil, deviceKey: String?, buildToolName: String? = nil) throws {
                 let operatingSystemName = "\(operatingSystem)"
-
-                var buildOnly = buildOnly
-                if Configuration.skipSimulators ∧ operatingSystem ≠ .macOS {
-                    buildOnly = true
-                }
-
-                printTestHeader(buildOnly: buildOnly, operatingSystemName: operatingSystemName, buildToolName: buildToolName)
 
                 let flag: String
                 let flagValue: String

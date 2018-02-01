@@ -56,8 +56,8 @@ extension Workspace.Validate {
                         continue
                     }
 
-                    try Tests.test(on: job, validationStatus: &validationStatus, output: &output)
-                    try Tests.validateCodeCoverage(on: job, validationStatus: &validationStatus, output: &output)
+                    try Tests.test(options.project, on: job, validationStatus: &validationStatus, output: &output)
+                    try Tests.validateCodeCoverage(for: options.project, on: job, validationStatus: &validationStatus, output: &output)
             }
         }
     }

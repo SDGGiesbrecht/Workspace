@@ -437,14 +437,6 @@ extension Configuration {
     static var manageXcode: Bool {
         return booleanValue(option: .manageXcode)
     }
-
-    static var prohibitCompilerWarnings: Bool {
-        return booleanValue(option: .prohibitCompilerWarnings)
-    }
-
-    static var enforceCodeCoverage: Bool {
-        return booleanValue(option: .enforceTestCoverage)
-    }
     static var testCoverageExemptionTokensForSameLine: [String] {
         return listValue(option: .testCoverageExemptionTokensForSameLine)
     }

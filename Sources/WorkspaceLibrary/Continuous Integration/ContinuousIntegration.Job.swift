@@ -69,7 +69,7 @@ extension ContinuousIntegration {
 
         // MARK: - Properties
 
-        var englishOperatingSystemName: StrictString {
+        var englishTargetOperatingSystemName: StrictString {
             switch self {
             case .macOSSwiftPackageManager, .macOSXcode:
                 return "macOS"
@@ -85,7 +85,7 @@ extension ContinuousIntegration {
                 unreachable()
             }
         }
-        var englishBuildSystemName: StrictString? {
+        var englishTargetBuildSystemName: StrictString? {
             switch self {
             case .macOSSwiftPackageManager:
                 return "the Swift Package Manager"

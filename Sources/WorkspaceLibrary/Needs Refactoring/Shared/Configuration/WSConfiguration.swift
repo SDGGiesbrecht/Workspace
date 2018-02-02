@@ -437,12 +437,6 @@ extension Configuration {
     static var manageXcode: Bool {
         return booleanValue(option: .manageXcode)
     }
-    static var testCoverageExemptionTokensForSameLine: [String] {
-        return listValue(option: .testCoverageExemptionTokensForSameLine)
-    }
-    static var testCoverageExemptionTokensForPreviousLine: [String] {
-        return listValue(option: .testCoverageExemptionTokensForPreviousLine)
-    }
 
     static var manageContinuousIntegration: Bool {
         return booleanValue(option: .manageContinuousIntegration)

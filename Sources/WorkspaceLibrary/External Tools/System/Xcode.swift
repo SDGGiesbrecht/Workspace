@@ -96,7 +96,40 @@
             return warnings.isEmpty
         }
 
+        private func buildSettings(for scheme: String, on sdk: SDK, output: inout Command.Output) throws -> String {
+            return try executeInCompatibilityMode(with: [
+                "\u{2D}showBuildSettings",
+                "\u{2D}scheme", scheme,
+                "\u{2D}sdk", sdk.rawValue
+                ], output: &output, silently: true)
+        }
+
+        private func buildDirectory(for scheme: String, on sdk: SDK, output: inout Command.Output) throws -> URL {
+            let settings = try buildSettings(for: scheme, on: sdk, output: &output)
+            guard let productDirectory = settings.scalars.firstNestingLevel(startingWith: " BUILD_DIR = ".scalars, endingWith: "\n".scalars)?.contents.contents else {
+                throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
+                    switch localization {
+                    case .englishCanada:
+                        return "Could not find “BUILD_DIR” in Xcode build settings."
+                    }
+                }))
+            }
+            return URL(fileURLWithPath: String(productDirectory)).deletingLastPathComponent()
+        }
+
+        private func productsDirectory(for scheme: String, on sdk: SDK, output: inout Command.Output) throws -> URL {
+            return try buildDirectory(for: scheme, on: sdk, output: &output).appendingPathComponent("Products")
+        }
+
+        private func coverageDirectory(for scheme: String, on sdk: SDK, output: inout Command.Output) throws -> URL {
+            return try buildDirectory(for: scheme, on: sdk, output: &output).appendingPathComponent("ProfileData")
+        }
+
         func test(scheme: String, on sdk: SDK, output: inout Command.Output) -> Bool {
+
+            if let coverage = try? coverageDirectory(for: scheme, on: sdk, output: &output) {
+                try? FileManager.default.removeItem(at: coverage)
+            }
 
             var script = [
                 "test"
@@ -104,7 +137,7 @@
 
             switch sdk {
             case .iOSSimulator:
-                script += ["\u{2D}destination", "name=iPhone X"]
+                script += ["\u{2D}destination", "name=iPhone 8"]
             case .tvOSSimulator:
                 script += ["\u{2D}destination", "name=Apple TV 4K"]
             default:
@@ -119,6 +152,48 @@
             } catch {
                 return false
             }
+        }
+
+        func coverageData(for target: String, of scheme: String, on sdk: SDK, output: inout Command.Output) throws -> String {
+
+            let directory = try coverageDirectory(for: scheme, on: sdk, output: &output)
+            guard let instance = try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil, options: []).first else {
+                throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
+                    switch localization {
+                    case .englishCanada:
+                        return "No coverage data available."
+                    }
+                }))
+            }
+            let rawData = instance.appendingPathComponent("Coverage.profdata")
+
+            let settings = try buildSettings(for: scheme, on: sdk, output: &output)
+            guard let executablePathSuffix = settings.scalars.firstNestingLevel(startingWith: " EXECUTABLE_PATH = \(target).".scalars, endingWith: "\n".scalars)?.contents.contents else {
+                throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
+                    switch localization {
+                    case .englishCanada:
+                        return "Could not find “EXECUTABLE_PATH” in Xcode build settings."
+                    }
+                }))
+            }
+            let relativeExecutableLocation = target + "." + String(executablePathSuffix)
+
+            let directorySuffix: String
+            if sdk == .macOS {
+                directorySuffix = ""
+            } else {
+                directorySuffix = "\u{2D}" + sdk.rawValue
+            }
+
+            let executable = try productsDirectory(for: scheme, on: sdk, output: &output).appendingPathComponent("Debug" + directorySuffix).appendingPathComponent(relativeExecutableLocation)
+
+            return try Shell.default.run(command: [
+                "xcrun", "llvm\u{2D}cov", "show",
+                "\u{2D}show\u{2D}regions",
+                "\u{2D}instr\u{2D}profile",
+                rawData.path,
+                executable.path
+                ], silently: true)
         }
     }
 

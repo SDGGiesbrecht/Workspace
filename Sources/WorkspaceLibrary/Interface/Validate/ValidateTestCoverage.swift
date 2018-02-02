@@ -51,7 +51,8 @@ extension Workspace.Validate {
             for job in ContinuousIntegration.Job.cases
                 where try options.job.includes(job: job) ∧ (try Build.job(job, isRelevantTo: options.project, andAvailableJobs: Tests.coverageJobs, output: &output)) {
 
-                    if options.job == nil, // Not in continuous integration.
+                    if try options.project.configuration.shouldSkipSimulator(),
+                        options.job == nil, // Not in continuous integration.
                         job ∈ Tests.simulatorJobs {
                         continue
                     }

@@ -87,6 +87,11 @@ struct Tests {
         try FileManager.default.do(in: project.location) {
             do {
 
+                setenv(DXcode.skipProofreadingEnvironmentVariable, "YES", 1 /* overwrite */)
+                defer {
+                    unsetenv(DXcode.skipProofreadingEnvironmentVariable)
+                }
+
                 let buildCommand: (inout Command.Output) throws -> Bool
                 switch job {
                 case .macOSSwiftPackageManager, .linux:
@@ -284,17 +289,4 @@ struct Tests {
 
         return overallCoverageSuccess
     }
-
-    /*
-
-    static func test(options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
-
-        #if !os(Linux)
-            try DXcode.temporarilyDisableProofreading(output: &output)
-            defer {
-                (try? DXcode.reEnableProofreading(output: &output))!
-        }
-        #endif
-    }
-    */
 }

@@ -152,13 +152,15 @@
         static let scriptObjectName = "PROOFREAD"
         static let scriptActionEntry = scriptObjectName + ","
 
+        static let skipProofreadingEnvironmentVariable = "SKIP_PROOFREADING"
+
         static func enableProofreading(output: inout Command.Output) throws {
 
             let script: String
             if try Repository.packageRepository.isWorkspaceProject(output: &output) {
-                script = "swift run workspace proofread •xcode"
+                script = "if [ \u{2D}z ${SKIP_PROOFREADING+set} ] ; then swift run workspace proofread •xcode ; fi"
             } else {
-                script = "export PATH=\u{5C}\u{22}$HOME/.SDG/Registry:$PATH\u{5C}\u{22} ; if which workspace > /dev/null ; then workspace proofread •xcode •use‐version " + latestStableWorkspaceVersion.string + " ; else echo \u{5C}\u{22}warning: Install Workspace if you wish to receive in‐code reports of style errors for this project. See https://github.com/SDGGiesbrecht/Workspace\u{5C}\u{22} ; fi"
+                script = "if [ \u{2D}z ${SKIP_PROOFREADING+set} ] ; then export PATH=\u{5C}\u{22}$HOME/.SDG/Registry:$PATH\u{5C}\u{22} ; if which workspace > /dev/null ; then workspace proofread •xcode •use‐version " + latestStableWorkspaceVersion.string + " ; else echo \u{5C}\u{22}warning: Install Workspace if you wish to receive in‐code reports of style errors for this project. See https://github.com/SDGGiesbrecht/Workspace\u{5C}\u{22} ; fi ; fi"
             }
 
             let allTargets = try Repository.packageRepository.targets(output: &output).map { $0.name }

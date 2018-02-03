@@ -148,6 +148,11 @@ struct Tests {
 
         try FileManager.default.do(in: project.location) {
 
+            setenv(DXcode.skipProofreadingEnvironmentVariable, "YES", 1 /* overwrite */)
+            defer {
+                unsetenv(DXcode.skipProofreadingEnvironmentVariable)
+            }
+
             let testCommand: (inout Command.Output) -> Bool
             switch job {
             case .macOSSwiftPackageManager, .linux:
@@ -180,6 +185,11 @@ struct Tests {
     }
 
     static func validateCodeCoverage(for project: PackageRepository, on job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+
+        setenv(DXcode.skipProofreadingEnvironmentVariable, "YES", 1 /* overwrite */)
+        defer {
+            unsetenv(DXcode.skipProofreadingEnvironmentVariable)
+        }
 
         let scheme = try Xcode.default.scheme(output: &output)
 

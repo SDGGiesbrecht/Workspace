@@ -262,7 +262,7 @@ struct Tests {
             let fileLine = fileReport.range.lowerBound.line(in: coverageReport.lines)
             let file = String(coverageReport.lines[fileLine].line)
 
-            if file.scalars.contains("Needs Refactoring".scalars) {
+            if file.scalars.contains("Needs Refactoring".scalars) ∨ file.scalars.contains(" .swift\u{3A}".scalars) /* switch case */ {
                 continue // [_Workaround: A temporary measure until refactoring is complete._]
             }
 

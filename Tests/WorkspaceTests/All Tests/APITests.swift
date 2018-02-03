@@ -172,38 +172,6 @@ class APITests : TestCase {
                                     output += try Workspace.command.execute(with: ["proofread", "•no‐colour"])
                                 }
 
-                                XCTAssertErrorFree {
-                                    output += "\n$ workspace build\n"
-                                    output += try Workspace.command.execute(with: ["build"])
-                                }
-                                #if os(macOS)
-                                    // Simulators are not all simultaneously available in continuous integration.
-                                    XCTAssertErrorFree {
-                                        output += "\n$ workspace test •job macos‐swift‐package‐manager\n"
-                                        output += try Workspace.command.execute(with: ["test", "•job", "macos‐swift‐package‐manager"])
-                                        output += "\n$ workspace test •job macos‐xcode\n"
-                                        output += try Workspace.command.execute(with: ["test", "•job", "macos‐xcode"])
-                                    }
-                                #else
-                                    XCTAssertErrorFree {
-                                        output += "\n$ workspace test\n"
-                                        output += try Workspace.command.execute(with: ["test"])
-                                    }
-                                #endif
-
-                                #if os(macOS)
-                                    // Simulators are not all simultaneously available in continuous integration.
-                                    XCTAssertErrorFree {
-                                        output += "\n$ workspace validate test‐coverage •job macos‐xcode\n"
-                                        output += try Workspace.command.execute(with: ["validate", "test‐coverage", "•job", "macos‐xcode"])
-                                    }
-                                #else
-                                    XCTAssertErrorFree {
-                                        output += "\n$ workspace validate test‐coverage\n"
-                                        output += try Workspace.command.execute(with: ["validate", "test‐coverage"])
-                                    }
-                                #endif
-
                                 #if !os(Linux)
                                     XCTAssertErrorFree {
                                         output += "\n$ workspace validate documentation‐coverage\n"

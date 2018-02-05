@@ -62,7 +62,7 @@ class APITests : TestCase {
             for project in try FileManager.default.contentsOfDirectory(at: beforeDirectory, includingPropertiesForKeys: nil, options: [])
                 where project.lastPathComponent ≠ ".DS_Store" {
 
-                    if project.lastPathComponent ≠ "SDG" ∧ project.lastPathComponent ≠ "Default" {
+                    if project.lastPathComponent ≠ "SDGLibrary" ∧ project.lastPathComponent ≠ "Default" ∧ project.lastPathComponent ≠ "SDGTool" {
                         // [_Warning: Temporary._]
                         continue
                     }

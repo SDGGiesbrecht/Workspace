@@ -1,0 +1,22 @@
+
+$ workspace refresh scripts
+
+$ workspace refresh read‐me
+
+$ workspace refresh continuous‐integration
+
+$ workspace refresh resources
+
+$ workspace proofread
+
+$ workspace validate build
+
+$ workspace test
+
+$ workspace validate test‐coverage
+
+$ workspace validate documentation‐coverage
+
+$ workspace proofread •xcode
+
+$ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --quiet

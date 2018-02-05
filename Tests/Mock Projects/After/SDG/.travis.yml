@@ -28,31 +28,6 @@ matrix:
         - "bash \"./Validate (macOS).command\" •job linux"
     - os: osx
       env:
-        - JOB="iOS"
-      osx_image: xcode9.2
-      language: objective-c
-      xcode_sdk: iphonesimulator
-      script:
-        - "bash \"./Refresh (macOS).command\""
-        - "bash \"./Validate (macOS).command\" •job ios"
-    - os: osx
-      env:
-        - JOB="watchOS"
-      osx_image: xcode9.2
-      script:
-        - "bash \"./Refresh (macOS).command\""
-        - "bash \"./Validate (macOS).command\" •job watchos"
-    - os: osx
-      env:
-        - JOB="tvOS"
-      osx_image: xcode9.2
-      language: objective-c
-      xcode_sdk: appletvsimulator
-      script:
-        - "bash \"./Refresh (macOS).command\""
-        - "bash \"./Validate (macOS).command\" •job tvos"
-    - os: osx
-      env:
         - JOB="Miscellaneous"
       osx_image: xcode9.2
       script:

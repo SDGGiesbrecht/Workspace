@@ -216,12 +216,9 @@ libswiftRemoteMirror.dylib is up to date at [...]/Library/Developer/Xcode/Derive
 
 Test Suite 'All tests' [...]Test Suite 'DefaultTests.xctest' [...]Test Suite 'DefaultTests' [...]Test Case '-[DefaultTests.DefaultTests testExample]' started.
 Test Case '-[DefaultTests.DefaultTests testExample]' [...]).
-Test Suite 'DefaultTests' [...]145.
-	 Executed 1 test, with 0 failures (0 [...]
-Test Suite 'DefaultTests.xctest' [...]147.
-	 Executed 1 test, with 0 failures (0 [...]
-Test Suite 'All tests' [...]147.
-	 Executed 1 test, with 0 failures (0 [...]
+Test Suite 'DefaultTests' [...]	 Executed 1 test, with 0 failures (0 [...]
+Test Suite 'DefaultTests.xctest' [...]	 Executed 1 test, with 0 failures (0 [...]
+Test Suite 'All tests' [...]	 Executed 1 test, with 0 failures (0 [...]
 
 
 ✓ Tests pass on macOS with the Swift Package Manager.

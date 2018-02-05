@@ -3,4 +3,7 @@ $ workspace refresh continuous‐integration
 
 Refreshing continuous integration configuration...
 
+
+$ swift package resolve
+
 Writing to “.travis.yml”...

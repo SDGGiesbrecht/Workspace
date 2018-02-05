@@ -161,6 +161,22 @@ class APITests : TestCase {
                             output.replaceMatches(for: NSHomeDirectory().scalars, with: replacement)
                             output.replaceMatches(for: "`..".scalars, with: "`".scalars)
                             output.replaceMatches(for: "/..".scalars, with: [])
+                            // Remove varying times.
+                            output.replaceMatches(for: CompositePattern([
+                                LiteralPattern("started at ".scalars),
+                                RepetitionPattern(ConditionalPattern(condition: { $0 ≠ "\n" })),
+                                LiteralPattern("\n".scalars),
+                                ]), with: replacement)
+                            output.replaceMatches(for: CompositePattern([
+                                LiteralPattern("passed (".scalars),
+                                RepetitionPattern(ConditionalPattern(condition: { $0 ≠ " " })),
+                                LiteralPattern(" seconds".scalars),
+                                ]), with: replacement)
+                            output.replaceMatches(for: CompositePattern([
+                                LiteralPattern("unexpected) in ".scalars),
+                                RepetitionPattern(ConditionalPattern(condition: { $0 ≠ "\n" })),
+                                LiteralPattern(" seconds".scalars),
+                                ]), with: replacement)
 
                             XCTAssertErrorFree { try output.save(to: outputLocation) }
                             checkForDifferences(in: "output", at: outputLocation, for: project)

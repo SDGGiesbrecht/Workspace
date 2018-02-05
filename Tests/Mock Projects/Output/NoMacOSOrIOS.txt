@@ -1,53 +1,13 @@
 
-$ workspace refresh scripts
-
-Refreshing scripts...
-
-
-$ swift package resolve
-
-Writing to “Refresh (macOS).command”...
-Writing to “Refresh (Linux).sh”...
-
-$ swift package resolve
-
-Writing to “Validate (macOS).command”...
-$ workspace refresh resources
-
-Refreshing resources...
-
-$ workspace proofread
-
-Normalizing files...
-
-
-Proofreading source code... (§1)
-
-.Workspace Configuration.txt
-.gitignore
-Package.swift
-README.md
-Sources/NoMacOSOrIOS/NoMacOSOrIOS.swift
-Tests/LinuxMain.swift
-Tests/NoMacOSOrIOSTests/NoMacOSOrIOSTests.swift
-
-$ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --reporter emoji
-
-
-$ swift package resolve
-
-
-✓ Source code passes proofreading.
-
-
-“NoMacOSOrIOS” passes validation.
-
 $ workspace validate documentation‐coverage
+
+$ swift package resolve
+
 
 Generating documentation for “NoMacOSOrIOS”...
 
 
-$ jazzy --module NoMacOSOrIOS --copyright "Copyright ©2018 the NoMacOSOrIOS project contributors. All rights reserved." --documentation=Documentation/*.md --clean --use-safe-filenames --output "[...]/Tests/Mock Projects/Before/NoMacOSOrIOS/docs/NoMacOSOrIOS" --xcodebuild-arguments "-scheme,NoMacOSOrIOS-Package,-target,NoMacOSOrIOS,-sdk,watchos,-derivedDataPath,[...]/Jazzy Build Artifacts"
+$ jazzy --module NoMacOSOrIOS --copyright "Copyright ©2018 the NoMacOSOrIOS project contributors. All rights reserved." --documentation=Documentation/*.md --clean --use-safe-filenames --output "[...]/Tests/Mock Projects/After/NoMacOSOrIOS/docs/NoMacOSOrIOS" --xcodebuild-arguments "-scheme,NoMacOSOrIOS-Package,-target,NoMacOSOrIOS,-sdk,watchos,-derivedDataPath,[...]/Jazzy Build Artifacts"
 0% documentation coverage with 0 undocumented symbols
 skipped 1 private, fileprivate, or internal symbol (use `--min-acl` to specify a different minimum ACL)
 jam out ♪♫ to your fresh new docs in `docs/NoMacOSOrIOS`

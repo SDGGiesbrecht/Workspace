@@ -36,7 +36,7 @@ class APITests : TestCase {
         }
     }
 
-    func testWorkflow() {
+    func testOnMockProjects() {
         // Get version checks over with, so that they are not in the output.
         triggerVersionChecks()
 
@@ -64,169 +64,98 @@ class APITests : TestCase {
                     print("\n\nTesting on “\(project.lastPathComponent)”...\n\n".formattedAsSectionHeader())
 
                     let expectedToFail = (try? project.appendingPathComponent("✗").checkResourceIsReachable()) == true
+                    var commands = try String(from: project.appendingPathComponent("$.txt")).components(separatedBy: "\n").filter({ ¬$0.isEmpty }).map { $0.components(separatedBy: " ").map({ StrictString($0) }) }
+                    #if os(Linux)
+                        commands = commands.filter { command
+                            return ¬command.contains("documentation‐coverage")
+                        }
+                    #endif
 
-                    #if !os(Linux)
+                    #if os(Linux)
                         // [_Workaround: Linux differs due to absence of Jazzy._]
+                        let resultLocation = mockProjectsDirectory.appendingPathComponent("After (Linux)/" + project.lastPathComponent)
+                        let outputLocation = mockProjectsDirectory.appendingPathComponent("Output (Linux)/" + project.lastPathComponent + ".txt")
+                    #else
                         let resultLocation = mockProjectsDirectory.appendingPathComponent("After/" + project.lastPathComponent)
                         let outputLocation = mockProjectsDirectory.appendingPathComponent("Output/" + project.lastPathComponent + ".txt")
                     #endif
 
                     // Ensure proper starting state.
-                    func revertToStartingState() {
-                        try? FileManager.default.removeItem(at: project)
-                        XCTAssertErrorFree {
-                            try FileManager.default.do(in: repositoryRoot) {
-                                try Shell.default.run(command: [
-                                    "git", "checkout", Shell.quote(project.path)
-                                    ])
-                            }
-                        }
-                    }
-                    revertToStartingState()
-                    defer { revertToStartingState() }
+                    try? FileManager.default.removeItem(at: resultLocation)
+                    try FileManager.default.copy(project, to: resultLocation)
 
-                    try FileManager.default.do(in: project) {
+                    try FileManager.default.do(in: resultLocation) {
                         LocalizationSetting(orderOfPrecedence: ["en\u{2D}CA"]).do {
 
-                            // [_Workaround: This should eventually just do “workspace validate”._]
+                            #if !os(Linux)
+                                // [_Workaround: Until Xcode management is testable._]
+                                _ = try? Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
+                            #endif
+
                             var output: StrictString = ""
 
-                            if expectedToFail {
-                                do {
-                                    output += "\n$ workspace refresh scripts\n"
-                                    output += try Workspace.command.execute(with: ["refresh", "scripts", "•no‐colour"])
-
-                                    if project.lastPathComponent ∉ Set(["BadStyle", "FailingDocumentationCoverage", "InvalidConfigurationEnumerationValue", "InvalidResourceDirectory", "InvalidTarget", "NoAuthor"]) {
-                                        output += "\n$ workspace refresh read‐me\n"
-                                        output += try Workspace.command.execute(with: ["refresh", "read‐me", "•no‐colour"])
+                            for command in commands {
+                                output += "\n$ workspace " + command.joined(separator: " ") + "\n"
+                                let execute = { output += try Workspace.command.execute(with: command + ["•no‐colour"]) }
+                                if expectedToFail {
+                                    do {
+                                        try execute()
+                                    } catch let error as Command.Error {
+                                        output += "\n" + error.describe()
+                                    } catch let error {
+                                        XCTFail("Unexpected error: \(error)")
                                     }
 
-                                    if project.lastPathComponent ∉ Set(["FailingDocumentationCoverage", "InvalidConfigurationEnumerationValue", "InvalidProjectType",
-                                                                            "NoLocalizations", "UndefinedConfigurationValue"]) {
-                                        output += "\n$ workspace refresh continuous‐integration\n"
-                                        output += try Workspace.command.execute(with: ["refresh", "continuous‐integration", "•no‐colour"])
+                                } else {
+                                    XCTAssertErrorFree {
+                                        try execute()
                                     }
-
-                                    output += "\n$ workspace refresh resources\n"
-                                    output += try Workspace.command.execute(with: ["refresh", "resources", "•no‐colour"])
-
-                                    #if !os(Linux)
-                                        try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
-                                    #endif
-
-                                    output += "\n$ workspace proofread\n"
-                                    output += try Workspace.command.execute(with: ["proofread", "•no‐colour"])
-
-                                    #if !os(Linux)
-                                        output += "\n$ workspace validate documentation‐coverage\n"
-                                        output += try Workspace.command.execute(with: ["validate", "documentation‐coverage", "•no‐colour"])
-                                    #endif
-
-                                } catch let error as Command.Error {
-                                    output += "\n" + error.describe()
-                                } catch let error {
-                                    XCTFail("Unexpected error: \(error)")
                                 }
-                                do {
-                                    output += "\n\n⁂\n\n"
-                                    output += "\n$ workspace proofread •xcode\n"
-                                    output += try Workspace.command.execute(with: ["proofread", "•xcode"])
-                                } catch let error as Command.Error {
-                                    output += "\n" + error.describe()
-                                } catch let error {
-                                    XCTFail("Unexpected error: \(error)")
-                                }
-                            } else {
+                            }
+
+                            #if !os(Linux)
                                 XCTAssertErrorFree {
-                                    output += "\n$ workspace refresh scripts\n"
-                                    output += try Workspace.command.execute(with: ["refresh", "scripts", "•no‐colour"])
-                                }
 
-                                if project.lastPathComponent ∉ Set(["ApplicationProjectType", "CustomProofread", "Default", "NoMacOS", "NoMacOSOrIOS", "NoMacOSOrIOSOrWatchOS", "UnicodeSource"]) {
-                                    XCTAssertErrorFree {
-                                        output += "\n$ workspace refresh read‐me\n"
-                                        output += try Workspace.command.execute(with: ["refresh", "read‐me", "•no‐colour"])
-                                    }
-                                }
+                                    if project.lastPathComponent == "UnicodeSource" {
+                                        let index = try String(from: resultLocation.appendingPathComponent("docs/\(project.lastPathComponent)/index.html"))
+                                        XCTAssert(¬index.contains("Skip in Jazzy"), "Failed to remove read‐me–only content.")
 
-                                if project.lastPathComponent ∉ Set(["CustomReadMe", "Default", "ExecutableProjectType", "NoMacOS", "NoMacOSOrIOS", "NoMacOSOrIOSOrWatchOS", "PartialReadMe", "UnicodeSource"]) {
-                                    XCTAssertErrorFree {
-                                        output += "\n$ workspace refresh continuous‐integration\n"
-                                        output += try Workspace.command.execute(with: ["refresh", "continuous‐integration", "•no‐colour"])
-                                    }
-                                }
-
-                                XCTAssertErrorFree {
-                                    output += "\n$ workspace refresh resources\n"
-                                    output += try Workspace.command.execute(with: ["refresh", "resources", "•no‐colour"])
-                                }
-
-                                #if !os(Linux)
-                                    XCTAssertErrorFree {
-                                        try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
-                                    }
-                                #endif
-
-                                XCTAssertErrorFree {
-                                    output += "\n$ workspace proofread\n"
-                                    output += try Workspace.command.execute(with: ["proofread", "•no‐colour"])
-                                }
-
-                                #if !os(Linux)
-                                    XCTAssertErrorFree {
-                                        output += "\n$ workspace validate documentation‐coverage\n"
-                                        output += try Workspace.command.execute(with: ["validate", "documentation‐coverage", "•no‐colour"])
-
-                                        if project.lastPathComponent ∉ Set(["ApplicationProjectType", "CustomProofread", "CustomReadMe", "Default", "ExecutableProjectType", "PartialReadMe", "SDG"]) {
-                                            let index = try String(from: project.appendingPathComponent("docs/\(project.lastPathComponent)/index.html"))
-                                            XCTAssert(¬index.contains("Skip in Jazzy"), "Failed to remove read‐me–only content.")
-
-                                            if project.lastPathComponent == "UnicodeSource" {
-                                                let page = try String(from: project.appendingPathComponent("docs/UnicodeSource/Extensions/Bool.html"))
-                                                XCTAssert(¬page.contains("\u{22}err\u{22}"), "Failed to clean up Jazzy output.")
-                                            }
+                                        if project.lastPathComponent == "UnicodeSource" {
+                                            let page = try String(from: resultLocation.appendingPathComponent("docs/UnicodeSource/Extensions/Bool.html"))
+                                            XCTAssert(¬page.contains("\u{22}err\u{22}"), "Failed to clean up Jazzy output.")
                                         }
                                     }
-                                #endif
+                                }
+                            #endif
 
+                            if project.lastPathComponent == "SDG" {
                                 XCTAssert(FileManager.default.isExecutableFile(atPath: "Refresh (macOS).command"), "Generated macOS refresh script is not executable.")
                                 XCTAssert(FileManager.default.isExecutableFile(atPath: "Refresh (Linux).sh"), "Generated Linux refresh script is not executable.")
                                 XCTAssert(FileManager.default.isExecutableFile(atPath: "Validate (macOS).command"), "Generated macOS validate script is not executable.")
                                 #if os(Linux)
                                     XCTAssert(FileManager.default.isExecutableFile(atPath: "Validate (Linux).sh"), "Generated Linux validate script is not executable.")
                                 #endif
-
-                                #if !os(Linux)
-                                    // [_Workaround: Linux differs due to absence of Jazzy._]
-                                    XCTAssertErrorFree {
-                                        try? FileManager.default.removeItem(at: resultLocation)
-                                        try FileManager.default.copy(project, to: resultLocation)
-                                        // Remove variable files.
-                                        try? FileManager.default.removeItem(at: resultLocation.appendingPathComponent("Package.resolved"))
-                                        try? FileManager.default.removeItem(at: resultLocation.appendingPathComponent("docs/\(project.lastPathComponent)/docsets"))
-                                    }
-                                    checkForDifferences(in: "repository", at: resultLocation, for: project)
-                                #endif
                             }
 
-                            #if !os(Linux)
-                                // [_Workaround: Linux differs due to absence of Jazzy._]
+                            // Remove variable files.
+                            try? FileManager.default.removeItem(at: resultLocation.appendingPathComponent("Package.resolved"))
+                            try? FileManager.default.removeItem(at: resultLocation.appendingPathComponent("docs/\(project.lastPathComponent)/docsets"))
+                            checkForDifferences(in: "repository", at: resultLocation, for: project)
 
-                                let replacement = "[...]".scalars
-                                // Remove varying repository location.
-                                output.replaceMatches(for: repositoryRoot.path.scalars, with: replacement)
-                                // Remove varying cache directory.
-                                output.replaceMatches(for: FileManager.default.url(in: .cache, at: "Cache").deletingLastPathComponent().path.scalars, with: replacement)
-                                // Remove varying SwiftLint location.
-                                output.replaceMatches(for: "\u{22}[...]/Tools/SwiftLint/swiftlint\u{22}".scalars, with: "swiftlint".scalars)
-                                // Remove varying temporary directory.
-                                output.replaceMatches(for: FileManager.default.url(in: .temporary, at: "Temporary").deletingLastPathComponent().path.scalars, with: replacement)
-                                output.replaceMatches(for: "`..".scalars, with: "`".scalars)
-                                output.replaceMatches(for: "/..".scalars, with: [])
+                            let replacement = "[...]".scalars
+                            // Remove varying repository location.
+                            output.replaceMatches(for: repositoryRoot.path.scalars, with: replacement)
+                            // Remove varying cache directory.
+                            output.replaceMatches(for: FileManager.default.url(in: .cache, at: "Cache").deletingLastPathComponent().path.scalars, with: replacement)
+                            // Remove varying SwiftLint location.
+                            output.replaceMatches(for: "\u{22}[...]/Tools/SwiftLint/swiftlint\u{22}".scalars, with: "swiftlint".scalars)
+                            // Remove varying temporary directory.
+                            output.replaceMatches(for: FileManager.default.url(in: .temporary, at: "Temporary").deletingLastPathComponent().path.scalars, with: replacement)
+                            output.replaceMatches(for: "`..".scalars, with: "`".scalars)
+                            output.replaceMatches(for: "/..".scalars, with: [])
 
-                                XCTAssertErrorFree { try output.save(to: outputLocation) }
-                                checkForDifferences(in: "output", at: outputLocation, for: project)
-                            #endif
+                            XCTAssertErrorFree { try output.save(to: outputLocation) }
+                            checkForDifferences(in: "output", at: outputLocation, for: project)
                         }
                     }
             }
@@ -236,7 +165,7 @@ class APITests : TestCase {
     static var allTests: [(String, (APITests) -> () throws -> Void)] {
         return [
             ("testCheckForUpdates", testCheckForUpdates),
-            ("testWorkflow", testWorkflow)
+            ("testOnMockProjects", testOnMockProjects)
         ]
     }
 }

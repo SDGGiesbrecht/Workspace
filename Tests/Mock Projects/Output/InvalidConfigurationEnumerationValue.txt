@@ -1,47 +1,4 @@
 
-$ workspace refresh scripts
-
-Refreshing scripts...
-
-
-$ swift package resolve
-
-Writing to “Refresh (macOS).command”...
-Writing to “Refresh (Linux).sh”...
-
-$ swift package resolve
-
-Writing to “Validate (macOS).command”...
-$ workspace refresh resources
-
-Refreshing resources...
-
-$ workspace proofread
-
-Normalizing files...
-
-
-Proofreading source code... (§1)
-
-.Workspace Configuration.txt
-.gitignore
-Package.swift
-README.md
-Sources/InvalidConfigurationEnumerationValue/InvalidConfigurationEnumerationValue.swift
-Tests/InvalidConfigurationEnumerationValueTests/InvalidConfigurationEnumerationValueTests.swift
-Tests/LinuxMain.swift
-
-$ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --reporter emoji
-
-
-$ swift package resolve
-
-
-✓ Source code passes proofreading.
-
-
-“InvalidConfigurationEnumerationValue” passes validation.
-
 $ workspace validate documentation‐coverage
 
 Invalid value for “Generate Documentation”:
@@ -49,10 +6,3 @@ Maybe
 Available values:
 True
 False
-
-⁂
-
-
-$ workspace proofread •xcode
-
-$ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --quiet

@@ -23,7 +23,6 @@ Normalizing files...
 
 Proofreading source code... (§1)
 
-.gitignore
 Package.swift
 README.md
 Sources/Default/Default.swift
@@ -64,3 +63,7 @@ Checking documentation coverage for “Default”... (§1)
 
 
 “Default” passes validation.
+
+$ workspace proofread •xcode
+
+$ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --quiet

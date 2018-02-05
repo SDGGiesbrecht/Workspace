@@ -1,1 +1,3 @@
 Generate Documentation: True
+
+Localizations: en

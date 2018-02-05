@@ -1,0 +1,9 @@
+refresh scripts
+refresh read‐me
+refresh continuous‐integration
+refresh resources
+
+proofread
+validate documentation‐coverage
+
+proofread •xcode

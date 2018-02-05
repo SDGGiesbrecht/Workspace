@@ -1,17 +1,4 @@
 
-$ workspace refresh scripts
-
-Refreshing scripts...
-
-
-$ swift package resolve
-
-Writing to “Refresh (macOS).command”...
-Writing to “Refresh (Linux).sh”...
-
-$ swift package resolve
-
-Writing to “Validate (macOS).command”...
 $ workspace refresh read‐me
 
 Invalid value for “Project Type”:
@@ -20,10 +7,3 @@ Available values:
 Library
 Application
 Executable
-
-⁂
-
-
-$ workspace proofread •xcode
-
-$ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --quiet

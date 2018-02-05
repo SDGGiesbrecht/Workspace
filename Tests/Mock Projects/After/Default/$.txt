@@ -1,0 +1,7 @@
+refresh scripts
+refresh resources
+
+proofread
+validate documentation‐coverage
+
+proofread •xcode

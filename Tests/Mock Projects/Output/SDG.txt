@@ -5,9 +5,6 @@ Refreshing scripts...
 
 
 $ swift package resolve
-Fetching file:///tmp/Developer/Dependency
-Cloning file:///tmp/Developer/Dependency
-Resolving file:///tmp/Developer/Dependency at 1.0.0
 
 Writing to “Refresh (macOS).command”...
 Writing to “Refresh (Linux).sh”...
@@ -91,7 +88,6 @@ Normalizing files...
 Proofreading source code... (§1)
 
 .Workspace Configuration.txt
-.gitignore
 .travis.yml
 Documentation/[zxx] Read Me.md
 Documentation/[zxx] Related Projects.md
@@ -151,3 +147,7 @@ Checking documentation coverage for “Library”... (§1)
 
 
 “SDG” passes validation.
+
+$ workspace proofread •xcode
+
+$ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --quiet

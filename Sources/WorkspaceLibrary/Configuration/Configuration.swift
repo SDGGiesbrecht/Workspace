@@ -156,6 +156,7 @@ struct Configuration {
     // MARK: - Options: Supported Environment
 
     func projectType() throws -> PackageRepository.Target.TargetType {
+        // [_Workaround: Temporarily needed for bridging._]
         guard let key = try string(for: .projectType) else {
             return .library
         }
@@ -165,9 +166,16 @@ struct Configuration {
         return result
     }
 
-    func supports(_ operatingSystem: OperatingSystem) throws -> Bool {
-        return try (try boolean(for: operatingSystem.supportOption) ?? true)
-            ∧ (try projectType().isSupported(on: operatingSystem))
+    func supports(_ operatingSystem: OperatingSystem, project: PackageRepository, output: inout Command.Output) throws -> Bool {
+        if ¬(try boolean(for: operatingSystem.supportOption) ?? true) {
+            return false
+        } else {
+            if try ¬project.executableTargets(output: &output).isEmpty {
+                return PackageRepository.Target.TargetType.executable.isSupported(on: operatingSystem)
+            } else {
+                return true
+            }
+        }
     }
 
     // MARK: - Options: Localizations

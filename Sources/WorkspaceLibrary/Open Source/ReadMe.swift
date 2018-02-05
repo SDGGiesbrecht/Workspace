@@ -89,8 +89,8 @@ enum ReadMe {
         return StrictString(links.joined(separator: " • ".scalars)) + " " + skipInJazzy
     }
 
-    private static func operatingSystemList(for project: PackageRepository) throws -> StrictString {
-        let supported = try OperatingSystem.cases.filter({ try project.configuration.supports($0) })
+    private static func operatingSystemList(for project: PackageRepository, output: inout Command.Output) throws -> StrictString {
+        let supported = try OperatingSystem.cases.filter({ try project.configuration.supports($0, project: project, output: &output) })
         let list = supported.map({ $0.isolatedName.resolved() }).joined(separator: " • ".scalars)
         return StrictString(list)
     }
@@ -637,7 +637,7 @@ enum ReadMe {
                 return "Localization Links"
             }
         }))
-        readMe.insert(try operatingSystemList(for: project), for: UserFacingText({ (localization, _) in
+        readMe.insert(try operatingSystemList(for: project, output: &output), for: UserFacingText({ (localization, _) in
             switch localization {
             case .englishCanada:
                 return "Operating System List"

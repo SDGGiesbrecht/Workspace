@@ -61,6 +61,12 @@ class APITests : TestCase {
         XCTAssertErrorFree {
             for project in try FileManager.default.contentsOfDirectory(at: beforeDirectory, includingPropertiesForKeys: nil, options: [])
                 where project.lastPathComponent ≠ ".DS_Store" {
+
+                    if project.lastPathComponent ≠ "SDG" ∧ project.lastPathComponent ≠ "Default" {
+                        // [_Warning: Temporary._]
+                        continue
+                    }
+
                     print("\n\nTesting on “\(project.lastPathComponent)”...\n\n".formattedAsSectionHeader())
 
                     let expectedToFail = (try? project.appendingPathComponent("✗").checkResourceIsReachable()) == true
@@ -176,6 +182,11 @@ class APITests : TestCase {
                                 LiteralPattern("unexpected) in ".scalars),
                                 RepetitionPattern(ConditionalPattern(condition: { $0 ≠ "\n" })),
                                 LiteralPattern(" seconds".scalars),
+                                ]), with: replacement)
+                            output.replaceMatches(for: CompositePattern([
+                                LiteralPattern("passed at ".scalars),
+                                RepetitionPattern(ConditionalPattern(condition: { $0 ≠ "\n" })),
+                                LiteralPattern(".\n".scalars),
                                 ]), with: replacement)
 
                             XCTAssertErrorFree { try output.save(to: outputLocation) }

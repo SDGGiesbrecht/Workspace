@@ -235,19 +235,19 @@ extension ContinuousIntegration {
         func isRequired(by project: PackageRepository, output: inout Command.Output) throws -> Bool {
             switch self {
             case .macOSSwiftPackageManager:
-                return try project.configuration.supports(.macOS)
+                return try project.configuration.supports(.macOS, project: project, output: &output)
                     ∧ ¬(try project.configuration.projectType() == .application)
             case .macOSXcode:
-                return try project.configuration.supports(.macOS)
+                return try project.configuration.supports(.macOS, project: project, output: &output)
             case .linux:
-                return try project.configuration.supports(.linux)
+                return try project.configuration.supports(.linux, project: project, output: &output)
             case .iOS:
-                return try project.configuration.supports(.iOS)
+                return try project.configuration.supports(.iOS, project: project, output: &output)
                     ∨ project.isWorkspaceProject(output: &output) // For simulator tests.
             case .watchOS:
-                return try project.configuration.supports(.watchOS)
+                return try project.configuration.supports(.watchOS, project: project, output: &output)
             case .tvOS:
-                return try project.configuration.supports(.tvOS)
+                return try project.configuration.supports(.tvOS, project: project, output: &output)
                     ∨ project.isWorkspaceProject(output: &output) // For simulator tests.
             case .miscellaneous:
                 return true

@@ -26,7 +26,7 @@ struct Tests {
     ]
     static let testJobs: Set<ContinuousIntegration.Job> = coverageJobs ∪ [
         .macOSSwiftPackageManager,
-        .linux,
+        .linux
     ]
     static let buildJobs: Set<ContinuousIntegration.Job> = testJobs ∪ [
         .watchOS

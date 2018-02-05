@@ -70,7 +70,7 @@
             return String(line.filter({ $0 ∉ CharacterSet.whitespaces }))
         }
 
-        enum SDK: String {
+        enum SDK : String {
             case macOS = "macosx"
             case iOS = "iphoneos"
             case iOSSimulator = "iphonesimulator"

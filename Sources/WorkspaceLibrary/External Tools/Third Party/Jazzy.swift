@@ -115,9 +115,9 @@ import SDGCommandLine
             try executeInCompatibilityMode(with: jazzyArguments, output: &output)
             project.resetCache(debugReason: "jazzy")
 
-            // [_Workaround: Jazzy is incompatible with Jekyll. (jazzy --version 0.9.0)_]
+            // [_Workaround: Jazzy is incompatible with Jekyll. (jazzy --version 0.9.1)_]
             try preventJekyllInterference(in: outputDirectory, for: project, output: &output)
-            // [_Workaround: Jazzy expects only ASCII. (jazzy --version 0.9.0)_]
+            // [_Workaround: Jazzy expects only ASCII. (jazzy --version 0.9.1)_]
             try fixSplitClusters(in: outputDirectory, for: project, output: &output)
         }
 

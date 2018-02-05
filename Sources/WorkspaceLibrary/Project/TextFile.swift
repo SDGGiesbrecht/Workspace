@@ -38,7 +38,7 @@ struct TextFile {
     init(possiblyAt location: URL, executable: Bool = false) throws {
         do {
             self = try TextFile(alreadyAt: location)
-            if isExecutable ≠ executable { // [_Exempt from Code Coverage_] Unreachable except with corrupt files.
+            if isExecutable ≠ executable { // [_Exempt from Test Coverage_] Unreachable except with corrupt files.
                 isExecutable = executable
                 hasChanged = true
             }
@@ -48,7 +48,7 @@ struct TextFile {
         }
     }
 
-    init(mockFileWithContents contents: String, fileType: FileType) { // [_Exempt from Code Coverage_] [_Workaround: Until “licence” is testable._]
+    init(mockFileWithContents contents: String, fileType: FileType) { // [_Exempt from Test Coverage_] [_Workaround: Until “licence” is testable._]
         let temporary = FileManager.default.url(in: .temporary, at: "Mock File")
         self.init(location: temporary, fileType: fileType, executable: false, contents: contents, isNew: true)
     }
@@ -73,8 +73,8 @@ struct TextFile {
     let location: URL
 
     var isExecutable: Bool {
-        willSet { // [_Exempt from Code Coverage_] Unreachable except with corrupt files.
-            if newValue ≠ isExecutable { // [_Exempt from Code Coverage_]
+        willSet { // [_Exempt from Test Coverage_] Unreachable except with corrupt files.
+            if newValue ≠ isExecutable { // [_Exempt from Test Coverage_]
                 hasChanged = true
             }
         }
@@ -131,22 +131,22 @@ struct TextFile {
     }
 
     var header: String {
-        get { // [_Exempt from Code Coverage_] [_Workaround: Until “headers” is testable._]
+        get { // [_Exempt from Test Coverage_] [_Workaround: Until “headers” is testable._]
             return fileType.syntax.header(file: self)
         }
-        set { // [_Exempt from Code Coverage_] [_Workaround: Until “headers” is testable._]
+        set { // [_Exempt from Test Coverage_] [_Workaround: Until “headers” is testable._]
             fileType.syntax.insert(header: newValue, into: &self)
         }
     }
 
     var body: String {
-        get { // [_Exempt from Code Coverage_] [_Workaround: Until “validate” is testable._]
+        get { // [_Exempt from Test Coverage_] [_Workaround: Until “validate” is testable._]
             return String(contents[headerEnd...])
         }
         set {
             var new = newValue
             // Remove unnecessary initial spacing
-            while new.hasPrefix("\n") { // [_Exempt from Code Coverage_] [_Workaround: Until “validate” is testable._]
+            while new.hasPrefix("\n") { // [_Exempt from Test Coverage_] [_Workaround: Until “validate” is testable._]
                 new.scalars.removeFirst()
             }
 

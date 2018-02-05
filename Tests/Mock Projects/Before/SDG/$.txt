@@ -4,6 +4,9 @@ refresh continuous‐integration
 refresh resources
 
 proofread
+validate build
+test
+validate test‐coverage
 validate documentation‐coverage
 
 proofread •xcode

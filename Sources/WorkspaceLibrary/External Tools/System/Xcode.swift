@@ -35,21 +35,21 @@
 
         // MARK: - Usage
 
-        private func parseError(projectInformation: String) -> Command.Error { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Xcode.
-            return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Code Coverage_]
+        private func parseError(projectInformation: String) -> Command.Error { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Xcode.
+            return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Test Coverage_]
                 switch localization {
-                case .englishCanada: // [_Exempt from Code Coverage_]
+                case .englishCanada: // [_Exempt from Test Coverage_]
                     return StrictString("Error loading Xcode project:\n\(projectInformation)")
                 }
             }))
         }
 
-        func projectFile() throws -> URL? { // [_Exempt from Code Coverage_] [_Workaround: Until refresh Xcode project is testable._]
+        func projectFile() throws -> URL? { // [_Exempt from Test Coverage_] [_Workaround: Until refresh Xcode project is testable._]
             let files = try FileManager.default.contentsOfDirectory(at: URL(fileURLWithPath: FileManager.default.currentDirectoryPath), includingPropertiesForKeys: [], options: [])
 
-            for file in files where file.pathExtension == "xcodeproj" { // [_Exempt from Code Coverage_] [_Workaround: Until refresh Xcode project is testable._]
+            for file in files where file.pathExtension == "xcodeproj" { // [_Exempt from Test Coverage_] [_Workaround: Until refresh Xcode project is testable._]
                 return file
-            } // [_Exempt from Code Coverage_] [_Workaround: Until refresh Xcode project is testable._]
+            } // [_Exempt from Test Coverage_] [_Workaround: Until refresh Xcode project is testable._]
 
             return nil
         }
@@ -57,12 +57,12 @@
         func scheme(output: inout Command.Output) throws -> String {
             let information = try executeInCompatibilityMode(with: ["\u{2D}list"], output: &output, silently: true)
 
-            guard let schemesHeader = information.scalars.firstMatch(for: "Schemes:".scalars)?.range else { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Xcode.
+            guard let schemesHeader = information.scalars.firstMatch(for: "Schemes:".scalars)?.range else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Xcode.
                 throw parseError(projectInformation: information)
             }
             let schemesHeaderLine = schemesHeader.lines(in: information.lines)
             let nextLine = schemesHeaderLine.upperBound
-            guard nextLine ≠ information.lines.endIndex else { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Xcode.
+            guard nextLine ≠ information.lines.endIndex else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Xcode.
                 throw parseError(projectInformation: information)
             }
             let line = information.lines[nextLine].line

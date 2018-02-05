@@ -26,7 +26,7 @@ enum Proofreading {
         let activeRules = (rules + manualWarnings as [Rule.Type]).filter { rule in
             for name in InterfaceLocalization.cases.lazy.map({ rule.name.resolved(for: $0) }) where  name ∈ disabledRules {
                 return false
-            } // [_Exempt from Code Coverage_] False positive in Xcode 9.2.
+            } // [_Exempt from Test Coverage_] False positive in Xcode 9.2.
             return true
         }
 

@@ -22,7 +22,7 @@ private let thisVersion: Version? = nil // Set this to latestStableWorkspaceVers
 
 let workspacePackageURL = URL(string: "https://github.com/SDGGiesbrecht/Workspace")!
 
-public func run() { // [_Exempt from Code Coverage_]
+public func run() { // [_Exempt from Test Coverage_]
 
     // [_Workaround: Make sure the correct repository gets loaded before moving into any other directory._]
     _ = Repository.packageRepository

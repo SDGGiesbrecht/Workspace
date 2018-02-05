@@ -54,9 +54,9 @@ extension Workspace {
 
         static func checkForUpdates(output: inout Command.Output) throws -> Version? {
             let latestRemote = try Package(url: workspacePackageURL).latestVersion(output: &output)
-            if latestRemote ≠ latestStableWorkspaceVersion { // [_Exempt from Code Coverage_] Execution path is determined externally.
+            if latestRemote ≠ latestStableWorkspaceVersion { // [_Exempt from Test Coverage_] Execution path is determined externally.
                 return latestRemote
-            } else { // [_Exempt from Code Coverage_] Execution path is determined externally.
+            } else { // [_Exempt from Test Coverage_] Execution path is determined externally.
                 return nil // Up to date.
             }
         }

@@ -149,13 +149,13 @@ extension PackageRepository {
             () -> [URL] in
 
             var failureReason: Error? // Thrown after enumeration stops. (See below.)
-            guard let enumerator = FileManager.default.enumerator(at: location, includingPropertiesForKeys: [.isDirectoryKey, .isExecutableKey], options: [], errorHandler: { (_, error: Error) -> Bool in // [_Exempt from Code Coverage_] It is unknown what circumstances would actually cause an error.
+            guard let enumerator = FileManager.default.enumerator(at: location, includingPropertiesForKeys: [.isDirectoryKey, .isExecutableKey], options: [], errorHandler: { (_, error: Error) -> Bool in // [_Exempt from Test Coverage_] It is unknown what circumstances would actually cause an error.
                 failureReason = error
                 return false // Stop.
-            }) else { // [_Exempt from Code Coverage_] It is unknown what circumstances would actually result in a `nil` enumerator being returned.
-                throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Code Coverage_]
+            }) else { // [_Exempt from Test Coverage_] It is unknown what circumstances would actually result in a `nil` enumerator being returned.
+                throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Test Coverage_]
                     switch localization {
-                    case .englishCanada: // [_Exempt from Code Coverage_]
+                    case .englishCanada: // [_Exempt from Test Coverage_]
                         return "Cannot enumerate the project files."
                     }
                 }))
@@ -163,10 +163,10 @@ extension PackageRepository {
 
             var result: [URL] = []
             for object in enumerator {
-                guard let url = object as? URL else { // [_Exempt from Code Coverage_] It is unknown why something other than a URL would be returned.
-                    throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Code Coverage_]
+                guard let url = object as? URL else { // [_Exempt from Test Coverage_] It is unknown why something other than a URL would be returned.
+                    throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Test Coverage_]
                         switch localization {
-                        case .englishCanada: // [_Exempt from Code Coverage_]
+                        case .englishCanada: // [_Exempt from Test Coverage_]
                             return StrictString("Unexpected \(type(of: object)) encountered while enumerating project files.")
                         }
                     }))
@@ -189,7 +189,7 @@ extension PackageRepository {
                 }
             }
 
-            if let error = failureReason { // [_Exempt from Code Coverage_] It is unknown what circumstances would actually cause an error.
+            if let error = failureReason { // [_Exempt from Test Coverage_] It is unknown what circumstances would actually cause an error.
                 throw error
             }
             return result.sorted() // So that output order is consistent.
@@ -268,7 +268,7 @@ extension PackageRepository {
             let result = try sourceFiles(output: &output).filter { (file) in
                 for directory in locations where file.is(in: directory) {
                     return true
-                } // [_Exempt from Code Coverage_] [_Workaround: False coverage result. (Swift 4.0.2)_]
+                } // [_Exempt from Test Coverage_] [_Workaround: False coverage result. (Swift 4.0.2)_]
                 return false
             }
             return result
@@ -341,11 +341,11 @@ extension PackageRepository {
 
     // MARK: - Xcode
 
-    func xcodeProjectFile() throws -> URL? { // [_Exempt from Code Coverage_] [_Workaround: Until refresh Xcode is testable._]
+    func xcodeProjectFile() throws -> URL? { // [_Exempt from Test Coverage_] [_Workaround: Until refresh Xcode is testable._]
         var result: URL?
-        try FileManager.default.do(in: location) { // [_Exempt from Code Coverage_] [_Workaround: Until refresh Xcode is testable._]
+        try FileManager.default.do(in: location) { // [_Exempt from Test Coverage_] [_Workaround: Until refresh Xcode is testable._]
             result = try Xcode.default.projectFile()
-        } // [_Exempt from Code Coverage_] [_Workaround: Until refresh Xcode is testable._]
+        } // [_Exempt from Test Coverage_] [_Workaround: Until refresh Xcode is testable._]
         return result
     }
 

@@ -70,10 +70,10 @@ struct Configuration {
 
     // MARK: - Types
 
-    private static func optionNotDefinedError(for option: Option) -> Command.Error { // [_Exempt from Code Coverage_] [_Workaround: Until licence is testable._]
-        return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Code Coverage_] [_Workaround: Until licence is testable._]
+    private static func optionNotDefinedError(for option: Option) -> Command.Error { // [_Exempt from Test Coverage_] [_Workaround: Until licence is testable._]
+        return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Test Coverage_] [_Workaround: Until licence is testable._]
             switch localization {
-            case .englishCanada: // [_Exempt from Code Coverage_] [_Workaround: Until licence is testable._]
+            case .englishCanada: // [_Exempt from Test Coverage_] [_Workaround: Until licence is testable._]
                 return "Configuration option not defined: " + StrictString(option.key)
             }
         }))
@@ -149,7 +149,7 @@ struct Configuration {
         return string.lines.map({ String($0.line) })
     }
 
-    func optionIsDefined(_ option: Option) throws -> Bool { // [_Exempt from Code Coverage_] [_Workaround: Until licence is testable._]
+    func optionIsDefined(_ option: Option) throws -> Bool { // [_Exempt from Test Coverage_] [_Workaround: Until licence is testable._]
         return try options()[option] ≠ nil
     }
 
@@ -304,7 +304,7 @@ struct Configuration {
         }
     }
     func requireInstallationInstructions(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template {
-        guard let defined = try installationInstructions(for: localization, project: project, output: &output) else { // [_Exempt from Code Coverage_] [_Workaround: Until application targets are supported again._]
+        guard let defined = try installationInstructions(for: localization, project: project, output: &output) else { // [_Exempt from Test Coverage_] [_Workaround: Until application targets are supported again._]
             throw Configuration.optionNotDefinedError(for: .installationInstructions)
         }
         return defined
@@ -373,16 +373,16 @@ struct Configuration {
 
     // MARK: - Options: Active Management Tasks
 
-    func shouldProvideScripts() throws -> Bool { // [_Exempt from Code Coverage_] [_Workaround: Until refresh is testable._]
-        return try boolean(for: .provideScripts) ?? true // Unlikely to overwrite a user file, and necessary for version locking and continuous integration management. // [_Exempt from Code Coverage_] [_Workaround: Until refresh is testable._]
+    func shouldProvideScripts() throws -> Bool { // [_Exempt from Test Coverage_] [_Workaround: Until refresh is testable._]
+        return try boolean(for: .provideScripts) ?? true // Unlikely to overwrite a user file, and necessary for version locking and continuous integration management. // [_Exempt from Test Coverage_] [_Workaround: Until refresh is testable._]
     }
 
-    func shouldManageReadMe() throws -> Bool { // [_Exempt from Code Coverage_] [_Workaround: Until refresh is testable._]
-        return try boolean(for: .manageReadMe) ?? false // [_Exempt from Code Coverage_] [_Workaround: Until refresh is testable._]
+    func shouldManageReadMe() throws -> Bool { // [_Exempt from Test Coverage_] [_Workaround: Until refresh is testable._]
+        return try boolean(for: .manageReadMe) ?? false // [_Exempt from Test Coverage_] [_Workaround: Until refresh is testable._]
     }
 
-    func shouldManageContinuousIntegration() throws -> Bool { // [_Exempt from Code Coverage_] [_Workaround: Until refresh is testable._]
-        return try boolean(for: .manageContinuousIntegration) ?? false // [_Exempt from Code Coverage_] [_Workaround: Until refresh is testable._]
+    func shouldManageContinuousIntegration() throws -> Bool { // [_Exempt from Test Coverage_] [_Workaround: Until refresh is testable._]
+        return try boolean(for: .manageContinuousIntegration) ?? false // [_Exempt from Test Coverage_] [_Workaround: Until refresh is testable._]
     }
 
     func shouldGenerateDocumentation() throws -> Bool {
@@ -407,8 +407,8 @@ struct Configuration {
         return try boolean(for: .enforceTestCoverage) ?? true
     }
 
-    func shouldEnforceDocumentationCoverage() throws -> Bool { // [_Exempt from Code Coverage_] [_Workaround: Until validate is testable._]
-        return try boolean(for: .enforceDocumentationCoverage) ?? true // [_Exempt from Code Coverage_] [_Workaround: Until validate is testable._]
+    func shouldEnforceDocumentationCoverage() throws -> Bool { // [_Exempt from Test Coverage_] [_Workaround: Until validate is testable._]
+        return try boolean(for: .enforceDocumentationCoverage) ?? true // [_Exempt from Test Coverage_] [_Workaround: Until validate is testable._]
     }
     func testCoverageExemptionTokensForSameLine() throws -> [String] {
         return try list(for: .testCoverageExemptionTokensForSameLine)

@@ -357,16 +357,16 @@ extension ContinuousIntegration {
 extension Optional where Wrapped == ContinuousIntegration.Job {
     // MARK: - where Wrapped == ContinuousIntegration.Job
 
-    func includes(job: ContinuousIntegration.Job) -> Bool { // [_Exempt from Code Coverage_] [_Workaround: Until unit‐tests is testable._]
+    func includes(job: ContinuousIntegration.Job) -> Bool { // [_Exempt from Test Coverage_] [_Workaround: Until unit‐tests is testable._]
         switch self {
-        case .none: // [_Exempt from Code Coverage_] [_Workaround: Until unit‐tests is testable._]
+        case .none: // [_Exempt from Test Coverage_] [_Workaround: Until unit‐tests is testable._]
             switch job {
-            case .macOSSwiftPackageManager, .macOSXcode, .linux, .iOS, .watchOS, .tvOS, .miscellaneous, .documentation: // [_Exempt from Code Coverage_] [_Workaround: Until unit‐tests is testable._]
+            case .macOSSwiftPackageManager, .macOSXcode, .linux, .iOS, .watchOS, .tvOS, .miscellaneous, .documentation: // [_Exempt from Test Coverage_] [_Workaround: Until unit‐tests is testable._]
                 return true
-            case .deployment: // [_Exempt from Code Coverage_] [_Workaround: Until unit‐tests is testable._]
+            case .deployment: // [_Exempt from Test Coverage_] [_Workaround: Until unit‐tests is testable._]
                 return false
             }
-        case .some(let currentJob): // [_Exempt from Code Coverage_] [_Workaround: Until unit‐tests is testable._]
+        case .some(let currentJob): // [_Exempt from Test Coverage_] [_Workaround: Until unit‐tests is testable._]
             return currentJob == job
         }
     }

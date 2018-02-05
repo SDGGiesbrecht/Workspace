@@ -414,7 +414,7 @@ enum ReadMe {
             ]
         }
 
-        if result == [] { // [_Exempt from Code Coverage_] [_Workaround: Until application targets are supported again._]
+        if result == [] { // [_Exempt from Test Coverage_] [_Workaround: Until application targets are supported again._]
             return nil
         } else {
             return Template(source: result.joinAsLines())
@@ -741,7 +741,7 @@ enum ReadMe {
                 let name: StrictString
                 if let packageName = try? package.projectName(output: &output) {
                     name = packageName
-                } else { // [_Exempt from Code Coverage_] Only reachable with a non‐package repository.
+                } else { // [_Exempt from Test Coverage_] Only reachable with a non‐package repository.
                     name = StrictString(url.lastPathComponent)
                 }
 
@@ -751,7 +751,7 @@ enum ReadMe {
                 ]
 
                 if let succeeded = try? package.configuration.shortProjectDescription(for: localization),
-                    let description = succeeded { // [_Exempt from Code Coverage_] Until Workspace’s configuration is centralized again.
+                    let description = succeeded { // [_Exempt from Test Coverage_] Until Workspace’s configuration is centralized again.
                     markdown += [
                         "",
                         description

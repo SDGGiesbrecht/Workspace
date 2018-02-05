@@ -98,6 +98,9 @@ class APITests : TestCase {
                             defer {
                                 unsetenv("SIMULATOR_UNAVAILABLE_FOR_TESTING")
                             }
+                            
+                            // Reset Xcode cache so that logs are consistent.
+                            try? FileManager.default.removeItem(at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent("Library/Developer/Xcode/DerivedData"))
 
                             #if !os(Linux)
                                 // [_Workaround: Until Xcode management is testable._]

@@ -87,6 +87,12 @@ class APITests : TestCase {
                     try FileManager.default.do(in: resultLocation) {
                         LocalizationSetting(orderOfPrecedence: ["en\u{2D}CA"]).do {
 
+                             // Simulators are not available to all CI jobs and must be tested separately.
+                            setenv("SIMULATOR_UNAVAILABLE_FOR_TESTING", "YES", 1 /* overwrite */)
+                            defer {
+                                unsetenv("SIMULATOR_UNAVAILABLE_FOR_TESTING")
+                            }
+
                             #if !os(Linux)
                                 // [_Workaround: Until Xcode management is testable._]
                                 _ = try? Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
@@ -151,6 +157,8 @@ class APITests : TestCase {
                             output.replaceMatches(for: "\u{22}[...]/Tools/SwiftLint/swiftlint\u{22}".scalars, with: "swiftlint".scalars)
                             // Remove varying temporary directory.
                             output.replaceMatches(for: FileManager.default.url(in: .temporary, at: "Temporary").deletingLastPathComponent().path.scalars, with: replacement)
+                            // Remove varying home directory.
+                            output.replaceMatches(for: NSHomeDirectory().scalars, with: replacement)
                             output.replaceMatches(for: "`..".scalars, with: "`".scalars)
                             output.replaceMatches(for: "/..".scalars, with: [])
 

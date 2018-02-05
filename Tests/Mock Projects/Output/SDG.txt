@@ -124,6 +124,12 @@ $ swift package resolve
 
 “SDG” passes validation.
 
+$ workspace validate build
+
+$ workspace test
+
+$ workspace validate test‐coverage
+
 $ workspace validate documentation‐coverage
 
 Generating documentation for “Library”...

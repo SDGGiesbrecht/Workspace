@@ -57,6 +57,12 @@ extension Workspace {
                         continue
                     }
 
+                    if BuildConfiguration.current == .debug,
+                        job ∈ Tests.simulatorJobs,
+                        ProcessInfo.processInfo.environment["SIMULATOR_UNAVAILABLE_FOR_TESTING"] ≠ nil { // Simulators are not available to all CI jobs and must be tested separately.
+                        continue
+                    }
+
                     try Tests.test(options.project, on: job, validationStatus: &validationStatus, output: &output)
             }
         }

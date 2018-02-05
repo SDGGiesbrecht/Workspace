@@ -243,10 +243,12 @@ extension ContinuousIntegration {
                 return try project.configuration.supports(.linux)
             case .iOS:
                 return try project.configuration.supports(.iOS)
+                    ∨ project.isWorkspaceProject(output: &output) // For simulator tests.
             case .watchOS:
                 return try project.configuration.supports(.watchOS)
             case .tvOS:
                 return try project.configuration.supports(.tvOS)
+                    ∨ project.isWorkspaceProject(output: &output) // For simulator tests.
             case .miscellaneous:
                 return true
             case .documentation:

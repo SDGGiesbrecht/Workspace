@@ -38,7 +38,7 @@ extension SwiftTool {
         return try _build(output: &output) // Shared from SDGCommandLine.
     }
 
-    func test(output: inout Command.Output) -> Bool {
+    func test(output: inout Command.Output) -> Bool { // [_Exempt from Test Coverage_] Tested separately.
         let result: Bool = _test(output: &output) // Shared from SDGCommandLine.
         return result
     }

@@ -32,6 +32,7 @@ class APITests : TestCase {
         XCTAssertErrorFree {
             try FileManager.default.do(in: repositoryRoot) {
                 try Workspace.command.execute(with: ["refresh", "scripts"])
+                try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
             }
         }
     }

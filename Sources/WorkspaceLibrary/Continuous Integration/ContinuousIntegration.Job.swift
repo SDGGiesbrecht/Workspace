@@ -239,7 +239,7 @@ extension ContinuousIntegration {
                     ∧ ¬(try project.configuration.projectType() == .application)
             case .macOSXcode:
                 return try project.configuration.supports(.macOS, project: project, output: &output)
-            case .linux:
+            case .linux: // [_Exempt from Test Coverage_] False coverage result in Xcode 9.2.
                 return try project.configuration.supports(.linux, project: project, output: &output)
             case .iOS:
                 return try project.configuration.supports(.iOS, project: project, output: &output)

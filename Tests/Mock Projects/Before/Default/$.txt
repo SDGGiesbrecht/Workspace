@@ -8,3 +8,5 @@ validate test‐coverage
 validate documentation‐coverage
 
 proofread •xcode
+
+validate build •job macos‐swift‐package‐manager

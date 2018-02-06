@@ -159,10 +159,10 @@ struct Configuration {
         // [_Workaround: Temporarily needed for bridging._]
         guard let key = try string(for: .projectType) else {
             return .library
-        }
-        guard let result = PackageRepository.Target.TargetType(key: StrictString(key)) else {
-            throw Configuration.invalidEnumerationValueError(for: .projectType, value: key, valid: PackageRepository.Target.TargetType.cases.map({ $0.key }))
-        }
+        } // [_Exempt from Test Coverage_] Deprecated.
+        guard let result = PackageRepository.Target.TargetType(key: StrictString(key)) else { // [_Exempt from Test Coverage_] Deprecated.
+            throw Configuration.invalidEnumerationValueError(for: .projectType, value: key, valid: PackageRepository.Target.TargetType.cases.map({ $0.key })) // [_Exempt from Test Coverage_] Deprecated.
+        } // [_Exempt from Test Coverage_] Deprecated.
         return result
     }
 
@@ -407,12 +407,12 @@ struct Configuration {
         return Set(array.map({ StrictString($0) }))
     }
 
-    func shouldProhibitCompilerWarnings() throws -> Bool {
-        return try boolean(for: .prohibitCompilerWarnings) ?? true
+    func shouldProhibitCompilerWarnings() throws -> Bool { // [_Exempt from Test Coverage_] [_Workaround: Until validate is testable._]
+        return try boolean(for: .prohibitCompilerWarnings) ?? true // [_Exempt from Test Coverage_] [_Workaround: Until validate is testable._]
     }
 
-    func shouldEnforceTestCoverage() throws -> Bool {
-        return try boolean(for: .enforceTestCoverage) ?? true
+    func shouldEnforceTestCoverage() throws -> Bool { // [_Exempt from Test Coverage_] [_Workaround: Until validate is testable._]
+        return try boolean(for: .enforceTestCoverage) ?? true // [_Exempt from Test Coverage_] [_Workaround: Until validate is testable._]
     }
 
     func shouldEnforceDocumentationCoverage() throws -> Bool { // [_Exempt from Test Coverage_] [_Workaround: Until validate is testable._]

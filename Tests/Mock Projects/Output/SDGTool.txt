@@ -20,6 +20,9 @@ Refreshing read‐me...
 $ swift package resolve
 
 Writing to “Documentation/🇨🇦EN Read Me.md”...
+
+$ swift package resolve
+
 Writing to “Documentation/🇨🇦EN Related Projects.md”...
 
 $ swift package resolve
@@ -161,61 +164,19 @@ Testing on macOS with Xcode... (§2)
 
 
 $ xcodebuild test -sdk macosx -scheme SDG-Package
-Build settings from command line:
-    SDKROOT = macosx10.13
+[...]
 
-=== BUILD TARGET Dependency OF PROJECT SDG WITH CONFIGURATION Debug ===
-
-Check dependencies
-
-=== BUILD TARGET Library OF PROJECT SDG WITH CONFIGURATION Debug ===
-
-Check dependencies
-
-=== BUILD TARGET SDGTests OF PROJECT SDG WITH CONFIGURATION Debug ===
-
-Check dependencies
-
-ProcessInfoPlistFile [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Info.plist SDG.xcodeproj/SDGTests_Info.plist
-    cd "[...]/Tests/Mock Projects/After/SDGTool"
-    builtin-infoPlistUtility [...]/Tests/Mock\ Projects/After/SDGTool/SDG.xcodeproj/SDGTests_Info.plist -expandbuildsettings -platform macosx -o [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Info.plist
-
-CopySwiftLibs [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest
-    cd "[...]/Tests/Mock Projects/After/SDGTool"
-    export CODESIGN_ALLOCATE=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate
-    export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
-    export SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk
-    builtin-swiftStdLibTool --copy --verbose --scan-executable [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/MacOS/SDGTests --scan-folder [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks --scan-folder [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/PlugIns --scan-folder [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/Library.framework --scan-folder [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/Dependency.framework --platform macosx --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks --strip-bitcode --resource-destination [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Resources --resource-library libswiftRemoteMirror.dylib
-Requested Swift ABI version based on scanned binaries: 5
-libswiftCore.dylib is up to date at [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftCore.dylib
-libswiftCoreFoundation.dylib is up to date at [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftCoreFoundation.dylib
-libswiftCoreGraphics.dylib is up to date at [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftCoreGraphics.dylib
-libswiftDarwin.dylib is up to date at [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftDarwin.dylib
-libswiftDispatch.dylib is up to date at [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftDispatch.dylib
-libswiftFoundation.dylib is up to date at [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftFoundation.dylib
-libswiftIOKit.dylib is up to date at [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftIOKit.dylib
-libswiftObjectiveC.dylib is up to date at [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftObjectiveC.dylib
-libswiftAppKit.dylib is up to date at [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftAppKit.dylib
-libswiftCoreData.dylib is up to date at [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftCoreData.dylib
-libswiftCoreImage.dylib is up to date at [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftCoreImage.dylib
-libswiftMetal.dylib is up to date at [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftMetal.dylib
-libswiftQuartzCore.dylib is up to date at [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftQuartzCore.dylib
-libswiftXCTest.dylib is up to date at [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftXCTest.dylib
-libswiftXPC.dylib is up to date at [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftXPC.dylib
-libswiftos.dylib is up to date at [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftos.dylib
-libswiftRemoteMirror.dylib is up to date at [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Resources/libswiftRemoteMirror.dylib
-
-=== BUILD TARGET tool OF PROJECT SDG WITH CONFIGURATION Debug ===
-
-Check dependencies
-
-** TEST SUCCEEDED **
-
-Test Suite 'All tests' [...]Test Suite 'SDGTests.xctest' [...]Test Suite 'SDGTests' [...]Test Case '-[SDGTests.SDGTests testExample]' started.
-Test Case '-[SDGTests.SDGTests testExample]' [...]).
-Test Suite 'SDGTests' [...]	 Executed 1 test, with 0 failures (0 [...]
-Test Suite 'SDGTests.xctest' [...]	 Executed 1 test, with 0 failures (0 [...]
-Test Suite 'All tests' [...]	 Executed 1 test, with 0 failures (0 [...]
+Test Suite 'All tests' started at [...]
+Test Suite 'SDGTests.xctest' started at [...]
+Test Suite 'SDGTests' started at [...]
+Test Case '-[SDGTests.SDGTests testExample]' started.
+Test Case '-[SDGTests.SDGTests testExample]' passed [...] seconds).
+Test Suite 'SDGTests' passed at [...]
+	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
+Test Suite 'SDGTests.xctest' passed at [...]
+	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
+Test Suite 'All tests' passed at [...]
+	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
 
 
 ✓ Tests pass on macOS with the Swift Package Manager.
@@ -225,6 +186,34 @@ Test Suite 'All tests' [...]	 Executed 1 test, with 0 failures (0 [...]
 “SDG” passes validation.
 
 $ workspace validate test‐coverage
+
+Testing on macOS with Xcode... (§1)
+
+
+$ xcodebuild test -sdk macosx -scheme SDG-Package
+[...]
+
+Test Suite 'All tests' started at [...]
+Test Suite 'SDGTests.xctest' started at [...]
+Test Suite 'SDGTests' started at [...]
+Test Case '-[SDGTests.SDGTests testExample]' started.
+Test Case '-[SDGTests.SDGTests testExample]' passed [...] seconds).
+Test Suite 'SDGTests' passed at [...]
+	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
+Test Suite 'SDGTests.xctest' passed at [...]
+	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
+Test Suite 'All tests' passed at [...]
+	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
+
+
+Checking code coverage for “Library” on macOS... (§2)
+
+
+✓ Tests pass on macOS with Xcode.
+✓ Test coverage is complete for “Library” on macOS.
+
+
+“SDG” passes validation.
 
 $ workspace validate documentation‐coverage
 

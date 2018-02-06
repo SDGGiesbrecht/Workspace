@@ -98,9 +98,6 @@ class APITests : TestCase {
                             defer {
                                 unsetenv("SIMULATOR_UNAVAILABLE_FOR_TESTING")
                             }
-                            
-                            // Reset Xcode cache so that logs are consistent.
-                            try? FileManager.default.removeItem(at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent("Library/Developer/Xcode/DerivedData"))
 
                             #if !os(Linux)
                                 // [_Workaround: Until Xcode management is testable._]
@@ -190,6 +187,12 @@ class APITests : TestCase {
                                 LiteralPattern("passed at ".scalars),
                                 RepetitionPattern(ConditionalPattern(condition: { $0 ≠ "\n" })),
                                 LiteralPattern(".\n".scalars),
+                                ]), with: replacement)
+                            // Remove varying Xcode output
+                            output.replaceMatches(for: CompositePattern([
+                                LiteralPattern("Build settings from command line:".scalars),
+                                RepetitionPattern(ConditionalPattern(condition: { _ in true }), consumption: .lazy),
+                                LiteralPattern("** BUILD SUCCEEDED **".scalars),
                                 ]), with: replacement)
 
                             XCTAssertErrorFree { try output.save(to: outputLocation) }

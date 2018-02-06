@@ -1,0 +1,10 @@
+
+$ workspace validate build
+
+“FailingTests” fails validation.
+$ workspace test
+
+“FailingTests” fails validation.
+$ workspace validate test‐coverage
+
+“FailingTests” fails validation.

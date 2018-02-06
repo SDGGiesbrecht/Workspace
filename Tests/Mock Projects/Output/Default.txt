@@ -154,3 +154,16 @@ Checking documentation coverage for “Default”... (§1)
 $ workspace proofread •xcode
 
 $ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --quiet
+
+$ workspace validate build •job macos‐swift‐package‐manager
+
+Checking build for macOS with the Swift Package Manager... (§1)
+
+
+$ swift build
+
+
+✓ There are no compiler warnings for macOS with the Swift Package Manager.
+
+
+“Default” passes validation.

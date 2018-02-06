@@ -1,0 +1,3 @@
+validate build
+test
+validate test‐coverage

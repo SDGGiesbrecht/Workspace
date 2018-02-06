@@ -106,11 +106,17 @@ Testing on macOS with Xcode... (§2)
 $ xcodebuild test -sdk macosx -scheme Default-Package
 [...]
 
-Test Suite 'All tests' [...]Test Suite 'DefaultTests.xctest' [...]Test Suite 'DefaultTests' [...]Test Case '-[DefaultTests.DefaultTests testExample]' started.
-Test Case '-[DefaultTests.DefaultTests testExample]' [...]).
-Test Suite 'DefaultTests' [...]	 Executed 1 test, with 0 failures (0 [...]
-Test Suite 'DefaultTests.xctest' [...]	 Executed 1 test, with 0 failures (0 [...]
-Test Suite 'All tests' [...]	 Executed 1 test, with 0 failures (0 [...]
+Test Suite 'All tests' started at [...]
+Test Suite 'DefaultTests.xctest' started at [...]
+Test Suite 'DefaultTests' started at [...]
+Test Case '-[DefaultTests.DefaultTests testExample]' started.
+Test Case '-[DefaultTests.DefaultTests testExample]' passed [...] seconds).
+Test Suite 'DefaultTests' passed at [...]
+	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
+Test Suite 'DefaultTests.xctest' passed at [...]
+	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
+Test Suite 'All tests' passed at [...]
+	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
 
 
 ✓ Tests pass on macOS with the Swift Package Manager.
@@ -120,6 +126,34 @@ Test Suite 'All tests' [...]	 Executed 1 test, with 0 failures (0 [...]
 “Default” passes validation.
 
 $ workspace validate test‐coverage
+
+Testing on macOS with Xcode... (§1)
+
+
+$ xcodebuild test -sdk macosx -scheme Default-Package
+[...]
+
+Test Suite 'All tests' started at [...]
+Test Suite 'DefaultTests.xctest' started at [...]
+Test Suite 'DefaultTests' started at [...]
+Test Case '-[DefaultTests.DefaultTests testExample]' started.
+Test Case '-[DefaultTests.DefaultTests testExample]' passed [...] seconds).
+Test Suite 'DefaultTests' passed at [...]
+	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
+Test Suite 'DefaultTests.xctest' passed at [...]
+	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
+Test Suite 'All tests' passed at [...]
+	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
+
+
+Checking code coverage for “Default” on macOS... (§2)
+
+
+✓ Tests pass on macOS with Xcode.
+✓ Test coverage is complete for “Default” on macOS.
+
+
+“Default” passes validation.
 
 $ workspace validate documentation‐coverage
 

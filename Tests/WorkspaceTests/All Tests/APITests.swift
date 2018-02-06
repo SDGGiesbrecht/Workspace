@@ -62,8 +62,9 @@ class APITests : TestCase {
             for project in try FileManager.default.contentsOfDirectory(at: beforeDirectory, includingPropertiesForKeys: nil, options: [])
                 where project.lastPathComponent ≠ ".DS_Store" {
 
-                    if project.lastPathComponent ≠ "Default" {
-                        // [_Warning: Temporary._]
+                    if let filter = ProcessInfo.processInfo.environment["MOCK_PROJECT"],
+                        project.lastPathComponent ≠ filter {
+                        // This environment variable can be used to test a single mock project at a time.
                         continue
                     }
 
@@ -154,7 +155,7 @@ class APITests : TestCase {
                             try? FileManager.default.removeItem(at: resultLocation.appendingPathComponent("docs/\(project.lastPathComponent)/docsets"))
                             checkForDifferences(in: "repository", at: resultLocation, for: project)
 
-                            let replacement = "[...]".scalars
+                            let replacement: StrictString = "[...]"
                             // Remove varying repository location.
                             output.replaceMatches(for: repositoryRoot.path.scalars, with: replacement)
                             // Remove varying cache directory.
@@ -172,22 +173,22 @@ class APITests : TestCase {
                                 LiteralPattern("started at ".scalars),
                                 RepetitionPattern(ConditionalPattern(condition: { $0 ≠ "\n" })),
                                 LiteralPattern("\n".scalars),
-                                ]), with: replacement)
+                                ]), with: "started at " + replacement + "\n")
                             output.replaceMatches(for: CompositePattern([
                                 LiteralPattern("passed (".scalars),
                                 RepetitionPattern(ConditionalPattern(condition: { $0 ≠ " " })),
                                 LiteralPattern(" seconds".scalars),
-                                ]), with: replacement)
+                                ]), with: "passed " + replacement + " seconds")
                             output.replaceMatches(for: CompositePattern([
                                 LiteralPattern("unexpected) in ".scalars),
                                 RepetitionPattern(ConditionalPattern(condition: { $0 ≠ "\n" })),
                                 LiteralPattern(" seconds".scalars),
-                                ]), with: replacement)
+                                ]), with: "unexpected) in " + replacement + " seconds")
                             output.replaceMatches(for: CompositePattern([
                                 LiteralPattern("passed at ".scalars),
                                 RepetitionPattern(ConditionalPattern(condition: { $0 ≠ "\n" })),
                                 LiteralPattern(".\n".scalars),
-                                ]), with: replacement)
+                                ]), with: "passed at " + replacement + "\n")
                             // Remove varying Xcode output
                             output.replaceMatches(for: CompositePattern([
                                 LiteralPattern("Build settings from command line:".scalars),

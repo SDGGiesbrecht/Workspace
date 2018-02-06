@@ -204,7 +204,23 @@ class APITests : TestCase {
                             output.replaceMatches(for: CompositePattern([
                                 LiteralPattern("$ swift test".scalars),
                                 RepetitionPattern(ConditionalPattern(condition: { $0 ≠ "§" }), consumption: .lazy),
-                                LiteralPattern("\n\n".scalars),
+                                LiteralPattern("\n\n\n".scalars),
+                                ]), with: "".scalars)
+                            output.replaceMatches(for: "✓ Tests pass on macOS with the Swift Package Manager.\n".scalars, with: "".scalars)
+                            output.replaceMatches(for: CompositePattern([
+                                LiteralPattern("Test Suite".scalars),
+                                RepetitionPattern(ConditionalPattern(condition: { $0 ≠ "\n" }), consumption: .lazy),
+                                LiteralPattern("\n".scalars),
+                                ]), with: "".scalars)
+                            output.replaceMatches(for: CompositePattern([
+                                LiteralPattern("Test Case".scalars),
+                                RepetitionPattern(ConditionalPattern(condition: { $0 ≠ "\n" }), consumption: .lazy),
+                                LiteralPattern("\n".scalars),
+                                ]), with: "".scalars)
+                            output.replaceMatches(for: CompositePattern([
+                                LiteralPattern("\u{9} Executed".scalars),
+                                RepetitionPattern(ConditionalPattern(condition: { $0 ≠ "\n" }), consumption: .lazy),
+                                LiteralPattern("\n".scalars),
                                 ]), with: "".scalars)
 
                             XCTAssertErrorFree { try output.save(to: outputLocation) }

@@ -179,31 +179,14 @@ $ workspace test
 Testing on macOS with the Swift Package Manager... (§1)
 
 
-$ swift test
-Compile Swift Module 'SDGTests' (1 sources)
-Linking ./.build/x86_64-apple-macosx10.10/debug/SDGPackageTests.xctest/Contents/MacOS/SDGPackageTests
-
-
 Testing on macOS with Xcode... (§2)
 
 
 $ xcodebuild test -sdk macosx -scheme SDG-Package
 [...]
 
-Test Suite 'All tests' started at [...]
-Test Suite 'SDGTests.xctest' started at [...]
-Test Suite 'SDGTests' started at [...]
-Test Case '-[SDGTests.SDGTests testExample]' started.
-Test Case '-[SDGTests.SDGTests testExample]' passed [...] seconds).
-Test Suite 'SDGTests' passed at [...]
-	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
-Test Suite 'SDGTests.xctest' passed at [...]
-	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
-Test Suite 'All tests' passed at [...]
-	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
 
 
-✓ Tests pass on macOS with the Swift Package Manager.
 ✓ Tests pass on macOS with Xcode.
 
 
@@ -217,17 +200,6 @@ Testing on macOS with Xcode... (§1)
 $ xcodebuild test -sdk macosx -scheme SDG-Package
 [...]
 
-Test Suite 'All tests' started at [...]
-Test Suite 'SDGTests.xctest' started at [...]
-Test Suite 'SDGTests' started at [...]
-Test Case '-[SDGTests.SDGTests testExample]' started.
-Test Case '-[SDGTests.SDGTests testExample]' passed [...] seconds).
-Test Suite 'SDGTests' passed at [...]
-	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
-Test Suite 'SDGTests.xctest' passed at [...]
-	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
-Test Suite 'All tests' passed at [...]
-	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
 
 
 Checking test coverage for “Library” on macOS... (§2)

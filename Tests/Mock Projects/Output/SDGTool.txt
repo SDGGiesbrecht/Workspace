@@ -255,14 +255,14 @@ Ditto [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh
     cd "[...]/Tests/Mock Projects/After/SDGTool"
     /usr/bin/ditto -rsrc [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/Library.build/Objects-normal/x86_64/Library.swiftmodule [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/Library.framework/Versions/A/Modules/Library.swiftmodule/x86_64.swiftmodule
 
-Ditto [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/Library.framework/Versions/A/Modules/Library.swiftmodule/x86_64.swiftdoc [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/Library.build/Objects-normal/x86_64/Library.swiftdoc
-    cd "[...]/Tests/Mock Projects/After/SDGTool"
-    /usr/bin/ditto -rsrc [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/Library.build/Objects-normal/x86_64/Library.swiftdoc [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/Library.framework/Versions/A/Modules/Library.swiftmodule/x86_64.swiftdoc
-
 Ld [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/Library.framework/Versions/A/Library normal x86_64
     cd "[...]/Tests/Mock Projects/After/SDGTool"
     export MACOSX_DEPLOYMENT_TARGET=10.10
     /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch x86_64 -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -L[...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug -F[...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks -filelist [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/Library.build/Objects-normal/x86_64/Library.LinkFileList -install_name @rpath/Library.framework/Versions/A/Library -Xlinker -rpath -Xlinker /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx -mmacosx-version-min=10.10 -Xlinker -object_path_lto -Xlinker [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/Library.build/Objects-normal/x86_64/Library_lto.o -Xlinker -export_dynamic -Xlinker -no_deduplicate -fobjc-link-runtime -fprofile-instr-generate -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx -Xlinker -add_ast_path -Xlinker [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/Library.build/Objects-normal/x86_64/Library.swiftmodule -framework Dependency -single_module -Xlinker -dependency_info -Xlinker [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/Library.build/Objects-normal/x86_64/Library_dependency_info.dat -o [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/Library.framework/Versions/A/Library
+
+Ditto [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/Library.framework/Versions/A/Modules/Library.swiftmodule/x86_64.swiftdoc [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/Library.build/Objects-normal/x86_64/Library.swiftdoc
+    cd "[...]/Tests/Mock Projects/After/SDGTool"
+    /usr/bin/ditto -rsrc [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/Library.build/Objects-normal/x86_64/Library.swiftdoc [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/Library.framework/Versions/A/Modules/Library.swiftmodule/x86_64.swiftdoc
 
 Ditto [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/Library.build/module.modulemap [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/Library.framework/Versions/A/Modules/module.modulemap
     cd "[...]/Tests/Mock Projects/After/SDGTool"
@@ -305,13 +305,13 @@ Ld [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Bu
     export MACOSX_DEPLOYMENT_TARGET=10.10
     /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -L[...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug -F[...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks -filelist [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/tool.build/Objects-normal/x86_64/tool.LinkFileList -Xlinker -rpath -Xlinker /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx -Xlinker -rpath -Xlinker @executable_path -mmacosx-version-min=10.10 -Xlinker -object_path_lto -Xlinker [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/tool.build/Objects-normal/x86_64/tool_lto.o -Xlinker -no_deduplicate -fobjc-link-runtime -fprofile-instr-generate -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx -Xlinker -add_ast_path -Xlinker [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/tool.build/Objects-normal/x86_64/tool.swiftmodule -framework Library -framework Dependency -Xlinker -dependency_info -Xlinker [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/tool.build/Objects-normal/x86_64/tool_dependency_info.dat -o [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/tool
 
-Ditto [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/tool.swiftmodule/x86_64.swiftmodule [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/tool.build/Objects-normal/x86_64/tool.swiftmodule
-    cd "[...]/Tests/Mock Projects/After/SDGTool"
-    /usr/bin/ditto -rsrc [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/tool.build/Objects-normal/x86_64/tool.swiftmodule [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/tool.swiftmodule/x86_64.swiftmodule
-
 Ditto [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/tool.swiftmodule/x86_64.swiftdoc [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/tool.build/Objects-normal/x86_64/tool.swiftdoc
     cd "[...]/Tests/Mock Projects/After/SDGTool"
     /usr/bin/ditto -rsrc [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/tool.build/Objects-normal/x86_64/tool.swiftdoc [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/tool.swiftmodule/x86_64.swiftdoc
+
+Ditto [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/tool.swiftmodule/x86_64.swiftmodule [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/tool.build/Objects-normal/x86_64/tool.swiftmodule
+    cd "[...]/Tests/Mock Projects/After/SDGTool"
+    /usr/bin/ditto -rsrc [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/tool.build/Objects-normal/x86_64/tool.swiftmodule [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/tool.swiftmodule/x86_64.swiftmodule
 
 ** BUILD SUCCEEDED **
 
@@ -324,6 +324,125 @@ Ditto [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh
 “SDG” passes validation.
 
 $ workspace test
+
+Testing on macOS with the Swift Package Manager... (§1)
+
+
+$ swift test
+Compile Swift Module 'SDGTests' (1 sources)
+Linking ./.build/x86_64-apple-macosx10.10/debug/SDGPackageTests.xctest/Contents/MacOS/SDGPackageTests
+
+
+Testing on macOS with Xcode... (§2)
+
+
+$ xcodebuild test -sdk macosx -scheme SDG-Package
+Build settings from command line:
+    SDKROOT = macosx10.13
+
+=== BUILD TARGET Dependency OF PROJECT SDG WITH CONFIGURATION Debug ===
+
+Check dependencies
+
+=== BUILD TARGET Library OF PROJECT SDG WITH CONFIGURATION Debug ===
+
+Check dependencies
+
+=== BUILD TARGET tool OF PROJECT SDG WITH CONFIGURATION Debug ===
+
+Check dependencies
+
+=== BUILD TARGET SDGTests OF PROJECT SDG WITH CONFIGURATION Debug ===
+Check dependencies
+
+Write auxiliary files
+/bin/mkdir -p [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64
+write-file [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests.LinkFileList
+write-file [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests-OutputFileMap.json
+write-file [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/swift-overrides.hmap
+
+Create product structure
+/bin/mkdir -p [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents
+/bin/mkdir -p [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/MacOS
+
+ProcessInfoPlistFile [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Info.plist SDG.xcodeproj/SDGTests_Info.plist
+    cd "[...]/Tests/Mock Projects/After/SDGTool"
+    builtin-infoPlistUtility [...]/Tests/Mock\ Projects/After/SDGTool/SDG.xcodeproj/SDGTests_Info.plist -expandbuildsettings -platform macosx -o [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Info.plist
+
+CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
+    cd "[...]/Tests/Mock Projects/After/SDGTool"
+    export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
+    export SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -incremental -module-name SDGTests -Onone -enforce-exclusivity=checked -DSWIFT_PACKAGE -DXcode -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -target x86_64-apple-macosx10.10 -g -module-cache-path [...]/Library/Developer/Xcode/DerivedData/ModuleCache -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -index-store-path [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Index/DataStore -Xfrontend -report-errors-to-debugger -swift-version 4 -I [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug -F [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug -F /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks -parse-as-library -c -j4 [...]/Tests/Mock\ Projects/After/SDGTool/Tests/SDGTests/SDGTests.swift -output-file-map [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests-OutputFileMap.json -parseable-output -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests.swiftmodule -Xcc -I[...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/swift-overrides.hmap -Xcc -I[...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/include -Xcc -I[...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/DerivedSources/x86_64 -Xcc -I[...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/DerivedSources -emit-objc-header -emit-objc-header-path [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests-Swift.h -Xcc -working-directory[...]/Tests/Mock\ Projects/After/SDGTool -Xfrontend -serialize-debugging-options
+
+CompileSwift normal x86_64 [...]/Tests/Mock Projects/After/SDGTool/Tests/SDGTests/SDGTests.swift
+    cd [...]/Tests/Mock Projects/After/SDGTool
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift -frontend -c -primary-file "[...]/Tests/Mock Projects/After/SDGTool/Tests/SDGTests/SDGTests.swift" -target x86_64-apple-macosx10.10 -enable-objc-interop -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -I [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug -F [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug -F /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks -g -module-cache-path [...]/Library/Developer/Xcode/DerivedData/ModuleCache -profile-generate -profile-coverage-mapping -swift-version 4 -enforce-exclusivity=checked -D SWIFT_PACKAGE -D Xcode -serialize-debugging-options -report-errors-to-debugger -serialize-debugging-options -Xcc -I[...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/swift-overrides.hmap -Xcc -I[...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/include -Xcc -I[...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/DerivedSources/x86_64 -Xcc -I[...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/DerivedSources -Xcc "-working-directory[...]/Tests/Mock Projects/After/SDGTool" -emit-module-doc-path [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests~partial.swiftdoc -serialize-diagnostics-path [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests.dia -Onone -parse-as-library -module-name SDGTests -emit-module-path [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests~partial.swiftmodule -emit-dependencies-path [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests.d -emit-reference-dependencies-path [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests.swiftdeps -o [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests.o -index-store-path [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Index/DataStore -index-system-modules
+
+MergeSwiftModule normal x86_64 [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests.swiftmodule
+    cd [...]/Tests/Mock Projects/After/SDGTool
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift -frontend -emit-module [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests~partial.swiftmodule -parse-as-library -target x86_64-apple-macosx10.10 -enable-objc-interop -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -I [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug -F [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug -F /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks -g -module-cache-path [...]/Library/Developer/Xcode/DerivedData/ModuleCache -profile-generate -profile-coverage-mapping -swift-version 4 -enforce-exclusivity=checked -D SWIFT_PACKAGE -D Xcode -serialize-debugging-options -report-errors-to-debugger -serialize-debugging-options -Xcc -I[...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/swift-overrides.hmap -Xcc -I[...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/include -Xcc -I[...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/DerivedSources/x86_64 -Xcc -I[...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/DerivedSources -Xcc "-working-directory[...]/Tests/Mock Projects/After/SDGTool" -emit-module-doc-path [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests.swiftdoc -module-name SDGTests -emit-objc-header-path [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests-Swift.h -o [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests.swiftmodule
+
+Ditto [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/DerivedSources/SDGTests-Swift.h [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests-Swift.h
+    cd "[...]/Tests/Mock Projects/After/SDGTool"
+    /usr/bin/ditto -rsrc [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests-Swift.h [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/DerivedSources/SDGTests-Swift.h
+
+Ditto [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.swiftmodule/x86_64.swiftmodule [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests.swiftmodule
+    cd "[...]/Tests/Mock Projects/After/SDGTool"
+    /usr/bin/ditto -rsrc [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests.swiftmodule [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.swiftmodule/x86_64.swiftmodule
+
+Ld [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/MacOS/SDGTests normal x86_64
+    cd "[...]/Tests/Mock Projects/After/SDGTool"
+    export MACOSX_DEPLOYMENT_TARGET=10.10
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch x86_64 -bundle -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk -L[...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug -F[...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks -F/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks -filelist [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests.LinkFileList -Xlinker -rpath -Xlinker @loader_path/Frameworks -Xlinker -rpath -Xlinker @loader_path/Frameworks -mmacosx-version-min=10.10 -Xlinker -object_path_lto -Xlinker [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests_lto.o -Xlinker -no_deduplicate -fobjc-link-runtime -fprofile-instr-generate -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx -Xlinker -add_ast_path -Xlinker [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests.swiftmodule -framework XCTest -framework Library -framework Dependency -Xlinker -dependency_info -Xlinker [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests_dependency_info.dat -o [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/MacOS/SDGTests
+
+Ditto [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.swiftmodule/x86_64.swiftdoc [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests.swiftdoc
+    cd "[...]/Tests/Mock Projects/After/SDGTool"
+    /usr/bin/ditto -rsrc [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Intermediates.noindex/SDG.build/Debug/SDGTests.build/Objects-normal/x86_64/SDGTests.swiftdoc [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.swiftmodule/x86_64.swiftdoc
+
+CopySwiftLibs [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest
+    cd "[...]/Tests/Mock Projects/After/SDGTool"
+    export CODESIGN_ALLOCATE=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate
+    export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
+    export SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk
+    builtin-swiftStdLibTool --copy --verbose --scan-executable [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/MacOS/SDGTests --scan-folder [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks --scan-folder [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/PlugIns --scan-folder [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/Library.framework --scan-folder [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/Dependency.framework --platform macosx --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks --strip-bitcode --resource-destination [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Resources --resource-library libswiftRemoteMirror.dylib
+Requested Swift ABI version based on scanned binaries: 5
+Copying /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftCore.dylib to [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftCore.dylib
+Copying /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftCoreFoundation.dylib to [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftCoreFoundation.dylib
+Copying /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftCoreGraphics.dylib to [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftCoreGraphics.dylib
+Copying /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftDarwin.dylib to [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftDarwin.dylib
+Copying /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftDispatch.dylib to [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftDispatch.dylib
+Copying /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftFoundation.dylib to [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftFoundation.dylib
+Copying /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftIOKit.dylib to [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftIOKit.dylib
+Copying /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftObjectiveC.dylib to [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftObjectiveC.dylib
+Copying /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftAppKit.dylib to [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftAppKit.dylib
+Copying /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftCoreData.dylib to [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftCoreData.dylib
+Copying /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftCoreImage.dylib to [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftCoreImage.dylib
+Copying /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftMetal.dylib to [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftMetal.dylib
+Copying /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftQuartzCore.dylib to [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftQuartzCore.dylib
+Copying /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftXCTest.dylib to [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftXCTest.dylib
+Copying /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftXPC.dylib to [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftXPC.dylib
+Copying /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftos.dylib to [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftos.dylib
+Copying /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/libswiftRemoteMirror.dylib to [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Resources/libswiftRemoteMirror.dylib
+
+Touch [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest
+    cd "[...]/Tests/Mock Projects/After/SDGTool"
+    /usr/bin/touch -c [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest
+
+** TEST SUCCEEDED **
+
+Test Suite 'All tests' [...]Test Suite 'SDGTests.xctest' [...]Test Suite 'SDGTests' [...]Test Case '-[SDGTests.SDGTests testExample]' started.
+Test Case '-[SDGTests.SDGTests testExample]' [...]).
+Test Suite 'SDGTests' [...]	 Executed 1 test, with 0 failures (0 [...]
+Test Suite 'SDGTests.xctest' [...]	 Executed 1 test, with 0 failures (0 [...]
+Test Suite 'All tests' [...]	 Executed 1 test, with 0 failures (0 [...]
+
+
+✓ Tests pass on macOS with the Swift Package Manager.
+✓ Tests pass on macOS with Xcode.
+
+
+“SDG” passes validation.
 
 $ workspace validate test‐coverage
 

@@ -1,5 +1,5 @@
 import XCTest
-@testable import SDG
+@testable import Library
 
 class SDGTests : XCTestCase {
     func testExample() {

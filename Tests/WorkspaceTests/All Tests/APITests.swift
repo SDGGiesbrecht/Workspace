@@ -62,7 +62,7 @@ class APITests : TestCase {
             for project in try FileManager.default.contentsOfDirectory(at: beforeDirectory, includingPropertiesForKeys: nil, options: [])
                 where project.lastPathComponent ≠ ".DS_Store" {
 
-                    if project.lastPathComponent ≠ "SDGLibrary" ∧ project.lastPathComponent ≠ "Default" ∧ project.lastPathComponent ≠ "SDGTool" {
+                    if project.lastPathComponent ≠ "Default" {
                         // [_Warning: Temporary._]
                         continue
                     }
@@ -194,6 +194,11 @@ class APITests : TestCase {
                                 RepetitionPattern(ConditionalPattern(condition: { _ in true }), consumption: .lazy),
                                 LiteralPattern("** BUILD SUCCEEDED **".scalars),
                                 ]), with: replacement)
+                            output.replaceMatches(for: CompositePattern([
+                                    LiteralPattern("Build settings from command line:".scalars),
+                                    RepetitionPattern(ConditionalPattern(condition: { _ in true }), consumption: .lazy),
+                                    LiteralPattern("** TEST SUCCEEDED **".scalars),
+                                    ]), with: replacement)
 
                             XCTAssertErrorFree { try output.save(to: outputLocation) }
                             checkForDifferences(in: "output", at: outputLocation, for: project)

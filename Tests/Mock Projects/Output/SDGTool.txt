@@ -172,11 +172,8 @@ Check dependencies
 
 Check dependencies
 
-=== BUILD TARGET tool OF PROJECT SDG WITH CONFIGURATION Debug ===
-
-Check dependencies
-
 === BUILD TARGET SDGTests OF PROJECT SDG WITH CONFIGURATION Debug ===
+
 Check dependencies
 
 ProcessInfoPlistFile [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Info.plist SDG.xcodeproj/SDGTests_Info.plist
@@ -207,6 +204,10 @@ libswiftXCTest.dylib is up to date at [...]/Library/Developer/Xcode/DerivedData/
 libswiftXPC.dylib is up to date at [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftXPC.dylib
 libswiftos.dylib is up to date at [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Frameworks/libswiftos.dylib
 libswiftRemoteMirror.dylib is up to date at [...]/Library/Developer/Xcode/DerivedData/SDG-elnyyrtshjziqpgrnuupytkjjueh/Build/Products/Debug/SDGTests.xctest/Contents/Resources/libswiftRemoteMirror.dylib
+
+=== BUILD TARGET tool OF PROJECT SDG WITH CONFIGURATION Debug ===
+
+Check dependencies
 
 ** TEST SUCCEEDED **
 

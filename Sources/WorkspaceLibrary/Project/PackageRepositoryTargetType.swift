@@ -38,29 +38,29 @@ extension PackageRepositoryTarget {
 
         // MARK: - Properties
 
-        var key: StrictString {
+        var key: StrictString { // [_Exempt from Test Coverage_] Deprecated.
             return StrictString(rawValue)
         }
 
         func isSupported(on operatingSystem: OperatingSystem) -> Bool {
             switch self {
-            case .library:
+            case .library: // [_Exempt from Test Coverage_] Deprecated.
                 switch operatingSystem {
-                case .macOS, .linux, .iOS, .watchOS, .tvOS:
+                case .macOS, .linux, .iOS, .watchOS, .tvOS: // [_Exempt from Test Coverage_] Deprecated.
                     return true
                 }
-            case .application:
+            case .application: // [_Exempt from Test Coverage_] Deprecated.
                 switch operatingSystem {
-                case .macOS, .iOS, .tvOS:
+                case .macOS, .iOS, .tvOS: // [_Exempt from Test Coverage_] Deprecated.
                     return true
-                case .linux, .watchOS:
+                case .linux, .watchOS: // [_Exempt from Test Coverage_] Deprecated.
                     return false
                 }
-            case .executable:
+            case .executable: // [_Exempt from Test Coverage_] Deprecated.
                 switch operatingSystem {
-                case .macOS, .linux:
+                case .macOS, .linux: // [_Exempt from Test Coverage_] Deprecated.
                     return true
-                case .iOS, .watchOS, .tvOS:
+                case .iOS, .watchOS, .tvOS: // [_Exempt from Test Coverage_] Deprecated.
                     return false
                 }
             }

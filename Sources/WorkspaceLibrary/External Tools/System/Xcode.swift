@@ -157,10 +157,10 @@
         func coverageData(for target: String, of scheme: String, on sdk: SDK, output: inout Command.Output) throws -> String {
 
             let directory = try coverageDirectory(for: scheme, on: sdk, output: &output)
-            guard let instance = try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil, options: []).first else {
-                throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
+            guard let instance = try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil, options: []).first else { // [_Exempt from Test Coverage_] Unreachable without corrupt project.
+                throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in // [_Exempt from Test Coverage_]
                     switch localization {
-                    case .englishCanada:
+                    case .englishCanada: // [_Exempt from Test Coverage_]
                         return "No coverage data available."
                     }
                 }))
@@ -168,10 +168,10 @@
             let rawData = instance.appendingPathComponent("Coverage.profdata")
 
             let settings = try buildSettings(for: scheme, on: sdk, output: &output)
-            guard let executablePathSuffix = settings.scalars.firstNestingLevel(startingWith: " EXECUTABLE_PATH = \(target).".scalars, endingWith: "\n".scalars)?.contents.contents else {
-                throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
+            guard let executablePathSuffix = settings.scalars.firstNestingLevel(startingWith: " EXECUTABLE_PATH = \(target).".scalars, endingWith: "\n".scalars)?.contents.contents else { // [_Exempt from Test Coverage_] Unreachable without corrupt project.
+                throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in // [_Exempt from Test Coverage_]
                     switch localization {
-                    case .englishCanada:
+                    case .englishCanada: // [_Exempt from Test Coverage_]
                         return "Could not find “EXECUTABLE_PATH” in Xcode build settings."
                     }
                 }))
@@ -181,7 +181,7 @@
             let directorySuffix: String
             if sdk == .macOS {
                 directorySuffix = ""
-            } else {
+            } else { // [_Exempt from Test Coverage_] Tested separately.
                 directorySuffix = "\u{2D}" + sdk.rawValue
             }
 

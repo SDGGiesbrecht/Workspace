@@ -1,3 +1,5 @@
 validate build
 test
 validate test‐coverage
+
+validate build •job miscellaneous

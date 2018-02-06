@@ -64,9 +64,9 @@ struct Tests {
         switch job {
         case .macOSXcode:
             return .macOS
-        case .iOS:
+        case .iOS: // [_Exempt from Test Coverage_] Tested separately.
             return .iOSSimulator
-        case .tvOS:
+        case .tvOS: // [_Exempt from Test Coverage_] Tested separately.
             return .tvOSSimulator
         case .macOSSwiftPackageManager, .linux, .watchOS, .miscellaneous, .documentation, .deployment:
             unreachable()
@@ -162,7 +162,7 @@ struct Tests {
 
             let testCommand: (inout Command.Output) -> Bool
             switch job {
-            case .macOSSwiftPackageManager, .linux:
+            case .macOSSwiftPackageManager, .linux: // [_Exempt from Test Coverage_] Tested separately.
                 testCommand = SwiftTool.default.test
             case .macOSXcode, .iOS, .watchOS, .tvOS:
                 let scheme = try Xcode.default.scheme(output: &output)
@@ -269,7 +269,7 @@ struct Tests {
             let fileLine = fileReport.range.lowerBound.line(in: coverageReport.lines)
             let file = String(coverageReport.lines[fileLine].line)
 
-            if file.scalars.contains("Needs Refactoring".scalars) ∨ file.scalars.contains(" .swift\u{3A}".scalars) /* switch case */ {
+            if file.scalars.contains("Needs Refactoring".scalars) ∨ file.scalars.contains(" .swift\u{3A}".scalars) /* switch case */ { // [_Exempt from Test Coverage_] Temporary.
                 continue // [_Workaround: A temporary measure until refactoring is complete._]
             }
 

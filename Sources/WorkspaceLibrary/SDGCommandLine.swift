@@ -71,11 +71,11 @@ extension _Swift {
         }
     }
 
-    func _test(output: inout Command.Output) -> Bool {
-        do {
+    func _test(output: inout Command.Output) -> Bool { // [_Exempt from Test Coverage_] Tested separately.
+        do { // [_Exempt from Test Coverage_]
             let _: Void = try _test(output: &output) // Shared from SDGCommandLine.
             return true
-        } catch {
+        } catch { // [_Exempt from Test Coverage_]
             return false
         }
     }

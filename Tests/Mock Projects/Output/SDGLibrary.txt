@@ -230,7 +230,7 @@ Test Suite 'All tests' passed at [...]
 	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
 
 
-Checking code coverage for “Library” on macOS... (§2)
+Checking test coverage for “Library” on macOS... (§2)
 
 
 ✓ Tests pass on macOS with Xcode.

@@ -206,7 +206,7 @@ struct Tests {
                 switch localization {
                 case .englishCanada:
                     let name = job.englishTargetOperatingSystemName
-                    return StrictString("Checking code coverage for “\(target)” on \(name)...") + section.anchor
+                    return StrictString("Checking test coverage for “\(target)” on \(name)...") + section.anchor
                 }
             }).resolved().formattedAsSectionHeader(), to: &output)
 

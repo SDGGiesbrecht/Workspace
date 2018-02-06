@@ -74,7 +74,6 @@ Library: Current Version
 
 For information on the various available options, see the documentation for the particular feature:
 
-- [Responsibilities](Responsibilities.md)
 - [Project Types](Project%20Types.md)
 - [Operating Systems](Operating%20Systems.md)
 - [Simulator](Simulator.md)
@@ -85,7 +84,7 @@ For information on the various available options, see the documentation for the 
 - [File Headers](File%20Headers.md)
 - [Proofreading](Proofreading.md)
 - [Compiler Warnings](Compiler%20Warnings.md)
-- [Code Coverage](Code%20Coverage.md)
+- [Test Coverage](Test%20Coverage.md)
 - [Documentation Generation](Documentation%20Generation.md)
 - [Continuous Integration](Continuous%20Integration.md)
 - [Ignoring File Types](Ignoring%20File%20Types.md)

@@ -2,7 +2,7 @@
 
 import PackageDescription
 
-let packageName = "SDGLibrary"
+let packageName = "SDG"
 let library = "Library"
 let tests = packageName + "Tests"
 

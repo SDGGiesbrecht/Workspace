@@ -95,31 +95,14 @@ $ workspace test
 Testing on macOS with the Swift Package Manager... (§1)
 
 
-$ swift test
-Compile Swift Module 'DefaultTests' (1 sources)
-Linking ./.build/x86_64-apple-macosx10.10/debug/DefaultPackageTests.xctest/Contents/MacOS/DefaultPackageTests
-
-
 Testing on macOS with Xcode... (§2)
 
 
 $ xcodebuild test -sdk macosx -scheme Default-Package
 [...]
 
-Test Suite 'All tests' started at [...]
-Test Suite 'DefaultTests.xctest' started at [...]
-Test Suite 'DefaultTests' started at [...]
-Test Case '-[DefaultTests.DefaultTests testExample]' started.
-Test Case '-[DefaultTests.DefaultTests testExample]' passed [...] seconds).
-Test Suite 'DefaultTests' passed at [...]
-	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
-Test Suite 'DefaultTests.xctest' passed at [...]
-	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
-Test Suite 'All tests' passed at [...]
-	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
 
 
-✓ Tests pass on macOS with the Swift Package Manager.
 ✓ Tests pass on macOS with Xcode.
 
 
@@ -133,17 +116,6 @@ Testing on macOS with Xcode... (§1)
 $ xcodebuild test -sdk macosx -scheme Default-Package
 [...]
 
-Test Suite 'All tests' started at [...]
-Test Suite 'DefaultTests.xctest' started at [...]
-Test Suite 'DefaultTests' started at [...]
-Test Case '-[DefaultTests.DefaultTests testExample]' started.
-Test Case '-[DefaultTests.DefaultTests testExample]' passed [...] seconds).
-Test Suite 'DefaultTests' passed at [...]
-	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
-Test Suite 'DefaultTests.xctest' passed at [...]
-	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
-Test Suite 'All tests' passed at [...]
-	 Executed 1 test, with 0 failures (0 unexpected) in [...] seconds
 
 
 Checking test coverage for “Default” on macOS... (§2)

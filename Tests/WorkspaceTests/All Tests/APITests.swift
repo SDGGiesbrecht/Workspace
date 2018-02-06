@@ -200,6 +200,12 @@ class APITests : TestCase {
                                     RepetitionPattern(ConditionalPattern(condition: { _ in true }), consumption: .lazy),
                                     LiteralPattern("** TEST SUCCEEDED **".scalars),
                                     ]), with: replacement)
+                            // Remove tests skipped in Xcode sandbox
+                            output.replaceMatches(for: CompositePattern([
+                                LiteralPattern("$ swift test".scalars),
+                                RepetitionPattern(ConditionalPattern(condition: { $0 ≠ "§" }), consumption: .lazy),
+                                LiteralPattern("\n\n".scalars),
+                                ]), with: "".scalars)
 
                             XCTAssertErrorFree { try output.save(to: outputLocation) }
                             checkForDifferences(in: "output", at: outputLocation, for: project)

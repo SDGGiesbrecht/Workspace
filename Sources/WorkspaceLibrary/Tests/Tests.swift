@@ -148,6 +148,13 @@ struct Tests {
 
         try FileManager.default.do(in: project.location) {
 
+            if BuildConfiguration.current == .debug,
+                ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil, // “swift test” gets confused inside Xcode’s test sandbox. This skips it while testing Workspace.
+                job == .macOSSwiftPackageManager {
+                print("Skipping due to sandbox...")
+                return
+            }
+
             setenv(DXcode.skipProofreadingEnvironmentVariable, "YES", 1 /* overwrite */)
             defer {
                 unsetenv(DXcode.skipProofreadingEnvironmentVariable)

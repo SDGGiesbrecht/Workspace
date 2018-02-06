@@ -496,27 +496,6 @@ extension Configuration {
             printValidationFailureDescription(description)
         }
 
-        // Project Type vs Operating System
-
-        func check(forIncompatibleOperatingSystem option: Option) {
-            if configurationFile[option] == String(Configuration.trueOptionValue) {
-                incompatibilityDetected(between: .projectType, and: option, documentation: .projectTypes)
-            }
-        }
-
-        if (try? Repository.packageRepository.configuration.projectType()) == .application {
-
-            check(forIncompatibleOperatingSystem: .supportLinux)
-            check(forIncompatibleOperatingSystem: .supportWatchOS)
-        }
-
-        if (try? Repository.packageRepository.configuration.projectType()) == .executable {
-
-            check(forIncompatibleOperatingSystem: .supportIOS)
-            check(forIncompatibleOperatingSystem: .supportWatchOS)
-            check(forIncompatibleOperatingSystem: .supportTVOS)
-        }
-
         // Manage Licence
 
         if manageLicence ∧ configurationFile[.licence] == nil {

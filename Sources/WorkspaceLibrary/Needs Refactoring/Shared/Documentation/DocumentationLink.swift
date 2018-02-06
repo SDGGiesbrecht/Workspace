@@ -30,7 +30,6 @@ enum DocumentationLink : String, CustomStringConvertible {
 
     case installation = "#installation"
     case requiringOptions = "Configuring Workspace.md#requiring\u{2D}options"
-    case projectTypes = "Project Types.md"
     case git = "Git.md"
     case readMe = "Read‐Me.md"
     case licence = "Licence.md"
@@ -44,7 +43,6 @@ enum DocumentationLink : String, CustomStringConvertible {
 
     static var all: [DocumentationLink] {
         return [
-            .projectTypes,
             .git,
             .readMe,
             .licence,

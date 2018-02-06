@@ -74,7 +74,6 @@ Library: Current Version
 
 For information on the various available options, see the documentation for the particular feature:
 
-- [Project Types](Project%20Types.md)
 - [Operating Systems](Operating%20Systems.md)
 - [Simulator](Simulator.md)
 - [Read‐Me](Read‐Me.md)

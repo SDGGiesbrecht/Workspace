@@ -4,6 +4,9 @@ import PackageDescription
 
 let package = Package(
     name: "ExecutableProjectType",
+    products: [
+        .executable(name: "ExecutableProjectType", targets: ["ExecutableProjectType"])
+    ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
     ],

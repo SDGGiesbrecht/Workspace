@@ -104,7 +104,7 @@ class APITests : TestCase {
 
                             #if !os(Linux)
                                 // [_Workaround: Until Xcode management is testable._]
-                                _ = try? Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj"])
+                                _ = try? Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj", "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage"])
                             #endif
 
                             var output: StrictString = ""

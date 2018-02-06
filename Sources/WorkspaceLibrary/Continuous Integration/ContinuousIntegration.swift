@@ -25,7 +25,10 @@ enum ContinuousIntegration {
             "  include:"
         ]
 
-        for job in Job.cases where try job.isRequired(by: project, output: &output) {
+        for job in Job.cases where try job.isRequired(by: project, output: &output)
+
+            ∨ (job ∈ Tests.simulatorJobs ∧ project.isWorkspaceProject(output: &output)) { // Simulator is unavailable during normal test.
+
             travisConfiguration.append(contentsOf: try job.script(configuration: project.configuration))
         }
 

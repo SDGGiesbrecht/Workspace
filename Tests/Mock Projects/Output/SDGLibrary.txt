@@ -84,6 +84,7 @@ $ workspace proofread
 
 Normalizing files...
 
+Writing to “Sources/Library/SDG.swift”...
 
 Proofreading source code... (§1)
 

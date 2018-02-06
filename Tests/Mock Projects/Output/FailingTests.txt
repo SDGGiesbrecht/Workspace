@@ -8,3 +8,6 @@ $ workspace test
 $ workspace validate test‐coverage
 
 “FailingTests” fails validation.
+$ workspace validate build •job miscellaneous
+
+Invalid job.

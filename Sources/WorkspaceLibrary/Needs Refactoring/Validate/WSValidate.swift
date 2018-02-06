@@ -72,8 +72,16 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         try Workspace.Validate.Build.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
     }
     if try options.project.configuration.shouldEnforceTestCoverage() {
-        try Workspace.Validate.TestCoverage.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
+        if let job = options.job,
+            job ∉ Tests.coverageJobs {
+            // Coverage impossible to check.
+            try Workspace.Test.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
+        } else {
+            // Check coverage.
+            try Workspace.Validate.TestCoverage.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
+        }
     } else {
+        // Coverage irrelevant.
         try Workspace.Test.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
     }
 

@@ -120,10 +120,10 @@ struct Tests {
                         }
                     }))
                 }
-            } catch { // [_Exept from Test Coverage_] False coverage result in Xcode 9.2.
-                validationStatus.failStep(message: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in // [_Exept from Test Coverage_]
+            } catch { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.2.
+                validationStatus.failStep(message: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in // [_Exempt from Test Coverage_]
                     switch localization {
-                    case .englishCanada: // [_Exept from Test Coverage_]
+                    case .englishCanada: // [_Exempt from Test Coverage_]
                         return "Build failed for " + englishName(for: job) + "." + section.crossReference.resolved(for: localization)
                     }
                 }))
@@ -226,10 +226,10 @@ struct Tests {
                         return StrictString("Test coverage is complete for “\(target)” on \(name).")
                     }
                 }))
-            } else { // [_Exept from Test Coverage_] False coverage result in Xcode 9.2.
-                validationStatus.failStep(message: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
-                    switch localization { // [_Exept from Test Coverage_]
-                    case .englishCanada: // [_Exept from Test Coverage_]
+            } else { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.2.
+                validationStatus.failStep(message: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in // [_Exempt from Test Coverage_]
+                    switch localization {
+                    case .englishCanada: // [_Exempt from Test Coverage_]
                         let name = job.englishTargetOperatingSystemName
                         return StrictString("Test coverage is incomplete for “\(target)” on \(name).") + section.crossReference.resolved(for: localization)
                     }

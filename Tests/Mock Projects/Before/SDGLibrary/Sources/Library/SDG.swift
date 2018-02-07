@@ -15,4 +15,12 @@ struct SDG {
     func exempt() { // [_Exempt from Test Coverage_]
         
     }
+    
+    func alsoExempt() {
+        // customPreviousLineToken
+    }
+    
+    func anotherExemption() { // customSameLineToken
+        
+    }
 }

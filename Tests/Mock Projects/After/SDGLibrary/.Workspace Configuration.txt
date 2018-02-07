@@ -163,3 +163,6 @@ This project is just a test.
 [_Begin Related Projects_]
 https://github.com/SDGGiesbrecht/Workspace
 [_End_]
+
+Test Coverage Exemption Tokens for the Same Line: customSameLineToken
+Test Coverage Exemption Tokens for the Previous Line: customPreviousLineToken

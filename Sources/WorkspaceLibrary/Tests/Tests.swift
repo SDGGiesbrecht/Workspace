@@ -203,7 +203,7 @@ struct Tests {
         let allTargets = try project.targets(output: &output).map({ $0.name })
         // [_Workaround: The list of libraries (product or otherwise) should be retrieved from the package manager directly instead. (SDGCommandLine 0.1.4)_]
         let executables = Set(try project.executableTargets(output: &output))
-        let validTargets = allTargets.filter { ¬$0.scalars.contains("Tests".scalars) ∧ $0 ∉ executables }
+        let validTargets = allTargets.filter { ¬$0.scalars.contains("Tests".scalars) ∧ $0 ∉ executables ∪ ["test‐ios‐simulator", "test‐tvos‐simulator"] }
 
         for target in validTargets {
 

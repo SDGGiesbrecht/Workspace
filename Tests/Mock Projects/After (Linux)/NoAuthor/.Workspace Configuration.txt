@@ -1,0 +1,5 @@
+Generate Documentation: True
+
+[_Begin Documentation Copyright_]
+[_Author_]
+[_End_]

@@ -1,0 +1,5 @@
+Project Type: Executable
+
+Localizations: en
+
+Quotation: Blah blah blah...

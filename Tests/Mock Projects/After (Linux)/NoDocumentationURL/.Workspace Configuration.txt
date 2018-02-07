@@ -1,0 +1,6 @@
+Localizations: en
+
+[_Begin Read‐Me_]
+[_en_]
+[_API Links_]
+[_End_]

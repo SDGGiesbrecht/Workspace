@@ -1,0 +1,61 @@
+
+
+[🇨🇦EN](Documentation/🇨🇦EN%20Read%20Me.md) • [🇬🇧EN](Documentation/🇬🇧EN%20Read%20Me.md) • [🇺🇸EN](Documentation/🇺🇸EN%20Read%20Me.md) • [🇩🇪DE](Documentation/🇩🇪DE%20Lies%20mich.md) • [🇫🇷FR](Documentation/🇫🇷FR%20Lisez%20moi.md) • [🇬🇷ΕΛ](Documentation/🇬🇷ΕΛ%20Με%20διαβάστε.md) • [🇮🇱עב](Documentation/🇮🇱עב%20קרא%20אותי.md) • [[zxx]](Documentation/[zxx]%20Read%20Me.md) <!--Skip in Jazzy-->
+
+macOS • Linux • iOS • watchOS • tvOS
+
+APIs: [Library](https://example.github.io/SDG/Library)
+
+# SDG
+
+This project does stuff.
+
+> [« ... »<br>“...”](https://www.biblegateway.com/passage/?search=Chapter+1&version=WLC;NIV)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;―someone
+
+## Features
+
+- Stuff.
+- More stuff.
+- Even more stuff.
+
+(For a list of related projects, see [here](Documentation/🇨🇦EN%20Related%20Projects.md).) <!--Skip in Jazzy-->
+
+## Importing
+
+`SDG` is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).
+
+Simply add `SDG` as a dependency in `Package.swift`:
+
+```swift
+let package = Package(
+    name: "MyPackage",
+    dependencies: [
+        .package(url: "https://github.com/JohnDoe/SDG", from: Version(1, 0, 0)),
+    ],
+    targets: [
+        .target(name: "MyTarget", dependencies: [
+            .productItem(name: "Library", package: "SDG"),
+        ])
+    ]
+)
+```
+
+`SDG` can then be imported in source files:
+
+```swift
+import Library
+```
+
+## Example Usage
+
+```swift
+// 🇨🇦EN
+```
+
+## Other
+
+...
+
+## About
+
+This project is just a test.

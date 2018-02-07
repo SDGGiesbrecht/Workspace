@@ -45,6 +45,7 @@ struct Tests {
         return result
     }
 
+#if !os(Linux)
     private static func buildSDK(for job: ContinuousIntegration.Job) -> Xcode.SDK {
         switch job {
         case .macOSXcode:
@@ -72,6 +73,7 @@ struct Tests {
             unreachable()
         }
     }
+#endif
 
     static func build(_ project: PackageRepository, for job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
 
@@ -86,21 +88,26 @@ struct Tests {
 
         try FileManager.default.do(in: project.location) {
             do {
-
+#if !os(Linux)
                 setenv(DXcode.skipProofreadingEnvironmentVariable, "YES", 1 /* overwrite */)
                 defer {
                     unsetenv(DXcode.skipProofreadingEnvironmentVariable)
                 }
+#endif
 
                 let buildCommand: (inout Command.Output) throws -> Bool
                 switch job {
                 case .macOSSwiftPackageManager, .linux:
                     buildCommand = SwiftTool.default.build
                 case .macOSXcode, .iOS, .watchOS, .tvOS:
+#if os(Linux)
+unreachable()
+#else
                     let scheme = try Xcode.default.scheme(output: &output)
                     buildCommand = { output in
                         return try Xcode.default.build(scheme: scheme, for: buildSDK(for: job), output: &output)
                     }
+#endif
                 case .miscellaneous, .documentation, .deployment:
                     unreachable()
                 }
@@ -155,20 +162,26 @@ struct Tests {
                 return
             }
 
+#if !os(Linux)
             setenv(DXcode.skipProofreadingEnvironmentVariable, "YES", 1 /* overwrite */)
             defer {
                 unsetenv(DXcode.skipProofreadingEnvironmentVariable)
             }
+#endif
 
             let testCommand: (inout Command.Output) -> Bool
             switch job {
             case .macOSSwiftPackageManager, .linux: // [_Exempt from Test Coverage_] Tested separately.
                 testCommand = SwiftTool.default.test
             case .macOSXcode, .iOS, .watchOS, .tvOS:
+#if os(Linux)
+unreachable()
+#else
                 let scheme = try Xcode.default.scheme(output: &output)
                 testCommand = { output in
                     return Xcode.default.test(scheme: scheme, on: testSDK(for: job), output: &output)
                 }
+#endif
             case .miscellaneous, .documentation, .deployment:
                 unreachable()
             }
@@ -192,6 +205,7 @@ struct Tests {
     }
 
     static func validateCodeCoverage(for project: PackageRepository, on job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+#if !os(Linux)
 
         setenv(DXcode.skipProofreadingEnvironmentVariable, "YES", 1 /* overwrite */)
         defer {
@@ -236,6 +250,7 @@ struct Tests {
                 }))
             }
         }
+#endif
     }
 
     private static func untestableSameLineTokens(for project: PackageRepository) throws -> [StrictString] {

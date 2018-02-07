@@ -74,7 +74,7 @@ class APITests : TestCase {
                     let expectedToFail = (try? project.appendingPathComponent("✗").checkResourceIsReachable()) == true
                     var commands = try String(from: project.appendingPathComponent("$.txt")).components(separatedBy: "\n").filter({ ¬$0.isEmpty }).map { $0.components(separatedBy: " ").map({ StrictString($0) }) }
                     #if os(Linux)
-                        commands = commands.filter { command
+                        commands = commands.filter { command in
                             return ¬command.contains("documentation‐coverage")
                         }
                     #endif
@@ -87,10 +87,13 @@ class APITests : TestCase {
                         let resultLocation = mockProjectsDirectory.appendingPathComponent("After/" + project.lastPathComponent)
                         let outputLocation = mockProjectsDirectory.appendingPathComponent("Output/" + project.lastPathComponent + ".txt")
                     #endif
-
                     // Ensure proper starting state.
                     try? FileManager.default.removeItem(at: resultLocation)
+#if os(Linux)
+try Shell.default.run(command: ["cp", "\u{2D}r", Shell.quote(project.path), Shell.quote(resultLocation.path)])
+#else
                     try FileManager.default.copy(project, to: resultLocation)
+#endif
 
                     try FileManager.default.do(in: resultLocation) {
                         LocalizationSetting(orderOfPrecedence: ["en\u{2D}CA"]).do {

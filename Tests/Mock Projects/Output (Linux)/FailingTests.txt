@@ -1,0 +1,17 @@
+
+$ workspace validate build
+
+“FailingTests” fails validation.
+$ workspace test
+
+“FailingTests” fails validation.
+$ workspace validate test‐coverage
+
+
+
+
+“FailingTests” passes validation.
+
+$ workspace validate build •job miscellaneous
+
+Invalid job.

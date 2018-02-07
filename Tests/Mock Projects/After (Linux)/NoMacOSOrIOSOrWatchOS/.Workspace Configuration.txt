@@ -1,0 +1,5 @@
+Support macOS: False
+Support iOS: False
+Support watchOS: False
+
+Generate Documentation: True

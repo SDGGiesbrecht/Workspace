@@ -86,6 +86,45 @@ $ swift package resolve
 Writing to “Sources/Library/Resources.swift”...
 $ workspace proofread
 
+Normalizing files...
+
+
+Proofreading source code... (§1)
+
+.travis.yml
+.Workspace Configuration.txt
+Documentation/[zxx] Read Me.md
+Documentation/[zxx] Related Projects.md
+Documentation/🇨🇦EN Read Me.md
+Documentation/🇨🇦EN Related Projects.md
+Documentation/🇩🇪DE Lies mich.md
+Documentation/🇩🇪DE Verwandte Projekte.md
+Documentation/🇫🇷FR Lisez moi.md
+Documentation/🇫🇷FR Projets liés.md
+Documentation/🇬🇧EN Read Me.md
+Documentation/🇬🇧EN Related Projects.md
+Documentation/🇬🇷ΕΛ Με διαβάστε.md
+Documentation/🇬🇷ΕΛ Συγγενικά έργα.md
+Documentation/🇮🇱עב מיזמים קשורים.md
+Documentation/🇮🇱עב קרא אותי.md
+Documentation/🇺🇸EN Read Me.md
+Documentation/🇺🇸EN Related Projects.md
+Package.swift
+README.md
+Sources/Library/Resources.swift
+Sources/Library/SDG.swift
+Sources/tool/main.swift
+Tests/LinuxMain.swift
+Tests/SDGTests/SDGTests.swift
+
+$ swift package resolve
+
+
+✓ Source code passes proofreading.
+
+
+“SDG” passes validation.
+
 $ workspace validate build
 
 Checking build for Linux... (§1)
@@ -122,70 +161,3 @@ $ workspace validate test‐coverage
 “SDG” passes validation.
 
 $ workspace proofread •xcode
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/checkouts/Dependency-2203813545210335531/Package.swift:2:13: warning: U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/checkouts/Dependency-2203813545210335531/Package.swift:2:19: warning: U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/checkouts/Dependency-2203813545210335531/Package.swift:16:51: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/checkouts/Dependency-2203813545210335531/Package.swift:16:57: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/checkouts/Dependency-2203813545210335531/Tests/DependencyTests/DependencyTests.swift:4:22: warning: Colons should be preceded by spaces when denoting protocols or superclasses. (Colon Spacing)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:287: warning: U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:2: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:9: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:13: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:26: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:31: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:39: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:48: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:53: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:56: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:67: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:70: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:84: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:87: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:120: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:123: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:129: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:133: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:147: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:151: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:158: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:167: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:176: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:179: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:220: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:223: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:231: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:234: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:240: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:244: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:249: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:252: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:261: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:265: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:273: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:276: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:307: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:313: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/dependencies-state.json:1:321: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/repositories/checkouts-state.json:1:165: warning: U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/repositories/checkouts-state.json:1:2: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/repositories/checkouts-state.json:1:9: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/repositories/checkouts-state.json:1:13: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/repositories/checkouts-state.json:1:26: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/repositories/checkouts-state.json:1:30: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/repositories/checkouts-state.json:1:63: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/repositories/checkouts-state.json:1:67: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/repositories/checkouts-state.json:1:81: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/repositories/checkouts-state.json:1:84: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/repositories/checkouts-state.json:1:117: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/repositories/checkouts-state.json:1:120: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/repositories/checkouts-state.json:1:127: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/repositories/checkouts-state.json:1:130: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/repositories/checkouts-state.json:1:140: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/repositories/checkouts-state.json:1:143: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/repositories/checkouts-state.json:1:151: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/repositories/checkouts-state.json:1:154: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/repositories/checkouts-state.json:1:185: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/repositories/checkouts-state.json:1:191: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/.build/repositories/checkouts-state.json:1:199: warning: U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/Validate (Linux).sh:5:54: warning: “&&” is obsolete. Use the conjunction sign (∧). (Unicode)
-[...]/Tests/Mock Projects/After (Linux)/SDGTool/Validate (macOS).command:5:54: warning: “&&” is obsolete. Use the conjunction sign (∧). (Unicode)

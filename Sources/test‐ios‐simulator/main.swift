@@ -30,6 +30,7 @@ do {
     }
 
 } catch let error {
+    print(error)
     print(error.localizedDescription)
     exit(1)
 }

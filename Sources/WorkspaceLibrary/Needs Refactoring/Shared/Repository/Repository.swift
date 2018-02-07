@@ -37,17 +37,6 @@ struct Repository {
         return result!
     }()
 
-    // MARK: - Configuration
-
-    static let testZone: RelativePath = ".Test Zone"
-
-    // MARK: - Cache
-
-    private struct Cache {
-        fileprivate var printableListOfAllFiles: String?
-    }
-    private static var cache = Cache()
-
     // MARK: - Constants
 
     private static let fileManager = FileManager.default
@@ -56,10 +45,6 @@ struct Repository {
     static let root: RelativePath = RelativePath("")
 
     // MARK: - Repository
-
-    static func resetCache() {
-        cache = Cache()
-    }
 
     static var allFiles: [RelativePath] {
         let urls = require { try packageRepository.allFiles() }
@@ -74,18 +59,6 @@ struct Repository {
     static var sourceFiles: [RelativePath] {
         let urls = require { try packageRepository.sourceFiles(output: &standInOutput) }
         return paths(from: urls)
-    }
-
-    static var printableListOfAllFiles: String {
-        return cached(in: &cache.printableListOfAllFiles) {
-            () -> String in
-
-            return allFiles.map({ $0.string }).joinAsLines()
-        }
-    }
-
-    static var isEmpty: Bool {
-        return allFiles.isEmpty
     }
 
     private static func path(_ possiblePath: RelativePath, isIn path: RelativePath) -> Bool {
@@ -109,13 +82,6 @@ struct Repository {
 
     static func allFiles(at path: RelativePath) -> [RelativePath] {
         return allFiles.filter { (possiblePath: RelativePath) -> Bool in
-
-            return Repository.path(possiblePath, isIn: path)
-        }
-    }
-
-    static func trackedFiles(at path: RelativePath) -> [RelativePath] {
-        return trackedFiles.filter { (possiblePath: RelativePath) -> Bool in
 
             return Repository.path(possiblePath, isIn: path)
         }
@@ -192,72 +158,6 @@ struct Repository {
         try? delete(path)
 
         try? fileManager.createDirectory(atPath: absolute(path).directory, withIntermediateDirectories: true, attributes: nil)
-    }
-
-    private static func performPathChange(from origin: RelativePath, to destination: RelativePath, copy: Bool, includeIgnoredFiles: Bool = false) throws {
-
-        // This must generate the entire list of files to copy before starting to make changes. Otherwise the run‐away effect of copying a directory into itself is catastrophic.
-        let files: [RelativePath]
-        if includeIgnoredFiles {
-            files = allFiles(at: origin)
-        } else {
-            files = trackedFiles(at: origin)
-        }
-
-        let changes = files.map { (changeOrigin: RelativePath) -> (changeOrigin: RelativePath, changeDestination: RelativePath) in
-
-            let relative = String(changeOrigin.string[changeOrigin.string.index(changeOrigin.string.clusters.startIndex, offsetBy: origin.string.clusters.count)...])
-
-            return (changeOrigin, RelativePath(destination.string + relative))
-        }
-        if changes.isEmpty {
-            fatalError(message: [
-                "No files exist at “\(origin)”",
-                "This may indicate a bug in Workspace."
-                ])
-        }
-
-        for change in changes {
-
-            let verb = copy ? "Copying" : "Moving"
-            print(["\(verb) “\(change.changeOrigin)” to “\(change.changeDestination)”..."])
-
-            prepareForWrite(path: change.changeDestination)
-
-            #if os(Linux)
-                // [_Workaround: Skip unavailable file copying by using shell on Linux. (Swift 3.1.0)_]
-                try Shell.default.run(command: ["cp", absolute(change.changeOrigin).string, absolute(change.changeDestination).string], silently: true)
-            #else
-                try fileManager.copyItem(atPath: absolute(change.changeOrigin).string, toPath: absolute(change.changeDestination).string)
-            #endif
-
-            if ¬copy {
-                try delete(change.changeOrigin)
-            }
-        }
-
-        Repository.packageRepository.resetCache(debugReason: destination.string)
-    }
-
-    private static func performPathChange(from origin: RelativePath, into destination: RelativePath, copy: Bool, includeIgnoredFiles: Bool = false) throws {
-        let destinationFile = destination.subfolderOrFile(origin.filename)
-        try performPathChange(from: origin, to: destinationFile, copy: copy, includeIgnoredFiles: includeIgnoredFiles)
-    }
-
-    static func copy(_ origin: RelativePath, to destination: RelativePath, includeIgnoredFiles: Bool = false) throws {
-        try performPathChange(from: origin, to: destination, copy: true, includeIgnoredFiles: includeIgnoredFiles)
-    }
-
-    static func copy(_ origin: RelativePath, into destination: RelativePath, includeIgnoredFiles: Bool = false) throws {
-        try performPathChange(from: origin, into: destination, copy: true, includeIgnoredFiles: includeIgnoredFiles)
-    }
-
-    static func move(_ origin: RelativePath, to destination: RelativePath, includeIgnoredFiles: Bool = false) throws {
-        try performPathChange(from: origin, to: destination, copy: false, includeIgnoredFiles: includeIgnoredFiles)
-    }
-
-    static func move(_ origin: RelativePath, into destination: RelativePath, includeIgnoredFiles: Bool = false) throws {
-        try performPathChange(from: origin, into: destination, copy: false, includeIgnoredFiles: includeIgnoredFiles)
     }
 
     // MARK: - Linked Repositories

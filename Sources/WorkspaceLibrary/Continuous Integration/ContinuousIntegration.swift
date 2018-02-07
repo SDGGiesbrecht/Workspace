@@ -25,8 +25,20 @@ enum ContinuousIntegration {
             "  include:"
         ]
 
-        for job in Job.cases where try job.isRequired(by: project, output: &output) {
+        for job in Job.cases where try job.isRequired(by: project, output: &output)
+
+            ∨ (job ∈ Tests.simulatorJobs ∧ project.isWorkspaceProject(output: &output)) { // Simulator is unavailable during normal test.
+
             travisConfiguration.append(contentsOf: try job.script(configuration: project.configuration))
+        }
+
+        if try project.isWorkspaceProject(output: &output) {
+            travisConfiguration = travisConfiguration.map {
+                var line = $0
+                line.scalars.replaceMatches(for: "\u{22}bash \u{5C}\u{22}./Validate (macOS).command\u{5C}\u{22} •job ios\u{22}".scalars, with: "swift run test‐ios‐simulator".scalars)
+                line.scalars.replaceMatches(for: "\u{22}bash \u{5C}\u{22}./Validate (macOS).command\u{5C}\u{22} •job tvos\u{22}".scalars, with: "swift run test‐tvos‐simulator".scalars)
+                return line
+            }
         }
 
         travisConfiguration.append(contentsOf: [

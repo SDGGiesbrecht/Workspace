@@ -33,4 +33,13 @@ extension SwiftTool {
     func dependencies(output: inout Command.Output) throws -> [StrictString: Version] {
         return try _dependencies(output: &output) // Shared from SDGCommandLine.
     }
+
+    func build(output: inout Command.Output) throws -> Bool {
+        return try _build(output: &output) // Shared from SDGCommandLine.
+    }
+
+    func test(output: inout Command.Output) -> Bool { // [_Exempt from Test Coverage_] Tested separately.
+        let result: Bool = _test(output: &output) // Shared from SDGCommandLine.
+        return result
+    }
 }

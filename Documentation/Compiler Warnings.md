@@ -17,3 +17,7 @@
 Workspace can prohibit compiler warnings.
 
 This is controlled by the [configuration](Configuring%20Workspace.md) option `Prohibit Compiler Warnings`. The default value is `True`.
+
+```shell
+$ workspace validate build
+```

@@ -69,6 +69,33 @@ extension ContinuousIntegration {
 
         // MARK: - Properties
 
+        var englishTargetOperatingSystemName: StrictString {
+            switch self {
+            case .macOSSwiftPackageManager, .macOSXcode:
+                return "macOS"
+            case .linux: // [_Exempt from Test Coverage_] Unreachable from macOS.
+                return "Linux"
+            case .iOS:
+                return "iOS"
+            case .watchOS:
+                return "watchOS"
+            case .tvOS:
+                return "tvOS"
+            case .miscellaneous, .documentation, .deployment:
+                unreachable()
+            }
+        }
+        var englishTargetBuildSystemName: StrictString? {
+            switch self {
+            case .macOSSwiftPackageManager:
+                return "the Swift Package Manager"
+            case .macOSXcode:
+                return "Xcode"
+            case .linux, .iOS, .watchOS, .tvOS, .miscellaneous, .documentation, .deployment:
+                return nil
+            }
+        }
+
         var name: UserFacingText<InterfaceLocalization, Void> {
             switch self {
             case .macOSSwiftPackageManager:
@@ -208,18 +235,18 @@ extension ContinuousIntegration {
         func isRequired(by project: PackageRepository, output: inout Command.Output) throws -> Bool {
             switch self {
             case .macOSSwiftPackageManager:
-                return try project.configuration.supports(.macOS)
+                return try project.configuration.supports(.macOS, project: project, output: &output)
                     ∧ ¬(try project.configuration.projectType() == .application)
             case .macOSXcode:
-                return try project.configuration.supports(.macOS)
-            case .linux:
-                return try project.configuration.supports(.linux)
+                return try project.configuration.supports(.macOS, project: project, output: &output)
+            case .linux: // [_Exempt from Test Coverage_] False coverage result in Xcode 9.2.
+                return try project.configuration.supports(.linux, project: project, output: &output)
             case .iOS:
-                return try project.configuration.supports(.iOS)
+                return try project.configuration.supports(.iOS, project: project, output: &output)
             case .watchOS:
-                return try project.configuration.supports(.watchOS)
+                return try project.configuration.supports(.watchOS, project: project, output: &output)
             case .tvOS:
-                return try project.configuration.supports(.tvOS)
+                return try project.configuration.supports(.tvOS, project: project, output: &output)
             case .miscellaneous:
                 return true
             case .documentation:
@@ -330,16 +357,16 @@ extension ContinuousIntegration {
 extension Optional where Wrapped == ContinuousIntegration.Job {
     // MARK: - where Wrapped == ContinuousIntegration.Job
 
-    func includes(job: ContinuousIntegration.Job) -> Bool { // [_Exempt from Code Coverage_] [_Workaround: Until unit‐tests is testable._]
+    func includes(job: ContinuousIntegration.Job) -> Bool {
         switch self {
-        case .none: // [_Exempt from Code Coverage_] [_Workaround: Until unit‐tests is testable._]
+        case .none:
             switch job {
-            case .macOSSwiftPackageManager, .macOSXcode, .linux, .iOS, .watchOS, .tvOS, .miscellaneous, .documentation: // [_Exempt from Code Coverage_] [_Workaround: Until unit‐tests is testable._]
+            case .macOSSwiftPackageManager, .macOSXcode, .linux, .iOS, .watchOS, .tvOS, .miscellaneous, .documentation:
                 return true
-            case .deployment: // [_Exempt from Code Coverage_] [_Workaround: Until unit‐tests is testable._]
+            case .deployment:
                 return false
             }
-        case .some(let currentJob): // [_Exempt from Code Coverage_] [_Workaround: Until unit‐tests is testable._]
+        case .some(let currentJob):
             return currentJob == job
         }
     }

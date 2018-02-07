@@ -1,0 +1,213 @@
+
+$ workspace refresh scripts
+
+Refreshing scripts...
+
+
+$ swift package resolve
+
+Writing to “Refresh (macOS).command”...
+Writing to “Refresh (Linux).sh”...
+
+$ swift package resolve
+
+Writing to “Validate (macOS).command”...
+$ workspace refresh read‐me
+
+Refreshing read‐me...
+
+
+$ swift package resolve
+
+Writing to “Documentation/🇨🇦EN Read Me.md”...
+Writing to “Documentation/🇨🇦EN Related Projects.md”...
+
+$ swift package resolve
+
+Writing to “README.md”...
+
+$ swift package resolve
+
+Writing to “Documentation/🇬🇧EN Read Me.md”...
+Writing to “Documentation/🇬🇧EN Related Projects.md”...
+
+$ swift package resolve
+
+Writing to “Documentation/🇺🇸EN Read Me.md”...
+Writing to “Documentation/🇺🇸EN Related Projects.md”...
+
+$ swift package resolve
+
+Writing to “Documentation/🇩🇪DE Lies mich.md”...
+Writing to “Documentation/🇩🇪DE Verwandte Projekte.md”...
+
+$ swift package resolve
+
+Writing to “Documentation/🇫🇷FR Lisez moi.md”...
+Writing to “Documentation/🇫🇷FR Projets liés.md”...
+
+$ swift package resolve
+
+Writing to “Documentation/🇬🇷ΕΛ Με διαβάστε.md”...
+Writing to “Documentation/🇬🇷ΕΛ Συγγενικά έργα.md”...
+
+$ swift package resolve
+
+Writing to “Documentation/🇮🇱עב קרא אותי.md”...
+Writing to “Documentation/🇮🇱עב מיזמים קשורים.md”...
+
+$ swift package resolve
+
+Writing to “Documentation/[zxx] Read Me.md”...
+Writing to “Documentation/[zxx] Related Projects.md”...
+Deleting “Documentation/Related Projects.md”...
+$ workspace refresh continuous‐integration
+
+Refreshing continuous integration configuration...
+
+
+$ swift package resolve
+
+Writing to “.travis.yml”...
+$ workspace refresh resources
+
+Refreshing resources...
+
+
+$ swift package resolve
+
+Writing to “Sources/Library/Resources.swift”...
+$ workspace proofread
+
+Normalizing files...
+
+
+Proofreading source code... (§1)
+
+.Workspace Configuration.txt
+.travis.yml
+Documentation/[zxx] Read Me.md
+Documentation/[zxx] Related Projects.md
+Documentation/🇨🇦EN Read Me.md
+Documentation/🇨🇦EN Related Projects.md
+Documentation/🇩🇪DE Lies mich.md
+Documentation/🇩🇪DE Verwandte Projekte.md
+Documentation/🇫🇷FR Lisez moi.md
+Documentation/🇫🇷FR Projets liés.md
+Documentation/🇬🇧EN Read Me.md
+Documentation/🇬🇧EN Related Projects.md
+Documentation/🇬🇷ΕΛ Με διαβάστε.md
+Documentation/🇬🇷ΕΛ Συγγενικά έργα.md
+Documentation/🇮🇱עב מיזמים קשורים.md
+Documentation/🇮🇱עב קרא אותי.md
+Documentation/🇺🇸EN Read Me.md
+Documentation/🇺🇸EN Related Projects.md
+Package.swift
+README.md
+Sources/Library/Resources.swift
+Sources/Library/SDG.swift
+Sources/tool/main.swift
+Tests/LinuxMain.swift
+Tests/SDGTests/SDGTests.swift
+
+$ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --reporter emoji
+
+
+$ swift package resolve
+
+
+✓ Source code passes proofreading.
+
+
+“SDG” passes validation.
+
+$ workspace validate build
+
+Checking build for macOS with the Swift Package Manager... (§1)
+
+
+$ swift build
+Compile Swift Module 'Dependency' (1 sources)
+Compile Swift Module 'Library' (2 sources)
+Compile Swift Module 'tool' (1 sources)
+Linking ./.build/x86_64-apple-macosx10.10/debug/tool
+
+
+Checking build for macOS with Xcode... (§2)
+
+
+$ xcodebuild build -sdk macosx -scheme SDG-Package
+[...]
+
+
+
+✓ There are no compiler warnings for macOS with the Swift Package Manager.
+✓ There are no compiler warnings for macOS with Xcode.
+
+
+“SDG” passes validation.
+
+$ workspace test
+
+Testing on macOS with the Swift Package Manager... (§1)
+
+
+Testing on macOS with Xcode... (§2)
+
+
+$ xcodebuild test -sdk macosx -scheme SDG-Package
+[...]
+
+
+
+✓ Tests pass on macOS with Xcode.
+
+
+“SDG” passes validation.
+
+$ workspace validate test‐coverage
+
+Testing on macOS with Xcode... (§1)
+
+
+$ xcodebuild test -sdk macosx -scheme SDG-Package
+[...]
+
+
+
+Checking test coverage for “Library” on macOS... (§2)
+
+
+✓ Tests pass on macOS with Xcode.
+✓ Test coverage is complete for “Library” on macOS.
+
+
+“SDG” passes validation.
+
+$ workspace validate documentation‐coverage
+
+Generating documentation for “Library”...
+
+
+$ jazzy --module Library --copyright "Copyright ©2017–2018 John Doe and the SDG project contributors. All rights reserved." --github_url "https://github.com/JohnDoe/SDG" --documentation=Documentation/*.md --clean --use-safe-filenames --output "[...]/Documentation/Library" --xcodebuild-arguments "-scheme,SDG-Package,-target,Library,-sdk,macosx,-derivedDataPath,[...]/Jazzy Build Artifacts"
+0% documentation coverage with 0 undocumented symbols
+skipped 6 private, fileprivate, or internal symbols (use `--min-acl` to specify a different minimum ACL)
+jam out ♪♫ to your fresh new docs in `[...]/Documentation/Library`
+
+Writing to “[...]/Documentation/Library/.nojekyll”...
+
+$ swift package resolve
+
+
+Checking documentation coverage for “Library”... (§1)
+
+
+✓ Generated documentation for “Library”.
+✓ Documentation coverage is complete for “Library”.
+
+
+“SDG” passes validation.
+
+$ workspace proofread •xcode
+
+$ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --quiet

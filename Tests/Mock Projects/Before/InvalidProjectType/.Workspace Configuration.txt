@@ -1,4 +1,0 @@
-Project Type: Invalid
-
-Manage Read‐Me: True
-Localizations: en

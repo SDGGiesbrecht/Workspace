@@ -1,0 +1,119 @@
+
+$ workspace refresh scripts
+
+Refreshing scripts...
+
+
+$ swift package resolve
+Fetching file:///tmp/Developer/Dependency
+Cloning file:///tmp/Developer/Dependency
+Resolving file:///tmp/Developer/Dependency at 1.0.0
+
+Writing to “Refresh (macOS).command”...
+Writing to “Refresh (Linux).sh”...
+Writing to “Validate (macOS).command”...
+Writing to “Validate (Linux).sh”...
+$ workspace refresh read‐me
+
+Refreshing read‐me...
+
+Writing to “Documentation/🇨🇦EN Read Me.md”...
+Writing to “Documentation/🇨🇦EN Related Projects.md”...
+Writing to “README.md”...
+Writing to “Documentation/🇬🇧EN Read Me.md”...
+Writing to “Documentation/🇬🇧EN Related Projects.md”...
+Writing to “Documentation/🇺🇸EN Read Me.md”...
+Writing to “Documentation/🇺🇸EN Related Projects.md”...
+Writing to “Documentation/🇩🇪DE Lies mich.md”...
+Writing to “Documentation/🇩🇪DE Verwandte Projekte.md”...
+Writing to “Documentation/🇫🇷FR Lisez moi.md”...
+Writing to “Documentation/🇫🇷FR Projets liés.md”...
+Writing to “Documentation/🇬🇷ΕΛ Με διαβάστε.md”...
+Writing to “Documentation/🇬🇷ΕΛ Συγγενικά έργα.md”...
+Writing to “Documentation/🇮🇱עב קרא אותי.md”...
+Writing to “Documentation/🇮🇱עב מיזמים קשורים.md”...
+Writing to “Documentation/[zxx] Read Me.md”...
+Writing to “Documentation/[zxx] Related Projects.md”...
+Deleting “Documentation/Related Projects.md”...
+$ workspace refresh continuous‐integration
+
+Refreshing continuous integration configuration...
+
+Writing to “.travis.yml”...
+$ workspace refresh resources
+
+Refreshing resources...
+
+Writing to “Sources/Library/Resources.swift”...
+$ workspace proofread
+
+Normalizing files...
+
+Writing to “.Workspace Configuration.txt”...
+Writing to “Sources/Library/SDG.swift”...
+
+Proofreading source code... (§1)
+
+.travis.yml
+.Workspace Configuration.txt
+Documentation/[zxx] Read Me.md
+Documentation/[zxx] Related Projects.md
+Documentation/🇨🇦EN Read Me.md
+Documentation/🇨🇦EN Related Projects.md
+Documentation/🇩🇪DE Lies mich.md
+Documentation/🇩🇪DE Verwandte Projekte.md
+Documentation/🇫🇷FR Lisez moi.md
+Documentation/🇫🇷FR Projets liés.md
+Documentation/🇬🇧EN Read Me.md
+Documentation/🇬🇧EN Related Projects.md
+Documentation/🇬🇷ΕΛ Με διαβάστε.md
+Documentation/🇬🇷ΕΛ Συγγενικά έργα.md
+Documentation/🇮🇱עב מיזמים קשורים.md
+Documentation/🇮🇱עב קרא אותי.md
+Documentation/🇺🇸EN Read Me.md
+Documentation/🇺🇸EN Related Projects.md
+Package.swift
+README.md
+Sources/Library/Resources.swift
+Sources/Library/SDG.swift
+Tests/LinuxMain.swift
+Tests/SDGTests/SDGTests.swift
+
+✓ Source code passes proofreading.
+
+
+“SDG” passes validation.
+
+$ workspace validate build
+
+Checking build for Linux... (§1)
+
+
+$ swift build
+Compile Swift Module 'Dependency' (1 sources)
+Compile Swift Module 'Library' (2 sources)
+
+
+✓ There are no compiler warnings for Linux.
+
+
+“SDG” passes validation.
+
+$ workspace test
+
+Testing on Linux... (§1)
+
+
+✓ Tests pass on Linux.
+
+
+“SDG” passes validation.
+
+$ workspace validate test‐coverage
+
+
+
+
+“SDG” passes validation.
+
+$ workspace proofread •xcode

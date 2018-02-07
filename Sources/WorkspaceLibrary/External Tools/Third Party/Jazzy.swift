@@ -40,19 +40,19 @@ import SDGCommandLine
 
         static let `default` = Jazzy(version: Version(0, 9, 1))
 
-        override class var name: UserFacingText<InterfaceLocalization, Void> { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
-            return UserFacingText({ (localization, _) in // [_Exempt from Code Coverage_]
+        override class var name: UserFacingText<InterfaceLocalization, Void> { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
+            return UserFacingText({ (localization, _) in // [_Exempt from Test Coverage_]
                 switch localization {
-                case .englishCanada: // [_Exempt from Code Coverage_]
+                case .englishCanada: // [_Exempt from Test Coverage_]
                     return "Jazzy"
                 }
             })
         }
 
-        override class var installationInstructionsURL: UserFacingText<InterfaceLocalization, Void> { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
-            return UserFacingText({ (localization, _) in // [_Exempt from Code Coverage_]
+        override class var installationInstructionsURL: UserFacingText<InterfaceLocalization, Void> { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
+            return UserFacingText({ (localization, _) in // [_Exempt from Test Coverage_]
                 switch localization {
-                case .englishCanada: // [_Exempt from Code Coverage_]
+                case .englishCanada: // [_Exempt from Test Coverage_]
                     return "https://github.com/realm/jazzy"
                 }
             })
@@ -115,16 +115,16 @@ import SDGCommandLine
             try executeInCompatibilityMode(with: jazzyArguments, output: &output)
             project.resetCache(debugReason: "jazzy")
 
-            // [_Workaround: Jazzy is incompatible with Jekyll. (jazzy --version 0.9.0)_]
+            // [_Workaround: Jazzy is incompatible with Jekyll. (jazzy --version 0.9.1)_]
             try preventJekyllInterference(in: outputDirectory, for: project, output: &output)
-            // [_Workaround: Jazzy expects only ASCII. (jazzy --version 0.9.0)_]
+            // [_Workaround: Jazzy expects only ASCII. (jazzy --version 0.9.1)_]
             try fixSplitClusters(in: outputDirectory, for: project, output: &output)
         }
 
-        private func parseError(undocumented json: String) -> Command.Error { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
-            return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Code Coverage_]
+        private func parseError(undocumented json: String) -> Command.Error { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
+            return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Test Coverage_]
                 switch localization {
-                case .englishCanada: // [_Exempt from Code Coverage_]
+                case .englishCanada: // [_Exempt from Test Coverage_]
                     return StrictString("Error loading list of undocumented symbols:\n\(json)")
                 }
             }))
@@ -134,11 +134,11 @@ import SDGCommandLine
 
             let json = try TextFile(alreadyAt: outputDirectory.appendingPathComponent("undocumented.json")).contents
 
-            guard let information = (try JSONSerialization.jsonObject(with: json.file, options: []) as? PropertyListValue)?.as([String: Any].self) else { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
+            guard let information = (try JSONSerialization.jsonObject(with: json.file, options: []) as? PropertyListValue)?.as([String: Any].self) else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
                 throw parseError(undocumented: json)
             }
 
-            guard let warnings = (information["warnings"] as? PropertyListValue)?.as([Any].self) else { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
+            guard let warnings = (information["warnings"] as? PropertyListValue)?.as([Any].self) else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
                 throw parseError(undocumented: json)
             }
 
@@ -147,7 +147,7 @@ import SDGCommandLine
             for entry in warnings {
                 guard let warning = (entry as? PropertyListValue)?.as([String: Any].self),
                     let path = (warning["file"] as? PropertyListValue)?.as(String.self),
-                    let symbol = (warning["symbol"] as? PropertyListValue)?.as(String.self) else { // [_Exempt from Code Coverage_] Reachable only with an incompatible version of Jazzy.
+                    let symbol = (warning["symbol"] as? PropertyListValue)?.as(String.self) else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
                         throw parseError(undocumented: json)
                 }
                 let line = (warning["line"] as? PropertyListValue)?.as(Int.self) // Occasionally “null” for some reason.
@@ -183,7 +183,7 @@ import SDGCommandLine
                             } else if let `class` = source.scalars.firstNestingLevel(startingWith: "<span class=\u{22}".scalars, endingWith: "\u{22}>".scalars, in: error.container.range)?.contents.range {
                                 if first ∈ SwiftLanguage.operatorHeadCharactersIncludingDot {
                                     source.scalars.replaceSubrange(`class`, with: "o".scalars)
-                                } else { // [_Exempt from Code Coverage_] Possibly no longer occurs in Jazzy output.
+                                } else { // [_Exempt from Test Coverage_] Possibly no longer occurs in Jazzy output.
                                     source.scalars.replaceSubrange(`class`, with: "n".scalars)
                                 }
                             }

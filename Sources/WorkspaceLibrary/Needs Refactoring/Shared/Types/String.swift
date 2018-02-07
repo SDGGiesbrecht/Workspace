@@ -20,10 +20,6 @@ typealias ScalarIndex = String.UnicodeScalarView.Index
 
 extension String {
 
-    static var crLF: String {
-        return "\u{D}\u{A}"
-    }
-
     var isWhitespace: Bool {
         return ¬scalars.contains(where: { $0 ∉ CharacterSet.whitespaces })
     }

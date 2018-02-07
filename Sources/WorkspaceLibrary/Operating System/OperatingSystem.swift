@@ -13,8 +13,19 @@
  */
 
 import SDGCornerstone
+import SDGCommandLine
 
 enum OperatingSystem : Int, IterableEnumeration {
+
+    // MARK: - Static Properties
+
+    static var current: OperatingSystem {
+        #if os(macOS)
+            return .macOS
+        #elseif os(Linux)
+            return .linux
+        #endif
+    }
 
     // MARK: - Cases
 

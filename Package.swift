@@ -44,6 +44,9 @@ let package = Package(
             .productItem(name: sdgCornerstone, package: sdgCornerstone),
             .productItem(name: sdgCommandLine, package: sdgCommandLine)
             ]),
-        .testTarget(name: tests, dependencies: [.targetItem(name: library)])
+
+        .testTarget(name: tests, dependencies: [.targetItem(name: library)]),
+        .target(name: "test‐ios‐simulator", dependencies: [.targetItem(name: library)]),
+        .target(name: "test‐tvos‐simulator", dependencies: [.targetItem(name: library)])
     ]
 )

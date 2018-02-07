@@ -43,6 +43,7 @@ public enum Workspace {
 
         // Individual Steps
         Workspace.Normalize.command,
+        Workspace.Test.command,
 
         // Other
         Workspace.CheckForUpdates.command

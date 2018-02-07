@@ -68,7 +68,27 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
     // Running unit tests...
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    try UnitTests.test(options: options, validationStatus: &validationStatus, output: &output)
+    if try options.project.configuration.shouldProhibitCompilerWarnings() {
+        try Workspace.Validate.Build.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
+    }
+#if os(Linux)
+        // Coverage irrelevant.
+        try Workspace.Test.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
+#else
+    if try options.project.configuration.shouldEnforceTestCoverage() {
+        if let job = options.job,
+            job ∉ Tests.coverageJobs {
+            // Coverage impossible to check.
+            try Workspace.Test.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
+        } else {
+            // Check coverage.
+            try Workspace.Validate.TestCoverage.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
+        }
+    } else {
+        // Coverage irrelevant.
+        try Workspace.Test.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
+    }
+#endif
 
     #if !os(Linux)
         if options.job.includes(job: .documentation) {

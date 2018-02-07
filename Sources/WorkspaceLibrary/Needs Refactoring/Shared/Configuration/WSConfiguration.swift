@@ -17,32 +17,6 @@ import SDGCommandLine
 
 extension Configuration {
 
-    // MARK: - Static Properties
-
-    static var configurationFilePath: RelativePath {
-        return RelativePath(Configuration.fileName)
-    }
-
-    // MARK: - Cache
-
-    private struct Cache {
-
-        // MARK: - Properties
-
-        fileprivate var packageName: String?
-
-        // MARK: - Settings
-
-        fileprivate var automaticallyTakeOnNewResponsibilites: Bool?
-    }
-    private static var cache = Cache()
-
-    // MARK: - Interface
-
-    static func resetCache() {
-        cache = Cache()
-    }
-
     private static let startTokens = (start: "[_Begin ", end: "_]")
     private static func startMultilineOption(option: Option) -> String {
         return "\(startTokens.start)\(option)\(startTokens.end)"
@@ -106,12 +80,6 @@ extension Configuration {
         }
 
         configuration.body = additions.joined() + configuration.body
-    }
-
-    static func addEntries(entries: [(option: Option, value: String, comment: [String]?)], output: inout Command.Output) {
-        var configuration = File(possiblyAt: Configuration.configurationFilePath)
-        addEntries(entries: entries, to: &configuration)
-        require { try configuration.write(output: &output) }
     }
 
     // MARK: - Properties
@@ -389,52 +357,16 @@ extension Configuration {
         return mapped
     }
 
-    // Workspace Behaviour
-
-    static var automaticallyTakeOnNewResponsibilites: Bool {
-        return booleanValue(option: .automaticallyTakeOnNewResponsibilites)
-    }
-
     // Project Type
 
     static var requiredOptions: [String] {
         return listValue(option: .requireOptions)
     }
 
-    static var skipSimulators: Bool {
-        if Environment.isInContinuousIntegration {
-            return false
-        } else {
-            return booleanValue(option: .skipSimulator)
-        }
-    }
-
     // Project Names
-
-    static func packageName(forProjectName projectName: String) -> String {
-        return projectName
-    }
 
     static func moduleName(forProjectName projectName: String) -> String {
         return projectName.replacingOccurrences(of: " ", with: "")
-    }
-    static func defaultModuleName(output: inout Command.Output) throws -> String {
-        switch (try? Repository.packageRepository.configuration.projectType())! {
-        case .library, .application:
-            return moduleName(forProjectName: String(try Repository.packageRepository.projectName(output: &output)))
-        default:
-            return executableLibraryName(forProjectName: String(try Repository.packageRepository.projectName(output: &output)))
-        }
-    }
-
-    static func executableName(forProjectName projectName: String) -> String {
-        return moduleName(forProjectName: projectName).lowercased()
-    }
-    static func executableLibraryName(forProjectName projectName: String) -> String {
-        return moduleName(forProjectName: projectName) + "Library"
-    }
-    static func testModuleName(forProjectName projectName: String) -> String {
-        return moduleName(forProjectName: projectName) + "Tests"
     }
 
     // Responsibilities
@@ -498,33 +430,12 @@ extension Configuration {
     static var requiredAuthor: String {
         return stringValue(option: .author)
     }
-    static var projectWebsite: String? {
-        return possibleStringValue(option: .projectWebsite)
-    }
     static var requiredProjectWebsite: String {
         return stringValue(option: .projectWebsite)
     }
 
     static var manageXcode: Bool {
         return booleanValue(option: .manageXcode)
-    }
-
-    static var disableProofreadingRules: Set<String> {
-        return Set(listValue(option: .disableProofreadingRules))
-    }
-
-    static var prohibitCompilerWarnings: Bool {
-        return booleanValue(option: .prohibitCompilerWarnings)
-    }
-
-    static var enforceCodeCoverage: Bool {
-        return booleanValue(option: .enforceCodeCoverage)
-    }
-    static var codeCoverageExemptionTokensForSameLine: [String] {
-        return listValue(option: .codeCoverageExemptionTokensForSameLine)
-    }
-    static var codeCoverageExemptionTokensForPreviousLine: [String] {
-        return listValue(option: .codeCoverageExemptionTokensForPreviousLine)
     }
 
     static var manageContinuousIntegration: Bool {
@@ -540,11 +451,6 @@ extension Configuration {
     // SDG
     static var sdg: Bool {
         return booleanValue(option: .sdg)
-    }
-
-    // Testing
-    static var nestedTest: Bool {
-        return booleanValue(option: .nestedTest)
     }
 
     static func validate() -> Bool {
@@ -588,27 +494,6 @@ extension Configuration {
 
             succeeding = false
             printValidationFailureDescription(description)
-        }
-
-        // Project Type vs Operating System
-
-        func check(forIncompatibleOperatingSystem option: Option) {
-            if configurationFile[option] == String(Configuration.trueOptionValue) {
-                incompatibilityDetected(between: .projectType, and: option, documentation: .platforms)
-            }
-        }
-
-        if (try? Repository.packageRepository.configuration.projectType()) == .application {
-
-            check(forIncompatibleOperatingSystem: .supportLinux)
-            check(forIncompatibleOperatingSystem: .supportWatchOS)
-        }
-
-        if (try? Repository.packageRepository.configuration.projectType()) == .executable {
-
-            check(forIncompatibleOperatingSystem: .supportIOS)
-            check(forIncompatibleOperatingSystem: .supportWatchOS)
-            check(forIncompatibleOperatingSystem: .supportTVOS)
         }
 
         // Manage Licence

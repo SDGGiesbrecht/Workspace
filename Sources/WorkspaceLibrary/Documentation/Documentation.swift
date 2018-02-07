@@ -82,13 +82,13 @@ enum Documentation {
         let outputSubdirectory = subdirectory(for: target, in: outputDirectory)
 
         let buildOperatingSystem: OperatingSystem
-        if try project.configuration.supports(.macOS) {
+        if try project.configuration.supports(.macOS, project: project, output: &output) {
             buildOperatingSystem = .macOS
-        } else if try project.configuration.supports(.iOS) {
+        } else if try project.configuration.supports(.iOS, project: project, output: &output) {
             buildOperatingSystem = .iOS
-        } else if try project.configuration.supports(.watchOS) {
+        } else if try project.configuration.supports(.watchOS, project: project, output: &output) {
             buildOperatingSystem = .watchOS
-        } else if try project.configuration.supports(.tvOS) {
+        } else if try project.configuration.supports(.tvOS, project: project, output: &output) {
             buildOperatingSystem = .tvOS
         } else {
             buildOperatingSystem = .macOS
@@ -139,7 +139,7 @@ enum Documentation {
 
         for warning in warnings {
             print([
-                warning.file.path(relativeTo: project.location) + ":" + String(warning.line?.inDigits() ?? ""), // [_Exempt from Code Coverage_] It is unknown what would cause a missing line number.
+                warning.file.path(relativeTo: project.location) + ":" + String(warning.line?.inDigits() ?? ""), // [_Exempt from Test Coverage_] It is unknown what would cause a missing line number.
                 warning.symbol,
                 ""
                 ].joinAsLines().formattedAsError(), to: &output)

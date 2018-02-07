@@ -1,0 +1,168 @@
+Current Version: 1.0.0
+
+Author: John Doe
+Administrators: John Doe
+
+Project Website: https://example.github.io/SDG/SDG
+Documentation URL: https://example.github.io/SDG
+Repository URL: https://github.com/JohnDoe/SDG
+
+Manage Read‐Me: True
+Manage Licence: True
+Licence: Apache 2.0
+Manage Contributing Instructions: True
+Manage Continuous Integration: True
+
+Manage File Headers: True
+
+Generate Documentation: True
+Original Documentation Copyright Year: 2017
+Encrypted Travis Deployment Key: 0123456789abcdef
+
+Manage Xcode: True
+
+[_Begin Disable Proofreading Rules_]
+line_length
+[_End_]
+
+[_Begin Localizations_]
+🇨🇦EN
+🇬🇧EN
+🇺🇸EN
+🇩🇪DE
+🇫🇷FR
+🇬🇷ΕΛ
+🇮🇱עב
+zxx
+[_End_]
+
+[_Begin Short Project Description_]
+[_🇨🇦EN_]
+This project does stuff.
+[_🇬🇧EN_]
+...
+[_🇺🇸EN_]
+...
+[_🇩🇪DE_]
+...
+[_🇫🇷FR_]
+...
+[_🇬🇷ΕΛ_]
+...
+[_🇮🇱עב_]
+...
+[_zxx_]
+...
+[_End_]
+
+[_Begin Quotation_]
+« ... »
+[_End_]
+[_Begin Quotation Translation_]
+[_🇨🇦EN_]
+“...”
+[_🇬🇧EN_]
+...
+[_🇺🇸EN_]
+...
+[_🇩🇪DE_]
+...
+[_🇫🇷FR_]
+...
+[_🇬🇷ΕΛ_]
+...
+[_🇮🇱עב_]
+...
+[_zxx_]
+...
+[_End_]
+
+Quotation Testament: תנ״ך
+Quotation Chapter: Chapter 1
+
+[_Begin Citation_]
+[_🇨🇦EN_]
+someone
+[_🇬🇧EN_]
+...
+[_🇺🇸EN_]
+...
+[_🇩🇪DE_]
+...
+[_🇫🇷FR_]
+...
+[_🇬🇷ΕΛ_]
+...
+[_🇮🇱עב_]
+...
+[_zxx_]
+...
+[_End_]
+
+[_Begin Feature List_]
+[_🇨🇦EN_]
+- Stuff.
+- More stuff.
+- Even more stuff.
+[_🇬🇧EN_]
+...
+[_🇺🇸EN_]
+...
+[_🇩🇪DE_]
+...
+[_🇫🇷FR_]
+...
+[_🇬🇷ΕΛ_]
+...
+[_🇮🇱עב_]
+...
+[_zxx_]
+...
+[_End_]
+
+[_Begin Other Read‐Me Content_]
+[_🇨🇦EN_]
+## Other
+
+...
+[_🇬🇧EN_]
+...
+[_🇺🇸EN_]
+...
+[_🇩🇪DE_]
+...
+[_🇫🇷FR_]
+...
+[_🇬🇷ΕΛ_]
+...
+[_🇮🇱עב_]
+...
+[_zxx_]
+...
+[_End_]
+
+[_Begin Read‐Me About Section_]
+[_🇨🇦EN_]
+This project is just a test.
+[_🇬🇧EN_]
+...
+[_🇺🇸EN_]
+...
+[_🇩🇪DE_]
+...
+[_🇫🇷FR_]
+...
+[_🇬🇷ΕΛ_]
+...
+[_🇮🇱עב_]
+...
+[_zxx_]
+...
+[_End_]
+
+[_Begin Related Projects_]
+https://github.com/SDGGiesbrecht/Workspace
+[_End_]
+
+Test Coverage Exemption Tokens for the Same Line: customSameLineToken
+Test Coverage Exemption Tokens for the Previous Line: customPreviousLineToken

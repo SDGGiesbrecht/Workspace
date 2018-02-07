@@ -24,8 +24,6 @@ enum Option : String, CustomStringConvertible {
 
     // MARK: - Cases
 
-    case automaticallyTakeOnNewResponsibilites = "Automatically Take On New Responsibilities"
-
     case projectType = "Project Type"
     case requireOptions = "Require Options"
 
@@ -80,9 +78,9 @@ enum Option : String, CustomStringConvertible {
 
     case prohibitCompilerWarnings = "Prohibit Compiler Warnings"
 
-    case enforceCodeCoverage = "Enforce Code Coverage"
-    case codeCoverageExemptionTokensForSameLine = "Code Coverage Exemption Tokens for the Same Line"
-    case codeCoverageExemptionTokensForPreviousLine = "Code Coverage Exemption Tokens for the Previous Line"
+    case enforceTestCoverage = "Enforce Test Coverage"
+    case testCoverageExemptionTokensForSameLine = "Test Coverage Exemption Tokens for the Same Line"
+    case testCoverageExemptionTokensForPreviousLine = "Test Coverage Exemption Tokens for the Previous Line"
 
     case generateDocumentation = "Generate Documentation"
     case enforceDocumentationCoverage = "Enforce Documentation Coverage"
@@ -103,8 +101,6 @@ enum Option : String, CustomStringConvertible {
     case testLongOption = "Test Long Option"
 
     static let allPublic: [Option] = [
-        .automaticallyTakeOnNewResponsibilites,
-
         .projectType,
         .requireOptions,
 
@@ -156,9 +152,9 @@ enum Option : String, CustomStringConvertible {
 
         .prohibitCompilerWarnings,
 
-        .enforceCodeCoverage,
-        .codeCoverageExemptionTokensForSameLine,
-        .codeCoverageExemptionTokensForPreviousLine,
+        .enforceTestCoverage,
+        .testCoverageExemptionTokensForSameLine,
+        .testCoverageExemptionTokensForPreviousLine,
 
         .generateDocumentation,
         .documentationCopyright,
@@ -179,8 +175,6 @@ enum Option : String, CustomStringConvertible {
 
     var defaultValue: String {
         switch self {
-        case .automaticallyTakeOnNewResponsibilites:
-            return String(Configuration.falseOptionValue)
 
         case .projectType:
             return String(PackageRepository.Target.TargetType.library.key)
@@ -281,11 +275,11 @@ enum Option : String, CustomStringConvertible {
         case .prohibitCompilerWarnings:
             return String(Configuration.trueOptionValue)
 
-        case .enforceCodeCoverage:
+        case .enforceTestCoverage:
             return String(Configuration.trueOptionValue)
-        case .codeCoverageExemptionTokensForSameLine:
+        case .testCoverageExemptionTokensForSameLine:
             return Configuration.emptyListOptionValue
-        case .codeCoverageExemptionTokensForPreviousLine:
+        case .testCoverageExemptionTokensForPreviousLine:
             return Configuration.emptyListOptionValue
 
         case .generateDocumentation:
@@ -318,17 +312,6 @@ enum Option : String, CustomStringConvertible {
             return "Default\nValue"
         }
     }
-
-    static let automaticResponsibilityDocumentationPage = DocumentationLink.responsibilities
-    static let automaticRepsonsibilities: [(option: Option, automaticValue: String, documentationPage: DocumentationLink)] = [
-        (.manageReadMe, automaticValue: String(Configuration.trueOptionValue), DocumentationLink.readMe),
-        (.manageLicence, automaticValue: String(Configuration.trueOptionValue), DocumentationLink.licence),
-        (.manageContributingInstructions, automaticValue: String(Configuration.trueOptionValue), DocumentationLink.contributingInstructions),
-        (.manageXcode, automaticValue: String(Configuration.trueOptionValue), DocumentationLink.xcode),
-        (.manageFileHeaders, automaticValue: String(Configuration.trueOptionValue), DocumentationLink.fileHeaders),
-        (.generateDocumentation, automaticValue: String(Configuration.trueOptionValue), DocumentationLink.documentationGeneration),
-        (.manageContinuousIntegration, automaticValue: String(Configuration.trueOptionValue), DocumentationLink.continuousIntegration)
-        ]
 
     // MARK: - CustomStringConvertible
 

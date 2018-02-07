@@ -1,3 +1,0 @@
-Project Type: Application
-
-Manage Continuous Integration: True

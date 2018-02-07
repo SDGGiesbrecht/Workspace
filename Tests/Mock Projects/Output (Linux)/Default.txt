@@ -71,5 +71,3 @@ $ workspace validate test‐coverage
 “Default” passes validation.
 
 $ workspace proofread •xcode
-
-$ workspace validate build •job macos‐swift‐package‐manager

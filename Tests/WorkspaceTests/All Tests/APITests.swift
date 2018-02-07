@@ -75,7 +75,7 @@ class APITests : TestCase {
                     var commands = try String(from: project.appendingPathComponent("$.txt")).components(separatedBy: "\n").filter({ ¬$0.isEmpty }).map { $0.components(separatedBy: " ").map({ StrictString($0) }) }
                     #if os(Linux)
                         commands = commands.filter { command in
-                            return ¬command.contains("documentation‐coverage")
+                            return ¬command.contains(where: { $0 ∈ Set<StrictString>(["documentation‐coverage", "macos‐swift‐package‐manager"])})
                         }
                     #endif
 

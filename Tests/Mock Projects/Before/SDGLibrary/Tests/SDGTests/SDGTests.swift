@@ -6,7 +6,8 @@ class SDGTests : XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
-        XCTAssertEqual(SDG().text(), "Hello, World!")
+        XCTAssertEqual(SDG().text(true), "Hello, World!")
+        XCTAssertEqual(SDG().text(false), "Hello, World!")
     }
 
     static var allTests = [

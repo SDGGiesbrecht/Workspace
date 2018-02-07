@@ -120,10 +120,10 @@ struct Tests {
                         }
                     }))
                 }
-            } catch {
-                validationStatus.failStep(message: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+            } catch { // [_Exept from Test Coverage_] False coverage result in Xcode 9.2.
+                validationStatus.failStep(message: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in // [_Exept from Test Coverage_]
                     switch localization {
-                    case .englishCanada:
+                    case .englishCanada: // [_Exept from Test Coverage_]
                         return "Build failed for " + englishName(for: job) + "." + section.crossReference.resolved(for: localization)
                     }
                 }))
@@ -226,10 +226,10 @@ struct Tests {
                         return StrictString("Test coverage is complete for “\(target)” on \(name).")
                     }
                 }))
-            } else {
+            } else { // [_Exept from Test Coverage_] False coverage result in Xcode 9.2.
                 validationStatus.failStep(message: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
-                    switch localization {
-                    case .englishCanada:
+                    switch localization { // [_Exept from Test Coverage_]
+                    case .englishCanada: // [_Exept from Test Coverage_]
                         let name = job.englishTargetOperatingSystemName
                         return StrictString("Test coverage is incomplete for “\(target)” on \(name).") + section.crossReference.resolved(for: localization)
                     }
@@ -273,7 +273,7 @@ struct Tests {
                 continue // [_Workaround: A temporary measure until refactoring is complete._]
             }
 
-            hits: for untested in fileReport.contents.matches(for: "^0".scalars) {
+            hits: for untested in fileReport.contents.matches(for: "\u{5E}0".scalars) {
                 let errorLineIndex = untested.range.lowerBound.line(in: coverageReport.lines)
                 let errorLine = String(coverageReport.lines[errorLineIndex].line)
                 let sourceLineIndex = coverageReport.lines.index(before: errorLineIndex)

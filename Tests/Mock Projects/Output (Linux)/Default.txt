@@ -3,14 +3,8 @@ $ workspace refresh scripts
 
 Refreshing scripts...
 
-
-$ swift package resolve
-
 Writing to “Refresh (macOS).command”...
 Writing to “Refresh (Linux).sh”...
-
-$ swift package resolve
-
 Writing to “Validate (macOS).command”...
 Writing to “Validate (Linux).sh”...
 $ workspace refresh resources
@@ -29,9 +23,6 @@ README.md
 Sources/Default/Default.swift
 Tests/DefaultTests/DefaultTests.swift
 Tests/LinuxMain.swift
-
-$ swift package resolve
-
 
 ✓ Source code passes proofreading.
 

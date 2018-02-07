@@ -24,7 +24,7 @@ do {
 
     let repositoryRoot = URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
 
-    let mockProject = repositoryRoot.appendingPathComponent("Tests/Mock Projects/After/SDGLibrary")
+    let mockProject = repositoryRoot.appendingPathComponent("Tests/Mock Projects/After/Default")
     try FileManager.default.do(in: mockProject) {
         try Workspace.command.execute(with: ["validate", "test‐coverage", "•job", "ios"])
     }

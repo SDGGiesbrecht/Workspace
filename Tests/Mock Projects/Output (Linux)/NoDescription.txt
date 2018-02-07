@@ -1,0 +1,4 @@
+
+$ workspace refresh read‐me
+
+Configuration option not defined: Short Project Description

@@ -1,0 +1,6 @@
+Localizations: en
+
+Quotation: Blah blah blah...
+
+Quotation Testament: ...
+Quotation Chapter: Chapter 1

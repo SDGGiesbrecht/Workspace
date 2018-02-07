@@ -1,0 +1,57 @@
+
+$ workspace refresh scripts
+
+Refreshing scripts...
+
+
+$ swift package resolve
+
+Writing to “Refresh (macOS).command”...
+Writing to “Refresh (Linux).sh”...
+
+$ swift package resolve
+
+Writing to “Validate (macOS).command”...
+Writing to “Validate (Linux).sh”...
+$ workspace refresh resources
+
+Refreshing resources...
+
+$ workspace proofread
+
+$ workspace validate build
+
+Checking build for Linux... (§1)
+
+
+$ swift build
+Compile Swift Module 'Default' (1 sources)
+warning: minimum recommended clang is version 3.6, otherwise you may encounter linker errors.
+
+
+✓ There are no compiler warnings for Linux.
+
+
+“Default” passes validation.
+
+$ workspace test
+
+Testing on Linux... (§1)
+
+
+✓ Tests pass on Linux.
+
+
+“Default” passes validation.
+
+$ workspace validate test‐coverage
+
+
+
+
+“Default” passes validation.
+
+$ workspace proofread •xcode
+[...]/Tests/Mock Projects/After (Linux)/Default/Validate (Linux).sh:5:54: warning: “&&” is obsolete. Use the conjunction sign (∧). (Unicode)
+[...]/Tests/Mock Projects/After (Linux)/Default/Validate (macOS).command:5:54: warning: “&&” is obsolete. Use the conjunction sign (∧). (Unicode)
+$ workspace validate build •job macos‐swift‐package‐manager

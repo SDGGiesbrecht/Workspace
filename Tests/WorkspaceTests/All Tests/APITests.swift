@@ -87,10 +87,13 @@ class APITests : TestCase {
                         let resultLocation = mockProjectsDirectory.appendingPathComponent("After/" + project.lastPathComponent)
                         let outputLocation = mockProjectsDirectory.appendingPathComponent("Output/" + project.lastPathComponent + ".txt")
                     #endif
-
                     // Ensure proper starting state.
                     try? FileManager.default.removeItem(at: resultLocation)
+#if os(Linux)
+try Shell.default.run(command: ["cp", "\u{2D}r", Shell.quote(project.path), Shell.quote(resultLocation.path)])
+#else
                     try FileManager.default.copy(project, to: resultLocation)
+#endif
 
                     try FileManager.default.do(in: resultLocation) {
                         LocalizationSetting(orderOfPrecedence: ["en\u{2D}CA"]).do {

@@ -173,55 +173,55 @@ class APITests : TestCase {
                             output.replaceMatches(for: CompositePattern([
                                 LiteralPattern("started at ".scalars),
                                 RepetitionPattern(ConditionalPattern(condition: { $0 ≠ "\n" })),
-                                LiteralPattern("\n".scalars),
+                                LiteralPattern("\n".scalars)
                                 ]), with: "started at " + replacement + "\n")
                             output.replaceMatches(for: CompositePattern([
                                 LiteralPattern("passed (".scalars),
                                 RepetitionPattern(ConditionalPattern(condition: { $0 ≠ " " })),
-                                LiteralPattern(" seconds".scalars),
+                                LiteralPattern(" seconds".scalars)
                                 ]), with: "passed " + replacement + " seconds")
                             output.replaceMatches(for: CompositePattern([
                                 LiteralPattern("unexpected) in ".scalars),
                                 RepetitionPattern(ConditionalPattern(condition: { $0 ≠ "\n" })),
-                                LiteralPattern(" seconds".scalars),
+                                LiteralPattern(" seconds".scalars)
                                 ]), with: "unexpected) in " + replacement + " seconds")
                             output.replaceMatches(for: CompositePattern([
                                 LiteralPattern("passed at ".scalars),
                                 RepetitionPattern(ConditionalPattern(condition: { $0 ≠ "\n" })),
-                                LiteralPattern(".\n".scalars),
+                                LiteralPattern(".\n".scalars)
                                 ]), with: "passed at " + replacement + "\n")
                             // Remove varying Xcode output
                             output.replaceMatches(for: CompositePattern([
                                 LiteralPattern("Build settings from command line:".scalars),
                                 RepetitionPattern(ConditionalPattern(condition: { _ in true }), consumption: .lazy),
-                                LiteralPattern("** BUILD SUCCEEDED **".scalars),
+                                LiteralPattern("** BUILD SUCCEEDED **".scalars)
                                 ]), with: replacement)
                             output.replaceMatches(for: CompositePattern([
                                     LiteralPattern("Build settings from command line:".scalars),
                                     RepetitionPattern(ConditionalPattern(condition: { _ in true }), consumption: .lazy),
-                                    LiteralPattern("** TEST SUCCEEDED **".scalars),
+                                    LiteralPattern("** TEST SUCCEEDED **".scalars)
                                     ]), with: replacement)
                             // Remove tests skipped in Xcode sandbox
                             output.replaceMatches(for: CompositePattern([
                                 LiteralPattern("$ swift test".scalars),
                                 RepetitionPattern(ConditionalPattern(condition: { $0 ≠ "§" }), consumption: .lazy),
-                                LiteralPattern("\n\n\n".scalars),
+                                LiteralPattern("\n\n\n".scalars)
                                 ]), with: "".scalars)
                             output.replaceMatches(for: "✓ Tests pass on macOS with the Swift Package Manager.\n".scalars, with: "".scalars)
                             output.replaceMatches(for: CompositePattern([
                                 LiteralPattern("Test Suite".scalars),
                                 RepetitionPattern(ConditionalPattern(condition: { $0 ≠ "\n" }), consumption: .lazy),
-                                LiteralPattern("\n".scalars),
+                                LiteralPattern("\n".scalars)
                                 ]), with: "".scalars)
                             output.replaceMatches(for: CompositePattern([
                                 LiteralPattern("Test Case".scalars),
                                 RepetitionPattern(ConditionalPattern(condition: { $0 ≠ "\n" }), consumption: .lazy),
-                                LiteralPattern("\n".scalars),
+                                LiteralPattern("\n".scalars)
                                 ]), with: "".scalars)
                             output.replaceMatches(for: CompositePattern([
                                 LiteralPattern("\u{9} Executed".scalars),
                                 RepetitionPattern(ConditionalPattern(condition: { $0 ≠ "\n" }), consumption: .lazy),
-                                LiteralPattern("\n".scalars),
+                                LiteralPattern("\n".scalars)
                                 ]), with: "".scalars)
 
                             XCTAssertErrorFree { try output.save(to: outputLocation) }

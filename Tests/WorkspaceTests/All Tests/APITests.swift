@@ -227,7 +227,7 @@ try Shell.default.run(command: ["cp", "\u{2D}r", Shell.quote(project.path), Shel
                                 LiteralPattern("\n".scalars)
                                 ]), with: "".scalars)
                             // Remove clang notices
-                                output.replaceMatches(for: "warning: minimum recommended clang is version 3.6, otherwise you may encounter linker errors.".scalars, with: "".scalars)
+                                output.replaceMatches(for: "warning: minimum recommended clang is version 3.6, otherwise you may encounter linker errors.\n".scalars, with: "".scalars)
 
                             XCTAssertErrorFree { try output.save(to: outputLocation) }
                             checkForDifferences(in: "output", at: outputLocation, for: project)

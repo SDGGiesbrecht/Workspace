@@ -131,7 +131,6 @@ Checking build for Linux... (§1)
 $ swift build
 Compile Swift Module 'Dependency' (1 sources)
 Compile Swift Module 'Library' (2 sources)
-warning: minimum recommended clang is version 3.6, otherwise you may encounter linker errors.
 
 
 ✓ There are no compiler warnings for Linux.

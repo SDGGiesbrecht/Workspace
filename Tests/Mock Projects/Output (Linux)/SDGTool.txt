@@ -135,7 +135,6 @@ Compile Swift Module 'Dependency' (1 sources)
 Compile Swift Module 'Library' (2 sources)
 Compile Swift Module 'tool' (1 sources)
 Linking ./.build/x86_64-unknown-linux/debug/tool
-warning: minimum recommended clang is version 3.6, otherwise you may encounter linker errors.
 
 
 ✓ There are no compiler warnings for Linux.

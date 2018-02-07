@@ -16,9 +16,6 @@ Sources/CustomProofread/CustomProofread.swift
 Tests/CustomProofreadTests/CustomProofreadTests.swift
 Tests/LinuxMain.swift
 
-$ swift package resolve
-
-
 ✓ Source code passes proofreading.
 
 

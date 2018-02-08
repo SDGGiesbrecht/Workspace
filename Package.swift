@@ -46,7 +46,7 @@ let package = Package(
             ]),
 
         .testTarget(name: tests, dependencies: [.targetItem(name: library)]),
-        .target(name: "test‐ios‐simulator", dependencies: [.targetItem(name: library)]),
-        .target(name: "test‐tvos‐simulator", dependencies: [.targetItem(name: library)])
+        .target(name: "test‐ios‐simulator", dependencies: [.targetItem(name: library)], path: "Tests/test‐ios‐simulator"),
+        .target(name: "test‐tvos‐simulator", dependencies: [.targetItem(name: library)], path: "Tests/test‐tvos‐simulator")
     ]
 )

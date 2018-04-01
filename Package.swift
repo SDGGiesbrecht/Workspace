@@ -1,4 +1,4 @@
-// swift-tools-version:4.0
+// swift-tools-version:4.1
 
 /*
  Package.swift
@@ -16,37 +16,29 @@
 
 import PackageDescription
 
-let packageName = "Workspace"
-let tool = "workspace"
-let werkzeug = "arbeitsbereich"
-
-let library = packageName + "Library"
-let tests = packageName + "Tests"
-
-let sdgGiesbrecht = "https://github.com/SDGGiesbrecht/"
-let sdgCornerstone = "SDGCornerstone"
-let sdgCommandLine = "SDGCommandLine"
-
 let package = Package(
-    name: packageName,
+    name: "Workspace",
     products: [
-        .executable(name: tool, targets: [tool]),
-        .executable(name: werkzeug, targets: [tool])
+        .executable(name: "workspace", targets: ["workspace"]),
+        .executable(name: "arbeitsbereich", targets: ["workspace"])
     ],
     dependencies: [
-    .package(url: sdgGiesbrecht + sdgCornerstone, .exact(Version(0, 7, 3))),
-        .package(url: sdgGiesbrecht + sdgCommandLine, .exact(Version(0, 1, 4)))
+        // [_Warning: point to real versions._]
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .branch("swift‐4.1")),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .branch("swift‐4.1"))
     ],
     targets: [
-        .target(name: tool, dependencies: [.targetItem(name: library)]),
+        .target(name: "workspace", dependencies: [.targetItem(name: "WorkspaceLibrary")]),
 
-        .target(name: library, dependencies: [
-            .productItem(name: sdgCornerstone, package: sdgCornerstone),
-            .productItem(name: sdgCommandLine, package: sdgCommandLine)
+        .target(name: "WorkspaceLibrary", dependencies: [
+            .productItem(name: "SDGCornerstone", package: "SDGCornerstone"),
+            .productItem(name: "SDGCommandLine", package: "SDGCommandLine")
             ]),
 
-        .testTarget(name: tests, dependencies: [.targetItem(name: library)]),
-        .target(name: "test‐ios‐simulator", dependencies: [.targetItem(name: library)], path: "Tests/test‐ios‐simulator"),
-        .target(name: "test‐tvos‐simulator", dependencies: [.targetItem(name: library)], path: "Tests/test‐tvos‐simulator")
+        .testTarget(name: "WorkspaceTests", dependencies: [.targetItem(name: "WorkspaceLibrary")]),
+        .target(name: "test‐ios‐simulator", dependencies: [.targetItem(name: "WorkspaceLibrary")],
+                path: "Tests/test‐ios‐simulator"),
+        .target(name: "test‐tvos‐simulator", dependencies: [.targetItem(name: "WorkspaceLibrary")],
+                path: "Tests/test‐tvos‐simulator")
     ]
 )

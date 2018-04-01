@@ -5,18 +5,18 @@
         "package": "SDGCommandLine",
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCommandLine",
         "state": {
-          "branch": null,
-          "revision": "93b8ecc5e26de3113de43fd39478b077008e26a9",
-          "version": "0.1.4"
+          "branch": "swift‐4.1",
+          "revision": "9155d4f7efd7a496bf592bfffe4ed449febb5d28",
+          "version": null
         }
       },
       {
         "package": "SDGCornerstone",
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCornerstone",
         "state": {
-          "branch": null,
-          "revision": "c1799688ccc498367d2159b1394887b4ca27da61",
-          "version": "0.7.3"
+          "branch": "swift‐4.1",
+          "revision": "82861b7bc96178f7a1930d657f0247a09fe847e0",
+          "version": null
         }
       }
     ]

@@ -19,7 +19,7 @@ struct ValidationStatus {
 
     // MARK: - Static Properties
 
-    static let passOrFailSymbol = UserFacingText({ (localization: InterfaceLocalization, passing: Bool) in
+    static let passOrFailSymbol = UserFacingDynamicText({ (localization: InterfaceLocalization, passing: Bool) in
         switch localization {
         case .englishCanada:
             return passing ? "✓" : "✗"
@@ -46,11 +46,11 @@ struct ValidationStatus {
         return ReportSection(number: currentSection)
     }
 
-    mutating func passStep(message: UserFacingText<InterfaceLocalization, Void>) {
+    mutating func passStep(message: UserFacingText<InterfaceLocalization>) {
         summary.append((ValidationStatus.passOrFailSymbol.resolved(using: true) + " " + message.resolved()).formattedAsSuccess())
     }
 
-    mutating func failStep(message: UserFacingText<InterfaceLocalization, Void>) {
+    mutating func failStep(message: UserFacingText<InterfaceLocalization>) {
         passing = false
         summary.append((ValidationStatus.passOrFailSymbol.resolved(using: false) + " " + message.resolved()).formattedAsError())
     }
@@ -62,14 +62,14 @@ struct ValidationStatus {
     func reportOutcome(projectName: StrictString, output: inout Command.Output) throws {
         print(StrictString(summary.joined(separator: "\n".scalars)).separated(), to: &output)
         if passing {
-            print(UserFacingText({ (localization: InterfaceLocalization, _: Void) in
+            print(UserFacingText({ (localization: InterfaceLocalization) in
                 switch localization {
                 case .englishCanada:
                     return "“" + projectName + "” passes validation."
                 }
             }).resolved().formattedAsSuccess().separated(), to: &output)
         } else {
-            throw Command.Error(description: UserFacingText({ (localization: InterfaceLocalization, _: Void) in
+            throw Command.Error(description: UserFacingText({ (localization: InterfaceLocalization) in
                 switch localization {
                 case .englishCanada:
                     return "“" + projectName + "” fails validation."

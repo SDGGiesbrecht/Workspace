@@ -68,7 +68,7 @@ class SwiftLint : SwiftPackage {
 
             try executeInCompatibilityMode(with: arguments, output: &output)
             return true
-        } catch let error as Shell.Error {
+        } catch let error as ExternalProcess.Error {
             if error.code ∈ Set<Int>([
                 2, // Error level violation.
                 3 // Warning level violation in strict mode.

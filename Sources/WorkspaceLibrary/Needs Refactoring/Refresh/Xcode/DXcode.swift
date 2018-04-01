@@ -50,7 +50,7 @@
 
             file.contents.scalars.replaceMatches(for: [
                 LiteralPattern(startToken.scalars),
-                ConditionalPattern(condition: { $0 ≠ illegal }),
+                ConditionalPattern({ $0 ≠ illegal }),
                 LiteralPattern(startToken.scalars)
                 ], with: replacement)
 

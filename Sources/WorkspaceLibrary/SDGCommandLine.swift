@@ -22,7 +22,7 @@ import SDGCommandLine
 extension _Swift {
 
     private func parseError(packageDescription json: String) -> Command.Error { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Swift.
-        return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Test Coverage_]
+        return Command.Error(description: UserFacingText<InterfaceLocalization>({ (localization) in // [_Exempt from Test Coverage_]
             switch localization {
             case .englishCanada: // [_Exempt from Test Coverage_]
                 return StrictString("Error loading dependency graph:\n\(json)")
@@ -39,19 +39,19 @@ extension _Swift {
             "\u{2D}\u{2D}format", "json"
             ], output: &output, silently: true)
 
-        guard let graph = (try JSONSerialization.jsonObject(with: json.file, options: []) as? PropertyListValue)?.as([String: Any].self) else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Swift.
+        guard let graph = try JSONSerialization.jsonObject(with: json.file, options: []) as? [String: Any] else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Swift.
             throw parseError(packageDescription: json)
         }
 
-        guard let dependencies = (graph["dependencies"] as? PropertyListValue)?.as([Any].self) else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Swift.
+        guard let dependencies = graph["dependencies"] as? [Any] else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Swift.
             throw parseError(packageDescription: json)
         }
 
         var result: [StrictString: Version] = [:]
         for dictionary in dependencies {
-            guard let dependency = (dictionary as? PropertyListValue)?.as([String: Any].self),
-                let name = (dependency["name"] as? PropertyListValue)?.as(String.self),
-                let versionString = (dependency["version"] as? PropertyListValue)?.as(String.self) else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Swift.
+            guard let dependency = dictionary as? [String: Any],
+                let name = dependency["name"] as? String,
+                let versionString = dependency["version"] as? String else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Swift.
                     throw parseError(packageDescription: json)
             }
 

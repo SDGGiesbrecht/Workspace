@@ -166,7 +166,7 @@ struct TextFile {
     // MARK: - Writing
 
     static func reportWriteOperation(to location: URL, in repository: PackageRepository, output: inout Command.Output) {
-        print(UserFacingText<InterfaceLocalization, String>({ (localization, path) in
+        print(UserFacingDynamicText<InterfaceLocalization, String>({ (localization, path) in
             switch localization {
             case .englishCanada:
                 return StrictString("Writing to “\(path)”...")
@@ -175,7 +175,7 @@ struct TextFile {
     }
 
     static func reportDeleteOperation(from location: URL, in repository: PackageRepository, output: inout Command.Output) {
-        print(UserFacingText<InterfaceLocalization, String>({ (localization, path) in
+        print(UserFacingDynamicText<InterfaceLocalization, String>({ (localization, path) in
             switch localization {
             case .englishCanada:
                 return StrictString("Deleting “\(path)”...")

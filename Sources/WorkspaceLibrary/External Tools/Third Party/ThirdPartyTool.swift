@@ -46,10 +46,12 @@ class ThirdPartyTool {
     }
 
     final func executeInCompatibilityMode(with arguments: [String], output: inout Command.Output) throws {
-        if let systemVersionString = try? Shell.default.run(command: ([String(command)] + versionCheck.map({ String($0) })), silently: true),
+        if let systemVersionString = try? Shell.default.run(command: ([String(command)] + versionCheck.map({ String($0) }))),
             let systemVersion = Version(firstIn: systemVersionString),
             systemVersion == version {
-            try Shell.default.run(command: [String(command)] + arguments, alternatePrint: { print($0, to: &output) })
+            print("", to: &output)
+            try Shell.default.run(command: [String(command)] + arguments, reportProgress: { print($0, to: &output) })
+            print("", to: &output)
             return
         } // [_Exempt from Test Coverage_] Unreachable except with incompatible versions of tools.
 

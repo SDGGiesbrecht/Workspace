@@ -36,9 +36,9 @@ struct ReportSection {
         return " (" + identifier + ")"
     }
 
-    var crossReference: UserFacingText<InterfaceLocalization, Void> {
+    var crossReference: UserFacingText<InterfaceLocalization> {
         let identifier = self.identifier
-        return UserFacingText({ (localization, _) in
+        return UserFacingText({ (localization) in
             switch localization {
             case .englishCanada:
                 #if os(macOS)

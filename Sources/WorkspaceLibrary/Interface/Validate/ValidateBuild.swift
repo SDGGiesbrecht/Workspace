@@ -21,14 +21,14 @@ extension Workspace.Validate {
 
     enum Build {
 
-        private static let name = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        private static let name = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "build"
             }
         })
 
-        private static let description = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        private static let description = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "validates the build, checking that it triggers no compiler warnings."
@@ -55,7 +55,7 @@ extension Workspace.Validate {
         static func validate(job: ContinuousIntegration.Job?, against validJobs: Set<ContinuousIntegration.Job>, for project: PackageRepository, output: inout Command.Output) throws {
             if let specified = job,
                 ¬(try Build.job(specified, isRelevantTo: project, andAvailableJobs: validJobs, output: &output)) {
-                throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
+                throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization) in
                     switch localization {
                     case .englishCanada:
                         return "Invalid job."

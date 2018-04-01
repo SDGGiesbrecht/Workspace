@@ -17,21 +17,21 @@ import SDGCommandLine
 
 struct GenericWarning : Warning {
 
-    static let name = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let name = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Manual Warning"
         }
     })
 
-    static let trigger = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let trigger = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Warning"
         }
     })
 
-    static func message(for details: StrictString, in project: PackageRepository, output: inout Command.Output) -> UserFacingText<InterfaceLocalization, Void>? {
-        return UserFacingText({ _, _ in details })
+    static func message(for details: StrictString, in project: PackageRepository, output: inout Command.Output) -> UserFacingText<InterfaceLocalization>? {
+        return UserFacingText({ _ in details })
     }
 }

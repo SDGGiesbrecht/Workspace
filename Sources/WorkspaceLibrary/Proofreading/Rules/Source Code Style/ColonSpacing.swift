@@ -19,28 +19,28 @@ import SDGCommandLine
 
 struct ColonSpacing : Rule {
 
-    static let name = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let name = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Colon Spacing"
         }
     })
 
-    static let precedingMessage = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let precedingMessage = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Colons should not be preceded by spaces."
         }
     })
 
-    static let conformanceMessage = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let conformanceMessage = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Colons should be preceded by spaces when denoting protocols or superclasses."
         }
     })
 
-    static let followingMessage = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let followingMessage = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Colons should be followed by spaces."
@@ -69,7 +69,7 @@ struct ColonSpacing : Rule {
                     protocolOrSuperclass = false
                 } else if fromStartOfFile(to: match, in: file).hasSuffix("_".scalars) {
                     protocolOrSuperclass = false
-                } else if let startOfPreviousIdentifier = fromStartOfLine(to: match, in: file).components(separatedBy: ConditionalPattern(condition: { $0 ∈ (CharacterSet.whitespaces ∪ CharacterSet.punctuationCharacters) ∪ CharacterSet.symbols })).filter({ ¬$0.range.isEmpty }).last?.contents.first {
+                } else if let startOfPreviousIdentifier = fromStartOfLine(to: match, in: file).components(separatedBy: ConditionalPattern({ $0 ∈ (CharacterSet.whitespaces ∪ CharacterSet.punctuationCharacters) ∪ CharacterSet.symbols })).filter({ ¬$0.range.isEmpty }).last?.contents.first {
                     protocolOrSuperclass = startOfPreviousIdentifier ∈ CharacterSet.uppercaseLetters
                 } else {
                     protocolOrSuperclass = false

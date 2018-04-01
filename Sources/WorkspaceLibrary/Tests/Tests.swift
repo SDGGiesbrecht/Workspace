@@ -79,7 +79,7 @@ struct Tests {
 
         let section = validationStatus.newSection()
 
-        print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        print(UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "Checking build for " + englishName(for: job) + "..." + section.anchor
@@ -113,14 +113,14 @@ unreachable()
                 }
 
                 if try buildCommand(&output) {
-                    validationStatus.passStep(message: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+                    validationStatus.passStep(message: UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
                         switch localization {
                         case .englishCanada:
                             return "There are no compiler warnings for " + englishName(for: job) + "."
                         }
                     }))
                 } else {
-                    validationStatus.failStep(message: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+                    validationStatus.failStep(message: UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
                         switch localization {
                         case .englishCanada:
                             return "There are compiler warnings for " + englishName(for: job) + "." + section.crossReference.resolved(for: localization)
@@ -128,7 +128,7 @@ unreachable()
                     }))
                 }
             } catch { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.2.
-                validationStatus.failStep(message: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in // [_Exempt from Test Coverage_]
+                validationStatus.failStep(message: UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in // [_Exempt from Test Coverage_]
                     switch localization {
                     case .englishCanada: // [_Exempt from Test Coverage_]
                         return "Build failed for " + englishName(for: job) + "." + section.crossReference.resolved(for: localization)
@@ -142,7 +142,7 @@ unreachable()
 
         let section = validationStatus.newSection()
 
-        print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        print(UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
             switch localization {
             case .englishCanada:
                 var name = job.englishTargetOperatingSystemName
@@ -187,14 +187,14 @@ unreachable()
             }
 
             if testCommand(&output) {
-                validationStatus.passStep(message: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+                validationStatus.passStep(message: UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
                     switch localization {
                     case .englishCanada:
                         return "Tests pass on " + englishName(for: job) + "."
                     }
                 }))
             } else {
-                validationStatus.failStep(message: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+                validationStatus.failStep(message: UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
                     switch localization {
                     case .englishCanada:
                         return "Tests fail on " + englishName(for: job) + "." + section.crossReference.resolved(for: localization)
@@ -223,7 +223,7 @@ unreachable()
 
             let section = validationStatus.newSection()
 
-            print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+            print(UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
                 switch localization {
                 case .englishCanada:
                     let name = job.englishTargetOperatingSystemName
@@ -233,7 +233,7 @@ unreachable()
 
             let report = try Xcode.default.coverageData(for: target, of: scheme, on: testSDK(for: job), output: &output)
             if try validate(coverageReport: report, for: project, output: &output) {
-                validationStatus.passStep(message: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+                validationStatus.passStep(message: UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
                     switch localization {
                     case .englishCanada:
                         let name = job.englishTargetOperatingSystemName
@@ -241,7 +241,7 @@ unreachable()
                     }
                 }))
             } else { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.2.
-                validationStatus.failStep(message: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in // [_Exempt from Test Coverage_]
+                validationStatus.failStep(message: UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in // [_Exempt from Test Coverage_]
                     switch localization {
                     case .englishCanada: // [_Exempt from Test Coverage_]
                         let name = job.englishTargetOperatingSystemName
@@ -300,7 +300,7 @@ unreachable()
 
                 let nextLineIndex = coverageReport.lines.index(after: errorLineIndex)
                 let nextLine = String(coverageReport.lines[nextLineIndex].line)
-                let sourceLines = String((sourceLine + nextLine).scalars.replacingMatches(for: ConditionalPattern(condition: { $0 ∈ nullCharacters }), with: "".scalars))
+                let sourceLines = String((sourceLine + nextLine).scalars.replacingMatches(for: ConditionalPattern({ $0 ∈ nullCharacters }), with: "".scalars))
 
                 for token in previousLineTokens where sourceLines.scalars.contains(token.scalars) {
                     continue hits

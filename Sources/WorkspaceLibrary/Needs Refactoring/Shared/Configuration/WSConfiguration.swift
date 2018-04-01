@@ -123,7 +123,7 @@ extension Configuration {
         }
 
         func split(_ string: String, at token: String) -> (before: String, after: String)? {
-            var result = string.components(separatedBy: token)
+            var result = string.components(separatedBy: token).map { String($0.contents) }
             guard result.count > 1 else {
                 return nil
             }
@@ -331,7 +331,7 @@ extension Configuration {
                 currentLocalization = code
             } else {
                 guard let localization = currentLocalization else {
-                    throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+                    throw Command.Error(description: UserFacingText<InterfaceLocalization>({ (localization) in
                         switch localization {
                         case .englishCanada:
                             return [
@@ -535,7 +535,7 @@ extension Configuration {
                 }
             }
 
-            let components = entry.components(separatedBy: ": ")
+            let components = entry.components(separatedBy: ": ").map { String($0.contents) }
 
             if components.count == 1 {
                 return (option: option(forKey: components[0]), types: Set(PackageRepository.Target.TargetType.cases))

@@ -21,14 +21,14 @@ extension Workspace {
 
     enum Test {
 
-        private static let name = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        private static let name = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "test"
             }
         })
 
-        private static let description = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        private static let description = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "runs the project’s test targets."

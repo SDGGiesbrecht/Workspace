@@ -18,26 +18,26 @@ import SDGCommandLine
 extension Workspace {
     enum Proofread {
 
-        private static let name = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        private static let name = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "proofread"
             }
         })
 
-        private static let description = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        private static let description = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "proofreads the current project’s source for style violations."
             }
         })
 
-        static let runAsXcodeBuildPhase = SDGCommandLine.Option(name: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        static let runAsXcodeBuildPhase = SDGCommandLine.Option(name: UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "xcode"
             }
-        }), description: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        }), description: UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "behaves as an xcode build phase."
@@ -60,7 +60,7 @@ extension Workspace {
             let section = validationStatus.newSection()
 
             if ¬options.runAsXcodeBuildPhase {
-                print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+                print(UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
                     switch localization {
                     case .englishCanada:
                         return StrictString("Proofreading source code...") + section.anchor
@@ -76,14 +76,14 @@ extension Workspace {
             }
 
             if try Proofreading.proofread(project: options.project, reporter: reporter, output: &output) {
-                validationStatus.passStep(message: UserFacingText({(localization: InterfaceLocalization, _: Void) in
+                validationStatus.passStep(message: UserFacingText({(localization: InterfaceLocalization) in
                     switch localization {
                     case .englishCanada:
                         return "Source code passes proofreading."
                     }
                 }))
             } else {
-                validationStatus.failStep(message: UserFacingText({(localization: InterfaceLocalization, _: Void) in
+                validationStatus.failStep(message: UserFacingText({(localization: InterfaceLocalization) in
                     switch localization {
                     case .englishCanada:
                         return StrictString("Source code fails proofreading.") + section.crossReference.resolved(for: localization)

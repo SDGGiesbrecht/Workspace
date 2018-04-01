@@ -71,7 +71,7 @@ struct PackageRepositoryTarget : Hashable {
         return source
     }
 
-    private static let resourceNamespace = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    private static let resourceNamespace = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Resources"
@@ -85,7 +85,8 @@ struct PackageRepositoryTarget : Hashable {
     private func namespaceTree(for resources: [URL], of package: PackageRepository) -> [StrictString: Any] {
         var tree: [StrictString: Any] = [:]
         for resource in resources {
-            let pathComponents = resource.path(relativeTo: package.location).components(separatedBy: "/").dropFirst(2)
+            let pathComponentsArray = resource.path(relativeTo: package.location).components(separatedBy: "/").dropFirst(2).map({ String($0.contents) })
+            let pathComponents = pathComponentsArray[pathComponentsArray.startIndex...]
             add(components: pathComponents, to: &tree, for: resource)
         }
         return tree

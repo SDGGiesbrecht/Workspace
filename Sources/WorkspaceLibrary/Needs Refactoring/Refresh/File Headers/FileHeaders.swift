@@ -62,7 +62,7 @@ struct FileHeaders {
             for space in ["", " "] {
                 if let range = text.scalars.firstMatch(for: (symbol + space).scalars)?.range {
                     var numberEnd = range.upperBound
-                    text.scalars.advance(&numberEnd, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.decimalDigits })))
+                    text.scalars.advance(&numberEnd, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.decimalDigits })))
                     let number = text.scalars[range.upperBound ..< numberEnd]
                     if number.count == 4 {
                         oldStartDate = String(number)

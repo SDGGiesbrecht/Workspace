@@ -71,7 +71,7 @@ struct Configuration {
     // MARK: - Types
 
     private static func optionNotDefinedError(for option: Option) -> Command.Error { // [_Exempt from Test Coverage_] [_Workaround: Until licence is testable._]
-        return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Test Coverage_] [_Workaround: Until licence is testable._]
+        return Command.Error(description: UserFacingText<InterfaceLocalization>({ (localization) in // [_Exempt from Test Coverage_] [_Workaround: Until licence is testable._]
             switch localization {
             case .englishCanada: // [_Exempt from Test Coverage_] [_Workaround: Until licence is testable._]
                 return "Configuration option not defined: " + StrictString(option.key)
@@ -80,7 +80,7 @@ struct Configuration {
     }
 
     static func invalidEnumerationValueError(for option: Option, value: String, valid: [StrictString]) -> Command.Error {
-        return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+        return Command.Error(description: UserFacingText<InterfaceLocalization>({ (localization) in
             switch localization {
             case .englishCanada:
                 return ([
@@ -368,7 +368,7 @@ struct Configuration {
         }
         return try result.map { (entry) in
             guard let url = URL(string: entry) else {
-                throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+                throw Command.Error(description: UserFacingText<InterfaceLocalization>({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return StrictString("“\(entry)” in “\(Option.relatedProjects)” is not a valid URL.")

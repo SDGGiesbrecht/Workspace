@@ -17,14 +17,14 @@ import SDGCommandLine
 
 struct DocumentationOfCompilationConditions : Rule {
 
-    static let name = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let name = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Documentation of Compilation Conditions"
         }
     })
 
-    static let message = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let message = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return StrictString("Undocumented compilation condition. Add “\(Mark.expectedSyntax)\u{23}if...” on the next line.")

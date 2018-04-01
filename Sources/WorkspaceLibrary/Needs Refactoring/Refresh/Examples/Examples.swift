@@ -68,7 +68,7 @@ struct Examples {
                         }
 
                         var indentEnd: String.ScalarView.Index = startLineRange.lowerBound.samePosition(in: file.contents.scalars)
-                        file.contents.scalars.advance(&indentEnd, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
+                        file.contents.scalars.advance(&indentEnd, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
                         let indent = String(file.contents[startLineRange.lowerBound ..< indentEnd.cluster(in: file.contents.clusters)])
 
                         contents = contents.map { (line: String) -> String in

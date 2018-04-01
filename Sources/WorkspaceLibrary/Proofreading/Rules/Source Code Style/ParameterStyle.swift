@@ -17,14 +17,14 @@ import SDGCommandLine
 
 struct ParametersStyle : Rule {
 
-    static let name = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let name = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Parameter Style"
         }
     })
 
-    static let message = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let message = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Parameters should be grouped under a single callout."

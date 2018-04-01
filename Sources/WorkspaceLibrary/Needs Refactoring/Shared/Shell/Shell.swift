@@ -26,7 +26,14 @@ import SDGCommandLine
     }
 
     do {
-        return try Shell.default.run(command: arguments, silently: silent)
+        if silent {
+            return try Shell.default.run(command: arguments)
+        } else {
+            print("")
+            let result = try Shell.default.run(command: arguments, reportProgress: { print($0) })
+            print("")
+            return result
+        }
     } catch {
         fatalError(message: [
             "Command failed:",

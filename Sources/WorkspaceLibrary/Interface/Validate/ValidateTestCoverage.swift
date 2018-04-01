@@ -21,14 +21,14 @@ extension Workspace.Validate {
 
     enum TestCoverage {
 
-        private static let name = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        private static let name = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "test‐coverage"
             }
         })
 
-        private static let description = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        private static let description = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "validates test coverage, checking that every code path is reached by the project’s tests."

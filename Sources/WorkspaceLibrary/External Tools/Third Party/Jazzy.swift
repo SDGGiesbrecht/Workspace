@@ -20,7 +20,7 @@ import SDGCommandLine
 #if os(Linux)
 
     func linuxJazzyError() -> Command.Error {
-        return Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
+        return Command.Error(description: UserFacingText({(localization: InterfaceLocalization) in
             switch localization {
             case .englishCanada:
                 return StrictString([
@@ -40,8 +40,8 @@ import SDGCommandLine
 
         static let `default` = Jazzy(version: Version(0, 9, 1))
 
-        override class var name: UserFacingText<InterfaceLocalization, Void> { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
-            return UserFacingText({ (localization, _) in // [_Exempt from Test Coverage_]
+        override class var name: UserFacingText<InterfaceLocalization> { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
+            return UserFacingText({ (localization) in // [_Exempt from Test Coverage_]
                 switch localization {
                 case .englishCanada: // [_Exempt from Test Coverage_]
                     return "Jazzy"
@@ -49,8 +49,8 @@ import SDGCommandLine
             })
         }
 
-        override class var installationInstructionsURL: UserFacingText<InterfaceLocalization, Void> { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
-            return UserFacingText({ (localization, _) in // [_Exempt from Test Coverage_]
+        override class var installationInstructionsURL: UserFacingText<InterfaceLocalization> { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
+            return UserFacingText({ (localization) in // [_Exempt from Test Coverage_]
                 switch localization {
                 case .englishCanada: // [_Exempt from Test Coverage_]
                     return "https://github.com/realm/jazzy"
@@ -122,7 +122,7 @@ import SDGCommandLine
         }
 
         private func parseError(undocumented json: String) -> Command.Error { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
-            return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Test Coverage_]
+            return Command.Error(description: UserFacingText<InterfaceLocalization>({ (localization) in // [_Exempt from Test Coverage_]
                 switch localization {
                 case .englishCanada: // [_Exempt from Test Coverage_]
                     return StrictString("Error loading list of undocumented symbols:\n\(json)")
@@ -134,23 +134,23 @@ import SDGCommandLine
 
             let json = try TextFile(alreadyAt: outputDirectory.appendingPathComponent("undocumented.json")).contents
 
-            guard let information = (try JSONSerialization.jsonObject(with: json.file, options: []) as? PropertyListValue)?.as([String: Any].self) else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
+            guard let information = try JSONSerialization.jsonObject(with: json.file, options: []) as? [String: Any] else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
                 throw parseError(undocumented: json)
             }
 
-            guard let warnings = (information["warnings"] as? PropertyListValue)?.as([Any].self) else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
+            guard let warnings = information["warnings"] as? [Any] else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
                 throw parseError(undocumented: json)
             }
 
             var result: [(file: URL, line: Int?, symbol: String)] = []
 
             for entry in warnings {
-                guard let warning = (entry as? PropertyListValue)?.as([String: Any].self),
-                    let path = (warning["file"] as? PropertyListValue)?.as(String.self),
-                    let symbol = (warning["symbol"] as? PropertyListValue)?.as(String.self) else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
+                guard let warning = entry as? [String: Any],
+                    let path = warning["file"] as? String,
+                    let symbol = warning["symbol"] as? String else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
                         throw parseError(undocumented: json)
                 }
-                let line = (warning["line"] as? PropertyListValue)?.as(Int.self) // Occasionally “null” for some reason.
+                let line = warning["line"] as? Int // Occasionally “null” for some reason.
 
                 result.append((file: URL(fileURLWithPath: path), line: line, symbol: symbol))
             }

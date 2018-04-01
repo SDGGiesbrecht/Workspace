@@ -147,11 +147,11 @@ struct FileSyntax {
 
         let newline = AlternativePatterns([
             LiteralPattern("\u{D}\u{A}".scalars),
-            ConditionalPattern(condition: { $0 ∈ CharacterSet.newlines })
+            ConditionalPattern({ $0 ∈ CharacterSet.newlines })
             ])
 
         string.scalars.advance(&scalar, over: RepetitionPattern(newline, count: 0 ... 1))
-        string.scalars.advance(&scalar, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
+        string.scalars.advance(&scalar, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
         string.scalars.advance(&scalar, over: RepetitionPattern(newline, count: 0 ... 1))
 
         index = scalar.cluster(in: string.clusters)

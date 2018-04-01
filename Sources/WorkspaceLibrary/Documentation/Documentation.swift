@@ -46,19 +46,19 @@ enum Documentation {
 
         var template = try project.configuration.documentationCopyright()
 
-        template.insert(dates, for: UserFacingText({ (localization, _) in
+        template.insert(dates, for: UserFacingText({ (localization) in
             switch localization {
             case .englishCanada:
                 return "Copyright"
             }
         }))
-        try template.insert(resultOf: { try project.configuration.requireAuthor() }, for: UserFacingText({ (localization, _) in
+        try template.insert(resultOf: { try project.configuration.requireAuthor() }, for: UserFacingText({ (localization) in
             switch localization {
             case .englishCanada:
                 return "Author"
             }
         }))
-        template.insert(try project.projectName(output: &output), for: UserFacingText({ (localization, _) in
+        template.insert(try project.projectName(output: &output), for: UserFacingText({ (localization) in
             switch localization {
             case .englishCanada:
                 return "Project"
@@ -72,7 +72,7 @@ enum Documentation {
 
     static func document(target: String, for project: PackageRepository, outputDirectory: URL, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
 
-        print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        print(UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "Generating documentation for “" + StrictString(target) + "”..."
@@ -116,7 +116,7 @@ enum Documentation {
             }
         }
 
-        validationStatus.passStep(message: UserFacingText({ localization, _ in
+        validationStatus.passStep(message: UserFacingText({ localization in
             switch localization {
             case .englishCanada:
                 return "Generated documentation for “" + StrictString(target) + "”."
@@ -128,7 +128,7 @@ enum Documentation {
 
         let section = validationStatus.newSection()
 
-        print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        print(UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "Checking documentation coverage for “" + StrictString(target) + "”..." + section.anchor
@@ -146,14 +146,14 @@ enum Documentation {
         }
 
         if warnings.isEmpty {
-            validationStatus.passStep(message: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+            validationStatus.passStep(message: UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
                 switch localization {
                 case .englishCanada:
                     return "Documentation coverage is complete for “" + StrictString(target) + "”."
                 }
             }))
         } else {
-            validationStatus.failStep(message: UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+            validationStatus.failStep(message: UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
                 switch localization {
                 case .englishCanada:
                     return "Documentation coverage is incomplete for “" + StrictString(target) + "”." + section.crossReference.resolved(for: localization)

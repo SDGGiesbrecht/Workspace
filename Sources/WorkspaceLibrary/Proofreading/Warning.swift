@@ -16,8 +16,8 @@ import SDGCornerstone
 import SDGCommandLine
 
 protocol Warning : Rule {
-    static var trigger: UserFacingText<InterfaceLocalization, Void> { get }
-    static func message(for details: StrictString, in project: PackageRepository, output: inout Command.Output) throws -> UserFacingText<InterfaceLocalization, Void>?
+    static var trigger: UserFacingText<InterfaceLocalization> { get }
+    static func message(for details: StrictString, in project: PackageRepository, output: inout Command.Output) throws -> UserFacingText<InterfaceLocalization>?
 }
 
 let manualWarnings: [Warning.Type] = [

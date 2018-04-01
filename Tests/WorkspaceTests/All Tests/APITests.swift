@@ -232,6 +232,12 @@ try Shell.default.run(command: ["cp", "\u{2D}r", Shell.quote(project.path), Shel
                             // Remove resolves
                             output.replaceMatches(for: "\n$ swift package resolve\n\n".scalars, with: "".scalars)
                             #endif
+                            // SwiftLint parses files in a non‐deterministic order.
+                            output.replaceMatches(for: CompositePattern([
+                                LiteralPattern("Linting \u{27}".scalars),
+                                RepetitionPattern(ConditionalPattern({ $0 ≠ "\u{27}" }), consumption: .lazy),
+                                LiteralPattern("\u{27}".scalars)
+                                ]), with: "Linting \u{27}[...]\u{27}".scalars)
 
                             XCTAssertErrorFree { try output.save(to: outputLocation) }
                             checkForDifferences(in: "output", at: outputLocation, for: project)

@@ -26,7 +26,7 @@ extension Command.Output {
     static var mock: Command.Output = {
         var result: Command.Output?
         do {
-            try Command(name: UserFacingText<MockLocalization, Void>({ _, _ in "" }), description: UserFacingText<MockLocalization, Void>({ _, _ in "" }), directArguments: [], options: [], execution: { (_, _, output: inout Command.Output) in
+            try Command(name: UserFacingText<MockLocalization>({ _ in "" }), description: UserFacingText<MockLocalization>({ _ in "" }), directArguments: [], options: [], execution: { (_, _, output: inout Command.Output) in
                 result = output
             }).execute(with: [])
         } catch {}

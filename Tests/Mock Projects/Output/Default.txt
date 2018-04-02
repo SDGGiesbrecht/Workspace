@@ -30,6 +30,13 @@ Tests/DefaultTests/DefaultTests.swift
 Tests/LinuxMain.swift
 
 $ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --reporter emoji
+Loading configuration from '[...]/SwiftLint/Configuration.yml'
+Linting Swift files in current working directory
+Linting '[...]' (1/4)
+Linting '[...]' (2/4)
+Linting '[...]' (3/4)
+Linting '[...]' (4/4)
+Done linting! Found 0 violations, 0 serious in 4 files.
 
 
 $ swift package resolve
@@ -101,6 +108,7 @@ Testing on macOS with Xcode... (§2)
 $ xcodebuild test -sdk macosx -scheme Default-Package
 [...]
 
+Generating coverage data...
 
 
 ✓ Tests pass on macOS with Xcode.
@@ -116,6 +124,7 @@ Testing on macOS with Xcode... (§1)
 $ xcodebuild test -sdk macosx -scheme Default-Package
 [...]
 
+Generating coverage data...
 
 
 Checking test coverage for “Default” on macOS... (§2)
@@ -133,6 +142,10 @@ Generating documentation for “Default”...
 
 
 $ jazzy --module Default --copyright "Copyright ©2018 the Default project contributors. All rights reserved." --documentation=Documentation/*.md --clean --use-safe-filenames --output "[...]/Documentation/Default" --xcodebuild-arguments "-scheme,Default-Package,-target,Default,-sdk,macosx,-derivedDataPath,[...]/Jazzy Build Artifacts"
+Running xcodebuild
+Parsing Default.swift (1/1)
+building site
+building search index
 0% documentation coverage with 0 undocumented symbols
 skipped 1 private, fileprivate, or internal symbol (use `--min-acl` to specify a different minimum ACL)
 jam out ♪♫ to your fresh new docs in `[...]/Documentation/Default`

@@ -111,6 +111,15 @@ Tests/LinuxMain.swift
 Tests/SDGTests/SDGTests.swift
 
 $ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --reporter emoji
+Loading configuration from '[...]/SwiftLint/Configuration.yml'
+Linting Swift files in current working directory
+Linting '[...]' (1/6)
+Linting '[...]' (2/6)
+Linting '[...]' (3/6)
+Linting '[...]' (4/6)
+Linting '[...]' (5/6)
+Linting '[...]' (6/6)
+Done linting! Found 0 violations, 0 serious in 6 files.
 
 
 $ swift package resolve

@@ -69,7 +69,7 @@
                 }
                 let line = information.lines[lineLocation].line
                 let nameOnly = String(line.filter({ $0 ∉ CharacterSet.whitespaces }))
-                if ¬nameOnly.hasSuffix("PackageDescription") ∧ ¬nameOnly.hasSuffix("Tests") {
+                if nameOnly.hasSuffix("\u{2D}Package") {
                     name = nameOnly
                 } else {
                     lineLocation = information.lines.index(after: lineLocation)

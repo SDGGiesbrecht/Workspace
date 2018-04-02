@@ -195,7 +195,6 @@ Testing on macOS with Xcode... (§2)
 $ xcodebuild test -sdk macosx -scheme SDG-Package
 [...]
 
-Generating coverage data...
 
 
 ✓ Tests pass on macOS with Xcode.
@@ -211,7 +210,6 @@ Testing on macOS with Xcode... (§1)
 $ xcodebuild test -sdk macosx -scheme SDG-Package
 [...]
 
-Generating coverage data...
 
 
 Checking test coverage for “Library” on macOS... (§2)

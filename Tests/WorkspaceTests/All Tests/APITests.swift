@@ -238,6 +238,8 @@ try Shell.default.run(command: ["cp", "\u{2D}r", Shell.quote(project.path), Shel
                                 RepetitionPattern(ConditionalPattern({ $0 ≠ "\u{27}" }), consumption: .lazy),
                                 LiteralPattern("\u{27}".scalars)
                                 ]), with: "Linting \u{27}[...]\u{27}".scalars)
+                            // Xcode prints this inconsistently
+                            output.replaceMatches(for: "Generating coverage data...\n".scalars, with: "".scalars)
 
                             XCTAssertErrorFree { try output.save(to: outputLocation) }
                             checkForDifferences(in: "output", at: outputLocation, for: project)

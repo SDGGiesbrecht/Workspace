@@ -60,14 +60,22 @@
             guard let schemesHeader = information.scalars.firstMatch(for: "Schemes:".scalars)?.range else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Xcode.
                 throw parseError(projectInformation: information)
             }
-            let schemesHeaderLine = schemesHeader.lines(in: information.lines)
-            let nextLine = schemesHeaderLine.upperBound
-            guard nextLine ≠ information.lines.endIndex else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Xcode.
-                throw parseError(projectInformation: information)
-            }
-            let line = information.lines[nextLine].line
+            var lineLocation = schemesHeader.lines(in: information.lines).upperBound
 
-            return String(line.filter({ $0 ∉ CharacterSet.whitespaces }))
+            var name: String? = nil
+            while name == nil {
+                guard lineLocation ≠ information.lines.endIndex else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Xcode.
+                    throw parseError(projectInformation: information)
+                }
+                let line = information.lines[lineLocation].line
+                let nameOnly = String(line.filter({ $0 ∉ CharacterSet.whitespaces }))
+                if ¬nameOnly.hasSuffix("PackageDescription") ∧ ¬nameOnly.hasSuffix("Tests") {
+                    name = nameOnly
+                } else {
+                    lineLocation = information.lines.index(after: lineLocation)
+                }
+            }
+            return name!
         }
 
         enum SDK : String {

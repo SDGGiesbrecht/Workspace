@@ -167,6 +167,7 @@ Testing on macOS with Xcode... (§2)
 $ xcodebuild test -sdk macosx -scheme SDG-Package
 [...]
 
+Generating coverage data...
 
 
 ✓ Tests pass on macOS with Xcode.
@@ -182,6 +183,7 @@ Testing on macOS with Xcode... (§1)
 $ xcodebuild test -sdk macosx -scheme SDG-Package
 [...]
 
+Generating coverage data...
 
 
 Checking test coverage for “Library” on macOS... (§2)
@@ -199,6 +201,11 @@ Generating documentation for “Library”...
 
 
 $ jazzy --module Library --copyright "Copyright ©2017–2018 John Doe and the SDG project contributors. All rights reserved." --github_url "https://github.com/JohnDoe/SDG" --documentation=Documentation/*.md --clean --use-safe-filenames --output "[...]/Documentation/Library" --xcodebuild-arguments "-scheme,SDG-Package,-target,Library,-sdk,macosx,-derivedDataPath,[...]/Jazzy Build Artifacts"
+Running xcodebuild
+Parsing Resources.swift (1/2)
+Parsing SDG.swift (2/2)
+building site
+building search index
 0% documentation coverage with 0 undocumented symbols
 skipped 6 private, fileprivate, or internal symbols (use `--min-acl` to specify a different minimum ACL)
 jam out ♪♫ to your fresh new docs in `[...]/Documentation/Library`

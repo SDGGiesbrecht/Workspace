@@ -32,7 +32,7 @@ struct FileHeaders {
             "[_Filename_]",
             "",
             "This source file is part of the [_Project_] open source project."
-            ]
+        ]
         if Configuration.optionIsDefined(.projectWebsite) {
             defaultHeader.append("[_Website_]")
         }
@@ -123,29 +123,31 @@ struct FileHeaders {
         }
 
         for path in Repository.sourceFiles.filter({ shouldManageHeader(path: $0) }) {
+            try autoreleasepool {
 
-            if FileType(filePath: path)?.syntax ≠ nil {
+                if FileType(filePath: path)?.syntax ≠ nil {
 
-                var file = require { try File(at: path) }
-                let oldHeader = file.header
-                var header = template
+                    var file = require { try File(at: path) }
+                    let oldHeader = file.header
+                    var header = template
 
-                header = header.replacingOccurrences(of: key("Filename"), with: String(StrictString(path.filename)))
-                header = header.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.projectName(output:
-                    &output)))
-                if let website = possibleWebsite {
-                    header = header.replacingOccurrences(of: key("Website"), with: website)
+                    header = header.replacingOccurrences(of: key("Filename"), with: String(StrictString(path.filename)))
+                    header = header.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.projectName(output:
+                        &output)))
+                    if let website = possibleWebsite {
+                        header = header.replacingOccurrences(of: key("Website"), with: website)
+                    }
+                    header = header.replacingOccurrences(of: key("Copyright"), with: FileHeaders.copyright(fromText: oldHeader))
+                    if let author = possibleAuthor {
+                        header = header.replacingOccurrences(of: key("Author"), with: author)
+                    }
+                    if let licence = possibleLicence {
+                        header = header.replacingOccurrences(of: key("Licence"), with: licence)
+                    }
+
+                    file.header = header
+                    require { try file.write(output: &output) }
                 }
-                header = header.replacingOccurrences(of: key("Copyright"), with: FileHeaders.copyright(fromText: oldHeader))
-                if let author = possibleAuthor {
-                    header = header.replacingOccurrences(of: key("Author"), with: author)
-                }
-                if let licence = possibleLicence {
-                    header = header.replacingOccurrences(of: key("Licence"), with: licence)
-                }
-
-                file.header = header
-                require { try file.write(output: &output) }
             }
         }
     }

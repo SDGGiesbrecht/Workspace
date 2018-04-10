@@ -68,8 +68,10 @@ extension Workspace.Validate {
 
             for job in ContinuousIntegration.Job.cases
                 where try options.job.includes(job: job) ∧ (try Build.job(job, isRelevantTo: options.project, andAvailableJobs: Tests.buildJobs, output: &output)) {
+                    try autoreleasepool {
 
-                try Tests.build(options.project, for: job, validationStatus: &validationStatus, output: &output)
+                        try Tests.build(options.project, for: job, validationStatus: &validationStatus, output: &output)
+                    }
             }
         }
     }

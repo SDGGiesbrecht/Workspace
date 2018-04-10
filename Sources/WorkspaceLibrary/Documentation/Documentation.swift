@@ -103,16 +103,18 @@ enum Documentation {
         for url in try project.trackedFiles(output: &output) where url.is(in: outputSubdirectory) {
             if let type = try? FileType(url: url),
                 type == .html {
+                try autoreleasepool {
 
-                var file = try TextFile(alreadyAt: url)
-                var source = file.contents
-                while let skipMarker = source.scalars.firstMatch(for: transformedMarker.scalars) {
-                    let line = skipMarker.range.lines(in: source.lines)
-                    source.lines.removeSubrange(line)
+                    var file = try TextFile(alreadyAt: url)
+                    var source = file.contents
+                    while let skipMarker = source.scalars.firstMatch(for: transformedMarker.scalars) {
+                        let line = skipMarker.range.lines(in: source.lines)
+                        source.lines.removeSubrange(line)
+                    }
+
+                    file.contents = source
+                    try file.writeChanges(for: project, output: &output)
                 }
-
-                file.contents = source
-                try file.writeChanges(for: project, output: &output)
             }
         }
 

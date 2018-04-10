@@ -50,21 +50,23 @@ extension Workspace.Validate {
 
             for job in ContinuousIntegration.Job.cases
                 where try options.job.includes(job: job) ∧ (try Build.job(job, isRelevantTo: options.project, andAvailableJobs: Tests.coverageJobs, output: &output)) {
+                    try autoreleasepool {
 
-                    if try options.project.configuration.shouldSkipSimulator(),
-                        options.job == nil, // Not in continuous integration.
-                        job ∈ Tests.simulatorJobs { // [_Exempt from Test Coverage_] Tested separately.
-                        continue
+                        if try options.project.configuration.shouldSkipSimulator(),
+                            options.job == nil, // Not in continuous integration.
+                            job ∈ Tests.simulatorJobs { // [_Exempt from Test Coverage_] Tested separately.
+                            return // and continue loop.
+                        }
+
+                        if BuildConfiguration.current == .debug,
+                            job ∈ Tests.simulatorJobs,
+                            ProcessInfo.processInfo.environment["SIMULATOR_UNAVAILABLE_FOR_TESTING"] ≠ nil { // Simulators are not available to all CI jobs and must be tested separately.
+                            return // and continue loop.
+                        }
+
+                        try Tests.test(options.project, on: job, validationStatus: &validationStatus, output: &output)
+                        try Tests.validateCodeCoverage(for: options.project, on: job, validationStatus: &validationStatus, output: &output)
                     }
-
-                    if BuildConfiguration.current == .debug,
-                        job ∈ Tests.simulatorJobs,
-                        ProcessInfo.processInfo.environment["SIMULATOR_UNAVAILABLE_FOR_TESTING"] ≠ nil { // Simulators are not available to all CI jobs and must be tested separately.
-                        continue
-                    }
-
-                    try Tests.test(options.project, on: job, validationStatus: &validationStatus, output: &output)
-                    try Tests.validateCodeCoverage(for: options.project, on: job, validationStatus: &validationStatus, output: &output)
             }
         }
     }

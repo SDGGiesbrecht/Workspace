@@ -113,16 +113,18 @@ struct PackageRepositoryTarget : Hashable {
     private func source(for namespaceTree: [StrictString: Any]) throws -> StrictString {
         var result: StrictString = ""
         for name in namespaceTree.keys.sorted() {
-            let value = namespaceTree[name]
+            try autoreleasepool {
+                let value = namespaceTree[name]
 
-            if let resource = value as? URL {
-                try result.append(contentsOf: source(for: resource, named: name) + "\n")
-            } else if let namespace = value as? [StrictString: Any] {
-                result.append(contentsOf: "enum " + name + " {\n")
-                result.append(contentsOf: try source(for: namespace))
-                result.append(contentsOf: "}\n")
-            } else {
-                unreachable()
+                if let resource = value as? URL {
+                    try result.append(contentsOf: source(for: resource, named: name) + "\n")
+                } else if let namespace = value as? [StrictString: Any] {
+                    result.append(contentsOf: "enum " + name + " {\n")
+                    result.append(contentsOf: try source(for: namespace))
+                    result.append(contentsOf: "}\n")
+                } else {
+                    unreachable()
+                }
             }
         }
 

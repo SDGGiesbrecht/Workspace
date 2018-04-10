@@ -174,11 +174,11 @@ extension PackageRepository {
 
                 let isDirectory: Bool
                 #if os(Linux)
-                    // [_Workaround: Linux has no implementation for resourcesValues(forKeys:) (Swift 4.0.2)_]
-                    var objCBool: ObjCBool = false
-                    isDirectory = FileManager.default.fileExists(atPath: url.path, isDirectory: &objCBool) ∧ objCBool
+                // [_Workaround: Linux has no implementation for resourcesValues(forKeys:) (Swift 4.0.2)_]
+                var objCBool: ObjCBool = false
+                isDirectory = FileManager.default.fileExists(atPath: url.path, isDirectory: &objCBool) ∧ objCBool
                 #else
-                    isDirectory = (try url.resourceValues(forKeys: [.isDirectoryKey])).isDirectory!
+                isDirectory = (try url.resourceValues(forKeys: [.isDirectoryKey])).isDirectory!
                 #endif
 
                 if ¬isDirectory, // Skip directories.
@@ -305,7 +305,9 @@ extension PackageRepository {
         }
 
         for (target, resources) in targets {
-            try target.refresh(resources: resources, from: self, output: &output)
+            try autoreleasepool {
+                try target.refresh(resources: resources, from: self, output: &output)
+            }
         }
     }
 
@@ -326,13 +328,17 @@ extension PackageRepository {
     #if !os(Linux)
     func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
         for product in try libraryProductTargets(output: &output) {
+            try autoreleasepool {
             try Documentation.document(target: product, for: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: &output)
+            }
         }
     }
 
     func validateDocumentationCoverage(outputDirectory: URL, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
         for product in try libraryProductTargets(output: &output) {
+            try autoreleasepool {
             try Documentation.validateDocumentationCoverage(for: product, in: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: &output)
+            }
         }
     }
     #endif

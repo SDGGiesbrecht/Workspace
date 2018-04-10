@@ -736,26 +736,28 @@ enum ReadMe {
             ]
 
             for url in relatedProjectURLs {
+                autoreleasepool {
 
-                let package = Repository.linkedRepository(from: url)
-                let name: StrictString
-                if let packageName = try? package.projectName(output: &output) {
-                    name = packageName
-                } else { // [_Exempt from Test Coverage_] Only reachable with a non‐package repository.
-                    name = StrictString(url.lastPathComponent)
-                }
+                    let package = Repository.linkedRepository(from: url)
+                    let name: StrictString
+                    if let packageName = try? package.projectName(output: &output) {
+                        name = packageName
+                    } else { // [_Exempt from Test Coverage_] Only reachable with a non‐package repository.
+                        name = StrictString(url.lastPathComponent)
+                    }
 
-                markdown += [
-                    "",
-                    StrictString("### [\(name)](\(url.absoluteString))")
-                ]
-
-                if let succeeded = try? package.configuration.shortProjectDescription(for: localization),
-                    let description = succeeded { // [_Exempt from Test Coverage_] Until Workspace’s configuration is centralized again.
                     markdown += [
                         "",
-                        description
+                        StrictString("### [\(name)](\(url.absoluteString))")
                     ]
+
+                    if let succeeded = try? package.configuration.shortProjectDescription(for: localization),
+                        let description = succeeded { // [_Exempt from Test Coverage_] Until Workspace’s configuration is centralized again.
+                        markdown += [
+                            "",
+                            description
+                        ]
+                    }
                 }
             }
 
@@ -771,15 +773,18 @@ enum ReadMe {
     static func refreshReadMe(for project: PackageRepository, output: inout Command.Output) throws {
         let localizations = try project.configuration.localizations()
         for localization in localizations {
-            let setting = LocalizationSetting(orderOfPrecedence: [localization] + localizations)
-            try setting.do {
-                try refreshReadMe(at: readMeLocation(for: project, localization: localization), for: localization, in: project, atProjectRoot: false, output: &output)
-                try refreshRelatedProjects(at: relatedProjectsLocation(for: project, localization: localization), for: localization, in: project, output: &output)
-            }
+            try autoreleasepool {
 
-            if localization == (try project.configuration.developmentLocalization()) {
+                let setting = LocalizationSetting(orderOfPrecedence: [localization] + localizations)
                 try setting.do {
-                    try refreshReadMe(at: project.location.appendingPathComponent("README.md"), for: localization, in: project, atProjectRoot: true, output: &output)
+                    try refreshReadMe(at: readMeLocation(for: project, localization: localization), for: localization, in: project, atProjectRoot: false, output: &output)
+                    try refreshRelatedProjects(at: relatedProjectsLocation(for: project, localization: localization), for: localization, in: project, output: &output)
+                }
+
+                if localization == (try project.configuration.developmentLocalization()) {
+                    try setting.do {
+                        try refreshReadMe(at: project.location.appendingPathComponent("README.md"), for: localization, in: project, atProjectRoot: true, output: &output)
+                    }
                 }
             }
         }

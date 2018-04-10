@@ -45,7 +45,7 @@ struct Tests {
         return result
     }
 
-#if !os(Linux)
+    #if !os(Linux)
     private static func buildSDK(for job: ContinuousIntegration.Job) -> Xcode.SDK {
         switch job {
         case .macOSXcode:
@@ -73,7 +73,7 @@ struct Tests {
             unreachable()
         }
     }
-#endif
+    #endif
 
     static func build(_ project: PackageRepository, for job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
 
@@ -88,26 +88,26 @@ struct Tests {
 
         try FileManager.default.do(in: project.location) {
             do {
-#if !os(Linux)
+                #if !os(Linux)
                 setenv(DXcode.skipProofreadingEnvironmentVariable, "YES", 1 /* overwrite */)
                 defer {
                     unsetenv(DXcode.skipProofreadingEnvironmentVariable)
                 }
-#endif
+                #endif
 
                 let buildCommand: (inout Command.Output) throws -> Bool
                 switch job {
                 case .macOSSwiftPackageManager, .linux:
                     buildCommand = SwiftTool.default.build
                 case .macOSXcode, .iOS, .watchOS, .tvOS:
-#if os(Linux)
-unreachable()
-#else
+                    #if os(Linux)
+                    unreachable()
+                    #else
                     let scheme = try Xcode.default.scheme(output: &output)
                     buildCommand = { output in
                         return try Xcode.default.build(scheme: scheme, for: buildSDK(for: job), output: &output)
                     }
-#endif
+                    #endif
                 case .miscellaneous, .documentation, .deployment:
                     unreachable()
                 }
@@ -162,26 +162,26 @@ unreachable()
                 return
             }
 
-#if !os(Linux)
+            #if !os(Linux)
             setenv(DXcode.skipProofreadingEnvironmentVariable, "YES", 1 /* overwrite */)
             defer {
                 unsetenv(DXcode.skipProofreadingEnvironmentVariable)
             }
-#endif
+            #endif
 
             let testCommand: (inout Command.Output) -> Bool
             switch job {
             case .macOSSwiftPackageManager, .linux: // [_Exempt from Test Coverage_] Tested separately.
                 testCommand = SwiftTool.default.test
             case .macOSXcode, .iOS, .watchOS, .tvOS:
-#if os(Linux)
-unreachable()
-#else
+                #if os(Linux)
+                unreachable()
+                #else
                 let scheme = try Xcode.default.scheme(output: &output)
                 testCommand = { output in
                     return Xcode.default.test(scheme: scheme, on: testSDK(for: job), output: &output)
                 }
-#endif
+                #endif
             case .miscellaneous, .documentation, .deployment:
                 unreachable()
             }
@@ -205,7 +205,7 @@ unreachable()
     }
 
     static func validateCodeCoverage(for project: PackageRepository, on job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
-#if !os(Linux)
+        #if !os(Linux)
 
         setenv(DXcode.skipProofreadingEnvironmentVariable, "YES", 1 /* overwrite */)
         defer {
@@ -220,37 +220,39 @@ unreachable()
         let validTargets = allTargets.filter { ¬$0.scalars.contains("Tests".scalars) ∧ $0 ∉ executables ∪ ["test‐ios‐simulator", "test‐tvos‐simulator"] }
 
         for target in validTargets {
+            try autoreleasepool {
 
-            let section = validationStatus.newSection()
+                let section = validationStatus.newSection()
 
-            print(UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
-                switch localization {
-                case .englishCanada:
-                    let name = job.englishTargetOperatingSystemName
-                    return StrictString("Checking test coverage for “\(target)” on \(name)...") + section.anchor
-                }
-            }).resolved().formattedAsSectionHeader(), to: &output)
-
-            let report = try Xcode.default.coverageData(for: target, of: scheme, on: testSDK(for: job), output: &output)
-            if try validate(coverageReport: report, for: project, output: &output) {
-                validationStatus.passStep(message: UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+                print(UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
                     switch localization {
                     case .englishCanada:
                         let name = job.englishTargetOperatingSystemName
-                        return StrictString("Test coverage is complete for “\(target)” on \(name).")
+                        return StrictString("Checking test coverage for “\(target)” on \(name)...") + section.anchor
                     }
-                }))
-            } else { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.2.
-                validationStatus.failStep(message: UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in // [_Exempt from Test Coverage_]
-                    switch localization {
-                    case .englishCanada: // [_Exempt from Test Coverage_]
-                        let name = job.englishTargetOperatingSystemName
-                        return StrictString("Test coverage is incomplete for “\(target)” on \(name).") + section.crossReference.resolved(for: localization)
-                    }
-                }))
+                }).resolved().formattedAsSectionHeader(), to: &output)
+
+                let report = try Xcode.default.coverageData(for: target, of: scheme, on: testSDK(for: job), output: &output)
+                if try validate(coverageReport: report, for: project, output: &output) {
+                    validationStatus.passStep(message: UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+                        switch localization {
+                        case .englishCanada:
+                            let name = job.englishTargetOperatingSystemName
+                            return StrictString("Test coverage is complete for “\(target)” on \(name).")
+                        }
+                    }))
+                } else { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.2.
+                    validationStatus.failStep(message: UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in // [_Exempt from Test Coverage_]
+                        switch localization {
+                        case .englishCanada: // [_Exempt from Test Coverage_]
+                            let name = job.englishTargetOperatingSystemName
+                            return StrictString("Test coverage is incomplete for “\(target)” on \(name).") + section.crossReference.resolved(for: localization)
+                        }
+                    }))
+                }
             }
         }
-#endif
+        #endif
     }
 
     private static func untestableSameLineTokens(for project: PackageRepository) throws -> [StrictString] {

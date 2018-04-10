@@ -67,15 +67,15 @@ enum Script : Int, IterableEnumeration {
         switch self {
         case .refreshMacOS, .validateMacOS:
             #if os(macOS)
-                return true
+            return true
             #elseif os(Linux)
-                return true // Linux scripts use the macOS ones internally.
+            return true // Linux scripts use the macOS ones internally.
             #endif
         case .refreshLinux, .validateLinux:
             #if os(macOS)
-                return false
+            return false
             #elseif os(Linux)
-                return true
+            return true
             #endif
         }
     }
@@ -98,10 +98,13 @@ enum Script : Int, IterableEnumeration {
         }
 
         for script in cases where script.isRelevantOnCurrentDevice ∨ script.isCheckedIn {
-            var file = try TextFile(possiblyAt: project.location.appendingPathComponent(String(script.fileName)), executable: true)
-            file.contents.replaceSubrange(file.contents.startIndex ..< file.headerStart, with: String(script.shebang()))
-            file.body = String(try script.source(for: project, output: &output))
-            try file.writeChanges(for: project, output: &output)
+            try autoreleasepool {
+
+                var file = try TextFile(possiblyAt: project.location.appendingPathComponent(String(script.fileName)), executable: true)
+                file.contents.replaceSubrange(file.contents.startIndex ..< file.headerStart, with: String(script.shebang()))
+                file.body = String(try script.source(for: project, output: &output))
+                try file.writeChanges(for: project, output: &output)
+            }
         }
     }
 

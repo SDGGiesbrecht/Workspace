@@ -321,7 +321,7 @@ extension ContinuousIntegration {
 
             switch operatingSystem {
             case .macOS:
-                result.append("      osx_image: xcode9.2")
+                result.append("      osx_image: xcode9.3")
             case .linux:
                 result.append("      dist: trusty")
             case .iOS, .watchOS, .tvOS:
@@ -339,7 +339,7 @@ extension ContinuousIntegration {
 
             if operatingSystem == .linux {
                 result.append(contentsOf: [
-                    ContinuousIntegration.commandEntry("export SWIFT_VERSION=4.0.3"),
+                    ContinuousIntegration.commandEntry("export SWIFT_VERSION=4.1"),
                     ContinuousIntegration.commandEntry("eval \u{22}$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\u{22}")
                     ])
             }

@@ -39,3 +39,4 @@ disabled_rules:
   - large_tuple
   - function_parameter_count
   - cyclomatic_complexity
+  - force_cast

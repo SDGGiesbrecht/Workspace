@@ -61,7 +61,9 @@ enum FileType : CustomStringConvertible {
         "png",
         "resolved",
         "svg",
-        "tgz"
+        "testspec",
+        "tgz",
+        "txt"
     ]
 
     init?<P : Path>(filePath: P) {

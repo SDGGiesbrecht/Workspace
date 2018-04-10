@@ -260,8 +260,11 @@ struct Tests {
             "[_Exempt from Test Coverage_]",
             "assert",
             "precondition",
-            "fatalError"
-            ] + (try project.configuration.testCoverageExemptionTokensForSameLine().map({ StrictString($0) }))
+            "fatalError",
+            "fail"
+            ]
+            + (try project.configuration.testCoverageExemptionTokensForSameLine().map({ StrictString($0) }))
+            + (try untestablePreviousLineTokens(for: project)) // for simple trailing closures
     }
     private static func untestablePreviousLineTokens(for project: PackageRepository) throws -> [StrictString] {
         return [

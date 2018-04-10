@@ -62,12 +62,12 @@ class APITests : TestCase {
         XCTAssertErrorFree {
             for project in try FileManager.default.contentsOfDirectory(at: beforeDirectory, includingPropertiesForKeys: nil, options: [])
                 where project.lastPathComponent ≠ ".DS_Store" {
-                    autoreleasepool {
+                    try autoreleasepool {
 
                         if let filter = ProcessInfo.processInfo.environment["MOCK_PROJECT"],
                             project.lastPathComponent ≠ filter {
                             // This environment variable can be used to test a single mock project at a time.
-                            continue
+                            return // and continue loop.
                         }
 
                         print("\n\nTesting on “\(project.lastPathComponent)”...\n\n".formattedAsSectionHeader())

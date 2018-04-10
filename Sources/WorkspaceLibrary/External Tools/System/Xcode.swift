@@ -24,7 +24,7 @@
 
         // MARK: - Static Properties
 
-        static let defaultVersion = Version(9, 2)
+        static let defaultVersion = Version(9, 3)
         static let `default` = Xcode(version: defaultVersion)
 
         // MARK: - Initialization

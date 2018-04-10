@@ -23,9 +23,8 @@ let package = Package(
         .executable(name: "arbeitsbereich", targets: ["workspace"])
     ],
     dependencies: [
-        // [_Warning: point to real versions._]
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .branch("swift‐4.1")),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .branch("swift‐4.1"))
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 8, 0))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 2, 0)))
     ],
     targets: [
         .target(name: "workspace", dependencies: [.targetItem(name: "WorkspaceLibrary")]),

@@ -21,21 +21,21 @@ struct WorkaroundReminder : Warning {
 
     static let noticeOnly = true
 
-    static let name = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let name = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Workaround Reminder"
         }
     })
 
-    static let trigger = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let trigger = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Workaround"
         }
     })
 
-    static func message(for details: StrictString, in project: PackageRepository, output: inout Command.Output) throws -> UserFacingText<InterfaceLocalization, Void>? {
+    static func message(for details: StrictString, in project: PackageRepository, output: inout Command.Output) throws -> UserFacingText<InterfaceLocalization>? {
 
         if let versionCheck = details.scalars.firstNestingLevel(startingWith: "(".scalars, endingWith: ")".scalars) {
             var parameters = versionCheck.contents.contents.components(separatedBy: " ".scalars)
@@ -61,7 +61,7 @@ struct WorkaroundReminder : Warning {
             }
         }
 
-        return UserFacingText({ localization, _ in
+        return UserFacingText({ localization in
             let label: StrictString
             switch localization {
             case .englishCanada:
@@ -77,7 +77,7 @@ struct WorkaroundReminder : Warning {
             return version
         } else {
             return cached(in: &dependencyVersionCache[dependency], {
-                if let shellOutput = try? Shell.default.run(command: String(dependency).components(separatedBy: " "), silently: true),
+                if let shellOutput = try? Shell.default.run(command: String(dependency).components(separatedBy: " ")),
                     let version = Version(firstIn: shellOutput) {
                     return version
                 } else {

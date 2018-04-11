@@ -19,7 +19,7 @@ import SDGCommandLine
 
 struct Mark : Rule {
 
-    static let name = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let name = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Mark"
@@ -28,7 +28,7 @@ struct Mark : Rule {
 
     static let expectedSyntax: StrictString = "/\u{2F} MAR\u{4B}: \u{2D} "
 
-    static let message = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let message = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return StrictString("Incomplete heading syntax. Use “\(expectedSyntax)”.")
@@ -44,7 +44,7 @@ struct Mark : Rule {
 
             let line = file.contents.lineRange(for: match.range)
             if file.contents.scalars[line].hasPrefix(CompositePattern([
-                RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })),
+                RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })),
                 LiteralPattern("//".scalars)
                 ])) {
 
@@ -68,15 +68,15 @@ struct Mark : Rule {
 
                 if ¬file.contents.scalars[match.range.upperBound...].hasPrefix(CompositePattern([
                     LiteralPattern(": \u{2D} ".scalars),
-                    NotPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces }))
+                    NotPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }))
                     ])) {
                     errorExists = true
 
                     file.contents.scalars.advance(&errorEnd, over: CompositePattern([
                         RepetitionPattern(LiteralPattern(":".scalars), count: 0 ... 1),
-                        RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })),
+                        RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })),
                         RepetitionPattern(LiteralPattern("\u{2D}".scalars), count: 0 ... 1),
-                        RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces }))
+                        RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }))
                         ]))
                 }
 

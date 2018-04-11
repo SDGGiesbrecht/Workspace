@@ -17,14 +17,14 @@ import SDGCommandLine
 
 struct MissingImplementation : Rule {
 
-    static let name = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let name = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Missing Implementation"
         }
     })
 
-    static let message = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let message = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Missing implementation."

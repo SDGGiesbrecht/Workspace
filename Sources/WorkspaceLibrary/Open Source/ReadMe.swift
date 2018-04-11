@@ -35,7 +35,7 @@ enum ReadMe {
     private static func readMeLocation(for project: PackageRepository, localization: String) -> URL {
         var result: URL?
         LocalizationSetting(orderOfPrecedence: [localization]).do {
-            result = locationOfDocumentationFile(named: UserFacingText<ContentLocalization, Void>({ (localization, _) in
+            result = locationOfDocumentationFile(named: UserFacingText<ContentLocalization>({ (localization) in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Read Me"
@@ -54,7 +54,7 @@ enum ReadMe {
     }
 
     static func relatedProjectsLocation(for project: PackageRepository, localization: String) -> URL {
-        return locationOfDocumentationFile(named: UserFacingText<ContentLocalization, Void>({ (localization, _) in
+        return locationOfDocumentationFile(named: UserFacingText<ContentLocalization>({ (localization) in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Related Projects"
@@ -98,7 +98,7 @@ enum ReadMe {
     private static func apiLinksMarkup(for project: PackageRepository, output: inout Command.Output) throws -> StrictString {
 
         let baseURL = try project.configuration.requireDocumentationURL()
-        let label = UserFacingText<ContentLocalization, Void>({ (localization, _) in
+        let label = UserFacingText<ContentLocalization>({ (localization) in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "APIs:"
@@ -140,7 +140,7 @@ enum ReadMe {
         guard let chapter = try project.configuration.quotationChapter() else {
             return nil
         }
-        let translationCode = UserFacingText<ContentLocalization, Void>({ (localization, _) in
+        let translationCode = UserFacingText<ContentLocalization>({ (localization) in
             switch localization {
             case .englishUnitedKingdom,
                  .ελληνικάΕλλάδα, .עברית־ישראל /* No side‐by‐side available. */:
@@ -181,7 +181,7 @@ enum ReadMe {
         var relativeURL = StrictString(absoluteURL.path(relativeTo: project.location))
         relativeURL.replaceMatches(for: " ".scalars, with: "%20".scalars)
 
-        let link = UserFacingText<ContentLocalization, Void>({ (localization, _) in
+        let link = UserFacingText<ContentLocalization>({ (localization) in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return StrictString("(For a list of related projects, see [here](\(relativeURL)).)")
@@ -212,7 +212,7 @@ enum ReadMe {
             includedInstallationSection = true
 
             result += [
-                "## " + UserFacingText<ContentLocalization, Void>({ (localization, _) in
+                "## " + UserFacingText<ContentLocalization>({ (localization) in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Installation"
@@ -227,7 +227,7 @@ enum ReadMe {
                     }
                 }).resolved(),
                 "",
-                UserFacingText<ContentLocalization, Void>({ (localization, _) in
+                UserFacingText<ContentLocalization>({ (localization) in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return StrictString("Paste the following into a terminal to install or update `\(package)`:")
@@ -255,7 +255,7 @@ enum ReadMe {
             }
 
             result += [
-                "## " + UserFacingText<ContentLocalization, Void>({ (localization, _) in
+                "## " + UserFacingText<ContentLocalization>({ (localization) in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Importing"
@@ -270,7 +270,7 @@ enum ReadMe {
                     }
                 }).resolved(),
                 "",
-                UserFacingText<ContentLocalization, StrictString>({ (localization, package) in
+                UserFacingDynamicText<ContentLocalization, StrictString>({ (localization, package) in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return StrictString("`\(package)` is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).")
@@ -287,7 +287,7 @@ enum ReadMe {
                 ""
             ]
 
-            let dependencySummary: StrictString = UserFacingText<ContentLocalization, StrictString>({ (localization, package) in
+            let dependencySummary: StrictString = UserFacingDynamicText<ContentLocalization, StrictString>({ (localization, package) in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return StrictString("Simply add `\(package)` as a dependency in `Package.swift`")
@@ -312,7 +312,7 @@ enum ReadMe {
                 }
 
                 result += [
-                    dependencySummary + UserFacingText<ContentLocalization, Void>({ (localization, _) in
+                    dependencySummary + UserFacingText<ContentLocalization>({ (localization) in
                         switch localization {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .ελληνικάΕλλάδα, .עברית־ישראל:
                             return ":"
@@ -322,7 +322,7 @@ enum ReadMe {
                     }).resolved(),
                     "",
                     "```swift",
-                    StrictString("let ") + UserFacingText<ContentLocalization, Void>({ (localization, _) in
+                    StrictString("let ") + UserFacingText<ContentLocalization>({ (localization) in
                         switch localization {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return "package"
@@ -336,7 +336,7 @@ enum ReadMe {
                             return "חבילה"
                         }
                     }).resolved() + " = Package(",
-                    (StrictString("    name: \u{22}") + UserFacingText<ContentLocalization, Void>({ (localization, _) in
+                    (StrictString("    name: \u{22}") + UserFacingText<ContentLocalization>({ (localization) in
                         switch localization {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return "MyPackage"
@@ -354,7 +354,7 @@ enum ReadMe {
                     StrictString("        .package(url: \u{22}\(repository.absoluteString)\u{22}, \(versionSpecification)),"),
                     "    ],",
                     "    targets: [",
-                    (StrictString("        .target(name: \u{22}") + UserFacingText<ContentLocalization, Void>({ (localization, _) in
+                    (StrictString("        .target(name: \u{22}") + UserFacingText<ContentLocalization>({ (localization) in
                         switch localization {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return "MyTarget"
@@ -379,7 +379,7 @@ enum ReadMe {
                     "```"
                 ]
             } else {
-                result += [dependencySummary + UserFacingText<ContentLocalization, Void>({ (localization, _) in
+                result += [dependencySummary + UserFacingText<ContentLocalization>({ (localization) in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .françaisFrance, .ελληνικάΕλλάδα, .עברית־ישראל:
                         return "."
@@ -389,7 +389,7 @@ enum ReadMe {
 
             result += [
                 "",
-                UserFacingText<ContentLocalization, StrictString>({ (localization, package) in
+                UserFacingDynamicText<ContentLocalization, StrictString>({ (localization, package) in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return StrictString("`\(package)` can then be imported in source files:")
@@ -423,7 +423,7 @@ enum ReadMe {
 
     static func defaultExampleUsageTemplate(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template? {
         let prefixes = InterfaceLocalization.cases.map { (localization) in
-            return UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+            return UserFacingText<InterfaceLocalization>({ (localization) in
                 switch localization {
                 case .englishCanada:
                     return "Read‐Me"
@@ -493,7 +493,7 @@ enum ReadMe {
         }
 
         if try project.configuration.optionIsDefined(.featureList) {
-            let header = UserFacingText<ContentLocalization, Void>({ (localization, _) in
+            let header = UserFacingText<ContentLocalization>({ (localization) in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Features"
@@ -530,7 +530,7 @@ enum ReadMe {
         }
 
         if (try project.configuration.exampleUsage(for: localization, project: project, output: &output)) ≠ nil {
-            let header = UserFacingText<ContentLocalization, Void>({ (localization, _) in
+            let header = UserFacingText<ContentLocalization>({ (localization) in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Example Usage"
@@ -561,7 +561,7 @@ enum ReadMe {
         }
 
         if try project.configuration.optionIsDefined(.readMeAboutSection) {
-            let header = UserFacingText<ContentLocalization, Void>({ (localization, _) in
+            let header = UserFacingText<ContentLocalization>({ (localization) in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "About"
@@ -594,35 +594,35 @@ enum ReadMe {
 
         // Section Elements
 
-        try readMe.insert(resultOf: { try project.configuration.requireFeatureList(for: localization) }, for: UserFacingText({ (localization, _) in
+        try readMe.insert(resultOf: { try project.configuration.requireFeatureList(for: localization) }, for: UserFacingText({ (localization) in
             switch localization {
             case .englishCanada:
                 return "Features"
             }
         }))
 
-        try readMe.insert(resultOf: { try project.configuration.requireInstallationInstructions(for: localization, project: project, output: &output).text }, for: UserFacingText({ (localization, _) in
+        try readMe.insert(resultOf: { try project.configuration.requireInstallationInstructions(for: localization, project: project, output: &output).text }, for: UserFacingText({ (localization) in
             switch localization {
             case .englishCanada:
                 return "Installation Instructions"
             }
         }))
 
-        try readMe.insert(resultOf: { try project.configuration.requireExampleUsage(for: localization, project: project, output: &output).text}, for: UserFacingText({ (localization, _) in
+        try readMe.insert(resultOf: { try project.configuration.requireExampleUsage(for: localization, project: project, output: &output).text}, for: UserFacingText({ (localization) in
             switch localization {
             case .englishCanada:
                 return "Example Usage"
             }
         }))
 
-        try readMe.insert(resultOf: { try project.configuration.requireOtherReadMeContent(for: localization, project: project, output: &output).text }, for: UserFacingText({ (localization, _) in
+        try readMe.insert(resultOf: { try project.configuration.requireOtherReadMeContent(for: localization, project: project, output: &output).text }, for: UserFacingText({ (localization) in
             switch localization {
             case .englishCanada:
                 return "Other"
             }
         }))
 
-        try readMe.insert(resultOf: { try project.configuration.requireReadMeAboutSectionTemplate(for: localization, project: project, output: &output).text }, for: UserFacingText({ (localization, _) in
+        try readMe.insert(resultOf: { try project.configuration.requireReadMeAboutSectionTemplate(for: localization, project: project, output: &output).text }, for: UserFacingText({ (localization) in
             switch localization {
             case .englishCanada:
                 return "About"
@@ -631,37 +631,37 @@ enum ReadMe {
 
         // Line Elements
 
-        readMe.insert(try localizationLinksMarkup(for: project, fromProjectRoot: atProjectRoot), for: UserFacingText({ (localization, _) in
+        readMe.insert(try localizationLinksMarkup(for: project, fromProjectRoot: atProjectRoot), for: UserFacingText({ (localization) in
             switch localization {
             case .englishCanada:
                 return "Localization Links"
             }
         }))
-        readMe.insert(try operatingSystemList(for: project, output: &output), for: UserFacingText({ (localization, _) in
+        readMe.insert(try operatingSystemList(for: project, output: &output), for: UserFacingText({ (localization) in
             switch localization {
             case .englishCanada:
                 return "Operating System List"
             }
         }))
-        try readMe.insert(resultOf: { try apiLinksMarkup(for: project, output: &output) }, for: UserFacingText({ (localization, _) in
+        try readMe.insert(resultOf: { try apiLinksMarkup(for: project, output: &output) }, for: UserFacingText({ (localization) in
             switch localization {
             case .englishCanada:
                 return "API Links"
             }
         }))
-        try readMe.insert(resultOf: { try project.configuration.requireShortProjectDescription(for: localization) }, for: UserFacingText({ (localization, _) in
+        try readMe.insert(resultOf: { try project.configuration.requireShortProjectDescription(for: localization) }, for: UserFacingText({ (localization) in
             switch localization {
             case .englishCanada:
                 return "Short Description"
             }
         }))
-        try readMe.insert(resultOf: { try quotationMarkup(localization: localization, project: project) }, for: UserFacingText({ (localization, _) in
+        try readMe.insert(resultOf: { try quotationMarkup(localization: localization, project: project) }, for: UserFacingText({ (localization) in
             switch localization {
             case .englishCanada:
                 return "Quotation"
             }
         }))
-        readMe.insert(resultOf: { relatedProjectsLinkMarkup(for: project, localization: localization) }, for: UserFacingText({ (localization, _) in
+        readMe.insert(resultOf: { relatedProjectsLinkMarkup(for: project, localization: localization) }, for: UserFacingText({ (localization) in
             switch localization {
             case .englishCanada:
                 return "Related Projects"
@@ -670,19 +670,19 @@ enum ReadMe {
 
         // Word Elements
 
-        readMe.insert(try project.projectName(output: &output), for: UserFacingText({ (localization, _) in
+        readMe.insert(try project.projectName(output: &output), for: UserFacingText({ (localization) in
             switch localization {
             case .englishCanada:
                 return "Project"
             }
         }))
-        try readMe.insert(resultOf: { StrictString(try project.configuration.requireRepositoryURL().absoluteString) }, for: UserFacingText({ (localization, _) in
+        try readMe.insert(resultOf: { StrictString(try project.configuration.requireRepositoryURL().absoluteString) }, for: UserFacingText({ (localization) in
             switch localization {
             case .englishCanada:
                 return "Repository URL"
             }
         }))
-        try readMe.insert(resultOf: { StrictString(try project.configuration.requireCurrentVersion().string) }, for: UserFacingText({ (localization, _) in
+        try readMe.insert(resultOf: { StrictString(try project.configuration.requireCurrentVersion().string) }, for: UserFacingText({ (localization) in
             switch localization {
             case .englishCanada:
                 return "Current Version"
@@ -694,7 +694,7 @@ enum ReadMe {
                 "```swift",
                 StrictString(example),
                 "```"
-                ].joinAsLines(), for: UserFacingText({ (localization, _) in
+                ].joinAsLines(), for: UserFacingText({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return StrictString("Example: \(key)")
@@ -719,7 +719,7 @@ enum ReadMe {
 
         if let relatedProjectURLs = try project.configuration.relatedProjects() {
             var markdown: [StrictString] = [
-                StrictString("# ") + UserFacingText<ContentLocalization, Void>({ (localization, _) in
+                StrictString("# ") + UserFacingText<ContentLocalization>({ (localization) in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Related Projects"
@@ -736,26 +736,28 @@ enum ReadMe {
             ]
 
             for url in relatedProjectURLs {
+                autoreleasepool {
 
-                let package = Repository.linkedRepository(from: url)
-                let name: StrictString
-                if let packageName = try? package.projectName(output: &output) {
-                    name = packageName
-                } else { // [_Exempt from Test Coverage_] Only reachable with a non‐package repository.
-                    name = StrictString(url.lastPathComponent)
-                }
+                    let package = Repository.linkedRepository(from: url)
+                    let name: StrictString
+                    if let packageName = try? package.projectName(output: &output) {
+                        name = packageName
+                    } else { // [_Exempt from Test Coverage_] Only reachable with a non‐package repository.
+                        name = StrictString(url.lastPathComponent)
+                    }
 
-                markdown += [
-                    "",
-                    StrictString("### [\(name)](\(url.absoluteString))")
-                ]
-
-                if let succeeded = try? package.configuration.shortProjectDescription(for: localization),
-                    let description = succeeded { // [_Exempt from Test Coverage_] Until Workspace’s configuration is centralized again.
                     markdown += [
                         "",
-                        description
+                        StrictString("### [\(name)](\(url.absoluteString))")
                     ]
+
+                    if let succeeded = try? package.configuration.shortProjectDescription(for: localization),
+                        let description = succeeded { // [_Exempt from Test Coverage_] Until Workspace’s configuration is centralized again.
+                        markdown += [
+                            "",
+                            description
+                        ]
+                    }
                 }
             }
 
@@ -771,15 +773,18 @@ enum ReadMe {
     static func refreshReadMe(for project: PackageRepository, output: inout Command.Output) throws {
         let localizations = try project.configuration.localizations()
         for localization in localizations {
-            let setting = LocalizationSetting(orderOfPrecedence: [localization] + localizations)
-            try setting.do {
-                try refreshReadMe(at: readMeLocation(for: project, localization: localization), for: localization, in: project, atProjectRoot: false, output: &output)
-                try refreshRelatedProjects(at: relatedProjectsLocation(for: project, localization: localization), for: localization, in: project, output: &output)
-            }
+            try autoreleasepool {
 
-            if localization == (try project.configuration.developmentLocalization()) {
+                let setting = LocalizationSetting(orderOfPrecedence: [localization] + localizations)
                 try setting.do {
-                    try refreshReadMe(at: project.location.appendingPathComponent("README.md"), for: localization, in: project, atProjectRoot: true, output: &output)
+                    try refreshReadMe(at: readMeLocation(for: project, localization: localization), for: localization, in: project, atProjectRoot: false, output: &output)
+                    try refreshRelatedProjects(at: relatedProjectsLocation(for: project, localization: localization), for: localization, in: project, output: &output)
+                }
+
+                if localization == (try project.configuration.developmentLocalization()) {
+                    try setting.do {
+                        try refreshReadMe(at: project.location.appendingPathComponent("README.md"), for: localization, in: project, atProjectRoot: true, output: &output)
+                    }
                 }
             }
         }

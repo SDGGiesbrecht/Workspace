@@ -17,14 +17,14 @@ import SDGCommandLine
 
 struct DeprecatedLinuxDocumentation : Rule {
 
-    static let name = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let name = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Deprecated Linux Documentation"
         }
     })
 
-    static let message = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let message = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Special compilation conditions are no longer necessary for Linux documentation."

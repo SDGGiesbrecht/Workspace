@@ -20,14 +20,14 @@ import SDGCommandLine
 extension Workspace {
     enum Document {
 
-        private static let name = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        private static let name = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "document"
             }
         })
 
-        private static let description = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        private static let description = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "generates API documentation for each library product."
@@ -45,7 +45,7 @@ extension Workspace {
                 try executeAsStep(outputDirectory: outputDirectory, options: options, validationStatus: &validationStatus, output: &output)
 
                 guard validationStatus.validatedSomething else {
-                    throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in
+                    throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization) in
                         switch localization {
                         case .englishCanada:
                             return [

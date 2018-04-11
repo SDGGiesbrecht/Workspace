@@ -166,7 +166,7 @@ struct TextFile {
     // MARK: - Writing
 
     static func reportWriteOperation(to location: URL, in repository: PackageRepository, output: inout Command.Output) {
-        print(UserFacingText<InterfaceLocalization, String>({ (localization, path) in
+        print(UserFacingDynamicText<InterfaceLocalization, String>({ (localization, path) in
             switch localization {
             case .englishCanada:
                 return StrictString("Writing to “\(path)”...")
@@ -175,7 +175,7 @@ struct TextFile {
     }
 
     static func reportDeleteOperation(from location: URL, in repository: PackageRepository, output: inout Command.Output) {
-        print(UserFacingText<InterfaceLocalization, String>({ (localization, path) in
+        print(UserFacingDynamicText<InterfaceLocalization, String>({ (localization, path) in
             switch localization {
             case .englishCanada:
                 return StrictString("Deleting “\(path)”...")
@@ -191,7 +191,7 @@ struct TextFile {
             if isExecutable {
                 #if os(Linux)
                     // [_Workaround: FileManager cannot change permissions on Linux. (Swift 4.0.2)_]
-                    try Shell.default.run(command: ["chmod", "+x", Shell.quote(location.path)], silently: true)
+                    try Shell.default.run(command: ["chmod", "+x", Shell.quote(location.path)])
                 #else
                     try FileManager.default.setAttributes([.posixPermissions: 0o777], ofItemAtPath: location.path)
                 #endif

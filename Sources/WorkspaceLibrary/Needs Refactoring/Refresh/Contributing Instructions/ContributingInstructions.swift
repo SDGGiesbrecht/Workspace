@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGCornerstone
 import SDGCommandLine
 
@@ -75,7 +77,7 @@ struct ContributingInstructions {
             "    \u{2D} State your agreement to licensing your contributions under the [project licence](LICENSE.md).",
             "5. **Wait for continuous integration** to complete its validation.",
             "6. **Request a review** from [_Administrators_] by clicking the gear in the top right of the pull request page."
-            ]
+        ]
 
         if Configuration.developmentNotes ≠ nil {
             instructions.append(contentsOf: [
@@ -92,7 +94,7 @@ struct ContributingInstructions {
     static func defaultIssueTemplate() throws -> String {
 
         var template = [
-        "<\u{21}\u{2D}\u{2D} Reminder: \u{2D}\u{2D}>",
+            "<\u{21}\u{2D}\u{2D} Reminder: \u{2D}\u{2D}>",
             "<\u{21}\u{2D}\u{2D} Have you searched to see if a related issue exists already? \u{2D}\u{2D}>",
             "<\u{21}\u{2D}\u{2D} If one exists, please add your information there instead. \u{2D}\u{2D}>",
             "",
@@ -221,17 +223,19 @@ struct ContributingInstructions {
         var printedHeader = false
 
         for path in [contributingInstructionsPath, issueTemplatePath, pullRequestTemplatePath] {
+            autoreleasepool {
 
-            var file = File(possiblyAt: path)
-            if let range = file.contents.range(of: managementComment) {
+                var file = File(possiblyAt: path)
+                if let range = file.contents.range(of: managementComment) {
 
-                if ¬printedHeader {
-                    printedHeader = true
-                    print("Cancelling contributing instruction management...".formattedAsSectionHeader(), to: &output)
+                    if ¬printedHeader {
+                        printedHeader = true
+                        print("Cancelling contributing instruction management...".formattedAsSectionHeader(), to: &output)
+                    }
+
+                    file.contents.removeSubrange(range)
+                    try? file.write(output: &output)
                 }
-
-                file.contents.removeSubrange(range)
-                try? file.write(output: &output)
             }
         }
     }

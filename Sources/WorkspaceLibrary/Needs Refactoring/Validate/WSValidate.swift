@@ -42,14 +42,14 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
         if Configuration.validate() {
-            validationStatus.passStep(message: UserFacingText({ localization, _ in
+            validationStatus.passStep(message: UserFacingText({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Workspace configuration validates."
                 }
             }))
         } else {
-            validationStatus.failStep(message: UserFacingText({ localization, _ in
+            validationStatus.failStep(message: UserFacingText({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Workspace configuration fails validation. (See above for details.)"
@@ -120,7 +120,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
                 allowedDifferences.append(relatedProjects)
                 relatedProjects.scalars.replaceMatches(for: ".md".scalars, with: ".html".scalars)
                 relatedProjects.scalars.replaceMatches(for: " ".scalars, with: "\u{2D}".scalars)
-                relatedProjects.scalars.replaceMatches(for: ConditionalPattern(condition: { $0 ∉
+                relatedProjects.scalars.replaceMatches(for: ConditionalPattern({ $0 ∉
                     (CharacterSet(charactersIn: Unicode.Scalar(0x00) ..< Unicode.Scalar(0x80))
                         ∩ CharacterSet.alphanumerics)
                     ∪ ["\u{2D}", "."]
@@ -131,14 +131,14 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
 
             requireBash(["git", "add", ".", "\u{2D}\u{2D}intent\u{2D}to\u{2D}add"], silent: true)
             if (try? Shell.default.run(command: ["git", "diff", "\u{2D}\u{2D}exit\u{2D}code", "\u{2D}\u{2D}", ".", "\u{27}:(exclude)*.dsidx\u{27}"] + allowedDifferences)) ≠ nil {
-                validationStatus.passStep(message: UserFacingText({ localization, _ in
+                validationStatus.passStep(message: UserFacingText({ localization in
                     switch localization {
                     case .englishCanada:
                         return "The project is up to date."
                     }
                 }))
             } else {
-                validationStatus.failStep(message: UserFacingText({ localization, _ in
+                validationStatus.failStep(message: UserFacingText({ localization in
                     switch localization {
                     case .englishCanada:
                         return "The project is out of date. (Please run “Validate” before committing.)"
@@ -153,7 +153,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     if let update = try Workspace.CheckForUpdates.checkForUpdates(output: &output) {
-        print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        print(UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
             switch localization {
             case .englishCanada:
                 return [

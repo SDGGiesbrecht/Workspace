@@ -25,7 +25,7 @@ Workspace automates management of Swift projects.
 ## Features
 
 - Provides rigorous validation:
-  - [Test coverage](Code%20Coverage.md)
+  - [Test coverage](Test%20Coverage.md)
   - [Compiler warnings](Compiler%20Warnings.md)
   - [Documentation coverage](Documentation%20Generation.md#enforcement)
   - [Example validation](Examples.md)

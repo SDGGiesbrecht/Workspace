@@ -32,7 +32,7 @@ struct FileHeaders {
             "[_Filename_]",
             "",
             "This source file is part of the [_Project_] open source project."
-            ]
+        ]
         if Configuration.optionIsDefined(.projectWebsite) {
             defaultHeader.append("[_Website_]")
         }
@@ -62,7 +62,7 @@ struct FileHeaders {
             for space in ["", " "] {
                 if let range = text.scalars.firstMatch(for: (symbol + space).scalars)?.range {
                     var numberEnd = range.upperBound
-                    text.scalars.advance(&numberEnd, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.decimalDigits })))
+                    text.scalars.advance(&numberEnd, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.decimalDigits })))
                     let number = text.scalars[range.upperBound ..< numberEnd]
                     if number.count == 4 {
                         oldStartDate = String(number)
@@ -123,29 +123,31 @@ struct FileHeaders {
         }
 
         for path in Repository.sourceFiles.filter({ shouldManageHeader(path: $0) }) {
+            try autoreleasepool {
 
-            if FileType(filePath: path)?.syntax ≠ nil {
+                if FileType(filePath: path)?.syntax ≠ nil {
 
-                var file = require { try File(at: path) }
-                let oldHeader = file.header
-                var header = template
+                    var file = require { try File(at: path) }
+                    let oldHeader = file.header
+                    var header = template
 
-                header = header.replacingOccurrences(of: key("Filename"), with: String(StrictString(path.filename)))
-                header = header.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.projectName(output:
-                    &output)))
-                if let website = possibleWebsite {
-                    header = header.replacingOccurrences(of: key("Website"), with: website)
+                    header = header.replacingOccurrences(of: key("Filename"), with: String(StrictString(path.filename)))
+                    header = header.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.projectName(output:
+                        &output)))
+                    if let website = possibleWebsite {
+                        header = header.replacingOccurrences(of: key("Website"), with: website)
+                    }
+                    header = header.replacingOccurrences(of: key("Copyright"), with: FileHeaders.copyright(fromText: oldHeader))
+                    if let author = possibleAuthor {
+                        header = header.replacingOccurrences(of: key("Author"), with: author)
+                    }
+                    if let licence = possibleLicence {
+                        header = header.replacingOccurrences(of: key("Licence"), with: licence)
+                    }
+
+                    file.header = header
+                    require { try file.write(output: &output) }
                 }
-                header = header.replacingOccurrences(of: key("Copyright"), with: FileHeaders.copyright(fromText: oldHeader))
-                if let author = possibleAuthor {
-                    header = header.replacingOccurrences(of: key("Author"), with: author)
-                }
-                if let licence = possibleLicence {
-                    header = header.replacingOccurrences(of: key("Licence"), with: licence)
-                }
-
-                file.header = header
-                require { try file.write(output: &output) }
             }
         }
     }

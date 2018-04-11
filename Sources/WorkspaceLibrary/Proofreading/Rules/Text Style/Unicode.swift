@@ -19,7 +19,7 @@ import SDGCommandLine
 
 struct UnicodeRule : Rule {
 
-    static let name = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let name = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Unicode"
@@ -41,7 +41,7 @@ struct UnicodeRule : Rule {
                       allowInHeading: Bool = false,
                       allowInFloatLiteral: Bool = false,
                       allowInToolsVersion: Bool = false,
-                      message: UserFacingText<InterfaceLocalization, Void>, status: ProofreadingStatus, output: inout Command.Output) {
+                      message: UserFacingText<InterfaceLocalization>, status: ProofreadingStatus, output: inout Command.Output) {
 
         for protocolName in allowedDefaultImplementations where file.location.lastPathComponent == protocolName + ".swift" {
             return
@@ -211,8 +211,8 @@ struct UnicodeRule : Rule {
             }
 
             reportViolation(in: file, at: match.range, replacementSuggestion: replacement, message:
-                UserFacingText<InterfaceLocalization, Void>({ localization, _ in
-                    let obsoleteMessage = UserFacingText<InterfaceLocalization, Void>({ localization, _ in
+                UserFacingText<InterfaceLocalization>({ localization in
+                    let obsoleteMessage = UserFacingText<InterfaceLocalization>({ localization in
                         switch localization {
                         case .englishCanada:
                             let error: StrictString
@@ -249,7 +249,7 @@ struct UnicodeRule : Rule {
               allowInHeading: true,
               allowInFloatLiteral: true,
               allowInToolsVersion: true,
-              message: UserFacingText<InterfaceLocalization, Void>({ localization, _ in
+              message: UserFacingText<InterfaceLocalization>({ localization in
                 switch localization {
                 // Note to localizers: Adapt the recommendations for the target localization.
                 case .englishCanada:
@@ -261,7 +261,7 @@ struct UnicodeRule : Rule {
               allowInSwiftSource: true,
               allowInShellSource: true,
               allowInSampleCode: true,
-              message: UserFacingText<InterfaceLocalization, Void>({ localization, _ in
+              message: UserFacingText<InterfaceLocalization>({ localization in
             switch localization {
             // Note to localizers: Adapt the recommendations for the target localization.
             case .englishCanada:
@@ -272,7 +272,7 @@ struct UnicodeRule : Rule {
         check(file, for: "\u{27}",
               allowInShellSource: true,
               allowInSampleCode: true,
-              message: UserFacingText<InterfaceLocalization, Void>({ localization, _ in
+              message: UserFacingText<InterfaceLocalization>({ localization in
                 switch localization {
                 // Note to localizers: Adapt the recommendations for the target localization.
                 case .englishCanada:
@@ -284,7 +284,7 @@ struct UnicodeRule : Rule {
               replacement: "≠",
               allowInShellSource: true,
               allowedAliasDefinitions: ["≠"],
-              message: UserFacingText<InterfaceLocalization, Void>({ localization, _ in
+              message: UserFacingText<InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Use the not equal sign (≠)."
@@ -297,7 +297,7 @@ struct UnicodeRule : Rule {
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["¬", "≠"],
               allowInHTMLComment: true,
-              message: UserFacingText<InterfaceLocalization, Void>({ localization, _ in
+              message: UserFacingText<InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Use the not sign (¬)."
@@ -308,7 +308,7 @@ struct UnicodeRule : Rule {
               replacement: "∧",
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["∧"],
-              message: UserFacingText<InterfaceLocalization, Void>({ localization, _ in
+              message: UserFacingText<InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Use the conjunction sign (∧)."
@@ -319,7 +319,7 @@ struct UnicodeRule : Rule {
               replacement: "∨",
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["∨"],
-              message: UserFacingText<InterfaceLocalization, Void>({ localization, _ in
+              message: UserFacingText<InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Use the disjunction sign (∨)."
@@ -330,7 +330,7 @@ struct UnicodeRule : Rule {
               replacement: "≤",
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["≤"],
-              message: UserFacingText<InterfaceLocalization, Void>({ localization, _ in
+              message: UserFacingText<InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Use the less‐than‐or‐equal sign (≤)."
@@ -341,7 +341,7 @@ struct UnicodeRule : Rule {
               replacement: "≥",
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["≥"],
-              message: UserFacingText<InterfaceLocalization, Void>({ localization, _ in
+              message: UserFacingText<InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Use the greater‐than‐or‐equal sign (≥)."
@@ -353,7 +353,7 @@ struct UnicodeRule : Rule {
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["×"],
               allowedDefaultImplementations: ["Numeric"],
-              message: UserFacingText<InterfaceLocalization, Void>({ localization, _ in
+              message: UserFacingText<InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Use the multiplication sign (×)."
@@ -365,7 +365,7 @@ struct UnicodeRule : Rule {
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["×"],
               allowedDefaultImplementations: ["Numeric"],
-              message: UserFacingText<InterfaceLocalization, Void>({ localization, _ in
+              message: UserFacingText<InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Use the multiplication sign (×)."
@@ -376,7 +376,7 @@ struct UnicodeRule : Rule {
               replacement: " ÷ ",
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["÷", "divide"],
-              message: UserFacingText<InterfaceLocalization, Void>({ localization, _ in
+              message: UserFacingText<InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Use the division sign (÷)."
@@ -387,7 +387,7 @@ struct UnicodeRule : Rule {
               replacement: "÷=",
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["÷", "divide"],
-              message: UserFacingText<InterfaceLocalization, Void>({ localization, _ in
+              message: UserFacingText<InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Use the division sign (÷)."

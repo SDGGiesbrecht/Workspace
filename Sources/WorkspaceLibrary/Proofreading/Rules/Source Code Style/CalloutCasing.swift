@@ -19,14 +19,14 @@ import SDGCommandLine
 
 struct CalloutCasing : Rule {
 
-    static let name = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let name = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Callout Casing"
         }
     })
 
-    static let message = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let message = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Callouts should be capitalized."
@@ -40,7 +40,7 @@ struct CalloutCasing : Rule {
                     next ∈ CharacterSet.lowercaseLetters {
 
                     var endOfWord = match.range.upperBound
-                    file.contents.scalars.advance(&endOfWord, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.letters })))
+                    file.contents.scalars.advance(&endOfWord, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.letters })))
                     if endOfWord ≠ file.contents.scalars.endIndex,
                         file.contents.scalars[endOfWord] == ":" {
 

@@ -88,7 +88,7 @@ struct LineCommentSyntax {
 
     private func restOfLine(at index: String.Index, in range: Range<String.Index>, of string: String) -> Range<String.Index> {
 
-        if let newline = string.scalars.firstMatch(for: ConditionalPattern(condition: { $0 ∈ CharacterSet.newlines }), in: (index ..< range.upperBound).sameRange(in: string.scalars))?.range.clusters(in: string.clusters) {
+        if let newline = string.scalars.firstMatch(for: ConditionalPattern({ $0 ∈ CharacterSet.newlines }), in: (index ..< range.upperBound).sameRange(in: string.scalars))?.range.clusters(in: string.clusters) {
 
             return index ..< newline.lowerBound
         } else {
@@ -104,21 +104,21 @@ struct LineCommentSyntax {
 
         let newline = AlternativePatterns([
             LiteralPattern("\u{D}\u{A}".scalars),
-            ConditionalPattern(condition: { $0 ∈ CharacterSet.newlines })
+            ConditionalPattern({ $0 ∈ CharacterSet.newlines })
             ])
 
         var resultEnd = restOfLine(at: startRange.lowerBound, in: range, of: string).upperBound
         var testIndex: String.ScalarView.Index = resultEnd.samePosition(in: string.scalars)
         string.scalars.advance(&testIndex, over: RepetitionPattern(newline, count: 0 ... 1))
 
-        string.scalars.advance(&testIndex, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces})))
+        string.scalars.advance(&testIndex, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces})))
 
         while string.scalars.suffix(from: testIndex).hasPrefix(start.scalars) {
             resultEnd = restOfLine(at: testIndex.cluster(in: string.clusters), in: range, of: string).upperBound
             testIndex = resultEnd.samePosition(in: string.scalars)
             string.scalars.advance(&testIndex, over: RepetitionPattern(newline, count: 0 ... 1))
 
-            string.scalars.advance(&testIndex, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces})))
+            string.scalars.advance(&testIndex, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces})))
         }
 
         return startRange.lowerBound ..< resultEnd
@@ -153,13 +153,13 @@ struct LineCommentSyntax {
 
             var index = line.scalars.startIndex
 
-            line.scalars.advance(&index, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
+            line.scalars.advance(&index, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
             guard line.scalars.advance(&index, over: start.scalars) else {
                 line.parseError(at: index.cluster(in: line.clusters), in: nil)
             }
 
             if stylisticSpacing {
-                line.scalars.advance(&index, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces }), count: 0 ... 1))
+                line.scalars.advance(&index, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }), count: 0 ... 1))
             }
 
             var result = String(line.scalars.suffix(from: index))

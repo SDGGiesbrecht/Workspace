@@ -115,6 +115,14 @@ Tests/LinuxMain.swift
 Tests/SDGTests/SDGTests.swift
 
 $ swiftlint lint --strict --config [...]/SwiftLint/Configuration.yml --reporter emoji
+Loading configuration from '[...]/SwiftLint/Configuration.yml'
+Linting Swift files in current working directory
+Linting '[...]' (1/5)
+Linting '[...]' (2/5)
+Linting '[...]' (3/5)
+Linting '[...]' (4/5)
+Linting '[...]' (5/5)
+Done linting! Found 0 violations, 0 serious in 5 files.
 
 
 $ swift package resolve
@@ -219,6 +227,11 @@ Generating documentation for “Library”...
 
 
 $ jazzy --module Library --copyright "Copyright ©2017–2018 John Doe and the SDG project contributors. All rights reserved." --github_url "https://github.com/JohnDoe/SDG" --documentation=Documentation/*.md --clean --use-safe-filenames --output "[...]/Documentation/Library" --xcodebuild-arguments "-scheme,SDG-Package,-target,Library,-sdk,macosx,-derivedDataPath,[...]/Jazzy Build Artifacts"
+Running xcodebuild
+Parsing Resources.swift (1/2)
+Parsing SDG.swift (2/2)
+building site
+building search index
 0% documentation coverage with 0 undocumented symbols
 skipped 6 private, fileprivate, or internal symbols (use `--min-acl` to specify a different minimum ACL)
 jam out ♪♫ to your fresh new docs in `[...]/Documentation/Library`

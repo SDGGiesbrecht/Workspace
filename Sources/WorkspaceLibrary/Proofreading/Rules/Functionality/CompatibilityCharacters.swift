@@ -19,7 +19,7 @@ import SDGCommandLine
 
 struct CompatibilityCharacters : Rule {
 
-    static let name = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let name = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Compatibility Characters"
@@ -32,7 +32,7 @@ struct CompatibilityCharacters : Rule {
             let character = String(scalar)
             let normalized = character.decomposedStringWithCompatibilityMapping
             if character ≠ normalized {
-                reportViolation(in: file, at: index ..< file.contents.scalars.index(after: index), replacementSuggestion: StrictString(normalized), message: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+                reportViolation(in: file, at: index ..< file.contents.scalars.index(after: index), replacementSuggestion: StrictString(normalized), message: UserFacingText<InterfaceLocalization>({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return StrictString("U+\(scalar.hexadecimalCode) may be lost in normalization; use “\(normalized)” instead.")

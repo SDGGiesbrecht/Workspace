@@ -118,7 +118,7 @@ extension PackageRepository {
         return try packageStructure(output: &output).executableProducts
     }
 
-    static let resourceDirectoryName = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let resourceDirectoryName = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Resources"
@@ -153,7 +153,7 @@ extension PackageRepository {
                 failureReason = error
                 return false // Stop.
             }) else { // [_Exempt from Test Coverage_] It is unknown what circumstances would actually result in a `nil` enumerator being returned.
-                throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Test Coverage_]
+                throw Command.Error(description: UserFacingText<InterfaceLocalization>({ (localization) in // [_Exempt from Test Coverage_]
                     switch localization {
                     case .englishCanada: // [_Exempt from Test Coverage_]
                         return "Cannot enumerate the project files."
@@ -164,7 +164,7 @@ extension PackageRepository {
             var result: [URL] = []
             for object in enumerator {
                 guard let url = object as? URL else { // [_Exempt from Test Coverage_] It is unknown why something other than a URL would be returned.
-                    throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Test Coverage_]
+                    throw Command.Error(description: UserFacingText<InterfaceLocalization>({ (localization) in // [_Exempt from Test Coverage_]
                         switch localization {
                         case .englishCanada: // [_Exempt from Test Coverage_]
                             return StrictString("Unexpected \(type(of: object)) encountered while enumerating project files.")
@@ -174,11 +174,11 @@ extension PackageRepository {
 
                 let isDirectory: Bool
                 #if os(Linux)
-                    // [_Workaround: Linux has no implementation for resourcesValues(forKeys:) (Swift 4.0.2)_]
-                    var objCBool: ObjCBool = false
-                    isDirectory = FileManager.default.fileExists(atPath: url.path, isDirectory: &objCBool) ∧ objCBool
+                // [_Workaround: Linux has no implementation for resourcesValues(forKeys:) (Swift 4.0.2)_]
+                var objCBool: ObjCBool = false
+                isDirectory = FileManager.default.fileExists(atPath: url.path, isDirectory: &objCBool) ∧ objCBool.boolValue
                 #else
-                    isDirectory = (try url.resourceValues(forKeys: [.isDirectoryKey])).isDirectory!
+                isDirectory = (try url.resourceValues(forKeys: [.isDirectoryKey])).isDirectory!
                 #endif
 
                 if ¬isDirectory, // Skip directories.
@@ -278,7 +278,7 @@ extension PackageRepository {
     func target(for resource: URL, output: inout Command.Output) throws -> Target {
         let path = resource.path(relativeTo: location).dropping(through: "/")
         guard let targetName = path.prefix(upTo: "/")?.contents else {
-            throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+            throw Command.Error(description: UserFacingText<InterfaceLocalization>({ (localization) in
                 switch localization {
                 case .englishCanada:
                     return StrictString("No target specified for resource:\n\(path)\nFiles must be in subdirectories named corresponding to the intended target.")
@@ -286,7 +286,7 @@ extension PackageRepository {
             }))
         }
         guard let target = (try targetsByName(output: &output))[String(targetName)] else {
-            throw Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+            throw Command.Error(description: UserFacingText<InterfaceLocalization>({ (localization) in
                 switch localization {
                 case .englishCanada:
                     return StrictString("No target named “\(targetName)”.\nResources must be in subdirectories named corresponding to the intended target.")
@@ -305,7 +305,9 @@ extension PackageRepository {
         }
 
         for (target, resources) in targets {
-            try target.refresh(resources: resources, from: self, output: &output)
+            try autoreleasepool {
+                try target.refresh(resources: resources, from: self, output: &output)
+            }
         }
     }
 
@@ -326,13 +328,17 @@ extension PackageRepository {
     #if !os(Linux)
     func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
         for product in try libraryProductTargets(output: &output) {
+            try autoreleasepool {
             try Documentation.document(target: product, for: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: &output)
+            }
         }
     }
 
     func validateDocumentationCoverage(outputDirectory: URL, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
         for product in try libraryProductTargets(output: &output) {
+            try autoreleasepool {
             try Documentation.validateDocumentationCoverage(for: product, in: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: &output)
+            }
         }
     }
     #endif

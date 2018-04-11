@@ -24,7 +24,7 @@
 
         // MARK: - Static Properties
 
-        static let defaultVersion = Version(9, 2)
+        static let defaultVersion = Version(9, 3)
         static let `default` = Xcode(version: defaultVersion)
 
         // MARK: - Initialization
@@ -36,7 +36,7 @@
         // MARK: - Usage
 
         private func parseError(projectInformation: String) -> Command.Error { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Xcode.
-            return Command.Error(description: UserFacingText<InterfaceLocalization, Void>({ (localization, _) in // [_Exempt from Test Coverage_]
+            return Command.Error(description: UserFacingText<InterfaceLocalization>({ (localization) in // [_Exempt from Test Coverage_]
                 switch localization {
                 case .englishCanada: // [_Exempt from Test Coverage_]
                     return StrictString("Error loading Xcode project:\n\(projectInformation)")
@@ -60,14 +60,22 @@
             guard let schemesHeader = information.scalars.firstMatch(for: "Schemes:".scalars)?.range else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Xcode.
                 throw parseError(projectInformation: information)
             }
-            let schemesHeaderLine = schemesHeader.lines(in: information.lines)
-            let nextLine = schemesHeaderLine.upperBound
-            guard nextLine ≠ information.lines.endIndex else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Xcode.
-                throw parseError(projectInformation: information)
-            }
-            let line = information.lines[nextLine].line
+            var lineLocation = schemesHeader.lines(in: information.lines).upperBound
 
-            return String(line.filter({ $0 ∉ CharacterSet.whitespaces }))
+            var name: String? = nil
+            while name == nil {
+                guard lineLocation ≠ information.lines.endIndex else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Xcode.
+                    throw parseError(projectInformation: information)
+                }
+                let line = information.lines[lineLocation].line
+                let nameOnly = String(line.filter({ $0 ∉ CharacterSet.whitespaces }))
+                if nameOnly.hasSuffix("\u{2D}Package") {
+                    name = nameOnly
+                } else {
+                    lineLocation = information.lines.index(after: lineLocation)
+                }
+            }
+            return name!
         }
 
         enum SDK : String {
@@ -107,7 +115,7 @@
         private func buildDirectory(for scheme: String, on sdk: SDK, output: inout Command.Output) throws -> URL {
             let settings = try buildSettings(for: scheme, on: sdk, output: &output)
             guard let productDirectory = settings.scalars.firstNestingLevel(startingWith: " BUILD_DIR = ".scalars, endingWith: "\n".scalars)?.contents.contents else { // [_Exempt from Test Coverage_] Unreachable without corrupt project.
-                throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in // [_Exempt from Test Coverage_]
+                throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization) in // [_Exempt from Test Coverage_]
                     switch localization {
                     case .englishCanada: // [_Exempt from Test Coverage_]
                         return "Could not find “BUILD_DIR” in Xcode build settings."
@@ -158,7 +166,7 @@
 
             let directory = try coverageDirectory(for: scheme, on: sdk, output: &output)
             guard let instance = try FileManager.default.contentsOfDirectory(at: directory, includingPropertiesForKeys: nil, options: []).first else { // [_Exempt from Test Coverage_] Unreachable without corrupt project.
-                throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in // [_Exempt from Test Coverage_]
+                throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization) in // [_Exempt from Test Coverage_]
                     switch localization {
                     case .englishCanada: // [_Exempt from Test Coverage_]
                         return "No coverage data available."
@@ -169,7 +177,7 @@
 
             let settings = try buildSettings(for: scheme, on: sdk, output: &output)
             guard let executablePathSuffix = settings.scalars.firstNestingLevel(startingWith: " EXECUTABLE_PATH = \(target).".scalars, endingWith: "\n".scalars)?.contents.contents else { // [_Exempt from Test Coverage_] Unreachable without corrupt project.
-                throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization, _: Void) in // [_Exempt from Test Coverage_]
+                throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization) in // [_Exempt from Test Coverage_]
                     switch localization {
                     case .englishCanada: // [_Exempt from Test Coverage_]
                         return "Could not find “EXECUTABLE_PATH” in Xcode build settings."
@@ -193,7 +201,7 @@
                 "\u{2D}instr\u{2D}profile",
                 rawData.path,
                 executable.path
-                ], silently: true)
+                ])
         }
     }
 

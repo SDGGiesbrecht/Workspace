@@ -33,13 +33,16 @@ enum Proofreading {
         for url in try project.sourceFiles(output: &output)
             where (try? FileType(url: url)) ≠ nil
                 ∧ (try? FileType(url: url)) ≠ .xcodeProject {
-            let file = try TextFile(alreadyAt: url)
+                    try autoreleasepool {
 
-            reporter.reportParsing(file: file.location.path(relativeTo: project.location), to: &output)
+                        let file = try TextFile(alreadyAt: url)
 
-            for rule in activeRules {
-                try rule.check(file: file, in: project, status: status, output: &output)
-            }
+                        reporter.reportParsing(file: file.location.path(relativeTo: project.location), to: &output)
+
+                        for rule in activeRules {
+                            try rule.check(file: file, in: project, status: status, output: &output)
+                        }
+                    }
         }
 
         try proofreadWithSwiftLint(project: project, status: status, forXcode: reporter is XcodeProofreadingReporter, output: &output)
@@ -50,13 +53,13 @@ enum Proofreading {
     private static func proofreadWithSwiftLint(project: PackageRepository, status: ProofreadingStatus, forXcode: Bool, output: inout Command.Output) throws {
 
         #if os(Linux)
-            // [_Workaround: SwiftLint requires elaborate proping on Linux. (swiftlint version 0.24.2)_]
-            do {
-                try Shell.default.run(command: ["swiftlint", "version"], silently: true)
-                // Use SwiftLint if it has been manually installed...
-            } catch {
-                return // ...otherwise skip.
-            }
+        // [_Workaround: SwiftLint requires elaborate proping on Linux. (swiftlint version 0.24.2)_]
+        do {
+            try Shell.default.run(command: ["swiftlint", "version"])
+            // Use SwiftLint if it has been manually installed...
+        } catch {
+            return // ...otherwise skip.
+        }
         #endif
 
         try FileManager.default.do(in: project.location) {

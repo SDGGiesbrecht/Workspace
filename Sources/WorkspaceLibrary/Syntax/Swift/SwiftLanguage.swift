@@ -173,7 +173,7 @@ struct SwiftLanguage {
         switch casing {
         case .variable:
             // Lowercase first word/acronym.
-            if let match = identifier.firstMatch(for: RepetitionPattern(ConditionalPattern(condition: { $0 ∉ CharacterSet.lowercaseLetters }))),
+            if let match = identifier.firstMatch(for: RepetitionPattern(ConditionalPattern({ $0 ∉ CharacterSet.lowercaseLetters }))),
                 match.range.lowerBound == identifier.startIndex {
 
                 identifier.replaceSubrange(match.range, with: String(StrictString(match.contents)).lowercased().scalars)
@@ -184,7 +184,7 @@ struct SwiftLanguage {
         }
 
         // Replace disallowed characters.
-        identifier.replaceMatches(for: ConditionalPattern(condition: { $0 ∉ SwiftLanguage.allowedIdentifierCharacters }), with: "_".scalars)
+        identifier.replaceMatches(for: ConditionalPattern({ $0 ∉ SwiftLanguage.allowedIdentifierCharacters }), with: "_".scalars)
 
         // Replace underscores with camel case where legible.
         var scalarArray = Array(identifier.scalars)

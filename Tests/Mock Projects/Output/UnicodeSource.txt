@@ -20,6 +20,10 @@ Generating documentation for “UnicodeSource”...
 
 
 $ jazzy --module UnicodeSource --copyright "Copyright ©2018 the UnicodeSource project contributors. All rights reserved." --documentation=Documentation/*.md --clean --use-safe-filenames --output "[...]/Tests/Mock Projects/After/UnicodeSource/docs/UnicodeSource" --xcodebuild-arguments "-scheme,UnicodeSource-Package,-target,UnicodeSource,-sdk,macosx,-derivedDataPath,[...]/Jazzy Build Artifacts"
+Running xcodebuild
+Parsing UnicodeSource.swift (1/1)
+building site
+building search index
 100% documentation coverage with 0 undocumented symbols
 included 4 public or open symbols
 skipped 1 private, fileprivate, or internal symbol (use `--min-acl` to specify a different minimum ACL)

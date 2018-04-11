@@ -19,14 +19,14 @@ extension Workspace.Refresh {
 
     enum Resources {
 
-        private static let name = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        private static let name = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "resources"
             }
         })
 
-        private static let description = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        private static let description = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "regenerates code providing access to the project’s resources."
@@ -35,7 +35,7 @@ extension Workspace.Refresh {
 
         static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, options: Options, output: inout Command.Output) throws in
 
-            print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+            print(UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
                 switch localization {
                 case .englishCanada:
                     return "Refreshing resources..."

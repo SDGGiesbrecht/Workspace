@@ -126,13 +126,13 @@ struct BlockCommentSyntax {
         lines.removeFirst()
 
         var index = first.scalars.startIndex
-        first.scalars.advance(&index, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces })))
+        first.scalars.advance(&index, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
         let indent = first.scalars.distance(from: first.scalars.startIndex, to: index)
 
         var result = [first.scalars.suffix(from: index)]
         for line in lines {
             var indentIndex = line.scalars.startIndex
-            line.scalars.advance(&indentIndex, over: RepetitionPattern(ConditionalPattern(condition: { $0 ∈ CharacterSet.whitespaces }), count: 0 ... indent))
+            line.scalars.advance(&indentIndex, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }), count: 0 ... indent))
             result.append(line.scalars.suffix(from: indentIndex))
         }
 

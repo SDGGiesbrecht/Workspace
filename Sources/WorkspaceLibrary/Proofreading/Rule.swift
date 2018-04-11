@@ -16,7 +16,7 @@ import SDGCornerstone
 import SDGCommandLine
 
 protocol Rule {
-    static var name: UserFacingText<InterfaceLocalization, Void> { get }
+    static var name: UserFacingText<InterfaceLocalization> { get }
     static var noticeOnly: Bool { get }
     static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: inout Command.Output) throws
 }
@@ -31,7 +31,7 @@ extension Rule {
 
     // MARK: - Reporting
 
-    static func reportViolation(in file: TextFile, at location: Range<String.ScalarView.Index>, replacementSuggestion: StrictString? = nil, message: UserFacingText<InterfaceLocalization, Void>, status: ProofreadingStatus, output: inout Command.Output) {
+    static func reportViolation(in file: TextFile, at location: Range<String.ScalarView.Index>, replacementSuggestion: StrictString? = nil, message: UserFacingText<InterfaceLocalization>, status: ProofreadingStatus, output: inout Command.Output) {
         status.report(violation: StyleViolation(in: file, at: location, replacementSuggestion: replacementSuggestion, noticeOnly: noticeOnly, ruleIdentifier: Self.name, message: message), to: &output)
     }
 
@@ -64,13 +64,13 @@ extension Rule {
 
     static func fromStartOfLine(to match: PatternMatch<String.ScalarView>, in file: TextFile) -> String.ScalarView.SubSequence {
         let line = lineRange(for: match, in: file)
-        let range = line.sameRange(in: file.contents.scalars)!.lowerBound ..< match.range.lowerBound
+        let range = line.sameRange(in: file.contents.scalars).lowerBound ..< match.range.lowerBound
         return file.contents.scalars[range]
     }
 
     static func upToEndOfLine(from match: PatternMatch<String.ScalarView>, in file: TextFile) -> String.ScalarView.SubSequence {
         let line = lineRange(for: match, in: file)
-        let range = match.range.upperBound ..< line.sameRange(in: file.contents.scalars)!.upperBound
+        let range = match.range.upperBound ..< line.sameRange(in: file.contents.scalars).upperBound
         return file.contents.scalars[range]
     }
 

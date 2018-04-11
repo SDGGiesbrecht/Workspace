@@ -17,14 +17,14 @@ import SDGCommandLine
 
 struct DocumentationOfExtensionConstraints : Rule {
 
-    static let name = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let name = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Documentation of Extension Constraints"
         }
     })
 
-    static let message = UserFacingText<InterfaceLocalization, Void>({ (localization, _) in
+    static let message = UserFacingText<InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return StrictString("Undocumented extension constraint. Add “\(Mark.expectedSyntax)where...” on the next line.")

@@ -21,8 +21,8 @@ import SDGCommandLine
 private func description(of error: Error) -> String {
     if let command = error as? Command.Error {
         return String(command.describe())
-    } else if let shell = error as? Shell.Error {
-        return shell.description
+    } else if let shell = error as? ExternalProcess.Error {
+        return shell.output
     } else {
         return error.localizedDescription
     }

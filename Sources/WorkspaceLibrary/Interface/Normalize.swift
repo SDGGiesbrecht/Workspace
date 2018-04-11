@@ -18,14 +18,14 @@ import SDGCommandLine
 extension Workspace {
     enum Normalize {
 
-        private static let name = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        private static let name = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "normalize"
             }
         })
 
-        private static let description = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        private static let description = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "normalizes the current project’s files by removing trailing whitespace, applying Unix newlines and performing canonical decomposition."
@@ -39,7 +39,7 @@ extension Workspace {
         static func executeAsStep(options: Options, output: inout Command.Output) throws {
 
             if ¬options.runAsXcodeBuildPhase {
-                print(UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+                print(UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
                     switch localization {
                     case .englishCanada:
                         return StrictString("Normalizing files...")

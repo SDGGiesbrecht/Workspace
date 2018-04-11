@@ -32,13 +32,13 @@ struct Template {
         return "[_" + name + "_]"
     }
 
-    mutating func insert(_ string: StrictString, for element: UserFacingText<InterfaceLocalization, Void>) {
+    mutating func insert(_ string: StrictString, for element: UserFacingText<InterfaceLocalization>) {
         for localization in InterfaceLocalization.cases {
             text.replaceMatches(for: Template.element(named: element.resolved(for: localization)), with: string)
         }
     }
 
-    mutating func insert(resultOf closure: () throws -> StrictString, for element: UserFacingText<InterfaceLocalization, Void>) rethrows {
+    mutating func insert(resultOf closure: () throws -> StrictString, for element: UserFacingText<InterfaceLocalization>) rethrows {
         for localization in InterfaceLocalization.cases {
             if text.contains(Template.element(named: element.resolved(for: localization))) {
                 insert(try closure(), for: element)

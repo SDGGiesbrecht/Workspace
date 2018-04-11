@@ -21,21 +21,21 @@ extension ContinuousIntegration {
 
         // MARK: - Static Properties
 
-        static let environmentVariableName: UserFacingText<InterfaceLocalization, Void> = UserFacingText({ (localization, _) in
+        static let environmentVariableName: UserFacingText<InterfaceLocalization> = UserFacingText({ (localization) in
             switch localization {
             case .englishCanada:
                 return "JOB"
             }
         })
 
-        private static let optionName = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        private static let optionName = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "job"
             }
         })
 
-        private static let optionDescription = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        private static let optionDescription = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "A particular continuous integration job."
@@ -44,14 +44,14 @@ extension ContinuousIntegration {
 
         static let option = SDGCommandLine.Option(name: optionName, description: optionDescription, type: argument)
 
-        private static let argumentName = UserFacingText<InterfaceLocalization, Void>({ (localization: InterfaceLocalization, _) -> StrictString in
+        private static let argumentName = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
             switch localization {
             case .englishCanada:
                 return "job"
             }
         })
 
-        private static let argument = ArgumentType.enumeration(name: argumentName, cases: Job.cases.map { (job: Job) -> (value: Job, label: UserFacingText<InterfaceLocalization, Void>) in
+        private static let argument = ArgumentType.enumeration(name: argumentName, cases: Job.cases.map { (job: Job) -> (value: Job, label: UserFacingText<InterfaceLocalization>) in
             return (value: job, label: job.argumentName)
         })
 
@@ -96,66 +96,66 @@ extension ContinuousIntegration {
             }
         }
 
-        var name: UserFacingText<InterfaceLocalization, Void> {
+        var name: UserFacingText<InterfaceLocalization> {
             switch self {
             case .macOSSwiftPackageManager:
-                return UserFacingText({ (localization, _) in
+                return UserFacingText({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "macOS + Swift Package Manager"
                     }
                 })
             case .macOSXcode:
-                return UserFacingText({ (localization, _) in
+                return UserFacingText({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "macOS + Xcode"
                     }
                 })
             case .linux:
-                return UserFacingText({ (localization, _) in
+                return UserFacingText({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "Linux"
                     }
                 })
             case .iOS:
-                return UserFacingText({ (localization, _) in
+                return UserFacingText({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "iOS"
                     }
                 })
             case .watchOS:
-                return UserFacingText({ (localization, _) in
+                return UserFacingText({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "watchOS"
                     }
                 })
             case .tvOS:
-                return UserFacingText({ (localization, _) in
+                return UserFacingText({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "tvOS"
                     }
                 })
             case .miscellaneous:
-                return UserFacingText({ (localization, _) in
+                return UserFacingText({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "Miscellaneous"
                     }
                 })
             case .documentation:
-                return UserFacingText({ (localization, _) in
+                return UserFacingText({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "Documentation"
                     }
                 })
             case .deployment:
-                return UserFacingText({ (localization, _) in
+                return UserFacingText({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "Deployment"
@@ -164,66 +164,66 @@ extension ContinuousIntegration {
             }
         }
 
-        var argumentName: UserFacingText<InterfaceLocalization, Void> {
+        var argumentName: UserFacingText<InterfaceLocalization> {
             switch self {
             case .macOSSwiftPackageManager:
-                return UserFacingText({ (localization, _) in
+                return UserFacingText({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "macos‐swift‐package‐manager"
                     }
                 })
             case .macOSXcode:
-                return UserFacingText({ (localization, _) in
+                return UserFacingText({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "macos‐xcode"
                     }
                 })
             case .linux:
-                return UserFacingText({ (localization, _) in
+                return UserFacingText({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "linux"
                     }
                 })
             case .iOS:
-                return UserFacingText({ (localization, _) in
+                return UserFacingText({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "ios"
                     }
                 })
             case .watchOS:
-                return UserFacingText({ (localization, _) in
+                return UserFacingText({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "watchos"
                     }
                 })
             case .tvOS:
-                return UserFacingText({ (localization, _) in
+                return UserFacingText({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "tvos"
                     }
                 })
             case .miscellaneous:
-                return UserFacingText({ (localization, _) in
+                return UserFacingText({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "miscellaneous"
                     }
                 })
             case .documentation:
-                return UserFacingText({ (localization, _) in
+                return UserFacingText({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "documentation"
                     }
                 })
             case .deployment:
-                return UserFacingText({ (localization, _) in
+                return UserFacingText({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "deployment"
@@ -321,7 +321,7 @@ extension ContinuousIntegration {
 
             switch operatingSystem {
             case .macOS:
-                result.append("      osx_image: xcode9.2")
+                result.append("      osx_image: xcode9.3")
             case .linux:
                 result.append("      dist: trusty")
             case .iOS, .watchOS, .tvOS:
@@ -339,7 +339,7 @@ extension ContinuousIntegration {
 
             if operatingSystem == .linux {
                 result.append(contentsOf: [
-                    ContinuousIntegration.commandEntry("export SWIFT_VERSION=4.0.3"),
+                    ContinuousIntegration.commandEntry("export SWIFT_VERSION=4.1"),
                     ContinuousIntegration.commandEntry("eval \u{22}$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\u{22}")
                     ])
             }

@@ -55,7 +55,7 @@ enum Proofreading {
         #if os(Linux)
         // [_Workaround: SwiftLint requires elaborate proping on Linux. (swiftlint version 0.24.2)_]
         do {
-            try Shell.default.run(command: ["swiftlint", "version"], silently: true)
+            try Shell.default.run(command: ["swiftlint", "version"])
             // Use SwiftLint if it has been manually installed...
         } catch {
             return // ...otherwise skip.

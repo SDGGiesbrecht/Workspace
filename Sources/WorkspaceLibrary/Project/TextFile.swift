@@ -191,7 +191,7 @@ struct TextFile {
             if isExecutable {
                 #if os(Linux)
                     // [_Workaround: FileManager cannot change permissions on Linux. (Swift 4.0.2)_]
-                    try Shell.default.run(command: ["chmod", "+x", Shell.quote(location.path)], silently: true)
+                    try Shell.default.run(command: ["chmod", "+x", Shell.quote(location.path)])
                 #else
                     try FileManager.default.setAttributes([.posixPermissions: 0o777], ofItemAtPath: location.path)
                 #endif

@@ -130,7 +130,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
             allowedDifferences = allowedDifferences.map { "\u{27}:(exclude)*\($0.components(separatedBy: " ").last!)\u{27}" }
 
             requireBash(["git", "add", ".", "\u{2D}\u{2D}intent\u{2D}to\u{2D}add"], silent: true)
-            if (try? Shell.default.run(command: ["git", "diff", "\u{2D}\u{2D}exit\u{2D}code", "\u{2D}\u{2D}", ".", "\u{27}:(exclude)*.dsidx\u{27}"] + allowedDifferences)) ≠ nil {
+            if (try? Shell.default.run(command: ["git", "diff", "\u{2D}\u{2D}exit\u{2D}code", "\u{2D}\u{2D}", ".", "\u{27}:(exclude)*.dsidx\u{27}"] + allowedDifferences, reportProgress: { print($0, to: &output) })) ≠ nil {
                 validationStatus.passStep(message: UserFacingText({ localization in
                     switch localization {
                     case .englishCanada:

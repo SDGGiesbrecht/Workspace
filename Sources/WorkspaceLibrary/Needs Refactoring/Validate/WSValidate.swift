@@ -14,7 +14,6 @@
 
 import Foundation
 
-import SDGCornerstone
 import SDGCommandLine
 
 func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: inout Command.Output) throws {

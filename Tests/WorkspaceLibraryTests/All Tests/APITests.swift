@@ -15,7 +15,6 @@
 import Foundation
 import XCTest
 
-import SDGCornerstone
 import SDGCommandLine
 
 import WorkspaceLibrary

@@ -14,7 +14,6 @@
 
 import XCTest
 
-import SDGCornerstone
 import SDGCommandLine
 
 class TestCase : XCTestCase {

@@ -14,7 +14,6 @@
 
 import Foundation
 
-import SDGCornerstone
 
 func fatalError(message: [String]) -> Never {
     fail(message: message)

@@ -36,16 +36,20 @@ let package = Package(
             //.productItem(name: "SDGCollections", package: "SDGCornerstone"),
             //.productItem(name: "SDGPersistence", package: "SDGCornerstone"),
             //.productItem(name: "SDGLocalization", package: "SDGCornerstone"),
-            //.productItem(name: "SDGCommandLine", package: "SDGCommandLine"),
+            .productItem(name: "SDGCommandLine", package: "SDGCommandLine"),
             //.productItem(name: "SDGSwift", package: "SDGSwift"),
             //.productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
             //.productItem(name: "SDGXcode", package: "SDGSwift")
             ]),
 
         .testTarget(name: "WorkspaceLibraryTests", dependencies: [.targetItem(name: "WorkspaceLibrary")]),
-        .target(name: "test‐ios‐simulator", dependencies: [.targetItem(name: "WorkspaceLibrary")],
-                path: "Tests/test‐ios‐simulator"),
-        .target(name: "test‐tvos‐simulator", dependencies: [.targetItem(name: "WorkspaceLibrary")],
-                path: "Tests/test‐tvos‐simulator")
+        .target(name: "test‐ios‐simulator", dependencies: [
+            .targetItem(name: "WorkspaceLibrary"),
+            .productItem(name: "SDGCommandLine", package: "SDGCommandLine"),
+            ], path: "Tests/test‐ios‐simulator"),
+        .target(name: "test‐tvos‐simulator", dependencies: [
+            .targetItem(name: "WorkspaceLibrary"),
+            .productItem(name: "SDGCommandLine", package: "SDGCommandLine"),
+            ], path: "Tests/test‐tvos‐simulator")
     ]
 )

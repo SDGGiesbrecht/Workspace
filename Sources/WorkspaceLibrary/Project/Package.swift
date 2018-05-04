@@ -14,7 +14,6 @@
 
 import Foundation
 
-import SDGCornerstone
 import SDGCommandLine
 
 typealias Package = _Package // Shared from SDGCommandLine.

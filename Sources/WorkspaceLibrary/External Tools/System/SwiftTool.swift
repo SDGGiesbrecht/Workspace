@@ -14,7 +14,6 @@
 
 import Foundation
 
-import SDGCornerstone
 import SDGCommandLine
 
 typealias SwiftTool = _Swift // Shared from SDGCommandLine.

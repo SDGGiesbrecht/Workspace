@@ -14,7 +14,6 @@
 
 import Foundation
 
-import SDGCornerstone
 
 typealias ScalarIndex = String.UnicodeScalarView.Index
 

@@ -14,7 +14,6 @@
 
 import Foundation
 
-import SDGCornerstone
 import SDGCommandLine
 
 enum Script : Int, IterableEnumeration {

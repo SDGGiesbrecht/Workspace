@@ -16,7 +16,6 @@
 
 import Foundation
 
-import SDGCornerstone
 import SDGCommandLine
 
 extension _Swift {

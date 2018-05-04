@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCommandLine",
         "state": {
           "branch": null,
-          "revision": "0b3df040decee894e53a85dcd2229980d5267fe1",
-          "version": "0.2.0"
+          "revision": "ffde7bbd185e08caa36f4dbf728cc58433dda848",
+          "version": "0.3.0"
         }
       },
       {
@@ -15,8 +15,26 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCornerstone",
         "state": {
           "branch": null,
-          "revision": "7c89a28dfa540f457c4126514dab42ec64311132",
-          "version": "0.8.0"
+          "revision": "e26d96eb8a28d295a403682069dbc30a72312bdd",
+          "version": "0.9.3"
+        }
+      },
+      {
+        "package": "SDGSwift",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
+        "state": {
+          "branch": null,
+          "revision": "81210be0edc2fcaa08848483bbba65ad1f1d5b30",
+          "version": "0.1.1"
+        }
+      },
+      {
+        "package": "SwiftPM",
+        "repositoryURL": "https://github.com/apple/swift-package-manager",
+        "state": {
+          "branch": null,
+          "revision": "63a01220e93271dc3bf204b9e13dd1aeb2beefee",
+          "version": "0.2.0"
         }
       }
     ]

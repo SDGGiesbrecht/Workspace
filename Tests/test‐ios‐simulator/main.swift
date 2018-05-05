@@ -14,12 +14,14 @@
 
 import Foundation
 
+import SDGExternalProcess
+
 import SDGCommandLine
 
 import WorkspaceLibrary
 
 do {
-    SDGCommandLine.initialize(applicationIdentifier: "ca.solideogloria.Workspace.Tests", version: nil, packageURL: nil)
+    ProcessInfo.applicationIdentifier = "ca.solideogloria.Workspace.Tests"
 
     let repositoryRoot = URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
 
@@ -29,7 +31,7 @@ do {
         try Workspace.command.execute(with: ["validate", "test‐coverage", "•job", "ios"])
     }
 
-} catch let error {
+} catch {
     print(error)
     print(error.localizedDescription)
     exit(1)

@@ -14,9 +14,14 @@
 
 import Foundation
 
-import SDGSwift
+import SDGControlFlow
+import SDGLogic
+import SDGCollections
 
 import SDGCommandLine
+
+import SDGSwift
+import SDGXcode
 
 struct Tests {
 
@@ -48,28 +53,30 @@ struct Tests {
 
     #if !os(Linux)
     private static func buildSDK(for job: ContinuousIntegration.Job) -> Xcode.SDK {
+        // [_Warning: Redesign this._]
         switch job {
         case .macOSXcode:
             return .macOS
         case .iOS:
-            return .iOS
+            return .iOS(simulator: false)
         case .watchOS:
             return .watchOS
         case .tvOS:
-            return .tvOS
+            return .tvOS(simulator: false)
         case .macOSSwiftPackageManager, .linux, .miscellaneous, .documentation, .deployment:
             unreachable()
         }
     }
 
     private static func testSDK(for job: ContinuousIntegration.Job) -> Xcode.SDK {
+        // [_Warning: Redesign this._]
         switch job {
         case .macOSXcode:
             return .macOS
         case .iOS: // [_Exempt from Test Coverage_] Tested separately.
-            return .iOSSimulator
+            return .iOS(simulator: true)
         case .tvOS: // [_Exempt from Test Coverage_] Tested separately.
-            return .tvOSSimulator
+            return .tvOS(simulator: true)
         case .macOSSwiftPackageManager, .linux, .watchOS, .miscellaneous, .documentation, .deployment:
             unreachable()
         }
@@ -77,15 +84,16 @@ struct Tests {
     #endif
 
     static func build(_ project: PackageRepository, for job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: Command.Output) throws {
+        // [_Warning: Redesign this._]
 
         let section = validationStatus.newSection()
 
-        print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+        output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "Checking build for " + englishName(for: job) + "..." + section.anchor
             }
-        }).resolved().formattedAsSectionHeader(), to: output)
+        }).resolved().formattedAsSectionHeader())
 
         try FileManager.default.do(in: project.location) {
             do {
@@ -99,14 +107,21 @@ struct Tests {
                 let buildCommand: (Command.Output) throws -> Bool
                 switch job {
                 case .macOSSwiftPackageManager, .linux:
-                    buildCommand = SwiftTool.default.build
+                    buildCommand = { output in
+                        let log = try project.build(reportProgress: { output.print($0) })
+                        return ¬SwiftCompiler.warningsOccurred(during: log)
+                    }
                 case .macOSXcode, .iOS, .watchOS, .tvOS:
                     #if os(Linux)
                     unreachable()
                     #else
-                    let scheme = try Xcode.default.scheme(output: output)
                     buildCommand = { output in
-                        return try Xcode.default.build(scheme: scheme, for: buildSDK(for: job), output: output)
+                        let log = try project.build(for: buildSDK(for: job)) { report in
+                            if let relevant = Xcode.abbreviate(output: report) {
+                                output.print(relevant)
+                            }
+                        }
+                        return ¬Xcode.warningsOccurred(during: log)
                     }
                     #endif
                 case .miscellaneous, .documentation, .deployment:
@@ -140,10 +155,11 @@ struct Tests {
     }
 
     static func test(_ project: PackageRepository, on job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: Command.Output) throws {
+        // [_Warning: Redesign this._]
 
         let section = validationStatus.newSection()
 
-        print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+        output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 var name = job.englishTargetOperatingSystemName
@@ -152,7 +168,7 @@ struct Tests {
                 }
                 return "Testing on " + englishName(for: job) + "..." + section.anchor
             }
-        }).resolved().formattedAsSectionHeader(), to: output)
+        }).resolved().formattedAsSectionHeader())
 
         try FileManager.default.do(in: project.location) {
 
@@ -173,14 +189,29 @@ struct Tests {
             let testCommand: (Command.Output) -> Bool
             switch job {
             case .macOSSwiftPackageManager, .linux: // [_Exempt from Test Coverage_] Tested separately.
-                testCommand = SwiftTool.default.test
+                testCommand = { output in
+                    do {
+                        try project.test(reportProgress: { output.print($0) })
+                        return true
+                    } catch {
+                        return false
+                    }
+                }
             case .macOSXcode, .iOS, .watchOS, .tvOS:
                 #if os(Linux)
                 unreachable()
                 #else
-                let scheme = try Xcode.default.scheme(output: output)
                 testCommand = { output in
-                    return Xcode.default.test(scheme: scheme, on: testSDK(for: job), output: output)
+                    do {
+                        try project.test(on: testSDK(for: job)) { report in
+                            if let relevant = Xcode.abbreviate(output: report) {
+                                output.print(relevant)
+                            }
+                        }
+                        return true
+                    } catch {
+                        return false
+                    }
                 }
                 #endif
             case .miscellaneous, .documentation, .deployment:
@@ -207,13 +238,12 @@ struct Tests {
 
     static func validateCodeCoverage(for project: PackageRepository, on job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: Command.Output) throws {
         #if !os(Linux)
+        // [_Warning: Redesign this._]
 
         setenv(DXcode.skipProofreadingEnvironmentVariable, "YES", 1 /* overwrite */)
         defer {
             unsetenv(DXcode.skipProofreadingEnvironmentVariable)
         }
-
-        let scheme = try Xcode.default.scheme(output: output)
 
         let allTargets = try project.targets(output: output).map({ $0.name })
         // [_Workaround: The list of libraries (product or otherwise) should be retrieved from the package manager directly instead. (SDGCommandLine 0.1.4)_]
@@ -225,15 +255,16 @@ struct Tests {
 
                 let section = validationStatus.newSection()
 
-                print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
                         let name = job.englishTargetOperatingSystemName
                         return StrictString("Checking test coverage for “\(target)” on \(name)...") + section.anchor
                     }
-                }).resolved().formattedAsSectionHeader(), to: output)
+                }).resolved().formattedAsSectionHeader())
 
-                let report = try Xcode.default.coverageData(for: target, of: scheme, on: testSDK(for: job), output: output)
+                // [_Warning: Does nothing._]
+                let report = ""//try Xcode.default.coverageData(for: target, of: scheme, on: testSDK(for: job), output: output)
                 if try validate(coverageReport: report, for: project, output: output) {
                     validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
@@ -317,11 +348,11 @@ struct Tests {
                 }
 
                 overallCoverageSuccess = false
-                print([
+                output.print([
                     URL(fileURLWithPath: file).path(relativeTo: project.location),
                     sourceLine,
                     errorLine
-                    ].joinAsLines().formattedAsError().separated(), to: output)
+                    ].joinAsLines().formattedAsError().separated())
             }
         }
 

@@ -14,7 +14,12 @@
 
 import Foundation
 
+import SDGLogic
+import SDGCollections
+
 import SDGCommandLine
+
+import SDGSwift
 
 struct Mark : Rule {
 

@@ -25,7 +25,8 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 9, 3))),
         .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 3, 0))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 1, 1)))
+        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 1, 1))),
+        .package(url: "https://github.com/apple/swift\u{2D}package\u{2D}manager", .exact(Version(0, 2, 0)))
     ],
     targets: [
         .target(name: "WorkspaceTool", dependencies: [.targetItem(name: "WorkspaceLibrary")]),
@@ -33,6 +34,7 @@ let package = Package(
         .target(name: "WorkspaceLibrary", dependencies: [
             .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
             .productItem(name: "SDGLogic", package: "SDGCornerstone"),
+            .productItem(name: "SDGMathematics", package: "SDGCornerstone"),
             .productItem(name: "SDGCollections", package: "SDGCornerstone"),
             .productItem(name: "SDGText", package: "SDGCornerstone"),
             .productItem(name: "SDGPersistence", package: "SDGCornerstone"),
@@ -41,7 +43,8 @@ let package = Package(
             .productItem(name: "SDGCommandLine", package: "SDGCommandLine"),
             .productItem(name: "SDGSwift", package: "SDGSwift"),
             .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-            .productItem(name: "SDGXcode", package: "SDGSwift")
+            .productItem(name: "SDGXcode", package: "SDGSwift"),
+            .productItem(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
             ]),
 
         .testTarget(name: "WorkspaceLibraryTests", dependencies: [.targetItem(name: "WorkspaceLibrary")]),

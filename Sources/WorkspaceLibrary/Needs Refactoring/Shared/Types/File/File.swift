@@ -162,18 +162,18 @@ struct File {
 
     func requireRange(of tokens: (String, String), in searchRange: Range<String.Index>? = nil) -> Range<String.Index> {
 
-        return require(search: { contents.scalars.firstNestingLevel(startingWith: $0.0.scalars, endingWith: $0.1.scalars, in: searchRange?.sameRange(in: contents.scalars))?.container.range.clusters(in: contents.clusters) }, tokens: tokens, range: searchRange)
+        return require(search: { contents.scalars.firstNestingLevel(startingWith: $0.0.scalars, endingWith: $0.1.scalars, in: (searchRange ?? contents.clusters.bounds).sameRange(in: contents.scalars))?.container.range.clusters(in: contents.clusters) }, tokens: tokens, range: searchRange)
     }
 
     func requireRangeOfContents(of tokens: (String, String), in searchRange: Range<String.Index>? = nil) -> Range<String.Index> {
 
-        return require(search: { contents.scalars.firstNestingLevel(startingWith: $0.0.scalars, endingWith: $0.0.scalars, in: searchRange?.sameRange(in: contents.scalars))?.contents.range.clusters(in: contents.clusters) }, tokens: tokens, range: searchRange)
+        return require(search: { contents.scalars.firstNestingLevel(startingWith: $0.0.scalars, endingWith: $0.0.scalars, in: (searchRange ?? contents.clusters.bounds).sameRange(in: contents.scalars))?.contents.range.clusters(in: contents.clusters) }, tokens: tokens, range: searchRange)
     }
 
     func requireContents(of tokens: (String, String), in searchRange: Range<String.Index>? = nil) -> String {
 
         return require(search: {
-            guard let result = contents.scalars.firstNestingLevel(startingWith: $0.0.scalars, endingWith: $0.1.scalars, in: searchRange?.sameRange(in: contents.scalars))?.contents.contents else {
+            guard let result = contents.scalars.firstNestingLevel(startingWith: $0.0.scalars, endingWith: $0.1.scalars, in: (searchRange ?? contents.clusters.bounds).sameRange(in: contents.scalars))?.contents.contents else {
                 return nil
             }
             return String(result)

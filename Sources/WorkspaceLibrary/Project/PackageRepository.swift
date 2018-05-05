@@ -14,9 +14,18 @@
 
 import Foundation
 
+import SDGControlFlow
+import SDGLogic
+
 import SDGCommandLine
 
 import SDGSwift
+import SDGSwiftPackageManager
+// [_Warning: Probably not necessary._]
+import SDGXcode
+
+// [_Warning: Probably not necessary._]
+import PackageModel
 
 extension PackageRepository {
 
@@ -26,7 +35,7 @@ extension PackageRepository {
         fileprivate var packageStructure: (name: String, libraryProductTargets: [String], executableProducts: [String], targets: [(name: String, location: URL)])?
         fileprivate var targets: [Target]?
         fileprivate var targetsByName: [String: Target]?
-        fileprivate var dependencies: [StrictString: Version]?
+        fileprivate var dependencies: [StrictString: SDGSwift.Version]?
 
         fileprivate var allFiles: [URL]?
         fileprivate var trackedFiles: [URL]?
@@ -65,11 +74,43 @@ extension PackageRepository {
 
     private func packageStructure(output: Command.Output) throws -> (name: String, libraryProductTargets: [String], executableProducts: [String], targets: [(name: String, location: URL)]) {
         return try cached(in: &cache.packageStructure) {
-            var result: (name: String, libraryProductTargets: [String], executableProducts: [String], targets: [(name: String, location: URL)])?
-            try FileManager.default.do(in: location) {
-                result = try SwiftTool.default.packageStructure(output: output)
+            // [_Warning: Redesign this._]
+            let structure = try package()
+            let name = structure.name
+
+            var libraryProductTargets: [String] = []
+            var executableProducts: [String] = []
+            for product in structure.products {
+                switch product.type {
+                case .library:
+                    for target in product.targets {
+                        if ¬libraryProductTargets.contains(target.name) {
+                            libraryProductTargets.append(target.name)
+                        }
+                    }
+                case .executable:
+                    executableProducts.append(product.name)
+                case .test:
+                    break
+                }
             }
-            return result!
+
+            var targets: [(name: String, location: URL)] = []
+            for target in structure.manifest.package.targets {
+                if let path = target.path {
+                    targets.append((name: target.name, location: URL(fileURLWithPath: path)))
+                } else {
+                    let base: URL
+                    if target.isTest {
+                        base = location.appendingPathComponent("Tests")
+                    } else {
+                        base = location.appendingPathComponent("Sources")
+                    }
+                    targets.append((name: target.name, location: base.appendingPathComponent(target.name)))
+                }
+            }
+
+            return (name: name, libraryProductTargets: libraryProductTargets, executableProducts: executableProducts, targets: targets)
         }
     }
 
@@ -106,7 +147,7 @@ extension PackageRepository {
         return try packageStructure(output: output).executableProducts
     }
 
-    static let resourceDirectoryName = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
+    static let resourceDirectoryName = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
         case .englishCanada:
             return "Resources"
@@ -120,13 +161,17 @@ extension PackageRepository {
         }
     }
 
-    func dependencies(output: Command.Output) throws -> [StrictString: Version] {
+    func dependencies(output: Command.Output) throws -> [StrictString: SDGSwift.Version] {
         return try cached(in: &cache.dependencies) {
-            var result: [StrictString: Version]?
-            try FileManager.default.do(in: location) {
-                result = try SwiftTool.default.dependencies(output: output)
+            // [_Warning: Redesign this._]
+            var result: [StrictString: SDGSwift.Version] = [:]
+            let graph = try packageGraph()
+            for dependency in graph.packages {
+                if let version = dependency.manifest.version {
+                    result[StrictString(dependency.name)] = SDGSwift.Version(version.major, version.minor, version.patch)
+                }
             }
-            return result!
+            return result
         }
     }
 
@@ -188,10 +233,7 @@ extension PackageRepository {
         return try cached(in: &cache.trackedFiles) {
             () -> [URL] in
 
-            var ignoredURLs: [URL] = []
-            try FileManager.default.do(in: location) {
-                ignoredURLs = try Git.default.ignoredFiles(output: output)
-            }
+            var ignoredURLs: [URL] = try ignoredFiles()
             ignoredURLs.append(location.appendingPathComponent(".git"))
 
             let result = try allFiles().filter { (url) in
@@ -336,19 +378,13 @@ extension PackageRepository {
     // MARK: - Xcode
 
     func xcodeProjectFile() throws -> URL? { // [_Exempt from Test Coverage_] [_Workaround: Until refresh Xcode is testable._]
-        var result: URL?
-        try FileManager.default.do(in: location) { // [_Exempt from Test Coverage_] [_Workaround: Until refresh Xcode is testable._]
-            result = try Xcode.default.projectFile()
-        } // [_Exempt from Test Coverage_] [_Workaround: Until refresh Xcode is testable._]
-        return result
+        // [_Warning: Redesign this._]
+        return try xcodeProject()
     }
 
     func xcodeScheme(output: Command.Output) throws -> String {
-        var result: String = ""
-        try FileManager.default.do(in: location) {
-            result = try Xcode.default.scheme(output: output)
-        }
-        return result
+        // [_Warning: Redesign this._]
+        return try scheme()
     }
 
     #endif

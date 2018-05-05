@@ -14,6 +14,8 @@
 
 import SDGCommandLine
 
+import SDGSwift
+
 protocol Warning : Rule {
     static var trigger: UserFacing<StrictString, InterfaceLocalization> { get }
     static func message(for details: StrictString, in project: PackageRepository, output: Command.Output) throws -> UserFacing<StrictString, InterfaceLocalization>?

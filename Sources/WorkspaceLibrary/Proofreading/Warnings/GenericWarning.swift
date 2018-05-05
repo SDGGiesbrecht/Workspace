@@ -14,6 +14,8 @@
 
 import SDGCommandLine
 
+import SDGSwift
+
 struct GenericWarning : Warning {
 
     static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
@@ -31,6 +33,6 @@ struct GenericWarning : Warning {
     })
 
     static func message(for details: StrictString, in project: PackageRepository, output: Command.Output) -> UserFacing<StrictString, InterfaceLocalization>? {
-        return UserFacingText({ _ in details })
+        return UserFacing({ _ in details })
     }
 }

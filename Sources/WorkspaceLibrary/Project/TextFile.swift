@@ -14,6 +14,9 @@
 
 import Foundation
 
+import SDGControlFlow
+import SDGLogic
+
 import SDGCommandLine
 
 import SDGSwift
@@ -167,21 +170,21 @@ struct TextFile {
     // MARK: - Writing
 
     static func reportWriteOperation(to location: URL, in repository: PackageRepository, output: Command.Output) {
-        print(UserFacingDynamicText<InterfaceLocalization, String>({ (localization, path) in
+        output.print(UserFacingDynamic<StrictString, InterfaceLocalization, String>({ localization, path in
             switch localization {
             case .englishCanada:
                 return StrictString("Writing to “\(path)”...")
             }
-        }).resolved(using: location.path(relativeTo: repository.location)), to: output)
+        }).resolved(using: location.path(relativeTo: repository.location)))
     }
 
     static func reportDeleteOperation(from location: URL, in repository: PackageRepository, output: Command.Output) {
-        print(UserFacingDynamicText<InterfaceLocalization, String>({ (localization, path) in
+        output.print(UserFacingDynamic<StrictString, InterfaceLocalization, String>({ localization, path in
             switch localization {
             case .englishCanada:
                 return StrictString("Deleting “\(path)”...")
             }
-        }).resolved(using: location.path(relativeTo: repository.location)), to: output)
+        }).resolved(using: location.path(relativeTo: repository.location)))
     }
 
     func writeChanges(for repository: PackageRepository, output: Command.Output) throws {

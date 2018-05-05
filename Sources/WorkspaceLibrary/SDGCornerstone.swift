@@ -12,13 +12,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGCollections
 
 // [_Workaround: Everything in this file should be in moved to SDGCornerstone. (SDGCornerstone 0.7.3)_]
 
-extension Optional where Wrapped : Collection, Wrapped.Element : Equatable {
-    // MARK: - where Wrapped : Collection, Wrapped.Element : Equatable
+extension Optional where Wrapped : SearchableCollection {
+    // MARK: - where Wrapped : SearchableCollection
 
-    public func contains<C : Collection>(_ pattern: C) -> Bool where C.Element == Wrapped.Element {
+    public func contains<C : SearchableCollection>(_ pattern: C) -> Bool where C.Element == Wrapped.Element {
         switch self {
         case .some(let wrapped):
             return wrapped.contains(LiteralPattern(pattern))

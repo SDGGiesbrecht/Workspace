@@ -18,7 +18,7 @@ struct ValidationStatus {
 
     // MARK: - Static Properties
 
-    static let passOrFailSymbol = UserFacingDynamicText({ (localization: InterfaceLocalization, passing: Bool) in
+    static let passOrFailSymbol = UserFacingDynamic<StrictString, InterfaceLocalization, Bool>({ localization, passing in
         switch localization {
         case .englishCanada:
             return passing ? "✓" : "✗"
@@ -59,16 +59,16 @@ struct ValidationStatus {
     }
 
     func reportOutcome(projectName: StrictString, output: Command.Output) throws {
-        print(StrictString(summary.joined(separator: "\n".scalars)).separated(), to: output)
+        output.print(StrictString(summary.joined(separator: "\n".scalars)).separated())
         if passing {
-            print(UserFacingText({ (localization: InterfaceLocalization) in
+            output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "“" + projectName + "” passes validation."
                 }
-            }).resolved().formattedAsSuccess().separated(), to: output)
+            }).resolved().formattedAsSuccess().separated())
         } else {
-            throw Command.Error(description: UserFacingText({ (localization: InterfaceLocalization) in
+            throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "“" + projectName + "” fails validation."

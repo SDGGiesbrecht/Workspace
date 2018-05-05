@@ -14,7 +14,13 @@
 
 import Foundation
 
+import SDGControlFlow
+import SDGMathematics
+import SDGExternalProcess
+
 import SDGCommandLine
+
+import SDGSwift
 
 struct WorkaroundReminder : Warning {
 

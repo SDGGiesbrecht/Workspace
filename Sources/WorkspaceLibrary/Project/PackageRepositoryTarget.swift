@@ -14,6 +14,8 @@
 
 import Foundation
 
+import SDGCollections
+
 import SDGCommandLine
 
 import SDGSwift

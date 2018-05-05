@@ -14,6 +14,8 @@
 
 import SDGCommandLine
 
+import SDGSwift
+
 struct ParametersStyle : Rule {
 
     static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in

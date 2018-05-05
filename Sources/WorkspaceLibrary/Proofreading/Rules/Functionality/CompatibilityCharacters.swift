@@ -14,7 +14,11 @@
 
 import Foundation
 
+import SDGLogic
+
 import SDGCommandLine
+
+import SDGSwift
 
 struct CompatibilityCharacters : Rule {
 

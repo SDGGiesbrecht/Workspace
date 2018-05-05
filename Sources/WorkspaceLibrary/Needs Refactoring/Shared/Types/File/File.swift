@@ -95,7 +95,7 @@ struct File {
 
     // MARK: - Writing
 
-    func write(output: inout Command.Output) throws {
+    func write(output: Command.Output) throws {
         try textFile.writeChanges(for: Repository.packageRepository, output: &output)
     }
 

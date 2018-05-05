@@ -12,8 +12,9 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGSwift
 
-extension PackageRepositoryTarget {
+extension PackageRepository.Target {
 
     enum TargetType : String {
 

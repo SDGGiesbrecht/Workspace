@@ -12,7 +12,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGControlFlow
+import SDGLogic
+import SDGLocalization
+
 import SDGCommandLine
+
+import SDGSwift
 
 extension ContinuousIntegration {
 
@@ -20,21 +26,21 @@ extension ContinuousIntegration {
 
         // MARK: - Static Properties
 
-        static let environmentVariableName: UserFacingText<InterfaceLocalization> = UserFacingText({ (localization) in
+        static let environmentVariableName = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "JOB"
             }
         })
 
-        private static let optionName = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        private static let optionName = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "job"
             }
         })
 
-        private static let optionDescription = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        private static let optionDescription = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "A particular continuous integration job."
@@ -43,14 +49,14 @@ extension ContinuousIntegration {
 
         static let option = SDGCommandLine.Option(name: optionName, description: optionDescription, type: argument)
 
-        private static let argumentName = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        private static let argumentName = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "job"
             }
         })
 
-        private static let argument = ArgumentType.enumeration(name: argumentName, cases: Job.cases.map { (job: Job) -> (value: Job, label: UserFacingText<InterfaceLocalization>) in
+        private static let argument = ArgumentType.enumeration(name: argumentName, cases: Job.cases.map { (job: Job) -> (value: Job, label: UserFacing<StrictString, InterfaceLocalization>) in
             return (value: job, label: job.argumentName)
         })
 
@@ -95,66 +101,66 @@ extension ContinuousIntegration {
             }
         }
 
-        var name: UserFacingText<InterfaceLocalization> {
+        var name: UserFacing<StrictString, InterfaceLocalization> {
             switch self {
             case .macOSSwiftPackageManager:
-                return UserFacingText({ (localization) in
+                return UserFacing({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "macOS + Swift Package Manager"
                     }
                 })
             case .macOSXcode:
-                return UserFacingText({ (localization) in
+                return UserFacing({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "macOS + Xcode"
                     }
                 })
             case .linux:
-                return UserFacingText({ (localization) in
+                return UserFacing({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "Linux"
                     }
                 })
             case .iOS:
-                return UserFacingText({ (localization) in
+                return UserFacing({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "iOS"
                     }
                 })
             case .watchOS:
-                return UserFacingText({ (localization) in
+                return UserFacing({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "watchOS"
                     }
                 })
             case .tvOS:
-                return UserFacingText({ (localization) in
+                return UserFacing({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "tvOS"
                     }
                 })
             case .miscellaneous:
-                return UserFacingText({ (localization) in
+                return UserFacing({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "Miscellaneous"
                     }
                 })
             case .documentation:
-                return UserFacingText({ (localization) in
+                return UserFacing({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "Documentation"
                     }
                 })
             case .deployment:
-                return UserFacingText({ (localization) in
+                return UserFacing({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "Deployment"
@@ -163,66 +169,66 @@ extension ContinuousIntegration {
             }
         }
 
-        var argumentName: UserFacingText<InterfaceLocalization> {
+        var argumentName: UserFacing<StrictString, InterfaceLocalization> {
             switch self {
             case .macOSSwiftPackageManager:
-                return UserFacingText({ (localization) in
+                return UserFacing({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "macos‐swift‐package‐manager"
                     }
                 })
             case .macOSXcode:
-                return UserFacingText({ (localization) in
+                return UserFacing({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "macos‐xcode"
                     }
                 })
             case .linux:
-                return UserFacingText({ (localization) in
+                return UserFacing({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "linux"
                     }
                 })
             case .iOS:
-                return UserFacingText({ (localization) in
+                return UserFacing({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "ios"
                     }
                 })
             case .watchOS:
-                return UserFacingText({ (localization) in
+                return UserFacing({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "watchos"
                     }
                 })
             case .tvOS:
-                return UserFacingText({ (localization) in
+                return UserFacing({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "tvos"
                     }
                 })
             case .miscellaneous:
-                return UserFacingText({ (localization) in
+                return UserFacing({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "miscellaneous"
                     }
                 })
             case .documentation:
-                return UserFacingText({ (localization) in
+                return UserFacing({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "documentation"
                     }
                 })
             case .deployment:
-                return UserFacingText({ (localization) in
+                return UserFacing({ (localization) in
                     switch localization {
                     case .englishCanada:
                         return "deployment"
@@ -231,29 +237,29 @@ extension ContinuousIntegration {
             }
         }
 
-        func isRequired(by project: PackageRepository, output: inout Command.Output) throws -> Bool {
+        func isRequired(by project: PackageRepository, output: Command.Output) throws -> Bool {
             switch self {
             case .macOSSwiftPackageManager:
-                return try project.configuration.supports(.macOS, project: project, output: &output)
+                return try project.configuration.supports(.macOS, project: project, output: output)
                     ∧ ¬(try project.configuration.projectType() == .application)
             case .macOSXcode:
-                return try project.configuration.supports(.macOS, project: project, output: &output)
+                return try project.configuration.supports(.macOS, project: project, output: output)
             case .linux: // [_Exempt from Test Coverage_] False coverage result in Xcode 9.2.
-                return try project.configuration.supports(.linux, project: project, output: &output)
+                return try project.configuration.supports(.linux, project: project, output: output)
             case .iOS:
-                return try project.configuration.supports(.iOS, project: project, output: &output)
+                return try project.configuration.supports(.iOS, project: project, output: output)
             case .watchOS:
-                return try project.configuration.supports(.watchOS, project: project, output: &output)
+                return try project.configuration.supports(.watchOS, project: project, output: output)
             case .tvOS:
-                return try project.configuration.supports(.tvOS, project: project, output: &output)
+                return try project.configuration.supports(.tvOS, project: project, output: output)
             case .miscellaneous:
                 return true
             case .documentation:
                 return try project.configuration.shouldGenerateDocumentation()
-                    ∧ project.hasTargetsToDocument(output: &output)
+                    ∧ project.hasTargetsToDocument(output: output)
             case .deployment:
                 return try project.configuration.shouldGenerateDocumentation()
-                ∧ project.hasTargetsToDocument(output: &output)
+                ∧ project.hasTargetsToDocument(output: output)
                 ∧ (try project.configuration.encryptedTravisDeploymentKey()) ≠ nil
             }
         }

@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGText
+import SDGLocalization
 
 struct ReportSection {
 
@@ -35,9 +37,9 @@ struct ReportSection {
         return " (" + identifier + ")"
     }
 
-    var crossReference: UserFacingText<InterfaceLocalization> {
+    var crossReference: UserFacing<StrictString, InterfaceLocalization> {
         let identifier = self.identifier
-        return UserFacingText({ (localization) in
+        return UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 #if os(macOS)

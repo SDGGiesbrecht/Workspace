@@ -55,7 +55,7 @@ struct DGit {
         + ignoreEntriesForWorkspace
         + ignoreEntriesForJazzy
 
-    static func updateGitConfiguraiton(output: inout Command.Output) {
+    static func updateGitConfiguraiton(output: Command.Output) {
 
         let startToken = "# [_Begin Workspace Section_]"
         let endToken = "# [_End Workspace Section]"

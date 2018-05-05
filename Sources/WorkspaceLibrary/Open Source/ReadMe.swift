@@ -16,6 +16,8 @@ import Foundation
 
 import SDGCommandLine
 
+import SDGSwift
+
 enum ReadMe {
 
     // MARK: - Locations
@@ -88,13 +90,13 @@ enum ReadMe {
         return StrictString(links.joined(separator: " • ".scalars)) + " " + skipInJazzy
     }
 
-    private static func operatingSystemList(for project: PackageRepository, output: inout Command.Output) throws -> StrictString {
+    private static func operatingSystemList(for project: PackageRepository, output: Command.Output) throws -> StrictString {
         let supported = try OperatingSystem.cases.filter({ try project.configuration.supports($0, project: project, output: &output) })
         let list = supported.map({ $0.isolatedName.resolved() }).joined(separator: " • ".scalars)
         return StrictString(list)
     }
 
-    private static func apiLinksMarkup(for project: PackageRepository, output: inout Command.Output) throws -> StrictString {
+    private static func apiLinksMarkup(for project: PackageRepository, output: Command.Output) throws -> StrictString {
 
         let baseURL = try project.configuration.requireDocumentationURL()
         let label = UserFacingText<ContentLocalization>({ (localization) in
@@ -198,7 +200,7 @@ enum ReadMe {
         return link + " " + skipInJazzy
     }
 
-    static func defaultInstallationInstructionsTemplate(localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template? {
+    static func defaultInstallationInstructionsTemplate(localization: String, project: PackageRepository, output: Command.Output) throws -> Template? {
         var result: [StrictString] = []
 
         let tools = try project.executableTargets(output: &output)
@@ -420,7 +422,7 @@ enum ReadMe {
         }
     }
 
-    static func defaultExampleUsageTemplate(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template? {
+    static func defaultExampleUsageTemplate(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template? {
         let prefixes = InterfaceLocalization.cases.map { (localization) in
             return UserFacingText<InterfaceLocalization>({ (localization) in
                 switch localization {
@@ -460,7 +462,7 @@ enum ReadMe {
         }
     }
 
-    static func defaultReadMeTemplate(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template {
+    static func defaultReadMeTemplate(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template {
 
         var readMe: [StrictString] = [
             "[_Localization Links_]",
@@ -588,7 +590,7 @@ enum ReadMe {
 
     // MARK: - Refreshment
 
-    private static func refreshReadMe(at location: URL, for localization: String, in project: PackageRepository, atProjectRoot: Bool, output: inout Command.Output) throws {
+    private static func refreshReadMe(at location: URL, for localization: String, in project: PackageRepository, atProjectRoot: Bool, output: Command.Output) throws {
         var readMe = try project.configuration.readMe(for: localization, project: project, output: &output)
 
         // Section Elements
@@ -714,7 +716,7 @@ enum ReadMe {
         try file.writeChanges(for: project, output: &output)
     }
 
-    private static func refreshRelatedProjects(at location: URL, for localization: String, in project: PackageRepository, output: inout Command.Output) throws {
+    private static func refreshRelatedProjects(at location: URL, for localization: String, in project: PackageRepository, output: Command.Output) throws {
 
         if let relatedProjectURLs = try project.configuration.relatedProjects() {
             var markdown: [StrictString] = [
@@ -769,7 +771,7 @@ enum ReadMe {
         }
     }
 
-    static func refreshReadMe(for project: PackageRepository, output: inout Command.Output) throws {
+    static func refreshReadMe(for project: PackageRepository, output: Command.Output) throws {
         let localizations = try project.configuration.localizations()
         for localization in localizations {
             try autoreleasepool {

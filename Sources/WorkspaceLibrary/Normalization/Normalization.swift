@@ -18,7 +18,7 @@ import SDGCommandLine
 
 enum Normalization {
 
-    static func normalize(project: PackageRepository, output: inout Command.Output) throws {
+    static func normalize(project: PackageRepository, output: Command.Output) throws {
 
         for url in try project.sourceFiles(output: &output) {
             try autoreleasepool {

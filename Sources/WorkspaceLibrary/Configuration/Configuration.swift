@@ -14,7 +14,12 @@
 
 import Foundation
 
+import SDGControlFlow
+import SDGLogic
+
 import SDGCommandLine
+
+import SDGSwift
 
 struct Configuration {
 
@@ -70,7 +75,7 @@ struct Configuration {
     // MARK: - Types
 
     private static func optionNotDefinedError(for option: Option) -> Command.Error { // [_Exempt from Test Coverage_] [_Workaround: Until licence is testable._]
-        return Command.Error(description: UserFacingText<InterfaceLocalization>({ (localization) in // [_Exempt from Test Coverage_] [_Workaround: Until licence is testable._]
+        return Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in // [_Exempt from Test Coverage_] [_Workaround: Until licence is testable._]
             switch localization {
             case .englishCanada: // [_Exempt from Test Coverage_] [_Workaround: Until licence is testable._]
                 return "Configuration option not defined: " + StrictString(option.key)
@@ -79,7 +84,7 @@ struct Configuration {
     }
 
     static func invalidEnumerationValueError(for option: Option, value: String, valid: [StrictString]) -> Command.Error {
-        return Command.Error(description: UserFacingText<InterfaceLocalization>({ (localization) in
+        return Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return ([
@@ -165,11 +170,11 @@ struct Configuration {
         return result
     }
 
-    func supports(_ operatingSystem: OperatingSystem, project: PackageRepository, output: inout Command.Output) throws -> Bool {
+    func supports(_ operatingSystem: OperatingSystem, project: PackageRepository, output: Command.Output) throws -> Bool {
         if ¬(try boolean(for: operatingSystem.supportOption) ?? true) {
             return false
         } else {
-            if try ¬project.executableTargets(output: &output).isEmpty {
+            if try ¬project.executableTargets(output: output).isEmpty {
                 return PackageRepository.Target.TargetType.executable.isSupported(on: operatingSystem)
             } else {
                 return true
@@ -303,60 +308,60 @@ struct Configuration {
         }
         return defined
     }
-    func installationInstructions(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template? {
+    func installationInstructions(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template? {
         if let defined = try localizedTemplate(for: localization, from: .installationInstructions) {
             return defined
         } else {
-            return try ReadMe.defaultInstallationInstructionsTemplate(localization: localization, project: project, output: &output)
+            return try ReadMe.defaultInstallationInstructionsTemplate(localization: localization, project: project, output: output)
         }
     }
-    func requireInstallationInstructions(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template {
-        guard let defined = try installationInstructions(for: localization, project: project, output: &output) else { // [_Exempt from Test Coverage_] [_Workaround: Until application targets are supported again._]
+    func requireInstallationInstructions(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template {
+        guard let defined = try installationInstructions(for: localization, project: project, output: output) else { // [_Exempt from Test Coverage_] [_Workaround: Until application targets are supported again._]
             throw Configuration.optionNotDefinedError(for: .installationInstructions)
         }
         return defined
     }
-    func exampleUsage(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template? {
+    func exampleUsage(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template? {
         if let defined = try localizedTemplate(for: localization, from: .exampleUsage) {
             return defined
         } else {
-            return try ReadMe.defaultExampleUsageTemplate(for: localization, project: project, output: &output)
+            return try ReadMe.defaultExampleUsageTemplate(for: localization, project: project, output: output)
         }
     }
-    func requireExampleUsage(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template {
-        guard let defined = try exampleUsage(for: localization, project: project, output: &output) else {
+    func requireExampleUsage(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template {
+        guard let defined = try exampleUsage(for: localization, project: project, output: output) else {
             throw Configuration.optionNotDefinedError(for: .exampleUsage)
         }
         return defined
     }
-    func otherReadMeContent(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template? {
+    func otherReadMeContent(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template? {
         if let defined = try localizedTemplate(for: localization, from: .otherReadMeContent) {
             return defined
         } else {
-            return try ReadMe.defaultExampleUsageTemplate(for: localization, project: project, output: &output)
+            return try ReadMe.defaultExampleUsageTemplate(for: localization, project: project, output: output)
         }
     }
-    func requireOtherReadMeContent(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template {
-        guard let defined = try otherReadMeContent(for: localization, project: project, output: &output) else {
+    func requireOtherReadMeContent(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template {
+        guard let defined = try otherReadMeContent(for: localization, project: project, output: output) else {
             throw Configuration.optionNotDefinedError(for: .otherReadMeContent)
         }
         return defined
     }
-    func readMeAboutSectionTemplate(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template? {
+    func readMeAboutSectionTemplate(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template? {
         return try localizedTemplate(for: localization, from: .readMeAboutSection)
     }
-    func requireReadMeAboutSectionTemplate(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template {
-        guard let defined = try readMeAboutSectionTemplate(for: localization, project: project, output: &output) else {
+    func requireReadMeAboutSectionTemplate(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template {
+        guard let defined = try readMeAboutSectionTemplate(for: localization, project: project, output: output) else {
             throw Configuration.optionNotDefinedError(for: .readMeAboutSection)
         }
         return defined
     }
 
-    func readMe(for localization: String, project: PackageRepository, output: inout Command.Output) throws -> Template {
+    func readMe(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template {
         if let defined = try localizedTemplate(for: localization, from: .readMe) {
             return defined
         } else {
-            return try ReadMe.defaultReadMeTemplate(for: localization, project: project, output: &output)
+            return try ReadMe.defaultReadMeTemplate(for: localization, project: project, output: output)
         }
     }
 
@@ -367,7 +372,7 @@ struct Configuration {
         }
         return try result.map { (entry) in
             guard let url = URL(string: entry) else {
-                throw Command.Error(description: UserFacingText<InterfaceLocalization>({ (localization) in
+                throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
                         return StrictString("“\(entry)” in “\(Option.relatedProjects)” is not a valid URL.")

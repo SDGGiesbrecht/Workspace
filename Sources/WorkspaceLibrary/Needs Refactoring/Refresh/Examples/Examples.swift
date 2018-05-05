@@ -18,7 +18,7 @@ import SDGCommandLine
 
 struct Examples {
 
-    static func examples(in project: PackageRepository, output: inout Command.Output) throws -> [String: String] {
+    static func examples(in project: PackageRepository, output: Command.Output) throws -> [String: String] {
 
         var list: [String: String] = [:]
 
@@ -91,7 +91,7 @@ struct Examples {
         return list
     }
 
-    static func refreshExamples(output: inout Command.Output) throws {
+    static func refreshExamples(output: Command.Output) throws {
 
         for path in Repository.sourceFiles {
             try autoreleasepool {

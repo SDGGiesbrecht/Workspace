@@ -45,11 +45,11 @@ struct ValidationStatus {
         return ReportSection(number: currentSection)
     }
 
-    mutating func passStep(message: UserFacingText<InterfaceLocalization>) {
+    mutating func passStep(message: UserFacing<StrictString, InterfaceLocalization>) {
         summary.append((ValidationStatus.passOrFailSymbol.resolved(using: true) + " " + message.resolved()).formattedAsSuccess())
     }
 
-    mutating func failStep(message: UserFacingText<InterfaceLocalization>) {
+    mutating func failStep(message: UserFacing<StrictString, InterfaceLocalization>) {
         passing = false
         summary.append((ValidationStatus.passOrFailSymbol.resolved(using: false) + " " + message.resolved()).formattedAsError())
     }
@@ -58,7 +58,7 @@ struct ValidationStatus {
         return ¬summary.isEmpty
     }
 
-    func reportOutcome(projectName: StrictString, output: inout Command.Output) throws {
+    func reportOutcome(projectName: StrictString, output: Command.Output) throws {
         print(StrictString(summary.joined(separator: "\n".scalars)).separated(), to: &output)
         if passing {
             print(UserFacingText({ (localization: InterfaceLocalization) in

@@ -46,7 +46,7 @@ struct ColonSpacing : Rule {
         }
     })
 
-    static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: inout Command.Output) {
+    static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
         if file.fileType == .swift {
 
             for match in file.contents.scalars.matches(for: ":".scalars) {

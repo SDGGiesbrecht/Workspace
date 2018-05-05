@@ -12,11 +12,16 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+import SDGCollections
+
 import SDGCommandLine
+
+import SDGSwift
 
 enum ContinuousIntegration {
 
-    static func refreshContinuousIntegration(for project: PackageRepository, output: inout Command.Output) throws {
+    static func refreshContinuousIntegration(for project: PackageRepository, output: Command.Output) throws {
 
         var travisConfiguration: [String] = [
             "language: generic",
@@ -24,14 +29,14 @@ enum ContinuousIntegration {
             "  include:"
         ]
 
-        for job in Job.cases where try job.isRequired(by: project, output: &output)
+        for job in Job.cases where try job.isRequired(by: project, output: output)
 
-            ∨ (job ∈ Tests.simulatorJobs ∧ project.isWorkspaceProject(output: &output)) { // Simulator is unavailable during normal test.
+            ∨ (job ∈ Tests.simulatorJobs ∧ project.isWorkspaceProject(output: output)) { // Simulator is unavailable during normal test.
 
             travisConfiguration.append(contentsOf: try job.script(configuration: project.configuration))
         }
 
-        if try project.isWorkspaceProject(output: &output) {
+        if try project.isWorkspaceProject(output: output) {
             travisConfiguration = travisConfiguration.map {
                 var line = $0
                 line.scalars.replaceMatches(for: "\u{22}bash \u{5C}\u{22}./Validate (macOS).command\u{5C}\u{22} •job ios\u{22}".scalars, with: "swift run test‐ios‐simulator".scalars)
@@ -50,7 +55,7 @@ enum ContinuousIntegration {
 
         var travisConfigurationFile = try TextFile(possiblyAt: project.location.appendingPathComponent(".travis.yml"))
         travisConfigurationFile.body = travisConfiguration.joinAsLines()
-        try travisConfigurationFile.writeChanges(for: project, output: &output)
+        try travisConfigurationFile.writeChanges(for: project, output: output)
     }
 
     static func commandEntry(_ command: String) -> String {

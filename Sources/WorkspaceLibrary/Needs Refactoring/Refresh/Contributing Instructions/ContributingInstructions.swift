@@ -168,7 +168,7 @@ struct ContributingInstructions {
         return template.joinAsLines()
     }()
 
-    static func refreshContributingInstructions(output: inout Command.Output) throws {
+    static func refreshContributingInstructions(output: Command.Output) throws {
 
         func key(_ name: String) -> String {
             return "[_\(name)_]"
@@ -217,7 +217,7 @@ struct ContributingInstructions {
         try? Repository.delete(deprecatedContributingInstructionsPath)
     }
 
-    static func relinquishControl(output: inout Command.Output) {
+    static func relinquishControl(output: Command.Output) {
 
         var printedHeader = false
 

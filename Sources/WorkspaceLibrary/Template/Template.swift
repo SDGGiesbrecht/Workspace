@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGText
+import SDGLocalization
 
 struct Template {
 
@@ -31,13 +33,13 @@ struct Template {
         return "[_" + name + "_]"
     }
 
-    mutating func insert(_ string: StrictString, for element: UserFacingText<InterfaceLocalization>) {
+    mutating func insert(_ string: StrictString, for element: UserFacing<StrictString,InterfaceLocalization>) {
         for localization in InterfaceLocalization.cases {
             text.replaceMatches(for: Template.element(named: element.resolved(for: localization)), with: string)
         }
     }
 
-    mutating func insert(resultOf closure: () throws -> StrictString, for element: UserFacingText<InterfaceLocalization>) rethrows {
+    mutating func insert(resultOf closure: () throws -> StrictString, for element: UserFacing<StrictString, InterfaceLocalization>) rethrows {
         for localization in InterfaceLocalization.cases {
             if text.contains(Template.element(named: element.resolved(for: localization))) {
                 insert(try closure(), for: element)

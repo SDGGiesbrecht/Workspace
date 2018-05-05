@@ -63,7 +63,7 @@ struct DocumentationInheritance {
         return list
     }()
 
-    static func refreshDocumentation(output: inout Command.Output) {
+    static func refreshDocumentation(output: Command.Output) {
 
         for path in Repository.sourceFiles {
             autoreleasepool {

@@ -16,6 +16,6 @@ import SDGCommandLine
 
 protocol ProofreadingReporter {
 
-    func reportParsing(file: String, to output: inout Command.Output)
-    func report(violation: StyleViolation, to output: inout Command.Output)
+    func reportParsing(file: String, to output: Command.Output)
+    func report(violation: StyleViolation, to output: Command.Output)
 }

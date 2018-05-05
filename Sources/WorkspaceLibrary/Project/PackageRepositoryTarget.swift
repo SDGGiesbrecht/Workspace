@@ -16,157 +16,157 @@ import Foundation
 
 import SDGCommandLine
 
+import SDGSwift
+
 extension PackageRepository {
-    // [_Workaround: Extensions have visibility issues. (Swift 4.0.2)_]
-    typealias Target = PackageRepositoryTarget
-}
 
-struct PackageRepositoryTarget : Hashable {
+    struct Target : Hashable {
 
-    // MARK: - Initialization
+        // MARK: - Initialization
 
-    init(name: String, sourceDirectory: URL) {
-        self.name = name
-        self.sourceDirectory = sourceDirectory
-    }
-
-    // MARK: - Properties
-
-    let name: String
-    let sourceDirectory: URL
-
-    // MARK: - Resources
-
-    func refresh(resources: [URL], from package: PackageRepository, output: inout Command.Output) throws {
-
-        var resourceFile = try TextFile(possiblyAt: sourceDirectory.appendingPathComponent("Resources.swift"))
-        resourceFile.body = String(try generateSource(for: resources, of: package))
-        try resourceFile.writeChanges(for: package, output: &output)
-    }
-
-    private func generateSource(for resources: [URL], of package: PackageRepository) throws -> StrictString {
-        var source: StrictString = "import Foundation\n\n"
-
-        let enumName = PackageRepository.Target.resourceNamespace.resolved(for: InterfaceLocalization.fallbackLocalization)
-        source += "internal enum " + enumName + " {}\n"
-
-        var registeredAliases: Set<StrictString> = [enumName]
-        for alias in InterfaceLocalization.cases.map({ PackageRepository.Target.resourceNamespace.resolved(for: $0) }) where alias ∉ registeredAliases {
-            registeredAliases.insert(alias)
-            source += "internal typealias "
-            source += alias
-            source += " = "
-            source += enumName
-            source += "\n"
+        init(name: String, sourceDirectory: URL) {
+            self.name = name
+            self.sourceDirectory = sourceDirectory
         }
 
-        source.append(contentsOf: "\n")
+        // MARK: - Properties
 
-        source.append(contentsOf: "extension Resources {\n".scalars)
+        let name: String
+        let sourceDirectory: URL
 
-        source.append(contentsOf: (try namespaceTreeSource(for: resources, of: package)) + "\n")
+        // MARK: - Resources
 
-        source.append(contentsOf: "}\n".scalars)
-        return source
-    }
+        func refresh(resources: [URL], from package: PackageRepository, output: Command.Output) throws {
 
-    private static let resourceNamespace = UserFacingText<InterfaceLocalization>({ (localization) in
-        switch localization {
-        case .englishCanada:
-            return "Resources"
+            var resourceFile = try TextFile(possiblyAt: sourceDirectory.appendingPathComponent("Resources.swift"))
+            resourceFile.body = String(try generateSource(for: resources, of: package))
+            try resourceFile.writeChanges(for: package, output: &output)
         }
-    })
 
-    private func namespaceTreeSource(for resources: [URL], of package: PackageRepository) throws -> StrictString {
-        return try source(for: namespaceTree(for: resources, of: package))
-    }
+        private func generateSource(for resources: [URL], of package: PackageRepository) throws -> StrictString {
+            var source: StrictString = "import Foundation\n\n"
 
-    private func namespaceTree(for resources: [URL], of package: PackageRepository) -> [StrictString: Any] {
-        var tree: [StrictString: Any] = [:]
-        for resource in resources {
-            let pathComponentsArray = resource.path(relativeTo: package.location).components(separatedBy: "/").dropFirst(2).map({ String($0.contents) })
-            let pathComponents = pathComponentsArray[pathComponentsArray.startIndex...]
-            add(components: pathComponents, to: &tree, for: resource)
-        }
-        return tree
-    }
+            let enumName = PackageRepository.Target.resourceNamespace.resolved(for: InterfaceLocalization.fallbackLocalization)
+            source += "internal enum " + enumName + " {}\n"
 
-    private func add(components: ArraySlice<String>, to tree: inout [StrictString: Any], for resource: URL) {
-        if ¬components.isEmpty {
-            if components.count == 1 {
-                tree[variableName(for: components.first!)] = resource
-            } else {
-                let name = SwiftLanguage.default.identifier(for: StrictString(components.first!), casing: .type)
-                var branch = tree[name] as? [StrictString: Any] ?? [:]
-                add(components: components.dropFirst(), to: &branch, for: resource)
-                tree[name] = branch
+            var registeredAliases: Set<StrictString> = [enumName]
+            for alias in InterfaceLocalization.cases.map({ PackageRepository.Target.resourceNamespace.resolved(for: $0) }) where alias ∉ registeredAliases {
+                registeredAliases.insert(alias)
+                source += "internal typealias "
+                source += alias
+                source += " = "
+                source += enumName
+                source += "\n"
             }
+
+            source.append(contentsOf: "\n")
+
+            source.append(contentsOf: "extension Resources {\n".scalars)
+
+            source.append(contentsOf: (try namespaceTreeSource(for: resources, of: package)) + "\n")
+
+            source.append(contentsOf: "}\n".scalars)
+            return source
         }
-    }
 
-    private func variableName(for fileName: String) -> StrictString {
-        let nameOnly = URL(fileURLWithPath: "/" + fileName).deletingPathExtension().lastPathComponent
-        return SwiftLanguage.default.identifier(for: StrictString(nameOnly), casing: .variable)
-    }
+        private static let resourceNamespace = UserFacingText<InterfaceLocalization>({ (localization) in
+            switch localization {
+            case .englishCanada:
+                return "Resources"
+            }
+        })
 
-    private func source(for namespaceTree: [StrictString: Any]) throws -> StrictString {
-        var result: StrictString = ""
-        for name in namespaceTree.keys.sorted() {
-            try autoreleasepool {
-                let value = namespaceTree[name]
+        private func namespaceTreeSource(for resources: [URL], of package: PackageRepository) throws -> StrictString {
+            return try source(for: namespaceTree(for: resources, of: package))
+        }
 
-                if let resource = value as? URL {
-                    try result.append(contentsOf: source(for: resource, named: name) + "\n")
-                } else if let namespace = value as? [StrictString: Any] {
-                    result.append(contentsOf: "enum " + name + " {\n")
-                    result.append(contentsOf: try source(for: namespace))
-                    result.append(contentsOf: "}\n")
+        private func namespaceTree(for resources: [URL], of package: PackageRepository) -> [StrictString: Any] {
+            var tree: [StrictString: Any] = [:]
+            for resource in resources {
+                let pathComponentsArray = resource.path(relativeTo: package.location).components(separatedBy: "/").dropFirst(2).map({ String($0.contents) })
+                let pathComponents = pathComponentsArray[pathComponentsArray.startIndex...]
+                add(components: pathComponents, to: &tree, for: resource)
+            }
+            return tree
+        }
+
+        private func add(components: ArraySlice<String>, to tree: inout [StrictString: Any], for resource: URL) {
+            if ¬components.isEmpty {
+                if components.count == 1 {
+                    tree[variableName(for: components.first!)] = resource
                 } else {
-                    unreachable()
+                    let name = SwiftLanguage.default.identifier(for: StrictString(components.first!), casing: .type)
+                    var branch = tree[name] as? [StrictString: Any] ?? [:]
+                    add(components: components.dropFirst(), to: &branch, for: resource)
+                    tree[name] = branch
                 }
             }
         }
 
-        if result.scalars.last == "\n" {
-            result.scalars.removeLast()
-        }
-        return StrictString(result.lines.map({ (lineInformation) in
-            return "    " + StrictString(lineInformation.line)
-        }).joined(separator: "\n".scalars) + "\n")
-    }
-
-    private func source(for resource: URL, named name: StrictString) throws -> StrictString {
-        let fileExtension = resource.pathExtension
-        let initializer: (StrictString, StrictString)
-        switch fileExtension {
-        case "command", "md", "sh", "txt", "yml":
-            initializer = ("String(data: ", ", encoding: String.Encoding.utf8)!")
-        default:
-            initializer = ("", "")
+        private func variableName(for fileName: String) -> StrictString {
+            let nameOnly = URL(fileURLWithPath: "/" + fileName).deletingPathExtension().lastPathComponent
+            return SwiftLanguage.default.identifier(for: StrictString(nameOnly), casing: .variable)
         }
 
-        let data = try Data(from: resource)
-        let string = data.base64EncodedString()
-        var declaration: StrictString = "static let "
-        declaration += name
-        declaration += " = "
-        declaration += initializer.0
-        declaration += "Data(base64Encoded: \u{22}"
-        declaration += string.scalars
-        declaration += "\u{22})!"
-        declaration += initializer.1
-        return declaration
-    }
+        private func source(for namespaceTree: [StrictString: Any]) throws -> StrictString {
+            var result: StrictString = ""
+            for name in namespaceTree.keys.sorted() {
+                try autoreleasepool {
+                    let value = namespaceTree[name]
 
-    // MARK: - Equatable
+                    if let resource = value as? URL {
+                        try result.append(contentsOf: source(for: resource, named: name) + "\n")
+                    } else if let namespace = value as? [StrictString: Any] {
+                        result.append(contentsOf: "enum " + name + " {\n")
+                        result.append(contentsOf: try source(for: namespace))
+                        result.append(contentsOf: "}\n")
+                    } else {
+                        unreachable()
+                    }
+                }
+            }
 
-    static func == (lhs: PackageRepository.Target, rhs: PackageRepository.Target) -> Bool {
-        return (lhs.name, lhs.sourceDirectory) == (rhs.name, rhs.sourceDirectory)
-    }
+            if result.scalars.last == "\n" {
+                result.scalars.removeLast()
+            }
+            return StrictString(result.lines.map({ (lineInformation) in
+                return "    " + StrictString(lineInformation.line)
+            }).joined(separator: "\n".scalars) + "\n")
+        }
 
-    // MARK: - Hashable
+        private func source(for resource: URL, named name: StrictString) throws -> StrictString {
+            let fileExtension = resource.pathExtension
+            let initializer: (StrictString, StrictString)
+            switch fileExtension {
+            case "command", "md", "sh", "txt", "yml":
+                initializer = ("String(data: ", ", encoding: String.Encoding.utf8)!")
+            default:
+                initializer = ("", "")
+            }
 
-    var hashValue: Int {
-        return name.hashValue
+            let data = try Data(from: resource)
+            let string = data.base64EncodedString()
+            var declaration: StrictString = "static let "
+            declaration += name
+            declaration += " = "
+            declaration += initializer.0
+            declaration += "Data(base64Encoded: \u{22}"
+            declaration += string.scalars
+            declaration += "\u{22})!"
+            declaration += initializer.1
+            return declaration
+        }
+
+        // MARK: - Equatable
+
+        static func == (lhs: PackageRepository.Target, rhs: PackageRepository.Target) -> Bool {
+            return (lhs.name, lhs.sourceDirectory) == (rhs.name, rhs.sourceDirectory)
+        }
+
+        // MARK: - Hashable
+
+        var hashValue: Int {
+            return name.hashValue
+        }
     }
 }

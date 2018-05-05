@@ -34,7 +34,7 @@ extension Workspace {
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [ContinuousIntegration.Job.option], execution: { (_, options: Options, output: inout Command.Output) throws in
+        static let command = Command(name: name, description: description, directArguments: [], options: [ContinuousIntegration.Job.option], execution: { (_, options: Options, output: Command.Output) throws in
 
             try Validate.Build.validate(job: options.job, against: Tests.testJobs, for: options.project, output: &output)
 
@@ -45,7 +45,7 @@ extension Workspace {
             try validationStatus.reportOutcome(projectName: try options.project.projectName(output: &output), output: &output)
         })
 
-        static func executeAsStep(options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+        static func executeAsStep(options: Options, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
             for job in ContinuousIntegration.Job.cases
                 where try options.job.includes(job: job) ∧ (try Validate.Build.job(job, isRelevantTo: options.project, andAvailableJobs: Tests.testJobs, output: &output)) {

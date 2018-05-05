@@ -14,45 +14,49 @@
 
 import Foundation
 
+import SDGLogic
+
 import SDGCommandLine
+
+import SDGSwift
 
 extension Workspace {
     enum CheckForUpdates {
 
-        private static let name = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "check‐for‐updates"
             }
         })
 
-        private static let description = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "checks for available Workspace updates."
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, _, output: inout Command.Output) throws in
-            if let update = try checkForUpdates(output: &output) {
-                print(UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, _, output: Command.Output) throws in
+            if let update = try checkForUpdates(output: output) {
+                output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
                         return StrictString("Workspace \(update.string) is available.\nFor update instructions, see \(DocumentationLink.installation.url.in(Underline.underlined))")
                     }
-                }).resolved(), to: &output)
+                }).resolved())
             } else {
-                print(UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+                output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
                         return "Workspace is up to date."
                     }
-                }).resolved(), to: &output)
+                }).resolved())
             }
         })
 
-        static func checkForUpdates(output: inout Command.Output) throws -> Version? {
-            let latestRemote = try Package(url: workspacePackageURL).latestVersion(output: &output)
+        static func checkForUpdates(output: Command.Output) throws -> Version? {
+            let latestRemote = try Package(url: workspacePackageURL).versions().sorted().last!
             if latestRemote ≠ latestStableWorkspaceVersion { // [_Exempt from Test Coverage_] Execution path is determined externally.
                 return latestRemote
             } else { // [_Exempt from Test Coverage_] Execution path is determined externally.

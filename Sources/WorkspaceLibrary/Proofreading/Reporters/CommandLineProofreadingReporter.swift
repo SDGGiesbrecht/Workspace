@@ -28,11 +28,11 @@ class CommandLineProofreadingReporter : ProofreadingReporter {
 
     // MARK: - ProofreadingReporter
 
-    func reportParsing(file: String, to output: inout Command.Output) {
+    func reportParsing(file: String, to output: Command.Output) {
         print(file.in(FontWeight.bold), to: &output)
     }
 
-    func report(violation: StyleViolation, to output: inout Command.Output) {
+    func report(violation: StyleViolation, to output: Command.Output) {
 
         func highlight<S : StringFamily>(_ problem: S) -> S {
             if violation.noticeOnly {

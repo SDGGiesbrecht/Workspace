@@ -20,7 +20,7 @@ import SDGCommandLine
 
 struct DXcode {
 
-    static func refreshXcodeProjects(output: inout Command.Output) throws {
+    static func refreshXcodeProjects(output: Command.Output) throws {
         let script = ["swift", "package", "generate\u{2D}xcodeproj", "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage"]
         requireBash(script)
 
@@ -131,7 +131,7 @@ struct DXcode {
         }
     }
 
-    private static func modifyProject(condition shouldModify: (String) -> Bool, modification modify: (inout File) -> Void, output: inout Command.Output) throws {
+    private static func modifyProject(condition shouldModify: (String) -> Bool, modification modify: (inout File) -> Void, output: Command.Output) throws {
 
         let path = RelativePath("\(try Repository.packageRepository.xcodeProjectFile()!.lastPathComponent)/project.pbxproj")
 
@@ -153,7 +153,7 @@ struct DXcode {
 
     static let skipProofreadingEnvironmentVariable = "SKIP_PROOFREADING"
 
-    static func enableProofreading(output: inout Command.Output) throws {
+    static func enableProofreading(output: Command.Output) throws {
 
         let script: String
         if try Repository.packageRepository.isWorkspaceProject(output: &output) {
@@ -209,7 +209,7 @@ struct DXcode {
 
     static let disabledScriptActionEntry = "/* " + scriptObjectName + " */"
 
-    static func temporarilyDisableProofreading(output: inout Command.Output) throws {
+    static func temporarilyDisableProofreading(output: Command.Output) throws {
 
         try modifyProject(condition: { (_) -> Bool in
             return true
@@ -219,7 +219,7 @@ struct DXcode {
         }, output: &output)
     }
 
-    static func reEnableProofreading(output: inout Command.Output) throws {
+    static func reEnableProofreading(output: Command.Output) throws {
 
         try modifyProject(condition: { (_) -> Bool in
             return true

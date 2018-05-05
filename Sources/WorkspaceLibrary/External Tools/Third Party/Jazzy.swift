@@ -14,7 +14,12 @@
 
 import Foundation
 
+import SDGCollections
+import SDGExternalProcess
+
 import SDGCommandLine
+
+import SDGSwift
 
 #if os(Linux)
 
@@ -39,8 +44,8 @@ class Jazzy : RubyGem {
 
     static let `default` = Jazzy(version: Version(0, 9, 1))
 
-    override class var name: UserFacingText<InterfaceLocalization> { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
-        return UserFacingText({ (localization) in // [_Exempt from Test Coverage_]
+    override class var name: UserFacing<StrictString, InterfaceLocalization> { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
+        return UserFacing({ localization in // [_Exempt from Test Coverage_]
             switch localization {
             case .englishCanada: // [_Exempt from Test Coverage_]
                 return "Jazzy"
@@ -48,8 +53,8 @@ class Jazzy : RubyGem {
         })
     }
 
-    override class var installationInstructionsURL: UserFacingText<InterfaceLocalization> { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
-        return UserFacingText({ (localization) in // [_Exempt from Test Coverage_]
+    override class var installationInstructionsURL: UserFacing<StrictString, InterfaceLocalization> { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
+        return UserFacing({ localization in // [_Exempt from Test Coverage_]
             switch localization {
             case .englishCanada: // [_Exempt from Test Coverage_]
                 return "https://github.com/realm/jazzy"
@@ -68,7 +73,7 @@ class Jazzy : RubyGem {
 
     // MARK: - Usage
 
-    func document(target: String, scheme: String, buildOperatingSystem: OperatingSystem, copyright: StrictString, gitHubURL: URL?, outputDirectory: URL, project: PackageRepository, output: inout Command.Output) throws {
+    func document(target: String, scheme: String, buildOperatingSystem: OperatingSystem, copyright: StrictString, gitHubURL: URL?, outputDirectory: URL, project: PackageRepository, output: Command.Output) throws {
         let sdk: String
         switch buildOperatingSystem {
         case .macOS:
@@ -111,17 +116,17 @@ class Jazzy : RubyGem {
                 ].joined(separator: ",")
             ])
 
-        try executeInCompatibilityMode(with: jazzyArguments, output: &output)
+        try executeInCompatibilityMode(with: jazzyArguments, output: output)
         project.resetCache(debugReason: "jazzy")
 
         // [_Workaround: Jazzy is incompatible with Jekyll. (jazzy --version 0.9.1)_]
-        try preventJekyllInterference(in: outputDirectory, for: project, output: &output)
+        try preventJekyllInterference(in: outputDirectory, for: project, output: output)
         // [_Workaround: Jazzy expects only ASCII. (jazzy --version 0.9.1)_]
-        try fixSplitClusters(in: outputDirectory, for: project, output: &output)
+        try fixSplitClusters(in: outputDirectory, for: project, output: output)
     }
 
     private func parseError(undocumented json: String) -> Command.Error { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
-        return Command.Error(description: UserFacingText<InterfaceLocalization>({ (localization) in // [_Exempt from Test Coverage_]
+        return Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in // [_Exempt from Test Coverage_]
             switch localization {
             case .englishCanada: // [_Exempt from Test Coverage_]
                 return StrictString("Error loading list of undocumented symbols:\n\(json)")
@@ -159,14 +164,14 @@ class Jazzy : RubyGem {
 
     // MARK: - Workarounds
 
-    private func preventJekyllInterference(in directory: URL, for project: PackageRepository, output: inout Command.Output) throws {
+    private func preventJekyllInterference(in directory: URL, for project: PackageRepository, output: Command.Output) throws {
         let nojekyll = directory.appendingPathComponent(".nojekyll")
-        TextFile.reportWriteOperation(to: nojekyll, in: project, output: &output)
+        TextFile.reportWriteOperation(to: nojekyll, in: project, output: output)
         try Data().write(to: nojekyll)
     }
 
-    private func fixSplitClusters(in directory: URL, for project: PackageRepository, output: inout Command.Output) throws {
-        for url in try project.trackedFiles(output: &output) where url.is(in: directory) {
+    private func fixSplitClusters(in directory: URL, for project: PackageRepository, output: Command.Output) throws {
+        for url in try project.trackedFiles(output: output) where url.is(in: directory) {
             if let type = try? FileType(url: url),
                 type == .html {
                 try autoreleasepool {
@@ -191,7 +196,7 @@ class Jazzy : RubyGem {
                     }
 
                     file.contents = source
-                    try file.writeChanges(for: project, output: &output)
+                    try file.writeChanges(for: project, output: output)
                 }
             }
         }

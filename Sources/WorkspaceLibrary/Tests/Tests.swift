@@ -74,7 +74,7 @@ struct Tests {
     }
     #endif
 
-    static func build(_ project: PackageRepository, for job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+    static func build(_ project: PackageRepository, for job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
         let section = validationStatus.newSection()
 
@@ -94,7 +94,7 @@ struct Tests {
                 }
                 #endif
 
-                let buildCommand: (inout Command.Output) throws -> Bool
+                let buildCommand: (Command.Output) throws -> Bool
                 switch job {
                 case .macOSSwiftPackageManager, .linux:
                     buildCommand = SwiftTool.default.build
@@ -137,7 +137,7 @@ struct Tests {
         }
     }
 
-    static func test(_ project: PackageRepository, on job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+    static func test(_ project: PackageRepository, on job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
         let section = validationStatus.newSection()
 
@@ -168,7 +168,7 @@ struct Tests {
             }
             #endif
 
-            let testCommand: (inout Command.Output) -> Bool
+            let testCommand: (Command.Output) -> Bool
             switch job {
             case .macOSSwiftPackageManager, .linux: // [_Exempt from Test Coverage_] Tested separately.
                 testCommand = SwiftTool.default.test
@@ -203,7 +203,7 @@ struct Tests {
         }
     }
 
-    static func validateCodeCoverage(for project: PackageRepository, on job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+    static func validateCodeCoverage(for project: PackageRepository, on job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: Command.Output) throws {
         #if !os(Linux)
 
         setenv(DXcode.skipProofreadingEnvironmentVariable, "YES", 1 /* overwrite */)
@@ -277,7 +277,7 @@ struct Tests {
 
     private static let nullCharacters = (CharacterSet.whitespacesAndNewlines ∪ CharacterSet.decimalDigits) ∪ ["|"]
 
-    private static func validate(coverageReport: String, for project: PackageRepository, output: inout Command.Output) throws -> Bool {
+    private static func validate(coverageReport: String, for project: PackageRepository, output: Command.Output) throws -> Bool {
 
         let sameLineTokens = try untestableSameLineTokens(for: project)
         let previousLineTokens = try untestablePreviousLineTokens(for: project)

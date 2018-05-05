@@ -12,10 +12,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLocalization
 
 enum ContentLocalization : String, Localization {
 
     // MARK: - Cases
+
+    // [_Warning: Check that all uses are high quality._]
 
     case englishUnitedKingdom = "en\u{2D}GB"
     case englishUnitedStates = "en\u{2D}US"

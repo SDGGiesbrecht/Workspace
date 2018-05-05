@@ -29,7 +29,7 @@ class ProofreadingStatus {
 
     // MARK: - Usage
 
-    func report(violation: StyleViolation, to output: inout Command.Output) {
+    func report(violation: StyleViolation, to output: Command.Output) {
         if ¬violation.noticeOnly {
             passing = false
         }

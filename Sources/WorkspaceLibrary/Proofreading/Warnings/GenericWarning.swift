@@ -30,7 +30,7 @@ struct GenericWarning : Warning {
         }
     })
 
-    static func message(for details: StrictString, in project: PackageRepository, output: inout Command.Output) -> UserFacingText<InterfaceLocalization>? {
+    static func message(for details: StrictString, in project: PackageRepository, output: Command.Output) -> UserFacingText<InterfaceLocalization>? {
         return UserFacingText({ _ in details })
     }
 }

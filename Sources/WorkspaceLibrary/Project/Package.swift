@@ -16,28 +16,8 @@ import Foundation
 
 import SDGCommandLine
 
-typealias Package = _Package // Shared from SDGCommandLine.
+import SDGSwift
+
 extension Package {
-
-    // MARK: - Initialization
-
-    init(url: URL) {
-        self.init(_url: url) // Shared from SDGCommandLine.
-    }
-
-    // MARK: - Properties
-
-    func latestVersion(output: inout Command.Output) throws -> Version? {
-        return try versions(output: &output).max()
-    }
-
-    func versions(output: inout Command.Output) throws -> Set<Version> {
-        return try Git.default.versions(of: self, output: &output)
-    }
-
-    // MARK: - Usage
-
-    func execute(_ version: Version, of executableNames: Set<StrictString>, with arguments: [StrictString], cacheDirectory: URL, output: inout Command.Output) throws { // [_Exempt from Test Coverage_] Unreachable except with incompatible versions of tools.
-        try _execute(version, of: executableNames, with: arguments, cacheDirectory: cacheDirectory, output: &output) // Shared from SDGCommandLine
-    }
+    // [_Warning: Is this needed?_]
 }

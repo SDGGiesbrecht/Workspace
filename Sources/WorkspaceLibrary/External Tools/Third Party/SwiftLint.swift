@@ -14,6 +14,9 @@
 
 import Foundation
 
+import SDGCollections
+import SDGExternalProcess
+
 import SDGCommandLine
 
 class SwiftLint : SwiftPackage {
@@ -43,7 +46,7 @@ class SwiftLint : SwiftPackage {
         return StrictString(Resources.SwiftLint.standardConfiguration)
     }
 
-    func proofread(withConfiguration configuration: URL?, forXcode: Bool, output: inout Command.Output) throws -> Bool {
+    func proofread(withConfiguration configuration: URL?, forXcode: Bool, output: Command.Output) throws -> Bool {
 
         do {
             var arguments = [
@@ -65,7 +68,7 @@ class SwiftLint : SwiftPackage {
                 ]
             }
 
-            try executeInCompatibilityMode(with: arguments, output: &output)
+            try executeInCompatibilityMode(with: arguments, output: output)
             return true
         } catch let error as ExternalProcess.Error {
             if error.code ∈ Set<Int>([

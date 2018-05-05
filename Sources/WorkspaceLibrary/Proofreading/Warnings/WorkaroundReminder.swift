@@ -34,7 +34,7 @@ struct WorkaroundReminder : Warning {
         }
     })
 
-    static func message(for details: StrictString, in project: PackageRepository, output: inout Command.Output) throws -> UserFacingText<InterfaceLocalization>? {
+    static func message(for details: StrictString, in project: PackageRepository, output: Command.Output) throws -> UserFacingText<InterfaceLocalization>? {
 
         if let versionCheck = details.scalars.firstNestingLevel(startingWith: "(".scalars, endingWith: ")".scalars) {
             var parameters = versionCheck.contents.contents.components(separatedBy: " ".scalars)
@@ -71,7 +71,7 @@ struct WorkaroundReminder : Warning {
     }
 
     private static var dependencyVersionCache: [StrictString: Version?] = [:]
-    private static func currentVersion(of dependency: StrictString, for project: PackageRepository, output: inout Command.Output) throws -> Version? {
+    private static func currentVersion(of dependency: StrictString, for project: PackageRepository, output: Command.Output) throws -> Version? {
         if let version = try project.dependencies(output: &output)[dependency] {
             return version
         } else {

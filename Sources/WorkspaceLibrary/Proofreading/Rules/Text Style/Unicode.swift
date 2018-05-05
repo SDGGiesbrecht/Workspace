@@ -40,7 +40,7 @@ struct UnicodeRule : Rule {
                       allowInHeading: Bool = false,
                       allowInFloatLiteral: Bool = false,
                       allowInToolsVersion: Bool = false,
-                      message: UserFacingText<InterfaceLocalization>, status: ProofreadingStatus, output: inout Command.Output) {
+                      message: UserFacingText<InterfaceLocalization>, status: ProofreadingStatus, output: Command.Output) {
 
         for protocolName in allowedDefaultImplementations where file.location.lastPathComponent == protocolName + ".swift" {
             return
@@ -234,7 +234,7 @@ struct UnicodeRule : Rule {
         }
     }
 
-    static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: inout Command.Output) {
+    static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
 
         check(file, for: "\u{2D}",
               allowInShellSource: true,

@@ -16,6 +16,8 @@ import Foundation
 
 import SDGCommandLine
 
+import SDGSwift
+
 enum Documentation {
 
     static let defaultDocumentationDirectoryName = "docs" // Matches GitHub Pages.
@@ -30,7 +32,7 @@ enum Documentation {
         return Template(source: try FileHeaders.defaultCopyright(configuration: configuration).text + " All rights reserved.")
     }
 
-    private static func copyright(for directory: URL, in project: PackageRepository, output: inout Command.Output) throws -> StrictString {
+    private static func copyright(for directory: URL, in project: PackageRepository, output: Command.Output) throws -> StrictString {
 
         let existing = try TextFile(possiblyAt: directory.appendingPathComponent("index.html")).contents
         let searchArea: String
@@ -45,19 +47,19 @@ enum Documentation {
 
         var template = try project.configuration.documentationCopyright()
 
-        template.insert(dates, for: UserFacingText({ (localization) in
+        template.insert(dates, for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "Copyright"
             }
         }))
-        try template.insert(resultOf: { try project.configuration.requireAuthor() }, for: UserFacingText({ (localization) in
+        try template.insert(resultOf: { try project.configuration.requireAuthor() }, for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "Author"
             }
         }))
-        template.insert(try project.projectName(output: &output), for: UserFacingText({ (localization) in
+        template.insert(try project.projectName(output: output), for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "Project"
@@ -69,37 +71,37 @@ enum Documentation {
 
     #if !os(Linux)
 
-    static func document(target: String, for project: PackageRepository, outputDirectory: URL, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+    static func document(target: String, for project: PackageRepository, outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
-        print(UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "Generating documentation for “" + StrictString(target) + "”..."
             }
-        }).resolved().formattedAsSectionHeader(), to: &output)
+        }).resolved().formattedAsSectionHeader())
 
         let outputSubdirectory = subdirectory(for: target, in: outputDirectory)
 
         let buildOperatingSystem: OperatingSystem
-        if try project.configuration.supports(.macOS, project: project, output: &output) {
+        if try project.configuration.supports(.macOS, project: project, output: output) {
             buildOperatingSystem = .macOS
-        } else if try project.configuration.supports(.iOS, project: project, output: &output) {
+        } else if try project.configuration.supports(.iOS, project: project, output: output) {
             buildOperatingSystem = .iOS
-        } else if try project.configuration.supports(.watchOS, project: project, output: &output) {
+        } else if try project.configuration.supports(.watchOS, project: project, output: output) {
             buildOperatingSystem = .watchOS
-        } else if try project.configuration.supports(.tvOS, project: project, output: &output) {
+        } else if try project.configuration.supports(.tvOS, project: project, output: output) {
             buildOperatingSystem = .tvOS
         } else {
             buildOperatingSystem = .macOS
         }
 
-        let copyrightText = try copyright(for: outputSubdirectory, in: project, output: &output)
+        let copyrightText = try copyright(for: outputSubdirectory, in: project, output: output)
         try FileManager.default.do(in: project.location) {
-            try Jazzy.default.document(target: target, scheme: try project.xcodeScheme(output: &output), buildOperatingSystem: buildOperatingSystem, copyright: copyrightText, gitHubURL: try project.configuration.repositoryURL(), outputDirectory: outputSubdirectory, project: project, output: &output)
+            try Jazzy.default.document(target: target, scheme: try project.xcodeScheme(output: output), buildOperatingSystem: buildOperatingSystem, copyright: copyrightText, gitHubURL: try project.configuration.repositoryURL(), outputDirectory: outputSubdirectory, project: project, output: output)
         }
 
         let transformedMarker = ReadMe.skipInJazzy.replacingMatches(for: "\u{2D}\u{2D}".scalars, with: "&ndash;".scalars).replacingMatches(for: "<".scalars, with: "&lt;".scalars).replacingMatches(for: ">".scalars, with: "&gt;".scalars)
-        for url in try project.trackedFiles(output: &output) where url.is(in: outputSubdirectory) {
+        for url in try project.trackedFiles(output: output) where url.is(in: outputSubdirectory) {
             if let type = try? FileType(url: url),
                 type == .html {
                 try autoreleasepool {
@@ -112,12 +114,12 @@ enum Documentation {
                     }
 
                     file.contents = source
-                    try file.writeChanges(for: project, output: &output)
+                    try file.writeChanges(for: project, output: output)
                 }
             }
         }
 
-        validationStatus.passStep(message: UserFacingText({ localization in
+        validationStatus.passStep(message: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "Generated documentation for “" + StrictString(target) + "”."
@@ -125,36 +127,36 @@ enum Documentation {
         }))
     }
 
-    static func validateDocumentationCoverage(for target: String, in project: PackageRepository, outputDirectory: URL, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+    static func validateDocumentationCoverage(for target: String, in project: PackageRepository, outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
         let section = validationStatus.newSection()
 
-        print(UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "Checking documentation coverage for “" + StrictString(target) + "”..." + section.anchor
             }
-        }).resolved().formattedAsSectionHeader(), to: &output)
+        }).resolved().formattedAsSectionHeader())
 
         let warnings = try Jazzy.default.warnings(outputDirectory: subdirectory(for: target, in: outputDirectory))
 
         for warning in warnings {
-            print([
+            output.print([
                 warning.file.path(relativeTo: project.location) + ":" + String(warning.line?.inDigits() ?? ""), // [_Exempt from Test Coverage_] It is unknown what would cause a missing line number.
                 warning.symbol,
                 ""
-                ].joinAsLines().formattedAsError(), to: &output)
+                ].joinAsLines().formattedAsError())
         }
 
         if warnings.isEmpty {
-            validationStatus.passStep(message: UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+            validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Documentation coverage is complete for “" + StrictString(target) + "”."
                 }
             }))
         } else {
-            validationStatus.failStep(message: UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+            validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Documentation coverage is incomplete for “" + StrictString(target) + "”." + section.crossReference.resolved(for: localization)

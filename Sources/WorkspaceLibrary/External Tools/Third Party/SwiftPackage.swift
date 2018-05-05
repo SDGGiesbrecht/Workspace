@@ -16,11 +16,13 @@ import Foundation
 
 import SDGCommandLine
 
+import SDGSwift
+
 class SwiftPackage : ThirdPartyTool {
 
     // MARK: - Execution
 
-    final override class func execute(command: StrictString, version: Version, with arguments: [String], versionCheck: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: inout Command.Output) throws { // [_Exempt from Test Coverage_] Unreachable except with incompatible version of SwiftLint.
-        try Package(url: repositoryURL).execute(version, of: [command], with: arguments.map({ StrictString($0) }), cacheDirectory: cacheDirectory, output: &output) // [_Exempt from Test Coverage_] Unreachable except with incompatible version of SwiftLint.
+    final override class func execute(command: StrictString, version: Version, with arguments: [String], versionCheck: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: Command.Output) throws { // [_Exempt from Test Coverage_] Unreachable except with incompatible version of SwiftLint.
+        try Package(url: repositoryURL).execute(Build.version(version), of: [command], with: arguments, cacheDirectory: cacheDirectory, reportProgress: { output.print($0) }) // [_Exempt from Test Coverage_] Unreachable except with incompatible version of SwiftLint.
     }
 }

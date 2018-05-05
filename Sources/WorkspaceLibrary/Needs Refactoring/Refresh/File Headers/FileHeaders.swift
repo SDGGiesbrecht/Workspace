@@ -85,7 +85,7 @@ struct FileHeaders {
         return copyright
     }
 
-    static func refreshFileHeaders(output: inout Command.Output) throws {
+    static func refreshFileHeaders(output: Command.Output) throws {
 
         func key(_ name: String) -> String {
             return "[_\(name)_]"

@@ -31,11 +31,11 @@ extension Workspace {
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_: DirectArguments, options: Options, output: inout Command.Output) throws in
+        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_: DirectArguments, options: Options, output: Command.Output) throws in
             try executeAsStep(options: options, output: &output)
         })
 
-        static func executeAsStep(options: Options, output: inout Command.Output) throws {
+        static func executeAsStep(options: Options, output: Command.Output) throws {
 
             if ¬options.runAsXcodeBuildPhase {
                 print(UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in

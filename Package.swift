@@ -31,15 +31,17 @@ let package = Package(
         .target(name: "WorkspaceTool", dependencies: [.targetItem(name: "WorkspaceLibrary")]),
 
         .target(name: "WorkspaceLibrary", dependencies: [
-            //.productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
-            //.productItem(name: "SDGLogic", package: "SDGCornerstone"),
-            //.productItem(name: "SDGCollections", package: "SDGCornerstone"),
-            //.productItem(name: "SDGPersistence", package: "SDGCornerstone"),
-            //.productItem(name: "SDGLocalization", package: "SDGCornerstone"),
+            .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
+            .productItem(name: "SDGLogic", package: "SDGCornerstone"),
+            .productItem(name: "SDGCollections", package: "SDGCornerstone"),
+            .productItem(name: "SDGText", package: "SDGCornerstone"),
+            .productItem(name: "SDGPersistence", package: "SDGCornerstone"),
+            .productItem(name: "SDGLocalization", package: "SDGCornerstone"),
+            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .productItem(name: "SDGCommandLine", package: "SDGCommandLine"),
-            //.productItem(name: "SDGSwift", package: "SDGSwift"),
-            //.productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-            //.productItem(name: "SDGXcode", package: "SDGSwift")
+            .productItem(name: "SDGSwift", package: "SDGSwift"),
+            .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
+            .productItem(name: "SDGXcode", package: "SDGSwift")
             ]),
 
         .testTarget(name: "WorkspaceLibraryTests", dependencies: [.targetItem(name: "WorkspaceLibrary")]),

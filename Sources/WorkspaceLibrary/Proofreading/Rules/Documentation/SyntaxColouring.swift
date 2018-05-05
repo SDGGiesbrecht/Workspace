@@ -30,7 +30,7 @@ struct SyntaxColouring : Rule {
         }
     })
 
-    static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: inout Command.Output) {
+    static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
 
         var occurrenceCount: [String: Bool] = [:]
 

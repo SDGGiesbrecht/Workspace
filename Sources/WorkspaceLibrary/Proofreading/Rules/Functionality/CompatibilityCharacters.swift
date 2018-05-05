@@ -25,7 +25,7 @@ struct CompatibilityCharacters : Rule {
         }
     })
 
-    static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: inout Command.Output) {
+    static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
         for index in file.contents.scalars.indices {
             let scalar = file.contents.scalars[index]
             let character = String(scalar)

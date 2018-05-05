@@ -101,7 +101,7 @@ enum Licence : String {
 
     // MARK: - Licence Management
 
-    static func refreshLicence(output: inout Command.Output) throws {
+    static func refreshLicence(output: Command.Output) throws {
 
         guard let licence = Configuration.licence else {
 

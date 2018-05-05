@@ -16,14 +16,9 @@ import Foundation
 
 import SDGCommandLine
 
-typealias PackageRepository = _PackageRepository // Shared from SDGCommandLine.
+import SDGSwift
+
 extension PackageRepository {
-
-    // MARK: - Initialization
-
-    init(alreadyAt location: URL) {
-        self.init(_alreadyAt: location) // Shared from SDGCommandLine.
-    }
 
     // MARK: - Cache
 
@@ -54,12 +49,6 @@ extension PackageRepository {
         }
     }
 
-    // MARK: - Location
-
-    var location: URL {
-        return _location // Shared from SDGCommandLine.
-    }
-
     // MARK: - Configuration
 
     var configuration: Configuration {
@@ -68,13 +57,13 @@ extension PackageRepository {
 
     // MARK: - Miscellaneous Properties
 
-    func isWorkspaceProject(output: inout Command.Output) throws -> Bool {
+    func isWorkspaceProject(output: Command.Output) throws -> Bool {
         return try projectName(output: &output) == "Workspace"
     }
 
     // MARK: - Structure
 
-    private func packageStructure(output: inout Command.Output) throws -> (name: String, libraryProductTargets: [String], executableProducts: [String], targets: [(name: String, location: URL)]) {
+    private func packageStructure(output: Command.Output) throws -> (name: String, libraryProductTargets: [String], executableProducts: [String], targets: [(name: String, location: URL)]) {
         return try cached(in: &cache.packageStructure) {
             var result: (name: String, libraryProductTargets: [String], executableProducts: [String], targets: [(name: String, location: URL)])?
             try FileManager.default.do(in: location) {
@@ -84,21 +73,21 @@ extension PackageRepository {
         }
     }
 
-    func projectName(output: inout Command.Output) throws -> StrictString {
+    func projectName(output: Command.Output) throws -> StrictString {
         return StrictString(try packageName(output: &output))
     }
 
-    func packageName(output: inout Command.Output) throws -> String {
+    func packageName(output: Command.Output) throws -> String {
         return try packageStructure(output: &output).name
     }
 
-    func targets(output: inout Command.Output) throws -> [Target] {
+    func targets(output: Command.Output) throws -> [Target] {
         return try cached(in: &cache.targets) {
             let targetInformation = try packageStructure(output: &output).targets
             return targetInformation.map { Target(name: $0.name, sourceDirectory: $0.location) }
         }
     }
-    func targetsByName(output: inout Command.Output) throws -> [String: Target] {
+    func targetsByName(output: Command.Output) throws -> [String: Target] {
         return try cached(in: &cache.targetsByName) {
             let ordered = try targets(output: &output)
             var byName: [String: Target] = [:]
@@ -109,11 +98,11 @@ extension PackageRepository {
         }
     }
 
-    func libraryProductTargets(output: inout Command.Output) throws -> [String] {
+    func libraryProductTargets(output: Command.Output) throws -> [String] {
         return try packageStructure(output: &output).libraryProductTargets
     }
 
-    func executableTargets(output: inout Command.Output) throws -> [String] {
+    func executableTargets(output: Command.Output) throws -> [String] {
         return try packageStructure(output: &output).executableProducts
     }
 
@@ -131,7 +120,7 @@ extension PackageRepository {
         }
     }
 
-    func dependencies(output: inout Command.Output) throws -> [StrictString: Version] {
+    func dependencies(output: Command.Output) throws -> [StrictString: Version] {
         return try cached(in: &cache.dependencies) {
             var result: [StrictString: Version]?
             try FileManager.default.do(in: location) {
@@ -195,7 +184,7 @@ extension PackageRepository {
         }
     }
 
-    func trackedFiles(output: inout Command.Output) throws -> [URL] {
+    func trackedFiles(output: Command.Output) throws -> [URL] {
         return try cached(in: &cache.trackedFiles) {
             () -> [URL] in
 
@@ -217,7 +206,7 @@ extension PackageRepository {
         }
     }
 
-    func sourceFiles(output: inout Command.Output) throws -> [URL] {
+    func sourceFiles(output: Command.Output) throws -> [URL] {
         return try cached(in: &cache.sourceFiles) { () -> [URL] in
 
             let generatedURLs = [
@@ -242,25 +231,25 @@ extension PackageRepository {
 
     // MARK: - Scripts
 
-    func refreshScripts(output: inout Command.Output) throws {
+    func refreshScripts(output: Command.Output) throws {
         try Script.refreshRelevantScripts(for: self, output: &output)
     }
 
     // MARK: - Read‐Me
 
-    func refreshReadMe(output: inout Command.Output) throws {
+    func refreshReadMe(output: Command.Output) throws {
         try ReadMe.refreshReadMe(for: self, output: &output)
     }
 
     // MARK: - Continuous Integration
 
-    func refreshContinuousIntegration(output: inout Command.Output) throws {
+    func refreshContinuousIntegration(output: Command.Output) throws {
         try ContinuousIntegration.refreshContinuousIntegration(for: self, output: &output)
     }
 
     // MARK: - Resources
 
-    func resourceFiles(output: inout Command.Output) throws -> [URL] {
+    func resourceFiles(output: Command.Output) throws -> [URL] {
         return try cached(in: &cache.resourceFiles) { () -> [URL] in
             let locations = resourceDirectories()
 
@@ -274,7 +263,7 @@ extension PackageRepository {
         }
     }
 
-    func target(for resource: URL, output: inout Command.Output) throws -> Target {
+    func target(for resource: URL, output: Command.Output) throws -> Target {
         let path = resource.path(relativeTo: location).dropping(through: "/")
         guard let targetName = path.prefix(upTo: "/")?.contents else {
             throw Command.Error(description: UserFacingText<InterfaceLocalization>({ (localization) in
@@ -295,7 +284,7 @@ extension PackageRepository {
         return target
     }
 
-    func refreshResources(output: inout Command.Output) throws {
+    func refreshResources(output: Command.Output) throws {
 
         var targets: [Target: [URL]] = [:]
         for resource in try resourceFiles(output: &output) {
@@ -312,7 +301,7 @@ extension PackageRepository {
 
     // MARK: - Examples
 
-    func examples(output: inout Command.Output) throws -> [String: String] {
+    func examples(output: Command.Output) throws -> [String: String] {
         return try cached(in: &cache.examples) {
             return try Examples.examples(in: self, output: &output)
         }
@@ -320,12 +309,12 @@ extension PackageRepository {
 
     // MARK: - Documentation
 
-    func hasTargetsToDocument(output: inout Command.Output) throws -> Bool {
+    func hasTargetsToDocument(output: Command.Output) throws -> Bool {
         return ¬(try libraryProductTargets(output: &output)).isEmpty
     }
 
     #if !os(Linux)
-    func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+    func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
         for product in try libraryProductTargets(output: &output) {
             try autoreleasepool {
             try Documentation.document(target: product, for: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: &output)
@@ -333,7 +322,7 @@ extension PackageRepository {
         }
     }
 
-    func validateDocumentationCoverage(outputDirectory: URL, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+    func validateDocumentationCoverage(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
         for product in try libraryProductTargets(output: &output) {
             try autoreleasepool {
             try Documentation.validateDocumentationCoverage(for: product, in: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: &output)
@@ -354,7 +343,7 @@ extension PackageRepository {
         return result
     }
 
-    func xcodeScheme(output: inout Command.Output) throws -> String {
+    func xcodeScheme(output: Command.Output) throws -> String {
         var result: String = ""
         try FileManager.default.do(in: location) {
             result = try Xcode.default.scheme(output: &output)
@@ -366,7 +355,7 @@ extension PackageRepository {
 
     // MARK: - Actions
 
-    func delete(_ location: URL, output: inout Command.Output) {
+    func delete(_ location: URL, output: Command.Output) {
         if FileManager.default.fileExists(atPath: location.path, isDirectory: nil) {
             TextFile.reportDeleteOperation(from: location, in: self, output: &output)
             try? FileManager.default.removeItem(at: location)

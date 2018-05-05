@@ -43,7 +43,7 @@ extension Workspace {
             }
         }), type: ArgumentType.boolean)
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [runAsXcodeBuildPhase], execution: { (_: DirectArguments, options: Options, output: inout Command.Output) throws in
+        static let command = Command(name: name, description: description, directArguments: [], options: [runAsXcodeBuildPhase], execution: { (_: DirectArguments, options: Options, output: Command.Output) throws in
             var validationStatus = ValidationStatus()
             try executeAsStep(normalizingFirst: true, options: options, validationStatus: &validationStatus, output: &output)
 
@@ -52,7 +52,7 @@ extension Workspace {
             }
         })
 
-        static func executeAsStep(normalizingFirst: Bool, options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+        static func executeAsStep(normalizingFirst: Bool, options: Options, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
             try Workspace.Normalize.executeAsStep(options: options, output: &output) // So that SwiftLint’s trailing_whitespace doesn’t trigger.
 

@@ -16,7 +16,7 @@ import Foundation
 
 import SDGCommandLine
 
-func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: inout Command.Output) throws {
+func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: Command.Output) throws {
 
     var validationStatus = ValidationStatus()
 

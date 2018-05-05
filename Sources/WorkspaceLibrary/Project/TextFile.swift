@@ -16,6 +16,8 @@ import Foundation
 
 import SDGCommandLine
 
+import SDGSwift
+
 struct TextFile {
 
     // MARK: - Initialization
@@ -164,7 +166,7 @@ struct TextFile {
 
     // MARK: - Writing
 
-    static func reportWriteOperation(to location: URL, in repository: PackageRepository, output: inout Command.Output) {
+    static func reportWriteOperation(to location: URL, in repository: PackageRepository, output: Command.Output) {
         print(UserFacingDynamicText<InterfaceLocalization, String>({ (localization, path) in
             switch localization {
             case .englishCanada:
@@ -173,7 +175,7 @@ struct TextFile {
         }).resolved(using: location.path(relativeTo: repository.location)), to: &output)
     }
 
-    static func reportDeleteOperation(from location: URL, in repository: PackageRepository, output: inout Command.Output) {
+    static func reportDeleteOperation(from location: URL, in repository: PackageRepository, output: Command.Output) {
         print(UserFacingDynamicText<InterfaceLocalization, String>({ (localization, path) in
             switch localization {
             case .englishCanada:
@@ -182,7 +184,7 @@ struct TextFile {
         }).resolved(using: location.path(relativeTo: repository.location)), to: &output)
     }
 
-    func writeChanges(for repository: PackageRepository, output: inout Command.Output) throws {
+    func writeChanges(for repository: PackageRepository, output: Command.Output) throws {
         if hasChanged {
             TextFile.reportWriteOperation(to: location, in: repository, output: &output)
 

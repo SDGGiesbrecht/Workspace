@@ -34,7 +34,7 @@ extension Workspace.Validate {
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [ContinuousIntegration.Job.option], execution: { (_, options: Options, output: inout Command.Output) throws in
+        static let command = Command(name: name, description: description, directArguments: [], options: [ContinuousIntegration.Job.option], execution: { (_, options: Options, output: Command.Output) throws in
 
             try validate(job: options.job, against: Tests.buildJobs, for: options.project, output: &output)
 
@@ -45,13 +45,13 @@ extension Workspace.Validate {
             try validationStatus.reportOutcome(projectName: try options.project.projectName(output: &output), output: &output)
         })
 
-        static func job(_ job: ContinuousIntegration.Job, isRelevantTo project: PackageRepository, andAvailableJobs validJobs: Set<ContinuousIntegration.Job>, output: inout Command.Output) throws -> Bool {
+        static func job(_ job: ContinuousIntegration.Job, isRelevantTo project: PackageRepository, andAvailableJobs validJobs: Set<ContinuousIntegration.Job>, output: Command.Output) throws -> Bool {
             return try job ∈ validJobs
                 ∧ ((try job.isRequired(by: project, output: &output))
                     ∧ job.operatingSystem == OperatingSystem.current)
         }
 
-        static func validate(job: ContinuousIntegration.Job?, against validJobs: Set<ContinuousIntegration.Job>, for project: PackageRepository, output: inout Command.Output) throws {
+        static func validate(job: ContinuousIntegration.Job?, against validJobs: Set<ContinuousIntegration.Job>, for project: PackageRepository, output: Command.Output) throws {
             if let specified = job,
                 ¬(try Build.job(specified, isRelevantTo: project, andAvailableJobs: validJobs, output: &output)) {
                 throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization) in
@@ -63,7 +63,7 @@ extension Workspace.Validate {
             }
         }
 
-        static func executeAsStep(options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+        static func executeAsStep(options: Options, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
             for job in ContinuousIntegration.Job.cases
                 where try options.job.includes(job: job) ∧ (try Build.job(job, isRelevantTo: options.project, andAvailableJobs: Tests.buildJobs, output: &output)) {

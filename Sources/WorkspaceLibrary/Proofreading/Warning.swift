@@ -16,7 +16,7 @@ import SDGCommandLine
 
 protocol Warning : Rule {
     static var trigger: UserFacingText<InterfaceLocalization> { get }
-    static func message(for details: StrictString, in project: PackageRepository, output: inout Command.Output) throws -> UserFacingText<InterfaceLocalization>?
+    static func message(for details: StrictString, in project: PackageRepository, output: Command.Output) throws -> UserFacingText<InterfaceLocalization>?
 }
 
 let manualWarnings: [Warning.Type] = [
@@ -26,7 +26,7 @@ let manualWarnings: [Warning.Type] = [
 
 extension Warning {
 
-    static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: inout Command.Output) throws {
+    static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) throws {
         if file.location.path.hasSuffix("Documentation/Manual Warnings.md") { // [_Exempt from Test Coverage_]
             return
         }

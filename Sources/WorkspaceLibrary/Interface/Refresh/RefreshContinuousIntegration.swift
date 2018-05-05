@@ -32,7 +32,7 @@ extension Workspace.Refresh {
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, options: Options, output: inout Command.Output) throws in
+        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, options: Options, output: Command.Output) throws in
 
             print(UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
                 switch localization {

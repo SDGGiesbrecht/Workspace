@@ -14,6 +14,8 @@
 
 import Foundation
 
+import SDGControlFlow
+
 import SDGCommandLine
 
 enum Script : Int, IterableEnumeration {
@@ -90,7 +92,7 @@ enum Script : Int, IterableEnumeration {
 
     // MARK: - Refreshing
 
-    static func refreshRelevantScripts(for project: PackageRepository, output: inout Command.Output) throws {
+    static func refreshRelevantScripts(for project: PackageRepository, output: Command.Output) throws {
 
         for deprecated in Script.deprecatedFileNames {
             project.delete(project.location.appendingPathComponent(String(deprecated)), output: &output)
@@ -135,7 +137,7 @@ enum Script : Int, IterableEnumeration {
         return "gnome\u{2D}terminal \u{2D}e \u{22}bash \u{2D}\u{2D}login \u{2D}c \u{5C}\u{22}source ~/.bashrc; ./" + script + "\u{5C} \u{5C}(macOS\u{5C}).command; exec bash\u{5C}\u{22}\u{22}"
     }
 
-    func getWorkspace(andExecute command: StrictString, for project: PackageRepository, output: inout Command.Output) throws -> [StrictString] {
+    func getWorkspace(andExecute command: StrictString, for project: PackageRepository, output: Command.Output) throws -> [StrictString] {
         let command = command.appending(contentsOf: " $1 $2")
 
         if try project.isWorkspaceProject(output: &output) {
@@ -173,7 +175,7 @@ enum Script : Int, IterableEnumeration {
         }
     }
 
-    func source(for project: PackageRepository, output: inout Command.Output) throws -> StrictString {
+    func source(for project: PackageRepository, output: Command.Output) throws -> StrictString {
         var lines: [StrictString] = [
             stopOnFailure(),
             findRepository(),

@@ -30,7 +30,7 @@ struct MissingImplementation : Rule {
         }
     })
 
-    static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: inout Command.Output) {
+    static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
         for match in file.contents.scalars.matches(for: "\u{6E}otImplementedYet".scalars) {
             if ¬fromStartOfFile(to: match, in: file).hasSuffix("func ".scalars) {
                 reportViolation(in: file, at: match.range, message: message, status: status, output: &output)

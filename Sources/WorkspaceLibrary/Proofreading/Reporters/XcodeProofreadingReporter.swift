@@ -28,11 +28,11 @@ class XcodeProofreadingReporter : ProofreadingReporter {
 
     // MARK: - ProofreadingReporter
 
-    func reportParsing(file: String, to output: inout Command.Output) {
+    func reportParsing(file: String, to output: Command.Output) {
         // Unneeded.
     }
 
-    func report(violation: StyleViolation, to output: inout Command.Output) {
+    func report(violation: StyleViolation, to output: Command.Output) {
 
         let file = violation.file.contents
         let lines = file.lines

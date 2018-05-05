@@ -33,7 +33,7 @@ extension Workspace {
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, options: Options, output: inout Command.Output) throws in
+        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, options: Options, output: Command.Output) throws in
 
             #if os(Linux)
                 throw linuxJazzyError()
@@ -60,7 +60,7 @@ extension Workspace {
         })
 
         #if !os(Linux)
-        static func executeAsStep(outputDirectory: URL, options: Options, validationStatus: inout ValidationStatus, output: inout Command.Output) throws {
+        static func executeAsStep(outputDirectory: URL, options: Options, validationStatus: inout ValidationStatus, output: Command.Output) throws {
             try options.project.document(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: &output)
         }
         #endif

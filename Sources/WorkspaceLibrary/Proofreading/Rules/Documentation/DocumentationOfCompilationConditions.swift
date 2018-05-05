@@ -32,7 +32,7 @@ struct DocumentationOfCompilationConditions : Rule {
 
     static let markSearchToken = "MAR\u{4B}".scalars
 
-    static func check(file: TextFile, for conditionalCompilationToken: String, status: ProofreadingStatus, output: inout Command.Output) {
+    static func check(file: TextFile, for conditionalCompilationToken: String, status: ProofreadingStatus, output: Command.Output) {
         for match in file.contents.scalars.matches(for: conditionalCompilationToken.scalars) where
             ¬line(of: match, in: file).contains(markSearchToken)
             ∧ ¬line(after: match, in: file).contains(markSearchToken)
@@ -42,7 +42,7 @@ struct DocumentationOfCompilationConditions : Rule {
         }
     }
 
-    static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: inout Command.Output) {
+    static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
         if file.fileType == .swift {
             check(file: file, for: "\u{23}if", status: status, output: &output)
             check(file: file, for: "\u{23}else", status: status, output: &output)

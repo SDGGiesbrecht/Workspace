@@ -18,7 +18,7 @@ import SDGCommandLine
 
 enum Proofreading {
 
-    static func proofread(project: PackageRepository, reporter: ProofreadingReporter, output: inout Command.Output) throws -> Bool {
+    static func proofread(project: PackageRepository, reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
         let status = ProofreadingStatus(reporter: reporter)
 
         let disabledRules: Set<StrictString> = try project.configuration.disabledProofreadingRules()
@@ -49,7 +49,7 @@ enum Proofreading {
         return status.passing
     }
 
-    private static func proofreadWithSwiftLint(project: PackageRepository, status: ProofreadingStatus, forXcode: Bool, output: inout Command.Output) throws {
+    private static func proofreadWithSwiftLint(project: PackageRepository, status: ProofreadingStatus, forXcode: Bool, output: Command.Output) throws {
 
         #if os(Linux)
         // [_Workaround: SwiftLint requires elaborate proping on Linux. (swiftlint version 0.24.2)_]

@@ -19,14 +19,14 @@ import SDGCommandLine
 extension Workspace {
     enum Document {
 
-        private static let name = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "document"
             }
         })
 
-        private static let description = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "generates API documentation for each library product."
@@ -41,10 +41,10 @@ extension Workspace {
 
                 var validationStatus = ValidationStatus()
                 let outputDirectory = Documentation.defaultDocumentationDirectory(for: options.project)
-                try executeAsStep(outputDirectory: outputDirectory, options: options, validationStatus: &validationStatus, output: &output)
+                try executeAsStep(outputDirectory: outputDirectory, options: options, validationStatus: &validationStatus, output: output)
 
                 guard validationStatus.validatedSomething else {
-                    throw Command.Error(description: UserFacingText({(localization: InterfaceLocalization) in
+                    throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
                         case .englishCanada:
                             return [
@@ -54,14 +54,14 @@ extension Workspace {
                         }
                     }))
                 }
-                try validationStatus.reportOutcome(projectName: try options.project.projectName(output: &output), output: &output)
+                try validationStatus.reportOutcome(projectName: try options.project.projectName(output: output), output: output)
 
             #endif
         })
 
         #if !os(Linux)
         static func executeAsStep(outputDirectory: URL, options: Options, validationStatus: inout ValidationStatus, output: Command.Output) throws {
-            try options.project.document(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: &output)
+            try options.project.document(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
         }
         #endif
     }

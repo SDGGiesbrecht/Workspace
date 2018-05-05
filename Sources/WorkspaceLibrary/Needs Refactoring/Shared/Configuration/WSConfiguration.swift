@@ -12,7 +12,12 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+import SDGCollections
+
 import SDGCommandLine
+
+import SDGSwift
 
 extension Configuration {
 
@@ -330,7 +335,7 @@ extension Configuration {
                 currentLocalization = code
             } else {
                 guard let localization = currentLocalization else {
-                    throw Command.Error(description: UserFacingText<InterfaceLocalization>({ (localization) in
+                    throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ (localization) in
                         switch localization {
                         case .englishCanada:
                             return [

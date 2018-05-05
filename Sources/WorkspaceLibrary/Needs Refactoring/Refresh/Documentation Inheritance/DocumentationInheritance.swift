@@ -14,6 +14,9 @@
 
 import Foundation
 
+import SDGLogic
+import SDGCollections
+
 import SDGCommandLine
 
 struct DocumentationInheritance {
@@ -125,7 +128,7 @@ struct DocumentationInheritance {
                         }
                     }
 
-                    require { try file.write(output: &output) }
+                    require { try file.write(output: output) }
                 }
             }
         }

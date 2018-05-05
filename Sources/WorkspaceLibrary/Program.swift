@@ -27,6 +27,8 @@ public func run() { // [_Exempt from Test Coverage_]
     // [_Workaround: Make sure the correct repository gets loaded before moving into any other directory._]
     _ = Repository.packageRepository
 
-    SDGCommandLine.initialize(applicationIdentifier: "ca.solideogloria.Workspace", version: thisVersion, packageURL: workspacePackageURL)
+    ProcessInfo.applicationIdentifier = "ca.solideogloria.Workspace"
+    ProcessInfo.version = thisVersion
+    ProcessInfo.packageURL = workspacePackageURL
     Workspace.command.executeAsMain()
 }

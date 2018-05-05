@@ -14,6 +14,7 @@
 
 import Foundation
 
+import SDGLogic
 
 struct Environment {
 

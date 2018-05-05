@@ -58,7 +58,7 @@ extension PackageRepository {
     // MARK: - Miscellaneous Properties
 
     func isWorkspaceProject(output: Command.Output) throws -> Bool {
-        return try projectName(output: &output) == "Workspace"
+        return try projectName(output: output) == "Workspace"
     }
 
     // MARK: - Structure
@@ -67,29 +67,29 @@ extension PackageRepository {
         return try cached(in: &cache.packageStructure) {
             var result: (name: String, libraryProductTargets: [String], executableProducts: [String], targets: [(name: String, location: URL)])?
             try FileManager.default.do(in: location) {
-                result = try SwiftTool.default.packageStructure(output: &output)
+                result = try SwiftTool.default.packageStructure(output: output)
             }
             return result!
         }
     }
 
     func projectName(output: Command.Output) throws -> StrictString {
-        return StrictString(try packageName(output: &output))
+        return StrictString(try packageName(output: output))
     }
 
     func packageName(output: Command.Output) throws -> String {
-        return try packageStructure(output: &output).name
+        return try packageStructure(output: output).name
     }
 
     func targets(output: Command.Output) throws -> [Target] {
         return try cached(in: &cache.targets) {
-            let targetInformation = try packageStructure(output: &output).targets
+            let targetInformation = try packageStructure(output: output).targets
             return targetInformation.map { Target(name: $0.name, sourceDirectory: $0.location) }
         }
     }
     func targetsByName(output: Command.Output) throws -> [String: Target] {
         return try cached(in: &cache.targetsByName) {
-            let ordered = try targets(output: &output)
+            let ordered = try targets(output: output)
             var byName: [String: Target] = [:]
             for target in ordered {
                 byName[target.name] = target
@@ -99,14 +99,14 @@ extension PackageRepository {
     }
 
     func libraryProductTargets(output: Command.Output) throws -> [String] {
-        return try packageStructure(output: &output).libraryProductTargets
+        return try packageStructure(output: output).libraryProductTargets
     }
 
     func executableTargets(output: Command.Output) throws -> [String] {
-        return try packageStructure(output: &output).executableProducts
+        return try packageStructure(output: output).executableProducts
     }
 
-    static let resourceDirectoryName = UserFacingText<InterfaceLocalization>({ (localization) in
+    static let resourceDirectoryName = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Resources"
@@ -124,7 +124,7 @@ extension PackageRepository {
         return try cached(in: &cache.dependencies) {
             var result: [StrictString: Version]?
             try FileManager.default.do(in: location) {
-                result = try SwiftTool.default.dependencies(output: &output)
+                result = try SwiftTool.default.dependencies(output: output)
             }
             return result!
         }
@@ -141,7 +141,7 @@ extension PackageRepository {
                 failureReason = error
                 return false // Stop.
             }) else { // [_Exempt from Test Coverage_] It is unknown what circumstances would actually result in a `nil` enumerator being returned.
-                throw Command.Error(description: UserFacingText<InterfaceLocalization>({ (localization) in // [_Exempt from Test Coverage_]
+                throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ (localization) in // [_Exempt from Test Coverage_]
                     switch localization {
                     case .englishCanada: // [_Exempt from Test Coverage_]
                         return "Cannot enumerate the project files."
@@ -152,7 +152,7 @@ extension PackageRepository {
             var result: [URL] = []
             for object in enumerator {
                 guard let url = object as? URL else { // [_Exempt from Test Coverage_] It is unknown why something other than a URL would be returned.
-                    throw Command.Error(description: UserFacingText<InterfaceLocalization>({ (localization) in // [_Exempt from Test Coverage_]
+                    throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ (localization) in // [_Exempt from Test Coverage_]
                         switch localization {
                         case .englishCanada: // [_Exempt from Test Coverage_]
                             return StrictString("Unexpected \(type(of: object)) encountered while enumerating project files.")
@@ -190,7 +190,7 @@ extension PackageRepository {
 
             var ignoredURLs: [URL] = []
             try FileManager.default.do(in: location) {
-                ignoredURLs = try Git.default.ignoredFiles(output: &output)
+                ignoredURLs = try Git.default.ignoredFiles(output: output)
             }
             ignoredURLs.append(location.appendingPathComponent(".git"))
 
@@ -217,7 +217,7 @@ extension PackageRepository {
                 "Tests/Mock Projects" // To prevent treating them as Workspace source files for headers, etc.
                 ].map({ location.appendingPathComponent( String($0)) })
 
-            let result = try trackedFiles(output: &output).filter { (url) in
+            let result = try trackedFiles(output: output).filter { (url) in
                 for generatedURL in generatedURLs {
                     if url.is(in: generatedURL) {
                         return false
@@ -232,19 +232,19 @@ extension PackageRepository {
     // MARK: - Scripts
 
     func refreshScripts(output: Command.Output) throws {
-        try Script.refreshRelevantScripts(for: self, output: &output)
+        try Script.refreshRelevantScripts(for: self, output: output)
     }
 
     // MARK: - Read‐Me
 
     func refreshReadMe(output: Command.Output) throws {
-        try ReadMe.refreshReadMe(for: self, output: &output)
+        try ReadMe.refreshReadMe(for: self, output: output)
     }
 
     // MARK: - Continuous Integration
 
     func refreshContinuousIntegration(output: Command.Output) throws {
-        try ContinuousIntegration.refreshContinuousIntegration(for: self, output: &output)
+        try ContinuousIntegration.refreshContinuousIntegration(for: self, output: output)
     }
 
     // MARK: - Resources
@@ -253,7 +253,7 @@ extension PackageRepository {
         return try cached(in: &cache.resourceFiles) { () -> [URL] in
             let locations = resourceDirectories()
 
-            let result = try sourceFiles(output: &output).filter { (file) in
+            let result = try sourceFiles(output: output).filter { (file) in
                 for directory in locations where file.is(in: directory) {
                     return true
                 } // [_Exempt from Test Coverage_] [_Workaround: False coverage result. (Swift 4.0.2)_]
@@ -266,15 +266,15 @@ extension PackageRepository {
     func target(for resource: URL, output: Command.Output) throws -> Target {
         let path = resource.path(relativeTo: location).dropping(through: "/")
         guard let targetName = path.prefix(upTo: "/")?.contents else {
-            throw Command.Error(description: UserFacingText<InterfaceLocalization>({ (localization) in
+            throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ (localization) in
                 switch localization {
                 case .englishCanada:
                     return StrictString("No target specified for resource:\n\(path)\nFiles must be in subdirectories named corresponding to the intended target.")
                 }
             }))
         }
-        guard let target = (try targetsByName(output: &output))[String(targetName)] else {
-            throw Command.Error(description: UserFacingText<InterfaceLocalization>({ (localization) in
+        guard let target = (try targetsByName(output: output))[String(targetName)] else {
+            throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ (localization) in
                 switch localization {
                 case .englishCanada:
                     return StrictString("No target named “\(targetName)”.\nResources must be in subdirectories named corresponding to the intended target.")
@@ -287,14 +287,14 @@ extension PackageRepository {
     func refreshResources(output: Command.Output) throws {
 
         var targets: [Target: [URL]] = [:]
-        for resource in try resourceFiles(output: &output) {
-            let intendedTarget = try target(for: resource, output: &output)
+        for resource in try resourceFiles(output: output) {
+            let intendedTarget = try target(for: resource, output: output)
             targets[intendedTarget, default: []].append(resource)
         }
 
         for (target, resources) in targets {
             try autoreleasepool {
-                try target.refresh(resources: resources, from: self, output: &output)
+                try target.refresh(resources: resources, from: self, output: output)
             }
         }
     }
@@ -303,29 +303,29 @@ extension PackageRepository {
 
     func examples(output: Command.Output) throws -> [String: String] {
         return try cached(in: &cache.examples) {
-            return try Examples.examples(in: self, output: &output)
+            return try Examples.examples(in: self, output: output)
         }
     }
 
     // MARK: - Documentation
 
     func hasTargetsToDocument(output: Command.Output) throws -> Bool {
-        return ¬(try libraryProductTargets(output: &output)).isEmpty
+        return ¬(try libraryProductTargets(output: output)).isEmpty
     }
 
     #if !os(Linux)
     func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
-        for product in try libraryProductTargets(output: &output) {
+        for product in try libraryProductTargets(output: output) {
             try autoreleasepool {
-            try Documentation.document(target: product, for: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: &output)
+            try Documentation.document(target: product, for: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
             }
         }
     }
 
     func validateDocumentationCoverage(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
-        for product in try libraryProductTargets(output: &output) {
+        for product in try libraryProductTargets(output: output) {
             try autoreleasepool {
-            try Documentation.validateDocumentationCoverage(for: product, in: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: &output)
+            try Documentation.validateDocumentationCoverage(for: product, in: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
             }
         }
     }
@@ -346,7 +346,7 @@ extension PackageRepository {
     func xcodeScheme(output: Command.Output) throws -> String {
         var result: String = ""
         try FileManager.default.do(in: location) {
-            result = try Xcode.default.scheme(output: &output)
+            result = try Xcode.default.scheme(output: output)
         }
         return result
     }
@@ -357,7 +357,7 @@ extension PackageRepository {
 
     func delete(_ location: URL, output: Command.Output) {
         if FileManager.default.fileExists(atPath: location.path, isDirectory: nil) {
-            TextFile.reportDeleteOperation(from: location, in: self, output: &output)
+            TextFile.reportDeleteOperation(from: location, in: self, output: output)
             try? FileManager.default.removeItem(at: location)
             resetCache(debugReason: location.lastPathComponent)
         }

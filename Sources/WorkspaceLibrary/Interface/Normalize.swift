@@ -17,14 +17,14 @@ import SDGCommandLine
 extension Workspace {
     enum Normalize {
 
-        private static let name = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "normalize"
             }
         })
 
-        private static let description = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "normalizes the current project’s files by removing trailing whitespace, applying Unix newlines and performing canonical decomposition."
@@ -32,21 +32,21 @@ extension Workspace {
         })
 
         static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_: DirectArguments, options: Options, output: Command.Output) throws in
-            try executeAsStep(options: options, output: &output)
+            try executeAsStep(options: options, output: output)
         })
 
         static func executeAsStep(options: Options, output: Command.Output) throws {
 
             if ¬options.runAsXcodeBuildPhase {
-                print(UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+                output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
                         return StrictString("Normalizing files...")
                     }
-                }).resolved().formattedAsSectionHeader(), to: &output)
+                }).resolved().formattedAsSectionHeader())
             }
 
-            try Normalization.normalize(project: options.project, output: &output)
+            try Normalization.normalize(project: options.project, output: output)
         }
     }
 }

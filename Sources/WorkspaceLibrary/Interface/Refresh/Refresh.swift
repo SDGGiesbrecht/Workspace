@@ -17,14 +17,14 @@ import SDGCommandLine
 extension Workspace {
     enum Refresh {
 
-        private static let name = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "refresh"
             }
         })
 
-        private static let description = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "refreshes the project by updating its components and readying it for development."

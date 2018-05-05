@@ -14,6 +14,8 @@
 
 import Foundation
 
+import SDGSwift
+
 import SDGCommandLine
 
 struct Tests {
@@ -78,12 +80,12 @@ struct Tests {
 
         let section = validationStatus.newSection()
 
-        print(UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        print(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "Checking build for " + englishName(for: job) + "..." + section.anchor
             }
-        }).resolved().formattedAsSectionHeader(), to: &output)
+        }).resolved().formattedAsSectionHeader(), to: output)
 
         try FileManager.default.do(in: project.location) {
             do {
@@ -102,24 +104,24 @@ struct Tests {
                     #if os(Linux)
                     unreachable()
                     #else
-                    let scheme = try Xcode.default.scheme(output: &output)
+                    let scheme = try Xcode.default.scheme(output: output)
                     buildCommand = { output in
-                        return try Xcode.default.build(scheme: scheme, for: buildSDK(for: job), output: &output)
+                        return try Xcode.default.build(scheme: scheme, for: buildSDK(for: job), output: output)
                     }
                     #endif
                 case .miscellaneous, .documentation, .deployment:
                     unreachable()
                 }
 
-                if try buildCommand(&output) {
-                    validationStatus.passStep(message: UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+                if try buildCommand(output) {
+                    validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
                         case .englishCanada:
                             return "There are no compiler warnings for " + englishName(for: job) + "."
                         }
                     }))
                 } else {
-                    validationStatus.failStep(message: UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+                    validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
                         case .englishCanada:
                             return "There are compiler warnings for " + englishName(for: job) + "." + section.crossReference.resolved(for: localization)
@@ -127,7 +129,7 @@ struct Tests {
                     }))
                 }
             } catch { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.2.
-                validationStatus.failStep(message: UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in // [_Exempt from Test Coverage_]
+                validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in // [_Exempt from Test Coverage_]
                     switch localization {
                     case .englishCanada: // [_Exempt from Test Coverage_]
                         return "Build failed for " + englishName(for: job) + "." + section.crossReference.resolved(for: localization)
@@ -141,7 +143,7 @@ struct Tests {
 
         let section = validationStatus.newSection()
 
-        print(UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        print(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 var name = job.englishTargetOperatingSystemName
@@ -150,7 +152,7 @@ struct Tests {
                 }
                 return "Testing on " + englishName(for: job) + "..." + section.anchor
             }
-        }).resolved().formattedAsSectionHeader(), to: &output)
+        }).resolved().formattedAsSectionHeader(), to: output)
 
         try FileManager.default.do(in: project.location) {
 
@@ -176,24 +178,24 @@ struct Tests {
                 #if os(Linux)
                 unreachable()
                 #else
-                let scheme = try Xcode.default.scheme(output: &output)
+                let scheme = try Xcode.default.scheme(output: output)
                 testCommand = { output in
-                    return Xcode.default.test(scheme: scheme, on: testSDK(for: job), output: &output)
+                    return Xcode.default.test(scheme: scheme, on: testSDK(for: job), output: output)
                 }
                 #endif
             case .miscellaneous, .documentation, .deployment:
                 unreachable()
             }
 
-            if testCommand(&output) {
-                validationStatus.passStep(message: UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+            if testCommand(output) {
+                validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
                         return "Tests pass on " + englishName(for: job) + "."
                     }
                 }))
             } else {
-                validationStatus.failStep(message: UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+                validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
                         return "Tests fail on " + englishName(for: job) + "." + section.crossReference.resolved(for: localization)
@@ -211,11 +213,11 @@ struct Tests {
             unsetenv(DXcode.skipProofreadingEnvironmentVariable)
         }
 
-        let scheme = try Xcode.default.scheme(output: &output)
+        let scheme = try Xcode.default.scheme(output: output)
 
-        let allTargets = try project.targets(output: &output).map({ $0.name })
+        let allTargets = try project.targets(output: output).map({ $0.name })
         // [_Workaround: The list of libraries (product or otherwise) should be retrieved from the package manager directly instead. (SDGCommandLine 0.1.4)_]
-        let executables = Set(try project.executableTargets(output: &output))
+        let executables = Set(try project.executableTargets(output: output))
         let validTargets = allTargets.filter { ¬$0.scalars.contains("Tests".scalars) ∧ $0 ∉ executables ∪ ["test‐ios‐simulator", "test‐tvos‐simulator"] }
 
         for target in validTargets {
@@ -223,17 +225,17 @@ struct Tests {
 
                 let section = validationStatus.newSection()
 
-                print(UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+                print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
                         let name = job.englishTargetOperatingSystemName
                         return StrictString("Checking test coverage for “\(target)” on \(name)...") + section.anchor
                     }
-                }).resolved().formattedAsSectionHeader(), to: &output)
+                }).resolved().formattedAsSectionHeader(), to: output)
 
-                let report = try Xcode.default.coverageData(for: target, of: scheme, on: testSDK(for: job), output: &output)
-                if try validate(coverageReport: report, for: project, output: &output) {
-                    validationStatus.passStep(message: UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+                let report = try Xcode.default.coverageData(for: target, of: scheme, on: testSDK(for: job), output: output)
+                if try validate(coverageReport: report, for: project, output: output) {
+                    validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
                         case .englishCanada:
                             let name = job.englishTargetOperatingSystemName
@@ -241,7 +243,7 @@ struct Tests {
                         }
                     }))
                 } else { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.2.
-                    validationStatus.failStep(message: UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in // [_Exempt from Test Coverage_]
+                    validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in // [_Exempt from Test Coverage_]
                         switch localization {
                         case .englishCanada: // [_Exempt from Test Coverage_]
                             let name = job.englishTargetOperatingSystemName
@@ -319,7 +321,7 @@ struct Tests {
                     URL(fileURLWithPath: file).path(relativeTo: project.location),
                     sourceLine,
                     errorLine
-                    ].joinAsLines().formattedAsError().separated(), to: &output)
+                    ].joinAsLines().formattedAsError().separated(), to: output)
             }
         }
 

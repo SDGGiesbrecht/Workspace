@@ -16,14 +16,14 @@ import SDGCommandLine
 
 public enum Workspace {
 
-    private static let name = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+    private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
         case .englishCanada:
             return "workspace"
         }
     })
 
-    private static let description = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+    private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
         case .englishCanada:
             return "automates management of Swift projects."

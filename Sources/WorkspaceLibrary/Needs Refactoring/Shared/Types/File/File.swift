@@ -14,6 +14,10 @@
 
 import Foundation
 
+import SDGLogic
+import SDGCollections
+import SDGText
+
 import SDGCommandLine
 
 struct File {
@@ -96,7 +100,7 @@ struct File {
     // MARK: - Writing
 
     func write(output: Command.Output) throws {
-        try textFile.writeChanges(for: Repository.packageRepository, output: &output)
+        try textFile.writeChanges(for: Repository.packageRepository, output: output)
     }
 
     // MARK: - Handling Parse Errors

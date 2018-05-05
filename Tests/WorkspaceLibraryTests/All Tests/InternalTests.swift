@@ -86,9 +86,9 @@ class InternalTests : TestCase {
         ]
 
         XCTAssertErrorFree {
-            _ = try Command(name: UserFacingText<InterfaceLocalization>({ _ in "" }), description: UserFacingText({ _ in "" }), directArguments: [], options: [], execution: { (_, _, output: Command.Output) in
+            _ = try Command(name: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }), description: UserFacingText({ _ in "" }), directArguments: [], options: [], execution: { (_, _, output: Command.Output) in
 
-                let tracked = try PackageRepository(alreadyAt: repositoryRoot).trackedFiles(output: &output)
+                let tracked = try PackageRepository(alreadyAt: repositoryRoot).trackedFiles(output: output)
                 let relative = tracked.map { $0.path(relativeTo: repositoryRoot) }
                 let unexpected = relative.filter { path in
 

@@ -15,7 +15,7 @@
 import SDGCommandLine
 
 protocol Rule {
-    static var name: UserFacingText<InterfaceLocalization> { get }
+    static var name: UserFacing<StrictString, InterfaceLocalization> { get }
     static var noticeOnly: Bool { get }
     static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) throws
 }
@@ -30,8 +30,8 @@ extension Rule {
 
     // MARK: - Reporting
 
-    static func reportViolation(in file: TextFile, at location: Range<String.ScalarView.Index>, replacementSuggestion: StrictString? = nil, message: UserFacingText<InterfaceLocalization>, status: ProofreadingStatus, output: Command.Output) {
-        status.report(violation: StyleViolation(in: file, at: location, replacementSuggestion: replacementSuggestion, noticeOnly: noticeOnly, ruleIdentifier: Self.name, message: message), to: &output)
+    static func reportViolation(in file: TextFile, at location: Range<String.ScalarView.Index>, replacementSuggestion: StrictString? = nil, message: UserFacing<StrictString, InterfaceLocalization>, status: ProofreadingStatus, output: Command.Output) {
+        status.report(violation: StyleViolation(in: file, at: location, replacementSuggestion: replacementSuggestion, noticeOnly: noticeOnly, ruleIdentifier: Self.name, message: message), to: output)
     }
 
     // MARK: - Parsing Utilities

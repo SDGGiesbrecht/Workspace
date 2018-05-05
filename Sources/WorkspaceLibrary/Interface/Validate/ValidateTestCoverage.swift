@@ -14,20 +14,24 @@
 
 import Foundation
 
+import SDGControlFlow
+import SDGLogic
+import SDGCollections
+
 import SDGCommandLine
 
 extension Workspace.Validate {
 
     enum TestCoverage {
 
-        private static let name = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "test‐coverage"
             }
         })
 
-        private static let description = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "validates test coverage, checking that every code path is reached by the project’s tests."
@@ -36,19 +40,19 @@ extension Workspace.Validate {
 
         static let command = Command(name: name, description: description, directArguments: [], options: [ContinuousIntegration.Job.option], execution: { (_, options: Options, output: Command.Output) throws in
 
-            try Build.validate(job: options.job, against: Tests.coverageJobs, for: options.project, output: &output)
+            try Build.validate(job: options.job, against: Tests.coverageJobs, for: options.project, output: output)
 
             var validationStatus = ValidationStatus()
 
-            try executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
+            try executeAsStep(options: options, validationStatus: &validationStatus, output: output)
 
-            try validationStatus.reportOutcome(projectName: try options.project.projectName(output: &output), output: &output)
+            try validationStatus.reportOutcome(projectName: try options.project.projectName(output: output), output: output)
         })
 
         static func executeAsStep(options: Options, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
             for job in ContinuousIntegration.Job.cases
-                where try options.job.includes(job: job) ∧ (try Build.job(job, isRelevantTo: options.project, andAvailableJobs: Tests.coverageJobs, output: &output)) {
+                where try options.job.includes(job: job) ∧ (try Build.job(job, isRelevantTo: options.project, andAvailableJobs: Tests.coverageJobs, output: output)) {
                     try autoreleasepool {
 
                         if try options.project.configuration.shouldSkipSimulator(),
@@ -63,8 +67,8 @@ extension Workspace.Validate {
                             return // and continue loop.
                         }
 
-                        try Tests.test(options.project, on: job, validationStatus: &validationStatus, output: &output)
-                        try Tests.validateCodeCoverage(for: options.project, on: job, validationStatus: &validationStatus, output: &output)
+                        try Tests.test(options.project, on: job, validationStatus: &validationStatus, output: output)
+                        try Tests.validateCodeCoverage(for: options.project, on: job, validationStatus: &validationStatus, output: output)
                     }
             }
         }

@@ -14,7 +14,12 @@
 
 import Foundation
 
+import SDGLogic
+import SDGCollections
+
 import SDGCommandLine
+
+import SDGSwift
 
 struct Examples {
 
@@ -22,7 +27,7 @@ struct Examples {
 
         var list: [String: String] = [:]
 
-        for url in try project.sourceFiles(output: &output) {
+        for url in try project.sourceFiles(output: output) {
             autoreleasepool {
 
                 if let file = try? TextFile(alreadyAt: url) {
@@ -130,7 +135,7 @@ struct Examples {
                             syntaxError()
                         }
                         let exampleName = String(details[colon.upperBound...])
-                        guard let example = try Repository.packageRepository.examples(output: &output)[exampleName] else {
+                        guard let example = try Repository.packageRepository.examples(output: output)[exampleName] else {
                             fatalError(message: [
                                 "There are no examples named “\(exampleName)”."
                                 ])
@@ -173,7 +178,7 @@ struct Examples {
                         }
                     }
 
-                    require { try file.write(output: &output) }
+                    require { try file.write(output: output) }
                 }
             }
         }

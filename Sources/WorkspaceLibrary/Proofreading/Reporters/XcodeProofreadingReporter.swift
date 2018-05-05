@@ -46,6 +46,6 @@ class XcodeProofreadingReporter : ProofreadingReporter {
         let utf16ViolationStart = violation.range.lowerBound.samePosition(in: file.utf16)!
         let column: Int = file.utf16.distance(from: utf16LineStart, to: utf16ViolationStart) + 1
 
-        print("\(path):\(lineNumber):\(column): warning: \(violation.message.resolved()) (\(violation.ruleIdentifier.resolved()))", to: &output)
+        print("\(path):\(lineNumber):\(column): warning: \(violation.message.resolved()) (\(violation.ruleIdentifier.resolved()))", to: output)
     }
 }

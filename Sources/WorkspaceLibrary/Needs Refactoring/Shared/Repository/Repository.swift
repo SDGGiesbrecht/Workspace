@@ -16,11 +16,13 @@ import Foundation
 
 import SDGCommandLine
 
+import SDGSwift
+
 struct Repository {
 
     // MARK: - Bridging
 
-    static let packageRepository = PackageRepository(alreadyAt: URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
+    static let packageRepository = PackageRepository(at: URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
 
     static func paths(from urls: [URL]) -> [RelativePath] {
         return urls.map { (url) in
@@ -30,7 +32,7 @@ struct Repository {
 
     static var standInOutput: Command.Output = {
         var result: Command.Output?
-        _ = try? Command(name: UserFacingText<InterfaceLocalization>({ _ in "" }), description: UserFacingText<InterfaceLocalization>({ _ in "" }), directArguments: [], options: [], execution: { (_, _, output: Command.Output) in
+        _ = try? Command(name: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }), description: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }), directArguments: [], options: [], execution: { (_, _, output: Command.Output) in
             result = output
         }).execute(with: [])
         return result!
@@ -51,12 +53,12 @@ struct Repository {
     }
 
     static var trackedFiles: [RelativePath] {
-        let urls = require { try packageRepository.trackedFiles(output: &standInOutput) }
+        let urls = require { try packageRepository.trackedFiles(output: standInOutput) }
         return paths(from: urls)
     }
 
     static var sourceFiles: [RelativePath] {
-        let urls = require { try packageRepository.sourceFiles(output: &standInOutput) }
+        let urls = require { try packageRepository.sourceFiles(output: standInOutput) }
         return paths(from: urls)
     }
 
@@ -164,7 +166,7 @@ struct Repository {
     static func linkedRepository(from url: URL) -> PackageRepository {
         let name = Repository.nameOfLinkedRepository(atURL: url.absoluteString)
         let repositoryLocation = URL(fileURLWithPath: linkedRepository(named: name).string)
-        let repository = PackageRepository(alreadyAt: repositoryLocation)
+        let repository = PackageRepository(at: repositoryLocation)
         return repository
     }
 

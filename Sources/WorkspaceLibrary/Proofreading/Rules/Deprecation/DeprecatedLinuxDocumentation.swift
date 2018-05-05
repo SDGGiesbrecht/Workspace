@@ -16,14 +16,14 @@ import SDGCommandLine
 
 struct DeprecatedLinuxDocumentation : Rule {
 
-    static let name = UserFacingText<InterfaceLocalization>({ (localization) in
+    static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Deprecated Linux Documentation"
         }
     })
 
-    static let message = UserFacingText<InterfaceLocalization>({ (localization) in
+    static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Special compilation conditions are no longer necessary for Linux documentation."
@@ -32,7 +32,7 @@ struct DeprecatedLinuxDocumentation : Rule {
 
     static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
         for match in file.contents.scalars.matches(for: "\u{4C}inuxDocs".scalars) {
-            reportViolation(in: file, at: match.range, message: message, status: status, output: &output)
+            reportViolation(in: file, at: match.range, message: message, status: status, output: output)
         }
     }
 }

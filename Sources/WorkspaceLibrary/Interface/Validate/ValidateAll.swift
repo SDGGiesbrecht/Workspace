@@ -18,14 +18,14 @@ extension Workspace.Validate {
 
     enum All {
 
-        private static let name = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "all"
             }
         })
 
-        private static let description = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "performs all configured validation checks."
@@ -35,7 +35,7 @@ extension Workspace.Validate {
         static let command = Command(name: name, description: description, directArguments: [], options: [
             ContinuousIntegration.Job.option
             ], execution: { (arguments: DirectArguments, options: Options, output: Command.Output) throws in
-            try runValidate(andExit: true, arguments: arguments, options: options, output: &output)
+            try runValidate(andExit: true, arguments: arguments, options: options, output: output)
         })
     }
 }

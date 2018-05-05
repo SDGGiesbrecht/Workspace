@@ -16,14 +16,14 @@ import SDGCommandLine
 
 struct ParametersStyle : Rule {
 
-    static let name = UserFacingText<InterfaceLocalization>({ (localization) in
+    static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Parameter Style"
         }
     })
 
-    static let message = UserFacingText<InterfaceLocalization>({ (localization) in
+    static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Parameters should be grouped under a single callout."
@@ -33,7 +33,7 @@ struct ParametersStyle : Rule {
     static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
         if file.fileType == .swift {
             for match in file.contents.scalars.matches(for: "//\u{2F} \u{2D} Parameter ".scalars) {
-                reportViolation(in: file, at: match.range, message: message, status: status, output: &output)
+                reportViolation(in: file, at: match.range, message: message, status: status, output: output)
             }
         }
     }

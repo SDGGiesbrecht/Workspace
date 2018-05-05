@@ -55,10 +55,10 @@ enum OperatingSystem : Int, IterableEnumeration {
 
     // MARK: - Name
 
-    var isolatedName: UserFacingText<ContentLocalization> {
+    var isolatedName: UserFacing<StrictString, ContentLocalization> {
         switch self {
         case .macOS:
-            return UserFacingText({ (localization) in
+            return UserFacing({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .françaisFrance:
                     return "macOS"
@@ -69,7 +69,7 @@ enum OperatingSystem : Int, IterableEnumeration {
                 }
             })
         case .linux:
-            return UserFacingText({ (localization) in
+            return UserFacing({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .françaisFrance:
                     return "Linux"
@@ -80,7 +80,7 @@ enum OperatingSystem : Int, IterableEnumeration {
                 }
             })
         case .iOS:
-            return UserFacingText({ (localization) in
+            return UserFacing({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .françaisFrance:
                     return "iOS"
@@ -91,7 +91,7 @@ enum OperatingSystem : Int, IterableEnumeration {
                 }
             })
         case .watchOS:
-            return UserFacingText({ (localization) in
+            return UserFacing({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .françaisFrance:
                     return "watchOS"
@@ -102,7 +102,7 @@ enum OperatingSystem : Int, IterableEnumeration {
                 }
             })
         case .tvOS:
-            return UserFacingText({ (localization) in
+            return UserFacing({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .françaisFrance:
                     return "tvOS"

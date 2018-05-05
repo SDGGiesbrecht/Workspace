@@ -18,7 +18,7 @@ import SDGCommandLine
 
 struct Mark : Rule {
 
-    static let name = UserFacingText<InterfaceLocalization>({ (localization) in
+    static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Mark"
@@ -27,7 +27,7 @@ struct Mark : Rule {
 
     static let expectedSyntax: StrictString = "/\u{2F} MAR\u{4B}: \u{2D} "
 
-    static let message = UserFacingText<InterfaceLocalization>({ (localization) in
+    static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return StrictString("Incomplete heading syntax. Use “\(expectedSyntax)”.")
@@ -80,7 +80,7 @@ struct Mark : Rule {
                 }
 
                 if errorExists {
-                    reportViolation(in: file, at: errorStart ..< errorEnd, replacementSuggestion: expectedSyntax, message: message, status: status, output: &output)
+                    reportViolation(in: file, at: errorStart ..< errorEnd, replacementSuggestion: expectedSyntax, message: message, status: status, output: output)
                 }
             }
         }

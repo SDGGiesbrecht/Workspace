@@ -14,6 +14,8 @@
 
 import Foundation
 
+import SDGLogic
+
 import SDGCommandLine
 
 struct ContributingInstructions {
@@ -180,7 +182,7 @@ struct ContributingInstructions {
             Configuration.contributingInstructions
             ].joinAsLines()
 
-        body = body.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.projectName(output: &output)))
+        body = body.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.projectName(output: output)))
 
         var administrators = Configuration.administrators
         var administratorList: String
@@ -202,15 +204,15 @@ struct ContributingInstructions {
 
         var contributing = File(possiblyAt: contributingInstructionsPath)
         contributing.body = body
-        require { try contributing.write(output: &output) }
+        require { try contributing.write(output: output) }
 
         var issue = File(possiblyAt: issueTemplatePath)
         issue.contents = Configuration.issueTemplate
-        require { try issue.write(output: &output) }
+        require { try issue.write(output: output) }
 
         var pullRequest = File(possiblyAt: pullRequestTemplatePath)
         pullRequest.contents = Configuration.pullRequestTemplate
-        require { try pullRequest.write(output: &output) }
+        require { try pullRequest.write(output: output) }
 
         // Remove deprecated.
 
@@ -229,11 +231,11 @@ struct ContributingInstructions {
 
                     if ¬printedHeader {
                         printedHeader = true
-                        print("Cancelling contributing instruction management...".formattedAsSectionHeader(), to: &output)
+                        output.print("Cancelling contributing instruction management...".formattedAsSectionHeader())
                     }
 
                     file.contents.removeSubrange(range)
-                    try? file.write(output: &output)
+                    try? file.write(output: output)
                 }
             }
         }

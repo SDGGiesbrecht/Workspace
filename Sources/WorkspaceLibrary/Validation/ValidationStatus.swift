@@ -59,14 +59,14 @@ struct ValidationStatus {
     }
 
     func reportOutcome(projectName: StrictString, output: Command.Output) throws {
-        print(StrictString(summary.joined(separator: "\n".scalars)).separated(), to: &output)
+        print(StrictString(summary.joined(separator: "\n".scalars)).separated(), to: output)
         if passing {
             print(UserFacingText({ (localization: InterfaceLocalization) in
                 switch localization {
                 case .englishCanada:
                     return "“" + projectName + "” passes validation."
                 }
-            }).resolved().formattedAsSuccess().separated(), to: &output)
+            }).resolved().formattedAsSuccess().separated(), to: output)
         } else {
             throw Command.Error(description: UserFacingText({ (localization: InterfaceLocalization) in
                 switch localization {

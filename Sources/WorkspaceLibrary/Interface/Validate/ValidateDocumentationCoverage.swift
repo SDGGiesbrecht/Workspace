@@ -14,20 +14,22 @@
 
 import Foundation
 
+import SDGLogic
+
 import SDGCommandLine
 
 extension Workspace.Validate {
 
     enum DocumentationCoverage {
 
-        private static let name = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "documentation‐coverage"
             }
         })
 
-        private static let description = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "validates documentation coverage, checking that every public symbol in every library product is documented."
@@ -41,10 +43,10 @@ extension Workspace.Validate {
             #else
 
                 var validationStatus = ValidationStatus()
-                try executeAsStepDocumentingFirst(options: options, validationStatus: &validationStatus, output: &output)
+                try executeAsStepDocumentingFirst(options: options, validationStatus: &validationStatus, output: output)
 
                 if ¬validationStatus.validatedSomething {
-                    validationStatus.passStep(message: UserFacingText({(localization: InterfaceLocalization) in
+                    validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
                         case .englishCanada:
                             return "No library products to document."
@@ -52,7 +54,7 @@ extension Workspace.Validate {
                     }))
                 }
 
-                try validationStatus.reportOutcome(projectName: try options.project.projectName(output: &output), output: &output)
+                try validationStatus.reportOutcome(projectName: try options.project.projectName(output: output), output: output)
 
             #endif
         })
@@ -77,15 +79,15 @@ extension Workspace.Validate {
                 }
             }
 
-            try Workspace.Document.executeAsStep(outputDirectory: outputDirectory, options: options, validationStatus: &validationStatus, output: &output)
+            try Workspace.Document.executeAsStep(outputDirectory: outputDirectory, options: options, validationStatus: &validationStatus, output: output)
 
-            try executeAsStep(outputDirectory: outputDirectory, options: options, validationStatus: &validationStatus, output: &output)
+            try executeAsStep(outputDirectory: outputDirectory, options: options, validationStatus: &validationStatus, output: output)
         }
         #endif
 
         #if !os(Linux)
         static func executeAsStep(outputDirectory: URL, options: Options, validationStatus: inout ValidationStatus, output: Command.Output) throws {
-            try options.project.validateDocumentationCoverage(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: &output)
+            try options.project.validateDocumentationCoverage(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
         }
         #endif
     }

@@ -16,14 +16,14 @@ import SDGCommandLine
 
 struct SyntaxColouring : Rule {
 
-    static let name = UserFacingText<InterfaceLocalization>({ (localization) in
+    static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Syntax Colouring"
         }
     })
 
-    static let message = UserFacingText<InterfaceLocalization>({ (localization) in
+    static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Language specifier missing. Specify a language for syntax colouring."
@@ -42,7 +42,7 @@ struct SyntaxColouring : Rule {
             occurrenceCount[indent] = isOdd
 
             if isOdd ∧ file.contents.scalars[match.range.upperBound...].hasPrefix("\n".scalars) {
-                reportViolation(in: file, at: match.range, message: message, status: status, output: &output)
+                reportViolation(in: file, at: match.range, message: message, status: status, output: output)
             }
         }
     }

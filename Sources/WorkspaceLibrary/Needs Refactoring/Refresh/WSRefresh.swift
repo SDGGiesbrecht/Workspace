@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 import SDGCommandLine
 
 func instructionsAfterRefresh() throws -> String {
@@ -29,105 +31,105 @@ func instructionsAfterRefresh() throws -> String {
 func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: Command.Output) throws {
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    print("Refreshing \(try options.project.projectName(output: &output))...".formattedAsSectionHeader(), to: &output)
+    output.print("Refreshing \(try options.project.projectName(output: output))...".formattedAsSectionHeader())
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Scripts
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     if try options.project.configuration.shouldProvideScripts() {
-        try Workspace.Refresh.Scripts.command.execute(withArguments: arguments, options: options, output: &output)
+        try Workspace.Refresh.Scripts.command.execute(withArguments: arguments, options: options, output: output)
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    print("Updating Git configuration...".formattedAsSectionHeader(), to: &output)
+    output.print("Updating Git configuration...".formattedAsSectionHeader())
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    DGit.updateGitConfiguraiton(output: &output)
+    DGit.updateGitConfiguraiton(output: output)
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Read‐Me
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     if try options.project.configuration.shouldManageReadMe() {
-        try Workspace.Refresh.ReadMe.command.execute(withArguments: arguments, options: options, output: &output)
+        try Workspace.Refresh.ReadMe.command.execute(withArguments: arguments, options: options, output: output)
     }
 
     if Configuration.manageLicence {
 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        print("Updating licence...".formattedAsSectionHeader(), to: &output)
+        output.print("Updating licence...".formattedAsSectionHeader())
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        try Licence.refreshLicence(output: &output)
+        try Licence.refreshLicence(output: output)
     }
 
     if Configuration.manageContributingInstructions {
 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        print("Updating contributing instructions...".formattedAsSectionHeader(), to: &output)
+        output.print("Updating contributing instructions...".formattedAsSectionHeader())
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        try ContributingInstructions.refreshContributingInstructions(output: &output)
+        try ContributingInstructions.refreshContributingInstructions(output: output)
     } else {
-        ContributingInstructions.relinquishControl(output: &output)
+        ContributingInstructions.relinquishControl(output: output)
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Continuous Integration
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     if try options.project.configuration.shouldManageContinuousIntegration() {
-        try Workspace.Refresh.ContinuousIntegration.command.execute(withArguments: arguments, options: options, output: &output)
+        try Workspace.Refresh.ContinuousIntegration.command.execute(withArguments: arguments, options: options, output: output)
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Resources
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    try Workspace.Refresh.Resources.command.execute(withArguments: arguments, options: options, output: &output)
+    try Workspace.Refresh.Resources.command.execute(withArguments: arguments, options: options, output: output)
 
     if Configuration.manageFileHeaders {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        print("Updating file headers...".formattedAsSectionHeader(), to: &output)
+        output.print("Updating file headers...".formattedAsSectionHeader())
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        try FileHeaders.refreshFileHeaders(output: &output)
+        try FileHeaders.refreshFileHeaders(output: output)
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    print("Updating examples...".formattedAsSectionHeader(), to: &output)
+    output.print("Updating examples...".formattedAsSectionHeader())
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    try Examples.refreshExamples(output: &output)
+    try Examples.refreshExamples(output: output)
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    print("Updating inherited documentation...".formattedAsSectionHeader(), to: &output)
+    output.print("Updating inherited documentation...".formattedAsSectionHeader())
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    DocumentationInheritance.refreshDocumentation(output: &output)
+    DocumentationInheritance.refreshDocumentation(output: output)
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Normalization
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    try Workspace.Normalize.executeAsStep(options: options, output: &output)
+    try Workspace.Normalize.executeAsStep(options: options, output: output)
 
     #if !os(Linux)
         if Configuration.manageXcode ∧ Environment.operatingSystem == .macOS {
 
             // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-            print("Refreshing Xcode project...".formattedAsSectionHeader(), to: &output)
+            output.print("Refreshing Xcode project...".formattedAsSectionHeader())
             // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-            try DXcode.refreshXcodeProjects(output: &output)
+            try DXcode.refreshXcodeProjects(output: output)
         }
         if Environment.operatingSystem == .macOS {
-            try DXcode.enableProofreading(output: &output)
+            try DXcode.enableProofreading(output: output)
         }
     #endif
 
     if shouldExit {
 
         succeed(message: [
-            "\(try Repository.packageRepository.projectName(output: &output)) is refreshed and ready.",
+            "\(try Repository.packageRepository.projectName(output: output)) is refreshed and ready.",
             try instructionsAfterRefresh()
             ])
     }

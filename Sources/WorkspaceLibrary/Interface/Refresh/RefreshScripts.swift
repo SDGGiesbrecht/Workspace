@@ -18,14 +18,14 @@ extension Workspace.Refresh {
 
     enum Scripts {
 
-        private static let name = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "scripts"
             }
         })
 
-        private static let description = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "regenerates the project’s refresh and validation scripts."
@@ -34,14 +34,14 @@ extension Workspace.Refresh {
 
         static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, options: Options, output: Command.Output) throws in
 
-            print(UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+            output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Refreshing scripts..."
                 }
-            }).resolved().formattedAsSectionHeader(), to: &output)
+            }).resolved().formattedAsSectionHeader())
 
-            try options.project.refreshScripts(output: &output)
+            try options.project.refreshScripts(output: output)
         })
     }
 }

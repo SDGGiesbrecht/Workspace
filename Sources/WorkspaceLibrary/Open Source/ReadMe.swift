@@ -91,7 +91,7 @@ enum ReadMe {
     }
 
     private static func operatingSystemList(for project: PackageRepository, output: Command.Output) throws -> StrictString {
-        let supported = try OperatingSystem.cases.filter({ try project.configuration.supports($0, project: project, output: &output) })
+        let supported = try OperatingSystem.cases.filter({ try project.configuration.supports($0, project: project, output: output) })
         let list = supported.map({ $0.isolatedName.resolved() }).joined(separator: " • ".scalars)
         return StrictString(list)
     }
@@ -114,7 +114,7 @@ enum ReadMe {
             }
         }).resolved()
 
-        let links = try project.libraryProductTargets(output: &output).map { (name: String) -> StrictString in
+        let links = try project.libraryProductTargets(output: output).map { (name: String) -> StrictString in
 
             var link: StrictString = "[" + StrictString(name) + "]"
             link += "(" + StrictString(baseURL.appendingPathComponent(name).absoluteString) + ")"
@@ -203,12 +203,12 @@ enum ReadMe {
     static func defaultInstallationInstructionsTemplate(localization: String, project: PackageRepository, output: Command.Output) throws -> Template? {
         var result: [StrictString] = []
 
-        let tools = try project.executableTargets(output: &output)
+        let tools = try project.executableTargets(output: output)
         var includedInstallationSection = false
         if ¬tools.isEmpty,
             let repository = try project.configuration.repositoryURL(),
             let version = try project.configuration.currentVersion() {
-            let package = StrictString(try project.packageName(output: &output))
+            let package = StrictString(try project.packageName(output: output))
 
             includedInstallationSection = true
 
@@ -249,7 +249,7 @@ enum ReadMe {
             ]
         }
 
-        let libraries = try project.libraryProductTargets(output: &output)
+        let libraries = try project.libraryProductTargets(output: output)
         if ¬libraries.isEmpty {
             if includedInstallationSection {
                 result += [""]
@@ -284,7 +284,7 @@ enum ReadMe {
                     case .עברית־ישראל:
                         /*א*/ return StrictString("יש ל־`\(package)` מיועד של שימוש עם [מנהל חבילת סוויפט](https://swift.org/package-manager/).")
                     }
-                }).resolved(using: StrictString(try project.packageName(output: &output))),
+                }).resolved(using: StrictString(try project.packageName(output: output))),
                 ""
             ]
 
@@ -301,7 +301,7 @@ enum ReadMe {
                 case .עברית־ישראל:
                     /*א*/ return StrictString("תוסיף את `\(package)` בפשוט ברשימת תלות ב־`Package.swift`")
                 }
-            }).resolved(using: StrictString(try project.packageName(output: &output)))
+            }).resolved(using: StrictString(try project.packageName(output: output)))
 
             if let repository = try project.configuration.repositoryURL(),
                 let currentVersion = try project.configuration.currentVersion() {
@@ -371,7 +371,7 @@ enum ReadMe {
                     }).resolved() + StrictString("\u{22}, dependencies: [")) as StrictString
                 ]
                 for library in libraries {
-                    result += [StrictString("            .productItem(name: \u{22}\(library)\u{22}, package: \u{22}\(try project.packageName(output: &output))\u{22}),")]
+                    result += [StrictString("            .productItem(name: \u{22}\(library)\u{22}, package: \u{22}\(try project.packageName(output: output))\u{22}),")]
                 }
                 result += [
                     "        ])",
@@ -403,7 +403,7 @@ enum ReadMe {
                     case .עברית־ישראל:
                         /*א*/ return StrictString("אז יכול ליבא את `\(package)` בקבץי מקור:")
                     }
-                }).resolved(using: StrictString(try project.packageName(output: &output))),
+                }).resolved(using: StrictString(try project.packageName(output: output))),
                 "",
                 "```swift"
             ]
@@ -424,7 +424,7 @@ enum ReadMe {
 
     static func defaultExampleUsageTemplate(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template? {
         let prefixes = InterfaceLocalization.cases.map { (localization) in
-            return UserFacingText<InterfaceLocalization>({ (localization) in
+            return UserFacing<StrictString, InterfaceLocalization>({ (localization) in
                 switch localization {
                 case .englishCanada:
                     return "Read‐Me"
@@ -438,7 +438,7 @@ enum ReadMe {
 
         var source: [StrictString] = []
 
-        for (key, _) in try project.examples(output: &output) {
+        for (key, _) in try project.examples(output: output) {
             for prefix in prefixes {
                 for suffix in suffixes {
                     if key.hasPrefix(String(prefix + " "))
@@ -523,14 +523,14 @@ enum ReadMe {
             ]
         }
 
-        if (try project.configuration.installationInstructions(for: localization, project: project, output: &output)) ≠ nil {
+        if (try project.configuration.installationInstructions(for: localization, project: project, output: output)) ≠ nil {
             readMe += [
                 "",
                 "[_Installation Instructions_]"
             ]
         }
 
-        if (try project.configuration.exampleUsage(for: localization, project: project, output: &output)) ≠ nil {
+        if (try project.configuration.exampleUsage(for: localization, project: project, output: output)) ≠ nil {
             let header = UserFacingText<ContentLocalization>({ (localization) in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -591,39 +591,39 @@ enum ReadMe {
     // MARK: - Refreshment
 
     private static func refreshReadMe(at location: URL, for localization: String, in project: PackageRepository, atProjectRoot: Bool, output: Command.Output) throws {
-        var readMe = try project.configuration.readMe(for: localization, project: project, output: &output)
+        var readMe = try project.configuration.readMe(for: localization, project: project, output: output)
 
         // Section Elements
 
-        try readMe.insert(resultOf: { try project.configuration.requireFeatureList(for: localization) }, for: UserFacingText({ (localization) in
+        try readMe.insert(resultOf: { try project.configuration.requireFeatureList(for: localization) }, for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "Features"
             }
         }))
 
-        try readMe.insert(resultOf: { try project.configuration.requireInstallationInstructions(for: localization, project: project, output: &output).text }, for: UserFacingText({ (localization) in
+        try readMe.insert(resultOf: { try project.configuration.requireInstallationInstructions(for: localization, project: project, output: output).text }, for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "Installation Instructions"
             }
         }))
 
-        try readMe.insert(resultOf: { try project.configuration.requireExampleUsage(for: localization, project: project, output: &output).text}, for: UserFacingText({ (localization) in
+        try readMe.insert(resultOf: { try project.configuration.requireExampleUsage(for: localization, project: project, output: output).text}, for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "Example Usage"
             }
         }))
 
-        try readMe.insert(resultOf: { try project.configuration.requireOtherReadMeContent(for: localization, project: project, output: &output).text }, for: UserFacingText({ (localization) in
+        try readMe.insert(resultOf: { try project.configuration.requireOtherReadMeContent(for: localization, project: project, output: output).text }, for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "Other"
             }
         }))
 
-        try readMe.insert(resultOf: { try project.configuration.requireReadMeAboutSectionTemplate(for: localization, project: project, output: &output).text }, for: UserFacingText({ (localization) in
+        try readMe.insert(resultOf: { try project.configuration.requireReadMeAboutSectionTemplate(for: localization, project: project, output: output).text }, for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "About"
@@ -632,37 +632,37 @@ enum ReadMe {
 
         // Line Elements
 
-        readMe.insert(try localizationLinksMarkup(for: project, fromProjectRoot: atProjectRoot), for: UserFacingText({ (localization) in
+        readMe.insert(try localizationLinksMarkup(for: project, fromProjectRoot: atProjectRoot), for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "Localization Links"
             }
         }))
-        readMe.insert(try operatingSystemList(for: project, output: &output), for: UserFacingText({ (localization) in
+        readMe.insert(try operatingSystemList(for: project, output: output), for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "Operating System List"
             }
         }))
-        try readMe.insert(resultOf: { try apiLinksMarkup(for: project, output: &output) }, for: UserFacingText({ (localization) in
+        try readMe.insert(resultOf: { try apiLinksMarkup(for: project, output: output) }, for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "API Links"
             }
         }))
-        try readMe.insert(resultOf: { try project.configuration.requireShortProjectDescription(for: localization) }, for: UserFacingText({ (localization) in
+        try readMe.insert(resultOf: { try project.configuration.requireShortProjectDescription(for: localization) }, for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "Short Description"
             }
         }))
-        try readMe.insert(resultOf: { try quotationMarkup(localization: localization, project: project) }, for: UserFacingText({ (localization) in
+        try readMe.insert(resultOf: { try quotationMarkup(localization: localization, project: project) }, for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "Quotation"
             }
         }))
-        readMe.insert(resultOf: { relatedProjectsLinkMarkup(for: project, localization: localization) }, for: UserFacingText({ (localization) in
+        readMe.insert(resultOf: { relatedProjectsLinkMarkup(for: project, localization: localization) }, for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "Related Projects"
@@ -671,31 +671,31 @@ enum ReadMe {
 
         // Word Elements
 
-        readMe.insert(try project.projectName(output: &output), for: UserFacingText({ (localization) in
+        readMe.insert(try project.projectName(output: output), for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "Project"
             }
         }))
-        try readMe.insert(resultOf: { StrictString(try project.configuration.requireRepositoryURL().absoluteString) }, for: UserFacingText({ (localization) in
+        try readMe.insert(resultOf: { StrictString(try project.configuration.requireRepositoryURL().absoluteString) }, for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "Repository URL"
             }
         }))
-        try readMe.insert(resultOf: { StrictString(try project.configuration.requireCurrentVersion().string) }, for: UserFacingText({ (localization) in
+        try readMe.insert(resultOf: { StrictString(try project.configuration.requireCurrentVersion().string) }, for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "Current Version"
             }
         }))
 
-        for (key, example) in try project.examples(output: &output) {
+        for (key, example) in try project.examples(output: output) {
             readMe.insert([
                 "```swift",
                 StrictString(example),
                 "```"
-                ].joinAsLines(), for: UserFacingText({ (localization) in
+                ].joinAsLines(), for: UserFacing({ localization in
                     switch localization {
                     case .englishCanada:
                         return StrictString("Example: \(key)")
@@ -713,7 +713,7 @@ enum ReadMe {
 
         var file = try TextFile(possiblyAt: location)
         file.body = body
-        try file.writeChanges(for: project, output: &output)
+        try file.writeChanges(for: project, output: output)
     }
 
     private static func refreshRelatedProjects(at location: URL, for localization: String, in project: PackageRepository, output: Command.Output) throws {
@@ -741,7 +741,7 @@ enum ReadMe {
 
                     let package = Repository.linkedRepository(from: url)
                     let name: StrictString
-                    if let packageName = try? package.projectName(output: &output) {
+                    if let packageName = try? package.projectName(output: output) {
                         name = packageName
                     } else { // [_Exempt from Test Coverage_] Only reachable with a non‐package repository.
                         name = StrictString(url.lastPathComponent)
@@ -765,9 +765,9 @@ enum ReadMe {
             let body = String(markdown.joinAsLines())
             var file = try TextFile(possiblyAt: location)
             file.body = body
-            try file.writeChanges(for: project, output: &output)
+            try file.writeChanges(for: project, output: output)
         } else {
-            project.delete(location, output: &output)
+            project.delete(location, output: output)
         }
     }
 
@@ -778,19 +778,19 @@ enum ReadMe {
 
                 let setting = LocalizationSetting(orderOfPrecedence: [localization] + localizations)
                 try setting.do {
-                    try refreshReadMe(at: readMeLocation(for: project, localization: localization), for: localization, in: project, atProjectRoot: false, output: &output)
-                    try refreshRelatedProjects(at: relatedProjectsLocation(for: project, localization: localization), for: localization, in: project, output: &output)
+                    try refreshReadMe(at: readMeLocation(for: project, localization: localization), for: localization, in: project, atProjectRoot: false, output: output)
+                    try refreshRelatedProjects(at: relatedProjectsLocation(for: project, localization: localization), for: localization, in: project, output: output)
                 }
 
                 if localization == (try project.configuration.developmentLocalization()) {
                     try setting.do {
-                        try refreshReadMe(at: project.location.appendingPathComponent("README.md"), for: localization, in: project, atProjectRoot: true, output: &output)
+                        try refreshReadMe(at: project.location.appendingPathComponent("README.md"), for: localization, in: project, atProjectRoot: true, output: output)
                     }
                 }
             }
         }
 
         // Deprecated file locations.
-        project.delete(project.location.appendingPathComponent("Documentation/Related Projects.md"), output: &output)
+        project.delete(project.location.appendingPathComponent("Documentation/Related Projects.md"), output: output)
     }
 }

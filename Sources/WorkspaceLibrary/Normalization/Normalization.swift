@@ -14,13 +14,17 @@
 
 import Foundation
 
+import SDGCollections
+
 import SDGCommandLine
+
+import SDGSwift
 
 enum Normalization {
 
     static func normalize(project: PackageRepository, output: Command.Output) throws {
 
-        for url in try project.sourceFiles(output: &output) {
+        for url in try project.sourceFiles(output: output) {
             try autoreleasepool {
 
                 if let syntax = (try? FileType(url: url))?.syntax {
@@ -46,7 +50,7 @@ enum Normalization {
                     }
 
                     file.contents = normalizedLines.joinAsLines()
-                    try file.writeChanges(for: project, output: &output)
+                    try file.writeChanges(for: project, output: output)
                 }
             }
         }

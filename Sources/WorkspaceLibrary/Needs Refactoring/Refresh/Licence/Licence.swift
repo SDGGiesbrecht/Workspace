@@ -116,7 +116,7 @@ enum Licence : String {
         let oldContents = file.contents
 
         let copyright = FileHeaders.copyright(fromText: oldContents)
-        var authors = "the \(try Repository.packageRepository.projectName(output: &output)) project contributors."
+        var authors = "the \(try Repository.packageRepository.projectName(output: output)) project contributors."
         let configuration = Repository.packageRepository.configuration
         if try configuration.optionIsDefined(.author) {
             authors = "\(try Repository.packageRepository.configuration.requireAuthor()) and " + authors
@@ -130,7 +130,7 @@ enum Licence : String {
         text = text.replacingOccurrences(of: key("Authors"), with: authors)
 
         file.contents = text
-        require { try file.write(output: &output) }
+        require { try file.write(output: output) }
 
         // Delete alternate licence files to prevent duplicates.
         try? Repository.delete(RelativePath("LICENSE.txt"))

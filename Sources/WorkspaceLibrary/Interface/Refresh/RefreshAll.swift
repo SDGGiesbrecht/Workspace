@@ -18,14 +18,14 @@ extension Workspace.Refresh {
 
     enum All {
 
-        private static let name = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "all"
             }
         })
 
-        private static let description = UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+        private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "performs all configured refreshment tasks."
@@ -33,7 +33,7 @@ extension Workspace.Refresh {
         })
 
         static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (arguments: DirectArguments, options: Options, output: Command.Output) throws in
-            try runRefresh(andExit: true, arguments: arguments, options: options, output: &output)
+            try runRefresh(andExit: true, arguments: arguments, options: options, output: output)
         })
     }
 }

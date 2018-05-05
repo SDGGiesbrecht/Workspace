@@ -14,6 +14,8 @@
 
 import Foundation
 
+import SDGLogic
+import SDGCollections
 
 struct BlockCommentSyntax {
 

@@ -18,7 +18,7 @@ import SDGCommandLine
 
 struct UnicodeRule : Rule {
 
-    static let name = UserFacingText<InterfaceLocalization>({ (localization) in
+    static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Unicode"
@@ -40,7 +40,7 @@ struct UnicodeRule : Rule {
                       allowInHeading: Bool = false,
                       allowInFloatLiteral: Bool = false,
                       allowInToolsVersion: Bool = false,
-                      message: UserFacingText<InterfaceLocalization>, status: ProofreadingStatus, output: Command.Output) {
+                      message: UserFacing<StrictString, InterfaceLocalization>, status: ProofreadingStatus, output: Command.Output) {
 
         for protocolName in allowedDefaultImplementations where file.location.lastPathComponent == protocolName + ".swift" {
             return
@@ -210,8 +210,8 @@ struct UnicodeRule : Rule {
             }
 
             reportViolation(in: file, at: match.range, replacementSuggestion: replacement, message:
-                UserFacingText<InterfaceLocalization>({ localization in
-                    let obsoleteMessage = UserFacingText<InterfaceLocalization>({ localization in
+                UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    let obsoleteMessage = UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
                         case .englishCanada:
                             let error: StrictString
@@ -230,7 +230,7 @@ struct UnicodeRule : Rule {
                     })
 
                     return obsoleteMessage.resolved(for: localization) + " " + message.resolved(for: localization)
-            }), status: status, output: &output)
+            }), status: status, output: output)
         }
     }
 
@@ -248,47 +248,47 @@ struct UnicodeRule : Rule {
               allowInHeading: true,
               allowInFloatLiteral: true,
               allowInToolsVersion: true,
-              message: UserFacingText<InterfaceLocalization>({ localization in
+              message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 // Note to localizers: Adapt the recommendations for the target localization.
                 case .englishCanada:
                     return "Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–)."
                 }
-              }), status: status, output: &output)
+              }), status: status, output: output)
 
         check(file, for: "\u{22}",
               allowInSwiftSource: true,
               allowInShellSource: true,
               allowInSampleCode: true,
-              message: UserFacingText<InterfaceLocalization>({ localization in
+              message: UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             // Note to localizers: Adapt the recommendations for the target localization.
             case .englishCanada:
                 return "Use quotation marks (“, ”) or double prime (′′)."
             }
-        }), status: status, output: &output)
+        }), status: status, output: output)
 
         check(file, for: "\u{27}",
               allowInShellSource: true,
               allowInSampleCode: true,
-              message: UserFacingText<InterfaceLocalization>({ localization in
+              message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 // Note to localizers: Adapt the recommendations for the target localization.
                 case .englishCanada:
                     return "Use an apostrophe (’), quotation marks (‘, ’), degrees (°) or prime (′)."
                 }
-              }), status: status, output: &output)
+              }), status: status, output: output)
 
         check(file, for: "\u{21}\u{3D}",
               replacement: "≠",
               allowInShellSource: true,
               allowedAliasDefinitions: ["≠"],
-              message: UserFacingText<InterfaceLocalization>({ localization in
+              message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Use the not equal sign (≠)."
                 }
-              }), status: status, output: &output)
+              }), status: status, output: output)
 
         check(file, for: "!",
               replacement: "¬",
@@ -296,101 +296,101 @@ struct UnicodeRule : Rule {
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["¬", "≠"],
               allowInHTMLComment: true,
-              message: UserFacingText<InterfaceLocalization>({ localization in
+              message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Use the not sign (¬)."
                 }
-              }), status: status, output: &output)
+              }), status: status, output: output)
 
         check(file, for: "&\u{26}",
               replacement: "∧",
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["∧"],
-              message: UserFacingText<InterfaceLocalization>({ localization in
+              message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Use the conjunction sign (∧)."
                 }
-              }), status: status, output: &output)
+              }), status: status, output: output)
 
         check(file, for: "\u{7C}|",
               replacement: "∨",
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["∨"],
-              message: UserFacingText<InterfaceLocalization>({ localization in
+              message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Use the disjunction sign (∨)."
                 }
-              }), status: status, output: &output)
+              }), status: status, output: output)
 
         check(file, for: "\u{3C}=",
               replacement: "≤",
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["≤"],
-              message: UserFacingText<InterfaceLocalization>({ localization in
+              message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Use the less‐than‐or‐equal sign (≤)."
                 }
-              }), status: status, output: &output)
+              }), status: status, output: output)
 
         check(file, for: "\u{3E}=",
               replacement: "≥",
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["≥"],
-              message: UserFacingText<InterfaceLocalization>({ localization in
+              message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Use the greater‐than‐or‐equal sign (≥)."
                 }
-              }), status: status, output: &output)
+              }), status: status, output: output)
 
         check(file, for: " \u{2A} ",
               replacement: " × ",
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["×"],
               allowedDefaultImplementations: ["Numeric"],
-              message: UserFacingText<InterfaceLocalization>({ localization in
+              message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Use the multiplication sign (×)."
                 }
-              }), status: status, output: &output)
+              }), status: status, output: output)
 
         check(file, for: "\u{2A}=",
               replacement: "×=",
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["×"],
               allowedDefaultImplementations: ["Numeric"],
-              message: UserFacingText<InterfaceLocalization>({ localization in
+              message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Use the multiplication sign (×)."
                 }
-              }), status: status, output: &output)
+              }), status: status, output: output)
 
         check(file, for: " \u{2F} ",
               replacement: " ÷ ",
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["÷", "divide"],
-              message: UserFacingText<InterfaceLocalization>({ localization in
+              message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Use the division sign (÷)."
                 }
-              }), status: status, output: &output)
+              }), status: status, output: output)
 
         check(file, for: "\u{2F}=",
               replacement: "÷=",
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["÷", "divide"],
-              message: UserFacingText<InterfaceLocalization>({ localization in
+              message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Use the division sign (÷)."
                 }
-              }), status: status, output: &output)
+              }), status: status, output: output)
     }
 }

@@ -16,6 +16,9 @@
 
 import Foundation
 
+import SDGLogic
+import SDGCollections
+
 import SDGCommandLine
 
 struct DXcode {
@@ -29,7 +32,7 @@ struct DXcode {
         let path = RelativePath("\(try Repository.packageRepository.xcodeProjectFile()!.lastPathComponent)")
         var file = require { try File(at: path.subfolderOrFile("project.pbxproj")) }
 
-        let allTargets = try Repository.packageRepository.targets(output: &output).map { $0.name }
+        let allTargets = try Repository.packageRepository.targets(output: output).map { $0.name }
         let primaryProductName = allTargets.first(where: { $0.scalars.first! ∈ CharacterSet.uppercaseLetters ∧ ¬$0.hasPrefix("Tests") })!
         let applicationExecutableName = primaryProductName
         let xcodeTestTarget = primaryProductName + "Tests"
@@ -117,7 +120,7 @@ struct DXcode {
             file.contents = project
         }
 
-        require { try file.write(output: &output) }
+        require { try file.write(output: output) }
 
         if try Repository.packageRepository.configuration.projectType() == .application {
 
@@ -127,7 +130,7 @@ struct DXcode {
 
             info.contents = info.contents.replacingOccurrences(of: "<key>NSPrincipalClass</key>\n  <string></string>", with: "<key>NSPrincipalClass</key>\n  <string>\(Configuration.moduleName).Application</string>")
 
-            require { try info.write(output: &output) }
+            require { try info.write(output: output) }
         }
     }
 
@@ -141,7 +144,7 @@ struct DXcode {
             if shouldModify(file.contents) {
 
                 modify(&file)
-                require { try file.write(output: &output) }
+                require { try file.write(output: output) }
             }
         } catch {
             return
@@ -156,13 +159,13 @@ struct DXcode {
     static func enableProofreading(output: Command.Output) throws {
 
         let script: String
-        if try Repository.packageRepository.isWorkspaceProject(output: &output) {
+        if try Repository.packageRepository.isWorkspaceProject(output: output) {
             script = "if [ \u{2D}z ${SKIP_PROOFREADING+set} ] ; then swift run workspace proofread •xcode ; fi"
         } else {
-            script = "if [ \u{2D}z ${SKIP_PROOFREADING+set} ] ; then export PATH=\u{5C}\u{22}$HOME/.SDG/Registry:$PATH\u{5C}\u{22} ; if which workspace > /dev/null ; then workspace proofread •xcode •use‐version " + latestStableWorkspaceVersion.string + " ; else echo \u{5C}\u{22}warning: Install Workspace if you wish to receive in‐code reports of style errors for this project. See https://github.com/SDGGiesbrecht/Workspace\u{5C}\u{22} ; fi ; fi"
+            script = "if [ \u{2D}z ${SKIP_PROOFREADING+set} ] ; then export PATH=\u{5C}\u{22}$HOME/.SDG/Registry:$PATH\u{5C}\u{22} ; if which workspace > /dev/null ; then workspace proofread •xcode •use‐version " + latestStableWorkspaceVersion.string() + " ; else echo \u{5C}\u{22}warning: Install Workspace if you wish to receive in‐code reports of style errors for this project. See https://github.com/SDGGiesbrecht/Workspace\u{5C}\u{22} ; fi ; fi"
         }
 
-        let allTargets = try Repository.packageRepository.targets(output: &output).map { $0.name }
+        let allTargets = try Repository.packageRepository.targets(output: output).map { $0.name }
         let primaryXcodeTarget = allTargets.first(where: { $0.scalars.first! ∈ CharacterSet.uppercaseLetters ∧ ¬$0.hasPrefix("Tests") })!
 
         try modifyProject(condition: {
@@ -204,7 +207,7 @@ struct DXcode {
                 scriptActionEntry,
                 "" // Final line break.
                 ].joinAsLines())
-        }, output: &output)
+        }, output: output)
     }
 
     static let disabledScriptActionEntry = "/* " + scriptObjectName + " */"
@@ -216,7 +219,7 @@ struct DXcode {
         }, modification: { (file: inout File) -> Void in
 
             file.contents = file.contents.replacingOccurrences(of: scriptActionEntry, with: disabledScriptActionEntry)
-        }, output: &output)
+        }, output: output)
     }
 
     static func reEnableProofreading(output: Command.Output) throws {
@@ -226,7 +229,7 @@ struct DXcode {
         }, modification: { (file: inout File) -> Void in
 
             file.contents = file.contents.replacingOccurrences(of: disabledScriptActionEntry, with: scriptActionEntry)
-        }, output: &output)
+        }, output: output)
     }
 }
 

@@ -16,14 +16,14 @@ import SDGCommandLine
 
 struct AutoindentResilience : Rule {
 
-    static let name = UserFacingText<InterfaceLocalization>({ (localization) in
+    static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Autoindent Resilience"
         }
     })
 
-    static let message = UserFacingText<InterfaceLocalization>({ (localization) in
+    static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "“/*\u{2A}” may not survive autoindent (⌃I). Use “///” instead."
@@ -33,7 +33,7 @@ struct AutoindentResilience : Rule {
     static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
         if file.fileType == .swift {
             for match in file.contents.scalars.matches(for: "/*\u{2A}".scalars) {
-                reportViolation(in: file, at: match.range, message: message, status: status, output: &output)
+                reportViolation(in: file, at: match.range, message: message, status: status, output: output)
             }
         }
     }

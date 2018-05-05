@@ -16,14 +16,14 @@ import SDGCommandLine
 
 struct DocumentationOfCompilationConditions : Rule {
 
-    static let name = UserFacingText<InterfaceLocalization>({ (localization) in
+    static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Documentation of Compilation Conditions"
         }
     })
 
-    static let message = UserFacingText<InterfaceLocalization>({ (localization) in
+    static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return StrictString("Undocumented compilation condition. Add “\(Mark.expectedSyntax)\u{23}if...” on the next line.")
@@ -38,14 +38,14 @@ struct DocumentationOfCompilationConditions : Rule {
             ∧ ¬line(after: match, in: file).contains(markSearchToken)
             ∧ from(match, toNext: "#e" /* “else” or “end”, but not “if” */, in: file).contains("public".scalars) {
 
-                reportViolation(in: file, at: match.range, message: message, status: status, output: &output)
+                reportViolation(in: file, at: match.range, message: message, status: status, output: output)
         }
     }
 
     static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
         if file.fileType == .swift {
-            check(file: file, for: "\u{23}if", status: status, output: &output)
-            check(file: file, for: "\u{23}else", status: status, output: &output)
+            check(file: file, for: "\u{23}if", status: status, output: output)
+            check(file: file, for: "\u{23}else", status: status, output: output)
         }
     }
 }

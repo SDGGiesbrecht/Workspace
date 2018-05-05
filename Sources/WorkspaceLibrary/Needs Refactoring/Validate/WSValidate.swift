@@ -14,6 +14,10 @@
 
 import Foundation
 
+import SDGLogic
+import SDGCollections
+import SDGExternalProcess
+
 import SDGCommandLine
 
 func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: Command.Output) throws {
@@ -26,29 +30,29 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         // Refreshing
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        try runRefresh(andExit: false, arguments: arguments, options: options, output: &output)
+        try runRefresh(andExit: false, arguments: arguments, options: options, output: output)
 
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    print("Validating \(try Repository.packageRepository.projectName(output: &output))...".formattedAsSectionHeader(), to: &output)
+    output.print("Validating \(try Repository.packageRepository.projectName(output: output))...".formattedAsSectionHeader())
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     if options.job == .miscellaneous ∨ options.job == nil {
 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        print("Validating Workspace configuration...".formattedAsSectionHeader(), to: &output)
+        output.print("Validating Workspace configuration...".formattedAsSectionHeader())
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
         if Configuration.validate() {
-            validationStatus.passStep(message: UserFacingText({ localization in
+            validationStatus.passStep(message: UserFacing({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Workspace configuration validates."
                 }
             }))
         } else {
-            validationStatus.failStep(message: UserFacingText({ localization in
+            validationStatus.failStep(message: UserFacing({ localization in
                 switch localization {
                 case .englishCanada:
                     return "Workspace configuration fails validation. (See above for details.)"
@@ -60,7 +64,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         // Proofreading...
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-        try Workspace.Proofread.executeAsStep(normalizingFirst: false, options: options, validationStatus: &validationStatus, output: &output)
+        try Workspace.Proofread.executeAsStep(normalizingFirst: false, options: options, validationStatus: &validationStatus, output: output)
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
@@ -68,40 +72,40 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     if try options.project.configuration.shouldProhibitCompilerWarnings() {
-        try Workspace.Validate.Build.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
+        try Workspace.Validate.Build.executeAsStep(options: options, validationStatus: &validationStatus, output: output)
     }
 #if os(Linux)
         // Coverage irrelevant.
-        try Workspace.Test.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
+        try Workspace.Test.executeAsStep(options: options, validationStatus: &validationStatus, output: output)
 #else
     if try options.project.configuration.shouldEnforceTestCoverage() {
         if let job = options.job,
             job ∉ Tests.coverageJobs {
             // Coverage impossible to check.
-            try Workspace.Test.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
+            try Workspace.Test.executeAsStep(options: options, validationStatus: &validationStatus, output: output)
         } else {
             // Check coverage.
-            try Workspace.Validate.TestCoverage.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
+            try Workspace.Validate.TestCoverage.executeAsStep(options: options, validationStatus: &validationStatus, output: output)
         }
     } else {
         // Coverage irrelevant.
-        try Workspace.Test.executeAsStep(options: options, validationStatus: &validationStatus, output: &output)
+        try Workspace.Test.executeAsStep(options: options, validationStatus: &validationStatus, output: output)
     }
 #endif
 
     #if !os(Linux)
         if options.job.includes(job: .documentation) {
             if try options.project.configuration.shouldEnforceDocumentationCoverage() {
-                try Workspace.Validate.DocumentationCoverage.executeAsStepDocumentingFirst(options: options, validationStatus: &validationStatus, output: &output)
+                try Workspace.Validate.DocumentationCoverage.executeAsStepDocumentingFirst(options: options, validationStatus: &validationStatus, output: output)
             } else if try options.project.configuration.shouldGenerateDocumentation()
                 ∧ (try options.project.configuration.encryptedTravisDeploymentKey() == nil) {
-                try Workspace.Document.executeAsStep(outputDirectory: Documentation.defaultDocumentationDirectory(for: options.project), options: options, validationStatus: &validationStatus, output: &output)
+                try Workspace.Document.executeAsStep(outputDirectory: Documentation.defaultDocumentationDirectory(for: options.project), options: options, validationStatus: &validationStatus, output: output)
             }
         }
 
         if try options.job.includes(job: .deployment)
             ∧ (try options.project.configuration.shouldGenerateDocumentation()) {
-            try Workspace.Document.executeAsStep(outputDirectory: Documentation.defaultDocumentationDirectory(for: options.project), options: options, validationStatus: &validationStatus, output: &output)
+            try Workspace.Document.executeAsStep(outputDirectory: Documentation.defaultDocumentationDirectory(for: options.project), options: options, validationStatus: &validationStatus, output: output)
         }
     #endif
 
@@ -110,7 +114,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         if options.job ≠ ContinuousIntegration.Job.deployment {
 
             // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-            print("Validating project state...".formattedAsSectionHeader(), to: &output)
+            output.print("Validating project state...".formattedAsSectionHeader())
             // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
             var allowedDifferences: [String] = []
@@ -129,15 +133,15 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
             allowedDifferences = allowedDifferences.map { "\u{27}:(exclude)*\($0.components(separatedBy: " ").last!)\u{27}" }
 
             requireBash(["git", "add", ".", "\u{2D}\u{2D}intent\u{2D}to\u{2D}add"], silent: true)
-            if (try? Shell.default.run(command: ["git", "diff", "\u{2D}\u{2D}exit\u{2D}code", "\u{2D}\u{2D}", ".", "\u{27}:(exclude)*.dsidx\u{27}"] + allowedDifferences, reportProgress: { print($0, to: &output) })) ≠ nil {
-                validationStatus.passStep(message: UserFacingText({ localization in
+            if (try? Shell.default.run(command: ["git", "diff", "\u{2D}\u{2D}exit\u{2D}code", "\u{2D}\u{2D}", ".", "\u{27}:(exclude)*.dsidx\u{27}"] + allowedDifferences, reportProgress: { output.print($0) })) ≠ nil {
+                validationStatus.passStep(message: UserFacing({ localization in
                     switch localization {
                     case .englishCanada:
                         return "The project is up to date."
                     }
                 }))
             } else {
-                validationStatus.failStep(message: UserFacingText({ localization in
+                validationStatus.failStep(message: UserFacing({ localization in
                     switch localization {
                     case .englishCanada:
                         return "The project is out of date. (Please run “Validate” before committing.)"
@@ -148,11 +152,11 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    print("Summary".formattedAsSectionHeader(), to: &output)
+    output.print("Summary".formattedAsSectionHeader())
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    if let update = try Workspace.CheckForUpdates.checkForUpdates(output: &output) {
-        print(UserFacingText<InterfaceLocalization>({ (localization: InterfaceLocalization) -> StrictString in
+    if let update = try Workspace.CheckForUpdates.checkForUpdates(output: output) {
+        output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return [
@@ -163,8 +167,8 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
                     StrictString("\(DocumentationLink.installation.url.in(Underline.underlined))")
                     ].joinAsLines()
             }
-        }).resolved().formattedAsWarning().separated(), to: &output)
+        }).resolved().formattedAsWarning().separated())
     }
 
-    try validationStatus.reportOutcome(projectName: try options.project.projectName(output: &output), output: &output)
+    try validationStatus.reportOutcome(projectName: try options.project.projectName(output: output), output: output)
 }

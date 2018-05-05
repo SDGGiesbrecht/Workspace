@@ -14,12 +14,14 @@
 
 import Foundation
 
+import SDGText
+import SDGLocalization
 
 struct StyleViolation {
 
     // MARK: - Initialization
 
-    init(in file: TextFile, at location: Range<String.ScalarView.Index>, replacementSuggestion: StrictString? = nil, noticeOnly: Bool = false, ruleIdentifier: UserFacingText<InterfaceLocalization>, message: UserFacingText<InterfaceLocalization>) {
+    init(in file: TextFile, at location: Range<String.ScalarView.Index>, replacementSuggestion: StrictString? = nil, noticeOnly: Bool = false, ruleIdentifier: UserFacing<StrictString, InterfaceLocalization>, message: UserFacing<StrictString, InterfaceLocalization>) {
         self.file = file
         self.noticeOnly = noticeOnly
         self.ruleIdentifier = ruleIdentifier
@@ -42,7 +44,7 @@ struct StyleViolation {
     let file: TextFile
     let range: Range<String.ClusterView.Index>
     let replacementSuggestion: StrictString?
-    let ruleIdentifier: UserFacingText<InterfaceLocalization>
-    let message: UserFacingText<InterfaceLocalization>
+    let ruleIdentifier: UserFacing<StrictString, InterfaceLocalization>
+    let message: UserFacing<StrictString, InterfaceLocalization>
     let noticeOnly: Bool
 }

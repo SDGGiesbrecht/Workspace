@@ -172,7 +172,7 @@ struct TextFile {
             case .englishCanada:
                 return StrictString("Writing to “\(path)”...")
             }
-        }).resolved(using: location.path(relativeTo: repository.location)), to: &output)
+        }).resolved(using: location.path(relativeTo: repository.location)), to: output)
     }
 
     static func reportDeleteOperation(from location: URL, in repository: PackageRepository, output: Command.Output) {
@@ -181,12 +181,12 @@ struct TextFile {
             case .englishCanada:
                 return StrictString("Deleting “\(path)”...")
             }
-        }).resolved(using: location.path(relativeTo: repository.location)), to: &output)
+        }).resolved(using: location.path(relativeTo: repository.location)), to: output)
     }
 
     func writeChanges(for repository: PackageRepository, output: Command.Output) throws {
         if hasChanged {
-            TextFile.reportWriteOperation(to: location, in: repository, output: &output)
+            TextFile.reportWriteOperation(to: location, in: repository, output: output)
 
             try contents.save(to: location)
             if isExecutable {

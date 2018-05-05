@@ -40,7 +40,7 @@ extension PackageRepository {
 
             var resourceFile = try TextFile(possiblyAt: sourceDirectory.appendingPathComponent("Resources.swift"))
             resourceFile.body = String(try generateSource(for: resources, of: package))
-            try resourceFile.writeChanges(for: package, output: &output)
+            try resourceFile.writeChanges(for: package, output: output)
         }
 
         private func generateSource(for resources: [URL], of package: PackageRepository) throws -> StrictString {
@@ -69,7 +69,7 @@ extension PackageRepository {
             return source
         }
 
-        private static let resourceNamespace = UserFacingText<InterfaceLocalization>({ (localization) in
+        private static let resourceNamespace = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
             switch localization {
             case .englishCanada:
                 return "Resources"

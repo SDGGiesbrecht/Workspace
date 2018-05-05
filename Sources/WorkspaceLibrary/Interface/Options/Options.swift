@@ -16,6 +16,8 @@ import Foundation
 
 import SDGCommandLine
 
+import SDGSwift
+
 extension Options {
 
     var job: ContinuousIntegration.Job? {
@@ -28,6 +30,6 @@ extension Options {
 
     var project: PackageRepository {
         let url = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-        return PackageRepository(alreadyAt: url)
+        return PackageRepository(at: url)
     }
 }

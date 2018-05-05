@@ -95,7 +95,7 @@ enum Script : Int, IterableEnumeration {
     static func refreshRelevantScripts(for project: PackageRepository, output: Command.Output) throws {
 
         for deprecated in Script.deprecatedFileNames {
-            project.delete(project.location.appendingPathComponent(String(deprecated)), output: &output)
+            project.delete(project.location.appendingPathComponent(String(deprecated)), output: output)
         }
 
         for script in cases where script.isRelevantOnCurrentDevice ∨ script.isCheckedIn {
@@ -103,8 +103,8 @@ enum Script : Int, IterableEnumeration {
 
                 var file = try TextFile(possiblyAt: project.location.appendingPathComponent(String(script.fileName)), executable: true)
                 file.contents.replaceSubrange(file.contents.startIndex ..< file.headerStart, with: String(script.shebang()))
-                file.body = String(try script.source(for: project, output: &output))
-                try file.writeChanges(for: project, output: &output)
+                file.body = String(try script.source(for: project, output: output))
+                try file.writeChanges(for: project, output: output)
             }
         }
     }
@@ -140,7 +140,7 @@ enum Script : Int, IterableEnumeration {
     func getWorkspace(andExecute command: StrictString, for project: PackageRepository, output: Command.Output) throws -> [StrictString] {
         let command = command.appending(contentsOf: " $1 $2")
 
-        if try project.isWorkspaceProject(output: &output) {
+        if try project.isWorkspaceProject(output: output) {
             return ["swift run workspace " + command]
         } else {
             let version = StrictString(latestStableWorkspaceVersion.string)
@@ -188,9 +188,9 @@ enum Script : Int, IterableEnumeration {
         case .validateLinux: // [_Exempt from Test Coverage_] Unreachable from macOS.
             lines.append(openTerminal(andExecute: "Validate"))
         case .refreshMacOS:
-            lines.append(contentsOf: try getWorkspace(andExecute: "refresh", for: project, output: &output))
+            lines.append(contentsOf: try getWorkspace(andExecute: "refresh", for: project, output: output))
         case .validateMacOS:
-            lines.append(contentsOf: try getWorkspace(andExecute: "validate", for: project, output: &output))
+            lines.append(contentsOf: try getWorkspace(andExecute: "validate", for: project, output: output))
         }
 
         return StrictString(lines.joined(separator: "\n".scalars))

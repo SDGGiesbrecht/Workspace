@@ -14,7 +14,11 @@
 
 import Foundation
 
+import SDGLogic
+
 import SDGCommandLine
+
+import SDGSwift
 
 enum Proofreading {
 
@@ -29,22 +33,22 @@ enum Proofreading {
             return true
         }
 
-        for url in try project.sourceFiles(output: &output)
+        for url in try project.sourceFiles(output: output)
             where (try? FileType(url: url)) ≠ nil
                 ∧ (try? FileType(url: url)) ≠ .xcodeProject {
                     try autoreleasepool {
 
                         let file = try TextFile(alreadyAt: url)
 
-                        reporter.reportParsing(file: file.location.path(relativeTo: project.location), to: &output)
+                        reporter.reportParsing(file: file.location.path(relativeTo: project.location), to: output)
 
                         for rule in activeRules {
-                            try rule.check(file: file, in: project, status: status, output: &output)
+                            try rule.check(file: file, in: project, status: status, output: output)
                         }
                     }
         }
 
-        try proofreadWithSwiftLint(project: project, status: status, forXcode: reporter is XcodeProofreadingReporter, output: &output)
+        try proofreadWithSwiftLint(project: project, status: status, forXcode: reporter is XcodeProofreadingReporter, output: output)
 
         return status.passing
     }
@@ -72,7 +76,7 @@ enum Proofreading {
                 try SwiftLint.default.standardConfiguration().save(to: standard)
             }
 
-            if ¬(try SwiftLint.default.proofread(withConfiguration: configuration, forXcode: forXcode, output: &output)) {
+            if ¬(try SwiftLint.default.proofread(withConfiguration: configuration, forXcode: forXcode, output: output)) {
                 status.failExternalPhase()
             }
         }

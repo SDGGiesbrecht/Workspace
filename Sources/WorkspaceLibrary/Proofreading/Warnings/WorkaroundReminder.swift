@@ -20,21 +20,21 @@ struct WorkaroundReminder : Warning {
 
     static let noticeOnly = true
 
-    static let name = UserFacingText<InterfaceLocalization>({ (localization) in
+    static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Workaround Reminder"
         }
     })
 
-    static let trigger = UserFacingText<InterfaceLocalization>({ (localization) in
+    static let trigger = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Workaround"
         }
     })
 
-    static func message(for details: StrictString, in project: PackageRepository, output: Command.Output) throws -> UserFacingText<InterfaceLocalization>? {
+    static func message(for details: StrictString, in project: PackageRepository, output: Command.Output) throws -> UserFacing<StrictString, InterfaceLocalization>? {
 
         if let versionCheck = details.scalars.firstNestingLevel(startingWith: "(".scalars, endingWith: ")".scalars) {
             var parameters = versionCheck.contents.contents.components(separatedBy: " ".scalars)
@@ -47,11 +47,11 @@ struct WorkaroundReminder : Warning {
                     var newDetails = details
                     let script: StrictString = "swift \u{2D}\u{2D}version"
                     newDetails.replaceSubrange(versionCheck.contents.range, with: "\(script) \(problemVersion.string)".scalars)
-                    if try message(for: newDetails, in: project, output: &output) == nil {
+                    if try message(for: newDetails, in: project, output: output) == nil {
                         return nil
                     }
                 } else {
-                    if let current = try currentVersion(of: dependency, for: project, output: &output) {
+                    if let current = try currentVersion(of: dependency, for: project, output: output) {
                         if current ≤ problemVersion {
                             return nil
                         }
@@ -60,7 +60,7 @@ struct WorkaroundReminder : Warning {
             }
         }
 
-        return UserFacingText({ localization in
+        return UserFacing({ localization in
             let label: StrictString
             switch localization {
             case .englishCanada:
@@ -72,7 +72,7 @@ struct WorkaroundReminder : Warning {
 
     private static var dependencyVersionCache: [StrictString: Version?] = [:]
     private static func currentVersion(of dependency: StrictString, for project: PackageRepository, output: Command.Output) throws -> Version? {
-        if let version = try project.dependencies(output: &output)[dependency] {
+        if let version = try project.dependencies(output: output)[dependency] {
             return version
         } else {
             return cached(in: &dependencyVersionCache[dependency], {

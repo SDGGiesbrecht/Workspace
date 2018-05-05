@@ -18,28 +18,28 @@ import SDGCommandLine
 
 struct ColonSpacing : Rule {
 
-    static let name = UserFacingText<InterfaceLocalization>({ (localization) in
+    static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Colon Spacing"
         }
     })
 
-    static let precedingMessage = UserFacingText<InterfaceLocalization>({ (localization) in
+    static let precedingMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Colons should not be preceded by spaces."
         }
     })
 
-    static let conformanceMessage = UserFacingText<InterfaceLocalization>({ (localization) in
+    static let conformanceMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Colons should be preceded by spaces when denoting protocols or superclasses."
         }
     })
 
-    static let followingMessage = UserFacingText<InterfaceLocalization>({ (localization) in
+    static let followingMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Colons should be followed by spaces."
@@ -82,10 +82,10 @@ struct ColonSpacing : Rule {
                             let precedingIndex = file.contents.scalars.index(before: match.range.lowerBound)
                             let errorRange = precedingIndex ..< match.range.upperBound
 
-                            reportViolation(in: file, at: errorRange, replacementSuggestion: ":", message: precedingMessage, status: status, output: &output)
+                            reportViolation(in: file, at: errorRange, replacementSuggestion: ":", message: precedingMessage, status: status, output: output)
                         }
                     } else if protocolOrSuperclass {
-                        reportViolation(in: file, at: match.range, replacementSuggestion: " :", message: conformanceMessage, status: status, output: &output)
+                        reportViolation(in: file, at: match.range, replacementSuggestion: " :", message: conformanceMessage, status: status, output: output)
                     }
                 }
 
@@ -95,7 +95,7 @@ struct ColonSpacing : Rule {
                         "/" /* URL */
                     ] {
 
-                    reportViolation(in: file, at: match.range, replacementSuggestion: ": ", message: followingMessage, status: status, output: &output)
+                    reportViolation(in: file, at: match.range, replacementSuggestion: ": ", message: followingMessage, status: status, output: output)
                 }
             }
         }

@@ -14,6 +14,9 @@
 
 import Foundation
 
+import SDGLogic
+import SDGCollections
+
 import SDGCommandLine
 
 struct FileHeaders {
@@ -132,7 +135,7 @@ struct FileHeaders {
 
                     header = header.replacingOccurrences(of: key("Filename"), with: String(StrictString(path.filename)))
                     header = header.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.projectName(output:
-                        &output)))
+                        output)))
                     if let website = possibleWebsite {
                         header = header.replacingOccurrences(of: key("Website"), with: website)
                     }
@@ -145,7 +148,7 @@ struct FileHeaders {
                     }
 
                     file.header = header
-                    require { try file.write(output: &output) }
+                    require { try file.write(output: output) }
                 }
             }
         }

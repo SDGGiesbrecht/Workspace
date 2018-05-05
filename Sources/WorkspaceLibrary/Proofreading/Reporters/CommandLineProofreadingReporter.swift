@@ -29,7 +29,7 @@ class CommandLineProofreadingReporter : ProofreadingReporter {
     // MARK: - ProofreadingReporter
 
     func reportParsing(file: String, to output: Command.Output) {
-        print(file.in(FontWeight.bold), to: &output)
+        print(file.in(FontWeight.bold), to: output)
     }
 
     func report(violation: StyleViolation, to output: Command.Output) {
@@ -47,7 +47,7 @@ class CommandLineProofreadingReporter : ProofreadingReporter {
         let lines = violation.file.contents.lines
         let lineRange = violation.range.lines(in: lines)
         let lineNumber = lines.distance(from: lines.startIndex, to: lineRange.lowerBound) + 1
-        let lineMessage = UserFacingText<InterfaceLocalization>({ localization in
+        let lineMessage = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "Line " + lineNumber.inDigits()
@@ -70,6 +70,6 @@ class CommandLineProofreadingReporter : ProofreadingReporter {
             display
             ].joinAsLines()
 
-        print(message, to: &output)
+        print(message, to: output)
     }
 }

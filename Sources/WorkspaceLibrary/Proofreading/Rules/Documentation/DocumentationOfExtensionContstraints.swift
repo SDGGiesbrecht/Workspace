@@ -16,14 +16,14 @@ import SDGCommandLine
 
 struct DocumentationOfExtensionConstraints : Rule {
 
-    static let name = UserFacingText<InterfaceLocalization>({ (localization) in
+    static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Documentation of Extension Constraints"
         }
     })
 
-    static let message = UserFacingText<InterfaceLocalization>({ (localization) in
+    static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return StrictString("Undocumented extension constraint. Add “\(Mark.expectedSyntax)where...” on the next line.")
@@ -36,7 +36,7 @@ struct DocumentationOfExtensionConstraints : Rule {
                 where line(of: match, in: file).contains(" where ".scalars)
                     ∧ ¬line(after: match, in: file).contains(DocumentationOfCompilationConditions.markSearchToken) {
 
-                        reportViolation(in: file, at: match.range, message: message, status: status, output: &output)
+                        reportViolation(in: file, at: match.range, message: message, status: status, output: output)
             }
         }
     }

@@ -13,7 +13,7 @@
  */
 
 import XCTest
-@testable import WorkspaceTests
+@testable import WorkspaceLibraryTests
 
 XCTMain([
     testCase(APITests.allTests),

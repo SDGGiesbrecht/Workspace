@@ -15,7 +15,9 @@
 import Foundation
 import XCTest
 
+import SDGControlFlow
 import SDGLogic
+import SDGCollections
 import SDGText
 import SDGExternalProcess
 

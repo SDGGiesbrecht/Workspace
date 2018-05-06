@@ -49,7 +49,9 @@ let package = Package(
 
         .testTarget(name: "WorkspaceLibraryTests", dependencies: [
             .targetItem(name: "WorkspaceLibrary"),
+            .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
             .productItem(name: "SDGLogic", package: "SDGCornerstone"),
+            .productItem(name: "SDGCollections", package: "SDGCornerstone"),
             .productItem(name: "SDGText", package: "SDGCornerstone"),
             .productItem(name: "SDGLocalization", package: "SDGCornerstone"),
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),

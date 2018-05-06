@@ -3,18 +3,9 @@ $ workspace refresh read‐me
 
 Refreshing read‐me...
 
-
-$ swift package resolve
-
 Writing to “Documentation/🇬🇧EN Read Me.md”...
-
-$ swift package resolve
-
 Writing to “README.md”...
 $ workspace validate documentation‐coverage
-
-$ swift package resolve
-
 
 Generating documentation for “UnicodeSource”...
 
@@ -36,9 +27,6 @@ Writing to “docs/UnicodeSource/docsets/UnicodeSource.docset/Contents/Resources
 Writing to “docs/UnicodeSource/docsets/UnicodeSource.docset/Contents/Resources/Documents/index.html”...
 Writing to “docs/UnicodeSource/en-read-me.html”...
 Writing to “docs/UnicodeSource/index.html”...
-
-$ swift package resolve
-
 
 Checking documentation coverage for “UnicodeSource”... (§1)
 

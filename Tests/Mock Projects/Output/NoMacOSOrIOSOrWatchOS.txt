@@ -1,9 +1,6 @@
 
 $ workspace validate documentation‐coverage
 
-$ swift package resolve
-
-
 Generating documentation for “NoMacOSOrIOSOrWatchOS”...
 
 
@@ -17,9 +14,6 @@ skipped 1 private, fileprivate, or internal symbol (use `--min-acl` to specify a
 jam out ♪♫ to your fresh new docs in `docs/NoMacOSOrIOSOrWatchOS`
 
 Writing to “docs/NoMacOSOrIOSOrWatchOS/.nojekyll”...
-
-$ swift package resolve
-
 
 Checking documentation coverage for “NoMacOSOrIOSOrWatchOS”... (§1)
 

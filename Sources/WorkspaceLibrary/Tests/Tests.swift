@@ -238,7 +238,7 @@ struct Tests {
 
     static func validateCodeCoverage(for project: PackageRepository, on job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: Command.Output) throws {
         #if !os(Linux)
-        return // [_Warning: Redesign this._]
+        return ()// [_Warning: Redesign this._]
 
         setenv(DXcode.skipProofreadingEnvironmentVariable, "YES", 1 /* overwrite */)
         defer {

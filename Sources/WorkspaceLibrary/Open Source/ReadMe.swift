@@ -247,7 +247,7 @@ enum ReadMe {
                 }).resolved(),
                 "",
                 "```shell",
-                StrictString("curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s \(package) \u{22}\(repository.absoluteString)\u{22} \(version.string) \u{22}\(tools.first!) help\u{22} " + tools.joined(separator: " ")),
+                StrictString("curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s \(package) \u{22}\(repository.absoluteString)\u{22} \(version.string()) \u{22}\(tools.first!) help\u{22} " + tools.joined(separator: " ")),
                 "```"
             ]
         }

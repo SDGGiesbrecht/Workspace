@@ -17,6 +17,8 @@ import Foundation
 import SDGControlFlow
 import SDGLogic
 import SDGCollections
+import SDGText
+import SDGPersistence
 
 import SDGCommandLine
 
@@ -238,51 +240,100 @@ struct Tests {
 
     static func validateCodeCoverage(for project: PackageRepository, on job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: Command.Output) throws {
         #if !os(Linux)
-        return ()// [_Warning: Redesign this._]
 
-        setenv(DXcode.skipProofreadingEnvironmentVariable, "YES", 1 /* overwrite */)
-        defer {
-            unsetenv(DXcode.skipProofreadingEnvironmentVariable)
+        let section = validationStatus.newSection()
+        output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishCanada:
+                let name = job.englishTargetOperatingSystemName
+                return StrictString("Checking test coverage on \(name)...") + section.anchor
+            }
+        }).resolved().formattedAsSectionHeader())
+
+        func failStepWithError(message: StrictString) {
+
+            output.print(message.formattedAsError())
+
+            validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in // [_Exempt from Test Coverage_]
+                switch localization {
+                case .englishCanada: // [_Exempt from Test Coverage_]
+                    let name = job.englishTargetOperatingSystemName
+                    return StrictString("Test coverage could not be determined on \(name).") + section.crossReference.resolved(for: localization)
+                }
+            }))
         }
 
-        let allTargets = try project.targets(output: output).map({ $0.name })
-        // [_Workaround: The list of libraries (product or otherwise) should be retrieved from the package manager directly instead. (SDGCommandLine 0.1.4)_]
-        let executables = Set(try project.executableTargets(output: output))
-        let validTargets = allTargets.filter { ¬$0.scalars.contains("Tests".scalars) ∧ $0 ∉ executables ∪ ["test‐ios‐simulator", "test‐tvos‐simulator"] }
+        do {
+            guard let report = try project.codeCoverageReport(on: testSDK(for: job)) else {
+                failStepWithError(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return "Xcode has not produced a test coverage report."
+                    }
+                }).resolved())
+                return
+            }
 
-        for target in validTargets {
-            try autoreleasepool {
+            var irrelevantFiles: Set<URL> = []
+            for target in try project.packageStructure().targets {
+                switch target.type {
+                case .library, .executable, .systemModule:
+                    break // Coverage matters.
+                case .test:
+                    // Coverage unimportant.
+                    for path in target.sources.paths {
+                        irrelevantFiles.insert(URL(fileURLWithPath: path.asString))
+                    }
+                }
+            }
 
-                let section = validationStatus.newSection()
+            var passing = true
+            let sameLineTokens = try untestableSameLineTokens(for: project)
+            let previousLineTokens = try untestablePreviousLineTokens(for: project)
+            for file in report.files where file.file ∉ irrelevantFiles {
+                CommandLineProofreadingReporter.default.reportParsing(file: file.file.path(relativeTo: project.location), to: output)
+                try autoreleasepool {
+                    let sourceFile = try String(from: file.file)
+                    regionLoop: for region in file.regions {
+                        let startLineIndex = region.region.lowerBound.line(in: sourceFile.lines)
+                        let startLine = sourceFile.lines[startLineIndex].line
+                        for token in sameLineTokens where startLine.contains(token.scalars) {
+                            continue regionLoop // Ignore and move on.
+                        }
+                        let nextLineIndex = sourceFile.lines.index(after: startLineIndex)
+                        if nextLineIndex ≠ sourceFile.lines.endIndex {
+                            let nextLine = sourceFile.lines[nextLineIndex].line
+                            for token in previousLineTokens where nextLine.contains(token.scalars) {
+                                continue regionLoop // Ignore and move on.
+                            }
+                        }
+                        // No ignore tokens.
 
-                output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                        CommandLineProofreadingReporter.default.report(violation: region.region, in: sourceFile, to: output)
+                        passing = false
+                    }
+                }
+            }
+
+            if passing {
+                validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
                         let name = job.englishTargetOperatingSystemName
-                        return StrictString("Checking test coverage for “\(target)” on \(name)...") + section.anchor
+                        return StrictString("Test coverage is complete on \(name).")
                     }
-                }).resolved().formattedAsSectionHeader())
-
-                // [_Warning: Does nothing._]
-                let report = ""//try Xcode.default.coverageData(for: target, of: scheme, on: testSDK(for: job), output: output)
-                if try validate(coverageReport: report, for: project, output: output) {
-                    validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                        switch localization {
-                        case .englishCanada:
-                            let name = job.englishTargetOperatingSystemName
-                            return StrictString("Test coverage is complete for “\(target)” on \(name).")
-                        }
-                    }))
-                } else { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.2.
-                    validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in // [_Exempt from Test Coverage_]
-                        switch localization {
-                        case .englishCanada: // [_Exempt from Test Coverage_]
-                            let name = job.englishTargetOperatingSystemName
-                            return StrictString("Test coverage is incomplete for “\(target)” on \(name).") + section.crossReference.resolved(for: localization)
-                        }
-                    }))
-                }
+                }))
+            } else {
+                validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in // [_Exempt from Test Coverage_]
+                    switch localization {
+                    case .englishCanada: // [_Exempt from Test Coverage_]
+                        let name = job.englishTargetOperatingSystemName
+                        return StrictString("Test coverage is incomplete on \(name).") + section.crossReference.resolved(for: localization)
+                    }
+                }))
             }
+        } catch {
+            failStepWithError(message: StrictString(error.localizedDescription))
         }
         #endif
     }
@@ -306,56 +357,5 @@ struct Tests {
             "primitiveMethod",
             "unreachable"
             ] + (try project.configuration.testCoverageExemptionTokensForPreviousLine().map({ StrictString($0) }))
-    }
-
-    private static let nullCharacters = (CharacterSet.whitespacesAndNewlines ∪ CharacterSet.decimalDigits) ∪ ["|"]
-
-    private static func validate(coverageReport: String, for project: PackageRepository, output: Command.Output) throws -> Bool {
-
-        let sameLineTokens = try untestableSameLineTokens(for: project)
-        let previousLineTokens = try untestablePreviousLineTokens(for: project)
-
-        var overallCoverageSuccess = true
-
-        for fileReport in coverageReport.scalars.components(separatedBy: ".swift\u{3A}".scalars) {
-            let fileLine = fileReport.range.lowerBound.line(in: coverageReport.lines)
-            let file = String(coverageReport.lines[fileLine].line)
-
-            if file.scalars.contains("Needs Refactoring".scalars) ∨ file.scalars.contains(" .swift\u{3A}".scalars) /* switch case */ { // [_Exempt from Test Coverage_] Temporary.
-                continue // [_Workaround: A temporary measure until refactoring is complete._]
-            }
-
-            hits: for untested in fileReport.contents.matches(for: "\u{5E}0".scalars) {
-                let errorLineIndex = untested.range.lowerBound.line(in: coverageReport.lines)
-                let errorLine = String(coverageReport.lines[errorLineIndex].line)
-                let sourceLineIndex = coverageReport.lines.index(before: errorLineIndex)
-                let sourceLine = String(coverageReport.lines[sourceLineIndex].line)
-
-                for token in sameLineTokens where sourceLine.scalars.contains(token.scalars) {
-                    continue hits
-                }
-
-                let nextLineIndex = coverageReport.lines.index(after: errorLineIndex)
-                let nextLine = String(coverageReport.lines[nextLineIndex].line)
-                let sourceLines = String((sourceLine + nextLine).scalars.replacingMatches(for: ConditionalPattern({ $0 ∈ nullCharacters }), with: "".scalars))
-
-                for token in previousLineTokens where sourceLines.scalars.contains(token.scalars) {
-                    continue hits
-                }
-
-                if sourceLines.scalars.hasPrefix("}}".scalars) {
-                    continue hits
-                }
-
-                overallCoverageSuccess = false
-                output.print([
-                    URL(fileURLWithPath: file).path(relativeTo: project.location),
-                    sourceLine,
-                    errorLine
-                    ].joinAsLines().formattedAsError().separated())
-            }
-        }
-
-        return overallCoverageSuccess
     }
 }

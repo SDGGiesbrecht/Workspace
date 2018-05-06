@@ -32,7 +32,7 @@ extension PackageRepository {
     // MARK: - Cache
 
     private class Cache {
-        fileprivate var packageStructure: (name: String, libraryProductTargets: [String], executableProducts: [String], targets: [(name: String, location: URL)])?
+        fileprivate var packageStructure: PackageModel.Package?
         fileprivate var targets: [Target]?
         fileprivate var targetsByName: [String: Target]?
         fileprivate var dependencies: [StrictString: SDGSwift.Version]?
@@ -72,46 +72,50 @@ extension PackageRepository {
 
     // MARK: - Structure
 
-    private func packageStructure(output: Command.Output) throws -> (name: String, libraryProductTargets: [String], executableProducts: [String], targets: [(name: String, location: URL)]) {
+    internal func packageStructure() throws -> PackageModel.Package {
         return try cached(in: &cache.packageStructure) {
-            // [_Warning: Redesign this._]
-            let structure = try package()
-            let name = structure.name
-
-            var libraryProductTargets: [String] = []
-            var executableProducts: [String] = []
-            for product in structure.products {
-                switch product.type {
-                case .library:
-                    for target in product.targets {
-                        if ¬libraryProductTargets.contains(target.name) {
-                            libraryProductTargets.append(target.name)
-                        }
-                    }
-                case .executable:
-                    executableProducts.append(product.name)
-                case .test:
-                    break
-                }
-            }
-
-            var targets: [(name: String, location: URL)] = []
-            for target in structure.manifest.package.targets {
-                if let path = target.path {
-                    targets.append((name: target.name, location: URL(fileURLWithPath: path)))
-                } else {
-                    let base: URL
-                    if target.isTest {
-                        base = location.appendingPathComponent("Tests")
-                    } else {
-                        base = location.appendingPathComponent("Sources")
-                    }
-                    targets.append((name: target.name, location: base.appendingPathComponent(target.name)))
-                }
-            }
-
-            return (name: name, libraryProductTargets: libraryProductTargets, executableProducts: executableProducts, targets: targets)
+            return try package()
         }
+    }
+
+    private func packageStructure(output: Command.Output) throws -> (name: String, libraryProductTargets: [String], executableProducts: [String], targets: [(name: String, location: URL)]) {
+        // [_Warning: Redesign this._]
+        let structure = try packageStructure()
+        let name = structure.name
+
+        var libraryProductTargets: [String] = []
+        var executableProducts: [String] = []
+        for product in structure.products {
+            switch product.type {
+            case .library:
+                for target in product.targets {
+                    if ¬libraryProductTargets.contains(target.name) {
+                        libraryProductTargets.append(target.name)
+                    }
+                }
+            case .executable:
+                executableProducts.append(product.name)
+            case .test:
+                break
+            }
+        }
+
+        var targets: [(name: String, location: URL)] = []
+        for target in structure.manifest.package.targets {
+            if let path = target.path {
+                targets.append((name: target.name, location: URL(fileURLWithPath: path)))
+            } else {
+                let base: URL
+                if target.isTest {
+                    base = location.appendingPathComponent("Tests")
+                } else {
+                    base = location.appendingPathComponent("Sources")
+                }
+                targets.append((name: target.name, location: base.appendingPathComponent(target.name)))
+            }
+        }
+
+        return (name: name, libraryProductTargets: libraryProductTargets, executableProducts: executableProducts, targets: targets)
     }
 
     func projectName(output: Command.Output) throws -> StrictString {
@@ -359,7 +363,7 @@ extension PackageRepository {
     func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
         for product in try libraryProductTargets(output: output) {
             try autoreleasepool {
-            try Documentation.document(target: product, for: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
+                try Documentation.document(target: product, for: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
             }
         }
     }
@@ -367,7 +371,7 @@ extension PackageRepository {
     func validateDocumentationCoverage(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
         for product in try libraryProductTargets(output: output) {
             try autoreleasepool {
-            try Documentation.validateDocumentationCoverage(for: product, in: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
+                try Documentation.validateDocumentationCoverage(for: product, in: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
             }
         }
     }

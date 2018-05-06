@@ -32,6 +32,32 @@ class CommandLineProofreadingReporter : ProofreadingReporter {
         output.print(file.in(FontWeight.bold))
     }
 
+    private func lineMessage(source: String, violation: Range<String.ScalarView.Index>) -> StrictString {
+        let lines = source.lines
+        let lineRange = violation.lines(in: lines)
+        let lineNumber = lines.distance(from: lines.startIndex, to: lineRange.lowerBound) + 1
+        return UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishCanada:
+                return "Line " + lineNumber.inDigits()
+            }
+        }).resolved()
+    }
+
+    private func display(source: String, violation: Range<String.ScalarView.Index>, replacementSuggestion: StrictString?, highlight: (String) -> String) -> String {
+        let lines = source.lines
+        let lineRange = violation.lines(in: lines)
+        let context = lineRange.sameRange(in: source.clusters)
+        let preceding = String(source.clusters[context.lowerBound ..< violation.lowerBound])
+        let problem = highlight(String(source.clusters[violation])).in(Underline.underlined)
+        let following = String(source.clusters[violation.upperBound ..< context.upperBound])
+        var result = preceding + problem + following
+        if let suggestion = replacementSuggestion {
+            result += preceding + String(suggestion).formattedAsSuccess() + following
+        }
+        return result
+    }
+
     func report(violation: StyleViolation, to output: Command.Output) {
 
         func highlight<S : StringFamily>(_ problem: S) -> S {
@@ -44,32 +70,18 @@ class CommandLineProofreadingReporter : ProofreadingReporter {
 
         let description = highlight(violation.message.resolved()) + " (" + violation.ruleIdentifier.resolved() + ")"
 
-        let lines = violation.file.contents.lines
-        let lineRange = violation.range.lines(in: lines)
-        let lineNumber = lines.distance(from: lines.startIndex, to: lineRange.lowerBound) + 1
-        let lineMessage = UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishCanada:
-                return "Line " + lineNumber.inDigits()
-            }
-        }).resolved()
-
-        let context = lineRange.sameRange(in: violation.file.contents.clusters)
-        let preceding = String(violation.file.contents.clusters[context.lowerBound ..< violation.range.lowerBound])
-        let problem = highlight(String(violation.file.contents.clusters[violation.range])).in(Underline.underlined)
-        let following = String(violation.file.contents.clusters[violation.range.upperBound ..< context.upperBound])
-        var display = preceding + problem + following
-
-        if let suggestion = violation.replacementSuggestion {
-            display += preceding + String(suggestion).formattedAsSuccess() + following
-        }
-
-        let message = [
-            String(lineMessage),
+        output.print([
+            String(lineMessage(source: violation.file.contents, violation: violation.range)),
             String(description),
-            display
-            ].joinAsLines()
+            display(source: violation.file.contents, violation: violation.range, replacementSuggestion: violation.replacementSuggestion, highlight: highlight)
+            ].joinAsLines())
+    }
 
-        output.print(message)
+    // Parallel reporting style for test coverage.
+    func report(violation: Range<String.ScalarView.Index>, in file: String, to output: Command.Output) {
+        output.print([
+            String(lineMessage(source: file, violation: violation)),
+            display(source: file, violation: violation, replacementSuggestion: nil, highlight: { $0.formattedAsError() })
+            ].joinAsLines())
     }
 }

@@ -14,8 +14,10 @@
 
 import Foundation
 
+import SDGControlFlow
 import SDGLogic
 import SDGCollections
+import SDGExternalProcess
 
 import SDGCommandLine
 

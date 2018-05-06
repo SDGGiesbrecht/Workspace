@@ -15,6 +15,8 @@
 import Foundation
 import XCTest
 
+import SDGExternalProcess
+
 import SDGCommandLine
 
 func checkForDifferences(in contentLabel: String, at location: URL, for mockProject: URL, file: StaticString = #file, line: UInt = #line) {

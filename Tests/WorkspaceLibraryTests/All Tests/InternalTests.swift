@@ -15,7 +15,11 @@
 import Foundation
 import XCTest
 
+import SDGLogic
+
 import SDGCommandLine
+
+import SDGSwift
 
 @testable import WorkspaceLibrary
 
@@ -86,9 +90,9 @@ class InternalTests : TestCase {
         ]
 
         XCTAssertErrorFree {
-            _ = try Command(name: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }), description: UserFacingText({ _ in "" }), directArguments: [], options: [], execution: { (_, _, output: Command.Output) in
+            _ = try Command(name: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }), description: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }), directArguments: [], options: [], execution: { (_, _, output: Command.Output) in
 
-                let tracked = try PackageRepository(alreadyAt: repositoryRoot).trackedFiles(output: output)
+                let tracked = try PackageRepository(at: repositoryRoot).trackedFiles(output: output)
                 let relative = tracked.map { $0.path(relativeTo: repositoryRoot) }
                 let unexpected = relative.filter { path in
 
@@ -120,31 +124,11 @@ class InternalTests : TestCase {
         }
     }
 
-    func testSystemToolVersions() {
-        let shouldTest = ProcessInfo.processInfo.environment["CONTINUOUS_INTEGRATION"] ≠ nil
-            ∨ ProcessInfo.processInfo.environment["CI"] ≠ nil
-            ∨ ProcessInfo.processInfo.environment["TRAVIS"] ≠ nil
-
-        if shouldTest {
-            XCTAssertErrorFree({
-                #if !os(Linux)
-                    var versionString = Xcode.defaultVersion.string
-                    if versionString.hasSuffix(".0") {
-                        versionString.scalars.removeLast(2)
-                    }
-
-                    XCTAssert(try Shell.default.run(command: ["xcodebuild", "\u{2D}version"]).scalars.contains(versionString.scalars), "Xcode is out of date.")
-                #endif
-            })
-        }
-    }
-
     static var allTests: [(String, (InternalTests) -> () throws -> Void)] {
         return [
             ("testDocumentationCoverage", testDocumentationCoverage),
             ("testGitIgnoreCoverage", testGitIgnoreCoverage),
-            ("testHelp", testHelp),
-            ("testSystemToolVersions", testSystemToolVersions)
+            ("testHelp", testHelp)
         ]
     }
 }

@@ -15,6 +15,10 @@
 import Foundation
 import XCTest
 
+import SDGLogic
+import SDGText
+import SDGExternalProcess
+
 import SDGCommandLine
 
 import WorkspaceLibrary
@@ -119,7 +123,7 @@ class APITests : TestCase {
                                             do {
                                                 try execute()
                                             } catch let error as Command.Error {
-                                                output += "\n" + error.describe()
+                                                output += StrictString("\n\(error)")
                                             } catch let error {
                                                 XCTFail("Unexpected error: \(error)")
                                             }

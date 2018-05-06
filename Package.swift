@@ -47,7 +47,14 @@ let package = Package(
             .productItem(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
             ]),
 
-        .testTarget(name: "WorkspaceLibraryTests", dependencies: [.targetItem(name: "WorkspaceLibrary")]),
+        .testTarget(name: "WorkspaceLibraryTests", dependencies: [
+            .targetItem(name: "WorkspaceLibrary"),
+            .productItem(name: "SDGLogic", package: "SDGCornerstone"),
+            .productItem(name: "SDGText", package: "SDGCornerstone"),
+            .productItem(name: "SDGLocalization", package: "SDGCornerstone"),
+            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
+            .productItem(name: "SDGSwift", package: "SDGSwift"),
+            ]),
         .target(name: "test‐ios‐simulator", dependencies: [
             .targetItem(name: "WorkspaceLibrary"),
             .productItem(name: "SDGCommandLine", package: "SDGCommandLine"),

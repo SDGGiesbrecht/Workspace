@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLocalization
+
 import SDGCommandLine
 
 extension Command.Output {
@@ -25,7 +27,7 @@ extension Command.Output {
     static var mock: Command.Output = {
         var result: Command.Output?
         do {
-            try Command(name: UserFacingText<MockLocalization>({ _ in "" }), description: UserFacingText<MockLocalization>({ _ in "" }), directArguments: [], options: [], execution: { (_, _, output: Command.Output) in
+            try Command(name: UserFacing<StrictString, MockLocalization>({ _ in "" }), description: UserFacing<StrictString, MockLocalization>({ _ in "" }), directArguments: [], options: [], execution: { (_, _, output: Command.Output) in
                 result = output
             }).execute(with: [])
         } catch {}

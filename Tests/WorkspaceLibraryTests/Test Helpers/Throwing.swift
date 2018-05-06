@@ -18,13 +18,8 @@ import XCTest
 import SDGCommandLine
 
 private func description(of error: Error) -> String {
-    if let command = error as? Command.Error {
-        return String(command.describe())
-    } else if let shell = error as? ExternalProcess.Error {
-        return shell.output
-    } else {
-        return error.localizedDescription
-    }
+    // [_Warning: Redesign this._]
+    return error.localizedDescription
 }
 
 func XCTAssertErrorFree(file: StaticString = #file, line: UInt = #line, _ expression: () throws -> Void) {

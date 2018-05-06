@@ -23,7 +23,8 @@ class TestCase : XCTestCase {
     override func setUp() {
         if ¬TestCase.initialized {
             TestCase.initialized = true
-            SDGCommandLine.initialize(applicationIdentifier: "ca.solideogloria.Workspace.Tests", version: nil, packageURL: nil)
+            // [_Warning: Redesign this._]
+            ProcessInfo.applicationIdentifier = "ca.solideogloria.Workspace.Tests"
         }
         super.setUp()
     }

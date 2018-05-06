@@ -52,7 +52,7 @@ struct WorkaroundReminder : Warning {
                 if dependency == "Swift" {
                     var newDetails = details
                     let script: StrictString = "swift \u{2D}\u{2D}version"
-                    newDetails.replaceSubrange(versionCheck.contents.range, with: "\(script) \(problemVersion.string)".scalars)
+                    newDetails.replaceSubrange(versionCheck.contents.range, with: "\(script) \(problemVersion.string())".scalars)
                     if try message(for: newDetails, in: project, output: output) == nil {
                         return nil
                     }

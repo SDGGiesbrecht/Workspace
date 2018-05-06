@@ -24,7 +24,7 @@ import SDGSwift
 #if os(Linux)
 
 func linuxJazzyError() -> Command.Error {
-    return Command.Error(description: UserFacingText({(localization: InterfaceLocalization) in
+    return Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
         case .englishCanada:
             return StrictString([

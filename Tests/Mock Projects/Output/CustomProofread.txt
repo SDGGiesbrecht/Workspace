@@ -25,10 +25,6 @@ Linting '[...]' (3/4)
 Linting '[...]' (4/4)
 Done linting! Found 0 violations, 0 serious in 4 files.
 
-
-$ swift package resolve
-
-
 ✓ Source code passes proofreading.
 
 

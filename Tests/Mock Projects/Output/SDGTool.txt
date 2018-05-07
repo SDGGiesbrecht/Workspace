@@ -3,61 +3,28 @@ $ workspace refresh scripts
 
 Refreshing scripts...
 
-
-$ swift package resolve
-
 Writing to “Refresh (macOS).command”...
 Writing to “Refresh (Linux).sh”...
-
-$ swift package resolve
-
 Writing to “Validate (macOS).command”...
 $ workspace refresh read‐me
 
 Refreshing read‐me...
 
-
-$ swift package resolve
-
 Writing to “Documentation/🇨🇦EN Read Me.md”...
 Writing to “Documentation/🇨🇦EN Related Projects.md”...
-
-$ swift package resolve
-
 Writing to “README.md”...
-
-$ swift package resolve
-
 Writing to “Documentation/🇬🇧EN Read Me.md”...
 Writing to “Documentation/🇬🇧EN Related Projects.md”...
-
-$ swift package resolve
-
 Writing to “Documentation/🇺🇸EN Read Me.md”...
 Writing to “Documentation/🇺🇸EN Related Projects.md”...
-
-$ swift package resolve
-
 Writing to “Documentation/🇩🇪DE Lies mich.md”...
 Writing to “Documentation/🇩🇪DE Verwandte Projekte.md”...
-
-$ swift package resolve
-
 Writing to “Documentation/🇫🇷FR Lisez moi.md”...
 Writing to “Documentation/🇫🇷FR Projets liés.md”...
-
-$ swift package resolve
-
 Writing to “Documentation/🇬🇷ΕΛ Με διαβάστε.md”...
 Writing to “Documentation/🇬🇷ΕΛ Συγγενικά έργα.md”...
-
-$ swift package resolve
-
 Writing to “Documentation/🇮🇱עב קרא אותי.md”...
 Writing to “Documentation/🇮🇱עב מיזמים קשורים.md”...
-
-$ swift package resolve
-
 Writing to “Documentation/[zxx] Read Me.md”...
 Writing to “Documentation/[zxx] Related Projects.md”...
 Deleting “Documentation/Related Projects.md”...
@@ -65,16 +32,10 @@ $ workspace refresh continuous‐integration
 
 Refreshing continuous integration configuration...
 
-
-$ swift package resolve
-
 Writing to “.travis.yml”...
 $ workspace refresh resources
 
 Refreshing resources...
-
-
-$ swift package resolve
 
 Writing to “Sources/Library/Resources.swift”...
 $ workspace proofread
@@ -121,10 +82,6 @@ Linting '[...]' (5/6)
 Linting '[...]' (6/6)
 Done linting! Found 0 violations, 0 serious in 6 files.
 
-
-$ swift package resolve
-
-
 ✓ Source code passes proofreading.
 
 
@@ -134,21 +91,16 @@ $ workspace validate build
 
 Checking build for macOS with the Swift Package Manager... (§1)
 
-
-$ swift build
+$ swift build --configuration release --static-swift-stdlib
 Compile Swift Module 'Dependency' (1 sources)
 Compile Swift Module 'Library' (2 sources)
 Compile Swift Module 'tool' (1 sources)
-Linking ./.build/x86_64-apple-macosx10.10/debug/tool
-
+Linking ./.build/x86_64-apple-macosx10.10/release/tool
 
 Checking build for macOS with Xcode... (§2)
 
-
 $ xcodebuild build -sdk macosx -scheme SDG-Package
 [...]
-
-
 
 ✓ There are no compiler warnings for macOS with the Swift Package Manager.
 ✓ There are no compiler warnings for macOS with Xcode.
@@ -160,14 +112,18 @@ $ workspace test
 
 Testing on macOS with the Swift Package Manager... (§1)
 
+$ swift test
+Compile Swift Module 'Dependency' (1 sources)
+Compile Swift Module 'Library' (2 sources)
+Compile Swift Module 'SDGTests' (1 sources)
+Compile Swift Module 'tool' (1 sources)
+Linking ./.build/x86_64-apple-macosx10.10/debug/tool
+Linking ./.build/x86_64-apple-macosx10.10/debug/SDGPackageTests.xctest/Contents/MacOS/SDGPackageTests
 
 Testing on macOS with Xcode... (§2)
 
-
 $ xcodebuild test -sdk macosx -scheme SDG-Package
 [...]
-
-
 
 ✓ Tests pass on macOS with Xcode.
 
@@ -209,9 +165,6 @@ skipped 6 private, fileprivate, or internal symbols (use `--min-acl` to specify 
 jam out ♪♫ to your fresh new docs in `[...]/Documentation/Library`
 
 Writing to “[...]/Documentation/Library/.nojekyll”...
-
-$ swift package resolve
-
 
 Checking documentation coverage for “Library”... (§1)
 

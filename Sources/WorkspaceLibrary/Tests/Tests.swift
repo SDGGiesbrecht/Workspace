@@ -277,8 +277,13 @@ struct Tests {
             var irrelevantFiles: Set<URL> = []
             for target in try project.packageStructure().targets {
                 switch target.type {
-                case .library, .executable, .systemModule:
+                case .library, .systemModule:
                     break // Coverage matters.
+                case .executable:
+                    // Not testable.
+                    for path in target.sources.paths {
+                        irrelevantFiles.insert(URL(fileURLWithPath: path.asString))
+                    }
                 case .test:
                     // Coverage unimportant.
                     for path in target.sources.paths {

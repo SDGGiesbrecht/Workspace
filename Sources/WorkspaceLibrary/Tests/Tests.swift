@@ -264,7 +264,7 @@ struct Tests {
         }
 
         do {
-            guard let report = try project.codeCoverageReport(on: testSDK(for: job)) else {
+            guard let report = try project.codeCoverageReport(on: testSDK(for: job), ignoreCoveredRegions: true) else {
                 failStepWithError(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:

@@ -145,19 +145,18 @@ $ xcodebuild test -sdk macosx -scheme SDG-Package
 “SDG” passes validation.
 
 $ workspace validate test‐coverage
-Testing on macOS with Xcode... (§1)
 
+Testing on macOS with Xcode... (§1)
 
 $ xcodebuild test -sdk macosx -scheme SDG-Package
 [...]
 
+Checking test coverage on macOS... (§2)
 
-
-Checking test coverage for “Library” on macOS... (§2)
-
+Sources/Library/SDG.swift
 
 ✓ Tests pass on macOS with Xcode.
-✓ Test coverage is complete for “Library” on macOS.
+✓ Test coverage is complete on macOS.
 
 
 “SDG” passes validation.

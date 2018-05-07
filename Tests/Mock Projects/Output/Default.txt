@@ -96,17 +96,15 @@ $ workspace validate test‐coverage
 
 Testing on macOS with Xcode... (§1)
 
-
 $ xcodebuild test -sdk macosx -scheme Default-Package
 [...]
 
+Checking test coverage on macOS... (§2)
 
-
-Checking test coverage for “Default” on macOS... (§2)
-
+Sources/Default/Default.swift
 
 ✓ Tests pass on macOS with Xcode.
-✓ Test coverage is complete for “Default” on macOS.
+✓ Test coverage is complete on macOS.
 
 
 “Default” passes validation.

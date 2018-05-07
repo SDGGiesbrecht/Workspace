@@ -32,7 +32,8 @@ extension PackageRepository {
     // MARK: - Cache
 
     private class Cache {
-        fileprivate var packageStructure: PackageModel.Package?
+        fileprivate var manifest: PackageModel.Manifest?
+        fileprivate var package: PackageModel.Package?
         fileprivate var targets: [Target]?
         fileprivate var targetsByName: [String: Target]?
         fileprivate var dependencies: [StrictString: SDGSwift.Version]?
@@ -72,15 +73,21 @@ extension PackageRepository {
 
     // MARK: - Structure
 
-    internal func packageStructure() throws -> PackageModel.Package {
-        return try cached(in: &cache.packageStructure) {
+    func cachedManifest() throws -> PackageModel.Manifest {
+        return try cached(in: &cache.manifest) {
+            return try manifest()
+        }
+    }
+
+    func cachedPackage() throws -> PackageModel.Package {
+        return try cached(in: &cache.package) {
             return try package()
         }
     }
 
     private func packageStructure(output: Command.Output) throws -> (name: String, libraryProductTargets: [String], executableProducts: [String], targets: [(name: String, location: URL)]) {
         // [_Warning: Redesign this._]
-        let structure = try packageStructure()
+        let structure = try cachedPackage()
         let name = structure.name
 
         var libraryProductTargets: [String] = []

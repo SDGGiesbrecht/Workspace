@@ -275,7 +275,7 @@ struct Tests {
             }
 
             var irrelevantFiles: Set<URL> = []
-            for target in try project.packageStructure().targets {
+            for target in try project.package().targets {
                 switch target.type {
                 case .library, .systemModule:
                     break // Coverage matters.

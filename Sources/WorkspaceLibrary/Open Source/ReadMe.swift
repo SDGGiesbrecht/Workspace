@@ -16,6 +16,7 @@ import Foundation
 
 import SDGControlFlow
 import SDGLogic
+import SDGCollections
 
 import SDGCommandLine
 
@@ -207,8 +208,17 @@ enum ReadMe {
     static func defaultInstallationInstructionsTemplate(localization: String, project: PackageRepository, output: Command.Output) throws -> Template? {
         var result: [StrictString] = []
 
-        let package = try project.packageStructure()
-        let tools = package.products.filter({ $0.type == .executable }).map { $0.name }
+        var tools = try project.cachedPackage().products.filter({ $0.type == .executable }).map { $0.name }
+
+        // Filter out tools which have not been declared as products.
+        switch try project.cachedManifest().package {
+        case .v3:
+            tools = [] // No concept of products.
+        case .v4(let manifest):
+            let publicProducts = Set(manifest.products.map({ $0.name }))
+            tools = tools.filter { $0 ∈ publicProducts }
+        }
+
         var includedInstallationSection = false
         if ¬tools.isEmpty,
             let repository = try project.configuration.repositoryURL(),

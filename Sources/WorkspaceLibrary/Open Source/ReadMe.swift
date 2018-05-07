@@ -20,6 +20,7 @@ import SDGLogic
 import SDGCommandLine
 
 import SDGSwift
+import SDGSwiftPackageManager
 
 enum ReadMe {
 
@@ -206,7 +207,8 @@ enum ReadMe {
     static func defaultInstallationInstructionsTemplate(localization: String, project: PackageRepository, output: Command.Output) throws -> Template? {
         var result: [StrictString] = []
 
-        let tools = try project.executableTargets(output: output)
+        let package = try project.packageStructure()
+        let tools = package.products.filter({ $0.type == .executable }).map { $0.name }
         var includedInstallationSection = false
         if ¬tools.isEmpty,
             let repository = try project.configuration.repositoryURL(),

@@ -55,15 +55,15 @@ let package = Package(
             .productItem(name: "SDGText", package: "SDGCornerstone"),
             .productItem(name: "SDGLocalization", package: "SDGCornerstone"),
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
-            .productItem(name: "SDGSwift", package: "SDGSwift"),
+            .productItem(name: "SDGSwift", package: "SDGSwift")
             ]),
         .target(name: "test‐ios‐simulator", dependencies: [
             .targetItem(name: "WorkspaceLibrary"),
-            .productItem(name: "SDGCommandLine", package: "SDGCommandLine"),
+            .productItem(name: "SDGCommandLine", package: "SDGCommandLine")
             ], path: "Tests/test‐ios‐simulator"),
         .target(name: "test‐tvos‐simulator", dependencies: [
             .targetItem(name: "WorkspaceLibrary"),
-            .productItem(name: "SDGCommandLine", package: "SDGCommandLine"),
+            .productItem(name: "SDGCommandLine", package: "SDGCommandLine")
             ], path: "Tests/test‐tvos‐simulator")
     ]
 )

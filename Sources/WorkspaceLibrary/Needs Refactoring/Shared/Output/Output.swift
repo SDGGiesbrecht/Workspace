@@ -14,7 +14,6 @@
 
 import Foundation
 
-
 func fatalError(message: [String]) -> Never {
     fail(message: message)
 }

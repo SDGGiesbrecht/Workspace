@@ -12,7 +12,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-
 func require<T>(operation: () throws -> T) -> T {
     do {
         return try operation()

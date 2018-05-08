@@ -250,10 +250,7 @@ class APITests : TestCase {
         }
     }
 
-    static var allTests: [(String, (APITests) -> () throws -> Void)] {
-        return [
-            ("testCheckForUpdates", testCheckForUpdates),
-            ("testOnMockProjects", testOnMockProjects)
-        ]
+    func testHelp() {
+        testCommand(Workspace.command, with: ["help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace)", overwriteSpecificationInsteadOfFailing: false)
     }
 }

@@ -105,22 +105,4 @@ class InternalTests : TestCase {
             }).execute(with: [])
         }
     }
-
-    func testHelp() {
-        for localization in InterfaceLocalization.cases {
-            LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-                XCTAssertErrorFree {
-                    try Workspace.command.execute(with: ["help"])
-                }
-            }
-        }
-    }
-
-    static var allTests: [(String, (InternalTests) -> () throws -> Void)] {
-        return [
-            ("testDocumentationCoverage", testDocumentationCoverage),
-            ("testGitIgnoreCoverage", testGitIgnoreCoverage),
-            ("testHelp", testHelp)
-        ]
-    }
 }

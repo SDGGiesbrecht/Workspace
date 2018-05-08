@@ -12,15 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
-
-import SDGControlFlow
 import SDGMathematics
+import GeneralImports
+
 import SDGExternalProcess
-
-import SDGCommandLine
-
-import SDGSwift
 
 import PackageModel
 

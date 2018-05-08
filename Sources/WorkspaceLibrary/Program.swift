@@ -12,9 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
-
-import SDGCommandLine
+import GeneralImports
 
 // Do not forget to increment the version in “.Workspace Configuration.txt” as well.
 let latestStableWorkspaceVersion = Version(0, 6, 0)

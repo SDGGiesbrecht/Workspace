@@ -13,10 +13,7 @@
  */
 
 import SDGLogic
-
-import SDGCommandLine
-
-import SDGSwift
+import GeneralImports
 
 protocol Rule {
     static var name: UserFacing<StrictString, InterfaceLocalization> { get }

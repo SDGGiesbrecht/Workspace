@@ -12,17 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
-import XCTest
-
-import SDGLogic
-import SDGXCTestUtilities
-
-import SDGCommandLine
-
-import SDGSwift
-
 @testable import WorkspaceLibrary
+import GeneralTestImports
 
 class InternalTests : TestCase {
 

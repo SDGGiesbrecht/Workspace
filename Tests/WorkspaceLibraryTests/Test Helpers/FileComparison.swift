@@ -12,12 +12,9 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
-import XCTest
+import GeneralTestImports
 
 import SDGExternalProcess
-
-import SDGCommandLine
 
 func checkForDifferences(in contentLabel: String, at location: URL, for mockProject: URL, file: StaticString = #file, line: UInt = #line) {
     do {

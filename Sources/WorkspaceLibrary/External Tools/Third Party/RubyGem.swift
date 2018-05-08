@@ -12,12 +12,9 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+import GeneralImports
 
-import SDGCollections
 import SDGExternalProcess
-
-import SDGCommandLine
 
 class RubyGem : ThirdPartyTool {
 

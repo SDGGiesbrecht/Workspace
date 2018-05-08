@@ -14,10 +14,7 @@
 
 import SDGLogic
 import SDGCollections
-
-import SDGCommandLine
-
-import SDGSwift
+import GeneralImports
 
 extension Configuration {
 

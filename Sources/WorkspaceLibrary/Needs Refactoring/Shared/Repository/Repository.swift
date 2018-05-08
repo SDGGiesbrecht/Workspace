@@ -12,11 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
-
-import SDGCommandLine
-
-import SDGSwift
+import GeneralImports
 
 struct Repository {
 

@@ -13,8 +13,7 @@
  */
 
 import SDGLogic
-
-import SDGCommandLine
+import GeneralImports
 
 func instructionsAfterRefresh() throws -> String {
     if let xcodeProject = try Repository.packageRepository.xcodeProject()?.lastPathComponent {

@@ -13,10 +13,7 @@
  */
 
 import SDGLogic
-
-import SDGCommandLine
-
-import SDGSwift
+import GeneralImports
 
 struct DocumentationOfCompilationConditions : Rule {
 

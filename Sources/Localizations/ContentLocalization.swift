@@ -14,7 +14,7 @@
 
 import SDGLocalization
 
-enum ContentLocalization : String, Localization {
+public enum ContentLocalization : String, Localization {
 
     // MARK: - Cases
 
@@ -24,5 +24,5 @@ enum ContentLocalization : String, Localization {
 
     // MARK: - Localization
 
-    static let fallbackLocalization = ContentLocalization.englishUnitedKingdom
+    public static let fallbackLocalization = ContentLocalization.englishUnitedKingdom
 }

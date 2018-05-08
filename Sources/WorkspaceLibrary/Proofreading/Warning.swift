@@ -12,9 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGCommandLine
-
-import SDGSwift
+import GeneralImports
 
 protocol Warning : Rule {
     static var trigger: UserFacing<StrictString, InterfaceLocalization> { get }

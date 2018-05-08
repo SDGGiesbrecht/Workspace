@@ -12,11 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
-
 import SDGLogic
-
-import SDGCommandLine
+import GeneralImports
 
 extension Workspace.Validate {
 

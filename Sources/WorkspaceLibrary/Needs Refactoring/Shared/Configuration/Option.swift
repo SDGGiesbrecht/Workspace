@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGSwift
+import GeneralImports
 
 enum Option : String, CustomStringConvertible {
 

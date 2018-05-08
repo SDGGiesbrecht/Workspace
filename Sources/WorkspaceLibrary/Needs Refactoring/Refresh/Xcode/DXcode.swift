@@ -14,12 +14,9 @@
 
 #if !os(Linux)
 
-import Foundation
-
 import SDGLogic
 import SDGCollections
-
-import SDGCommandLine
+import GeneralImports
 
 struct DXcode {
 

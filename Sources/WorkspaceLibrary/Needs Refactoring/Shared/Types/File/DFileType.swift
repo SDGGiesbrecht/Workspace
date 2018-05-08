@@ -14,8 +14,7 @@
 
 import SDGLogic
 import SDGCollections
-
-import SDGCommandLine
+import GeneralImports
 
 enum FileType : CustomStringConvertible {
 

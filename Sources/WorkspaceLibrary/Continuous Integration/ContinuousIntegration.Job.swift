@@ -12,13 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGControlFlow
 import SDGLogic
-import SDGLocalization
-
-import SDGCommandLine
-
-import SDGSwift
+import GeneralImports
 
 extension ContinuousIntegration {
 

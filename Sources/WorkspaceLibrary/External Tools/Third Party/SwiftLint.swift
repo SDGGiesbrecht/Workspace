@@ -12,12 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
-
 import SDGCollections
-import SDGExternalProcess
+import GeneralImports
 
-import SDGCommandLine
+import SDGExternalProcess
 
 class SwiftLint : SwiftPackage {
 

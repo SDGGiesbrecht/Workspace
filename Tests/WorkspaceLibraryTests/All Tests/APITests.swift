@@ -12,19 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
-import XCTest
-
-import SDGControlFlow
 import SDGLogic
-import SDGCollections
-import SDGText
+import GeneralTestImports
+
 import SDGExternalProcess
-import SDGXCTestUtilities
-
-import SDGCommandLine
-
-import WorkspaceLibrary
 
 class APITests : TestCase {
 

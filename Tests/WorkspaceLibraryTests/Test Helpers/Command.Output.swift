@@ -12,9 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLocalization
-
-import SDGCommandLine
+import GeneralImports
 
 extension Command.Output {
 

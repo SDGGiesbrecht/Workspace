@@ -29,9 +29,27 @@ let package = Package(
         .package(url: "https://github.com/apple/swift\u{2D}package\u{2D}manager", .exact(Version(0, 2, 0)))
     ],
     targets: [
+        // The executable. (Multiple products duplicate this with localized names.)
         .target(name: "WorkspaceTool", dependencies: [.targetItem(name: "WorkspaceLibrary")]),
-
+        // The umbrella library. (Shared by the various localized executables.)
         .target(name: "WorkspaceLibrary", dependencies: [
+            "GeneralImports",
+            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
+            .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
+            .productItem(name: "SDGXcode", package: "SDGSwift"),
+            .productItem(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
+            ]),
+
+        // Components
+
+        // Defines the lists of supported localizations.
+        .target(name: "Localizations", dependencies: [
+            .productItem(name: "SDGLocalization", package: "SDGCornerstone")
+            ]),
+        // Centralizes imports needed almost everywhere.
+        .target(name: "GeneralImports", dependencies: [
+            "Localizations",
+
             .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
             .productItem(name: "SDGLogic", package: "SDGCornerstone"),
             .productItem(name: "SDGMathematics", package: "SDGCornerstone"),
@@ -39,32 +57,33 @@ let package = Package(
             .productItem(name: "SDGText", package: "SDGCornerstone"),
             .productItem(name: "SDGPersistence", package: "SDGCornerstone"),
             .productItem(name: "SDGLocalization", package: "SDGCornerstone"),
-            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
-            .productItem(name: "SDGCommandLine", package: "SDGCommandLine"),
-            .productItem(name: "SDGSwift", package: "SDGSwift"),
-            .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-            .productItem(name: "SDGXcode", package: "SDGSwift"),
-            .productItem(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
-            ]),
 
-        .testTarget(name: "WorkspaceLibraryTests", dependencies: [
-            .targetItem(name: "WorkspaceLibrary"),
-            .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
-            .productItem(name: "SDGLogic", package: "SDGCornerstone"),
-            .productItem(name: "SDGCollections", package: "SDGCornerstone"),
-            .productItem(name: "SDGText", package: "SDGCornerstone"),
-            .productItem(name: "SDGLocalization", package: "SDGCornerstone"),
-            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
-            .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
+            .productItem(name: "SDGCommandLine", package: "SDGCommandLine"),
+
             .productItem(name: "SDGSwift", package: "SDGSwift")
             ]),
+
+        // Tests
+
+        .target(name: "GeneralTestImports", dependencies: [
+            "GeneralImports",
+            "WorkspaceLibrary",
+            .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
+            .productItem(name: "SDGCommandLineTestUtilities", package: "SDGCommandLine")
+            ]),
+        .testTarget(name: "WorkspaceLibraryTests", dependencies: [
+            "GeneralTestImports",
+            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
+            ]),
         .target(name: "test‐ios‐simulator", dependencies: [
-            .targetItem(name: "WorkspaceLibrary"),
-            .productItem(name: "SDGCommandLine", package: "SDGCommandLine")
+            "GeneralImports",
+            "WorkspaceLibrary",
+            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
             ], path: "Tests/test‐ios‐simulator"),
         .target(name: "test‐tvos‐simulator", dependencies: [
-            .targetItem(name: "WorkspaceLibrary"),
-            .productItem(name: "SDGCommandLine", package: "SDGCommandLine")
+            "GeneralImports",
+            "WorkspaceLibrary",
+            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
             ], path: "Tests/test‐tvos‐simulator")
     ]
 )

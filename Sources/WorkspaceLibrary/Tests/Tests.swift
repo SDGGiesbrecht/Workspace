@@ -53,9 +53,7 @@ struct Tests {
         return result
     }
 
-    #if !os(Linux)
     private static func buildSDK(for job: ContinuousIntegration.Job) -> Xcode.SDK {
-        // [_Warning: Redesign this._]
         switch job {
         case .macOSXcode:
             return .macOS
@@ -71,7 +69,6 @@ struct Tests {
     }
 
     private static func testSDK(for job: ContinuousIntegration.Job) -> Xcode.SDK {
-        // [_Warning: Redesign this._]
         switch job {
         case .macOSXcode:
             return .macOS
@@ -83,7 +80,6 @@ struct Tests {
             unreachable()
         }
     }
-    #endif
 
     static func build(_ project: PackageRepository, for job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: Command.Output) throws {
         // [_Warning: Redesign this._]
@@ -97,62 +93,56 @@ struct Tests {
             }
         }).resolved().formattedAsSectionHeader())
 
-        try FileManager.default.do(in: project.location) {
-            do {
-                #if !os(Linux)
-                setenv(DXcode.skipProofreadingEnvironmentVariable, "YES", 1 /* overwrite */)
-                defer {
-                    unsetenv(DXcode.skipProofreadingEnvironmentVariable)
-                }
-                #endif
+        do {
+            #if !os(Linux)
+            setenv(DXcode.skipProofreadingEnvironmentVariable, "YES", 1 /* overwrite */)
+            defer {
+                unsetenv(DXcode.skipProofreadingEnvironmentVariable)
+            }
+            #endif
 
-                let buildCommand: (Command.Output) throws -> Bool
-                switch job {
-                case .macOSSwiftPackageManager, .linux:
-                    buildCommand = { output in
-                        let log = try project.build(reportProgress: { output.print($0) })
-                        return ¬SwiftCompiler.warningsOccurred(during: log)
-                    }
-                case .macOSXcode, .iOS, .watchOS, .tvOS:
-                    #if os(Linux)
-                    unreachable()
-                    #else
-                    buildCommand = { output in
-                        let log = try project.build(for: buildSDK(for: job)) { report in
-                            if let relevant = Xcode.abbreviate(output: report) {
-                                output.print(relevant)
-                            }
-                        }
-                        return ¬Xcode.warningsOccurred(during: log)
-                    }
-                    #endif
-                case .miscellaneous, .documentation, .deployment:
-                    unreachable()
+            let buildCommand: (Command.Output) throws -> Bool
+            switch job {
+            case .macOSSwiftPackageManager, .linux:
+                buildCommand = { output in
+                    let log = try project.build(reportProgress: { output.print($0) })
+                    return ¬SwiftCompiler.warningsOccurred(during: log)
                 }
+            case .macOSXcode, .iOS, .watchOS, .tvOS:
+                buildCommand = { output in
+                    let log = try project.build(for: buildSDK(for: job)) { report in
+                        if let relevant = Xcode.abbreviate(output: report) {
+                            output.print(relevant)
+                        }
+                    }
+                    return ¬Xcode.warningsOccurred(during: log)
+                }
+            case .miscellaneous, .documentation, .deployment:
+                unreachable()
+            }
 
-                if try buildCommand(output) {
-                    validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                        switch localization {
-                        case .englishCanada:
-                            return "There are no compiler warnings for " + englishName(for: job) + "."
-                        }
-                    }))
-                } else {
-                    validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                        switch localization {
-                        case .englishCanada:
-                            return "There are compiler warnings for " + englishName(for: job) + "." + section.crossReference.resolved(for: localization)
-                        }
-                    }))
-                }
-            } catch { // [_Exempt from Test Coverage_] False coverage result in Xcode 9.2.
-                validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in // [_Exempt from Test Coverage_]
+            if try buildCommand(output) {
+                validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
-                    case .englishCanada: // [_Exempt from Test Coverage_]
-                        return "Build failed for " + englishName(for: job) + "." + section.crossReference.resolved(for: localization)
+                    case .englishCanada:
+                        return "There are no compiler warnings for " + englishName(for: job) + "."
+                    }
+                }))
+            } else {
+                validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return "There are compiler warnings for " + englishName(for: job) + "." + section.crossReference.resolved(for: localization)
                     }
                 }))
             }
+        } catch {
+            validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in // [_Exempt from Test Coverage_]
+                switch localization {
+                case .englishCanada: // [_Exempt from Test Coverage_]
+                    return "Build failed for " + englishName(for: job) + "." + section.crossReference.resolved(for: localization)
+                }
+            }))
         }
     }
 
@@ -172,74 +162,66 @@ struct Tests {
             }
         }).resolved().formattedAsSectionHeader())
 
-        try FileManager.default.do(in: project.location) {
+        if BuildConfiguration.current == .debug,
+            ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil, // “swift test” gets confused inside Xcode’s test sandbox. This skips it while testing Workspace.
+            job == .macOSSwiftPackageManager {
+            print("Skipping due to sandbox...")
+            return
+        }
 
-            if BuildConfiguration.current == .debug,
-                ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil, // “swift test” gets confused inside Xcode’s test sandbox. This skips it while testing Workspace.
-                job == .macOSSwiftPackageManager {
-                print("Skipping due to sandbox...")
-                return
-            }
+        #if !os(Linux)
+        setenv(DXcode.skipProofreadingEnvironmentVariable, "YES", 1 /* overwrite */)
+        defer {
+            unsetenv(DXcode.skipProofreadingEnvironmentVariable)
+        }
+        #endif
 
-            #if !os(Linux)
-            setenv(DXcode.skipProofreadingEnvironmentVariable, "YES", 1 /* overwrite */)
-            defer {
-                unsetenv(DXcode.skipProofreadingEnvironmentVariable)
-            }
-            #endif
-
-            let testCommand: (Command.Output) -> Bool
-            switch job {
-            case .macOSSwiftPackageManager, .linux: // [_Exempt from Test Coverage_] Tested separately.
-                testCommand = { output in
-                    do {
-                        try project.test(reportProgress: { output.print($0) })
-                        return true
-                    } catch {
-                        return false
-                    }
+        let testCommand: (Command.Output) -> Bool
+        switch job {
+        case .macOSSwiftPackageManager, .linux: // [_Exempt from Test Coverage_] Tested separately.
+            testCommand = { output in
+                do {
+                    try project.test(reportProgress: { output.print($0) })
+                    return true
+                } catch {
+                    return false
                 }
-            case .macOSXcode, .iOS, .watchOS, .tvOS:
-                #if os(Linux)
-                unreachable()
-                #else
-                testCommand = { output in
-                    do {
-                        try project.test(on: testSDK(for: job)) { report in
-                            if let relevant = Xcode.abbreviate(output: report) {
-                                output.print(relevant)
-                            }
+            }
+        case .macOSXcode, .iOS, .watchOS, .tvOS:
+            testCommand = { output in
+                do {
+                    try project.test(on: testSDK(for: job)) { report in
+                        if let relevant = Xcode.abbreviate(output: report) {
+                            output.print(relevant)
                         }
-                        return true
-                    } catch {
-                        return false
                     }
+                    return true
+                } catch {
+                    return false
                 }
-                #endif
-            case .miscellaneous, .documentation, .deployment:
-                unreachable()
             }
+        case .miscellaneous, .documentation, .deployment:
+            unreachable()
+        }
 
-            if testCommand(output) {
-                validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishCanada:
-                        return "Tests pass on " + englishName(for: job) + "."
-                    }
-                }))
-            } else {
-                validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishCanada:
-                        return "Tests fail on " + englishName(for: job) + "." + section.crossReference.resolved(for: localization)
-                    }
-                }))
-            }
+        if testCommand(output) {
+            validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "Tests pass on " + englishName(for: job) + "."
+                }
+            }))
+        } else {
+            validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "Tests fail on " + englishName(for: job) + "." + section.crossReference.resolved(for: localization)
+                }
+            }))
         }
     }
 
     static func validateCodeCoverage(for project: PackageRepository, on job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: Command.Output) throws {
-        #if !os(Linux)
 
         let section = validationStatus.newSection()
         output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -278,7 +260,7 @@ struct Tests {
             for target in try project.package().targets {
                 switch target.type {
                 case .library, .systemModule:
-                    break // Coverage matters.
+                break // Coverage matters.
                 case .executable:
                     // Not testable.
                     for path in target.sources.paths {
@@ -340,7 +322,6 @@ struct Tests {
         } catch {
             failStepWithError(message: StrictString(error.localizedDescription))
         }
-        #endif
     }
 
     private static func untestableSameLineTokens(for project: PackageRepository) throws -> [StrictString] {

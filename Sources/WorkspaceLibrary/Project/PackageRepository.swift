@@ -162,20 +162,6 @@ extension PackageRepository {
         }
     }
 
-    func dependencies(output: Command.Output) throws -> [StrictString: SDGSwift.Version] {
-        return try cached(in: &cache.dependencies) {
-            // [_Warning: Redesign this._]
-            var result: [StrictString: SDGSwift.Version] = [:]
-            let graph = try packageGraph()
-            for dependency in graph.packages {
-                if let version = dependency.manifest.version {
-                    result[StrictString(dependency.name)] = SDGSwift.Version(version.major, version.minor, version.patch)
-                }
-            }
-            return result
-        }
-    }
-
     // MARK: - Files
 
     func allFiles() throws -> [URL] {

@@ -20,6 +20,10 @@ import SDGCollections
 import SDGCommandLine
 
 import SDGSwift
+import SDGSwiftPackageManager
+
+import PackageDescription4
+import PackageModel
 
 extension PackageRepository {
 
@@ -27,15 +31,33 @@ extension PackageRepository {
 
         // MARK: - Initialization
 
-        init(name: String, sourceDirectory: URL) {
-            self.name = name
-            self.sourceDirectory = sourceDirectory
+        init(packageDescriptionTarget: PackageDescription4.Target, package: PackageRepository) {
+            self.packageDescriptionTarget = packageDescriptionTarget
+            self.package = package
         }
 
         // MARK: - Properties
 
-        let name: String
-        let sourceDirectory: URL
+        let packageDescriptionTarget: PackageDescription4.Target
+        private let package: PackageRepository
+
+        var name: String {
+            return packageDescriptionTarget.name
+        }
+
+        var sourceDirectory: URL {
+            if let path = packageDescriptionTarget.path {
+                return URL(fileURLWithPath: path)
+            } else {
+                let base: URL
+                if packageDescriptionTarget.isTest {
+                    base = package.location.appendingPathComponent("Tests")
+                } else {
+                    base = package.location.appendingPathComponent("Sources")
+                }
+                return base.appendingPathComponent(name)
+            }
+        }
 
         // MARK: - Resources
 

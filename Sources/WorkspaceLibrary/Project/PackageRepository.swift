@@ -91,30 +91,16 @@ extension PackageRepository {
     }
 
     func targets() throws -> [Target] {
-        // [_Warning: Redesign this._]
         return try cached(in: &cache.targets) {
-            var targetInformation: [(name: String, location: URL)] = []
-            for target in try cachedPackage().manifest.package.targets {
-                if let path = target.path {
-                    targetInformation.append((name: target.name, location: URL(fileURLWithPath: path)))
-                } else {
-                    let base: URL
-                    if target.isTest {
-                        base = location.appendingPathComponent("Tests")
-                    } else {
-                        base = location.appendingPathComponent("Sources")
-                    }
-                    targetInformation.append((name: target.name, location: base.appendingPathComponent(target.name)))
-                }
+            return try cachedPackage().manifest.package.targets.map { primitiveTarget in
+                return Target(packageDescriptionTarget: primitiveTarget, package: self)
             }
-            return targetInformation.map { Target(name: $0.name, sourceDirectory: $0.location) }
         }
     }
     func targetsByName() throws -> [String: Target] {
         return try cached(in: &cache.targetsByName) {
-            let ordered = try targets()
             var byName: [String: Target] = [:]
-            for target in ordered {
+            for target in try targets() {
                 byName[target.name] = target
             }
             return byName

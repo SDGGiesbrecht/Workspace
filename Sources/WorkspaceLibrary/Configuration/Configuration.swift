@@ -174,7 +174,7 @@ struct Configuration {
         if ¬(try boolean(for: operatingSystem.supportOption) ?? true) {
             return false
         } else {
-            if try ¬project.executableTargets(output: output).isEmpty {
+            if try project.cachedPackage().targets.contains(where: { $0.type == .executable }) {
                 return PackageRepository.Target.TargetType.executable.isSupported(on: operatingSystem)
             } else {
                 return true

@@ -95,7 +95,7 @@ enum ReadMe {
             }
         }).resolved()
 
-        let links = try project.libraryProductTargets(output: output).map { (name: String) -> StrictString in
+        let links = try project.publicLibraryModules().map { (name: String) -> StrictString in
 
             var link: StrictString = "[" + StrictString(name) + "]"
             link += "(" + StrictString(baseURL.appendingPathComponent(name).absoluteString) + ")"
@@ -210,7 +210,7 @@ enum ReadMe {
             ]
         }
 
-        let libraries = try project.libraryProductTargets(output: output)
+        let libraries = try project.publicLibraryModules()
         if ¬libraries.isEmpty {
             if includedInstallationSection {
                 result += [""]

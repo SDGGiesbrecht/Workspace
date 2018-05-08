@@ -34,6 +34,7 @@ extension PackageRepository {
     private class Cache {
         fileprivate var manifest: PackageModel.Manifest?
         fileprivate var package: PackageModel.Package?
+        fileprivate var publicLibraryModules: [String]?
         fileprivate var targets: [Target]?
         fileprivate var targetsByName: [String: Target]?
         fileprivate var dependencies: [StrictString: SDGSwift.Version]?
@@ -85,57 +86,31 @@ extension PackageRepository {
         }
     }
 
-    private func packageStructure(output: Command.Output) throws -> (name: String, libraryProductTargets: [String], executableProducts: [String], targets: [(name: String, location: URL)]) {
-        // [_Warning: Redesign this._]
-        let structure = try cachedPackage()
-        let name = structure.name
-
-        var libraryProductTargets: [String] = []
-        var executableProducts: [String] = []
-        for product in structure.products {
-            switch product.type {
-            case .library:
-                for target in product.targets {
-                    if ¬libraryProductTargets.contains(target.name) {
-                        libraryProductTargets.append(target.name)
-                    }
-                }
-            case .executable:
-                executableProducts.append(product.name)
-            case .test:
-                break
-            }
-        }
-
-        var targets: [(name: String, location: URL)] = []
-        for target in structure.manifest.package.targets {
-            if let path = target.path {
-                targets.append((name: target.name, location: URL(fileURLWithPath: path)))
-            } else {
-                let base: URL
-                if target.isTest {
-                    base = location.appendingPathComponent("Tests")
-                } else {
-                    base = location.appendingPathComponent("Sources")
-                }
-                targets.append((name: target.name, location: base.appendingPathComponent(target.name)))
-            }
-        }
-
-        return (name: name, libraryProductTargets: libraryProductTargets, executableProducts: executableProducts, targets: targets)
-    }
-
     func projectName(output: Command.Output) throws -> StrictString {
         return StrictString(try packageName(output: output))
     }
 
     func packageName(output: Command.Output) throws -> String {
-        return try packageStructure(output: output).name
+        return try cachedManifest().name
     }
 
     func targets(output: Command.Output) throws -> [Target] {
+        // [_Warning: Redesign this._]
         return try cached(in: &cache.targets) {
-            let targetInformation = try packageStructure(output: output).targets
+            var targetInformation: [(name: String, location: URL)] = []
+            for target in try cachedPackage().manifest.package.targets {
+                if let path = target.path {
+                    targetInformation.append((name: target.name, location: URL(fileURLWithPath: path)))
+                } else {
+                    let base: URL
+                    if target.isTest {
+                        base = location.appendingPathComponent("Tests")
+                    } else {
+                        base = location.appendingPathComponent("Sources")
+                    }
+                    targetInformation.append((name: target.name, location: base.appendingPathComponent(target.name)))
+                }
+            }
             return targetInformation.map { Target(name: $0.name, sourceDirectory: $0.location) }
         }
     }
@@ -150,12 +125,23 @@ extension PackageRepository {
         }
     }
 
-    func libraryProductTargets(output: Command.Output) throws -> [String] {
-        return try packageStructure(output: output).libraryProductTargets
-    }
-
-    func executableTargets(output: Command.Output) throws -> [String] {
-        return try packageStructure(output: output).executableProducts
+    func publicLibraryModules() throws -> [String] {
+        return try cached(in: &cache.publicLibraryModules) {
+            var result: [String] = []
+            for product in try cachedPackage().products {
+                switch product.type {
+                case .library:
+                    for target in product.targets {
+                        if ¬result.contains(target.name) {
+                            result.append(target.name)
+                        }
+                    }
+                case .executable, .test:
+                    break
+                }
+            }
+            return result
+        }
     }
 
     static let resourceDirectoryName = UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -363,12 +349,12 @@ extension PackageRepository {
     // MARK: - Documentation
 
     func hasTargetsToDocument(output: Command.Output) throws -> Bool {
-        return ¬(try libraryProductTargets(output: output)).isEmpty
+        return ¬(try publicLibraryModules()).isEmpty
     }
 
     #if !os(Linux)
     func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
-        for product in try libraryProductTargets(output: output) {
+        for product in try publicLibraryModules() {
             try autoreleasepool {
                 try Documentation.document(target: product, for: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
             }
@@ -376,7 +362,7 @@ extension PackageRepository {
     }
 
     func validateDocumentationCoverage(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
-        for product in try libraryProductTargets(output: output) {
+        for product in try publicLibraryModules() {
             try autoreleasepool {
                 try Documentation.validateDocumentationCoverage(for: product, in: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
             }

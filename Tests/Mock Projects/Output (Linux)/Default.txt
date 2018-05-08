@@ -33,10 +33,8 @@ $ workspace validate build
 
 Checking build for Linux... (§1)
 
-
-$ swift build
+$ swift build --configuration release --static-swift-stdlib
 Compile Swift Module 'Default' (1 sources)
-
 
 ✓ There are no compiler warnings for Linux.
 

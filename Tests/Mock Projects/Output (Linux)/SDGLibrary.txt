@@ -3,12 +3,6 @@ $ workspace refresh scripts
 
 Refreshing scripts...
 
-
-$ swift package resolve
-Fetching file:///tmp/Developer/Dependency
-Cloning file:///tmp/Developer/Dependency
-Resolving file:///tmp/Developer/Dependency at 1.0.0
-
 Writing to “Refresh (macOS).command”...
 Writing to “Refresh (Linux).sh”...
 Writing to “Validate (macOS).command”...
@@ -88,11 +82,12 @@ $ workspace validate build
 
 Checking build for Linux... (§1)
 
-
-$ swift build
+$ swift build --configuration release --static-swift-stdlib
 Compile Swift Module 'Dependency' (1 sources)
 Compile Swift Module 'Library' (2 sources)
-
+Fetching file:///tmp/Developer/Dependency
+Cloning file:///tmp/Developer/Dependency
+Resolving file:///tmp/Developer/Dependency at 1.0.0
 
 ✓ There are no compiler warnings for Linux.
 

@@ -60,56 +60,36 @@ enum OperatingSystem : Int, IterableEnumeration {
         case .macOS:
             return UserFacing({ localization in
                 switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .françaisFrance:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "macOS"
-                case .ελληνικάΕλλάδα:
-                    return "Μακ‐Ο‐Ες"
-                case .עברית־ישראל:
-                    return "מק־או־אס"
                 }
             })
         case .linux:
             return UserFacing({ localization in
                 switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .françaisFrance:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Linux"
-                case .ελληνικάΕλλάδα:
-                    return "Λίνουξ"
-                case .עברית־ישראל:
-                    return "לינוקס"
                 }
             })
         case .iOS:
             return UserFacing({ localization in
                 switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .françaisFrance:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "iOS"
-                case .ελληνικάΕλλάδα:
-                    return "Αι‐Ο‐Ες"
-                case .עברית־ישראל:
-                    return "איי־או־אס"
                 }
             })
         case .watchOS:
             return UserFacing({ localization in
                 switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .françaisFrance:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "watchOS"
-                case .ελληνικάΕλλάδα:
-                    return "Ουατσ‐Ο‐Ες"
-                case .עברית־ישראל:
-                    return "וץ׳־או־אס"
                 }
             })
         case .tvOS:
             return UserFacing({ localization in
                 switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .françaisFrance:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "tvOS"
-                case .ελληνικάΕλλάδα:
-                    return "Τι‐Βι‐Ο‐Ες"
-                case .עברית־ישראל:
-                    return "טי־וי־או־אס"
                 }
             })
         }

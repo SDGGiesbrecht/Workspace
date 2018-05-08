@@ -18,21 +18,11 @@ enum ContentLocalization : String, Localization {
 
     // MARK: - Cases
 
-    // [_Warning: Check that all uses are high quality._]
-
     case englishUnitedKingdom = "en\u{2D}GB"
     case englishUnitedStates = "en\u{2D}US"
     case englishCanada = "en\u{2D}CA"
 
-    case deutschDeutschland = "de\u{2D}DE"
-
-    case françaisFrance = "fr\u{2D}FR"
-
-    case ελληνικάΕλλάδα = "el\u{2D}GR"
-
-    case עברית־ישראל = "he\u{2D}IL"
-
     // MARK: - Localization
 
-    static let fallbackLocalization = ContentLocalization.englishCanada
+    static let fallbackLocalization = ContentLocalization.englishUnitedKingdom
 }

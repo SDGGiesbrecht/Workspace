@@ -45,14 +45,6 @@ enum ReadMe {
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Read Me"
-                case .deutschDeutschland:
-                    return "Lies mich"
-                case .françaisFrance:
-                    return "Lisez moi"
-                case .ελληνικάΕλλάδα:
-                    return "Με διαβάστε"
-                case .עברית־ישראל:
-                    return "קרא אותי"
                 }
             }).resolved(), for: localization, in: project)
         }
@@ -64,14 +56,6 @@ enum ReadMe {
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Related Projects"
-            case .deutschDeutschland:
-                return "Verwandte Projekte"
-            case .françaisFrance:
-                return "Projets liés"
-            case .ελληνικάΕλλάδα:
-                return "Συγγενικά έργα"
-            case .עברית־ישראל:
-                return "מיזמים קשורים"
             }
         }).resolved(), for: localization, in: project)
     }
@@ -108,14 +92,6 @@ enum ReadMe {
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "APIs:"
-            case .deutschDeutschland:
-                return "SAPs"
-            case .françaisFrance:
-                return "IPA :"
-            case .ελληνικάΕλλάδα:
-                return "ΔΠΕ:"
-            case .עברית־ישראל:
-                return "מת״י:"
             }
         }).resolved()
 
@@ -148,15 +124,10 @@ enum ReadMe {
         }
         let translationCode = UserFacing<StrictString, ContentLocalization>({ localization in
             switch localization {
-            case .englishUnitedKingdom,
-                 .ελληνικάΕλλάδα, .עברית־ישראל /* No side‐by‐side available. */:
+            case .englishUnitedKingdom:
                 return "NIVUK"
             case .englishUnitedStates, .englishCanada:
                 return "NIV"
-            case .deutschDeutschland:
-                return "SCH2000"
-            case .françaisFrance:
-                return "SG21"
             }
         }).resolved()
 
@@ -191,15 +162,6 @@ enum ReadMe {
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return StrictString("(For a list of related projects, see [here](\(relativeURL)).)")
-            case .deutschDeutschland:
-                return StrictString("(Für eine Liste verwandter Projekte, siehe [hier](\(relativeURL)).)")
-            case .françaisFrance:
-                return StrictString("(Pour une liste de projets lié, voir [ici](\(relativeURL)).)")
-            case .ελληνικάΕλλάδα:
-                return StrictString("(Για ένα κατάλογο συγγενικών έργων, δείτε [εδώ](\(relativeURL)).)")
-            case .עברית־ישראל:
-                return StrictString("(לרשימה של מיזמים קשורים, ראה [כאן](\(relativeURL)).)")
-
             }
         }).resolved()
         return link + " " + skipInJazzy
@@ -232,14 +194,6 @@ enum ReadMe {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Installation"
-                    case .deutschDeutschland:
-                        return "Installation"
-                    case .françaisFrance:
-                        return "Installation"
-                    case .ελληνικάΕλλάδα:
-                        return "Εγκατάσταση"
-                    case .עברית־ישראל:
-                        return "התקנה"
                     }
                 }).resolved(),
                 "",
@@ -247,14 +201,6 @@ enum ReadMe {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return StrictString("Paste the following into a terminal to install or update `\(package)`:")
-                    case .deutschDeutschland:
-                        return StrictString("Setze folgendes in ein Terminal ein, um `\(package)` zu installieren oder aktualisieren:")
-                    case .françaisFrance:
-                        return StrictString("Collez le suivant dans un terminal pour installer `\(package)` ou mettre `\(package)` à jour:")
-                    case .ελληνικάΕλλάδα:
-                        return StrictString("Κόλλα αυτό σε ένα τερματικό για να εγκαταστήσετε ή ενημέρωσετε `\(package)`:")
-                    case .עברית־ישראל:
-                        /*א*/ return StrictString("הדבק או הדביקי את זה במסוף להתקין או לעדכן את `\(package)`:")
                     }
                 }).resolved(),
                 "",
@@ -275,14 +221,6 @@ enum ReadMe {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Importing"
-                    case .deutschDeutschland:
-                        return "Einführung"
-                    case .françaisFrance:
-                        return "Importation"
-                    case .ελληνικάΕλλάδα:
-                        return "Εισαγωγή"
-                    case .עברית־ישראל:
-                        return "ליבא"
                     }
                 }).resolved(),
                 "",
@@ -290,14 +228,6 @@ enum ReadMe {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return StrictString("`\(package)` is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).")
-                    case .deutschDeutschland:
-                        return StrictString("`\(package)` ist für den Einsatz mit dem [Swift‐Paketverwalter](https://swift.org/package-manager/) vorgesehen.")
-                    case .françaisFrance:
-                        return StrictString("`\(package)` est prévu pour utilisation avec le [Gestionnaire de paquets Swift](https://swift.org/package-manager/).")
-                    case .ελληνικάΕλλάδα:
-                        return StrictString("`\(package)` προορίζεται για χρήση με τον [διαχειριστή πακέτων του Σουιφτ](https://swift.org/package-manager/).")
-                    case .עברית־ישראל:
-                        /*א*/ return StrictString("יש ל־`\(package)` מיועד של שימוש עם [מנהל חבילת סוויפט](https://swift.org/package-manager/).")
                     }
                 }).resolved(using: StrictString(try project.packageName(output: output))),
                 ""
@@ -307,14 +237,6 @@ enum ReadMe {
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return StrictString("Simply add `\(package)` as a dependency in `Package.swift`")
-                case .deutschDeutschland:
-                    return StrictString("Fügen Sie `\(package)` einfach in der Abhängigkeitsliste in `Package.swift` hinzu")
-                case .françaisFrance:
-                    return StrictString("Ajoutez `\(package)` simplement dans la liste des dépendances dans `Package.swift`")
-                case .ελληνικάΕλλάδα:
-                    return StrictString("Πρόσθεσε τον `\(package)` απλά στο κατάλογο των εξαρτήσεων στο `Package.swift`")
-                case .עברית־ישראל:
-                    /*א*/ return StrictString("תוסיף את `\(package)` בפשוט ברשימת תלות ב־`Package.swift`")
                 }
             }).resolved(using: StrictString(try project.packageName(output: output)))
 
@@ -330,10 +252,8 @@ enum ReadMe {
                 result += [
                     dependencySummary + UserFacing<StrictString, ContentLocalization>({ localization in
                         switch localization {
-                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .ελληνικάΕλλάδα, .עברית־ישראל:
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return ":"
-                        case .françaisFrance:
-                            return " :"
                         }
                     }).resolved(),
                     "",
@@ -342,28 +262,12 @@ enum ReadMe {
                         switch localization {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return "package"
-                        case .deutschDeutschland:
-                            return "paket"
-                        case .françaisFrance:
-                            return "paquet"
-                        case .ελληνικάΕλλάδα:
-                            return "πακέτο"
-                        case .עברית־ישראל:
-                            return "חבילה"
                         }
                     }).resolved() + " = Package(",
                     (StrictString("    name: \u{22}") + UserFacing<StrictString, ContentLocalization>({ localization in
                         switch localization {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return "MyPackage"
-                        case .deutschDeutschland:
-                            return "MeinPaket"
-                        case .françaisFrance:
-                            return "MonPaquet"
-                        case .ελληνικάΕλλάδα:
-                            return "ΠακέτοΜου"
-                        case .עברית־ישראל:
-                            return "חבילה־שלי"
                         }
                     }).resolved() + StrictString("\u{22},")) as StrictString,
                     "    dependencies: [",
@@ -374,14 +278,6 @@ enum ReadMe {
                         switch localization {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return "MyTarget"
-                        case .deutschDeutschland:
-                            return "MeinZiel"
-                        case .françaisFrance:
-                            return "MaCible"
-                        case .ελληνικάΕλλάδα:
-                            return "ΣτόχοςΜου"
-                        case .עברית־ישראל:
-                            return "מטרה־שלי"
                         }
                     }).resolved() + StrictString("\u{22}, dependencies: [")) as StrictString
                 ]
@@ -397,7 +293,7 @@ enum ReadMe {
             } else {
                 result += [dependencySummary + UserFacing<StrictString, ContentLocalization>({ localization in
                     switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada, .deutschDeutschland, .françaisFrance, .ελληνικάΕλλάδα, .עברית־ישראל:
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "."
                     }
                 }).resolved()]
@@ -409,14 +305,6 @@ enum ReadMe {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return StrictString("`\(package)` can then be imported in source files:")
-                    case .deutschDeutschland:
-                        return StrictString("Dann kann `\(package)` in Quelldateien eingeführt werden:")
-                    case .françaisFrance:
-                        return StrictString("Puis `\(package)` peut être importé dans des fichiers sources :")
-                    case .ελληνικάΕλλάδα:
-                        return StrictString("Έπειτα `\(package)` μπορεί να εισάγεται στα πηγαία αρχεία:")
-                    case .עברית־ישראל:
-                        /*א*/ return StrictString("אז יכול ליבא את `\(package)` בקבץי מקור:")
                     }
                 }).resolved(using: StrictString(try project.packageName(output: output))),
                 "",
@@ -513,14 +401,6 @@ enum ReadMe {
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Features"
-                case .deutschDeutschland:
-                    return "Merkmale"
-                case .françaisFrance:
-                    return "Fonctionnalités"
-                case .ελληνικάΕλλάδα:
-                    return "Χαρακτηριστικά"
-                case .עברית־ישראל:
-                    return "תכונות"
                 }
             }).resolved()
 
@@ -550,14 +430,6 @@ enum ReadMe {
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Example Usage"
-                case .deutschDeutschland:
-                    return "Verwendungsbeispiele"
-                case .françaisFrance:
-                    return "Examples d’utilisation"
-                case .ελληνικάΕλλάδα:
-                    return "Παράδειγματα χρήσης"
-                case .עברית־ישראל:
-                    return "דוגמות שימוש"
                 }
             }).resolved()
 
@@ -581,14 +453,6 @@ enum ReadMe {
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "About"
-                case .deutschDeutschland:
-                    return "Über"
-                case .françaisFrance:
-                    return "À propos"
-                case .ελληνικάΕλλάδα:
-                    return "Πληροφορίες"
-                case .עברית־ישראל:
-                    return "אודות"
                 }
             }).resolved()
 
@@ -739,14 +603,6 @@ enum ReadMe {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Related Projects"
-                    case .deutschDeutschland:
-                        return "Verwandte Projekte"
-                    case .françaisFrance:
-                        return "Projets liés"
-                    case .ελληνικάΕλλάδα:
-                        return "Συγγενικά έργα"
-                    case .עברית־ישראל:
-                        return "מיזמים קשורים"
                     }
                 }).resolved()
             ]

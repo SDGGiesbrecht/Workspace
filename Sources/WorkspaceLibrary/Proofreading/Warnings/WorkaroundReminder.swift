@@ -22,6 +22,8 @@ import SDGCommandLine
 
 import SDGSwift
 
+import PackageModel
+
 struct WorkaroundReminder : Warning {
 
     static let noticeOnly = true
@@ -76,10 +78,11 @@ struct WorkaroundReminder : Warning {
         })
     }
 
-    private static var dependencyVersionCache: [StrictString: Version?] = [:]
-    private static func currentVersion(of dependency: StrictString, for project: PackageRepository, output: Command.Output) throws -> Version? {
-        if let version = try project.dependencies(output: output)[dependency] {
-            return version
+    private static var dependencyVersionCache: [StrictString: SDGSwift.Version?] = [:]
+    private static func currentVersion(of dependency: StrictString, for project: PackageRepository, output: Command.Output) throws -> SDGSwift.Version? {
+        if let dependency = try project.dependenciesByName()[String(dependency)],
+            let version = dependency.manifest.version {
+            return Version(version)
         } else {
             return cached(in: &dependencyVersionCache[dependency], {
                 if let shellOutput = try? Shell.default.run(command: String(dependency).components(separatedBy: " ")),

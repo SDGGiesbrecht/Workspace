@@ -26,6 +26,7 @@ import SDGXcode
 
 // [_Warning: Probably not necessary._]
 import PackageModel
+import PackageGraph
 
 extension PackageRepository {
 
@@ -34,9 +35,12 @@ extension PackageRepository {
     private class Cache {
         fileprivate var manifest: PackageModel.Manifest?
         fileprivate var package: PackageModel.Package?
+        fileprivate var packageGraph: PackageGraph?
+
         fileprivate var publicLibraryModules: [String]?
         fileprivate var targets: [Target]?
         fileprivate var targetsByName: [String: Target]?
+        fileprivate var dependenciesByName: [String: ResolvedPackage]?
         fileprivate var dependencies: [StrictString: SDGSwift.Version]?
 
         fileprivate var allFiles: [URL]?
@@ -83,6 +87,12 @@ extension PackageRepository {
     func cachedPackage() throws -> PackageModel.Package {
         return try cached(in: &cache.package) {
             return try package()
+        }
+    }
+
+    func cachedPackageGraph() throws -> PackageGraph {
+        return try cached(in: &cache.packageGraph) {
+            return try packageGraph()
         }
     }
 
@@ -137,6 +147,18 @@ extension PackageRepository {
 
         return InterfaceLocalization.cases.map { (localization) in
             return location.appendingPathComponent(String(PackageRepository.resourceDirectoryName.resolved(for: localization)))
+        }
+    }
+
+    func dependenciesByName() throws -> [String: ResolvedPackage] {
+        return try cached(in: &cache.dependenciesByName) {
+            let graph = try cachedPackageGraph()
+
+            var result: [String: ResolvedPackage] = [:]
+            for dependency in graph.packages {
+                result[dependency.name] = dependency
+            }
+            return result
         }
     }
 

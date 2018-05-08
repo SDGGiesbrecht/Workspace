@@ -17,15 +17,11 @@ import SDGLogic
 import SDGCommandLine
 
 func instructionsAfterRefresh() throws -> String {
-    #if os(Linux)
+    if let xcodeProject = try Repository.packageRepository.xcodeProject()?.lastPathComponent {
+        return "Open “\(xcodeProject)” to work on the project."
+    } else {
         return ""
-    #else
-        if let xcodeProject = try Repository.packageRepository.xcodeProjectFile()?.lastPathComponent {
-            return "Open “\(xcodeProject)” to work on the project."
-        } else {
-            return ""
-        }
-    #endif
+    }
 }
 
 func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: Command.Output) throws {

@@ -29,7 +29,7 @@ struct DXcode {
 
         // Allow dependencies to be found by the executable.
 
-        let path = RelativePath("\(try Repository.packageRepository.xcodeProjectFile()!.lastPathComponent)")
+        let path = RelativePath("\(try Repository.packageRepository.xcodeProject()!.lastPathComponent)")
         var file = require { try File(at: path.subfolderOrFile("project.pbxproj")) }
 
         let allTargets = try Repository.packageRepository.targets().map { $0.name }
@@ -136,7 +136,7 @@ struct DXcode {
 
     private static func modifyProject(condition shouldModify: (String) -> Bool, modification modify: (inout File) -> Void, output: Command.Output) throws {
 
-        let path = RelativePath("\(try Repository.packageRepository.xcodeProjectFile()!.lastPathComponent)/project.pbxproj")
+        let path = RelativePath("\(try Repository.packageRepository.xcodeProject()!.lastPathComponent)/project.pbxproj")
 
         do {
             var file = try File(at: path)

@@ -16,7 +16,7 @@ import GeneralImports
 
 import SDGExternalProcess
 
-import WorkspaceLibrary
+import Interface
 
 do {
     ProcessInfo.applicationIdentifier = "ca.solideogloria.Workspace.Tests"

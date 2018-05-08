@@ -1,6 +1,6 @@
 
 @_exported import GeneralImports
-@_exported import WorkspaceLibrary
+@_exported import Interface
 
 @_exported import XCTest
 

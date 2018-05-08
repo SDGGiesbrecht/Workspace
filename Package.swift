@@ -34,13 +34,20 @@ let package = Package(
         // The umbrella library. (Shared by the various localized executables.)
         .target(name: "WorkspaceLibrary", dependencies: [
             "GeneralImports",
+            "Interface"
+            ]),
+
+        // Components
+
+        // Defines the public command line interface.
+        .target(name: "Interface", dependencies: [
+            "GeneralImports",
+            // [_Workaround: This module and its dependency list needs refactoring._]
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
             .productItem(name: "SDGXcode", package: "SDGSwift"),
             .productItem(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
             ]),
-
-        // Components
 
         // Defines the lists of supported localizations.
         .target(name: "Localizations", dependencies: [
@@ -67,7 +74,7 @@ let package = Package(
 
         .target(name: "GeneralTestImports", dependencies: [
             "GeneralImports",
-            "WorkspaceLibrary",
+            "Interface",
             .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
             .productItem(name: "SDGCommandLineTestUtilities", package: "SDGCommandLine")
             ]),
@@ -77,12 +84,12 @@ let package = Package(
             ]),
         .target(name: "test‐ios‐simulator", dependencies: [
             "GeneralImports",
-            "WorkspaceLibrary",
+            "Interface",
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
             ], path: "Tests/test‐ios‐simulator"),
         .target(name: "test‐tvos‐simulator", dependencies: [
             "GeneralImports",
-            "WorkspaceLibrary",
+            "Interface",
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
             ], path: "Tests/test‐tvos‐simulator")
     ]

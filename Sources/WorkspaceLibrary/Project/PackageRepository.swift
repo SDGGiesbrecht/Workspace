@@ -21,10 +21,7 @@ import SDGCommandLine
 
 import SDGSwift
 import SDGSwiftPackageManager
-// [_Warning: Probably not necessary._]
-import SDGXcode
 
-// [_Warning: Probably not necessary._]
 import PackageModel
 import PackageGraph
 
@@ -41,7 +38,6 @@ extension PackageRepository {
         fileprivate var targets: [Target]?
         fileprivate var targetsByName: [String: Target]?
         fileprivate var dependenciesByName: [String: ResolvedPackage]?
-        fileprivate var dependencies: [StrictString: SDGSwift.Version]?
 
         fileprivate var allFiles: [URL]?
         fileprivate var trackedFiles: [URL]?

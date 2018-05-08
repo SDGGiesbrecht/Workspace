@@ -59,7 +59,7 @@ enum Documentation {
                 return "Author"
             }
         }))
-        template.insert(try project.projectName(output: output), for: UserFacing({ localization in
+        template.insert(try project.projectName(), for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "Project"

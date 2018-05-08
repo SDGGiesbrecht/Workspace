@@ -69,7 +69,7 @@ extension PackageRepository {
     // MARK: - Miscellaneous Properties
 
     func isWorkspaceProject(output: Command.Output) throws -> Bool {
-        return try projectName(output: output) == "Workspace"
+        return try projectName() == "Workspace"
     }
 
     // MARK: - Structure
@@ -86,15 +86,11 @@ extension PackageRepository {
         }
     }
 
-    func projectName(output: Command.Output) throws -> StrictString {
-        return StrictString(try packageName(output: output))
+    func projectName() throws -> StrictString {
+        return StrictString(try cachedManifest().name)
     }
 
-    func packageName(output: Command.Output) throws -> String {
-        return try cachedManifest().name
-    }
-
-    func targets(output: Command.Output) throws -> [Target] {
+    func targets() throws -> [Target] {
         // [_Warning: Redesign this._]
         return try cached(in: &cache.targets) {
             var targetInformation: [(name: String, location: URL)] = []
@@ -114,9 +110,9 @@ extension PackageRepository {
             return targetInformation.map { Target(name: $0.name, sourceDirectory: $0.location) }
         }
     }
-    func targetsByName(output: Command.Output) throws -> [String: Target] {
+    func targetsByName() throws -> [String: Target] {
         return try cached(in: &cache.targetsByName) {
-            let ordered = try targets(output: output)
+            let ordered = try targets()
             var byName: [String: Target] = [:]
             for target in ordered {
                 byName[target.name] = target
@@ -312,7 +308,7 @@ extension PackageRepository {
                 }
             }))
         }
-        guard let target = (try targetsByName(output: output))[String(targetName)] else {
+        guard let target = (try targetsByName())[String(targetName)] else {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ (localization) in
                 switch localization {
                 case .englishCanada:

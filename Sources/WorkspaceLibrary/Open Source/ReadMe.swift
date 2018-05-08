@@ -185,7 +185,7 @@ enum ReadMe {
         if ¬tools.isEmpty,
             let repository = try project.configuration.repositoryURL(),
             let version = try project.configuration.currentVersion() {
-            let package = StrictString(try project.packageName(output: output))
+            let package = StrictString(try project.cachedManifest().name)
 
             includedInstallationSection = true
 
@@ -229,7 +229,7 @@ enum ReadMe {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return StrictString("`\(package)` is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).")
                     }
-                }).resolved(using: StrictString(try project.packageName(output: output))),
+                }).resolved(using: StrictString(try project.cachedManifest().name)),
                 ""
             ]
 
@@ -238,7 +238,7 @@ enum ReadMe {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return StrictString("Simply add `\(package)` as a dependency in `Package.swift`")
                 }
-            }).resolved(using: StrictString(try project.packageName(output: output)))
+            }).resolved(using: StrictString(try project.cachedManifest().name))
 
             if let repository = try project.configuration.repositoryURL(),
                 let currentVersion = try project.configuration.currentVersion() {
@@ -282,7 +282,7 @@ enum ReadMe {
                     }).resolved() + StrictString("\u{22}, dependencies: [")) as StrictString
                 ]
                 for library in libraries {
-                    result += [StrictString("            .productItem(name: \u{22}\(library)\u{22}, package: \u{22}\(try project.packageName(output: output))\u{22}),")]
+                    result += [StrictString("            .productItem(name: \u{22}\(library)\u{22}, package: \u{22}\(try project.cachedManifest().name)\u{22}),")]
                 }
                 result += [
                     "        ])",
@@ -306,7 +306,7 @@ enum ReadMe {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return StrictString("`\(package)` can then be imported in source files:")
                     }
-                }).resolved(using: StrictString(try project.packageName(output: output))),
+                }).resolved(using: StrictString(try project.cachedManifest().name)),
                 "",
                 "```swift"
             ]
@@ -550,7 +550,7 @@ enum ReadMe {
 
         // Word Elements
 
-        readMe.insert(try project.projectName(output: output), for: UserFacing({ localization in
+        readMe.insert(try project.projectName(), for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "Project"
@@ -612,7 +612,7 @@ enum ReadMe {
 
                     let package = Repository.linkedRepository(from: url)
                     let name: StrictString
-                    if let packageName = try? package.projectName(output: output) {
+                    if let packageName = try? package.projectName() {
                         name = packageName
                     } else { // [_Exempt from Test Coverage_] Only reachable with a non‐package repository.
                         name = StrictString(url.lastPathComponent)

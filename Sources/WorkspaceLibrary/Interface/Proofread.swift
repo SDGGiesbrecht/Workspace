@@ -48,7 +48,7 @@ extension Workspace {
             try executeAsStep(normalizingFirst: true, options: options, validationStatus: &validationStatus, output: output)
 
             if ¬options.runAsXcodeBuildPhase { // Xcode should keep building anyway.
-                try validationStatus.reportOutcome(projectName: try options.project.projectName(output: output), output: output)
+                try validationStatus.reportOutcome(projectName: try options.project.projectName(), output: output)
             }
         })
 

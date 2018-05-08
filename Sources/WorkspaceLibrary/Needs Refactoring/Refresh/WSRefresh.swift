@@ -31,7 +31,7 @@ func instructionsAfterRefresh() throws -> String {
 func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: Command.Output) throws {
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    output.print("Refreshing \(try options.project.projectName(output: output))...".formattedAsSectionHeader())
+    output.print("Refreshing \(try options.project.projectName())...".formattedAsSectionHeader())
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
@@ -129,7 +129,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     if shouldExit {
 
         succeed(message: [
-            "\(try Repository.packageRepository.projectName(output: output)) is refreshed and ready.",
+            "\(try Repository.packageRepository.projectName()) is refreshed and ready.",
             try instructionsAfterRefresh()
             ])
     }

@@ -183,7 +183,7 @@ struct ContributingInstructions {
             Configuration.contributingInstructions
             ].joinAsLines()
 
-        body = body.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.projectName(output: output)))
+        body = body.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.projectName()))
 
         var administrators = Configuration.administrators
         var administratorList: String

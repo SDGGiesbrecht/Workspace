@@ -97,7 +97,7 @@ enum Documentation {
 
         let copyrightText = try copyright(for: outputSubdirectory, in: project, output: output)
         try FileManager.default.do(in: project.location) {
-            try Jazzy.default.document(target: target, scheme: try project.xcodeScheme(output: output), buildOperatingSystem: buildOperatingSystem, copyright: copyrightText, gitHubURL: try project.configuration.repositoryURL(), outputDirectory: outputSubdirectory, project: project, output: output)
+            try Jazzy.default.document(target: target, scheme: try project.scheme(), buildOperatingSystem: buildOperatingSystem, copyright: copyrightText, gitHubURL: try project.configuration.repositoryURL(), outputDirectory: outputSubdirectory, project: project, output: output)
         }
 
         let transformedMarker = ReadMe.skipInJazzy.replacingMatches(for: "\u{2D}\u{2D}".scalars, with: "&ndash;".scalars).replacingMatches(for: "<".scalars, with: "&lt;".scalars).replacingMatches(for: ">".scalars, with: "&gt;".scalars)

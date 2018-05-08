@@ -320,22 +320,6 @@ extension PackageRepository {
     }
     #endif
 
-    #if !os(Linux)
-
-    // MARK: - Xcode
-
-    func xcodeProjectFile() throws -> URL? { // [_Exempt from Test Coverage_] [_Workaround: Until refresh Xcode is testable._]
-        // [_Warning: Redesign this._]
-        return try xcodeProject()
-    }
-
-    func xcodeScheme(output: Command.Output) throws -> String {
-        // [_Warning: Redesign this._]
-        return try scheme()
-    }
-
-    #endif
-
     // MARK: - Actions
 
     func delete(_ location: URL, output: Command.Output) {

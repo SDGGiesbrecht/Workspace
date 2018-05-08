@@ -82,7 +82,6 @@ struct Tests {
     }
 
     static func build(_ project: PackageRepository, for job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: Command.Output) throws {
-        // [_Warning: Redesign this._]
 
         let section = validationStatus.newSection()
 
@@ -147,7 +146,6 @@ struct Tests {
     }
 
     static func test(_ project: PackageRepository, on job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: Command.Output) throws {
-        // [_Warning: Redesign this._]
 
         let section = validationStatus.newSection()
 

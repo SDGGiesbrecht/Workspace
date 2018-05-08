@@ -1,5 +1,5 @@
 
 
-# Verwandte Projekte
+# Related Projects
 
 ### [Workspace](https://github.com/SDGGiesbrecht/Workspace)

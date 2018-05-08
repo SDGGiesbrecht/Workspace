@@ -20,6 +20,7 @@ import SDGLogic
 import SDGCollections
 import SDGText
 import SDGExternalProcess
+import SDGXCTestUtilities
 
 import SDGCommandLine
 

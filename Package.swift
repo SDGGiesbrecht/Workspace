@@ -55,6 +55,7 @@ let package = Package(
             .productItem(name: "SDGText", package: "SDGCornerstone"),
             .productItem(name: "SDGLocalization", package: "SDGCornerstone"),
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
+            .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
             .productItem(name: "SDGSwift", package: "SDGSwift")
             ]),
         .target(name: "test‐ios‐simulator", dependencies: [

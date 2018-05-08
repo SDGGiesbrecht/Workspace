@@ -1,5 +1,3 @@
 struct Default {
-    func text() -> String {
-        return "Hello, World!"
-    }
+    var text = "Hello, World!"
 }

@@ -98,10 +98,6 @@ $ workspace test
 
 Testing on Linux... (§1)
 
-
-✓ Tests pass on Linux.
-
-
 “SDG” passes validation.
 
 $ workspace validate test‐coverage

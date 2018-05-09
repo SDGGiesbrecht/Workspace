@@ -13,13 +13,11 @@
  */
 
 @testable import Interface
-import GeneralImports
+import GeneralTestImports
 
 func triggerVersionChecks() {
-    XCTAssertErrorFree {
-        #if !os(Linux)
-        _ = try SwiftLint.default.execute(with: ["version"], output: Command.Output.mock)
-        _ = try Jazzy.default.execute(with: ["\u{2D}\u{2D}version"], output: Command.Output.mock)
-        #endif
-    }
+    #if !os(Linux)
+    _ = try? SwiftLint.default.execute(with: ["version"], output: Command.Output.mock)
+    _ = try? Jazzy.default.execute(with: ["\u{2D}\u{2D}version"], output: Command.Output.mock)
+    #endif
 }

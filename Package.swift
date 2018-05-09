@@ -75,6 +75,7 @@ let package = Package(
         .target(name: "GeneralTestImports", dependencies: [
             "GeneralImports",
             "Interface",
+            .productItem(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
             .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
             .productItem(name: "SDGCommandLineTestUtilities", package: "SDGCommandLine")
             ]),

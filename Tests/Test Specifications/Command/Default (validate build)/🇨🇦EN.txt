@@ -1,0 +1,104 @@
+$ workspace validate build •no‐colour
+
+Checking build for macOS with the Swift Package Manager... (§1)
+
+$ swift build --configuration release --static-swift-stdlib
+Compile Swift Module 'Default' (1 sources)
+
+Checking build for macOS with Xcode... (§2)
+
+$ xcodebuild build -sdk macosx -scheme Default-Package
+Build settings from command line:
+    SDKROOT = macosx10.13
+=== BUILD TARGET Default OF PROJECT Default WITH CONFIGURATION Debug ===
+Check dependencies
+Write auxiliary files
+Create product structure
+ProcessInfoPlistFile [...]/Default_Info.plist
+CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
+CompileSwift [...]/Default.swift
+MergeSwiftModule [...]/Default.swiftmodule
+Ditto [...]/Default-Swift.h
+Ditto [...]/Default.swiftdoc
+Ld [...]/Default normal x86_64
+Ditto [...]/Default.swiftmodule
+Ditto [...]/module.modulemap
+Touch [...]/Default.framework
+** BUILD SUCCEEDED **
+
+Checking build for iOS... (§3)
+
+$ xcodebuild build -sdk iphoneos -scheme Default-Package
+Build settings from command line:
+    SDKROOT = iphoneos11.3
+=== BUILD TARGET Default OF PROJECT Default WITH CONFIGURATION Debug ===
+Check dependencies
+Write auxiliary files
+Create product structure
+ProcessInfoPlistFile [...]/Default_Info.plist
+CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
+CompileSwift [...]/Default.swift
+MergeSwiftModule [...]/Default.swiftmodule
+Ditto [...]/Default-Swift.h
+Ld [...]/Default normal arm64
+Ditto [...]/Default.swiftdoc
+Ditto [...]/Default.swiftmodule
+Ditto [...]/module.modulemap
+Touch [...]/Default.framework
+** BUILD SUCCEEDED **
+
+Checking build for watchOS... (§4)
+
+$ xcodebuild build -sdk watchos -scheme Default-Package
+Build settings from command line:
+    SDKROOT = watchos4.3
+=== BUILD TARGET Default OF PROJECT Default WITH CONFIGURATION Debug ===
+Check dependencies
+Default will not be code signed because its settings don't specify a development team.
+Write auxiliary files
+Create product structure
+ProcessInfoPlistFile [...]/Default_Info.plist
+CompileSwiftSources normal armv7k com.apple.xcode.tools.swift.compiler
+CompileSwift [...]/Default.swift
+MergeSwiftModule [...]/Default.swiftmodule
+Ditto [...]/Default-Swift.h
+Ditto [...]/Default.swiftmodule
+Ditto [...]/Default.swiftdoc
+Ld [...]/Default normal armv7k
+ld: warning: directory not found for option '-F/Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/Library/Frameworks'
+Ditto [...]/module.modulemap
+Touch [...]/Default.framework
+** BUILD SUCCEEDED **
+
+Checking build for tvOS... (§5)
+
+$ xcodebuild build -sdk appletvos -scheme Default-Package
+Build settings from command line:
+    SDKROOT = appletvos11.3
+=== BUILD TARGET Default OF PROJECT Default WITH CONFIGURATION Debug ===
+Check dependencies
+Default will not be code signed because its settings don't specify a development team.
+Write auxiliary files
+Create product structure
+ProcessInfoPlistFile [...]/Default_Info.plist
+CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
+CompileSwift [...]/Default.swift
+MergeSwiftModule [...]/Default.swiftmodule
+Ditto [...]/Default-Swift.h
+Ld [...]/Default normal arm64
+Ditto [...]/Default.swiftmodule
+Ditto [...]/Default.swiftdoc
+Ditto [...]/module.modulemap
+Touch [...]/Default.framework
+** BUILD SUCCEEDED **
+
+✓ There are no compiler warnings for macOS with the Swift Package Manager.
+✓ There are no compiler warnings for macOS with Xcode.
+✓ There are no compiler warnings for iOS.
+✓ There are no compiler warnings for watchOS.
+✓ There are no compiler warnings for tvOS.
+
+
+“Default” passes validation.
+
+0

@@ -1,6 +1,0 @@
-Localizations: en
-
-[_Begin Read‐Me_]
-[_en_]
- [_Quotation_]
-[_End_]

@@ -20,7 +20,7 @@ class InternalTests : TestCase {
     func testDocumentationCoverage() {
         // [_Workaround: Can this be moved to API Tests?_]
 
-        XCTAssertErrorFree {
+        do {
             try FileManager.default.do(in: repositoryRoot) {
                 for link in DocumentationLink.all {
                     var url = link.url
@@ -43,6 +43,8 @@ class InternalTests : TestCase {
                     XCTAssert(exists, "Broken link: \(link.url)")
                 }
             }
+        } catch {
+            XCTFail("\(error)")
         }
     }
 
@@ -81,7 +83,7 @@ class InternalTests : TestCase {
             "Resources"
         ]
 
-        XCTAssertErrorFree {
+        do {
             _ = try Command(name: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }), description: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }), directArguments: [], options: [], execution: { (_, _, output: Command.Output) in
 
                 let tracked = try PackageRepository(at: repositoryRoot).trackedFiles(output: output)
@@ -103,6 +105,8 @@ class InternalTests : TestCase {
                     ].joinAsLines())
 
             }).execute(with: [])
+        } catch {
+            XCTFail("\(error)")
         }
     }
 }

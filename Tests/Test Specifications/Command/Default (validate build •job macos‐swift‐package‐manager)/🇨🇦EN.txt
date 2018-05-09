@@ -1,0 +1,12 @@
+$ workspace validate build •job macos‐swift‐package‐manager •no‐colour
+
+Checking build for macOS with the Swift Package Manager... (§1)
+
+$ swift build --configuration release --static-swift-stdlib
+
+✓ There are no compiler warnings for macOS with the Swift Package Manager.
+
+
+“Default” passes validation.
+
+0

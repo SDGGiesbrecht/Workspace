@@ -1,4 +1,0 @@
-
-$ workspace validate documentation‐coverage
-
-Configuration option not defined: Author

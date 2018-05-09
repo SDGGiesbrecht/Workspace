@@ -18,7 +18,7 @@ import GeneralTestImports
 import SDGExternalProcess
 
 class APITests : TestCase {
-    
+
     static var triggeredVersionChecks: Void?
     override func setUp() {
         super.setUp()
@@ -35,19 +35,19 @@ class APITests : TestCase {
             XCTFail("\(error)")
         }
     }
-    
+
     func testDefaults() {
         PackageRepository(mock: "Default").test(commands: [
             // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
             ["refresh", "resources"],
-            
+
             ["proofread"],
             ["validate", "build"],
             ["test"],
             ["validate", "test‐coverage"],
             ["validate", "documentation‐coverage"],
-            
+
             ["proofread", "•xcode"],
             ["validate", "build", "•job", "macos‐swift‐package‐manager"],
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)

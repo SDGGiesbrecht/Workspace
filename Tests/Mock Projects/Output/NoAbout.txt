@@ -1,4 +1,0 @@
-
-$ workspace refresh read‐me
-
-Configuration option not defined: Read‐Me About Section

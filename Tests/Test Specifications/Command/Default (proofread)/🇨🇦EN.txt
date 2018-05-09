@@ -7,6 +7,7 @@ Writing to “Tests/LinuxMain.swift”...
 
 Proofreading source code... (§1)
 
+.gitignore
 Package.swift
 Line 2
 U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (Unicode)
@@ -38,12 +39,6 @@ Undocumented compilation condition. Add “// MARK: - #if...” on the next line
 #if !os(macOS)
 
 Tests/LinuxMain.swift
-Validate (macOS).command
-Line 5
-“&&” is obsolete. Use the conjunction sign (∧). (Unicode)
-REPOSITORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-REPOSITORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" ∧ pwd )"
-
 
 [$ swiftlint...]
 

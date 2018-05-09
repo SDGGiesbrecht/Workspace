@@ -54,6 +54,7 @@ extension PackageRepository {
                     _ = try? Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj", "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage"])
                     #endif
                     _ = try? Shell.default.run(command: ["git", "init"])
+                    _ = try? FileManager.default.copy(repositoryRoot.appendingPathComponent(".gitignore"), to: location.appendingPathComponent(".gitignore"))
 
                     for command in commands {
                         print(StrictString("$ workspace ") + command.joined(separator: " "))

@@ -37,6 +37,7 @@ class APITests : TestCase {
     }
 
     func testDefaults() {
+        // [_Warning: Not all mock projects have been refactored yet._]
         PackageRepository(mock: "Default").test(commands: [
             // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],

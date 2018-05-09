@@ -97,7 +97,7 @@ struct Tests {
             switch job {
             case .macOSSwiftPackageManager, .linux:
                 buildCommand = { output in
-                    let log = try project.build(reportProgress: { output.print($0) })
+                    let log = try project.build(releaseConfiguration: false, staticallyLinkStandardLibrary: false, reportProgress: { output.print($0) })
                     return ¬SwiftCompiler.warningsOccurred(during: log)
                 }
             case .macOSXcode, .iOS, .watchOS, .tvOS:

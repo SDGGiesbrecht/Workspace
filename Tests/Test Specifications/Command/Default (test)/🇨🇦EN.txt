@@ -44,17 +44,17 @@ Copying [...]/libswiftXPC.dylib
 Copying [...]/libswiftos.dylib
 Copying [...]/libswiftRemoteMirror.dylib
 Touch [...]/DefaultTests.xctest
-Test Suite 'All tests' started at 2018-05-08 19:43:16.775
-Test Suite 'DefaultTests.xctest' started at 2018-05-08 19:43:16.777
-Test Suite 'DefaultTests' started at 2018-05-08 19:43:16.777
+Test Suite 'All tests' started at 2018-05-08 19:52:02.337
+Test Suite 'DefaultTests.xctest' started at 2018-05-08 19:52:02.338
+Test Suite 'DefaultTests' started at 2018-05-08 19:52:02.339
 Test Case '-[DefaultTests.DefaultTests testExample]' started.
-Test Case '-[DefaultTests.DefaultTests testExample]' passed (0.650 seconds).
-Test Suite 'DefaultTests' passed at 2018-05-08 19:43:17.428.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.650 (0.651) seconds
-Test Suite 'DefaultTests.xctest' passed at 2018-05-08 19:43:17.429.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.650 (0.652) seconds
-Test Suite 'All tests' passed at 2018-05-08 19:43:17.430.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.650 (0.654) seconds
+Test Case '-[DefaultTests.DefaultTests testExample]' passed (0.808 seconds).
+Test Suite 'DefaultTests' passed at 2018-05-08 19:52:03.148.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.808 (0.809) seconds
+Test Suite 'DefaultTests.xctest' passed at 2018-05-08 19:52:03.148.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.808 (0.810) seconds
+Test Suite 'All tests' passed at 2018-05-08 19:52:03.149.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.808 (0.812) seconds
 Generating coverage data...
 ** TEST SUCCEEDED **
 

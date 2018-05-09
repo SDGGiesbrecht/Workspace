@@ -71,6 +71,20 @@ extension PackageRepository {
                             // Temporary directory.
                             let temporary = FileManager.default.url(in: .temporary, at: "File").deletingLastPathComponent()
                             output.scalars.replaceMatches(for: temporary.path.scalars, with: "[Temporary]".scalars)
+                            
+                            // SwiftLint order varies.
+                            output.scalars.replaceMatches(for: CompositePattern([
+                                LiteralPattern("$ swiftlint".scalars),
+                                any,
+                                LiteralPattern("\n0".scalars),
+                                ]), with: "[$ swiftlint]\n0".scalars)
+                            
+                            // SwiftLint order varies.
+                            output.scalars.replaceMatches(for: CompositePattern([
+                                LiteralPattern("$ swiftlint".scalars),
+                                any,
+                                LiteralPattern("\n0".scalars),
+                                ]), with: "[$ swiftlint]\n0".scalars)
                         }
 
                         testCommand(Workspace.command, with: command, localizations: localizations, uniqueTestName: specificationName, postprocess: postprocess, overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing, file: file, line: line)

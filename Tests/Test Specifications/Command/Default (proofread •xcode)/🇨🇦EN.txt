@@ -7,10 +7,5 @@ $ workspace proofread •xcode •no‐colour
 /private[Temporary]/Default/Tests/DefaultTests/XCTestManifests.swift:3:1: warning: Undocumented compilation condition. Add “// MARK: - #if...” on the next line. (Documentation of Compilation Conditions)
 /private[Temporary]/Default/Validate (macOS).command:5:54: warning: “&&” is obsolete. Use the conjunction sign (∧). (Unicode)
 
-$ swiftlint lint --strict --config /Users/Jeremy/Library/Caches/ca.solideogloria.SDGCornerstone.SharedTestingDomain.debug/SwiftLint/Configuration.yml --quiet
-[Temporary]/Default/Tests/DefaultTests/XCTestManifests.swift:6:40: warning: Trailing Comma Violation: Collection literals should not have trailing commas. (trailing_comma)
-[Temporary]/Default/Tests/DefaultTests/DefaultTests.swift:12: warning: Vertical Whitespace Violation: Limit vertical whitespace to a single empty line. Currently 2. (vertical_whitespace)
-[Temporary]/Default/Tests/DefaultTests/DefaultTests.swift:14:37: warning: Trailing Comma Violation: Collection literals should not have trailing commas. (trailing_comma)
-[Temporary]/Default/Package.swift:12:34: warning: Trailing Comma Violation: Collection literals should not have trailing commas. (trailing_comma)
-[Temporary]/Default/Package.swift:26:39: warning: Trailing Comma Violation: Collection literals should not have trailing commas. (trailing_comma)
+[$ swiftlint]
 0

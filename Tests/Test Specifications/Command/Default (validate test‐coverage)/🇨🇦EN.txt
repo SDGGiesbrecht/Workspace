@@ -9,17 +9,17 @@ Build settings from command line:
 Check dependencies
 === BUILD TARGET DefaultTests OF PROJECT Default WITH CONFIGURATION Debug ===
 Check dependencies
-Test Suite 'All tests' started at 2018-05-08 19:43:28.851
-Test Suite 'DefaultTests.xctest' started at 2018-05-08 19:43:28.853
-Test Suite 'DefaultTests' started at 2018-05-08 19:43:28.855
+Test Suite 'All tests' started at 2018-05-08 19:52:13.611
+Test Suite 'DefaultTests.xctest' started at 2018-05-08 19:52:13.613
+Test Suite 'DefaultTests' started at 2018-05-08 19:52:13.614
 Test Case '-[DefaultTests.DefaultTests testExample]' started.
-Test Case '-[DefaultTests.DefaultTests testExample]' passed (0.522 seconds).
-Test Suite 'DefaultTests' passed at 2018-05-08 19:43:29.381.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.522 (0.525) seconds
-Test Suite 'DefaultTests.xctest' passed at 2018-05-08 19:43:29.383.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.522 (0.530) seconds
-Test Suite 'All tests' passed at 2018-05-08 19:43:29.383.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.522 (0.533) seconds
+Test Case '-[DefaultTests.DefaultTests testExample]' passed (0.487 seconds).
+Test Suite 'DefaultTests' passed at 2018-05-08 19:52:14.103.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.487 (0.489) seconds
+Test Suite 'DefaultTests.xctest' passed at 2018-05-08 19:52:14.104.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.487 (0.491) seconds
+Test Suite 'All tests' passed at 2018-05-08 19:52:14.104.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.487 (0.493) seconds
 Generating coverage data...
 ** TEST SUCCEEDED **
 

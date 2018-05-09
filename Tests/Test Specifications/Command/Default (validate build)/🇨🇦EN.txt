@@ -40,9 +40,9 @@ CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
 CompileSwift [...]/Default.swift
 MergeSwiftModule [...]/Default.swiftmodule
 Ditto [...]/Default-Swift.h
+Ditto [...]/Default.swiftmodule
 Ld [...]/Default normal arm64
 Ditto [...]/Default.swiftdoc
-Ditto [...]/Default.swiftmodule
 Ditto [...]/module.modulemap
 Touch [...]/Default.framework
 ** BUILD SUCCEEDED **
@@ -62,9 +62,9 @@ CompileSwiftSources normal armv7k com.apple.xcode.tools.swift.compiler
 CompileSwift [...]/Default.swift
 MergeSwiftModule [...]/Default.swiftmodule
 Ditto [...]/Default-Swift.h
+Ditto [...]/Default.swiftdoc
 Ld [...]/Default normal armv7k
 ld: warning: directory not found for option '-F/Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/Library/Frameworks'
-Ditto [...]/Default.swiftdoc
 Ditto [...]/Default.swiftmodule
 Ditto [...]/module.modulemap
 Touch [...]/Default.framework
@@ -85,9 +85,9 @@ CompileSwiftSources normal arm64 com.apple.xcode.tools.swift.compiler
 CompileSwift [...]/Default.swift
 MergeSwiftModule [...]/Default.swiftmodule
 Ditto [...]/Default-Swift.h
+Ld [...]/Default normal arm64
 Ditto [...]/Default.swiftmodule
 Ditto [...]/Default.swiftdoc
-Ld [...]/Default normal arm64
 Ditto [...]/module.modulemap
 Touch [...]/Default.framework
 ** BUILD SUCCEEDED **

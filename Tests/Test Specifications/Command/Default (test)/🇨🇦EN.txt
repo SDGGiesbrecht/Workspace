@@ -6,57 +6,7 @@ Testing on macOS with the Swift Package Manager... (§1)
 
 Testing on macOS with Xcode... (§2)
 
-$ xcodebuild test -sdk macosx -scheme Default-Package
-Build settings from command line:
-    SDKROOT = macosx10.13
-=== BUILD TARGET Default OF PROJECT Default WITH CONFIGURATION Debug ===
-Check dependencies
-=== BUILD TARGET DefaultTests OF PROJECT Default WITH CONFIGURATION Debug ===
-Check dependencies
-Write auxiliary files
-Create product structure
-ProcessInfoPlistFile [...]/DefaultTests_Info.plist
-CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
-CompileSwift [...]/DefaultTests.swift
-CompileSwift [...]/XCTestManifests.swift
-MergeSwiftModule [...]/DefaultTests.swiftmodule
-Ditto [...]/DefaultTests-Swift.h
-Ld [...]/DefaultTests normal x86_64
-Ditto [...]/DefaultTests.swiftmodule
-Ditto [...]/DefaultTests.swiftdoc
-CopySwiftLibs [...]/DefaultTests.xctest
-Requested Swift ABI version based on scanned binaries: 6
-Copying [...]/libswiftCore.dylib
-Copying [...]/libswiftAppKit.dylib
-Copying [...]/libswiftCoreData.dylib
-Copying [...]/libswiftCoreFoundation.dylib
-Copying [...]/libswiftCoreGraphics.dylib
-Copying [...]/libswiftCoreImage.dylib
-Copying [...]/libswiftDarwin.dylib
-Copying [...]/libswiftDispatch.dylib
-Copying [...]/libswiftFoundation.dylib
-Copying [...]/libswiftIOKit.dylib
-Copying [...]/libswiftMetal.dylib
-Copying [...]/libswiftObjectiveC.dylib
-Copying [...]/libswiftQuartzCore.dylib
-Copying [...]/libswiftXCTest.dylib
-Copying [...]/libswiftXPC.dylib
-Copying [...]/libswiftos.dylib
-Copying [...]/libswiftRemoteMirror.dylib
-Touch [...]/DefaultTests.xctest
-Test Suite 'All tests' started at 2018-05-08 19:58:19.852
-Test Suite 'DefaultTests.xctest' started at 2018-05-08 19:58:19.854
-Test Suite 'DefaultTests' started at 2018-05-08 19:58:19.854
-Test Case '-[DefaultTests.DefaultTests testExample]' started.
-Test Case '-[DefaultTests.DefaultTests testExample]' passed (0.659 seconds).
-Test Suite 'DefaultTests' passed at 2018-05-08 19:58:20.514.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.659 (0.660) seconds
-Test Suite 'DefaultTests.xctest' passed at 2018-05-08 19:58:20.515.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.659 (0.661) seconds
-Test Suite 'All tests' passed at 2018-05-08 19:58:20.516.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.659 (0.663) seconds
-Generating coverage data...
-** TEST SUCCEEDED **
+[$ xcodebuild...]
 
 ✓ Tests pass on macOS with Xcode.
 

@@ -2,26 +2,7 @@ $ workspace validate test‐coverage •no‐colour
 
 Testing on macOS with Xcode... (§1)
 
-$ xcodebuild test -sdk macosx -scheme Default-Package
-Build settings from command line:
-    SDKROOT = macosx10.13
-=== BUILD TARGET Default OF PROJECT Default WITH CONFIGURATION Debug ===
-Check dependencies
-=== BUILD TARGET DefaultTests OF PROJECT Default WITH CONFIGURATION Debug ===
-Check dependencies
-Test Suite 'All tests' started at 2018-05-08 19:58:30.608
-Test Suite 'DefaultTests.xctest' started at 2018-05-08 19:58:30.609
-Test Suite 'DefaultTests' started at 2018-05-08 19:58:30.610
-Test Case '-[DefaultTests.DefaultTests testExample]' started.
-Test Case '-[DefaultTests.DefaultTests testExample]' passed (0.509 seconds).
-Test Suite 'DefaultTests' passed at 2018-05-08 19:58:31.120.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.509 (0.510) seconds
-Test Suite 'DefaultTests.xctest' passed at 2018-05-08 19:58:31.121.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.509 (0.511) seconds
-Test Suite 'All tests' passed at 2018-05-08 19:58:31.122.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.509 (0.514) seconds
-Generating coverage data...
-** TEST SUCCEEDED **
+[$ xcodebuild...]
 
 Checking test coverage on macOS... (§2)
 

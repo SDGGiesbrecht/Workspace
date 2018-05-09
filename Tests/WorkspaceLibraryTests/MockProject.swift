@@ -56,6 +56,7 @@ extension PackageRepository {
                     _ = try? Shell.default.run(command: ["git", "init"])
 
                     for command in commands {
+                        print(StrictString("$ workspace ") + command.joined(separator: " "))
                         let specificationName: StrictString = "Default (" + command.joined(separator: " ") + ")"
 
                         func postprocess(_ output: inout String) {
@@ -76,20 +77,15 @@ extension PackageRepository {
                             output.scalars.replaceMatches(for: CompositePattern([
                                 LiteralPattern("$ swiftlint".scalars),
                                 any,
-                                LiteralPattern("\n0".scalars),
-                                ]), with: "[$ swiftlint...]\n0".scalars)
+                                LiteralPattern("\n\n".scalars),
+                                ]), with: "[$ swiftlint...]\n\n".scalars)
                             output.scalars.replaceMatches(for: CompositePattern([
                                 LiteralPattern("$ swiftlint".scalars),
                                 any,
-                                LiteralPattern("\n\n".scalars),
-                                ]), with: "[$ swiftlint...]\n\n".scalars)
+                                LiteralPattern("\n0".scalars),
+                                ]), with: "[$ swiftlint...]\n0".scalars)
                             
                             // Xcode order varies.
-                            output.scalars.replaceMatches(for: CompositePattern([
-                                LiteralPattern("$ xcodebuild".scalars),
-                                any,
-                                LiteralPattern("\n0".scalars),
-                                ]), with: "[$ xcodebuild...]\n0".scalars)
                             output.scalars.replaceMatches(for: CompositePattern([
                                 LiteralPattern("$ xcodebuild".scalars),
                                 any,

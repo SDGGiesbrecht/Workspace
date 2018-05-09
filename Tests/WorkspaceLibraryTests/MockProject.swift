@@ -85,6 +85,8 @@ extension PackageRepository {
                                 ]), with: "[Different from Xcode]".scalars)
 
                             // Temporary directory varies.
+                            output.scalars.replaceMatches(for: "`..".scalars, with: "".scalars)
+                            output.scalars.replaceMatches(for: "/..".scalars, with: "".scalars)
                             output.scalars.replaceMatches(for: FileManager.default.url(in: .temporary, at: "File").deletingLastPathComponent().path.scalars, with: "[Temporary]".scalars)
                             output.scalars.replaceMatches(for: "/private/tmp".scalars, with: "[Temporary]".scalars)
 

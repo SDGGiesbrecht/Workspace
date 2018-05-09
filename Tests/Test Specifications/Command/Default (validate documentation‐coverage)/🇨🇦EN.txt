@@ -3,16 +3,16 @@ $ workspace validate documentation‐coverage •no‐colour
 Generating documentation for “Default”...
 
 
-$ jazzy --module Default --copyright "Copyright ©2018 the Default project contributors. All rights reserved." --documentation=Documentation/*.md --clean --use-safe-filenames --output "/var/folders/xk/z2w2yxxn5hn1jkkm88c3lj640000gn/T/TemporaryItems/(A Document Being Saved By xctest 5)/ca.solideogloria.SDGCornerstone.SharedTestingDomain.debug/Documentation/Default" --xcodebuild-arguments "-scheme,Default-Package,-target,Default,-sdk,macosx,-derivedDataPath,/var/folders/xk/z2w2yxxn5hn1jkkm88c3lj640000gn/T/TemporaryItems/(A Document Being Saved By xctest 5)/ca.solideogloria.SDGCornerstone.SharedTestingDomain.debug/Jazzy Build Artifacts"
+$ jazzy --module Default --copyright "Copyright ©2018 the Default project contributors. All rights reserved." --documentation=Documentation/*.md --clean --use-safe-filenames --output "[Temporary]/Documentation/Default" --xcodebuild-arguments "-scheme,Default-Package,-target,Default,-sdk,macosx,-derivedDataPath,[Temporary]/Jazzy Build Artifacts"
 Running xcodebuild
 Parsing Default.swift (1/1)
 building site
 building search index
 0% documentation coverage with 0 undocumented symbols
 skipped 1 private, fileprivate, or internal symbol (use `--min-acl` to specify a different minimum ACL)
-jam out ♪♫ to your fresh new docs in `../../../var/folders/xk/z2w2yxxn5hn1jkkm88c3lj640000gn/T/TemporaryItems/(A Document Being Saved By xctest 5)/ca.solideogloria.SDGCornerstone.SharedTestingDomain.debug/Documentation/Default`
+jam out ♪♫ to your fresh new docs in `../../..[Temporary]/Documentation/Default`
 
-Writing to “/var/folders/xk/z2w2yxxn5hn1jkkm88c3lj640000gn/T/TemporaryItems/(A Document Being Saved By xctest 5)/ca.solideogloria.SDGCornerstone.SharedTestingDomain.debug/Documentation/Default/.nojekyll”...
+Writing to “[Temporary]/Documentation/Default/.nojekyll”...
 
 Checking documentation coverage for “Default”... (§1)
 

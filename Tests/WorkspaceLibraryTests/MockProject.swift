@@ -55,11 +55,11 @@ extension PackageRepository {
                     unsetenv("SIMULATOR_UNAVAILABLE_FOR_TESTING")
                 }
 
-                #if os(Linux)
-                try Shell.default.run(command: ["cp", "\u{2D}r", Shell.quote(beforeLocation.path), Shell.quote(location.path)])
-                #else
+                //#if os(Linux) [_Warning: Is this needed?_]
+                //try Shell.default.run(command: ["cp", "\u{2D}r", Shell.quote(beforeLocation.path), Shell.quote(location.path)])
+                //#else
                 try FileManager.default.copy(beforeLocation, to: location)
-                #endif
+                //#endif
                 defer { try? FileManager.default.removeItem(at: location) }
 
                 try FileManager.default.do(in: location) {
@@ -85,8 +85,8 @@ extension PackageRepository {
                                 ]), with: "[Different from Xcode]".scalars)
 
                             // Temporary directory varies.
-                            let temporary = FileManager.default.url(in: .temporary, at: "File").deletingLastPathComponent()
-                            output.scalars.replaceMatches(for: temporary.path.scalars, with: "[Temporary]".scalars)
+                            output.scalars.replaceMatches(for: FileManager.default.url(in: .temporary, at: "File").deletingLastPathComponent().path.scalars, with: "[Temporary]".scalars)
+                            output.scalars.replaceMatches(for: "/private/tmp".scalars, with: "[Temporary]".scalars)
 
                             // SwiftLint order varies.
                             output.scalars.replaceMatches(for: CompositePattern([

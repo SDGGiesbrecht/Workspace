@@ -67,6 +67,10 @@ extension PackageRepository {
                                 any,
                                 LiteralPattern("[_End Xcode Exemption_]".scalars),
                                 ]), with: "[Different from Xcode]".scalars)
+
+                            // Temporary directory.
+                            let temporary = FileManager.default.url(in: .temporary, at: "File").deletingLastPathComponent()
+                            output.scalars.replaceMatches(for: temporary.path.scalars, with: "[Temporary]".scalars)
                         }
 
                         testCommand(Workspace.command, with: command, localizations: localizations, uniqueTestName: specificationName, postprocess: postprocess, overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing, file: file, line: line)

@@ -38,22 +38,28 @@ Undocumented compilation condition. Add “// MARK: - #if...” on the next line
 #if !os(macOS)
 
 Tests/LinuxMain.swift
+Validate (macOS).command
+Line 5
+“&&” is obsolete. Use the conjunction sign (∧). (Unicode)
+REPOSITORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+REPOSITORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" ∧ pwd )"
+
 
 $ swiftlint lint --strict --config /Users/Jeremy/Library/Caches/ca.solideogloria.SDGCornerstone.SharedTestingDomain.debug/SwiftLint/Configuration.yml --reporter emoji
 Loading configuration from '/Users/Jeremy/Library/Caches/ca.solideogloria.SDGCornerstone.SharedTestingDomain.debug/SwiftLint/Configuration.yml'
 Linting Swift files in current working directory
 Linting 'Package.swift' (1/5)
-Linting 'Default.swift' (2/5)
-Linting 'DefaultTests.swift' (3/5)
+Linting 'DefaultTests.swift' (2/5)
+Linting 'Default.swift' (3/5)
 Linting 'XCTestManifests.swift' (4/5)
 Linting 'LinuxMain.swift' (5/5)
-/var/folders/xk/z2w2yxxn5hn1jkkm88c3lj640000gn/T/TemporaryItems/(A Document Being Saved By xctest 10)/ca.solideogloria.SDGCornerstone.SharedTestingDomain.debug/Default/Package.swift
+[Temporary]/Default/Package.swift
 ⚠️ Line 26: Collection literals should not have trailing commas.
 ⚠️ Line 12: Collection literals should not have trailing commas.
-/var/folders/xk/z2w2yxxn5hn1jkkm88c3lj640000gn/T/TemporaryItems/(A Document Being Saved By xctest 10)/ca.solideogloria.SDGCornerstone.SharedTestingDomain.debug/Default/Tests/DefaultTests/DefaultTests.swift
+[Temporary]/Default/Tests/DefaultTests/DefaultTests.swift
 ⚠️ Line 14: Collection literals should not have trailing commas.
 ⚠️ Line 12: Limit vertical whitespace to a single empty line. Currently 2.
-/var/folders/xk/z2w2yxxn5hn1jkkm88c3lj640000gn/T/TemporaryItems/(A Document Being Saved By xctest 10)/ca.solideogloria.SDGCornerstone.SharedTestingDomain.debug/Default/Tests/DefaultTests/XCTestManifests.swift
+[Temporary]/Default/Tests/DefaultTests/XCTestManifests.swift
 ⚠️ Line 6: Collection literals should not have trailing commas.
 Done linting! Found 5 violations, 0 serious in 5 files.
 

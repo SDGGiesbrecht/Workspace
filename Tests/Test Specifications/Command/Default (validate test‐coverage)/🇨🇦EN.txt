@@ -9,23 +9,23 @@ Build settings from command line:
 Check dependencies
 === BUILD TARGET DefaultTests OF PROJECT Default WITH CONFIGURATION Debug ===
 Check dependencies
-Test Suite 'All tests' started at 2018-05-08 18:15:50.109
-Test Suite 'DefaultTests.xctest' started at 2018-05-08 18:15:50.110
-Test Suite 'DefaultTests' started at 2018-05-08 18:15:50.111
+Test Suite 'All tests' started at 2018-05-08 19:43:28.851
+Test Suite 'DefaultTests.xctest' started at 2018-05-08 19:43:28.853
+Test Suite 'DefaultTests' started at 2018-05-08 19:43:28.855
 Test Case '-[DefaultTests.DefaultTests testExample]' started.
-Test Case '-[DefaultTests.DefaultTests testExample]' passed (0.484 seconds).
-Test Suite 'DefaultTests' passed at 2018-05-08 18:15:50.595.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.484 (0.485) seconds
-Test Suite 'DefaultTests.xctest' passed at 2018-05-08 18:15:50.596.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.484 (0.486) seconds
-Test Suite 'All tests' passed at 2018-05-08 18:15:50.597.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.484 (0.488) seconds
+Test Case '-[DefaultTests.DefaultTests testExample]' passed (0.522 seconds).
+Test Suite 'DefaultTests' passed at 2018-05-08 19:43:29.381.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.522 (0.525) seconds
+Test Suite 'DefaultTests.xctest' passed at 2018-05-08 19:43:29.383.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.522 (0.530) seconds
+Test Suite 'All tests' passed at 2018-05-08 19:43:29.383.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.522 (0.533) seconds
 Generating coverage data...
 ** TEST SUCCEEDED **
 
 Checking test coverage on macOS... (§2)
 
-/var/folders/xk/z2w2yxxn5hn1jkkm88c3lj640000gn/T/TemporaryItems/(A Document Being Saved By xctest 10)/ca.solideogloria.SDGCornerstone.SharedTestingDomain.debug/Default/Tests/DefaultTests/DefaultTests.swift
+[Temporary]/Default/Tests/DefaultTests/DefaultTests.swift
 
 ✓ Tests pass on macOS with Xcode.
 ✓ Test coverage is complete on macOS.

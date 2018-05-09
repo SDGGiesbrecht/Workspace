@@ -11,18 +11,6 @@ Build settings from command line:
     SDKROOT = macosx10.13
 === BUILD TARGET Default OF PROJECT Default WITH CONFIGURATION Debug ===
 Check dependencies
-Write auxiliary files
-Create product structure
-ProcessInfoPlistFile [...]/Default_Info.plist
-CompileSwiftSources normal x86_64 com.apple.xcode.tools.swift.compiler
-CompileSwift [...]/Default.swift
-MergeSwiftModule [...]/Default.swiftmodule
-Ditto [...]/Default-Swift.h
-Ld [...]/Default normal x86_64
-Ditto [...]/Default.swiftdoc
-Ditto [...]/Default.swiftmodule
-Ditto [...]/module.modulemap
-Touch [...]/Default.framework
 === BUILD TARGET DefaultTests OF PROJECT Default WITH CONFIGURATION Debug ===
 Check dependencies
 Write auxiliary files
@@ -34,8 +22,8 @@ CompileSwift [...]/XCTestManifests.swift
 MergeSwiftModule [...]/DefaultTests.swiftmodule
 Ditto [...]/DefaultTests-Swift.h
 Ld [...]/DefaultTests normal x86_64
-Ditto [...]/DefaultTests.swiftdoc
 Ditto [...]/DefaultTests.swiftmodule
+Ditto [...]/DefaultTests.swiftdoc
 CopySwiftLibs [...]/DefaultTests.xctest
 Requested Swift ABI version based on scanned binaries: 6
 Copying [...]/libswiftCore.dylib
@@ -56,17 +44,17 @@ Copying [...]/libswiftXPC.dylib
 Copying [...]/libswiftos.dylib
 Copying [...]/libswiftRemoteMirror.dylib
 Touch [...]/DefaultTests.xctest
-Test Suite 'All tests' started at 2018-05-08 18:52:49.399
-Test Suite 'DefaultTests.xctest' started at 2018-05-08 18:52:49.401
-Test Suite 'DefaultTests' started at 2018-05-08 18:52:49.401
+Test Suite 'All tests' started at 2018-05-08 19:43:16.775
+Test Suite 'DefaultTests.xctest' started at 2018-05-08 19:43:16.777
+Test Suite 'DefaultTests' started at 2018-05-08 19:43:16.777
 Test Case '-[DefaultTests.DefaultTests testExample]' started.
-Test Case '-[DefaultTests.DefaultTests testExample]' passed (0.557 seconds).
-Test Suite 'DefaultTests' passed at 2018-05-08 18:52:49.959.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.557 (0.558) seconds
-Test Suite 'DefaultTests.xctest' passed at 2018-05-08 18:52:49.960.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.557 (0.559) seconds
-Test Suite 'All tests' passed at 2018-05-08 18:52:49.961.
-	 Executed 1 test, with 0 failures (0 unexpected) in 0.557 (0.561) seconds
+Test Case '-[DefaultTests.DefaultTests testExample]' passed (0.650 seconds).
+Test Suite 'DefaultTests' passed at 2018-05-08 19:43:17.428.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.650 (0.651) seconds
+Test Suite 'DefaultTests.xctest' passed at 2018-05-08 19:43:17.429.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.650 (0.652) seconds
+Test Suite 'All tests' passed at 2018-05-08 19:43:17.430.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.650 (0.654) seconds
 Generating coverage data...
 ** TEST SUCCEEDED **
 

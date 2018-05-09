@@ -3,10 +3,24 @@ $ workspace validate documentation‐coverage •no‐colour
 Generating documentation for “Default”...
 
 
-$ gem install jazzy --version 0.9.1
-ERROR:  While executing gem ... (Gem::FilePermissionError)
-    You don't have write permissions for the /Library/Ruby/Gems/2.3.0 directory.
-Failed to install Jazzy (Function).
-Please install Jazzy (Function) manually.
-See [4mhttps://github.com/realm/jazzy[24m
-9223372036854775807
+$ jazzy --module Default --copyright "Copyright ©2018 the Default project contributors. All rights reserved." --documentation=Documentation/*.md --clean --use-safe-filenames --output "[Temporary]/Documentation/Default" --xcodebuild-arguments "-scheme,Default-Package,-target,Default,-sdk,macosx,-derivedDataPath,[Temporary]/Jazzy Build Artifacts"
+Running xcodebuild
+Parsing Default.swift (1/1)
+building site
+building search index
+0% documentation coverage with 0 undocumented symbols
+skipped 1 private, fileprivate, or internal symbol (use `--min-acl` to specify a different minimum ACL)
+jam out ♪♫ to your fresh new docs in `../../../../../../../../../..[Temporary]/Documentation/Default`
+
+Writing to “[Temporary]/Documentation/Default/.nojekyll”...
+
+Checking documentation coverage for “Default”... (§1)
+
+
+✓ Generated documentation for “Default”.
+✓ Documentation coverage is complete for “Default”.
+
+
+“Default” passes validation.
+
+0

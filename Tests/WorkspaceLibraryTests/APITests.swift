@@ -51,7 +51,7 @@ class APITests : TestCase {
 
             ["proofread", "•xcode"],
             ["validate", "build", "•job", "macos‐swift‐package‐manager"],
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: true) // [_Warning: Overwriting._]
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false) // [_Warning: Overwriting._]
     }
 
     func testSelfSpecificScripts() {

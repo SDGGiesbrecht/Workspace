@@ -83,6 +83,10 @@ extension PackageRepository {
                                 any,
                                 LiteralPattern("[_End Xcode Exemption_]".scalars),
                                 ]), with: "[Different from Xcode]".scalars)
+                            if output.scalars.contains("[Different from Xcode]".scalars) {
+                                output.scalars.replaceMatches(for: "\n\n✓ Tests pass on macOS with Xcode.".scalars, with: "\n\n✓ Tests pass on macOS with the Swift Package Manager.\n✓ Tests pass on macOS with Xcode.".scalars)
+                            }
+
 
                             // Temporary directory varies.
                             output.scalars.replaceMatches(for: "`..".scalars, with: "`".scalars)

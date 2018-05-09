@@ -27,7 +27,8 @@ extension PackageRepository {
     // MARK: - Initialization
 
     init(mock name: String) {
-        self.init(at: FileManager.default.url(in: .temporary, at: name))
+        // Not using url(in: .temporary) because the dynamic URL causes Xcode’s derived data to grow limitlessly over many test iterations.
+        self.init(at: URL(fileURLWithPath: "/tmp").appendingPathComponent(name))
     }
 
     func test<L>(commands: [[StrictString]], localizations: L.Type, withDependency: Bool = false, overwriteSpecificationInsteadOfFailing: Bool, file: StaticString = #file, line: UInt = #line) where L : InputLocalization {

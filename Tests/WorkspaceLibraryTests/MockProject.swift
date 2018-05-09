@@ -68,7 +68,7 @@ extension PackageRepository {
                                 LiteralPattern("[_End Xcode Exemption_]".scalars),
                                 ]), with: "[Different from Xcode]".scalars)
 
-                            // Temporary directory.
+                            // Temporary directory varies.
                             let temporary = FileManager.default.url(in: .temporary, at: "File").deletingLastPathComponent()
                             output.scalars.replaceMatches(for: temporary.path.scalars, with: "[Temporary]".scalars)
                             
@@ -77,14 +77,24 @@ extension PackageRepository {
                                 LiteralPattern("$ swiftlint".scalars),
                                 any,
                                 LiteralPattern("\n0".scalars),
-                                ]), with: "[$ swiftlint]\n0".scalars)
-                            
-                            // SwiftLint order varies.
+                                ]), with: "[$ swiftlint...]\n0".scalars)
                             output.scalars.replaceMatches(for: CompositePattern([
                                 LiteralPattern("$ swiftlint".scalars),
                                 any,
+                                LiteralPattern("\n\n".scalars),
+                                ]), with: "[$ swiftlint...]\n\n".scalars)
+                            
+                            // Xcode order varies.
+                            output.scalars.replaceMatches(for: CompositePattern([
+                                LiteralPattern("$ xcodebuild".scalars),
+                                any,
                                 LiteralPattern("\n0".scalars),
-                                ]), with: "[$ swiftlint]\n0".scalars)
+                                ]), with: "[$ xcodebuild...]\n0".scalars)
+                            output.scalars.replaceMatches(for: CompositePattern([
+                                LiteralPattern("$ xcodebuild".scalars),
+                                any,
+                                LiteralPattern("\n\n".scalars),
+                                ]), with: "[$ xcodebuild...]\n\n".scalars)
                         }
 
                         testCommand(Workspace.command, with: command, localizations: localizations, uniqueTestName: specificationName, postprocess: postprocess, overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing, file: file, line: line)

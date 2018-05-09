@@ -7,5 +7,5 @@ $ workspace proofread •xcode •no‐colour
 /private[Temporary]/Default/Tests/DefaultTests/XCTestManifests.swift:3:1: warning: Undocumented compilation condition. Add “// MARK: - #if...” on the next line. (Documentation of Compilation Conditions)
 /private[Temporary]/Default/Validate (macOS).command:5:54: warning: “&&” is obsolete. Use the conjunction sign (∧). (Unicode)
 
-[$ swiftlint]
+[$ swiftlint...]
 0

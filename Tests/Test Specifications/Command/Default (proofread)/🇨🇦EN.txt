@@ -45,23 +45,7 @@ REPOSITORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 REPOSITORY="$( cd "$( dirname "${BASH_SOURCE[0]}" )" ∧ pwd )"
 
 
-$ swiftlint lint --strict --config /Users/Jeremy/Library/Caches/ca.solideogloria.SDGCornerstone.SharedTestingDomain.debug/SwiftLint/Configuration.yml --reporter emoji
-Loading configuration from '/Users/Jeremy/Library/Caches/ca.solideogloria.SDGCornerstone.SharedTestingDomain.debug/SwiftLint/Configuration.yml'
-Linting Swift files in current working directory
-Linting 'Package.swift' (1/5)
-Linting 'Default.swift' (2/5)
-Linting 'DefaultTests.swift' (3/5)
-Linting 'XCTestManifests.swift' (4/5)
-Linting 'LinuxMain.swift' (5/5)
-[Temporary]/Default/Package.swift
-⚠️ Line 26: Collection literals should not have trailing commas.
-⚠️ Line 12: Collection literals should not have trailing commas.
-[Temporary]/Default/Tests/DefaultTests/DefaultTests.swift
-⚠️ Line 14: Collection literals should not have trailing commas.
-⚠️ Line 12: Limit vertical whitespace to a single empty line. Currently 2.
-[Temporary]/Default/Tests/DefaultTests/XCTestManifests.swift
-⚠️ Line 6: Collection literals should not have trailing commas.
-Done linting! Found 5 violations, 0 serious in 5 files.
+[$ swiftlint...]
 
 ✗ Source code fails proofreading. (See ⌘F “§1”)
 

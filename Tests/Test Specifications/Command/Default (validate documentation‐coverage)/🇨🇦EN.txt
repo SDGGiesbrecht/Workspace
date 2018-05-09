@@ -10,7 +10,7 @@ building site
 building search index
 0% documentation coverage with 0 undocumented symbols
 skipped 1 private, fileprivate, or internal symbol (use `--min-acl` to specify a different minimum ACL)
-jam out ♪♫ to your fresh new docs in `../../..[Temporary]/Documentation/Default`
+jam out ♪♫ to your fresh new docs in `[Temporary]/Documentation/Default`
 
 Writing to “[Temporary]/Documentation/Default/.nojekyll”...
 

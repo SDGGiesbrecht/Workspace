@@ -2,7 +2,7 @@ $ workspace validate build •no‐colour
 
 Checking build for macOS with the Swift Package Manager... (§1)
 
-$ swift build --configuration release --static-swift-stdlib
+$ swift build
 Compile Swift Module 'Default' (1 sources)
 
 Checking build for macOS with Xcode... (§2)

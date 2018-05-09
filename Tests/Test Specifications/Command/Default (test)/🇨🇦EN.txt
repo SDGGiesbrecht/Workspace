@@ -8,7 +8,6 @@ Testing on macOS with Xcode... (§2)
 
 [$ xcodebuild...]
 
-✓ Tests pass on macOS with the Swift Package Manager.
 ✓ Tests pass on macOS with Xcode.
 
 

@@ -128,7 +128,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
                 }), with: "".scalars)
                 allowedDifferences.append(relatedProjects.lowercased())
             }
-            allowedDifferences = allowedDifferences.map { "\u{27}:(exclude)*\($0.components(separatedBy: " ").last!)\u{27}" }
+            allowedDifferences = allowedDifferences.map { "\u{27}:(exclude)*\(String($0.components(separatedBy: " ").last!.contents))\u{27}" }
 
             requireBash(["git", "add", ".", "\u{2D}\u{2D}intent\u{2D}to\u{2D}add"], silent: true)
             if (try? Shell.default.run(command: ["git", "diff", "\u{2D}\u{2D}exit\u{2D}code", "\u{2D}\u{2D}", ".", "\u{27}:(exclude)*.dsidx\u{27}"] + allowedDifferences, reportProgress: { output.print($0) })) ≠ nil {

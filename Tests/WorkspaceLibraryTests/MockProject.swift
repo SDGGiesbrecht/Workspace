@@ -89,9 +89,8 @@ extension PackageRepository {
                                 // Expected.
                             }
                         }
-                        if ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil,
-                            command == ["build"] {
-                            // Phases skipped within Xcode due to bugged reroute.
+                        if ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil, command == ["test"] {
+                            // Phases skipped within Xcode due to rerouting interference.
                             requireSuccess()
                             continue
                         }

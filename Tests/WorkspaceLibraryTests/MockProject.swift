@@ -74,7 +74,15 @@ extension PackageRepository {
                         print(StrictString("$ workspace ") + command.joined(separator: " "))
                         let specificationName: StrictString = "Default (" + command.joined(separator: " ") + ")"
 
+                        // Special handling of commands with platform differences
+                        if ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil {
+
+                        }
+
+                        // General commands
                         func postprocess(_ output: inout String) {
+
+                            let any: RepetitionPattern<Unicode.Scalar> = RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy)
 
                             // Temporary directory varies.
                             output.scalars.replaceMatches(for: "`..".scalars, with: "`".scalars)

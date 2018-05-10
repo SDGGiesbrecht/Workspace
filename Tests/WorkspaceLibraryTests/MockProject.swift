@@ -76,18 +76,6 @@ extension PackageRepository {
 
                         func postprocess(_ output: inout String) {
 
-                            // Platform differences.
-                            let any: RepetitionPattern<Unicode.Scalar> = RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy)
-                            output.scalars.replaceMatches(for: CompositePattern([
-                                LiteralPattern("[_Begin Xcode Exemption_]".scalars),
-                                any,
-                                LiteralPattern("[_End Xcode Exemption_]".scalars),
-                                ]), with: "[Different from Xcode]".scalars)
-                            if output.scalars.contains("[Different from Xcode]".scalars) {
-                                output.scalars.replaceMatches(for: "\n\n✓ Tests pass on macOS with Xcode.".scalars, with: "\n\n✓ Tests pass on macOS with the Swift Package Manager.\n✓ Tests pass on macOS with Xcode.".scalars)
-                            }
-
-
                             // Temporary directory varies.
                             output.scalars.replaceMatches(for: "`..".scalars, with: "`".scalars)
                             output.scalars.replaceMatches(for: "/..".scalars, with: "".scalars)

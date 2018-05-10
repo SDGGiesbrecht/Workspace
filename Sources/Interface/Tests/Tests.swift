@@ -153,16 +153,8 @@ struct Tests {
             }
         }).resolved().formattedAsSectionHeader())
 
-        let problematicJob = BuildConfiguration.current == .debug ∧ job == .macOSSwiftPackageManager
-        if problematicJob {
-            output.print("[_Begin Xcode Exemption_]")
-        }
-        defer {
-            if problematicJob {
-                output.print("[_End Xcode Exemption_]")
-            }
-        }
-        if problematicJob,
+        if BuildConfiguration.current == .debug,
+            job == .macOSSwiftPackageManager,
             ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil {
             // “swift test” gets confused inside Xcode’s test sandbox. This skips it while testing Workspace.
             output.print("Skipping due to sandbox...")

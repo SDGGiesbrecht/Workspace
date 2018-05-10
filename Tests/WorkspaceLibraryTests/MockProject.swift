@@ -75,8 +75,15 @@ extension PackageRepository {
                         let specificationName: StrictString = "Default (" + command.joined(separator: " ") + ")"
 
                         // Special handling of commands with platform differences
-                        if ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil {
+                        if ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil,
+                            command == ["test"] {
+                            // Phases skipped within Xcode due to bugged reroute.
 
+                            do {
+                                try Workspace.command.execute(with: command)
+                            } catch {
+                                XCTFail("\(error)")
+                            }
                         }
 
                         // General commands
@@ -90,6 +97,20 @@ extension PackageRepository {
                             output.scalars.replaceMatches(for: FileManager.default.url(in: .temporary, at: "File").deletingLastPathComponent().path.scalars, with: "[Temporary]".scalars)
                             output.scalars.replaceMatches(for: "/private/tmp".scalars, with: "[Temporary]".scalars)
 
+                            // Swift test times vary.
+                            output.scalars.replaceMatches(for: CompositePattern([
+                                LiteralPattern("$ swift test".scalars),
+                                any,
+                                LiteralPattern("\n\n".scalars),
+                                ]), with: "[$ swift test...]\n\n".scalars)
+
+                            // Xcode order varies.
+                            output.scalars.replaceMatches(for: CompositePattern([
+                                LiteralPattern("$ xcodebuild".scalars),
+                                any,
+                                LiteralPattern("\n\n".scalars),
+                                ]), with: "[$ xcodebuild...]\n\n".scalars)
+
                             // SwiftLint order varies.
                             output.scalars.replaceMatches(for: CompositePattern([
                                 LiteralPattern("$ swiftlint".scalars),
@@ -101,13 +122,6 @@ extension PackageRepository {
                                 any,
                                 LiteralPattern("\n0".scalars),
                                 ]), with: "[$ swiftlint...]\n0".scalars)
-
-                            // Xcode order varies.
-                            output.scalars.replaceMatches(for: CompositePattern([
-                                LiteralPattern("$ xcodebuild".scalars),
-                                any,
-                                LiteralPattern("\n\n".scalars),
-                                ]), with: "[$ xcodebuild...]\n\n".scalars)
                         }
 
                         testCommand(Workspace.command, with: command, localizations: localizations, uniqueTestName: specificationName, postprocess: postprocess, overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing, file: file, line: line)

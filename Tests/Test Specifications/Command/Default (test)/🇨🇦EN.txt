@@ -2,7 +2,7 @@ $ workspace test •no‐colour
 
 Testing on macOS with the Swift Package Manager... (§1)
 
-[Different from Xcode]
+[$ swift test...]
 
 Testing on macOS with Xcode... (§2)
 

@@ -108,6 +108,7 @@ extension PackageRepository {
                             ∨ command == ["validate", "test‐coverage"] {
                             // Invalid on Linux
                             expectFailure()
+                            continue
                         }
                         #endif
 

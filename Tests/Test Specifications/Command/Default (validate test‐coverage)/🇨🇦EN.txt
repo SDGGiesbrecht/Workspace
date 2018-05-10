@@ -6,7 +6,7 @@ Testing on macOS with Xcode... (§1)
 
 Checking test coverage on macOS... (§2)
 
-/tmp/Default/Tests/DefaultTests/DefaultTests.swift
+[Temporary]/Default/Tests/DefaultTests/DefaultTests.swift
 
 ✓ Tests pass on macOS with Xcode.
 ✓ Test coverage is complete on macOS.

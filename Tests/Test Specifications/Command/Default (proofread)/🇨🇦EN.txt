@@ -42,7 +42,7 @@ Tests/LinuxMain.swift
 
 [$ swiftlint...]
 
-✗ Source code fails proofreading. (See ⌘F “§1”)
+✗ Source code fails proofreading. (See [⌘F] “§1”)
 
 “Default” fails validation.
 9223372036854775807

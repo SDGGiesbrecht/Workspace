@@ -59,6 +59,7 @@ extension PackageRepository {
                     unsetenv("SIMULATOR_UNAVAILABLE_FOR_TESTING")
                 }
 
+                try? FileManager.default.removeItem(at: location)
                 #if os(Linux)
                 try Shell.default.run(command: ["cp", "\u{2D}r", Shell.quote(beforeLocation.path), Shell.quote(location.path)])
                 #else
@@ -76,7 +77,7 @@ extension PackageRepository {
 
                     for command in commands {
                         print(StrictString("$ workspace ") + command.joined(separator: " "))
-                        let specificationName: StrictString = "Default (" + command.joined(separator: " ") + ")"
+                        let specificationName: StrictString = "\(location.lastPathComponent) (" + command.joined(separator: " ") + ")"
 
                         // Special handling of commands with platform differences
                         func requireSuccess() {
@@ -175,7 +176,7 @@ extension PackageRepository {
                     #endif
 
                     let afterLocation = PackageRepository.afterDirectory(for: location.lastPathComponent)
-                    if overwriteSpecificationInsteadOfFailing {
+                    if true {//overwriteSpecificationInsteadOfFailing { [_Warning: Undo this._]
                         try? FileManager.default.removeItem(at: afterLocation)
                         try FileManager.default.move(location, to: afterLocation)
                     } else {

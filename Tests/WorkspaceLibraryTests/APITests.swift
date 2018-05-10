@@ -28,6 +28,13 @@ class APITests : TestCase {
         }
     }
 
+    func testBadStyle() {
+        PackageRepository(mock: "BadStyle").test(commands: [
+            ["proofread"],
+            ["proofread", "•xcode"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
     func testCheckForUpdates() {
         do {
             try Workspace.command.execute(with: ["check‐for‐updates"])
@@ -36,8 +43,20 @@ class APITests : TestCase {
         }
     }
 
+    func testCustomProofread() {
+        PackageRepository(mock: "CustomProofread").test(commands: [
+            ["proofread"],
+            ["proofread", "•xcode"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testCustomReadMe() {
+        PackageRepository(mock: "CustomReadMe").test(commands: [
+            ["refresh", "read‐me"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
     func testDefaults() {
-        // [_Warning: Not all mock projects have been refactored yet._]
         PackageRepository(mock: "Default").test(commands: [
             // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
@@ -51,7 +70,191 @@ class APITests : TestCase {
 
             ["proofread", "•xcode"],
             ["validate", "build", "•job", "macos‐swift‐package‐manager"],
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false) // [_Warning: Overwriting._]
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testExecutableProjectType() {
+        PackageRepository(mock: "ExecutableProjectType").test(commands: [
+            ["refresh", "read‐me"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testFailingDocumentationCoverage() {
+        PackageRepository(mock: "FailingDocumentationCoverage").test(commands: [
+            ["validate", "documentation‐coverage"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testFailingTests() {
+        PackageRepository(mock: "FailingTests").test(commands: [
+            ["validate", "build"],
+            ["validate", "test‐coverage"],
+            ["validate", "build", "•job", "miscellaneous"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testInvalidConfigurationValue() {
+        PackageRepository(mock: "InvalidConfigurationValue").test(commands: [
+            ["validate", "documentation‐coverage"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testInvalidReference() {
+        PackageRepository(mock: "InvalidReference").test(commands: [
+            ["refresh", "read‐me"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testInvalidRelatedProject() {
+        PackageRepository(mock: "InvalidRelatedProject").test(commands: [
+            ["refresh", "read‐me"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testInvalidResourceDirectory() {
+        PackageRepository(mock: "InvalidResourceDirectory").test(commands: [
+            ["refresh", "resources"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testInvalidTarget() {
+        PackageRepository(mock: "InvalidTarget").test(commands: [
+            ["refresh", "resources"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testNoAbout() {
+        PackageRepository(mock: "NoAbout").test(commands: [
+            ["refresh", "read‐me"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testNoAuthor() {
+        #if !os(Linux)
+        PackageRepository(mock: "NoAbout").test(commands: [
+            ["validate", "documentation‐coverage"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        #endif
+    }
+
+    func testNoDescription() {
+        PackageRepository(mock: "NoDescription").test(commands: [
+            ["refresh", "read‐me"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testNoDocumentationURL() {
+        PackageRepository(mock: "NoDocumentationURL").test(commands: [
+            ["refresh", "read‐me"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testNoExamples() {
+        PackageRepository(mock: "NoDocumentationURL").test(commands: [
+            ["refresh", "read‐me"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testNoFeatures() {
+        PackageRepository(mock: "NoFeatures").test(commands: [
+            ["refresh", "read‐me"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testNoLocalizations() {
+        PackageRepository(mock: "NoLocalizations").test(commands: [
+            ["refresh", "read‐me"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testNoMacOS() {
+        #if !os(Linux)
+        PackageRepository(mock: "NoMacOS").test(commands: [
+            ["validate", "documentation‐coverage"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        #endif
+    }
+
+    func testNoMacOSOrIOS() {
+        #if !os(Linux)
+        PackageRepository(mock: "NoMacOSOrIOS").test(commands: [
+            ["validate", "documentation‐coverage"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        #endif
+    }
+
+    func testNoMacOSOrIOSOrWatchOS() {
+        #if !os(Linux)
+        PackageRepository(mock: "NoMacOSOrIOSOrWatchOS").test(commands: [
+            ["validate", "documentation‐coverage"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        #endif
+    }
+
+    func testNoOther() {
+        PackageRepository(mock: "NoOther").test(commands: [
+            ["refresh", "read‐me"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testNoQuotation() {
+        PackageRepository(mock: "NoQuotation").test(commands: [
+            ["refresh", "read‐me"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testNoQuotationSource() {
+        PackageRepository(mock: "NoQuotationSource").test(commands: [
+            ["refresh", "read‐me"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testNoRepositoryURL() {
+        PackageRepository(mock: "NoRepositoryURL").test(commands: [
+            ["refresh", "read‐me"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testPartialReadMe() {
+        PackageRepository(mock: "PartialReadMe").test(commands: [
+            ["refresh", "read‐me"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testSDGLibrary() {
+        PackageRepository(mock: "SDGLibrary").test(commands: [
+            // [_Workaround: This should just be “validate” once it is possible._]
+            ["refresh", "scripts"],
+            ["refresh", "read‐me"],
+            ["refresh", "continuous‐integration"],
+            ["refresh", "resources"],
+
+            ["proofread"],
+            ["validate", "build"],
+            ["test"],
+            ["validate", "test‐coverage"],
+            ["validate", "documentation‐coverage"],
+
+            ["proofread", "•xcode"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testSDGTool() {
+        PackageRepository(mock: "SDGLibrary").test(commands: [
+            // [_Workaround: This should just be “validate” once it is possible._]
+            ["refresh", "scripts"],
+            ["refresh", "read‐me"],
+            ["refresh", "continuous‐integration"],
+            ["refresh", "resources"],
+
+            ["proofread"],
+            ["validate", "build"],
+            ["test"],
+            ["validate", "test‐coverage"],
+            ["validate", "documentation‐coverage"],
+
+            ["proofread", "•xcode"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testSelfSpecificScripts() {
@@ -63,6 +266,21 @@ class APITests : TestCase {
         } catch {
             XCTFail("\(error)")
         }
+    }
+
+    func testUndefinedConfigurationValue() {
+        PackageRepository(mock: "UndefinedConfigurationValue").test(commands: [
+            ["refresh", "read‐me"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testUnicodeSource() {
+        #if !os(Linux)
+        PackageRepository(mock: "UnicodeSource").test(commands: [
+            ["refresh", "read‐me"],
+            ["validate", "documentation‐coverage"],
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        #endif
     }
 
     func testHelp() {

@@ -55,11 +55,11 @@ extension PackageRepository {
                     unsetenv("SIMULATOR_UNAVAILABLE_FOR_TESTING")
                 }
 
-                //#if os(Linux) [_Warning: Is this needed?_]
-                //try Shell.default.run(command: ["cp", "\u{2D}r", Shell.quote(beforeLocation.path), Shell.quote(location.path)])
-                //#else
+                #if os(Linux)
+                try Shell.default.run(command: ["cp", "\u{2D}r", Shell.quote(beforeLocation.path), Shell.quote(location.path)])
+                #else
                 try FileManager.default.copy(beforeLocation, to: location)
-                //#endif
+                #endif
                 defer { try? FileManager.default.removeItem(at: location) }
 
                 try FileManager.default.do(in: location) {

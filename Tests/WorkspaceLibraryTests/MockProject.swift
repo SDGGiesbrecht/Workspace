@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+@testable import Interface
 import GeneralTestImports
 
 import SDGExternalProcess
@@ -22,6 +23,9 @@ extension PackageRepository {
     private static let mockProjectsDirectory = repositoryRoot.appendingPathComponent("Tests/Mock Projects")
     private static func beforeDirectory(for mockProject: String) -> URL {
         return mockProjectsDirectory.appendingPathComponent("Before").appendingPathComponent(mockProject)
+    }
+    private static func afterDirectory(for mockProject: String) -> URL {
+        return mockProjectsDirectory.appendingPathComponent("After").appendingPathComponent(mockProject)
     }
 
     // MARK: - Initialization
@@ -169,6 +173,37 @@ extension PackageRepository {
                         }
                     }
                     #endif
+
+                    let afterLocation = PackageRepository.afterDirectory(for: location.lastPathComponent)
+                    if overwriteSpecificationInsteadOfFailing {
+                        try? FileManager.default.removeItem(at: afterLocation)
+                        try FileManager.default.move(location, to: afterLocation)
+                    } else {
+
+                        var files: Set<String> = []
+                        for file in try PackageRepository(at: location).trackedFiles(output: Command.Output.mock) {
+                            files.insert(file.path(relativeTo: location))
+                        }
+                        for file in try PackageRepository(at: afterLocation).trackedFiles(output: Command.Output.mock) {
+                            files.insert(file.path(relativeTo: afterLocation))
+                        }
+
+                        for file in files {
+                            let result = location.appendingPathComponent(file)
+                            let after = afterLocation.appendingPathComponent(file)
+                            if let resultContents = try? String(from: result) {
+                                if let _ = try? String(from: after) {
+                                    compare(resultContents, against: after, overwriteSpecificationInsteadOfFailing: false)
+                                } else {
+                                    XCTFail("Unexpected file produced: “\(file)”")
+                                }
+                            } else {
+                                if let _ = try? String(from: after) {
+                                    XCTFail("Failed to produce “\(file)”.")
+                                }
+                            }
+                        }
+                    }
                 }
             }
         } catch {

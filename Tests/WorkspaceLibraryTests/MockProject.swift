@@ -75,16 +75,41 @@ extension PackageRepository {
                         let specificationName: StrictString = "Default (" + command.joined(separator: " ") + ")"
 
                         // Special handling of commands with platform differences
-                        if ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil,
-                            command == ["test"] {
-                            // Phases skipped within Xcode due to bugged reroute.
-
+                        func requireSuccess() {
                             do {
                                 try Workspace.command.execute(with: command)
                             } catch {
-                                XCTFail("\(error)")
+                                XCTFail("\(error)", file: file, line: line)
                             }
                         }
+                        func expectFailure() {
+                            do {
+                                XCTFail(String(try Workspace.command.execute(with: command)), file: file, line: line)
+                            } catch {
+                                // Expected.
+                            }
+                        }
+                        if ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil,
+                            command == ["build"] {
+                            // Phases skipped within Xcode due to bugged reroute.
+                            requireSuccess()
+                            continue
+                        }
+                        #if os(Linux)
+                        if command == ["refresh", "scripts"]
+                            ∨ command == ["validate", "build"]
+                            ∨ command == ["test"] {
+                            // Differing task set on Linux.
+                            requireSuccess()
+                            continue
+                        }
+                        if command == command == ["validate", "build", "•job", "macos‐swift‐package‐manager"]
+                            ∨ command == ["validate", "documentation‐coverage"]
+                            ∨ ["validate", "test‐coverage"] {
+                            // Invalid on Linux
+                            expectFailure()
+                        }
+                        #endif
 
                         // General commands
                         func postprocess(_ output: inout String) {
@@ -96,6 +121,11 @@ extension PackageRepository {
                             output.scalars.replaceMatches(for: "/..".scalars, with: "".scalars)
                             output.scalars.replaceMatches(for: FileManager.default.url(in: .temporary, at: "File").deletingLastPathComponent().path.scalars, with: "[Temporary]".scalars)
                             output.scalars.replaceMatches(for: "/private/tmp".scalars, with: "[Temporary]".scalars)
+                            output.scalars.replaceMatches(for: "/tmp".scalars, with: "[Temporary]".scalars)
+
+                            // Find hotkey varies.
+                            output.scalars.replaceMatches(for: "⌘F".scalars, with: "[⌘F]".scalars)
+                            output.scalars.replaceMatches(for: "Ctrl + F".scalars, with: "[⌘F]".scalars)
 
                             // Swift test times vary.
                             output.scalars.replaceMatches(for: CompositePattern([

@@ -25,7 +25,8 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 9, 3))),
         .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 3, 0))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 1, 2))),
+        // [_Warning: Pointing at a branch._]
+        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .branch("coverage")),// .exact(Version(0, 1, 2))),
         .package(url: "https://github.com/apple/swift\u{2D}package\u{2D}manager", .exact(Version(0, 2, 0)))
     ],
     targets: [

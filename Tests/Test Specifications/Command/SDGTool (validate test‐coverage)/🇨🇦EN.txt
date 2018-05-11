@@ -2,13 +2,19 @@ $ workspace validate test‐coverage •no‐colour
 
 Testing on macOS with Xcode... (§1)
 
+[$ xcodebuild...]
 
 Checking test coverage on macOS... (§2)
 
-The package has no Xcode project.
+[Temporary]/SDGTool/Sources/Library/SDG.swift
+[Temporary]/SDGTool/Sources/tool/main.swift
+Line 1
+print("Hello, world!")
 
-✗ Tests fail on macOS with Xcode. (See [⌘F] “§1”)
-✗ Test coverage could not be determined on macOS. (See [⌘F] “§2”)
+[Temporary]/SDGTool/Tests/SDGTests/SDGTests.swift
+
+✓ Tests pass on macOS with Xcode.
+✗ Test coverage is incomplete on macOS. (See [⌘F] “§2”)
 
 “SDG” fails validation.
 9223372036854775807

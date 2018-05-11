@@ -93,8 +93,8 @@ class APITests : TestCase {
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
-    func testInvalidConfigurationValue() {
-        PackageRepository(mock: "InvalidConfigurationValue").test(commands: [
+    func testInvalidConfigurationEnumerationValue() {
+        PackageRepository(mock: "InvalidConfigurationEnumerationValue").test(commands: [
             ["validate", "documentation‐coverage"],
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }

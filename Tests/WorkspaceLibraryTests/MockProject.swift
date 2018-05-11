@@ -176,7 +176,7 @@ extension PackageRepository {
                     #endif
 
                     let afterLocation = PackageRepository.afterDirectory(for: location.lastPathComponent)
-                    if overwriteSpecificationInsteadOfFailing {
+                    if overwriteSpecificationInsteadOfFailing ∨ (try? afterLocation.checkResourceIsReachable()) ≠ true {
                         try? FileManager.default.removeItem(at: afterLocation)
                         try FileManager.default.move(location, to: afterLocation)
                     } else {

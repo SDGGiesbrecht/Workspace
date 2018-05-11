@@ -25,7 +25,7 @@ extension APITests {
         ("testFailingDocumentationCoverage", testFailingDocumentationCoverage),
         ("testFailingTests", testFailingTests),
         ("testHelp", testHelp),
-        ("testInvalidConfigurationValue", testInvalidConfigurationValue),
+        ("testInvalidConfigurationEnumerationValue", testInvalidConfigurationEnumerationValue),
         ("testInvalidReference", testInvalidReference),
         ("testInvalidRelatedProject", testInvalidRelatedProject),
         ("testInvalidResourceDirectory", testInvalidResourceDirectory),

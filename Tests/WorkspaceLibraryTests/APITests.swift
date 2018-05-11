@@ -240,7 +240,7 @@ class APITests : TestCase {
     }
 
     func testSDGTool() {
-        PackageRepository(mock: "SDGLibrary").test(commands: [
+        PackageRepository(mock: "SDGTool").test(commands: [
             // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
             ["refresh", "read‐me"],

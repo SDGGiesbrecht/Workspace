@@ -1,4 +1,4 @@
 $ workspace proofread •xcode •no‐colour
 
-[[$ swiftlint...]
+[$ swiftlint...]
 0

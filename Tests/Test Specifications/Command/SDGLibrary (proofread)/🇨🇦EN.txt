@@ -33,5 +33,5 @@ Sources/Library/SDG.swift
 Tests/LinuxMain.swift
 Tests/SDGTests/SDGTests.swift
 
-[[$ swiftlint...]
+[$ swiftlint...]
 0

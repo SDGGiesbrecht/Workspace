@@ -16,5 +16,5 @@ Sources/CustomProofread/CustomProofread.swift
 Tests/CustomProofreadTests/CustomProofreadTests.swift
 Tests/LinuxMain.swift
 
-[[$ swiftlint...]
+[$ swiftlint...]
 0

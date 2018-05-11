@@ -150,13 +150,13 @@ extension PackageRepository {
                             output.scalars.replaceMatches(for: CompositePattern([
                                 LiteralPattern("$ swiftlint".scalars),
                                 any,
-                                LiteralPattern("\n\n".scalars),
-                                ]), with: "[$ swiftlint...]\n\n".scalars)
+                                LiteralPattern("\n0".scalars),
+                                ]), with: "[$ swiftlint...]\n0".scalars)
                             output.scalars.replaceMatches(for: CompositePattern([
                                 LiteralPattern("$ swiftlint".scalars),
                                 any,
-                                LiteralPattern("\n0".scalars),
-                                ]), with: "[$ swiftlint...]\n0".scalars)
+                                LiteralPattern("\n\n".scalars),
+                                ]), with: "[$ swiftlint...]\n\n".scalars)
                         }
 
                         testCommand(Workspace.command, with: command, localizations: localizations, uniqueTestName: specificationName, postprocess: postprocess, overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing, file: file, line: line)

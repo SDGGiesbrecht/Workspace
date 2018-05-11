@@ -86,6 +86,16 @@ class APITests : TestCase {
     }
 
     func testFailingTests() {
+        // Attempt to remove existing derived data so that the build is clean.
+        // Otherwise Xcode skips the build stages where the awaited warnings occur.
+        do {
+            for url in try FileManager.default.contentsOfDirectory(at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent("Library/Developer/Xcode/DerivedData"), includingPropertiesForKeys:nil, options: []) {
+                if url.lastPathComponent.contains("FailingTests") {
+                    try? FileManager.default.removeItem(at: url)
+                }
+            }
+        } catch {}
+        // This test may fail if derived data is not in the default location. See above.
         PackageRepository(mock: "FailingTests").test(commands: [
             ["validate", "build"],
             ["validate", "test‐coverage"],

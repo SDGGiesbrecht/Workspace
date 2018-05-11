@@ -118,10 +118,6 @@ extension PackageRepository {
 
                         // General commands
                         func postprocess(_ output: inout String) {
-                            if location.lastPathComponent == "FailingTests" {
-                                // [_Warning: Temporary._]
-                                print(output)
-                            }
 
                             let any: RepetitionPattern<Unicode.Scalar> = RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy)
 

@@ -1,0 +1,10 @@
+$ workspace refresh read‐me •no‐colour
+
+Refreshing read‐me...
+
+Invalid value for “Quotation Testament”:
+...
+Available values:
+תנ״ך
+ΚΔ
+9223372036854775807

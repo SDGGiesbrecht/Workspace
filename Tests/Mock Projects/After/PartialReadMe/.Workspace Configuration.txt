@@ -1,0 +1,18 @@
+Current Version: 0.1.0
+Repository URL: https://somewhere.com
+
+[_Begin Localizations_]
+🇨🇦EN
+🇬🇧EN
+🇺🇸EN
+🇩🇪DE
+🇫🇷FR
+🇬🇷ΕΛ
+🇮🇱עב
+zxx
+[_End_]
+
+Quotation: Blah blah blah...
+
+Quotation Testament: ΚΔ
+Quotation Chapter: Chapter 1

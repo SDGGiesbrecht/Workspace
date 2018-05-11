@@ -1,0 +1,19 @@
+$ workspace test •no‐colour
+
+Testing on macOS with the Swift Package Manager... (§1)
+
+[$ swift test...]
+
+Please make sure you have the correct access rights
+and the repository exists.
+'SDG' [Temporary]/SDGLibrary: error: product dependency 'Dependency' not found
+Fetching file://[Temporary]/Developer/Dependency
+
+Testing on macOS with Xcode... (§2)
+
+
+✗ Tests fail on macOS with the Swift Package Manager. (See [⌘F] “§1”)
+✗ Tests fail on macOS with Xcode. (See [⌘F] “§2”)
+
+“SDG” fails validation.
+9223372036854775807

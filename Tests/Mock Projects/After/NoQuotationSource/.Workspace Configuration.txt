@@ -1,0 +1,12 @@
+Localizations: en
+
+[_Begin Quotation_]
+« ... »
+[_End_]
+
+[_Begin Quotation Translation_]
+[_en_]
+“...”
+[_End_]
+
+Quotation Chapter: 1

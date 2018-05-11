@@ -1,0 +1,35 @@
+$ workspace validate build •no‐colour
+
+Checking build for macOS with the Swift Package Manager... (§1)
+
+$ swift build
+Compile Swift Module 'FailingTests' (1 sources)
+[Temporary]/FailingTests/Sources/FailingTests/FailingTests.swift:3:13: warning: initialization of immutable value 'x' was never used; consider replacing with assignment to '_' or removing it
+        let x = "Unused"
+        ~~~~^
+        _
+
+Checking build for macOS with Xcode... (§2)
+
+[$ xcodebuild...]
+
+Checking build for iOS... (§3)
+
+[$ xcodebuild...]
+
+Checking build for watchOS... (§4)
+
+[$ xcodebuild...]
+
+Checking build for tvOS... (§5)
+
+[$ xcodebuild...]
+
+✗ There are compiler warnings for macOS with the Swift Package Manager. (See [⌘F] “§1”)
+✓ There are no compiler warnings for macOS with Xcode.
+✓ There are no compiler warnings for iOS.
+✓ There are no compiler warnings for watchOS.
+✓ There are no compiler warnings for tvOS.
+
+“FailingTests” fails validation.
+9223372036854775807

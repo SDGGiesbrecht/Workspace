@@ -1,0 +1,34 @@
+$ workspace validate build •no‐colour
+
+Checking build for macOS with the Swift Package Manager... (§1)
+
+$ swift build
+error: failed to clone; Cloning into bare repository '[Temporary]/SDGLibrary/.build/repositories/Dependency-74053125454640535'...
+fatal: '[Temporary]/Developer/Dependency' does not appear to be a git repository
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+'SDG' [Temporary]/SDGLibrary: error: product dependency 'Dependency' not found
+Fetching file://[Temporary]/Developer/Dependency
+
+Checking build for macOS with Xcode... (§2)
+
+
+Checking build for iOS... (§3)
+
+
+Checking build for watchOS... (§4)
+
+
+Checking build for tvOS... (§5)
+
+
+✗ Build failed for macOS with the Swift Package Manager. (See [⌘F] “§1”)
+✗ Build failed for macOS with Xcode. (See [⌘F] “§2”)
+✗ Build failed for iOS. (See [⌘F] “§3”)
+✗ Build failed for watchOS. (See [⌘F] “§4”)
+✗ Build failed for tvOS. (See [⌘F] “§5”)
+
+“SDG” fails validation.
+9223372036854775807

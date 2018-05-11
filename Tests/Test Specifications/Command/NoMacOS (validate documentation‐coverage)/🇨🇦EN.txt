@@ -1,0 +1,26 @@
+$ workspace validate documentation‐coverage •no‐colour
+
+Generating documentation for “NoMacOS”...
+
+
+$ jazzy --module NoMacOS --copyright "Copyright ©2017–2018 the NoMacOS project contributors. All rights reserved." --documentation=Documentation/*.md --clean --use-safe-filenames --output "[Temporary]/NoMacOS/docs/NoMacOS" --xcodebuild-arguments "-scheme,NoMacOS-Package,-target,NoMacOS,-sdk,iphoneos,-derivedDataPath,[Temporary]/Jazzy Build Artifacts"
+Running xcodebuild
+Parsing NoMacOS.swift (1/1)
+building site
+building search index
+0% documentation coverage with 0 undocumented symbols
+skipped 1 private, fileprivate, or internal symbol (use `--min-acl` to specify a different minimum ACL)
+jam out ♪♫ to your fresh new docs in `docs/NoMacOS`
+
+Writing to “docs/NoMacOS/.nojekyll”...
+
+Checking documentation coverage for “NoMacOS”... (§1)
+
+
+✓ Generated documentation for “NoMacOS”.
+✓ Documentation coverage is complete for “NoMacOS”.
+
+
+“NoMacOS” passes validation.
+
+0

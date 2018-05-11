@@ -1,0 +1,227 @@
+$ workspace proofread •no‐colour
+
+Normalizing files...
+
+Writing to “Sources/BadStyle/Normalization/Decomposition.swift”...
+Writing to “Sources/BadStyle/Normalization/EmptyIndents.swift”...
+Writing to “Sources/BadStyle/Rules/Documentation/ExtensionConstraints.swift”...
+Writing to “Sources/BadStyle/Rules/Functionality/SyntaxColouring.swift”...
+Writing to “Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift”...
+
+Proofreading source code... (§1)
+
+.Workspace Configuration.txt
+.gitignore
+Package.swift
+Line 2
+U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (Unicode)
+// The swift-tools-version declares the minimum version of Swift required to build this package.
+
+Line 2
+U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (Unicode)
+// The swift-tools-version declares the minimum version of Swift required to build this package.
+
+README.md
+Sources/BadStyle/BadStyle.swift
+Sources/BadStyle/Normalization/Decomposition.swift
+Sources/BadStyle/Normalization/EmptyIndents.swift
+Sources/BadStyle/Normalization/MarkdownLineBreaks.md
+Sources/BadStyle/Normalization/ShellExecutability.sh
+Sources/BadStyle/Rules/Deprecation/LinuxDocumentation.swift
+Line 3
+Special compilation conditions are no longer necessary for Linux documentation. (Deprecated Linux Documentation)
+#if os(macOS) || LinuxDocs // Deprecated; should trigger.
+
+Sources/BadStyle/Rules/Documentation/CompilationConditions.swift
+Line 3
+Undocumented compilation condition. Add “// MARK: - #if...” on the next line. (Documentation of Compilation Conditions)
+#if macOS // Should be documented; trigger.
+
+Sources/BadStyle/Rules/Documentation/ExtensionConstraints.swift
+Line 3
+Undocumented extension constraint. Add “// MARK: - where...” on the next line. (Documentation of Extension Constraints)
+extension Equatable where Self : Comparable { // Undocumented; should trigger.
+
+Sources/BadStyle/Rules/Documentation/SyntaxColouring.swift
+Line 7
+Language specifier missing. Specify a language for syntax colouring. (Syntax Colouring)
+/// ```
+
+Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift
+Line 3
+U+00B2 may be lost in normalization; use “2” instead. (Compatibility Characters)
+let compatibility = "2"
+let compatibility = "2"
+
+Sources/BadStyle/Rules/Functionality/Mark.swift
+Line 3
+Incomplete heading syntax. Use “// MARK: - ”. (Mark)
+/// MARK: This heading is malformed and should trigger.
+// MARK: - This heading is malformed and should trigger.
+
+Sources/BadStyle/Rules/Functionality/SyntaxColouring.swift
+Line 3
+“/**” may not survive autoindent (⌃I). Use “///” instead. (Autoindent Resilience)
+/**
+
+Line 6
+U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (Unicode)
+ - A list
+
+Line 7
+U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (Unicode)
+     - A sublist
+
+Sources/BadStyle/Rules/Intentional/MissingImplementation.swift
+Line 4
+Missing implementation. (Missing Implementation)
+    notImplementedYet() // This should trigger a warning.
+
+Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift
+Line 5
+Callouts should be capitalized. (Callout Casing)
+/// - warning: This should trigger. It should have been capitalized.
+Wwarning: This should trigger. It should have been capitalized.
+
+Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift
+Line 3
+Colons should be preceded by spaces when denoting protocols or superclasses. (Colon Spacing)
+struct Conformance: Equatable { // This colon should trigger. It should be spaced.
+struct Conformance : Equatable { // This colon should trigger. It should be spaced.
+
+Line 4
+Colons should not be preceded by spaces. (Colon Spacing)
+    static func == (lhs : Conformance, rhs:Conformance) -> Bool { // These colons should trigger. They need respacing.
+    static func == (lhs: Conformance, rhs:Conformance) -> Bool { // These colons should trigger. They need respacing.
+
+Line 4
+Colons should be followed by spaces. (Colon Spacing)
+    static func == (lhs : Conformance, rhs:Conformance) -> Bool { // These colons should trigger. They need respacing.
+    static func == (lhs : Conformance, rhs: Conformance) -> Bool { // These colons should trigger. They need respacing.
+
+Sources/BadStyle/Rules/Source Code Style/ParameterStyle.swift
+Line 5
+Parameters should be grouped under a single callout. (Parameter Style)
+/// - Parameter one: A parameter documented the wrong way, so trigger.
+
+Sources/BadStyle/Rules/Text Style/Unicode.swift
+Line 9
+U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (Unicode)
+// Trigger, because this is not a minus sign: a - b
+
+Line 5
+U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
+// "These quotation marks are generic and should trigger."
+
+Line 5
+U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (Unicode)
+// "These quotation marks are generic and should trigger."
+
+Line 39
+U+0027 is obsolete. Use an apostrophe (’), quotation marks (‘, ’), degrees (°) or prime (′). (Unicode)
+// 'These quotation marks are generic and should trigger.'
+
+Line 39
+U+0027 is obsolete. Use an apostrophe (’), quotation marks (‘, ’), degrees (°) or prime (′). (Unicode)
+// 'These quotation marks are generic and should trigger.'
+
+Line 49
+“!=” is obsolete. Use the not equal sign (≠). (Unicode)
+// Trigger, because this is not a not‐equal sign: a != b
+// Trigger, because this is not a not‐equal sign: a ≠ b
+
+Line 43
+“!” is obsolete. Use the not sign (¬). (Unicode)
+// Trigger, because this is not a not sign: !a
+// Trigger, because this is not a not sign: ¬a
+
+Line 49
+“!” is obsolete. Use the not sign (¬). (Unicode)
+// Trigger, because this is not a not‐equal sign: a != b
+// Trigger, because this is not a not‐equal sign: a ¬= b
+
+Line 44
+“&&” is obsolete. Use the conjunction sign (∧). (Unicode)
+// Trigger, because this is not a conjunction sign: a && b
+// Trigger, because this is not a conjunction sign: a ∧ b
+
+Line 45
+“||” is obsolete. Use the disjunction sign (∨). (Unicode)
+// Trigger, because this is not a disjunction sign: a || b
+// Trigger, because this is not a disjunction sign: a ∨ b
+
+Line 50
+“<=” is obsolete. Use the less‐than‐or‐equal sign (≤). (Unicode)
+// Trigger, because this is not a less‐than‐or‐equal‐to sign: a <= b
+// Trigger, because this is not a less‐than‐or‐equal‐to sign: a ≤ b
+
+Line 51
+“>=” is obsolete. Use the greater‐than‐or‐equal sign (≥). (Unicode)
+// Trigger, because this is not a greater‐than‐or‐equal‐to sign: a >= b
+// Trigger, because this is not a greater‐than‐or‐equal‐to sign: a ≥ b
+
+Line 55
+“ * ” is obsolete. Use the multiplication sign (×). (Unicode)
+// Trigger, because this is not a multiplication sign: a * b
+// Trigger, because this is not a multiplication sign: a × b
+
+Line 56
+“*=” is obsolete. Use the multiplication sign (×). (Unicode)
+// Trigger, because this is not a multiplication sign: a *= b
+// Trigger, because this is not a multiplication sign: a ×= b
+
+Line 57
+“ / ” is obsolete. Use the division sign (÷). (Unicode)
+// Trigger, because this is not a division sign: a / b
+// Trigger, because this is not a division sign: a ÷ b
+
+Line 58
+“/=” is obsolete. Use the division sign (÷). (Unicode)
+// Trigger, because this is not a division sign: a /= b
+// Trigger, because this is not a division sign: a ÷= b
+
+Sources/BadStyle/SwiftLint.swift
+Sources/BadStyle/Warnings/Warning.swift
+Line 3
+This should trigger a warning. (Manual Warning)
+// [_Warning: This should trigger a warning._]
+
+Sources/BadStyle/Warnings/Workaround.swift
+Line 3
+Workaround: This should trigger. The workaround may no longer be necessary. (Dependency 0.9.9) (Workaround Reminder)
+// [_Workaround: This should trigger. The workaround may no longer be necessary. (Dependency 0.9.9)_]
+
+Line 4
+Workaround: This should be silent. The workaround is still necessary. (Dependency 1.0.0) (Workaround Reminder)
+// [_Workaround: This should be silent. The workaround is still necessary. (Dependency 1.0.0)_]
+
+Line 6
+Workaround: This should trigger. The workaround may no longer be necessary. (Swift 3) (Workaround Reminder)
+// [_Workaround: This should trigger. The workaround may no longer be necessary. (Swift 3)_]
+
+Line 9
+Workaround: This should trigger. The workaround may no longer be necessary. (echo 1.0.0 0.9.9) (Workaround Reminder)
+// [_Workaround: This should trigger. The workaround may no longer be necessary. (echo 1.0.0 0.9.9)_]
+
+Line 12
+Workaround: This should trigger no matter what. (Workaround Reminder)
+// [_Workaround: This should trigger no matter what._]
+
+Line 13
+Workaround: This malformed version check should trigger. (echo oops 1.0.0) (Workaround Reminder)
+// [_Workaround: This malformed version check should trigger. (echo oops 1.0.0)_]
+
+Tests/BadStyleTests/BadStyleTests.swift
+Line 4
+Colons should be preceded by spaces when denoting protocols or superclasses. (Colon Spacing)
+class BadStyleTests: XCTestCase {
+class BadStyleTests : XCTestCase {
+
+Tests/LinuxMain.swift
+
+[$ swiftlint...]
+
+✗ Source code fails proofreading. (See [⌘F] “§1”)
+
+“BadStyle” fails validation.
+9223372036854775807

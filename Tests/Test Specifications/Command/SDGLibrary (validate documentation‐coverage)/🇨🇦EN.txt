@@ -1,0 +1,6 @@
+$ workspace validate documentation‐coverage •no‐colour
+
+Generating documentation for “Library”...
+
+The package has no Xcode project.
+9223372036854775807

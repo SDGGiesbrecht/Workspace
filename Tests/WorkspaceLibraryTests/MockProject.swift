@@ -189,7 +189,7 @@ extension PackageRepository {
                             files.insert(file.path(relativeTo: afterLocation))
                         }
 
-                        for file in files {
+                        for file in files where ¬file.hasSuffix(".dsidx") {
                             let result = location.appendingPathComponent(file)
                             let after = afterLocation.appendingPathComponent(file)
                             if let resultContents = try? String(from: result) {

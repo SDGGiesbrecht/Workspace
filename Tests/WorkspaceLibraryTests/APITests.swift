@@ -246,7 +246,7 @@ class APITests : TestCase {
             ["validate", "documentation‐coverage"],
 
             ["proofread", "•xcode"],
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testSDGTool() {
@@ -264,7 +264,7 @@ class APITests : TestCase {
             ["validate", "documentation‐coverage"],
 
             ["proofread", "•xcode"],
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testSelfSpecificScripts() {

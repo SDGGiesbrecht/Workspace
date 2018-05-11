@@ -4,16 +4,14 @@ Testing on macOS with the Swift Package Manager... (§1)
 
 [$ swift test...]
 
-Please make sure you have the correct access rights
-and the repository exists.
-'SDG' [Temporary]/SDGTool: error: product dependency 'Dependency' not found
-Fetching file://[Temporary]/Developer/Dependency
-
 Testing on macOS with Xcode... (§2)
 
+[$ xcodebuild...]
 
-✗ Tests fail on macOS with the Swift Package Manager. (See [⌘F] “§1”)
-✗ Tests fail on macOS with Xcode. (See [⌘F] “§2”)
+✓ Tests pass on macOS with the Swift Package Manager.
+✓ Tests pass on macOS with Xcode.
 
-“SDG” fails validation.
-9223372036854775807
+
+“SDG” passes validation.
+
+0

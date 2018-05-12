@@ -269,7 +269,7 @@ struct Tests {
             var passing = true
             let sameLineTokens = try untestableSameLineTokens(for: project)
             let previousLineTokens = try untestablePreviousLineTokens(for: project)
-            for file in report.files where file.file.resolvingSymlinksInPath() ∉ irrelevantFiles {
+            for file in report.files where file.file.resolvingSymlinksInPath() ∉ irrelevantFiles ∧ ¬file.file.path.contains("/Needs Refactoring/") { // [_Workaround: “Needs Refactoring” is a temporary measure._]
                 CommandLineProofreadingReporter.default.reportParsing(file: file.file.path(relativeTo: project.location), to: output)
                 try autoreleasepool {
                     let sourceFile = try String(from: file.file)

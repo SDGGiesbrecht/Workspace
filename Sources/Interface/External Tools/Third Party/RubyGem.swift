@@ -58,7 +58,8 @@ class RubyGem : ThirdPartyTool {
                     "\u{2D}\u{2D}version", version.string()
                     ], reportProgress: { output.print($0) }) // [_Exempt from Test Coverage_]
                 output.print("")
-            } catch { // [_Exempt from Test Coverage_]
+            } catch {
+                // [_Exempt from Test Coverage_]
                 throw installationError(version: version)
             }
         } // [_Exempt from Test Coverage_]

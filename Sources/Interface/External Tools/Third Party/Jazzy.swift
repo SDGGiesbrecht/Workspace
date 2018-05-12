@@ -184,7 +184,8 @@ class Jazzy : RubyGem {
                             } else if let `class` = source.scalars.firstNestingLevel(startingWith: "<span class=\u{22}".scalars, endingWith: "\u{22}>".scalars, in: error.container.range)?.contents.range {
                                 if first ∈ SwiftLanguage.operatorHeadCharactersIncludingDot {
                                     source.scalars.replaceSubrange(`class`, with: "o".scalars)
-                                } else { // [_Exempt from Test Coverage_] Possibly no longer occurs in Jazzy output.
+                                } else {
+                                    // [_Exempt from Test Coverage_] Possibly no longer occurs in Jazzy output.
                                     source.scalars.replaceSubrange(`class`, with: "n".scalars)
                                 }
                             }

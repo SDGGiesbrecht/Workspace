@@ -118,8 +118,9 @@ extension PackageRepository {
                             continue
                         }
                         if command == ["validate", "build", "•job", "macos‐swift‐package‐manager"]
-                            ∨ command == ["validate", "documentation‐coverage"]
-                            ∨ command == ["validate", "test‐coverage"] {
+                            ∨ command == ["validate", "test‐coverage"]
+                            ∨ command == ["document"]
+                            ∨ command == ["validate", "documentation‐coverage"] {
                             // Invalid on Linux
                             expectFailure()
                             continue

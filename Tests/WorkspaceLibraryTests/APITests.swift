@@ -77,7 +77,8 @@ class APITests : TestCase {
     func testExecutableProjectType() {
         PackageRepository(mock: "ExecutableProjectType").test(commands: [
             ["refresh", "read‐me"],
-            ["document"]
+            ["document"],
+            ["validate", "documentation‐coverage"]
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 

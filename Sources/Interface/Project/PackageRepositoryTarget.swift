@@ -130,7 +130,8 @@ extension PackageRepository {
 
         private func source(for namespaceTree: [StrictString: Any]) throws -> StrictString {
             var result: StrictString = ""
-            for name in namespaceTree.keys.sorted() {
+            for name in namespaceTree.keys.sorted(by: { $0.scalars.lexicographicallyPrecedes($1.scalars) }) {
+                // [_Workaround: Simple “sorted()” differs between operating systems. (Swift 4.1)_]
                 try autoreleasepool {
                     let value = namespaceTree[name]
 

@@ -104,7 +104,11 @@ extension PackageRepository {
                             ∨ command == ["validate", "build"]
                             ∨ command == ["test"] {
                             // Differing task set on Linux.
-                            requireSuccess()
+                            if location.lastPathComponent == "FailingTests" {
+                                expectFailure()
+                            } else {
+                                requireSuccess()
+                            }
                             continue
                         }
                         if command == ["validate", "build", "•job", "macos‐swift‐package‐manager"]

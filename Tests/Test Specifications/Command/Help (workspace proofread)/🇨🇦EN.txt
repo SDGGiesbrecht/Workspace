@@ -1,0 +1,19 @@
+$ workspace proofread help •no‐colour
+
+workspace proofread proofreads the current project’s source for style violations.
+
+Subcommands
+
+help displays usage information.
+
+Options
+
+•language [language preference] A language to use instead of the one specified in preferences.
+•no‐colour Removes colour from the output.
+•xcode behaves as an xcode build phase.
+
+Argument Types
+
+[language preference] A list of IETF language tags or SDGCornerstone language icons. Semicolons indicate fallback order. Commas indicate that multiple languages should be used. Examples: “en-CA” or “🇨🇦EN” → Canadian English, “cwd,en;fr” → both Woods Cree and English, otherwise French
+
+0

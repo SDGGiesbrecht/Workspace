@@ -1,0 +1,23 @@
+$ workspace refresh help •no‐colour
+
+workspace refresh refreshes the project by updating its components and readying it for development.
+
+Subcommands
+
+all performs all configured refreshment tasks.
+continuous‐integration regenerates the project’s continuous integration configuration files.
+help displays usage information.
+read‐me regenerates the project’s read‐me file.
+resources regenerates code providing access to the project’s resources.
+scripts regenerates the project’s refresh and validation scripts.
+
+Options
+
+•language [language preference] A language to use instead of the one specified in preferences.
+•no‐colour Removes colour from the output.
+
+Argument Types
+
+[language preference] A list of IETF language tags or SDGCornerstone language icons. Semicolons indicate fallback order. Commas indicate that multiple languages should be used. Examples: “en-CA” or “🇨🇦EN” → Canadian English, “cwd,en;fr” → both Woods Cree and English, otherwise French
+
+0

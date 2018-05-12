@@ -1,0 +1,6 @@
+$ workspace validate documentation‐coverage •no‐colour
+
+Generating documentation for “NoAuthor”...
+
+Configuration option not defined: Author
+9223372036854775807

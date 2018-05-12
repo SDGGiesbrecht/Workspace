@@ -141,7 +141,7 @@ class APITests : TestCase {
 
     func testNoAuthor() {
         #if !os(Linux)
-        PackageRepository(mock: "NoAbout").test(commands: [
+        PackageRepository(mock: "NoAuthor").test(commands: [
             ["validate", "documentation‐coverage"]
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
         #endif

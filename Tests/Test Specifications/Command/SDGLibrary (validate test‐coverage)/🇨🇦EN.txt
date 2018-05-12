@@ -7,7 +7,6 @@ Testing on macOS with Xcode... (§1)
 Checking test coverage on macOS... (§2)
 
 [Temporary]/SDGLibrary/Sources/Library/SDG.swift
-[Temporary]/SDGLibrary/Tests/SDGTests/SDGTests.swift
 
 ✓ Tests pass on macOS with Xcode.
 ✓ Test coverage is complete on macOS.

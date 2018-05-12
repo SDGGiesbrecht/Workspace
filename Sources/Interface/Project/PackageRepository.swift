@@ -295,6 +295,7 @@ extension PackageRepository {
     }
 
     #if !os(Linux)
+    // MARK: - #if !os(Linux)
     func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
         for product in try publicLibraryModules() {
             try autoreleasepool {

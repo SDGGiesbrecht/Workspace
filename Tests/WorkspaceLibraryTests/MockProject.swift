@@ -136,26 +136,26 @@ extension PackageRepository {
                             output.scalars.replaceMatches(for: CompositePattern([
                                 LiteralPattern("$ swift test".scalars),
                                 any,
-                                LiteralPattern("\n\n".scalars),
+                                LiteralPattern("\n\n".scalars)
                                 ]), with: "[$ swift test...]\n\n".scalars)
 
                             // Xcode order varies.
                             output.scalars.replaceMatches(for: CompositePattern([
                                 LiteralPattern("$ xcodebuild".scalars),
                                 any,
-                                LiteralPattern("\n\n".scalars),
+                                LiteralPattern("\n\n".scalars)
                                 ]), with: "[$ xcodebuild...]\n\n".scalars)
 
                             // SwiftLint order varies.
                             output.scalars.replaceMatches(for: CompositePattern([
                                 LiteralPattern("$ swiftlint".scalars),
                                 any,
-                                LiteralPattern("\n0".scalars),
+                                LiteralPattern("\n0".scalars)
                                 ]), with: "[$ swiftlint...]\n0".scalars)
                             output.scalars.replaceMatches(for: CompositePattern([
                                 LiteralPattern("$ swiftlint".scalars),
                                 any,
-                                LiteralPattern("\n\n".scalars),
+                                LiteralPattern("\n\n".scalars)
                                 ]), with: "[$ swiftlint...]\n\n".scalars)
                         }
 
@@ -196,13 +196,13 @@ extension PackageRepository {
                             let result = location.appendingPathComponent(file)
                             let after = afterLocation.appendingPathComponent(file)
                             if let resultContents = try? String(from: result) {
-                                if let _ = try? String(from: after) {
+                                if (try? String(from: after)) ≠ nil {
                                     compare(resultContents, against: after, overwriteSpecificationInsteadOfFailing: false)
                                 } else {
                                     XCTFail("Unexpected file produced: “\(file)”")
                                 }
                             } else {
-                                if let _ = try? String(from: after) {
+                                if (try? String(from: after)) ≠ nil {
                                     XCTFail("Failed to produce “\(file)”.")
                                 }
                             }

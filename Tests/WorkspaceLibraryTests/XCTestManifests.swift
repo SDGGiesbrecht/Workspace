@@ -50,7 +50,7 @@ extension APITests {
         ("testSDGTool", testSDGTool),
         ("testSelfSpecificScripts", testSelfSpecificScripts),
         ("testUndefinedConfigurationValue", testUndefinedConfigurationValue),
-        ("testUnicodeSource", testUnicodeSource),
+        ("testUnicodeSource", testUnicodeSource)
     ]
 }
 
@@ -58,15 +58,16 @@ extension InternalTests {
     static let __allTests = [
         ("testDocumentationCoverage", testDocumentationCoverage),
         ("testGitIgnoreCoverage", testGitIgnoreCoverage),
-        ("testLinuxMainGenerationCompatibility", testLinuxMainGenerationCompatibility),
+        ("testLinuxMainGenerationCompatibility", testLinuxMainGenerationCompatibility)
     ]
 }
 
 #if !os(macOS)
+// MARK: - #if !os(macOS)
 public func __allTests() -> [XCTestCaseEntry] {
     return [
         testCase(APITests.__allTests),
-        testCase(InternalTests.__allTests),
+        testCase(InternalTests.__allTests)
     ]
 }
 #endif

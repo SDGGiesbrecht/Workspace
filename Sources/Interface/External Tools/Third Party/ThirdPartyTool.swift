@@ -52,8 +52,8 @@ class ThirdPartyTool {
             try Shell.default.run(command: [String(command)] + arguments, reportProgress: { output.print($0) })
             output.print("")
             return
-        } // [_Exempt from Test Coverage_] Unreachable except with incompatible versions of tools.
-
+        }
+        // [_Exempt from Test Coverage_] Unreachable except with incompatible versions of tools.
         try type(of: self).execute(command: command, version: version, with: arguments, versionCheck: versionCheck, repositoryURL: repositoryURL, cacheDirectory: ThirdPartyTool.toolsCache.appendingPathComponent(repositoryURL.lastPathComponent), output: output)
     }
 

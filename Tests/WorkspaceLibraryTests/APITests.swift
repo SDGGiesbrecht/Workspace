@@ -160,7 +160,7 @@ class APITests : TestCase {
     }
 
     func testNoExamples() {
-        PackageRepository(mock: "NoDocumentationURL").test(commands: [
+        PackageRepository(mock: "NoExamples").test(commands: [
             ["refresh", "read‐me"]
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }

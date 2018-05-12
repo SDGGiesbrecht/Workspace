@@ -77,11 +77,10 @@ extension PackageRepository {
 
                     for command in commands {
 
-                        // [_Warning: Can this be avoided outside travis?_]
-                        //if ProcessInfo.processInfo.environment["CONTINUOUS_INTEGRATION"] ≠ nil {
+                        if ProcessInfo.processInfo.environment["CONTINUOUS_INTEGRATION"] ≠ nil {
                             // Travis CI needs period output of some sort; otherwise it assumes the tests have stalled.
                             _ = try? Shell.default.run(command: ["echo", "Tests continuing...", ">", "/dev/tty"])
-                        //}
+                        }
 
                         print(StrictString("$ workspace ") + command.joined(separator: " "))
                         let specificationName: StrictString = StrictString("\(location.lastPathComponent) (") + command.joined(separator: " ") + ")"

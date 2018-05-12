@@ -2,7 +2,6 @@ $ workspace proofread •no‐colour
 
 Normalizing files...
 
-Writing to “Tests/LinuxMain.swift”...
 
 Proofreading source code... (§1)
 

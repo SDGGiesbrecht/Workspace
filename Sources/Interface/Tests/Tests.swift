@@ -256,12 +256,12 @@ struct Tests {
                 case .executable:
                     // Not testable.
                     for path in target.sources.paths {
-                        irrelevantFiles.insert(URL(fileURLWithPath: path.asString))
+                        irrelevantFiles.insert(URL(fileURLWithPath: path.asString).resolvingSymlinksInPath())
                     }
                 case .test:
                     // Coverage unimportant.
                     for path in target.sources.paths {
-                        irrelevantFiles.insert(URL(fileURLWithPath: path.asString))
+                        irrelevantFiles.insert(URL(fileURLWithPath: path.asString).resolvingSymlinksInPath())
                     }
                 }
             }
@@ -269,7 +269,7 @@ struct Tests {
             var passing = true
             let sameLineTokens = try untestableSameLineTokens(for: project)
             let previousLineTokens = try untestablePreviousLineTokens(for: project)
-            for file in report.files where file.file ∉ irrelevantFiles {
+            for file in report.files where file.file.resolvingSymlinksInPath() ∉ irrelevantFiles {
                 CommandLineProofreadingReporter.default.reportParsing(file: file.file.path(relativeTo: project.location), to: output)
                 try autoreleasepool {
                     let sourceFile = try String(from: file.file)

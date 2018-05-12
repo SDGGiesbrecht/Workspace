@@ -191,10 +191,6 @@ Line 3
 Workaround: This should trigger. The workaround may no longer be necessary. (Dependency 0.9.9) (Workaround Reminder)
 // [_Workaround: This should trigger. The workaround may no longer be necessary. (Dependency 0.9.9)_]
 
-Line 4
-Workaround: This should be silent. The workaround is still necessary. (Dependency 1.0.0) (Workaround Reminder)
-// [_Workaround: This should be silent. The workaround is still necessary. (Dependency 1.0.0)_]
-
 Line 6
 Workaround: This should trigger. The workaround may no longer be necessary. (Swift 3) (Workaround Reminder)
 // [_Workaround: This should trigger. The workaround may no longer be necessary. (Swift 3)_]

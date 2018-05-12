@@ -34,7 +34,6 @@ $ workspace proofread •xcode •no‐colour
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:58:52: warning: “/=” is obsolete. Use the division sign (÷). (Unicode)
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Warning.swift:3:4: warning: This should trigger a warning. (Manual Warning)
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:3:4: warning: Workaround: This should trigger. The workaround may no longer be necessary. (Dependency 0.9.9) (Workaround Reminder)
-[Temporary]/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:4:4: warning: Workaround: This should be silent. The workaround is still necessary. (Dependency 1.0.0) (Workaround Reminder)
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:6:4: warning: Workaround: This should trigger. The workaround may no longer be necessary. (Swift 3) (Workaround Reminder)
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:9:4: warning: Workaround: This should trigger. The workaround may no longer be necessary. (echo 1.0.0 0.9.9) (Workaround Reminder)
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:12:4: warning: Workaround: This should trigger no matter what. (Workaround Reminder)

@@ -32,7 +32,7 @@ class APITests : TestCase {
         PackageRepository(mock: "BadStyle").test(commands: [
             ["proofread"],
             ["proofread", "•xcode"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCheckForUpdates() {

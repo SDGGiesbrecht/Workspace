@@ -61,6 +61,7 @@ class APITests : TestCase {
             // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
             ["refresh", "resources"],
+            ["normalize"],
 
             ["proofread"],
             ["validate", "build"],
@@ -238,6 +239,7 @@ class APITests : TestCase {
             ["refresh", "read‐me"],
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
+            ["normalize"],
 
             ["proofread"],
             ["validate", "build"],
@@ -256,6 +258,7 @@ class APITests : TestCase {
             ["refresh", "read‐me"],
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
+            ["normalize"],
 
             ["proofread"],
             ["validate", "build"],

@@ -7,34 +7,12 @@ Testing on macOS with Xcode... (§1)
 Checking test coverage on macOS... (§2)
 
 [Temporary]/SDGLibrary/Sources/Library/SDG.swift
-Line 10
-
-    func untestable() {
-        preconditionFailure()
-    }
-
-Line 14
-
-    func exempt() { // [_Exempt from Test Coverage_]
-
-    }
-
-Line 18
-
-    func alsoExempt() {
-        // customPreviousLineToken
-    }
-
-Line 22
-
-    func anotherExemption() { // customSameLineToken
-
-    }
-
 [Temporary]/SDGLibrary/Tests/SDGTests/SDGTests.swift
 
 ✓ Tests pass on macOS with Xcode.
-✗ Test coverage is incomplete on macOS. (See [⌘F] “§2”)
+✓ Test coverage is complete on macOS.
 
-“SDG” fails validation.
-9223372036854775807
+
+“SDG” passes validation.
+
+0

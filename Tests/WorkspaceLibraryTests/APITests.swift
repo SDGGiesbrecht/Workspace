@@ -229,7 +229,8 @@ class APITests : TestCase {
 
     func testPartialReadMe() {
         PackageRepository(mock: "PartialReadMe").test(commands: [
-            ["refresh", "read‐me"]
+            ["refresh", "read‐me"],
+            ["document"]
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 

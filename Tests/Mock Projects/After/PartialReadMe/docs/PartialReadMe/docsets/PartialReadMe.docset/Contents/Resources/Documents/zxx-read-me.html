@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>[zxx] Read Me  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a title="[zxx] Read Me  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html">PartialReadMe Docs</a> (0% documented)</p>
+        <p class="header-right"><a href="https://somewhere.com"><img src="img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html">PartialReadMe Reference</a>
+        <img id="carat" src="img/carat.png" />
+        [zxx] Read Me  Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="Guides.html">Guides</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="zxx-read-me.html">[zxx] Read Me</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="en-read-me.html">🇨🇦EN Read Me</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="de-read-me.html">🇩🇪DE Read Me</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="fr-read-me.html">🇫🇷FR Read Me</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="en-read-me.html">🇬🇧EN Read Me</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="-read-me.html">🇬🇷ΕΛ Read Me</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="-read-me.html">🇮🇱עב Read Me</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="en-read-me.html">🇺🇸EN Read Me</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            
+
+<p>macOS • Linux • iOS • watchOS • tvOS</p>
+<h1 id='partialreadme' class='heading'>PartialReadMe</h1>
+
+<blockquote>
+<p><a href="https://www.biblegateway.com/passage/?search=Chapter+1&version=SBLGNT;NIV">Blah blah blah&hellip;</a></p>
+</blockquote>
+<h2 id='importing' class='heading'>Importing</h2>
+
+<p><code>PartialReadMe</code> is intended for use with the <a href="https://swift.org/package-manager/">Swift Package Manager</a>.</p>
+
+<p>Simply add <code>PartialReadMe</code> as a dependency in <code>Package.swift</code>:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">package</span> <span class="o">=</span> <span class="kt">Package</span><span class="p">(</span>
+    <span class="nv">name</span><span class="p">:</span> <span class="s">"MyPackage"</span><span class="p">,</span>
+    <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
+        <span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://somewhere.com"</span><span class="p">,</span> <span class="o">.</span><span class="nf">upToNextMinor</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="kt">Version</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))),</span>
+    <span class="p">],</span>
+    <span class="nv">targets</span><span class="p">:</span> <span class="p">[</span>
+        <span class="o">.</span><span class="nf">target</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="s">"MyTarget"</span><span class="p">,</span> <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
+            <span class="o">.</span><span class="nf">productItem</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="s">"PartialReadMe"</span><span class="p">,</span> <span class="nv">package</span><span class="p">:</span> <span class="s">"PartialReadMe"</span><span class="p">),</span>
+        <span class="p">])</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+</code></pre>
+
+<p><code>PartialReadMe</code> can then be imported in source files:</p>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">PartialReadMe</span>
+</code></pre>
+
+          </section>
+        </section>
+        <section id="footer">
+          <p>Copyright ©2018 the PartialReadMe project contributors. All rights reserved.</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

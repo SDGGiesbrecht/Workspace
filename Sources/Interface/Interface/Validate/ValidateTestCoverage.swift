@@ -62,7 +62,8 @@ extension Workspace.Validate {
 
                         if try options.project.configuration.shouldSkipSimulator(),
                             options.job == nil, // Not in continuous integration.
-                            job ∈ Tests.simulatorJobs { // [_Exempt from Test Coverage_] Tested separately.
+                            job ∈ Tests.simulatorJobs {
+                            // [_Exempt from Test Coverage_] Tested separately.
                             return // and continue loop.
                         }
 

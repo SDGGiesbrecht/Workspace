@@ -76,6 +76,12 @@ extension PackageRepository {
                     _ = try? FileManager.default.copy(repositoryRoot.appendingPathComponent(".gitignore"), to: location.appendingPathComponent(".gitignore"))
 
                     for command in commands {
+
+                        if ProcessInfo.processInfo.environment["CONTINUOUS_INTEGRATION"] ≠ nil {
+                            // Travis CI needs period output of some sort; otherwise it assumes the tests have stalled.
+                            _ = try? Shell.default.run(command: ["echo", "Tests continuing...", ">", "/dev/tty"])
+                        }
+
                         print(StrictString("$ workspace ") + command.joined(separator: " "))
                         let specificationName: StrictString = StrictString("\(location.lastPathComponent) (") + command.joined(separator: " ") + ")"
 

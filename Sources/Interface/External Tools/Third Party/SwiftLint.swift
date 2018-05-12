@@ -74,10 +74,10 @@ class SwiftLint : SwiftPackage {
                 3 // Warning level violation in strict mode.
                 ]) {
                 return false // SwiftLint reported a violation.
-            } // [_Exempt from Test Coverage_]
-            throw error // Error in SwiftLint set‐up.
-        } catch let error { // [_Exempt from Test Coverage_]
-            throw error // Error in SwiftLint set‐up.
+            }
+            throw error // Error in SwiftLint set‐up. [_Exempt from Test Coverage_]
+        } catch let error {
+            throw error // Error in SwiftLint set‐up. // [_Exempt from Test Coverage_]
         }
     }
 }

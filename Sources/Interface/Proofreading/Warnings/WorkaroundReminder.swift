@@ -86,7 +86,7 @@ struct WorkaroundReminder : Warning {
                 } else {
                     return nil
                 }
-            })
+            }) // [_Exempt from Test Coverage_] Meaningless coverage region.
         }
     }
 }

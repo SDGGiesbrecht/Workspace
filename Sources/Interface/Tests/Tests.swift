@@ -65,9 +65,11 @@ struct Tests {
         switch job {
         case .macOSXcode:
             return .macOS
-        case .iOS: // [_Exempt from Test Coverage_] Tested separately.
+        case .iOS:
+            // [_Exempt from Test Coverage_] Tested separately.
             return .iOS(simulator: true)
-        case .tvOS: // [_Exempt from Test Coverage_] Tested separately.
+        case .tvOS:
+            // [_Exempt from Test Coverage_] Tested separately.
             return .tvOS(simulator: true)
         case .macOSSwiftPackageManager, .linux, .watchOS, .miscellaneous, .documentation, .deployment:
             unreachable()
@@ -170,7 +172,8 @@ struct Tests {
 
         let testCommand: (Command.Output) -> Bool
         switch job {
-        case .macOSSwiftPackageManager, .linux: // [_Exempt from Test Coverage_] Tested separately.
+        case .macOSSwiftPackageManager, .linux:
+            // [_Exempt from Test Coverage_] Tested separately.
             testCommand = { output in
                 do {
                     try project.test(reportProgress: { output.print($0) })
@@ -225,6 +228,7 @@ struct Tests {
         }).resolved().formattedAsSectionHeader())
 
         func failStepWithError(message: StrictString) {
+            // [_Exempt from Test Coverage_] Difficult to reach consistently.
 
             output.print(message.formattedAsError())
 

@@ -31,6 +31,7 @@ Sources/Library/SDG.swift
 Sources/tool/main.swift
 Tests/LinuxMain.swift
 Tests/SDGTests/SDGTests.swift
+Tests/test‐tool/main.swift
 
 [$ swiftlint...]
 0

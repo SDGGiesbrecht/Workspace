@@ -310,8 +310,8 @@ struct Configuration {
         }
     }
     func requireInstallationInstructions(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template {
-        guard let defined = try installationInstructions(for: localization, project: project, output: output) else { // [_Exempt from Test Coverage_] [_Workaround: Until application targets are supported again._]
-            throw Configuration.optionNotDefinedError(for: .installationInstructions)
+        guard let defined = try installationInstructions(for: localization, project: project, output: output) else {
+            throw Configuration.optionNotDefinedError(for: .installationInstructions) // [_Exempt from Test Coverage_] [_Workaround: Until application targets are supported again._]
         }
         return defined
     }

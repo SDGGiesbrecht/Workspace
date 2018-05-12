@@ -2,7 +2,6 @@ $ workspace proofread •no‐colour
 
 Normalizing files...
 
-Writing to “Tests/DefaultTests/XCTestManifests.swift”...
 Writing to “Tests/LinuxMain.swift”...
 
 Proofreading source code... (§1)
@@ -36,7 +35,7 @@ final class DefaultTests : XCTestCase {
 Tests/DefaultTests/XCTestManifests.swift
 Line 3
 Undocumented compilation condition. Add “// MARK: - #if...” on the next line. (Documentation of Compilation Conditions)
-#if !os(macOS)
+#if !canImport(ObjectiveC)
 
 Tests/LinuxMain.swift
 

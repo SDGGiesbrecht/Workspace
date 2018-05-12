@@ -175,6 +175,9 @@ extension PackageRepository {
                     }
                     #endif
 
+                    /// Commit hashes vary.
+                    try? FileManager.default.removeItem(at: location.appendingPathComponent("Package.resolved"))
+
                     let afterLocation = PackageRepository.afterDirectory(for: location.lastPathComponent)
                     if overwriteSpecificationInsteadOfFailing ∨ (try? afterLocation.checkResourceIsReachable()) ≠ true {
                         try? FileManager.default.removeItem(at: afterLocation)

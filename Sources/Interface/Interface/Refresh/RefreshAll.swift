@@ -32,7 +32,7 @@ extension Workspace.Refresh {
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (arguments: DirectArguments, options: Options, output: Command.Output) throws in
+        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (arguments: DirectArguments, options: Options, output: Command.Output) throws in // [_Exempt from Test Coverage_] [_Workaround: Not testable yet._]
             try runRefresh(andExit: true, arguments: arguments, options: options, output: output)
         })
     }

@@ -12,7 +12,6 @@ Line 6
         return "???"
     }
 
-[Temporary]/FailingTests/Tests/FailingTestsTests/FailingTestsTests.swift
 
 ✗ Tests fail on macOS with Xcode. (See [⌘F] “§1”)
 ✗ Test coverage is incomplete on macOS. (See [⌘F] “§2”)

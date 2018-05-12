@@ -17,6 +17,7 @@ import GeneralImports
 extension PackageRepository.Target {
 
     enum TargetType : String {
+        // [_Workaround: Deprecated._]
 
         // MARK: - Initialization
 
@@ -44,12 +45,14 @@ extension PackageRepository.Target {
 
         func isSupported(on operatingSystem: OperatingSystem) -> Bool {
             switch self {
-            case .library: // [_Exempt from Test Coverage_] Deprecated.
+            case .library:
+                // [_Exempt from Test Coverage_] Deprecated.
                 switch operatingSystem {
                 case .macOS, .linux, .iOS, .watchOS, .tvOS: // [_Exempt from Test Coverage_] Deprecated.
                     return true
                 }
-            case .application: // [_Exempt from Test Coverage_] Deprecated.
+            case .application:
+                // [_Exempt from Test Coverage_] Deprecated.
                 switch operatingSystem {
                 case .macOS, .iOS, .tvOS: // [_Exempt from Test Coverage_] Deprecated.
                     return true

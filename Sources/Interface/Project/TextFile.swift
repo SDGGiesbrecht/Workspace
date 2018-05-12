@@ -38,7 +38,8 @@ struct TextFile {
     init(possiblyAt location: URL, executable: Bool = false) throws {
         do {
             self = try TextFile(alreadyAt: location)
-            if isExecutable ≠ executable { // [_Exempt from Test Coverage_] Unreachable except with corrupt files.
+            if isExecutable ≠ executable {
+                // [_Exempt from Test Coverage_] Unreachable except with corrupt files.
                 isExecutable = executable
                 hasChanged = true
             }
@@ -146,7 +147,8 @@ struct TextFile {
         set {
             var new = newValue
             // Remove unnecessary initial spacing
-            while new.hasPrefix("\n") { // [_Exempt from Test Coverage_] [_Workaround: Until “validate” is testable._]
+            while new.hasPrefix("\n") {
+                // [_Exempt from Test Coverage_] [_Workaround: Until “validate” is testable._]
                 new.scalars.removeFirst()
             }
 

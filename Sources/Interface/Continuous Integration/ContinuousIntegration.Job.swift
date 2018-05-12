@@ -73,8 +73,8 @@ extension ContinuousIntegration {
             switch self {
             case .macOSSwiftPackageManager, .macOSXcode:
                 return "macOS"
-            case .linux: // [_Exempt from Test Coverage_] Unreachable from macOS.
-                return "Linux"
+            case .linux:
+                return "Linux" // [_Exempt from Test Coverage_] Unreachable from macOS.
             case .iOS:
                 return "iOS"
             case .watchOS:

@@ -134,12 +134,12 @@ class Jazzy : RubyGem {
 
         let json = try TextFile(alreadyAt: outputDirectory.appendingPathComponent("undocumented.json")).contents
 
-        guard let information = try JSONSerialization.jsonObject(with: json.file, options: []) as? [String: Any] else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
-            throw parseError(undocumented: json)
+        guard let information = try JSONSerialization.jsonObject(with: json.file, options: []) as? [String: Any] else {
+            throw parseError(undocumented: json) // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
         }
 
-        guard let warnings = information["warnings"] as? [Any] else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
-            throw parseError(undocumented: json)
+        guard let warnings = information["warnings"] as? [Any] else {
+            throw parseError(undocumented: json) // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
         }
 
         var result: [(file: URL, line: Int?, symbol: String)] = []
@@ -147,8 +147,8 @@ class Jazzy : RubyGem {
         for entry in warnings {
             guard let warning = entry as? [String: Any],
                 let path = warning["file"] as? String,
-                let symbol = warning["symbol"] as? String else { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
-                    throw parseError(undocumented: json)
+                let symbol = warning["symbol"] as? String else {
+                    throw parseError(undocumented: json) // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
             }
             let line = warning["line"] as? Int // Occasionally “null” for some reason.
 

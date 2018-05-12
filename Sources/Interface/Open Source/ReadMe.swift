@@ -169,7 +169,7 @@ enum ReadMe {
 
         // Filter out tools which have not been declared as products.
         switch try project.cachedManifest().package {
-        case .v3:
+        case .v3: // [_Exempt from Test Coverage_] Not officially supported anyway.
             tools = [] // No concept of products.
         case .v4(let manifest):
             let publicProducts = Set(manifest.products.map({ $0.name }))
@@ -609,7 +609,8 @@ enum ReadMe {
                     let name: StrictString
                     if let packageName = try? package.projectName() {
                         name = packageName
-                    } else { // [_Exempt from Test Coverage_] Only reachable with a non‐package repository.
+                    } else {
+                        // [_Exempt from Test Coverage_] Only reachable with a non‐package repository.
                         name = StrictString(url.lastPathComponent)
                     }
 

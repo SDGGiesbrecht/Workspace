@@ -237,7 +237,8 @@ extension PackageRepository {
             let result = try sourceFiles(output: output).filter { (file) in
                 for directory in locations where file.is(in: directory) {
                     return true
-                } // [_Exempt from Test Coverage_] [_Workaround: False coverage result. (Swift 4.0.2)_]
+                }
+                // [_Exempt from Test Coverage_] [_Workaround: False coverage result. (Swift 4.0.2)_]
                 return false
             }
             return result

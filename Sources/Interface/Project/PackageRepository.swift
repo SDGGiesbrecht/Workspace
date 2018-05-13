@@ -274,7 +274,9 @@ extension PackageRepository {
             targets[intendedTarget, default: []].append(resource)
         }
 
-        for (target, resources) in targets {
+        for (target, resources) in targets.keys.sorted(by: { $0.name.scalars.lexicographicallyPrecedes($1.name.scalars) }).map({ ($0, targets[$0]!) }) { // So that output order is consistent.
+            // [_Workaround: Simple “sorted()” differs between operating systems. (Swift 4.1)_]
+
             try autoreleasepool {
                 try target.refresh(resources: resources, from: self, output: output)
             }

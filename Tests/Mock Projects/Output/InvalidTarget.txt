@@ -1,5 +1,0 @@
-
-$ workspace refresh resources
-
-No target named “InvalidModule”.
-Resources must be in subdirectories named corresponding to the intended target.

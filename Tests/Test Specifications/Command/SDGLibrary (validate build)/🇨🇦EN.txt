@@ -1,0 +1,32 @@
+$ workspace validate build •no‐colour
+
+Checking build for macOS with the Swift Package Manager... (§1)
+
+[$ swift...]
+
+Checking build for macOS with Xcode... (§2)
+
+[$ xcodebuild...]
+
+Checking build for iOS... (§3)
+
+[$ xcodebuild...]
+
+Checking build for watchOS... (§4)
+
+[$ xcodebuild...]
+
+Checking build for tvOS... (§5)
+
+[$ xcodebuild...]
+
+✓ There are no compiler warnings for macOS with the Swift Package Manager.
+✓ There are no compiler warnings for macOS with Xcode.
+✓ There are no compiler warnings for iOS.
+✓ There are no compiler warnings for watchOS.
+✓ There are no compiler warnings for tvOS.
+
+
+“SDG” passes validation.
+
+0

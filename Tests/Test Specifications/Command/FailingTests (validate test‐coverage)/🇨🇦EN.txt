@@ -1,0 +1,20 @@
+$ workspace validate test‐coverage •no‐colour
+
+Testing on macOS with Xcode... (§1)
+
+[$ xcodebuild...]
+
+Checking test coverage on macOS... (§2)
+
+[Temporary]/FailingTests/Sources/FailingTests/FailingTests.swift
+Line 6
+    func untested() -> String {
+        return "???"
+    }
+
+
+✗ Tests fail on macOS with Xcode. (See [⌘F] “§1”)
+✗ Test coverage is incomplete on macOS. (See [⌘F] “§2”)
+
+“FailingTests” fails validation.
+9223372036854775807

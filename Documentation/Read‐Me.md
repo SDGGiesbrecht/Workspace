@@ -91,11 +91,5 @@ While any identifier can be used as a localization, Workspace currently only und
 - `🇬🇧EN`/`en-GB`/`en`
     - `🇺🇸EN`/`en-US`
     - `🇨🇦EN`/`en-CA`
-- `🇩🇪DE`/`de-DE`/`de`*
-- `🇫🇷FR`/`fr-FR`/`fr`*
-- `🇬🇷ΕΛ`/`el-GR`/`el`*
-- `🇮🇱עב`/`he-IL`/`he`*
-
-*The text in languages marked with an asterisk was not produced by a native speaker and may contain errors. Corrections and style improvements would be welcome. (Mention it in an [issue](https://github.com/SDGGiesbrecht/Workspace/issues).)
 
 If you speak a language not already on the list and you might be willing to help add it, you can mention it in an [issue](https://github.com/SDGGiesbrecht/Workspace/issues).

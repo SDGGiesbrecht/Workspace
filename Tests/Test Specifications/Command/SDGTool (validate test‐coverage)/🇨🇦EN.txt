@@ -1,0 +1,17 @@
+$ workspace validate test‐coverage •no‐colour
+
+Testing on macOS with Xcode... (§1)
+
+[$ xcodebuild...]
+
+Checking test coverage on macOS... (§2)
+
+[Temporary]/SDGTool/Sources/Library/SDG.swift
+
+✓ Tests pass on macOS with Xcode.
+✓ Test coverage is complete on macOS.
+
+
+“SDG” passes validation.
+
+0

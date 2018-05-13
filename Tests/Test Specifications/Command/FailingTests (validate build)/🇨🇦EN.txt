@@ -1,0 +1,30 @@
+$ workspace validate build •no‐colour
+
+Checking build for macOS with the Swift Package Manager... (§1)
+
+[$ swift...]
+
+Checking build for macOS with Xcode... (§2)
+
+[$ xcodebuild...]
+
+Checking build for iOS... (§3)
+
+[$ xcodebuild...]
+
+Checking build for watchOS... (§4)
+
+[$ xcodebuild...]
+
+Checking build for tvOS... (§5)
+
+[$ xcodebuild...]
+
+✗ There are compiler warnings for macOS with the Swift Package Manager. (See [⌘F] “§1”)
+✗ There are compiler warnings for macOS with Xcode. (See [⌘F] “§2”)
+✗ There are compiler warnings for iOS. (See [⌘F] “§3”)
+✗ There are compiler warnings for watchOS. (See [⌘F] “§4”)
+✗ There are compiler warnings for tvOS. (See [⌘F] “§5”)
+
+“FailingTests” fails validation.
+9223372036854775807

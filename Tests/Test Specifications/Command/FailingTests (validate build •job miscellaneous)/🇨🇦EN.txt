@@ -1,0 +1,3 @@
+$ workspace validate build •job miscellaneous •no‐colour
+Invalid job.
+9223372036854775807

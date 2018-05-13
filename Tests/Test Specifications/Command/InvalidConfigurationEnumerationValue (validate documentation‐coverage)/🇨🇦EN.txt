@@ -1,0 +1,7 @@
+$ workspace validate documentation‐coverage •no‐colour
+Invalid value for “Generate Documentation”:
+Maybe
+Available values:
+True
+False
+9223372036854775807

@@ -26,11 +26,13 @@ matrix:
         - "eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\""
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job linux"
-    - os: osx
+    - os: linux
       env:
         - JOB="Miscellaneous"
-      osx_image: xcode9.3
+      dist: trusty
       script:
+        - "export SWIFT_VERSION=4.1"
+        - "eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\""
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job miscellaneous"
     - os: osx

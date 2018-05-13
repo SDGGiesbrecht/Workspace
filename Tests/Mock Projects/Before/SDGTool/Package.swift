@@ -24,6 +24,7 @@ let package = Package(
             .productItem(name: dependency, package: dependency)
             ]),
         .target(name: tool, dependencies: [.targetItem(name: library)]),
-        .testTarget(name: tests, dependencies: [.targetItem(name: library)])
+        .testTarget(name: tests, dependencies: [.targetItem(name: library)]),
+        .target(name: "test‐tool", path: "Tests/test‐tool")
     ]
 )

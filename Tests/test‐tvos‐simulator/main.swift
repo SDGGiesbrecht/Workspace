@@ -12,15 +12,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+import GeneralImports
 
-import SDGCornerstone
-import SDGCommandLine
+import SDGExternalProcess
 
-import WorkspaceLibrary
+import Interface
 
 do {
-    SDGCommandLine.initialize(applicationIdentifier: "ca.solideogloria.Workspace.Tests", version: nil, packageURL: nil)
+    ProcessInfo.applicationIdentifier = "ca.solideogloria.Workspace.Tests"
 
     let repositoryRoot = URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
 
@@ -30,7 +29,7 @@ do {
         try Workspace.command.execute(with: ["validate", "test‐coverage", "•job", "tvos"])
     }
 
-} catch let error {
+} catch {
     print(error)
     print(error.localizedDescription)
     exit(1)

@@ -1,8 +1,0 @@
-
-$ workspace validate documentation‐coverage
-
-Invalid value for “Generate Documentation”:
-Maybe
-Available values:
-True
-False

@@ -1,0 +1,6 @@
+$ workspace normalize •no‐colour
+
+Normalizing files...
+
+Writing to “Tests/LinuxMain.swift”...
+0

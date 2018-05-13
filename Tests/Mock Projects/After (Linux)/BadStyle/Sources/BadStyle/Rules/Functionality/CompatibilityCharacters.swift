@@ -1,3 +1,0 @@
-// Header
-
-let compatibility = "²"

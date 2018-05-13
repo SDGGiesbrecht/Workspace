@@ -1,3 +1,0 @@
-refresh read‐me
-
-validate documentation‐coverage

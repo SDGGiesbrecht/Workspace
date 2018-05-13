@@ -1,0 +1,5 @@
+$ workspace normalize •no‐colour
+
+Normalizing files...
+
+0

@@ -1,0 +1,16 @@
+$ workspace validate test‐coverage •no‐colour
+
+Testing on macOS with Xcode... (§1)
+
+[$ xcodebuild...]
+
+Checking test coverage on macOS... (§2)
+
+
+✓ Tests pass on macOS with Xcode.
+✓ Test coverage is complete on macOS.
+
+
+“Default” passes validation.
+
+0

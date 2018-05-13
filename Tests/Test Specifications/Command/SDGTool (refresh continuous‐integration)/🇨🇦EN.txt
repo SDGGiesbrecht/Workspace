@@ -1,0 +1,6 @@
+$ workspace refresh continuous‐integration •no‐colour
+
+Refreshing continuous integration configuration...
+
+Writing to “.travis.yml”...
+0

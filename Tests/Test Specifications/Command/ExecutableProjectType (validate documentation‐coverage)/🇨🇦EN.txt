@@ -1,0 +1,8 @@
+$ workspace validate documentation‐coverage •no‐colour
+
+✓ No library products to document.
+
+
+“ExecutableProjectType” passes validation.
+
+0

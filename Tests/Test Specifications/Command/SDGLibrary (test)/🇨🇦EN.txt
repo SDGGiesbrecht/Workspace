@@ -1,0 +1,17 @@
+$ workspace test •no‐colour
+
+Testing on macOS with the Swift Package Manager... (§1)
+
+[$ swift...]
+
+Testing on macOS with Xcode... (§2)
+
+[$ xcodebuild...]
+
+✓ Tests pass on macOS with the Swift Package Manager.
+✓ Tests pass on macOS with Xcode.
+
+
+“SDG” passes validation.
+
+0

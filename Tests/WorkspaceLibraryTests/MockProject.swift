@@ -143,12 +143,12 @@ extension PackageRepository {
                             output.scalars.replaceMatches(for: "⌘F".scalars, with: "[⌘F]".scalars)
                             output.scalars.replaceMatches(for: "Ctrl + F".scalars, with: "[⌘F]".scalars)
 
-                            // Swift test times vary.
+                            // Swift order varies.
                             output.scalars.replaceMatches(for: CompositePattern([
-                                LiteralPattern("$ swift test".scalars),
+                                LiteralPattern("$ swift ".scalars),
                                 any,
                                 LiteralPattern("\n\n".scalars)
-                                ]), with: "[$ swift test...]\n\n".scalars)
+                                ]), with: "[$ swift...]\n\n".scalars)
 
                             // Xcode order varies.
                             output.scalars.replaceMatches(for: CompositePattern([

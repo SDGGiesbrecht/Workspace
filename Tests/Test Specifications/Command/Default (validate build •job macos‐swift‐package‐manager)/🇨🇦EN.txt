@@ -2,7 +2,7 @@ $ workspace validate build •job macos‐swift‐package‐manager •no‐colo
 
 Checking build for macOS with the Swift Package Manager... (§1)
 
-$ swift build
+[$ swift...]
 
 ✓ There are no compiler warnings for macOS with the Swift Package Manager.
 

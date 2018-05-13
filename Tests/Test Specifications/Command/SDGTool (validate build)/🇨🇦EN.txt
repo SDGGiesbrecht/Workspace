@@ -2,13 +2,7 @@ $ workspace validate build •no‐colour
 
 Checking build for macOS with the Swift Package Manager... (§1)
 
-$ swift build
-Compile Swift Module 'test_tool' (1 sources)
-Compile Swift Module 'Dependency' (1 sources)
-Linking ./.build/x86_64-apple-macosx10.10/debug/test‐tool
-Compile Swift Module 'Library' (2 sources)
-Compile Swift Module 'tool' (1 sources)
-Linking ./.build/x86_64-apple-macosx10.10/debug/tool
+[$ swift...]
 
 Checking build for macOS with Xcode... (§2)
 

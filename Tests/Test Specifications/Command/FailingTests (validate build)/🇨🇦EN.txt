@@ -2,12 +2,7 @@ $ workspace validate build •no‐colour
 
 Checking build for macOS with the Swift Package Manager... (§1)
 
-$ swift build
-Compile Swift Module 'FailingTests' (1 sources)
-[Temporary]/FailingTests/Sources/FailingTests/FailingTests.swift:3:13: warning: initialization of immutable value 'x' was never used; consider replacing with assignment to '_' or removing it
-        let x = "Unused"
-        ~~~~^
-        _
+[$ swift...]
 
 Checking build for macOS with Xcode... (§2)
 

@@ -175,7 +175,8 @@ struct UnicodeRule : Rule {
                     if upToEndOfFile(from: match, in: file).hasPrefix(">".scalars) {
                         continue
                     }
-                default: // [_Exempt from Test Coverage_] Probably not reachable.
+                default:
+                    // [_Exempt from Test Coverage_] Probably not reachable.
                     break
                 }
             }

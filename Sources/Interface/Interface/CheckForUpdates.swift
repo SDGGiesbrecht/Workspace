@@ -58,6 +58,7 @@ extension Workspace {
                 // [_Exempt from Test Coverage_] Execution path is determined externally.
                 return latestRemote
             } else { // [_Exempt from Test Coverage_] Execution path is determined externally.
+                // [_Exempt from Test Coverage_]
                 return nil // Up to date.
             }
         }

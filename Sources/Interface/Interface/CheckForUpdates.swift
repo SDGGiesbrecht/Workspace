@@ -38,7 +38,7 @@ extension Workspace {
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
-                        return StrictString("Workspace \(update.string) is available.\nFor update instructions, see \(DocumentationLink.installation.url.in(Underline.underlined))")
+                        return StrictString("Workspace \(update.string()) is available.\nFor update instructions, see \(DocumentationLink.installation.url.in(Underline.underlined))")
                     }
                 }).resolved())
             } else {
@@ -57,8 +57,8 @@ extension Workspace {
             if latestRemote ≠ latestStableWorkspaceVersion {
                 // [_Exempt from Test Coverage_] Execution path is determined externally.
                 return latestRemote
-            } else {
-                // [_Exempt from Test Coverage_] Execution path is determined externally.
+            } else { // [_Exempt from Test Coverage_] Execution path is determined externally.
+                // [_Exempt from Test Coverage_]
                 return nil // Up to date.
             }
         }

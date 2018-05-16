@@ -54,7 +54,7 @@ Workspace automates management of Swift projects.
 Paste the following into a terminal to install or update `Workspace`:
 
 ```shell
-curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.7.0 "workspace help" workspace arbeitsbereich
+curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.7.1 "workspace help" workspace arbeitsbereich
 ```
 
 ## The Workspace Workflow

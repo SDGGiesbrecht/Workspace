@@ -38,7 +38,7 @@ class Jazzy : RubyGem {
 
     // MARK: - Static Properties
 
-    static let `default` = Jazzy(version: Version(0, 9, 1))
+    static let `default` = Jazzy(version: Version(0, 9, 3))
 
     override class var name: UserFacing<StrictString, InterfaceLocalization> { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
         return UserFacing({ localization in // [_Exempt from Test Coverage_]

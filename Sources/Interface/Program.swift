@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Dispatch
 import GeneralImports
 
 // Do not forget to increment the version in “.Workspace Configuration.txt” as well.
@@ -22,11 +23,14 @@ let workspacePackageURL = URL(string: "https://github.com/SDGGiesbrecht/Workspac
 
 public func run() { // [_Exempt from Test Coverage_]
 
-    // [_Workaround: Make sure the correct repository gets loaded before moving into any other directory._]
-    _ = Repository.packageRepository
+    DispatchQueue.global(qos: .utility).sync {
 
-    ProcessInfo.applicationIdentifier = "ca.solideogloria.Workspace"
-    ProcessInfo.version = thisVersion
-    ProcessInfo.packageURL = workspacePackageURL
-    Workspace.command.executeAsMain()
+        // [_Workaround: Make sure the correct repository gets loaded before moving into any other directory._]
+        _ = Repository.packageRepository
+
+        ProcessInfo.applicationIdentifier = "ca.solideogloria.Workspace"
+        ProcessInfo.version = thisVersion
+        ProcessInfo.packageURL = workspacePackageURL
+        Workspace.command.executeAsMain()
+    }
 }

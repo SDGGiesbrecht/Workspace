@@ -23,9 +23,9 @@ let package = Package(
         .executable(name: "arbeitsbereich", targets: ["WorkspaceTool"])
     ],
     dependencies: [
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 9, 4))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 3, 0))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 1, 6))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 10, 0))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 3, 1))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 1, 7))),
         .package(url: "https://github.com/apple/swift\u{2D}package\u{2D}manager", .exact(Version(0, 2, 0)))
     ],
     targets: [

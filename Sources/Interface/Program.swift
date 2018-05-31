@@ -16,7 +16,7 @@ import Dispatch
 import GeneralImports
 
 // Do not forget to increment the version in “.Workspace Configuration.txt” as well.
-let latestStableWorkspaceVersion = Version(0, 7, 2)
+let latestStableWorkspaceVersion = Version(0, 7, 3)
 private let thisVersion: Version? = nil // Set this to latestStableWorkspaceVersion for release commits, nil the rest of the time.
 
 let workspacePackageURL = URL(string: "https://github.com/SDGGiesbrecht/Workspace")!

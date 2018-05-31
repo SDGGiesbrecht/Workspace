@@ -16,14 +16,14 @@ matrix:
     - os: osx
       env:
         - JOB="macOS + Swift Package Manager"
-      osx_image: xcode9.4
+      osx_image: xcode9.3
       script:
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job macos‐swift‐package‐manager"
     - os: osx
       env:
         - JOB="macOS + Xcode"
-      osx_image: xcode9.4
+      osx_image: xcode9.3
       script:
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job macos‐xcode"
@@ -39,7 +39,7 @@ matrix:
     - os: osx
       env:
         - JOB="iOS"
-      osx_image: xcode9.4
+      osx_image: xcode9.3
       language: objective-c
       xcode_sdk: iphonesimulator
       script:
@@ -48,7 +48,7 @@ matrix:
     - os: osx
       env:
         - JOB="tvOS"
-      osx_image: xcode9.4
+      osx_image: xcode9.3
       language: objective-c
       xcode_sdk: appletvsimulator
       script:

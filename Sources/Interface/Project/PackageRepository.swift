@@ -22,109 +22,42 @@ import PackageGraph
 
 extension PackageRepository {
 
-    // MARK: - Cache
-
-    private class Cache {
-        fileprivate var manifest: PackageModel.Manifest?
-        fileprivate var package: PackageModel.Package?
-        fileprivate var packageGraph: PackageGraph?
-
-        fileprivate var publicLibraryModules: [String]?
-        fileprivate var targets: [Target]?
-        fileprivate var targetsByName: [String: Target]?
-        fileprivate var dependenciesByName: [String: ResolvedPackage]?
-
-        fileprivate var allFiles: [URL]?
-        fileprivate var trackedFiles: [URL]?
-        fileprivate var sourceFiles: [URL]?
-        fileprivate var resourceFiles: [URL]?
-
-        fileprivate var examples: [String: String]?
-    }
-    private static var caches: [URL: Cache] = [:]
-    private var cache: Cache {
-        return cached(in: &PackageRepository.caches[location]) {
-            return Cache()
-        }
-    }
-
-    func resetCache(debugReason: String) {
-        PackageRepository.caches[location] = Cache()
-        if BuildConfiguration.current == .debug {
-            print("(Debug notice: Repository cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)")
-        }
-    }
-
     // MARK: - Configuration
 
     var configuration: Configuration {
         return Configuration(for: self)
     }
 
-    // MARK: - Miscellaneous Properties
-
-    func isWorkspaceProject(output: Command.Output) throws -> Bool {
-        return try projectName() == "Workspace"
-    }
-
     // MARK: - Structure
 
-    func cachedManifest() throws -> PackageModel.Manifest {
-        return try cached(in: &cache.manifest) {
-            return try manifest()
-        }
-    }
-
-    func cachedPackage() throws -> PackageModel.Package {
-        return try cached(in: &cache.package) {
-            return try package()
-        }
-    }
-
-    func cachedPackageGraph() throws -> PackageGraph {
-        return try cached(in: &cache.packageGraph) {
-            return try packageGraph()
-        }
-    }
-
-    func projectName() throws -> StrictString {
-        return StrictString(try cachedManifest().name)
-    }
-
     func targets() throws -> [Target] {
-        return try cached(in: &cache.targets) {
-            return try cachedPackage().manifest.package.targets.map { primitiveTarget in
-                return Target(packageDescriptionTarget: primitiveTarget, package: self)
-            }
+        return try cachedPackage().manifest.package.targets.map { primitiveTarget in
+            return Target(packageDescriptionTarget: primitiveTarget, package: self)
         }
     }
     func targetsByName() throws -> [String: Target] {
-        return try cached(in: &cache.targetsByName) {
-            var byName: [String: Target] = [:]
-            for target in try targets() {
-                byName[target.name] = target
-            }
-            return byName
+        var byName: [String: Target] = [:]
+        for target in try targets() {
+            byName[target.name] = target
         }
+        return byName
     }
 
     func publicLibraryModules() throws -> [String] {
-        return try cached(in: &cache.publicLibraryModules) {
-            var result: [String] = []
-            for product in try cachedPackage().products {
-                switch product.type {
-                case .library:
-                    for target in product.targets {
-                        if ¬result.contains(target.name) {
-                            result.append(target.name)
-                        }
+        var result: [String] = []
+        for product in try cachedPackage().products {
+            switch product.type {
+            case .library:
+                for target in product.targets {
+                    if ¬result.contains(target.name) {
+                        result.append(target.name)
                     }
-                case .executable, .test:
-                    break
                 }
+            case .executable, .test:
+                break
             }
-            return result
         }
+        return result
     }
 
     static let resourceDirectoryName = UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -138,75 +71,6 @@ extension PackageRepository {
 
         return InterfaceLocalization.cases.map { (localization) in
             return location.appendingPathComponent(String(PackageRepository.resourceDirectoryName.resolved(for: localization)))
-        }
-    }
-
-    func dependenciesByName() throws -> [String: ResolvedPackage] {
-        return try cached(in: &cache.dependenciesByName) {
-            let graph = try cachedPackageGraph()
-
-            var result: [String: ResolvedPackage] = [:]
-            for dependency in graph.packages {
-                result[dependency.name] = dependency
-            }
-            return result
-        }
-    }
-
-    // MARK: - Files
-
-    func allFiles() throws -> [URL] {
-        return try cached(in: &cache.allFiles) {
-            () -> [URL] in
-            let files = try FileManager.default.deepFileEnumeration(in: location).filter { url in
-                // Skip irrelevant operating system files.
-                return url.lastPathComponent ≠ ".DS_Store"
-                    ∧ ¬url.lastPathComponent.hasSuffix("~")
-            }
-            return files.sorted { $0.absoluteString.scalars.lexicographicallyPrecedes($1.absoluteString.scalars) } // So that output order is consistent.
-            // [_Workaround: Simple “sorted()” differs between operating systems. (Swift 4.1)_]
-        }
-    }
-
-    func trackedFiles(output: Command.Output) throws -> [URL] {
-        return try cached(in: &cache.trackedFiles) {
-            () -> [URL] in
-
-            var ignoredURLs: [URL] = try ignoredFiles()
-            ignoredURLs.append(location.appendingPathComponent(".git"))
-
-            let result = try allFiles().filter { (url) in
-                for ignoredURL in ignoredURLs {
-                    if url.is(in: ignoredURL) {
-                        return false
-                    }
-                }
-                return true
-            }
-            return result
-        }
-    }
-
-    func sourceFiles(output: Command.Output) throws -> [URL] {
-        return try cached(in: &cache.sourceFiles) { () -> [URL] in
-
-            let generatedURLs = [
-                "docs",
-                Script.refreshMacOS.fileName,
-                Script.refreshLinux.fileName,
-
-                "Tests/Mock Projects" // To prevent treating them as Workspace source files for headers, etc.
-                ].map({ location.appendingPathComponent( String($0)) })
-
-            let result = try trackedFiles(output: output).filter { (url) in
-                for generatedURL in generatedURLs {
-                    if url.is(in: generatedURL) {
-                        return false
-                    }
-                }
-                return true
-            }
-            return result
         }
     }
 
@@ -231,18 +95,16 @@ extension PackageRepository {
     // MARK: - Resources
 
     func resourceFiles(output: Command.Output) throws -> [URL] {
-        return try cached(in: &cache.resourceFiles) { () -> [URL] in
-            let locations = resourceDirectories()
+        let locations = resourceDirectories()
 
-            let result = try sourceFiles(output: output).filter { (file) in
-                for directory in locations where file.is(in: directory) {
-                    return true
-                }
-                // [_Exempt from Test Coverage_] [_Workaround: False coverage result. (Swift 4.0.2)_]
-                return false
+        let result = try sourceFiles(output: output).filter { (file) in
+            for directory in locations where file.is(in: directory) {
+                return true
             }
-            return result
+            // [_Exempt from Test Coverage_] [_Workaround: False coverage result. (Swift 4.0.2)_]
+            return false
         }
+        return result
     }
 
     func target(for resource: URL, output: Command.Output) throws -> Target {
@@ -286,9 +148,7 @@ extension PackageRepository {
     // MARK: - Examples
 
     func examples(output: Command.Output) throws -> [String: String] {
-        return try cached(in: &cache.examples) {
-            return try Examples.examples(in: self, output: output)
-        }
+        return try Examples.examples(in: self, output: output)
     }
 
     // MARK: - Documentation
@@ -315,14 +175,4 @@ extension PackageRepository {
         }
     }
     #endif
-
-    // MARK: - Actions
-
-    func delete(_ location: URL, output: Command.Output) {
-        if FileManager.default.fileExists(atPath: location.path, isDirectory: nil) {
-            TextFile.reportDeleteOperation(from: location, in: self, output: output)
-            try? FileManager.default.removeItem(at: location)
-            resetCache(debugReason: location.lastPathComponent)
-        }
-    }
 }

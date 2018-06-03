@@ -14,6 +14,7 @@
 
 import SDGLogic
 import GeneralImports
+import Project
 
 enum Script : Int, IterableEnumeration {
 
@@ -29,9 +30,9 @@ enum Script : Int, IterableEnumeration {
     var fileName: StrictString {
         switch self {
         case .refreshMacOS:
-            return "Refresh (macOS).command"
+            return refreshScriptMacOSFileName
         case .refreshLinux:
-            return "Refresh (Linux).sh"
+            return refreshScriptLinuxFileName
         case .validateMacOS:
             return "Validate (macOS).command"
         case .validateLinux:
@@ -137,7 +138,7 @@ enum Script : Int, IterableEnumeration {
     func getWorkspace(andExecute command: StrictString, for project: PackageRepository, output: Command.Output) throws -> [StrictString] {
         let command = command.appending(contentsOf: " $1 $2")
 
-        if try project.isWorkspaceProject(output: output) {
+        if try project.isWorkspaceProject() {
             return ["swift run workspace " + command]
         } else {
             let version = StrictString(latestStableWorkspaceVersion.string())

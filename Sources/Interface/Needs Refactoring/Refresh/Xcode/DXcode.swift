@@ -156,7 +156,7 @@ struct DXcode {
     static func enableProofreading(output: Command.Output) throws {
 
         let script: String
-        if try Repository.packageRepository.isWorkspaceProject(output: output) {
+        if try Repository.packageRepository.isWorkspaceProject() {
             script = "if [ \u{2D}z ${SKIP_PROOFREADING+set} ] ; then swift run workspace proofread •xcode ; fi"
         } else {
             script = "if [ \u{2D}z ${SKIP_PROOFREADING+set} ] ; then export PATH=\u{5C}\u{22}$HOME/.SDG/Registry:$PATH\u{5C}\u{22} ; if which workspace > /dev/null ; then workspace proofread •xcode •use‐version " + latestStableWorkspaceVersion.string() + " ; else echo \u{5C}\u{22}warning: Install Workspace if you wish to receive in‐code reports of style errors for this project. See https://github.com/SDGGiesbrecht/Workspace\u{5C}\u{22} ; fi ; fi"

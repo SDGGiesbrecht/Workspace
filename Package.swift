@@ -42,11 +42,18 @@ let package = Package(
         // Defines the public command line interface.
         .target(name: "Interface", dependencies: [
             "GeneralImports",
+            "Project",
             // [_Workaround: This module and its dependency list needs refactoring._]
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
             .productItem(name: "SDGXcode", package: "SDGSwift"),
             .productItem(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
+            ]),
+
+        // Defines general project structure queries and cache.
+        .target(name: "Project", dependencies: [
+            "GeneralImports",
+            .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
             ]),
 
         // Defines the lists of supported localizations.

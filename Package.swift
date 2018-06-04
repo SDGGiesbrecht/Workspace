@@ -53,7 +53,7 @@ let package = Package(
         // Defines general project structure queries and cache.
         .target(name: "Project", dependencies: [
             "GeneralImports",
-            .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
+            .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift")
             ]),
 
         // Defines the lists of supported localizations.

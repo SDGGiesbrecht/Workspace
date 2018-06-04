@@ -32,6 +32,9 @@ public func run() { // [_Exempt from Test Coverage_]
         ProcessInfo.version = thisVersion
         ProcessInfo.packageURL = workspacePackageURL
 
+        #if os(Linux)
+        Workspace.command.executeAsMain()
+        #else
         let reason = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
@@ -41,5 +44,6 @@ public func run() { // [_Exempt from Test Coverage_]
         ProcessInfo.processInfo.performActivity(options: [.userInitiated, .idleSystemSleepDisabled], reason: String(reason.resolved())) {
             Workspace.command.executeAsMain()
         }
+        #endif
     }
 }

@@ -31,6 +31,15 @@ public func run() { // [_Exempt from Test Coverage_]
         ProcessInfo.applicationIdentifier = "ca.solideogloria.Workspace"
         ProcessInfo.version = thisVersion
         ProcessInfo.packageURL = workspacePackageURL
-        Workspace.command.executeAsMain()
+
+        let reason = UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishCanada:
+                return "Workspace"
+            }
+        })
+        ProcessInfo.processInfo.performActivity(options: [.userInitiated, .idleSystemSleepDisabled], reason: String(reason.resolved())) {
+            Workspace.command.executeAsMain()
+        }
     }
 }

@@ -176,15 +176,6 @@ struct TextFile {
         }).resolved(using: location.path(relativeTo: repository.location)))
     }
 
-    static func reportDeleteOperation(from location: URL, in repository: PackageRepository, output: Command.Output) {
-        output.print(UserFacingDynamic<StrictString, InterfaceLocalization, String>({ localization, path in
-            switch localization {
-            case .englishCanada:
-                return StrictString("Deleting “\(path)”...")
-            }
-        }).resolved(using: location.path(relativeTo: repository.location)))
-    }
-
     func writeChanges(for repository: PackageRepository, output: Command.Output) throws {
         if hasChanged {
             TextFile.reportWriteOperation(to: location, in: repository, output: output)

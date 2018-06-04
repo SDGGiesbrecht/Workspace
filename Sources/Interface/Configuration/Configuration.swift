@@ -14,6 +14,7 @@
 
 import SDGLogic
 import GeneralImports
+import Project
 
 struct Configuration {
 

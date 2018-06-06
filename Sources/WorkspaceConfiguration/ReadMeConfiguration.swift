@@ -20,11 +20,6 @@ public struct ReadMeConfiguration : Codable {
     /// This is off by default.
     public var manage: Bool = false
 
-    /// The root URL where Workspace‐generated API documentation is hosted.
-    ///
-    /// Specify the directory for the package, not for an individual module. Workspace will link to each module individually.
-    public var documentationURL: URL?
-
     /// A short description of the project.
     ///
     /// There is no default description.
@@ -39,16 +34,6 @@ public struct ReadMeConfiguration : Codable {
     ///
     /// There is no default feature list.
     public var featureList: [LocalizationIdentifier: Markdown] = [:]
-
-    /// A list of related projects.
-    ///
-    /// There are no default related projects.
-    public var relatedProjects: [RelatedProjectEntry] = []
-
-    /// The semantic version of the current stable release of the project.
-    ///
-    /// There is no default version.
-    public var currentVersion: String?
 
     /// Other read‐me content.
     ///
@@ -80,7 +65,7 @@ public struct ReadMeConfiguration : Codable {
 
     /// The entire contents of the read‐me.
     ///
-    /// By default, this is assembled from the other read‐me options.
+    /// By default, this is assembled from the other documentation and read‐me options.
     public var contents: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>() { configuration in
         // [_Warning: Not documented yet._]
         // [_Warning: Not implemented yet._]

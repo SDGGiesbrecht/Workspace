@@ -22,5 +22,5 @@ public struct ContinuousIntegrationConfiguration : Codable {
     /// Because booting and switching the simulator often takes longer than all the other tasks combined, this option is available to skip actions requiring the simulator. It can save a lot of time for projects where there are very few differences between the macOS tests and those of the other Apple platforms.
     ///
     /// **This option only takes effect when running locally. Workspace still performs all tasks during continuous integration.**
-    var skipSimulatorOutsideContinuousIntegration: Bool = false
+    public var skipSimulatorOutsideContinuousIntegration: Bool = false
 }

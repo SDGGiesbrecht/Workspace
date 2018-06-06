@@ -38,8 +38,17 @@ public final class WorkspaceConfiguration : Configuration {
     /// Options related to licencing.
     var licence: LicenceConfiguration = LicenceConfiguration()
 
+    /// Options related to file headers.
+    var fileHeaders: FileHeaderConfiguration = FileHeaderConfiguration()
+
     /// Options related to GitHub.
     var gitHub: GitHubConfiguration = GitHubConfiguration()
+
+    /// Options related to Xcode.
+    var xcode: XcodeConfiguration = XcodeConfiguration()
+
+    /// Options related to proofreading.
+    var proofreading: ProofreadingConfiguration = ProofreadingConfiguration()
 
     /// Options related to documentation.
     var documentation: DocumentationConfiguration = DocumentationConfiguration()
@@ -54,7 +63,9 @@ public final class WorkspaceConfiguration : Configuration {
     /// - Warning: Many opt‐in tasks involve writing into project files.
     public func optIntoAllTasks() {
         licence.manage = true
+        fileHeaders.manage = true
         gitHub.manage = true
+        xcode.manage = true
         documentation.readMe.manage = true
     }
 
@@ -64,7 +75,9 @@ public final class WorkspaceConfiguration : Configuration {
         case provideWorkflowScripts
         case supportedOperatingSystems
         case licence
+        case fileHeaders
         case gitHub
+        case xcode
         case documentation
         case continuousIntegration
     }
@@ -79,7 +92,9 @@ public final class WorkspaceConfiguration : Configuration {
         try container.encode(provideWorkflowScripts, forKey: .provideWorkflowScripts)
         try container.encode(supportedOperatingSystems, forKey: .supportedOperatingSystems)
         try container.encode(licence, forKey: .licence)
+        try container.encode(fileHeaders, forKey: .fileHeaders)
         try container.encode(gitHub, forKey: .gitHub)
+        try container.encode(xcode, forKey: .xcode)
         try container.encode(documentation, forKey: .documentation)
         try container.encode(continuousIntegration, forKey: .continuousIntegration)
         try super.encode(to: container.superEncoder())
@@ -95,6 +110,8 @@ public final class WorkspaceConfiguration : Configuration {
         provideWorkflowScripts = try container.decode(Bool.self, forKey: .provideWorkflowScripts)
         supportedOperatingSystems = try container.decode(Set<OperatingSystem>.self, forKey: .supportedOperatingSystems)
         gitHub = try container.decode(GitHubConfiguration.self, forKey: .gitHub)
+        fileHeaders = try container.decode(FileHeaderConfiguration.self, forKey: .fileHeaders)
+        xcode = try container.decode(XcodeConfiguration.self, forKey: .xcode)
         licence = try container.decode(LicenceConfiguration.self, forKey: .licence)
         documentation = try container.decode(DocumentationConfiguration.self, forKey: .documentation)
         continuousIntegration = try container.decode(ContinuousIntegrationConfiguration.self, forKey: .continuousIntegration)

@@ -1,5 +1,5 @@
 /*
- Exports.swift
+ Markdown.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -12,6 +12,5 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-@_exported import struct Foundation.URL
-
-@_exported import SDGSwiftConfiguration
+/// Markdown source.
+public typealias Markdown = String

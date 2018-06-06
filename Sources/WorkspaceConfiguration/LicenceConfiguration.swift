@@ -1,5 +1,5 @@
 /*
- Exports.swift
+ LicenceConfiguration.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -12,6 +12,16 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-@_exported import struct Foundation.URL
+/// Options related to licencing.
+public struct LicenceConfiguration: Codable {
 
-@_exported import SDGSwiftConfiguration
+    /// Whether or not to manage the project licence.
+    ///
+    /// This is off by default.
+    public var manage: Bool = false
+
+    /// The project licence.
+    ///
+    /// There is no default licence.
+    public var licence: Licence?
+}

@@ -17,6 +17,10 @@ import SDGSwiftConfiguration
 /// A Workspace configuration.
 public final class WorkspaceConfiguration : Configuration {
 
+    // MARK: - Static Properties
+
+    internal static var registered: WorkspaceConfiguration = WorkspaceConfiguration()
+
     // MARK: - Properties
 
     /// Whether or not to provide workflow scripts.
@@ -31,6 +35,12 @@ public final class WorkspaceConfiguration : Configuration {
     /// The default assumes support for all operating systems.
     var supportedOperatingSystems: Set<OperatingSystem> = Set(OperatingSystem.cases)
 
+    /// Options related to licencing.
+    var licence: LicenceConfiguration = LicenceConfiguration()
+
+    /// Options related to GitHub.
+    var gitHub: GitHubConfiguration = GitHubConfiguration()
+
     /// Options related to documentation.
     var documentation: DocumentationConfiguration = DocumentationConfiguration()
 
@@ -43,7 +53,9 @@ public final class WorkspaceConfiguration : Configuration {
     ///
     /// - Warning: Many opt‐in tasks involve writing into project files.
     public func optIntoAllTasks() {
-        documentation.manageReadMe = true
+        licence.manage = true
+        gitHub.manage = true
+        documentation.readMe.manage = true
     }
 
     // MARK: - Encoding
@@ -51,6 +63,8 @@ public final class WorkspaceConfiguration : Configuration {
     private enum CodingKeys : CodingKey {
         case provideWorkflowScripts
         case supportedOperatingSystems
+        case licence
+        case gitHub
         case documentation
         case continuousIntegration
     }
@@ -64,6 +78,8 @@ public final class WorkspaceConfiguration : Configuration {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(provideWorkflowScripts, forKey: .provideWorkflowScripts)
         try container.encode(supportedOperatingSystems, forKey: .supportedOperatingSystems)
+        try container.encode(licence, forKey: .licence)
+        try container.encode(gitHub, forKey: .gitHub)
         try container.encode(documentation, forKey: .documentation)
         try container.encode(continuousIntegration, forKey: .continuousIntegration)
         try super.encode(to: container.superEncoder())
@@ -78,6 +94,8 @@ public final class WorkspaceConfiguration : Configuration {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         provideWorkflowScripts = try container.decode(Bool.self, forKey: .provideWorkflowScripts)
         supportedOperatingSystems = try container.decode(Set<OperatingSystem>.self, forKey: .supportedOperatingSystems)
+        gitHub = try container.decode(GitHubConfiguration.self, forKey: .gitHub)
+        licence = try container.decode(LicenceConfiguration.self, forKey: .licence)
         documentation = try container.decode(DocumentationConfiguration.self, forKey: .documentation)
         continuousIntegration = try container.decode(ContinuousIntegrationConfiguration.self, forKey: .continuousIntegration)
         try super.init(from: container.superDecoder())
@@ -87,10 +105,11 @@ public final class WorkspaceConfiguration : Configuration {
 
     /// Creates a Workspace configuration according to the defaults.
     ///
-    /// Defaults are generally non‐invasive. Tasks which would write into project files are generally off by default.
+    /// Defaults are generally non‐invasive. Most tasks which would write into project files are off by default.
     ///
-    /// To opt in to all tasks, including the more invasive ones, use `optIntoAllTasks()`.
+    /// To opt in to all tasks use `optIntoAllTasks()`.
     public required init() {
         super.init()
+        WorkspaceConfiguration.registered = self
     }
 }

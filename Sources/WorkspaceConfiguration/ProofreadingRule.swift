@@ -61,6 +61,29 @@ public enum ProofreadingRule : String, Codable {
     /// Requires documented parameters to be grouped.
     case parameterGrouping
 
+    // [_Inherit Documentation: SDGCornerstone.IterableEnumeration.cases_]
+    public static let cases: [ProofreadingRule] = [
+        .deprecatedLinuxDocumentation,
+
+        .manualWarnings,
+        .missingImplementation,
+        .workaroundReminders,
+
+        .compatibilityCharacters,
+        .autoindentResilience,
+        .marks,
+
+        .documentationOfExtensionConstraints,
+        .documentationOfCompliationConditions,
+        .syntaxColouring,
+
+        .unicode,
+
+        .colonSpacing,
+        .calloutCasing,
+        .parameterGrouping
+    ]
+
     // MARK: - Properties
 
     public var category: Category {

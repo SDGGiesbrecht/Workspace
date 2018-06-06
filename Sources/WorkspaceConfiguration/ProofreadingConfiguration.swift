@@ -18,6 +18,5 @@ public struct ProofreadingConfiguration: Codable {
     /// The set of active proofreading rules.
     ///
     /// All rules are active by default.
-    public var rules: Set<ProofreadingRule> = [
-    ]
+    public var rules: Set<ProofreadingRule> = Set(ProofreadingRule.cases)
 }

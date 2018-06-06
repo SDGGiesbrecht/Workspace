@@ -32,7 +32,7 @@ public enum OperatingSystem : String, Codable {
     /// tvOS
     case tvOS
 
-    /// An iterable list of all operating systems.
+     // [_Inherit Documentation: SDGCornerstone.IterableEnumeration.cases_]
     public static let cases: [OperatingSystem] = [
         .macOS,
         .linux,

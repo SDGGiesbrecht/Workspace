@@ -19,18 +19,13 @@ import PackageDescription
 let package = Package(
     name: "Workspace",
     products: [
-        /// The API used in configuration files.
-        .library(name: "WorkspaceConfiguration", targets: ["WorkspaceConfiguration"]),
-
-        /// Workspace.
         .executable(name: "workspace", targets: ["WorkspaceTool"]),
-        /// Arbeitsbereich.
         .executable(name: "arbeitsbereich", targets: ["WorkspaceTool"])
     ],
     dependencies: [
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 10, 0))),
         .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 3, 1))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 1, 8))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 1, 7))),
         .package(url: "https://github.com/apple/swift\u{2D}package\u{2D}manager", .exact(Version(0, 2, 0)))
     ],
     targets: [
@@ -80,11 +75,6 @@ let package = Package(
             .productItem(name: "SDGCommandLine", package: "SDGCommandLine"),
 
             .productItem(name: "SDGSwift", package: "SDGSwift")
-            ]),
-
-        // The API used in configuration files.
-        .target(name: "WorkspaceConfiguration", dependencies: [
-            .productItem(name: "SDGSwiftConfiguration", package: "SDGSwift")
             ]),
 
         // Tests

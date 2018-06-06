@@ -57,32 +57,6 @@ Paste the following into a terminal to install or update `Workspace`:
 curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.7.3 "workspace help" workspace arbeitsbereich
 ```
 
-## Importing
-
-`Workspace` is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).
-
-Simply add `Workspace` as a dependency in `Package.swift`:
-
-```swift
-let package = Package(
-    name: "MyPackage",
-    dependencies: [
-        .package(url: "https://github.com/SDGGiesbrecht/Workspace", .upToNextMinor(from: Version(0, 7, 3))),
-    ],
-    targets: [
-        .target(name: "MyTarget", dependencies: [
-            .productItem(name: "WorkspaceConfiguration", package: "Workspace"),
-        ])
-    ]
-)
-```
-
-`Workspace` can then be imported in source files:
-
-```swift
-import WorkspaceConfiguration
-```
-
 ## The Workspace Workflow
 
 *The Workspace project is managed by... Workspace! So let’s try it out by following along using the Workspace project itself.*

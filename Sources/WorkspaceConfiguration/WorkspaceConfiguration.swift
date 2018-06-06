@@ -50,6 +50,9 @@ public final class WorkspaceConfiguration : Configuration {
     /// Options related to proofreading.
     var proofreading: ProofreadingConfiguration = ProofreadingConfiguration()
 
+    /// Options related to building and testing.
+    var testing: TestingConfiguration = TestingConfiguration()
+
     /// Options related to documentation.
     var documentation: DocumentationConfiguration = DocumentationConfiguration()
 
@@ -78,6 +81,8 @@ public final class WorkspaceConfiguration : Configuration {
         case fileHeaders
         case gitHub
         case xcode
+        case proofreading
+        case testing
         case documentation
         case continuousIntegration
     }
@@ -95,6 +100,8 @@ public final class WorkspaceConfiguration : Configuration {
         try container.encode(fileHeaders, forKey: .fileHeaders)
         try container.encode(gitHub, forKey: .gitHub)
         try container.encode(xcode, forKey: .xcode)
+        try container.encode(proofreading, forKey: .proofreading)
+        try container.encode(testing, forKey: .testing)
         try container.encode(documentation, forKey: .documentation)
         try container.encode(continuousIntegration, forKey: .continuousIntegration)
         try super.encode(to: container.superEncoder())
@@ -113,6 +120,8 @@ public final class WorkspaceConfiguration : Configuration {
         fileHeaders = try container.decode(FileHeaderConfiguration.self, forKey: .fileHeaders)
         xcode = try container.decode(XcodeConfiguration.self, forKey: .xcode)
         licence = try container.decode(LicenceConfiguration.self, forKey: .licence)
+        proofreading = try container.decode(ProofreadingConfiguration.self, forKey: .proofreading)
+        testing = try container.decode(TestingConfiguration.self, forKey: .testing)
         documentation = try container.decode(DocumentationConfiguration.self, forKey: .documentation)
         continuousIntegration = try container.decode(ContinuousIntegrationConfiguration.self, forKey: .continuousIntegration)
         try super.init(from: container.superDecoder())

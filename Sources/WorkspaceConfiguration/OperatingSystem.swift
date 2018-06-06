@@ -33,6 +33,7 @@ public enum OperatingSystem : String, Codable {
     case tvOS
 
      // [_Inherit Documentation: SDGCornerstone.IterableEnumeration.cases_]
+    /// An array containing every case of the enumeration.
     public static let cases: [OperatingSystem] = [
         .macOS,
         .linux,

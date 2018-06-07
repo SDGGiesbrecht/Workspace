@@ -202,12 +202,6 @@ struct Configuration {
 
     // MARK: - Options: Read‐Me
 
-    func requireFeatureList(for localization: String) throws -> StrictString {
-        guard let defined = try localizedStrictString(for: localization, from: .featureList) else {
-            throw Configuration.optionNotDefinedError(for: .featureList)
-        }
-        return defined
-    }
     func installationInstructions(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template? {
         if let defined = try localizedTemplate(for: localization, from: .installationInstructions) {
             return defined

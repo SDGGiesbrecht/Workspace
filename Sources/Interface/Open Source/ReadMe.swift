@@ -380,7 +380,7 @@ enum ReadMe {
             ]
         }
 
-        if try project.configuration.optionIsDefined(.featureList) {
+        if try ¬project.cachedConfiguration().documentation.readMe.shortProjectDescription.isEmpty {
             let header = UserFacing<StrictString, ContentLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -458,7 +458,17 @@ enum ReadMe {
 
         // Section Elements
 
-        try readMe.insert(resultOf: { try project.configuration.requireFeatureList(for: localization) }, for: UserFacing({ localization in
+        try readMe.insert(resultOf: {
+            guard let description = try project.cachedConfiguration().documentation.readMe.normalizedShortProjectDescription[localization] else {
+                throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return StrictString("There are no features specified for “\(localization)”. (documentation.readMe.featureList)")
+                    }
+                }))
+            }
+            return description
+        }, for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "Features"

@@ -202,15 +202,6 @@ struct Configuration {
 
     // MARK: - Options: Read‐Me
 
-    func quotation() throws -> StrictString? {
-        return try strictString(for: .quotation)
-    }
-    func requireQuotation() throws -> StrictString {
-        guard let defined = try quotation() else {
-            throw Configuration.optionNotDefinedError(for: .quotation)
-        }
-        return defined
-    }
     func quotationTranslation(localization: String) throws -> StrictString? {
         return try localizedStrictString(for: localization, from: .quotationTranslation)
     }

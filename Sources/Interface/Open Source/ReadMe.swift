@@ -142,7 +142,16 @@ enum ReadMe {
     }
 
     private static func quotationMarkup(localization: String, project: PackageRepository) throws -> StrictString {
-        var result = [try project.configuration.requireQuotation()]
+        guard let original = try project.cachedConfiguration().documentation.readMe.quotation?.original else {
+            throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return StrictString("There is no quotation specified. (documentation.readMe.quotation)")
+                }
+            }))
+        }
+
+        var result = [StrictString(original)]
         if let translation = try project.configuration.quotationTranslation(localization: localization) {
             result += [translation]
         }
@@ -395,7 +404,7 @@ enum ReadMe {
                 "[_Short Description_]"
             ]
         }
-        if try project.configuration.optionIsDefined(.quotation) {
+        if try project.cachedConfiguration().documentation.readMe.quotation ≠ nil {
             readMe += [
                 "",
                 "[_Quotation_]"

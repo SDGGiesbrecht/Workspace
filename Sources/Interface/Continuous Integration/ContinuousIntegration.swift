@@ -24,7 +24,7 @@ enum ContinuousIntegration {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
-                    return "Continuous integration requires workflow scripts to be present. (provideWorkflowScripts)."
+                    return "Continuous integration requires workflow scripts to be present. (provideWorkflowScripts)"
                 }
             }))
         }

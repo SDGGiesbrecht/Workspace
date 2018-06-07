@@ -84,7 +84,15 @@ enum ReadMe {
 
     private static func apiLinksMarkup(for project: PackageRepository, output: Command.Output) throws -> StrictString {
 
-        let baseURL = try project.configuration.requireDocumentationURL()
+        guard let baseURL = try project.cachedConfiguration().documentation.documentationURL else {
+            throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "API links require a documentation URL to be specified. (documentation.documentationURL)"
+                }
+            }))
+        }
+
         let label = UserFacing<StrictString, ContentLocalization>({ localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -373,7 +381,7 @@ enum ReadMe {
             "[_Operating System List_]",
             ""
         ]
-        if try project.configuration.optionIsDefined(.documentationURL) {
+        if try project.cachedConfiguration().documentation.documentationURL ≠ nil {
             readMe += [
                 "[_API Links_]",
                 ""

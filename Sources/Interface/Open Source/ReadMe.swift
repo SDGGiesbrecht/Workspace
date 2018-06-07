@@ -128,9 +128,9 @@ enum ReadMe {
             let components: [StrictString] = ["[", result.joinAsLines(), "](", StrictString(url.absoluteString), ")"]
             result = [components.joined()]
         }
-        if let citation = try project.configuration.citation(localization: localization) {
+        if let citation = try project.cachedConfiguration().documentation.readMe.quotation?.citation[localization] {
             let indent = StrictString([String](repeating: "&nbsp;", count: 100).joined())
-            result += [indent + "―" + citation]
+            result += [indent + "―" + StrictString(citation)]
         }
 
         return StrictString("> ") + StrictString(result.joined(separator: "\n".scalars)).replacingMatches(for: "\n".scalars, with: "<br>".scalars)

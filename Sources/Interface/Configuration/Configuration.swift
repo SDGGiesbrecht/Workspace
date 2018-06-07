@@ -202,9 +202,6 @@ struct Configuration {
 
     // MARK: - Options: Read‐Me
 
-    func citation(localization: String) throws -> StrictString? {
-        return try localizedStrictString(for: localization, from: .citation)
-    }
     func requireFeatureList(for localization: String) throws -> StrictString {
         guard let defined = try localizedStrictString(for: localization, from: .featureList) else {
             throw Configuration.optionNotDefinedError(for: .featureList)

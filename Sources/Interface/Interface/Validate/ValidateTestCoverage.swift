@@ -16,6 +16,8 @@ import SDGLogic
 import SDGCollections
 import GeneralImports
 
+import Project
+
 extension Workspace.Validate {
 
     enum TestCoverage {
@@ -60,7 +62,7 @@ extension Workspace.Validate {
                 where try options.job.includes(job: job) ∧ (try Build.job(job, isRelevantTo: options.project, andAvailableJobs: Tests.coverageJobs, output: output)) {
                     try autoreleasepool {
 
-                        if try options.project.configuration.shouldSkipSimulator(),
+                        if try options.project.cachedConfiguration().continuousIntegration.skipSimulatorOutsideContinuousIntegration,
                             options.job == nil, // Not in continuous integration.
                             job ∈ Tests.simulatorJobs {
                             // [_Exempt from Test Coverage_] Tested separately.

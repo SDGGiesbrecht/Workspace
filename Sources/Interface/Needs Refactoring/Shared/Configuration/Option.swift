@@ -26,8 +26,6 @@ enum Option : String, CustomStringConvertible {
 
     // MARK: - Cases
 
-    case skipSimulator = "Skip Simulator"
-
     case localizations = "Localizations"
 
     case provideScripts = "Provide Scripts"
@@ -94,8 +92,6 @@ enum Option : String, CustomStringConvertible {
     case testLongOption = "Test Long Option"
 
     static let allPublic: [Option] = [
-        .skipSimulator,
-
         .localizations,
 
         .manageReadMe,
@@ -159,9 +155,6 @@ enum Option : String, CustomStringConvertible {
 
     var defaultValue: String {
         switch self {
-        case .skipSimulator:
-            return String(Configuration.falseOptionValue)
-
         case .localizations:
             return String(Configuration.emptyListOptionValue)
 

@@ -400,8 +400,4 @@ struct Configuration {
     func testCoverageExemptionTokensForPreviousLine() throws -> [String] {
         return try list(for: .testCoverageExemptionTokensForPreviousLine)
     }
-
-    func shouldSkipSimulator() throws -> Bool {
-        return try boolean(for: .skipSimulator) ?? false
-    }
 }

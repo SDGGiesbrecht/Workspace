@@ -395,7 +395,7 @@ enum ReadMe {
                 "[_Features_]"
             ]
         }
-        if try project.configuration.optionIsDefined(.relatedProjects) {
+        if try ¬project.cachedConfiguration().documentation.relatedProjects.isEmpty {
             readMe += [
                 "",
                 "[_Related Projects_]"
@@ -603,7 +603,8 @@ enum ReadMe {
 
     private static func refreshRelatedProjects(at location: URL, for localization: String, in project: PackageRepository, output: Command.Output) throws {
 
-        if let relatedProjectURLs = try project.configuration.relatedProjects() {
+        let relatedProjects = try project.cachedConfiguration().documentation.relatedProjects
+        if ¬relatedProjects.isEmpty {
             var markdown: [StrictString] = [
                 StrictString("# ") + UserFacing<StrictString, ContentLocalization>({ localization in
                     switch localization {
@@ -613,29 +614,36 @@ enum ReadMe {
                 }).resolved()
             ]
 
-            for url in relatedProjectURLs {
+            for entry in relatedProjects {
                 autoreleasepool {
-
-                    let package = Repository.linkedRepository(from: url)
-                    let name: StrictString
-                    if let packageName = try? package.projectName() {
-                        name = packageName
-                    } else {
-                        // [_Exempt from Test Coverage_] Only reachable with a non‐package repository.
-                        name = StrictString(url.lastPathComponent)
-                    }
-
-                    markdown += [
-                        "",
-                        StrictString("### [\(name)](\(url.absoluteString))")
-                    ]
-
-                    if let succeeded = try? package.cachedConfiguration().documentation.readMe.normalizedShortProjectDescription[localization],
-                        let description = succeeded { // [_Exempt from Test Coverage_] Until Workspace’s configuration is centralized again.
+                    switch entry {
+                    case .heading(text: let text):
                         markdown += [
                             "",
-                            description
+                            StrictString("## \(text))")
                         ]
+                    case .project(url: let url):
+                        let package = Repository.linkedRepository(from: url)
+                        let name: StrictString
+                        if let packageName = try? package.projectName() {
+                            name = packageName
+                        } else {
+                            // [_Exempt from Test Coverage_] Only reachable with a non‐package repository.
+                            name = StrictString(url.lastPathComponent)
+                        }
+
+                        markdown += [
+                            "",
+                            StrictString("### [\(name)](\(url.absoluteString))")
+                        ]
+
+                        if let configuration = try? package.cachedConfiguration(),
+                            let description = configuration.documentation.readMe.normalizedShortProjectDescription[localization] {
+                            markdown += [
+                                "",
+                                description
+                            ]
+                        }
                     }
                 }
             }

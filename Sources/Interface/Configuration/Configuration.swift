@@ -259,24 +259,6 @@ struct Configuration {
         }
     }
 
-    func relatedProjects() throws -> [URL]? {
-        let result = try list(for: .relatedProjects)
-        guard ¬result.isEmpty else {
-            return nil
-        }
-        return try result.map { (entry) in
-            guard let url = URL(string: entry) else {
-                throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishCanada:
-                        return StrictString("“\(entry)” in “\(Option.relatedProjects)” is not a valid URL.")
-                    }
-                }))
-            }
-            return url
-        }
-    }
-
     // MARK: - Options: Active Management Tasks
 
     func shouldManageContinuousIntegration() throws -> Bool { // [_Exempt from Test Coverage_] [_Workaround: Until refresh is testable._]

@@ -336,10 +336,6 @@ struct Configuration {
 
     // MARK: - Options: Active Management Tasks
 
-    func shouldProvideScripts() throws -> Bool { // [_Exempt from Test Coverage_] [_Workaround: Until refresh is testable._]
-        return try boolean(for: .provideScripts) ?? true // Unlikely to overwrite a user file, and necessary for version locking and continuous integration management. // [_Exempt from Test Coverage_] [_Workaround: Until refresh is testable._]
-    }
-
     func shouldManageReadMe() throws -> Bool { // [_Exempt from Test Coverage_] [_Workaround: Until refresh is testable._]
         return try boolean(for: .manageReadMe) ?? false // [_Exempt from Test Coverage_] [_Workaround: Until refresh is testable._]
     }

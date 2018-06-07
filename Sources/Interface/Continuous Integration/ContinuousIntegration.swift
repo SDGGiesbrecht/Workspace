@@ -20,6 +20,15 @@ enum ContinuousIntegration {
 
     static func refreshContinuousIntegration(for project: PackageRepository, output: Command.Output) throws {
 
+        if try project.cachedConfiguration().provideWorkflowScripts == false {
+            throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "Continuous integration requires workflow scripts to be present. (provideWorkflowScripts)."
+                }
+            }))
+        }
+
         var travisConfiguration: [String] = [
             "language: generic",
             "matrix:",

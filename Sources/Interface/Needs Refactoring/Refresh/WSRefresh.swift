@@ -32,7 +32,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Scripts
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    if try options.project.configuration.shouldProvideScripts() {
+    if try options.project.cachedConfiguration().provideWorkflowScripts {
         try Workspace.Refresh.Scripts.command.execute(withArguments: arguments, options: options, output: output)
     }
 

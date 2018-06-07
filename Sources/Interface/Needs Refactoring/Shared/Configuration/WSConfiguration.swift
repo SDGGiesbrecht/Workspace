@@ -368,10 +368,6 @@ extension Configuration {
 
     // Responsibilities
 
-    static var provideScripts: Bool {
-        return booleanValue(option: .provideScripts)
-    }
-
     static var manageLicence: Bool {
         return booleanValue(option: .manageLicence)
     }
@@ -497,12 +493,6 @@ extension Configuration {
 
         if manageLicence ∧ configurationFile[.licence] == nil {
             incompatibilityDetected(between: .manageLicence, and: .licence, documentation: .licence)
-        }
-
-        // CI requires scripts
-
-        if manageContinuousIntegration ∧ ¬provideScripts {
-            incompatibilityDetected(between: .manageContinuousIntegration, and: .provideScripts, documentation: DocumentationLink.continuousIntegration)
         }
 
         // Documentation Deployment

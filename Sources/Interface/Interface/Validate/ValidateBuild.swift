@@ -16,6 +16,8 @@ import SDGLogic
 import SDGCollections
 import GeneralImports
 
+import Project
+
 extension Workspace.Validate {
 
     enum Build {

@@ -12,7 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGCollections
 import GeneralImports
+
+import Project
 
 enum Documentation {
 
@@ -79,13 +82,13 @@ enum Documentation {
         let outputSubdirectory = subdirectory(for: target, in: outputDirectory)
 
         let buildOperatingSystem: OperatingSystem
-        if try project.configuration.supports(.macOS, project: project, output: output) {
+        if try .macOS ∈ project.cachedConfiguration().supportedOperatingSystems {
             buildOperatingSystem = .macOS
-        } else if try project.configuration.supports(.iOS, project: project, output: output) {
+        } else if try .iOS ∈ project.cachedConfiguration().supportedOperatingSystems {
             buildOperatingSystem = .iOS
-        } else if try project.configuration.supports(.watchOS, project: project, output: output) {
+        } else if try .watchOS ∈ project.cachedConfiguration().supportedOperatingSystems {
             buildOperatingSystem = .watchOS
-        } else if try project.configuration.supports(.tvOS, project: project, output: output) {
+        } else if try .tvOS ∈ project.cachedConfiguration().supportedOperatingSystems {
             buildOperatingSystem = .tvOS
         } else {
             buildOperatingSystem = .macOS

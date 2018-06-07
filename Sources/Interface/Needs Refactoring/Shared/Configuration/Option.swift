@@ -26,12 +26,6 @@ enum Option : String, CustomStringConvertible {
 
     // MARK: - Cases
 
-    case supportMacOS = "Support macOS"
-    case supportLinux = "Support Linux"
-    case supportIOS = "Support iOS"
-    case supportWatchOS = "Support watchOS"
-    case supportTVOS = "Support tvOS"
-
     case skipSimulator = "Skip Simulator"
 
     case localizations = "Localizations"
@@ -100,12 +94,6 @@ enum Option : String, CustomStringConvertible {
     case testLongOption = "Test Long Option"
 
     static let allPublic: [Option] = [
-        .supportMacOS,
-        .supportLinux,
-        .supportIOS,
-        .supportWatchOS,
-        .supportTVOS,
-
         .skipSimulator,
 
         .localizations,
@@ -171,17 +159,6 @@ enum Option : String, CustomStringConvertible {
 
     var defaultValue: String {
         switch self {
-        case .supportMacOS:
-            return String(Configuration.trueOptionValue)
-        case .supportLinux:
-            return String(Configuration.trueOptionValue)
-        case .supportIOS:
-            return String(Configuration.trueOptionValue)
-        case .supportWatchOS:
-            return String(Configuration.trueOptionValue)
-        case .supportTVOS:
-            return String(Configuration.trueOptionValue)
-
         case .skipSimulator:
             return String(Configuration.falseOptionValue)
 

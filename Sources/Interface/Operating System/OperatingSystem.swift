@@ -14,44 +14,21 @@
 
 import GeneralImports
 
-enum OperatingSystem : Int, IterableEnumeration {
+import WorkspaceConfiguration
+
+extension OperatingSystem {
 
     // MARK: - Static Properties
 
     static var current: OperatingSystem {
         #if os(macOS)
-            return .macOS
+        return .macOS
         #elseif os(Linux)
-            return .linux
+        return .linux
         #endif
     }
 
-    // MARK: - Cases
-
-    case macOS
-    case linux
-    case iOS
-    case watchOS
-    case tvOS
-
     // MARK: - Properties
-
-    var supportOption: Option {
-        switch self {
-        case .macOS:
-            return .supportMacOS
-        case .linux:
-            return .supportLinux
-        case .iOS:
-            return .supportIOS
-        case .watchOS:
-            return .supportWatchOS
-        case .tvOS:
-            return .supportTVOS
-        }
-    }
-
-    // MARK: - Name
 
     var isolatedName: UserFacing<StrictString, ContentLocalization> {
         switch self {

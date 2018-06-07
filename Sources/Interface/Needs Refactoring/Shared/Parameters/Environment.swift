@@ -15,6 +15,8 @@
 import SDGLogic
 import GeneralImports
 
+import Project
+
 struct Environment {
 
     // MARK: - Properties

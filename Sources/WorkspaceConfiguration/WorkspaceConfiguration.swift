@@ -28,36 +28,36 @@ public final class WorkspaceConfiguration : Configuration {
     /// This is on by default.
     ///
     /// These scripts are provided to reduce refreshment and validation to a simple double‐click. They will also ensure that the same version of Workspace gets used for the project on every machine it is cloned to.
-    var provideWorkflowScripts: Bool = true
+    public var provideWorkflowScripts: Bool = true
 
     /// The operating systems the project supports.
     ///
     /// The default assumes support for all operating systems.
-    var supportedOperatingSystems: Set<OperatingSystem> = Set(OperatingSystem.cases)
+    public var supportedOperatingSystems: Set<OperatingSystem> = Set(OperatingSystem.cases)
 
     /// Options related to licencing.
-    var licence: LicenceConfiguration = LicenceConfiguration()
+    public var licence: LicenceConfiguration = LicenceConfiguration()
 
     /// Options related to file headers.
-    var fileHeaders: FileHeaderConfiguration = FileHeaderConfiguration()
+    public var fileHeaders: FileHeaderConfiguration = FileHeaderConfiguration()
 
     /// Options related to GitHub.
-    var gitHub: GitHubConfiguration = GitHubConfiguration()
+    public var gitHub: GitHubConfiguration = GitHubConfiguration()
 
     /// Options related to Xcode.
-    var xcode: XcodeConfiguration = XcodeConfiguration()
+    public var xcode: XcodeConfiguration = XcodeConfiguration()
 
     /// Options related to proofreading.
-    var proofreading: ProofreadingConfiguration = ProofreadingConfiguration()
+    public var proofreading: ProofreadingConfiguration = ProofreadingConfiguration()
 
     /// Options related to building and testing.
-    var testing: TestingConfiguration = TestingConfiguration()
+    public var testing: TestingConfiguration = TestingConfiguration()
 
     /// Options related to documentation.
-    var documentation: DocumentationConfiguration = DocumentationConfiguration()
+    public var documentation: DocumentationConfiguration = DocumentationConfiguration()
 
     /// Options related to continuous integration.
-    var continuousIntegration: ContinuousIntegrationConfiguration = ContinuousIntegrationConfiguration()
+    public var continuousIntegration: ContinuousIntegrationConfiguration = ContinuousIntegrationConfiguration()
 
     // MARK: - Methods
 

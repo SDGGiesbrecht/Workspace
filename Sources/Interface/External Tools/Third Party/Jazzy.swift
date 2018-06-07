@@ -17,6 +17,8 @@ import GeneralImports
 
 import SDGExternalProcess
 
+import Project
+
 #if os(Linux)
 
 func linuxJazzyError() -> Command.Error {

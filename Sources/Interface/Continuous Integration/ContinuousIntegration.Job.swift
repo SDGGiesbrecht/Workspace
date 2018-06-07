@@ -13,7 +13,10 @@
  */
 
 import SDGLogic
+import SDGCollections
 import GeneralImports
+
+import Project
 
 extension ContinuousIntegration {
 
@@ -234,18 +237,16 @@ extension ContinuousIntegration {
 
         func isRequired(by project: PackageRepository, output: Command.Output) throws -> Bool {
             switch self {
-            case .macOSSwiftPackageManager:
-                return try project.configuration.supports(.macOS, project: project, output: output)
-            case .macOSXcode:
-                return try project.configuration.supports(.macOS, project: project, output: output)
+            case .macOSSwiftPackageManager, .macOSXcode:
+                return try .macOS ∈ project.cachedConfiguration().supportedOperatingSystems
             case .linux: // [_Exempt from Test Coverage_] False coverage result in Xcode 9.2.
-                return try project.configuration.supports(.linux, project: project, output: output)
+                return try .linux ∈ project.cachedConfiguration().supportedOperatingSystems
             case .iOS:
-                return try project.configuration.supports(.iOS, project: project, output: output)
+                return try .iOS ∈ project.cachedConfiguration().supportedOperatingSystems
             case .watchOS:
-                return try project.configuration.supports(.watchOS, project: project, output: output)
+                return try .watchOS ∈ project.cachedConfiguration().supportedOperatingSystems
             case .tvOS:
-                return try project.configuration.supports(.tvOS, project: project, output: output)
+                return try .tvOS ∈ project.cachedConfiguration().supportedOperatingSystems
             case .miscellaneous:
                 return true
             case .documentation:

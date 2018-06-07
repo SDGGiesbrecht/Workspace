@@ -154,20 +154,6 @@ struct Configuration {
         return try options()[option] ≠ nil
     }
 
-    // MARK: - Options: Supported Environment
-
-    func supports(_ operatingSystem: OperatingSystem, project: PackageRepository, output: Command.Output) throws -> Bool {
-        if ¬(try boolean(for: operatingSystem.supportOption) ?? true) {
-            return false
-        } else {
-            if try project.cachedPackage().targets.contains(where: { $0.type == .executable }) {
-                return PackageRepository.Target.TargetType.executable.isSupported(on: operatingSystem)
-            } else {
-                return true
-            }
-        }
-    }
-
     // MARK: - Options: Localizations
 
     func localizations() throws -> [String] {

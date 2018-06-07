@@ -18,6 +18,8 @@ import GeneralImports
 
 import SDGSwiftPackageManager
 
+import Project
+
 enum ReadMe {
 
     // MARK: - Locations
@@ -75,7 +77,7 @@ enum ReadMe {
     }
 
     private static func operatingSystemList(for project: PackageRepository, output: Command.Output) throws -> StrictString {
-        let supported = try OperatingSystem.cases.filter({ try project.configuration.supports($0, project: project, output: output) })
+        let supported = try OperatingSystem.cases.filter({ try $0 ∈ project.cachedConfiguration().supportedOperatingSystems })
         let list = supported.map({ $0.isolatedName.resolved() }).joined(separator: " • ".scalars)
         return StrictString(list)
     }

@@ -118,7 +118,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
             // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
             var allowedDifferences: [String] = []
-            for localization in try options.project.configuration.localizations() {
+            for localization in try options.project.cachedConfiguration().documentation.normalizedLocalizations {
                 var relatedProjects = ReadMe.relatedProjectsLocation(for: options.project, localization: localization).lastPathComponent
                 allowedDifferences.append(relatedProjects)
                 relatedProjects.scalars.replaceMatches(for: ".md".scalars, with: ".html".scalars)

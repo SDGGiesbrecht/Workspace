@@ -154,27 +154,6 @@ struct Configuration {
         return try options()[option] ≠ nil
     }
 
-    // MARK: - Options: Localizations
-
-    func localizations() throws -> [String] {
-        return try cached(in: &cache.localizations) {
-
-            let result = try list(for: .localizations)
-            if result.isEmpty {
-                throw Configuration.optionNotDefinedError(for: .localizations)
-            }
-            return result.map { (entry) -> String in
-                return InterfaceLocalization.code(for: StrictString(entry)) ?? entry
-            }
-        }
-    }
-    func developmentLocalization() throws -> String {
-        guard let result = try localizations().first else {
-            unreachable()
-        }
-        return result
-    }
-
     // MARK: - Options: Project Metadata
 
     func currentVersion() throws -> Version? {

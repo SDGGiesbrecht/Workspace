@@ -63,7 +63,7 @@ enum ReadMe {
 
     private static func localizationLinksMarkup(for project: PackageRepository, fromProjectRoot: Bool) throws -> StrictString {
         var links: [StrictString] = []
-        for targetLocalization in try project.configuration.localizations() {
+        for targetLocalization in try project.cachedConfiguration().documentation.normalizedLocalizations {
             let linkText = ContentLocalization.icon(for: targetLocalization) ?? StrictString("[" + targetLocalization + "]")
             let absoluteURL = readMeLocation(for: project, localization: targetLocalization)
             var relativeURL = StrictString(absoluteURL.path(relativeTo: project.location))
@@ -642,7 +642,7 @@ enum ReadMe {
     }
 
     static func refreshReadMe(for project: PackageRepository, output: Command.Output) throws {
-        let localizations = try project.configuration.localizations()
+        let localizations = try project.cachedConfiguration().documentation.normalizedLocalizations
         for localization in localizations {
             try autoreleasepool {
 
@@ -652,7 +652,7 @@ enum ReadMe {
                     try refreshRelatedProjects(at: relatedProjectsLocation(for: project, localization: localization), for: localization, in: project, output: output)
                 }
 
-                if localization == (try project.configuration.developmentLocalization()) {
+                if localization == (try project.cachedConfiguration().documentation.developmentLocalization()) {
                     try setting.do {
                         try refreshReadMe(at: project.location.appendingPathComponent("README.md"), for: localization, in: project, atProjectRoot: true, output: output)
                     }

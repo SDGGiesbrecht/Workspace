@@ -152,8 +152,8 @@ enum ReadMe {
         }
 
         var result = [StrictString(original)]
-        if let translation = try project.configuration.quotationTranslation(localization: localization) {
-            result += [translation]
+        if let translation = try project.cachedConfiguration().documentation.readMe.quotation?.translations[localization] {
+            result += [StrictString(translation)]
         }
         if let url = try project.configuration.quotationURL(localization: localization, project: project) {
             let components: [StrictString] = ["[", result.joinAsLines(), "](", StrictString(url.absoluteString), ")"]

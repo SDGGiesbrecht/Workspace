@@ -1,14 +1,14 @@
 
 import GeneralImports
 
-import WorkspaceConfiguration
-
 extension DocumentationConfiguration {
 
+    internal static func normalize(localizationIdentifier: String) -> String {
+        return InterfaceLocalization.code(for: StrictString(localizationIdentifier)) ?? localizationIdentifier
+    }
+
     public var normalizedLocalizations: [String] {
-        return localizations.map { (entry) -> String in
-            return InterfaceLocalization.code(for: StrictString(entry)) ?? entry
-        }
+        return localizations.map { DocumentationConfiguration.normalize(localizationIdentifier: $0) }
     }
 
     public func developmentLocalization() throws -> String {

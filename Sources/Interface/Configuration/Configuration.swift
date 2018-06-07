@@ -199,15 +199,6 @@ struct Configuration {
             throw Configuration.optionNotDefinedError(for: .author)
         }
     }
-    func shortProjectDescription(for localization: String) throws -> StrictString? {
-        return try localizedStrictString(for: localization, from: .shortProjectDescription)
-    }
-    func requireShortProjectDescription(for localization: String) throws -> StrictString {
-        guard let defined = try shortProjectDescription(for: localization) else {
-            throw Configuration.optionNotDefinedError(for: .shortProjectDescription)
-        }
-        return defined
-    }
 
     // MARK: - Options: Read‐Me
 

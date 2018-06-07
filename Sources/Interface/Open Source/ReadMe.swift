@@ -389,7 +389,7 @@ enum ReadMe {
         }
 
         readMe += ["# [_Project_]"]
-        if try project.configuration.optionIsDefined(.shortProjectDescription) {
+        if try ¬project.cachedConfiguration().documentation.readMe.shortProjectDescription.isEmpty {
             readMe += [
                 "",
                 "[_Short Description_]"
@@ -535,12 +535,24 @@ enum ReadMe {
                 return "API Links"
             }
         }))
-        try readMe.insert(resultOf: { try project.configuration.requireShortProjectDescription(for: localization) }, for: UserFacing({ localization in
+
+        try readMe.insert(resultOf: {
+            guard let description = try project.cachedConfiguration().documentation.readMe.normalizedShortProjectDescription[localization] else {
+                throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return StrictString("There is no short project description specified for “\(localization)”. (documentation.readMe.shortProjectDescription)")
+                    }
+                }))
+            }
+            return description
+        }, for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "Short Description"
             }
         }))
+
         try readMe.insert(resultOf: { try quotationMarkup(localization: localization, project: project) }, for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
@@ -630,7 +642,7 @@ enum ReadMe {
                         StrictString("### [\(name)](\(url.absoluteString))")
                     ]
 
-                    if let succeeded = try? package.configuration.shortProjectDescription(for: localization),
+                    if let succeeded = try? package.cachedConfiguration().documentation.readMe.normalizedShortProjectDescription[localization],
                         let description = succeeded { // [_Exempt from Test Coverage_] Until Workspace’s configuration is centralized again.
                         markdown += [
                             "",

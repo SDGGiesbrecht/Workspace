@@ -45,7 +45,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Read‐Me
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    if try options.project.configuration.shouldManageReadMe() {
+    if try options.project.cachedConfiguration().documentation.readMe.manage {
         try Workspace.Refresh.ReadMe.command.execute(withArguments: arguments, options: options, output: output)
     }
 

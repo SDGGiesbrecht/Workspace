@@ -26,7 +26,6 @@ enum Option : String, CustomStringConvertible {
 
     // MARK: - Cases
 
-    case manageReadMe = "Manage Read‐Me"
     case readMe = "Read‐Me"
     case documentationURL = "Documentation URL"
     case shortProjectDescription = "Short Project Description"
@@ -150,8 +149,6 @@ enum Option : String, CustomStringConvertible {
     var defaultValue: String {
         switch self {
 
-        case .manageReadMe:
-            return String(Configuration.falseOptionValue)
         case .readMe:
             return Configuration.noValue
         case .documentationURL:

@@ -336,10 +336,6 @@ struct Configuration {
 
     // MARK: - Options: Active Management Tasks
 
-    func shouldManageReadMe() throws -> Bool { // [_Exempt from Test Coverage_] [_Workaround: Until refresh is testable._]
-        return try boolean(for: .manageReadMe) ?? false // [_Exempt from Test Coverage_] [_Workaround: Until refresh is testable._]
-    }
-
     func shouldManageContinuousIntegration() throws -> Bool { // [_Exempt from Test Coverage_] [_Workaround: Until refresh is testable._]
         return try boolean(for: .manageContinuousIntegration) ?? false // [_Exempt from Test Coverage_] [_Workaround: Until refresh is testable._]
     }

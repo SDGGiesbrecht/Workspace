@@ -236,7 +236,6 @@ extension ContinuousIntegration {
             switch self {
             case .macOSSwiftPackageManager:
                 return try project.configuration.supports(.macOS, project: project, output: output)
-                    ∧ ¬(try project.configuration.projectType() == .application)
             case .macOSXcode:
                 return try project.configuration.supports(.macOS, project: project, output: output)
             case .linux: // [_Exempt from Test Coverage_] False coverage result in Xcode 9.2.

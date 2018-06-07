@@ -31,11 +31,6 @@ struct DXcode {
         let path = RelativePath("\(try Repository.packageRepository.xcodeProject()!.lastPathComponent)")
         var file = require { try File(at: path.subfolderOrFile("project.pbxproj")) }
 
-        let allTargets = try Repository.packageRepository.targets().map { $0.name }
-        let primaryProductName = allTargets.first(where: { $0.scalars.first! ∈ CharacterSet.uppercaseLetters ∧ ¬$0.hasPrefix("Tests") })!
-        let applicationExecutableName = primaryProductName
-        let xcodeTestTarget = primaryProductName + "Tests"
-
         let startToken = "LD_RUNPATH_SEARCH_PATHS = ("
         let endToken = ");"
         let illegal = endToken.scalars.first!
@@ -55,82 +50,7 @@ struct DXcode {
             LiteralPattern(startToken.scalars)
             ], with: replacement)
 
-        if try Repository.packageRepository.configuration.projectType() == .application {
-            var project = file.contents
-
-            // Change product type from framework to application.
-
-            let productMarkerSearchString = "productName = \u{22}\(primaryProductName)\u{22}"
-            guard let productMarker = project.range(of: productMarkerSearchString),
-                let rangeOfProductType = project.scalars.firstMatch(for: ".framework".scalars, in: (productMarker.upperBound ..< project.endIndex).sameRange(in: project.scalars))?.range.clusters(in: project.clusters) else {
-                    fatalError(message: [
-                        "Cannot find primary product in Xcode project.",
-                        "Expected “.framework” after “\(productMarkerSearchString)”."
-                        ])
-            }
-            project.replaceSubrange(rangeOfProductType, with: ".application")
-
-            // Application bundle name should be .app not .framework.
-
-            project = project.replacingOccurrences(of: "\(primaryProductName).framework", with: "\(primaryProductName).app")
-
-            // Remove .app from the list of frameworks that tests link against.
-
-            var possibleFrameworksList: Range<String.Index>?
-            var searchLocation = project.startIndex
-            let frameworkPhaseSearchString = "isa = \u{22}PBXFrameworksBuildPhase\u{22}"
-            let fileListTokens = ("files = (", ");")
-            while let frameworkPhase = project.scalars.firstMatch(for: frameworkPhaseSearchString.scalars, in: (searchLocation ..< project.endIndex).sameRange(in: project.scalars))?.range.clusters(in: project.clusters) {
-                searchLocation = frameworkPhase.upperBound
-
-                if let fileList = project.scalars.firstNestingLevel(startingWith: fileListTokens.0.scalars, endingWith: fileListTokens.1.scalars, in: (frameworkPhase.upperBound ..< project.endIndex).sameRange(in: project.scalars))?.contents.range.clusters(in: project.clusters) {
-                    if let existing = possibleFrameworksList {
-                        if project.distance(from: fileList.lowerBound, to: fileList.upperBound) > project.distance(from: existing.lowerBound, to: existing.upperBound) {
-                            possibleFrameworksList = fileList
-                        }
-                    } else {
-                        possibleFrameworksList = fileList
-                    }
-                }
-            }
-            guard let frameworksList = possibleFrameworksList else {
-                fatalError(message: [
-                    "Cannot find test dependency list in Xcode project.",
-                    "Expected “\(fileListTokens.0)”...“\(fileListTokens.1)” after “\(frameworkPhaseSearchString)”."
-                    ])
-            }
-            var frameworkLines = String(project[frameworksList]).lines.map({ String($0.line) })
-            for index in frameworkLines.indices.reversed() where ¬frameworkLines[index].isWhitespace {
-                frameworkLines.remove(at: index)
-                break
-            }
-            project.replaceSubrange(frameworksList, with: frameworkLines.joinAsLines())
-
-            // Provide test linking information.
-
-            let testMarker = "TARGET_NAME = \u{22}\(xcodeTestTarget)\u{22};"
-            let testInfo = [
-                "\u{22}TEST_HOST[sdk=macosx*]\u{22} = \u{22}$(BUILT_PRODUCTS_DIR)/\(primaryProductName).app/Contents/MacOS/\(applicationExecutableName)\u{22};",
-                "TEST_HOST = \u{22}$(BUILT_PRODUCTS_DIR)/\(primaryProductName).app/\(applicationExecutableName)\u{22};",
-                "BUNDLE_LOADER = \u{22}$(TEST_HOST)\u{22};"
-            ]
-            project = project.replacingOccurrences(of: testMarker, with: ([testMarker] + testInfo).joinAsLines())
-
-            file.contents = project
-        }
-
         require { try file.write(output: output) }
-
-        if try Repository.packageRepository.configuration.projectType() == .application {
-
-            // Denote principal class in Info.plist for @NSApplicationMain to work.
-
-            var info = require { try File(at: path.subfolderOrFile("\(primaryProductName)_Info.plist")) }
-
-            info.contents = info.contents.replacingOccurrences(of: "<key>NSPrincipalClass</key>\n  <string></string>", with: "<key>NSPrincipalClass</key>\n  <string>\(Configuration.moduleName).Application</string>")
-
-            require { try info.write(output: output) }
-        }
     }
 
     private static func modifyProject(condition shouldModify: (String) -> Bool, modification modify: (inout File) -> Void, output: Command.Output) throws {

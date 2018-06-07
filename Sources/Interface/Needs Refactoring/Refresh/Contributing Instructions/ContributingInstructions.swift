@@ -107,8 +107,14 @@ struct ContributingInstructions {
             ""
         ]
 
-        switch try Repository.packageRepository.configuration.projectType() {
-        case .library:
+        let products = try Repository.packageRepository.cachedPackage().products
+        if products.contains(where: { product in
+            if case .library = product.type {
+                return true
+            } else {
+                return false
+            } }) {
+
             template += [
                 "```swift",
                 "let thisCode = trigger(theBug)",
@@ -116,19 +122,14 @@ struct ContributingInstructions {
                 "// Or provide a link to code elsewhere.",
                 "```"
             ]
-        case .executable:
+        }
+        if products.contains(where: { $0.type == .executable }) {
             template += [
                 "```shell",
                 "this script \u{2D}\u{2D}triggers \u{22}the bug\u{22}",
                 "",
                 "# Or provide a link to a script elsewhere.",
                 "```"
-            ]
-        case .application:
-            template += [
-                "1. To trigger the bug, follow this step.",
-                "2. Then this step.",
-                "..."
             ]
         }
 

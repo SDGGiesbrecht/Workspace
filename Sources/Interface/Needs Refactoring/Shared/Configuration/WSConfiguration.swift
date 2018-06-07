@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// [_Warning: Remove this._]
+
 import SDGLogic
 import SDGCollections
 import GeneralImports
@@ -562,10 +564,6 @@ extension Configuration {
             } else {
                 required[key] = types
             }
-        }
-
-        for (option, types) in required where configurationFile[option] == nil ∧ (try? Repository.packageRepository.configuration.projectType())! ∈ types {
-            incompatibilityDetected(between: option, and: .requireOptions, documentation: DocumentationLink.requiringOptions)
         }
 
         return succeeding

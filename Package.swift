@@ -14,6 +14,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// [_Warning: Convert all documentation._]
+
 import PackageDescription
 
 let package = Package(

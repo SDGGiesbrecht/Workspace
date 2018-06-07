@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// [_Warning: Remove this._]
+
 import GeneralImports
 
 enum Option : String, CustomStringConvertible {
@@ -24,7 +26,6 @@ enum Option : String, CustomStringConvertible {
 
     // MARK: - Cases
 
-    case projectType = "Project Type"
     case requireOptions = "Require Options"
 
     case supportMacOS = "Support macOS"
@@ -101,7 +102,6 @@ enum Option : String, CustomStringConvertible {
     case testLongOption = "Test Long Option"
 
     static let allPublic: [Option] = [
-        .projectType,
         .requireOptions,
 
         .supportMacOS,
@@ -176,8 +176,6 @@ enum Option : String, CustomStringConvertible {
     var defaultValue: String {
         switch self {
 
-        case .projectType:
-            return String(PackageRepository.Target.TargetType.library.key)
         case .requireOptions:
             return Configuration.emptyListOptionValue
 

@@ -78,6 +78,8 @@ extension PackageRepository {
     }
 
     public func cachedConfiguration() throws -> WorkspaceConfiguration {
+        // [_Warning: Rename this to just configuration._]
+
         return try cached(in: &cache.configuration) {
             return try WorkspaceConfiguration.load(
                 configuration: WorkspaceConfiguration.self,

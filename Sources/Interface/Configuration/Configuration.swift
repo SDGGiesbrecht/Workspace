@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// [_Warning: Remove this._]
+
 import SDGLogic
 import GeneralImports
 import Project
@@ -153,17 +155,6 @@ struct Configuration {
     }
 
     // MARK: - Options: Supported Environment
-
-    func projectType() throws -> PackageRepository.Target.TargetType {
-        // [_Workaround: Temporarily needed for bridging._]
-        guard let key = try string(for: .projectType) else {
-            return .library
-        } // [_Exempt from Test Coverage_] Deprecated.
-        guard let result = PackageRepository.Target.TargetType(key: StrictString(key)) else { // [_Exempt from Test Coverage_] Deprecated.
-            throw Configuration.invalidEnumerationValueError(for: .projectType, value: key, valid: PackageRepository.Target.TargetType.cases.map({ $0.key })) // [_Exempt from Test Coverage_] Deprecated.
-        } // [_Exempt from Test Coverage_] Deprecated.
-        return result
-    }
 
     func supports(_ operatingSystem: OperatingSystem, project: PackageRepository, output: Command.Output) throws -> Bool {
         if ¬(try boolean(for: operatingSystem.supportOption) ?? true) {

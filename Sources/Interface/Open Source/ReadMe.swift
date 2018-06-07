@@ -110,19 +110,6 @@ enum ReadMe {
         return label + " " + StrictString(links.joined(separator: " • ".scalars))
     }
 
-    private static func key(for testament: StrictString) throws -> StrictString {
-        let old: StrictString = "תנ״ך"
-        let new: StrictString = "ΚΔ"
-        switch testament {
-        case old:
-            return "WLC"
-        case new:
-            return "SBLGNT"
-        default:
-            throw Configuration.invalidEnumerationValueError(for: .quotationTestament, value: String(testament), valid: [old, new])
-        }
-    }
-
     private static func quotationMarkup(localization: String, project: PackageRepository) throws -> StrictString {
         guard let original = try project.cachedConfiguration().documentation.readMe.quotation?.original else {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in

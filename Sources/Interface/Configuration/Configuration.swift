@@ -202,12 +202,6 @@ struct Configuration {
 
     // MARK: - Options: Read‐Me
 
-    func requireQuotationTestament() throws -> StrictString {
-        guard let value = try strictString(for: .quotationTestament) else {
-            throw Configuration.optionNotDefinedError(for: .quotationTestament)
-        }
-        return value
-    }
     func citation(localization: String) throws -> StrictString? {
         return try localizedStrictString(for: localization, from: .citation)
     }

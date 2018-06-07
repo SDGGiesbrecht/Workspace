@@ -16,9 +16,7 @@ import SDGLogic
 import GeneralImports
 
 import SDGSwiftPackageManager
-
-import PackageModel
-import PackageGraph
+import SDGSwiftConfigurationLoading
 
 extension PackageRepository {
 
@@ -28,6 +26,8 @@ extension PackageRepository {
         fileprivate var manifest: PackageModel.Manifest?
         fileprivate var package: PackageModel.Package?
         fileprivate var packageGraph: PackageGraph?
+
+        fileprivate var configuration: WorkspaceConfiguration?
 
         fileprivate var allFiles: [URL]?
         fileprivate var trackedFiles: [URL]?
@@ -72,6 +72,13 @@ extension PackageRepository {
     public func cachedPackageGraph() throws -> PackageGraph {
         return try cached(in: &cache.packageGraph) {
             return try packageGraph()
+        }
+    }
+
+    public func cachedConfiguration() throws -> WorkspaceConfiguration {
+        return try cached(in: &cache.configuration) {
+            let other = try packageGraph()
+            return WorkspaceConfiguration()
         }
     }
 

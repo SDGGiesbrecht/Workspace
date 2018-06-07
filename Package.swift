@@ -59,7 +59,8 @@ let package = Package(
         .target(name: "Project", dependencies: [
             "GeneralImports",
             "WorkspaceConfiguration",
-            .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift")
+            .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
+            .productItem(name: "SDGSwiftConfigurationLoading", package: "SDGSwift")
             ]),
 
         // Defines the lists of supported localizations.

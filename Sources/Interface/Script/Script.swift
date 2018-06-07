@@ -14,6 +14,8 @@
 
 import SDGLogic
 import GeneralImports
+
+import Metadata
 import Project
 
 enum Script : Int, IterableEnumeration {
@@ -141,7 +143,7 @@ enum Script : Int, IterableEnumeration {
         if try project.isWorkspaceProject() {
             return ["swift run workspace " + command]
         } else {
-            let version = StrictString(latestStableWorkspaceVersion.string())
+            let version = StrictString(Metadata.latestStableVersion.string())
             let arguments: StrictString = command + " •use‐version " + version
 
             let macOSCachePath: StrictString = "~/Library/Caches/ca.solideogloria.Workspace/Versions/" + version + "/"

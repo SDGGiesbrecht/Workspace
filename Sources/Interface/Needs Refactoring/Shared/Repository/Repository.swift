@@ -14,11 +14,11 @@
 
 import GeneralImports
 
-struct Repository {
+public struct Repository {
 
     // MARK: - Bridging
 
-    static let packageRepository = PackageRepository(at: URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
+    public static let packageRepository = PackageRepository(at: URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
 
     static func paths(from urls: [URL]) -> [RelativePath] {
         return urls.map { (url) in

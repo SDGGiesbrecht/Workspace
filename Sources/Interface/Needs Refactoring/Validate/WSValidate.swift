@@ -18,6 +18,8 @@ import GeneralImports
 
 import SDGExternalProcess
 
+import Metadata
+
 func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: Command.Output) throws {
 
     var validationStatus = ValidationStatus()
@@ -158,7 +160,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
             switch localization {
             case .englishCanada:
                 return [
-                    StrictString("This validation used Workspace \(latestStableWorkspaceVersion.string()), which is no longer up to date."),
+                    StrictString("This validation used Workspace \(Metadata.latestStableVersion.string()), which is no longer up to date."),
                     "To update the version used by this project, run:",
                     StrictString("$ workspace refresh scripts •use‐version \(update.string)"),
                     "(This requires a full installation. See the following link.)",

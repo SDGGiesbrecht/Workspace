@@ -15,6 +15,8 @@
 import SDGLogic
 import GeneralImports
 
+import Metadata
+
 extension Workspace {
     enum CheckForUpdates {
 
@@ -53,8 +55,8 @@ extension Workspace {
         })
 
         static func checkForUpdates(output: Command.Output) throws -> Version? {
-            let latestRemote = try Package(url: workspacePackageURL).versions().sorted().last!
-            if latestRemote ≠ latestStableWorkspaceVersion {
+            let latestRemote = try Package(url: Metadata.packageURL).versions().sorted().last!
+            if latestRemote ≠ Metadata.latestStableVersion {
                 // [_Exempt from Test Coverage_] Execution path is determined externally.
                 return latestRemote
             } else { // [_Exempt from Test Coverage_] Execution path is determined externally.

@@ -18,6 +18,8 @@ import GeneralImports
 import SDGSwiftPackageManager
 import SDGSwiftConfigurationLoading
 
+import Metadata
+
 extension PackageRepository {
 
     // MARK: - Cache
@@ -77,8 +79,18 @@ extension PackageRepository {
 
     public func cachedConfiguration() throws -> WorkspaceConfiguration {
         return try cached(in: &cache.configuration) {
-            let other = try packageGraph()
-            return WorkspaceConfiguration()
+            return try WorkspaceConfiguration.load(
+                configuration: WorkspaceConfiguration.self,
+                named: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return "Workspace"
+                    }
+                }),
+                from: location,
+                linkingAgainst: "WorkspaceConfiguration",
+                in: SDGSwift.Package(url: Metadata.packageURL),
+                at: Metadata.latestStableVersion)
         }
     }
 

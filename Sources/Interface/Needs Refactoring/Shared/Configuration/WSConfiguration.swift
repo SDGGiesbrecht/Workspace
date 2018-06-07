@@ -360,12 +360,6 @@ extension Configuration {
         return mapped
     }
 
-    // Project Type
-
-    static var requiredOptions: [String] {
-        return listValue(option: .requireOptions)
-    }
-
     // Project Names
 
     static func moduleName(forProjectName projectName: String) -> String {
@@ -515,55 +509,6 @@ extension Configuration {
 
         if optionIsDefined(.encryptedTravisDeploymentKey) ∧ ¬optionIsDefined(.originalDocumentationCopyrightYear) {
             incompatibilityDetected(between: .encryptedTravisDeploymentKey, and: .originalDocumentationCopyrightYear, documentation: DocumentationLink.documentationGeneration)
-        }
-
-        // Custom
-
-        let requiredEntries = requiredOptions
-        let requiredDefinitions = requiredEntries.map { (entry: String) -> (option: Option, types: Set<PackageRepository.Target.TargetType>) in
-
-            func option(forKey key: String) -> Option {
-                if let option = Option(key: key) {
-                    return option
-                } else {
-                    fatalError(message: [
-                        "Invalide option key in “Required Options”.",
-                        "",
-                        key,
-                        "",
-                        "Available Keys:",
-                        "",
-                        Option.allPublic.map({ $0.key }).joinAsLines()
-                        ])
-                }
-            }
-
-            let components = entry.components(separatedBy: ": ").map { String($0.contents) }
-
-            if components.count == 1 {
-                return (option: option(forKey: components[0]), types: Set(PackageRepository.Target.TargetType.cases))
-            } else {
-                guard let type = PackageRepository.Target.TargetType(key: StrictString(components[0])) else {
-                    fatalError(message: [
-                        "Invalid project type in “Required Options”:",
-                        "",
-                        components[0],
-                        "",
-                        "Available Types:",
-                        "",
-                        String(PackageRepository.Target.TargetType.cases.map({ $0.key }).joinAsLines())
-                        ])
-                }
-                return (option: option(forKey: components[1]), types: [type])
-            }
-        }
-        var required: [Option: Set<PackageRepository.Target.TargetType>] = [:]
-        for (key, types) in requiredDefinitions {
-            if let existing = required[key] {
-                required[key] = existing ∪ types
-            } else {
-                required[key] = types
-            }
         }
 
         return succeeding

@@ -34,13 +34,13 @@ public struct Quotation : Codable {
     /// There are no default translations.
     public var translation: [LocalizationIdentifier: String] = [:]
 
-    /// A link for the quotation.
-    ///
-    /// There is no default link.
-    public var link: [LocalizationIdentifier: URL] = [:]
-
     /// The citation.
     ///
     /// There is no default citation.
     public var citation: [LocalizationIdentifier: String] = [:]
+
+    /// A link for the quotation.
+    ///
+    /// There is no default link.
+    public var link: [LocalizationIdentifier: URL] = [:]
 }

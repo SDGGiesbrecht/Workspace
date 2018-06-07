@@ -123,24 +123,6 @@ enum ReadMe {
         }
     }
 
-    static func defaultQuotationURL(localization: String, project: PackageRepository) throws -> URL? {
-        guard let chapter = try project.configuration.quotationChapter() else {
-            return nil
-        }
-        let translationCode = UserFacing<StrictString, ContentLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom:
-                return "NIVUK"
-            case .englishUnitedStates, .englishCanada:
-                return "NIV"
-            }
-        }).resolved()
-
-        let sanitizedChapter = chapter.replacingMatches(for: " ".scalars, with: "+".scalars)
-        let originalKey = try key(for: try project.configuration.requireQuotationTestament())
-        return URL(string: "https://www.biblegateway.com/passage/?search=\(sanitizedChapter)&version=\(originalKey);\(translationCode)")
-    }
-
     private static func quotationMarkup(localization: String, project: PackageRepository) throws -> StrictString {
         guard let original = try project.cachedConfiguration().documentation.readMe.quotation?.original else {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in

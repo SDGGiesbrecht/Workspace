@@ -202,9 +202,6 @@ struct Configuration {
 
     // MARK: - Options: Read‐Me
 
-    func quotationChapter() throws -> StrictString? {
-        return try strictString(for: .quotationChapter)
-    }
     func requireQuotationTestament() throws -> StrictString {
         guard let value = try strictString(for: .quotationTestament) else {
             throw Configuration.optionNotDefinedError(for: .quotationTestament)

@@ -27,7 +27,6 @@ enum Option : String, CustomStringConvertible {
     // MARK: - Cases
 
     case readMe = "Read‐Me"
-    case quotationChapter = "Quotation Chapter"
     case quotationTestament = "Quotation Testament"
     case citation = "Citation"
     case featureList = "Feature List"
@@ -140,8 +139,6 @@ enum Option : String, CustomStringConvertible {
         switch self {
 
         case .readMe:
-            return Configuration.noValue
-        case .quotationChapter:
             return Configuration.noValue
         case .quotationTestament:
             return Configuration.noValue

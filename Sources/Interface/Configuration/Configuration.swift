@@ -202,12 +202,6 @@ struct Configuration {
 
     // MARK: - Options: Read‐Me
 
-    func quotationURL(localization: String, project: PackageRepository) throws -> URL? {
-        guard let url = try localizedString(for: localization, from: .quotationURL) else {
-            return try ReadMe.defaultQuotationURL(localization: localization, project: project)
-        }
-        return URL(string: url)
-    }
     func quotationChapter() throws -> StrictString? {
         return try strictString(for: .quotationChapter)
     }

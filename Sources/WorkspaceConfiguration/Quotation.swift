@@ -32,15 +32,15 @@ public struct Quotation : Codable {
     /// Translations of the quotation.
     ///
     /// There are no default translations.
-    public var translations: [LocalizationIdentifier: String] = [:]
+    public var translation: [LocalizationIdentifier: String] = [:]
 
     /// A link for the quotation.
     ///
     /// There is no default link.
-    public var links: [LocalizationIdentifier: URL] = [:]
+    public var link: [LocalizationIdentifier: URL] = [:]
 
     /// The citation.
     ///
     /// There is no default citation.
-    public var citations: [LocalizationIdentifier: String] = [:]
+    public var citation: [LocalizationIdentifier: String] = [:]
 }

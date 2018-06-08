@@ -16,6 +16,7 @@ import GeneralImports
 
 // [_Warning: Do these need to be public?_]
 public struct Template {
+    // [_Warning: Deprecated._]
 
     // MARK: - Initialization
 

@@ -10,6 +10,8 @@ extension ReadMeConfiguration {
     }
 
     internal func resolvedContents(for package: PackageRepository) throws -> [LocalizationIdentifier: StrictString] {
+        // [_Warning: Sink this with context._]
+
         var templates = contents.resolve(try package.cachedConfiguration()).mapKeyValuePairs { localization, text in
             return (DocumentationConfiguration.normalize(localizationIdentifier: localization), StrictString(text))
         }

@@ -119,13 +119,6 @@ enum ReadMe {
 
         // Word Elements
 
-        readMe.insert(try project.projectName(), for: UserFacing({ localization in
-            switch localization {
-            case .englishCanada:
-                return "Project"
-            }
-        }))
-
         for (key, example) in try project.examples(output: output) {
             readMe.insert([
                 "```swift",

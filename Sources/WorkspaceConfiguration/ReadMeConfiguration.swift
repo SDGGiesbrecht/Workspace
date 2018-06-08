@@ -68,9 +68,10 @@ public struct ReadMeConfiguration : Codable {
     /// - `[_localizationLinks_]`: Links to the read‐me in its other languages.
     /// - `[_apiLinks_]`: Links to the generated documentation (blank unless `documentationURL` is specified).
     /// - `[_projectName_]`: The name of the project.
+    /// - `[_relatedProjects_]`: A link to the list of related projects.
     /// - `[_installationInstructions_]`: The value of `installationInstructions`
+    /// - `[_exampleUsage_]`: The value of `exampleUsage`.
     public var contents: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>() { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
-        // [_Warning: Not documented yet._]
 
         var result: [LocalizationIdentifier: Markdown] = [:]
         for localization in ContentLocalization.cases {

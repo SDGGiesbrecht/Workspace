@@ -76,11 +76,12 @@ public struct ReadMeConfiguration : Codable {
                 "[_localizationLinks_]",
                 ""
             ]
+
             readMe += [
-                // [_Warning: Unnecessary template?_]
-                "[_Operating System List_]",
+                OperatingSystem.cases.filter({ configuration.supportedOperatingSystems.contains($0) }).map({ $0.isolatedName(for: localization) }).joined(separator: " • "),
                 ""
             ]
+
             if configuration.documentation.documentationURL ≠ nil {
                 readMe += [
                     // [_Warning: Unnecessary template?_]

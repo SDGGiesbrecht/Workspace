@@ -35,12 +35,6 @@ enum ReadMe {
 
     // MARK: - Templates
 
-    private static func operatingSystemList(for project: PackageRepository, output: Command.Output) throws -> StrictString {
-        let supported = try OperatingSystem.cases.filter({ try $0 ∈ project.cachedConfiguration().supportedOperatingSystems })
-        let list = supported.map({ $0.isolatedName.resolved() }).joined(separator: " • ".scalars)
-        return StrictString(list)
-    }
-
     private static func apiLinksMarkup(for project: PackageRepository, output: Command.Output) throws -> StrictString {
 
         guard let baseURL = try project.cachedConfiguration().documentation.documentationURL else {
@@ -181,12 +175,6 @@ enum ReadMe {
 
         // Line Elements
 
-        readMe.insert(try operatingSystemList(for: project, output: output), for: UserFacing({ localization in
-            switch localization {
-            case .englishCanada:
-                return "Operating System List"
-            }
-        }))
         try readMe.insert(resultOf: { try apiLinksMarkup(for: project, output: output) }, for: UserFacing({ localization in
             switch localization {
             case .englishCanada:

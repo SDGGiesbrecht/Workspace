@@ -27,46 +27,4 @@ extension OperatingSystem {
         return .linux
         #endif
     }
-
-    // MARK: - Properties
-
-    var isolatedName: UserFacing<StrictString, ContentLocalization> {
-        switch self {
-        case .macOS:
-            return UserFacing({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "macOS"
-                }
-            })
-        case .linux:
-            return UserFacing({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Linux"
-                }
-            })
-        case .iOS:
-            return UserFacing({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "iOS"
-                }
-            })
-        case .watchOS:
-            return UserFacing({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "watchOS"
-                }
-            })
-        case .tvOS:
-            return UserFacing({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "tvOS"
-                }
-            })
-        }
-    }
 }

@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import LocalizationPrimitives
+
 /// An operating system.
 public enum OperatingSystem : String, Codable {
 
@@ -41,4 +43,36 @@ public enum OperatingSystem : String, Codable {
         .watchOS,
         .tvOS
     ]
+
+    // MARK: - Properties
+
+    internal func isolatedName(for localization: ContentLocalization) -> String {
+        switch self {
+        case .macOS:
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "macOS"
+            }
+        case .linux:
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Linux"
+            }
+        case .iOS:
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "iOS"
+            }
+        case .watchOS:
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "watchOS"
+            }
+        case .tvOS:
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "tvOS"
+            }
+        }
+    }
 }

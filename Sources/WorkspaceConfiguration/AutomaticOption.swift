@@ -3,6 +3,7 @@
 ///
 /// The automated value may depend on the package manifest, the contents of the repository, or other information which is not available until after the configuration is loaded.
 public enum Automatic<Option> : Codable where Option : Codable {
+    // [_Warning: Sink all these with context._]
 
     // MARK: - Cases
 

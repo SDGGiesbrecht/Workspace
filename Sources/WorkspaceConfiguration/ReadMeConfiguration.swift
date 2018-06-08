@@ -66,6 +66,8 @@ public struct ReadMeConfiguration : Codable {
     /// Workspace will replace several template tokens after the configuration is loaded:
     ///
     /// - `[_localizationLinks_]`: Links to the read‐me in its other languages.
+    /// - `[_apiLinks_]`: Links to the generated documentation (blank unless `documentationURL` is specified).
+    /// - `[_projectName_]`: The name of the project.
     /// - `[_installationInstructions_]`: The value of `installationInstructions`
     public var contents: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>() { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
         // [_Warning: Not documented yet._]
@@ -89,8 +91,7 @@ public struct ReadMeConfiguration : Codable {
                 ]
             }
 
-            // [_Warning: Unnecessary template?_]
-            readMe += ["# [_Project_]"]
+            readMe += ["# [_projectName_]"]
 
             if let description = configuration.documentation.readMe.shortProjectDescription[localization.rawValue] {
                 readMe += [

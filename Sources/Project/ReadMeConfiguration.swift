@@ -17,6 +17,23 @@ extension ReadMeConfiguration {
         templates = try templates.mapKeyValuePairs { (language, template) in
             var result = Template(source: template)
 
+            // Sections
+
+            let localizedInstallation: StrictString
+            if let specified = installation[language] {
+                localizedInstallation = specified
+            } else {
+                localizedInstallation = ""
+            }
+            result.insert(localizedInstallation, for: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "installationInstructions"
+                }
+            }))
+
+            // Lines
+
             result.insert(try localizationLinksMarkup(for: package), for: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
@@ -37,16 +54,12 @@ extension ReadMeConfiguration {
                 }
             }))
 
-            let localizedInstallation: StrictString
-            if let specified = installation[language] {
-                localizedInstallation = specified
-            } else {
-                localizedInstallation = ""
-            }
-            result.insert(localizedInstallation, for: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            // Fragments
+
+            result.insert(try package.projectName(), for: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
-                    return "installationInstructions"
+                    return "projectName"
                 }
             }))
 

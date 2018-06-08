@@ -26,7 +26,6 @@ enum Option : String, CustomStringConvertible {
 
     // MARK: - Cases
 
-    case currentVersion = "Current Version"
     case exampleUsage = "Example Usage"
     case otherReadMeContent = "Other Read‐Me Content"
     case readMeAboutSection = "Read‐Me About Section"
@@ -75,7 +74,6 @@ enum Option : String, CustomStringConvertible {
     case testLongOption = "Test Long Option"
 
     static let allPublic: [Option] = [
-        .currentVersion,
         .exampleUsage,
         .otherReadMeContent,
         .readMeAboutSection,
@@ -124,8 +122,6 @@ enum Option : String, CustomStringConvertible {
 
     var defaultValue: String {
         switch self {
-        case .currentVersion:
-            return Configuration.noValue
         case .exampleUsage:
             return Configuration.noValue
         case .otherReadMeContent:

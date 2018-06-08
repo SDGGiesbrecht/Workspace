@@ -156,19 +156,6 @@ struct Configuration {
 
     // MARK: - Options: Project Metadata
 
-    func currentVersion() throws -> Version? {
-        guard let defined = try string(for: .currentVersion) else {
-            return nil
-        }
-        return Version(defined)
-    }
-    func requireCurrentVersion() throws -> Version {
-        guard let defined = try currentVersion() else {
-            throw Configuration.optionNotDefinedError(for: .currentVersion)
-        }
-        return defined
-    }
-
     func documentationCopyright() throws -> Template {
         if let defined = try strictString(for: .documentationCopyright) {
             return Template(source: defined)

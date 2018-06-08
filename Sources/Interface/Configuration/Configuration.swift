@@ -169,19 +169,6 @@ struct Configuration {
         return defined
     }
 
-    func repositoryURL() throws -> URL? {
-        if let defined = try string(for: .repositoryURL) {
-            return URL(string: defined)
-        }
-        return nil
-    }
-    func requireRepositoryURL() throws -> URL {
-        guard let defined = try repositoryURL() else {
-            throw Configuration.optionNotDefinedError(for: .repositoryURL)
-        }
-        return defined
-    }
-
     func documentationCopyright() throws -> Template {
         if let defined = try strictString(for: .documentationCopyright) {
             return Template(source: defined)

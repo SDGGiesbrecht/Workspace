@@ -305,7 +305,7 @@ enum ReadMe {
         // Section Elements
 
         try readMe.insert(resultOf: {
-            guard let description = try project.cachedConfiguration().documentation.readMe.normalizedShortProjectDescription[localization] else {
+            guard let features = try project.cachedConfiguration().documentation.readMe.normalizedShortProjectDescription[localization] else {
                 throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
@@ -313,7 +313,7 @@ enum ReadMe {
                     }
                 }))
             }
-            return description
+            return features
         }, for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
@@ -322,7 +322,7 @@ enum ReadMe {
         }))
 
         try readMe.insert(resultOf: {
-            guard let description = try project.cachedConfiguration().documentation.readMe.resolvedInstallationInstructions(for: project)[localization] else {
+            guard let instructions = try project.cachedConfiguration().documentation.readMe.resolvedInstallationInstructions(for: project)[localization] else {
                 throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
@@ -330,7 +330,7 @@ enum ReadMe {
                     }
                 }))
             }
-            return description
+            return instructions
         }, for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
@@ -418,12 +418,24 @@ enum ReadMe {
                 return "Project"
             }
         }))
-        try readMe.insert(resultOf: { StrictString(try project.configuration.requireRepositoryURL().absoluteString) }, for: UserFacing({ localization in
+
+        try readMe.insert(resultOf: {
+            guard let url = try project.cachedConfiguration().documentation.repositoryURL else {
+                throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return StrictString("There is no short project description specified for “\(localization)”. (documentation.repositoryURL)")
+                    }
+                }))
+            }
+            return StrictString(url.absoluteString)
+        }, for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "Repository URL"
             }
         }))
+
         try readMe.insert(resultOf: { StrictString(try project.configuration.requireCurrentVersion().string()) }, for: UserFacing({ localization in
             switch localization {
             case .englishCanada:

@@ -27,7 +27,6 @@ enum Option : String, CustomStringConvertible {
     // MARK: - Cases
 
     case readMe = "Read‐Me"
-    case installationInstructions = "Installation Instructions"
     case repositoryURL = "Repository URL"
     case currentVersion = "Current Version"
     case exampleUsage = "Example Usage"
@@ -79,7 +78,6 @@ enum Option : String, CustomStringConvertible {
 
     static let allPublic: [Option] = [
         .readMe,
-        .installationInstructions,
         .repositoryURL,
         .currentVersion,
         .exampleUsage,
@@ -132,8 +130,6 @@ enum Option : String, CustomStringConvertible {
         switch self {
 
         case .readMe:
-            return Configuration.noValue
-        case .installationInstructions:
             return Configuration.noValue
         case .repositoryURL:
             return Configuration.noValue

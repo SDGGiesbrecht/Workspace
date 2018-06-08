@@ -108,12 +108,7 @@ struct ContributingInstructions {
         ]
 
         let products = try Repository.packageRepository.cachedPackage().products
-        if products.contains(where: { product in
-            if case .library = product.type {
-                return true
-            } else {
-                return false
-            } }) {
+        if products.contains(where: { $0.type.isLibrary }) {
 
             template += [
                 "```swift",

@@ -28,14 +28,13 @@ extension PackageRepository {
         fileprivate var manifest: PackageModel.Manifest?
         fileprivate var package: PackageModel.Package?
         fileprivate var packageGraph: PackageGraph?
+        fileprivate var dependenciesByName: [String: ResolvedPackage]?
 
         fileprivate var configuration: WorkspaceConfiguration?
 
         fileprivate var allFiles: [URL]?
         fileprivate var trackedFiles: [URL]?
         fileprivate var sourceFiles: [URL]?
-
-        fileprivate var dependenciesByName: [String: ResolvedPackage]?
     }
     private static var caches: [URL: Cache] = [:]
     private var cache: Cache {
@@ -57,7 +56,7 @@ extension PackageRepository {
         return try projectName() == "Workspace"
     }
 
-    // MARK: - Structure
+    // MARK: - Manifest
 
     public func cachedManifest() throws -> PackageModel.Manifest {
         return try cached(in: &cache.manifest) {
@@ -77,6 +76,24 @@ extension PackageRepository {
         }
     }
 
+    public func projectName() throws -> StrictString {
+        return StrictString(try cachedManifest().name)
+    }
+
+    public func dependenciesByName() throws -> [String: ResolvedPackage] {
+        return try cached(in: &cache.dependenciesByName) {
+            let graph = try cachedPackageGraph()
+
+            var result: [String: ResolvedPackage] = [:]
+            for dependency in graph.packages {
+                result[dependency.name] = dependency
+            }
+            return result
+        }
+    }
+
+    // MARK: - Configuration
+
     public func cachedConfiguration() throws -> WorkspaceConfiguration {
         // [_Warning: Rename this to just configuration._]
 
@@ -93,22 +110,6 @@ extension PackageRepository {
                 linkingAgainst: "WorkspaceConfiguration",
                 in: SDGSwift.Package(url: Metadata.packageURL),
                 at: Metadata.latestStableVersion)
-        }
-    }
-
-    public func projectName() throws -> StrictString {
-        return StrictString(try cachedManifest().name)
-    }
-
-    public func dependenciesByName() throws -> [String: ResolvedPackage] {
-        return try cached(in: &cache.dependenciesByName) {
-            let graph = try cachedPackageGraph()
-
-            var result: [String: ResolvedPackage] = [:]
-            for dependency in graph.packages {
-                result[dependency.name] = dependency
-            }
-            return result
         }
     }
 

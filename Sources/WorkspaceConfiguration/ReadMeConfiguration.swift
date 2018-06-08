@@ -46,7 +46,7 @@ public struct ReadMeConfiguration : Codable {
     /// Installation instructions.
     ///
     /// Default instructions exist for executable and library products if `repositoryURL` and `currentVersion` are defined.
-    public var installationInstructions: Automatic<[LocalizationIdentifier: Markdown]?> = .automatic
+    public var installationInstructions: Automatic<[LocalizationIdentifier: Markdown]> = .automatic
 
     /// Example usage.
     ///

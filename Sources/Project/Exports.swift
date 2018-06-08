@@ -14,8 +14,10 @@
 
 @_exported import class PackageModel.Manifest
 @_exported import class PackageModel.Package
+@_exported import struct PackageGraph.PackageGraph
+@_exported import class PackageModel.Product
 @_exported import enum PackageModel.ProductType
 @_exported import class PackageModel.ResolvedPackage
-@_exported import struct PackageGraph.PackageGraph
+@_exported import class PackageModel.Target
 
 @_exported import WorkspaceConfiguration

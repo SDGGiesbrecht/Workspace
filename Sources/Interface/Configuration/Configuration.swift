@@ -202,19 +202,6 @@ struct Configuration {
 
     // MARK: - Options: Read‐Me
 
-    func installationInstructions(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template? {
-        if let defined = try localizedTemplate(for: localization, from: .installationInstructions) {
-            return defined
-        } else {
-            return try ReadMe.defaultInstallationInstructionsTemplate(localization: localization, project: project, output: output)
-        }
-    }
-    func requireInstallationInstructions(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template {
-        guard let defined = try installationInstructions(for: localization, project: project, output: output) else {
-            throw Configuration.optionNotDefinedError(for: .installationInstructions) // [_Exempt from Test Coverage_] [_Workaround: Until application targets are supported again._]
-        }
-        return defined
-    }
     func exampleUsage(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template? {
         if let defined = try localizedTemplate(for: localization, from: .exampleUsage) {
             return defined

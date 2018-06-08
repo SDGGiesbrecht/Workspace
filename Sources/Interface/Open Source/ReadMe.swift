@@ -100,11 +100,16 @@ enum ReadMe {
             }
         }).resolved()
 
-        let links = try project.publicLibraryModules().map { (name: String) -> StrictString in
+        var links: [StrictString] = []
+        var alreadyListed: Set<String> = []
+        for product in try project.cachedPackage().products where product.type.isLibrary {
+            for module in product.targets where module.name ∉ alreadyListed {
+                alreadyListed.insert(module.name)
 
-            var link: StrictString = "[" + StrictString(name) + "]"
-            link += "(" + StrictString(baseURL.appendingPathComponent(name).absoluteString) + ")"
-            return link
+                var link: StrictString = "[" + StrictString(module.name) + "]"
+                link += "(" + StrictString(baseURL.appendingPathComponent(module.name).absoluteString) + ")"
+                links.append(link)
+            }
         }
 
         return label + " " + StrictString(links.joined(separator: " • ".scalars))
@@ -148,165 +153,6 @@ enum ReadMe {
             }
         }).resolved()
         return link + " " + skipInJazzy
-    }
-
-    static func defaultInstallationInstructionsTemplate(localization: String, project: PackageRepository, output: Command.Output) throws -> Template? {
-        var result: [StrictString] = []
-
-        var tools = try project.cachedPackage().products.filter({ $0.type == .executable }).map { $0.name }
-
-        // Filter out tools which have not been declared as products.
-        switch try project.cachedManifest().package {
-        case .v3:
-            // [_Exempt from Test Coverage_] Not officially supported anyway.
-            tools = [] // No concept of products.
-        case .v4(let manifest):
-            let publicProducts = Set(manifest.products.map({ $0.name }))
-            tools = tools.filter { $0 ∈ publicProducts }
-        }
-
-        var includedInstallationSection = false
-        if ¬tools.isEmpty,
-            let repository = try project.configuration.repositoryURL(),
-            let version = try project.configuration.currentVersion() {
-            let package = StrictString(try project.cachedManifest().name)
-
-            includedInstallationSection = true
-
-            result += [
-                "## " + UserFacing<StrictString, ContentLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "Installation"
-                    }
-                }).resolved(),
-                "",
-                UserFacing<StrictString, ContentLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return StrictString("Paste the following into a terminal to install or update `\(package)`:")
-                    }
-                }).resolved(),
-                "",
-                "```shell",
-                StrictString("curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s \(package) \u{22}\(repository.absoluteString)\u{22} \(version.string()) \u{22}\(tools.first!) help\u{22} " + tools.joined(separator: " ")),
-                "```"
-            ]
-        }
-
-        let libraries = try project.publicLibraryModules()
-        if ¬libraries.isEmpty {
-            if includedInstallationSection {
-                result += [""]
-            }
-
-            result += [
-                "## " + UserFacing<StrictString, ContentLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "Importing"
-                    }
-                }).resolved(),
-                "",
-                UserFacingDynamic<StrictString, ContentLocalization, StrictString>({ localization, package in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return StrictString("`\(package)` is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).")
-                    }
-                }).resolved(using: StrictString(try project.cachedManifest().name)),
-                ""
-            ]
-
-            let dependencySummary: StrictString = UserFacingDynamic<StrictString, ContentLocalization, StrictString>({ localization, package in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return StrictString("Simply add `\(package)` as a dependency in `Package.swift`")
-                }
-            }).resolved(using: StrictString(try project.cachedManifest().name))
-
-            if let repository = try project.configuration.repositoryURL(),
-                let currentVersion = try project.configuration.currentVersion() {
-                var versionSpecification: String
-                if currentVersion.major == 0 {
-                    versionSpecification = ".upToNextMinor(from: Version(\(currentVersion.major), \(currentVersion.minor), \(currentVersion.patch)))"
-                } else {
-                    versionSpecification = "from: Version(\(currentVersion.major), \(currentVersion.minor), \(currentVersion.patch))"
-                }
-
-                result += [
-                    dependencySummary + UserFacing<StrictString, ContentLocalization>({ localization in
-                        switch localization {
-                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                            return ":"
-                        }
-                    }).resolved(),
-                    "",
-                    "```swift",
-                    StrictString("let ") + UserFacing<StrictString, ContentLocalization>({ localization in
-                        switch localization {
-                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                            return "package"
-                        }
-                    }).resolved() + " = Package(",
-                    (StrictString("    name: \u{22}") + UserFacing<StrictString, ContentLocalization>({ localization in
-                        switch localization {
-                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                            return "MyPackage"
-                        }
-                    }).resolved() + StrictString("\u{22},")) as StrictString,
-                    "    dependencies: [",
-                    StrictString("        .package(url: \u{22}\(repository.absoluteString)\u{22}, \(versionSpecification)),"),
-                    "    ],",
-                    "    targets: [",
-                    (StrictString("        .target(name: \u{22}") + UserFacing<StrictString, ContentLocalization>({ localization in
-                        switch localization {
-                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                            return "MyTarget"
-                        }
-                    }).resolved() + StrictString("\u{22}, dependencies: [")) as StrictString
-                ]
-                for library in libraries {
-                    result += [StrictString("            .productItem(name: \u{22}\(library)\u{22}, package: \u{22}\(try project.cachedManifest().name)\u{22}),")]
-                }
-                result += [
-                    "        ])",
-                    "    ]",
-                    ")",
-                    "```"
-                ]
-            } else {
-                result += [dependencySummary + UserFacing<StrictString, ContentLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "."
-                    }
-                }).resolved()]
-            }
-
-            result += [
-                "",
-                UserFacingDynamic<StrictString, ContentLocalization, StrictString>({ localization, package in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return StrictString("`\(package)` can then be imported in source files:")
-                    }
-                }).resolved(using: StrictString(try project.cachedManifest().name)),
-                "",
-                "```swift"
-            ]
-            for library in libraries {
-                result += [StrictString("import \(library)")]
-            }
-            result += [
-                "```"
-            ]
-        }
-
-        if result == [] { // [_Exempt from Test Coverage_] [_Workaround: Until application targets are supported again._]
-            return nil
-        } else {
-            return Template(source: result.joinAsLines())
-        }
     }
 
     static func defaultExampleUsageTemplate(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template? {
@@ -402,7 +248,7 @@ enum ReadMe {
             ]
         }
 
-        if (try project.configuration.installationInstructions(for: localization, project: project, output: output)) ≠ nil {
+        if try ¬project.cachedConfiguration().documentation.readMe.resolvedInstallationInstructions(for: project).isEmpty {
             readMe += [
                 "",
                 "[_Installation Instructions_]"
@@ -475,7 +321,17 @@ enum ReadMe {
             }
         }))
 
-        try readMe.insert(resultOf: { try project.configuration.requireInstallationInstructions(for: localization, project: project, output: output).text }, for: UserFacing({ localization in
+        try readMe.insert(resultOf: {
+            guard let description = try project.cachedConfiguration().documentation.readMe.resolvedInstallationInstructions(for: project)[localization] else {
+                throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return StrictString("There are no installation instructions specified for “\(localization)”. (documentation.readMe.installationInstructions)")
+                    }
+                }))
+            }
+            return description
+        }, for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "Installation Instructions"

@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGCollections
 import GeneralImports
 
 import SDGSwiftPackageManager
@@ -41,23 +42,6 @@ extension PackageRepository {
             byName[target.name] = target
         }
         return byName
-    }
-
-    func publicLibraryModules() throws -> [String] {
-        var result: [String] = []
-        for product in try cachedPackage().products {
-            switch product.type {
-            case .library:
-                for target in product.targets {
-                    if ¬result.contains(target.name) {
-                        result.append(target.name)
-                    }
-                }
-            case .executable, .test:
-                break
-            }
-        }
-        return result
     }
 
     static let resourceDirectoryName = UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -154,23 +138,35 @@ extension PackageRepository {
     // MARK: - Documentation
 
     func hasTargetsToDocument(output: Command.Output) throws -> Bool {
-        return ¬(try publicLibraryModules()).isEmpty
+        return try ¬cachedPackage().products.contains(where: { $0.type.isLibrary })
     }
 
     #if !os(Linux)
     // MARK: - #if !os(Linux)
     func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
-        for product in try publicLibraryModules() {
-            try autoreleasepool {
-                try Documentation.document(target: product, for: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
+
+        var alreadyDocumented: Set<String> = []
+        for product in try cachedPackage().products where product.type.isLibrary {
+            for module in product.targets where module.name ∉ alreadyDocumented {
+                alreadyDocumented.insert(module.name)
+
+                try autoreleasepool {
+                    try Documentation.document(target: product.name, for: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
+                }
             }
         }
     }
 
     func validateDocumentationCoverage(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
-        for product in try publicLibraryModules() {
-            try autoreleasepool {
-                try Documentation.validateDocumentationCoverage(for: product, in: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
+
+        var alreadyDocumented: Set<String> = []
+        for product in try cachedPackage().products where product.type.isLibrary {
+            for module in product.targets where module.name ∉ alreadyDocumented {
+                alreadyDocumented.insert(module.name)
+
+                try autoreleasepool {
+                    try Documentation.validateDocumentationCoverage(for: product.name, in: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
+                }
             }
         }
     }

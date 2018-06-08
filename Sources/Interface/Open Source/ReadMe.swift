@@ -24,32 +24,8 @@ enum ReadMe {
 
     // MARK: - Locations
 
-    private static let documentationDirectoryName = "Documentation"
-    private static func documentationDirectory(for project: PackageRepository) -> URL {
-        return project.location.appendingPathComponent(documentationDirectoryName)
-    }
-
-    private static func locationOfDocumentationFile(named name: StrictString, for localization: String, in project: PackageRepository) -> URL {
-        let icon = ContentLocalization.icon(for: localization) ?? StrictString("[" + localization + "]")
-        let fileName: StrictString = icon + " " + name + ".md"
-        return documentationDirectory(for: project).appendingPathComponent(String(fileName))
-    }
-
-    private static func readMeLocation(for project: PackageRepository, localization: String) -> URL {
-        var result: URL?
-        LocalizationSetting(orderOfPrecedence: [localization]).do {
-            result = locationOfDocumentationFile(named: UserFacing<StrictString, ContentLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Read Me"
-                }
-            }).resolved(), for: localization, in: project)
-        }
-        return result!
-    }
-
     static func relatedProjectsLocation(for project: PackageRepository, localization: String) -> URL {
-        return locationOfDocumentationFile(named: UserFacing<StrictString, ContentLocalization>({ localization in
+        return ReadMeConfiguration.locationOfDocumentationFile(named: UserFacing<StrictString, ContentLocalization>({ localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Related Projects"
@@ -58,23 +34,6 @@ enum ReadMe {
     }
 
     // MARK: - Templates
-
-    static let skipInJazzy: StrictString = "<!\u{2D}\u{2D}Skip in Jazzy\u{2D}\u{2D}>"
-
-    private static func localizationLinksMarkup(for project: PackageRepository, fromProjectRoot: Bool) throws -> StrictString {
-        var links: [StrictString] = []
-        for targetLocalization in try project.localizations() {
-            let linkText = ContentLocalization.icon(for: targetLocalization) ?? StrictString("[" + targetLocalization + "]")
-            let absoluteURL = readMeLocation(for: project, localization: targetLocalization)
-            var relativeURL = StrictString(absoluteURL.path(relativeTo: project.location))
-            relativeURL.replaceMatches(for: " ".scalars, with: "%20".scalars)
-
-            var link: StrictString = "[" + linkText + "]"
-            link += "(" + relativeURL + ")"
-            links.append(link)
-        }
-        return StrictString(links.joined(separator: " • ".scalars)) + " " + skipInJazzy
-    }
 
     private static func operatingSystemList(for project: PackageRepository, output: Command.Output) throws -> StrictString {
         let supported = try OperatingSystem.cases.filter({ try $0 ∈ project.cachedConfiguration().supportedOperatingSystems })
@@ -152,7 +111,7 @@ enum ReadMe {
                 return StrictString("(For a list of related projects, see [here](\(relativeURL)).)")
             }
         }).resolved()
-        return link + " " + skipInJazzy
+        return link + " " + ReadMeConfiguration.skipInJazzy
     }
 
     static func defaultExampleUsageTemplate(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template? {
@@ -222,12 +181,6 @@ enum ReadMe {
 
         // Line Elements
 
-        readMe.insert(try localizationLinksMarkup(for: project, fromProjectRoot: atProjectRoot), for: UserFacing({ localization in
-            switch localization {
-            case .englishCanada:
-                return "Localization Links"
-            }
-        }))
         readMe.insert(try operatingSystemList(for: project, output: output), for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
@@ -267,7 +220,7 @@ enum ReadMe {
         if ¬atProjectRoot {
             // Fix links according to location.
             let prefix = "]("
-            let searchTerm: String = prefix + documentationDirectory(for: project).path(relativeTo: project.location) + "/"
+            let searchTerm: String = prefix + ReadMeConfiguration.documentationDirectory(for: project).path(relativeTo: project.location) + "/"
             body.scalars.replaceMatches(for: searchTerm.scalars, with: prefix.scalars)
         }
 
@@ -336,7 +289,7 @@ enum ReadMe {
         for localization in try project.localizations() {
             try autoreleasepool {
 
-                try refreshReadMe(at: readMeLocation(for: project, localization: localization), for: localization, in: project, atProjectRoot: false, output: output)
+                try refreshReadMe(at: ReadMeConfiguration.readMeLocation(for: project, localization: localization), for: localization, in: project, atProjectRoot: false, output: output)
                 try refreshRelatedProjects(at: relatedProjectsLocation(for: project, localization: localization), for: localization, in: project, output: output)
 
                 try refreshReadMe(at: project.location.appendingPathComponent("README.md"), for: try project.developmentLocalization(), in: project, atProjectRoot: true, output: output)

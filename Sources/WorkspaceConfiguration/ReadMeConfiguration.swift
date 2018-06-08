@@ -63,17 +63,17 @@ public struct ReadMeConfiguration : Codable {
     ///
     /// By default, this is assembled from the other documentation and read‐me options.
     ///
-    /// Workspace will replace several template tokens of the form `[_`*name*`_]` with the values of their respective `Automatic` options after the configuration is loaded:
+    /// Workspace will replace several template tokens after the configuration is loaded:
     ///
-    /// - `installationInstructions`
+    /// - `[_localizationLinks_]`: Links to the read‐me in its other languages.
+    /// - `[_installationInstructions_]`: The value of `installationInstructions`
     public var contents: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>() { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
         // [_Warning: Not documented yet._]
 
         var result: [LocalizationIdentifier: Markdown] = [:]
         for localization in ContentLocalization.cases {
             var readMe: [String] = [
-                // [_Warning: Unnecessary template?_]
-                "[_Localization Links_]",
+                "[_localizationLinks_]",
                 ""
             ]
             readMe += [

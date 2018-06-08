@@ -14,8 +14,15 @@ extension ReadMeConfiguration {
             return (DocumentationConfiguration.normalize(localizationIdentifier: localization), StrictString(text))
         }
         let installation = try resolvedInstallationInstructions(for: package)
-        templates = templates.mapKeyValuePairs { (language, template) in
+        templates = try templates.mapKeyValuePairs { (language, template) in
             var result = Template(source: template)
+
+            result.insert(try localizationLinksMarkup(for: package), for: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "localizationLinks"
+                }
+            }))
 
             let localizedInstallation: StrictString
             if let specified = installation[language] {
@@ -33,6 +40,45 @@ extension ReadMeConfiguration {
             return (language, result.text)
         }
         return templates
+    }
+
+    // MARK: - Localization Links
+
+    private static let documentationDirectoryName = "Documentation"
+    public static func documentationDirectory(for project: PackageRepository) -> URL {
+        return project.location.appendingPathComponent(ReadMeConfiguration.documentationDirectoryName)
+    }
+
+    public static func locationOfDocumentationFile(named name: StrictString, for localization: String, in project: PackageRepository) -> URL {
+        let icon = ContentLocalization.icon(for: localization) ?? StrictString("[" + localization + "]")
+        let fileName: StrictString = icon + " " + name + ".md"
+        return documentationDirectory(for: project).appendingPathComponent(String(fileName))
+    }
+
+    public static func readMeLocation(for project: PackageRepository, localization: String) -> URL {
+        return ReadMeConfiguration.locationOfDocumentationFile(named: UserFacing<StrictString, ContentLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Read Me"
+            }
+        }).resolved(for: ContentLocalization(reasonableMatchFor: localization) ?? ContentLocalization.fallbackLocalization), for: localization, in: project)
+    }
+
+    public static let skipInJazzy: StrictString = "<!\u{2D}\u{2D}Skip in Jazzy\u{2D}\u{2D}>"
+
+    private func localizationLinksMarkup(for project: PackageRepository) throws -> StrictString {
+        var links: [StrictString] = []
+        for targetLocalization in try project.localizations() {
+            let linkText = ContentLocalization.icon(for: targetLocalization) ?? StrictString("[" + targetLocalization + "]")
+            let absoluteURL = ReadMeConfiguration.readMeLocation(for: project, localization: targetLocalization)
+            var relativeURL = StrictString(absoluteURL.path(relativeTo: project.location))
+            relativeURL.replaceMatches(for: " ".scalars, with: "%20".scalars)
+
+            var link: StrictString = "[" + linkText + "]"
+            link += "(" + relativeURL + ")"
+            links.append(link)
+        }
+        return StrictString(links.joined(separator: " • ".scalars)) + " " + ReadMeConfiguration.skipInJazzy
     }
 
     // MARK: - Installation Instructions

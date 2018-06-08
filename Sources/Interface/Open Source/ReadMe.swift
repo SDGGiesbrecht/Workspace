@@ -22,17 +22,6 @@ import Project
 
 enum ReadMe {
 
-    // MARK: - Locations
-
-    static func relatedProjectsLocation(for project: PackageRepository, localization: String) -> URL {
-        return ReadMeConfiguration.locationOfDocumentationFile(named: UserFacing<StrictString, ContentLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "Related Projects"
-            }
-        }).resolved(), for: localization, in: project)
-    }
-
     // MARK: - Templates
 
     private static func quotationMarkup(localization: String, project: PackageRepository) throws -> StrictString {
@@ -59,20 +48,6 @@ enum ReadMe {
         }
 
         return StrictString("> ") + StrictString(result.joined(separator: "\n".scalars)).replacingMatches(for: "\n".scalars, with: "<br>".scalars)
-    }
-
-    private static func relatedProjectsLinkMarkup(for project: PackageRepository, localization: String) -> StrictString {
-        let absoluteURL = relatedProjectsLocation(for: project, localization: localization)
-        var relativeURL = StrictString(absoluteURL.path(relativeTo: project.location))
-        relativeURL.replaceMatches(for: " ".scalars, with: "%20".scalars)
-
-        let link = UserFacing<StrictString, ContentLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return StrictString("(For a list of related projects, see [here](\(relativeURL)).)")
-            }
-        }).resolved()
-        return link + " " + ReadMeConfiguration.skipInJazzy
     }
 
     static func defaultExampleUsageTemplate(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template? {
@@ -238,7 +213,7 @@ enum ReadMe {
             try autoreleasepool {
 
                 try refreshReadMe(at: ReadMeConfiguration.readMeLocation(for: project, localization: localization), for: localization, in: project, atProjectRoot: false, output: output)
-                try refreshRelatedProjects(at: relatedProjectsLocation(for: project, localization: localization), for: localization, in: project, output: output)
+                try refreshRelatedProjects(at: ReadMeConfiguration.relatedProjectsLocation(for: project, localization: localization), for: localization, in: project, output: output)
 
                 try refreshReadMe(at: project.location.appendingPathComponent("README.md"), for: try project.developmentLocalization(), in: project, atProjectRoot: true, output: output)
             }

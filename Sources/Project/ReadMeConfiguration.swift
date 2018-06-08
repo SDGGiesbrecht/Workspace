@@ -54,6 +54,19 @@ extension ReadMeConfiguration {
                 }
             }))
 
+            let related: StrictString
+            if let link = try relatedProjectsLinkMarkup(for: package, localization: language) {
+                related = link
+            } else {
+                related = ""
+            }
+            result.insert(related, for: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "relatedProjects"
+                }
+            }))
+
             // Fragments
 
             result.insert(try package.projectName(), for: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -129,6 +142,36 @@ extension ReadMeConfiguration {
         }
 
         return label + " " + StrictString(links.joined(separator: " • ".scalars))
+    }
+
+    // MARK: - Related Projects
+
+    public static func relatedProjectsLocation(for project: PackageRepository, localization: String) -> URL {
+        return ReadMeConfiguration.locationOfDocumentationFile(named: UserFacing<StrictString, ContentLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Related Projects"
+            }
+        }).resolved(for: ContentLocalization(reasonableMatchFor: localization) ?? ContentLocalization.fallbackLocalization), for: localization, in: project)
+    }
+
+    private func relatedProjectsLinkMarkup(for project: PackageRepository, localization: String) throws -> StrictString? {
+
+        guard try project.cachedConfiguration().documentation.relatedProjects.isEmpty else {
+            return nil
+        }
+
+        let absoluteURL = ReadMeConfiguration.relatedProjectsLocation(for: project, localization: localization)
+        var relativeURL = StrictString(absoluteURL.path(relativeTo: project.location))
+        relativeURL.replaceMatches(for: " ".scalars, with: "%20".scalars)
+
+        let link = UserFacing<StrictString, ContentLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return StrictString("(For a list of related projects, see [here](\(relativeURL)).)")
+            }
+        }).resolved(for: ContentLocalization(reasonableMatchFor: localization) ?? ContentLocalization.fallbackLocalization)
+        return link + " " + ReadMeConfiguration.skipInJazzy
     }
 
     // MARK: - Installation Instructions

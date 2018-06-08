@@ -19,6 +19,7 @@ import GeneralImports
 import SDGExternalProcess
 
 import Metadata
+import Project
 
 func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: Command.Output) throws {
 
@@ -119,7 +120,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
 
             var allowedDifferences: [String] = []
             for localization in try options.project.localizations() {
-                var relatedProjects = ReadMe.relatedProjectsLocation(for: options.project, localization: localization).lastPathComponent
+                var relatedProjects = ReadMeConfiguration.relatedProjectsLocation(for: options.project, localization: localization).lastPathComponent
                 allowedDifferences.append(relatedProjects)
                 relatedProjects.scalars.replaceMatches(for: ".md".scalars, with: ".html".scalars)
                 relatedProjects.scalars.replaceMatches(for: " ".scalars, with: "\u{2D}".scalars)

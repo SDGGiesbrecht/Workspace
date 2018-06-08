@@ -124,8 +124,7 @@ public struct ReadMeConfiguration : Codable {
             if ¬configuration.documentation.relatedProjects.isEmpty {
                 readMe += [
                     "",
-                    // [_Warning: Unnecessary template?_]
-                    "[_Related Projects_]"
+                    "[_relatedProjects_]"
                 ]
             }
 

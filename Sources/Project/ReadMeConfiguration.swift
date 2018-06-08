@@ -24,6 +24,19 @@ extension ReadMeConfiguration {
                 }
             }))
 
+            let apis: StrictString
+            if let modules = try apiLinksMarkup(for: package, localization: language) {
+                apis = modules
+            } else {
+                apis = ""
+            }
+            result.insert(apis, for: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "apiLinks"
+                }
+            }))
+
             let localizedInstallation: StrictString
             if let specified = installation[language] {
                 localizedInstallation = specified
@@ -81,9 +94,33 @@ extension ReadMeConfiguration {
         return StrictString(links.joined(separator: " • ".scalars)) + " " + ReadMeConfiguration.skipInJazzy
     }
 
+    // MARK: - API Links
+
+    private func apiLinksMarkup(for project: PackageRepository, localization: String) throws -> StrictString? {
+
+        guard let baseURL = try project.cachedConfiguration().documentation.documentationURL else {
+            return nil
+        }
+
+        let label = UserFacing<StrictString, ContentLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "APIs:"
+            }
+        }).resolved(for: ContentLocalization(reasonableMatchFor: localization) ?? ContentLocalization.fallbackLocalization)
+
+        let links: [StrictString] = try project.productModules().map { module in
+            var link: StrictString = "[" + StrictString(module.name) + "]"
+            link += "(" + StrictString(baseURL.appendingPathComponent(module.name).absoluteString) + ")"
+            return link
+        }
+
+        return label + " " + StrictString(links.joined(separator: " • ".scalars))
+    }
+
     // MARK: - Installation Instructions
 
-    internal func resolvedInstallationInstructions(for project: PackageRepository) throws -> [LocalizationIdentifier: StrictString] {
+    private func resolvedInstallationInstructions(for project: PackageRepository) throws -> [LocalizationIdentifier: StrictString] {
 
         guard let repository = try project.cachedConfiguration().documentation.repositoryURL,
             let versionString = try project.cachedConfiguration().documentation.currentVersion,
@@ -289,12 +326,8 @@ extension ReadMeConfiguration {
             "```swift"
         ]
 
-        var listedModules: Set<String> = []
-        for library in libraries {
-            for module in library.targets where module.name ∉ listedModules {
-                listedModules.insert(module.name)
-                result += [StrictString("import \(module.name)")]
-            }
+        for module in try project.productModules() {
+            result += [StrictString("import \(module.name)")]
         }
 
         result += [

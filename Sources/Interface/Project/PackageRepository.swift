@@ -145,28 +145,18 @@ extension PackageRepository {
     // MARK: - #if !os(Linux)
     func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
-        var alreadyDocumented: Set<String> = []
-        for product in try cachedPackage().products where product.type.isLibrary {
-            for module in product.targets where module.name ∉ alreadyDocumented {
-                alreadyDocumented.insert(module.name)
-
-                try autoreleasepool {
-                    try Documentation.document(target: product.name, for: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
-                }
+        for product in try productModules() {
+            try autoreleasepool {
+                try Documentation.document(target: product.name, for: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
             }
         }
     }
 
     func validateDocumentationCoverage(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
-        var alreadyDocumented: Set<String> = []
-        for product in try cachedPackage().products where product.type.isLibrary {
-            for module in product.targets where module.name ∉ alreadyDocumented {
-                alreadyDocumented.insert(module.name)
-
-                try autoreleasepool {
-                    try Documentation.validateDocumentationCoverage(for: product.name, in: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
-                }
+        for product in try productModules() {
+            try autoreleasepool {
+                try Documentation.validateDocumentationCoverage(for: product.name, in: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
             }
         }
     }

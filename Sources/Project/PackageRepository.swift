@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGCollections
 import GeneralImports
 
 import SDGSwiftPackageManager
@@ -28,6 +29,7 @@ extension PackageRepository {
         fileprivate var manifest: PackageModel.Manifest?
         fileprivate var package: PackageModel.Package?
         fileprivate var packageGraph: PackageGraph?
+        fileprivate var productModules: [Target]?
         fileprivate var dependenciesByName: [String: ResolvedPackage]?
 
         fileprivate var configuration: WorkspaceConfiguration?
@@ -81,6 +83,20 @@ extension PackageRepository {
 
     public func projectName() throws -> StrictString {
         return StrictString(try cachedManifest().name)
+    }
+
+    public func productModules() throws -> [Target] {
+        return try cached(in: &cache.productModules) {
+            var accountedFor: Set<String> = []
+            var result: [Target] = []
+            for product in try cachedPackage().products where product.type.isLibrary {
+                for module in product.targets where module.name ∉ accountedFor {
+                    accountedFor.insert(module.name)
+                    result.append(module)
+                }
+            }
+            return result
+        }
     }
 
     public func dependenciesByName() throws -> [String: ResolvedPackage] {

@@ -35,39 +35,6 @@ enum ReadMe {
 
     // MARK: - Templates
 
-    private static func apiLinksMarkup(for project: PackageRepository, output: Command.Output) throws -> StrictString {
-
-        guard let baseURL = try project.cachedConfiguration().documentation.documentationURL else {
-            throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishCanada:
-                    return "API links require a documentation URL to be specified. (documentation.documentationURL)"
-                }
-            }))
-        }
-
-        let label = UserFacing<StrictString, ContentLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "APIs:"
-            }
-        }).resolved()
-
-        var links: [StrictString] = []
-        var alreadyListed: Set<String> = []
-        for product in try project.cachedPackage().products where product.type.isLibrary {
-            for module in product.targets where module.name ∉ alreadyListed {
-                alreadyListed.insert(module.name)
-
-                var link: StrictString = "[" + StrictString(module.name) + "]"
-                link += "(" + StrictString(baseURL.appendingPathComponent(module.name).absoluteString) + ")"
-                links.append(link)
-            }
-        }
-
-        return label + " " + StrictString(links.joined(separator: " • ".scalars))
-    }
-
     private static func quotationMarkup(localization: String, project: PackageRepository) throws -> StrictString {
         guard let original = try project.cachedConfiguration().documentation.readMe.quotation?.original else {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -174,13 +141,6 @@ enum ReadMe {
         }))
 
         // Line Elements
-
-        try readMe.insert(resultOf: { try apiLinksMarkup(for: project, output: output) }, for: UserFacing({ localization in
-            switch localization {
-            case .englishCanada:
-                return "API Links"
-            }
-        }))
 
         // Word Elements
 

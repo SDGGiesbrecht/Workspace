@@ -84,8 +84,7 @@ public struct ReadMeConfiguration : Codable {
 
             if configuration.documentation.documentationURL ≠ nil {
                 readMe += [
-                    // [_Warning: Unnecessary template?_]
-                    "[_API Links_]",
+                    "[_apiLinks_]",
                     ""
                 ]
             }

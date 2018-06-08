@@ -225,14 +225,6 @@ struct Configuration {
         return defined
     }
 
-    func readMe(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template {
-        if let defined = try localizedTemplate(for: localization, from: .readMe) {
-            return defined
-        } else {
-            return try ReadMe.defaultReadMeTemplate(for: localization, project: project, output: output)
-        }
-    }
-
     // MARK: - Options: Active Management Tasks
 
     func shouldManageContinuousIntegration() throws -> Bool { // [_Exempt from Test Coverage_] [_Workaround: Until refresh is testable._]

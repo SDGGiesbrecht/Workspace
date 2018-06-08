@@ -43,4 +43,11 @@ public struct Quotation : Codable {
     ///
     /// There is no default link.
     public var link: [LocalizationIdentifier: URL] = [:]
+
+    // MARK: - Source
+
+    internal func source(for localization: LocalizationIdentifier) -> String {
+        // [_Warning: Not implemented yet._]
+        return ""
+    }
 }

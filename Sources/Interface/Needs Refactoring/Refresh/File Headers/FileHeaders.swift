@@ -16,6 +16,8 @@ import SDGLogic
 import SDGCollections
 import GeneralImports
 
+import Project
+
 struct FileHeaders {
 
     static func defaultCopyright(configuration: Configuration) throws -> Template {

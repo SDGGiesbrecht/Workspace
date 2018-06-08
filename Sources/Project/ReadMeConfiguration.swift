@@ -3,15 +3,41 @@ import GeneralImports
 
 extension ReadMeConfiguration {
 
-    public var normalizedShortProjectDescription: [LocalizationIdentifier: StrictString] {
+    internal var normalizedShortProjectDescription: [LocalizationIdentifier: StrictString] {
         return shortProjectDescription.mapKeyValuePairs { localization, text in
             return (DocumentationConfiguration.normalize(localizationIdentifier: localization), StrictString(text))
         }
     }
 
+    internal func resolvedContents(for package: PackageRepository) throws -> [LocalizationIdentifier: StrictString] {
+        var templates = contents.resolve(try package.cachedConfiguration()).mapKeyValuePairs { localization, text in
+            return (DocumentationConfiguration.normalize(localizationIdentifier: localization), StrictString(text))
+        }
+        let installation = try resolvedInstallationInstructions(for: package)
+        templates = templates.mapKeyValuePairs { (language, template) in
+            var result = Template(source: template)
+
+            let localizedInstallation: StrictString
+            if let specified = installation[language] {
+                localizedInstallation = specified
+            } else {
+                localizedInstallation = ""
+            }
+            result.insert(localizedInstallation, for: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "installationInstructions"
+                }
+            }))
+
+            return (language, result.text)
+        }
+        return templates
+    }
+
     // MARK: - Installation Instructions
 
-    public func resolvedInstallationInstructions(for project: PackageRepository) throws -> [LocalizationIdentifier: StrictString] {
+    internal func resolvedInstallationInstructions(for project: PackageRepository) throws -> [LocalizationIdentifier: StrictString] {
 
         guard let repository = try project.cachedConfiguration().documentation.repositoryURL,
             let versionString = try project.cachedConfiguration().documentation.currentVersion,

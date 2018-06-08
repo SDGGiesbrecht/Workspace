@@ -69,13 +69,24 @@ let package = Package(
             .productItem(name: "SDGSwiftConfigurationLoading", package: "SDGSwift")
             ]),
 
+        // The API used in configuration files.
+        .target(name: "WorkspaceConfiguration", dependencies: [
+            "LocalizationPrimitives",
+            .productItem(name: "SDGLogic", package: "SDGCornerstone"),
+            .productItem(name: "SDGSwiftConfiguration", package: "SDGSwift")
+            ]),
+
         // Defines matadata related to the Workspace project.
         .target(name: "Metadata", dependencies: ["GeneralImports"]),
 
         // Defines the lists of supported localizations.
         .target(name: "Localizations", dependencies: [
+            "LocalizationPrimitives",
             .productItem(name: "SDGLocalization", package: "SDGCornerstone")
             ]),
+        // Defines the lists of localizations provided to configuration files.
+        .target(name: "LocalizationPrimitives", dependencies: []),
+
         // Centralizes imports needed almost everywhere.
         .target(name: "GeneralImports", dependencies: [
             "Localizations",
@@ -91,11 +102,6 @@ let package = Package(
             .productItem(name: "SDGCommandLine", package: "SDGCommandLine"),
 
             .productItem(name: "SDGSwift", package: "SDGSwift")
-            ]),
-
-        // The API used in configuration files.
-        .target(name: "WorkspaceConfiguration", dependencies: [
-            .productItem(name: "SDGSwiftConfiguration", package: "SDGSwift")
             ]),
 
         // Tests

@@ -31,6 +31,9 @@ extension PackageRepository {
         fileprivate var dependenciesByName: [String: ResolvedPackage]?
 
         fileprivate var configuration: WorkspaceConfiguration?
+        fileprivate var localizations: [LocalizationIdentifier]?
+        fileprivate var shortDescription: [LocalizationIdentifier: StrictString]?
+        fileprivate var readMe: [LocalizationIdentifier: StrictString]?
 
         fileprivate var allFiles: [URL]?
         fileprivate var trackedFiles: [URL]?
@@ -110,6 +113,35 @@ extension PackageRepository {
                 linkingAgainst: "WorkspaceConfiguration",
                 in: SDGSwift.Package(url: Metadata.packageURL),
                 at: Metadata.latestStableVersion)
+        }
+    }
+
+    public func localizations() throws -> [LocalizationIdentifier] {
+        return try cached(in: &cache.localizations) {
+            return try cachedConfiguration().documentation.normalizedLocalizations
+        }
+    }
+    public func developmentLocalization() throws -> LocalizationIdentifier {
+        guard let result = try localizations().first else {
+            throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "The project does not specify any localizations."
+                }
+            }))
+        }
+        return result
+    }
+
+    public func shortDescription() throws -> [LocalizationIdentifier: StrictString] {
+        return try cached(in: &cache.shortDescription) {
+            return try cachedConfiguration().documentation.readMe.normalizedShortProjectDescription
+        }
+    }
+
+    public func readMe() throws -> [LocalizationIdentifier: StrictString] {
+        return try cached(in: &cache.readMe) {
+            return try cachedConfiguration().documentation.readMe.resolvedContents(for: self)
         }
     }
 

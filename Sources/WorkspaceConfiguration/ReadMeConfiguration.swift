@@ -12,6 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
+import LocalizationPrimitives
+
 /// Options related to the project read‐me.
 public struct ReadMeConfiguration : Codable {
 
@@ -52,19 +56,119 @@ public struct ReadMeConfiguration : Codable {
     ///
     /// By default, Workspace will look for example identifiers beginning with `Read‐Me ` and ending with a localization key, and will include them in the read‐me.
     ///
-    /// Arbitrary examples can be parsed from the project source by including placeholders of the form “[&#x5F;Example: identifier_]” in the markdown.
-    public var exampleUsage: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>() { configuration in
-        // [_Warning: Not documented yet._]
-        // [_Warning: Not implemented yet._]
-        return [:]
-    }
+    /// Arbitrary examples can be parsed from the project source by including placeholders of the form “[&#x5F;example: identifier_]” in the markdown.
+    public var exampleUsage: Automatic<[LocalizationIdentifier: Markdown]> = .automatic
 
     /// The entire contents of the read‐me.
     ///
     /// By default, this is assembled from the other documentation and read‐me options.
-    public var contents: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>() { configuration in
+    ///
+    /// Workspace will replace several template tokens of the form `[_`*name*`_]` with the values of their respective `Automatic` options after the configuration is loaded:
+    ///
+    /// - `installationInstructions`
+    public var contents: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>() { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
         // [_Warning: Not documented yet._]
-        // [_Warning: Not implemented yet._]
-        return [:]
+
+        var result: [LocalizationIdentifier: Markdown] = [:]
+        for localization in ContentLocalization.cases {
+            var readMe: [String] = [
+                // [_Warning: Unnecessary template?_]
+                "[_Localization Links_]",
+                ""
+            ]
+            readMe += [
+                // [_Warning: Unnecessary template?_]
+                "[_Operating System List_]",
+                ""
+            ]
+            if configuration.documentation.documentationURL ≠ nil {
+                readMe += [
+                    // [_Warning: Unnecessary template?_]
+                    "[_API Links_]",
+                    ""
+                ]
+            }
+
+            // [_Warning: Unnecessary template?_]
+            readMe += ["# [_Project_]"]
+
+            if let description = configuration.documentation.readMe.shortProjectDescription[localization.rawValue] {
+                readMe += [
+                    "",
+                    description
+                ]
+            }
+
+            if let quotation = configuration.documentation.readMe.quotation {
+                readMe += [
+                    "",
+                    quotation.source(for: localization.rawValue)
+                ]
+            }
+
+            if let features = configuration.documentation.readMe.featureList[localization.rawValue] {
+                let header: String
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    header = "Features"
+                }
+                readMe += [
+                    "",
+                    "## " + header,
+                    "",
+                    features
+                ]
+            }
+
+            if ¬configuration.documentation.relatedProjects.isEmpty {
+                readMe += [
+                    "",
+                    // [_Warning: Unnecessary template?_]
+                    "[_Related Projects_]"
+                ]
+            }
+
+            readMe += [
+                "",
+                "[_installationInstructions_]"
+            ]
+
+            let examplesHeader: String
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                examplesHeader = "Example Usage"
+            }
+
+            readMe += [
+                "",
+                "## " + examplesHeader,
+                "",
+                "[\u{5F}exampleUsage_]"
+            ]
+
+            if let other = configuration.documentation.readMe.other[localization.rawValue] {
+                readMe += [
+                    "",
+                    other
+                ]
+            }
+
+            if let about = configuration.documentation.readMe.about[localization.rawValue] {
+                let header: String
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    header = "About"
+                }
+                readMe += [
+                    "",
+                    "## " + header,
+                    "",
+                    about
+                ]
+            }
+
+            result[localization.rawValue] = readMe.joined(separator: "\n")
+        }
+        return result
     }
 }

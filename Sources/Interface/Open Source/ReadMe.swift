@@ -63,7 +63,7 @@ enum ReadMe {
 
     private static func localizationLinksMarkup(for project: PackageRepository, fromProjectRoot: Bool) throws -> StrictString {
         var links: [StrictString] = []
-        for targetLocalization in try project.cachedConfiguration().documentation.normalizedLocalizations {
+        for targetLocalization in try project.localizations() {
             let linkText = ContentLocalization.icon(for: targetLocalization) ?? StrictString("[" + targetLocalization + "]")
             let absoluteURL = readMeLocation(for: project, localization: targetLocalization)
             var relativeURL = StrictString(absoluteURL.path(relativeTo: project.location))
@@ -195,167 +195,28 @@ enum ReadMe {
         }
     }
 
-    static func defaultReadMeTemplate(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template {
-
-        var readMe: [StrictString] = [
-            "[_Localization Links_]",
-            ""
-        ]
-        readMe += [
-            "[_Operating System List_]",
-            ""
-        ]
-        if try project.cachedConfiguration().documentation.documentationURL ≠ nil {
-            readMe += [
-                "[_API Links_]",
-                ""
-            ]
-        }
-
-        readMe += ["# [_Project_]"]
-        if try ¬project.cachedConfiguration().documentation.readMe.shortProjectDescription.isEmpty {
-            readMe += [
-                "",
-                "[_Short Description_]"
-            ]
-        }
-        if try project.cachedConfiguration().documentation.readMe.quotation ≠ nil {
-            readMe += [
-                "",
-                "[_Quotation_]"
-            ]
-        }
-
-        if try ¬project.cachedConfiguration().documentation.readMe.shortProjectDescription.isEmpty {
-            let header = UserFacing<StrictString, ContentLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Features"
-                }
-            }).resolved()
-
-            readMe += [
-                "",
-                StrictString("## ") + header,
-                "",
-                "[_Features_]"
-            ]
-        }
-        if try ¬project.cachedConfiguration().documentation.relatedProjects.isEmpty {
-            readMe += [
-                "",
-                "[_Related Projects_]"
-            ]
-        }
-
-        if try ¬project.cachedConfiguration().documentation.readMe.resolvedInstallationInstructions(for: project).isEmpty {
-            readMe += [
-                "",
-                "[_Installation Instructions_]"
-            ]
-        }
-
-        if (try project.configuration.exampleUsage(for: localization, project: project, output: output)) ≠ nil {
-            let header = UserFacing<StrictString, ContentLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Example Usage"
-                }
-            }).resolved()
-
-            readMe += [
-                "",
-                StrictString("## ") + header,
-                "",
-                "[\u{5F}Example Usage_]"
-            ]
-        }
-
-        if try project.configuration.optionIsDefined(.otherReadMeContent) {
-            readMe += [
-                "",
-                "[_Other_]"
-            ]
-        }
-
-        if try project.configuration.optionIsDefined(.readMeAboutSection) {
-            let header = UserFacing<StrictString, ContentLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "About"
-                }
-            }).resolved()
-
-            readMe += [
-                "",
-                StrictString("## ") + header,
-                "",
-                "[_About_]"
-            ]
-        }
-
-        return Template(source: StrictString(readMe.joined(separator: "\n".scalars)))
-    }
-
     // MARK: - Refreshment
 
     private static func refreshReadMe(at location: URL, for localization: String, in project: PackageRepository, atProjectRoot: Bool, output: Command.Output) throws {
-        var readMe = try project.configuration.readMe(for: localization, project: project, output: output)
+
+        guard let readMeSource = try project.readMe()[localization] else {
+            throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return StrictString("There is no read‐me for “\(localization)”. (documentation.readMe.contents)")
+                }
+            }))
+        }
+
+        // [_Warning: This should not be a template any more._]
+        var readMe = Template(source: readMeSource)
 
         // Section Elements
-
-        try readMe.insert(resultOf: {
-            guard let features = try project.cachedConfiguration().documentation.readMe.normalizedShortProjectDescription[localization] else {
-                throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishCanada:
-                        return StrictString("There are no features specified for “\(localization)”. (documentation.readMe.featureList)")
-                    }
-                }))
-            }
-            return features
-        }, for: UserFacing({ localization in
-            switch localization {
-            case .englishCanada:
-                return "Features"
-            }
-        }))
-
-        try readMe.insert(resultOf: {
-            guard let instructions = try project.cachedConfiguration().documentation.readMe.resolvedInstallationInstructions(for: project)[localization] else {
-                throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishCanada:
-                        return StrictString("There are no installation instructions specified for “\(localization)”. (documentation.readMe.installationInstructions)")
-                    }
-                }))
-            }
-            return instructions
-        }, for: UserFacing({ localization in
-            switch localization {
-            case .englishCanada:
-                return "Installation Instructions"
-            }
-        }))
 
         try readMe.insert(resultOf: { try project.configuration.requireExampleUsage(for: localization, project: project, output: output).text}, for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
-                return "Example Usage"
-            }
-        }))
-
-        try readMe.insert(resultOf: { try project.configuration.requireOtherReadMeContent(for: localization, project: project, output: output).text }, for: UserFacing({ localization in
-            switch localization {
-            case .englishCanada:
-                return "Other"
-            }
-        }))
-
-        try readMe.insert(resultOf: { try project.configuration.requireReadMeAboutSectionTemplate(for: localization, project: project, output: output).text }, for: UserFacing({ localization in
-            switch localization {
-            case .englishCanada:
-                return "About"
+                return "exampleUsage"
             }
         }))
 
@@ -380,66 +241,12 @@ enum ReadMe {
             }
         }))
 
-        try readMe.insert(resultOf: {
-            guard let description = try project.cachedConfiguration().documentation.readMe.normalizedShortProjectDescription[localization] else {
-                throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishCanada:
-                        return StrictString("There is no short project description specified for “\(localization)”. (documentation.readMe.shortProjectDescription)")
-                    }
-                }))
-            }
-            return description
-        }, for: UserFacing({ localization in
-            switch localization {
-            case .englishCanada:
-                return "Short Description"
-            }
-        }))
-
-        try readMe.insert(resultOf: { try quotationMarkup(localization: localization, project: project) }, for: UserFacing({ localization in
-            switch localization {
-            case .englishCanada:
-                return "Quotation"
-            }
-        }))
-        readMe.insert(resultOf: { relatedProjectsLinkMarkup(for: project, localization: localization) }, for: UserFacing({ localization in
-            switch localization {
-            case .englishCanada:
-                return "Related Projects"
-            }
-        }))
-
         // Word Elements
 
         readMe.insert(try project.projectName(), for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
                 return "Project"
-            }
-        }))
-
-        try readMe.insert(resultOf: {
-            guard let url = try project.cachedConfiguration().documentation.repositoryURL else {
-                throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishCanada:
-                        return StrictString("There is no short project description specified for “\(localization)”. (documentation.repositoryURL)")
-                    }
-                }))
-            }
-            return StrictString(url.absoluteString)
-        }, for: UserFacing({ localization in
-            switch localization {
-            case .englishCanada:
-                return "Repository URL"
-            }
-        }))
-
-        try readMe.insert(resultOf: { StrictString(try project.configuration.requireCurrentVersion().string()) }, for: UserFacing({ localization in
-            switch localization {
-            case .englishCanada:
-                return "Current Version"
             }
         }))
 
@@ -505,11 +312,11 @@ enum ReadMe {
                             StrictString("### [\(name)](\(url.absoluteString))")
                         ]
 
-                        if let configuration = try? package.cachedConfiguration(),
-                            let description = configuration.documentation.readMe.normalizedShortProjectDescription[localization] {
+                        if let description = try? package.shortDescription(),
+                            let localized = description[localization] {
                             markdown += [
                                 "",
-                                description
+                                localized
                             ]
                         }
                     }
@@ -526,21 +333,13 @@ enum ReadMe {
     }
 
     static func refreshReadMe(for project: PackageRepository, output: Command.Output) throws {
-        let localizations = try project.cachedConfiguration().documentation.normalizedLocalizations
-        for localization in localizations {
+        for localization in try project.localizations() {
             try autoreleasepool {
 
-                let setting = LocalizationSetting(orderOfPrecedence: [localization] + localizations)
-                try setting.do {
-                    try refreshReadMe(at: readMeLocation(for: project, localization: localization), for: localization, in: project, atProjectRoot: false, output: output)
-                    try refreshRelatedProjects(at: relatedProjectsLocation(for: project, localization: localization), for: localization, in: project, output: output)
-                }
+                try refreshReadMe(at: readMeLocation(for: project, localization: localization), for: localization, in: project, atProjectRoot: false, output: output)
+                try refreshRelatedProjects(at: relatedProjectsLocation(for: project, localization: localization), for: localization, in: project, output: output)
 
-                if localization == (try project.cachedConfiguration().documentation.developmentLocalization()) {
-                    try setting.do {
-                        try refreshReadMe(at: project.location.appendingPathComponent("README.md"), for: localization, in: project, atProjectRoot: true, output: output)
-                    }
-                }
+                try refreshReadMe(at: project.location.appendingPathComponent("README.md"), for: try project.developmentLocalization(), in: project, atProjectRoot: true, output: output)
             }
         }
 

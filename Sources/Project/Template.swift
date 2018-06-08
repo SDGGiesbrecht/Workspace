@@ -14,17 +14,18 @@
 
 import GeneralImports
 
-struct Template {
+// [_Warning: Do these need to be public?_]
+public struct Template {
 
     // MARK: - Initialization
 
-    init(source: StrictString) {
+    public init(source: StrictString) {
         text = source
     }
 
     // MARK: - Properties
 
-    var text: StrictString
+    public var text: StrictString
 
     // MARK: - Usage
 
@@ -32,18 +33,18 @@ struct Template {
         return "[_" + name + "_]"
     }
 
-    mutating func insert(_ string: StrictString, for element: UserFacing<StrictString, InterfaceLocalization>) {
+    public mutating func insert(_ string: StrictString, for element: UserFacing<StrictString, InterfaceLocalization>) {
         for localization in InterfaceLocalization.cases {
             text.replaceMatches(for: Template.element(named: element.resolved(for: localization)), with: string)
         }
     }
 
-    mutating func insert(resultOf closure: () throws -> StrictString, for element: UserFacing<StrictString, InterfaceLocalization>) rethrows {
+    public mutating func insert(resultOf closure: () throws -> StrictString, for element: UserFacing<StrictString, InterfaceLocalization>) rethrows {
+        // [_Warning: Deprecated._]
         for localization in InterfaceLocalization.cases {
             if text.contains(Template.element(named: element.resolved(for: localization))) {
                 insert(try closure(), for: element)
             }
         }
-
     }
 }

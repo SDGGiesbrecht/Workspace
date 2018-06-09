@@ -58,9 +58,8 @@ extension Licence {
 
         let copyright = FileHeaders.copyright(fromText: oldContents)
         var authors = "the \(try Repository.packageRepository.projectName()) project contributors."
-        let configuration = Repository.packageRepository.configuration
-        if try configuration.optionIsDefined(.author) {
-            authors = "\(try Repository.packageRepository.configuration.requireAuthor()) and " + authors
+        if let configuredAuthor = try Repository.packageRepository.cachedConfiguration().documentation.primaryAuthor {
+            authors = "\(configuredAuthor) and " + authors
         }
 
         func key(_ key: String) -> String {

@@ -368,9 +368,6 @@ extension Configuration {
 
     // Responsibilities
 
-    static var requiredAuthor: String {
-        return stringValue(option: .author)
-    }
     static var requiredProjectWebsite: String {
         return stringValue(option: .projectWebsite)
     }

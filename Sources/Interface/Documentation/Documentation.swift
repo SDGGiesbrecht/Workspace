@@ -49,19 +49,7 @@ enum Documentation {
         template.insert(dates, for: UserFacing({ localization in
             switch localization {
             case .englishCanada:
-                return "Copyright"
-            }
-        }))
-        try template.insert(resultOf: { try project.configuration.requireAuthor() }, for: UserFacing({ localization in
-            switch localization {
-            case .englishCanada:
-                return "Author"
-            }
-        }))
-        template.insert(try project.projectName(), for: UserFacing({ localization in
-            switch localization {
-            case .englishCanada:
-                return "Project"
+                return "dates"
             }
         }))
 

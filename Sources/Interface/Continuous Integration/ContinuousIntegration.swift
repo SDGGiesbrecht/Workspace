@@ -39,7 +39,7 @@ enum ContinuousIntegration {
 
             ∨ (job ∈ Tests.simulatorJobs ∧ project.isWorkspaceProject()) { // Simulator is unavailable during normal test.
 
-            travisConfiguration.append(contentsOf: try job.script(configuration: project.configuration))
+            travisConfiguration.append(contentsOf: try job.script(configuration: project.cachedConfiguration()))
         }
 
         if try project.isWorkspaceProject() {

@@ -255,7 +255,7 @@ extension ContinuousIntegration {
             case .deployment:
                 return try project.cachedConfiguration().documentation.api.generate
                 ∧ project.hasTargetsToDocument(output: output)
-                ∧ (try project.configuration.encryptedTravisDeploymentKey()) ≠ nil
+                ∧ (try project.cachedConfiguration().documentation.api.encryptedTravisCIDeploymentKey) ≠ nil
             }
         }
 
@@ -295,14 +295,14 @@ extension ContinuousIntegration {
             }
         }
 
-        func script(configuration: Configuration) throws -> [String] {
+        func script(configuration: WorkspaceConfiguration) throws -> [String] {
             var result: [String] = [
                 "    \u{2D} os: " + travisOperatingSystemKey,
                 "      env:",
                 "        \u{2D} " + environmentLabel
             ]
             if self == .deployment {
-                guard let key = try configuration.encryptedTravisDeploymentKey() else {
+                guard let key = configuration.documentation.api.encryptedTravisCIDeploymentKey else {
                     unreachable()
                 }
 

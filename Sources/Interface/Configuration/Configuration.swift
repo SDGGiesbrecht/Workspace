@@ -159,8 +159,4 @@ struct Configuration {
     func shouldManageContinuousIntegration() throws -> Bool { // [_Exempt from Test Coverage_] [_Workaround: Until refresh is testable._]
         return try boolean(for: .manageContinuousIntegration) ?? false // [_Exempt from Test Coverage_] [_Workaround: Until refresh is testable._]
     }
-
-    func encryptedTravisDeploymentKey() throws -> String? {
-        return try string(for: .encryptedTravisDeploymentKey)
-    }
 }

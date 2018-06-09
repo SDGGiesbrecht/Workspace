@@ -99,7 +99,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
             if try options.project.cachedConfiguration().documentation.api.enforceCoverage {
                 try Workspace.Validate.DocumentationCoverage.executeAsStepDocumentingFirst(options: options, validationStatus: &validationStatus, output: output)
             } else if try options.project.cachedConfiguration().documentation.api.generate
-                ∧ (try options.project.configuration.encryptedTravisDeploymentKey() == nil) {
+                ∧ (try options.project.cachedConfiguration().documentation.api.encryptedTravisCIDeploymentKey == nil) {
                 try Workspace.Document.executeAsStep(outputDirectory: Documentation.defaultDocumentationDirectory(for: options.project), options: options, validationStatus: &validationStatus, output: output)
             }
         }

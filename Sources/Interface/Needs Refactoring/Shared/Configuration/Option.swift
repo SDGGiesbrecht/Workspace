@@ -26,8 +26,6 @@ enum Option : String, CustomStringConvertible {
 
     // MARK: - Cases
 
-    case encryptedTravisDeploymentKey = "Encrypted Travis Deployment Key"
-
     case manageContinuousIntegration = "Manage Continuous Integration"
 
     case ignoreFileTypes = "Ignore File Types"
@@ -42,8 +40,6 @@ enum Option : String, CustomStringConvertible {
 
     static let allPublic: [Option] = [
 
-        .encryptedTravisDeploymentKey,
-
         .manageContinuousIntegration,
 
         .ignoreFileTypes
@@ -57,9 +53,6 @@ enum Option : String, CustomStringConvertible {
 
     var defaultValue: String {
         switch self {
-
-        case .encryptedTravisDeploymentKey:
-            return Configuration.noValue
 
         case .manageContinuousIntegration:
             return String(Configuration.falseOptionValue)

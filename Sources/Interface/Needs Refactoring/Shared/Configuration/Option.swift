@@ -26,7 +26,6 @@ enum Option : String, CustomStringConvertible {
 
     // MARK: - Cases
 
-    case pullRequestTemplate = "Pull Request Template"
     case administrators = "Administrators"
     case developmentNotes = "Development Notes"
 
@@ -64,7 +63,6 @@ enum Option : String, CustomStringConvertible {
     case testLongOption = "Test Long Option"
 
     static let allPublic: [Option] = [
-        .pullRequestTemplate,
         .administrators,
         .developmentNotes,
 
@@ -103,8 +101,6 @@ enum Option : String, CustomStringConvertible {
     var defaultValue: String {
         switch self {
 
-        case .pullRequestTemplate:
-            return ContributingInstructions.defaultPullRequestTemplate
         case .administrators:
             return Configuration.emptyListOptionValue
         case .developmentNotes:

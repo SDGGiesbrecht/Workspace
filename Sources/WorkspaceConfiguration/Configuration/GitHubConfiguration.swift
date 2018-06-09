@@ -167,10 +167,17 @@ public struct GitHubConfiguration: Codable {
 
     /// The pull request template.
     ///
-    /// By default, this is assembled from the other GitHub options.
-    public var pullRequestTemplate: Lazy<Markdown> = Lazy<Markdown>() { configuration in
-        // [_Warning: Not documented yet._]
-        // [_Warning: Not implemented yet._]
-        return ""
-    }
+    /// This defaults to a generic template.
+    public var pullRequestTemplate: Markdown = [
+        "<\u{21}\u{2D}\u{2D} Reminder: \u{2D}\u{2D}>",
+        "<\u{21}\u{2D}\u{2D} Have you opened an issue and gotten a response from an administrator? \u{2D}\u{2D}>",
+        "<\u{21}\u{2D}\u{2D} Always do that first; sometimes it will save you some work. \u{2D}\u{2D}>",
+        "",
+        "<\u{21}\u{2D}\u{2D} Fill in the issue number. \u{2D}\u{2D}>",
+        "This work was commissioned by an administrator in issue #000.",
+        "",
+        "<\u{21}\u{2D}\u{2D} Keep only one of the following lines. \u{2D}\u{2D}>",
+        "I **am licensing** this under the [project licence](../blob/master/LICENSE.md).",
+        "I **refuse to license** this under the [project licence](../blob/master/LICENSE.md)."
+        ].joined(separator: "\n")
 }

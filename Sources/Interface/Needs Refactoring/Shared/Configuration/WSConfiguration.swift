@@ -368,9 +368,6 @@ extension Configuration {
 
     // Responsibilities
 
-    static var pullRequestTemplate: String {
-        return stringValue(option: .pullRequestTemplate)
-    }
     static var administrators: [String] {
         return listValue(option: .administrators)
     }

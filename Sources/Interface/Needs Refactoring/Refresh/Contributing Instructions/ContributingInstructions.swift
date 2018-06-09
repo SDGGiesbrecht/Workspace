@@ -27,24 +27,6 @@ struct ContributingInstructions {
         return FileType.markdown.syntax.comment(contents: managementWarning)
     }()
 
-    static let defaultPullRequestTemplate: String = {
-
-        var template = [
-            "<\u{21}\u{2D}\u{2D} Reminder: \u{2D}\u{2D}>",
-            "<\u{21}\u{2D}\u{2D} Have you opened an issue and gotten a response from an administrator? \u{2D}\u{2D}>",
-            "<\u{21}\u{2D}\u{2D} Always do that first; sometimes it will save you some work. \u{2D}\u{2D}>",
-            "",
-            "<\u{21}\u{2D}\u{2D} Fill in the issue number. \u{2D}\u{2D}>",
-            "This work was commissioned by an administrator in issue #000.",
-            "",
-            "<\u{21}\u{2D}\u{2D} Keep only one of the following lines. \u{2D}\u{2D}>",
-            "I **am licensing** this under the [project licence](../blob/master/LICENSE.md).",
-            "I **refuse to license** this under the [project licence](../blob/master/LICENSE.md)."
-        ]
-
-        return template.joinAsLines()
-    }()
-
     static func refreshContributingInstructions(output: Command.Output) throws {
 
         func key(_ name: String) -> String {
@@ -68,7 +50,7 @@ struct ContributingInstructions {
         require { try issue.write(output: output) }
 
         var pullRequest = File(possiblyAt: pullRequestTemplatePath)
-        pullRequest.contents = Configuration.pullRequestTemplate
+        pullRequest.contents = String(try Repository.packageRepository.cachedConfiguration().gitHub.pullRequestTemplate)
         require { try pullRequest.write(output: output) }
 
         // Remove deprecated.

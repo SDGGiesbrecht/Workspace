@@ -26,7 +26,6 @@ enum Option : String, CustomStringConvertible {
 
     // MARK: - Cases
 
-    case generateDocumentation = "Generate Documentation"
     case enforceDocumentationCoverage = "Enforce Documentation Coverage"
     case documentationCopyright = "Documentation Copyright"
     case originalDocumentationCopyrightYear = "Original Documentation Copyright Year"
@@ -46,7 +45,6 @@ enum Option : String, CustomStringConvertible {
 
     static let allPublic: [Option] = [
 
-        .generateDocumentation,
         .documentationCopyright,
         .originalDocumentationCopyrightYear,
         .encryptedTravisDeploymentKey,
@@ -66,8 +64,6 @@ enum Option : String, CustomStringConvertible {
     var defaultValue: String {
         switch self {
 
-        case .generateDocumentation:
-            return String(Configuration.trueOptionValue)
         case .enforceDocumentationCoverage:
             return String(Configuration.trueOptionValue)
         case .documentationCopyright:

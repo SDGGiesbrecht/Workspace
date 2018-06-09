@@ -73,6 +73,7 @@ public final class WorkspaceConfiguration : Configuration {
         gitHub.manage = true
         xcode.manage = true
         documentation.readMe.manage = true
+        documentation.api.generate = true
     }
 
     // MARK: - Encoding

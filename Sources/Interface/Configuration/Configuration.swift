@@ -173,9 +173,6 @@ struct Configuration {
         return try boolean(for: .manageContinuousIntegration) ?? false // [_Exempt from Test Coverage_] [_Workaround: Until refresh is testable._]
     }
 
-    func shouldGenerateDocumentation() throws -> Bool {
-        return try boolean(for: .generateDocumentation) ?? false
-    }
     func encryptedTravisDeploymentKey() throws -> String? {
         return try string(for: .encryptedTravisDeploymentKey)
     }

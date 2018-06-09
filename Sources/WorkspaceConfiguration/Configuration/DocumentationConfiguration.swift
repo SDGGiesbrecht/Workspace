@@ -54,4 +54,7 @@ public struct DocumentationConfiguration : Codable {
 
     /// Options related to the project read‐me.
     public var readMe: ReadMeConfiguration = ReadMeConfiguration()
+
+    /// Options related to API documentation.
+    public var api: APIDocumentationConfiguration = APIDocumentationConfiguration()
 }

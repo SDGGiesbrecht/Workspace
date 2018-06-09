@@ -250,10 +250,10 @@ extension ContinuousIntegration {
             case .miscellaneous:
                 return true
             case .documentation:
-                return try project.configuration.shouldGenerateDocumentation()
+                return try project.cachedConfiguration().documentation.api.generate
                     ∧ project.hasTargetsToDocument(output: output)
             case .deployment:
-                return try project.configuration.shouldGenerateDocumentation()
+                return try project.cachedConfiguration().documentation.api.generate
                 ∧ project.hasTargetsToDocument(output: output)
                 ∧ (try project.configuration.encryptedTravisDeploymentKey()) ≠ nil
             }

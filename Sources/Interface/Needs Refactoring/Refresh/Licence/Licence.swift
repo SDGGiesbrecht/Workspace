@@ -102,10 +102,12 @@ enum Licence : String {
     static func refreshLicence(output: Command.Output) throws {
 
         guard let licence = Configuration.licence else {
-
-            // Fails later in validation phase.
-
-            return
+            throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return StrictString("No licence has been selected. (licence.licence)")
+                }
+            }))
         }
 
         var text = licence.text

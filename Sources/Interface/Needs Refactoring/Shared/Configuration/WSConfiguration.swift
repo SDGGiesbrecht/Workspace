@@ -368,9 +368,6 @@ extension Configuration {
 
     // Responsibilities
 
-    static var manageLicence: Bool {
-        return booleanValue(option: .manageLicence)
-    }
     static var licence: Licence? {
         if let key = possibleStringValue(option: .licence) {
             if let result = Licence(key: StrictString(key)) {
@@ -487,12 +484,6 @@ extension Configuration {
 
             succeeding = false
             printValidationFailureDescription(description)
-        }
-
-        // Manage Licence
-
-        if manageLicence ∧ configurationFile[.licence] == nil {
-            incompatibilityDetected(between: .manageLicence, and: .licence, documentation: .licence)
         }
 
         // Documentation Deployment

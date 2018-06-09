@@ -49,7 +49,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
         try Workspace.Refresh.ReadMe.command.execute(withArguments: arguments, options: options, output: output)
     }
 
-    if Configuration.manageLicence {
+    if try options.project.cachedConfiguration().licence.manage {
 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         output.print("Updating licence...".formattedAsSectionHeader())

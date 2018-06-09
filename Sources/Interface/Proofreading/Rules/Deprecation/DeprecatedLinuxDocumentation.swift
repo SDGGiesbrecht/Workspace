@@ -19,7 +19,7 @@ struct DeprecatedLinuxDocumentation : Rule {
     static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
-            return "Deprecated Linux Documentation"
+            return "deprecatedLinuxDocumentation"
         }
     })
 

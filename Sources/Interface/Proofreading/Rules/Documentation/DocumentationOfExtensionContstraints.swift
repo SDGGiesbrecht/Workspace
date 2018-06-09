@@ -20,14 +20,14 @@ struct DocumentationOfExtensionConstraints : Rule {
     static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
-            return "Documentation of Extension Constraints"
+            return "documentationOfExtensionConstraints"
         }
     })
 
     static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
-            return StrictString("Undocumented extension constraint. Add “\(Mark.expectedSyntax)where...” on the next line.")
+            return StrictString("Undocumented extension constraint. Add “\(Marks.expectedSyntax)where...” on the next line.")
         }
     })
 

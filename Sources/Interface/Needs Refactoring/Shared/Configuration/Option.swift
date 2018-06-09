@@ -26,8 +26,6 @@ enum Option : String, CustomStringConvertible {
 
     // MARK: - Cases
 
-    case disableProofreadingRules = "Disable Proofreading Rules"
-
     case prohibitCompilerWarnings = "Prohibit Compiler Warnings"
 
     case enforceTestCoverage = "Enforce Test Coverage"
@@ -54,8 +52,6 @@ enum Option : String, CustomStringConvertible {
 
     static let allPublic: [Option] = [
 
-        .disableProofreadingRules,
-
         .prohibitCompilerWarnings,
 
         .enforceTestCoverage,
@@ -81,9 +77,6 @@ enum Option : String, CustomStringConvertible {
 
     var defaultValue: String {
         switch self {
-
-        case .disableProofreadingRules:
-            return Configuration.emptyListOptionValue
 
         case .prohibitCompilerWarnings:
             return String(Configuration.trueOptionValue)

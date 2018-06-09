@@ -16,12 +16,12 @@ import SDGLogic
 import SDGCollections
 import GeneralImports
 
-struct Mark : Rule {
+struct Marks : Rule {
 
     static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
-            return "Mark"
+            return "marks"
         }
     })
 

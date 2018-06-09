@@ -20,14 +20,14 @@ struct DocumentationOfCompilationConditions : Rule {
     static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
-            return "Documentation of Compilation Conditions"
+            return "documentationOfCompilationConditions"
         }
     })
 
     static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
-            return StrictString("Undocumented compilation condition. Add “\(Mark.expectedSyntax)\u{23}if...” on the next line.")
+            return StrictString("Undocumented compilation condition. Add “\(Marks.expectedSyntax)\u{23}if...” on the next line.")
         }
     })
 

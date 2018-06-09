@@ -19,7 +19,7 @@ struct MissingImplementation : Rule {
     static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
-            return "Missing Implementation"
+            return "missingImplementation"
         }
     })
 

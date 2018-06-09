@@ -19,14 +19,14 @@ import SDGExternalProcess
 
 import PackageModel
 
-struct WorkaroundReminder : Warning {
+struct WorkaroundReminders : Warning {
 
     static let noticeOnly = true
 
     static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
-            return "Workaround Reminder"
+            return "workaroundReminders"
         }
     })
 

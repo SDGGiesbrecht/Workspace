@@ -53,7 +53,7 @@ public enum ProofreadingRule : String, Codable {
     case documentationOfExtensionConstraints
 
     /// Requires compilation conditions to be documented.
-    case documentationOfCompliationConditions
+    case documentationOfCompilationConditions
 
     /// Requires Markdown code blocks to specify a language.
     case syntaxColouring
@@ -88,7 +88,7 @@ public enum ProofreadingRule : String, Codable {
         .marks,
 
         .documentationOfExtensionConstraints,
-        .documentationOfCompliationConditions,
+        .documentationOfCompilationConditions,
         .syntaxColouring,
 
         .unicode,
@@ -116,7 +116,7 @@ public enum ProofreadingRule : String, Codable {
             return .functionality
 
         case .documentationOfExtensionConstraints,
-             .documentationOfCompliationConditions,
+             .documentationOfCompilationConditions,
              .syntaxColouring:
             return .documentation
 

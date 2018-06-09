@@ -14,12 +14,12 @@
 
 import GeneralImports
 
-struct ParametersStyle : Rule {
+struct ParameterGrouping : Rule {
 
     static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
-            return "Parameter Style"
+            return "parameterGrouping"
         }
     })
 

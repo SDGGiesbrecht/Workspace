@@ -20,8 +20,8 @@ protocol Warning : Rule {
 }
 
 let manualWarnings: [Warning.Type] = [
-    GenericWarning.self,
-    WorkaroundReminder.self
+    ManualWarnings.self,
+    WorkaroundReminders.self
 ]
 
 extension Warning {

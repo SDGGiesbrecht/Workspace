@@ -23,14 +23,7 @@ enum Proofreading {
     static func proofread(project: PackageRepository, reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
         let status = ProofreadingStatus(reporter: reporter)
 
-        let disabledRules: Set<StrictString> = try project.configuration.disabledProofreadingRules()
-        let activeRules = (rules + manualWarnings as [Rule.Type]).filter { rule in
-            for name in InterfaceLocalization.cases.lazy.map({ rule.name.resolved(for: $0) }) where  name ∈ disabledRules {
-                return false
-            }
-            // [_Exempt from Test Coverage_] False positive in Xcode 9.2.
-            return true
-        }
+        let activeRules = try project.cachedConfiguration().proofreading.rules
 
         for url in try project.sourceFiles(output: output)
             where (try? FileType(url: url)) ≠ nil
@@ -42,7 +35,7 @@ enum Proofreading {
                         reporter.reportParsing(file: file.location.path(relativeTo: project.location), to: output)
 
                         for rule in activeRules {
-                            try rule.check(file: file, in: project, status: status, output: output)
+                            try rule.parser.check(file: file, in: project, status: status, output: output)
                         }
                     }
         }

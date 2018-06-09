@@ -14,12 +14,12 @@
 
 import GeneralImports
 
-struct GenericWarning : Warning {
+struct ManualWarnings : Warning {
 
     static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
-            return "Manual Warning"
+            return "manualWarnings"
         }
     })
 

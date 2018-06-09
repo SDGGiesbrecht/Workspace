@@ -79,7 +79,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         // Coverage irrelevant.
         try Workspace.Test.executeAsStep(options: options, validationStatus: &validationStatus, output: output)
 #else
-    if try options.project.configuration.shouldEnforceTestCoverage() {
+    if try options.project.cachedConfiguration().testing.enforceTestCoverage {
         if let job = options.job,
             job ∉ Tests.coverageJobs {
             // Coverage impossible to check.

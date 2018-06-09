@@ -26,8 +26,6 @@ enum Option : String, CustomStringConvertible {
 
     // MARK: - Cases
 
-    case ignoreFileTypes = "Ignore File Types"
-
     // SDG
     case sdg = "SDG"
 
@@ -35,11 +33,6 @@ enum Option : String, CustomStringConvertible {
     case nestedTest = "Nested Test"
     case testOption = "Test Option"
     case testLongOption = "Test Long Option"
-
-    static let allPublic: [Option] = [
-
-        .ignoreFileTypes
-        ]
 
     // MARK: - Properties
 
@@ -49,9 +42,6 @@ enum Option : String, CustomStringConvertible {
 
     var defaultValue: String {
         switch self {
-
-        case .ignoreFileTypes:
-            return Configuration.emptyListOptionValue
 
         // SDG
         case .sdg:

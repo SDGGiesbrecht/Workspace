@@ -59,6 +59,9 @@ public final class WorkspaceConfiguration : Configuration {
     /// Options related to continuous integration.
     public var continuousIntegration: ContinuousIntegrationConfiguration = ContinuousIntegrationConfiguration()
 
+    /// Options related to the project repository.
+    public var repository: RepositoryConfiguration = RepositoryConfiguration()
+
     /// :nodoc:
     public var sdg: Bool = false
 
@@ -90,6 +93,7 @@ public final class WorkspaceConfiguration : Configuration {
         case testing
         case documentation
         case continuousIntegration
+        case repository
         case sdg
     }
 
@@ -110,6 +114,7 @@ public final class WorkspaceConfiguration : Configuration {
         try container.encode(testing, forKey: .testing)
         try container.encode(documentation, forKey: .documentation)
         try container.encode(continuousIntegration, forKey: .continuousIntegration)
+        try container.encode(repository, forKey: .repository)
         try container.encode(sdg, forKey: .sdg)
         try super.encode(to: container.superEncoder())
     }
@@ -131,6 +136,7 @@ public final class WorkspaceConfiguration : Configuration {
         testing = try container.decode(TestingConfiguration.self, forKey: .testing)
         documentation = try container.decode(DocumentationConfiguration.self, forKey: .documentation)
         continuousIntegration = try container.decode(ContinuousIntegrationConfiguration.self, forKey: .continuousIntegration)
+        repository = try container.decode(RepositoryConfiguration.self, forKey: .repository)
         sdg = try container.decode(Bool.self, forKey: .sdg)
         try super.init(from: container.superDecoder())
     }

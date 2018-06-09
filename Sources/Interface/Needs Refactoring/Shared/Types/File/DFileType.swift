@@ -53,20 +53,6 @@ enum FileType : CustomStringConvertible {
 
     // MARK: - Initialization
 
-    static let binaryFileTypes: Set<String> = [
-        "dsidx",
-        "DS_Store",
-        "nojekyll",
-        "plist",
-        "pins",
-        "png",
-        "resolved",
-        "svg",
-        "testspec",
-        "tgz",
-        "txt"
-    ]
-
     init?<P : Path>(filePath: P) {
 
         var result: FileType?
@@ -90,8 +76,9 @@ enum FileType : CustomStringConvertible {
                 identifier = filename
             }
 
-            if identifier ∉ FileType.binaryFileTypes
-                ∧ identifier ∉ Configuration.ignoreFileTypes {
+            let configuration = try? Repository.packageRepository.cachedConfiguration()
+            let ignoredFileTypes = configuration?.repository.ignoredFileTypes ?? []
+            if identifier ∉ ignoredFileTypes {
                 if FileType.unsupportedTypesEncountered[identifier] == nil {
                     FileType.unsupportedTypesEncountered[identifier] = Repository.relative(filePath)
                 }

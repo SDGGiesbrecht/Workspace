@@ -91,11 +91,7 @@ extension Configuration {
         func reportUnsupportedKey(_ key: String) -> Never {
             fatalError(message: [
                 "Unsupported configuration key:",
-                key,
-                "",
-                "Supported keys:",
-                "",
-                Option.allPublic.map({ $0.key }).joinAsLines()
+                key
                 ])
         }
 
@@ -364,12 +360,6 @@ extension Configuration {
 
     static func moduleName(forProjectName projectName: String) -> String {
         return projectName.replacingOccurrences(of: " ", with: "")
-    }
-
-    // Miscellaneous
-
-    static var ignoreFileTypes: Set<String> {
-        return Set(listValue(option: .ignoreFileTypes))
     }
 
     // SDG

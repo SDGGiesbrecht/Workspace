@@ -32,4 +32,38 @@ public enum Licence: String, Codable {
 
     /// An [explicit notice of copyright](https://github.com/SDGGiesbrecht/Workspace/blob/master/Resources/Interface/Licences/Copyright.md), which gives no permissions.
     case copyright
+
+    // MARK: - Details
+
+    internal var notice: String {
+        var result: [String]
+        switch self {
+        case .apache2_0:
+            result = [
+                "Licensed under the Apache Licence, Version 2.0.",
+                "See http://www.apache.org/licenses/LICENSE-2.0 for licence information."
+            ]
+        case .mit:
+            result = [
+                "Licensed under the MIT Licence.",
+                "See https://opensource.org/licenses/MIT for licence information."
+            ]
+        case .gnuGeneralPublic3_0:
+            result = [
+                "Licensed under the GNU General Public Licence, Version 3.0.",
+                "See http://www.gnu.org/licenses/ for licence information."
+            ]
+        case .unlicense:
+            result = [
+                "Dedicated to the public domain.",
+                "See http://unlicense.org/ for more information."
+            ]
+        case .copyright:
+            result = [
+                "This software is subject to copyright law.",
+                "It may not be used, copied, distributed or modified without first obtaining a private licence from the copyright holder(s)."
+            ]
+        }
+        return result.joined(separator: "\n")
+    }
 }

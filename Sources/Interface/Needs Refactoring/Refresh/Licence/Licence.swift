@@ -38,40 +38,6 @@ extension Licence {
         return file.body
     }
 
-    private var noticeLines: [String] {
-        switch self {
-        case .apache2_0:
-            return [
-                "Licensed under the Apache Licence, Version 2.0.",
-                "See http://www.apache.org/licenses/LICENSE-2.0 for licence information."
-            ]
-        case .mit:
-            return [
-                "Licensed under the MIT Licence.",
-                "See https://opensource.org/licenses/MIT for licence information."
-            ]
-        case .gnuGeneralPublic3_0:
-            return [
-                "Licensed under the GNU General Public Licence, Version 3.0.",
-                "See http://www.gnu.org/licenses/ for licence information."
-            ]
-        case .unlicense:
-            return [
-                "Dedicated to the public domain.",
-                "See http://unlicense.org/ for more information."
-            ]
-        case .copyright:
-            return [
-                "This software is subject to copyright law.",
-                "It may not be used, copied, distributed or modified without first obtaining a private licence from the copyright holder(s)."
-            ]
-        }
-    }
-
-    var notice: String {
-        return noticeLines.joinAsLines()
-    }
-
     // MARK: - Licence Management
 
     static func refreshLicence(output: Command.Output) throws {

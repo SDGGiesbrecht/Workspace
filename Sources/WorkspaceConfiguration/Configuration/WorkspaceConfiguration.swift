@@ -59,6 +59,9 @@ public final class WorkspaceConfiguration : Configuration {
     /// Options related to continuous integration.
     public var continuousIntegration: ContinuousIntegrationConfiguration = ContinuousIntegrationConfiguration()
 
+    /// :nodoc:
+    public var sdg: Bool = false
+
     // MARK: - Methods
 
     /// Opts into all tasks which are off by default.
@@ -85,6 +88,7 @@ public final class WorkspaceConfiguration : Configuration {
         case testing
         case documentation
         case continuousIntegration
+        case sdg
     }
 
     // [_Inherit Documentation: SDGCornerstone.Encodable.encode(to:)_]
@@ -104,6 +108,7 @@ public final class WorkspaceConfiguration : Configuration {
         try container.encode(testing, forKey: .testing)
         try container.encode(documentation, forKey: .documentation)
         try container.encode(continuousIntegration, forKey: .continuousIntegration)
+        try container.encode(sdg, forKey: .sdg)
         try super.encode(to: container.superEncoder())
     }
 
@@ -124,6 +129,7 @@ public final class WorkspaceConfiguration : Configuration {
         testing = try container.decode(TestingConfiguration.self, forKey: .testing)
         documentation = try container.decode(DocumentationConfiguration.self, forKey: .documentation)
         continuousIntegration = try container.decode(ContinuousIntegrationConfiguration.self, forKey: .continuousIntegration)
+        sdg = try container.decode(Bool.self, forKey: .sdg)
         try super.init(from: container.superDecoder())
     }
 

@@ -28,7 +28,7 @@ enum Documentation {
     }
 
     static func defaultCopyrightTemplate(configuration: Configuration) throws -> Template {
-        return Template(source: try FileHeaders.defaultCopyright(configuration: configuration).text + " All rights reserved.")
+        return Template(source: try Repository.packageRepository.sourceCopyright() + " All rights reserved.")
     }
 
     private static func copyright(for directory: URL, in project: PackageRepository, output: Command.Output) throws -> StrictString {

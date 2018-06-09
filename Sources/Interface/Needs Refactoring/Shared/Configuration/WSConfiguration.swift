@@ -368,9 +368,6 @@ extension Configuration {
 
     // Responsibilities
 
-    static var fileHeader: String {
-        return stringValue(option: .fileHeader)
-    }
     static var requiredAuthor: String {
         return stringValue(option: .author)
     }

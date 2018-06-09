@@ -20,42 +20,6 @@ import Project
 
 struct FileHeaders {
 
-    static func defaultCopyright(configuration: Configuration) throws -> Template {
-        if try configuration.optionIsDefined(.author) {
-            return Template(source: "Copyright [_Copyright_] [_Author_] and the [_Project_] project contributors.")
-        } else {
-            return Template(source: "Copyright [_Copyright_] the [_Project_] project contributors.")
-        }
-    }
-
-    static let defaultFileHeader: String = {
-        var defaultHeader: [String] = [
-            "[_Filename_]",
-            "",
-            "This source file is part of the [_Project_] open source project."
-        ]
-        if Configuration.optionIsDefined(.projectWebsite) {
-            defaultHeader.append("[_Website_]")
-        }
-        defaultHeader.append(contentsOf: [
-            ""
-            ])
-        defaultHeader.append(String((try? defaultCopyright(configuration: Repository.packageRepository.configuration))!.text))
-        if Configuration.sdg {
-            defaultHeader.append(contentsOf: [
-                "",
-                "Soli Deo gloria."
-                ])
-        }
-        if (try? Repository.packageRepository.cachedConfiguration())?.licence.licence ≠ nil {
-            defaultHeader.append(contentsOf: [
-                "",
-                "[_Licence_]"
-                ])
-        }
-        return defaultHeader.joinAsLines()
-    }()
-
     static func copyright(fromText text: String) -> String {
 
         var oldStartDate: String?
@@ -93,22 +57,7 @@ struct FileHeaders {
             return "[_\(name)_]"
         }
 
-        let template = Configuration.fileHeader
-
-        var possibleWebsite: String?
-        if template.contains(key("Website")) {
-            possibleWebsite = Configuration.requiredProjectWebsite
-        }
-
-        var possibleAuthor: String?
-        if template.contains(key("Author")) {
-            possibleAuthor = Configuration.requiredAuthor
-        }
-
-        var possibleLicence: String?
-        if template.contains(key("Licence")) {
-            possibleLicence = try Repository.packageRepository.cachedConfiguration().licence.licence?.notice
-        }
+        let template = String(try Repository.packageRepository.sourceCopyright())
 
         var skippedFiles: Set<String> = []
         skippedFiles.insert("LICENSE.md")
@@ -124,7 +73,7 @@ struct FileHeaders {
         }
 
         for path in Repository.sourceFiles.filter({ shouldManageHeader(path: $0) }) {
-            try autoreleasepool {
+            autoreleasepool {
 
                 if FileType(filePath: path)?.syntax ≠ nil {
 
@@ -132,18 +81,8 @@ struct FileHeaders {
                     let oldHeader = file.header
                     var header = template
 
-                    header = header.replacingOccurrences(of: key("Filename"), with: String(StrictString(path.filename)))
-                    header = header.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.projectName()))
-                    if let website = possibleWebsite {
-                        header = header.replacingOccurrences(of: key("Website"), with: website)
-                    }
-                    header = header.replacingOccurrences(of: key("Copyright"), with: FileHeaders.copyright(fromText: oldHeader))
-                    if let author = possibleAuthor {
-                        header = header.replacingOccurrences(of: key("Author"), with: author)
-                    }
-                    if let licence = possibleLicence {
-                        header = header.replacingOccurrences(of: key("Licence"), with: licence)
-                    }
+                    header = header.replacingOccurrences(of: key("filename"), with: String(StrictString(path.filename)))
+                    header = header.replacingOccurrences(of: key("dates"), with: FileHeaders.copyright(fromText: oldHeader))
 
                     file.header = header
                     require { try file.write(output: output) }

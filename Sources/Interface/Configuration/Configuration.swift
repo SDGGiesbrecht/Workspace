@@ -154,13 +154,6 @@ struct Configuration {
         return try options()[option] ≠ nil
     }
 
-    // MARK: - Options: Project Metadata
-
-
-    func originalDocumentationCopyrightYear() throws -> StrictString? {
-        return try strictString(for: .originalDocumentationCopyrightYear)
-    }
-
     // MARK: - Options: Active Management Tasks
 
     func shouldManageContinuousIntegration() throws -> Bool { // [_Exempt from Test Coverage_] [_Workaround: Until refresh is testable._]

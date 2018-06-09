@@ -426,12 +426,6 @@ extension Configuration {
             printValidationFailureDescription(description)
         }
 
-        // Documentation Deployment
-
-        if optionIsDefined(.encryptedTravisDeploymentKey) ∧ ¬optionIsDefined(.originalDocumentationCopyrightYear) {
-            incompatibilityDetected(between: .encryptedTravisDeploymentKey, and: .originalDocumentationCopyrightYear, documentation: DocumentationLink.documentationGeneration)
-        }
-
         return succeeding
     }
 }

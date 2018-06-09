@@ -13,6 +13,9 @@ public struct APIDocumentationConfiguration : Codable {
     /// This is on by default.
     public var enforceCoverage: Bool = true
 
+    /// The year the documentation was first published.
+    public var yearFirstPublished: Int?
+
     /// The copyright notice.
     ///
     /// By default, this is assembled from the file header copyright notice.

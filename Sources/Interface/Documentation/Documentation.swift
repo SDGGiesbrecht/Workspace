@@ -27,18 +27,17 @@ enum Documentation {
         return documentationDirectory.appendingPathComponent(target)
     }
 
-    private static func copyright(for directory: URL, in project: PackageRepository, output: Command.Output) throws -> StrictString {
+    private static func copyright(for project: PackageRepository, output: Command.Output) throws -> StrictString {
 
-        let existing = try TextFile(possiblyAt: directory.appendingPathComponent("index.html")).contents
-        let searchArea: String
-        if let override = try project.configuration.originalDocumentationCopyrightYear() {
-            searchArea = "©" + String(override)
-        } else if let footerStart = existing.range(of: "<section id=\u{22}footer\u{22}>")?.upperBound {
-            searchArea = String(existing[footerStart...])
-        } else {
-            searchArea = ""
+        guard let defined = try project.cachedConfiguration().documentation.api.yearFirstPublished else {
+            throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "No year has been specified for when the documentation was first published. (documentation.api.yearFirstPublished)"
+                }
+            }))
         }
-        let dates = StrictString(FileHeaders.copyright(fromText: searchArea))
+        let dates = StrictString(FileHeaders.copyright(fromText: "©\(defined)"))
 
         var template = Template(source: try project.documentationCopyright())
 
@@ -78,7 +77,7 @@ enum Documentation {
             buildOperatingSystem = .macOS
         }
 
-        let copyrightText = try copyright(for: outputSubdirectory, in: project, output: output)
+        let copyrightText = try copyright(for: project, output: output)
         try FileManager.default.do(in: project.location) {
             try Jazzy.default.document(target: target, scheme: try project.scheme(), buildOperatingSystem: buildOperatingSystem, copyright: copyrightText, gitHubURL: try project.cachedConfiguration().documentation.repositoryURL, outputDirectory: outputSubdirectory, project: project, output: output)
         }

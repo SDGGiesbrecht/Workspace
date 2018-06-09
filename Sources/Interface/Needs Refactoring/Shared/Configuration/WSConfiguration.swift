@@ -368,27 +368,6 @@ extension Configuration {
 
     // Responsibilities
 
-    static var licence: Licence? {
-        if let key = possibleStringValue(option: .licence) {
-            if let result = Licence(key: StrictString(key)) {
-                return result
-            } else {
-                invalidEnumValue(option: .licence, value: key, valid: Licence.all.map({ $0.key }))
-            }
-        } else {
-            return nil
-        }
-    }
-    static var requiredLicence: Licence {
-        let key = stringValue(option: .licence)
-
-        if let result = Licence(key: StrictString(key)) {
-            return result
-        } else {
-            invalidEnumValue(option: .licence, value: key, valid: Licence.all.map({ $0.key }))
-        }
-    }
-
     static var manageContributingInstructions: Bool {
         return booleanValue(option: .manageContributingInstructions)
     }

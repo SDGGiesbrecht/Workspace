@@ -26,8 +26,6 @@ enum Option : String, CustomStringConvertible {
 
     // MARK: - Cases
 
-    case licence = "Licence"
-
     case manageContributingInstructions = "Manage Contributing Instructions"
     case contributingInstructions = "Contributing Instructions"
     case issueTemplate = "Issue Template"
@@ -69,8 +67,6 @@ enum Option : String, CustomStringConvertible {
     case testLongOption = "Test Long Option"
 
     static let allPublic: [Option] = [
-        .licence,
-
         .manageContributingInstructions,
         .contributingInstructions,
         .issueTemplate,
@@ -112,8 +108,6 @@ enum Option : String, CustomStringConvertible {
 
     var defaultValue: String {
         switch self {
-        case .licence:
-            return Configuration.noValue
 
         case .manageContributingInstructions:
             return String(Configuration.falseOptionValue)

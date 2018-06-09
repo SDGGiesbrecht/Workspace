@@ -47,7 +47,7 @@ struct FileHeaders {
                 "Soli Deo gloria."
                 ])
         }
-        if Configuration.optionIsDefined(.licence) {
+        if (try? Repository.packageRepository.cachedConfiguration())?.licence.licence ≠ nil {
             defaultHeader.append(contentsOf: [
                 "",
                 "[_Licence_]"
@@ -107,7 +107,7 @@ struct FileHeaders {
 
         var possibleLicence: String?
         if template.contains(key("Licence")) {
-            possibleLicence = Configuration.requiredLicence.notice
+            possibleLicence = try Repository.packageRepository.cachedConfiguration().licence.licence?.notice
         }
 
         var skippedFiles: Set<String> = []

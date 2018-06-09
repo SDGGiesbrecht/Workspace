@@ -13,36 +13,11 @@
  */
 
 import GeneralImports
+import WorkspaceConfiguration
 
-enum Licence : String {
-
-    // MARK: - Initialization
-
-    init?(key: StrictString) {
-        self.init(rawValue: String(key))
-    }
-
-    // MARK: - Cases
-
-    case apache2_0 = "Apache 2.0"
-    case mit = "MIT"
-    case gnuGeneralPublic3_0 = "GNU General Public 3.0"
-    case unlicense = "Unlicense"
-    case copyright = "Copyright"
-
-    static let all: [Licence] = [
-        .apache2_0,
-        .mit,
-        .gnuGeneralPublic3_0,
-        .unlicense,
-        .copyright
-    ]
+extension Licence {
 
     // MARK: - Properties
-
-    var key: StrictString {
-        return StrictString(rawValue)
-    }
 
     var text: String {
         var source: String
@@ -101,7 +76,7 @@ enum Licence : String {
 
     static func refreshLicence(output: Command.Output) throws {
 
-        guard let licence = Configuration.licence else {
+        guard let licence = try Repository.packageRepository.cachedConfiguration().licence.licence else {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:

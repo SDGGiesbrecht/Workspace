@@ -14,6 +14,7 @@
 
 import SDGLogic
 import GeneralImports
+import WorkspaceConfiguration
 
 func instructionsAfterRefresh() throws -> String {
     if let xcodeProject = try Repository.packageRepository.xcodeProject()?.lastPathComponent {

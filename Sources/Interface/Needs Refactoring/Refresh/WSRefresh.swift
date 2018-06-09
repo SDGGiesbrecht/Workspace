@@ -59,7 +59,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
         try Licence.refreshLicence(output: output)
     }
 
-    if Configuration.manageContributingInstructions {
+    if try options.project.cachedConfiguration().gitHub.manage {
 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         output.print("Updating contributing instructions...".formattedAsSectionHeader())

@@ -368,9 +368,6 @@ extension Configuration {
 
     // Responsibilities
 
-    static var manageContributingInstructions: Bool {
-        return booleanValue(option: .manageContributingInstructions)
-    }
     static var contributingInstructions: String {
         return stringValue(option: .contributingInstructions)
     }

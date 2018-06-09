@@ -26,9 +26,6 @@ enum Option : String, CustomStringConvertible {
 
     // MARK: - Cases
 
-    case testCoverageExemptionTokensForSameLine = "Test Coverage Exemption Tokens for the Same Line"
-    case testCoverageExemptionTokensForPreviousLine = "Test Coverage Exemption Tokens for the Previous Line"
-
     case generateDocumentation = "Generate Documentation"
     case enforceDocumentationCoverage = "Enforce Documentation Coverage"
     case documentationCopyright = "Documentation Copyright"
@@ -49,9 +46,6 @@ enum Option : String, CustomStringConvertible {
 
     static let allPublic: [Option] = [
 
-        .testCoverageExemptionTokensForSameLine,
-        .testCoverageExemptionTokensForPreviousLine,
-
         .generateDocumentation,
         .documentationCopyright,
         .originalDocumentationCopyrightYear,
@@ -71,11 +65,6 @@ enum Option : String, CustomStringConvertible {
 
     var defaultValue: String {
         switch self {
-
-        case .testCoverageExemptionTokensForSameLine:
-            return Configuration.emptyListOptionValue
-        case .testCoverageExemptionTokensForPreviousLine:
-            return Configuration.emptyListOptionValue
 
         case .generateDocumentation:
             return String(Configuration.trueOptionValue)

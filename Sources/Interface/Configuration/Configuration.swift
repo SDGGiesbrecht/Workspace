@@ -185,10 +185,4 @@ struct Configuration {
     func shouldEnforceDocumentationCoverage() throws -> Bool { // [_Exempt from Test Coverage_] [_Workaround: Until validate is testable._]
         return try boolean(for: .enforceDocumentationCoverage) ?? true // [_Exempt from Test Coverage_] [_Workaround: Until validate is testable._]
     }
-    func testCoverageExemptionTokensForSameLine() throws -> [String] {
-        return try list(for: .testCoverageExemptionTokensForSameLine)
-    }
-    func testCoverageExemptionTokensForPreviousLine() throws -> [String] {
-        return try list(for: .testCoverageExemptionTokensForPreviousLine)
-    }
 }

@@ -270,9 +270,10 @@ struct Tests {
                 }
             }
 
+            let sameLineTokens = try project.cachedConfiguration().testing.testCoverageExemptions.map { StrictString($0.token) }
+            let previousLineTokens = try project.cachedConfiguration().testing.testCoverageExemptions.filter({ $0.scope == .previousLine }).map { StrictString($0.token) }
+
             var passing = true
-            let sameLineTokens = try untestableSameLineTokens(for: project)
-            let previousLineTokens = try untestablePreviousLineTokens(for: project)
             for file in report.files where file.file.resolvingSymlinksInPath() ∉ irrelevantFiles ∧ ¬file.file.path.contains("/Needs Refactoring/") { // [_Workaround: “Needs Refactoring” is a temporary measure._]
                 CommandLineProofreadingReporter.default.reportParsing(file: file.file.path(relativeTo: project.location), to: output)
                 try autoreleasepool {
@@ -318,26 +319,5 @@ struct Tests {
         } catch {
             failStepWithError(message: StrictString(error.localizedDescription))
         }
-    }
-
-    private static func untestableSameLineTokens(for project: PackageRepository) throws -> [StrictString] {
-        return [
-            "[_Exempt from Test Coverage_]",
-            "assert",
-            "precondition",
-            "fatalError",
-            "fail"
-            ]
-            + (try project.configuration.testCoverageExemptionTokensForSameLine().map({ StrictString($0) }))
-            + (try untestablePreviousLineTokens(for: project)) // for simple trailing closures
-    }
-    private static func untestablePreviousLineTokens(for project: PackageRepository) throws -> [StrictString] {
-        return [
-            "assertionFailure",
-            "preconditionFailure",
-            "fatalError",
-            "primitiveMethod",
-            "unreachable"
-            ] + (try project.configuration.testCoverageExemptionTokensForPreviousLine().map({ StrictString($0) }))
     }
 }

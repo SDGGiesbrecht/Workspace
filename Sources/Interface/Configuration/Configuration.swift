@@ -153,10 +153,4 @@ struct Configuration {
     func optionIsDefined(_ option: Option) throws -> Bool { // [_Exempt from Test Coverage_] [_Workaround: Until licence is testable._]
         return try options()[option] ≠ nil
     }
-
-    // MARK: - Options: Active Management Tasks
-
-    func shouldManageContinuousIntegration() throws -> Bool { // [_Exempt from Test Coverage_] [_Workaround: Until refresh is testable._]
-        return try boolean(for: .manageContinuousIntegration) ?? false // [_Exempt from Test Coverage_] [_Workaround: Until refresh is testable._]
-    }
 }

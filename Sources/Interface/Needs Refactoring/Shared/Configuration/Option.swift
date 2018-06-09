@@ -26,8 +26,6 @@ enum Option : String, CustomStringConvertible {
 
     // MARK: - Cases
 
-    case manageContinuousIntegration = "Manage Continuous Integration"
-
     case ignoreFileTypes = "Ignore File Types"
 
     // SDG
@@ -40,8 +38,6 @@ enum Option : String, CustomStringConvertible {
 
     static let allPublic: [Option] = [
 
-        .manageContinuousIntegration,
-
         .ignoreFileTypes
         ]
 
@@ -53,9 +49,6 @@ enum Option : String, CustomStringConvertible {
 
     var defaultValue: String {
         switch self {
-
-        case .manageContinuousIntegration:
-            return String(Configuration.falseOptionValue)
 
         case .ignoreFileTypes:
             return Configuration.emptyListOptionValue

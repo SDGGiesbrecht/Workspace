@@ -15,6 +15,11 @@
 /// Options related to continuous integration.
 public struct ContinuousIntegrationConfiguration : Codable {
 
+    /// Whether or not to manage continuous integration.
+    ///
+    /// This is off by default.
+    public var manage: Bool = false
+
     /// Whether or not to skip simulator tasks when running them locally.
     ///
     /// This is off by default.

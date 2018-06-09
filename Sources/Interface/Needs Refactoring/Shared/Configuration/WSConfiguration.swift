@@ -366,12 +366,6 @@ extension Configuration {
         return projectName.replacingOccurrences(of: " ", with: "")
     }
 
-    // Responsibilities
-
-    static var manageContinuousIntegration: Bool {
-        return booleanValue(option: .manageContinuousIntegration)
-    }
-
     // Miscellaneous
 
     static var ignoreFileTypes: Set<String> {

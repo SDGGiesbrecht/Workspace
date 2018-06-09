@@ -73,7 +73,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Continuous Integration
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    if try options.project.configuration.shouldManageContinuousIntegration() {
+    if try options.project.cachedConfiguration().continuousIntegration.manage {
         try Workspace.Refresh.ContinuousIntegration.command.execute(withArguments: arguments, options: options, output: output)
     }
 

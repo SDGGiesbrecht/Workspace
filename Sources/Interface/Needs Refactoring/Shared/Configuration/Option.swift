@@ -29,11 +29,6 @@ enum Option : String, CustomStringConvertible {
     // SDG
     case sdg = "SDG"
 
-    // Testing Workspace
-    case nestedTest = "Nested Test"
-    case testOption = "Test Option"
-    case testLongOption = "Test Long Option"
-
     // MARK: - Properties
 
     var key: String {
@@ -46,14 +41,6 @@ enum Option : String, CustomStringConvertible {
         // SDG
         case .sdg:
             return String(Configuration.falseOptionValue)
-
-        // Tests
-        case .nestedTest:
-            return String(Configuration.falseOptionValue)
-        case .testOption:
-            return "Default Value"
-        case .testLongOption:
-            return "Default\nValue"
         }
     }
 

@@ -368,9 +368,6 @@ extension Configuration {
 
     // Responsibilities
 
-    static var manageFileHeaders: Bool {
-        return booleanValue(option: .manageFileHeaders)
-    }
     static var fileHeader: String {
         return stringValue(option: .fileHeader)
     }

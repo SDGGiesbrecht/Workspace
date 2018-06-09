@@ -82,7 +82,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     try Workspace.Refresh.Resources.command.execute(withArguments: arguments, options: options, output: output)
 
-    if Configuration.manageFileHeaders {
+    if try Repository.packageRepository.cachedConfiguration().fileHeaders.manage {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         output.print("Updating file headers...".formattedAsSectionHeader())
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

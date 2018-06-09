@@ -36,6 +36,7 @@ extension PackageRepository {
         fileprivate var localizations: [LocalizationIdentifier]?
         fileprivate var shortDescription: [LocalizationIdentifier: StrictString]?
         fileprivate var readMe: [LocalizationIdentifier: StrictString]?
+        fileprivate var contributingInstructions: StrictString?
 
         fileprivate var allFiles: [URL]?
         fileprivate var trackedFiles: [URL]?
@@ -158,6 +159,12 @@ extension PackageRepository {
     public func readMe() throws -> [LocalizationIdentifier: StrictString] {
         return try cached(in: &cache.readMe) {
             return try cachedConfiguration().documentation.readMe.resolvedContents(for: self)
+        }
+    }
+
+    public func contributingInstructions() throws -> StrictString {
+        return try cached(in: &cache.contributingInstructions) {
+            return try cachedConfiguration().gitHub.resolvedContributingInstructions(for: self)
         }
     }
 

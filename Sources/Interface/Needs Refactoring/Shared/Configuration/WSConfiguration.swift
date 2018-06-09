@@ -368,9 +368,6 @@ extension Configuration {
 
     // Responsibilities
 
-    static var contributingInstructions: String {
-        return stringValue(option: .contributingInstructions)
-    }
     static var issueTemplate: String {
         return stringValue(option: .issueTemplate)
     }

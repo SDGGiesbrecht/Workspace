@@ -174,18 +174,6 @@ struct Configuration {
         }
     }
 
-    // MARK: - Options: Read‐Me
-
-    func readMeAboutSectionTemplate(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template? {
-        return try localizedTemplate(for: localization, from: .readMeAboutSection)
-    }
-    func requireReadMeAboutSectionTemplate(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template {
-        guard let defined = try readMeAboutSectionTemplate(for: localization, project: project, output: output) else {
-            throw Configuration.optionNotDefinedError(for: .readMeAboutSection)
-        }
-        return defined
-    }
-
     // MARK: - Options: Active Management Tasks
 
     func shouldManageContinuousIntegration() throws -> Bool { // [_Exempt from Test Coverage_] [_Workaround: Until refresh is testable._]

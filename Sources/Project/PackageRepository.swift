@@ -36,6 +36,7 @@ extension PackageRepository {
         fileprivate var localizations: [LocalizationIdentifier]?
         fileprivate var shortDescription: [LocalizationIdentifier: StrictString]?
         fileprivate var sourceCopyright: StrictString?
+        fileprivate var documentationCopyright: StrictString?
         fileprivate var readMe: [LocalizationIdentifier: StrictString]?
         fileprivate var contributingInstructions: StrictString?
         fileprivate var issueTemplate: StrictString?
@@ -181,6 +182,12 @@ extension PackageRepository {
     public func sourceCopyright() throws -> StrictString {
         return try cached(in: &cache.sourceCopyright) {
             return try cachedConfiguration().fileHeaders.resolvedCopyrightNotice(for: self)
+        }
+    }
+
+    public func documentationCopyright() throws -> StrictString {
+        return try cached(in: &cache.documentationCopyright) {
+            return try cachedConfiguration().documentation.api.resolvedCopyrightNotice(for: self)
         }
     }
 

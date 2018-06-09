@@ -27,10 +27,6 @@ enum Documentation {
         return documentationDirectory.appendingPathComponent(target)
     }
 
-    static func defaultCopyrightTemplate(configuration: Configuration) throws -> Template {
-        return Template(source: try Repository.packageRepository.sourceCopyright() + " All rights reserved.")
-    }
-
     private static func copyright(for directory: URL, in project: PackageRepository, output: Command.Output) throws -> StrictString {
 
         let existing = try TextFile(possiblyAt: directory.appendingPathComponent("index.html")).contents
@@ -44,7 +40,7 @@ enum Documentation {
         }
         let dates = StrictString(FileHeaders.copyright(fromText: searchArea))
 
-        var template = try project.configuration.documentationCopyright()
+        var template = Template(source: try project.documentationCopyright())
 
         template.insert(dates, for: UserFacing({ localization in
             switch localization {

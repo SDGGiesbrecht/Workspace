@@ -156,13 +156,7 @@ struct Configuration {
 
     // MARK: - Options: Project Metadata
 
-    func documentationCopyright() throws -> Template {
-        if let defined = try strictString(for: .documentationCopyright) {
-            return Template(source: defined)
-        } else {
-            return try Documentation.defaultCopyrightTemplate(configuration: self)
-        }
-    }
+
     func originalDocumentationCopyrightYear() throws -> StrictString? {
         return try strictString(for: .originalDocumentationCopyrightYear)
     }

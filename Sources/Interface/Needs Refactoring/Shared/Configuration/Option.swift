@@ -26,7 +26,6 @@ enum Option : String, CustomStringConvertible {
 
     // MARK: - Cases
 
-    case documentationCopyright = "Documentation Copyright"
     case originalDocumentationCopyrightYear = "Original Documentation Copyright Year"
     case encryptedTravisDeploymentKey = "Encrypted Travis Deployment Key"
 
@@ -61,8 +60,6 @@ enum Option : String, CustomStringConvertible {
     var defaultValue: String {
         switch self {
 
-        case .documentationCopyright:
-            return String((try? Repository.packageRepository.configuration.documentationCopyright())!.text)
         case .originalDocumentationCopyrightYear:
             return Configuration.noValue
         case .encryptedTravisDeploymentKey:

@@ -176,19 +176,6 @@ struct Configuration {
 
     // MARK: - Options: Read‐Me
 
-    func otherReadMeContent(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template? {
-        if let defined = try localizedTemplate(for: localization, from: .otherReadMeContent) {
-            return defined
-        } else {
-            return try ReadMe.defaultExampleUsageTemplate(for: localization, project: project, output: output)
-        }
-    }
-    func requireOtherReadMeContent(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template {
-        guard let defined = try otherReadMeContent(for: localization, project: project, output: output) else {
-            throw Configuration.optionNotDefinedError(for: .otherReadMeContent)
-        }
-        return defined
-    }
     func readMeAboutSectionTemplate(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template? {
         return try localizedTemplate(for: localization, from: .readMeAboutSection)
     }

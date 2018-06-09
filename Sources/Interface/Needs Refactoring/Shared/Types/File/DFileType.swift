@@ -90,9 +90,6 @@ enum FileType : CustomStringConvertible {
 
     // MARK: - Cases
 
-    // Workspace
-    case workspaceConfiguration
-
     // Source
     case swift
     case swiftPackageManifest
@@ -121,9 +118,6 @@ enum FileType : CustomStringConvertible {
     // MARK: - Filename Suffixes
 
     private static let fileNameSuffixes: [(suffix: String, type: FileType)] = [
-
-        // Workspace
-        (".Workspace Configuration.txt", .workspaceConfiguration),
 
         // Source
         ("Package.swift", .swiftPackageManifest),
@@ -167,8 +161,6 @@ enum FileType : CustomStringConvertible {
     static let swiftDocumentationSyntax = FileSyntax(blockCommentSyntax: BlockCommentSyntax(start: "/*" + "*", end: "*/", stylisticIndent: " "), lineCommentSyntax: LineCommentSyntax(start: "///"))
     var syntax: FileSyntax {
         switch self {
-        case .workspaceConfiguration:
-            return Configuration.syntax
         case .swift, .css, .javaScript:
             return FileSyntax(blockCommentSyntax: FileType.swiftBlockCommentSyntax, lineCommentSyntax: FileType.swiftLineCommentSyntax)
         case .swiftPackageManifest:
@@ -192,8 +184,6 @@ enum FileType : CustomStringConvertible {
 
     var description: String {
         switch self {
-        case .workspaceConfiguration:
-            return "Workspace Configuration"
         case .swift:
             return "Swift"
         case .swiftPackageManifest:

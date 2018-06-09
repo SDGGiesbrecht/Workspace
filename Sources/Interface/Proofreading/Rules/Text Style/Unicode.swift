@@ -83,7 +83,7 @@ struct UnicodeRule : Rule {
                     if ¬fromStartOfLine(to: match, in: file).contains("#".scalars) /* Not a comment */ {
                         continue
                     }
-                case .markdown, .workspaceConfiguration:
+                case .markdown:
                     if fromStartOfFile(to: match, in: file).contains("```shell".scalars) ∧ upToEndOfFile(from: match, in: file).contains("```".scalars) {
                         continue
                     }
@@ -94,7 +94,7 @@ struct UnicodeRule : Rule {
 
             if allowInSampleCode {
                 switch file.fileType {
-                case .markdown, .swift, .workspaceConfiguration:
+                case .markdown, .swift:
                     if fromStartOfFile(to: match, in: file).contains("```".scalars)
                         ∧ upToEndOfFile(from: match, in: file).contains("```".scalars) {
                         continue
@@ -121,15 +121,6 @@ struct UnicodeRule : Rule {
                         ])) {
                         continue
                     }
-                case .workspaceConfiguration:
-                    if fromStartOfFile(to: match, in: file).contains("[_Begin Feature List_]".scalars)
-                        ∧ upToEndOfFile(from: match, in: file).contains("[_End_]".scalars) {
-                        continue
-                    }
-                    if fromStartOfFile(to: match, in: file).contains("[_Begin Other Read‐Me Content_]".scalars)
-                        ∧ upToEndOfFile(from: match, in: file).contains("[_End_]".scalars) {
-                        continue
-                    }
                 default:
                     break
                 }
@@ -140,7 +131,7 @@ struct UnicodeRule : Rule {
                     continue
                 }
                 switch file.fileType {
-                case .markdown, .workspaceConfiguration:
+                case .markdown:
                     if line(of: match, in: file).contains("](".scalars) {
                         continue
                     }

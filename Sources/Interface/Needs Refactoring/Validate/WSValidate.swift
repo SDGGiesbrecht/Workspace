@@ -42,26 +42,6 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
     if options.job == .miscellaneous ∨ options.job == nil {
 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        output.print("Validating Workspace configuration...".formattedAsSectionHeader())
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-
-        if Configuration.validate() {
-            validationStatus.passStep(message: UserFacing({ localization in
-                switch localization {
-                case .englishCanada:
-                    return "Workspace configuration validates."
-                }
-            }))
-        } else {
-            validationStatus.failStep(message: UserFacing({ localization in
-                switch localization {
-                case .englishCanada:
-                    return "Workspace configuration fails validation. (See above for details.)"
-                }
-            }))
-        }
-
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         // Proofreading...
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 

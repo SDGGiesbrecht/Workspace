@@ -23,12 +23,6 @@ import PackageGraph
 
 extension PackageRepository {
 
-    // MARK: - Configuration
-
-    var configuration: Configuration {
-        return Configuration(for: self)
-    }
-
     // MARK: - Structure
 
     func targets() throws -> [Target] {

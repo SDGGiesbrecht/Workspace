@@ -26,8 +26,6 @@ enum Option : String, CustomStringConvertible {
 
     // MARK: - Cases
 
-    case manageXcode = "Manage Xcode"
-
     case manageFileHeaders = "Manage File Headers"
     case fileHeader = "File Header"
     case author = "Author"
@@ -61,8 +59,6 @@ enum Option : String, CustomStringConvertible {
 
     static let allPublic: [Option] = [
 
-        .manageXcode,
-
         .manageFileHeaders,
         .fileHeader,
         .projectWebsite,
@@ -95,9 +91,6 @@ enum Option : String, CustomStringConvertible {
 
     var defaultValue: String {
         switch self {
-
-        case .manageXcode:
-            return String(Configuration.falseOptionValue)
 
         case .manageFileHeaders:
             return String(Configuration.falseOptionValue)

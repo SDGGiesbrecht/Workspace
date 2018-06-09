@@ -41,7 +41,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     output.print("Updating Git configuration...".formattedAsSectionHeader())
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    DGit.updateGitConfiguraiton(output: output)
+    try DGit.updateGitConfiguraiton(output: output)
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Read‐Me
@@ -109,7 +109,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     try Workspace.Normalize.executeAsStep(options: options, output: output)
 
     #if !os(Linux)
-        if Configuration.manageXcode ∧ Environment.operatingSystem == .macOS {
+        if try Repository.packageRepository.cachedConfiguration().xcode.manage {
 
             // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
             output.print("Refreshing Xcode project...".formattedAsSectionHeader())

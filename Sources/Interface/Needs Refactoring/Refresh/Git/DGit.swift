@@ -53,7 +53,7 @@ struct DGit {
         + ignoreEntriesForWorkspace
         + ignoreEntriesForJazzy
 
-    static func updateGitConfiguraiton(output: Command.Output) {
+    static func updateGitConfiguraiton(output: Command.Output) throws {
 
         let startToken = "# [_Begin Workspace Section_]"
         let endToken = "# [_End Workspace Section]"
@@ -103,7 +103,7 @@ struct DGit {
         let gitIgnore = File(possiblyAt: RelativePath(".gitignore"))
 
         var updatedLines: [String] = requiredIgnoreEntries
-        if Configuration.manageXcode {
+        if try Repository.packageRepository.cachedConfiguration().xcode.manage {
             updatedLines += dependentIgnoreEntriesForXcode
         }
 

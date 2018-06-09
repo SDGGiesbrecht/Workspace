@@ -368,9 +368,6 @@ extension Configuration {
 
     // Responsibilities
 
-    static var administrators: [String] {
-        return listValue(option: .administrators)
-    }
     static var developmentNotes: String? {
         return possibleStringValue(option: .developmentNotes)
     }

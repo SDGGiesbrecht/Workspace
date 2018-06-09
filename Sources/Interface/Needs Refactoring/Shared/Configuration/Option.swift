@@ -26,7 +26,6 @@ enum Option : String, CustomStringConvertible {
 
     // MARK: - Cases
 
-    case administrators = "Administrators"
     case developmentNotes = "Development Notes"
 
     case manageXcode = "Manage Xcode"
@@ -63,7 +62,6 @@ enum Option : String, CustomStringConvertible {
     case testLongOption = "Test Long Option"
 
     static let allPublic: [Option] = [
-        .administrators,
         .developmentNotes,
 
         .manageXcode,
@@ -101,8 +99,6 @@ enum Option : String, CustomStringConvertible {
     var defaultValue: String {
         switch self {
 
-        case .administrators:
-            return Configuration.emptyListOptionValue
         case .developmentNotes:
             return Configuration.noValue
 

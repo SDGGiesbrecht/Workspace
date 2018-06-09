@@ -33,7 +33,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 10, 0))),
         .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 3, 1))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 1, 9))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 1, 10))),
         .package(url: "https://github.com/apple/swift\u{2D}package\u{2D}manager", .exact(Version(0, 2, 0)))
     ],
     targets: [

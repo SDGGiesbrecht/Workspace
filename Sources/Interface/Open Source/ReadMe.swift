@@ -108,14 +108,32 @@ enum ReadMe {
 
         // Section Elements
 
-        try readMe.insert(resultOf: { try project.configuration.requireExampleUsage(for: localization, project: project, output: output).text}, for: UserFacing({ localization in
+        let examplesUsage: StrictString
+        let examplesOption = try project.cachedConfiguration().documentation.readMe.exampleUsage
+        switch examplesOption {
+        case .custom(let custom):
+            guard let localized = custom[localization] else {
+                throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return StrictString("There is no example usage for “\(localization)”. (documentation.readMe.exampleUsuage)")
+                    }
+                }))
+            }
+            examplesUsage = StrictString(localized)
+        case .automatic:
+            if let `default` = try defaultExampleUsageTemplate(for: localization, project: project, output: output) {
+                examplesUsage = `default`.text
+            } else {
+                examplesUsage = ""
+            }
+        }
+        readMe.insert(examplesUsage, for: UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
                 return "exampleUsage"
             }
         }))
-
-        // Line Elements
 
         // Word Elements
 
@@ -127,7 +145,7 @@ enum ReadMe {
                 ].joinAsLines(), for: UserFacing({ localization in
                     switch localization {
                     case .englishCanada:
-                        return StrictString("Example: \(key)")
+                        return StrictString("example: \(key)")
                     }
                 }))
         }

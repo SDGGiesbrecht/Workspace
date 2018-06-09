@@ -26,8 +26,6 @@ enum Option : String, CustomStringConvertible {
 
     // MARK: - Cases
 
-    case projectWebsite = "Project Website"
-
     case disableProofreadingRules = "Disable Proofreading Rules"
 
     case prohibitCompilerWarnings = "Prohibit Compiler Warnings"
@@ -56,8 +54,6 @@ enum Option : String, CustomStringConvertible {
 
     static let allPublic: [Option] = [
 
-        .projectWebsite,
-
         .disableProofreadingRules,
 
         .prohibitCompilerWarnings,
@@ -85,9 +81,6 @@ enum Option : String, CustomStringConvertible {
 
     var defaultValue: String {
         switch self {
-
-        case .projectWebsite:
-            return Configuration.noValue
 
         case .disableProofreadingRules:
             return Configuration.emptyListOptionValue

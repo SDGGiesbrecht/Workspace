@@ -368,10 +368,6 @@ extension Configuration {
 
     // Responsibilities
 
-    static var requiredProjectWebsite: String {
-        return stringValue(option: .projectWebsite)
-    }
-
     static var manageContinuousIntegration: Bool {
         return booleanValue(option: .manageContinuousIntegration)
     }

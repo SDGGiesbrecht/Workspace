@@ -368,13 +368,6 @@ extension Configuration {
 
     // Responsibilities
 
-    static var developmentNotes: String? {
-        return possibleStringValue(option: .developmentNotes)
-    }
-    static var requiredDevelopmentNotes: String {
-        return possibleStringValue(option: .developmentNotes) ?? ""
-    }
-
     static var manageFileHeaders: Bool {
         return booleanValue(option: .manageFileHeaders)
     }

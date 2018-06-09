@@ -108,6 +108,7 @@ enum ReadMe {
 
         // Section Elements
 
+        // [_Warning: Can this be sunk further?_]
         let examplesUsage: StrictString
         let examplesOption = try project.cachedConfiguration().documentation.readMe.exampleUsage
         switch examplesOption {

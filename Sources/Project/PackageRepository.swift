@@ -37,6 +37,7 @@ extension PackageRepository {
         fileprivate var shortDescription: [LocalizationIdentifier: StrictString]?
         fileprivate var readMe: [LocalizationIdentifier: StrictString]?
         fileprivate var contributingInstructions: StrictString?
+        fileprivate var issueTemplate: StrictString?
 
         fileprivate var allFiles: [URL]?
         fileprivate var trackedFiles: [URL]?
@@ -118,6 +119,25 @@ extension PackageRepository {
         // [_Warning: Rename this to just configuration._]
 
         return try cached(in: &cache.configuration) {
+            var products: [PackageManifest.Product] = []
+            for product in try cachedPackage().products {
+                let type: PackageManifest.Product.ProductType
+                let modules: [String]
+                switch product.type {
+                case .library:
+                    type = .library
+                    modules = product.targets.map { $0.name }
+                case .executable:
+                    type = .executable
+                    modules = []
+                case .test:
+                    continue // skip
+                }
+                products.append(PackageManifest.Product(name: product.name, type: type, modules: modules))
+            }
+            let manifest = PackageManifest(packageName: String(try projectName()), products: products)
+            let context = WorkspaceContext(manifest: manifest)
+
             return try WorkspaceConfiguration.load(
                 configuration: WorkspaceConfiguration.self,
                 named: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -129,7 +149,8 @@ extension PackageRepository {
                 from: location,
                 linkingAgainst: "WorkspaceConfiguration",
                 in: SDGSwift.Package(url: Metadata.packageURL),
-                at: Metadata.latestStableVersion)
+                at: Metadata.latestStableVersion,
+                context: context)
         }
     }
 
@@ -165,6 +186,12 @@ extension PackageRepository {
     public func contributingInstructions() throws -> StrictString {
         return try cached(in: &cache.contributingInstructions) {
             return try cachedConfiguration().gitHub.resolvedContributingInstructions(for: self)
+        }
+    }
+
+    public func issueTemplate() throws -> StrictString {
+        return try cached(in: &cache.issueTemplate) {
+            return try cachedConfiguration().gitHub.resolvedIssueTemplate(for: self)
         }
     }
 

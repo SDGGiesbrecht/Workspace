@@ -83,7 +83,7 @@ public struct GitHubConfiguration: Codable {
             "    \u{2D} Link to the original issue with `#`000` `.",
             "    \u{2D} State your agreement to licensing your contributions under the [project licence](LICENSE.md).",
             "5. **Wait for continuous integration** to complete its validation.",
-        ]
+            ]
 
         let administrators = configuration.gitHub.administrators
         var administratorList: String
@@ -112,9 +112,57 @@ public struct GitHubConfiguration: Codable {
     ///
     /// By default, this is assembled from the other GitHub options.
     public var issueTemplate: Lazy<Markdown> = Lazy<Markdown>() { configuration in
-        // [_Warning: Not documented yet._]
-        // [_Warning: Not implemented yet._]
-        return ""
+        var template = [
+            "<\u{21}\u{2D}\u{2D} Reminder: \u{2D}\u{2D}>",
+            "<\u{21}\u{2D}\u{2D} Have you searched to see if a related issue exists already? \u{2D}\u{2D}>",
+            "<\u{21}\u{2D}\u{2D} If one exists, please add your information there instead. \u{2D}\u{2D}>",
+            "",
+            "### Description",
+            "",
+            "“Such‐and‐such appears broken.”",
+            "or",
+            "“Such‐and‐such would be a nice feature.”",
+            "",
+            "### Demonstration",
+            "<\u{21}\u{2D}\u{2D} If the issue is not a bug, erase this section.) \u{2D}\u{2D}>",
+            ""
+        ]
+
+        let products = WorkspaceContext.current.manifest.products
+        if products.contains(where: { $0.type == .library }) {
+            template += [
+                "```swift",
+                "let thisCode = trigger(theBug)",
+                "",
+                "// Or provide a link to code elsewhere.",
+                "```"
+            ]
+        }
+        if products.contains(where: { $0.type == .executable }) {
+            template += [
+                "```shell",
+                "this script \u{2D}\u{2D}triggers \u{22}the bug\u{22}",
+                "",
+                "# Or provide a link to a script elsewhere.",
+                "```"
+            ]
+        }
+
+        template += [
+            "",
+            "### Availability to Help",
+            "",
+            "<\u{21}\u{2D}\u{2D} Keep only one of the following lines. \u{2D}\u{2D}>",
+            "I **would like** the honour of helping with the implementation, and I think **I know my way around**.",
+            "I **would like** the honour of helping with the implementation, but **I would need some guidance** along the way.",
+            "I **do not want to help** with the implementation.",
+            "",
+            "### Solution/Design Thoughts",
+            "",
+            "It might work to do something like..."
+        ]
+
+        return template.joined(separator: "\n")
     }
 
     /// The pull request template.

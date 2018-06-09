@@ -368,9 +368,6 @@ extension Configuration {
 
     // Responsibilities
 
-    static var issueTemplate: String {
-        return stringValue(option: .issueTemplate)
-    }
     static var pullRequestTemplate: String {
         return stringValue(option: .pullRequestTemplate)
     }

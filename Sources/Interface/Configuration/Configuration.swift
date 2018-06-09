@@ -182,10 +182,6 @@ struct Configuration {
 
     // MARK: - Options: Active Checks
 
-    func shouldProhibitCompilerWarnings() throws -> Bool { // [_Exempt from Test Coverage_] [_Workaround: Until validate is testable._]
-        return try boolean(for: .prohibitCompilerWarnings) ?? true // [_Exempt from Test Coverage_] [_Workaround: Until validate is testable._]
-    }
-
     func shouldEnforceTestCoverage() throws -> Bool { // [_Exempt from Test Coverage_] [_Workaround: Until validate is testable._]
         return try boolean(for: .enforceTestCoverage) ?? true // [_Exempt from Test Coverage_] [_Workaround: Until validate is testable._]
     }

@@ -26,8 +26,6 @@ enum Option : String, CustomStringConvertible {
 
     // MARK: - Cases
 
-    case prohibitCompilerWarnings = "Prohibit Compiler Warnings"
-
     case enforceTestCoverage = "Enforce Test Coverage"
     case testCoverageExemptionTokensForSameLine = "Test Coverage Exemption Tokens for the Same Line"
     case testCoverageExemptionTokensForPreviousLine = "Test Coverage Exemption Tokens for the Previous Line"
@@ -52,8 +50,6 @@ enum Option : String, CustomStringConvertible {
 
     static let allPublic: [Option] = [
 
-        .prohibitCompilerWarnings,
-
         .enforceTestCoverage,
         .testCoverageExemptionTokensForSameLine,
         .testCoverageExemptionTokensForPreviousLine,
@@ -77,9 +73,6 @@ enum Option : String, CustomStringConvertible {
 
     var defaultValue: String {
         switch self {
-
-        case .prohibitCompilerWarnings:
-            return String(Configuration.trueOptionValue)
 
         case .enforceTestCoverage:
             return String(Configuration.trueOptionValue)

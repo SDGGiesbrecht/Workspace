@@ -72,7 +72,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
     // Running unit tests...
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    if try options.project.configuration.shouldProhibitCompilerWarnings() {
+    if try options.project.cachedConfiguration().testing.prohibitCompilerWarnings {
         try Workspace.Validate.Build.executeAsStep(options: options, validationStatus: &validationStatus, output: output)
     }
 #if os(Linux)

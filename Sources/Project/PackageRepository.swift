@@ -117,9 +117,7 @@ extension PackageRepository {
 
     // MARK: - Configuration
 
-    public func cachedConfiguration() throws -> WorkspaceConfiguration {
-        // [_Warning: Rename this to just configuration._]
-
+    public func configuration() throws -> WorkspaceConfiguration {
         return try cached(in: &cache.configuration) {
             var products: [PackageManifest.Product] = []
             for product in try cachedPackage().products {
@@ -158,7 +156,7 @@ extension PackageRepository {
 
     public func localizations() throws -> [LocalizationIdentifier] {
         return try cached(in: &cache.localizations) {
-            return try cachedConfiguration().documentation.normalizedLocalizations
+            return try configuration().documentation.normalizedLocalizations
         }
     }
     public func developmentLocalization() throws -> LocalizationIdentifier {
@@ -175,37 +173,37 @@ extension PackageRepository {
 
     public func shortDescription() throws -> [LocalizationIdentifier: StrictString] {
         return try cached(in: &cache.shortDescription) {
-            return try cachedConfiguration().documentation.readMe.normalizedShortProjectDescription
+            return try configuration().documentation.readMe.normalizedShortProjectDescription
         }
     }
 
     public func sourceCopyright() throws -> StrictString {
         return try cached(in: &cache.sourceCopyright) {
-            return try cachedConfiguration().fileHeaders.resolvedCopyrightNotice(for: self)
+            return try configuration().fileHeaders.resolvedCopyrightNotice(for: self)
         }
     }
 
     public func documentationCopyright() throws -> StrictString {
         return try cached(in: &cache.documentationCopyright) {
-            return try cachedConfiguration().documentation.api.resolvedCopyrightNotice(for: self)
+            return try configuration().documentation.api.resolvedCopyrightNotice(for: self)
         }
     }
 
     public func readMe() throws -> [LocalizationIdentifier: StrictString] {
         return try cached(in: &cache.readMe) {
-            return try cachedConfiguration().documentation.readMe.resolvedContents(for: self)
+            return try configuration().documentation.readMe.resolvedContents(for: self)
         }
     }
 
     public func contributingInstructions() throws -> StrictString {
         return try cached(in: &cache.contributingInstructions) {
-            return try cachedConfiguration().gitHub.resolvedContributingInstructions(for: self)
+            return try configuration().gitHub.resolvedContributingInstructions(for: self)
         }
     }
 
     public func issueTemplate() throws -> StrictString {
         return try cached(in: &cache.issueTemplate) {
-            return try cachedConfiguration().gitHub.resolvedIssueTemplate(for: self)
+            return try configuration().gitHub.resolvedIssueTemplate(for: self)
         }
     }
 

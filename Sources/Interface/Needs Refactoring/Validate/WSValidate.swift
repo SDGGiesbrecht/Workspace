@@ -52,14 +52,14 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
     // Running unit tests...
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    if try options.project.cachedConfiguration().testing.prohibitCompilerWarnings {
+    if try options.project.configuration().testing.prohibitCompilerWarnings {
         try Workspace.Validate.Build.executeAsStep(options: options, validationStatus: &validationStatus, output: output)
     }
 #if os(Linux)
         // Coverage irrelevant.
         try Workspace.Test.executeAsStep(options: options, validationStatus: &validationStatus, output: output)
 #else
-    if try options.project.cachedConfiguration().testing.enforceCoverage {
+    if try options.project.configuration().testing.enforceCoverage {
         if let job = options.job,
             job ∉ Tests.coverageJobs {
             // Coverage impossible to check.
@@ -76,16 +76,16 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
 
     #if !os(Linux)
         if options.job.includes(job: .documentation) {
-            if try options.project.cachedConfiguration().documentation.api.enforceCoverage {
+            if try options.project.configuration().documentation.api.enforceCoverage {
                 try Workspace.Validate.DocumentationCoverage.executeAsStepDocumentingFirst(options: options, validationStatus: &validationStatus, output: output)
-            } else if try options.project.cachedConfiguration().documentation.api.generate
-                ∧ (try options.project.cachedConfiguration().documentation.api.encryptedTravisCIDeploymentKey == nil) {
+            } else if try options.project.configuration().documentation.api.generate
+                ∧ (try options.project.configuration().documentation.api.encryptedTravisCIDeploymentKey == nil) {
                 try Workspace.Document.executeAsStep(outputDirectory: Documentation.defaultDocumentationDirectory(for: options.project), options: options, validationStatus: &validationStatus, output: output)
             }
         }
 
         if try options.job.includes(job: .deployment)
-            ∧ (try options.project.cachedConfiguration().documentation.api.generate) {
+            ∧ (try options.project.configuration().documentation.api.generate) {
             try Workspace.Document.executeAsStep(outputDirectory: Documentation.defaultDocumentationDirectory(for: options.project), options: options, validationStatus: &validationStatus, output: output)
         }
     #endif

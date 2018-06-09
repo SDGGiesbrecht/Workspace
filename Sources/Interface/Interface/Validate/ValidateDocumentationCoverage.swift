@@ -62,8 +62,8 @@ extension Workspace.Validate {
             // Refresh documentation so that results are meaningful.
             let outputDirectory: URL
             let outputIsTemporary: Bool
-            if try options.project.cachedConfiguration().documentation.api.encryptedTravisCIDeploymentKey ≠ nil
-                ∨ ¬(try options.project.cachedConfiguration().documentation.api.generate) {
+            if try options.project.configuration().documentation.api.encryptedTravisCIDeploymentKey ≠ nil
+                ∨ ¬(try options.project.configuration().documentation.api.generate) {
                 outputDirectory = FileManager.default.url(in: .temporary, at: "Documentation")
                 outputIsTemporary = true
             } else {

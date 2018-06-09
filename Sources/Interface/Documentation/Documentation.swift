@@ -29,7 +29,7 @@ enum Documentation {
 
     private static func copyright(for project: PackageRepository, output: Command.Output) throws -> StrictString {
 
-        guard let defined = try project.cachedConfiguration().documentation.api.yearFirstPublished else {
+        guard let defined = try project.configuration().documentation.api.yearFirstPublished else {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
@@ -65,13 +65,13 @@ enum Documentation {
         let outputSubdirectory = subdirectory(for: target, in: outputDirectory)
 
         let buildOperatingSystem: OperatingSystem
-        if try .macOS ∈ project.cachedConfiguration().supportedOperatingSystems {
+        if try .macOS ∈ project.configuration().supportedOperatingSystems {
             buildOperatingSystem = .macOS
-        } else if try .iOS ∈ project.cachedConfiguration().supportedOperatingSystems {
+        } else if try .iOS ∈ project.configuration().supportedOperatingSystems {
             buildOperatingSystem = .iOS
-        } else if try .watchOS ∈ project.cachedConfiguration().supportedOperatingSystems {
+        } else if try .watchOS ∈ project.configuration().supportedOperatingSystems {
             buildOperatingSystem = .watchOS
-        } else if try .tvOS ∈ project.cachedConfiguration().supportedOperatingSystems {
+        } else if try .tvOS ∈ project.configuration().supportedOperatingSystems {
             buildOperatingSystem = .tvOS
         } else {
             buildOperatingSystem = .macOS
@@ -79,7 +79,7 @@ enum Documentation {
 
         let copyrightText = try copyright(for: project, output: output)
         try FileManager.default.do(in: project.location) {
-            try Jazzy.default.document(target: target, scheme: try project.scheme(), buildOperatingSystem: buildOperatingSystem, copyright: copyrightText, gitHubURL: try project.cachedConfiguration().documentation.repositoryURL, outputDirectory: outputSubdirectory, project: project, output: output)
+            try Jazzy.default.document(target: target, scheme: try project.scheme(), buildOperatingSystem: buildOperatingSystem, copyright: copyrightText, gitHubURL: try project.configuration().documentation.repositoryURL, outputDirectory: outputSubdirectory, project: project, output: output)
         }
 
         let transformedMarker = ReadMeConfiguration.skipInJazzy.replacingMatches(for: "\u{2D}\u{2D}".scalars, with: "&ndash;".scalars).replacingMatches(for: "<".scalars, with: "&lt;".scalars).replacingMatches(for: ">".scalars, with: "&gt;".scalars)

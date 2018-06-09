@@ -51,7 +51,7 @@ extension Workspace {
                 where try options.job.includes(job: job) ∧ (try Validate.Build.job(job, isRelevantTo: options.project, andAvailableJobs: Tests.testJobs, output: output)) {
                     try autoreleasepool {
 
-                        if  try options.project.cachedConfiguration().continuousIntegration.skipSimulatorOutsideContinuousIntegration,
+                        if  try options.project.configuration().continuousIntegration.skipSimulatorOutsideContinuousIntegration,
                             options.job == nil, // Not in continuous integration.
                             job ∈ Tests.simulatorJobs {
                              // [_Exempt from Test Coverage_] Tested separately.

@@ -25,7 +25,7 @@ enum ReadMe {
     // MARK: - Templates
 
     private static func quotationMarkup(localization: String, project: PackageRepository) throws -> StrictString {
-        guard let original = try project.cachedConfiguration().documentation.readMe.quotation?.original else {
+        guard let original = try project.configuration().documentation.readMe.quotation?.original else {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
@@ -35,14 +35,14 @@ enum ReadMe {
         }
 
         var result = [StrictString(original)]
-        if let translation = try project.cachedConfiguration().documentation.readMe.quotation?.translation[localization] {
+        if let translation = try project.configuration().documentation.readMe.quotation?.translation[localization] {
             result += [StrictString(translation)]
         }
-        if let url = try project.cachedConfiguration().documentation.readMe.quotation?.link[localization] {
+        if let url = try project.configuration().documentation.readMe.quotation?.link[localization] {
             let components: [StrictString] = ["[", result.joinAsLines(), "](", StrictString(url.absoluteString), ")"]
             result = [components.joined()]
         }
-        if let citation = try project.cachedConfiguration().documentation.readMe.quotation?.citation[localization] {
+        if let citation = try project.configuration().documentation.readMe.quotation?.citation[localization] {
             let indent = StrictString([String](repeating: "&nbsp;", count: 100).joined())
             result += [indent + "―" + StrictString(citation)]
         }
@@ -110,7 +110,7 @@ enum ReadMe {
 
         // [_Warning: Can this be sunk further?_]
         let examplesUsage: StrictString
-        let examplesOption = try project.cachedConfiguration().documentation.readMe.exampleUsage
+        let examplesOption = try project.configuration().documentation.readMe.exampleUsage
         switch examplesOption {
         case .custom(let custom):
             guard let localized = custom[localization] else {
@@ -166,7 +166,7 @@ enum ReadMe {
 
     private static func refreshRelatedProjects(at location: URL, for localization: String, in project: PackageRepository, output: Command.Output) throws {
 
-        let relatedProjects = try project.cachedConfiguration().documentation.relatedProjects
+        let relatedProjects = try project.configuration().documentation.relatedProjects
         if ¬relatedProjects.isEmpty {
             var markdown: [StrictString] = [
                 StrictString("# ") + UserFacing<StrictString, ContentLocalization>({ localization in

@@ -12,7 +12,7 @@ extension ReadMeConfiguration {
     internal func resolvedContents(for package: PackageRepository) throws -> [LocalizationIdentifier: StrictString] {
         // [_Warning: Sink this with context._]
 
-        var templates = contents.resolve(try package.cachedConfiguration()).mapKeyValuePairs { localization, text in
+        var templates = contents.resolve(try package.configuration()).mapKeyValuePairs { localization, text in
             return (DocumentationConfiguration.normalize(localizationIdentifier: localization), StrictString(text))
         }
         let installation = try resolvedInstallationInstructions(for: package)
@@ -126,7 +126,7 @@ extension ReadMeConfiguration {
 
     private func apiLinksMarkup(for project: PackageRepository, localization: String) throws -> StrictString? {
 
-        guard let baseURL = try project.cachedConfiguration().documentation.documentationURL else {
+        guard let baseURL = try project.configuration().documentation.documentationURL else {
             return nil
         }
 
@@ -159,7 +159,7 @@ extension ReadMeConfiguration {
 
     private func relatedProjectsLinkMarkup(for project: PackageRepository, localization: String) throws -> StrictString? {
 
-        guard try project.cachedConfiguration().documentation.relatedProjects.isEmpty else {
+        guard try project.configuration().documentation.relatedProjects.isEmpty else {
             return nil
         }
 
@@ -180,8 +180,8 @@ extension ReadMeConfiguration {
 
     private func resolvedInstallationInstructions(for project: PackageRepository) throws -> [LocalizationIdentifier: StrictString] {
 
-        guard let repository = try project.cachedConfiguration().documentation.repositoryURL,
-            let versionString = try project.cachedConfiguration().documentation.currentVersion,
+        guard let repository = try project.configuration().documentation.repositoryURL,
+            let versionString = try project.configuration().documentation.currentVersion,
             let version = Version(versionString) else {
                 return [:]
         }

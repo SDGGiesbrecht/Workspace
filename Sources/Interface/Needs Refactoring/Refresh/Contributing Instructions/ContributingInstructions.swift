@@ -50,7 +50,7 @@ struct ContributingInstructions {
         require { try issue.write(output: output) }
 
         var pullRequest = File(possiblyAt: pullRequestTemplatePath)
-        pullRequest.contents = String(try Repository.packageRepository.cachedConfiguration().gitHub.pullRequestTemplate)
+        pullRequest.contents = String(try Repository.packageRepository.configuration().gitHub.pullRequestTemplate)
         require { try pullRequest.write(output: output) }
 
         // Remove deprecated.

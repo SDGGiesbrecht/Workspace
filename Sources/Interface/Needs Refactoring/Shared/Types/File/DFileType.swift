@@ -76,7 +76,7 @@ enum FileType : CustomStringConvertible {
                 identifier = filename
             }
 
-            let configuration = try? Repository.packageRepository.cachedConfiguration()
+            let configuration = try? Repository.packageRepository.configuration()
             let ignoredFileTypes = configuration?.repository.ignoredFileTypes ?? []
             if identifier ∉ ignoredFileTypes {
                 if FileType.unsupportedTypesEncountered[identifier] == nil {

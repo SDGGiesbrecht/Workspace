@@ -20,7 +20,7 @@ enum ContinuousIntegration {
 
     static func refreshContinuousIntegration(for project: PackageRepository, output: Command.Output) throws {
 
-        if try project.cachedConfiguration().provideWorkflowScripts == false {
+        if try project.configuration().provideWorkflowScripts == false {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
@@ -39,7 +39,7 @@ enum ContinuousIntegration {
 
             ∨ (job ∈ Tests.simulatorJobs ∧ project.isWorkspaceProject()) { // Simulator is unavailable during normal test.
 
-            travisConfiguration.append(contentsOf: try job.script(configuration: project.cachedConfiguration()))
+            travisConfiguration.append(contentsOf: try job.script(configuration: project.configuration()))
         }
 
         if try project.isWorkspaceProject() {

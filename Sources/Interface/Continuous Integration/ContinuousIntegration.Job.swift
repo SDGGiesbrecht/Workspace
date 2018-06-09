@@ -238,24 +238,24 @@ extension ContinuousIntegration {
         func isRequired(by project: PackageRepository, output: Command.Output) throws -> Bool {
             switch self {
             case .macOSSwiftPackageManager, .macOSXcode:
-                return try .macOS ∈ project.cachedConfiguration().supportedOperatingSystems
+                return try .macOS ∈ project.configuration().supportedOperatingSystems
             case .linux: // [_Exempt from Test Coverage_] False coverage result in Xcode 9.2.
-                return try .linux ∈ project.cachedConfiguration().supportedOperatingSystems
+                return try .linux ∈ project.configuration().supportedOperatingSystems
             case .iOS:
-                return try .iOS ∈ project.cachedConfiguration().supportedOperatingSystems
+                return try .iOS ∈ project.configuration().supportedOperatingSystems
             case .watchOS:
-                return try .watchOS ∈ project.cachedConfiguration().supportedOperatingSystems
+                return try .watchOS ∈ project.configuration().supportedOperatingSystems
             case .tvOS:
-                return try .tvOS ∈ project.cachedConfiguration().supportedOperatingSystems
+                return try .tvOS ∈ project.configuration().supportedOperatingSystems
             case .miscellaneous:
                 return true
             case .documentation:
-                return try project.cachedConfiguration().documentation.api.generate
+                return try project.configuration().documentation.api.generate
                     ∧ project.hasTargetsToDocument(output: output)
             case .deployment:
-                return try project.cachedConfiguration().documentation.api.generate
+                return try project.configuration().documentation.api.generate
                 ∧ project.hasTargetsToDocument(output: output)
-                ∧ (try project.cachedConfiguration().documentation.api.encryptedTravisCIDeploymentKey) ≠ nil
+                ∧ (try project.configuration().documentation.api.encryptedTravisCIDeploymentKey) ≠ nil
             }
         }
 

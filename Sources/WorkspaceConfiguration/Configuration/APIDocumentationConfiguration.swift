@@ -7,4 +7,9 @@ public struct APIDocumentationConfiguration : Codable {
     ///
     /// This is off by default.
     public var generate: Bool = false
+
+    /// Whether or not to enforce documentation coverage.
+    ///
+    /// This is on by default.
+    public var enforceCoverage: Bool = true
 }

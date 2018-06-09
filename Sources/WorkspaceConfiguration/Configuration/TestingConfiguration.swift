@@ -23,7 +23,7 @@ public struct TestingConfiguration: Codable {
     /// Whether or not to enforce test coverage.
     ///
     /// This is on by default.
-    public var enforceTestCoverage: Bool = true
+    public var enforceCoverage: Bool = true
 
     // [_Example 1: Test Coverage Exemption Tokens_]
     /// The set of active test coverage exemption tokens.

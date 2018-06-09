@@ -79,7 +79,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         // Coverage irrelevant.
         try Workspace.Test.executeAsStep(options: options, validationStatus: &validationStatus, output: output)
 #else
-    if try options.project.cachedConfiguration().testing.enforceTestCoverage {
+    if try options.project.cachedConfiguration().testing.enforceCoverage {
         if let job = options.job,
             job ∉ Tests.coverageJobs {
             // Coverage impossible to check.
@@ -96,7 +96,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
 
     #if !os(Linux)
         if options.job.includes(job: .documentation) {
-            if try options.project.configuration.shouldEnforceDocumentationCoverage() {
+            if try options.project.cachedConfiguration().documentation.api.enforceCoverage {
                 try Workspace.Validate.DocumentationCoverage.executeAsStepDocumentingFirst(options: options, validationStatus: &validationStatus, output: output)
             } else if try options.project.cachedConfiguration().documentation.api.generate
                 ∧ (try options.project.configuration.encryptedTravisDeploymentKey() == nil) {

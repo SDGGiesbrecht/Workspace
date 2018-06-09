@@ -176,10 +176,4 @@ struct Configuration {
     func encryptedTravisDeploymentKey() throws -> String? {
         return try string(for: .encryptedTravisDeploymentKey)
     }
-
-    // MARK: - Options: Active Checks
-
-    func shouldEnforceDocumentationCoverage() throws -> Bool { // [_Exempt from Test Coverage_] [_Workaround: Until validate is testable._]
-        return try boolean(for: .enforceDocumentationCoverage) ?? true // [_Exempt from Test Coverage_] [_Workaround: Until validate is testable._]
-    }
 }

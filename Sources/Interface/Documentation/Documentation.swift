@@ -37,7 +37,7 @@ enum Documentation {
                 }
             }))
         }
-        let dates = StrictString(FileHeaders.copyright(fromText: "©\(defined.inEnglishDigits())"))
+        let dates = StrictString(FileHeaders.copyright(fromText: "©\(defined)"))
 
         var template = Template(source: try project.documentationCopyright())
 

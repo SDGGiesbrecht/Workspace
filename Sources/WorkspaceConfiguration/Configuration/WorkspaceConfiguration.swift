@@ -14,6 +14,8 @@
 
 import SDGSwiftConfiguration
 
+// [_Warning: Make a proofreading rule to detect the old configuration._]
+
 /// A Workspace configuration.
 public final class WorkspaceConfiguration : Configuration {
 

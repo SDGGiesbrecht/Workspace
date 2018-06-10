@@ -75,7 +75,7 @@ public struct ReadMeConfiguration : Codable {
 
         var result: [LocalizationIdentifier: Markdown] = [:]
         for localization in ContentLocalization.cases {
-            var readMe: [String] = [
+            var readMe: [String] = [ // [_Warning: Sink this._]
                 "[_localizationLinks_]",
                 ""
             ]
@@ -86,13 +86,13 @@ public struct ReadMeConfiguration : Codable {
             ]
 
             if configuration.documentation.documentationURL ≠ nil {
-                readMe += [
+                readMe += [ // [_Warning: Sink this._]
                     "[_apiLinks_]",
                     ""
                 ]
             }
 
-            readMe += ["# [_projectName_]"]
+            readMe += ["# \(WorkspaceContext.current.manifest.packageName)"]
 
             if let description = configuration.documentation.readMe.shortProjectDescription[localization.rawValue] {
                 readMe += [
@@ -125,13 +125,13 @@ public struct ReadMeConfiguration : Codable {
             if ¬configuration.documentation.relatedProjects.isEmpty {
                 readMe += [
                     "",
-                    "[_relatedProjects_]"
+                    "[_relatedProjects_]" // [_Warning: Sink this._]
                 ]
             }
 
             readMe += [
                 "",
-                "[_installationInstructions_]"
+                "[_installationInstructions_]" // [_Warning: Sink this._]
             ]
 
             let examplesHeader: String
@@ -144,7 +144,7 @@ public struct ReadMeConfiguration : Codable {
                 "",
                 "## " + examplesHeader,
                 "",
-                "[\u{5F}exampleUsage_]"
+                "[\u{5F}exampleUsage_]" // [_Warning: Sink this._]
             ]
 
             if let other = configuration.documentation.readMe.other[localization.rawValue] {

@@ -33,14 +33,12 @@ public struct GitHubConfiguration: Codable {
     /// The contributing instructions.
     ///
     /// By default, this is assembled from the other GitHub options.
-    ///
-    /// The project name can be inserted using `[_project_]`.
     public var contributingInstructions: Lazy<Markdown> = Lazy<Markdown>() { configuration in
 
         var instructions: [Markdown] = [
-            "# Contributing to [_project_]",
+            "# Contributing to \(WorkspaceContext.current.manifest.packageName)",
             "",
-            "Everyone is welcome to contribute to [_project_]!",
+            "Everyone is welcome to contribute to \(WorkspaceContext.current.manifest.packageName)!",
             "",
             "## Step 1: Report",
             "",
@@ -66,7 +64,7 @@ public struct GitHubConfiguration: Codable {
             "If you have [reported](#step\u{2D}1\u{2D}report) your idea and an administrator has given you the green light, follow these steps to get a local copy you can work on.",
             "",
             "1. **Fork the repository** by clicking “Fork” in the top‐right of the repository page. (Skip this step if you have been given write access.)",
-            "2. **Create a local clone**. `git clone https://github.com/`user`/[_project_]`",
+            "2. **Create a local clone**. `git clone https://github.com/`user`/\(WorkspaceContext.current.manifest.packageName)`",
             "3. **Create a development branch**. `git checkout \u{2D}b `branch\u{2D}name` `",
             "4. **Set up the workspace** by double‐clicking `Refresh` in the root folder.",
             "",

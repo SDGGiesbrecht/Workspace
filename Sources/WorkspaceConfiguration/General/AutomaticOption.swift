@@ -1,7 +1,7 @@
 
 /// An option with a default value sensitive to information outside the configuration.
 ///
-/// The automated value may depend on the package manifest, the contents of the repository, or other information which is not available until after the configuration is loaded.
+/// The automated value may depend on parsed project files or other information which is not available until after the configuration is loaded.
 public enum Automatic<Option> : Codable where Option : Codable {
     // [_Warning: Sink all these with context._]
 

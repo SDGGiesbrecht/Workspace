@@ -14,4 +14,6 @@
 
 @_exported import struct Foundation.URL
 
+@_exported import struct SDGCalendar.GregorianYear
+
 @_exported import SDGSwiftConfiguration

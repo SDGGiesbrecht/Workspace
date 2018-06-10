@@ -1,6 +1,4 @@
 
-import SDGCalendar
-
 /// Options related to API documentation.
 public struct APIDocumentationConfiguration : Codable {
 

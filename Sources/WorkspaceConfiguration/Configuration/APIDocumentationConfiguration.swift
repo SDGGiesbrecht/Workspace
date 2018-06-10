@@ -1,4 +1,5 @@
 
+import SDGCalendar
 
 /// Options related to API documentation.
 public struct APIDocumentationConfiguration : Codable {
@@ -14,7 +15,7 @@ public struct APIDocumentationConfiguration : Codable {
     public var enforceCoverage: Bool = true
 
     /// The year the documentation was first published.
-    public var yearFirstPublished: Int?
+    public var yearFirstPublished: GregorianYear?
 
     /// The copyright notice.
     ///

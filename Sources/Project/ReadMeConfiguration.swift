@@ -181,8 +181,7 @@ extension ReadMeConfiguration {
     private func resolvedInstallationInstructions(for project: PackageRepository) throws -> [LocalizationIdentifier: StrictString] {
 
         guard let repository = try project.configuration().documentation.repositoryURL,
-            let versionString = try project.configuration().documentation.currentVersion,
-            let version = Version(versionString) else {
+            let version = try project.configuration().documentation.currentVersion else {
                 return [:]
         }
 

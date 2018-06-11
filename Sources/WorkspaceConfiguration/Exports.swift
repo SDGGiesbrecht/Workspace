@@ -17,4 +17,5 @@
 @_exported import SDGText // StrictString
 @_exported import struct SDGCalendar.GregorianYear
 
+@_exported import struct SDGSwift.Version
 @_exported import SDGSwiftConfiguration

@@ -75,6 +75,7 @@ let package = Package(
             .productItem(name: "SDGLogic", package: "SDGCornerstone"),
             .productItem(name: "SDGText", package: "SDGCornerstone"),
             .productItem(name: "SDGCalendar", package: "SDGCornerstone"),
+            .productItem(name: "SDGSwift", package: "SDGSwift"),
             .productItem(name: "SDGSwiftConfiguration", package: "SDGSwift")
             ]),
 

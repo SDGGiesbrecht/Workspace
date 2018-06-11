@@ -36,9 +36,9 @@ public struct GitHubConfiguration: Codable {
     public var contributingInstructions: Lazy<Markdown> = Lazy<Markdown>() { configuration in
 
         var template = StrictString(Resources.contributingTemplate)
-        
+
         template.replaceMatches(for: "#packageName".scalars, with: WorkspaceContext.current.manifest.packageName.scalars)
-        
+
         if let url = configuration.documentation.repositoryURL {
             template.replaceMatches(for: "#cloneScript".scalars, with: " `git clone \(url.absoluteString)`".scalars)
         } else {
@@ -67,7 +67,7 @@ public struct GitHubConfiguration: Codable {
 
         return template
     }
-    
+
     // [_Warning: Convert more of these to resources._]
 
     /// The issue template.

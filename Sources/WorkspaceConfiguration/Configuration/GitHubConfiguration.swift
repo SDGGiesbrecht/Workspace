@@ -74,25 +74,13 @@ public struct GitHubConfiguration: Codable {
     ///
     /// By default, this is assembled from the other GitHub options.
     public var issueTemplate: Lazy<Markdown> = Lazy<Markdown>() { configuration in
-        var template: [StrictString] = [
-            "<\u{21}\u{2D}\u{2D} Reminder: \u{2D}\u{2D}>",
-            "<\u{21}\u{2D}\u{2D} Have you searched to see if a related issue exists already? \u{2D}\u{2D}>",
-            "<\u{21}\u{2D}\u{2D} If one exists, please add your information there instead. \u{2D}\u{2D}>",
-            "",
-            "### Description",
-            "",
-            "“Such‐and‐such appears broken.”",
-            "or",
-            "“Such‐and‐such would be a nice feature.”",
-            "",
-            "### Demonstration",
-            "<\u{21}\u{2D}\u{2D} If the issue is not a bug, erase this section.) \u{2D}\u{2D}>",
-            ""
-        ]
+
+        var template = StrictString(Resources.issueTemplate)
 
         let products = WorkspaceContext.current.manifest.products
+        var trigger: [StrictString] = []
         if products.contains(where: { $0.type == .library }) {
-            template += [
+            trigger += [
                 "```swift",
                 "let thisCode = trigger(theBug)",
                 "",
@@ -101,7 +89,7 @@ public struct GitHubConfiguration: Codable {
             ]
         }
         if products.contains(where: { $0.type == .executable }) {
-            template += [
+            trigger += [
                 "```shell",
                 "this script \u{2D}\u{2D}triggers \u{22}the bug\u{22}",
                 "",
@@ -109,37 +97,13 @@ public struct GitHubConfiguration: Codable {
                 "```"
             ]
         }
+        template.replaceMatches(for: "#trigger".scalars, with: trigger.joinedAsLines())
 
-        template += [
-            "",
-            "### Availability to Help",
-            "",
-            "<\u{21}\u{2D}\u{2D} Keep only one of the following lines. \u{2D}\u{2D}>",
-            "I **would like** the honour of helping with the implementation, and I think **I know my way around**.",
-            "I **would like** the honour of helping with the implementation, but **I would need some guidance** along the way.",
-            "I **do not want to help** with the implementation.",
-            "",
-            "### Solution/Design Thoughts",
-            "",
-            "It might work to do something like..."
-        ]
-
-        return template.joinedAsLines()
+        return template
     }
 
     /// The pull request template.
     ///
     /// This defaults to a generic template.
-    public var pullRequestTemplate: Markdown = [
-        "<\u{21}\u{2D}\u{2D} Reminder: \u{2D}\u{2D}>",
-        "<\u{21}\u{2D}\u{2D} Have you opened an issue and gotten a response from an administrator? \u{2D}\u{2D}>",
-        "<\u{21}\u{2D}\u{2D} Always do that first; sometimes it will save you some work. \u{2D}\u{2D}>",
-        "",
-        "<\u{21}\u{2D}\u{2D} Fill in the issue number. \u{2D}\u{2D}>",
-        "This work was commissioned by an administrator in issue #000.",
-        "",
-        "<\u{21}\u{2D}\u{2D} Keep only one of the following lines. \u{2D}\u{2D}>",
-        "I **am licensing** this under the [project licence](../blob/master/LICENSE.md).",
-        "I **refuse to license** this under the [project licence](../blob/master/LICENSE.md)."
-        ].joinedAsLines()
+    public var pullRequestTemplate: Markdown = StrictString(Resources.pullRequestTemplate)
 }

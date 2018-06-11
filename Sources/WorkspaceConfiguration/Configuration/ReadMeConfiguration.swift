@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-import LocalizationPrimitives
+import Localizations
 
 /// Options related to the project read‐me.
 public struct ReadMeConfiguration : Codable {
@@ -94,7 +94,7 @@ public struct ReadMeConfiguration : Codable {
 
             readMe += ["# " + WorkspaceContext.current.manifest.packageName.scalars]
 
-            if let description = configuration.documentation.readMe.shortProjectDescription[localization.rawValue] {
+            if let description = configuration.documentation.readMe.shortProjectDescription[localization] {
                 readMe += [
                     "",
                     description
@@ -104,11 +104,11 @@ public struct ReadMeConfiguration : Codable {
             if let quotation = configuration.documentation.readMe.quotation {
                 readMe += [
                     "",
-                    quotation.source(for: localization.rawValue)
+                    quotation.source(for: LocalizationIdentifier(localization))
                 ]
             }
 
-            if let features = configuration.documentation.readMe.featureList[localization.rawValue] {
+            if let features = configuration.documentation.readMe.featureList[localization] {
                 let header: StrictString
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -147,14 +147,14 @@ public struct ReadMeConfiguration : Codable {
                 "[\u{5F}exampleUsage_]" // [_Warning: Sink this._]
             ]
 
-            if let other = configuration.documentation.readMe.other[localization.rawValue] {
+            if let other = configuration.documentation.readMe.other[localization] {
                 readMe += [
                     "",
                     other
                 ]
             }
 
-            if let about = configuration.documentation.readMe.about[localization.rawValue] {
+            if let about = configuration.documentation.readMe.about[localization] {
                 let header: StrictString
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -168,7 +168,7 @@ public struct ReadMeConfiguration : Codable {
                 ]
             }
 
-            result[localization.rawValue] = readMe.joinedAsLines()
+            result[localization] = readMe.joinedAsLines()
         }
         return result
     }

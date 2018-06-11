@@ -71,9 +71,10 @@ let package = Package(
 
         // The API used in configuration files.
         .target(name: "WorkspaceConfiguration", dependencies: [
-            "LocalizationPrimitives",
+            "Localizations",
             .productItem(name: "SDGLogic", package: "SDGCornerstone"),
             .productItem(name: "SDGText", package: "SDGCornerstone"),
+            .productItem(name: "SDGLocalization", package: "SDGCornerstone"),
             .productItem(name: "SDGCalendar", package: "SDGCornerstone"),
             .productItem(name: "SDGSwift", package: "SDGSwift"),
             .productItem(name: "SDGSwiftConfiguration", package: "SDGSwift")
@@ -84,11 +85,8 @@ let package = Package(
 
         // Defines the lists of supported localizations.
         .target(name: "Localizations", dependencies: [
-            "LocalizationPrimitives",
             .productItem(name: "SDGLocalization", package: "SDGCornerstone")
             ]),
-        // Defines the lists of localizations provided to configuration files.
-        .target(name: "LocalizationPrimitives", dependencies: []),
 
         // Centralizes imports needed almost everywhere.
         .target(name: "GeneralImports", dependencies: [

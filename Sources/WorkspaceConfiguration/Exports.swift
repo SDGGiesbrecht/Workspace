@@ -15,6 +15,7 @@
 @_exported import struct Foundation.URL
 
 @_exported import SDGText // StrictString
+@_exported import SDGLocalization
 @_exported import struct SDGCalendar.GregorianYear
 
 @_exported import struct SDGSwift.Version

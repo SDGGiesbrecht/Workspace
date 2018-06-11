@@ -3,18 +3,10 @@ import GeneralImports
 
 extension ReadMeConfiguration {
 
-    internal var normalizedShortProjectDescription: [LocalizationIdentifier: StrictString] {
-        return shortProjectDescription.mapKeyValuePairs { localization, text in
-            return (DocumentationConfiguration.normalize(localizationIdentifier: localization), StrictString(text))
-        }
-    }
-
     internal func resolvedContents(for package: PackageRepository) throws -> [LocalizationIdentifier: StrictString] {
         // [_Warning: Sink this with context._]
 
-        var templates = contents.resolve(try package.configuration()).mapKeyValuePairs { localization, text in
-            return (DocumentationConfiguration.normalize(localizationIdentifier: localization), StrictString(text))
-        }
+        var templates = contents.resolve(try package.configuration())
         let installation = try resolvedInstallationInstructions(for: package)
         templates = try templates.mapKeyValuePairs { (language, template) in
             var result = Template(source: template)
@@ -109,8 +101,8 @@ extension ReadMeConfiguration {
 
     private func localizationLinksMarkup(for project: PackageRepository) throws -> StrictString {
         var links: [StrictString] = []
-        for targetLocalization in try project.localizations() {
-            let linkText = ContentLocalization.icon(for: targetLocalization) ?? StrictString("[" + targetLocalization + "]")
+        for targetLocalization in try project.configuration().documentation.localizations {
+            let linkText = ContentLocalization.icon(for: targetLocalization.code) ?? StrictString("[" + targetLocalization.code + "]")
             let absoluteURL = ReadMeConfiguration.readMeLocation(for: project, localization: targetLocalization)
             var relativeURL = StrictString(absoluteURL.path(relativeTo: project.location))
             relativeURL.replaceMatches(for: " ".scalars, with: "%20".scalars)
@@ -124,7 +116,7 @@ extension ReadMeConfiguration {
 
     // MARK: - API Links
 
-    private func apiLinksMarkup(for project: PackageRepository, localization: String) throws -> StrictString? {
+    private func apiLinksMarkup(for project: PackageRepository, localization: LocalizationIdentifier) throws -> StrictString? {
 
         guard let baseURL = try project.configuration().documentation.documentationURL else {
             return nil
@@ -148,7 +140,7 @@ extension ReadMeConfiguration {
 
     // MARK: - Related Projects
 
-    public static func relatedProjectsLocation(for project: PackageRepository, localization: String) -> URL {
+    public static func relatedProjectsLocation(for project: PackageRepository, localization: LocalizationIdentifier) -> URL {
         return ReadMeConfiguration.locationOfDocumentationFile(named: UserFacing<StrictString, ContentLocalization>({ localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -157,7 +149,7 @@ extension ReadMeConfiguration {
         }).resolved(for: ContentLocalization(reasonableMatchFor: localization) ?? ContentLocalization.fallbackLocalization), for: localization, in: project)
     }
 
-    private func relatedProjectsLinkMarkup(for project: PackageRepository, localization: String) throws -> StrictString? {
+    private func relatedProjectsLinkMarkup(for project: PackageRepository, localization: LocalizationIdentifier) throws -> StrictString? {
 
         guard try project.configuration().documentation.relatedProjects.isEmpty else {
             return nil

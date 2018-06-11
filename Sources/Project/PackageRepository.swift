@@ -33,8 +33,6 @@ extension PackageRepository {
         fileprivate var dependenciesByName: [String: ResolvedPackage]?
 
         fileprivate var configuration: WorkspaceConfiguration?
-        fileprivate var localizations: [LocalizationIdentifier]?
-        fileprivate var shortDescription: [LocalizationIdentifier: StrictString]?
         fileprivate var sourceCopyright: StrictString?
         fileprivate var documentationCopyright: StrictString?
         fileprivate var readMe: [LocalizationIdentifier: StrictString]?
@@ -154,13 +152,8 @@ extension PackageRepository {
         }
     }
 
-    public func localizations() throws -> [LocalizationIdentifier] {
-        return try cached(in: &cache.localizations) {
-            return try configuration().documentation.normalizedLocalizations
-        }
-    }
     public func developmentLocalization() throws -> LocalizationIdentifier {
-        guard let result = try localizations().first else {
+        guard let result = try configuration().documentation.localizations.first else {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
@@ -169,12 +162,6 @@ extension PackageRepository {
             }))
         }
         return result
-    }
-
-    public func shortDescription() throws -> [LocalizationIdentifier: StrictString] {
-        return try cached(in: &cache.shortDescription) {
-            return try configuration().documentation.readMe.normalizedShortProjectDescription
-        }
     }
 
     public func sourceCopyright() throws -> StrictString {

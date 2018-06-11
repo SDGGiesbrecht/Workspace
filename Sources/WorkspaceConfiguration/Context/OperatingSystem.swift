@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import LocalizationPrimitives
+import Localizations
 
 /// An operating system.
 public enum OperatingSystem : String, Codable {

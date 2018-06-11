@@ -24,14 +24,14 @@ public struct FileHeaderConfiguration: Codable {
     ///
     /// By default, this is assembled from the other documentation and licence options.
     ///
-    /// Workspace will replace the dynamic element `[_dates_]` with the file’s copyright dates. (e.g. “©2016–2017”).
+    /// Workspace will replace the dynamic element `#dates` with the file’s copyright dates. (e.g. “©2016–2017”).
     public var copyrightNotice: Lazy<StrictString> = Lazy<StrictString>() { configuration in
         let project = StrictString(WorkspaceContext.current.manifest.packageName)
         if let author = configuration.documentation.primaryAuthor {
-            let components: [StrictString] = ["Copyright [_dates_] ", author, " and the ", project, " project contributors."]
+            let components: [StrictString] = ["Copyright #dates ", author, " and the ", project, " project contributors."]
             return components.joined()
         } else {
-            return "Copyright [_dates_] the " + project + " project contributors."
+            return "Copyright #dates the " + project + " project contributors."
         }
     }
 
@@ -39,13 +39,13 @@ public struct FileHeaderConfiguration: Codable {
     ///
     /// By default, this is assembled from the other documentation and licence options.
     ///
-    /// Workspace will replace the dynamic element `[_filename_]` with the name of the particular file.
+    /// Workspace will replace the dynamic element `#filename` with the name of the particular file.
     public var contents: Lazy<StrictString> = Lazy<StrictString>() { configuration in
 
         let packageName = StrictString(WorkspaceContext.current.manifest.packageName)
 
         var header: [StrictString] = [
-            "[_filename_]",
+            "#filename",
             "",
             "This source file is part of the " + packageName + " open source project."
         ]
@@ -53,9 +53,7 @@ public struct FileHeaderConfiguration: Codable {
             header.append(StrictString(site.absoluteString))
         }
 
-        header.append(contentsOf: [
-            ""
-            ])
+        header.append("")
 
         header.append(configuration.fileHeaders.copyrightNotice.resolve(configuration))
 

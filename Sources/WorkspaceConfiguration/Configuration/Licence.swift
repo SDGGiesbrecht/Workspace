@@ -35,8 +35,8 @@ public enum Licence: String, Codable {
 
     // MARK: - Details
 
-    internal var notice: String {
-        var result: [String]
+    internal var notice: StrictString {
+        var result: [StrictString]
         switch self {
         case .apache2_0:
             result = [
@@ -64,6 +64,6 @@ public enum Licence: String, Codable {
                 "It may not be used, copied, distributed or modified without first obtaining a private licence from the copyright holder(s)."
             ]
         }
-        return result.joined(separator: "\n")
+        return result.joinedAsLines()
     }
 }

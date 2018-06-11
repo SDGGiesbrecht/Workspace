@@ -39,7 +39,7 @@ enum ReadMe {
             result += [StrictString(translation)]
         }
         if let url = try project.configuration().documentation.readMe.quotation?.link[localization] {
-            let components: [StrictString] = ["[", result.joinAsLines(), "](", StrictString(url.absoluteString), ")"]
+            let components: [StrictString] = ["[", result.joinedAsLines(), "](", StrictString(url.absoluteString), ")"]
             result = [components.joined()]
         }
         if let citation = try project.configuration().documentation.readMe.quotation?.citation[localization] {
@@ -86,7 +86,7 @@ enum ReadMe {
         if source.isEmpty {
             return nil
         } else {
-            return Template(source: source.joinAsLines())
+            return Template(source: source.joinedAsLines())
         }
     }
 
@@ -143,7 +143,7 @@ enum ReadMe {
                 "```swift",
                 StrictString(example),
                 "```"
-                ].joinAsLines(), for: UserFacing({ localization in
+                ].joinedAsLines(), for: UserFacing({ localization in
                     switch localization {
                     case .englishCanada:
                         return StrictString("example: \(key)")
@@ -211,7 +211,7 @@ enum ReadMe {
                 }
             }
 
-            let body = String(markdown.joinAsLines())
+            let body = String(markdown.joinedAsLines())
             var file = try TextFile(possiblyAt: location)
             file.body = body
             try file.writeChanges(for: project, output: output)

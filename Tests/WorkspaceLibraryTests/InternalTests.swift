@@ -101,8 +101,8 @@ class InternalTests : TestCase {
 
                 XCTAssert(unexpected.isEmpty, [
                     "Unexpected files are being tracked by Git:",
-                    unexpected.joinAsLines()
-                    ].joinAsLines())
+                    unexpected.joinedAsLines()
+                    ].joinedAsLines())
 
             }).execute(with: [])
         } catch {

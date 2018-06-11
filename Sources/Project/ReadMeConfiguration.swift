@@ -276,7 +276,7 @@ extension ReadMeConfiguration {
             "```shell",
             StrictString("curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s \(projectName) \u{22}\(repository.absoluteString)\u{22} \(version.string()) \u{22}\(tools.first!) help\u{22} " + toolNames.joined(separator: " ")),
             "```"
-        ].joined(separator: "\n")
+        ].joinedAsLines()
     }
 
     private func localizedLibraryImportingInstructions(project: PackageRepository, libraries: [Product], repository: URL, version: Version, localization: ContentLocalization) throws -> StrictString? {
@@ -392,6 +392,6 @@ extension ReadMeConfiguration {
             "```"
         ]
 
-        return result.joined(separator: "\n")
+        return result.joinedAsLines()
     }
 }

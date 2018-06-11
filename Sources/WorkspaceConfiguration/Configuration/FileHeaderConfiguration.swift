@@ -25,12 +25,13 @@ public struct FileHeaderConfiguration: Codable {
     /// By default, this is assembled from the other documentation and licence options.
     ///
     /// Workspace will replace the dynamic element `[_dates_]` with the file’s copyright dates. (e.g. “©2016–2017”).
-    public var copyrightNotice: Lazy<String> = Lazy<String>() { configuration in
-        let project = WorkspaceContext.current.manifest.packageName
+    public var copyrightNotice: Lazy<StrictString> = Lazy<StrictString>() { configuration in
+        let project = StrictString(WorkspaceContext.current.manifest.packageName)
         if let author = configuration.documentation.primaryAuthor {
-            return "Copyright [_dates_] \(author) and the \(project) project contributors."
+            let components: [StrictString] = ["Copyright [_dates_] ", author, " and the ", project, " project contributors."]
+            return components.joined()
         } else {
-            return "Copyright [_dates_] the \(project) project contributors."
+            return "Copyright [_dates_] the " + project + " project contributors."
         }
     }
 
@@ -39,15 +40,17 @@ public struct FileHeaderConfiguration: Codable {
     /// By default, this is assembled from the other documentation and licence options.
     ///
     /// Workspace will replace the dynamic element `[_filename_]` with the name of the particular file.
-    public var contents: Lazy<String> = Lazy<String>() { configuration in
+    public var contents: Lazy<StrictString> = Lazy<StrictString>() { configuration in
 
-        var header: [String] = [
+        let packageName = StrictString(WorkspaceContext.current.manifest.packageName)
+
+        var header: [StrictString] = [
             "[_filename_]",
             "",
-            "This source file is part of the \(WorkspaceContext.current.manifest.packageName) open source project."
+            "This source file is part of the " + packageName + " open source project."
         ]
         if let site = configuration.documentation.projectWebsite {
-            header.append(site.absoluteString)
+            header.append(StrictString(site.absoluteString))
         }
 
         header.append(contentsOf: [
@@ -70,6 +73,6 @@ public struct FileHeaderConfiguration: Codable {
                 ])
         }
 
-        return header.joined(separator: "\n")
+        return header.joinedAsLines()
     }
 }

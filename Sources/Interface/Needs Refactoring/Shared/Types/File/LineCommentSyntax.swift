@@ -56,7 +56,7 @@ struct LineCommentSyntax {
             }
         }
 
-        return result.joinAsLines()
+        return result.joinedAsLines()
     }
 
     // MARK: - Parsing
@@ -169,7 +169,7 @@ struct LineCommentSyntax {
             }
             return result
         }
-        return lines.joinAsLines()
+        return lines.joinedAsLines()
     }
 
     func firstComment(in string: String) -> String? {

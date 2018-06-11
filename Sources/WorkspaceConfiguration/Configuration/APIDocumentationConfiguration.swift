@@ -20,8 +20,8 @@ public struct APIDocumentationConfiguration : Codable {
     /// By default, this is assembled from the file header copyright notice.
     ///
     /// Workspace will replace the dynamic element `[_dates_]` with the file’s copyright dates. (e.g. “©2016–2017”).
-    public var copyrightNotice: Lazy<String> = Lazy<String>() { configuration in
-        return configuration.fileHeaders.copyrightNotice.resolve(configuration).appending(" All rights reserved.")
+    public var copyrightNotice: Lazy<StrictString> = Lazy<StrictString>() { configuration in
+        return configuration.fileHeaders.copyrightNotice.resolve(configuration) + " All rights reserved."
     }
 
     /// An encrypted Travis CI deployment key.

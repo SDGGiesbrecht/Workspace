@@ -37,7 +37,7 @@ struct ContributingInstructions {
             managementComment,
             "",
             String(try Repository.packageRepository.contributingInstructions())
-            ].joinAsLines()
+            ].joinedAsLines()
 
         body = body.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.projectName()))
 

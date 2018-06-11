@@ -48,7 +48,7 @@ extension Workspace {
                             return [
                                 "Nothing to document.",
                                 "The package manifest does not define any library products."
-                                ].joinAsLines()
+                                ].joinedAsLines()
                         }
                     }))
                 }

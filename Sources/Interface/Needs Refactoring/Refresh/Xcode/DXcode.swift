@@ -41,7 +41,7 @@ struct DXcode {
             "@loader_path/Frameworks",
             "@executable_path/../Frameworks",
             "@loader_path/../Frameworks"
-            ].map({ "\u{22}\($0)\u{22}," }).joinAsLines()
+            ].map({ "\u{22}\($0)\u{22}," }).joinedAsLines()
         let replacement = (startToken + paths + endToken).scalars
 
         file.contents.scalars.replaceMatches(for: [
@@ -100,7 +100,7 @@ struct DXcode {
                 "    shellScript = \u{22}\(script)\u{22};",
                 "};",
                 "" // Final line break.
-                ].joinAsLines())
+                ].joinedAsLines())
 
             var searchRange = file.contents.startIndex ..< file.contents.endIndex
             var discoveredPhaseInsertLocation: String.Index?
@@ -125,7 +125,7 @@ struct DXcode {
             file.contents.replaceSubrange(phaseInsertLocation ..< phaseInsertLocation, with: [
                 scriptActionEntry,
                 "" // Final line break.
-                ].joinAsLines())
+                ].joinedAsLines())
         }, output: output)
     }
 

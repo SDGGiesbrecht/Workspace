@@ -29,7 +29,7 @@ func linuxJazzyError() -> Command.Error {
                 "Workspace cannot perform documentation tasks from Linux, because Jazzy does not run on Linux.",
                 "You can file a request with Jazzy:",
                 "https://github.com/realm/jazzy/issues".in(Underline.underlined)
-                ].joinAsLines())
+                ].joinedAsLines())
         }
     }))
 }

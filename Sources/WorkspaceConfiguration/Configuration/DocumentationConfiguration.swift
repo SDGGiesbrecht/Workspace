@@ -25,7 +25,7 @@ public struct DocumentationConfiguration : Codable {
     /// The semantic version of the current stable release of the project.
     ///
     /// There is no default version.
-    public var currentVersion: String?
+    public var currentVersion: String? // [_Use specific type._]
 
     /// The URL of the project website.
     ///
@@ -45,7 +45,7 @@ public struct DocumentationConfiguration : Codable {
     /// The primary project author.
     ///
     /// There is no default author.
-    public var primaryAuthor: String?
+    public var primaryAuthor: StrictString?
 
     /// A list of related projects.
     ///

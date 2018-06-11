@@ -60,7 +60,7 @@ enum ContinuousIntegration {
             ])
 
         var travisConfigurationFile = try TextFile(possiblyAt: project.location.appendingPathComponent(".travis.yml"))
-        travisConfigurationFile.body = travisConfiguration.joinAsLines()
+        travisConfigurationFile.body = travisConfiguration.joinedAsLines()
         try travisConfigurationFile.writeChanges(for: project, output: output)
     }
 

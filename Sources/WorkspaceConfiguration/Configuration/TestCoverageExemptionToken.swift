@@ -18,7 +18,7 @@ public struct TestCoverageExemptionToken : Codable, Hashable {
     // MARK: - Initialization
 
     /// Creates a test coverage exemption token.
-    public init(_ token: String, scope: Scope) {
+    public init(_ token: StrictString, scope: Scope) {
         self.token = token
         self.scope = scope
     }
@@ -26,7 +26,7 @@ public struct TestCoverageExemptionToken : Codable, Hashable {
     // MARK: - Properties
 
     /// The text of the token.
-    public var token: String
+    public var token: StrictString
 
     /// The scope.
     public var scope: Scope

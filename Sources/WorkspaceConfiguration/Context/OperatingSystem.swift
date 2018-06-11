@@ -46,7 +46,7 @@ public enum OperatingSystem : String, Codable {
 
     // MARK: - Properties
 
-    internal func isolatedName(for localization: ContentLocalization) -> String {
+    internal func isolatedName(for localization: ContentLocalization) -> StrictString {
         switch self {
         case .macOS:
             switch localization {

@@ -74,7 +74,7 @@ class CommandLineProofreadingReporter : ProofreadingReporter {
             String(lineMessage(source: violation.file.contents, violation: violation.range)),
             String(description),
             display(source: violation.file.contents, violation: violation.range, replacementSuggestion: violation.replacementSuggestion, highlight: highlight)
-            ].joinAsLines())
+            ].joinedAsLines())
     }
 
     // Parallel reporting style for test coverage.
@@ -82,6 +82,6 @@ class CommandLineProofreadingReporter : ProofreadingReporter {
         output.print([
             String(lineMessage(source: file, violation: violation)),
             display(source: file, violation: violation, replacementSuggestion: nil, highlight: { $0.formattedAsError() })
-            ].joinAsLines())
+            ].joinedAsLines())
     }
 }

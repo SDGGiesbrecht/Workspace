@@ -12,12 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import GeneralImports
-
 extension Array where Element : StringFamily {
     // MARK: - where Element : StringFamily
 
-    func joinAsLines() -> Element {
-        return joined(separator: "\n")
+    /// Joins an array of strings so that each entry in the array is a line of the string.
+    public func joinedAsLines() -> Element {
+        return joinedAsLines()
     }
 }

@@ -81,7 +81,7 @@ struct Examples {
                                 }
                             }
 
-                            list[identifier] = contents.joinAsLines()
+                            list[identifier] = contents.joinedAsLines()
                         }
                     }
                 }
@@ -157,14 +157,14 @@ struct Examples {
                                 "```swift",
                                 example,
                                 "```"
-                                ].joinAsLines().lines.map({ String($0.line) })
+                                ].joinedAsLines().lines.map({ String($0.line) })
 
                             for index in exampleLines.startIndex ..< exampleLines.endIndex where index ≠ exampleLines.startIndex {
                                 exampleLines[index] = internalIndent + exampleLines[index]
                             }
 
                             if countingExampleIndex == exampleIndex {
-                                commentValue.replaceSubrange(exampleRange, with: exampleLines.joinAsLines())
+                                commentValue.replaceSubrange(exampleRange, with: exampleLines.joinedAsLines())
 
                                 file.contents.replaceSubrange(commentRange, with: lineDocumentationSyntax.comment(contents: commentValue, indent: indent))
 

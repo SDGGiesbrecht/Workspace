@@ -68,7 +68,7 @@ func print(_ message: [String]) {
 }
 
 func print(_ message: [String], in colour: OutputColour?, spaced: Bool = false) {
-    var output = message.joinAsLines()
+    var output = message.joinedAsLines()
     if let textColour = colour {
         output = "\(textColour.start)\(output)\(OutputColour.end)"
     }

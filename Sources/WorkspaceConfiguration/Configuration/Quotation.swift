@@ -18,7 +18,7 @@ public struct Quotation : Codable {
     // MARK: - Initialization
 
     /// Creates a quotation.
-    public init(original: String) {
+    public init(original: StrictString) {
         self.original = original
     }
 
@@ -27,17 +27,17 @@ public struct Quotation : Codable {
     /// The quotation in its original language.
     ///
     /// There is no default quotation.
-    public var original: String
+    public var original: StrictString
 
     /// Translations of the quotation.
     ///
     /// There are no default translations.
-    public var translation: [LocalizationIdentifier: String] = [:]
+    public var translation: [LocalizationIdentifier: StrictString] = [:]
 
     /// The citation.
     ///
     /// There is no default citation.
-    public var citation: [LocalizationIdentifier: String] = [:]
+    public var citation: [LocalizationIdentifier: StrictString] = [:]
 
     /// A link for the quotation.
     ///
@@ -46,7 +46,7 @@ public struct Quotation : Codable {
 
     // MARK: - Source
 
-    internal func source(for localization: LocalizationIdentifier) -> String {
+    internal func source(for localization: LocalizationIdentifier) -> Markdown {
         // [_Warning: Not implemented yet._]
         return ""
     }

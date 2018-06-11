@@ -21,7 +21,7 @@ public enum RelatedProjectEntry : Codable {
     case project(url: URL)
 
     /// A heading.
-    case heading(text: [LocalizationIdentifier: String])
+    case heading(text: [LocalizationIdentifier: StrictString])
 
     private enum RelatedProjectEntryType: String, Codable {
         case project
@@ -64,7 +64,7 @@ public enum RelatedProjectEntry : Codable {
         case .project:
             self = .project(url: try container.decode(URL.self, forKey: CodingKeys.details))
         case .heading:
-            self = .heading(text: try container.decode([LocalizationIdentifier: String].self, forKey: CodingKeys.details))
+            self = .heading(text: try container.decode([LocalizationIdentifier: StrictString].self, forKey: CodingKeys.details))
         }
     }
 }

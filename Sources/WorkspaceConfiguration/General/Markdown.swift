@@ -13,4 +13,4 @@
  */
 
 /// Markdown source.
-public typealias Markdown = String
+public typealias Markdown = StrictString

@@ -127,7 +127,7 @@ enum Documentation {
                 warning.file.path(relativeTo: project.location) + ":" + String(warning.line?.inDigits() ?? ""), // [_Exempt from Test Coverage_] It is unknown what would cause a missing line number.
                 warning.symbol,
                 ""
-                ].joinAsLines().formattedAsError())
+                ].joinedAsLines().formattedAsError())
         }
 
         if warnings.isEmpty {

@@ -34,12 +34,12 @@ struct BlockCommentSyntax {
     // MARK: - Output
 
     func comment(contents: [String]) -> String {
-        return comment(contents: contents.joinAsLines())
+        return comment(contents: contents.joinedAsLines())
     }
 
     func comment(contents: String) -> String {
 
-        let withEndToken = [contents, end].joinAsLines()
+        let withEndToken = [contents, end].joinedAsLines()
 
         var lines = withEndToken.lines.map({ String($0.line) })
 
@@ -56,9 +56,9 @@ struct BlockCommentSyntax {
             }
         }
 
-        lines = [start, lines.joinAsLines()]
+        lines = [start, lines.joinedAsLines()]
 
-        return lines.joinAsLines()
+        return lines.joinedAsLines()
     }
 
     // MARK: - Parsing
@@ -140,7 +140,7 @@ struct BlockCommentSyntax {
             strings.removeLast()
         }
 
-        return strings.joinAsLines()
+        return strings.joinedAsLines()
     }
 
     func firstComment(in string: String) -> String? {

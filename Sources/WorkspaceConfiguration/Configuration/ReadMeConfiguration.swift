@@ -75,7 +75,7 @@ public struct ReadMeConfiguration : Codable {
 
         var result: [LocalizationIdentifier: Markdown] = [:]
         for localization in ContentLocalization.cases {
-            var readMe: [String] = [ // [_Warning: Sink this._]
+            var readMe: [StrictString] = [ // [_Warning: Sink this._]
                 "[_localizationLinks_]",
                 ""
             ]
@@ -92,7 +92,7 @@ public struct ReadMeConfiguration : Codable {
                 ]
             }
 
-            readMe += ["# \(WorkspaceContext.current.manifest.packageName)"]
+            readMe += ["# " + WorkspaceContext.current.manifest.packageName.scalars]
 
             if let description = configuration.documentation.readMe.shortProjectDescription[localization.rawValue] {
                 readMe += [
@@ -109,7 +109,7 @@ public struct ReadMeConfiguration : Codable {
             }
 
             if let features = configuration.documentation.readMe.featureList[localization.rawValue] {
-                let header: String
+                let header: StrictString
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     header = "Features"
@@ -134,7 +134,7 @@ public struct ReadMeConfiguration : Codable {
                 "[_installationInstructions_]" // [_Warning: Sink this._]
             ]
 
-            let examplesHeader: String
+            let examplesHeader: StrictString
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 examplesHeader = "Example Usage"
@@ -155,7 +155,7 @@ public struct ReadMeConfiguration : Codable {
             }
 
             if let about = configuration.documentation.readMe.about[localization.rawValue] {
-                let header: String
+                let header: StrictString
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     header = "About"
@@ -168,7 +168,7 @@ public struct ReadMeConfiguration : Codable {
                 ]
             }
 
-            result[localization.rawValue] = readMe.joined(separator: "\n")
+            result[localization.rawValue] = readMe.joinedAsLines()
         }
         return result
     }

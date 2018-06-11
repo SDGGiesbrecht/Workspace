@@ -44,7 +44,7 @@ enum Normalization {
                         return normalized + semanticWhitespace
                     }
 
-                    file.contents = normalizedLines.joinAsLines()
+                    file.contents = normalizedLines.joinedAsLines()
                     try file.writeChanges(for: project, output: output)
                 }
             }

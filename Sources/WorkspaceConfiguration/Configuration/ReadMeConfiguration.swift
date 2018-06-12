@@ -76,8 +76,8 @@ public struct ReadMeConfiguration : Codable {
         for localization in configuration.documentation.localizations {
             if let provided = localization._reasonableMatch {
 
-                var readMe: [StrictString] = [ // [_Warning: Sink this._]
-                    "#localizationLinks",
+                var readMe: [StrictString] = [
+                    localizationLinksMarkup(localizations: configuration.documentation.localizations),
                     ""
                 ]
 
@@ -173,5 +173,48 @@ public struct ReadMeConfiguration : Codable {
             }
         }
         return result
+    }
+
+    // MARK: - Localization Links
+
+    private static let documentationDirectoryName = "Documentation"
+    /// :nodoc:
+    public static func _documentationDirectory(for project: URL) -> URL {
+        return project.appendingPathComponent(documentationDirectoryName)
+    }
+
+    /// :nodoc:
+    public static func _locationOfDocumentationFile(named name: StrictString, for localization: LocalizationIdentifier, in project: URL) -> URL {
+        let icon = ContentLocalization.icon(for: localization.code) ?? StrictString("[" + localization.code + "]")
+        let fileName: StrictString = icon + " " + name + ".md"
+        return _documentationDirectory(for: project).appendingPathComponent(String(fileName))
+    }
+
+    /// :nodoc:
+    public static func _readMeLocation(for project: URL, localization: LocalizationIdentifier) -> URL {
+        let name: StrictString
+        switch localization._bestMatch {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            name = "Read Me"
+        }
+        return _locationOfDocumentationFile(named: name, for: localization, in: project)
+    }
+
+    /// :nodoc:
+    public static let _skipInJazzy: StrictString = "<!\u{2D}\u{2D}Skip in Jazzy\u{2D}\u{2D}>"
+
+    private static func localizationLinksMarkup(localizations: [LocalizationIdentifier]) -> StrictString {
+        var links: [StrictString] = []
+        for targetLocalization in localizations {
+            let linkText = ContentLocalization.icon(for: targetLocalization.code) ?? StrictString("[" + targetLocalization.code + "]")
+            let absoluteURL = _readMeLocation(for: WorkspaceContext.current.location, localization: targetLocalization)
+            var relativeURL = StrictString(absoluteURL.path(relativeTo: WorkspaceContext.current.location))
+            relativeURL.replaceMatches(for: " ".scalars, with: "%20".scalars)
+
+            var link: StrictString = "[" + linkText + "]"
+            link += "(" + relativeURL + ")"
+            links.append(link)
+        }
+        return StrictString(links.joined(separator: " • ".scalars)) + " " + _skipInJazzy
     }
 }

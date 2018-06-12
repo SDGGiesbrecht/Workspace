@@ -28,13 +28,6 @@ extension ReadMeConfiguration {
 
             // Lines
 
-            result.insert(try localizationLinksMarkup(for: package), for: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishCanada:
-                    return "localizationLinks"
-                }
-            }))
-
             let apis: StrictString
             if let modules = try apiLinksMarkup(for: package, localization: language) {
                 apis = modules
@@ -75,45 +68,6 @@ extension ReadMeConfiguration {
         return templates
     }
 
-    // MARK: - Localization Links
-
-    private static let documentationDirectoryName = "Documentation"
-    public static func documentationDirectory(for project: PackageRepository) -> URL {
-        return project.location.appendingPathComponent(ReadMeConfiguration.documentationDirectoryName)
-    }
-
-    public static func locationOfDocumentationFile(named name: StrictString, for localization: LocalizationIdentifier, in project: PackageRepository) -> URL {
-        let icon = ContentLocalization.icon(for: localization.code) ?? StrictString("[" + localization.code + "]")
-        let fileName: StrictString = icon + " " + name + ".md"
-        return documentationDirectory(for: project).appendingPathComponent(String(fileName))
-    }
-
-    public static func readMeLocation(for project: PackageRepository, localization: LocalizationIdentifier) -> URL {
-        return ReadMeConfiguration.locationOfDocumentationFile(named: UserFacing<StrictString, ContentLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "Read Me"
-            }
-        }).resolved(for: localization._bestMatch), for: localization, in: project)
-    }
-
-    public static let skipInJazzy: StrictString = "<!\u{2D}\u{2D}Skip in Jazzy\u{2D}\u{2D}>"
-
-    private func localizationLinksMarkup(for project: PackageRepository) throws -> StrictString {
-        var links: [StrictString] = []
-        for targetLocalization in try project.configuration().documentation.localizations {
-            let linkText = ContentLocalization.icon(for: targetLocalization.code) ?? StrictString("[" + targetLocalization.code + "]")
-            let absoluteURL = ReadMeConfiguration.readMeLocation(for: project, localization: targetLocalization)
-            var relativeURL = StrictString(absoluteURL.path(relativeTo: project.location))
-            relativeURL.replaceMatches(for: " ".scalars, with: "%20".scalars)
-
-            var link: StrictString = "[" + linkText + "]"
-            link += "(" + relativeURL + ")"
-            links.append(link)
-        }
-        return StrictString(links.joined(separator: " • ".scalars)) + " " + ReadMeConfiguration.skipInJazzy
-    }
-
     // MARK: - API Links
 
     private func apiLinksMarkup(for project: PackageRepository, localization: LocalizationIdentifier) throws -> StrictString? {
@@ -141,12 +95,12 @@ extension ReadMeConfiguration {
     // MARK: - Related Projects
 
     public static func relatedProjectsLocation(for project: PackageRepository, localization: LocalizationIdentifier) -> URL {
-        return ReadMeConfiguration.locationOfDocumentationFile(named: UserFacing<StrictString, ContentLocalization>({ localization in
+        return ReadMeConfiguration._locationOfDocumentationFile(named: UserFacing<StrictString, ContentLocalization>({ localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Related Projects"
             }
-        }).resolved(for: localization._bestMatch), for: localization, in: project)
+        }).resolved(for: localization._bestMatch), for: localization, in: project.location)
     }
 
     private func relatedProjectsLinkMarkup(for project: PackageRepository, localization: LocalizationIdentifier) throws -> StrictString? {
@@ -165,7 +119,7 @@ extension ReadMeConfiguration {
                 return StrictString("(For a list of related projects, see [here](\(relativeURL)).)")
             }
         }).resolved(for: localization._bestMatch)
-        return link + " " + ReadMeConfiguration.skipInJazzy
+        return link + " " + ReadMeConfiguration._skipInJazzy
     }
 
     // MARK: - Installation Instructions

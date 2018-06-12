@@ -12,11 +12,15 @@ public struct WorkspaceContext : Context {
     // MARK: - Initialization
 
     /// :nodoc:
-    public init(manifest: PackageManifest) {
+    public init(location: URL, manifest: PackageManifest) {
+        self.location = location
         self.manifest = manifest
     }
 
     // MARK: - Properties
+
+    /// The location of the configured repository.
+    public let location: URL
 
     /// Information from the package manifest.
     public let manifest: PackageManifest

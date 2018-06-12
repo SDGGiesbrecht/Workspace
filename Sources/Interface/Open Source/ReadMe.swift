@@ -129,7 +129,7 @@ enum ReadMe {
         if ¬atProjectRoot {
             // Fix links according to location.
             let prefix = "]("
-            let searchTerm: String = prefix + ReadMeConfiguration.documentationDirectory(for: project).path(relativeTo: project.location) + "/"
+            let searchTerm: String = prefix + ReadMeConfiguration._documentationDirectory(for: project.location).path(relativeTo: project.location) + "/"
             body.scalars.replaceMatches(for: searchTerm.scalars, with: prefix.scalars)
         }
 
@@ -198,7 +198,7 @@ enum ReadMe {
         for localization in try project.configuration().documentation.localizations {
             try autoreleasepool {
 
-                try refreshReadMe(at: ReadMeConfiguration.readMeLocation(for: project, localization: localization), for: localization, in: project, atProjectRoot: false, output: output)
+                try refreshReadMe(at: ReadMeConfiguration._readMeLocation(for: project.location, localization: localization), for: localization, in: project, atProjectRoot: false, output: output)
                 try refreshRelatedProjects(at: ReadMeConfiguration.relatedProjectsLocation(for: project, localization: localization), for: localization, in: project, output: output)
 
                 try refreshReadMe(at: project.location.appendingPathComponent("README.md"), for: try project.developmentLocalization(), in: project, atProjectRoot: true, output: output)

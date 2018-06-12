@@ -134,7 +134,7 @@ extension PackageRepository {
                 products.append(PackageManifest.Product(name: product.name, type: type, modules: modules))
             }
             let manifest = PackageManifest(packageName: String(try projectName()), products: products)
-            let context = WorkspaceContext(manifest: manifest)
+            let context = WorkspaceContext(location: location, manifest: manifest)
 
             return try WorkspaceConfiguration.load(
                 configuration: WorkspaceConfiguration.self,

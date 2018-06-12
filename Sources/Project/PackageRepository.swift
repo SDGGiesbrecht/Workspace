@@ -29,6 +29,7 @@ extension PackageRepository {
         fileprivate var manifest: PackageModel.Manifest?
         fileprivate var package: PackageModel.Package?
         fileprivate var packageGraph: PackageGraph?
+        fileprivate var products: [PackageModel.Product]?
         fileprivate var productModules: [Target]?
         fileprivate var dependenciesByName: [String: ResolvedPackage]?
 
@@ -87,6 +88,38 @@ extension PackageRepository {
         return StrictString(try cachedManifest().name)
     }
 
+    public func products() throws -> [PackageModel.Product] {
+        return try cached(in: &cache.products) {
+            var products: [PackageModel.Product] = []
+
+            // Filter out tools which have not been declared as products.
+            let declaredTools: Set<String>
+            switch try cachedManifest().package {
+            case .v3:
+                // [_Exempt from Test Coverage_] Not officially supported anyway.
+                declaredTools = [] // No concept of products.
+            case .v4(let manifest):
+                declaredTools = Set(manifest.products.map({ $0.name }))
+            }
+
+            for product in try cachedPackage().products {
+                switch product.type {
+                case .library:
+                    products.append(product)
+                case .executable:
+                    if product.name ∈ declaredTools {
+                        products.append(product)
+                    } else {
+                        continue // skip
+                    }
+                case .test:
+                    continue // skip
+                }
+            }
+            return products
+        }
+    }
+
     public func productModules() throws -> [Target] {
         return try cached(in: &cache.productModules) {
             var accountedFor: Set<String> = []
@@ -117,21 +150,9 @@ extension PackageRepository {
 
     public func configuration() throws -> WorkspaceConfiguration {
         return try cached(in: &cache.configuration) {
-            var products: [PackageManifest.Product] = []
 
-            // Filter out tools which have not been declared as products.
-            let declaredTools: Set<String>
-            switch try cachedManifest().package {
-            case .v3:
-                // [_Exempt from Test Coverage_] Not officially supported anyway.
-                declaredTools = [] // No concept of products.
-            case .v4(let manifest):
-                declaredTools = Set(manifest.products.map({ $0.name }))
-            }
+            let products = try self.products().map { (product: PackageModel.Product) -> PackageManifest.Product in
 
-            // [_Warning: centralize this filtering._]
-
-            for product in try cachedPackage().products {
                 let type: PackageManifest.Product.ProductType
                 let modules: [String]
                 switch product.type {
@@ -139,17 +160,15 @@ extension PackageRepository {
                     type = .library
                     modules = product.targets.map { $0.name }
                 case .executable:
-                    if product.name ∈ declaredTools {
-                        type = .executable
-                        modules = []
-                    } else {
-                        continue // skip
-                    }
+                    type = .executable
+                    modules = []
                 case .test:
-                    continue // skip
+                    unreachable()
                 }
-                products.append(PackageManifest.Product(name: product.name, type: type, modules: modules))
+
+                return PackageManifest.Product(name: product.name, type: type, modules: modules)
             }
+
             let manifest = PackageManifest(packageName: String(try projectName()), products: products)
             let context = WorkspaceContext(location: location, manifest: manifest)
 

@@ -68,8 +68,6 @@ public struct GitHubConfiguration: Codable {
         return template
     }
 
-    // [_Warning: Convert more of these to resources._]
-
     /// The issue template.
     ///
     /// By default, this is assembled from the other GitHub options.

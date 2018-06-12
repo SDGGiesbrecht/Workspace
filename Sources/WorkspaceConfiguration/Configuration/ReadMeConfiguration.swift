@@ -19,6 +19,8 @@ import Localizations
 /// Options related to the project read‐me.
 public struct ReadMeConfiguration : Codable {
 
+    // MARK: - Options
+
     /// Whether or not to manage the project read‐me.
     ///
     /// This is off by default.
@@ -75,7 +77,7 @@ public struct ReadMeConfiguration : Codable {
             if let provided = localization._reasonableMatch {
 
                 var readMe: [StrictString] = [
-                    localizationLinksMarkup(localizations: configuration.documentation.localizations),
+                    localizationLinks(configuration.documentation.localizations),
                     ""
                 ]
 
@@ -84,7 +86,7 @@ public struct ReadMeConfiguration : Codable {
                     ""
                 ]
 
-                if let api = apiLinksMarkup(configuration: configuration, localization: localization) {
+                if let api = apiLinks(for: configuration, in: localization) {
                     readMe += [
                         api,
                         ""
@@ -173,7 +175,7 @@ public struct ReadMeConfiguration : Codable {
         return result
     }
 
-    // MARK: - Localization Links
+    // MARK: - Useful components.
 
     private static let documentationDirectoryName = "Documentation"
     /// :nodoc:
@@ -201,7 +203,8 @@ public struct ReadMeConfiguration : Codable {
     /// :nodoc:
     public static let _skipInJazzy: StrictString = "<!\u{2D}\u{2D}Skip in Jazzy\u{2D}\u{2D}>"
 
-    private static func localizationLinksMarkup(localizations: [LocalizationIdentifier]) -> StrictString {
+    /// Constructs links to the read‐me in its other languages.
+    public static func localizationLinks(_ localizations: [LocalizationIdentifier]) -> StrictString {
         var links: [StrictString] = []
         for targetLocalization in localizations {
             let linkText = ContentLocalization.icon(for: targetLocalization.code) ?? StrictString("[" + targetLocalization.code + "]")
@@ -216,9 +219,10 @@ public struct ReadMeConfiguration : Codable {
         return StrictString(links.joined(separator: " • ".scalars)) + " " + _skipInJazzy
     }
 
-    // MARK: - API Links
-
-    private static func apiLinksMarkup(configuration: WorkspaceConfiguration, localization: LocalizationIdentifier) -> StrictString? {
+    /// Attempts to construct API links based on the specified configuration.
+    ///
+    /// The result will be `nil` if `documentationURL` is not specified or if the requested localization is not supported.
+    public static func apiLinks(for configuration: WorkspaceConfiguration, in localization: LocalizationIdentifier) -> StrictString? {
 
         guard let baseURL = configuration.documentation.documentationURL,
             let provided = localization._reasonableMatch else {

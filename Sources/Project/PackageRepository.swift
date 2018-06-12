@@ -118,6 +118,19 @@ extension PackageRepository {
     public func configuration() throws -> WorkspaceConfiguration {
         return try cached(in: &cache.configuration) {
             var products: [PackageManifest.Product] = []
+
+            // Filter out tools which have not been declared as products.
+            let declaredTools: Set<String>
+            switch try cachedManifest().package {
+            case .v3:
+                // [_Exempt from Test Coverage_] Not officially supported anyway.
+                declaredTools = [] // No concept of products.
+            case .v4(let manifest):
+                declaredTools = Set(manifest.products.map({ $0.name }))
+            }
+
+            // [_Warning: centralize this filtering._]
+
             for product in try cachedPackage().products {
                 let type: PackageManifest.Product.ProductType
                 let modules: [String]
@@ -126,8 +139,12 @@ extension PackageRepository {
                     type = .library
                     modules = product.targets.map { $0.name }
                 case .executable:
-                    type = .executable
-                    modules = []
+                    if product.name ∈ declaredTools {
+                        type = .executable
+                        modules = []
+                    } else {
+                        continue // skip
+                    }
                 case .test:
                     continue // skip
                 }
@@ -178,7 +195,7 @@ extension PackageRepository {
 
     public func readMe() throws -> [LocalizationIdentifier: StrictString] {
         return try cached(in: &cache.readMe) {
-            return try configuration().documentation.readMe.resolvedContents(for: self)
+            return try configuration().documentation.readMe.contents.resolve(configuration())
         }
     }
 

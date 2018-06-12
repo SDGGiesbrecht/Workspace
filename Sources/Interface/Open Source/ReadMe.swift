@@ -24,7 +24,7 @@ enum ReadMe {
 
     // MARK: - Templates
 
-    private static func quotationMarkup(localization: String, project: PackageRepository) throws -> StrictString {
+    private static func quotationMarkup(localization: LocalizationIdentifier, project: PackageRepository) throws -> StrictString {
         guard let original = try project.configuration().documentation.readMe.quotation?.original else {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
@@ -50,7 +50,7 @@ enum ReadMe {
         return StrictString("> ") + StrictString(result.joined(separator: "\n".scalars)).replacingMatches(for: "\n".scalars, with: "<br>".scalars)
     }
 
-    static func defaultExampleUsageTemplate(for localization: String, project: PackageRepository, output: Command.Output) throws -> Template? {
+    static func defaultExampleUsageTemplate(for localization: LocalizationIdentifier, project: PackageRepository, output: Command.Output) throws -> Template? {
         let prefixes = InterfaceLocalization.cases.map { (localization) in
             return UserFacing<StrictString, InterfaceLocalization>({ (localization) in
                 switch localization {
@@ -59,8 +59,8 @@ enum ReadMe {
                 }
             }).resolved(for: localization)
         }
-        var suffixes = [localization]
-        if let icon = ContentLocalization.icon(for: localization) {
+        var suffixes = [localization.code]
+        if let icon = localization.icon {
             suffixes += [String(icon)]
         }
 
@@ -92,7 +92,7 @@ enum ReadMe {
 
     // MARK: - Refreshment
 
-    private static func refreshReadMe(at location: URL, for localization: String, in project: PackageRepository, atProjectRoot: Bool, output: Command.Output) throws {
+    private static func refreshReadMe(at location: URL, for localization: LocalizationIdentifier, in project: PackageRepository, atProjectRoot: Bool, output: Command.Output) throws {
 
         guard let readMeSource = try project.readMe()[localization] else {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -164,7 +164,7 @@ enum ReadMe {
         try file.writeChanges(for: project, output: output)
     }
 
-    private static func refreshRelatedProjects(at location: URL, for localization: String, in project: PackageRepository, output: Command.Output) throws {
+    private static func refreshRelatedProjects(at location: URL, for localization: LocalizationIdentifier, in project: PackageRepository, output: Command.Output) throws {
 
         let relatedProjects = try project.configuration().documentation.relatedProjects
         if ¬relatedProjects.isEmpty {
@@ -200,11 +200,11 @@ enum ReadMe {
                             StrictString("### [\(name)](\(url.absoluteString))")
                         ]
 
-                        if let description = try? package.shortDescription(),
-                            let localized = description[localization] {
+                        if let configuration = try? package.configuration(),
+                            let description = configuration.documentation.readMe.shortProjectDescription[localization] {
                             markdown += [
                                 "",
-                                localized
+                                description
                             ]
                         }
                     }
@@ -221,7 +221,7 @@ enum ReadMe {
     }
 
     static func refreshReadMe(for project: PackageRepository, output: Command.Output) throws {
-        for localization in try project.localizations() {
+        for localization in try project.configuration().documentation.localizations {
             try autoreleasepool {
 
                 try refreshReadMe(at: ReadMeConfiguration.readMeLocation(for: project, localization: localization), for: localization, in: project, atProjectRoot: false, output: output)

@@ -15,20 +15,20 @@
 import SDGLocalization
 
 public enum ContentLocalization : String, Codable, InputLocalization {
-    
+
     // MARK: - Cases
-    
+
     case englishUnitedKingdom = "en\u{2D}GB"
     case englishUnitedStates = "en\u{2D}US"
     case englishCanada = "en\u{2D}CA"
-    
+
     public static let cases: [ContentLocalization] = [
         .englishUnitedKingdom,
         .englishUnitedStates,
         .englishCanada
     ]
-    
+
     // MARK: - Localization
-    
+
     public static let fallbackLocalization = ContentLocalization.englishUnitedKingdom
 }

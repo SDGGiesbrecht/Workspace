@@ -82,19 +82,19 @@ extension ReadMeConfiguration {
         return project.location.appendingPathComponent(ReadMeConfiguration.documentationDirectoryName)
     }
 
-    public static func locationOfDocumentationFile(named name: StrictString, for localization: String, in project: PackageRepository) -> URL {
-        let icon = ContentLocalization.icon(for: localization) ?? StrictString("[" + localization + "]")
+    public static func locationOfDocumentationFile(named name: StrictString, for localization: LocalizationIdentifier, in project: PackageRepository) -> URL {
+        let icon = ContentLocalization.icon(for: localization.code) ?? StrictString("[" + localization.code + "]")
         let fileName: StrictString = icon + " " + name + ".md"
         return documentationDirectory(for: project).appendingPathComponent(String(fileName))
     }
 
-    public static func readMeLocation(for project: PackageRepository, localization: String) -> URL {
+    public static func readMeLocation(for project: PackageRepository, localization: LocalizationIdentifier) -> URL {
         return ReadMeConfiguration.locationOfDocumentationFile(named: UserFacing<StrictString, ContentLocalization>({ localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Read Me"
             }
-        }).resolved(for: ContentLocalization(reasonableMatchFor: localization) ?? ContentLocalization.fallbackLocalization), for: localization, in: project)
+        }).resolved(for: localization._bestMatch), for: localization, in: project)
     }
 
     public static let skipInJazzy: StrictString = "<!\u{2D}\u{2D}Skip in Jazzy\u{2D}\u{2D}>"
@@ -127,7 +127,7 @@ extension ReadMeConfiguration {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "APIs:"
             }
-        }).resolved(for: ContentLocalization(reasonableMatchFor: localization) ?? ContentLocalization.fallbackLocalization)
+        }).resolved(for: localization._bestMatch)
 
         let links: [StrictString] = try project.productModules().map { module in
             var link: StrictString = "[" + StrictString(module.name) + "]"
@@ -146,7 +146,7 @@ extension ReadMeConfiguration {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Related Projects"
             }
-        }).resolved(for: ContentLocalization(reasonableMatchFor: localization) ?? ContentLocalization.fallbackLocalization), for: localization, in: project)
+        }).resolved(for: localization._bestMatch), for: localization, in: project)
     }
 
     private func relatedProjectsLinkMarkup(for project: PackageRepository, localization: LocalizationIdentifier) throws -> StrictString? {
@@ -164,7 +164,7 @@ extension ReadMeConfiguration {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return StrictString("(For a list of related projects, see [here](\(relativeURL)).)")
             }
-        }).resolved(for: ContentLocalization(reasonableMatchFor: localization) ?? ContentLocalization.fallbackLocalization)
+        }).resolved(for: localization._bestMatch)
         return link + " " + ReadMeConfiguration.skipInJazzy
     }
 
@@ -215,7 +215,7 @@ extension ReadMeConfiguration {
                 }
                 contents += libraryLinking
             }
-            result[DocumentationConfiguration.normalize(localizationIdentifier: localization.code)] = contents
+            result[localization] = contents
         }
         return result
     }

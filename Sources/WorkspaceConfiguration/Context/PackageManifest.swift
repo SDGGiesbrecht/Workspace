@@ -1,4 +1,6 @@
 
+import SDGCollections
+
 /// Information from the package manifest.
 public struct PackageManifest : Codable {
 
@@ -17,4 +19,17 @@ public struct PackageManifest : Codable {
 
     /// The products the package provides.
     public let products: [Product]
+
+    /// The list of the publically accessible modules.
+    public var productModules: [String] {
+        var accountedFor: Set<String> = []
+        var result: [String] = []
+        for product in products {
+            for module in product.modules where module ∉ accountedFor {
+                accountedFor.insert(module)
+                result.append(module)
+            }
+        }
+        return result
+    }
 }

@@ -65,8 +65,6 @@ public struct ReadMeConfiguration : Codable {
     ///
     /// Workspace will replace several template tokens after the configuration is loaded:
     ///
-    /// - `#localizationLinks`: Links to the read‐me in its other languages.
-    /// - `#apiLinks`: Links to the generated documentation (blank unless `documentationURL` is specified).
     /// - `#relatedProjects`: A link to the list of related projects.
     /// - `#installationInstructions`: The value of `installationInstructions`
     /// - `#exampleUsage`: The value of `exampleUsage`.
@@ -86,9 +84,9 @@ public struct ReadMeConfiguration : Codable {
                     ""
                 ]
 
-                if configuration.documentation.documentationURL ≠ nil {
-                    readMe += [ // [_Warning: Sink this._]
-                        "#apiLinks",
+                if let api = apiLinksMarkup(configuration: configuration, localization: localization) {
+                    readMe += [
+                        api,
                         ""
                     ]
                 }
@@ -216,5 +214,29 @@ public struct ReadMeConfiguration : Codable {
             links.append(link)
         }
         return StrictString(links.joined(separator: " • ".scalars)) + " " + _skipInJazzy
+    }
+
+    // MARK: - API Links
+
+    private static func apiLinksMarkup(configuration: WorkspaceConfiguration, localization: LocalizationIdentifier) -> StrictString? {
+
+        guard let baseURL = configuration.documentation.documentationURL,
+            let provided = localization._reasonableMatch else {
+            return nil
+        }
+
+        let label: StrictString
+        switch provided {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            label = "APIs:"
+        }
+
+        let links: [StrictString] = WorkspaceContext.current.manifest.productModules.map { module in
+            var link: StrictString = "[" + StrictString(module) + "]"
+            link += "(" + StrictString(baseURL.appendingPathComponent(module).absoluteString) + ")"
+            return link
+        }
+
+        return label + " " + StrictString(links.joined(separator: " • ".scalars))
     }
 }

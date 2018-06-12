@@ -26,21 +26,6 @@ extension ReadMeConfiguration {
                 }
             }))
 
-            // Lines
-
-            let apis: StrictString
-            if let modules = try apiLinksMarkup(for: package, localization: language) {
-                apis = modules
-            } else {
-                apis = ""
-            }
-            result.insert(apis, for: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishCanada:
-                    return "apiLinks"
-                }
-            }))
-
             let related: StrictString
             if let link = try relatedProjectsLinkMarkup(for: package, localization: language) {
                 related = link
@@ -66,30 +51,6 @@ extension ReadMeConfiguration {
             return (language, result.text)
         }
         return templates
-    }
-
-    // MARK: - API Links
-
-    private func apiLinksMarkup(for project: PackageRepository, localization: LocalizationIdentifier) throws -> StrictString? {
-
-        guard let baseURL = try project.configuration().documentation.documentationURL else {
-            return nil
-        }
-
-        let label = UserFacing<StrictString, ContentLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "APIs:"
-            }
-        }).resolved(for: localization._bestMatch)
-
-        let links: [StrictString] = try project.productModules().map { module in
-            var link: StrictString = "[" + StrictString(module.name) + "]"
-            link += "(" + StrictString(baseURL.appendingPathComponent(module.name).absoluteString) + ")"
-            return link
-        }
-
-        return label + " " + StrictString(links.joined(separator: " • ".scalars))
     }
 
     // MARK: - Related Projects

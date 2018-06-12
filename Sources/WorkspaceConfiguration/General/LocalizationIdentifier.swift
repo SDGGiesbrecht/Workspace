@@ -15,7 +15,7 @@
 import Localizations
 
 /// A localization identifier; either an IETF language tag or a language icon.
-public struct LocalizationIdentifier : Codable, Hashable {
+public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hashable {
 
     // MARK: - Initialization
 
@@ -53,5 +53,12 @@ public struct LocalizationIdentifier : Codable, Hashable {
     /// :nodoc:
     public var _bestMatch: ContentLocalization {
         return _reasonableMatch ?? ContentLocalization.fallbackLocalization
+    }
+
+    // MARK: - ExpressibleByStringLiteral
+
+    // [_Inherit Documentation: SDGCornerstone.ExpressiblyByStringLiteral.init(stringLiteral:)_]
+    public init(stringLiteral: String) {
+        self.init(stringLiteral)
     }
 }

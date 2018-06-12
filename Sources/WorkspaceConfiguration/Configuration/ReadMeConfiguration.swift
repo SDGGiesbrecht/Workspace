@@ -67,7 +67,6 @@ public struct ReadMeConfiguration : Codable {
     ///
     /// Workspace will replace several template tokens after the configuration is loaded:
     ///
-    /// - `#relatedProjects`: A link to the list of related projects.
     /// - `#installationInstructions`: The value of `installationInstructions`
     /// - `#exampleUsage`: The value of `exampleUsage`.
     public var contents: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>() { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in

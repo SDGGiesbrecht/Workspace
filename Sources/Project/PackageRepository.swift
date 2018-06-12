@@ -183,13 +183,13 @@ extension PackageRepository {
 
     public func sourceCopyright() throws -> StrictString {
         return try cached(in: &cache.sourceCopyright) {
-            return try configuration().fileHeaders.resolvedCopyrightNotice(for: self)
+            return try configuration().fileHeaders.copyrightNotice.resolve(configuration())
         }
     }
 
     public func documentationCopyright() throws -> StrictString {
         return try cached(in: &cache.documentationCopyright) {
-            return try configuration().documentation.api.resolvedCopyrightNotice(for: self)
+            return try configuration().documentation.api.copyrightNotice.resolve(configuration())
         }
     }
 
@@ -201,13 +201,13 @@ extension PackageRepository {
 
     public func contributingInstructions() throws -> StrictString {
         return try cached(in: &cache.contributingInstructions) {
-            return try configuration().gitHub.resolvedContributingInstructions(for: self)
+            return try configuration().gitHub.contributingInstructions.resolve(configuration())
         }
     }
 
     public func issueTemplate() throws -> StrictString {
         return try cached(in: &cache.issueTemplate) {
-            return try configuration().gitHub.resolvedIssueTemplate(for: self)
+            return try configuration().gitHub.issueTemplate.resolve(configuration())
         }
     }
 

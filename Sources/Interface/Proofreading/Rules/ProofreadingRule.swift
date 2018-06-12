@@ -7,6 +7,8 @@ extension ProofreadingRule {
 
     var parser: Rule.Type {
         switch self {
+        case .deprecatedConfiguration:
+            return DeprecatedConfiguration.self
         case .deprecatedLinuxDocumentation:
             return DeprecatedLinuxDocumentation.self
         case .manualWarnings:

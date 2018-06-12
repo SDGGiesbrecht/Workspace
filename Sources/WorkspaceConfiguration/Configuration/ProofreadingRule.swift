@@ -18,6 +18,9 @@ public enum ProofreadingRule : String, Codable {
 
     // ••••••• Deprecation •••••••
 
+    /// Catches deprecated configurations.
+    case deprecatedConfiguration
+
     /// Prohibits deprecated compiler conditions for Linux documentation.
     case deprecatedLinuxDocumentation
 
@@ -77,6 +80,7 @@ public enum ProofreadingRule : String, Codable {
     // [_Inherit Documentation: SDGCornerstone.IterableEnumeration.cases_]
     /// An array containing every case of the enumeration.
     public static let cases: [ProofreadingRule] = [
+        .deprecatedConfiguration,
         .deprecatedLinuxDocumentation,
 
         .manualWarnings,
@@ -102,7 +106,7 @@ public enum ProofreadingRule : String, Codable {
 
     public var category: Category {
         switch self {
-        case .deprecatedLinuxDocumentation:
+        case .deprecatedConfiguration, .deprecatedLinuxDocumentation:
             return .deprecation
 
         case .manualWarnings,

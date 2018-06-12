@@ -15,6 +15,7 @@
 import GeneralImports
 
 struct DeprecatedLinuxDocumentation : Rule {
+    // Deprecated in 0.3.0 (2017‐11‐22)
 
     static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {

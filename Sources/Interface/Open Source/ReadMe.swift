@@ -24,32 +24,6 @@ enum ReadMe {
 
     // MARK: - Templates
 
-    private static func quotationMarkup(localization: LocalizationIdentifier, project: PackageRepository) throws -> StrictString {
-        guard let original = try project.configuration().documentation.readMe.quotation?.original else {
-            throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishCanada:
-                    return StrictString("There is no quotation specified. (documentation.readMe.quotation)")
-                }
-            }))
-        }
-
-        var result = [StrictString(original)]
-        if let translation = try project.configuration().documentation.readMe.quotation?.translation[localization] {
-            result += [StrictString(translation)]
-        }
-        if let url = try project.configuration().documentation.readMe.quotation?.link[localization] {
-            let components: [StrictString] = ["[", result.joinedAsLines(), "](", StrictString(url.absoluteString), ")"]
-            result = [components.joined()]
-        }
-        if let citation = try project.configuration().documentation.readMe.quotation?.citation[localization] {
-            let indent = StrictString([String](repeating: "&nbsp;", count: 100).joined())
-            result += [indent + "―" + StrictString(citation)]
-        }
-
-        return StrictString("> ") + StrictString(result.joined(separator: "\n".scalars)).replacingMatches(for: "\n".scalars, with: "<br>".scalars)
-    }
-
     static func defaultExampleUsageTemplate(for localization: LocalizationIdentifier, project: PackageRepository, output: Command.Output) throws -> Template? {
         let prefixes = InterfaceLocalization.cases.map { (localization) in
             return UserFacing<StrictString, InterfaceLocalization>({ (localization) in

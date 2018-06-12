@@ -47,7 +47,19 @@ public struct Quotation : Codable {
     // MARK: - Source
 
     internal func source(for localization: LocalizationIdentifier) -> Markdown {
-        // [_Warning: Not implemented yet._]
-        return ""
+        var result = [original]
+        if let translated = translation[localization] {
+            result += [translated]
+        }
+        if let url = link[localization] {
+            let components: [StrictString] = ["[", result.joinedAsLines(), "](", StrictString(url.absoluteString), ")"]
+            result = [components.joined()]
+        }
+        if let cited = citation[localization] {
+            let indent = StrictString([String](repeating: "&nbsp;", count: 100).joined())
+            result += [indent + "―" + StrictString(cited)]
+        }
+
+        return StrictString("> ") + StrictString(result.joined(separator: "\n".scalars)).replacingMatches(for: "\n".scalars, with: "<br>".scalars)
     }
 }

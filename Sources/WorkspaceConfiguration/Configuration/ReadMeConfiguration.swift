@@ -41,14 +41,6 @@ public struct ReadMeConfiguration : Codable {
     /// There is no default feature list.
     public var featureList: [LocalizationIdentifier: Markdown] = [:]
 
-    /// Other read‐me content.
-    ///
-    /// There is nothing by default.
-    public var other: [LocalizationIdentifier: Markdown] = [:]
-
-    /// The about section.
-    public var about: [LocalizationIdentifier: Markdown] = [:]
-
     /// Installation instructions.
     ///
     /// Default instructions exist for executable and library products if `repositoryURL` and `currentVersion` are defined.
@@ -95,6 +87,14 @@ public struct ReadMeConfiguration : Codable {
     ///
     /// Arbitrary examples can be parsed from the project source by including placeholders of the form `#example(someExampleIdentifier)` in the markdown.
     public var exampleUsage: [LocalizationIdentifier: Markdown] = [:]
+
+    /// Other read‐me content.
+    ///
+    /// There is nothing by default.
+    public var other: [LocalizationIdentifier: Markdown] = [:]
+
+    /// The about section.
+    public var about: [LocalizationIdentifier: Markdown] = [:]
 
     /// The entire contents of the read‐me.
     ///

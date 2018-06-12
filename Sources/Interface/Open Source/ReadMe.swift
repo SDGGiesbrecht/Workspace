@@ -26,7 +26,7 @@ enum ReadMe {
 
     private static func refreshReadMe(at location: URL, for localization: LocalizationIdentifier, in project: PackageRepository, atProjectRoot: Bool, output: Command.Output) throws {
 
-        guard let readMeSource = try project.readMe()[localization] else {
+        guard var readMe = try project.readMe()[localization] else {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
@@ -35,34 +35,25 @@ enum ReadMe {
             }))
         }
 
-        // [_Warning: This should not be a template any more._]
-        var readMe = Template(source: readMeSource)
-
         // Word Elements
 
         for (key, example) in try project.examples(output: output) {
-            readMe.insert([
+            readMe.replaceMatches(for: StrictString("#example(\(key))"), with: [
                 "```swift",
                 StrictString(example),
                 "```"
-                ].joinedAsLines(), for: UserFacing({ localization in
-                    switch localization {
-                    case .englishCanada:
-                        return StrictString("example: \(key)")
-                    }
-                }))
+                ].joinedAsLines())
         }
 
-        var body = String(readMe.text)
         if ¬atProjectRoot {
             // Fix links according to location.
             let prefix = "]("
             let searchTerm: String = prefix + ReadMeConfiguration._documentationDirectory(for: project.location).path(relativeTo: project.location) + "/"
-            body.scalars.replaceMatches(for: searchTerm.scalars, with: prefix.scalars)
+            readMe.scalars.replaceMatches(for: searchTerm.scalars, with: prefix.scalars)
         }
 
         var file = try TextFile(possiblyAt: location)
-        file.body = body
+        file.body = String(readMe)
         try file.writeChanges(for: project, output: output)
     }
 

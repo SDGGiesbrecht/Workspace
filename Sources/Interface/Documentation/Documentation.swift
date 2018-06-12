@@ -39,16 +39,9 @@ enum Documentation {
         }
         let dates = StrictString(FileHeaders.copyright(fromText: "©\(defined.inEnglishDigits())"))
 
-        var template = Template(source: try project.documentationCopyright())
-
-        template.insert(dates, for: UserFacing({ localization in
-            switch localization {
-            case .englishCanada:
-                return "dates"
-            }
-        }))
-
-        return template.text
+        var template = try project.documentationCopyright()
+        template.replaceMatches(for: "#dates", with: dates)
+        return template
     }
 
     #if !os(Linux)

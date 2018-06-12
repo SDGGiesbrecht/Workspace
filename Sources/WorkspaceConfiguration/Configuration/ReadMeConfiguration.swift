@@ -123,10 +123,10 @@ public struct ReadMeConfiguration : Codable {
                     ]
                 }
 
-                if ¬configuration.documentation.relatedProjects.isEmpty {
+                if let related = relatedProjectsLink(for: configuration, in: localization) {
                     readMe += [
                         "",
-                        "#relatedProjects" // [_Warning: Sink this._]
+                        related
                     ]
                 }
 
@@ -183,8 +183,7 @@ public struct ReadMeConfiguration : Codable {
         return project.appendingPathComponent(documentationDirectoryName)
     }
 
-    /// :nodoc:
-    public static func _locationOfDocumentationFile(named name: StrictString, for localization: LocalizationIdentifier, in project: URL) -> URL {
+    private static func _locationOfDocumentationFile(named name: StrictString, for localization: LocalizationIdentifier, in project: URL) -> URL {
         let icon = ContentLocalization.icon(for: localization.code) ?? StrictString("[" + localization.code + "]")
         let fileName: StrictString = icon + " " + name + ".md"
         return _documentationDirectory(for: project).appendingPathComponent(String(fileName))
@@ -242,5 +241,39 @@ public struct ReadMeConfiguration : Codable {
         }
 
         return label + " " + StrictString(links.joined(separator: " • ".scalars))
+    }
+
+    // MARK: - Related Projects
+
+    /// :nodoc:
+    public static func _relatedProjectsLocation(for project: URL, localization: LocalizationIdentifier) -> URL {
+        let name: StrictString
+        switch localization._bestMatch {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            name = "Related Projects"
+        }
+        return _locationOfDocumentationFile(named: name, for: localization, in: project)
+    }
+
+    /// Attempts to construct a link to the related projects page.
+    ///
+    /// The result will be `nil` if there are no related projects or if the localization is not supported.
+    public static func relatedProjectsLink(for configuration: WorkspaceConfiguration, in localization: LocalizationIdentifier) -> StrictString? {
+
+        guard configuration.documentation.relatedProjects.isEmpty,
+            let provided = localization._reasonableMatch else {
+            return nil
+        }
+
+        let absoluteURL = _relatedProjectsLocation(for: WorkspaceContext.current.location, localization: localization)
+        var relativeURL = StrictString(absoluteURL.path(relativeTo: WorkspaceContext.current.location))
+        relativeURL.replaceMatches(for: " ".scalars, with: "%20".scalars)
+
+        let link: StrictString
+        switch provided {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            link = StrictString("(For a list of related projects, see [here](\(relativeURL)).)")
+        }
+        return link + " " + _skipInJazzy
     }
 }

@@ -199,7 +199,7 @@ enum ReadMe {
             try autoreleasepool {
 
                 try refreshReadMe(at: ReadMeConfiguration._readMeLocation(for: project.location, localization: localization), for: localization, in: project, atProjectRoot: false, output: output)
-                try refreshRelatedProjects(at: ReadMeConfiguration.relatedProjectsLocation(for: project, localization: localization), for: localization, in: project, output: output)
+                try refreshRelatedProjects(at: ReadMeConfiguration._relatedProjectsLocation(for: project.location, localization: localization), for: localization, in: project, output: output)
 
                 try refreshReadMe(at: project.location.appendingPathComponent("README.md"), for: try project.developmentLocalization(), in: project, atProjectRoot: true, output: output)
             }

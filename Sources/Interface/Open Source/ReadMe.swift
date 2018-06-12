@@ -22,48 +22,6 @@ import Project
 
 enum ReadMe {
 
-    // MARK: - Templates
-
-    static func defaultExampleUsageTemplate(for localization: LocalizationIdentifier, project: PackageRepository, output: Command.Output) throws -> Template? {
-        let prefixes = InterfaceLocalization.cases.map { (localization) in
-            return UserFacing<StrictString, InterfaceLocalization>({ (localization) in
-                switch localization {
-                case .englishCanada:
-                    return "Read‐Me"
-                }
-            }).resolved(for: localization)
-        }
-        var suffixes = [localization.code]
-        if let icon = localization.icon {
-            suffixes += [String(icon)]
-        }
-
-        var source: [StrictString] = []
-
-        for (key, _) in try project.examples(output: output) {
-            for prefix in prefixes {
-                for suffix in suffixes {
-                    if key.hasPrefix(String(prefix + " "))
-                        ∧ key.hasSuffix(" " + suffix) {
-                        source += [
-                            "",
-                            "[\u{5F}Example: " + StrictString(key) + "_]"
-                        ]
-                    }
-                }
-            }
-        }
-
-        while source.first?.isEmpty == true {
-            source.removeFirst()
-        }
-        if source.isEmpty {
-            return nil
-        } else {
-            return Template(source: source.joinedAsLines())
-        }
-    }
-
     // MARK: - Refreshment
 
     private static func refreshReadMe(at location: URL, for localization: LocalizationIdentifier, in project: PackageRepository, atProjectRoot: Bool, output: Command.Output) throws {
@@ -79,36 +37,6 @@ enum ReadMe {
 
         // [_Warning: This should not be a template any more._]
         var readMe = Template(source: readMeSource)
-
-        // Section Elements
-
-        // [_Warning: Can this be sunk further?_]
-        let examplesUsage: StrictString
-        let examplesOption = try project.configuration().documentation.readMe.exampleUsage
-        switch examplesOption {
-        case .custom(let custom):
-            guard let localized = custom[localization] else {
-                throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishCanada:
-                        return StrictString("There is no example usage for “\(localization)”. (documentation.readMe.exampleUsuage)")
-                    }
-                }))
-            }
-            examplesUsage = StrictString(localized)
-        case .automatic:
-            if let `default` = try defaultExampleUsageTemplate(for: localization, project: project, output: output) {
-                examplesUsage = `default`.text
-            } else {
-                examplesUsage = ""
-            }
-        }
-        readMe.insert(examplesUsage, for: UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishCanada:
-                return "exampleUsage"
-            }
-        }))
 
         // Word Elements
 

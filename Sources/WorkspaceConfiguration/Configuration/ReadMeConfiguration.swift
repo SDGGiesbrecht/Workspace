@@ -52,22 +52,53 @@ public struct ReadMeConfiguration : Codable {
     /// Installation instructions.
     ///
     /// Default instructions exist for executable and library products if `repositoryURL` and `currentVersion` are defined.
-    public var installationInstructions: Automatic<[LocalizationIdentifier: Markdown]> = .automatic
+    public var installationInstructions: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>() { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
+
+        guard let packageURL = configuration.documentation.repositoryURL,
+            let version = configuration.documentation.currentVersion else {
+                return [:]
+        }
+
+        var result: [LocalizationIdentifier: StrictString] = [:]
+        for localization in configuration.documentation.localizations {
+            if let provided = localization._reasonableMatch {
+
+                var instructions: [StrictString] = []
+                var precedingSection = false
+
+                if let toolInstallation = localizedToolInstallationInstructions(packageURL: packageURL, version: version, localization: provided) {
+                    precedingSection = true
+
+                    instructions += [toolInstallation]
+                }
+
+                if let libraryLinking = localizedLibraryImportingInstructions(packageURL: packageURL, version: version, localization: provided) {
+                    if precedingSection {
+                        instructions += [""]
+                    }
+                    precedingSection = true
+
+                    instructions += [libraryLinking]
+                }
+
+                if ¬instructions.isEmpty {
+                    result[localization] = instructions.joinedAsLines()
+                }
+            }
+        }
+        return result
+    }
 
     /// Example usage.
     ///
-    /// By default, Workspace will look for example identifiers beginning with `Read‐Me ` and ending with a localization key, and will include them in the read‐me.
+    /// There are no examples by default.
     ///
-    /// Arbitrary examples can be parsed from the project source by including placeholders of the form “[&#x5F;example: identifier_]” in the markdown.
-    public var exampleUsage: Automatic<[LocalizationIdentifier: Markdown]> = .automatic
+    /// Arbitrary examples can be parsed from the project source by including placeholders of the form `#example(someExampleIdentifier)` in the markdown.
+    public var exampleUsage: [LocalizationIdentifier: Markdown] = [:]
 
     /// The entire contents of the read‐me.
     ///
     /// By default, this is assembled from the other documentation and read‐me options.
-    ///
-    /// Workspace will replace several template tokens after the configuration is loaded:
-    ///
-    /// - `#exampleUsage`: The value of `exampleUsage`.
     public var contents: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>() { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
 
         var result: [LocalizationIdentifier: Markdown] = [:]
@@ -128,25 +159,19 @@ public struct ReadMeConfiguration : Codable {
                     ]
                 }
 
-                if let instructions = resolvedInstallationInstructions(for: configuration)[localization] {
+                if let instructions = configuration.documentation.readMe.installationInstructions.resolve(configuration)[localization] {
                     readMe += [
                         "",
                         instructions
                     ]
                 }
 
-                let examplesHeader: StrictString
-                switch provided {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    examplesHeader = "Example Usage"
+                if let examples = configuration.documentation.readMe.exampleUsage[localization] {
+                    readMe += [
+                        "",
+                        examples
+                    ]
                 }
-
-                readMe += [
-                    "",
-                    "## " + examplesHeader,
-                    "",
-                    "#exampleUsage" // [_Warning: Sink this._]
-                ]
 
                 if let other = configuration.documentation.readMe.other[localization] {
                     readMe += [
@@ -278,43 +303,6 @@ public struct ReadMeConfiguration : Codable {
     }
 
     // MARK: - Installation Instructions
-
-    private static func resolvedInstallationInstructions(for configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: StrictString] {
-
-        guard let packageURL = configuration.documentation.repositoryURL,
-            let version = configuration.documentation.currentVersion else {
-                return [:]
-        }
-
-        var result: [LocalizationIdentifier: StrictString] = [:]
-        for localization in configuration.documentation.localizations {
-            if let provided = localization._reasonableMatch {
-
-                var instructions: [StrictString] = []
-                var precedingSection = false
-
-                if let toolInstallation = localizedToolInstallationInstructions(packageURL: packageURL, version: version, localization: provided) {
-                    precedingSection = true
-
-                    instructions += [toolInstallation]
-                }
-
-                if let libraryLinking = localizedLibraryImportingInstructions(packageURL: packageURL, version: version, localization: provided) {
-                    if precedingSection {
-                        instructions += [""]
-                    }
-                    precedingSection = true
-
-                    instructions += [libraryLinking]
-                }
-
-                if ¬instructions.isEmpty {
-                    result[localization] = instructions.joinedAsLines()
-                }
-            }
-        }
-        return result
-    }
 
     private static func localizedToolInstallationInstructions(packageURL: URL, version: Version, localization: ContentLocalization) -> StrictString? {
 

@@ -65,110 +65,112 @@ public struct ReadMeConfiguration : Codable {
     ///
     /// Workspace will replace several template tokens after the configuration is loaded:
     ///
-    /// - `[_localizationLinks_]`: Links to the read‐me in its other languages.
-    /// - `[_apiLinks_]`: Links to the generated documentation (blank unless `documentationURL` is specified).
-    /// - `[_projectName_]`: The name of the project.
-    /// - `[_relatedProjects_]`: A link to the list of related projects.
-    /// - `[_installationInstructions_]`: The value of `installationInstructions`
-    /// - `[_exampleUsage_]`: The value of `exampleUsage`.
+    /// - `#localizationLinks`: Links to the read‐me in its other languages.
+    /// - `#apiLinks`: Links to the generated documentation (blank unless `documentationURL` is specified).
+    /// - `#relatedProjects`: A link to the list of related projects.
+    /// - `#installationInstructions`: The value of `installationInstructions`
+    /// - `#exampleUsage`: The value of `exampleUsage`.
     public var contents: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>() { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
 
         var result: [LocalizationIdentifier: Markdown] = [:]
-        for localization in ContentLocalization.cases {
-            var readMe: [StrictString] = [ // [_Warning: Sink this._]
-                "[_localizationLinks_]",
-                ""
-            ]
+        for localization in configuration.documentation.localizations {
+            if let provided = localization._reasonableMatch {
 
-            readMe += [
-                OperatingSystem.cases.filter({ configuration.supportedOperatingSystems.contains($0) }).map({ $0.isolatedName(for: localization) }).joined(separator: " • "),
-                ""
-            ]
-
-            if configuration.documentation.documentationURL ≠ nil {
-                readMe += [ // [_Warning: Sink this._]
-                    "[_apiLinks_]",
+                var readMe: [StrictString] = [ // [_Warning: Sink this._]
+                    "#localizationLinks",
                     ""
                 ]
-            }
 
-            readMe += ["# " + WorkspaceContext.current.manifest.packageName.scalars]
-
-            if let description = configuration.documentation.readMe.shortProjectDescription[localization] {
                 readMe += [
-                    "",
-                    description
+                    OperatingSystem.cases.filter({ configuration.supportedOperatingSystems.contains($0) }).map({ $0.isolatedName(for: provided) }).joined(separator: " • "),
+                    ""
                 ]
-            }
 
-            if let quotation = configuration.documentation.readMe.quotation {
-                readMe += [
-                    "",
-                    quotation.source(for: LocalizationIdentifier(localization))
-                ]
-            }
-
-            if let features = configuration.documentation.readMe.featureList[localization] {
-                let header: StrictString
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    header = "Features"
+                if configuration.documentation.documentationURL ≠ nil {
+                    readMe += [ // [_Warning: Sink this._]
+                        "#apiLinks",
+                        ""
+                    ]
                 }
-                readMe += [
-                    "",
-                    "## " + header,
-                    "",
-                    features
-                ]
-            }
 
-            if ¬configuration.documentation.relatedProjects.isEmpty {
-                readMe += [
-                    "",
-                    "[_relatedProjects_]" // [_Warning: Sink this._]
-                ]
-            }
+                readMe += ["# " + WorkspaceContext.current.manifest.packageName.scalars]
 
-            readMe += [
-                "",
-                "[_installationInstructions_]" // [_Warning: Sink this._]
-            ]
-
-            let examplesHeader: StrictString
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                examplesHeader = "Example Usage"
-            }
-
-            readMe += [
-                "",
-                "## " + examplesHeader,
-                "",
-                "[\u{5F}exampleUsage_]" // [_Warning: Sink this._]
-            ]
-
-            if let other = configuration.documentation.readMe.other[localization] {
-                readMe += [
-                    "",
-                    other
-                ]
-            }
-
-            if let about = configuration.documentation.readMe.about[localization] {
-                let header: StrictString
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    header = "About"
+                if let description = configuration.documentation.readMe.shortProjectDescription[localization] {
+                    readMe += [
+                        "",
+                        description
+                    ]
                 }
+
+                if let quotation = configuration.documentation.readMe.quotation {
+                    readMe += [
+                        "",
+                        quotation.source(for: localization)
+                    ]
+                }
+
+                if let features = configuration.documentation.readMe.featureList[localization] {
+                    let header: StrictString
+                    switch provided {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        header = "Features"
+                    }
+                    readMe += [
+                        "",
+                        "## " + header,
+                        "",
+                        features
+                    ]
+                }
+
+                if ¬configuration.documentation.relatedProjects.isEmpty {
+                    readMe += [
+                        "",
+                        "#relatedProjects" // [_Warning: Sink this._]
+                    ]
+                }
+
                 readMe += [
                     "",
-                    "## " + header,
-                    "",
-                    about
+                    "#installationInstructions" // [_Warning: Sink this._]
                 ]
-            }
 
-            result[localization] = readMe.joinedAsLines()
+                let examplesHeader: StrictString
+                switch provided {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    examplesHeader = "Example Usage"
+                }
+
+                readMe += [
+                    "",
+                    "## " + examplesHeader,
+                    "",
+                    "#exampleUsage" // [_Warning: Sink this._]
+                ]
+
+                if let other = configuration.documentation.readMe.other[localization] {
+                    readMe += [
+                        "",
+                        other
+                    ]
+                }
+
+                if let about = configuration.documentation.readMe.about[localization] {
+                    let header: StrictString
+                    switch provided {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        header = "About"
+                    }
+                    readMe += [
+                        "",
+                        "## " + header,
+                        "",
+                        about
+                    ]
+                }
+
+                result[localization] = readMe.joinedAsLines()
+            }
         }
         return result
     }

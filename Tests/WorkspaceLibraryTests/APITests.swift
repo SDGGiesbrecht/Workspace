@@ -46,12 +46,13 @@ class APITests : TestCase {
     }
 
     func testCustomProofread() {
-        /*
+        let configuration = WorkspaceConfiguration()
+        configuration.proofreading.rules.remove(.colonSpacing)
+        configuration.proofreading.rules.remove(.unicode)
         PackageRepository(mock: "CustomProofread").test(commands: [
             ["proofread"],
             ["proofread", "•xcode"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
- */
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCustomReadMe() {/*

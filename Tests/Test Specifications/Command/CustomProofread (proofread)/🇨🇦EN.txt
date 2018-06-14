@@ -2,12 +2,10 @@ $ workspace proofread •no‐colour
 
 Normalizing files...
 
-Writing to “.Workspace Configuration.txt”...
 Writing to “.swiftlint.yml”...
 
 Proofreading source code... (§1)
 
-.Workspace Configuration.txt
 .gitignore
 .swiftlint.yml
 Package.swift

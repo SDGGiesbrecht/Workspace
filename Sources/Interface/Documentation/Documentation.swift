@@ -29,18 +29,19 @@ enum Documentation {
 
     private static func copyright(for project: PackageRepository) throws -> StrictString {
 
-        guard let defined = try project.configuration().documentation.api.yearFirstPublished else {
-            throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishCanada:
-                    return "No year has been specified for when the documentation was first published. (documentation.api.yearFirstPublished)"
-                }
-            }))
-        }
-        let dates = StrictString(FileHeaders.copyright(fromText: "©\(defined.inEnglishDigits())"))
-
         var template = try project.documentationCopyright()
-        template.replaceMatches(for: "#dates", with: dates)
+        if template.contains("#dates".scalars) {
+            guard let defined = try project.configuration().documentation.api.yearFirstPublished else {
+                throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return "No year has been specified for when the documentation was first published. (documentation.api.yearFirstPublished)"
+                    }
+                }))
+            }
+            let dates = StrictString(FileHeaders.copyright(fromText: "©\(defined.inEnglishDigits())"))
+            template.replaceMatches(for: "#dates", with: dates)
+        }
         return template
     }
 

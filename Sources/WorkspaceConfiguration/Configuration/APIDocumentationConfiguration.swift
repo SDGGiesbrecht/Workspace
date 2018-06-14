@@ -21,7 +21,13 @@ public struct APIDocumentationConfiguration : Codable {
     ///
     /// Workspace will replace the dynamic element `#dates` with the file’s copyright dates. (e.g. “©2016–2017”).
     public var copyrightNotice: Lazy<StrictString> = Lazy<StrictString>() { configuration in
-        return configuration.fileHeaders.copyrightNotice.resolve(configuration) + " All rights reserved."
+        let result = configuration.fileHeaders.copyrightNotice.resolve(configuration) + " All rights reserved."
+        if configuration.documentation.api.yearFirstPublished == nil {
+            // Remove unavailable date.
+            return result.replacingMatches(for: "#dates", with: "©")
+        } else {
+            return result
+        }
     }
 
     /// An encrypted Travis CI deployment key.

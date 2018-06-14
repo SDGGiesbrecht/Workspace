@@ -3,7 +3,7 @@ $ workspace validate documentation‐coverage •no‐colour
 Generating documentation for “Default”... (§1)
 
 
-$ jazzy --module Default --copyright "Copyright © the Default project contributors. All rights reserved." --documentation=Documentation/*.md --clean --use-safe-filenames --output "[Temporary]/Documentation/Default" --xcodebuild-arguments "-scheme,Default-Package,-target,Default,-sdk,macosx,-derivedDataPath,[Temporary]/Jazzy Build Artifacts"
+$ jazzy --module Default --copyright "Copyright ©2018 the Default project contributors. All rights reserved." --documentation=Documentation/*.md --clean --use-safe-filenames --output "[Temporary]/Documentation/Default" --xcodebuild-arguments "-scheme,Default-Package,-target,Default,-sdk,macosx,-derivedDataPath,[Temporary]/Jazzy Build Artifacts"
 Running xcodebuild
 Parsing Default.swift (1/1)
 building site

@@ -55,11 +55,33 @@ class APITests : TestCase {
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
-    func testCustomReadMe() {/*
+    func testCustomReadMe() {
+        let configuration = WorkspaceConfiguration()
+        configuration.documentation.currentVersion = Version(1, 2, 3)
+        configuration.documentation.repositoryURL = URL(string: "https://github.com/User/Repository")!
+        configuration.documentation.localizations = ["en"]
+        configuration.documentation.readMe.quotation = Quotation(original: "Blah blah blah...")
+        configuration.documentation.readMe.quotation?.link["en"] = URL(string: "http://somewhere.com")!
+        configuration.documentation.readMe.installationInstructions = Lazy() { configuration in
+            return [
+                "en": StrictString([
+                    "## Installation",
+                    "",
+                    "Build from source at tag `\(configuration.documentation.currentVersion!.string())` of `\(configuration.documentation.repositoryURL!.absoluteString)`."
+                    ].joinedAsLines())
+            ]
+        }
+        configuration.documentation.readMe.exampleUsage = [
+            "en" : StrictString([
+                "```swift",
+                "let x = something()",
+                "```"
+                ].joinedAsLines())
+        ]
         PackageRepository(mock: "CustomReadMe").test(commands: [
             ["refresh", "read‐me"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     */}
+            ], configuration: configuration, requeue: 2, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+     }
 
     func testDefaults() {/*
         PackageRepository(mock: "Default").test(commands: [

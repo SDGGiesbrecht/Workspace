@@ -35,7 +35,7 @@ extension PackageRepository {
         self.init(at: URL(fileURLWithPath: "/tmp").appendingPathComponent(name))
     }
 
-    func test<L>(commands: [[StrictString]], configuration: WorkspaceConfiguration, localizations: L.Type, withDependency: Bool = false, overwriteSpecificationInsteadOfFailing: Bool, file: StaticString = #file, line: UInt = #line) where L : InputLocalization {
+    func test<L>(commands: [[StrictString]], configuration: WorkspaceConfiguration, requeue: Int = 1, localizations: L.Type, withDependency: Bool = false, overwriteSpecificationInsteadOfFailing: Bool, file: StaticString = #file, line: UInt = #line) where L : InputLocalization {
         do {
             try autoreleasepool {
                 let developer = URL(fileURLWithPath: "/tmp/Developer")
@@ -76,7 +76,9 @@ extension PackageRepository {
                     _ = try? FileManager.default.copy(repositoryRoot.appendingPathComponent(".gitignore"), to: location.appendingPathComponent(".gitignore"))
 
                     WorkspaceContext.current = try configurationContext()
-                    WorkspaceConfiguration.queue(mock: configuration)
+                    for _ in 1 ... requeue {
+                        WorkspaceConfiguration.queue(mock: configuration)
+                    }
 
                     for command in commands {
 
@@ -210,18 +212,18 @@ extension PackageRepository {
                             files.insert(file.path(relativeTo: afterLocation))
                         }
 
-                        for file in files where ¬file.hasSuffix(".dsidx") {
-                            let result = location.appendingPathComponent(file)
-                            let after = afterLocation.appendingPathComponent(file)
+                        for fileName in files where ¬fileName.hasSuffix(".dsidx") {
+                            let result = location.appendingPathComponent(fileName)
+                            let after = afterLocation.appendingPathComponent(fileName)
                             if let resultContents = try? String(from: result) {
                                 if (try? String(from: after)) ≠ nil {
-                                    compare(resultContents, against: after, overwriteSpecificationInsteadOfFailing: false)
+                                    compare(resultContents, against: after, overwriteSpecificationInsteadOfFailing: false, file: file, line: line)
                                 } else {
-                                    XCTFail("Unexpected file produced: “\(file)”")
+                                    XCTFail("Unexpected file produced: “\(fileName)”")
                                 }
                             } else {
                                 if (try? String(from: after)) ≠ nil {
-                                    XCTFail("Failed to produce “\(file)”.")
+                                    XCTFail("Failed to produce “\(fileName)”.")
                                 }
                             }
                         }

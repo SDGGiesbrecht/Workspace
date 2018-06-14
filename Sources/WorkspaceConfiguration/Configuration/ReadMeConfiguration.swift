@@ -167,7 +167,14 @@ public struct ReadMeConfiguration : Codable {
                 }
 
                 if let examples = configuration.documentation.readMe.exampleUsage[localization] {
+                    let header: StrictString
+                    switch provided {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        header = "Example Usage"
+                    }
                     readMe += [
+                        "",
+                        "## " + header,
                         "",
                         examples
                     ]
@@ -285,7 +292,7 @@ public struct ReadMeConfiguration : Codable {
     /// The result will be `nil` if there are no related projects or if the localization is not supported.
     public static func relatedProjectsLink(for configuration: WorkspaceConfiguration, in localization: LocalizationIdentifier) -> StrictString? {
 
-        guard configuration.documentation.relatedProjects.isEmpty,
+        guard ¬configuration.documentation.relatedProjects.isEmpty,
             let provided = localization._reasonableMatch else {
             return nil
         }

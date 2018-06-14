@@ -74,7 +74,7 @@ extension PackageRepository {
                     #endif
                     _ = try? Shell.default.run(command: ["git", "init"])
                     _ = try? FileManager.default.copy(repositoryRoot.appendingPathComponent(".gitignore"), to: location.appendingPathComponent(".gitignore"))
-                    
+
                     WorkspaceContext.current = try configurationContext()
                     WorkspaceConfiguration.queue(mock: configuration)
 

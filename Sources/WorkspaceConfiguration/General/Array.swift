@@ -17,6 +17,6 @@ extension Array where Element : StringFamily {
 
     /// Joins an array of strings so that each entry in the array is a line of the string.
     public func joinedAsLines() -> Element {
-        return joinedAsLines()
+        return joined(separator: "\n" as Element)
     }
 }

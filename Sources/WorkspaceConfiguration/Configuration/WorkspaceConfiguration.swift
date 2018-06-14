@@ -19,7 +19,7 @@ public final class WorkspaceConfiguration : Configuration {
 
     // MARK: - Static Properties
 
-    internal static var registered: WorkspaceConfiguration = WorkspaceConfiguration()
+    internal static var registered: WorkspaceConfiguration!
 
     // MARK: - Properties
 

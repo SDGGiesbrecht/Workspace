@@ -6,8 +6,16 @@ public struct WorkspaceContext : Context {
 
     // MARK: - Static Properties
 
+    private static var _current: WorkspaceContext?
     /// The context of the current project.
-    public static var current: WorkspaceContext = accept()!
+    public static var current: WorkspaceContext {
+        get {
+            return _current ?? accept()!
+        }
+        set {
+            _current = newValue
+        }
+    }
 
     // MARK: - Initialization
 

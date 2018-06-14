@@ -15,7 +15,7 @@
 import SDGLogic
 import GeneralImports
 
-import Metadata
+import WorkspaceMetadata
 import Project
 
 enum Script : Int, IterableEnumeration {

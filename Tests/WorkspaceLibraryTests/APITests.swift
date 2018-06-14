@@ -83,7 +83,7 @@ class APITests : TestCase {
             ], configuration: configuration, requeue: 2, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
      }
 
-    func testDefaults() {/*
+    func testDefaults() {
         PackageRepository(mock: "Default").test(commands: [
             // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
@@ -98,8 +98,8 @@ class APITests : TestCase {
 
             ["proofread", "•xcode"],
             ["validate", "build", "•job", "macos‐swift‐package‐manager"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     */}
+            ], configuration: WorkspaceConfiguration(), localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+     }
 
     func testExecutableProjectType() {/*
         PackageRepository(mock: "ExecutableProjectType").test(commands: [

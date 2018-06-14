@@ -1,6 +1,6 @@
 $ workspace validate documentation‐coverage •no‐colour
 
-Generating documentation for “FailingDocumentationCoverage”...
+Generating documentation for “FailingDocumentationCoverage”... (§1)
 
 
 $ jazzy --module FailingDocumentationCoverage --copyright "Copyright ©2018 the FailingDocumentationCoverage project contributors. All rights reserved." --documentation=Documentation/*.md --clean --use-safe-filenames --output "[Temporary]/Documentation/FailingDocumentationCoverage" --xcodebuild-arguments "-scheme,FailingDocumentationCoverage-Package,-target,FailingDocumentationCoverage,-sdk,macosx,-derivedDataPath,[Temporary]/Jazzy Build Artifacts"
@@ -15,14 +15,14 @@ jam out ♪♫ to your fresh new docs in `[Temporary]/Documentation/FailingDocum
 
 Writing to “[Temporary]/Documentation/FailingDocumentationCoverage/.nojekyll”...
 
-Checking documentation coverage for “FailingDocumentationCoverage”... (§1)
+Checking documentation coverage for “FailingDocumentationCoverage”... (§2)
 
 Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift:
 undocumented()
 
 
 ✓ Generated documentation for “FailingDocumentationCoverage”.
-✗ Documentation coverage is incomplete for “FailingDocumentationCoverage”. (See [⌘F] “§1”)
+✗ Documentation coverage is incomplete for “FailingDocumentationCoverage”. (See [⌘F] “§2”)
 
 “FailingDocumentationCoverage” fails validation.
 9223372036854775807

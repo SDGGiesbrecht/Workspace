@@ -115,11 +115,11 @@ class APITests : TestCase {
             ], configuration: configuration, requeue: 2, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
      }
 
-    func testFailingDocumentationCoverage() {/*
+    func testFailingDocumentationCoverage() {
         PackageRepository(mock: "FailingDocumentationCoverage").test(commands: [
             ["validate", "documentation‐coverage"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     */}
+            ], configuration: WorkspaceConfiguration(), localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+     }
 
     func testFailingTests() {/*
         // Attempt to remove existing derived data so that the build is clean.

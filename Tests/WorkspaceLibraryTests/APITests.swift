@@ -121,7 +121,7 @@ class APITests : TestCase {
             ], configuration: WorkspaceConfiguration(), localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
      }
 
-    func testFailingTests() {/*
+    func testFailingTests() {
         // Attempt to remove existing derived data so that the build is clean.
         // Otherwise Xcode skips the build stages where the awaited warnings occur.
         do {
@@ -136,8 +136,8 @@ class APITests : TestCase {
             ["validate", "build"],
             ["validate", "test‐coverage"],
             ["validate", "build", "•job", "miscellaneous"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     */}
+            ], configuration: WorkspaceConfiguration(), localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+     }
 
     func testInvalidConfigurationEnumerationValue() {/*
         PackageRepository(mock: "InvalidConfigurationEnumerationValue").test(commands: [

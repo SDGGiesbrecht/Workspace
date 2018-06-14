@@ -4,6 +4,6 @@
 
 macOS • Linux
 
-# ExecutableProjectType
+# Executable
 
 > Blah blah blah...

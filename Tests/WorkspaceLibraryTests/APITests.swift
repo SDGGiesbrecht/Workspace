@@ -101,13 +101,19 @@ class APITests : TestCase {
             ], configuration: WorkspaceConfiguration(), localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
      }
 
-    func testExecutableProjectType() {/*
-        PackageRepository(mock: "ExecutableProjectType").test(commands: [
+    func testExecutable() {
+        let configuration = WorkspaceConfiguration()
+        configuration.supportedOperatingSystems.remove(.iOS)
+        configuration.supportedOperatingSystems.remove(.watchOS)
+        configuration.supportedOperatingSystems.remove(.tvOS)
+        configuration.documentation.localizations = ["en"]
+        configuration.documentation.readMe.quotation = Quotation(original: "Blah blah blah...")
+        PackageRepository(mock: "Executable").test(commands: [
             ["refresh", "read‐me"],
             ["document"],
             ["validate", "documentation‐coverage"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     */}
+            ], configuration: configuration, requeue: 2, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+     }
 
     func testFailingDocumentationCoverage() {/*
         PackageRepository(mock: "FailingDocumentationCoverage").test(commands: [

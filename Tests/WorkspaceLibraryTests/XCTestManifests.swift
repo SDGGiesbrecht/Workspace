@@ -21,7 +21,7 @@ extension APITests {
         ("testCustomProofread", testCustomProofread),
         ("testCustomReadMe", testCustomReadMe),
         ("testDefaults", testDefaults),
-        ("testExecutableProjectType", testExecutableProjectType),
+        ("testExecutable", testExecutable),
         ("testFailingDocumentationCoverage", testFailingDocumentationCoverage),
         ("testFailingTests", testFailingTests),
         ("testHelp", testHelp),

@@ -33,6 +33,7 @@ extension PackageRepository {
         fileprivate var productModules: [Target]?
         fileprivate var dependenciesByName: [String: ResolvedPackage]?
 
+        fileprivate var configurationContext: WorkspaceContext?
         fileprivate var configuration: WorkspaceConfiguration?
         fileprivate var sourceCopyright: StrictString?
         fileprivate var documentationCopyright: StrictString?
@@ -148,8 +149,8 @@ extension PackageRepository {
 
     // MARK: - Configuration
 
-    public func configuration() throws -> WorkspaceConfiguration {
-        return try cached(in: &cache.configuration) {
+    public func configurationContext() throws -> WorkspaceContext {
+        return try cached(in: &cache.configurationContext) {
 
             let products = try self.products().map { (product: PackageModel.Product) -> PackageManifest.Product in
 
@@ -170,7 +171,12 @@ extension PackageRepository {
             }
 
             let manifest = PackageManifest(packageName: String(try projectName()), products: products)
-            let context = WorkspaceContext(location: location, manifest: manifest)
+            return WorkspaceContext(location: location, manifest: manifest)
+        }
+    }
+
+    public func configuration() throws -> WorkspaceConfiguration {
+        return try cached(in: &cache.configuration) {
 
             return try WorkspaceConfiguration.load(
                 configuration: WorkspaceConfiguration.self,
@@ -184,7 +190,7 @@ extension PackageRepository {
                 linkingAgainst: "WorkspaceConfiguration",
                 in: SDGSwift.Package(url: Metadata.packageURL),
                 at: Metadata.latestStableVersion,
-                context: context)
+                context: try configurationContext())
         }
     }
 

@@ -35,7 +35,7 @@ extension PackageRepository {
         self.init(at: URL(fileURLWithPath: "/tmp").appendingPathComponent(name))
     }
 
-    func test<L>(commands: [[StrictString]], localizations: L.Type, withDependency: Bool = false, overwriteSpecificationInsteadOfFailing: Bool, file: StaticString = #file, line: UInt = #line) where L : InputLocalization {
+    func test<L>(commands: [[StrictString]], configuration: WorkspaceConfiguration, localizations: L.Type, withDependency: Bool = false, overwriteSpecificationInsteadOfFailing: Bool, file: StaticString = #file, line: UInt = #line) where L : InputLocalization {
         do {
             try autoreleasepool {
                 let developer = URL(fileURLWithPath: "/tmp/Developer")
@@ -74,6 +74,9 @@ extension PackageRepository {
                     #endif
                     _ = try? Shell.default.run(command: ["git", "init"])
                     _ = try? FileManager.default.copy(repositoryRoot.appendingPathComponent(".gitignore"), to: location.appendingPathComponent(".gitignore"))
+                    
+                    WorkspaceContext.current = try configurationContext()
+                    WorkspaceConfiguration.queue(mock: configuration)
 
                     for command in commands {
 

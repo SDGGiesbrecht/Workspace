@@ -13,6 +13,7 @@
  */
 
 @_exported import GeneralImports
+@_exported import WorkspaceConfiguration
 @_exported import Interface
 
 @_exported import XCTest

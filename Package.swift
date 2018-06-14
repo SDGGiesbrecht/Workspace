@@ -110,6 +110,7 @@ let package = Package(
 
         .target(name: "GeneralTestImports", dependencies: [
             "GeneralImports",
+            "WorkspaceConfiguration",
             "Interface",
             .productItem(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
             .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone"),

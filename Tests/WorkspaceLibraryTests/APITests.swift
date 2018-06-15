@@ -231,6 +231,7 @@ class APITests : TestCase {
             configuration.documentation.readMe.featureList[localization] = "..."
             configuration.documentation.readMe.other[localization] = "..."
             configuration.documentation.readMe.about[localization] = "..."
+            configuration.documentation.readMe.exampleUsage[localization] = Markdown("#example(Read‐Me \(localization.icon.flatMap({String($0)}) ?? localization.code)")
         }
         configuration.documentation.readMe.shortProjectDescription["🇨🇦EN"] = "This project does stuff."
         configuration.documentation.readMe.quotation?.translation["🇨🇦EN"] = "“...”"
@@ -241,7 +242,6 @@ class APITests : TestCase {
             "- More stuff.",
             "- Even more stuff."
             ].joinedAsLines()
-        configuration.documentation.readMe.exampleUsage["🇨🇦EN"] = "#example(Read‐Me 🇨🇦EN)"
         configuration.documentation.readMe.other["🇨🇦EN"] = [
             "## Other",
             "",
@@ -268,7 +268,7 @@ class APITests : TestCase {
             ["validate", "documentation‐coverage"],
 
             ["proofread", "•xcode"]
-            ], configuration: configuration, requeue: 19, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, requeue: 20, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
      }
 
     func testSDGTool() {/*

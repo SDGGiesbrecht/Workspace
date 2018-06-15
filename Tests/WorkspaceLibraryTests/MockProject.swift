@@ -222,7 +222,7 @@ extension PackageRepository {
                                 }
                             } else {
                                 if (try? String(from: after)) ≠ nil {
-                                    XCTFail("Failed to produce “\(fileName)”.")
+                                    XCTFail("Failed to produce “\(fileName)”.", file: file, line: line)
                                 }
                             }
                         }

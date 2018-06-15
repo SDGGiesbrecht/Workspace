@@ -236,7 +236,7 @@ class APITests : TestCase {
         configuration.documentation.readMe.shortProjectDescription["🇨🇦EN"] = "This project does stuff."
         configuration.documentation.readMe.quotation?.translation["🇨🇦EN"] = "“...”"
         configuration.documentation.readMe.quotation?.citation["🇨🇦EN"] = "someone"
-        configuration.documentation.readMe.quotation?.link["🇬🇧EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=SBLGNT;NIVUK")!
+        configuration.documentation.readMe.quotation?.link["🇬🇧EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=WLC;NIVUK")!
         configuration.documentation.readMe.featureList["🇨🇦EN"] = [
             "- Stuff.",
             "- More stuff.",
@@ -257,9 +257,9 @@ class APITests : TestCase {
             // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
             ["refresh", "read‐me"],
-            //["refresh", "continuous‐integration"],
-            //["refresh", "resources"],
-            //["normalize"],
+            ["refresh", "continuous‐integration"],
+            ["refresh", "resources"],
+            ["normalize"],
 
             //["proofread"],
             //["validate", "build"],

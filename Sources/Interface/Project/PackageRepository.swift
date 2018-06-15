@@ -132,7 +132,7 @@ extension PackageRepository {
     // MARK: - Documentation
 
     func hasTargetsToDocument(output: Command.Output) throws -> Bool {
-        return try ¬cachedPackage().products.contains(where: { $0.type.isLibrary })
+        return try cachedPackage().products.contains(where: { $0.type.isLibrary })
     }
 
     #if !os(Linux)

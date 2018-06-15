@@ -29,6 +29,8 @@ public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hash
         if let icon = ContentLocalization.icon(for: identifier),
             let fromIcon = ContentLocalization.code(for: icon) {
             code = fromIcon
+        } else if let fromIcon = ContentLocalization.code(for: StrictString(identifier)) {
+            code = fromIcon
         } else {
             code = identifier
         }

@@ -139,12 +139,6 @@ class APITests : TestCase {
             ], configuration: WorkspaceConfiguration(), localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
      }
 
-    func testInvalidConfigurationEnumerationValue() {/*
-        PackageRepository(mock: "InvalidConfigurationEnumerationValue").test(commands: [
-            ["validate", "documentation‐coverage"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     */}
-
     func testInvalidReference() {/*
         PackageRepository(mock: "InvalidReference").test(commands: [
             ["refresh", "read‐me"]

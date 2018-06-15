@@ -5,7 +5,6 @@ Normalizing files...
 
 Proofreading source code... (§1)
 
-.Workspace Configuration.txt
 .gitignore
 .travis.yml
 Documentation/[zxx] Read Me.md

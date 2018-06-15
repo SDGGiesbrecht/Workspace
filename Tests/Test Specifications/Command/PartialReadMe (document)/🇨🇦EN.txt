@@ -1,6 +1,6 @@
 $ workspace document •no‐colour
 
-Generating documentation for “PartialReadMe”...
+Generating documentation for “PartialReadMe”... (§1)
 
 
 $ jazzy --module PartialReadMe --copyright "Copyright ©2018 the PartialReadMe project contributors. All rights reserved." --github_url "https://somewhere.com" --documentation=Documentation/*.md --clean --use-safe-filenames --output "[Temporary]/PartialReadMe/docs/PartialReadMe" --xcodebuild-arguments "-scheme,PartialReadMe-Package,-target,PartialReadMe,-sdk,macosx,-derivedDataPath,[Temporary]/Jazzy Build Artifacts"

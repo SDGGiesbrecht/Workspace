@@ -235,6 +235,7 @@ class APITests : TestCase {
         configuration.documentation.readMe.shortProjectDescription["🇨🇦EN"] = "This project does stuff."
         configuration.documentation.readMe.quotation?.translation["🇨🇦EN"] = "“...”"
         configuration.documentation.readMe.quotation?.citation["🇨🇦EN"] = "someone"
+        configuration.documentation.readMe.quotation?.link["🇬🇧EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=SBLGNT;NIVUK")!
         configuration.documentation.readMe.featureList["🇨🇦EN"] = [
             "- Stuff.",
             "- More stuff.",
@@ -267,7 +268,7 @@ class APITests : TestCase {
             ["validate", "documentation‐coverage"],
 
             ["proofread", "•xcode"]
-            ], configuration: configuration, requeue: 10, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, requeue: 19, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
      }
 
     func testSDGTool() {/*

@@ -25,7 +25,8 @@ extension PackageRepository {
 
     // MARK: - Cache
 
-    private class Cache {
+    private class MutatingCache {
+        // Writing resources may add source files to targets.
         fileprivate var manifest: PackageModel.Manifest?
         fileprivate var package: PackageModel.Package?
         fileprivate var packageGraph: PackageGraph?
@@ -33,30 +34,47 @@ extension PackageRepository {
         fileprivate var productModules: [Target]?
         fileprivate var dependenciesByName: [String: ResolvedPackage]?
 
+        // Various tasks add source files.
+        fileprivate var allFiles: [URL]?
+        fileprivate var trackedFiles: [URL]?
+        fileprivate var sourceFiles: [URL]?
+    }
+    private static var mutatingCaches: [URL: MutatingCache] = [:]
+    private var mutatingCache: MutatingCache {
+        return cached(in: &PackageRepository.mutatingCaches[location]) {
+            return MutatingCache()
+        }
+    }
+
+    public func resetCache(debugReason: String) {
+        PackageRepository.mutatingCaches[location] = MutatingCache()
+        if BuildConfiguration.current == .debug {
+            print("(Debug notice: Repository cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)")
+        }
+    }
+
+    private class StaticCache {
+        // Nothing modifies the package, product or module names or adds removes entries.
         fileprivate var configurationContext: WorkspaceContext?
+
+        // Nothing modifies the configuration.
         fileprivate var configuration: WorkspaceConfiguration?
         fileprivate var sourceCopyright: StrictString?
         fileprivate var documentationCopyright: StrictString?
         fileprivate var readMe: [LocalizationIdentifier: StrictString]?
         fileprivate var contributingInstructions: StrictString?
         fileprivate var issueTemplate: StrictString?
-
-        fileprivate var allFiles: [URL]?
-        fileprivate var trackedFiles: [URL]?
-        fileprivate var sourceFiles: [URL]?
     }
-    private static var caches: [URL: Cache] = [:]
-    private var cache: Cache {
-        return cached(in: &PackageRepository.caches[location]) {
-            return Cache()
+    private static var staticCaches: [URL: StaticCache] = [:]
+    private var staticCache: StaticCache {
+        return cached(in: &PackageRepository.staticCaches[location]) {
+            return StaticCache()
         }
     }
 
-    public func resetCache(debugReason: String) {
-        PackageRepository.caches[location] = Cache()
-        if BuildConfiguration.current == .debug {
-            print("(Debug notice: Repository cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)")
-        }
+    public func resetCachesForTesting() {
+        resetCache(debugReason: "testing")
+        PackageRepository.staticCaches[location] = StaticCache()
     }
 
     // MARK: - Miscellaneous Properties
@@ -68,19 +86,19 @@ extension PackageRepository {
     // MARK: - Manifest
 
     public func cachedManifest() throws -> PackageModel.Manifest {
-        return try cached(in: &cache.manifest) {
+        return try cached(in: &mutatingCache.manifest) {
             return try manifest()
         }
     }
 
     public func cachedPackage() throws -> PackageModel.Package {
-        return try cached(in: &cache.package) {
+        return try cached(in: &mutatingCache.package) {
             return try package()
         }
     }
 
     public func cachedPackageGraph() throws -> PackageGraph {
-        return try cached(in: &cache.packageGraph) {
+        return try cached(in: &mutatingCache.packageGraph) {
             return try packageGraph()
         }
     }
@@ -90,7 +108,7 @@ extension PackageRepository {
     }
 
     public func products() throws -> [PackageModel.Product] {
-        return try cached(in: &cache.products) {
+        return try cached(in: &mutatingCache.products) {
             var products: [PackageModel.Product] = []
 
             // Filter out tools which have not been declared as products.
@@ -122,7 +140,7 @@ extension PackageRepository {
     }
 
     public func productModules() throws -> [Target] {
-        return try cached(in: &cache.productModules) {
+        return try cached(in: &mutatingCache.productModules) {
             var accountedFor: Set<String> = []
             var result: [Target] = []
             for product in try cachedPackage().products where product.type.isLibrary {
@@ -136,7 +154,7 @@ extension PackageRepository {
     }
 
     public func dependenciesByName() throws -> [String: ResolvedPackage] {
-        return try cached(in: &cache.dependenciesByName) {
+        return try cached(in: &mutatingCache.dependenciesByName) {
             let graph = try cachedPackageGraph()
 
             var result: [String: ResolvedPackage] = [:]
@@ -150,7 +168,7 @@ extension PackageRepository {
     // MARK: - Configuration
 
     public func configurationContext() throws -> WorkspaceContext {
-        return try cached(in: &cache.configurationContext) {
+        return try cached(in: &staticCache.configurationContext) {
 
             let products = try self.products().map { (product: PackageModel.Product) -> PackageManifest.Product in
 
@@ -176,7 +194,7 @@ extension PackageRepository {
     }
 
     public func configuration() throws -> WorkspaceConfiguration {
-        return try cached(in: &cache.configuration) {
+        return try cached(in: &staticCache.configuration) {
 
             return try WorkspaceConfiguration.load(
                 configuration: WorkspaceConfiguration.self,
@@ -207,31 +225,31 @@ extension PackageRepository {
     }
 
     public func sourceCopyright() throws -> StrictString {
-        return try cached(in: &cache.sourceCopyright) {
+        return try cached(in: &staticCache.sourceCopyright) {
             return try configuration().fileHeaders.copyrightNotice.resolve(configuration())
         }
     }
 
     public func documentationCopyright() throws -> StrictString {
-        return try cached(in: &cache.documentationCopyright) {
+        return try cached(in: &staticCache.documentationCopyright) {
             return try configuration().documentation.api.copyrightNotice.resolve(configuration())
         }
     }
 
     public func readMe() throws -> [LocalizationIdentifier: StrictString] {
-        return try cached(in: &cache.readMe) {
+        return try cached(in: &staticCache.readMe) {
             return try configuration().documentation.readMe.contents.resolve(configuration())
         }
     }
 
     public func contributingInstructions() throws -> StrictString {
-        return try cached(in: &cache.contributingInstructions) {
+        return try cached(in: &staticCache.contributingInstructions) {
             return try configuration().gitHub.contributingInstructions.resolve(configuration())
         }
     }
 
     public func issueTemplate() throws -> StrictString {
-        return try cached(in: &cache.issueTemplate) {
+        return try cached(in: &staticCache.issueTemplate) {
             return try configuration().gitHub.issueTemplate.resolve(configuration())
         }
     }
@@ -239,7 +257,7 @@ extension PackageRepository {
     // MARK: - Files
 
     public func allFiles() throws -> [URL] {
-        return try cached(in: &cache.allFiles) {
+        return try cached(in: &mutatingCache.allFiles) {
             () -> [URL] in
             let files = try FileManager.default.deepFileEnumeration(in: location).filter { url in
                 // Skip irrelevant operating system files.
@@ -252,7 +270,7 @@ extension PackageRepository {
     }
 
     public func trackedFiles(output: Command.Output) throws -> [URL] {
-        return try cached(in: &cache.trackedFiles) {
+        return try cached(in: &mutatingCache.trackedFiles) {
             () -> [URL] in
 
             var ignoredURLs: [URL] = try ignoredFiles()
@@ -271,7 +289,7 @@ extension PackageRepository {
     }
 
     public func sourceFiles(output: Command.Output) throws -> [URL] {
-        return try cached(in: &cache.sourceFiles) { () -> [URL] in
+        return try cached(in: &mutatingCache.sourceFiles) { () -> [URL] in
 
             let generatedURLs = [
                 "docs",

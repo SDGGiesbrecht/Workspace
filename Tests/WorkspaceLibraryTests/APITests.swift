@@ -157,13 +157,16 @@ class APITests : TestCase {
             ], configuration: WorkspaceConfiguration(), localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
      }
 
-    func testNoMacOS() {/*
+    func testNoMacOS() {
         #if !os(Linux)
+        let configuration = WorkspaceConfiguration()
+        configuration.supportedOperatingSystems.remove(.macOS)
+        configuration.documentation.api.generate = true
         PackageRepository(mock: "NoMacOS").test(commands: [
             ["validate", "documentation‐coverage"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
         #endif
-     */}
+     }
 
     func testNoMacOSOrIOS() {/*
         #if !os(Linux)

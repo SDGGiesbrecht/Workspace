@@ -139,18 +139,6 @@ class APITests : TestCase {
             ], configuration: WorkspaceConfiguration(), localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
      }
 
-    func testInvalidReference() {/*
-        PackageRepository(mock: "InvalidReference").test(commands: [
-            ["refresh", "read‐me"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     */}
-
-    func testInvalidRelatedProject() {/*
-        PackageRepository(mock: "InvalidRelatedProject").test(commands: [
-            ["refresh", "read‐me"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     */}
-
     func testInvalidResourceDirectory() {/*
         PackageRepository(mock: "InvalidResourceDirectory").test(commands: [
             ["refresh", "resources"]

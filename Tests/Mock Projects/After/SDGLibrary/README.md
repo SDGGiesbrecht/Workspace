@@ -22,7 +22,7 @@ This project does stuff.
 
 ## Importing
 
-`SDG` is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).
+SDG provides a library for use with the [Swift Package Manager](https://swift.org/package-manager/).
 
 Simply add `SDG` as a dependency in `Package.swift`:
 

@@ -20,9 +20,9 @@ APIs: [Library](https://example.github.io/SDG/Library)
 
 ## Importing
 
-`SDG` is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).
+SDG provides a library for use with the [Swift Package Manager](https://swift.org/package-manager/).
 
-Simply add `SDG` as a dependency in `Package.swift`:
+Simply add SDG as a dependency in `Package.swift`:
 
 ```swift
 let package = Package(
@@ -38,7 +38,7 @@ let package = Package(
 )
 ```
 
-`SDG` can then be imported in source files:
+The library’s module can then be imported in source files:
 
 ```swift
 import Library

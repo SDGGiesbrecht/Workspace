@@ -18,32 +18,6 @@ APIs: [Library](https://example.github.io/SDG/Library)
 
 (For a list of related projects, see [here](🇩🇪DE%20Related%20Projects.md).) <!--Skip in Jazzy-->
 
-## Importing
-
-`SDG` is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).
-
-Simply add `SDG` as a dependency in `Package.swift`:
-
-```swift
-let package = Package(
-    name: "MyPackage",
-    dependencies: [
-        .package(url: "https://github.com/JohnDoe/SDG", from: Version(1, 0, 0)),
-    ],
-    targets: [
-        .target(name: "MyTarget", dependencies: [
-            .productItem(name: "Library", package: "SDG"),
-        ])
-    ]
-)
-```
-
-`SDG` can then be imported in source files:
-
-```swift
-import Library
-```
-
 ## Example Usage
 
 ```swift

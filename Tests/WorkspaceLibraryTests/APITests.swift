@@ -209,7 +209,49 @@ class APITests : TestCase {
             ], configuration: configuration, requeue: 10, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
      }
 
-    func testSDGLibrary() {/*
+    func testSDGLibrary() {
+        let configuration = WorkspaceConfiguration()
+        configuration.optIntoAllTasks()
+        configuration.licence.licence = .apache2_0
+        configuration.documentation.currentVersion = Version(1, 0, 0)
+        configuration.documentation.projectWebsite = URL(string: "https://example.github.io/SDG/SDG")!
+        configuration.documentation.documentationURL = URL(string: "https://example.github.io/SDG")!
+        configuration.documentation.repositoryURL = URL(string: "https://github.com/JohnDoe/SDG")!
+        configuration.documentation.primaryAuthor = "John Doe"
+        configuration.documentation.api.yearFirstPublished = 2017
+        configuration.documentation.api.encryptedTravisCIDeploymentKey = "0123456789abcdef"
+        configuration.gitHub.administrators = ["John Doe"]
+        configuration.documentation.localizations = ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"]
+        configuration.documentation.readMe.quotation = Quotation(original: "« ... »")
+        for localization in configuration.documentation.localizations {
+            configuration.documentation.readMe.shortProjectDescription[localization] = "..."
+            configuration.documentation.readMe.quotation?.translation[localization] = "..."
+            configuration.documentation.readMe.quotation?.citation[localization] = "..."
+            configuration.documentation.readMe.quotation?.link[localization] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=WLC;NIV")!
+            configuration.documentation.readMe.featureList[localization] = "..."
+            configuration.documentation.readMe.other[localization] = "..."
+            configuration.documentation.readMe.about[localization] = "..."
+        }
+        configuration.documentation.readMe.shortProjectDescription["🇨🇦EN"] = "This project does stuff."
+        configuration.documentation.readMe.quotation?.translation["🇨🇦EN"] = "“...”"
+        configuration.documentation.readMe.quotation?.citation["🇨🇦EN"] = "someone"
+        configuration.documentation.readMe.featureList["🇨🇦EN"] = [
+            "- Stuff.",
+            "- More stuff.",
+            "- Even more stuff."
+            ].joinedAsLines()
+        configuration.documentation.readMe.exampleUsage["🇨🇦EN"] = "#example(Read‐Me 🇨🇦EN)"
+        configuration.documentation.readMe.other["🇨🇦EN"] = [
+            "## Other",
+            "",
+            "..."
+            ].joinedAsLines()
+        configuration.documentation.readMe.about["🇨🇦EN"] = "This project is just a test."
+        configuration.documentation.relatedProjects = [
+            .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
+        ]
+        configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
+        configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
         PackageRepository(mock: "SDGLibrary").test(commands: [
             // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
@@ -225,8 +267,8 @@ class APITests : TestCase {
             ["validate", "documentation‐coverage"],
 
             ["proofread", "•xcode"]
-            ], localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
-     */}
+            ], configuration: configuration, requeue: 10, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+     }
 
     func testSDGTool() {/*
         PackageRepository(mock: "SDGTool").test(commands: [

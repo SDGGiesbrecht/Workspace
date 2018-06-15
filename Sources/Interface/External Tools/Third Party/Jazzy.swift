@@ -115,7 +115,7 @@ class Jazzy : RubyGem {
             ])
 
         try executeInCompatibilityMode(with: jazzyArguments, output: output)
-        project.resetCache(debugReason: "jazzy")
+        project.resetFileCache(debugReason: "jazzy")
 
         // [_Workaround: Jazzy is incompatible with Jekyll. (jazzy --version 0.9.1)_]
         try preventJekyllInterference(in: outputDirectory, for: project, output: output)

@@ -190,7 +190,11 @@ struct TextFile {
                 #endif
             }
 
-            repository.resetCache(debugReason: location.lastPathComponent)
+            if location.pathExtension == "swift" {
+                repository.resetManifestCache(debugReason: location.lastPathComponent)
+            } else {
+                repository.resetFileCache(debugReason: location.lastPathComponent)
+            }
         }
     }
 }

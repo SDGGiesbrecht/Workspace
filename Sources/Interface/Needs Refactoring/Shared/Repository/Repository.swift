@@ -128,7 +128,13 @@ public struct Repository {
     static func delete<P : Path>(_ path: P) throws {
 
         defer {
-            Repository.packageRepository.resetCache(debugReason: relative(path)?.string ?? "delete")
+            let repository = Repository.packageRepository
+            let reason = relative(path)?.string ?? "delete"
+            if reason.hasSuffix(".swift") {
+                repository.resetManifestCache(debugReason: reason)
+            } else {
+                repository.resetFileCache(debugReason: reason)
+            }
         }
 
         #if os(Linux)

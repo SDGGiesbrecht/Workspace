@@ -25,35 +25,54 @@ extension PackageRepository {
 
     // MARK: - Cache
 
-    private class MutatingCache {
-        // Writing resources may add source files to targets.
+    // This needs to be reset if any files are added, renamed, or deleted.
+    private class FileCache {
+        fileprivate var allFiles: [URL]?
+        fileprivate var trackedFiles: [URL]?
+        fileprivate var sourceFiles: [URL]?
+    }
+    private static var fileCaches: [URL: FileCache] = [:]
+    private var fileCache: FileCache {
+        return cached(in: &PackageRepository.fileCaches[location]) {
+            return FileCache()
+        }
+    }
+
+    public func resetFileCache(debugReason: String) {
+        PackageRepository.fileCaches[location] = FileCache()
+        if BuildConfiguration.current == .debug {
+            print("(Debug notice: File cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)")
+        }
+    }
+
+    // This only needs to be reset if a Swift source file is added, renamed, or removed.
+    // Modifications to file contents do not require a reset (except Package.swift, which is never altered by Workspace).
+    // Changes to support files do not require a reset (read‐me, etc.).
+    private class ManifestCache {
         fileprivate var manifest: PackageModel.Manifest?
         fileprivate var package: PackageModel.Package?
         fileprivate var packageGraph: PackageGraph?
         fileprivate var products: [PackageModel.Product]?
         fileprivate var productModules: [Target]?
         fileprivate var dependenciesByName: [String: ResolvedPackage]?
-
-        // Various tasks add source files.
-        fileprivate var allFiles: [URL]?
-        fileprivate var trackedFiles: [URL]?
-        fileprivate var sourceFiles: [URL]?
     }
-    private static var mutatingCaches: [URL: MutatingCache] = [:]
-    private var mutatingCache: MutatingCache {
-        return cached(in: &PackageRepository.mutatingCaches[location]) {
-            return MutatingCache()
+    private static var manifestCaches: [URL: ManifestCache] = [:]
+    private var manifestCache: ManifestCache {
+        return cached(in: &PackageRepository.manifestCaches[location]) {
+            return ManifestCache()
         }
     }
 
-    public func resetCache(debugReason: String) {
-        PackageRepository.mutatingCaches[location] = MutatingCache()
+    public func resetManifestCache(debugReason: String) {
+        resetFileCache(debugReason: debugReason)
+        PackageRepository.manifestCaches[location] = ManifestCache()
         if BuildConfiguration.current == .debug {
-            print("(Debug notice: Repository cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)")
+            print("(Debug notice: Manifest cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)")
         }
     }
 
-    private class StaticCache {
+    // These do not need to be reset during the execution of any command. (They do between tests.)
+    private class ConfigurationCache {
         // Nothing modifies the package, product or module names or adds removes entries.
         fileprivate var configurationContext: WorkspaceContext?
 
@@ -65,16 +84,19 @@ extension PackageRepository {
         fileprivate var contributingInstructions: StrictString?
         fileprivate var issueTemplate: StrictString?
     }
-    private static var staticCaches: [URL: StaticCache] = [:]
-    private var staticCache: StaticCache {
-        return cached(in: &PackageRepository.staticCaches[location]) {
-            return StaticCache()
+    private static var configurationCaches: [URL: ConfigurationCache] = [:]
+    private var configurationCache: ConfigurationCache {
+        return cached(in: &PackageRepository.configurationCaches[location]) {
+            return ConfigurationCache()
         }
     }
 
-    public func resetCachesForTesting() {
-        resetCache(debugReason: "testing")
-        PackageRepository.staticCaches[location] = StaticCache()
+    public func resetConfigurationCache(debugReason: String) {
+        resetManifestCache(debugReason: "testing")
+        PackageRepository.configurationCaches[location] = ConfigurationCache()
+        if BuildConfiguration.current == .debug {
+            print("(Debug notice: Configuration cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)")
+        }
     }
 
     // MARK: - Miscellaneous Properties
@@ -86,19 +108,19 @@ extension PackageRepository {
     // MARK: - Manifest
 
     public func cachedManifest() throws -> PackageModel.Manifest {
-        return try cached(in: &mutatingCache.manifest) {
+        return try cached(in: &manifestCache.manifest) {
             return try manifest()
         }
     }
 
     public func cachedPackage() throws -> PackageModel.Package {
-        return try cached(in: &mutatingCache.package) {
+        return try cached(in: &manifestCache.package) {
             return try package()
         }
     }
 
     public func cachedPackageGraph() throws -> PackageGraph {
-        return try cached(in: &mutatingCache.packageGraph) {
+        return try cached(in: &manifestCache.packageGraph) {
             return try packageGraph()
         }
     }
@@ -108,7 +130,7 @@ extension PackageRepository {
     }
 
     public func products() throws -> [PackageModel.Product] {
-        return try cached(in: &mutatingCache.products) {
+        return try cached(in: &manifestCache.products) {
             var products: [PackageModel.Product] = []
 
             // Filter out tools which have not been declared as products.
@@ -140,7 +162,7 @@ extension PackageRepository {
     }
 
     public func productModules() throws -> [Target] {
-        return try cached(in: &mutatingCache.productModules) {
+        return try cached(in: &manifestCache.productModules) {
             var accountedFor: Set<String> = []
             var result: [Target] = []
             for product in try cachedPackage().products where product.type.isLibrary {
@@ -154,7 +176,7 @@ extension PackageRepository {
     }
 
     public func dependenciesByName() throws -> [String: ResolvedPackage] {
-        return try cached(in: &mutatingCache.dependenciesByName) {
+        return try cached(in: &manifestCache.dependenciesByName) {
             let graph = try cachedPackageGraph()
 
             var result: [String: ResolvedPackage] = [:]
@@ -168,7 +190,7 @@ extension PackageRepository {
     // MARK: - Configuration
 
     public func configurationContext() throws -> WorkspaceContext {
-        return try cached(in: &staticCache.configurationContext) {
+        return try cached(in: &configurationCache.configurationContext) {
 
             let products = try self.products().map { (product: PackageModel.Product) -> PackageManifest.Product in
 
@@ -194,7 +216,7 @@ extension PackageRepository {
     }
 
     public func configuration() throws -> WorkspaceConfiguration {
-        return try cached(in: &staticCache.configuration) {
+        return try cached(in: &configurationCache.configuration) {
 
             return try WorkspaceConfiguration.load(
                 configuration: WorkspaceConfiguration.self,
@@ -225,31 +247,31 @@ extension PackageRepository {
     }
 
     public func sourceCopyright() throws -> StrictString {
-        return try cached(in: &staticCache.sourceCopyright) {
+        return try cached(in: &configurationCache.sourceCopyright) {
             return try configuration().fileHeaders.copyrightNotice.resolve(configuration())
         }
     }
 
     public func documentationCopyright() throws -> StrictString {
-        return try cached(in: &staticCache.documentationCopyright) {
+        return try cached(in: &configurationCache.documentationCopyright) {
             return try configuration().documentation.api.copyrightNotice.resolve(configuration())
         }
     }
 
     public func readMe() throws -> [LocalizationIdentifier: StrictString] {
-        return try cached(in: &staticCache.readMe) {
+        return try cached(in: &configurationCache.readMe) {
             return try configuration().documentation.readMe.contents.resolve(configuration())
         }
     }
 
     public func contributingInstructions() throws -> StrictString {
-        return try cached(in: &staticCache.contributingInstructions) {
+        return try cached(in: &configurationCache.contributingInstructions) {
             return try configuration().gitHub.contributingInstructions.resolve(configuration())
         }
     }
 
     public func issueTemplate() throws -> StrictString {
-        return try cached(in: &staticCache.issueTemplate) {
+        return try cached(in: &configurationCache.issueTemplate) {
             return try configuration().gitHub.issueTemplate.resolve(configuration())
         }
     }
@@ -257,7 +279,7 @@ extension PackageRepository {
     // MARK: - Files
 
     public func allFiles() throws -> [URL] {
-        return try cached(in: &mutatingCache.allFiles) {
+        return try cached(in: &fileCache.allFiles) {
             () -> [URL] in
             let files = try FileManager.default.deepFileEnumeration(in: location).filter { url in
                 // Skip irrelevant operating system files.
@@ -270,7 +292,7 @@ extension PackageRepository {
     }
 
     public func trackedFiles(output: Command.Output) throws -> [URL] {
-        return try cached(in: &mutatingCache.trackedFiles) {
+        return try cached(in: &fileCache.trackedFiles) {
             () -> [URL] in
 
             var ignoredURLs: [URL] = try ignoredFiles()
@@ -289,7 +311,7 @@ extension PackageRepository {
     }
 
     public func sourceFiles(output: Command.Output) throws -> [URL] {
-        return try cached(in: &mutatingCache.sourceFiles) { () -> [URL] in
+        return try cached(in: &fileCache.sourceFiles) { () -> [URL] in
 
             let generatedURLs = [
                 "docs",
@@ -324,7 +346,11 @@ extension PackageRepository {
             }).resolved(using: location.path(relativeTo: self.location)))
 
             try? FileManager.default.removeItem(at: location)
-            resetCache(debugReason: location.lastPathComponent)
+            if location.pathExtension == "swift" {
+                resetManifestCache(debugReason: location.lastPathComponent)
+            } else {
+                resetFileCache(debugReason: location.lastPathComponent)
+            }
         }
     }
 }

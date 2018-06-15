@@ -19,12 +19,6 @@ import SDGExternalProcess
 
 @discardableResult func requireBash(_ arguments: [String], silent: Bool = false) -> String {
 
-    defer {
-        if arguments.first ≠ "git" {
-            Repository.packageRepository.resetCache(debugReason: "‘\(arguments.joined(separator: " "))’ in ‘\(URL(fileURLWithPath: FileManager.default.currentDirectoryPath).lastPathComponent)’")
-        }
-    }
-
     do {
         if silent {
             return try Shell.default.run(command: arguments)

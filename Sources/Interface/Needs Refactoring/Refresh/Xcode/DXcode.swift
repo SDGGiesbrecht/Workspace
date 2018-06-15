@@ -25,6 +25,7 @@ struct DXcode {
     static func refreshXcodeProjects(output: Command.Output) throws {
         let script = ["swift", "package", "generate\u{2D}xcodeproj", "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage"]
         requireBash(script)
+        Repository.packageRepository.resetFileCache(debugReason: "generate\u{2D}xcodeproj")
 
         // Allow dependencies to be found by the executable.
 

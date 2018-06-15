@@ -12,10 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGControlFlow
 import Localizations
 
 /// A localization identifier; either an IETF language tag or a language icon.
-public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hashable {
+public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hashable, TransparentWrapper {
 
     // MARK: - Initialization
 
@@ -62,5 +63,19 @@ public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hash
     // [_Inherit Documentation: SDGCornerstone.ExpressiblyByStringLiteral.init(stringLiteral:)_]
     public init(stringLiteral: String) {
         self.init(stringLiteral)
+    }
+
+    // MARK: - TransparentWrapper
+
+    // [_Inherit Documentation: SDGCornerstone.TransparentWrapper.wrapped_]
+    /// The wrapped instance.
+    public var wrappedInstance: Any {
+        if let content = _reasonableMatch {
+            return content
+        } else if let icon = ContentLocalization.icon(for: code) {
+            return icon
+        } else {
+            return code
+        }
     }
 }

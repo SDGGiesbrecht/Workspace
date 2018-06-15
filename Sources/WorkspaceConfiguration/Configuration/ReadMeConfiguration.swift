@@ -103,106 +103,106 @@ public struct ReadMeConfiguration : Codable {
 
         var result: [LocalizationIdentifier: Markdown] = [:]
         for localization in configuration.documentation.localizations {
+
+            var readMe: [StrictString] = [
+                localizationLinks(configuration.documentation.localizations),
+                ""
+            ]
+
             if let provided = localization._reasonableMatch {
-
-                var readMe: [StrictString] = [
-                    localizationLinks(configuration.documentation.localizations),
-                    ""
-                ]
-
                 readMe += [
                     OperatingSystem.cases.filter({ configuration.supportedOperatingSystems.contains($0) }).map({ $0.isolatedName(for: provided) }).joined(separator: " • "),
                     ""
                 ]
-
-                if let api = apiLinks(for: configuration, in: localization) {
-                    readMe += [
-                        api,
-                        ""
-                    ]
-                }
-
-                readMe += ["# " + WorkspaceContext.current.manifest.packageName.scalars]
-
-                if let description = configuration.documentation.readMe.shortProjectDescription[localization] {
-                    readMe += [
-                        "",
-                        description
-                    ]
-                }
-
-                if let quotation = configuration.documentation.readMe.quotation {
-                    readMe += [
-                        "",
-                        quotation.source(for: localization)
-                    ]
-                }
-
-                if let features = configuration.documentation.readMe.featureList[localization] {
-                    let header: StrictString
-                    switch provided {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        header = "Features"
-                    }
-                    readMe += [
-                        "",
-                        "## " + header,
-                        "",
-                        features
-                    ]
-                }
-
-                if let related = relatedProjectsLink(for: configuration, in: localization) {
-                    readMe += [
-                        "",
-                        related
-                    ]
-                }
-
-                if let instructions = configuration.documentation.readMe.installationInstructions.resolve(configuration)[localization] {
-                    readMe += [
-                        "",
-                        instructions
-                    ]
-                }
-
-                if let examples = configuration.documentation.readMe.exampleUsage[localization] {
-                    let header: StrictString
-                    switch provided {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        header = "Example Usage"
-                    }
-                    readMe += [
-                        "",
-                        "## " + header,
-                        "",
-                        examples
-                    ]
-                }
-
-                if let other = configuration.documentation.readMe.other[localization] {
-                    readMe += [
-                        "",
-                        other
-                    ]
-                }
-
-                if let about = configuration.documentation.readMe.about[localization] {
-                    let header: StrictString
-                    switch provided {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        header = "About"
-                    }
-                    readMe += [
-                        "",
-                        "## " + header,
-                        "",
-                        about
-                    ]
-                }
-
-                result[localization] = readMe.joinedAsLines()
             }
+
+            if let api = apiLinks(for: configuration, in: localization) {
+                readMe += [
+                    api,
+                    ""
+                ]
+            }
+
+            readMe += ["# " + WorkspaceContext.current.manifest.packageName.scalars]
+
+            if let description = configuration.documentation.readMe.shortProjectDescription[localization] {
+                readMe += [
+                    "",
+                    description
+                ]
+            }
+
+            if let quotation = configuration.documentation.readMe.quotation {
+                readMe += [
+                    "",
+                    quotation.source(for: localization)
+                ]
+            }
+
+            if let features = configuration.documentation.readMe.featureList[localization] {
+                let header: StrictString
+                switch localization._bestMatch {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    header = "Features"
+                }
+                readMe += [
+                    "",
+                    "## " + header,
+                    "",
+                    features
+                ]
+            }
+
+            if let related = relatedProjectsLink(for: configuration, in: localization) {
+                readMe += [
+                    "",
+                    related
+                ]
+            }
+
+            if let instructions = configuration.documentation.readMe.installationInstructions.resolve(configuration)[localization] {
+                readMe += [
+                    "",
+                    instructions
+                ]
+            }
+
+            if let examples = configuration.documentation.readMe.exampleUsage[localization] {
+                let header: StrictString
+                switch localization._bestMatch {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    header = "Example Usage"
+                }
+                readMe += [
+                    "",
+                    "## " + header,
+                    "",
+                    examples
+                ]
+            }
+
+            if let other = configuration.documentation.readMe.other[localization] {
+                readMe += [
+                    "",
+                    other
+                ]
+            }
+
+            if let about = configuration.documentation.readMe.about[localization] {
+                let header: StrictString
+                switch localization._bestMatch {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    header = "About"
+                }
+                readMe += [
+                    "",
+                    "## " + header,
+                    "",
+                    about
+                ]
+            }
+
+            result[localization] = readMe.joinedAsLines()
         }
         return result
     }

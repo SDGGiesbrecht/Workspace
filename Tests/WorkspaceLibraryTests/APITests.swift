@@ -201,10 +201,12 @@ class APITests : TestCase {
         configuration.documentation.localizations = ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"]
         configuration.documentation.readMe.quotation = Quotation(original: "Blah blah blah...")
         configuration.documentation.readMe.quotation?.link["🇨🇦EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=SBLGNT;NIV")!
+        configuration.documentation.readMe.quotation?.link["🇬🇧EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=SBLGNT;NIVUK")!
+        configuration.documentation.readMe.quotation?.link["🇺🇸EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=SBLGNT;NIV")!
         PackageRepository(mock: "PartialReadMe").test(commands: [
             ["refresh", "read‐me"],
             ["document"]
-            ], configuration: configuration, requeue: 2, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, requeue: 10, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
      }
 
     func testSDGLibrary() {/*

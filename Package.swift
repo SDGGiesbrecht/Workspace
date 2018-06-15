@@ -72,6 +72,7 @@ let package = Package(
         // The API used in configuration files.
         .target(name: "WorkspaceConfiguration", dependencies: [
             "Localizations",
+            .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
             .productItem(name: "SDGLogic", package: "SDGCornerstone"),
             .productItem(name: "SDGCollections", package: "SDGCornerstone"),
             .productItem(name: "SDGText", package: "SDGCornerstone"),

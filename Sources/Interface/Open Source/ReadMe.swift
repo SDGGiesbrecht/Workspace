@@ -27,8 +27,8 @@ enum ReadMe {
     private static func refreshReadMe(at location: URL, for localization: LocalizationIdentifier, in project: PackageRepository, atProjectRoot: Bool, output: Command.Output) throws {
 
         guard var readMe = try project.readMe()[localization] else {
-            throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
+            throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ errorLocalization in
+                switch errorLocalization {
                 case .englishCanada:
                     return StrictString("There is no read‐me for “\(localization)”. (documentation.readMe.contents)")
                 }

@@ -10,9 +10,9 @@ macOS • Linux • iOS • watchOS • tvOS
 
 ## Importing
 
-`PartialReadMe` is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).
+PartialReadMe provides a library for use with the [Swift Package Manager](https://swift.org/package-manager/).
 
-Simply add `PartialReadMe` as a dependency in `Package.swift`:
+Simply add PartialReadMe as a dependency in `Package.swift`:
 
 ```swift
 let package = Package(
@@ -28,7 +28,7 @@ let package = Package(
 )
 ```
 
-`PartialReadMe` can then be imported in source files:
+The library’s module can then be imported in source files:
 
 ```swift
 import PartialReadMe

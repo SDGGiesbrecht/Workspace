@@ -257,17 +257,17 @@ class APITests : TestCase {
             // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
             ["refresh", "read‐me"],
-            ["refresh", "continuous‐integration"],
-            ["refresh", "resources"],
-            ["normalize"],
+            //["refresh", "continuous‐integration"],
+            //["refresh", "resources"],
+            //["normalize"],
 
-            ["proofread"],
-            ["validate", "build"],
-            ["test"],
-            ["validate", "test‐coverage"],
-            ["validate", "documentation‐coverage"],
+            //["proofread"],
+            //["validate", "build"],
+            //["test"],
+            //["validate", "test‐coverage"],
+            //["validate", "documentation‐coverage"],
 
-            ["proofread", "•xcode"]
+            //["proofread", "•xcode"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
      }
 

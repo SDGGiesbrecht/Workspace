@@ -151,11 +151,11 @@ class APITests : TestCase {
             ], configuration: WorkspaceConfiguration(), localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
      }
 
-    func testNoLocalizations() {/*
+    func testNoLocalizations() {
         PackageRepository(mock: "NoLocalizations").test(commands: [
             ["refresh", "read‐me"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     */}
+            ], configuration: WorkspaceConfiguration(), localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+     }
 
     func testNoMacOS() {/*
         #if !os(Linux)

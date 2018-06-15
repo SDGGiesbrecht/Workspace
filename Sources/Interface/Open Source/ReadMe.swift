@@ -114,7 +114,18 @@ enum ReadMe {
     }
 
     static func refreshReadMe(for project: PackageRepository, output: Command.Output) throws {
-        for localization in try project.configuration().documentation.localizations {
+
+        let localizations = try project.configuration().documentation.localizations
+        guard ¬localizations.isEmpty else {
+            throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return StrictString("There are no localizations specified. (documentation.localizations)")
+                }
+            }))
+        }
+
+        for localization in localizations {
             try autoreleasepool {
 
                 try refreshReadMe(at: ReadMeConfiguration._readMeLocation(for: project.location, localization: localization), for: localization, in: project, atProjectRoot: false, output: output)

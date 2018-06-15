@@ -151,12 +151,6 @@ class APITests : TestCase {
             ], configuration: WorkspaceConfiguration(), localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
      }
 
-    func testNoExamples() {/*
-        PackageRepository(mock: "NoExamples").test(commands: [
-            ["refresh", "read‐me"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     */}
-
     func testNoFeatures() {/*
         PackageRepository(mock: "NoFeatures").test(commands: [
             ["refresh", "read‐me"]

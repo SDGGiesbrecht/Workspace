@@ -162,27 +162,37 @@ class APITests : TestCase {
         let configuration = WorkspaceConfiguration()
         configuration.supportedOperatingSystems.remove(.macOS)
         configuration.documentation.api.generate = true
+        configuration.documentation.api.yearFirstPublished = 2017
         PackageRepository(mock: "NoMacOS").test(commands: [
             ["validate", "documentation‐coverage"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
         #endif
      }
 
-    func testNoMacOSOrIOS() {/*
+    func testNoMacOSOrIOS() {
         #if !os(Linux)
+        let configuration = WorkspaceConfiguration()
+        configuration.supportedOperatingSystems.remove(.macOS)
+        configuration.supportedOperatingSystems.remove(.iOS)
+        configuration.documentation.api.generate = true
         PackageRepository(mock: "NoMacOSOrIOS").test(commands: [
             ["validate", "documentation‐coverage"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
         #endif
-     */}
+     }
 
-    func testNoMacOSOrIOSOrWatchOS() {/*
+    func testNoMacOSOrIOSOrWatchOS() {
         #if !os(Linux)
+        let configuration = WorkspaceConfiguration()
+        configuration.supportedOperatingSystems.remove(.macOS)
+        configuration.supportedOperatingSystems.remove(.iOS)
+        configuration.supportedOperatingSystems.remove(.watchOS)
+        configuration.documentation.api.generate = true
         PackageRepository(mock: "NoMacOSOrIOSOrWatchOS").test(commands: [
             ["validate", "documentation‐coverage"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
         #endif
-     */}
+     }
 
     func testNoOther() {/*
         PackageRepository(mock: "NoOther").test(commands: [

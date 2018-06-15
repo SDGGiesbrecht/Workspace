@@ -161,8 +161,6 @@ class APITests : TestCase {
         #if !os(Linux)
         let configuration = WorkspaceConfiguration()
         configuration.supportedOperatingSystems.remove(.macOS)
-        configuration.documentation.currentVersion = Version(0, 1, 0)
-        configuration.documentation.repositoryURL = URL(string: "https://somewhere.com")!
         configuration.documentation.api.generate = true
         configuration.documentation.api.yearFirstPublished = 2017
         PackageRepository(mock: "NoMacOS").test(commands: [
@@ -198,6 +196,8 @@ class APITests : TestCase {
 
     func testPartialReadMe() {
         let configuration = WorkspaceConfiguration()
+        configuration.documentation.currentVersion = Version(0, 1, 0)
+        configuration.documentation.repositoryURL = URL(string: "https://somewhere.com")!
         configuration.documentation.localizations = ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"]
         configuration.documentation.readMe.quotation = Quotation(original: "Blah blah blah...")
         configuration.documentation.readMe.quotation?.link["🇨🇦EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=SBLGNT;NIV")!

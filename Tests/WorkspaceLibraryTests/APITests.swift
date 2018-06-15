@@ -151,32 +151,6 @@ class APITests : TestCase {
             ], configuration: WorkspaceConfiguration(), localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
      }
 
-    func testNoAbout() {/*
-        PackageRepository(mock: "NoAbout").test(commands: [
-            ["refresh", "read‐me"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     */}
-
-    func testNoAuthor() {/*
-        #if !os(Linux)
-        PackageRepository(mock: "NoAuthor").test(commands: [
-            ["validate", "documentation‐coverage"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-        #endif
-     */}
-
-    func testNoDescription() {/*
-        PackageRepository(mock: "NoDescription").test(commands: [
-            ["refresh", "read‐me"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     */}
-
-    func testNoDocumentationURL() {/*
-        PackageRepository(mock: "NoDocumentationURL").test(commands: [
-            ["refresh", "read‐me"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     */}
-
     func testNoExamples() {/*
         PackageRepository(mock: "NoExamples").test(commands: [
             ["refresh", "read‐me"]

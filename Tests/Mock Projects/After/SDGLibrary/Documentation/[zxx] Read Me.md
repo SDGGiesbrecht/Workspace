@@ -12,8 +12,6 @@
 
 ...
 
-(For a list of related projects, see [here]([zxx]%20Related%20Projects.md).) <!--Skip in Jazzy-->
-
 ## Example Usage
 
 ```swift

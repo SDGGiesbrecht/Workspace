@@ -77,7 +77,7 @@ extension PackageRepository {
 
                     WorkspaceContext.current = try configurationContext()
                     WorkspaceConfiguration.queue(mock: configuration)
-                    resetCachesForTesting()
+                    resetConfigurationCache(debugReason: "new test")
 
                     for command in commands {
 

@@ -194,30 +194,6 @@ class APITests : TestCase {
         #endif
      }
 
-    func testNoOther() {/*
-        PackageRepository(mock: "NoOther").test(commands: [
-            ["refresh", "read‐me"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     */}
-
-    func testNoQuotation() {/*
-        PackageRepository(mock: "NoQuotation").test(commands: [
-            ["refresh", "read‐me"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     */}
-
-    func testNoQuotationSource() {/*
-        PackageRepository(mock: "NoQuotationSource").test(commands: [
-            ["refresh", "read‐me"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     */}
-
-    func testNoRepositoryURL() {/*
-        PackageRepository(mock: "NoRepositoryURL").test(commands: [
-            ["refresh", "read‐me"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     */}
-
     func testPartialReadMe() {/*
         PackageRepository(mock: "PartialReadMe").test(commands: [
             ["refresh", "read‐me"],

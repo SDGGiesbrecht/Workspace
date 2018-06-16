@@ -1,5 +1,5 @@
 /*
- ParameterStyle.swift
+ ParameterGrouping.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace

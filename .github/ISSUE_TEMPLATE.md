@@ -1,6 +1,8 @@
-<!-- Reminder: -->
-<!-- Have you searched to see if a related issue exists already? -->
-<!-- If one exists, please add your information there instead. -->
+<!--
+ Reminder:
+ Have you searched to see if a related issue exists already?
+ If one exists, please add your information there instead.
+ -->
 
 ### Description
 
@@ -9,7 +11,7 @@ or
 “Such‐and‐such would be a nice feature.”
 
 ### Demonstration
-<!-- If the issue is not a bug, erase this section.) -->
+<!-- (If the issue is not a bug, erase this section.) -->
 
 ```shell
 this script --triggers "the bug"

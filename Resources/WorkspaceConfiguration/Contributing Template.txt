@@ -1,6 +1,6 @@
 # Contributing to #packageName
 
-Everyone is welcome to contribute to  #packageName!
+Everyone is welcome to contribute to #packageName!
 
 ## Step 1: Report
 
@@ -23,7 +23,7 @@ Even if you think you have the solution, please **do not start working on it** u
 
 ## Step 2: Branch
 
-If you have [reported](#step\u{2D}1\u{2D}report) your idea and an administrator has given you the green light, follow these steps to get a local copy you can work on.
+If you have [reported](#step-1-report) your idea and an administrator has given you the green light, follow these steps to get a local copy you can work on.
 
 1. **Fork the repository** by clicking “Fork” in the top‐right of the repository page. (Skip this step if you have been given write access.)
 2. **Create a local clone**.#cloneScript

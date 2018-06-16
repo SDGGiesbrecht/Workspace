@@ -49,6 +49,8 @@ public struct GitHubConfiguration: Codable {
         var administratorList: StrictString
         if administrators.isEmpty {
             administratorList = "an administrator"
+        } else if administrators.count == 1 {
+            administratorList = administrators.first!
         } else {
             let commas = StrictString(administrators.dropLast().joined(separator: ", ".scalars))
             let or = " or " + administrators.last!

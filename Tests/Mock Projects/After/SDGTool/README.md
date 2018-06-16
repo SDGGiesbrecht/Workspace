@@ -22,6 +22,8 @@ This project does stuff.
 
 ## Installation
 
+SDG provides a command line tool.
+
 Paste the following into a terminal to install or update `SDG`:
 
 ```shell
@@ -30,9 +32,9 @@ curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/
 
 ## Importing
 
-`SDG` is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).
+SDG provides a library for use with the [Swift Package Manager](https://swift.org/package-manager/).
 
-Simply add `SDG` as a dependency in `Package.swift`:
+Simply add SDG as a dependency in `Package.swift`:
 
 ```swift
 let package = Package(
@@ -48,7 +50,7 @@ let package = Package(
 )
 ```
 
-`SDG` can then be imported in source files:
+The library’s module can then be imported in source files:
 
 ```swift
 import Library

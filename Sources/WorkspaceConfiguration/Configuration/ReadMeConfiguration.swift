@@ -347,7 +347,7 @@ public struct ReadMeConfiguration : Codable {
             UserFacing<StrictString, ContentLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    var result = StrictString("Paste the following into a terminal to install or update")
+                    var result = StrictString("Paste the following into a terminal to install or update ")
                     if tools.count == 1 {
                         result += "it"
                     } else {

@@ -336,7 +336,7 @@ class APITests : TestCase {
             ], configuration: configuration, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
      }
 
-    func testSelfSpecificScripts() {/*
+    func testSelfSpecificScripts() {
         do {
             try FileManager.default.do(in: repositoryRoot) {
                 try Workspace.command.execute(with: ["refresh", "scripts"])
@@ -345,13 +345,7 @@ class APITests : TestCase {
         } catch {
             XCTFail("\(error)")
         }
-     */}
-
-    func testUndefinedConfigurationValue() {/*
-        PackageRepository(mock: "UndefinedConfigurationValue").test(commands: [
-            ["refresh", "read‐me"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     */}
+     }
 
     func testUnicodeSource() {/*
         #if !os(Linux)

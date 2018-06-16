@@ -36,7 +36,6 @@ extension APITests {
         ("testSDGLibrary", testSDGLibrary),
         ("testSDGTool", testSDGTool),
         ("testSelfSpecificScripts", testSelfSpecificScripts),
-        ("testUndefinedConfigurationValue", testUndefinedConfigurationValue),
         ("testUnicodeSource", testUnicodeSource)
     ]
 }

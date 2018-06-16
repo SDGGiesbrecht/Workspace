@@ -1,6 +1,0 @@
-Localizations: 🇬🇧EN
-
-[_Begin Read‐Me_]
-[_🇬🇧EN_]
-[_Current Version_]
-[_End_]

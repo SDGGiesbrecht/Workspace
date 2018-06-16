@@ -1,6 +1,6 @@
 $ workspace validate documentation‐coverage •no‐colour
 
-Generating documentation for “UnicodeSource”...
+Generating documentation for “UnicodeSource”... (§1)
 
 
 $ jazzy --module UnicodeSource --copyright "Copyright ©2018 the UnicodeSource project contributors. All rights reserved." --documentation=Documentation/*.md --clean --use-safe-filenames --output "[Temporary]/UnicodeSource/docs/UnicodeSource" --xcodebuild-arguments "-scheme,UnicodeSource-Package,-target,UnicodeSource,-sdk,macosx,-derivedDataPath,[Temporary]/Jazzy Build Artifacts"
@@ -21,7 +21,7 @@ Writing to “docs/UnicodeSource/docsets/UnicodeSource.docset/Contents/Resources
 Writing to “docs/UnicodeSource/en-read-me.html”...
 Writing to “docs/UnicodeSource/index.html”...
 
-Checking documentation coverage for “UnicodeSource”... (§1)
+Checking documentation coverage for “UnicodeSource”... (§2)
 
 
 ✓ Generated documentation for “UnicodeSource”.

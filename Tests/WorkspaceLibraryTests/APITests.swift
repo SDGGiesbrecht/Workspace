@@ -347,19 +347,22 @@ class APITests : TestCase {
         }
      }
 
-    func testUnicodeSource() {/*
+    func testUnicodeSource() {
         #if !os(Linux)
+        let configuration = WorkspaceConfiguration()
+        configuration.documentation.api.generate = true
+        configuration.documentation.localizations = ["en"]
         PackageRepository(mock: "UnicodeSource").test(commands: [
             ["refresh", "read‐me"],
             ["validate", "documentation‐coverage"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
         #endif
-     */}
+     }
 
-    func testHelp() {/*
+    func testHelp() {
         testCommand(Workspace.command, with: ["help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace)", overwriteSpecificationInsteadOfFailing: false)
         testCommand(Workspace.command, with: ["proofread", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace proofread)", overwriteSpecificationInsteadOfFailing: false)
         testCommand(Workspace.command, with: ["refresh", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace refresh)", overwriteSpecificationInsteadOfFailing: false)
         testCommand(Workspace.command, with: ["validate", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace validate)", overwriteSpecificationInsteadOfFailing: false)
-     */}
+     }
 }

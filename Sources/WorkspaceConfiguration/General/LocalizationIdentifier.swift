@@ -13,7 +13,7 @@
  */
 
 import SDGControlFlow
-import Localizations
+import WSLocalizations
 
 /// A localization identifier; either an IETF language tag or a language icon.
 public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hashable, TransparentWrapper {

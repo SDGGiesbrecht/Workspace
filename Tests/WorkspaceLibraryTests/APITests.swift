@@ -13,13 +13,11 @@
  */
 
 import SDGLogic
-import GeneralTestImports
+import WSGeneralTestImports
 
 import SDGExternalProcess
 
 class APITests : TestCase {
-
-    // [_Warning: Remove unneeded tests._]
 
     static var triggeredVersionChecks: Void?
     override func setUp() {

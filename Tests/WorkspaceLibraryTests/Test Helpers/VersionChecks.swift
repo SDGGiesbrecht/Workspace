@@ -12,8 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-@testable import Interface
-import GeneralTestImports
+@testable import WSInterface
+import WSGeneralTestImports
 
 func triggerVersionChecks() {
     _ = try? SwiftLint.default.execute(with: ["version"], output: Command.Output.mock)

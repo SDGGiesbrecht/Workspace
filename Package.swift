@@ -14,7 +14,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// [_Warning: Write replacement for “Require Options”._]
 // [_Warning: Convert all documentation._]
 
 import PackageDescription
@@ -41,18 +40,18 @@ let package = Package(
         .target(name: "WorkspaceTool", dependencies: [.targetItem(name: "WorkspaceLibrary")]),
         // The umbrella library. (Shared by the various localized executables.)
         .target(name: "WorkspaceLibrary", dependencies: [
-            "GeneralImports",
+            "WSGeneralImports",
             "WorkspaceProjectConfiguration",
-            "Interface"
+            "WSInterface"
             ]),
 
         // Components
 
         // Defines the public command line interface.
-        .target(name: "Interface", dependencies: [
-            "GeneralImports",
+        .target(name: "WSInterface", dependencies: [
+            "WSGeneralImports",
             "WorkspaceProjectConfiguration",
-            "Project",
+            "WSProject",
             // [_Workaround: This module and its dependency list needs refactoring._]
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
@@ -61,8 +60,8 @@ let package = Package(
             ]),
 
         // Defines general project structure queries and cache.
-        .target(name: "Project", dependencies: [
-            "GeneralImports",
+        .target(name: "WSProject", dependencies: [
+            "WSGeneralImports",
             "WorkspaceConfiguration",
             "WorkspaceProjectConfiguration",
             .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
@@ -71,7 +70,7 @@ let package = Package(
 
         // The API used in configuration files.
         .target(name: "WorkspaceConfiguration", dependencies: [
-            "Localizations",
+            "WSLocalizations",
             .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
             .productItem(name: "SDGLogic", package: "SDGCornerstone"),
             .productItem(name: "SDGCollections", package: "SDGCornerstone"),
@@ -83,13 +82,13 @@ let package = Package(
             ]),
 
         // Defines the lists of supported localizations.
-        .target(name: "Localizations", dependencies: [
+        .target(name: "WSLocalizations", dependencies: [
             .productItem(name: "SDGLocalization", package: "SDGCornerstone")
             ]),
 
         // Centralizes imports needed almost everywhere.
-        .target(name: "GeneralImports", dependencies: [
-            "Localizations",
+        .target(name: "WSGeneralImports", dependencies: [
+            "WSLocalizations",
 
             .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),
             .productItem(name: "SDGLogic", package: "SDGCornerstone"),
@@ -106,26 +105,26 @@ let package = Package(
 
         // Tests
 
-        .target(name: "GeneralTestImports", dependencies: [
-            "GeneralImports",
+        .target(name: "WSGeneralTestImports", dependencies: [
+            "WSGeneralImports",
             "WorkspaceConfiguration",
-            "Interface",
+            "WSInterface",
             .productItem(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
             .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
             .productItem(name: "SDGCommandLineTestUtilities", package: "SDGCommandLine")
             ]),
         .testTarget(name: "WorkspaceLibraryTests", dependencies: [
-            "GeneralTestImports",
+            "WSGeneralTestImports",
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
             ]),
         .target(name: "test‐ios‐simulator", dependencies: [
-            "GeneralImports",
-            "Interface",
+            "WSGeneralImports",
+            "WSInterface",
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
             ], path: "Tests/test‐ios‐simulator"),
         .target(name: "test‐tvos‐simulator", dependencies: [
-            "GeneralImports",
-            "Interface",
+            "WSGeneralImports",
+            "WSInterface",
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
             ], path: "Tests/test‐tvos‐simulator"),
 

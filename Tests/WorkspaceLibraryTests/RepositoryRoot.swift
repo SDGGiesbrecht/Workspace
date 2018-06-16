@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import GeneralImports
+import WSGeneralImports
 
 let repositoryRoot: URL = {
     var result = URL(fileURLWithPath: #file)

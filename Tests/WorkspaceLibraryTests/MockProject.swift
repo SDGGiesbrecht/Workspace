@@ -13,8 +13,8 @@
  */
 
 import SDGLogic
-@testable import Interface
-import GeneralTestImports
+@testable import WSInterface
+import WSGeneralTestImports
 
 import SDGExternalProcess
 

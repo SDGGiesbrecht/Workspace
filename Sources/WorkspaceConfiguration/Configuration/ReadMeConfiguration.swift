@@ -14,7 +14,7 @@
 
 import SDGLogic
 
-import Localizations
+import WSLocalizations
 
 /// Options related to the project read‐me.
 public struct ReadMeConfiguration : Codable {

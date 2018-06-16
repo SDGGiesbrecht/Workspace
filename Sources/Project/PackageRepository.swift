@@ -19,7 +19,6 @@ import GeneralImports
 import SDGSwiftPackageManager
 import SDGSwiftConfigurationLoading
 
-import WorkspaceMetadata
 import WorkspaceProjectConfiguration
 
 extension PackageRepository {

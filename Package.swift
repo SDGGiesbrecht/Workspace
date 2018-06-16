@@ -42,7 +42,7 @@ let package = Package(
         // The umbrella library. (Shared by the various localized executables.)
         .target(name: "WorkspaceLibrary", dependencies: [
             "GeneralImports",
-            "WorkspaceMetadata",
+            "WorkspaceProjectConfiguration",
             "Interface"
             ]),
 
@@ -51,7 +51,7 @@ let package = Package(
         // Defines the public command line interface.
         .target(name: "Interface", dependencies: [
             "GeneralImports",
-            "WorkspaceMetadata",
+            "WorkspaceProjectConfiguration",
             "Project",
             // [_Workaround: This module and its dependency list needs refactoring._]
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
@@ -63,7 +63,6 @@ let package = Package(
         // Defines general project structure queries and cache.
         .target(name: "Project", dependencies: [
             "GeneralImports",
-            "WorkspaceMetadata",
             "WorkspaceConfiguration",
             "WorkspaceProjectConfiguration",
             .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
@@ -82,9 +81,6 @@ let package = Package(
             .productItem(name: "SDGSwift", package: "SDGSwift"),
             .productItem(name: "SDGSwiftConfiguration", package: "SDGSwift")
             ]),
-
-        // Defines matadata related to the Workspace project.
-        .target(name: "WorkspaceMetadata", dependencies: ["GeneralImports"]),
 
         // Defines the lists of supported localizations.
         .target(name: "Localizations", dependencies: [

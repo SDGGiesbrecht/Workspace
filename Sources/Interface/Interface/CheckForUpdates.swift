@@ -15,7 +15,7 @@
 import SDGLogic
 import GeneralImports
 
-import WorkspaceMetadata
+import WorkspaceProjectConfiguration
 
 extension Workspace {
     enum CheckForUpdates {

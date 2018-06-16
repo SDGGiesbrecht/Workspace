@@ -18,7 +18,7 @@ import GeneralImports
 
 import SDGExternalProcess
 
-import WorkspaceMetadata
+import WorkspaceProjectConfiguration
 import Project
 
 func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: Command.Output) throws {

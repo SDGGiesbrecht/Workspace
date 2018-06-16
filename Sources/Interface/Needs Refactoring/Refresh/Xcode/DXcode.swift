@@ -18,7 +18,7 @@ import SDGLogic
 import SDGCollections
 import GeneralImports
 
-import WorkspaceMetadata
+import WorkspaceProjectConfiguration
 
 struct DXcode {
 

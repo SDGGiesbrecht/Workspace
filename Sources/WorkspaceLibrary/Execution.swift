@@ -16,7 +16,7 @@ import GeneralImports
 
 import Dispatch
 
-import WorkspaceMetadata
+import WorkspaceProjectConfiguration
 import Interface
 
 public func run() { // [_Exempt from Test Coverage_]

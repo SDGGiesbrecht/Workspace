@@ -48,6 +48,8 @@ public let configuration: WorkspaceConfiguration = {
 
     configuration.documentation.readMe.quotation?.link["🇨🇦EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Colossians+3&version=SBLGNT;NIV")!
 
+    // [_Warning: Update links._]
+
     configuration.documentation.readMe.featureList["🇨🇦EN"] = [
         "- Provides rigorous validation:",
         "  - [Test coverage](Documentation/Test%20Coverage.md)",

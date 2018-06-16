@@ -18,6 +18,10 @@ public struct TestingConfiguration: Codable {
     /// Whether or not to prohibit compiler warnings.
     ///
     /// This is on by default.
+    ///
+    /// ```shell
+    /// $ workspace validate build
+    /// ```
     public var prohibitCompilerWarnings: Bool = true
 
     /// Whether or not to enforce test coverage.

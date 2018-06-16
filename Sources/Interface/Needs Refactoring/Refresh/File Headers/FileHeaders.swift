@@ -20,7 +20,7 @@ import Project
 
 struct FileHeaders {
 
-    static func copyright(fromText text: String) -> String {
+    static func copyright(fromText text: String) -> StrictString {
 
         var oldStartDate: String?
         for symbol in ["©", "(C)", "(c)"] {
@@ -48,16 +48,12 @@ struct FileHeaders {
             copyright.append(copyrightStart + "–" + currentYear)
         }
 
-        return copyright
+        return StrictString(copyright)
     }
 
     static func refreshFileHeaders(output: Command.Output) throws {
 
-        func key(_ name: String) -> String {
-            return "[_\(name)_]"
-        }
-
-        let template = String(try Repository.packageRepository.sourceCopyright())
+        let template = try Repository.packageRepository.fileHeader()
 
         var skippedFiles: Set<String> = []
         skippedFiles.insert("LICENSE.md")
@@ -81,10 +77,10 @@ struct FileHeaders {
                     let oldHeader = file.header
                     var header = template
 
-                    header = header.replacingOccurrences(of: key("filename"), with: String(StrictString(path.filename)))
-                    header = header.replacingOccurrences(of: key("dates"), with: FileHeaders.copyright(fromText: oldHeader))
+                    header = header.replacingMatches(for: "#filename", with: StrictString(path.filename))
+                    header = header.replacingMatches(for: "#dates", with: FileHeaders.copyright(fromText: oldHeader))
 
-                    file.header = header
+                    file.header = String(header)
                     require { try file.write(output: output) }
                 }
             }

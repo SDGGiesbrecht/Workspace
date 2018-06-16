@@ -66,7 +66,7 @@ extension Licence {
             return "[_\(key)_]"
         }
 
-        text = text.replacingOccurrences(of: key("Copyright"), with: copyright)
+        text = text.replacingOccurrences(of: key("Copyright"), with: String(copyright))
         text = text.replacingOccurrences(of: key("Authors"), with: authors)
 
         file.contents = text

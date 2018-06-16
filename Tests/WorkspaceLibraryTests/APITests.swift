@@ -326,13 +326,13 @@ class APITests : TestCase {
             ["refresh", "resources"],
             ["normalize"],
 
-            //["proofread"],
-            //["validate", "build"],
-            //["test"],
-            //["validate", "test‐coverage"],
-            //["validate", "documentation‐coverage"],
+            ["proofread"],
+            ["validate", "build"],
+            ["test"],
+            ["validate", "test‐coverage"],
+            ["validate", "documentation‐coverage"],
 
-            //["proofread", "•xcode"]
+            ["proofread", "•xcode"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
      }
 

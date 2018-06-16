@@ -20,6 +20,7 @@ import SDGSwiftPackageManager
 import SDGSwiftConfigurationLoading
 
 import WorkspaceMetadata
+import WorkspaceProjectConfiguration
 
 extension PackageRepository {
 
@@ -218,19 +219,23 @@ extension PackageRepository {
     public func configuration() throws -> WorkspaceConfiguration {
         return try cached(in: &configurationCache.configuration) {
 
-            return try WorkspaceConfiguration.load(
-                configuration: WorkspaceConfiguration.self,
-                named: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishCanada:
-                        return "Workspace"
-                    }
-                }),
-                from: location,
-                linkingAgainst: "WorkspaceConfiguration",
-                in: SDGSwift.Package(url: Metadata.packageURL),
-                at: Metadata.latestStableVersion,
-                context: try configurationContext())
+            if try isWorkspaceProject() {
+                return WorkspaceProjectConfiguration.configuration
+            } else {
+                return try WorkspaceConfiguration.load(
+                    configuration: WorkspaceConfiguration.self,
+                    named: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                        switch localization {
+                        case .englishCanada:
+                            return "Workspace"
+                        }
+                    }),
+                    from: location,
+                    linkingAgainst: "WorkspaceConfiguration",
+                    in: SDGSwift.Package(url: Metadata.packageURL),
+                    at: Metadata.latestStableVersion,
+                    context: try configurationContext())
+            }
         }
     }
 

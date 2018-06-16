@@ -65,6 +65,7 @@ let package = Package(
             "GeneralImports",
             "WorkspaceMetadata",
             "WorkspaceConfiguration",
+            "WorkspaceProjectConfiguration",
             .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
             .productItem(name: "SDGSwiftConfigurationLoading", package: "SDGSwift")
             ]),
@@ -130,6 +131,13 @@ let package = Package(
             "GeneralImports",
             "Interface",
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
-            ], path: "Tests/test‐tvos‐simulator")
+            ], path: "Tests/test‐tvos‐simulator"),
+
+        // Other
+
+        // This allows Workspace to load and use a configuration from its own development state, instead of an externally available stable version.
+        .target(name: "WorkspaceProjectConfiguration", dependencies: [
+            "WorkspaceConfiguration"
+        ], path: "", sources: ["Workspace.swift"])
     ]
 )

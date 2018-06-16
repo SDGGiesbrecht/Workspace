@@ -15,6 +15,7 @@
 import GeneralImports
 
 public enum Metadata {
+    // [_Warning: These are now duplicates._]
 
     // Do not forget to increment the version in “.Workspace Configuration.txt” as well.
     public static let latestStableVersion = Version(0, 7, 3)

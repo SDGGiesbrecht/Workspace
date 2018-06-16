@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+
 import SDGSwiftConfiguration
 
 /// A Workspace configuration.
@@ -63,7 +65,7 @@ public final class WorkspaceConfiguration : Configuration {
     public var repository: RepositoryConfiguration = RepositoryConfiguration()
 
     /// :nodoc:
-    public var sdg: Bool = false
+    internal var isSDG: Bool = false
 
     // MARK: - Methods
 
@@ -80,6 +82,74 @@ public final class WorkspaceConfiguration : Configuration {
         documentation.api.generate = true
     }
 
+    /// :nodoc:
+    public func applySDGDefaults() {
+
+        isSDG = true
+        optIntoAllTasks()
+
+        documentation.primaryAuthor = "Jeremy David Giesbrecht"
+        gitHub.administrators = ["SDGGiesbrecht"]
+
+        licence.licence = .apache2_0
+
+        documentation.relatedProjects.append(.project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!))
+        documentation.relatedProjects.append(.project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!))
+        documentation.relatedProjects.append(.project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCommandLine")!))
+        documentation.relatedProjects.append(.project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!))
+    }
+
+    public func applySDGOverrides() {
+        let project = WorkspaceContext.current.manifest.packageName
+        let about = [
+            "The \(project) project is maintained by Jeremy David Giesbrecht.",
+            "",
+            "If \(project) saves you money, consider giving some of it as a [donation](https://paypal.me/JeremyGiesbrecht).",
+            "",
+            "If \(project) saves you time, consider devoting some of it to [contributing](\(documentation.repositoryURL?.absoluteString ?? "") back to the project.",
+            "",
+            "> [Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.<br>For the worker is worthy of his wages.](https://www.biblegateway.com/passage/?search=Luke+10&version=SBLGNT;NIV)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;―‎ישוע/Yeshuʼa"
+            ].joinedAsLines()
+        for localization in ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN"] as [LocalizationIdentifier] {
+            documentation.readMe.about[localization] = Markdown(about)
+        }
+    }
+
+    /// :nodoc:
+    public func validateSDGStandards() {
+        let needsAPIDocumentation = WorkspaceContext.current.manifest.products.contains(where: { $0.type == .library })
+
+        assert(documentation.currentVersion ≠ nil, "No version specified.")
+
+        assert(documentation.projectWebsite ≠ nil, "No project website specified.")
+        if needsAPIDocumentation {
+            assert(documentation.documentationURL ≠ nil, "No documentation URL specified.")
+        }
+        assert(documentation.repositoryURL ≠ nil, "No repository URL specified.")
+
+        assert(documentation.readMe.quotation ≠ nil, "No quotation specified.")
+
+        if needsAPIDocumentation {
+            assert(documentation.api.yearFirstPublished ≠ nil, "No first year of publication specified.")
+            assert(documentation.api.encryptedTravisCIDeploymentKey ≠ nil, "No Travis CI deployment key specified.")
+        }
+
+        assert(¬documentation.localizations.isEmpty, "No localizations specified.")
+
+        for localization in documentation.localizations {
+            assert(documentation.readMe.shortProjectDescription[localization] ≠ nil, "No short project description specified for “\(localization)”.")
+
+            if localization ≠ "🇮🇱עב" ∧ localization ≠ "🇬🇷ΕΛ" {
+                assert(documentation.readMe.quotation?.translation[localization] ≠ nil, "No translation specified for “\(localization)”.")
+            }
+            assert(documentation.readMe.quotation?.citation[localization] ≠ nil, "No citation specified for “\(localization)”.")
+            assert(documentation.readMe.quotation?.link[localization] ≠ nil, "No quotation link specified for “\(localization)”.")
+
+            assert(documentation.readMe.featureList[localization] ≠ nil, "No features specified for “\(localization)”.")
+            assert(documentation.readMe.exampleUsage[localization] ≠ nil, "No examples specified for “\(localization)”.")
+        }
+    }
+
     // MARK: - Encoding
 
     private enum CodingKeys : CodingKey {
@@ -94,7 +164,7 @@ public final class WorkspaceConfiguration : Configuration {
         case documentation
         case continuousIntegration
         case repository
-        case sdg
+        case isSDG
     }
 
     // [_Inherit Documentation: SDGCornerstone.Encodable.encode(to:)_]
@@ -115,7 +185,7 @@ public final class WorkspaceConfiguration : Configuration {
         try container.encode(documentation, forKey: .documentation)
         try container.encode(continuousIntegration, forKey: .continuousIntegration)
         try container.encode(repository, forKey: .repository)
-        try container.encode(sdg, forKey: .sdg)
+        try container.encode(isSDG, forKey: .isSDG)
         try super.encode(to: container.superEncoder())
     }
 
@@ -137,7 +207,7 @@ public final class WorkspaceConfiguration : Configuration {
         documentation = try container.decode(DocumentationConfiguration.self, forKey: .documentation)
         continuousIntegration = try container.decode(ContinuousIntegrationConfiguration.self, forKey: .continuousIntegration)
         repository = try container.decode(RepositoryConfiguration.self, forKey: .repository)
-        sdg = try container.decode(Bool.self, forKey: .sdg)
+        isSDG = try container.decode(Bool.self, forKey: .isSDG)
         try super.init(from: container.superDecoder())
     }
 

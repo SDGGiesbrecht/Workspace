@@ -137,7 +137,7 @@ let package = Package(
 
         // This allows Workspace to load and use a configuration from its own development state, instead of an externally available stable version.
         .target(name: "WorkspaceProjectConfiguration", dependencies: [
-            "WorkspaceConfiguration"
+            "WorkspaceConfiguration",
         ], path: "", sources: ["Workspace.swift"])
     ]
 )

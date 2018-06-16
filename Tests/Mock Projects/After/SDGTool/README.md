@@ -24,7 +24,7 @@ This project does stuff.
 
 SDG provides a command line tool.
 
-Paste the following into a terminal to install or update `SDG`:
+Paste the following into a terminal to install or update it:
 
 ```shell
 curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s SDG "https://github.com/JohnDoe/SDG" 1.0.0 "tool help" tool

@@ -18,6 +18,18 @@ public struct ContinuousIntegrationConfiguration : Codable {
     /// Whether or not to manage continuous integration.
     ///
     /// This is off by default.
+    ///
+    /// ```shell
+    /// $ workspace refresh continuous‐integration
+    /// ```
+    ///
+    /// Workspace will create and maintain a `.travis.yml` file at the project root, which configures Travis CI to run all the tests from `Validate` on every operating system supported by the project.
+    ///
+    /// - Note: Workspace cannot turn Travis CI on. It is still necessary to log into [Travis CI](https://travis-ci.org) and activate it for the project’s repository.
+    ///
+    /// ## Special Thanks
+    /// - [Travis CI](https://travis-ci.org)
+    /// - Kyle Fuller and [Swift Version Manager](https://github.com/kylef/swiftenv), which makes continuous integration possible on Linux.
     public var manage: Bool = false
 
     /// Whether or not to skip simulator tasks when running them locally.

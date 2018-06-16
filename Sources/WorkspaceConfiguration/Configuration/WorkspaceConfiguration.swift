@@ -19,7 +19,7 @@ import SDGSwiftConfiguration
 // [_Example 1: Sample Configuration_]
 /// A Workspace configuration.
 ///
-/// Workspace can be configured by placing a Swift file called `Workspace.swift` in the project root.
+/// Workspace can be configured by placing a Swift file named `Workspace.swift` in the project root.
 ///
 /// The contents of a configuration file might look something like this:
 ///

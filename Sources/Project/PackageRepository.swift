@@ -219,6 +219,7 @@ extension PackageRepository {
         return try cached(in: &configurationCache.configuration) {
 
             if try isWorkspaceProject() {
+                WorkspaceContext.current = try configurationContext()
                 return WorkspaceProjectConfiguration.configuration
             } else {
                 return try WorkspaceConfiguration.load(

@@ -13,6 +13,10 @@ public let configuration: WorkspaceConfiguration = {
     let configuration = WorkspaceConfiguration()
     configuration.applySDGDefaults()
 
+    configuration.supportedOperatingSystems.remove(.iOS)
+    configuration.supportedOperatingSystems.remove(.watchOS)
+    configuration.supportedOperatingSystems.remove(.tvOS)
+
     configuration.documentation.currentVersion = Metadata.latestStableVersion
     configuration.documentation.projectWebsite = URL(string: "https://github.com/SDGGiesbrecht/Workspace#workspace")!
     configuration.documentation.documentationURL = URL(string: "https://sdggiesbrecht.github.io/Workspace")!

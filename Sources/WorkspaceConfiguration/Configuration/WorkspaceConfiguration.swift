@@ -116,7 +116,7 @@ public final class WorkspaceConfiguration : Configuration {
     }
 
     /// :nodoc:
-    public func validateSDGStandards() {
+    public func validateSDGStandards(requireExamples: Bool = true) {
         let needsAPIDocumentation = WorkspaceContext.current.manifest.products.contains(where: { $0.type == .library })
 
         assert(documentation.currentVersion ≠ nil, "No version specified.")
@@ -146,7 +146,9 @@ public final class WorkspaceConfiguration : Configuration {
             assert(documentation.readMe.quotation?.link[localization] ≠ nil, "No quotation link specified for “\(localization)”.")
 
             assert(documentation.readMe.featureList[localization] ≠ nil, "No features specified for “\(localization)”.")
-            assert(documentation.readMe.exampleUsage[localization] ≠ nil, "No examples specified for “\(localization)”.")
+            if requireExamples {
+                assert(documentation.readMe.exampleUsage[localization] ≠ nil, "No examples specified for “\(localization)”.")
+            }
         }
     }
 

@@ -60,7 +60,11 @@ public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hash
 
     // MARK: - ExpressibleByStringLiteral
 
-    // [_Inherit Documentation: SDGCornerstone.ExpressiblyByStringLiteral.init(stringLiteral:)_]
+    // [_Inherit Documentation: SDGCornerstone.ExpressibleByStringLiteral.init(stringLiteral:)_]
+    /// Creates an instance from a string literal.
+    ///
+    /// - Parameters:
+    ///     - stringLiteral: The string literal.
     public init(stringLiteral: String) {
         self.init(stringLiteral)
     }

@@ -16,6 +16,8 @@
 
 macOS • Linux
 
+APIs: [WorkspaceConfiguration](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration)
+
 # Workspace
 
 Workspace automates management of Swift projects.
@@ -45,13 +47,15 @@ Workspace automates management of Swift projects.
 - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
 - Manages projects for macOS, Linux, iOS, watchOS and tvOS.
 - [Configurable](Configuring%20Workspace.md)
-  -  Configurations can be [shared](Configuring%20Workspace.md#sharing-configurations-between-projects) between projects.
+  - Configurations can be [shared](Configuring%20Workspace.md#sharing-configurations-between-projects) between projects.
 
 (For a list of related projects, see [here](🇨🇦EN%20Related%20Projects.md).) <!--Skip in Jazzy-->
 
 ## Installation
 
-Paste the following into a terminal to install or update `Workspace`:
+Workspace provides command line tools.
+
+Paste the following into a terminal to install or update them:
 
 ```shell
 curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.7.3 "workspace help" workspace arbeitsbereich
@@ -59,9 +63,9 @@ curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/
 
 ## Importing
 
-`Workspace` is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).
+Workspace provides a library for use with the [Swift Package Manager](https://swift.org/package-manager/).
 
-Simply add `Workspace` as a dependency in `Package.swift`:
+Simply add Workspace as a dependency in `Package.swift`:
 
 ```swift
 let package = Package(
@@ -77,7 +81,7 @@ let package = Package(
 )
 ```
 
-`Workspace` can then be imported in source files:
+The library’s module can then be imported in source files:
 
 ```swift
 import WorkspaceConfiguration

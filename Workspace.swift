@@ -15,7 +15,10 @@ public let configuration: WorkspaceConfiguration = {
 
     configuration.documentation.currentVersion = Metadata.latestStableVersion
     configuration.documentation.projectWebsite = URL(string: "https://github.com/SDGGiesbrecht/Workspace#workspace")!
+    configuration.documentation.documentationURL = URL(string: "https://sdggiesbrecht.github.io/Workspace")!
     configuration.documentation.repositoryURL = Metadata.packageURL
+
+    configuration.documentation.api.yearFirstPublished = 2017
 
     configuration.documentation.localizations = ["🇨🇦EN"]
 

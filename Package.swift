@@ -127,6 +127,10 @@ let package = Package(
             "WSInterface",
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
             ], path: "Tests/test‐tvos‐simulator"),
+        .target(name: "WSConfigurationExample", dependencies: [
+            "WorkspaceConfiguration",
+            .productItem(name: "SDGControlFlow", package: "SDGCornerstone")
+        ], path: "Tests/WSConfigurationExample"),
 
         // Other
 

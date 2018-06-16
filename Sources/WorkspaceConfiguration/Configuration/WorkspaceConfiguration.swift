@@ -24,6 +24,18 @@ import SDGSwiftConfiguration
 /// The contents of a configuration file might look something like this:
 ///
 /// ```swift
+/// import WorkspaceConfiguration
+///
+/// /*
+///  Exernal packages can be imported with this syntax:
+///  import [module] // [url], [version], [product]
+///  */
+/// import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
+///
+/// let configuration = WorkspaceConfiguration()
+/// configuration.optIntoAllTasks()
+/// configuration.documentation.readMe.manage = true
+/// configuration.documentation.readMe.shortProjectDescription["en"] = "This is just an example."
 /// ```
 public final class WorkspaceConfiguration : Configuration {
 

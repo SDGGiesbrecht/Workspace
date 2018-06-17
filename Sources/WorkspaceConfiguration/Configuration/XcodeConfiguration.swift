@@ -13,7 +13,7 @@
  */
 
 /// Options related to Xcode.
-public struct XcodeConfiguration: Codable {
+public struct XcodeConfiguration : Codable {
 
     /// Whether or not to manage the Xcode project.
     ///

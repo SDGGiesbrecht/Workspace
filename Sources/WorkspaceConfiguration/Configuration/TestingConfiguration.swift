@@ -13,7 +13,7 @@
  */
 
 /// Options related to building and testing.
-public struct TestingConfiguration: Codable {
+public struct TestingConfiguration : Codable {
 
     /// Whether or not to prohibit compiler warnings.
     ///

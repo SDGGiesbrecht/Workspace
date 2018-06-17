@@ -13,7 +13,7 @@
  */
 
 /// Options related to the project repository.
-public struct RepositoryConfiguration: Codable {
+public struct RepositoryConfiguration : Codable {
 
     /// A set of file extensions which source operations should ignore.
     ///

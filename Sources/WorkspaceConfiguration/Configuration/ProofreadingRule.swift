@@ -41,7 +41,7 @@ public enum ProofreadingRule : String, Codable {
     ///
     /// Workaround reminders are for times when you need to implement a temporary workaround because of a problem in a dependency, and you would like to remind yourself to go back and remove the workaround once the dependency is fixed.
     ///
-    /// The text, `[_Workaround: Some description here._]`/ will trigger a warning during proofreading, but will still pass validation.
+    /// The text, `[_Workaround: Some description here._]` will trigger a warning during proofreading, but will still pass validation.
     ///
     /// ## Version Detection
     ///
@@ -52,14 +52,19 @@ public enum ProofreadingRule : String, Codable {
     /// The dependency can be specified three different ways.
     ///
     /// - Package dependencies can be specified using the exact name of the package.
+    ///
     ///   ```swift
     ///   // [_Workaround: There is a problem in MyLibrary. (MyLibrary 1.0.0)_]
     ///   ```
+    ///
     /// - Swift itself can be specified with the string `Swift`.
+    ///
     ///   ```swift
     ///   // [_Workaround: There is a problem with Swift. (Swift 3.0.2)_]
     ///   ```
+    ///
     /// - Arbitrary dependencies can be specified by shell commands which output a version number. Workspace will look for the first group of the characters `0`–`9` and `.` in the command output. Only simple commands are supported; commands cannot contain quotation marks.
+    ///
     ///   ```swift
     ///   // [_Workaround: There is a problem with Git. (git --version 2.10.1)_]
     ///   ```
@@ -77,7 +82,7 @@ public enum ProofreadingRule : String, Codable {
     /// Prohibits documentation comments vulnerable to auto‐indent.
     case autoindentResilience
 
-    /// Catches broken syntax in source code headings (MARK).
+    /// Catches broken syntax in source code headings (`MARK`).
     case marks
 
     // ••••••• Documentation •••••••

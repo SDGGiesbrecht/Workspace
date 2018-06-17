@@ -21,7 +21,7 @@ public enum Licence: String, Codable {
 
     // MARK: - Cases
 
-    /// The [Apache 2.0](https://github.com/SDGGiesbrecht/Workspace/blob/master/Resources/Interface/Licences/Apache%202.0.md)) licence.
+    /// The [Apache 2.0](https://github.com/SDGGiesbrecht/Workspace/blob/master/Resources/Interface/Licences/Apache%202.0.md) licence.
     ///
     /// (Swift itself is under this licence.)
     case apache2_0

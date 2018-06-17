@@ -12,6 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+/// A project licence.
+///
+/// For information about the various licences, see [choosealicense.com](https://choosealicense.com).
+///
+/// Know of a common licence that is not yet supported? [Request it.](https://github.com/SDGGiesbrecht/Workspace/issues)
 public enum Licence: String, Codable {
 
     // MARK: - Cases

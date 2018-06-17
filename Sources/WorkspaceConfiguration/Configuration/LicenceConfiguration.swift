@@ -18,6 +18,7 @@ public struct LicenceConfiguration: Codable {
     /// Whether or not to manage the project licence.
     ///
     /// This is off by default.
+
     public var manage: Bool = false
 
     /// The project licence.

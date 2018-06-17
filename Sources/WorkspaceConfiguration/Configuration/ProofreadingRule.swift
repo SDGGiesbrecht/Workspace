@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+/// A proofreading rule.
 public enum ProofreadingRule : String, Codable {
 
     // MARK: - Cases
@@ -133,6 +134,7 @@ public enum ProofreadingRule : String, Codable {
 
     // MARK: - Properties
 
+    /// The category the rule belongs to.
     public var category: Category {
         switch self {
         case .deprecatedConfiguration, .deprecatedLinuxDocumentation:

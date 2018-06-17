@@ -17,6 +17,7 @@ public struct Lazy<Option> : Codable where Option : Codable {
 
     // MARK: - Initialization
 
+    /// Creates a lazy option with a resolution algorithm.
     public init(resolve: @escaping (WorkspaceConfiguration) -> Option) {
         self.resolve = resolve
     }

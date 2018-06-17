@@ -123,6 +123,7 @@ public final class WorkspaceConfiguration : Configuration {
         documentation.relatedProjects.append(.project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!))
     }
 
+    /// :nodoc:
     public func applySDGOverrides() {
         let project = WorkspaceContext.current.manifest.packageName
         let about = [

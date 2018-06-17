@@ -18,8 +18,6 @@ public struct GitHubConfiguration: Codable {
     /// Whether or not to manage the project’s GitHub configuration files.
     ///
     /// This is off by default.
-    ///
-    /// Workspace can manage the project’s contributing instructions, issue template and pull request template.
     public var manage: Bool = false
 
     /// A list of the administrator’s GitHub usernames.

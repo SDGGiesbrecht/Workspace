@@ -28,6 +28,7 @@ public struct ContinuousIntegrationConfiguration : Codable {
     /// - Note: Workspace cannot turn Travis CI on. It is still necessary to log into [Travis CI](https://travis-ci.org) and activate it for the project’s repository.
     ///
     /// ## Special Thanks
+    ///
     /// - [Travis CI](https://travis-ci.org)
     /// - Kyle Fuller and [Swift Version Manager](https://github.com/kylef/swiftenv), which makes continuous integration possible on Linux.
     public var manage: Bool = false

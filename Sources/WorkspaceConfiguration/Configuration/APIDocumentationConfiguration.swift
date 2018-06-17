@@ -18,11 +18,33 @@ public struct APIDocumentationConfiguration : Codable {
     /// Whether or not to generate API documentation.
     ///
     /// This is off by default.
+    ///
+    /// ```shell
+    /// $ workspace document
+    /// ```
+    ///
+    /// Workspace will generate API documentation using [Jazzy](https://github.com/realm/jazzy).
+    ///
+    /// By default, the generated documentation will be placed in a `docs` folder at the project root. [These GitHub settings](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch) can be adjusted to automatically host the documentation directly from the repository. (If you wish to avoid checking generated files into `master`, see `encryptedTravisCIDeploymentKey` for a more advanced method.)
+    ///
+    /// Each library product module receives its own subfolder. Link to the documentation like this: `https://some‐username.github.io/SomeRepository/SomeModule`
+    ///
+    /// Jazzy can be further configured by placing a `.jazzy.yaml` file in the project root. For more information see [Jazzy’s own documentation](https://github.com/realm/jazzy).
+    ///
+    /// - Note: Documentation generation is not supported *from* Linux because Jazzy does not run on Linux. However, documentation can still be generated *for* Linux from macOS, provided the project can also be built on macOS. If necessary, even a project which does not really support macOS can use `#if os(Linux)` to enable a successful build.
+    ///
+    /// ## Special Thanks
+    ///
+    /// - Realm and [Jazzy](https://github.com/realm/jazzy)
     public var generate: Bool = false
 
     /// Whether or not to enforce documentation coverage.
     ///
     /// This is on by default.
+    ///
+    /// ```shell
+    /// $ workspace validate documentation‐coverage
+    /// ```
     public var enforceCoverage: Bool = true
 
     /// The year the documentation was first published.

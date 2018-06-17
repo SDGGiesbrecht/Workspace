@@ -27,27 +27,26 @@ Workspace automates management of Swift projects.
 ## Features
 
 - Provides rigorous validation:
-  - [Test coverage](Documentation/Test%20Coverage.md)
-  - [Compiler warnings](Documentation/Compiler%20Warnings.md)
-  - [Documentation coverage](Documentation/Documentation%20Generation.md#enforcement)
-  - [Example validation](Documentation/Examples.md)
-  - [Style proofreading](Documentation/Proofreading.md) (including [SwiftLint](https://github.com/realm/SwiftLint))
-  - [Reminders](Documentation/Manual%20Warnings.md)
-  - [Continuous integration set‐up](Documentation/Continuous%20Integration.md) ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))
-- Generates API [documentation](Documentation/Documentation%20Generation.md) (except from Linux). (Using [Jazzy](https://github.com/realm/jazzy))
+  - [Test coverage](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/TestingConfiguration.html#/s:22WorkspaceConfiguration07TestingB0V15enforceCoverageSbvp)
+  - [Compiler warnings](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/TestingConfiguration.html#/s:22WorkspaceConfiguration07TestingB0V24prohibitCompilerWarningsSbvp)
+  - [Documentation coverage](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/APIDocumentationConfiguration.html#/s:22WorkspaceConfiguration016APIDocumentationB0V15enforceCoverageSbvp)
+  - [Example validation](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/examples.html)
+  - [Style proofreading](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/ProofreadingConfiguration.html) (including [SwiftLint](https://github.com/realm/SwiftLint))
+  - [Reminders](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Enums/ProofreadingRule.html#/s:22WorkspaceConfiguration16ProofreadingRuleO14manualWarningsA2CmF)
+  - [Continuous integration set‐up](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/ContinuousIntegrationConfiguration.html#/s:22WorkspaceConfiguration021ContinuousIntegrationB0V6manageSbvp) ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))
+- Generates API [documentation](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/APIDocumentationConfiguration.html#/s:22WorkspaceConfiguration016APIDocumentationB0V8generateSbvp) (except from Linux). (Using [Jazzy](https://github.com/realm/jazzy))
 - Automates code maintenance:
-  - [Embedded resources](Documentation/Resources.md)
-  - [Inherited documentation](Documentation/Documentation%20Inheritance.md)
-  - [Xcode project generation](Documentation/Xcode.md)
+  - [Embedded resources](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/resources.html)
+  - [Inherited documentation](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/documentation-inheritance.html)
+  - [Xcode project generation](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/XcodeConfiguration.html#/s:22WorkspaceConfiguration05XcodeB0V6manageSbvp)
 - Automates open source details:
-  - [File headers](Documentation/File%20Headers.md)
-  - [Read‐me files](Documentation/Read‐Me.md)
-  - [Licence notices](Documentation/Licence.md)
-  - [Contributing instructions](Documentation/Contributing%20Instructions.md)
+  - [File headers](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/FileHeaderConfiguration.html)
+  - [Read‐me files](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/ReadMeConfiguration.html#/s:22WorkspaceConfiguration06ReadMeB0V6manageSbvp)
+  - [Licence notices](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/LicenceConfiguration.html#/s:22WorkspaceConfiguration07LicenceB0V6manageSbvp)
+  - [Contributing instructions](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/GitHubConfiguration.html#/s:22WorkspaceConfiguration06GitHubB0V6manageSbvp)
 - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
 - Manages projects for macOS, Linux, iOS, watchOS and tvOS.
-- [Configurable](Documentation/Configuring%20Workspace.md)
-  - Configurations can be [shared](Documentation/Configuring%20Workspace.md#sharing-configurations-between-projects) between projects.
+- [Configurable](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Classes/WorkspaceConfiguration.html)
 
 (For a list of related projects, see [here](Documentation/🇨🇦EN%20Related%20Projects.md).) <!--Skip in Jazzy-->
 
@@ -105,7 +104,7 @@ git clone https://github.com/SDGGiesbrecht/Workspace
 
 ### Refresh the Workspace
 
-To refresh the workspace, double‐click the `Refresh` script for the corresponding operating system. (If you are on Linux and double‐clicking fails or opens a text file, see [here](Documentation/Linux%20Notes.md#doubleclicking-scripts).)
+To refresh the workspace, double‐click the `Refresh` script for the corresponding operating system. (If you are on Linux and double‐clicking fails or opens a text file, see [here](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/linux-notes.html).)
 
 `Refresh` opens a terminal window, and in it Workspace reports its actions while it sets the project folder up for development.
 
@@ -140,7 +139,7 @@ To apply Workspace to a project, run the following command in the root of the pr
 $ workspace refresh
 ```
 
-By default, Workspace refrains from tasks which would involve modifying project files. Such tasks must be activated with a [configuration](Documentation/Configuring%20Workspace.md) file.
+By default, Workspace refrains from tasks which would involve modifying project files. Such tasks must be activated with a [configuration](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Classes/WorkspaceConfiguration.html) file.
 
 ## About
 

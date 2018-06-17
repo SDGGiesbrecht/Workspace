@@ -82,7 +82,7 @@ public enum ProofreadingRule : String, Codable {
     /// Prohibits documentation comments vulnerable to auto‐indent.
     case autoindentResilience
 
-    /// Catches broken syntax in source code headings (`MARK`).
+    /// Catches broken syntax in source code headings.
     case marks
 
     // ••••••• Documentation •••••••

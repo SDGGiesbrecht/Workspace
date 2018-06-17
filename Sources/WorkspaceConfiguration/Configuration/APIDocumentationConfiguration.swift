@@ -31,7 +31,7 @@ public struct APIDocumentationConfiguration : Codable {
     ///
     /// Jazzy can be further configured by placing a `.jazzy.yaml` file in the project root. For more information see [Jazzy’s own documentation](https://github.com/realm/jazzy).
     ///
-    /// - Note: Documentation generation is not supported *from* Linux because Jazzy does not run on Linux. However, documentation can still be generated *for* Linux from macOS, provided the project can also be built on macOS. If necessary, even a project which does not really support macOS can use `#if os(Linux)` to enable a successful build.
+    /// - Note: Documentation generation is not supported *from* Linux because Jazzy does not run on Linux. However, documentation can still be generated *for* Linux from macOS, provided the project can also be built on macOS.
     ///
     /// ## Special Thanks
     ///
@@ -55,9 +55,9 @@ public struct APIDocumentationConfiguration : Codable {
     /// By default, this is assembled from the file header copyright notice.
     ///
     /// Workspace will replace the dynamic element `#dates` with the file’s copyright dates. (e.g. “©2016–2017”).
-    public var copyrightNotice: Lazy<StrictString> = Lazy<StrictString>() { configuration in
+    public var copyrightNotice: Lazy<StrictString> = Lazy<StrictString>(resolve: { configuration in
         return configuration.fileHeaders.copyrightNotice.resolve(configuration) + " All rights reserved."
-    }
+    })
 
     /// An encrypted Travis CI deployment key.
     ///

@@ -49,27 +49,27 @@ public let configuration: WorkspaceConfiguration = {
     configuration.documentation.readMe.quotation?.link["🇨🇦EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Colossians+3&version=SBLGNT;NIV")!
 
     configuration.documentation.readMe.featureList["🇨🇦EN"] = [
-        "- Provides rigorous validation:",
-        "  - [Test coverage](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/TestingConfiguration.html#/s:22WorkspaceConfiguration07TestingB0V15enforceCoverageSbvp)",
-        "  - [Compiler warnings](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/TestingConfiguration.html#/s:22WorkspaceConfiguration07TestingB0V24prohibitCompilerWarningsSbvp)",
-        "  - [Documentation coverage](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/APIDocumentationConfiguration.html#/s:22WorkspaceConfiguration016APIDocumentationB0V15enforceCoverageSbvp)",
-        "  - [Example validation](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/examples.html)",
-        "  - [Style proofreading](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/ProofreadingConfiguration.html) (including [SwiftLint](https://github.com/realm/SwiftLint))",
-        "  - [Reminders](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Enums/ProofreadingRule.html#/s:22WorkspaceConfiguration16ProofreadingRuleO14manualWarningsA2CmF)",
-        "  - [Continuous integration set‐up](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/ContinuousIntegrationConfiguration.html#/s:22WorkspaceConfiguration021ContinuousIntegrationB0V6manageSbvp) ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))",
-        "- Generates API [documentation](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/APIDocumentationConfiguration.html#/s:22WorkspaceConfiguration016APIDocumentationB0V8generateSbvp) (except from Linux). (Using [Jazzy](https://github.com/realm/jazzy))",
-        "- Automates code maintenance:",
-        "  - [Embedded resources](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/resources.html)",
-        "  - [Inherited documentation](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/documentation-inheritance.html)",
-        "  - [Xcode project generation](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/XcodeConfiguration.html#/s:22WorkspaceConfiguration05XcodeB0V6manageSbvp)",
-        "- Automates open source details:",
-        "  - [File headers](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/FileHeaderConfiguration.html)",
-        "  - [Read‐me files](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/ReadMeConfiguration.html#/s:22WorkspaceConfiguration06ReadMeB0V6manageSbvp)",
-        "  - [Licence notices](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/LicenceConfiguration.html#/s:22WorkspaceConfiguration07LicenceB0V6manageSbvp)",
-        "  - [Contributing instructions](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/GitHubConfiguration.html#/s:22WorkspaceConfiguration06GitHubB0V6manageSbvp)",
-        "- Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).",
-        "- Manages projects for macOS, Linux, iOS, watchOS and tvOS.",
-        "- [Configurable](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Classes/WorkspaceConfiguration.html)",
+        "\u{2D} Provides rigorous validation:",
+        "  \u{2D} [Test coverage](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/TestingConfiguration.html#/s:22WorkspaceConfiguration07TestingB0V15enforceCoverageSbvp)",
+        "  \u{2D} [Compiler warnings](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/TestingConfiguration.html#/s:22WorkspaceConfiguration07TestingB0V24prohibitCompilerWarningsSbvp)",
+        "  \u{2D} [Documentation coverage](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/APIDocumentationConfiguration.html#/s:22WorkspaceConfiguration016APIDocumentationB0V15enforceCoverageSbvp)",
+        "  \u{2D} [Example validation](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/examples.html)",
+        "  \u{2D} [Style proofreading](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/ProofreadingConfiguration.html) (including [SwiftLint](https://github.com/realm/SwiftLint))",
+        "  \u{2D} [Reminders](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Enums/ProofreadingRule.html#/s:22WorkspaceConfiguration16ProofreadingRuleO14manualWarningsA2CmF)",
+        "  \u{2D} [Continuous integration set‐up](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/ContinuousIntegrationConfiguration.html#/s:22WorkspaceConfiguration021ContinuousIntegrationB0V6manageSbvp) ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))",
+        "\u{2D} Generates API [documentation](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/APIDocumentationConfiguration.html#/s:22WorkspaceConfiguration016APIDocumentationB0V8generateSbvp) (except from Linux). (Using [Jazzy](https://github.com/realm/jazzy))",
+        "\u{2D} Automates code maintenance:",
+        "  \u{2D} [Embedded resources](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/resources.html)",
+        "  \u{2D} [Inherited documentation](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/documentation-inheritance.html)",
+        "  \u{2D} [Xcode project generation](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/XcodeConfiguration.html#/s:22WorkspaceConfiguration05XcodeB0V6manageSbvp)",
+        "\u{2D} Automates open source details:",
+        "  \u{2D} [File headers](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/FileHeaderConfiguration.html)",
+        "  \u{2D} [Read‐me files](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/ReadMeConfiguration.html#/s:22WorkspaceConfiguration06ReadMeB0V6manageSbvp)",
+        "  \u{2D} [Licence notices](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/LicenceConfiguration.html#/s:22WorkspaceConfiguration07LicenceB0V6manageSbvp)",
+        "  \u{2D} [Contributing instructions](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/GitHubConfiguration.html#/s:22WorkspaceConfiguration06GitHubB0V6manageSbvp)",
+        "\u{2D} Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).",
+        "\u{2D} Manages projects for macOS, Linux, iOS, watchOS and tvOS.",
+        "\u{2D} [Configurable](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Classes/WorkspaceConfiguration.html)"
     ].joinedAsLines()
 
     configuration.documentation.readMe.other["🇨🇦EN"] = [
@@ -126,7 +126,7 @@ public let configuration: WorkspaceConfiguration = {
         "$ workspace refresh",
         "```",
         "",
-        "By default, Workspace refrains from tasks which would involve modifying project files. Such tasks must be activated with a [configuration](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Classes/WorkspaceConfiguration.html) file.",
+        "By default, Workspace refrains from tasks which would involve modifying project files. Such tasks must be activated with a [configuration](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Classes/WorkspaceConfiguration.html) file."
         ].joinedAsLines()
 
     configuration.documentation.api.encryptedTravisCIDeploymentKey = "WfBLnstfcBi0Z8yioAfvEnoK/R59u+fLag3vBulzdePBF60jRQbT4qCr1wCuBsp1JHWJlJSM/GmVsqFEJgt1hJOL4lfx2proY6XUBNdn3BElPkDBgG2eIbPFHkdCtDLGSVqzNhUca6MKWJ4qZCujLKMSfvb+OBylzdhhVd+j5l/Icza0shRpAWDaSWiio3RkvxD08lFm9Fvlg4d09uRKzGPhlg1PjUP7bbl9xcoEqh/4ZzL2GTXGbHfJJOkQQXoPTbF0R8LiYVJVA5euFfHQw1rFepHhfSdhililvC0ld/ksSpQRLwCY93Sb9wOMRrc6HASApRALi9M3TGOQQrEI/Kjh4lJ+Okjg7wZnKixAuGPMUH0DWy57t+gSy51PyFi0bHfJzGm3Y5t8gtimsIiiWbWlNyZF3EndFmtQRfzLjfdJwHx34Zj44kX+rr7p29hkTlfv9YUuOP6CizVQnDfAoWPyv6lsD/PSYTdw97yWBoNXNVbKp8Ge4MmgtpYuWdOaZj0Lim0WZ/04A0clXW7wj/G+MJCbeRiFxKyVi6OUdhRy+BkVVqdNul892/vKyeLwJp9d6DtDkwy11TaxLeGpu0eBWUEhfQJIUG/EaE5FD1v6GsZpmy8FF+XVKeOPDI+kHuHQ6hUjXnOM8HGr0HGpbiQ9Nw0mv4ozUi+EFv7429Q="

@@ -13,7 +13,7 @@
  */
 
 /// Options related to GitHub.
-public struct GitHubConfiguration: Codable {
+public struct GitHubConfiguration : Codable {
 
     /// Whether or not to manage the project’s GitHub configuration files.
     ///
@@ -35,7 +35,7 @@ public struct GitHubConfiguration: Codable {
     /// By default, this is assembled from the other GitHub options.
     ///
     /// Contributing instructions are instructions in a `CONTRIBUTING.md` file which GitHub directs contributors to read.
-    public var contributingInstructions: Lazy<Markdown> = Lazy<Markdown>() { configuration in
+    public var contributingInstructions: Lazy<Markdown> = Lazy<Markdown>(resolve: { configuration in
 
         var template = StrictString(Resources.contributingTemplate)
 
@@ -70,14 +70,14 @@ public struct GitHubConfiguration: Codable {
         }
 
         return template
-    }
+    })
 
     /// The issue template.
     ///
     /// By default, this is assembled from the other GitHub options.
     ///
     /// An issue template is a markdown file in a `.github` folder which GitHub uses when someone creates a new issue.
-    public var issueTemplate: Lazy<Markdown> = Lazy<Markdown>() { configuration in
+    public var issueTemplate: Lazy<Markdown> = Lazy<Markdown>(resolve: { _ in
 
         var template = StrictString(Resources.issueTemplate)
 
@@ -104,7 +104,7 @@ public struct GitHubConfiguration: Codable {
         template.replaceMatches(for: "#trigger".scalars, with: trigger.joinedAsLines())
 
         return template
-    }
+    })
 
     /// The pull request template.
     ///

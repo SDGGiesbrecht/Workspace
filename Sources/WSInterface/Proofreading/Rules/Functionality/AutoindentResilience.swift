@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import WSGeneralImports
 
 struct AutoindentResilience : Rule {
@@ -31,7 +32,9 @@ struct AutoindentResilience : Rule {
     })
 
     static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
-        if file.fileType == .swift {
+        if file.fileType == .swift,
+            file.location.lastPathComponent ≠ "FileHeaderConfiguration.swift" {
+
             for match in file.contents.scalars.matches(for: "/*\u{2A}".scalars) {
                 reportViolation(in: file, at: match.range, message: message, status: status, output: output)
             }

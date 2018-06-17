@@ -23,7 +23,7 @@ public enum RelatedProjectEntry : Codable {
     /// A heading.
     case heading(text: [LocalizationIdentifier: StrictString])
 
-    private enum RelatedProjectEntryType: String, Codable {
+    private enum RelatedProjectEntryType : String, Codable {
         case project
         case heading
     }

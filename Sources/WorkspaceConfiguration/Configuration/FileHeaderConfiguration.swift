@@ -60,7 +60,7 @@
 ///
 /// # This is a header
 /// ```
-public struct FileHeaderConfiguration: Codable {
+public struct FileHeaderConfiguration : Codable {
 
     /// Whether or not to manage the project file headers.
     ///
@@ -78,7 +78,7 @@ public struct FileHeaderConfiguration: Codable {
     /// Workspace uses any pre‐existing start date if it can detect one already in the file header. Workspace searches for `©`, `(C)`, or `(c)` followed by an optional space and four digits. If none is found, Workspace will use the current date as the start date.
     ///
     /// Workspace always uses the current date as the end date.
-    public var copyrightNotice: Lazy<StrictString> = Lazy<StrictString>() { configuration in
+    public var copyrightNotice: Lazy<StrictString> = Lazy<StrictString>(resolve: { configuration in
         let project = StrictString(WorkspaceContext.current.manifest.packageName)
         if let author = configuration.documentation.primaryAuthor {
             let components: [StrictString] = ["Copyright #dates ", author, " and the ", project, " project contributors."]
@@ -86,14 +86,14 @@ public struct FileHeaderConfiguration: Codable {
         } else {
             return "Copyright #dates the " + project + " project contributors."
         }
-    }
+    })
 
     /// The entire contents of the file header.
     ///
     /// By default, this is assembled from the other documentation and licence options.
     ///
     /// Workspace will replace the dynamic element `#filename` with the name of the particular file.
-    public var contents: Lazy<StrictString> = Lazy<StrictString>() { configuration in
+    public var contents: Lazy<StrictString> = Lazy<StrictString>(resolve: { configuration in
 
         let packageName = StrictString(WorkspaceContext.current.manifest.packageName)
 
@@ -125,5 +125,5 @@ public struct FileHeaderConfiguration: Codable {
         }
 
         return header.joinedAsLines()
-    }
+    })
 }

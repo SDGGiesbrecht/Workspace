@@ -50,7 +50,7 @@ public struct ReadMeConfiguration : Codable {
     /// Installation instructions.
     ///
     /// Default instructions exist for executable and library products if `repositoryURL` and `currentVersion` are defined.
-    public var installationInstructions: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>() { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
+    public var installationInstructions: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>(resolve: { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
 
         guard let packageURL = configuration.documentation.repositoryURL,
             let version = configuration.documentation.currentVersion else {
@@ -85,7 +85,7 @@ public struct ReadMeConfiguration : Codable {
             }
         }
         return result
-    }
+    })
 
     /// Example usage.
     ///
@@ -105,7 +105,7 @@ public struct ReadMeConfiguration : Codable {
     /// The entire contents of the read‐me.
     ///
     /// By default, this is assembled from the other documentation and read‐me options.
-    public var contents: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>() { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
+    public var contents: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>(resolve: { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
 
         var result: [LocalizationIdentifier: Markdown] = [:]
         for localization in configuration.documentation.localizations {
@@ -211,7 +211,7 @@ public struct ReadMeConfiguration : Codable {
             result[localization] = readMe.joinedAsLines()
         }
         return result
-    }
+    })
 
     // MARK: - Useful components.
 

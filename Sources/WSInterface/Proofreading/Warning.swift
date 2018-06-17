@@ -27,7 +27,7 @@ let manualWarnings: [Warning.Type] = [
 extension Warning {
 
     static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) throws {
-        if file.location.path.hasSuffix("Documentation/Manual Warnings.md") {
+        if file.location.lastPathComponent == "ProofreadingRule.swift" {
             // [_Exempt from Test Coverage_]
             return
         }

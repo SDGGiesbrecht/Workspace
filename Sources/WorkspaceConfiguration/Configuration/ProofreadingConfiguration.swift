@@ -37,7 +37,7 @@
 /// ## Special Thanks
 ///
 /// - Realm and [SwiftLint](https://github.com/realm/SwiftLint)
-public struct ProofreadingConfiguration: Codable {
+public struct ProofreadingConfiguration : Codable {
 
     /// The set of active proofreading rules.
     ///

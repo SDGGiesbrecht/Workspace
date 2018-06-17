@@ -60,7 +60,7 @@ class APITests : TestCase {
         configuration.documentation.localizations = ["en"]
         configuration.documentation.readMe.quotation = Quotation(original: "Blah blah blah...")
         configuration.documentation.readMe.quotation?.link["en"] = URL(string: "http://somewhere.com")!
-        configuration.documentation.readMe.installationInstructions = Lazy() { configuration in
+        configuration.documentation.readMe.installationInstructions = Lazy({ configuration in
             return [
                 "en": StrictString([
                     "## Installation",
@@ -68,9 +68,9 @@ class APITests : TestCase {
                     "Build from source at tag `\(configuration.documentation.currentVersion!.string())` of `\(configuration.documentation.repositoryURL!.absoluteString)`."
                     ].joinedAsLines())
             ]
-        }
+        })
         configuration.documentation.readMe.exampleUsage = [
-            "en" : StrictString([
+            "en": StrictString([
                 "```swift",
                 "let x = something()",
                 "```"
@@ -236,9 +236,9 @@ class APITests : TestCase {
         configuration.documentation.readMe.quotation?.citation["🇨🇦EN"] = "someone"
         configuration.documentation.readMe.quotation?.link["🇬🇧EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=WLC;NIVUK")!
         configuration.documentation.readMe.featureList["🇨🇦EN"] = [
-            "- Stuff.",
-            "- More stuff.",
-            "- Even more stuff."
+            "\u{2D} Stuff.",
+            "\u{2D} More stuff.",
+            "\u{2D} Even more stuff."
             ].joinedAsLines()
         configuration.documentation.readMe.other["🇨🇦EN"] = [
             "## Other",
@@ -301,9 +301,9 @@ class APITests : TestCase {
         configuration.documentation.readMe.quotation?.citation["🇨🇦EN"] = "someone"
         configuration.documentation.readMe.quotation?.link["🇬🇧EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=WLC;NIVUK")!
         configuration.documentation.readMe.featureList["🇨🇦EN"] = [
-            "- Stuff.",
-            "- More stuff.",
-            "- Even more stuff."
+            "\u{2D} Stuff.",
+            "\u{2D} More stuff.",
+            "\u{2D} Even more stuff."
             ].joinedAsLines()
         configuration.documentation.readMe.other["🇨🇦EN"] = [
             "## Other",

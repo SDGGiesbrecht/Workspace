@@ -13,7 +13,7 @@
  */
 
 /// Options related to licencing.
-public struct LicenceConfiguration: Codable {
+public struct LicenceConfiguration : Codable {
 
     /// Whether or not to manage the project licence.
     ///

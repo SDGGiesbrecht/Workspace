@@ -18,6 +18,8 @@ public struct GitHubConfiguration: Codable {
     /// Whether or not to manage the project’s GitHub configuration files.
     ///
     /// This is off by default.
+    ///
+    /// Workspace can manage the project’s contributing instructions, issue template and pull request template.
     public var manage: Bool = false
 
     /// A list of the administrator’s GitHub usernames.
@@ -33,6 +35,8 @@ public struct GitHubConfiguration: Codable {
     /// The contributing instructions.
     ///
     /// By default, this is assembled from the other GitHub options.
+    ///
+    /// Contributing instructions are instructions in a `CONTRIBUTING.md` file which GitHub directs contributors to read.
     public var contributingInstructions: Lazy<Markdown> = Lazy<Markdown>() { configuration in
 
         var template = StrictString(Resources.contributingTemplate)
@@ -73,6 +77,8 @@ public struct GitHubConfiguration: Codable {
     /// The issue template.
     ///
     /// By default, this is assembled from the other GitHub options.
+    ///
+    /// An issue template is a markdown file in a `.github` folder which GitHub uses when someone creates a new issue.
     public var issueTemplate: Lazy<Markdown> = Lazy<Markdown>() { configuration in
 
         var template = StrictString(Resources.issueTemplate)
@@ -105,5 +111,7 @@ public struct GitHubConfiguration: Codable {
     /// The pull request template.
     ///
     /// This defaults to a generic template.
+    ///
+    /// A pull request template is a markdown file in a `.github` folder which GitHub uses when someone creates a new pull request.
     public var pullRequestTemplate: Markdown = StrictString(Resources.pullRequestTemplate)
 }

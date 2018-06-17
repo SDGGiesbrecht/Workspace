@@ -27,6 +27,10 @@ public struct TestingConfiguration: Codable {
     /// Whether or not to enforce test coverage.
     ///
     /// This is on by default.
+    ///
+    /// ```shell
+    /// $ workspace validate test‐coverage
+    /// ```
     public var enforceCoverage: Bool = true
 
     // [_Example 1: Test Coverage Exemption Tokens_]

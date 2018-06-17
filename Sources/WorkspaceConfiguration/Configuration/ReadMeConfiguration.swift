@@ -17,6 +17,8 @@ import SDGLogic
 import WSLocalizations
 
 /// Options related to the project read‐me.
+///
+/// A read‐me is a `README.md` file that GitHub and documentation generation use as the project’s main page.
 public struct ReadMeConfiguration : Codable {
 
     // MARK: - Options
@@ -24,6 +26,10 @@ public struct ReadMeConfiguration : Codable {
     /// Whether or not to manage the project read‐me.
     ///
     /// This is off by default.
+    ///
+    /// ```shell
+    /// $ workspace refresh read‐me
+    /// ```
     public var manage: Bool = false
 
     /// A short description of the project.

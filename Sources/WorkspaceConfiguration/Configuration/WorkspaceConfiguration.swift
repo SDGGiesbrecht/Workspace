@@ -49,6 +49,10 @@ public final class WorkspaceConfiguration : Configuration {
     ///
     /// This is on by default.
     ///
+    /// ```shell
+    /// $ workspace refresh scripts
+    /// ```
+    ///
     /// These scripts are provided to reduce refreshment and validation to a simple double‐click. They will also ensure that the same version of Workspace gets used for the project on every machine it is cloned to.
     public var provideWorkflowScripts: Bool = true
 

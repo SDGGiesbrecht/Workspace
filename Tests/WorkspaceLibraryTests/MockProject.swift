@@ -77,6 +77,7 @@ extension PackageRepository {
 
                     WorkspaceContext.current = try configurationContext()
                     WorkspaceConfiguration.queue(mock: configuration)
+                    defer { _ = try? self.configuration() } // Dequeue even if unused.
                     resetConfigurationCache(debugReason: "new test")
 
                     for command in commands {

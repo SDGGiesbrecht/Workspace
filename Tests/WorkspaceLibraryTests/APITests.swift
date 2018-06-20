@@ -56,6 +56,9 @@ class APITests : TestCase {
         let configuration = WorkspaceConfiguration()
         configuration.proofreading.rules.remove(.colonSpacing)
         configuration.proofreading.rules.remove(.unicode)
+        for rule in configuration.proofreading.rules {
+            _ = rule.category
+        }
         PackageRepository(mock: "CustomProofread").test(commands: [
             ["proofread"],
             ["proofread", "•xcode"]

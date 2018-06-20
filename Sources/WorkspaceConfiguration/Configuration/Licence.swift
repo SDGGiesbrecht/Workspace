@@ -49,22 +49,22 @@ public enum Licence : String, Codable {
                 "See http://www.apache.org/licenses/LICENSE-2.0 for licence information."
             ]
         case .mit:
-            result = [
+            result = [ // [_Exempt from Test Coverage_] [_Workaround: Until licence is testable._]
                 "Licensed under the MIT Licence.",
                 "See https://opensource.org/licenses/MIT for licence information."
             ]
         case .gnuGeneralPublic3_0:
-            result = [
+            result = [ // [_Exempt from Test Coverage_] [_Workaround: Until licence is testable._]
                 "Licensed under the GNU General Public Licence, Version 3.0.",
                 "See http://www.gnu.org/licenses/ for licence information."
             ]
         case .unlicense:
-            result = [
+            result = [ // [_Exempt from Test Coverage_] [_Workaround: Until licence is testable._]
                 "Dedicated to the public domain.",
                 "See http://unlicense.org/ for more information."
             ]
         case .copyright:
-            result = [
+            result = [ // [_Exempt from Test Coverage_] [_Workaround: Until licence is testable._]
                 "This software is subject to copyright law.",
                 "It may not be used, copied, distributed or modified without first obtaining a private licence from the copyright holder(s)."
             ]

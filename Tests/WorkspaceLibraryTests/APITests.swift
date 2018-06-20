@@ -227,7 +227,7 @@ class APITests : TestCase {
 
     func testSDGLibrary() {
         let configuration = WorkspaceConfiguration()
-        configuration.optIntoAllTasks()
+        configuration.applySDGDefaults()
         configuration.licence.licence = .apache2_0
         configuration.documentation.currentVersion = Version(1, 0, 0)
         configuration.documentation.projectWebsite = URL(string: "https://example.github.io/SDG/SDG")!
@@ -270,6 +270,7 @@ class APITests : TestCase {
         ]
         configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
         configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
+
         PackageRepository(mock: "SDGLibrary").test(commands: [
             // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
@@ -285,12 +286,12 @@ class APITests : TestCase {
             ["validate", "documentation‐coverage"],
 
             ["proofread", "•xcode"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
      }
 
     func testSDGTool() {
         let configuration = WorkspaceConfiguration()
-        configuration.optIntoAllTasks()
+        configuration.applySDGDefaults()
         configuration.supportedOperatingSystems.remove(.iOS)
         configuration.supportedOperatingSystems.remove(.watchOS)
         configuration.supportedOperatingSystems.remove(.tvOS)
@@ -335,6 +336,7 @@ class APITests : TestCase {
         ]
         configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
         configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
+
         PackageRepository(mock: "SDGTool").test(commands: [
             // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
@@ -350,7 +352,7 @@ class APITests : TestCase {
             ["validate", "documentation‐coverage"],
 
             ["proofread", "•xcode"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
      }
 
     func testSelfSpecificScripts() {

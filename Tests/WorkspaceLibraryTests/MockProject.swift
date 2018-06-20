@@ -35,7 +35,7 @@ extension PackageRepository {
         self.init(at: URL(fileURLWithPath: "/tmp").appendingPathComponent(name))
     }
 
-    func test<L>(commands: [[StrictString]], configuration: WorkspaceConfiguration = WorkspaceConfiguration(), localizations: L.Type, withDependency: Bool = false, overwriteSpecificationInsteadOfFailing: Bool, file: StaticString = #file, line: UInt = #line) where L : InputLocalization {
+    func test<L>(commands: [[StrictString]], configuration: WorkspaceConfiguration = WorkspaceConfiguration(), sdg: Bool = false, localizations: L.Type, withDependency: Bool = false, overwriteSpecificationInsteadOfFailing: Bool, file: StaticString = #file, line: UInt = #line) where L : InputLocalization {
         do {
             try autoreleasepool {
                 let developer = URL(fileURLWithPath: "/tmp/Developer")
@@ -76,6 +76,10 @@ extension PackageRepository {
                     _ = try? FileManager.default.copy(repositoryRoot.appendingPathComponent(".gitignore"), to: location.appendingPathComponent(".gitignore"))
 
                     WorkspaceContext.current = try configurationContext()
+                    if sdg {
+                        configuration.applySDGOverrides()
+                        configuration.validateSDGStandards()
+                    }
                     WorkspaceConfiguration.queue(mock: configuration)
                     defer { _ = try? self.configuration() } // Dequeue even if unused.
                     resetConfigurationCache(debugReason: "new test")

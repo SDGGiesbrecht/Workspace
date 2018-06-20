@@ -251,7 +251,7 @@ extension PackageRepository {
         return result
     }
 
-    public func fileHeader() throws -> StrictString {
+    public func fileHeader() throws -> StrictString { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         return try cached(in: &configurationCache.fileHeader) {
             return try configuration().fileHeaders.contents.resolve(configuration())
         }
@@ -269,13 +269,13 @@ extension PackageRepository {
         }
     }
 
-    public func contributingInstructions() throws -> StrictString {
+    public func contributingInstructions() throws -> StrictString { // [_Exempt from Test Coverage_] [_Workaround: Until contributing instructions are testable._]
         return try cached(in: &configurationCache.contributingInstructions) {
             return try configuration().gitHub.contributingInstructions.resolve(configuration())
         }
     }
 
-    public func issueTemplate() throws -> StrictString {
+    public func issueTemplate() throws -> StrictString { // [_Exempt from Test Coverage_] [_Workaround: Until contributing instructions are testable._]
         return try cached(in: &configurationCache.issueTemplate) {
             return try configuration().gitHub.issueTemplate.resolve(configuration())
         }
@@ -351,7 +351,7 @@ extension PackageRepository {
             }).resolved(using: location.path(relativeTo: self.location)))
 
             try? FileManager.default.removeItem(at: location)
-            if location.pathExtension == "swift" {
+            if location.pathExtension == "swift" { // [_Exempt from Test Coverage_] Nothing deletes Swift files yet.
                 resetManifestCache(debugReason: location.lastPathComponent)
             } else {
                 resetFileCache(debugReason: location.lastPathComponent)

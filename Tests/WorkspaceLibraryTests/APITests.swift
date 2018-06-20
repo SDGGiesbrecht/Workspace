@@ -43,6 +43,15 @@ class APITests : TestCase {
         }
     }
 
+    func testContinuousIntegrationWithoutScripts() {
+        let configuration = WorkspaceConfiguration()
+        configuration.provideWorkflowScripts = false
+        configuration.continuousIntegration.manage = true
+        PackageRepository(mock: "ContinuousIntegrationWithoutScripts").test(commands: [
+            ["refresh", "continuous‐integration"]
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
     func testCustomProofread() {
         let configuration = WorkspaceConfiguration()
         configuration.proofreading.rules.remove(.colonSpacing)

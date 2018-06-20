@@ -18,6 +18,7 @@ extension APITests {
     static let __allTests = [
         ("testBadStyle", testBadStyle),
         ("testCheckForUpdates", testCheckForUpdates),
+        ("testContinuousIntegrationWithoutScripts", testContinuousIntegrationWithoutScripts),
         ("testCustomProofread", testCustomProofread),
         ("testCustomReadMe", testCustomReadMe),
         ("testDefaults", testDefaults),

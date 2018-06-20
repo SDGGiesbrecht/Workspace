@@ -244,7 +244,7 @@ extension PackageRepository {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
-                    return "The project does not specify any localizations."
+                    return StrictString("There are no localizations specified. (documentation.localizations)")
                 }
             }))
         }

@@ -12,15 +12,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  -->
 
-<!--
- !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!!
- This file is managed by Workspace.
- Manual changes will not persist.
- For more information, see:
- https://github.com/SDGGiesbrecht/Workspace/blob/master/Documentation/Contributing Instructions.md
- !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!!
- -->
-
 # Contributing to Workspace
 
 Everyone is welcome to contribute to Workspace!

@@ -31,20 +31,14 @@ enum DocumentationLink : String, CustomStringConvertible {
     case installation = "#installation"
     case git = "Git.md"
     case contributingInstructions = "Contributing Instructions.md"
-    case fileHeaders = "File Headers.md"
     case resources = "Resources.md"
-    case documentationGeneration = "Documentation Generation.md"
-    case continuousIntegration = "Continuous Integration.md"
     case ignoringFileTypes = "Ignoring File Types.md"
 
     static var all: [DocumentationLink] {
         return [
             .git,
             .contributingInstructions,
-            .fileHeaders,
             .resources,
-            .documentationGeneration,
-            .continuousIntegration,
             .ignoringFileTypes
         ]
     }

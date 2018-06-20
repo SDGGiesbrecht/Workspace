@@ -104,7 +104,7 @@ enum Documentation {
             }))
 
         } catch {
-            output.print(error.localizedDescription.formattedAsError())
+            output.print(error.localizedDescription.formattedAsError()) // [_Exempt from Test Coverage_]
             validationStatus.failStep(message: UserFacing({ localization in
                 switch localization {
                 case .englishCanada:
@@ -153,7 +153,7 @@ enum Documentation {
                 }))
             }
         } catch {
-            output.print(error.localizedDescription.formattedAsError())
+            output.print(error.localizedDescription.formattedAsError()) // [_Exempt from Test Coverage_]
             validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:

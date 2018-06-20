@@ -61,7 +61,7 @@ class InternalTests : TestCase {
             "Package.resolved",
 
             // Workspace
-            ".Workspace Configuration.txt",
+            "Workspace.swift",
             String(Script.refreshMacOS.fileName),
             String(Script.refreshLinux.fileName),
 

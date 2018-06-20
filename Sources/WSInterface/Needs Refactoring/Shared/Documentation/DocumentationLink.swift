@@ -32,14 +32,12 @@ enum DocumentationLink : String, CustomStringConvertible {
     case git = "Git.md"
     case contributingInstructions = "Contributing Instructions.md"
     case resources = "Resources.md"
-    case ignoringFileTypes = "Ignoring File Types.md"
 
     static var all: [DocumentationLink] {
         return [
             .git,
             .contributingInstructions,
-            .resources,
-            .ignoringFileTypes
+            .resources
         ]
     }
 

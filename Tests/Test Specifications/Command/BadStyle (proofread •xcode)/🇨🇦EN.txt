@@ -1,4 +1,5 @@
 $ workspace proofread •xcode •no‐colour
+[Temporary]/BadStyle/.Workspace Configuration.txt:1:1: warning: “.Workspace Configuration.txt” is no longer used. It has been replaced by “Workspace.swift”. (deprecatedConfiguration)
 [Temporary]/BadStyle/Package.swift:2:13: warning: U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 [Temporary]/BadStyle/Package.swift:2:19: warning: U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Deprecation/LinuxDocumentation.swift:3:18: warning: Special compilation conditions are no longer necessary for Linux documentation. (deprecatedLinuxDocumentation)

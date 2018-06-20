@@ -114,9 +114,15 @@ enum FileType : CustomStringConvertible {
     // Xcode
     case xcodeProject
 
+    // Deprecated (Only exists so proofreading can detect it.)
+    case deprecatedWorkspaceConfiguration
+
     // MARK: - Filename Suffixes
 
     private static let fileNameSuffixes: [(suffix: String, type: FileType)] = [
+
+        // Deprecated
+        (".Workspace Configuration.txt", .deprecatedWorkspaceConfiguration),
 
         // Source
         ("Package.swift", .swiftPackageManifest),
@@ -176,6 +182,8 @@ enum FileType : CustomStringConvertible {
             return FileSyntax(blockCommentSyntax: FileType.htmlBlockComment, lineCommentSyntax: nil, requiredFirstLineToken: "<\u{21}DOCTYPE")
         case .xcodeProject:
             return FileSyntax(blockCommentSyntax: FileType.swiftBlockCommentSyntax, lineCommentSyntax: FileType.swiftLineCommentSyntax)
+        case .deprecatedWorkspaceConfiguration:
+            return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: nil, requiredFirstLineToken: nil, semanticLineTerminalWhitespace: [])
         }
     }
 
@@ -205,6 +213,8 @@ enum FileType : CustomStringConvertible {
             return "JavaScript"
         case .xcodeProject:
             return "Xcode Project"
+        case .deprecatedWorkspaceConfiguration:
+            return "Workspace Configuration"
         }
     }
 }

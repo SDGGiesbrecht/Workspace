@@ -60,7 +60,7 @@ class APITests : TestCase {
         configuration.documentation.localizations = ["en"]
         configuration.documentation.readMe.quotation = Quotation(original: "Blah blah blah...")
         configuration.documentation.readMe.quotation?.link["en"] = URL(string: "http://somewhere.com")!
-        configuration.documentation.readMe.installationInstructions = Lazy({ configuration in
+        configuration.documentation.readMe.installationInstructions = Lazy(resolve: { configuration in
             return [
                 "en": StrictString([
                     "## Installation",

@@ -158,6 +158,15 @@ class APITests : TestCase {
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
      }
 
+    func testMissingReadMeLocalization() {
+        let configuration = WorkspaceConfiguration()
+        configuration.documentation.localizations = ["zxx"]
+        configuration.documentation.readMe.contents.resolve = { _ in [:] }
+        PackageRepository(mock: "MissingReadMeLocalization").test(commands: [
+            ["refresh", "read‐me"]
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
     func testNoLocalizations() {
         PackageRepository(mock: "NoLocalizations").test(commands: [
             ["refresh", "read‐me"]

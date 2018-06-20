@@ -29,10 +29,7 @@ enum DocumentationLink : String, CustomStringConvertible {
     // MARK: - Cases
 
     case installation = "#installation"
-    case requiringOptions = "Configuring Workspace.md#requiring\u{2D}options"
     case git = "Git.md"
-    case readMe = "Read‐Me.md"
-    case licence = "Licence.md"
     case contributingInstructions = "Contributing Instructions.md"
     case xcode = "Xcode.md"
     case fileHeaders = "File Headers.md"
@@ -44,8 +41,6 @@ enum DocumentationLink : String, CustomStringConvertible {
     static var all: [DocumentationLink] {
         return [
             .git,
-            .readMe,
-            .licence,
             .contributingInstructions,
             .xcode,
             .fileHeaders,

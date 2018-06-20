@@ -22,27 +22,10 @@ struct ContributingInstructions {
     static let issueTemplatePath = RelativePath(".github/ISSUE_TEMPLATE.md")
     static let pullRequestTemplatePath = RelativePath(".github/PULL_REQUEST_TEMPLATE.md")
 
-    private static let managementComment: String = {
-        let managementWarning = File.managmentWarning(section: false, documentation: .contributingInstructions)
-        return FileType.markdown.syntax.comment(contents: managementWarning)
-    }()
-
     static func refreshContributingInstructions(output: Command.Output) throws {
 
-        func key(_ name: String) -> String {
-            return "[_\(name)_]"
-        }
-
-        var body = [
-            managementComment,
-            "",
-            String(try Repository.packageRepository.contributingInstructions())
-            ].joinedAsLines()
-
-        body = body.replacingOccurrences(of: key("Project"), with: String(try Repository.packageRepository.projectName()))
-
         var contributing = File(possiblyAt: contributingInstructionsPath)
-        contributing.body = body
+        contributing.body = String(try Repository.packageRepository.contributingInstructions())
         require { try contributing.write(output: output) }
 
         var issue = File(possiblyAt: issueTemplatePath)
@@ -56,27 +39,5 @@ struct ContributingInstructions {
         // Remove deprecated.
 
         try? Repository.delete(deprecatedContributingInstructionsPath)
-    }
-
-    static func relinquishControl(output: Command.Output) {
-
-        var printedHeader = false
-
-        for path in [contributingInstructionsPath, issueTemplatePath, pullRequestTemplatePath] {
-            autoreleasepool {
-
-                var file = File(possiblyAt: path)
-                if let range = file.contents.range(of: managementComment) {
-
-                    if ¬printedHeader {
-                        printedHeader = true
-                        output.print("Cancelling contributing instruction management...".formattedAsSectionHeader())
-                    }
-
-                    file.contents.removeSubrange(range)
-                    try? file.write(output: output)
-                }
-            }
-        }
     }
 }

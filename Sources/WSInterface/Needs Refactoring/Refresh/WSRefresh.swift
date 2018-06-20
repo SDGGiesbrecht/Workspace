@@ -66,8 +66,6 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
         try ContributingInstructions.refreshContributingInstructions(output: output)
-    } else {
-        ContributingInstructions.relinquishControl(output: output)
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

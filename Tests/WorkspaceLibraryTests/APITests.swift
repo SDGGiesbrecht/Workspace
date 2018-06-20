@@ -265,6 +265,7 @@ class APITests : TestCase {
             ].joinedAsLines()
         configuration.documentation.readMe.about["🇨🇦EN"] = "This project is just a test."
         configuration.documentation.relatedProjects = [
+            .heading(text: ["🇨🇦EN": "Heading"]),
             .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
         ]
         configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))

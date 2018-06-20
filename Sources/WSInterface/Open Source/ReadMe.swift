@@ -73,11 +73,13 @@ enum ReadMe {
             for entry in relatedProjects {
                 autoreleasepool {
                     switch entry {
-                    case .heading(text: let text):
-                        markdown += [
-                            "",
-                            StrictString("## \(text))")
-                        ]
+                    case .heading(text: let translations):
+                        if let text = translations[localization] {
+                            markdown += [
+                                "",
+                                StrictString("## \(text)")
+                            ]
+                        }
                     case .project(url: let url):
                         let package = Repository.linkedRepository(from: url)
                         let name: StrictString

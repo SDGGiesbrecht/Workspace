@@ -13,6 +13,11 @@ or
 ### Demonstration
 <!-- (If the issue is not a bug, erase this section.) -->
 
+```swift
+let thisCode = trigger(theBug)
+
+// Or provide a link to code elsewhere.
+```
 ```shell
 this script --triggers "the bug"
 

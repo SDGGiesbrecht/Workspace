@@ -19,6 +19,7 @@
 @_exported import XCTest
 
 @_exported import SDGPersistenceTestUtilities
+@_exported import SDGLocalizationTestUtilities
 @_exported import SDGXCTestUtilities
 
 @_exported import SDGCommandLineTestUtilities

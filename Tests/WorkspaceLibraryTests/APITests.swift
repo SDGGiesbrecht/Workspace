@@ -161,6 +161,16 @@ class APITests : TestCase {
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
      }
 
+    func testLocalizationIdentifier() {
+        var dictionary: [LocalizationIdentifier: Bool] = [:]
+        dictionary[ContentLocalization.englishCanada] = true
+        XCTAssertEqual(dictionary["🇨🇦EN"], true)
+        dictionary["🇬🇧EN"] = false
+        XCTAssertEqual(dictionary[ContentLocalization.englishUnitedKingdom], false)
+
+
+    }
+
     func testMissingReadMeLocalization() {
         let configuration = WorkspaceConfiguration()
         configuration.documentation.localizations = ["zxx"]
@@ -170,11 +180,31 @@ class APITests : TestCase {
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
+    func testMultipleProducts() {
+        let configuration = WorkspaceConfiguration()
+        configuration.documentation.localizations = ["en"]
+        configuration.documentation.currentVersion = Version(1, 0, 0)
+        configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
+        PackageRepository(mock: "MultipleProducts").test(commands: [
+            ["refresh", "read‐me"]
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testNoLibraries() {
+        let configuration = WorkspaceConfiguration()
+        configuration.documentation.localizations = ["en"]
+        configuration.documentation.currentVersion = Version(1, 0, 0)
+        configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
+        PackageRepository(mock: "NoLibraries").test(commands: [
+            ["refresh", "read‐me"]
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
     func testNoLocalizations() {
         PackageRepository(mock: "NoLocalizations").test(commands: [
             ["refresh", "read‐me"]
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     }
+    }
 
     func testNoMacOS() {
         #if !os(Linux)
@@ -213,12 +243,12 @@ class APITests : TestCase {
         #endif
      }
 
-    func testMultipleProducts() {
+    func testOneProductMultipleModules() {
         let configuration = WorkspaceConfiguration()
         configuration.documentation.localizations = ["en"]
         configuration.documentation.currentVersion = Version(1, 0, 0)
         configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
-        PackageRepository(mock: "MultipleProducts").test(commands: [
+        PackageRepository(mock: "OneProductMultipleModules").test(commands: [
             ["refresh", "read‐me"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }

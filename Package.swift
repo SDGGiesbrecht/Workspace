@@ -108,6 +108,7 @@ let package = Package(
             "WorkspaceConfiguration",
             "WSInterface",
             .productItem(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
+            .productItem(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
             .productItem(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
             .productItem(name: "SDGCommandLineTestUtilities", package: "SDGCommandLine")
             ]),

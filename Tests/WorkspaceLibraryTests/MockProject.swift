@@ -235,7 +235,7 @@ extension PackageRepository {
                 }
             }
         } catch {
-            XCTFail("\(error)")
+            XCTFail("\(error)", file: file, line: line)
         }
     }
 }

@@ -174,6 +174,8 @@ public final class WorkspaceConfiguration : Configuration {
             if requireExamples {
                 assert(documentation.readMe.exampleUsage[localization] ≠ nil, "No examples specified for “\(localization)”.")
             }
+
+            assert(documentation.readMe.about ≠ nil, "About not localized for “\(localization)”.")
         }
     }
 

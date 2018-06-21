@@ -1,6 +1,6 @@
 $ workspace validate documentation‐coverage •no‐colour
 
-Generating documentation for “NoMacOSOrIOS”...
+Generating documentation for “NoMacOSOrIOS”... (§1)
 
 
 $ jazzy --module NoMacOSOrIOS --copyright "Copyright ©2018 the NoMacOSOrIOS project contributors. All rights reserved." --documentation=Documentation/*.md --clean --use-safe-filenames --output "[Temporary]/NoMacOSOrIOS/docs/NoMacOSOrIOS" --xcodebuild-arguments "-scheme,NoMacOSOrIOS-Package,-target,NoMacOSOrIOS,-sdk,watchos,-derivedDataPath,[Temporary]/Jazzy Build Artifacts"
@@ -14,7 +14,7 @@ jam out ♪♫ to your fresh new docs in `docs/NoMacOSOrIOS`
 
 Writing to “docs/NoMacOSOrIOS/.nojekyll”...
 
-Checking documentation coverage for “NoMacOSOrIOS”... (§1)
+Checking documentation coverage for “NoMacOSOrIOS”... (§2)
 
 
 ✓ Generated documentation for “NoMacOSOrIOS”.

@@ -3,7 +3,7 @@ struct FailingTests {
         let x = "Unused"
         return "Hello, World!"
     }
-    func untested() -> String {
+    func notCovered() -> String {
         return "???"
     }
 }

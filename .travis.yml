@@ -63,6 +63,28 @@ matrix:
         - "eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\""
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job miscellaneous"
+    - os: osx
+      env:
+        - JOB="Documentation"
+      osx_image: xcode9.3
+      script:
+        - "bash \"./Refresh (macOS).command\""
+        - "bash \"./Validate (macOS).command\" •job documentation"
+    - os: osx
+      env:
+        - JOB="Deployment"
+        - secure: "WfBLnstfcBi0Z8yioAfvEnoK/R59u+fLag3vBulzdePBF60jRQbT4qCr1wCuBsp1JHWJlJSM/GmVsqFEJgt1hJOL4lfx2proY6XUBNdn3BElPkDBgG2eIbPFHkdCtDLGSVqzNhUca6MKWJ4qZCujLKMSfvb+OBylzdhhVd+j5l/Icza0shRpAWDaSWiio3RkvxD08lFm9Fvlg4d09uRKzGPhlg1PjUP7bbl9xcoEqh/4ZzL2GTXGbHfJJOkQQXoPTbF0R8LiYVJVA5euFfHQw1rFepHhfSdhililvC0ld/ksSpQRLwCY93Sb9wOMRrc6HASApRALi9M3TGOQQrEI/Kjh4lJ+Okjg7wZnKixAuGPMUH0DWy57t+gSy51PyFi0bHfJzGm3Y5t8gtimsIiiWbWlNyZF3EndFmtQRfzLjfdJwHx34Zj44kX+rr7p29hkTlfv9YUuOP6CizVQnDfAoWPyv6lsD/PSYTdw97yWBoNXNVbKp8Ge4MmgtpYuWdOaZj0Lim0WZ/04A0clXW7wj/G+MJCbeRiFxKyVi6OUdhRy+BkVVqdNul892/vKyeLwJp9d6DtDkwy11TaxLeGpu0eBWUEhfQJIUG/EaE5FD1v6GsZpmy8FF+XVKeOPDI+kHuHQ6hUjXnOM8HGr0HGpbiQ9Nw0mv4ozUi+EFv7429Q="
+      if: branch = master and (not type = pull_request)
+
+      deploy:
+        provider: pages
+        local_dir: docs
+        github_token: $GITHUB_TOKEN
+        skip_cleanup: true
+      osx_image: xcode9.3
+      script:
+        - "bash \"./Refresh (macOS).command\""
+        - "bash \"./Validate (macOS).command\" •job deployment"
 
 cache:
   directories:

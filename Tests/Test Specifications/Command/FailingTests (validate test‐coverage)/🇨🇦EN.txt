@@ -8,7 +8,7 @@ Checking test coverage on macOS... (§2)
 
 [Temporary]/FailingTests/Sources/FailingTests/FailingTests.swift
 Line 6
-    func untested() -> String {
+    func notCovered() -> String {
         return "???"
     }
 

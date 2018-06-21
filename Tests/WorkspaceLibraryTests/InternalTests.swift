@@ -12,8 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-@testable import Interface
-import GeneralTestImports
+@testable import WSInterface
+import WSGeneralTestImports
 
 class InternalTests : TestCase {
 
@@ -61,7 +61,7 @@ class InternalTests : TestCase {
             "Package.resolved",
 
             // Workspace
-            ".Workspace Configuration.txt",
+            "Workspace.swift",
             String(Script.refreshMacOS.fileName),
             String(Script.refreshLinux.fileName),
 
@@ -101,8 +101,8 @@ class InternalTests : TestCase {
 
                 XCTAssert(unexpected.isEmpty, [
                     "Unexpected files are being tracked by Git:",
-                    unexpected.joinAsLines()
-                    ].joinAsLines())
+                    unexpected.joinedAsLines()
+                    ].joinedAsLines())
 
             }).execute(with: [])
         } catch {

@@ -12,11 +12,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import GeneralImports
+import WSGeneralImports
 
 import SDGExternalProcess
 
-import Interface
+import WSInterface
 
 do {
     ProcessInfo.applicationIdentifier = "ca.solideogloria.Workspace.Tests"

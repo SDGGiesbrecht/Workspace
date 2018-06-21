@@ -13,8 +13,8 @@
  */
 
 import SDGLogic
-@testable import Interface
-import GeneralTestImports
+@testable import WSInterface
+import WSGeneralTestImports
 
 import SDGExternalProcess
 
@@ -35,7 +35,7 @@ extension PackageRepository {
         self.init(at: URL(fileURLWithPath: "/tmp").appendingPathComponent(name))
     }
 
-    func test<L>(commands: [[StrictString]], localizations: L.Type, withDependency: Bool = false, overwriteSpecificationInsteadOfFailing: Bool, file: StaticString = #file, line: UInt = #line) where L : InputLocalization {
+    func test<L>(commands: [[StrictString]], configuration: WorkspaceConfiguration = WorkspaceConfiguration(), sdg: Bool = false, localizations: L.Type, withDependency: Bool = false, overwriteSpecificationInsteadOfFailing: Bool, file: StaticString = #file, line: UInt = #line) where L : InputLocalization {
         do {
             try autoreleasepool {
                 let developer = URL(fileURLWithPath: "/tmp/Developer")
@@ -74,6 +74,15 @@ extension PackageRepository {
                     #endif
                     _ = try? Shell.default.run(command: ["git", "init"])
                     _ = try? FileManager.default.copy(repositoryRoot.appendingPathComponent(".gitignore"), to: location.appendingPathComponent(".gitignore"))
+
+                    WorkspaceContext.current = try configurationContext()
+                    if sdg {
+                        configuration.applySDGOverrides()
+                        configuration.validateSDGStandards()
+                    }
+                    WorkspaceConfiguration.queue(mock: configuration)
+                    defer { _ = try? self.configuration() } // Dequeue even if unused.
+                    resetConfigurationCache(debugReason: "new test")
 
                     for command in commands {
 
@@ -207,18 +216,18 @@ extension PackageRepository {
                             files.insert(file.path(relativeTo: afterLocation))
                         }
 
-                        for file in files where ¬file.hasSuffix(".dsidx") {
-                            let result = location.appendingPathComponent(file)
-                            let after = afterLocation.appendingPathComponent(file)
+                        for fileName in files where ¬fileName.hasSuffix(".dsidx") {
+                            let result = location.appendingPathComponent(fileName)
+                            let after = afterLocation.appendingPathComponent(fileName)
                             if let resultContents = try? String(from: result) {
                                 if (try? String(from: after)) ≠ nil {
-                                    compare(resultContents, against: after, overwriteSpecificationInsteadOfFailing: false)
+                                    compare(resultContents, against: after, overwriteSpecificationInsteadOfFailing: false, file: file, line: line)
                                 } else {
-                                    XCTFail("Unexpected file produced: “\(file)”")
+                                    XCTFail("Unexpected file produced: “\(fileName)”")
                                 }
                             } else {
                                 if (try? String(from: after)) ≠ nil {
-                                    XCTFail("Failed to produce “\(file)”.")
+                                    XCTFail("Failed to produce “\(fileName)”.", file: file, line: line)
                                 }
                             }
                         }
@@ -226,7 +235,7 @@ extension PackageRepository {
                 }
             }
         } catch {
-            XCTFail("\(error)")
+            XCTFail("\(error)", file: file, line: line)
         }
     }
 }

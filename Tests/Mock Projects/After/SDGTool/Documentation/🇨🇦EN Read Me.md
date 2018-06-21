@@ -22,7 +22,9 @@ This project does stuff.
 
 ## Installation
 
-Paste the following into a terminal to install or update `SDG`:
+SDG provides a command line tool.
+
+Paste the following into a terminal to install or update it:
 
 ```shell
 curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s SDG "https://github.com/JohnDoe/SDG" 1.0.0 "tool help" tool
@@ -30,9 +32,9 @@ curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/
 
 ## Importing
 
-`SDG` is intended for use with the [Swift Package Manager](https://swift.org/package-manager/).
+SDG provides a library for use with the [Swift Package Manager](https://swift.org/package-manager/).
 
-Simply add `SDG` as a dependency in `Package.swift`:
+Simply add SDG as a dependency in `Package.swift`:
 
 ```swift
 let package = Package(
@@ -48,7 +50,7 @@ let package = Package(
 )
 ```
 
-`SDG` can then be imported in source files:
+The library’s module can then be imported in source files:
 
 ```swift
 import Library
@@ -66,4 +68,10 @@ import Library
 
 ## About
 
-This project is just a test.
+The SDG project is maintained by Jeremy David Giesbrecht.
+
+If SDG saves you money, consider giving some of it as a [donation](https://paypal.me/JeremyGiesbrecht).
+
+If SDG saves you time, consider devoting some of it to [contributing](https://github.com/JohnDoe/SDG) back to the project.
+
+> [Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.<br>For the worker is worthy of his wages.](https://www.biblegateway.com/passage/?search=Luke+10&version=SBLGNT;NIV)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;―‎ישוע/Yeshuʼa

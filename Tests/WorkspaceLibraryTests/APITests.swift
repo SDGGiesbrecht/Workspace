@@ -56,7 +56,7 @@ class APITests : TestCase {
         let configuration = WorkspaceConfiguration()
         configuration.proofreading.rules.remove(.colonSpacing)
         configuration.proofreading.rules.remove(.unicode)
-        for rule in configuration.proofreading.rules {
+        for rule in ProofreadingRule.cases {
             _ = rule.category
         }
         PackageRepository(mock: "CustomProofread").test(commands: [
@@ -212,6 +212,16 @@ class APITests : TestCase {
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
         #endif
      }
+
+    func testMultipleProducts() {
+        let configuration = WorkspaceConfiguration()
+        configuration.documentation.localizations = ["en"]
+        configuration.documentation.currentVersion = Version(1, 0, 0)
+        configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
+        PackageRepository(mock: "MultipleProducts").test(commands: [
+            ["refresh", "read‐me"]
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
 
     func testPartialReadMe() {
         let configuration = WorkspaceConfiguration()

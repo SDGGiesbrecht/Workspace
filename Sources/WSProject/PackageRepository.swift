@@ -351,8 +351,8 @@ extension PackageRepository {
             }).resolved(using: location.path(relativeTo: self.location)))
 
             try? FileManager.default.removeItem(at: location)
-            if location.pathExtension == "swift" { // [_Exempt from Test Coverage_] Nothing deletes Swift files yet.
-                resetManifestCache(debugReason: location.lastPathComponent)
+            if location.pathExtension == "swift" {
+                resetManifestCache(debugReason: location.lastPathComponent) // [_Exempt from Test Coverage_] Nothing deletes Swift files yet.
             } else {
                 resetFileCache(debugReason: location.lastPathComponent)
             }

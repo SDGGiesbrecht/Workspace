@@ -168,7 +168,9 @@ class APITests : TestCase {
         dictionary["🇬🇧EN"] = false
         XCTAssertEqual(dictionary[ContentLocalization.englishUnitedKingdom], false)
 
-
+        testCustomStringConvertibleConformance(of: LocalizationIdentifier("en"), localizations: InterfaceLocalization.self, uniqueTestName: "English", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: LocalizationIdentifier("cmn"), localizations: InterfaceLocalization.self, uniqueTestName: "Mandarin", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: LocalizationIdentifier("zxx"), localizations: InterfaceLocalization.self, uniqueTestName: "Unknown", overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testMissingReadMeLocalization() {

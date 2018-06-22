@@ -24,6 +24,7 @@ public struct RepositoryConfiguration : Codable {
         "dsidx",
         "DS_Store",
         "nojekyll",
+        "pep8",
         "plist",
         "pins",
         "png",

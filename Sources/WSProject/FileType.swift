@@ -75,7 +75,11 @@ public enum FileType {
             return
         }
 
-        let pathExtension = url.pathExtension
+        var pathExtension = url.pathExtension
+        if pathExtension.isEmpty {
+            pathExtension = (url.lastPathComponent.components(separatedBy: ".") as [String]).last ?? ""
+        }
+
         if let supported = FileType.fileExtensions[pathExtension] {
             self = supported
             return
@@ -89,6 +93,7 @@ public enum FileType {
 
     // MARK: - Cases
 
+    case c
     case css
     case gitIgnore
     case html
@@ -105,15 +110,17 @@ public enum FileType {
     case deprecatedWorkspaceConfiguration
 
     private static let specialNames: [String: FileType] = [
-        ".gitattributes": .gitIgnore,
-        ".gitignore": .gitIgnore,
         "Package.swift": .swiftPackageManifest,
         ".Workspace Configuration.txt": .deprecatedWorkspaceConfiguration,
     ]
 
     private static let fileExtensions: [String: FileType] = [
+        "c": .c,
         "command": .shell,
         "css": .css,
+        "gitattributes": .gitIgnore,
+        "gitignore": .gitIgnore,
+        "h": .c,
         "htm": html,
         "html": .html,
         "js": .javaScript,
@@ -137,7 +144,7 @@ public enum FileType {
     public var syntax: FileSyntax {
         switch self {
 
-        case  .swift, .css, .javaScript:
+        case  .swift, .c, .css, .javaScript:
             return FileSyntax(blockCommentSyntax: FileType.swiftBlockCommentSyntax, lineCommentSyntax: FileType.swiftLineCommentSyntax)
         case .swiftPackageManifest:
             return FileSyntax(blockCommentSyntax: FileType.swiftBlockCommentSyntax, lineCommentSyntax: FileType.swiftLineCommentSyntax, requiredFirstLineToken: "/\u{2F} swift\u{2D}tools\u{2D}version:")

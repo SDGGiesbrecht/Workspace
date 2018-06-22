@@ -23,8 +23,10 @@ public struct RepositoryConfiguration : Codable {
     public var ignoredFileTypes: Set<String> = [
         "dsidx",
         "DS_Store",
+        "modulemap",
         "nojekyll",
         "pep8",
+        "pc",
         "plist",
         "pins",
         "png",

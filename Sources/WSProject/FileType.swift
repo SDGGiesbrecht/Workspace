@@ -77,7 +77,12 @@ public enum FileType {
 
         var pathExtension = url.pathExtension
         if pathExtension.isEmpty {
-            pathExtension = (url.lastPathComponent.components(separatedBy: ".") as [String]).last ?? ""
+            let components = url.lastPathComponent.components(separatedBy: ".") as [String]
+            if components.count > 1 {
+                pathExtension = components.last!
+            } else {
+                return nil // File with no extension information.
+            }
         }
 
         if let supported = FileType.fileExtensions[pathExtension] {
@@ -99,11 +104,14 @@ public enum FileType {
     case html
     case javaScript
     case json
+    case lisp
     case markdown
+    case objectiveC
     case shell
     case swift
     case swiftPackageManifest
     case xcodeProject
+    case xml
     case yaml
 
     // Deprecated (Only exists so proofreading can detect it.)
@@ -118,17 +126,21 @@ public enum FileType {
         "c": .c,
         "command": .shell,
         "css": .css,
+        "el": .lisp,
         "gitattributes": .gitIgnore,
         "gitignore": .gitIgnore,
-        "h": .c,
+        "h": .objectiveC,
         "htm": html,
         "html": .html,
         "js": .javaScript,
         "json": .json,
+        "m": .objectiveC,
         "md": .markdown,
         "pbxproj": .xcodeProject,
         "sh": .shell,
         "swift": .swift,
+        "xcscheme": .xml,
+        "xml": .xml,
         "yaml": .yaml,
         "yml": .yaml
     ]
@@ -144,26 +156,31 @@ public enum FileType {
     public var syntax: FileSyntax {
         switch self {
 
-        case  .swift, .c, .css, .javaScript:
+        case  .swift, .c, .css, .javaScript, .objectiveC:
             return FileSyntax(blockCommentSyntax: FileType.swiftBlockCommentSyntax, lineCommentSyntax: FileType.swiftLineCommentSyntax)
         case .swiftPackageManifest:
             return FileSyntax(blockCommentSyntax: FileType.swiftBlockCommentSyntax, lineCommentSyntax: FileType.swiftLineCommentSyntax, requiredFirstLineToken: "/\u{2F} swift\u{2D}tools\u{2D}version:")
-
-        case .gitIgnore, .yaml:
-            return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"))
-        case .html:
-            return FileSyntax(blockCommentSyntax: FileType.htmlBlockComment, lineCommentSyntax: nil, requiredFirstLineToken: "<\u{21}DOCTYPE")
-        case .json:
-            return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: nil)
-        case .markdown:
-            return FileSyntax(blockCommentSyntax: FileType.htmlBlockComment, lineCommentSyntax: nil, semanticLineTerminalWhitespace: ["  "])
-        case .shell:
-            return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"), requiredFirstLineToken: "#!")
         case .xcodeProject:
             return FileSyntax(blockCommentSyntax: FileType.swiftBlockCommentSyntax, lineCommentSyntax: FileType.swiftLineCommentSyntax)
 
-        case .deprecatedWorkspaceConfiguration:
-            return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: nil, requiredFirstLineToken: nil, semanticLineTerminalWhitespace: [])
+        case .shell:
+            return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"), requiredFirstLineToken: "#!")
+        case .gitIgnore, .yaml:
+            return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"))
+
+        case .html, .xml:
+            return FileSyntax(blockCommentSyntax: FileType.htmlBlockComment, lineCommentSyntax: nil, requiredFirstLineToken: "<\u{21}DOCTYPE")
+        case .markdown:
+            return FileSyntax(blockCommentSyntax: FileType.htmlBlockComment, lineCommentSyntax: nil, semanticLineTerminalWhitespace: ["  "])
+
+        case .lisp:
+            return FileSyntax(blockCommentSyntax: BlockCommentSyntax(start: "#|", end: "|#"), lineCommentSyntax: LineCommentSyntax(start: ";"))
+
+        case .json:
+            return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: nil)
+
+        case .deprecatedWorkspaceConfiguration: // Not actually used anymore.
+            return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: nil)
         }
     }
 }

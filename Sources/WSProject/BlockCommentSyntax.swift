@@ -33,11 +33,7 @@ internal struct BlockCommentSyntax {
 
     // MARK: - Output
 
-    private func comment(contents: [String]) -> String {
-        return comment(contents: contents.joinedAsLines())
-    }
-
-    internal func comment(contents: String) -> String {
+    internal func comment(contents: String) -> String { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
 
         let withEndToken = [contents, end].joinedAsLines()
 
@@ -69,7 +65,7 @@ internal struct BlockCommentSyntax {
         if ¬string.scalars.advance(&index, over: start.scalars) {
             return false
         } else {
-            // Block comment
+            // Block comment // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
 
             if countDocumentationMarkup {
                 return true
@@ -87,11 +83,11 @@ internal struct BlockCommentSyntax {
         }
     }
 
-    internal func firstComment(in range: Range<String.ScalarView.Index>, of string: String) -> NestingLevel<String.ScalarView>? {
+    internal func firstComment(in range: Range<String.ScalarView.Index>, of string: String) -> NestingLevel<String.ScalarView>? { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         return string.scalars.firstNestingLevel(startingWith: start.scalars, endingWith: end.scalars)
     }
 
-    internal func contentsOfFirstComment(in range: Range<String.ScalarView.Index>, of string: String) -> String? {
+    internal func contentsOfFirstComment(in range: Range<String.ScalarView.Index>, of string: String) -> String? { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         guard let range = firstComment(in: range, of: string)?.contents.range else {
             return nil
         }
@@ -125,11 +121,7 @@ internal struct BlockCommentSyntax {
         return strings.joinedAsLines()
     }
 
-    private func firstComment(in string: String) -> NestingLevel<String.ScalarView>? {
-        return firstComment(in: string.scalars.startIndex ..< string.scalars.endIndex, of: string)
-    }
-
-    internal func contentsOfFirstComment(in string: String) -> String? {
+    internal func contentsOfFirstComment(in string: String) -> String? { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         return contentsOfFirstComment(in: string.scalars.startIndex ..< string.scalars.endIndex, of: string)
     }
 }

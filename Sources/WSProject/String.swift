@@ -21,16 +21,4 @@ extension String {
     public var isWhitespace: Bool {
         return ¬scalars.contains(where: { $0 ∉ CharacterSet.whitespaces })
     }
-
-    // MARK: - Line and Column numbers
-
-    private func lineNumber(for index: String.ScalarView.Index) -> Int {
-        return lines.distance(from: lines.startIndex, to: index.line(in: lines)) + 1
-    }
-
-    private func columnNumber(for index: String.ScalarView.Index) -> Int {
-        let location = index.cluster(in: clusters)
-        let line = lineRange(for: location ..< location)
-        return distance(from: line.lowerBound, to: location) + 1
-    }
 }

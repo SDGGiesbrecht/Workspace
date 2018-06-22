@@ -136,7 +136,7 @@ public struct TextFile {
     }
 
     public var header: String {
-        get {
+        get { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
             return fileType.syntax.header(file: self)
         }
         set {
@@ -145,14 +145,14 @@ public struct TextFile {
     }
 
     public var body: String {
-        get {
+        get { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
             return String(contents[headerEnd...])
         }
         set {
             var new = newValue
             // Remove unnecessary initial spacing
             while new.hasPrefix("\n") {
-                new.scalars.removeFirst()
+                new.scalars.removeFirst() // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
             }
 
             let headerSource = String(contents[headerStart ..< headerEnd])

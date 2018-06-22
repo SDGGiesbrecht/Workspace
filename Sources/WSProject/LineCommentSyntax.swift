@@ -33,7 +33,7 @@ public struct LineCommentSyntax {
 
     // MARK: - Output
 
-    public func comment(contents: String, indent: String = "") -> String {
+    public func comment(contents: String, indent: String = "") -> String { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
 
         let spacing = stylisticSpacing ? " " : ""
 
@@ -70,7 +70,7 @@ public struct LineCommentSyntax {
             // Comment
 
             if countDocumentationMarkup {
-                return true
+                return true // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
             } else {
                 // Make shure this isn’t documentation.
 
@@ -79,7 +79,7 @@ public struct LineCommentSyntax {
                     if nextCharacter ∈ CharacterSet.whitespacesAndNewlines {
                         return true
                     }
-                }
+                } // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
                 return false
             }
         }
@@ -90,15 +90,15 @@ public struct LineCommentSyntax {
         if let newline = string.scalars.firstMatch(for: ConditionalPattern({ $0 ∈ CharacterSet.newlines }), in: (index ..< range.upperBound).sameRange(in: string.scalars))?.range {
 
             return index ..< newline.lowerBound
-        } else {
-            return index ..< range.upperBound
+        } else { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+            return index ..< range.upperBound // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         }
     }
 
     internal func rangeOfFirstComment(in range: Range<String.ScalarView.Index>, of string: String) -> Range<String.ScalarView.Index>? {
 
         guard let startRange = string.scalars.firstMatch(for: start.scalars, in: range)?.range else {
-            return nil
+            return nil // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         }
 
         var resultEnd = restOfLine(at: startRange.lowerBound, in: range, of: string).upperBound
@@ -118,16 +118,8 @@ public struct LineCommentSyntax {
         return startRange.lowerBound ..< resultEnd
     }
 
-    private func firstComment(in range: Range<String.ScalarView.Index>, of string: String) -> String? {
-        if let range = rangeOfFirstComment(in: range, of: string) {
-            return String(string[range])
-        } else {
-            return nil
-        }
-    }
-
     internal func contentsOfFirstComment(in range: Range<String.ScalarView.Index>, of string: String) -> String? {
-        guard let range = rangeOfFirstComment(in: range, of: string) else {
+        guard let range = rangeOfFirstComment(in: range, of: string) else { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
             return nil
 
         }
@@ -155,11 +147,7 @@ public struct LineCommentSyntax {
         return lines.joinedAsLines()
     }
 
-    private func firstComment(in string: String) -> String? {
-        return firstComment(in: string.startIndex ..< string.endIndex, of: string)
-    }
-
-    internal func contentsOfFirstComment(in string: String) -> String? {
+    internal func contentsOfFirstComment(in string: String) -> String? { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         return contentsOfFirstComment(in: string.startIndex ..< string.endIndex, of: string)
     }
 }

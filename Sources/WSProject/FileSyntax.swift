@@ -37,7 +37,7 @@ public struct FileSyntax {
 
     // MARK: - Output
 
-    private func comment(contents: String) -> String? {
+    private func comment(contents: String) -> String? { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         if let blockSyntax = blockCommentSyntax {
             return blockSyntax.comment(contents: contents)
         } else if let lineSyntax = lineCommentSyntax {
@@ -47,11 +47,11 @@ public struct FileSyntax {
         }
     }
 
-    private func generateHeader(contents: String) -> String? {
+    private func generateHeader(contents: String) -> String? { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         return comment(contents: contents)
     }
 
-    internal func insert(header: String, into file: inout TextFile) {
+    internal func insert(header: String, into file: inout TextFile) { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         if let generated = generateHeader(contents: header) {
 
             var first = String(file.contents[..<file.headerStart])
@@ -83,7 +83,7 @@ public struct FileSyntax {
 
     // MARK: - Parsing
 
-    public func rangeOfFirstComment(in range: Range<String.ScalarView.Index>, of file: TextFile) -> Range<String.ScalarView.Index>? {
+    public func rangeOfFirstComment(in range: Range<String.ScalarView.Index>, of file: TextFile) -> Range<String.ScalarView.Index>? { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         let possibleBlock = blockCommentSyntax?.firstComment(in: range, of: file.contents)?.container.range
         let possibleLine = lineCommentSyntax?.rangeOfFirstComment(in: range, of: file.contents)
 
@@ -106,7 +106,7 @@ public struct FileSyntax {
         }
     }
 
-    public func contentsOfFirstComment(in range: Range<String.ScalarView.Index>, of file: TextFile) -> String? {
+    public func contentsOfFirstComment(in range: Range<String.ScalarView.Index>, of file: TextFile) -> String? { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         if let block = blockCommentSyntax?.contentsOfFirstComment(in: range, of: file.contents) {
             return block
         } else if let line = lineCommentSyntax?.contentsOfFirstComment(in: range, of: file.contents) {
@@ -144,7 +144,7 @@ public struct FileSyntax {
         if let blockSyntax = blockCommentSyntax,
             blockSyntax.startOfCommentExists(at: start, in: file.contents, countDocumentationMarkup: false),
             let block = blockSyntax.firstComment(in: start ..< file.contents.scalars.endIndex, of: file.contents)?.container.range.upperBound {
-            return block
+            return block // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         }
 
         if let lineSyntax = lineCommentSyntax,
@@ -162,7 +162,7 @@ public struct FileSyntax {
         return result
     }
 
-    internal func header(file: TextFile) -> String {
+    internal func header(file: TextFile) -> String { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         let markup = String(file.contents[file.headerStart ..< file.headerEnd])
 
         if markup.lines.map({ String($0.line) }).filter({ ¬$0.isWhitespace }).isEmpty {

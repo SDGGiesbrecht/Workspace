@@ -21,7 +21,7 @@ public enum FileType {
     // MARK: - Static Properties
 
     private static var unsupportedFileTypesEncountered: [String: URL] = [:]
-    public static func unsupportedTypesWarning(for project: PackageRepository) throws -> StrictString? {
+    public static func unsupportedTypesWarning(for project: PackageRepository) throws -> StrictString? { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
 
         let expected = try project.configuration().repository.ignoredFileTypes
         var unexpectedTypes = unsupportedFileTypesEncountered.filter { key, _ in
@@ -168,7 +168,7 @@ public enum FileType {
             return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"))
 
         case .html, .xml:
-            return FileSyntax(blockCommentSyntax: FileType.htmlBlockComment, lineCommentSyntax: nil, requiredFirstLineToken: "<\u{21}DOCTYPE")
+            return FileSyntax(blockCommentSyntax: FileType.htmlBlockComment, lineCommentSyntax: nil, requiredFirstLineToken: "<\u{21}DOCTYPE") // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         case .markdown:
             return FileSyntax(blockCommentSyntax: FileType.htmlBlockComment, lineCommentSyntax: nil, semanticLineTerminalWhitespace: ["  "])
 
@@ -176,7 +176,7 @@ public enum FileType {
             return FileSyntax(blockCommentSyntax: BlockCommentSyntax(start: "#|", end: "|#"), lineCommentSyntax: LineCommentSyntax(start: ";"))
 
         case .json:
-            return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: nil)
+            return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: nil) // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
 
         case .deprecatedWorkspaceConfiguration: // Not actually used anymore.
             return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: nil)

@@ -79,7 +79,7 @@ enum Documentation {
 
             let transformedMarker = ReadMeConfiguration._skipInJazzy.replacingMatches(for: "\u{2D}\u{2D}".scalars, with: "&ndash;".scalars).replacingMatches(for: "<".scalars, with: "&lt;".scalars).replacingMatches(for: ">".scalars, with: "&gt;".scalars)
             for url in try project.trackedFiles(output: output) where url.is(in: outputSubdirectory) {
-                if let type = try? FileType(url: url),
+                if let type = FileType(url: url),
                     type == .html {
                     try autoreleasepool {
 

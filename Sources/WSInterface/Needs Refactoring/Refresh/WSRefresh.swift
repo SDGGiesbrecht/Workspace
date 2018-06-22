@@ -15,6 +15,7 @@
 import SDGLogic
 import WSGeneralImports
 import WorkspaceConfiguration
+import WSGitHub
 
 func instructionsAfterRefresh() throws -> String {
     if let xcodeProject = try Repository.packageRepository.xcodeProject()?.lastPathComponent {
@@ -59,13 +60,11 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
         try Licence.refreshLicence(output: output)
     }
 
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    // GitHub
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     if try options.project.configuration().gitHub.manage {
-
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        output.print("Updating contributing instructions...".formattedAsSectionHeader())
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-
-        try ContributingInstructions.refreshContributingInstructions(output: output)
+        try Workspace.Refresh.GitHub.command.execute(withArguments: arguments, options: options, output: output)
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
@@ -98,7 +97,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     output.print("Updating inherited documentation...".formattedAsSectionHeader())
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-    DocumentationInheritance.refreshDocumentation(output: output)
+    try DocumentationInheritance.refreshDocumentation(output: output)
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Normalization

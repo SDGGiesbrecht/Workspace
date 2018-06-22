@@ -12,13 +12,6 @@
 
 # [_Begin Workspace Section_]
 
-# !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!!
-# This section is managed by Workspace.
-# Manual changes will not persist.
-# For more information, see:
-# https://github.com/SDGGiesbrecht/Workspace/blob/master/Documentation/Git.md
-# !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!! !!!!!!!
-
 /Refresh?Workspace* linguist-vendored=true
 
 # [_End Workspace Section]

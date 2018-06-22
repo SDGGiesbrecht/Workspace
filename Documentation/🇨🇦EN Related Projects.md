@@ -23,3 +23,5 @@ Workspace automates management of Swift projects.
 ### [SDGCommandLine](https://github.com/SDGGiesbrecht/SDGCommandLine)
 
 ### [SDGCornerstone](https://github.com/SDGGiesbrecht/SDGCornerstone)
+
+SDGCornerstone forms the foundation of the SDG module family. It establishes design patterns and provides general‐use extensions to the [Swift Standard Library](https://developer.apple.com/reference/swift) and [Foundation](https://developer.apple.com/reference/foundation).

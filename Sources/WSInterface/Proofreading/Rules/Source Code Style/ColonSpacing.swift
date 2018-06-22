@@ -16,6 +16,8 @@ import SDGLogic
 import SDGCollections
 import WSGeneralImports
 
+import WSProject
+
 struct ColonSpacing : Rule {
 
     static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in

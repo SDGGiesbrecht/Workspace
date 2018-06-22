@@ -23,6 +23,7 @@ protocol Path : CustomStringConvertible, Equatable, ExpressibleByStringLiteral {
     // MARK: - Properties
 
     var string: String { get }
+    var url: URL { get }
 }
 
 extension Path {

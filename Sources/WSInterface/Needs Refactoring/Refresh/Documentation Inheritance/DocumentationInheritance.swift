@@ -15,20 +15,23 @@
 import SDGLogic
 import SDGCollections
 import WSGeneralImports
+import WSProject
 
 struct DocumentationInheritance {
     static let documentation: [String: String] = {
 
         requireBash(["swift", "package", "resolve"], silent: false)
+        Repository.packageRepository.resetFileCache(debugReason: "resolve")
 
         var list: [String: String] = [:]
 
-        for path in (Repository.allFiles(at: RelativePath("Packages")) + Repository.allFiles(at: RelativePath(".build/checkouts"))).filter({
-            ¬$0.string.contains(".git") ∧ ¬$0.string.contains("/docs/") }) + Repository.sourceFiles {
+        for url in ((Repository.allFiles(at: RelativePath("Packages")) + Repository.allFiles(at: RelativePath(".build/checkouts"))).filter({
+            ¬$0.string.contains(".git") ∧ ¬$0.string.contains("/docs/") }) + Repository.sourceFiles).map({ $0.url }) {
+
                 autoreleasepool {
 
-                    if FileType(filePath: path) == .swift {
-                        let file = require { try File(at: path) }
+                    if FileType(url: url) == .swift {
+                        let file = require { try TextFile(alreadyAt: url) }
 
                         let startTokens = ("[\u{5F}Define Documentation", "_]")
 
@@ -52,9 +55,9 @@ struct DocumentationInheritance {
                             }
 
                             let nextLineStart = file.contents.lineRange(for: startTokenRange).upperBound
-                            let comment = FileType.swiftDocumentationSyntax.requireContentsOfFirstComment(in: nextLineStart ..< file.contents.endIndex, of: file)
-
-                            list[identifier] = comment
+                            if let comment = FileType.swiftDocumentationSyntax.contentsOfFirstComment(in: nextLineStart ..< file.contents.endIndex, of: file) {
+                                list[identifier] = comment
+                            }
                         }
                     }
                 }
@@ -63,21 +66,18 @@ struct DocumentationInheritance {
         return list
     }()
 
-    static func refreshDocumentation(output: Command.Output) {
+    static func refreshDocumentation(output: Command.Output) throws {
 
-        for path in Repository.sourceFiles {
-            autoreleasepool {
+        for url in try Repository.packageRepository.sourceFiles(output: output) {
+            try autoreleasepool {
 
-                if FileType(filePath: path) == .swift {
+                if FileType(url: url) == .swift {
                     let documentationSyntax = FileType.swiftDocumentationSyntax
                     guard let lineDocumentationSyntax = documentationSyntax.lineCommentSyntax else {
-                        fatalError(message: [
-                            "Line documentation syntax missing.",
-                            "This may indicate a bug in Workspace."
-                            ])
+                        unreachable()
                     }
 
-                    var file = require { try File(at: path) }
+                    var file = require { try TextFile(alreadyAt: url) }
 
                     var index = file.contents.startIndex
                     while let range = file.contents.scalars.firstMatch(for: "[\u{5F}Inherit Documentation".scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.range.clusters(in: file.contents.clusters) {
@@ -101,7 +101,7 @@ struct DocumentationInheritance {
                         let documentationIdentifier = String(details[colon.upperBound...])
                         guard let replacement = documentation[documentationIdentifier] else {
                             fatalError(message: [
-                                "There are is no documenation named “\(documentationIdentifier)”."
+                                "There is no documenation named “\(documentationIdentifier)”."
                                 ])
                         }
 
@@ -125,7 +125,7 @@ struct DocumentationInheritance {
                         }
                     }
 
-                    require { try file.write(output: output) }
+                    try file.writeChanges(for: Repository.packageRepository, output: output)
                 }
             }
         }

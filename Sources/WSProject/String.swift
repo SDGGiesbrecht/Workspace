@@ -1,5 +1,5 @@
 /*
- FileType.Error.swift
+ String.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -12,10 +12,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension FileType {
+import SDGLogic
+import SDGCollections
+import WSGeneralImports
 
-    enum Error : Swift.Error {
+extension String {
 
-        case unrecognizedFileExtension(String)
+    public var isWhitespace: Bool {
+        return ¬scalars.contains(where: { $0 ∉ CharacterSet.whitespaces })
     }
 }

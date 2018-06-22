@@ -35,6 +35,7 @@ extension Workspace {
             All.command,
             Scripts.command,
             ReadMe.command,
+            GitHub.command,
             ContinuousIntegration.command,
             Resources.command
             ], defaultSubcommand: All.command)

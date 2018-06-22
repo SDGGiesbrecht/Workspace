@@ -17,6 +17,7 @@
 import SDGLogic
 import SDGCollections
 import WSGeneralImports
+import WSProject
 
 import WorkspaceProjectConfiguration
 
@@ -30,7 +31,7 @@ struct DXcode {
         // Allow dependencies to be found by the executable.
 
         let path = RelativePath("\(try Repository.packageRepository.xcodeProject()!.lastPathComponent)")
-        var file = require { try File(at: path.subfolderOrFile("project.pbxproj")) }
+        var file = require { try TextFile(alreadyAt: path.subfolderOrFile("project.pbxproj").url) }
 
         let startToken = "LD_RUNPATH_SEARCH_PATHS = ("
         let endToken = ");"
@@ -51,20 +52,20 @@ struct DXcode {
             LiteralPattern(startToken.scalars)
             ], with: replacement)
 
-        require { try file.write(output: output) }
+        try file.writeChanges(for: Repository.packageRepository, output: output)
     }
 
-    private static func modifyProject(condition shouldModify: (String) -> Bool, modification modify: (inout File) -> Void, output: Command.Output) throws {
+    private static func modifyProject(condition shouldModify: (String) -> Bool, modification modify: (inout TextFile) -> Void, output: Command.Output) throws {
 
         let path = RelativePath("\(try Repository.packageRepository.xcodeProject()!.lastPathComponent)/project.pbxproj")
 
         do {
-            var file = try File(at: path)
+            var file = try TextFile(alreadyAt: path.url)
 
             if shouldModify(file.contents) {
 
                 modify(&file)
-                require { try file.write(output: output) }
+                try file.writeChanges(for: Repository.packageRepository, output: output)
             }
         } catch {
             return
@@ -91,42 +92,44 @@ struct DXcode {
         try modifyProject(condition: {
             return ¬$0.contains("workspace proofread")
 
-        }, modification: { (file: inout File) -> Void in
+        }, modification: { (file: inout TextFile) -> Void in
 
-            let scriptInsertLocation = file.requireRange(of: "objects = {\n").upperBound
-            file.contents.replaceSubrange(scriptInsertLocation ..< scriptInsertLocation, with: [
-                "\(scriptObjectName) = {",
-                "    isa = PBXShellScriptBuildPhase;",
-                "    shellPath = /bin/bash;",
-                "    shellScript = \u{22}\(script)\u{22};",
-                "};",
-                "" // Final line break.
-                ].joinedAsLines())
+            if let scriptInsertLocation = file.contents.firstMatch(for: "objects = {\n")?.range.upperBound {
+                file.contents.replaceSubrange(scriptInsertLocation ..< scriptInsertLocation, with: [
+                    "\(scriptObjectName) = {",
+                    "    isa = PBXShellScriptBuildPhase;",
+                    "    shellPath = /bin/bash;",
+                    "    shellScript = \u{22}\(script)\u{22};",
+                    "};",
+                    "" // Final line break.
+                    ].joinedAsLines())
 
-            var searchRange = file.contents.startIndex ..< file.contents.endIndex
-            var discoveredPhaseInsertLocation: String.Index?
-            while let possiblePhaseInsertLocation = file.contents.scalars.firstMatch(for: "buildPhases = (\n".scalars, in: searchRange.sameRange(in: file.contents.scalars))?.range.upperBound.cluster(in: file.contents.clusters) {
-                searchRange = possiblePhaseInsertLocation ..< file.contents.endIndex
+                var searchRange = file.contents.startIndex ..< file.contents.endIndex
+                var discoveredPhaseInsertLocation: String.Index?
+                while let possiblePhaseInsertLocation = file.contents.scalars.firstMatch(for: "buildPhases = (\n".scalars, in: searchRange.sameRange(in: file.contents.scalars))?.range.upperBound.cluster(in: file.contents.clusters) {
+                    searchRange = possiblePhaseInsertLocation ..< file.contents.endIndex
 
-                let name = file.requireContents(of: ("name = \u{22}", "\u{22};"), in: searchRange)
-                if name == primaryXcodeTarget {
-                    discoveredPhaseInsertLocation = possiblePhaseInsertLocation
-                    break
+                    if let name = file.contents.firstNestingLevel(startingWith: "name = \u{22}", endingWith: "\u{22};", in: searchRange).flatMap({ String($0.contents.contents) }) {
+                        if name == primaryXcodeTarget {
+                            discoveredPhaseInsertLocation = possiblePhaseInsertLocation
+                            break
+                        }
+                    }
                 }
+
+                guard let phaseInsertLocation = discoveredPhaseInsertLocation else {
+
+                    fatalError(message: [
+                        "Failed to find a target with the following name:",
+                        primaryXcodeTarget
+                        ])
+                }
+
+                file.contents.replaceSubrange(phaseInsertLocation ..< phaseInsertLocation, with: [
+                    scriptActionEntry,
+                    "" // Final line break.
+                    ].joinedAsLines())
             }
-
-            guard let phaseInsertLocation = discoveredPhaseInsertLocation else {
-
-                fatalError(message: [
-                    "Failed to find a target with the following name:",
-                    primaryXcodeTarget
-                    ])
-            }
-
-            file.contents.replaceSubrange(phaseInsertLocation ..< phaseInsertLocation, with: [
-                scriptActionEntry,
-                "" // Final line break.
-                ].joinedAsLines())
         }, output: output)
     }
 
@@ -136,7 +139,7 @@ struct DXcode {
 
         try modifyProject(condition: { (_) -> Bool in
             return true
-        }, modification: { (file: inout File) -> Void in
+        }, modification: { (file: inout TextFile) -> Void in
 
             file.contents = file.contents.replacingOccurrences(of: scriptActionEntry, with: disabledScriptActionEntry)
         }, output: output)
@@ -146,7 +149,7 @@ struct DXcode {
 
         try modifyProject(condition: { (_) -> Bool in
             return true
-        }, modification: { (file: inout File) -> Void in
+        }, modification: { (file: inout TextFile) -> Void in
 
             file.contents = file.contents.replacingOccurrences(of: disabledScriptActionEntry, with: scriptActionEntry)
         }, output: output)

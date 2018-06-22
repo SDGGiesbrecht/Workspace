@@ -12,6 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Dispatch
+
+import SDGLogic
+import SDGMathematics
 import SDGCollections
 import WSGeneralImports
 
@@ -114,7 +118,21 @@ class Jazzy : RubyGem {
                 ].joined(separator: ",")
             ])
 
+        var complete = false
+        if ProcessInfo.processInfo.environment["CONTINUOUS_INTEGRATION"] ≠ nil {
+            // Travis CI needs periodic output of some sort; otherwise it assumes Jazzy has stalled.
+            DispatchQueue.global().async {
+                while ¬complete {
+                    Thread.sleep(until: Date.init(timeIntervalSinceNow: TimeInterval(60 /* s */ × 9)))
+                    if ¬complete {
+                        _ = try? Shell.default.run(command: ["echo", "Jazzy is still running...", ">", "/dev/tty"]) // [_Exempt from Test Coverage_] Tests had better not take that long!
+                    }
+                }
+            }
+        }
+
         try executeInCompatibilityMode(with: jazzyArguments, output: output)
+        complete = true
         project.resetFileCache(debugReason: "jazzy")
 
         // [_Workaround: Jazzy is incompatible with Jekyll. (jazzy --version 0.9.1)_]
@@ -170,7 +188,7 @@ class Jazzy : RubyGem {
 
     private func fixSplitClusters(in directory: URL, for project: PackageRepository, output: Command.Output) throws {
         for url in try project.trackedFiles(output: output) where url.is(in: directory) {
-            if let type = try? FileType(url: url),
+            if let type = FileType(url: url),
                 type == .html {
                 try autoreleasepool {
 

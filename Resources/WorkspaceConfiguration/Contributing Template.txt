@@ -27,7 +27,7 @@ If you have [reported](#step-1-report) your idea and an administrator has given 
 
 1. **Fork the repository** by clicking “Fork” in the top‐right of the repository page. (Skip this step if you have been given write access.)
 2. **Create a local clone**.#cloneScript
-3. **Create a development branch**. `git checkout \u{2D}b some‐new‐branch‐name`
+3. **Create a development branch**. `git checkout -b some‐new‐branch‐name`
 4. **Set up the workspace** by double‐clicking `Refresh` in the root folder.
 
 Now you are all set to try out your idea.

@@ -15,6 +15,8 @@
 import SDGLogic
 import WSGeneralImports
 
+import WSProject
+
 struct CompatibilityCharacters : Rule {
 
     static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in

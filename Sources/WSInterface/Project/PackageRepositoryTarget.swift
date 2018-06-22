@@ -17,6 +17,8 @@ import WSGeneralImports
 
 import SDGSwiftPackageManager
 
+import WSProject
+
 import PackageDescription4
 import PackageModel
 

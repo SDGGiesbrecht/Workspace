@@ -14,6 +14,7 @@
 
 import WSGeneralImports
 import WorkspaceConfiguration
+import WSProject
 
 extension Licence {
 
@@ -53,7 +54,7 @@ extension Licence {
 
         var text = licence.text
 
-        var file = File(possiblyAt: RelativePath("LICENSE.md"))
+        var file = try TextFile(possiblyAt: RelativePath("LICENSE.md").url)
         let oldContents = file.contents
 
         let copyright = FileHeaders.copyright(fromText: oldContents)
@@ -70,7 +71,7 @@ extension Licence {
         text = text.replacingOccurrences(of: key("Authors"), with: authors)
 
         file.contents = text
-        require { try file.write(output: output) }
+        try file.writeChanges(for: Repository.packageRepository, output: output)
 
         // Delete alternate licence files to prevent duplicates.
         try? Repository.delete(RelativePath("LICENSE.txt"))

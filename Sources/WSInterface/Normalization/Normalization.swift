@@ -14,6 +14,7 @@
 
 import SDGCollections
 import WSGeneralImports
+import WSProject
 
 enum Normalization {
 
@@ -22,7 +23,7 @@ enum Normalization {
         for url in try project.sourceFiles(output: output) {
             try autoreleasepool {
 
-                if let syntax = (try? FileType(url: url))?.syntax {
+                if let syntax = FileType(url: url)?.syntax {
                     var file = try TextFile(alreadyAt: url)
 
                     let lines = file.contents.lines.map({ String($0.line) })

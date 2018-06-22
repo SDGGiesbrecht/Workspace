@@ -14,6 +14,8 @@
 
 import WSGeneralImports
 
+import WSProject
+
 struct DeprecatedConfiguration : Rule {
     // Deprecated in 0.8.0 (???)
 

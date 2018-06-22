@@ -15,11 +15,11 @@
 import SDGCollections
 import WSGeneralImports
 
-struct LineCommentSyntax {
+public struct LineCommentSyntax {
 
     // MARK: - Initialization
 
-    init(start: String, stylisticSpacing: Bool = true, stylisticEnd: String? = nil) {
+    internal init(start: String, stylisticSpacing: Bool = true, stylisticEnd: String? = nil) {
         self.start = start
         self.stylisticSpacing = stylisticSpacing
         self.stylisticEnd = stylisticEnd
@@ -33,7 +33,7 @@ struct LineCommentSyntax {
 
     // MARK: - Output
 
-    func comment(contents: String, indent: String = "") -> String {
+    public func comment(contents: String, indent: String = "") -> String { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
 
         let spacing = stylisticSpacing ? " " : ""
 
@@ -61,7 +61,7 @@ struct LineCommentSyntax {
 
     // MARK: - Parsing
 
-    func commentExists(at location: String.Index, in string: String, countDocumentationMarkup: Bool = true) -> Bool {
+    internal func commentExists(at location: String.ScalarView.Index, in string: String, countDocumentationMarkup: Bool = true) -> Bool {
 
         var index = location
         if ¬string.clusters.advance(&index, over: start.clusters) {
@@ -70,7 +70,7 @@ struct LineCommentSyntax {
             // Comment
 
             if countDocumentationMarkup {
-                return true
+                return true // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
             } else {
                 // Make shure this isn’t documentation.
 
@@ -79,43 +79,38 @@ struct LineCommentSyntax {
                     if nextCharacter ∈ CharacterSet.whitespacesAndNewlines {
                         return true
                     }
-                }
+                } // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
                 return false
             }
         }
     }
 
-    private func restOfLine(at index: String.Index, in range: Range<String.Index>, of string: String) -> Range<String.Index> {
+    private func restOfLine(at index: String.ScalarView.Index, in range: Range<String.ScalarView.Index>, of string: String) -> Range<String.ScalarView.Index> {
 
-        if let newline = string.scalars.firstMatch(for: ConditionalPattern({ $0 ∈ CharacterSet.newlines }), in: (index ..< range.upperBound).sameRange(in: string.scalars))?.range.clusters(in: string.clusters) {
+        if let newline = string.scalars.firstMatch(for: ConditionalPattern({ $0 ∈ CharacterSet.newlines }), in: (index ..< range.upperBound).sameRange(in: string.scalars))?.range {
 
             return index ..< newline.lowerBound
-        } else {
-            return index ..< range.upperBound
+        } else { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+            return index ..< range.upperBound // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         }
     }
 
-    func rangeOfFirstComment(in range: Range<String.Index>, of string: String) -> Range<String.Index>? {
+    internal func rangeOfFirstComment(in range: Range<String.ScalarView.Index>, of string: String) -> Range<String.ScalarView.Index>? {
 
-        guard let startRange = string.scalars.firstMatch(for: start.scalars, in: range.sameRange(in: string.scalars))?.range.clusters(in: string.clusters) else {
-            return nil
+        guard let startRange = string.scalars.firstMatch(for: start.scalars, in: range)?.range else {
+            return nil // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         }
 
-        let newline = AlternativePatterns([
-            LiteralPattern("\u{D}\u{A}".scalars),
-            ConditionalPattern({ $0 ∈ CharacterSet.newlines })
-            ])
-
         var resultEnd = restOfLine(at: startRange.lowerBound, in: range, of: string).upperBound
-        var testIndex: String.ScalarView.Index = resultEnd.samePosition(in: string.scalars)
-        string.scalars.advance(&testIndex, over: RepetitionPattern(newline, count: 0 ... 1))
+        var testIndex: String.ScalarView.Index = resultEnd
+        string.scalars.advance(&testIndex, over: RepetitionPattern(CharacterSet.newlinePattern, count: 0 ... 1))
 
         string.scalars.advance(&testIndex, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces})))
 
         while string.scalars.suffix(from: testIndex).hasPrefix(start.scalars) {
-            resultEnd = restOfLine(at: testIndex.cluster(in: string.clusters), in: range, of: string).upperBound
-            testIndex = resultEnd.samePosition(in: string.scalars)
-            string.scalars.advance(&testIndex, over: RepetitionPattern(newline, count: 0 ... 1))
+            resultEnd = restOfLine(at: testIndex, in: range, of: string).upperBound
+            testIndex = resultEnd
+            string.scalars.advance(&testIndex, over: RepetitionPattern(CharacterSet.newlinePattern, count: 0 ... 1))
 
             string.scalars.advance(&testIndex, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces})))
         }
@@ -123,25 +118,7 @@ struct LineCommentSyntax {
         return startRange.lowerBound ..< resultEnd
     }
 
-    func requireRangeOfFirstComment(in range: Range<String.Index>, of file: File) -> Range<String.Index> {
-
-        guard let result = rangeOfFirstComment(in: range, of: file.contents) else {
-            _ = file.requireRange(of: start, in: range) // Trigger error at File.
-            unreachable()
-        }
-
-        return result
-    }
-
-    func firstComment(in range: Range<String.Index>, of string: String) -> String? {
-        if let range = rangeOfFirstComment(in: range, of: string) {
-            return String(string[range])
-        } else {
-            return nil
-        }
-    }
-
-    func contentsOfFirstComment(in range: Range<String.Index>, of string: String) -> String? {
+    internal func contentsOfFirstComment(in range: Range<String.ScalarView.Index>, of string: String) -> String? { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         guard let range = rangeOfFirstComment(in: range, of: string) else {
             return nil
 
@@ -153,9 +130,7 @@ struct LineCommentSyntax {
             var index = line.scalars.startIndex
 
             line.scalars.advance(&index, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
-            guard line.scalars.advance(&index, over: start.scalars) else {
-                line.parseError(at: index.cluster(in: line.clusters), in: nil)
-            }
+            line.scalars.advance(&index, over: start.scalars)
 
             if stylisticSpacing {
                 line.scalars.advance(&index, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }), count: 0 ... 1))
@@ -164,7 +139,7 @@ struct LineCommentSyntax {
             var result = String(line.scalars.suffix(from: index))
             if let end = stylisticEnd {
                 if result.hasSuffix(end) {
-                    result = String(result[..<result.index(result.endIndex, offsetBy: −end.clusters.count)])
+                    result = String(result.scalars[..<result.index(result.scalars.endIndex, offsetBy: −end.scalars.count)])
                 }
             }
             return result
@@ -172,11 +147,7 @@ struct LineCommentSyntax {
         return lines.joinedAsLines()
     }
 
-    func firstComment(in string: String) -> String? {
-        return firstComment(in: string.startIndex ..< string.endIndex, of: string)
-    }
-
-    func contentsOfFirstComment(in string: String) -> String? {
+    internal func contentsOfFirstComment(in string: String) -> String? { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         return contentsOfFirstComment(in: string.startIndex ..< string.endIndex, of: string)
     }
 }

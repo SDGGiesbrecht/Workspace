@@ -6,6 +6,7 @@ Subcommands
 
 all performs all configured refreshment tasks.
 continuous‐integration regenerates the project’s continuous integration configuration files.
+github regenerates the project’s GitHub configuration files.
 help displays usage information.
 read‐me regenerates the project’s read‐me file.
 resources regenerates code providing access to the project’s resources.

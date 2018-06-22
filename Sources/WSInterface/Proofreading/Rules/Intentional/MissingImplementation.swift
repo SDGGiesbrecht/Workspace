@@ -14,6 +14,8 @@
 
 import WSGeneralImports
 
+import WSProject
+
 struct MissingImplementation : Rule {
 
     static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in

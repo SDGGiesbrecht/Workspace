@@ -47,11 +47,11 @@ extension PackageRepository {
         try contributingInstructionsFile.writeChanges(for: self, output: output)
 
         var issueTemplateFile = try TextFile(possiblyAt: issueTemplateLocation)
-        issueTemplateFile.body = String(try issueTemplate())
+        issueTemplateFile.contents = String(try issueTemplate())
         try issueTemplateFile.writeChanges(for: self, output: output)
 
         var pullRequestTemplateFile = try TextFile(possiblyAt: pullRequestTemplateLocation)
-        pullRequestTemplateFile.body = String(try configuration().gitHub.pullRequestTemplate)
+        pullRequestTemplateFile.contents = String(try configuration().gitHub.pullRequestTemplate)
         try pullRequestTemplateFile.writeChanges(for: self, output: output)
 
         // Remove deprecated.

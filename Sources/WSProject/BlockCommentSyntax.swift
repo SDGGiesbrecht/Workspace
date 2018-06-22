@@ -64,8 +64,7 @@ internal struct BlockCommentSyntax {
         var index = location
         if ¬string.scalars.advance(&index, over: start.scalars) {
             return false
-        } else {
-            // Block comment // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+        } else { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
 
             if countDocumentationMarkup {
                 return true

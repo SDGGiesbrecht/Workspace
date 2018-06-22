@@ -118,8 +118,8 @@ public struct LineCommentSyntax {
         return startRange.lowerBound ..< resultEnd
     }
 
-    internal func contentsOfFirstComment(in range: Range<String.ScalarView.Index>, of string: String) -> String? {
-        guard let range = rangeOfFirstComment(in: range, of: string) else { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+    internal func contentsOfFirstComment(in range: Range<String.ScalarView.Index>, of string: String) -> String? { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+        guard let range = rangeOfFirstComment(in: range, of: string) else {
             return nil
 
         }

@@ -155,12 +155,10 @@ public enum FileType {
     public var syntax: FileSyntax {
         switch self {
 
-        case  .swift, .c, .css, .javaScript, .objectiveC:
+        case  .swift, .c, .css, .javaScript, .objectiveC, xcodeProject:
             return FileSyntax(blockCommentSyntax: FileType.swiftBlockCommentSyntax, lineCommentSyntax: FileType.swiftLineCommentSyntax)
         case .swiftPackageManifest:
             return FileSyntax(blockCommentSyntax: FileType.swiftBlockCommentSyntax, lineCommentSyntax: FileType.swiftLineCommentSyntax, requiredFirstLineToken: "/\u{2F} swift\u{2D}tools\u{2D}version:")
-        case .xcodeProject:
-            return FileSyntax(blockCommentSyntax: FileType.swiftBlockCommentSyntax, lineCommentSyntax: FileType.swiftLineCommentSyntax)
 
         case .shell:
             return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"), requiredFirstLineToken: "#!")
@@ -173,7 +171,7 @@ public enum FileType {
             return FileSyntax(blockCommentSyntax: FileType.htmlBlockComment, lineCommentSyntax: nil, semanticLineTerminalWhitespace: ["  "])
 
         case .lisp:
-            return FileSyntax(blockCommentSyntax: BlockCommentSyntax(start: "#|", end: "|#"), lineCommentSyntax: LineCommentSyntax(start: ";"))
+            return FileSyntax(blockCommentSyntax: BlockCommentSyntax(start: "#|", end: "|#"), lineCommentSyntax: LineCommentSyntax(start: ";")) // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
 
         case .json:
             return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: nil) // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]

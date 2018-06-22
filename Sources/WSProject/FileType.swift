@@ -92,6 +92,8 @@ public enum FileType {
     case deprecatedWorkspaceConfiguration
 
     private static let specialNames: [String: FileType] = [
+        ".gitattributes": .gitIgnore,
+        ".gitignore": .gitIgnore,
         "Package.swift": .swiftPackageManifest,
         ".Workspace Configuration.txt": .deprecatedWorkspaceConfiguration,
     ]
@@ -99,8 +101,6 @@ public enum FileType {
     private static let fileExtensions: [String: FileType] = [
         "command": .shell,
         "css": .css,
-        "gitattributes": .gitIgnore,
-        "gitignore": .gitIgnore,
         "htm": html,
         "html": .html,
         "js": .javaScript,

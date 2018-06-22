@@ -12,6 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Dispatch
+
+import SDGLogic
+import SDGMathematics
 import SDGCollections
 import WSGeneralImports
 
@@ -114,7 +118,21 @@ class Jazzy : RubyGem {
                 ].joined(separator: ",")
             ])
 
+        var complete = false
+        if ProcessInfo.processInfo.environment["CONTINUOUS_INTEGRATION"] ≠ nil {
+            // Travis CI needs periodic output of some sort; otherwise it assumes Jazzy has stalled.
+            DispatchQueue.global().async {
+                while ¬complete {
+                    Thread.sleep(until: Date.init(timeIntervalSinceNow: TimeInterval(60 /* s */ × 9)))
+                    if ¬complete {
+                        _ = try? Shell.default.run(command: ["echo", "Jazzy is still running...", ">", "/dev/tty"])
+                    }
+                }
+            }
+        }
+
         try executeInCompatibilityMode(with: jazzyArguments, output: output)
+        complete = true
         project.resetFileCache(debugReason: "jazzy")
 
         // [_Workaround: Jazzy is incompatible with Jekyll. (jazzy --version 0.9.1)_]

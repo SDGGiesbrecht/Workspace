@@ -320,6 +320,7 @@ class APITests : TestCase {
             // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
             ["refresh", "read‐me"],
+            ["refresh", "github"],
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
             ["normalize"],
@@ -386,6 +387,7 @@ class APITests : TestCase {
             // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
             ["refresh", "read‐me"],
+            ["refresh", "github"],
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
             ["normalize"],

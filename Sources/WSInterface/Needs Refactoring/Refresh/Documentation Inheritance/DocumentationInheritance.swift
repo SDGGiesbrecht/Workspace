@@ -21,6 +21,7 @@ struct DocumentationInheritance {
     static let documentation: [String: String] = {
 
         requireBash(["swift", "package", "resolve"], silent: false)
+        Repository.packageRepository.resetFileCache(debugReason: "resolve")
 
         var list: [String: String] = [:]
 

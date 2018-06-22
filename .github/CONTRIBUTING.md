@@ -40,8 +40,8 @@ Even if you think you have the solution, please **do not start working on it** u
 If you have [reported](#step-1-report) your idea and an administrator has given you the green light, follow these steps to get a local copy you can work on.
 
 1. **Fork the repository** by clicking “Fork” in the top‐right of the repository page. (Skip this step if you have been given write access.)
-2. **Create a local clone**. `git clone https://github.com/SDGGiesbrecht/Workspace`
-3. **Create a development branch**. `git checkout \u{2D}b some‐new‐branch‐name`
+2. **Create a local clone**. `git clone https://github.com/user/Workspace`
+3. **Create a development branch**. `git checkout -b some‐new‐branch‐name`
 4. **Set up the workspace** by double‐clicking `Refresh` in the root folder.
 
 Now you are all set to try out your idea.

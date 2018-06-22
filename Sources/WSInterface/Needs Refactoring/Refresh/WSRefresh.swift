@@ -60,13 +60,11 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
         try Licence.refreshLicence(output: output)
     }
 
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    // GitHub
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     if try options.project.configuration().gitHub.manage {
-
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        output.print("Updating contributing instructions...".formattedAsSectionHeader())
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-
-        try options.project.refreshGitHubConfiguration(output: output)
+        try Workspace.Refresh.GitHub.command.execute(withArguments: arguments, options: options, output: output)
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

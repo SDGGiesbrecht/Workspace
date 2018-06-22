@@ -124,8 +124,8 @@ class Jazzy : RubyGem {
             DispatchQueue.global().async {
                 while ¬complete {
                     Thread.sleep(until: Date.init(timeIntervalSinceNow: TimeInterval(60 /* s */ × 9)))
-                    if ¬complete { // [_Exempt from Test Coverage_] Tests had better not take that long!
-                        _ = try? Shell.default.run(command: ["echo", "Jazzy is still running...", ">", "/dev/tty"])
+                    if ¬complete {
+                        _ = try? Shell.default.run(command: ["echo", "Jazzy is still running...", ">", "/dev/tty"]) // [_Exempt from Test Coverage_] Tests had better not take that long!
                     }
                 }
             }

@@ -42,7 +42,7 @@ public struct GitHubConfiguration : Codable {
         template.replaceMatches(for: "#packageName".scalars, with: WorkspaceContext.current.manifest.packageName.scalars)
 
         if let url = configuration.documentation.repositoryURL {
-            template.replaceMatches(for: "#cloneScript".scalars, with: " `git clone \(url.absoluteString)`".scalars)
+            template.replaceMatches(for: "#cloneScript".scalars, with: " `git clone https://github.com/user/\(url.lastPathComponent)`".scalars)
         } else {
             template.replaceMatches(for: "#cloneScript".scalars, with: "".scalars)
         }

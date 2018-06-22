@@ -41,8 +41,6 @@ extension PackageRepository {
     // MARK: - Refreshment
 
     public func refreshGitHubConfiguration(output: Command.Output) throws {
-        // [_Warning: Rework these._]
-        // [_Warning: Localize these._]
 
         var contributingInstructionsFile = try TextFile(possiblyAt: contributingInstructionsLocation)
         contributingInstructionsFile.body = String(try contributingInstructions())

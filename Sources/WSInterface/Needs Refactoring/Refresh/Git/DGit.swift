@@ -80,7 +80,7 @@ struct DGit {
 
             var updatedLines: [String] = [
                 startToken,
-                "",
+                ""
                 ] + contents + [
                     "",
                     endToken

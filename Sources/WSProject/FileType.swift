@@ -61,7 +61,6 @@ public enum FileType {
                 }
             }).resolved())
 
-
             return warning.joinedAsLines()
         }
     }
@@ -119,7 +118,7 @@ public enum FileType {
 
     private static let specialNames: [String: FileType] = [
         "Package.swift": .swiftPackageManifest,
-        ".Workspace Configuration.txt": .deprecatedWorkspaceConfiguration,
+        ".Workspace Configuration.txt": .deprecatedWorkspaceConfiguration
     ]
 
     private static let fileExtensions: [String: FileType] = [

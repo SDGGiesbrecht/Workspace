@@ -15,6 +15,7 @@
 import SDGLogic
 import SDGCollections
 import WSGeneralImports
+import WSProject
 
 struct DocumentationInheritance {
     static let documentation: [String: String] = {
@@ -23,61 +24,61 @@ struct DocumentationInheritance {
 
         var list: [String: String] = [:]
 
-        for path in (Repository.allFiles(at: RelativePath("Packages")) + Repository.allFiles(at: RelativePath(".build/checkouts"))).filter({
-            ¬$0.string.contains(".git") ∧ ¬$0.string.contains("/docs/") }) + Repository.sourceFiles {
-                autoreleasepool {
+        for url in (try? Repository.packageRepository.allFiles()) ?? []
+            where (url.is(in: Repository.packageRepository.location.appendingPathComponent("Packages"))
+                ∨ url.is(in: Repository.packageRepository.location.appendingPathComponent(".build/checkouts")))
+                ∧ ¬(url.path.contains(".git") ∨ ¬url.path.contains("/docs/")) {
 
-                    if FileType(filePath: path) == .swift {
-                        let file = require { try File(at: path) }
+                    autoreleasepool {
 
-                        let startTokens = ("[\u{5F}Define Documentation", "_]")
+                        if FileType(url: url) == .swift {
+                            let file = require { try TextFile(alreadyAt: url) }
 
-                        var index = file.contents.startIndex
-                        while let startTokenRange = file.contents.scalars.firstNestingLevel(startingWith: startTokens.0.scalars, endingWith: startTokens.1.scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.container.range.clusters(in: file.contents.clusters) {
-                            index = startTokenRange.upperBound
+                            let startTokens = ("[\u{5F}Define Documentation", "_]")
 
-                            guard let identifierSubsequence = file.contents.scalars.firstNestingLevel(startingWith: startTokens.0.scalars, endingWith: startTokens.1.scalars, in: startTokenRange.sameRange(in: file.contents.scalars))?.contents.contents else {
-                                failTests(message: [
-                                    "Failed to parse “\(String(file.contents[startTokenRange]))”.",
-                                    "This may indicate a bug in Workspace."
-                                    ])
+                            var index = file.contents.startIndex
+                            while let startTokenRange = file.contents.scalars.firstNestingLevel(startingWith: startTokens.0.scalars, endingWith: startTokens.1.scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.container.range.clusters(in: file.contents.clusters) {
+                                index = startTokenRange.upperBound
+
+                                guard let identifierSubsequence = file.contents.scalars.firstNestingLevel(startingWith: startTokens.0.scalars, endingWith: startTokens.1.scalars, in: startTokenRange.sameRange(in: file.contents.scalars))?.contents.contents else {
+                                    failTests(message: [
+                                        "Failed to parse “\(String(file.contents[startTokenRange]))”.",
+                                        "This may indicate a bug in Workspace."
+                                        ])
+                                }
+                                var identifier = String(identifierSubsequence)
+
+                                if identifier.hasPrefix(":") {
+                                    identifier.unicodeScalars.removeFirst()
+                                }
+                                if identifier.hasPrefix(" ") {
+                                    identifier.unicodeScalars.removeFirst()
+                                }
+
+                                let nextLineStart = file.contents.lineRange(for: startTokenRange).upperBound
+                                if let comment = FileType.swiftDocumentationSyntax.contentsOfFirstComment(in: nextLineStart ..< file.contents.endIndex, of: file) {
+                                    list[identifier] = comment
+                                }
                             }
-                            var identifier = String(identifierSubsequence)
-
-                            if identifier.hasPrefix(":") {
-                                identifier.unicodeScalars.removeFirst()
-                            }
-                            if identifier.hasPrefix(" ") {
-                                identifier.unicodeScalars.removeFirst()
-                            }
-
-                            let nextLineStart = file.contents.lineRange(for: startTokenRange).upperBound
-                            let comment = FileType.swiftDocumentationSyntax.requireContentsOfFirstComment(in: nextLineStart ..< file.contents.endIndex, of: file)
-
-                            list[identifier] = comment
                         }
                     }
-                }
         }
 
         return list
     }()
 
-    static func refreshDocumentation(output: Command.Output) {
+    static func refreshDocumentation(output: Command.Output) throws {
 
-        for path in Repository.sourceFiles {
-            autoreleasepool {
+        for url in try Repository.packageRepository.sourceFiles(output: output) {
+            try autoreleasepool {
 
-                if FileType(filePath: path) == .swift {
+                if FileType(url: url) == .swift {
                     let documentationSyntax = FileType.swiftDocumentationSyntax
                     guard let lineDocumentationSyntax = documentationSyntax.lineCommentSyntax else {
-                        fatalError(message: [
-                            "Line documentation syntax missing.",
-                            "This may indicate a bug in Workspace."
-                            ])
+                        unreachable()
                     }
 
-                    var file = require { try File(at: path) }
+                    var file = require { try TextFile(alreadyAt: url) }
 
                     var index = file.contents.startIndex
                     while let range = file.contents.scalars.firstMatch(for: "[\u{5F}Inherit Documentation".scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.range.clusters(in: file.contents.clusters) {
@@ -125,7 +126,7 @@ struct DocumentationInheritance {
                         }
                     }
 
-                    require { try file.write(output: output) }
+                    try file.writeChanges(for: Repository.packageRepository, output: output)
                 }
             }
         }

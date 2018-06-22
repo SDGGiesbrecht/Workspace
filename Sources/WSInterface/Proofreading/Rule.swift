@@ -15,6 +15,8 @@
 import SDGLogic
 import WSGeneralImports
 
+import WSProject
+
 protocol Rule {
     static var name: UserFacing<StrictString, InterfaceLocalization> { get }
     static var noticeOnly: Bool { get }

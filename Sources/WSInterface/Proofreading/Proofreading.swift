@@ -18,6 +18,8 @@ import WSGeneralImports
 
 import SDGExternalProcess
 
+import WSProject
+
 enum Proofreading {
 
     static func proofread(project: PackageRepository, reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
@@ -26,8 +28,8 @@ enum Proofreading {
         let activeRules = try project.configuration().proofreading.rules
 
         for url in try project.sourceFiles(output: output)
-            where (try? FileType(url: url)) ≠ nil
-                ∧ (try? FileType(url: url)) ≠ .xcodeProject {
+            where FileType(url: url) ≠ nil
+                ∧ FileType(url: url) ≠ .xcodeProject {
                     try autoreleasepool {
 
                         let file = try TextFile(alreadyAt: url)

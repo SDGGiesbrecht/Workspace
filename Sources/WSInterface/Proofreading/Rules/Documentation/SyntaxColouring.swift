@@ -15,6 +15,8 @@
 import SDGLogic
 import WSGeneralImports
 
+import WSProject
+
 struct SyntaxColouring : Rule {
 
     static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in

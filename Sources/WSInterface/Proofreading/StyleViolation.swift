@@ -13,6 +13,7 @@
  */
 
 import WSGeneralImports
+import WSProject
 
 struct StyleViolation {
 

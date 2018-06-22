@@ -13,6 +13,7 @@
  */
 
 import WSGeneralImports
+import WSProject
 
 struct DGit {
 
@@ -58,10 +59,7 @@ struct DGit {
         let startToken = "# [_Begin Workspace Section_]"
         let endToken = "# [_End Workspace Section]"
 
-        let managementWarning = File.managmentWarning(section: true, documentation: .git)
-        let managementComment = FileType.gitignore.syntax.comment(contents: managementWarning)
-
-        func replaceManagedSection(in file: File, with contents: [String]) {
+        func replaceManagedSection(in file: TextFile, with contents: [String]) throws {
             var updatedFile = file
 
             var body = updatedFile.body
@@ -83,8 +81,6 @@ struct DGit {
             var updatedLines: [String] = [
                 startToken,
                 "",
-                managementComment,
-                ""
                 ] + contents + [
                     "",
                     endToken
@@ -95,29 +91,28 @@ struct DGit {
 
             body.replaceSubrange(managedRange, with: updatedLines.joinedAsLines())
             updatedFile.body = body
-            require {try updatedFile.write(output: output) }
+            try updatedFile.writeChanges(for: Repository.packageRepository, output: output)
         }
 
         // .gitignore
 
-        let gitIgnore = File(possiblyAt: RelativePath(".gitignore"))
+        let gitIgnore = try TextFile(possiblyAt: RelativePath(".gitignore").url)
 
         var updatedLines: [String] = requiredIgnoreEntries
         if try Repository.packageRepository.configuration().xcode.manage {
             updatedLines += dependentIgnoreEntriesForXcode
         }
 
-        replaceManagedSection(in: gitIgnore, with: updatedLines)
+        try replaceManagedSection(in: gitIgnore, with: updatedLines)
 
         // .gitattributes
 
-        let gitAttributes = File(possiblyAt: RelativePath(".gitattributes"))
+        let gitAttributes = try TextFile(possiblyAt: RelativePath(".gitattributes").url)
 
         let updatedAttributes = [
             "/Refresh?Workspace* linguist\u{2D}vendored=true"
             ]
 
-        replaceManagedSection(in: gitAttributes, with: updatedAttributes)
-
+        try replaceManagedSection(in: gitAttributes, with: updatedAttributes)
     }
 }

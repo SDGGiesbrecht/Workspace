@@ -14,6 +14,8 @@
 
 import WSGeneralImports
 
+import WSProject
+
 struct ParameterGrouping : Rule {
 
     static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in

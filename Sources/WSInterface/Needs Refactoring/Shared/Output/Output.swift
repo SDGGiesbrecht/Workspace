@@ -13,6 +13,7 @@
  */
 
 import WSGeneralImports
+import WSProject
 
 func fatalError(message: [String]) -> Never {
     fail(message: message)
@@ -46,8 +47,9 @@ func printWarning(_ message: [String]) {
 }
 private func outputWarnings() {
 
-    if let fileTypeWarning = FileType.unsupportedTypesWarning {
-        printWarning(fileTypeWarning)
+    if let optional = try? FileType.unsupportedTypesWarning(for: Repository.packageRepository),
+        let fileTypeWarning = optional {
+        printWarning([String(fileTypeWarning)])
     }
 
     for warning in warnings {

@@ -50,6 +50,7 @@ let package = Package(
             "WSGeneralImports",
             "WorkspaceProjectConfiguration",
             "WSProject",
+            "WSGitHub",
             // [_Workaround: This module and its dependency list needs refactoring._]
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
@@ -57,11 +58,19 @@ let package = Package(
             .productItem(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
             ]),
 
+        // GitHub management.
+        .target(name: "WSGitHub", dependencies: [
+            "WSGeneralImports",
+            "WSProject",
+            "WorkspaceProjectConfiguration"
+            ]),
+
         // Defines general project structure queries and cache.
         .target(name: "WSProject", dependencies: [
             "WSGeneralImports",
             "WorkspaceConfiguration",
             "WorkspaceProjectConfiguration",
+            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
             .productItem(name: "SDGSwiftConfigurationLoading", package: "SDGSwift")
             ]),

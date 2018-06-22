@@ -15,11 +15,11 @@
 import SDGCollections
 import WSGeneralImports
 
-struct BlockCommentSyntax {
+internal struct BlockCommentSyntax {
 
     // MARK: - Initialization
 
-    init(start: String, end: String, stylisticIndent: String? = nil) {
+    internal init(start: String, end: String, stylisticIndent: String? = nil) {
         self.start = start
         self.end = end
         self.stylisticIndent = stylisticIndent
@@ -27,17 +27,17 @@ struct BlockCommentSyntax {
 
     // MARK: - Properties
 
-    let start: String
-    let end: String
-    let stylisticIndent: String?
+    private let start: String
+    private let end: String
+    private let stylisticIndent: String?
 
     // MARK: - Output
 
-    func comment(contents: [String]) -> String {
+    private func comment(contents: [String]) -> String {
         return comment(contents: contents.joinedAsLines())
     }
 
-    func comment(contents: String) -> String {
+    internal func comment(contents: String) -> String {
 
         let withEndToken = [contents, end].joinedAsLines()
 
@@ -63,10 +63,10 @@ struct BlockCommentSyntax {
 
     // MARK: - Parsing
 
-    func startOfCommentExists(at location: String.Index, in string: String, countDocumentationMarkup: Bool = true) -> Bool {
+    internal func startOfCommentExists(at location: String.ScalarView.Index, in string: String, countDocumentationMarkup: Bool = true) -> Bool {
 
         var index = location
-        if ¬string.clusters.advance(&index, over: start.clusters) {
+        if ¬string.scalars.advance(&index, over: start.scalars) {
             return false
         } else {
             // Block comment
@@ -74,9 +74,9 @@ struct BlockCommentSyntax {
             if countDocumentationMarkup {
                 return true
             } else {
-                // Make shure this isn’t documentation.
+                // Make sure this isn’t documentation.
 
-                if let nextCharacter = string[index...].unicodeScalars.first {
+                if let nextCharacter = string.scalars[index...].first {
 
                     if nextCharacter ∈ CharacterSet.whitespacesAndNewlines {
                         return true
@@ -87,31 +87,13 @@ struct BlockCommentSyntax {
         }
     }
 
-    func rangeOfFirstComment(in range: Range<String.Index>, of string: String) -> Range<String.Index>? {
-        return string.scalars.firstNestingLevel(startingWith: start.scalars, endingWith: end.scalars, in: range.sameRange(in: string.scalars))?.container.range.clusters(in: string.clusters)
+    internal func firstComment(in range: Range<String.ScalarView.Index>, of string: String) -> NestingLevel<String.ScalarView>? {
+        return string.scalars.firstNestingLevel(startingWith: start.scalars, endingWith: end.scalars)
     }
 
-    func requireRangeOfFirstComment(in range: Range<String.Index>, of file: File) -> Range<String.Index> {
-
-        return file.requireRange(of: (start, end), in: range)
-    }
-
-    private func rangeOfContentsOfFirstComment(in range: Range<String.Index>, of string: String) -> Range<String.Index>? {
-        return string.scalars.firstNestingLevel(startingWith: start.scalars, endingWith: end.scalars, in: range.sameRange(in: string.scalars))?.contents.range.clusters(in: string.clusters)
-    }
-
-    func firstComment(in range: Range<String.Index>, of string: String) -> String? {
-        if let range = rangeOfFirstComment(in: range, of: string) {
-            return String(string[range])
-        } else {
+    internal func contentsOfFirstComment(in range: Range<String.ScalarView.Index>, of string: String) -> String? {
+        guard let range = firstComment(in: range, of: string)?.contents.range else {
             return nil
-        }
-    }
-
-    func contentsOfFirstComment(in range: Range<String.Index>, of string: String) -> String? {
-        guard let range = rangeOfContentsOfFirstComment(in: range, of: string) else {
-            return nil
-
         }
 
         var lines = String(string[range]).lines.map({ String($0.line) })
@@ -143,11 +125,11 @@ struct BlockCommentSyntax {
         return strings.joinedAsLines()
     }
 
-    func firstComment(in string: String) -> String? {
-        return firstComment(in: string.startIndex ..< string.endIndex, of: string)
+    private func firstComment(in string: String) -> NestingLevel<String.ScalarView>? {
+        return firstComment(in: string.scalars.startIndex ..< string.scalars.endIndex, of: string)
     }
 
-    func contentsOfFirstComment(in string: String) -> String? {
-        return contentsOfFirstComment(in: string.startIndex ..< string.endIndex, of: string)
+    internal func contentsOfFirstComment(in string: String) -> String? {
+        return contentsOfFirstComment(in: string.scalars.startIndex ..< string.scalars.endIndex, of: string)
     }
 }

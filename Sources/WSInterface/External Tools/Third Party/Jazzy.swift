@@ -170,7 +170,7 @@ class Jazzy : RubyGem {
 
     private func fixSplitClusters(in directory: URL, for project: PackageRepository, output: Command.Output) throws {
         for url in try project.trackedFiles(output: output) where url.is(in: directory) {
-            if let type = try? FileType(url: url),
+            if let type = FileType(url: url),
                 type == .html {
                 try autoreleasepool {
 

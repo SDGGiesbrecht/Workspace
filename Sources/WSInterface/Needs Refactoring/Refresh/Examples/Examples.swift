@@ -15,6 +15,7 @@
 import SDGLogic
 import SDGCollections
 import WSGeneralImports
+import WSProject
 
 struct Examples {
 
@@ -25,7 +26,8 @@ struct Examples {
         for url in try project.sourceFiles(output: output) {
             autoreleasepool {
 
-                if let file = try? TextFile(alreadyAt: url) {
+                if FileType(url: url) ≠ nil,
+                    let file = try? TextFile(alreadyAt: url) {
 
                     let startTokens = ("[_Define Example", "_]")
 
@@ -93,10 +95,10 @@ struct Examples {
 
     static func refreshExamples(output: Command.Output) throws {
 
-        for path in Repository.sourceFiles {
+        for url in try Repository.packageRepository.sourceFiles(output: output) {
             try autoreleasepool {
 
-                if FileType(filePath: path) == .swift {
+                if FileType(url: url) == .swift {
                     let documentationSyntax = FileType.swiftDocumentationSyntax
                     guard let lineDocumentationSyntax = documentationSyntax.lineCommentSyntax else {
                         fatalError(message: [
@@ -105,7 +107,7 @@ struct Examples {
                             ])
                     }
 
-                    var file = require { try File(at: path) }
+                    var file = require { try TextFile(alreadyAt: url) }
 
                     var index = file.contents.startIndex
                     while let range = file.contents.scalars.firstMatch(for: "[\u{5F}Example".scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.range.clusters(in: file.contents.clusters) {
@@ -137,43 +139,45 @@ struct Examples {
                         }
 
                         let nextLineStart = file.contents.lineRange(for: range).upperBound
-                        let commentRange = documentationSyntax.requireRangeOfFirstComment(in: nextLineStart ..< file.contents.endIndex, of: file)
-                        let indent = String(file.contents[nextLineStart ..< commentRange.lowerBound])
+                        if let commentRange = documentationSyntax.rangeOfFirstComment(in: nextLineStart ..< file.contents.endIndex, of: file) {
+                            let indent = String(file.contents[nextLineStart ..< commentRange.lowerBound])
 
-                        var commentValue = documentationSyntax.requireContentsOfFirstComment(in: commentRange, of: file)
+                            if var commentValue = documentationSyntax.contentsOfFirstComment(in: commentRange, of: file) {
 
-                        var countingExampleIndex = 0
-                        var searchIndex = commentValue.startIndex
-                        exampleSearch: while let startRange = commentValue.scalars.firstMatch(for: "```".scalars, in: (searchIndex ..< commentValue.endIndex).sameRange(in: commentValue.scalars))?.range.clusters(in: commentValue.clusters), let endRange = commentValue.scalars.firstMatch(for: "```".scalars, in: (startRange.upperBound ..< commentValue.endIndex).sameRange(in: commentValue.scalars))?.range.clusters(in: commentValue.clusters) {
-                            let exampleRange = startRange.lowerBound ..< endRange.upperBound
+                                var countingExampleIndex = 0
+                                var searchIndex = commentValue.startIndex
+                                exampleSearch: while let startRange = commentValue.scalars.firstMatch(for: "```".scalars, in: (searchIndex ..< commentValue.endIndex).sameRange(in: commentValue.scalars))?.range.clusters(in: commentValue.clusters), let endRange = commentValue.scalars.firstMatch(for: "```".scalars, in: (startRange.upperBound ..< commentValue.endIndex).sameRange(in: commentValue.scalars))?.range.clusters(in: commentValue.clusters) {
+                                    let exampleRange = startRange.lowerBound ..< endRange.upperBound
 
-                            searchIndex = exampleRange.upperBound
-                            countingExampleIndex += 1
+                                    searchIndex = exampleRange.upperBound
+                                    countingExampleIndex += 1
 
-                            let startLine = commentValue.lineRange(for: exampleRange.lowerBound ..< exampleRange.lowerBound)
-                            let internalIndent = String(commentValue[startLine.lowerBound ..< exampleRange.lowerBound])
+                                    let startLine = commentValue.lineRange(for: exampleRange.lowerBound ..< exampleRange.lowerBound)
+                                    let internalIndent = String(commentValue[startLine.lowerBound ..< exampleRange.lowerBound])
 
-                            var exampleLines = [
-                                "```swift",
-                                example,
-                                "```"
-                                ].joinedAsLines().lines.map({ String($0.line) })
+                                    var exampleLines = [
+                                        "```swift",
+                                        example,
+                                        "```"
+                                        ].joinedAsLines().lines.map({ String($0.line) })
 
-                            for index in exampleLines.startIndex ..< exampleLines.endIndex where index ≠ exampleLines.startIndex {
-                                exampleLines[index] = internalIndent + exampleLines[index]
-                            }
+                                    for index in exampleLines.startIndex ..< exampleLines.endIndex where index ≠ exampleLines.startIndex {
+                                        exampleLines[index] = internalIndent + exampleLines[index]
+                                    }
 
-                            if countingExampleIndex == exampleIndex {
-                                commentValue.replaceSubrange(exampleRange, with: exampleLines.joinedAsLines())
+                                    if countingExampleIndex == exampleIndex {
+                                        commentValue.replaceSubrange(exampleRange, with: exampleLines.joinedAsLines())
 
-                                file.contents.replaceSubrange(commentRange, with: lineDocumentationSyntax.comment(contents: commentValue, indent: indent))
+                                        file.contents.replaceSubrange(commentRange, with: lineDocumentationSyntax.comment(contents: commentValue, indent: indent))
 
-                                break exampleSearch
+                                        break exampleSearch
+                                    }
+                                }
                             }
                         }
                     }
 
-                    require { try file.write(output: output) }
+                    try file.writeChanges(for: Repository.packageRepository, output: output)
                 }
             }
         }

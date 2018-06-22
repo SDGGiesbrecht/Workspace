@@ -16,6 +16,8 @@ import SDGLogic
 import SDGCollections
 import WSGeneralImports
 
+import WSProject
+
 struct UnicodeRule : Rule {
 
     static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
@@ -79,7 +81,7 @@ struct UnicodeRule : Rule {
                 }
 
                 switch file.fileType {
-                case .shell, .yaml, .gitignore:
+                case .shell, .yaml, .gitIgnore:
                     if ¬fromStartOfLine(to: match, in: file).contains("#".scalars) /* Not a comment */ {
                         continue
                     }

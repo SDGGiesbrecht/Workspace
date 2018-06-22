@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 struct AbsolutePath : ExpressibleByExtendedGraphemeClusterLiteral, ExpressibleByStringLiteral, ExpressibleByUnicodeScalarLiteral, Path {
 
     // MARK: - Initialization
@@ -23,6 +25,10 @@ struct AbsolutePath : ExpressibleByExtendedGraphemeClusterLiteral, ExpressibleBy
     // MARK: - Properties
 
     var string: String
+
+    var url: URL {
+        return URL(fileURLWithPath: string)
+    }
 
     // MARK: - ExpressibleByExtendedGraphemeClusterLiteral
 

@@ -15,6 +15,7 @@
 import SDGLogic
 import SDGCollections
 import WSGeneralImports
+import WSProject
 
 enum ContinuousIntegration {
 

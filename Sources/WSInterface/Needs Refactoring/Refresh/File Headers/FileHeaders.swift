@@ -69,11 +69,11 @@ struct FileHeaders {
         }
 
         for path in Repository.sourceFiles.filter({ shouldManageHeader(path: $0) }) {
-            autoreleasepool {
+            try autoreleasepool {
 
-                if FileType(filePath: path)?.syntax ≠ nil {
+                if FileType(url: path.url) ≠ nil {
 
-                    var file = require { try File(at: path) }
+                    var file = require { try TextFile(alreadyAt: path.url) }
                     let oldHeader = file.header
                     var header = template
 
@@ -81,7 +81,7 @@ struct FileHeaders {
                     header = header.replacingMatches(for: "#dates", with: FileHeaders.copyright(fromText: oldHeader))
 
                     file.header = String(header)
-                    require { try file.write(output: output) }
+                    try file.writeChanges(for: Repository.packageRepository, output: output)
                 }
             }
         }

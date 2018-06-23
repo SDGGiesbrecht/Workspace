@@ -91,6 +91,11 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         }
     #endif
 
+    for (variable, value) in ProcessInfo.processInfo.environment {
+        if variable.contains("PULL") ∨ variable.contains("REQUEST") ∨ variable.contains("PR") {
+            print(variable, value)
+        }
+    }
     if ProcessInfo.isInContinuousIntegration ∧ ProcessInfo.isPullRequest {
 
         if options.job ≠ ContinuousIntegrationJob.deployment {

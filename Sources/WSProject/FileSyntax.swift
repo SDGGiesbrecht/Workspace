@@ -33,7 +33,7 @@ public struct FileSyntax {
 
     private let blockCommentSyntax: BlockCommentSyntax?
     public let lineCommentSyntax: LineCommentSyntax?
-    public var hasComments: Bool {
+    public var hasComments: Bool { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         return blockCommentSyntax ≠ nil ∨ lineCommentSyntax ≠ nil
     }
 

@@ -20,12 +20,13 @@ import SDGExternalProcess
 
 import WorkspaceProjectConfiguration
 import WSProject
+import WSContinuousIntegration
 
 func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: Command.Output) throws {
 
     var validationStatus = ValidationStatus()
 
-    if ¬Environment.isInContinuousIntegration {
+    if ¬ProcessInfo.isInContinuousIntegration {
 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         // Refreshing
@@ -90,31 +91,16 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         }
     #endif
 
-    if Environment.isInContinuousIntegration {
+    if ProcessInfo.isInContinuousIntegration ∧ ProcessInfo.isPullRequest {
 
-        if options.job ≠ ContinuousIntegration.Job.deployment {
+        if options.job ≠ ContinuousIntegrationJob.deployment {
 
             // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
             output.print("Validating project state...".formattedAsSectionHeader())
             // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-            var allowedDifferences: [String] = []
-            for localization in try options.project.configuration().documentation.localizations {
-                var relatedProjects = ReadMeConfiguration._relatedProjectsLocation(for: options.project.location, localization: localization).lastPathComponent
-                allowedDifferences.append(relatedProjects)
-                relatedProjects.scalars.replaceMatches(for: ".md".scalars, with: ".html".scalars)
-                relatedProjects.scalars.replaceMatches(for: " ".scalars, with: "\u{2D}".scalars)
-                relatedProjects.scalars.replaceMatches(for: ConditionalPattern({ $0 ∉
-                    (CharacterSet(charactersIn: Unicode.Scalar(0x00) ..< Unicode.Scalar(0x80))
-                        ∩ CharacterSet.alphanumerics)
-                    ∪ ["\u{2D}", "."]
-                }), with: "".scalars)
-                allowedDifferences.append(relatedProjects.lowercased())
-            }
-            allowedDifferences = allowedDifferences.map { "\u{27}:(exclude)*\(String($0.components(separatedBy: " ").last!.contents))\u{27}" }
-
             requireBash(["git", "add", ".", "\u{2D}\u{2D}intent\u{2D}to\u{2D}add"], silent: true)
-            if (try? Shell.default.run(command: ["git", "diff", "\u{2D}\u{2D}exit\u{2D}code", "\u{2D}\u{2D}", ".", "\u{27}:(exclude)*.dsidx\u{27}"] + allowedDifferences, reportProgress: { output.print($0) })) ≠ nil {
+            if (try? Shell.default.run(command: ["git", "diff", "\u{2D}\u{2D}exit\u{2D}code", "\u{2D}\u{2D}", ".", "\u{27}:(exclude)*.dsidx\u{27}"], reportProgress: { output.print($0) })) ≠ nil {
                 validationStatus.passStep(message: UserFacing({ localization in
                     switch localization {
                     case .englishCanada:

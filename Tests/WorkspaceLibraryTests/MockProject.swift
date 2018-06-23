@@ -86,7 +86,7 @@ extension PackageRepository {
 
                     for command in commands {
 
-                        if ProcessInfo.processInfo.environment["CONTINUOUS_INTEGRATION"] ≠ nil {
+                        if ProcessInfo.isInContinuousIntegration {
                             // Travis CI needs period output of some sort; otherwise it assumes the tests have stalled.
                             _ = try? Shell.default.run(command: ["echo", "Tests continuing...", ">", "/dev/tty"])
                         }

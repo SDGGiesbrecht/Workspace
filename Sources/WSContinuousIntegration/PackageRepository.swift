@@ -1,5 +1,5 @@
 /*
- ContinuousIntegration.swift
+ PackageRepository.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -17,11 +17,11 @@ import SDGCollections
 import WSGeneralImports
 import WSProject
 
-enum ContinuousIntegration {
+extension PackageRepository {
 
-    static func refreshContinuousIntegration(for project: PackageRepository, output: Command.Output) throws {
+    public func refreshContinuousIntegration(output: Command.Output) throws {
 
-        if try project.configuration().provideWorkflowScripts == false {
+        if try configuration().provideWorkflowScripts == false {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
@@ -36,14 +36,13 @@ enum ContinuousIntegration {
             "  include:"
         ]
 
-        for job in Job.cases where try job.isRequired(by: project, output: output)
+        for job in ContinuousIntegrationJob.cases where try job.isRequired(by: self)
+            ∨ (job ∈ ContinuousIntegrationJob.simulatorJobs ∧ isWorkspaceProject()) { // Simulator is unavailable during normal test.
 
-            ∨ (job ∈ Tests.simulatorJobs ∧ project.isWorkspaceProject()) { // Simulator is unavailable during normal test.
-
-            travisConfiguration.append(contentsOf: try job.script(configuration: project.configuration()))
+                travisConfiguration.append(contentsOf: try job.script(configuration: configuration()))
         }
 
-        if try project.isWorkspaceProject() {
+        if try isWorkspaceProject() {
             travisConfiguration = travisConfiguration.map {
                 var line = $0
                 line.scalars.replaceMatches(for: "\u{22}bash \u{5C}\u{22}./Validate (macOS).command\u{5C}\u{22} •job ios\u{22}".scalars, with: "swift run test‐ios‐simulator".scalars)
@@ -60,14 +59,8 @@ enum ContinuousIntegration {
             "  \u{2D} $HOME/.cache/ca.solideogloria.Workspace"
             ])
 
-        var travisConfigurationFile = try TextFile(possiblyAt: project.location.appendingPathComponent(".travis.yml"))
+        var travisConfigurationFile = try TextFile(possiblyAt: location.appendingPathComponent(".travis.yml"))
         travisConfigurationFile.body = travisConfiguration.joinedAsLines()
-        try travisConfigurationFile.writeChanges(for: project, output: output)
-    }
-
-    static func commandEntry(_ command: String) -> String {
-        var escapedCommand = command.replacingOccurrences(of: "\u{5C}", with: "\u{5C}\u{5C}")
-        escapedCommand = escapedCommand.replacingOccurrences(of: "\u{22}", with: "\u{5C}\u{22}")
-        return "        \u{2D} \u{22}\(escapedCommand)\u{22}"
+        try travisConfigurationFile.writeChanges(for: self, output: output)
     }
 }

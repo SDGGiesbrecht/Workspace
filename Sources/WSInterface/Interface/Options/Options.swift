@@ -13,11 +13,12 @@
  */
 
 import WSGeneralImports
+import WSContinuousIntegration
 
 extension Options {
 
-    var job: ContinuousIntegration.Job? {
-        return value(for: ContinuousIntegration.Job.option)
+    public var job: ContinuousIntegrationJob? {
+        return value(for: ContinuousIntegrationJob.option)
     }
 
     var runAsXcodeBuildPhase: Bool {

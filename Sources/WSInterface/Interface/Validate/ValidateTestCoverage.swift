@@ -17,6 +17,7 @@ import SDGCollections
 import WSGeneralImports
 
 import WSProject
+import WSContinuousIntegration
 
 extension Workspace.Validate {
 
@@ -36,7 +37,7 @@ extension Workspace.Validate {
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [ContinuousIntegration.Job.option], execution: { (_, options: Options, output: Command.Output) throws in
+        static let command = Command(name: name, description: description, directArguments: [], options: [ContinuousIntegrationJob.option], execution: { (_, options: Options, output: Command.Output) throws in
 
             try Build.validate(job: options.job, against: Tests.coverageJobs, for: options.project, output: output)
 
@@ -58,19 +59,19 @@ extension Workspace.Validate {
 
         static func executeAsStep(options: Options, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
-            for job in ContinuousIntegration.Job.cases
-                where try options.job.includes(job: job) ∧ (try Build.job(job, isRelevantTo: options.project, andAvailableJobs: Tests.coverageJobs, output: output)) {
+            for job in ContinuousIntegrationJob.cases
+                where try options.job.includes(job: job) ∧ (try Build.job(job, isRelevantTo: options.project, andAvailableJobs: Tests.coverageJobs)) {
                     try autoreleasepool {
 
                         if try options.project.configuration().continuousIntegration.skipSimulatorOutsideContinuousIntegration,
                             options.job == nil, // Not in continuous integration.
-                            job ∈ Tests.simulatorJobs {
+                            job ∈ ContinuousIntegrationJob.simulatorJobs {
                             // [_Exempt from Test Coverage_] Tested separately.
                             return // and continue loop.
                         }
 
                         if BuildConfiguration.current == .debug,
-                            job ∈ Tests.simulatorJobs,
+                            job ∈ ContinuousIntegrationJob.simulatorJobs,
                             ProcessInfo.processInfo.environment["SIMULATOR_UNAVAILABLE_FOR_TESTING"] ≠ nil { // Simulators are not available to all CI jobs and must be tested separately.
                             return // and continue loop.
                         }

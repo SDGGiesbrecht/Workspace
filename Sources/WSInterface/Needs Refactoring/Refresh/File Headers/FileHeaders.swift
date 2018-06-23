@@ -71,7 +71,8 @@ struct FileHeaders {
         for path in Repository.sourceFiles.filter({ shouldManageHeader(path: $0) }) {
             try autoreleasepool {
 
-                if FileType(url: path.url) ≠ nil {
+                if let type = FileType(url: path.url),
+                    type.syntax.hasComments {
 
                     var file = require { try TextFile(alreadyAt: path.url) }
                     let oldHeader = file.header

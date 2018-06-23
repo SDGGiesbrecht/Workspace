@@ -286,8 +286,6 @@ public enum ContinuousIntegrationJob : Int, IterableEnumeration {
 
         result.append("      script:")
 
-
-
         func commandEntry(_ command: String) -> String {
             var escapedCommand = command.replacingOccurrences(of: "\u{5C}", with: "\u{5C}\u{5C}")
             escapedCommand = escapedCommand.replacingOccurrences(of: "\u{22}", with: "\u{5C}\u{22}")

@@ -17,9 +17,10 @@ import SDGCollections
 import WSGeneralImports
 import WSProject
 
-enum ContinuousIntegration {
+internal enum ContinuousIntegration {
+    // [_Warning: Refactor onto PackageRepository._]
 
-    static func refreshContinuousIntegration(for project: PackageRepository, output: Command.Output) throws {
+    internal static func refreshContinuousIntegration(for project: PackageRepository, output: Command.Output) throws {
 
         if try project.configuration().provideWorkflowScripts == false {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -36,9 +37,8 @@ enum ContinuousIntegration {
             "  include:"
         ]
 
-        for job in Job.cases where try job.isRequired(by: project, output: output)
-
-            ∨ (job ∈ Tests.simulatorJobs ∧ project.isWorkspaceProject()) { // Simulator is unavailable during normal test.
+        for job in ContinuousIntegrationJob.cases where try job.isRequired(by: project)
+            ∨ (job ∈ ContinuousIntegrationJob.simulatorJobs ∧ project.isWorkspaceProject()) { // Simulator is unavailable during normal test.
 
             travisConfiguration.append(contentsOf: try job.script(configuration: project.configuration()))
         }
@@ -65,7 +65,7 @@ enum ContinuousIntegration {
         try travisConfigurationFile.writeChanges(for: project, output: output)
     }
 
-    static func commandEntry(_ command: String) -> String {
+    internal static func commandEntry(_ command: String) -> String {
         var escapedCommand = command.replacingOccurrences(of: "\u{5C}", with: "\u{5C}\u{5C}")
         escapedCommand = escapedCommand.replacingOccurrences(of: "\u{22}", with: "\u{5C}\u{22}")
         return "        \u{2D} \u{22}\(escapedCommand)\u{22}"

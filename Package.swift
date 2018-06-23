@@ -51,6 +51,8 @@ let package = Package(
             "WorkspaceProjectConfiguration",
             "WSProject",
             "WSGitHub",
+            "WSContinuousIntegration",
+            "WSDocumentation",
             // [_Workaround: This module and its dependency list needs refactoring._]
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
@@ -63,6 +65,19 @@ let package = Package(
             "WSGeneralImports",
             "WSProject",
             "WorkspaceProjectConfiguration"
+            ]),
+
+        // Continuous integration management.
+        .target(name: "WSContinuousIntegration", dependencies: [
+            "WSGeneralImports",
+            "WSProject",
+            "WSDocumentation"
+            ]),
+
+        // Documentation generation.
+        .target(name: "WSDocumentation", dependencies: [
+            "WSGeneralImports",
+            "WSProject"
             ]),
 
         // Defines general project structure queries and cache.

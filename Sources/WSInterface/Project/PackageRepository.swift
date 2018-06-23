@@ -18,9 +18,6 @@ import WSGeneralImports
 
 import SDGSwiftPackageManager
 
-import PackageModel
-import PackageGraph
-
 extension PackageRepository {
 
     // MARK: - Structure
@@ -62,12 +59,6 @@ extension PackageRepository {
 
     func refreshReadMe(output: Command.Output) throws {
         try ReadMe.refreshReadMe(for: self, output: output)
-    }
-
-    // MARK: - Continuous Integration
-
-    func refreshContinuousIntegration(output: Command.Output) throws {
-        try ContinuousIntegration.refreshContinuousIntegration(for: self, output: output)
     }
 
     // MARK: - Resources
@@ -130,10 +121,6 @@ extension PackageRepository {
     }
 
     // MARK: - Documentation
-
-    func hasTargetsToDocument(output: Command.Output) throws -> Bool {
-        return try cachedPackage().products.contains(where: { $0.type.isLibrary })
-    }
 
     #if !os(Linux)
     // MARK: - #if !os(Linux)

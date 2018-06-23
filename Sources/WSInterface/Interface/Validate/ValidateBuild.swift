@@ -17,6 +17,7 @@ import SDGCollections
 import WSGeneralImports
 
 import WSProject
+import WSContinuousIntegration
 
 extension Workspace.Validate {
 
@@ -36,7 +37,7 @@ extension Workspace.Validate {
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [ContinuousIntegration.Job.option], execution: { (_, options: Options, output: Command.Output) throws in
+        static let command = Command(name: name, description: description, directArguments: [], options: [ContinuousIntegrationJob.option], execution: { (_, options: Options, output: Command.Output) throws in
 
             try validate(job: options.job, against: Tests.buildJobs, for: options.project, output: output)
 
@@ -47,15 +48,15 @@ extension Workspace.Validate {
             try validationStatus.reportOutcome(projectName: try options.project.projectName(), output: output)
         })
 
-        static func job(_ job: ContinuousIntegration.Job, isRelevantTo project: PackageRepository, andAvailableJobs validJobs: Set<ContinuousIntegration.Job>, output: Command.Output) throws -> Bool {
+        static func job(_ job: ContinuousIntegrationJob, isRelevantTo project: PackageRepository, andAvailableJobs validJobs: Set<ContinuousIntegrationJob>) throws -> Bool {
             return try job ∈ validJobs
-                ∧ ((try job.isRequired(by: project, output: output))
+                ∧ ((try job.isRequired(by: project))
                     ∧ job.operatingSystem == OperatingSystem.current)
         }
 
-        static func validate(job: ContinuousIntegration.Job?, against validJobs: Set<ContinuousIntegration.Job>, for project: PackageRepository, output: Command.Output) throws {
+        static func validate(job: ContinuousIntegrationJob?, against validJobs: Set<ContinuousIntegrationJob>, for project: PackageRepository, output: Command.Output) throws {
             if let specified = job,
-                ¬(try Build.job(specified, isRelevantTo: project, andAvailableJobs: validJobs, output: output)) {
+                ¬(try Build.job(specified, isRelevantTo: project, andAvailableJobs: validJobs)) {
                 throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
@@ -67,8 +68,8 @@ extension Workspace.Validate {
 
         static func executeAsStep(options: Options, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
-            for job in ContinuousIntegration.Job.cases
-                where try options.job.includes(job: job) ∧ (try Build.job(job, isRelevantTo: options.project, andAvailableJobs: Tests.buildJobs, output: output)) {
+            for job in ContinuousIntegrationJob.cases
+                where try options.job.includes(job: job) ∧ (try Build.job(job, isRelevantTo: options.project, andAvailableJobs: Tests.buildJobs)) {
                     try autoreleasepool {
 
                         try Tests.build(options.project, for: job, validationStatus: &validationStatus, output: output)

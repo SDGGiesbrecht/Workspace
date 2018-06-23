@@ -18,27 +18,24 @@ import WSGeneralImports
 
 import SDGXcode
 
+import WSContinuousIntegration
+
 struct Tests {
 
-    static let coverageJobs: Set<ContinuousIntegration.Job> = [
+    static let coverageJobs: Set<ContinuousIntegrationJob> = [
         .macOSXcode,
         .iOS,
         .tvOS
     ]
-    static let testJobs: Set<ContinuousIntegration.Job> = coverageJobs ∪ [
+    static let testJobs: Set<ContinuousIntegrationJob> = coverageJobs ∪ [
         .macOSSwiftPackageManager,
         .linux
     ]
-    static let buildJobs: Set<ContinuousIntegration.Job> = testJobs ∪ [
+    static let buildJobs: Set<ContinuousIntegrationJob> = testJobs ∪ [
         .watchOS
     ]
 
-    static let simulatorJobs: Set<ContinuousIntegration.Job> = [
-        .iOS,
-        .tvOS
-    ]
-
-    private static func englishName(for job: ContinuousIntegration.Job) -> StrictString {
+    private static func englishName(for job: ContinuousIntegrationJob) -> StrictString {
         var result = job.englishTargetOperatingSystemName
         if let tool = job.englishTargetBuildSystemName {
             result += " with " + tool
@@ -46,7 +43,7 @@ struct Tests {
         return result
     }
 
-    private static func buildSDK(for job: ContinuousIntegration.Job) -> Xcode.SDK {
+    private static func buildSDK(for job: ContinuousIntegrationJob) -> Xcode.SDK {
         switch job {
         case .macOSXcode:
             return .macOS
@@ -61,7 +58,7 @@ struct Tests {
         }
     }
 
-    private static func testSDK(for job: ContinuousIntegration.Job) -> Xcode.SDK {
+    private static func testSDK(for job: ContinuousIntegrationJob) -> Xcode.SDK {
         switch job {
         case .macOSXcode:
             return .macOS
@@ -76,7 +73,7 @@ struct Tests {
         }
     }
 
-    static func build(_ project: PackageRepository, for job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: Command.Output) throws {
+    static func build(_ project: PackageRepository, for job: ContinuousIntegrationJob, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
         let section = validationStatus.newSection()
 
@@ -140,7 +137,7 @@ struct Tests {
         }
     }
 
-    static func test(_ project: PackageRepository, on job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: Command.Output) throws {
+    static func test(_ project: PackageRepository, on job: ContinuousIntegrationJob, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
         let section = validationStatus.newSection()
 
@@ -216,7 +213,7 @@ struct Tests {
         }
     }
 
-    static func validateCodeCoverage(for project: PackageRepository, on job: ContinuousIntegration.Job, validationStatus: inout ValidationStatus, output: Command.Output) throws {
+    static func validateCodeCoverage(for project: PackageRepository, on job: ContinuousIntegrationJob, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
         let section = validationStatus.newSection()
         output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in

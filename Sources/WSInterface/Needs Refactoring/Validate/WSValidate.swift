@@ -20,6 +20,7 @@ import SDGExternalProcess
 
 import WorkspaceProjectConfiguration
 import WSProject
+import WSContinuousIntegration
 
 func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: Command.Output) throws {
 
@@ -92,7 +93,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
 
     if ProcessInfo.isInContinuousIntegration ∧ ProcessInfo.isPullRequest {
 
-        if options.job ≠ ContinuousIntegration.Job.deployment {
+        if options.job ≠ ContinuousIntegrationJob.deployment {
 
             // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
             output.print("Validating project state...".formattedAsSectionHeader())

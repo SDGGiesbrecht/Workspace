@@ -25,7 +25,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
 
     var validationStatus = ValidationStatus()
 
-    if ¬Environment.isInContinuousIntegration {
+    if ¬ProcessInfo.isInContinuousIntegration {
 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         // Refreshing
@@ -90,7 +90,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         }
     #endif
 
-    if Environment.isInContinuousIntegration {
+    if ¬ProcessInfo.isInContinuousIntegration {
 
         if options.job ≠ ContinuousIntegration.Job.deployment {
 

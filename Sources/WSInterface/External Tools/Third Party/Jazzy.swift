@@ -119,7 +119,7 @@ class Jazzy : RubyGem {
             ])
 
         var complete = false
-        if ProcessInfo.processInfo.environment["CONTINUOUS_INTEGRATION"] ≠ nil {
+        if ProcessInfo.isInContinuousIntegration {
             // Travis CI needs periodic output of some sort; otherwise it assumes Jazzy has stalled.
             DispatchQueue.global().async {
                 while ¬complete {

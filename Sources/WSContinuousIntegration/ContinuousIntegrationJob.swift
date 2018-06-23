@@ -286,16 +286,24 @@ public enum ContinuousIntegrationJob : Int, IterableEnumeration {
 
         result.append("      script:")
 
+
+
+        func commandEntry(_ command: String) -> String {
+            var escapedCommand = command.replacingOccurrences(of: "\u{5C}", with: "\u{5C}\u{5C}")
+            escapedCommand = escapedCommand.replacingOccurrences(of: "\u{22}", with: "\u{5C}\u{22}")
+            return "        \u{2D} \u{22}\(escapedCommand)\u{22}"
+        }
+
         if operatingSystem == .linux {
             result.append(contentsOf: [
-                ContinuousIntegration.commandEntry("export SWIFT_VERSION=4.1.2"),
-                ContinuousIntegration.commandEntry("eval \u{22}$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\u{22}")
+                commandEntry("export SWIFT_VERSION=4.1.2"),
+                commandEntry("eval \u{22}$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\u{22}")
                 ])
         }
 
         result.append(contentsOf: [
-            ContinuousIntegration.commandEntry("bash \u{22}./Refresh (macOS).command\u{22}"),
-            ContinuousIntegration.commandEntry("bash \u{22}./Validate (macOS).command\u{22} •job " + String(argumentName.resolved(for: .englishCanada)))
+            commandEntry("bash \u{22}./Refresh (macOS).command\u{22}"),
+            commandEntry("bash \u{22}./Validate (macOS).command\u{22} •job " + String(argumentName.resolved(for: .englishCanada)))
             ])
 
         return result

@@ -90,7 +90,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         }
     #endif
 
-    if ¬ProcessInfo.isInContinuousIntegration {
+    if ProcessInfo.isInContinuousIntegration ∧ ProcessInfo.isPullRequest {
 
         if options.job ≠ ContinuousIntegration.Job.deployment {
 

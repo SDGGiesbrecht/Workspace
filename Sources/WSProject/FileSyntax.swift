@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import SDGCollections
 import WSGeneralImports
 
@@ -32,6 +33,9 @@ public struct FileSyntax {
 
     private let blockCommentSyntax: BlockCommentSyntax?
     public let lineCommentSyntax: LineCommentSyntax?
+    public var hasComments: Bool {
+        return blockCommentSyntax ≠ nil ∨ lineCommentSyntax ≠ nil
+    }
 
     public let semanticLineTerminalWhitespace: [String]
 

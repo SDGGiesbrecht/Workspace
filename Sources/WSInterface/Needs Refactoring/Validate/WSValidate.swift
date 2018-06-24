@@ -89,34 +89,33 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
 
         if try options.job.includes(job: .deployment)
             ∧ (try options.project.configuration().documentation.api.generate) {
-            try Workspace.Document.executeAsStep(outputDirectory: options.project.defaultDocumentationDirectory, options: options, validationStatus: &validationStatus, output: output)
+            try TravisCI.keepAlive {
+                try Workspace.Document.executeAsStep(outputDirectory: options.project.defaultDocumentationDirectory, options: options, validationStatus: &validationStatus, output: output)
+            }
         }
     #endif
 
     if ProcessInfo.isInContinuousIntegration ∧ ProcessInfo.isPullRequest {
 
-        if options.job ≠ ContinuousIntegrationJob.deployment {
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+        output.print("Validating project state...".formattedAsSectionHeader())
+        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
 
-            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-            output.print("Validating project state...".formattedAsSectionHeader())
-            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-
-            requireBash(["git", "add", ".", "\u{2D}\u{2D}intent\u{2D}to\u{2D}add"], silent: true)
-            if (try? Shell.default.run(command: ["git", "diff", "\u{2D}\u{2D}exit\u{2D}code", "\u{2D}\u{2D}", ".", "\u{27}:(exclude)*.dsidx\u{27}"], reportProgress: { output.print($0) })) ≠ nil {
-                validationStatus.passStep(message: UserFacing({ localization in
-                    switch localization {
-                    case .englishCanada:
-                        return "The project is up to date."
-                    }
-                }))
-            } else {
-                validationStatus.failStep(message: UserFacing({ localization in
-                    switch localization {
-                    case .englishCanada:
-                        return "The project is out of date. (Please run “Validate” before committing.)"
-                    }
-                }))
-            }
+        requireBash(["git", "add", ".", "\u{2D}\u{2D}intent\u{2D}to\u{2D}add"], silent: true)
+        if (try? Shell.default.run(command: ["git", "diff", "\u{2D}\u{2D}exit\u{2D}code", "\u{2D}\u{2D}", ".", "\u{27}:(exclude)*.dsidx\u{27}"], reportProgress: { output.print($0) })) ≠ nil {
+            validationStatus.passStep(message: UserFacing({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "The project is up to date."
+                }
+            }))
+        } else {
+            validationStatus.failStep(message: UserFacing({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "The project is out of date. (Please run “Validate” before committing.)"
+                }
+            }))
         }
     }
 

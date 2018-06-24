@@ -143,6 +143,7 @@ let package = Package(
             .productItem(name: "SDGText", package: "SDGCornerstone"),
             .productItem(name: "SDGPersistence", package: "SDGCornerstone"),
             .productItem(name: "SDGLocalization", package: "SDGCornerstone"),
+            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
 
             .productItem(name: "SDGCommandLine", package: "SDGCommandLine"),
 

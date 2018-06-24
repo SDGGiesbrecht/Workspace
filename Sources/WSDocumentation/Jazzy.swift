@@ -120,21 +120,9 @@ internal class Jazzy : RubyGem {
                 ].joined(separator: ",")
             ])
 
-        var complete = false
-        if ProcessInfo.isInContinuousIntegration {
-            // Travis CI needs periodic output of some sort; otherwise it assumes Jazzy has stalled.
-            DispatchQueue.global().async {
-                while ¬complete {
-                    Thread.sleep(until: Date.init(timeIntervalSinceNow: TimeInterval(60 /* s */ × 9)))
-                    if ¬complete {
-                        _ = try? Shell.default.run(command: ["echo", "Jazzy is still running...", ">", "/dev/tty"]) // [_Exempt from Test Coverage_] Tests had better not take that long!
-                    }
-                }
-            }
+        try TravisCI.keepAlive {
+            try executeInCompatibilityMode(with: jazzyArguments, output: output)
         }
-
-        try executeInCompatibilityMode(with: jazzyArguments, output: output)
-        complete = true
         project.resetFileCache(debugReason: "jazzy")
 
         // [_Workaround: Jazzy is incompatible with Jekyll. (jazzy --version 0.9.1)_]

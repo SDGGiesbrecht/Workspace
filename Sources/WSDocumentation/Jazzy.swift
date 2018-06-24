@@ -26,6 +26,7 @@ import WSSwift
 import WSThirdParty
 
 #if os(Linux)
+// MARK: - #if os(Linux)
 
 public func linuxJazzyError() -> Command.Error {
     return Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in

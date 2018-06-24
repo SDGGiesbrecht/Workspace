@@ -60,6 +60,7 @@ extension PackageRepository {
     // MARK: - Documentation
 
     #if !os(Linux)
+    // MARK: - #if os(Linux)
 
     public func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 

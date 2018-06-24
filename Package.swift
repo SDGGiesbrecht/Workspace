@@ -84,14 +84,14 @@ let package = Package(
             "WSValidation",
             "WSThirdParty",
             "WSSwift",
-            .productItem(name: "SDGXcode", package: "SDGSwift"),
+            .productItem(name: "SDGXcode", package: "SDGSwift")
             ]),
 
         // Mechanism for embedding third party tools.
         .target(name: "WSThirdParty", dependencies: [
             "WSGeneralImports",
             "WorkspaceConfiguration",
-            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
+            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
             ]),
 
         // Utilities for validation reports.

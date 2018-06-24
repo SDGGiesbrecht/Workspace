@@ -27,7 +27,7 @@ import WSThirdParty
 
 #if os(Linux)
 
-private func linuxJazzyError() -> Command.Error {
+public func linuxJazzyError() -> Command.Error {
     return Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
         case .englishCanada:

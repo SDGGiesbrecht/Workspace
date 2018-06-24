@@ -22,6 +22,7 @@ import WSGeneralImports
 import SDGExternalProcess
 
 import WSProject
+import WSThirdParty
 
 #if os(Linux)
 

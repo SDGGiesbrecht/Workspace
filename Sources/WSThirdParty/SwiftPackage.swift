@@ -14,11 +14,11 @@
 
 import WSGeneralImports
 
-class SwiftPackage : ThirdPartyTool {
+open class SwiftPackage : ThirdPartyTool {
 
     // MARK: - Execution
 
-    final override class func execute(command: StrictString, version: Version, with arguments: [String], versionCheck: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: Command.Output) throws { // [_Exempt from Test Coverage_] Unreachable except with incompatible version of SwiftLint.
+    public final override class func execute(command: StrictString, version: Version, with arguments: [String], versionCheck: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: Command.Output) throws { // [_Exempt from Test Coverage_] Unreachable except with incompatible version of SwiftLint.
         try Package(url: repositoryURL).execute(Build.version(version), of: [command], with: arguments, cacheDirectory: cacheDirectory, reportProgress: { output.print($0) }) // [_Exempt from Test Coverage_] Unreachable except with incompatible version of SwiftLint.
     }
 }

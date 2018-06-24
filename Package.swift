@@ -54,6 +54,7 @@ let package = Package(
             "WSContinuousIntegration",
             "WSDocumentation",
             // [_Workaround: This module and its dependency list needs refactoring._]
+            "WSThirdParty",
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
             .productItem(name: "SDGXcode", package: "SDGSwift"),
@@ -77,7 +78,15 @@ let package = Package(
         // Documentation generation.
         .target(name: "WSDocumentation", dependencies: [
             "WSGeneralImports",
-            "WSProject"
+            "WSProject",
+            "WSThirdParty"
+            ]),
+
+        // Mechanism for embedding third party tools.
+        .target(name: "WSThirdParty", dependencies: [
+            "WSGeneralImports",
+            "WorkspaceConfiguration",
+            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
             ]),
 
         // Defines general project structure queries and cache.

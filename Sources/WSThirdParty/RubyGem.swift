@@ -16,15 +16,17 @@ import WSGeneralImports
 
 import SDGExternalProcess
 
-class RubyGem : ThirdPartyTool {
+import WorkspaceConfiguration
+
+open class RubyGem : ThirdPartyTool {
 
     // MARK: - Class Properties
 
-    class var name: UserFacing<StrictString, InterfaceLocalization> {
+    open class var name: UserFacing<StrictString, InterfaceLocalization> {
         primitiveMethod()
     }
 
-    class var installationInstructionsURL: UserFacing<StrictString, InterfaceLocalization> {
+    open class var installationInstructionsURL: UserFacing<StrictString, InterfaceLocalization> {
         primitiveMethod()
     }
 
@@ -45,7 +47,7 @@ class RubyGem : ThirdPartyTool {
         }))
     }
 
-    final override class func execute(command: StrictString, version: Version, with arguments: [String], versionCheck: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: Command.Output) throws { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
+    public final override class func execute(command: StrictString, version: Version, with arguments: [String], versionCheck: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: Command.Output) throws { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
 
         let commandString: [String] = [String(command), "_" + version.string() + "_"]
         let versionCheckString = versionCheck.map({ String($0) }) // [_Exempt from Test Coverage_]

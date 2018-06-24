@@ -17,6 +17,8 @@ import WSGeneralImports
 
 import SDGExternalProcess
 
+import WSThirdParty
+
 class SwiftLint : SwiftPackage {
 
     // MARK: - Static Properties

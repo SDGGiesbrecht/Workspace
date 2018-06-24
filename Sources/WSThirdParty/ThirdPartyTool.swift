@@ -16,7 +16,7 @@ import WSGeneralImports
 
 import SDGExternalProcess
 
-class ThirdPartyTool {
+open class ThirdPartyTool {
 
     // MARK: - Static Properties
 
@@ -24,7 +24,7 @@ class ThirdPartyTool {
 
     // MARK: - Initialization
 
-    init(command: StrictString, repositoryURL: URL, version: Version, versionCheck: [StrictString]) { // [_Exempt from Test Coverage_] False positive with Xcode 9.3.
+    public init(command: StrictString, repositoryURL: URL, version: Version, versionCheck: [StrictString]) { // [_Exempt from Test Coverage_] False positive with Xcode 9.3.
         self.command = command
         self.repositoryURL = repositoryURL
         self.version = version
@@ -40,14 +40,15 @@ class ThirdPartyTool {
 
     // MARK: - Execution
 
-    final func execute(with arguments: [StrictString], output: Command.Output) throws {
+    public final func execute(with arguments: [StrictString], output: Command.Output) throws {
         try executeInCompatibilityMode(with: arguments.map({ String($0) }), output: output)
     }
 
-    final func executeInCompatibilityMode(with arguments: [String], output: Command.Output) throws {
+    public final func executeInCompatibilityMode(with arguments: [String], output: Command.Output) throws {
         if let systemVersionString = try? Shell.default.run(command: ([String(command)] + versionCheck.map({ String($0) }))),
             let systemVersion = Version(firstIn: systemVersionString),
             systemVersion == version {
+
             output.print("")
             try Shell.default.run(command: [String(command)] + arguments, reportProgress: { output.print($0) })
             output.print("")
@@ -57,7 +58,7 @@ class ThirdPartyTool {
         try type(of: self).execute(command: command, version: version, with: arguments, versionCheck: versionCheck, repositoryURL: repositoryURL, cacheDirectory: ThirdPartyTool.toolsCache.appendingPathComponent(repositoryURL.lastPathComponent), output: output)
     }
 
-    class func execute(command: StrictString, version: Version, with arguments: [String], versionCheck: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: Command.Output) throws {
+    open class func execute(command: StrictString, version: Version, with arguments: [String], versionCheck: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: Command.Output) throws {
         primitiveMethod()
     }
 }

@@ -16,6 +16,8 @@ import SDGLogic
 import WSValidation
 import WSGeneralImports
 
+import WSDocumentation
+
 extension Workspace.Validate {
 
     enum DocumentationCoverage {

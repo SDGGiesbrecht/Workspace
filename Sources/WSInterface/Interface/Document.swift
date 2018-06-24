@@ -15,6 +15,8 @@
 import WSGeneralImports
 import WSValidation
 
+import WSDocumentation
+
 extension Workspace {
     enum Document {
 

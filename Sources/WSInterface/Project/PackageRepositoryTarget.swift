@@ -18,6 +18,7 @@ import WSGeneralImports
 import SDGSwiftPackageManager
 
 import WSProject
+import WSSwift
 
 import PackageDescription4
 import PackageModel
@@ -117,7 +118,7 @@ extension PackageRepository {
                 if components.count == 1 {
                     tree[variableName(for: components.first!)] = resource
                 } else {
-                    let name = SwiftLanguage.default.identifier(for: StrictString(components.first!), casing: .type)
+                    let name = SwiftLanguage.identifier(for: StrictString(components.first!), casing: .type)
                     var branch = tree[name] as? [StrictString: Any] ?? [:]
                     add(components: components.dropFirst(), to: &branch, for: resource)
                     tree[name] = branch
@@ -127,7 +128,7 @@ extension PackageRepository {
 
         private func variableName(for fileName: String) -> StrictString {
             let nameOnly = URL(fileURLWithPath: "/" + fileName).deletingPathExtension().lastPathComponent
-            return SwiftLanguage.default.identifier(for: StrictString(nameOnly), casing: .variable)
+            return SwiftLanguage.identifier(for: StrictString(nameOnly), casing: .variable)
         }
 
         private func source(for namespaceTree: [StrictString: Any]) throws -> StrictString {

@@ -13,6 +13,7 @@
  */
 
 import WSGeneralImports
+import WSValidation
 
 extension Workspace {
     enum Proofread {

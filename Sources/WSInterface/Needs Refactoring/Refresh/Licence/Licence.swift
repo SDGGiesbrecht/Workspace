@@ -57,7 +57,7 @@ extension Licence {
         var file = try TextFile(possiblyAt: RelativePath("LICENSE.md").url)
         let oldContents = file.contents
 
-        let copyright = FileHeaders.copyright(fromText: oldContents)
+        let copyright = WSProject.copyright(fromText: oldContents)
         var authors = "the \(try Repository.packageRepository.projectName()) project contributors."
         if let configuredAuthor = try Repository.packageRepository.configuration().documentation.primaryAuthor {
             authors = "\(configuredAuthor) and " + authors

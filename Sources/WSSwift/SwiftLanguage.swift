@@ -17,11 +17,9 @@ import SDGMathematics
 import SDGCollections
 import WSGeneralImports
 
-struct SwiftLanguage {
+public enum SwiftLanguage {
 
     // MARK: - Static Properties
-
-    static let `default` = SwiftLanguage()
 
     private static let allowedIdentifierStarters: CharacterSet = {
         // From https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/LexicalStructure.html#//apple_ref/doc/uid/TP40014097-CH30-ID412
@@ -109,7 +107,7 @@ struct SwiftLanguage {
         return result
     }()
 
-    static let operatorHeadCharactersIncludingDot: CharacterSet = {
+    public static let operatorHeadCharactersIncludingDot: CharacterSet = {
         // From https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/LexicalStructure.html#//apple_ref/doc/uid/TP40014097-CH30-ID418
 
         var result: CharacterSet = ["/", "=", "\u{2D}", "+", "!", "*", "%", "<", ">", "&", "|", "^", "~", "?"]
@@ -160,15 +158,9 @@ struct SwiftLanguage {
         CharacterSet.lowercaseLetters
         ∪ CharacterSet.uppercaseLetters // Includes titlecase.
 
-    // MARK: - Initialization
-
-    private init() {
-
-    }
-
     // MARK: - Generating
 
-    func identifier(for string: StrictString, casing: Casing) -> StrictString {
+    public static func identifier(for string: StrictString, casing: Casing) -> StrictString {
         var identifier = string
 
         switch casing {

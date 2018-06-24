@@ -20,7 +20,9 @@ import SDGExternalProcess
 
 import WorkspaceProjectConfiguration
 import WSProject
+import WSValidation
 import WSContinuousIntegration
+import WSDocumentation
 
 func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: Options, output: Command.Output) throws {
 
@@ -81,13 +83,13 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
                 try Workspace.Validate.DocumentationCoverage.executeAsStepDocumentingFirst(options: options, validationStatus: &validationStatus, output: output)
             } else if try options.project.configuration().documentation.api.generate
                 ∧ (try options.project.configuration().documentation.api.encryptedTravisCIDeploymentKey == nil) {
-                try Workspace.Document.executeAsStep(outputDirectory: Documentation.defaultDocumentationDirectory(for: options.project), options: options, validationStatus: &validationStatus, output: output)
+                try Workspace.Document.executeAsStep(outputDirectory: options.project.defaultDocumentationDirectory, options: options, validationStatus: &validationStatus, output: output)
             }
         }
 
         if try options.job.includes(job: .deployment)
             ∧ (try options.project.configuration().documentation.api.generate) {
-            try Workspace.Document.executeAsStep(outputDirectory: Documentation.defaultDocumentationDirectory(for: options.project), options: options, validationStatus: &validationStatus, output: output)
+            try Workspace.Document.executeAsStep(outputDirectory: options.project.defaultDocumentationDirectory, options: options, validationStatus: &validationStatus, output: output)
         }
     #endif
 

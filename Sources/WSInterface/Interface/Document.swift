@@ -13,6 +13,7 @@
  */
 
 import WSGeneralImports
+import WSValidation
 
 extension Workspace {
     enum Document {
@@ -38,7 +39,7 @@ extension Workspace {
             #else
 
                 var validationStatus = ValidationStatus()
-                let outputDirectory = Documentation.defaultDocumentationDirectory(for: options.project)
+                let outputDirectory = options.project.defaultDocumentationDirectory
                 try executeAsStep(outputDirectory: outputDirectory, options: options, validationStatus: &validationStatus, output: output)
 
                 guard validationStatus.validatedSomething else {

@@ -43,7 +43,7 @@ extension Licence {
 
     static func refreshLicence(output: Command.Output) throws {
 
-        guard let licence = try Repository.packageRepository.configuration().licence.licence else {
+        guard let licence = try Repository.packageRepository.configuration(output: output).licence.licence else {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
@@ -59,7 +59,7 @@ extension Licence {
 
         let copyright = WSProject.copyright(fromText: oldContents)
         var authors = "the \(try Repository.packageRepository.projectName()) project contributors."
-        if let configuredAuthor = try Repository.packageRepository.configuration().documentation.primaryAuthor {
+        if let configuredAuthor = try Repository.packageRepository.configuration(output: output).documentation.primaryAuthor {
             authors = "\(configuredAuthor) and " + authors
         }
 

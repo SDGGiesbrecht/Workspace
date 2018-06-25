@@ -21,7 +21,7 @@ extension PackageRepository {
 
     public func refreshContinuousIntegration(output: Command.Output) throws {
 
-        if try configuration().provideWorkflowScripts == false {
+        if try configuration(output: output).provideWorkflowScripts == false {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
@@ -36,10 +36,10 @@ extension PackageRepository {
             "  include:"
         ]
 
-        for job in ContinuousIntegrationJob.cases where try job.isRequired(by: self)
+        for job in ContinuousIntegrationJob.cases where try job.isRequired(by: self, output: output)
             ∨ (job ∈ ContinuousIntegrationJob.simulatorJobs ∧ isWorkspaceProject()) { // Simulator is unavailable during normal test.
 
-                travisConfiguration.append(contentsOf: try job.script(configuration: configuration()))
+                travisConfiguration.append(contentsOf: try job.script(configuration: configuration(output: output)))
         }
 
         if try isWorkspaceProject() {

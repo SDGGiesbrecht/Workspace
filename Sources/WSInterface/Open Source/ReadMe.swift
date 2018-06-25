@@ -26,7 +26,7 @@ enum ReadMe {
 
     private static func refreshReadMe(at location: URL, for localization: LocalizationIdentifier, in project: PackageRepository, atProjectRoot: Bool, output: Command.Output) throws {
 
-        guard var readMe = try project.readMe()[localization] else {
+        guard var readMe = try project.readMe(output: output)[localization] else {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ errorLocalization in
                 switch errorLocalization {
                 case .englishCanada:
@@ -59,7 +59,7 @@ enum ReadMe {
 
     private static func refreshRelatedProjects(at location: URL, for localization: LocalizationIdentifier, in project: PackageRepository, output: Command.Output) throws {
 
-        let relatedProjects = try project.configuration().documentation.relatedProjects
+        let relatedProjects = try project.configuration(output: output).documentation.relatedProjects
         if ¬relatedProjects.isEmpty {
             var markdown: [StrictString] = [
                 StrictString("# ") + UserFacing<StrictString, ContentLocalization>({ localization in
@@ -95,7 +95,7 @@ enum ReadMe {
                             StrictString("### [\(name)](\(url.absoluteString))")
                         ]
 
-                        if let configuration = try? package.configuration(),
+                        if let configuration = try? package.configuration(output: output),
                             let description = configuration.documentation.readMe.shortProjectDescription[localization] {
                             markdown += [
                                 "",
@@ -117,7 +117,7 @@ enum ReadMe {
 
     static func refreshReadMe(for project: PackageRepository, output: Command.Output) throws {
 
-        for localization in try project.configuration().documentation.localizations {
+        for localization in try project.configuration(output: output).documentation.localizations {
             try autoreleasepool {
 
                 try refreshReadMe(at: ReadMeConfiguration._readMeLocation(for: project.location, localization: localization), for: localization, in: project, atProjectRoot: false, output: output)
@@ -125,7 +125,7 @@ enum ReadMe {
             }
         }
 
-        try refreshReadMe(at: project.location.appendingPathComponent("README.md"), for: try project.developmentLocalization(), in: project, atProjectRoot: true, output: output)
+        try refreshReadMe(at: project.location.appendingPathComponent("README.md"), for: try project.developmentLocalization(output: output), in: project, atProjectRoot: true, output: output)
 
         // Deprecated file locations.
         project.delete(project.location.appendingPathComponent("Documentation/Related Projects.md"), output: output)

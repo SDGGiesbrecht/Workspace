@@ -47,7 +47,7 @@ func printWarning(_ message: [String]) {
 }
 private func outputWarnings() {
 
-    if let optional = try? FileType.unsupportedTypesWarning(for: Repository.packageRepository),
+    if let optional = try? FileType.unsupportedTypesWarning(for: Repository.packageRepository, output: nil),
         let fileTypeWarning = optional {
         printWarning([String(fileTypeWarning)])
     }

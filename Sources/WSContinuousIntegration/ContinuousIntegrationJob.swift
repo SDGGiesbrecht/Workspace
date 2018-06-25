@@ -185,27 +185,27 @@ public enum ContinuousIntegrationJob : Int, IterableEnumeration {
         }
     }
 
-    public func isRequired(by project: PackageRepository) throws -> Bool {
+    public func isRequired(by project: PackageRepository, output: Command.Output) throws -> Bool {
         switch self {
         case .macOSSwiftPackageManager, .macOSXcode:
-            return try .macOS ∈ project.configuration().supportedOperatingSystems
+            return try .macOS ∈ project.configuration(output: output).supportedOperatingSystems
         case .linux: // [_Exempt from Test Coverage_] False coverage result in Xcode 9.2.
-            return try .linux ∈ project.configuration().supportedOperatingSystems
+            return try .linux ∈ project.configuration(output: output).supportedOperatingSystems
         case .iOS:
-            return try .iOS ∈ project.configuration().supportedOperatingSystems
+            return try .iOS ∈ project.configuration(output: output).supportedOperatingSystems
         case .watchOS:
-            return try .watchOS ∈ project.configuration().supportedOperatingSystems
+            return try .watchOS ∈ project.configuration(output: output).supportedOperatingSystems
         case .tvOS:
-            return try .tvOS ∈ project.configuration().supportedOperatingSystems
+            return try .tvOS ∈ project.configuration(output: output).supportedOperatingSystems
         case .miscellaneous:
             return true
         case .documentation:
-            return try project.configuration().documentation.api.generate
+            return try project.configuration(output: output).documentation.api.generate
                 ∧ project.hasTargetsToDocument()
         case .deployment:
-            return try project.configuration().documentation.api.generate
+            return try project.configuration(output: output).documentation.api.generate
                 ∧ project.hasTargetsToDocument()
-                ∧ (try project.configuration().documentation.api.encryptedTravisCIDeploymentKey) ≠ nil
+                ∧ (try project.configuration(output: output).documentation.api.encryptedTravisCIDeploymentKey) ≠ nil
         }
     }
 

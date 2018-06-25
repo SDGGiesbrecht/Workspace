@@ -43,15 +43,15 @@ extension PackageRepository {
     public func refreshGitHubConfiguration(output: Command.Output) throws {
 
         var contributingInstructionsFile = try TextFile(possiblyAt: contributingInstructionsLocation)
-        contributingInstructionsFile.body = String(try contributingInstructions())
+        contributingInstructionsFile.body = String(try contributingInstructions(output: output))
         try contributingInstructionsFile.writeChanges(for: self, output: output)
 
         var issueTemplateFile = try TextFile(possiblyAt: issueTemplateLocation)
-        issueTemplateFile.contents = String(try issueTemplate())
+        issueTemplateFile.contents = String(try issueTemplate(output: output))
         try issueTemplateFile.writeChanges(for: self, output: output)
 
         var pullRequestTemplateFile = try TextFile(possiblyAt: pullRequestTemplateLocation)
-        pullRequestTemplateFile.contents = String(try configuration().gitHub.pullRequestTemplate)
+        pullRequestTemplateFile.contents = String(try configuration(output: output).gitHub.pullRequestTemplate)
         try pullRequestTemplateFile.writeChanges(for: self, output: output)
 
         // Remove deprecated.

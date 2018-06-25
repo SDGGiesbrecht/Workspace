@@ -268,8 +268,8 @@ struct Tests {
                 }
             }
 
-            let sameLineTokens = try project.configuration().testing.testCoverageExemptions.map { StrictString($0.token) }
-            let previousLineTokens = try project.configuration().testing.testCoverageExemptions.filter({ $0.scope == .previousLine }).map { StrictString($0.token) }
+            let sameLineTokens = try project.configuration(output: output).testing.testCoverageExemptions.map { StrictString($0.token) }
+            let previousLineTokens = try project.configuration(output: output).testing.testCoverageExemptions.filter({ $0.scope == .previousLine }).map { StrictString($0.token) }
 
             var passing = true
             for file in report.files where file.file.resolvingSymlinksInPath() ∉ irrelevantFiles ∧ ¬file.file.path.contains("/Needs Refactoring/") { // [_Workaround: “Needs Refactoring” is a temporary measure._]

@@ -25,7 +25,7 @@ enum Proofreading {
     static func proofread(project: PackageRepository, reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
         let status = ProofreadingStatus(reporter: reporter)
 
-        let activeRules = try project.configuration().proofreading.rules
+        let activeRules = try project.configuration(output: output).proofreading.rules
 
         for url in try project.sourceFiles(output: output)
             where FileType(url: url) ≠ nil

@@ -119,27 +119,4 @@ extension PackageRepository {
     func examples(output: Command.Output) throws -> [String: String] {
         return try Examples.examples(in: self, output: output)
     }
-
-    // MARK: - Documentation
-
-    #if !os(Linux)
-    // MARK: - #if !os(Linux)
-    func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
-
-        for product in try productModules() {
-            try autoreleasepool {
-                try Documentation.document(target: product.name, for: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
-            }
-        }
-    }
-
-    func validateDocumentationCoverage(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
-
-        for product in try productModules() {
-            try autoreleasepool {
-                try Documentation.validateDocumentationCoverage(for: product.name, in: self, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
-            }
-        }
-    }
-    #endif
 }

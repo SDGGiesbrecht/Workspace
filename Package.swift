@@ -50,10 +50,13 @@ let package = Package(
             "WSGeneralImports",
             "WorkspaceProjectConfiguration",
             "WSProject",
+            "WSValidation",
             "WSGitHub",
             "WSContinuousIntegration",
             "WSDocumentation",
             // [_Workaround: This module and its dependency list needs refactoring._]
+            "WSSwift",
+            "WSThirdParty",
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
             .productItem(name: "SDGXcode", package: "SDGSwift"),
@@ -77,7 +80,28 @@ let package = Package(
         // Documentation generation.
         .target(name: "WSDocumentation", dependencies: [
             "WSGeneralImports",
-            "WSProject"
+            "WSProject",
+            "WSValidation",
+            "WSThirdParty",
+            "WSSwift",
+            .productItem(name: "SDGXcode", package: "SDGSwift")
+            ]),
+
+        // Mechanism for embedding third party tools.
+        .target(name: "WSThirdParty", dependencies: [
+            "WSGeneralImports",
+            "WorkspaceConfiguration",
+            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
+            ]),
+
+        // Utilities for validation reports.
+        .target(name: "WSValidation", dependencies: [
+            "WSGeneralImports"
+            ]),
+
+        // Utilities related to Swift syntax.
+        .target(name: "WSSwift", dependencies: [
+            "WSGeneralImports"
             ]),
 
         // Defines general project structure queries and cache.
@@ -119,6 +143,7 @@ let package = Package(
             .productItem(name: "SDGText", package: "SDGCornerstone"),
             .productItem(name: "SDGPersistence", package: "SDGCornerstone"),
             .productItem(name: "SDGLocalization", package: "SDGCornerstone"),
+            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
 
             .productItem(name: "SDGCommandLine", package: "SDGCommandLine"),
 

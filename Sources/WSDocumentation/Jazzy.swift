@@ -22,10 +22,13 @@ import WSGeneralImports
 import SDGExternalProcess
 
 import WSProject
+import WSSwift
+import WSThirdParty
 
 #if os(Linux)
+// MARK: - #if os(Linux)
 
-func linuxJazzyError() -> Command.Error {
+public func linuxJazzyError() -> Command.Error {
     return Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
         case .englishCanada:
@@ -40,13 +43,13 @@ func linuxJazzyError() -> Command.Error {
 
 #else
 
-class Jazzy : RubyGem {
+internal class Jazzy : RubyGem {
 
     // MARK: - Static Properties
 
-    static let `default` = Jazzy(version: Version(0, 9, 3))
+    internal static let `default` = Jazzy(version: Version(0, 9, 3))
 
-    override class var name: UserFacing<StrictString, InterfaceLocalization> { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
+    internal override class var name: UserFacing<StrictString, InterfaceLocalization> { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
         return UserFacing({ localization in // [_Exempt from Test Coverage_]
             switch localization {
             case .englishCanada: // [_Exempt from Test Coverage_]
@@ -55,7 +58,7 @@ class Jazzy : RubyGem {
         })
     }
 
-    override class var installationInstructionsURL: UserFacing<StrictString, InterfaceLocalization> { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
+    internal override class var installationInstructionsURL: UserFacing<StrictString, InterfaceLocalization> { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
         return UserFacing({ localization in // [_Exempt from Test Coverage_]
             switch localization {
             case .englishCanada: // [_Exempt from Test Coverage_]
@@ -66,7 +69,7 @@ class Jazzy : RubyGem {
 
     // MARK: - Initialization
 
-    init(version: Version) {
+    private init(version: Version) {
         super.init(command: "jazzy",
                    repositoryURL: URL(string: "https://github.com/realm/jazzy")!,
                    version: version,
@@ -75,7 +78,7 @@ class Jazzy : RubyGem {
 
     // MARK: - Usage
 
-    func document(target: String, scheme: String, buildOperatingSystem: OperatingSystem, copyright: StrictString, gitHubURL: URL?, outputDirectory: URL, project: PackageRepository, output: Command.Output) throws {
+    internal func document(target: String, scheme: String, buildOperatingSystem: OperatingSystem, copyright: StrictString, gitHubURL: URL?, outputDirectory: URL, project: PackageRepository, output: Command.Output) throws {
         let sdk: String
         switch buildOperatingSystem {
         case .macOS:
@@ -118,21 +121,9 @@ class Jazzy : RubyGem {
                 ].joined(separator: ",")
             ])
 
-        var complete = false
-        if ProcessInfo.isInContinuousIntegration {
-            // Travis CI needs periodic output of some sort; otherwise it assumes Jazzy has stalled.
-            DispatchQueue.global().async {
-                while ¬complete {
-                    Thread.sleep(until: Date.init(timeIntervalSinceNow: TimeInterval(60 /* s */ × 9)))
-                    if ¬complete {
-                        _ = try? Shell.default.run(command: ["echo", "Jazzy is still running...", ">", "/dev/tty"]) // [_Exempt from Test Coverage_] Tests had better not take that long!
-                    }
-                }
-            }
+        try TravisCI.keepAlive {
+            try executeInCompatibilityMode(with: jazzyArguments, output: output)
         }
-
-        try executeInCompatibilityMode(with: jazzyArguments, output: output)
-        complete = true
         project.resetFileCache(debugReason: "jazzy")
 
         // [_Workaround: Jazzy is incompatible with Jekyll. (jazzy --version 0.9.1)_]
@@ -150,7 +141,7 @@ class Jazzy : RubyGem {
         }))
     }
 
-    func warnings(outputDirectory: URL) throws -> [(file: URL, line: Int?, symbol: String)] {
+    internal func warnings(outputDirectory: URL) throws -> [(file: URL, line: Int?, symbol: String)] {
 
         let json = try TextFile(alreadyAt: outputDirectory.appendingPathComponent("undocumented.json")).contents
 

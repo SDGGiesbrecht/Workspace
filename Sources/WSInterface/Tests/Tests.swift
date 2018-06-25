@@ -18,6 +18,7 @@ import WSGeneralImports
 
 import SDGXcode
 
+import WSValidation
 import WSContinuousIntegration
 
 struct Tests {

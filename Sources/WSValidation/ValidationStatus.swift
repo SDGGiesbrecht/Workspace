@@ -14,11 +14,11 @@
 
 import WSGeneralImports
 
-struct ValidationStatus {
+public struct ValidationStatus {
 
     // MARK: - Static Properties
 
-    static let passOrFailSymbol = UserFacingDynamic<StrictString, InterfaceLocalization, Bool>({ localization, passing in
+    private static let passOrFailSymbol = UserFacingDynamic<StrictString, InterfaceLocalization, Bool>({ localization, passing in
         switch localization {
         case .englishCanada:
             return passing ? "✓" : "✗"
@@ -27,38 +27,38 @@ struct ValidationStatus {
 
     // MARK: - Initialization
 
-    init() {
+    public init() {
 
     }
 
     // MARK: - Properties
 
-    var passing: Bool = true
+    private var passing: Bool = true
 
     private var summary: [StrictString] = []
     private var currentSection = 0
 
     // MARK: - Usage
 
-    mutating func newSection() -> ReportSection {
+    public mutating func newSection() -> ReportSection {
         currentSection += 1
         return ReportSection(number: currentSection)
     }
 
-    mutating func passStep(message: UserFacing<StrictString, InterfaceLocalization>) {
+    public mutating func passStep(message: UserFacing<StrictString, InterfaceLocalization>) {
         summary.append((ValidationStatus.passOrFailSymbol.resolved(using: true) + " " + message.resolved()).formattedAsSuccess())
     }
 
-    mutating func failStep(message: UserFacing<StrictString, InterfaceLocalization>) {
+    public mutating func failStep(message: UserFacing<StrictString, InterfaceLocalization>) {
         passing = false
         summary.append((ValidationStatus.passOrFailSymbol.resolved(using: false) + " " + message.resolved()).formattedAsError())
     }
 
-    var validatedSomething: Bool {
+    public var validatedSomething: Bool {
         return ¬summary.isEmpty
     }
 
-    func reportOutcome(projectName: StrictString, output: Command.Output) throws {
+    public func reportOutcome(projectName: StrictString, output: Command.Output) throws {
         output.print(StrictString(summary.joined(separator: "\n".scalars)).separated())
         if passing {
             output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in

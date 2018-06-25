@@ -13,7 +13,10 @@
  */
 
 import SDGLogic
+import WSValidation
 import WSGeneralImports
+
+import WSDocumentation
 
 extension Workspace.Validate {
 
@@ -67,7 +70,7 @@ extension Workspace.Validate {
                 outputDirectory = FileManager.default.url(in: .temporary, at: "Documentation")
                 outputIsTemporary = true
             } else {
-                outputDirectory = Documentation.defaultDocumentationDirectory(for: options.project)
+                outputDirectory = options.project.defaultDocumentationDirectory
                 outputIsTemporary = false
             }
             defer {

@@ -14,29 +14,29 @@
 
 import WSGeneralImports
 
-struct ReportSection {
+public struct ReportSection {
 
     // MARK: - Initialization
 
-    init(number: Int) {
+    internal init(number: Int) {
         self.number = number
     }
 
     // MARK: - Properties
 
-    let number: Int
+    private let number: Int
 
     // MARK: - Usage
 
-    var identifier: StrictString {
+    private var identifier: StrictString {
         return "§" + number.inDigits()
     }
 
-    var anchor: StrictString {
+    public var anchor: StrictString {
         return " (" + identifier + ")"
     }
 
-    var crossReference: UserFacing<StrictString, InterfaceLocalization> {
+    public var crossReference: UserFacing<StrictString, InterfaceLocalization> {
         let identifier = self.identifier
         return UserFacing({ localization in
             switch localization {

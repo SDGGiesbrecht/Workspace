@@ -17,8 +17,6 @@ import WSGeneralImports
 
 import SDGExternalProcess
 
-import PackageModel
-
 internal struct WorkaroundReminders : Warning {
 
     internal static let noticeOnly = true

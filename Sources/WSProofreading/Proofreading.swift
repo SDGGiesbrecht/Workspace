@@ -16,8 +16,6 @@ import SDGLogic
 import SDGCollections
 import WSGeneralImports
 
-import SDGExternalProcess
-
 import WSProject
 
 // [_Warning: Refactor onto project._]

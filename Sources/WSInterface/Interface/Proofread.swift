@@ -76,7 +76,7 @@ extension Workspace {
                 reporter = CommandLineProofreadingReporter.default
             }
 
-            if try Proofreading.proofread(project: options.project, reporter: reporter, output: output) {
+            if try options.project.proofread(reporter: reporter, output: output) {
                 validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:

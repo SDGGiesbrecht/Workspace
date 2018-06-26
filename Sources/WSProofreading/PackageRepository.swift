@@ -18,37 +18,36 @@ import WSGeneralImports
 
 import WSProject
 
-// [_Warning: Refactor onto project._]
-public enum Proofreading {
+extension PackageRepository {
 
-    public static func proofread(project: PackageRepository, reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
+    public func proofread(reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
         let status = ProofreadingStatus(reporter: reporter)
 
-        let activeRules = try project.configuration(output: output).proofreading.rules
+        let activeRules = try configuration(output: output).proofreading.rules
 
-        for url in try project.sourceFiles(output: output)
+        for url in try sourceFiles(output: output)
             where FileType(url: url) ≠ nil
                 ∧ FileType(url: url) ≠ .xcodeProject {
                     try autoreleasepool {
 
                         let file = try TextFile(alreadyAt: url)
 
-                        reporter.reportParsing(file: file.location.path(relativeTo: project.location), to: output)
+                        reporter.reportParsing(file: file.location.path(relativeTo: location), to: output)
 
                         for rule in activeRules {
-                            try rule.parser.check(file: file, in: project, status: status, output: output)
+                            try rule.parser.check(file: file, in: self, status: status, output: output)
                         }
                     }
         }
 
-        try proofreadWithSwiftLint(project: project, status: status, forXcode: reporter is XcodeProofreadingReporter, output: output)
+        try proofreadWithSwiftLint(status: status, forXcode: reporter is XcodeProofreadingReporter, output: output)
 
         return status.passing
     }
 
-    private static func proofreadWithSwiftLint(project: PackageRepository, status: ProofreadingStatus, forXcode: Bool, output: Command.Output) throws {
+    private func proofreadWithSwiftLint(status: ProofreadingStatus, forXcode: Bool, output: Command.Output) throws {
 
-        try FileManager.default.do(in: project.location) {
+        try FileManager.default.do(in: location) {
 
             let configuration: URL?
             if SwiftLint.default.isConfigured() {

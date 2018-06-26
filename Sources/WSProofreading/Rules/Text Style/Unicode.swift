@@ -28,21 +28,21 @@ internal struct UnicodeRule : Rule {
     })
 
     private static func check(_ file: TextFile, for obsolete: String, replacement: StrictString? = nil,
-                      allowTrailing: Bool = false,
-                      allowInSwiftSource: Bool = false,
-                      allowInShellSource: Bool = false,
-                      allowInSampleCode: Bool = false,
-                      allowInMarkdownList: Bool = false,
-                      allowInURLs: Bool = false,
-                      allowInConditionalCompilationStatement: Bool = false,
-                      allowedAliasDefinitions: [StrictString] = [],
-                      allowedDefaultImplementations: [String] = [],
-                      allowInReturnArrow: Bool = false,
-                      allowInHTMLComment: Bool = false,
-                      allowInHeading: Bool = false,
-                      allowInFloatLiteral: Bool = false,
-                      allowInToolsVersion: Bool = false,
-                      message: UserFacing<StrictString, InterfaceLocalization>, status: ProofreadingStatus, output: Command.Output) {
+                              allowTrailing: Bool = false,
+                              allowInSwiftSource: Bool = false,
+                              allowInShellSource: Bool = false,
+                              allowInSampleCode: Bool = false,
+                              allowInMarkdownList: Bool = false,
+                              allowInURLs: Bool = false,
+                              allowInConditionalCompilationStatement: Bool = false,
+                              allowedAliasDefinitions: [StrictString] = [],
+                              allowedDefaultImplementations: [String] = [],
+                              allowInReturnArrow: Bool = false,
+                              allowInHTMLComment: Bool = false,
+                              allowInHeading: Bool = false,
+                              allowInFloatLiteral: Bool = false,
+                              allowInToolsVersion: Bool = false,
+                              message: UserFacing<StrictString, InterfaceLocalization>, status: ProofreadingStatus, output: Command.Output) {
 
         for protocolName in allowedDefaultImplementations where file.location.lastPathComponent == protocolName + ".swift" {
             return
@@ -224,7 +224,7 @@ internal struct UnicodeRule : Rule {
                     })
 
                     return obsoleteMessage.resolved(for: localization) + " " + message.resolved(for: localization)
-            }), status: status, output: output)
+                }), status: status, output: output)
         }
     }
 
@@ -255,12 +255,12 @@ internal struct UnicodeRule : Rule {
               allowInShellSource: true,
               allowInSampleCode: true,
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            // Note to localizers: Adapt the recommendations for the target localization.
-            case .englishCanada:
-                return "Use quotation marks (“, ”) or double prime (′′)."
-            }
-        }), status: status, output: output)
+                switch localization {
+                // Note to localizers: Adapt the recommendations for the target localization.
+                case .englishCanada:
+                    return "Use quotation marks (“, ”) or double prime (′′)."
+                }
+              }), status: status, output: output)
 
         check(file, for: "\u{27}",
               allowInShellSource: true,

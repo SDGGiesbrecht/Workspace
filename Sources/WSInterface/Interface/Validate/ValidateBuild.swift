@@ -49,15 +49,15 @@ extension Workspace.Validate {
             try validationStatus.reportOutcome(projectName: try options.project.projectName(), output: output)
         })
 
-        static func job(_ job: ContinuousIntegrationJob, isRelevantTo project: PackageRepository, andAvailableJobs validJobs: Set<ContinuousIntegrationJob>) throws -> Bool {
+        static func job(_ job: ContinuousIntegrationJob, isRelevantTo project: PackageRepository, andAvailableJobs validJobs: Set<ContinuousIntegrationJob>, output: Command.Output) throws -> Bool {
             return try job ∈ validJobs
-                ∧ ((try job.isRequired(by: project))
+                ∧ ((try job.isRequired(by: project, output: output))
                     ∧ job.operatingSystem == OperatingSystem.current)
         }
 
         static func validate(job: ContinuousIntegrationJob?, against validJobs: Set<ContinuousIntegrationJob>, for project: PackageRepository, output: Command.Output) throws {
             if let specified = job,
-                ¬(try Build.job(specified, isRelevantTo: project, andAvailableJobs: validJobs)) {
+                ¬(try Build.job(specified, isRelevantTo: project, andAvailableJobs: validJobs, output: output)) {
                 throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
@@ -70,7 +70,7 @@ extension Workspace.Validate {
         static func executeAsStep(options: Options, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
             for job in ContinuousIntegrationJob.cases
-                where try options.job.includes(job: job) ∧ (try Build.job(job, isRelevantTo: options.project, andAvailableJobs: Tests.buildJobs)) {
+                where try options.job.includes(job: job) ∧ (try Build.job(job, isRelevantTo: options.project, andAvailableJobs: Tests.buildJobs, output: output)) {
                     try autoreleasepool {
 
                         try Tests.build(options.project, for: job, validationStatus: &validationStatus, output: output)

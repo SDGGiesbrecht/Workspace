@@ -99,7 +99,7 @@ struct DGit {
         let gitIgnore = try TextFile(possiblyAt: RelativePath(".gitignore").url)
 
         var updatedLines: [String] = requiredIgnoreEntries
-        if try Repository.packageRepository.configuration().xcode.manage {
+        if try Repository.packageRepository.configuration(output: output).xcode.manage {
             updatedLines += dependentIgnoreEntriesForXcode
         }
 

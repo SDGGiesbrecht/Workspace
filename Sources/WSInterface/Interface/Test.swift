@@ -51,10 +51,10 @@ extension Workspace {
         static func executeAsStep(options: Options, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
             for job in ContinuousIntegrationJob.cases
-                where try options.job.includes(job: job) ∧ (try Validate.Build.job(job, isRelevantTo: options.project, andAvailableJobs: Tests.testJobs)) {
+                where try options.job.includes(job: job) ∧ (try Validate.Build.job(job, isRelevantTo: options.project, andAvailableJobs: Tests.testJobs, output: output)) {
                     try autoreleasepool {
 
-                        if  try options.project.configuration().continuousIntegration.skipSimulatorOutsideContinuousIntegration,
+                        if  try options.project.configuration(output: output).continuousIntegration.skipSimulatorOutsideContinuousIntegration,
                             options.job == nil, // Not in continuous integration.
                             job ∈ ContinuousIntegrationJob.simulatorJobs {
                              // [_Exempt from Test Coverage_] Tested separately.

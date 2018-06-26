@@ -30,7 +30,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 10, 0))),
         .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 3, 1))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 1, 11))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 1, 12))),
         .package(url: "https://github.com/apple/swift\u{2D}package\u{2D}manager", .exact(Version(0, 2, 0)))
     ],
     targets: [
@@ -53,6 +53,7 @@ let package = Package(
             "WSValidation",
             "WSGitHub",
             "WSContinuousIntegration",
+            "WSProofreading",
             "WSDocumentation",
             // [_Workaround: This module and its dependency list needs refactoring._]
             "WSSwift",
@@ -75,6 +76,14 @@ let package = Package(
             "WSGeneralImports",
             "WSProject",
             "WSDocumentation"
+            ]),
+
+        // Proofreading.
+        .target(name: "WSProofreading", dependencies: [
+            "WSGeneralImports",
+            "WSProject",
+            "WSThirdParty",
+            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
             ]),
 
         // Documentation generation.

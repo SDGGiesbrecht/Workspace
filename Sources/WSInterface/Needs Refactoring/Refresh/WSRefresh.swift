@@ -34,7 +34,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Scripts
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    if try options.project.configuration().provideWorkflowScripts {
+    if try options.project.configuration(output: output).provideWorkflowScripts {
         try Workspace.Refresh.Scripts.command.execute(withArguments: arguments, options: options, output: output)
     }
 
@@ -47,11 +47,11 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Read‐Me
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    if try options.project.configuration().documentation.readMe.manage {
+    if try options.project.configuration(output: output).documentation.readMe.manage {
         try Workspace.Refresh.ReadMe.command.execute(withArguments: arguments, options: options, output: output)
     }
 
-    if try options.project.configuration().licence.manage {
+    if try options.project.configuration(output: output).licence.manage {
 
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         output.print("Updating licence...".formattedAsSectionHeader())
@@ -63,14 +63,14 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // GitHub
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    if try options.project.configuration().gitHub.manage {
+    if try options.project.configuration(output: output).gitHub.manage {
         try Workspace.Refresh.GitHub.command.execute(withArguments: arguments, options: options, output: output)
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Continuous Integration
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    if try options.project.configuration().continuousIntegration.manage {
+    if try options.project.configuration(output: output).continuousIntegration.manage {
         try Workspace.Refresh.ContinuousIntegration.command.execute(withArguments: arguments, options: options, output: output)
     }
 
@@ -79,7 +79,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     try Workspace.Refresh.Resources.command.execute(withArguments: arguments, options: options, output: output)
 
-    if try Repository.packageRepository.configuration().fileHeaders.manage {
+    if try Repository.packageRepository.configuration(output: output).fileHeaders.manage {
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
         output.print("Updating file headers...".formattedAsSectionHeader())
         // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
@@ -106,7 +106,7 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     try Workspace.Normalize.executeAsStep(options: options, output: output)
 
     #if !os(Linux)
-        if try Repository.packageRepository.configuration().xcode.manage {
+        if try Repository.packageRepository.configuration(output: output).xcode.manage {
 
             // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
             output.print("Refreshing Xcode project...".formattedAsSectionHeader())

@@ -21,9 +21,10 @@ public enum FileType {
     // MARK: - Static Properties
 
     private static var unsupportedFileTypesEncountered: [String: URL] = [:]
-    public static func unsupportedTypesWarning(for project: PackageRepository) throws -> StrictString? { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+    public static func unsupportedTypesWarning(for project: PackageRepository, output: Command.Output?) throws -> StrictString? { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+        // [_Workaround: “output” should not be optional, but is currently required for bridging with older code._]
 
-        let expected = try project.configuration().repository.ignoredFileTypes
+        let expected = try project.configuration(output: output).repository.ignoredFileTypes
         var unexpectedTypes = unsupportedFileTypesEncountered.filter { key, _ in
             return key ∉ expected
         }

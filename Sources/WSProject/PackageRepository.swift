@@ -215,7 +215,8 @@ extension PackageRepository {
         }
     }
 
-    public func configuration() throws -> WorkspaceConfiguration {
+    public func configuration(output: Command.Output?) throws -> WorkspaceConfiguration {
+        // [_Workaround: “output” should not be optional, but it is needed to bridge with older code._]
         return try cached(in: &configurationCache.configuration) {
 
             if try isWorkspaceProject() {
@@ -234,13 +235,14 @@ extension PackageRepository {
                     linkingAgainst: "WorkspaceConfiguration",
                     in: SDGSwift.Package(url: Metadata.packageURL),
                     at: Metadata.latestStableVersion,
-                    context: try configurationContext())
+                    context: try configurationContext(),
+                    reportProgress: { output?.print($0) })
             }
         }
     }
 
-    public func developmentLocalization() throws -> LocalizationIdentifier {
-        guard let result = try configuration().documentation.localizations.first else {
+    public func developmentLocalization(output: Command.Output) throws -> LocalizationIdentifier {
+        guard let result = try configuration(output: output).documentation.localizations.first else {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
@@ -251,33 +253,33 @@ extension PackageRepository {
         return result
     }
 
-    public func fileHeader() throws -> StrictString { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+    public func fileHeader(output: Command.Output) throws -> StrictString { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         return try cached(in: &configurationCache.fileHeader) {
-            return try configuration().fileHeaders.contents.resolve(configuration())
+            return try configuration(output: output).fileHeaders.contents.resolve(configuration(output: output))
         }
     }
 
-    public func documentationCopyright() throws -> StrictString {
+    public func documentationCopyright(output: Command.Output) throws -> StrictString {
         return try cached(in: &configurationCache.documentationCopyright) {
-            return try configuration().documentation.api.copyrightNotice.resolve(configuration())
+            return try configuration(output: output).documentation.api.copyrightNotice.resolve(configuration(output: output))
         }
     }
 
-    public func readMe() throws -> [LocalizationIdentifier: StrictString] {
+    public func readMe(output: Command.Output) throws -> [LocalizationIdentifier: StrictString] {
         return try cached(in: &configurationCache.readMe) {
-            return try configuration().documentation.readMe.contents.resolve(configuration())
+            return try configuration(output: output).documentation.readMe.contents.resolve(configuration(output: output))
         }
     }
 
-    public func contributingInstructions() throws -> StrictString { // [_Exempt from Test Coverage_] [_Workaround: Until contributing instructions are testable._]
+    public func contributingInstructions(output: Command.Output) throws -> StrictString { // [_Exempt from Test Coverage_] [_Workaround: Until contributing instructions are testable._]
         return try cached(in: &configurationCache.contributingInstructions) {
-            return try configuration().gitHub.contributingInstructions.resolve(configuration())
+            return try configuration(output: output).gitHub.contributingInstructions.resolve(configuration(output: output))
         }
     }
 
-    public func issueTemplate() throws -> StrictString { // [_Exempt from Test Coverage_] [_Workaround: Until contributing instructions are testable._]
+    public func issueTemplate(output: Command.Output) throws -> StrictString { // [_Exempt from Test Coverage_] [_Workaround: Until contributing instructions are testable._]
         return try cached(in: &configurationCache.issueTemplate) {
-            return try configuration().gitHub.issueTemplate.resolve(configuration())
+            return try configuration(output: output).gitHub.issueTemplate.resolve(configuration(output: output))
         }
     }
 

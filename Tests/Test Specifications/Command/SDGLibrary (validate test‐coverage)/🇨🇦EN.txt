@@ -6,6 +6,8 @@ Testing on macOS with Xcode... (§1)
 
 Checking test coverage on macOS... (§2)
 
+Parsing report for “[Temporary]/SDGLibrary/Sources/Library/SDG.swift”...
+Parsing report for “[Temporary]/SDGLibrary/Tests/SDGTests/SDGTests.swift”...
 [Temporary]/SDGLibrary/Sources/Library/SDG.swift
 
 ✓ Tests pass on macOS with Xcode.

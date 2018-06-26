@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+@testable import WSProofreading
 @testable import WSDocumentation
 @testable import WSInterface
 import WSGeneralTestImports

@@ -42,12 +42,12 @@ extension PackageRepository {
         return documentationDirectory.appendingPathComponent(target)
     }
 
-    private func resolvedCopyright() throws -> StrictString {
+    private func resolvedCopyright(output: Command.Output) throws -> StrictString {
 
-        var template = try documentationCopyright()
+        var template = try documentationCopyright(output: output)
 
         let dates: StrictString
-        if let specified = try configuration().documentation.api.yearFirstPublished {
+        if let specified = try configuration(output: output).documentation.api.yearFirstPublished {
             dates = StrictString(WSProject.copyright(fromText: "©\(specified.inEnglishDigits())"))
         } else {
             dates = StrictString(WSProject.copyright(fromText: ""))
@@ -87,21 +87,21 @@ extension PackageRepository {
             let outputSubdirectory = PackageRepository.subdirectory(for: target, in: outputDirectory)
 
             let buildOperatingSystem: OperatingSystem
-            if try .macOS ∈ configuration().supportedOperatingSystems {
+            if try .macOS ∈ configuration(output: output).supportedOperatingSystems {
                 buildOperatingSystem = .macOS
-            } else if try .iOS ∈ configuration().supportedOperatingSystems {
+            } else if try .iOS ∈ configuration(output: output).supportedOperatingSystems {
                 buildOperatingSystem = .iOS
-            } else if try .watchOS ∈ configuration().supportedOperatingSystems {
+            } else if try .watchOS ∈ configuration(output: output).supportedOperatingSystems {
                 buildOperatingSystem = .watchOS
-            } else if try .tvOS ∈ configuration().supportedOperatingSystems {
+            } else if try .tvOS ∈ configuration(output: output).supportedOperatingSystems {
                 buildOperatingSystem = .tvOS
             } else {
                 buildOperatingSystem = .macOS
             }
 
-            let copyrightText = try resolvedCopyright()
+            let copyrightText = try resolvedCopyright(output: output)
             try FileManager.default.do(in: location) {
-                try Jazzy.default.document(target: target, scheme: try scheme(), buildOperatingSystem: buildOperatingSystem, copyright: copyrightText, gitHubURL: try configuration().documentation.repositoryURL, outputDirectory: outputSubdirectory, project: self, output: output)
+                try Jazzy.default.document(target: target, scheme: try scheme(), buildOperatingSystem: buildOperatingSystem, copyright: copyrightText, gitHubURL: try configuration(output: output).documentation.repositoryURL, outputDirectory: outputSubdirectory, project: self, output: output)
             }
 
             let transformedMarker = ReadMeConfiguration._skipInJazzy.replacingMatches(for: "\u{2D}\u{2D}".scalars, with: "&ndash;".scalars).replacingMatches(for: "<".scalars, with: "&lt;".scalars).replacingMatches(for: ">".scalars, with: "&gt;".scalars)

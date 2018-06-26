@@ -22,7 +22,7 @@ struct FileHeaders {
 
     static func refreshFileHeaders(output: Command.Output) throws {
 
-        let template = try Repository.packageRepository.fileHeader()
+        let template = try Repository.packageRepository.fileHeader(output: output)
 
         var skippedFiles: Set<String> = []
         skippedFiles.insert("LICENSE.md")

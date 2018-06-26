@@ -81,7 +81,9 @@ let package = Package(
         // Proofreading.
         .target(name: "WSProofreading", dependencies: [
             "WSGeneralImports",
-            "WSProject"
+            "WSProject",
+            "WSThirdParty",
+            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
             ]),
 
         // Documentation generation.

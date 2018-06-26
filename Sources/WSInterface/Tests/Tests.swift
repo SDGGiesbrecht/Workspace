@@ -20,6 +20,7 @@ import SDGXcode
 
 import WSValidation
 import WSContinuousIntegration
+import WSProofreading
 
 struct Tests {
 

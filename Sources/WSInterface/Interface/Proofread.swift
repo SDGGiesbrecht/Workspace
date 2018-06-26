@@ -14,6 +14,7 @@
 
 import WSGeneralImports
 import WSValidation
+import WSProofreading
 
 extension Workspace {
     enum Proofread {

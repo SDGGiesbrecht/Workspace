@@ -53,6 +53,7 @@ let package = Package(
             "WSValidation",
             "WSGitHub",
             "WSContinuousIntegration",
+            "WSProofreading",
             "WSDocumentation",
             // [_Workaround: This module and its dependency list needs refactoring._]
             "WSSwift",
@@ -75,6 +76,12 @@ let package = Package(
             "WSGeneralImports",
             "WSProject",
             "WSDocumentation"
+            ]),
+
+        // Proofreading.
+        .target(name: "WSProofreading", dependencies: [
+            "WSGeneralImports",
+            "WSProject"
             ]),
 
         // Documentation generation.

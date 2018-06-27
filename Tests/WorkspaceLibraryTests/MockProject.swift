@@ -107,7 +107,11 @@ extension PackageRepository {
                         }
                         if ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil, command == ["test"] {
                             // Phases skipped within Xcode due to rerouting interference.
-                            requireSuccess()
+                            if location.lastPathComponent == "Default" {
+                                expectFailure()
+                            } else {
+                                requireSuccess()
+                            }
                             continue
                         }
                         #if os(Linux)

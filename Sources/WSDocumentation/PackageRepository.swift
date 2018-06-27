@@ -19,6 +19,7 @@ import SDGXcode
 
 import WSProject
 import WSValidation
+import WSXcode
 
 extension PackageRepository {
 
@@ -131,7 +132,13 @@ extension PackageRepository {
             }))
 
         } catch {
-            output.print(error.localizedDescription.formattedAsError()) // [_Exempt from Test Coverage_]
+            var description = StrictString(error.localizedDescription)
+            if let noXcode = error as? Xcode.Error,
+                noXcode == .noXcodeProject {
+                description += "\n" + PackageRepository.xcodeProjectInstructions.resolved()
+            }
+            output.print(description.formattedAsError())
+
             validationStatus.failStep(message: UserFacing({ localization in
                 switch localization {
                 case .englishCanada:
@@ -189,7 +196,7 @@ extension PackageRepository {
                 }))
             }
         } catch {
-            output.print(error.localizedDescription.formattedAsError()) // [_Exempt from Test Coverage_]
+            output.print(error.localizedDescription.formattedAsError())
             validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:

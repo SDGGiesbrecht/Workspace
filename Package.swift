@@ -101,6 +101,7 @@ let package = Package(
             "WSProject",
             "WSValidation",
             "WSThirdParty",
+            "WSXcode",
             "WSSwift",
             .productItem(name: "SDGXcode", package: "SDGSwift")
             ]),

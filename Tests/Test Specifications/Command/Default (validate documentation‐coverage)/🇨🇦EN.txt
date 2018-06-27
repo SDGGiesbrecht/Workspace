@@ -2,25 +2,15 @@ $ workspace validate documentation‐coverage •no‐colour
 
 Generating documentation for “Default”... (§1)
 
-
-$ jazzy --module Default --copyright "Copyright ©2018 the Default project contributors. All rights reserved." --documentation=Documentation/*.md --clean --use-safe-filenames --output "[Temporary]/Documentation/Default" --xcodebuild-arguments "-scheme,Default-Package,-target,Default,-sdk,macosx,-derivedDataPath,[Temporary]/Jazzy Build Artifacts"
-Running xcodebuild
-Parsing Default.swift (1/1)
-building site
-building search index
-0% documentation coverage with 0 undocumented symbols
-skipped 1 private, fileprivate, or internal symbol (use `--min-acl` to specify a different minimum ACL)
-jam out ♪♫ to your fresh new docs in `[Temporary]/Documentation/Default`
-
-Writing to “[Temporary]/Documentation/Default/.nojekyll”...
+The package has no Xcode project.
+Configure “xcode.manage” or create an Xcode project manually.
 
 Checking documentation coverage for “Default”... (§2)
 
+The file “undocumented.json” couldn’t be opened because there is no such file.
 
-✓ Generated documentation for “Default”.
-✓ Documentation coverage is complete for “Default”.
+✗ Failed to generate documentation for “Default”. (See [⌘F] “§1”)
+✗ Documentation coverage information is unavailable for “Default”. (See [⌘F] “§2”)
 
-
-“Default” passes validation.
-
-0
+“Default” fails validation.
+9223372036854775807

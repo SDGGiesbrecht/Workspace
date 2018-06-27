@@ -40,6 +40,10 @@ extension Workspace {
             throw linuxJazzyError()
             #else
 
+            if try options.project.configuration(output: output).xcode.manage {
+                try Workspace.Refresh.Xcode.executeAsStep(options: options, output: output)
+            }
+
             var validationStatus = ValidationStatus()
             let outputDirectory = options.project.defaultDocumentationDirectory
             try executeAsStep(outputDirectory: outputDirectory, options: options, validationStatus: &validationStatus, output: output)
@@ -62,11 +66,6 @@ extension Workspace {
 
         #if !os(Linux)
         static func executeAsStep(outputDirectory: URL, options: Options, validationStatus: inout ValidationStatus, output: Command.Output) throws {
-
-            if try options.project.configuration(output: output).xcode.manage {
-                try Workspace.Refresh.Xcode.executeAsStep(options: options, output: output)
-            }
-
             try options.project.document(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
         }
         #endif

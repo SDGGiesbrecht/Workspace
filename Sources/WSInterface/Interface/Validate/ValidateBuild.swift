@@ -40,6 +40,12 @@ extension Workspace.Validate {
 
         static let command = Command(name: name, description: description, directArguments: [], options: [ContinuousIntegrationJob.option], execution: { (_, options: Options, output: Command.Output) throws in
 
+            #if !os(Linux)
+            if try options.project.configuration(output: output).xcode.manage {
+                try Workspace.Refresh.Xcode.executeAsStep(options: options, output: output)
+            }
+            #endif
+
             try validate(job: options.job, against: Tests.buildJobs, for: options.project, output: output)
 
             var validationStatus = ValidationStatus()

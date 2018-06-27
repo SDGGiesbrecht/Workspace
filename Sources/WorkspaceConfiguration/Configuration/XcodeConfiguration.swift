@@ -19,6 +19,10 @@ public struct XcodeConfiguration : Codable {
     ///
     /// This is off by default, but some tasks may throw errors if they require a compatible Xcode project and none is present.
     ///
+    /// ```shell
+    /// $ workspace refresh xcode
+    /// ```
+    ///
     /// An Xcode project can be managed manually instead, but it must correspond with the Package manifest. Where a customized Xcode project is needed, it is recommended to start with an automatically generated one and adjust it from there.
     public var manage: Bool = false
 }

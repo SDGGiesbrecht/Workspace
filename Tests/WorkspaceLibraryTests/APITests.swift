@@ -316,7 +316,7 @@ class APITests : TestCase {
         configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
         configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
 
-        PackageRepository(mock: "SDGLibrary").test(commands: [
+        var commands = [
             // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
             ["refresh", "read‐me"],
@@ -324,10 +324,11 @@ class APITests : TestCase {
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
             ["normalize"],
-            #if !os(Linux)
-            ["refresh", "xcode"],
-            #endif
-
+        ]
+        #if !os(Linux)
+        commands.append(["refresh", "xcode"])
+        #endif
+        commands.append(contentsOf: [
             ["proofread"],
             ["validate", "build"],
             ["test"],
@@ -335,7 +336,8 @@ class APITests : TestCase {
             ["validate", "documentation‐coverage"],
 
             ["proofread", "•xcode"]
-            ], configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+            ])
+        PackageRepository(mock: "SDGLibrary").test(commands: commands, configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
      }
 
     func testSDGTool() {
@@ -386,7 +388,7 @@ class APITests : TestCase {
         configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
         configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
 
-        PackageRepository(mock: "SDGTool").test(commands: [
+        var commands = [
             // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
             ["refresh", "read‐me"],
@@ -394,10 +396,11 @@ class APITests : TestCase {
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
             ["normalize"],
-            #if !os(Linux)
-            ["refresh", "xcode"],
-            #endif
-
+            ]
+        #if !os(Linux)
+        commands.append(["refresh", "xcode"])
+        #endif
+        commands.append(contentsOf: [
             ["proofread"],
             ["validate", "build"],
             ["test"],
@@ -405,7 +408,8 @@ class APITests : TestCase {
             ["validate", "documentation‐coverage"],
 
             ["proofread", "•xcode"]
-            ], configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+            ])
+        PackageRepository(mock: "SDGTool").test(commands: commands, configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
      }
 
     func testSelfSpecificScripts() {

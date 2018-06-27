@@ -35,6 +35,10 @@ extension Workspace.Refresh {
         })
 
         static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, options: Options, output: Command.Output) throws in
+            try executeAsStep(options: options, output: output)
+        })
+
+        static func executeAsStep(options: Options, output: Command.Output) throws {
 
             output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
@@ -44,6 +48,6 @@ extension Workspace.Refresh {
             }).resolved().formattedAsSectionHeader())
 
             try options.project.refreshXcodeProject(output: output)
-        })
+        }
     }
 }

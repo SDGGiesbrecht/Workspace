@@ -315,7 +315,12 @@ struct Tests {
                 }))
             }
         } catch {
-            failStepWithError(message: StrictString(error.localizedDescription))
+            var description = StrictString(error.localizedDescription)
+            if let noXcode = error as? Xcode.Error,
+                noXcode == .noXcodeProject {
+                description += "\n" + PackageRepository.xcodeProjectInstructions.resolved()
+            }
+            failStepWithError(message: description)
         }
     }
 }

@@ -2,16 +2,16 @@ $ workspace validate test‐coverage •no‐colour
 
 Testing on macOS with Xcode... (§1)
 
-[$ xcodebuild...]
+The package has no Xcode project.
+Configure “xcode.manage” or create an Xcode project manually.
 
 Checking test coverage on macOS... (§2)
 
-Parsing report for “[Temporary]/Default/Tests/DefaultTests/DefaultTests.swift”...
+The package has no Xcode project.
+Configure “xcode.manage” or create an Xcode project manually.
 
-✓ Tests pass on macOS with Xcode.
-✓ Test coverage is complete on macOS.
+✗ Tests fail on macOS with Xcode. (See [⌘F] “§1”)
+✗ Test coverage could not be determined on macOS. (See [⌘F] “§2”)
 
-
-“Default” passes validation.
-
-0
+“Default” fails validation.
+9223372036854775807

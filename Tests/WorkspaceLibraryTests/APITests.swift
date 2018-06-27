@@ -434,6 +434,7 @@ class APITests : TestCase {
     func testUnicodeSource() {
         #if !os(Linux)
         let configuration = WorkspaceConfiguration()
+        configuration.xcode.manage = true
         configuration.documentation.api.generate = true
         configuration.documentation.localizations = ["en"]
         PackageRepository(mock: "UnicodeSource").test(commands: [

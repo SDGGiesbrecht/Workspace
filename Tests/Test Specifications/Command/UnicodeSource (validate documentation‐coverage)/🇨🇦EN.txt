@@ -1,5 +1,11 @@
 $ workspace validate documentation‐coverage •no‐colour
 
+Refreshing Xcode project...
+
+[$ swift...]
+
+Writing to “UnicodeSource.xcodeproj/project.pbxproj”...
+
 Generating documentation for “UnicodeSource”... (§1)
 
 

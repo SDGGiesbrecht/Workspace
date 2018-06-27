@@ -324,6 +324,9 @@ class APITests : TestCase {
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
             ["normalize"],
+            #if !os(Linux)
+            ["refresh", "xcode"],
+            #endif
 
             ["proofread"],
             ["validate", "build"],
@@ -391,6 +394,9 @@ class APITests : TestCase {
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
             ["normalize"],
+            #if !os(Linux)
+            ["refresh", "xcode"],
+            #endif
 
             ["proofread"],
             ["validate", "build"],

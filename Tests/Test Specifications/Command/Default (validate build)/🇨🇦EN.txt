@@ -7,18 +7,22 @@ Checking build for macOS with the Swift Package Manager... (§1)
 Checking build for macOS with Xcode... (§2)
 
 The package has no Xcode project.
+Configure “xcode.manage” or create an Xcode project manually.
 
 Checking build for iOS... (§3)
 
 The package has no Xcode project.
+Configure “xcode.manage” or create an Xcode project manually.
 
 Checking build for watchOS... (§4)
 
 The package has no Xcode project.
+Configure “xcode.manage” or create an Xcode project manually.
 
 Checking build for tvOS... (§5)
 
 The package has no Xcode project.
+Configure “xcode.manage” or create an Xcode project manually.
 
 ✓ There are no compiler warnings for macOS with the Swift Package Manager.
 ✗ Build failed for macOS with Xcode. (See [⌘F] “§2”)

@@ -123,7 +123,18 @@ struct Tests {
                 }))
             }
         } catch {
-            output.print(error.localizedDescription.formattedAsError())
+            var description = StrictString(error.localizedDescription)
+            if let noXcode = error as? Xcode.Error,
+                noXcode == .noXcodeProject {
+                description += "\n" + UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return "Configure “xcode.manage” or create an Xcode project manually."
+                    }
+                }).resolved()
+            }
+            output.print(description.formattedAsError())
+
             validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in // [_Exempt from Test Coverage_]
                 switch localization {
                 case .englishCanada: // [_Exempt from Test Coverage_]

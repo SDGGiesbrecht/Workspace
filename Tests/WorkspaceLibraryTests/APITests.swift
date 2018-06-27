@@ -127,6 +127,7 @@ class APITests : TestCase {
 
     func testFailingDocumentationCoverage() {
         PackageRepository(mock: "FailingDocumentationCoverage").test(commands: [
+            ["refresh", "xcode"],
             ["validate", "documentation‐coverage"]
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
      }

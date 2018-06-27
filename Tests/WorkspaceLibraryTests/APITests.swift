@@ -316,7 +316,7 @@ class APITests : TestCase {
         configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
         configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
 
-        var commands = [
+        var commands: [[StrictString]] = [
             // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
             ["refresh", "read‐me"],
@@ -388,7 +388,7 @@ class APITests : TestCase {
         configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
         configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
 
-        var commands = [
+        var commands: [[StrictString]] = [
             // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
             ["refresh", "read‐me"],

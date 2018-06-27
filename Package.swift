@@ -82,7 +82,9 @@ let package = Package(
         // Xcode project management.
         .target(name: "WSXcode", dependencies: [
             "WSGeneralImports",
-            "WSProject"
+            "WSProject",
+            "WorkspaceProjectConfiguration",
+            .productItem(name: "SDGXcode", package: "SDGSwift"),
             ]),
 
         // Proofreading.

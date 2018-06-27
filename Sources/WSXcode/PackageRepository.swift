@@ -21,6 +21,13 @@ import WorkspaceProjectConfiguration
 
 extension PackageRepository {
 
+    public static let xcodeProjectInstructions = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishCanada:
+            return "Configure “xcode.manage” or create an Xcode project manually."
+        }
+    })
+
     #if !os(Linux)
     // MARK: - #if !os(Linux)
 

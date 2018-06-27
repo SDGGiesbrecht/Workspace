@@ -126,12 +126,7 @@ struct Tests {
             var description = StrictString(error.localizedDescription)
             if let noXcode = error as? Xcode.Error,
                 noXcode == .noXcodeProject {
-                description += "\n" + UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishCanada:
-                        return "Configure “xcode.manage” or create an Xcode project manually."
-                    }
-                }).resolved()
+                description += "\n" + PackageRepository.xcodeProjectInstructions.resolved()
             }
             output.print(description.formattedAsError())
 
@@ -189,6 +184,12 @@ struct Tests {
                     }
                     return true
                 } catch {
+                    var description = StrictString(error.localizedDescription)
+                    if let noXcode = error as? Xcode.Error,
+                        noXcode == .noXcodeProject {
+                        description += "\n" + PackageRepository.xcodeProjectInstructions.resolved()
+                    }
+                    output.print(description.formattedAsError())
                     return false
                 }
             }

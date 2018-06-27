@@ -6,12 +6,11 @@ Testing on macOS with the Swift Package Manager... (§1)
 
 Testing on macOS with Xcode... (§2)
 
-[$ xcodebuild...]
+The package has no Xcode project.
+Configure “xcode.manage” or create an Xcode project manually.
 
 ✓ Tests pass on macOS with the Swift Package Manager.
-✓ Tests pass on macOS with Xcode.
+✗ Tests fail on macOS with Xcode. (See [⌘F] “§2”)
 
-
-“Default” passes validation.
-
-0
+“Default” fails validation.
+9223372036854775807

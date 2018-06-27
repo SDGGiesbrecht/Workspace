@@ -84,7 +84,7 @@ let package = Package(
             "WSGeneralImports",
             "WSProject",
             "WorkspaceProjectConfiguration",
-            .productItem(name: "SDGXcode", package: "SDGSwift"),
+            .productItem(name: "SDGXcode", package: "SDGSwift")
             ]),
 
         // Proofreading.

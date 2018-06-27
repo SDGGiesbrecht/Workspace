@@ -52,7 +52,7 @@ extension PackageRepository {
             "            );",
             "            name = \u{22}\(PackageRepository.proofreadTargetName.resolved())\u{22};",
             "            productName = \u{22}\(PackageRepository.proofreadTargetName.resolved())\u{22};",
-            "        };",
+            "        };"
             ].joinedAsLines()
     }
 
@@ -70,7 +70,7 @@ extension PackageRepository {
             "            isa = PBXShellScriptBuildPhase;",
             "            shellPath = /bin/sh;",
             "            shellScript = \u{22}\(try script())\u{22};",
-            "        };",
+            "        };"
             ].joinedAsLines()
     }
 
@@ -87,7 +87,7 @@ extension PackageRepository {
                 project.contents.scalars.replaceSubrange(range, with: [
                     objectsLine,
                     aggregateTarget,
-                    try scriptObject(),
+                    try scriptObject()
                     ].joinedAsLines().scalars)
             }
 
@@ -95,7 +95,7 @@ extension PackageRepository {
             if let range = project.contents.scalars.firstMatch(for: targetsLine.scalars)?.range {
                 project.contents.scalars.replaceSubrange(range, with: [
                     targetsLine,
-                    PackageRepository.proofreadTargetIdentifier + ",",
+                    PackageRepository.proofreadTargetIdentifier + ","
                     ].joinedAsLines().scalars)
             }
 

@@ -16,6 +16,8 @@ import SDGLogic
 import SDGCollections
 import WSGeneralImports
 
+import SDGExternalProcess
+
 import SDGXcode
 
 import WSValidation
@@ -185,11 +187,13 @@ struct Tests {
                     return true
                 } catch {
                     var description = StrictString(error.localizedDescription)
-                    if let noXcode = error as? Xcode.Error,
-                        noXcode == .noXcodeProject {
-                        description += "\n" + PackageRepository.xcodeProjectInstructions.resolved()
+                    if error as? ExternalProcess.Error == nil { // ← Description would be redundant.
+                        if let noXcode = error as? Xcode.Error,
+                            noXcode == .noXcodeProject {
+                            description += "\n" + PackageRepository.xcodeProjectInstructions.resolved()
+                        }
+                        output.print(description.formattedAsError())
                     }
-                    output.print(description.formattedAsError())
                     return false
                 }
             }

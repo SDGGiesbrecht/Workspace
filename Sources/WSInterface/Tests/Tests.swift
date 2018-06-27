@@ -87,13 +87,6 @@ struct Tests {
         }).resolved().formattedAsSectionHeader())
 
         do {
-            #if !os(Linux)
-            setenv(DXcode.skipProofreadingEnvironmentVariable, "YES", 1 /* overwrite */)
-            defer {
-                unsetenv(DXcode.skipProofreadingEnvironmentVariable)
-            }
-            #endif
-
             let buildCommand: (Command.Output) throws -> Bool
             switch job {
             case .macOSSwiftPackageManager, .linux:
@@ -161,13 +154,6 @@ struct Tests {
             output.print("Skipping due to sandbox...")
             return
         }
-
-        #if !os(Linux)
-        setenv(DXcode.skipProofreadingEnvironmentVariable, "YES", 1 /* overwrite */)
-        defer {
-            unsetenv(DXcode.skipProofreadingEnvironmentVariable)
-        }
-        #endif
 
         let testCommand: (Command.Output) -> Bool
         switch job {

@@ -37,7 +37,8 @@ extension Workspace {
             ReadMe.command,
             GitHub.command,
             ContinuousIntegration.command,
-            Resources.command
+            Resources.command,
+            Xcode.command
             ], defaultSubcommand: All.command)
     }
 }

@@ -264,6 +264,7 @@ class APITests : TestCase {
 
     func testPartialReadMe() {
         let configuration = WorkspaceConfiguration()
+        configuration.xcode.manage = true
         configuration.documentation.currentVersion = Version(0, 1, 0)
         configuration.documentation.repositoryURL = URL(string: "https://somewhere.com")!
         configuration.documentation.localizations = ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"]

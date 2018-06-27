@@ -134,6 +134,8 @@ class APITests : TestCase {
      }
 
     func testFailingTests() {
+        let configuration = WorkspaceConfiguration()
+        configuration.xcode.manage = true
         // Attempt to remove existing derived data so that the build is clean.
         // Otherwise Xcode skips the build stages where the awaited warnings occur.
         do {
@@ -148,7 +150,7 @@ class APITests : TestCase {
             ["validate", "build"],
             ["validate", "test‐coverage"],
             ["validate", "build", "•job", "miscellaneous"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
      }
 
     func testInvalidResourceDirectory() {

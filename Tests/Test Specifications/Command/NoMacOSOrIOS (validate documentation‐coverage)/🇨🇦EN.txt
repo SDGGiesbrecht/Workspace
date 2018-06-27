@@ -1,5 +1,11 @@
 $ workspace validate documentation‐coverage •no‐colour
 
+Refreshing Xcode project...
+
+[$ swift...]
+
+Writing to “NoMacOSOrIOS.xcodeproj/project.pbxproj”...
+
 Generating documentation for “NoMacOSOrIOS”... (§1)
 
 

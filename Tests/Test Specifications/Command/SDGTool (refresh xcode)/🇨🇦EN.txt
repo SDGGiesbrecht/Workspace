@@ -1,0 +1,8 @@
+$ workspace refresh xcode •no‐colour
+
+Refreshing Xcode project...
+
+[$ swift...]
+
+Writing to “SDG.xcodeproj/project.pbxproj”...
+0

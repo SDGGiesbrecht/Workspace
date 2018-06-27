@@ -123,6 +123,7 @@ struct Tests {
                 }))
             }
         } catch {
+            output.print(error.localizedDescription.formattedAsError())
             validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in // [_Exempt from Test Coverage_]
                 switch localization {
                 case .englishCanada: // [_Exempt from Test Coverage_]

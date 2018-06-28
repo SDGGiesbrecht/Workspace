@@ -28,7 +28,6 @@ enum DocumentationLink : String, CustomStringConvertible {
     // MARK: - Cases
 
     case installation = "#installation"
-    case git = "Git.md"
     case resources = "Resources.md"
 
     // MARK: - Properties

@@ -340,7 +340,7 @@ class APITests : TestCase {
             ["refresh", "github"],
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
-            ["normalize"],
+            ["normalize"]
         ]
         #if !os(Linux)
         commands.append(["refresh", "xcode"])
@@ -412,7 +412,7 @@ class APITests : TestCase {
             ["refresh", "github"],
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
-            ["normalize"],
+            ["normalize"]
             ]
         #if !os(Linux)
         commands.append(["refresh", "xcode"])

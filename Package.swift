@@ -53,6 +53,7 @@ let package = Package(
             "WSValidation",
             "WSGitHub",
             "WSContinuousIntegration",
+            "WSXcode",
             "WSProofreading",
             "WSDocumentation",
             // [_Workaround: This module and its dependency list needs refactoring._]
@@ -78,6 +79,14 @@ let package = Package(
             "WSDocumentation"
             ]),
 
+        // Xcode project management.
+        .target(name: "WSXcode", dependencies: [
+            "WSGeneralImports",
+            "WSProject",
+            "WorkspaceProjectConfiguration",
+            .productItem(name: "SDGXcode", package: "SDGSwift")
+            ]),
+
         // Proofreading.
         .target(name: "WSProofreading", dependencies: [
             "WSGeneralImports",
@@ -92,6 +101,7 @@ let package = Package(
             "WSProject",
             "WSValidation",
             "WSThirdParty",
+            "WSXcode",
             "WSSwift",
             .productItem(name: "SDGXcode", package: "SDGSwift")
             ]),

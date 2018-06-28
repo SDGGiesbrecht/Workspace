@@ -61,7 +61,7 @@ public struct GitHubConfiguration : Codable {
         template.replaceMatches(for: "#administrators".scalars, with: administratorList)
 
         if let notes = configuration.gitHub.developmentNotes {
-            template.append(contentsOf: [ // [_Exempt from Test Coverage_] [_Workaround: Until contributing instructions are testable._]
+            template.append(contentsOf: [
                 "",
                 "## Development Notes",
                 "",

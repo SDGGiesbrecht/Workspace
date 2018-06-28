@@ -1,5 +1,11 @@
 $ workspace validate documentation‐coverage •no‐colour
 
+Refreshing Xcode project...
+
+[$ swift...]
+
+Writing to “SDG.xcodeproj/project.pbxproj”...
+
 Generating documentation for “Library”... (§1)
 
 

@@ -37,25 +37,29 @@ extension Workspace {
         static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, options: Options, output: Command.Output) throws in
 
             #if os(Linux)
-                throw linuxJazzyError()
+            throw linuxJazzyError()
             #else
 
-                var validationStatus = ValidationStatus()
-                let outputDirectory = options.project.defaultDocumentationDirectory
-                try executeAsStep(outputDirectory: outputDirectory, options: options, validationStatus: &validationStatus, output: output)
+            if try options.project.configuration(output: output).xcode.manage {
+                try Workspace.Refresh.Xcode.executeAsStep(options: options, output: output)
+            }
 
-                guard validationStatus.validatedSomething else {
-                    throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                        switch localization {
-                        case .englishCanada:
-                            return [
-                                "Nothing to document.",
-                                "The package manifest does not define any library products."
-                                ].joinedAsLines()
-                        }
-                    }))
-                }
-                try validationStatus.reportOutcome(projectName: try options.project.projectName(), output: output)
+            var validationStatus = ValidationStatus()
+            let outputDirectory = options.project.defaultDocumentationDirectory
+            try executeAsStep(outputDirectory: outputDirectory, options: options, validationStatus: &validationStatus, output: output)
+
+            guard validationStatus.validatedSomething else {
+                throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return [
+                            "Nothing to document.",
+                            "The package manifest does not define any library products."
+                            ].joinedAsLines()
+                    }
+                }))
+            }
+            try validationStatus.reportOutcome(projectName: try options.project.projectName(), output: output)
 
             #endif
         })

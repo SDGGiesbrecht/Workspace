@@ -31,13 +31,21 @@ extension Workspace {
             }
         })
 
-        static let command = Command(name: name, description: description, subcommands: [
-            All.command,
-            Scripts.command,
-            ReadMe.command,
-            GitHub.command,
-            ContinuousIntegration.command,
-            Resources.command
-            ], defaultSubcommand: All.command)
+        private static var subcommands: [Command] {
+            var list = [
+                All.command,
+                Scripts.command,
+                ReadMe.command,
+                GitHub.command,
+                ContinuousIntegration.command,
+                Resources.command
+            ]
+            #if !os(Linux)
+            list.append(Xcode.command)
+            #endif
+            return list
+        }
+
+        static let command = Command(name: name, description: description, subcommands: subcommands, defaultSubcommand: All.command)
     }
 }

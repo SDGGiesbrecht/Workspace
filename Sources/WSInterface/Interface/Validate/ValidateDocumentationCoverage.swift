@@ -39,22 +39,26 @@ extension Workspace.Validate {
         static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, options: Options, output: Command.Output) throws in
 
             #if os(Linux)
-                throw linuxJazzyError()
+            throw linuxJazzyError()
             #else
 
-                var validationStatus = ValidationStatus()
-                try executeAsStepDocumentingFirst(options: options, validationStatus: &validationStatus, output: output)
+            if try options.project.configuration(output: output).xcode.manage {
+                try Workspace.Refresh.Xcode.executeAsStep(options: options, output: output)
+            }
 
-                if ¬validationStatus.validatedSomething {
-                    validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                        switch localization {
-                        case .englishCanada:
-                            return "No library products to document."
-                        }
-                    }))
-                }
+            var validationStatus = ValidationStatus()
+            try executeAsStepDocumentingFirst(options: options, validationStatus: &validationStatus, output: output)
 
-                try validationStatus.reportOutcome(projectName: try options.project.projectName(), output: output)
+            if ¬validationStatus.validatedSomething {
+                validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return "No library products to document."
+                    }
+                }))
+            }
+
+            try validationStatus.reportOutcome(projectName: try options.project.projectName(), output: output)
 
             #endif
         })

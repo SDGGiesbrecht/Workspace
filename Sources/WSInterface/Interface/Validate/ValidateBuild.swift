@@ -42,6 +42,12 @@ extension Workspace.Validate {
 
             try validate(job: options.job, against: Tests.buildJobs, for: options.project, output: output)
 
+            #if !os(Linux)
+            if try options.project.configuration(output: output).xcode.manage {
+                try Workspace.Refresh.Xcode.executeAsStep(options: options, output: output)
+            }
+            #endif
+
             var validationStatus = ValidationStatus()
 
             try executeAsStep(options: options, validationStatus: &validationStatus, output: output)

@@ -20,11 +20,11 @@
 ///
 /// ## In Xcode
 ///
-/// Proofreading also works within Xcode, provided Workspace has been [fully installed](https://github.com/SDGGiesbrecht/Workspace#installation) on the local device. (If not, proofreading will be skipped, and a link to installation instructions will be displayed.)
+/// Proofreading also works within Xcode, provided Workspace has been [fully installed](https://github.com/SDGGiesbrecht/Workspace#installation) on the local device. (If not, a link to installation instructions will be displayed instead.)
 ///
-/// Workspace will set this up automatically if it is in charge of Xcode.
+/// Workspace will automatically set up a proofreading scheme if it is in charge of Xcode.
 ///
-/// If Workspace is not in charge of Xcode, proofreading can still be activated for a project by copying the “run script” build phase over from a generated project.
+/// If Workspace is not in charge of Xcode, proofreading can still be activated for a project by copying the scheme over from a generated project.
 ///
 /// ## SwiftLint
 ///

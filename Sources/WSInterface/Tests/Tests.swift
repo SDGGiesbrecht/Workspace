@@ -16,6 +16,8 @@ import SDGLogic
 import SDGCollections
 import WSGeneralImports
 
+import SDGExternalProcess
+
 import SDGXcode
 
 import WSValidation
@@ -87,13 +89,6 @@ struct Tests {
         }).resolved().formattedAsSectionHeader())
 
         do {
-            #if !os(Linux)
-            setenv(DXcode.skipProofreadingEnvironmentVariable, "YES", 1 /* overwrite */)
-            defer {
-                unsetenv(DXcode.skipProofreadingEnvironmentVariable)
-            }
-            #endif
-
             let buildCommand: (Command.Output) throws -> Bool
             switch job {
             case .macOSSwiftPackageManager, .linux:
@@ -130,6 +125,13 @@ struct Tests {
                 }))
             }
         } catch {
+            var description = StrictString(error.localizedDescription)
+            if let noXcode = error as? Xcode.Error,
+                noXcode == .noXcodeProject {
+                description += "\n" + PackageRepository.xcodeProjectInstructions.resolved()
+            }
+            output.print(description.formattedAsError())
+
             validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in // [_Exempt from Test Coverage_]
                 switch localization {
                 case .englishCanada: // [_Exempt from Test Coverage_]
@@ -162,13 +164,6 @@ struct Tests {
             return
         }
 
-        #if !os(Linux)
-        setenv(DXcode.skipProofreadingEnvironmentVariable, "YES", 1 /* overwrite */)
-        defer {
-            unsetenv(DXcode.skipProofreadingEnvironmentVariable)
-        }
-        #endif
-
         let testCommand: (Command.Output) -> Bool
         switch job {
         case .macOSSwiftPackageManager, .linux:
@@ -191,6 +186,14 @@ struct Tests {
                     }
                     return true
                 } catch {
+                    var description = StrictString(error.localizedDescription)
+                    if error as? ExternalProcess.Error == nil { // ← Description would be redundant.
+                        if let noXcode = error as? Xcode.Error,
+                            noXcode == .noXcodeProject {
+                            description += "\n" + PackageRepository.xcodeProjectInstructions.resolved()
+                        }
+                        output.print(description.formattedAsError())
+                    }
                     return false
                 }
             }
@@ -316,7 +319,12 @@ struct Tests {
                 }))
             }
         } catch {
-            failStepWithError(message: StrictString(error.localizedDescription))
+            var description = StrictString(error.localizedDescription)
+            if let noXcode = error as? Xcode.Error,
+                noXcode == .noXcodeProject {
+                description += "\n" + PackageRepository.xcodeProjectInstructions.resolved()
+            }
+            failStepWithError(message: description)
         }
     }
 }

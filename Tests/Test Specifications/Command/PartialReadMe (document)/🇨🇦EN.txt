@@ -1,5 +1,11 @@
 $ workspace document •no‐colour
 
+Refreshing Xcode project...
+
+[$ swift...]
+
+Writing to “PartialReadMe.xcodeproj/project.pbxproj”...
+
 Generating documentation for “PartialReadMe”... (§1)
 
 

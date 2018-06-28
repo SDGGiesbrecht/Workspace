@@ -271,13 +271,13 @@ extension PackageRepository {
         }
     }
 
-    public func contributingInstructions(output: Command.Output) throws -> StrictString { // [_Exempt from Test Coverage_] [_Workaround: Until contributing instructions are testable._]
+    public func contributingInstructions(output: Command.Output) throws -> StrictString {
         return try cached(in: &configurationCache.contributingInstructions) {
             return try configuration(output: output).gitHub.contributingInstructions.resolve(configuration(output: output))
         }
     }
 
-    public func issueTemplate(output: Command.Output) throws -> StrictString { // [_Exempt from Test Coverage_] [_Workaround: Until contributing instructions are testable._]
+    public func issueTemplate(output: Command.Output) throws -> StrictString {
         return try cached(in: &configurationCache.issueTemplate) {
             return try configuration(output: output).gitHub.issueTemplate.resolve(configuration(output: output))
         }

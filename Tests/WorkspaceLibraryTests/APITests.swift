@@ -126,12 +126,16 @@ class APITests : TestCase {
      }
 
     func testFailingDocumentationCoverage() {
+        let configuration = WorkspaceConfiguration()
+        configuration.xcode.manage = true
         PackageRepository(mock: "FailingDocumentationCoverage").test(commands: [
             ["validate", "documentation‐coverage"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
      }
 
     func testFailingTests() {
+        let configuration = WorkspaceConfiguration()
+        configuration.xcode.manage = true
         // Attempt to remove existing derived data so that the build is clean.
         // Otherwise Xcode skips the build stages where the awaited warnings occur.
         do {
@@ -146,8 +150,17 @@ class APITests : TestCase {
             ["validate", "build"],
             ["validate", "test‐coverage"],
             ["validate", "build", "•job", "miscellaneous"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
      }
+
+    func testHelp() {
+        testCommand(Workspace.command, with: ["help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace)", overwriteSpecificationInsteadOfFailing: false)
+        testCommand(Workspace.command, with: ["proofread", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace proofread)", overwriteSpecificationInsteadOfFailing: false)
+        #if !os(Linux) // Linux has no “xcode” subcommand.
+        testCommand(Workspace.command, with: ["refresh", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace refresh)", overwriteSpecificationInsteadOfFailing: false)
+        #endif
+        testCommand(Workspace.command, with: ["validate", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace validate)", overwriteSpecificationInsteadOfFailing: false)
+    }
 
     func testInvalidResourceDirectory() {
         PackageRepository(mock: "InvalidResourceDirectory").test(commands: [
@@ -212,6 +225,7 @@ class APITests : TestCase {
         #if !os(Linux)
         let configuration = WorkspaceConfiguration()
         configuration.supportedOperatingSystems.remove(.macOS)
+        configuration.xcode.manage = true
         configuration.documentation.api.generate = true
         configuration.documentation.api.yearFirstPublished = 2017
         PackageRepository(mock: "NoMacOS").test(commands: [
@@ -225,6 +239,7 @@ class APITests : TestCase {
         let configuration = WorkspaceConfiguration()
         configuration.supportedOperatingSystems.remove(.macOS)
         configuration.supportedOperatingSystems.remove(.iOS)
+        configuration.xcode.manage = true
         configuration.documentation.api.generate = true
         PackageRepository(mock: "NoMacOSOrIOS").test(commands: [
             ["validate", "documentation‐coverage"]
@@ -238,6 +253,7 @@ class APITests : TestCase {
         configuration.supportedOperatingSystems.remove(.macOS)
         configuration.supportedOperatingSystems.remove(.iOS)
         configuration.supportedOperatingSystems.remove(.watchOS)
+        configuration.xcode.manage = true
         configuration.documentation.api.generate = true
         PackageRepository(mock: "NoMacOSOrIOSOrWatchOS").test(commands: [
             ["validate", "documentation‐coverage"]
@@ -257,6 +273,7 @@ class APITests : TestCase {
 
     func testPartialReadMe() {
         let configuration = WorkspaceConfiguration()
+        configuration.xcode.manage = true
         configuration.documentation.currentVersion = Version(0, 1, 0)
         configuration.documentation.repositoryURL = URL(string: "https://somewhere.com")!
         configuration.documentation.localizations = ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"]
@@ -264,8 +281,10 @@ class APITests : TestCase {
         configuration.documentation.readMe.quotation?.link["🇨🇦EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=SBLGNT;NIV")!
         configuration.documentation.readMe.quotation?.link["🇬🇧EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=SBLGNT;NIVUK")!
         configuration.documentation.readMe.quotation?.link["🇺🇸EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=SBLGNT;NIV")!
+        configuration.gitHub.developmentNotes = "..."
         PackageRepository(mock: "PartialReadMe").test(commands: [
             ["refresh", "read‐me"],
+            ["refresh", "github"],
             ["document"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
      }
@@ -316,15 +335,19 @@ class APITests : TestCase {
         configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
         configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
 
-        PackageRepository(mock: "SDGLibrary").test(commands: [
+        var commands: [[StrictString]] = [
             // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
             ["refresh", "read‐me"],
             ["refresh", "github"],
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
-            ["normalize"],
-
+            ["normalize"]
+        ]
+        #if !os(Linux)
+        commands.append(["refresh", "xcode"])
+        #endif
+        commands.append(contentsOf: [
             ["proofread"],
             ["validate", "build"],
             ["test"],
@@ -332,7 +355,8 @@ class APITests : TestCase {
             ["validate", "documentation‐coverage"],
 
             ["proofread", "•xcode"]
-            ], configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+            ])
+        PackageRepository(mock: "SDGLibrary").test(commands: commands, configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
      }
 
     func testSDGTool() {
@@ -383,15 +407,19 @@ class APITests : TestCase {
         configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
         configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
 
-        PackageRepository(mock: "SDGTool").test(commands: [
+        var commands: [[StrictString]] = [
             // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
             ["refresh", "read‐me"],
             ["refresh", "github"],
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
-            ["normalize"],
-
+            ["normalize"]
+            ]
+        #if !os(Linux)
+        commands.append(["refresh", "xcode"])
+        #endif
+        commands.append(contentsOf: [
             ["proofread"],
             ["validate", "build"],
             ["test"],
@@ -399,7 +427,8 @@ class APITests : TestCase {
             ["validate", "documentation‐coverage"],
 
             ["proofread", "•xcode"]
-            ], configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+            ])
+        PackageRepository(mock: "SDGTool").test(commands: commands, configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
      }
 
     func testSelfSpecificScripts() {
@@ -416,6 +445,7 @@ class APITests : TestCase {
     func testUnicodeSource() {
         #if !os(Linux)
         let configuration = WorkspaceConfiguration()
+        configuration.xcode.manage = true
         configuration.documentation.api.generate = true
         configuration.documentation.localizations = ["en"]
         PackageRepository(mock: "UnicodeSource").test(commands: [
@@ -423,12 +453,5 @@ class APITests : TestCase {
             ["validate", "documentation‐coverage"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
         #endif
-     }
-
-    func testHelp() {
-        testCommand(Workspace.command, with: ["help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace)", overwriteSpecificationInsteadOfFailing: false)
-        testCommand(Workspace.command, with: ["proofread", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace proofread)", overwriteSpecificationInsteadOfFailing: false)
-        testCommand(Workspace.command, with: ["refresh", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace refresh)", overwriteSpecificationInsteadOfFailing: false)
-        testCommand(Workspace.command, with: ["validate", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace validate)", overwriteSpecificationInsteadOfFailing: false)
      }
 }

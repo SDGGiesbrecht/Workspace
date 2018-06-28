@@ -105,18 +105,13 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
 
     try Workspace.Normalize.executeAsStep(options: options, output: output)
 
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    // Xcode
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     #if !os(Linux)
-        if try Repository.packageRepository.configuration(output: output).xcode.manage {
-
-            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-            output.print("Refreshing Xcode project...".formattedAsSectionHeader())
-            // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-
-            try DXcode.refreshXcodeProjects(output: output)
-        }
-        if Environment.operatingSystem == .macOS {
-            try DXcode.enableProofreading(output: output)
-        }
+    if try options.project.configuration(output: output).xcode.manage {
+        try Workspace.Refresh.Xcode.command.execute(withArguments: arguments, options: options, output: output)
+    }
     #endif
 
     if shouldExit {

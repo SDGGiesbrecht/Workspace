@@ -19,6 +19,9 @@ public enum ProofreadingRule : String, Codable {
 
     // ••••••• Deprecation •••••••
 
+    /// Catches deprecated Git management notices.
+    case deprecatedGitManagement
+
     /// Catches deprecated configurations.
     case deprecatedConfiguration
 
@@ -142,7 +145,7 @@ public enum ProofreadingRule : String, Codable {
     /// The category the rule belongs to.
     public var category: Category {
         switch self {
-        case .deprecatedConfiguration, .deprecatedLinuxDocumentation:
+        case .deprecatedGitManagement, .deprecatedConfiguration, .deprecatedLinuxDocumentation:
             return .deprecation
 
         case .manualWarnings,

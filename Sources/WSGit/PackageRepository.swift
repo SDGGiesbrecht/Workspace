@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2018 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -16,4 +16,83 @@ import WSGeneralImports
 import WSProject
 
 extension PackageRepository {
+
+    // MARK: - Lists
+
+    private static var ignoreEntriesForMacOS: [String] {
+        return [
+            ".DS_Store"
+        ]
+    }
+
+    private static var ignoreEntriesForLinux: [String] {
+        return [
+            "*~"
+        ]
+    }
+
+    private static var ignoreEntriesForSwiftProjectManager: [String] {
+        return [
+            ".build",
+            "Packages"
+        ]
+    }
+
+    private static var ignoreEntriesForWorkspace: [String] {
+        return [
+            "Validate\\ (macOS).command",
+            "Validate\\ (Linux).sh"
+        ]
+    }
+
+    private static var ignoreEntriesForXcode: [String] {
+        return [
+            "*.xcodeproj",
+            "IDEWorkspaceChecks.plist",
+            "xcuserdata",
+            "*.profraw"
+        ]
+    }
+
+    private static var ignoreEntriesForJazzy: [String] {
+        return [
+            "undocumented.json",
+            // [_Workaround: Jazzy gzips undocumented.json. (jazzy --version 0.7.5)_]
+            "*.tgz"
+        ]
+    }
+
+    private static var ignoreEntries: [String] {
+        return ignoreEntriesForMacOS
+            + ignoreEntriesForLinux
+            + ignoreEntriesForSwiftProjectManager
+            + ignoreEntriesForWorkspace
+            + ignoreEntriesForXcode
+            + ignoreEntriesForJazzy
+    }
+
+    public func refreshGitConfiguration(output: Command.Output) throws {
+
+        let entries = try PackageRepository.ignoreEntries + configuration(output: output).git.additionalGitIgnoreEntries
+
+        var gitIgnore = try TextFile(possiblyAt: location.appendingPathComponent(".gitignore"))
+        gitIgnore.body = entries.joinedAsLines()
+        try gitIgnore.writeChanges(for: self, output: output)
+
+        var gitAttributes = try TextFile(possiblyAt: location.appendingPathComponent(".gitattributes"))
+        if let deprecatedManagedSection = gitAttributes.contents.scalars.firstMatch(for: [
+            LiteralPattern("# [_Begin Workspace Section_]".scalars),
+            RepetitionPattern(ConditionalPattern({ _ in true })),
+            LiteralPattern("# [_End Workspace Section]".scalars)
+            ]) {
+            if String(gitAttributes.contents.scalars[deprecatedManagedSection.range.upperBound...]).isWhitespace {
+                // Only deprecated Workspace entries.
+                delete(gitAttributes.location, output: output)
+            } else {
+                // Custom attributes present.
+                gitAttributes.contents.scalars.removeSubrange(deprecatedManagedSection.range)
+                try gitAttributes.writeChanges(for: self, output: output)
+            }
+        }
+    }
 }

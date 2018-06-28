@@ -39,10 +39,11 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    output.print("Updating Git configuration...".formattedAsSectionHeader())
+    // Git
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-
-    try DGit.updateGitConfiguraiton(output: output)
+    if try options.project.configuration(output: output).git.manage {
+        try Workspace.Refresh.Git.command.execute(withArguments: arguments, options: options, output: output)
+    }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Read‐Me

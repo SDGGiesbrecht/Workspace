@@ -57,18 +57,6 @@ private func outputWarnings() {
     }
 }
 
-func printValidationFailureDescription(_ message: [String]) {
-    print(message, in: .red, spaced: true)
-}
-
-private func printError(_ message: [String]) {
-    print(message, in: .red, spaced: true)
-}
-
-func print(_ message: [String]) {
-    print(message, in: nil)
-}
-
 func print(_ message: [String], in colour: OutputColour?, spaced: Bool = false) {
     var output = message.joinedAsLines()
     if let textColour = colour {

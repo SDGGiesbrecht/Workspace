@@ -48,11 +48,6 @@ public struct Repository {
         return paths(from: urls)
     }
 
-    static var trackedFiles: [RelativePath] {
-        let urls = require { try packageRepository.trackedFiles(output: standInOutput) }
-        return paths(from: urls)
-    }
-
     static var sourceFiles: [RelativePath] {
         let urls = require { try packageRepository.sourceFiles(output: standInOutput) }
         return paths(from: urls)

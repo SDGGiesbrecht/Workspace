@@ -14,7 +14,7 @@
 
 import Foundation
 
-struct AbsolutePath : ExpressibleByExtendedGraphemeClusterLiteral, ExpressibleByStringLiteral, ExpressibleByUnicodeScalarLiteral, Path {
+struct AbsolutePath : ExpressibleByStringLiteral, Path {
 
     // MARK: - Initialization
 
@@ -30,21 +30,9 @@ struct AbsolutePath : ExpressibleByExtendedGraphemeClusterLiteral, ExpressibleBy
         return URL(fileURLWithPath: string)
     }
 
-    // MARK: - ExpressibleByExtendedGraphemeClusterLiteral
-
-    init(extendedGraphemeClusterLiteral value: ExtendedGraphemeClusterType) {
-        self.init(value)
-    }
-
     // MARK: - ExpressibleByStringLiteral
 
     init(stringLiteral value: StringLiteralType) {
-        self.init(value)
-    }
-
-    // MARK: - ExpressibleByUnicodeScalarLiteral
-
-    init(unicodeScalarLiteral value: UnicodeScalarType) {
         self.init(value)
     }
 }

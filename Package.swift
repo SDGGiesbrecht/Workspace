@@ -51,6 +51,7 @@ let package = Package(
             "WorkspaceProjectConfiguration",
             "WSProject",
             "WSValidation",
+            "WSGit",
             "WSGitHub",
             "WSContinuousIntegration",
             "WSXcode",
@@ -63,6 +64,12 @@ let package = Package(
             .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
             .productItem(name: "SDGXcode", package: "SDGSwift"),
             .productItem(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
+            ]),
+
+        // Git management.
+        .target(name: "WSGit", dependencies: [
+            "WSGeneralImports",
+            "WSProject"
             ]),
 
         // GitHub management.

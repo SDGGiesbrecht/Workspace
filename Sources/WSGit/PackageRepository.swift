@@ -12,7 +12,9 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGCollections
 import WSGeneralImports
+
 import WSProject
 
 extension PackageRepository {
@@ -85,13 +87,13 @@ extension PackageRepository {
             RepetitionPattern(ConditionalPattern({ _ in true })),
             LiteralPattern("# [_End Workspace Section]".scalars)
             ]) {
-            if String(gitAttributes.contents.scalars[deprecatedManagedSection.range.upperBound...]).isWhitespace {
-                // Only deprecated Workspace entries.
-                delete(gitAttributes.location, output: output)
-            } else {
+            if gitAttributes.contents.scalars[deprecatedManagedSection.range.upperBound...].contains(where: { $0 ∉ CharacterSet.whitespacesAndNewlines }) {
                 // Custom attributes present.
                 gitAttributes.contents.scalars.removeSubrange(deprecatedManagedSection.range)
                 try gitAttributes.writeChanges(for: self, output: output)
+            } else {
+                // Only deprecated Workspace entries.
+                delete(gitAttributes.location, output: output)
             }
         }
     }

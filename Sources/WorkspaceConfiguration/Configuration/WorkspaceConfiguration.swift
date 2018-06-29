@@ -233,7 +233,7 @@ public final class WorkspaceConfiguration : Configuration {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         provideWorkflowScripts = try container.decode(Bool.self, forKey: .provideWorkflowScripts)
         supportedOperatingSystems = try container.decode(Set<OperatingSystem>.self, forKey: .supportedOperatingSystems)
-        git = try container.decodeIfPresent(GitConfiguration.self, forKey: .git) ?? GitConfiguration()
+        git = try container.decodeIfPresent(GitConfiguration.self, forKey: .git) ?? GitConfiguration() // [_Exempt from Test Coverage_] [_Workaround: Until 0.10.0 is released._]
         licence = try container.decode(LicenceConfiguration.self, forKey: .licence)
         fileHeaders = try container.decode(FileHeaderConfiguration.self, forKey: .fileHeaders)
         gitHub = try container.decode(GitHubConfiguration.self, forKey: .gitHub)

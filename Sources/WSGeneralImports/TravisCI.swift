@@ -26,7 +26,7 @@ public enum TravisCI {
 
             DispatchQueue.global().async {
                 while ¬complete {
-                    Thread.sleep(until: Date.init(timeIntervalSinceNow: TimeInterval(9 /* min */ × 60 /* s/min */)))
+                    Thread.sleep(until: Date.init(timeIntervalSinceNow: TimeInterval(5 /* min */ × 60 /* s/min */)))
                     if ¬complete {
                         _ = try? Shell.default.run(command: ["echo", "...", ">", "/dev/tty"]) // [_Exempt from Test Coverage_] Tests had better not take that long!
                     }

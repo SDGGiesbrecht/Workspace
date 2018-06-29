@@ -23,7 +23,7 @@ public enum TravisCI {
 
         var complete = false
         if ProcessInfo.isInContinuousIntegration {
-
+            // [_Exempt from Test Coverage_] Does not occur locally.
             DispatchQueue.global().async {
                 while ¬complete {
                     Thread.sleep(until: Date.init(timeIntervalSinceNow: TimeInterval(5 /* min */ × 60 /* s/min */)))

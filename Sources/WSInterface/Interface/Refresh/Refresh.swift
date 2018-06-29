@@ -35,6 +35,7 @@ extension Workspace {
             var list = [
                 All.command,
                 Scripts.command,
+                Git.command,
                 ReadMe.command,
                 GitHub.command,
                 ContinuousIntegration.command,

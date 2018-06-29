@@ -219,11 +219,11 @@ extension PackageRepository {
         // [_Workaround: “output” should not be optional, but it is needed to bridge with older code._]
         return try cached(in: &configurationCache.configuration) {
 
+            let result: WorkspaceConfiguration
             if try isWorkspaceProject() {
-                WorkspaceContext.current = try configurationContext()
-                return WorkspaceProjectConfiguration.configuration
+                result = WorkspaceProjectConfiguration.configuration
             } else {
-                return try WorkspaceConfiguration.load(
+                result = try WorkspaceConfiguration.load(
                     configuration: WorkspaceConfiguration.self,
                     named: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
@@ -238,6 +238,11 @@ extension PackageRepository {
                     context: try configurationContext(),
                     reportProgress: { output?.print($0) })
             }
+
+            // Force lazy options to resolve under the right context before it changes.
+            WorkspaceContext.current = try configurationContext()
+            let encoded = try JSONEncoder().encode(result)
+            return try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
         }
     }
 

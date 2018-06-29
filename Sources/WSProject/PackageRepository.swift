@@ -219,6 +219,9 @@ extension PackageRepository {
         // [_Workaround: “output” should not be optional, but it is needed to bridge with older code._]
         return try cached(in: &configurationCache.configuration) {
 
+            // Provide the context in case resolution happens internally.
+            WorkspaceContext.current = try configurationContext()
+
             let result: WorkspaceConfiguration
             if try isWorkspaceProject() {
                 result = WorkspaceProjectConfiguration.configuration
@@ -240,7 +243,6 @@ extension PackageRepository {
             }
 
             // Force lazy options to resolve under the right context before it changes.
-            WorkspaceContext.current = try configurationContext()
             let encoded = try JSONEncoder().encode(result)
             return try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
         }

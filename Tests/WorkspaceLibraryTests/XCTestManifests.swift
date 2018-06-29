@@ -46,7 +46,6 @@ extension APITests {
 
 extension InternalTests {
     static let __allTests = [
-        ("testDocumentationCoverage", testDocumentationCoverage),
         ("testGitIgnoreCoverage", testGitIgnoreCoverage),
         ("testLinuxMainGenerationCompatibility", testLinuxMainGenerationCompatibility)
     ]

@@ -118,6 +118,7 @@ public enum ProofreadingRule : String, Codable {
     // [_Inherit Documentation: SDGCornerstone.IterableEnumeration.cases_]
     /// An array containing every case of the enumeration.
     public static let cases: [ProofreadingRule] = [
+        .deprecatedGitManagement,
         .deprecatedConfiguration,
         .deprecatedLinuxDocumentation,
 

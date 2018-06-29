@@ -1,0 +1,17 @@
+
+
+# [_Begin Workspace Section_]
+# [_End Workspace Section]
+
+.DS_Store
+*~
+.build
+Packages
+Validate\ (macOS).command
+Validate\ (Linux).sh
+*.xcodeproj
+IDEWorkspaceChecks.plist
+xcuserdata
+*.profraw
+undocumented.json
+*.tgz

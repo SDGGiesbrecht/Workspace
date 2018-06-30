@@ -61,6 +61,9 @@ public final class WorkspaceConfiguration : Configuration {
     /// The default assumes support for all operating systems.
     public var supportedOperatingSystems: Set<OperatingSystem> = Set(OperatingSystem.cases)
 
+    /// Options related to Git.
+    public var git: GitConfiguration = GitConfiguration()
+
     /// Options related to licencing.
     public var licence: LicenceConfiguration = LicenceConfiguration()
 
@@ -97,6 +100,7 @@ public final class WorkspaceConfiguration : Configuration {
     ///
     /// - Warning: Many opt‐in tasks involve writing into project files.
     public func optIntoAllTasks() {
+        git.manage = true
         licence.manage = true
         fileHeaders.manage = true
         gitHub.manage = true
@@ -184,6 +188,7 @@ public final class WorkspaceConfiguration : Configuration {
     private enum CodingKeys : CodingKey {
         case provideWorkflowScripts
         case supportedOperatingSystems
+        case git
         case licence
         case fileHeaders
         case gitHub
@@ -205,6 +210,7 @@ public final class WorkspaceConfiguration : Configuration {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(provideWorkflowScripts, forKey: .provideWorkflowScripts)
         try container.encode(supportedOperatingSystems, forKey: .supportedOperatingSystems)
+        try container.encode(git, forKey: .git)
         try container.encode(licence, forKey: .licence)
         try container.encode(fileHeaders, forKey: .fileHeaders)
         try container.encode(gitHub, forKey: .gitHub)
@@ -227,10 +233,11 @@ public final class WorkspaceConfiguration : Configuration {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         provideWorkflowScripts = try container.decode(Bool.self, forKey: .provideWorkflowScripts)
         supportedOperatingSystems = try container.decode(Set<OperatingSystem>.self, forKey: .supportedOperatingSystems)
-        gitHub = try container.decode(GitHubConfiguration.self, forKey: .gitHub)
-        fileHeaders = try container.decode(FileHeaderConfiguration.self, forKey: .fileHeaders)
-        xcode = try container.decode(XcodeConfiguration.self, forKey: .xcode)
+        git = try container.decodeIfPresent(GitConfiguration.self, forKey: .git) ?? GitConfiguration() // [_Exempt from Test Coverage_] [_Workaround: Until 0.10.0 is released._]
         licence = try container.decode(LicenceConfiguration.self, forKey: .licence)
+        fileHeaders = try container.decode(FileHeaderConfiguration.self, forKey: .fileHeaders)
+        gitHub = try container.decode(GitHubConfiguration.self, forKey: .gitHub)
+        xcode = try container.decode(XcodeConfiguration.self, forKey: .xcode)
         proofreading = try container.decode(ProofreadingConfiguration.self, forKey: .proofreading)
         testing = try container.decode(TestingConfiguration.self, forKey: .testing)
         documentation = try container.decode(DocumentationConfiguration.self, forKey: .documentation)

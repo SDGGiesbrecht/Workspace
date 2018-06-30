@@ -29,7 +29,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 10, 0))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 3, 2))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 3, 3))),
         .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 2, 0))),
         .package(url: "https://github.com/apple/swift\u{2D}package\u{2D}manager", .exact(Version(0, 2, 0)))
     ],
@@ -51,6 +51,7 @@ let package = Package(
             "WorkspaceProjectConfiguration",
             "WSProject",
             "WSValidation",
+            "WSGit",
             "WSGitHub",
             "WSContinuousIntegration",
             "WSXcode",
@@ -63,6 +64,12 @@ let package = Package(
             .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
             .productItem(name: "SDGXcode", package: "SDGSwift"),
             .productItem(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
+            ]),
+
+        // Git management.
+        .target(name: "WSGit", dependencies: [
+            "WSGeneralImports",
+            "WSProject"
             ]),
 
         // GitHub management.

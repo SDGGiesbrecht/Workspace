@@ -20,6 +20,8 @@ extension ProofreadingRule {
 
     internal var parser: Rule.Type {
         switch self {
+        case .deprecatedGitManagement:
+            return DeprecatedGitManagement.self
         case .deprecatedConfiguration:
             return DeprecatedConfiguration.self
         case .deprecatedLinuxDocumentation:

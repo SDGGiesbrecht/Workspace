@@ -17,37 +17,6 @@ import WSGeneralTestImports
 
 class InternalTests : TestCase {
 
-    func testDocumentationCoverage() {
-        // [_Workaround: Can this be moved to API Tests?_]
-
-        do {
-            try FileManager.default.do(in: repositoryRoot) {
-                for link in DocumentationLink.all {
-                    var url = link.url
-                    if let anchor = url.range(of: "#") {
-                        url = String(url[..<anchor.lowerBound])
-                    }
-
-                    if ¬url.hasSuffix("master") { // Read‐me
-                        break
-                    }
-
-                    var exists = false
-                    for file in Repository.trackedFiles {
-
-                        if url.hasSuffix(file.string) {
-                            exists = true
-                            break
-                        }
-                    }
-                    XCTAssert(exists, "Broken link: \(link.url)")
-                }
-            }
-        } catch {
-            XCTFail("\(error)")
-        }
-    }
-
     func testGitIgnoreCoverage() {
         // [_Workaround: Can this be moved to API Tests?_]
 

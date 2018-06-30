@@ -338,6 +338,7 @@ class APITests : TestCase {
         var commands: [[StrictString]] = [
             // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
+            ["refresh", "git"],
             ["refresh", "read‐me"],
             ["refresh", "github"],
             ["refresh", "continuous‐integration"],
@@ -410,6 +411,7 @@ class APITests : TestCase {
         var commands: [[StrictString]] = [
             // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
+            ["refresh", "git"],
             ["refresh", "read‐me"],
             ["refresh", "github"],
             ["refresh", "continuous‐integration"],

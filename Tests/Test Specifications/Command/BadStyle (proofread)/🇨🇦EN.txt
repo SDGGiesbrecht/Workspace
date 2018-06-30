@@ -17,6 +17,10 @@ Line 1
 (This file should trigger a proofreading warning.)
 
 .gitignore
+Line 3
+Management sections are no longer used. Enable “git.manage” or remove the section markers. (deprecatedGitManagement)
+# [_Begin Workspace Section_]
+
 Package.swift
 Line 2
 U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)

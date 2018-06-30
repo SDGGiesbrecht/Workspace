@@ -69,7 +69,9 @@ extension PackageRepository {
 
                 try FileManager.default.do(in: location) {
                     _ = try? Shell.default.run(command: ["git", "init"])
-                    _ = try? FileManager.default.copy(repositoryRoot.appendingPathComponent(".gitignore"), to: location.appendingPathComponent(".gitignore"))
+                    if (try? location.appendingPathComponent(".gitignore").checkResourceIsReachable()) ≠ true {
+                        _ = try? FileManager.default.copy(repositoryRoot.appendingPathComponent(".gitignore"), to: location.appendingPathComponent(".gitignore"))
+                    }
 
                     WorkspaceContext.current = try configurationContext()
                     if sdg {

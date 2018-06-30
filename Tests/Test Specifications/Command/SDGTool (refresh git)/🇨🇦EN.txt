@@ -1,0 +1,6 @@
+$ workspace refresh git •no‐colour
+
+Refreshing Git configuration...
+
+Writing to “.gitattributes”...
+0

@@ -5,6 +5,7 @@ Normalizing files...
 
 Proofreading source code... (§1)
 
+.gitattributes
 .github/CONTRIBUTING.md
 .github/ISSUE_TEMPLATE.md
 .github/PULL_REQUEST_TEMPLATE.md

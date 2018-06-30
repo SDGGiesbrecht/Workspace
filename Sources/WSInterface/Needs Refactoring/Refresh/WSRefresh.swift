@@ -16,6 +16,7 @@ import SDGLogic
 import WSGeneralImports
 import WorkspaceConfiguration
 import WSGitHub
+import WSExamples
 
 func instructionsAfterRefresh() throws -> String {
     if let xcodeProject = try Repository.packageRepository.xcodeProject()?.lastPathComponent {
@@ -89,10 +90,9 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    output.print("Updating examples...".formattedAsSectionHeader())
+    // Examples
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-
-    try Examples.refreshExamples(output: output)
+    try Workspace.Refresh.Examples.command.execute(withArguments: arguments, options: options, output: output)
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     output.print("Updating inherited documentation...".formattedAsSectionHeader())

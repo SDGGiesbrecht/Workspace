@@ -19,6 +19,7 @@ import WSGeneralImports
 import SDGSwiftPackageManager
 
 import WSProject
+import WSExamples
 
 enum ReadMe {
 

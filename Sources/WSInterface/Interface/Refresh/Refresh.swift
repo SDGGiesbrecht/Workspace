@@ -39,7 +39,8 @@ extension Workspace {
                 ReadMe.command,
                 GitHub.command,
                 ContinuousIntegration.command,
-                Resources.command
+                Resources.command,
+                Examples.command
             ]
             #if !os(Linux)
             list.append(Xcode.command)

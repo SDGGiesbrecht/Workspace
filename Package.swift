@@ -54,6 +54,7 @@ let package = Package(
             "WSGit",
             "WSGitHub",
             "WSContinuousIntegration",
+            "WSExamples",
             "WSXcode",
             "WSProofreading",
             "WSDocumentation",
@@ -84,6 +85,12 @@ let package = Package(
             "WSGeneralImports",
             "WSProject",
             "WSDocumentation"
+            ]),
+
+        // Example management.
+        .target(name: "WSExamples", dependencies: [
+            "WSGeneralImports",
+            "WSProject"
             ]),
 
         // Xcode project management.

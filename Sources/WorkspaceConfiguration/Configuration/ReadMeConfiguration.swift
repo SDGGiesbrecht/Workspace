@@ -91,7 +91,7 @@ public struct ReadMeConfiguration : Codable {
     ///
     /// There are no examples by default.
     ///
-    /// Arbitrary examples can be parsed from the project source by including placeholders of the form `#example(someExampleIdentifier)` in the markdown.
+    /// Arbitrary examples can be parsed from the project source by including placeholders of the form “&#x23;example(someExampleIdentifier)” in the markdown.
     public var exampleUsage: [LocalizationIdentifier: Markdown] = [:]
 
     /// Other read‐me content.

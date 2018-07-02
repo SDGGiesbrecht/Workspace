@@ -94,8 +94,14 @@ extension PackageRepository {
                             identifier.trimMarginalWhitespace()
 
                             var example = StrictString(file.contents.scalars[closingParenthesis.range.upperBound ..< at.range.lowerBound])
+                            // Remove token lines.
                             example.lines.removeFirst()
                             example.lines.removeLast()
+                            // Remove final newline.
+                            if let lastLine = example.lines.dropLast().last {
+                                example.lines.removeLast(2)
+                                example.lines.append(Line(line: StrictString(lastLine.line), newline: ""))
+                            }
                             example = example.strippingCommonIndentation()
 
                             list[identifier] = example

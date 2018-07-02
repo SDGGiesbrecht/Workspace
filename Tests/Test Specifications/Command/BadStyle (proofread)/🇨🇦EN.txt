@@ -36,6 +36,22 @@ Sources/BadStyle/Normalization/Decomposition.swift
 Sources/BadStyle/Normalization/EmptyIndents.swift
 Sources/BadStyle/Normalization/MarkdownLineBreaks.md
 Sources/BadStyle/Normalization/ShellExecutability.sh
+Sources/BadStyle/Rules/Deprecation/ExampleDirectives.swift
+Line 3
+This syntax is no longer recognized. Use “@example(anExample)” instead. (deprecatedExampleDirectives)
+// [_Define Example: anExample_]
+// @example(anExample)
+
+Line 5
+This syntax is no longer recognized. Use “@endExample” instead. (deprecatedExampleDirectives)
+// [_End_]
+// @endExample
+
+Line 7
+This syntax is no longer recognized. Use “#example(1, anExample)” instead. (deprecatedExampleDirectives)
+// [_Example 1: anExample_]
+// #example(1, anExample)
+
 Sources/BadStyle/Rules/Deprecation/LinuxDocumentation.swift
 Line 3
 Special compilation conditions are no longer necessary for Linux documentation. (deprecatedLinuxDocumentation)

@@ -18,8 +18,6 @@ import WSGeneralImports
 import WSProject
 
 extension PackageRepository {
-    // [_Warning: Document new syntax._]
-    // [_Warning: Write proofreader to catch deprectaed syntax._]
 
     private static let exampleAttribute: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {

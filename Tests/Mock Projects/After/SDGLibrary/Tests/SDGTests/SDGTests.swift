@@ -15,34 +15,34 @@ class SDGTests : XCTestCase {
     ]
 }
 
-// [_Define Example: Read‐Me 🇨🇦EN_]
+// @example(Read‐Me 🇨🇦EN)
 // 🇨🇦EN
-// [_End_]
+// @endExample
 
-// [_Define Example: Read‐Me 🇬🇧EN_]
+// @example(Read‐Me 🇬🇧EN)
 // 🇬🇧EN
-// [_End_]
+// @endExample
 
-// [_Define Example: Read‐Me 🇺🇸EN_]
+// @example(Read‐Me 🇺🇸EN)
 // 🇺🇸EN
-// [_End_]
+// @endExample
 
-// [_Define Example: Read‐Me 🇩🇪DE_]
+// @example(Read‐Me 🇩🇪DE)
 // 🇩🇪DE
-// [_End_]
+// @endExample
 
-// [_Define Example: Read‐Me 🇫🇷FR_]
+// @example(Read‐Me 🇫🇷FR)
 // 🇫🇷FR
-// [_End_]
+// @endExample
 
-// [_Define Example: Read‐Me 🇬🇷ΕΛ_]
+// @example(Read‐Me 🇬🇷ΕΛ)
 // 🇬🇷ΕΛ
-// [_End_]
+// @endExample
 
-// [_Define Example: Read‐Me 🇮🇱עב_]
+// @example(Read‐Me 🇮🇱עב)
 // 🇮🇱עב
-// [_End_]
+// @endExample
 
-// [_Define Example: Read‐Me zxx_]
+// @example(Read‐Me zxx)
 // zxx
-// [_End_]
+// @endExample

@@ -49,7 +49,7 @@ extension PackageRepository {
                 RepetitionPattern(ConditionalPattern({ $0 ≠ ")" })),
                 LiteralPattern(")".scalars),
 
-                RepetitionPattern(ConditionalPattern({ _ in true })),
+                RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy),
 
                 LiteralPattern("@".scalars),
                 LiteralPattern(endAttribute.resolved(for: localization))

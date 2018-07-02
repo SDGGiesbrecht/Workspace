@@ -129,7 +129,7 @@ extension PackageRepository {
                         var indexString = StrictString(file.contents.scalars[openingParenthesis.range.upperBound ..< comma.range.lowerBound])
                         indexString.trimMarginalWhitespace()
 
-                        var identifier = StrictString(file.contents.scalars[openingParenthesis.range.upperBound ..< closingParenthesis.range.lowerBound])
+                        var identifier = StrictString(file.contents.scalars[comma.range.upperBound ..< closingParenthesis.range.lowerBound])
                         identifier.trimMarginalWhitespace()
 
                         let index = try Int(possibleDecimal: indexString)
@@ -137,7 +137,7 @@ extension PackageRepository {
                             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                                 switch localization {
                                 case .englishCanada:
-                                    return "There are no examples named “" + identifier + "”."
+                                    return "There is no example named “" + identifier + "”."
                                 }
                             }))
                         }

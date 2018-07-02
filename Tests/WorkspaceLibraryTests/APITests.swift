@@ -98,6 +98,7 @@ class APITests : TestCase {
             // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
             ["refresh", "resources"],
+            ["refresh", "examples"],
             ["normalize"],
 
             ["proofread"],
@@ -343,6 +344,7 @@ class APITests : TestCase {
             ["refresh", "github"],
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
+            ["refresh", "examples"],
             ["normalize"]
         ]
         #if !os(Linux)
@@ -416,6 +418,7 @@ class APITests : TestCase {
             ["refresh", "github"],
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
+            ["refresh", "examples"],
             ["normalize"]
             ]
         #if !os(Linux)

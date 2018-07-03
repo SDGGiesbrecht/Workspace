@@ -49,4 +49,22 @@ struct SDG {
     /// // ...
     /// ```
     func useExample() {} // [_Exempt from Test Coverage_]
+
+    // @documentation(someDocumentation)
+    /// This is documentation.
+    ///
+    /// It contains interesting information.
+    var defineDocumentation: Bool?
+
+    // #documentation(someDocumentation)
+    /// This is documentation.
+    ///
+    /// It contains interesting information.
+    var instertDocumentation: Bool?
+
+    // #documentation(someDocumentation)
+    /// This is documentation.
+    ///
+    /// It contains interesting information.
+    var replaceDocumentation: Bool?
 }

@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import SDGCollections
 import WSGeneralImports
 
@@ -207,4 +208,95 @@ extension PackageRepository {
     }
 
     #endif
+
+    // MARK: - Inheritance
+
+    private static let documentationAttribute: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishCanada:
+            return "documentation"
+        }
+    })
+
+    private static let documentationDirective: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishCanada:
+            return "documentation"
+        }
+    })
+
+    private static var documentationDeclarationPatterns: [CompositePattern<Unicode.Scalar>] {
+        return InterfaceLocalization.cases.map { localization in
+            return CompositePattern<Unicode.Scalar>([
+                LiteralPattern("@".scalars),
+                LiteralPattern(documentationAttribute.resolved(for: localization)),
+                LiteralPattern("(".scalars),
+                RepetitionPattern(ConditionalPattern({ $0 ∉ CharacterSet.newlines }), consumption: .greedy),
+                LiteralPattern(")".scalars)
+                ])
+        }
+    }
+
+    private static var documentationDirectivePatterns: [CompositePattern<Unicode.Scalar>] {
+        return InterfaceLocalization.cases.map { localization in
+            return CompositePattern<Unicode.Scalar>([
+                LiteralPattern("#".scalars),
+                LiteralPattern(documentationDirective.resolved(for: localization)),
+                LiteralPattern("(".scalars),
+                RepetitionPattern(ConditionalPattern({ $0 ∉ CharacterSet.newlines }), consumption: .greedy),
+                LiteralPattern(")".scalars)
+                ])
+        }
+    }
+
+    public func documentationDefinitions(output: Command.Output) throws -> [StrictString: StrictString] {
+        return try _withDocumentationCache {
+
+            try resolve(reportProgress: { output.print($0) })
+            resetFileCache(debugReason: "resolve")
+
+            var list: [StrictString: StrictString] = [:]
+
+            let dependencies = try allFiles().filter { url in
+                guard url.is(in: location.appendingPathComponent("Packages"))
+                    ∨ url.is(in: location.appendingPathComponent(".build/checkouts")) else {
+                        return false
+                }
+                if url.absoluteString.contains(".git") ∨ url.absoluteString.contains("/docs/") {
+                    return false
+                }
+                return true
+            }
+
+            for url in try dependencies + sourceFiles(output: output) {
+                try autoreleasepool {
+
+                    if FileType(url: url) == .swift {
+                        let file = try TextFile(alreadyAt: url)
+
+                        for match in file.contents.scalars.matches(for: AlternativePatterns(PackageRepository.documentationDeclarationPatterns)) {
+                            guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),
+                                let closingParenthesis = match.contents.lastMatch(for: ")".scalars) else {
+                                    unreachable()
+                            }
+
+                            var identifier = StrictString(file.contents.scalars[openingParenthesis.range.upperBound ..< closingParenthesis.range.lowerBound])
+                            identifier.trimMarginalWhitespace()
+
+                            let lineIndex = match.range.upperBound.line(in: file.contents.lines)
+                            if lineIndex ≠ file.contents.lines.endIndex {
+                                let nextLineStart = file.contents.lines.index(after: lineIndex).samePosition(in: file.contents.scalars)
+
+                                if let comment = FileType.swiftDocumentationSyntax.contentsOfFirstComment(in: nextLineStart ..< file.contents.scalars.endIndex, of: file) {
+                                    list[identifier] = StrictString(comment)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return list
+        }
+    }
 }

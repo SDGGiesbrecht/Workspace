@@ -15,56 +15,12 @@
 import SDGLogic
 import SDGCollections
 import WSGeneralImports
+
 import WSProject
+import WSDocumentation
 
 struct DocumentationInheritance {
-    static let documentation: [String: String] = {
 
-        requireBash(["swift", "package", "resolve"], silent: false)
-        Repository.packageRepository.resetFileCache(debugReason: "resolve")
-
-        var list: [String: String] = [:]
-
-        for url in ((Repository.allFiles(at: RelativePath("Packages")) + Repository.allFiles(at: RelativePath(".build/checkouts"))).filter({
-            ¬$0.string.contains(".git") ∧ ¬$0.string.contains("/docs/") }) + Repository.sourceFiles).map({ $0.url }) {
-
-                autoreleasepool {
-
-                    if FileType(url: url) == .swift {
-                        let file = require { try TextFile(alreadyAt: url) }
-
-                        let startTokens = ("[\u{5F}Define Documentation", "_]")
-
-                        var index = file.contents.startIndex
-                        while let startTokenRange = file.contents.scalars.firstNestingLevel(startingWith: startTokens.0.scalars, endingWith: startTokens.1.scalars, in: (index ..< file.contents.endIndex).sameRange(in: file.contents.scalars))?.container.range.clusters(in: file.contents.clusters) {
-                            index = startTokenRange.upperBound
-
-                            guard let identifierSubsequence = file.contents.scalars.firstNestingLevel(startingWith: startTokens.0.scalars, endingWith: startTokens.1.scalars, in: startTokenRange.sameRange(in: file.contents.scalars))?.contents.contents else {
-                                failTests(message: [
-                                    "Failed to parse “\(String(file.contents[startTokenRange]))”.",
-                                    "This may indicate a bug in Workspace."
-                                    ])
-                            }
-                            var identifier = String(identifierSubsequence)
-
-                            if identifier.hasPrefix(":") {
-                                identifier.unicodeScalars.removeFirst()
-                            }
-                            if identifier.hasPrefix(" ") {
-                                identifier.unicodeScalars.removeFirst()
-                            }
-
-                            let nextLineStart = file.contents.lineRange(for: startTokenRange).upperBound
-                            if let comment = FileType.swiftDocumentationSyntax.contentsOfFirstComment(in: nextLineStart ..< file.contents.endIndex, of: file) {
-                                list[identifier] = comment
-                            }
-                        }
-                    }
-                }
-        }
-
-        return list
-    }()
 
     static func refreshDocumentation(output: Command.Output) throws {
 
@@ -99,7 +55,7 @@ struct DocumentationInheritance {
                             syntaxError()
                         }
                         let documentationIdentifier = String(details[colon.upperBound...])
-                        guard let replacement = documentation[documentationIdentifier] else {
+                        guard let replacement = try Repository.packageRepository.documentationDefinitions(output: output)[StrictString(documentationIdentifier)] else {
                             fatalError(message: [
                                 "There is no documenation named “\(documentationIdentifier)”."
                                 ])
@@ -112,14 +68,14 @@ struct DocumentationInheritance {
 
                             let indent = String(file.contents[nextLineStart ..< commentRange.lowerBound])
 
-                            file.contents.replaceSubrange(commentRange, with: lineDocumentationSyntax.comment(contents: replacement, indent: indent))
+                            file.contents.replaceSubrange(commentRange, with: lineDocumentationSyntax.comment(contents: String(replacement), indent: indent))
                         } else {
                             var location: String.ScalarView.Index = nextLineStart.samePosition(in: file.contents.scalars)
                             file.contents.scalars.advance(&location, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
 
                             let indent = String(file.contents[nextLineStart ..< location.cluster(in: file.contents.clusters)])
 
-                            let result = lineDocumentationSyntax.comment(contents: replacement, indent: indent) + "\n" + indent
+                            let result = lineDocumentationSyntax.comment(contents: String(replacement), indent: indent) + "\n" + indent
 
                             file.contents.scalars.replaceSubrange(location ..< location, with: result.scalars)
                         }

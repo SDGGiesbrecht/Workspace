@@ -53,32 +53,6 @@ public struct Repository {
         return paths(from: urls)
     }
 
-    private static func path(_ possiblePath: RelativePath, isIn path: RelativePath) -> Bool {
-
-        if path == Repository.root {
-            return true
-        }
-
-        if possiblePath == path {
-            // The file itself
-            return true
-        }
-
-        if possiblePath.string.hasPrefix(path.string + "/") {
-            // In that folder.
-            return true
-        }
-
-        return false
-    }
-
-    static func allFiles(at path: RelativePath) -> [RelativePath] {
-        return allFiles.filter { (possiblePath: RelativePath) -> Bool in
-
-            return Repository.path(possiblePath, isIn: path)
-        }
-    }
-
     // MARK: - Files
 
     static func unsupportedPathType() -> Never {

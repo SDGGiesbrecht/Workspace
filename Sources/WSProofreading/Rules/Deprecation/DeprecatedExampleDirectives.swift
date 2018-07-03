@@ -26,7 +26,6 @@ internal struct DeprecatedExampleDirectives : Rule {
         }
     })
 
-
     private static func message(replacement: StrictString) -> UserFacing<StrictString, InterfaceLocalization> {
         return UserFacing<StrictString, InterfaceLocalization>({ (localization) in
             switch localization {

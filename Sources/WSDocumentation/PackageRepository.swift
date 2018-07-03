@@ -249,7 +249,7 @@ extension PackageRepository {
         }
     }
 
-    public func documentationDefinitions(output: Command.Output) throws -> [StrictString: StrictString] {
+    private func documentationDefinitions(output: Command.Output) throws -> [StrictString: StrictString] {
         return try _withDocumentationCache {
 
             try resolve(reportProgress: { output.print($0) })
@@ -283,13 +283,9 @@ extension PackageRepository {
                             var identifier = StrictString(file.contents.scalars[openingParenthesis.range.upperBound ..< closingParenthesis.range.lowerBound])
                             identifier.trimMarginalWhitespace()
 
-                            let lineIndex = match.range.upperBound.line(in: file.contents.lines)
-                            if lineIndex ≠ file.contents.lines.endIndex {
-                                let nextLineStart = file.contents.lines.index(after: lineIndex).samePosition(in: file.contents.scalars)
-
-                                if let comment = FileType.swiftDocumentationSyntax.contentsOfFirstComment(in: nextLineStart ..< file.contents.scalars.endIndex, of: file) {
-                                    list[identifier] = StrictString(comment)
-                                }
+                            let nextLineStart = match.range.lines(in: file.contents.lines).upperBound.samePosition(in: file.contents.scalars)
+                            if let comment = FileType.swiftDocumentationSyntax.contentsOfFirstComment(in: nextLineStart ..< file.contents.scalars.endIndex, of: file) {
+                                list[identifier] = StrictString(comment)
                             }
                         }
                     }
@@ -297,6 +293,63 @@ extension PackageRepository {
             }
 
             return list
+        }
+    }
+
+    public func refreshInheritedDocumentation(output: Command.Output) throws {
+
+        for url in try sourceFiles(output: output) {
+            try autoreleasepool {
+
+                if FileType(url: url) == .swift {
+                    let documentationSyntax = FileType.swiftDocumentationSyntax
+                    let lineDocumentationSyntax = documentationSyntax.lineCommentSyntax!
+
+                    var file = try TextFile(alreadyAt: url)
+
+                    var searchIndex = file.contents.scalars.startIndex
+                    while let match = file.contents.scalars.firstMatch(for: AlternativePatterns(PackageRepository.documentationDirectivePatterns), in: min(searchIndex, file.contents.scalars.endIndex) ..< file.contents.scalars.endIndex) {
+                        searchIndex = match.range.upperBound
+
+                        guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),
+                            let closingParenthesis = match.contents.lastMatch(for: ")".scalars) else {
+                                unreachable()
+                        }
+
+                        var identifier = StrictString(file.contents.scalars[openingParenthesis.range.upperBound ..< closingParenthesis.range.lowerBound])
+                        identifier.trimMarginalWhitespace()
+                        guard let replacement = try documentationDefinitions(output: output)[identifier] else {
+                            throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                                switch localization {
+                                case .englishCanada:
+                                    return "There is no documentation named “" + identifier + "”."
+                                }
+                            }))
+                        }
+
+                        let matchLines = match.range.lines(in: file.contents.lines)
+                        let nextLineStart = matchLines.upperBound.samePosition(in: file.contents.scalars)
+                        if let commentRange = documentationSyntax.rangeOfFirstComment(in: nextLineStart ..< file.contents.scalars.endIndex, of: file),
+                            file.contents.scalars[nextLineStart ..< commentRange.lowerBound].firstMatch(for: CharacterSet.newlinePattern) == nil {
+
+                            let indent = StrictString(file.contents.scalars[nextLineStart ..< commentRange.lowerBound])
+
+                            file.contents.scalars.replaceSubrange(commentRange, with: lineDocumentationSyntax.comment(contents: String(replacement), indent: String(indent)).scalars)
+                        } else {
+                            var location: String.ScalarView.Index = nextLineStart
+                            file.contents.scalars.advance(&location, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
+
+                            let indent = StrictString(file.contents.scalars[nextLineStart ..< location])
+
+                            let result = StrictString(lineDocumentationSyntax.comment(contents: String(replacement), indent: String(indent))) + "\n" + indent
+
+                            file.contents.scalars.insert(contentsOf: result.scalars, at: location)
+                        }
+                    }
+
+                    try file.writeChanges(for: self, output: output)
+                }
+            }
         }
     }
 }

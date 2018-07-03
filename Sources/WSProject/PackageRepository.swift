@@ -32,6 +32,7 @@ extension PackageRepository {
         fileprivate var sourceFiles: [URL]?
 
         fileprivate var examples: [StrictString: StrictString]?
+        fileprivate var documentation: [StrictString: StrictString]?
     }
     private static var fileCaches: [URL: FileCache] = [:]
     private var fileCache: FileCache {
@@ -351,6 +352,12 @@ extension PackageRepository {
 
     public func _withExampleCache(_ operation: () throws -> [StrictString: StrictString]) rethrows -> [StrictString: StrictString] {
         return try cached(in: &fileCache.examples) {
+            return try operation()
+        }
+    }
+
+    public func _withDocumentationCache(_ operation: () throws -> [StrictString: StrictString]) rethrows -> [StrictString: StrictString] {
+        return try cached(in: &fileCache.documentation) {
             return try operation()
         }
     }

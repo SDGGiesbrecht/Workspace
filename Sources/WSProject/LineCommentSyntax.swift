@@ -137,7 +137,7 @@ public struct LineCommentSyntax {
 
             var result = String(line.scalars.suffix(from: index))
             if let end = stylisticEnd {
-                if result.hasSuffix(end) {
+                if result.hasSuffix(end) { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
                     result = String(result.scalars[..<result.index(result.scalars.endIndex, offsetBy: −end.scalars.count)]) // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
                 }
             }

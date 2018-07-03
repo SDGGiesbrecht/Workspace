@@ -116,7 +116,7 @@ public struct FileSyntax {
         } else if let line = lineCommentSyntax?.contentsOfFirstComment(in: range, of: file.contents) {
             return line
         }
-        return nil
+        return nil // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
     }
 
     private static func advance(_ index: inout String.ScalarView.Index, pastLayoutSpacingIn string: String) {
@@ -137,7 +137,6 @@ public struct FileSyntax {
             }
             FileSyntax.advance(&index, pastLayoutSpacingIn: file.contents)
         }
-
         return index
     }
 

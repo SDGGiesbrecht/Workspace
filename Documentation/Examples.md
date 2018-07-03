@@ -22,7 +22,7 @@ When APIs change, it is easy to forget to update any examples in the documentati
 
 Examples can be defined anywhere in the project, but usually the best place for them is in a test module.
 
-To define an example, place it between `[_Define Example: Identifier_]` and `[_End_]`. Anything on the same line as either token will be ignored (such as `//`).
+To define an example, place it between `@example(identifier)` and `@endExample`. Anything on the same line as either token will be ignored (such as `//`).
 
 ```swift
 func forTheSakeOfLeavingTheGlobalScope() {
@@ -31,26 +31,26 @@ func forTheSakeOfLeavingTheGlobalScope() {
     let b = 0
     let c = 0
 
-    // [_Define Example: Symmetry_]
+    // @example(symmetry)
     if a == b {
         assert(b == a)
     }
-    // [_End_]
+    // @endExample
 
-    // [_Define Example: Transitivity_]
+    // @example(transitivity)
     if a == b ∧ b == c {
         assert(a == c)
     }
-    // [_End_]
+    // @endExample
 }
 ```
 
 ## Symbol Documentation
 
-To use an example in a symbol’s documentation, add one or more instances of `[_Example 0: Indentifier_]` to the line immediately preceding the documentation.
+To use an example in a symbol’s documentation, add one or more instances of “#example(0, identifier)” to the line immediately preceding the documentation.
 
 ```swift
-// [_Example 1: Symmetry_] [_Example 2: Transitivity_]
+// #example(1, symmetry) #example(2, transitivity)
 /// Returns `true` if `lhs` is equal to `rhs`.
 ///
 /// Equality is symmetrical:

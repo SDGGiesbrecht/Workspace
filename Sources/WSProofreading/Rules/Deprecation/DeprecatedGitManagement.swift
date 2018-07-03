@@ -17,7 +17,7 @@ import WSGeneralImports
 import WSProject
 
 internal struct DeprecatedGitManagement : Rule {
-    // Deprecated in 0.8.0 (???)
+    // Deprecated in 0.10.0 (???)
     // (There is also clean‐up of the deprecated “.gitattributes” in WSGit.)
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in

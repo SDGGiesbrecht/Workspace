@@ -19,6 +19,7 @@ import WSGeneralImports
 import SDGSwiftPackageManager
 
 import WSProject
+import WSExamples
 
 enum ReadMe {
 
@@ -38,7 +39,7 @@ enum ReadMe {
         // Word Elements
 
         for (key, example) in try project.examples(output: output) {
-            readMe.replaceMatches(for: StrictString("#example(\(key))"), with: [
+            readMe.replaceMatches(for: StrictString("\u{23}example(\(key))"), with: [
                 "```swift",
                 StrictString(example),
                 "```"

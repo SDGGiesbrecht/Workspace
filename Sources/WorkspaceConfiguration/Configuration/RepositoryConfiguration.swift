@@ -23,6 +23,7 @@ public struct RepositoryConfiguration : Codable {
     public var ignoredFileTypes: Set<String> = [
         "dsidx",
         "DS_Store",
+        "entitlements",
         "modulemap",
         "nojekyll",
         "pep8",
@@ -34,6 +35,7 @@ public struct RepositoryConfiguration : Codable {
         "svg",
         "testspec",
         "tgz",
-        "txt"
+        "txt",
+        "xcworkspacedata"
     ]
 }

@@ -1,0 +1,10 @@
+// Header
+
+// [_Define Example: anExample_]
+// Source.
+// [_End_]
+
+// [_Example 1: anExample_]
+/// ```swift
+/// ```
+var useExample

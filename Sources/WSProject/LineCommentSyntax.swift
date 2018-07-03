@@ -35,7 +35,7 @@ public struct LineCommentSyntax {
 
     public func comment(contents: String, indent: String = "") -> String { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
 
-        let spacing = stylisticSpacing ? " " : ""
+        let spacing = stylisticSpacing ? " " : "" // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
 
         var first = true
         var result: [String] = []
@@ -45,7 +45,7 @@ public struct LineCommentSyntax {
                 modified += spacing + line
             }
             if let end = stylisticEnd {
-                modified += spacing + end
+                modified += spacing + end // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
             }
 
             if first {
@@ -120,8 +120,7 @@ public struct LineCommentSyntax {
 
     internal func contentsOfFirstComment(in range: Range<String.ScalarView.Index>, of string: String) -> String? { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         guard let range = rangeOfFirstComment(in: range, of: string) else {
-            return nil
-
+            return nil // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         }
 
         let comment = String(string[range])
@@ -138,8 +137,8 @@ public struct LineCommentSyntax {
 
             var result = String(line.scalars.suffix(from: index))
             if let end = stylisticEnd {
-                if result.hasSuffix(end) {
-                    result = String(result.scalars[..<result.index(result.scalars.endIndex, offsetBy: −end.scalars.count)])
+                if result.hasSuffix(end) { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+                    result = String(result.scalars[..<result.index(result.scalars.endIndex, offsetBy: −end.scalars.count)]) // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
                 }
             }
             return result

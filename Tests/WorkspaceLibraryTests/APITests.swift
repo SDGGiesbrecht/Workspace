@@ -98,6 +98,7 @@ class APITests : TestCase {
             // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
             ["refresh", "resources"],
+            ["refresh", "examples"],
             ["normalize"],
 
             ["proofread"],
@@ -184,6 +185,12 @@ class APITests : TestCase {
         testCustomStringConvertibleConformance(of: LocalizationIdentifier("en"), localizations: InterfaceLocalization.self, uniqueTestName: "English", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: LocalizationIdentifier("cmn"), localizations: InterfaceLocalization.self, uniqueTestName: "Mandarin", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: LocalizationIdentifier("zxx"), localizations: InterfaceLocalization.self, uniqueTestName: "Unknown", overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testMissingExample() {
+        PackageRepository(mock: "MissingExample").test(commands: [
+            ["refresh", "examples"]
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testMissingReadMeLocalization() {
@@ -311,7 +318,7 @@ class APITests : TestCase {
             configuration.documentation.readMe.featureList[localization] = "..."
             configuration.documentation.readMe.other[localization] = "..."
             configuration.documentation.readMe.about[localization] = "..."
-            configuration.documentation.readMe.exampleUsage[localization] = Markdown("#example(Read‐Me \(localization.icon.flatMap({String($0)}) ?? localization.code))")
+            configuration.documentation.readMe.exampleUsage[localization] = Markdown("\u{23}example(Read‐Me \(localization.icon.flatMap({String($0)}) ?? localization.code))")
         }
         configuration.documentation.readMe.shortProjectDescription["🇨🇦EN"] = "This project does stuff."
         configuration.documentation.readMe.quotation?.translation["🇨🇦EN"] = "“...”"
@@ -343,6 +350,7 @@ class APITests : TestCase {
             ["refresh", "github"],
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
+            ["refresh", "examples"],
             ["normalize"]
         ]
         #if !os(Linux)
@@ -385,7 +393,7 @@ class APITests : TestCase {
             configuration.documentation.readMe.featureList[localization] = "..."
             configuration.documentation.readMe.other[localization] = "..."
             configuration.documentation.readMe.about[localization] = "..."
-            configuration.documentation.readMe.exampleUsage[localization] = Markdown("#example(Read‐Me \(localization.icon.flatMap({String($0)}) ?? localization.code))")
+            configuration.documentation.readMe.exampleUsage[localization] = Markdown("\u{23}example(Read‐Me \(localization.icon.flatMap({String($0)}) ?? localization.code))")
         }
         configuration.documentation.readMe.shortProjectDescription["🇨🇦EN"] = "This project does stuff."
         configuration.documentation.readMe.quotation?.translation["🇨🇦EN"] = "“...”"
@@ -416,6 +424,7 @@ class APITests : TestCase {
             ["refresh", "github"],
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
+            ["refresh", "examples"],
             ["normalize"]
             ]
         #if !os(Linux)

@@ -16,7 +16,7 @@ import SDGLogic
 
 import SDGSwiftConfiguration
 
-// [_Example 1: Sample Configuration_]
+// #example(1, sampleConfiguration)
 /// A Workspace configuration.
 ///
 /// Workspace can be configured by placing a Swift file named `Workspace.swift` in the project root.

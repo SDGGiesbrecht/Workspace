@@ -6,6 +6,7 @@ Subcommands
 
 all performs all configured refreshment tasks.
 continuous‐integration regenerates the project’s continuous integration configuration files.
+examples synchronizes the project’s compiled examples.
 git regenerates the project’s Git configuration files.
 github regenerates the project’s GitHub configuration files.
 help displays usage information.

@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// [_Define Example: Sample Configuration_]
+// @example(sampleConfiguration)
 import WorkspaceConfiguration
 
 /*
@@ -25,4 +25,4 @@ let configuration = WorkspaceConfiguration()
 configuration.optIntoAllTasks()
 configuration.documentation.readMe.manage = true
 configuration.documentation.readMe.shortProjectDescription["en"] = "This is just an example."
-// [_End_]
+// @endExample

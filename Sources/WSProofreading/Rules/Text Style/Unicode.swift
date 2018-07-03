@@ -230,6 +230,14 @@ internal struct UnicodeRule : Rule {
 
     internal static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
 
+        switch file.fileType {
+        case .json, .xcodeProject, .xml:
+            // Likely generated, not written.
+            return
+        case .c, .css, .deprecatedWorkspaceConfiguration, .gitIgnore, .html, .javaScript, .lisp, .markdown, .objectiveC, .shell, .swift, .swiftPackageManifest, .yaml:
+            break
+        }
+
         check(file, for: "\u{2D}",
               allowInShellSource: true,
               allowInSampleCode: true,

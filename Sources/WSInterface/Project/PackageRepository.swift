@@ -113,10 +113,4 @@ extension PackageRepository {
             }
         }
     }
-
-    // MARK: - Examples
-
-    func examples(output: Command.Output) throws -> [String: String] {
-        return try Examples.examples(in: self, output: output)
-    }
 }

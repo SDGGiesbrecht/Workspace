@@ -33,7 +33,7 @@ public struct TestingConfiguration : Codable {
     /// ```
     public var enforceCoverage: Bool = true
 
-    // [_Example 1: Test Coverage Exemption Tokens_]
+    // #example(1, testCoverageExemptionTokens)
     /// The set of active test coverage exemption tokens.
     ///
     /// The default tokens, taken straight from the source code, are:
@@ -51,7 +51,7 @@ public struct TestingConfiguration : Codable {
     /// TestCoverageExemptionToken("fail", scope: .sameLine)
     /// ```
     public var testCoverageExemptions: Set<TestCoverageExemptionToken> = [
-        // [_Define Example: Test Coverage Exemption Tokens_]
+        // @example(testCoverageExemptionTokens)
         TestCoverageExemptionToken("[_Exempt from Test Coverage_]", scope: .sameLine),
         TestCoverageExemptionToken("assert", scope: .sameLine),
         TestCoverageExemptionToken("assertionFailure", scope: .previousLine),
@@ -62,6 +62,6 @@ public struct TestingConfiguration : Codable {
         TestCoverageExemptionToken("unreachable", scope: .previousLine),
         TestCoverageExemptionToken("test", scope: .sameLine),
         TestCoverageExemptionToken("fail", scope: .sameLine)
-        // [_End_]
+        // @endExample
     ]
 }

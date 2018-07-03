@@ -23,4 +23,30 @@ struct SDG {
     func anotherExemption() { // customSameLineToken
 
     }
+
+    func defineExample() { // [_Exempt from Test Coverage_]
+        // @example(anExample)
+        // This is source code.
+
+        // And more after an empty line.
+        // @endExample
+
+        // @example(anotherExample )
+        // ...
+        // @endExample
+    }
+
+    // #example(1, anExample) #example(2, anotherExample)
+    /// Uses an example.
+    ///
+    /// ```swift
+    /// // This is source code.
+    ///
+    /// // And more after an empty line.
+    /// ```
+    ///
+    /// ```swift
+    /// // ...
+    /// ```
+    func useExample() {} // [_Exempt from Test Coverage_]
 }

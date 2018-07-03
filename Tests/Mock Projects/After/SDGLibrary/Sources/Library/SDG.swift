@@ -24,7 +24,7 @@ struct SDG {
 
     }
 
-    func defineExample() {
+    func defineExample() { // [_Exempt from Test Coverage_]
         // @example(anExample)
         // This is source code.
 
@@ -40,5 +40,5 @@ struct SDG {
     ///
     /// // And more after an empty line.
     /// ```
-    func useExample() {}
+    func useExample() {} // [_Exempt from Test Coverage_]
 }

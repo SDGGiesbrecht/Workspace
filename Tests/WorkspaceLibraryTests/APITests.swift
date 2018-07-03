@@ -99,6 +99,7 @@ class APITests : TestCase {
             ["refresh", "scripts"],
             ["refresh", "resources"],
             ["refresh", "examples"],
+            ["refresh", "inherited‐documentation"],
             ["normalize"],
 
             ["proofread"],
@@ -351,6 +352,7 @@ class APITests : TestCase {
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
             ["refresh", "examples"],
+            ["refresh", "inherited‐documentation"],
             ["normalize"]
         ]
         #if !os(Linux)
@@ -425,6 +427,7 @@ class APITests : TestCase {
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
             ["refresh", "examples"],
+            ["refresh", "inherited‐documentation"],
             ["normalize"]
             ]
         #if !os(Linux)

@@ -31,7 +31,7 @@ struct SDG {
         // And more after an empty line.
         // @endExample
 
-        // @example(anotherExample)
+        // @example(anotherExample )
         // ...
         // @endExample
     }

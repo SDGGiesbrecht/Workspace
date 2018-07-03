@@ -91,7 +91,7 @@ internal struct BlockCommentSyntax {
         guard let range = firstComment(in: range, of: string)?.contents.range else {
             return nil
         }
-
+        // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         var lines = String(string[range]).lines.map({ String($0.line) })
         while let line = lines.first, line.isWhitespace {
             lines.removeFirst()

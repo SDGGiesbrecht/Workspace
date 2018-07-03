@@ -92,7 +92,7 @@ public struct FileSyntax {
         let possibleLine = lineCommentSyntax?.rangeOfFirstComment(in: range, of: file.contents)
 
         if let block = possibleBlock {
-            if let line = possibleLine {
+            if let line = possibleLine { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
                 if block.lowerBound < line.lowerBound {
                     return block
                 } else {
@@ -104,15 +104,15 @@ public struct FileSyntax {
         } else {
             if let line = possibleLine {
                 return line
-            } else {
-                return nil
+            } else { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+                return nil // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
             }
         }
     }
 
     public func contentsOfFirstComment(in range: Range<String.ScalarView.Index>, of file: TextFile) -> String? { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         if let block = blockCommentSyntax?.contentsOfFirstComment(in: range, of: file.contents) {
-            return block
+            return block // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
         } else if let line = lineCommentSyntax?.contentsOfFirstComment(in: range, of: file.contents) {
             return line
         }

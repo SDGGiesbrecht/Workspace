@@ -57,7 +57,7 @@ extension PackageRepository {
         }
     }
 
-    private static var exampleUsePatterns: [CompositePattern<Unicode.Scalar>] {
+    private static var exampleDirectivePatterns: [CompositePattern<Unicode.Scalar>] {
         return InterfaceLocalization.cases.map { localization in
             return CompositePattern<Unicode.Scalar>([
                 LiteralPattern("#".scalars),
@@ -123,7 +123,10 @@ extension PackageRepository {
 
                     var file = try TextFile(alreadyAt: url)
 
-                    for match in file.contents.scalars.matches(for: AlternativePatterns(PackageRepository.exampleUsePatterns)) {
+                    var searchIndex = file.contents.scalars.startIndex
+                    while let match = file.contents.scalars.firstMatch(for: AlternativePatterns(PackageRepository.exampleDirectivePatterns), in: min(searchIndex, file.contents.scalars.endIndex) ..< file.contents.scalars.endIndex) {
+                        searchIndex = match.range.upperBound
+
                         guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),
                             let comma = match.contents.firstMatch(for: ",".scalars),
                             let closingParenthesis = match.contents.firstMatch(for: ")".scalars) else {

@@ -1,0 +1,7 @@
+$ workspace refresh inherited‐documentation •no‐colour
+
+Refreshing inherited documentation...
+
+$ swift package resolve
+There is no documentation named “doesNotExist”.
+9223372036854775807

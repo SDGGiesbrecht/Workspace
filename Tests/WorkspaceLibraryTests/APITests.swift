@@ -99,6 +99,7 @@ class APITests : TestCase {
             ["refresh", "scripts"],
             ["refresh", "resources"],
             ["refresh", "examples"],
+            ["refresh", "inherited‐documentation"],
             ["normalize"],
 
             ["proofread"],
@@ -185,6 +186,12 @@ class APITests : TestCase {
         testCustomStringConvertibleConformance(of: LocalizationIdentifier("en"), localizations: InterfaceLocalization.self, uniqueTestName: "English", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: LocalizationIdentifier("cmn"), localizations: InterfaceLocalization.self, uniqueTestName: "Mandarin", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: LocalizationIdentifier("zxx"), localizations: InterfaceLocalization.self, uniqueTestName: "Unknown", overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testMissingDocumentation() {
+        PackageRepository(mock: "MissingDocumentation").test(commands: [
+            ["refresh", "inherited‐documentation"]
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testMissingExample() {
@@ -351,6 +358,7 @@ class APITests : TestCase {
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
             ["refresh", "examples"],
+            ["refresh", "inherited‐documentation"],
             ["normalize"]
         ]
         #if !os(Linux)
@@ -425,6 +433,7 @@ class APITests : TestCase {
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
             ["refresh", "examples"],
+            ["refresh", "inherited‐documentation"],
             ["normalize"]
             ]
         #if !os(Linux)

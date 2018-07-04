@@ -18,14 +18,16 @@ Workspace can make symbols inherit their documentation.
 
 It can be tedious re‐writing the same documentation over again when conforming to a protocol or creating a subclass. Workspace can make documentation comments re‐usable—even by dependent packages.
 
+Note: Xcode has begun doing this automatically for protocol conformances, default implementations and subclass overrides wherever the symbol is left undocumented. However, Jazzy—which is used by Workspace for documentation generation and coverage validation—does not understand the inheritance tree. Projects using documentation features will need to continue using this method of inheritance for now.
+
 ## Defining Documentation
 
-To designate a documentation comment as a definition, place `[_Define Documentation: Identifier_]` on the line above. Anything on the same line will be ignored (such as `//`).
+To designate a documentation comment as a definition, place `@documentation(identifier)` on the line above. Anything on the same line will be ignored (such as `//`).
 
 ```swift
 protocol Rambler {
 
-    // [_Define Documentation: MyLibrary.Rambler.ramble()_]
+    // @documentation(MyLibrary.Rambler.ramble)
     /// Rambles on and on and on and on...
     func ramble() -> Never
 }
@@ -35,12 +37,12 @@ Workspace will only check Swift files for definitions.
 
 ## Inheriting Documentation
 
-To inherit for documentation defined elsewhere, place `[_Inherit Documentation: Identifier_]` where the documentation would go (or above it if it already exists). Anything on the same line will be ignored (such as `//`).
+To inherit for documentation defined elsewhere, place `#documentation(identifier)` where the documentation would go (or above it if it already exists). Anything on the same line will be ignored (such as `//`).
 
 ```swift
 struct Teacher : Rambler {
 
-    // [_Inherit Documentation: MyLibrary.Rambler.ramble()_]
+    // #documentation(MyLibrary.Rambler.ramble)
     /// (Workspace will automatically fill this in whenever the project is refreshed.)
     func ramble() -> Never {
 
@@ -52,4 +54,4 @@ struct Teacher : Rambler {
 }
 ```
 
-Workspace can find definitions in any Swift file in the project or even in dependencies as long as the source is present in the `Packages` folder.
+Workspace can find definitions in any Swift file in the project and even in package dependencies.

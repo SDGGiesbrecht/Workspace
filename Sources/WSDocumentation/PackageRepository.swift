@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import SDGCollections
 import WSGeneralImports
 
@@ -207,4 +208,148 @@ extension PackageRepository {
     }
 
     #endif
+
+    // MARK: - Inheritance
+
+    private static let documentationAttribute: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishCanada:
+            return "documentation"
+        }
+    })
+
+    private static let documentationDirective: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishCanada:
+            return "documentation"
+        }
+    })
+
+    private static var documentationDeclarationPatterns: [CompositePattern<Unicode.Scalar>] {
+        return InterfaceLocalization.cases.map { localization in
+            return CompositePattern<Unicode.Scalar>([
+                LiteralPattern("@".scalars),
+                LiteralPattern(documentationAttribute.resolved(for: localization)),
+                LiteralPattern("(".scalars),
+                RepetitionPattern(ConditionalPattern({ $0 ∉ CharacterSet.newlines }), consumption: .greedy),
+                LiteralPattern(")".scalars)
+                ])
+        }
+    }
+
+    private static var documentationDirectivePatterns: [CompositePattern<Unicode.Scalar>] {
+        return InterfaceLocalization.cases.map { localization in
+            return CompositePattern<Unicode.Scalar>([
+                LiteralPattern("#".scalars),
+                LiteralPattern(documentationDirective.resolved(for: localization)),
+                LiteralPattern("(".scalars),
+                RepetitionPattern(ConditionalPattern({ $0 ∉ CharacterSet.newlines }), consumption: .greedy),
+                LiteralPattern(")".scalars)
+                ])
+        }
+    }
+
+    private func documentationDefinitions(output: Command.Output) throws -> [StrictString: StrictString] {
+        return try _withDocumentationCache {
+
+            try resolve(reportProgress: { output.print($0) })
+            resetFileCache(debugReason: "resolve")
+
+            var list: [StrictString: StrictString] = [:]
+
+            let dependencies = try allFiles().filter { url in
+                guard url.is(in: location.appendingPathComponent("Packages"))
+                    ∨ url.is(in: location.appendingPathComponent(".build/checkouts")) else {
+                        return false
+                }
+                if url.absoluteString.contains(".git") ∨ url.absoluteString.contains("/docs/") {
+                    return false
+                }
+                return true
+            }
+
+            for url in try dependencies + sourceFiles(output: output) {
+                try autoreleasepool {
+
+                    if FileType(url: url) == .swift {
+                        let file = try TextFile(alreadyAt: url)
+
+                        for match in file.contents.scalars.matches(for: AlternativePatterns(PackageRepository.documentationDeclarationPatterns)) {
+                            guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),
+                                let closingParenthesis = match.contents.lastMatch(for: ")".scalars) else {
+                                    unreachable()
+                            }
+
+                            var identifier = StrictString(file.contents.scalars[openingParenthesis.range.upperBound ..< closingParenthesis.range.lowerBound])
+                            identifier.trimMarginalWhitespace()
+
+                            let nextLineStart = match.range.lines(in: file.contents.lines).upperBound.samePosition(in: file.contents.scalars)
+                            if let comment = FileType.swiftDocumentationSyntax.contentsOfFirstComment(in: nextLineStart ..< file.contents.scalars.endIndex, of: file) {
+                                list[identifier] = StrictString(comment)
+                            }
+                        }
+                    }
+                }
+            }
+
+            return list
+        }
+    }
+
+    public func refreshInheritedDocumentation(output: Command.Output) throws {
+
+        for url in try sourceFiles(output: output) {
+            try autoreleasepool {
+
+                if FileType(url: url) == .swift {
+                    let documentationSyntax = FileType.swiftDocumentationSyntax
+                    let lineDocumentationSyntax = documentationSyntax.lineCommentSyntax!
+
+                    var file = try TextFile(alreadyAt: url)
+
+                    var searchIndex = file.contents.scalars.startIndex
+                    while let match = file.contents.scalars.firstMatch(for: AlternativePatterns(PackageRepository.documentationDirectivePatterns), in: min(searchIndex, file.contents.scalars.endIndex) ..< file.contents.scalars.endIndex) {
+                        searchIndex = match.range.upperBound
+
+                        guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),
+                            let closingParenthesis = match.contents.lastMatch(for: ")".scalars) else {
+                                unreachable()
+                        }
+
+                        var identifier = StrictString(file.contents.scalars[openingParenthesis.range.upperBound ..< closingParenthesis.range.lowerBound])
+                        identifier.trimMarginalWhitespace()
+                        guard let replacement = try documentationDefinitions(output: output)[identifier] else {
+                            throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                                switch localization {
+                                case .englishCanada:
+                                    return "There is no documentation named “" + identifier + "”."
+                                }
+                            }))
+                        }
+
+                        let matchLines = match.range.lines(in: file.contents.lines)
+                        let nextLineStart = matchLines.upperBound.samePosition(in: file.contents.scalars)
+                        if let commentRange = documentationSyntax.rangeOfFirstComment(in: nextLineStart ..< file.contents.scalars.endIndex, of: file),
+                            file.contents.scalars[nextLineStart ..< commentRange.lowerBound].firstMatch(for: CharacterSet.newlinePattern) == nil {
+
+                            let indent = StrictString(file.contents.scalars[nextLineStart ..< commentRange.lowerBound])
+
+                            file.contents.scalars.replaceSubrange(commentRange, with: lineDocumentationSyntax.comment(contents: String(replacement), indent: String(indent)).scalars)
+                        } else {
+                            var location: String.ScalarView.Index = nextLineStart
+                            file.contents.scalars.advance(&location, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
+
+                            let indent = StrictString(file.contents.scalars[nextLineStart ..< location])
+
+                            let result = StrictString(lineDocumentationSyntax.comment(contents: String(replacement), indent: String(indent))) + "\n" + indent
+
+                            file.contents.scalars.insert(contentsOf: result.scalars, at: location)
+                        }
+                    }
+
+                    try file.writeChanges(for: self, output: output)
+                }
+            }
+        }
+    }
 }

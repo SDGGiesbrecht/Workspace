@@ -32,12 +32,6 @@ func fail(message: [String]) -> Never {
     exit(ExitCode.failed)
 }
 
-func failTests(message: [String]) -> Never {
-    outputWarnings()
-    print(message, in: .red, spaced: true)
-    exit(ExitCode.testsFailed)
-}
-
 // MARK: - Generic Printing
 
 private var warnings: [[String]] = []

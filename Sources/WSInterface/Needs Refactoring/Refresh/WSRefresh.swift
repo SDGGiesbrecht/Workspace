@@ -95,10 +95,9 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
     try Workspace.Refresh.Examples.command.execute(withArguments: arguments, options: options, output: output)
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-    output.print("Updating inherited documentation...".formattedAsSectionHeader())
+    // Inherited Documentation
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-
-    try DocumentationInheritance.refreshDocumentation(output: output)
+    try Workspace.Refresh.InheritedDocumentation.command.execute(withArguments: arguments, options: options, output: output)
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     // Normalization

@@ -40,7 +40,8 @@ extension Workspace {
                 GitHub.command,
                 ContinuousIntegration.command,
                 Resources.command,
-                Examples.command
+                Examples.command,
+                InheritedDocumentation.command
             ]
             #if !os(Linux)
             list.append(Xcode.command)

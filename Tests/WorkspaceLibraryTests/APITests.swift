@@ -188,6 +188,12 @@ class APITests : TestCase {
         testCustomStringConvertibleConformance(of: LocalizationIdentifier("zxx"), localizations: InterfaceLocalization.self, uniqueTestName: "Unknown", overwriteSpecificationInsteadOfFailing: false)
     }
 
+    func testMissingDocumentation() {
+        PackageRepository(mock: "MissingDocumentation").test(commands: [
+            ["refresh", "inherited‐documentation"]
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
     func testMissingExample() {
         PackageRepository(mock: "MissingExample").test(commands: [
             ["refresh", "examples"]

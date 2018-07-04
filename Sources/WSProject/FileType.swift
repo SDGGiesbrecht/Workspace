@@ -21,7 +21,7 @@ public enum FileType {
     // MARK: - Static Properties
 
     private static var unsupportedFileTypesEncountered: [String: URL] = [:]
-    public static func unsupportedTypesWarning(for project: PackageRepository, output: Command.Output?) throws -> StrictString? { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+    public static func unsupportedTypesWarning(for project: PackageRepository, output: Command.Output?) throws -> StrictString? {
         // [_Workaround: “output” should not be optional, but is currently required for bridging with older code._]
 
         let expected = try project.configuration(output: output).repository.ignoredFileTypes
@@ -147,11 +147,11 @@ public enum FileType {
 
     // MARK: - Syntax
 
-    private static let htmlBlockComment = BlockCommentSyntax(start: "<\u{21}\u{2D}\u{2D}", end: "\u{2D}\u{2D}>", stylisticIndent: " ")
+    private static let htmlBlockComment = BlockCommentSyntax(start: "<\u{21}\u{2D}\u{2D}", end: "\u{2D}\u{2D}>")
 
-    private static let swiftBlockCommentSyntax = BlockCommentSyntax(start: "/*", end: "*/", stylisticIndent: " ")
+    private static let swiftBlockCommentSyntax = BlockCommentSyntax(start: "/*", end: "*/")
     private static let swiftLineCommentSyntax = LineCommentSyntax(start: "//")
-    public static let swiftDocumentationSyntax = FileSyntax(blockCommentSyntax: BlockCommentSyntax(start: "/*" + "*", end: "*/", stylisticIndent: " "), lineCommentSyntax: LineCommentSyntax(start: "///"))
+    public static let swiftDocumentationSyntax = FileSyntax(blockCommentSyntax: BlockCommentSyntax(start: "/*" + "*", end: "*/"), lineCommentSyntax: LineCommentSyntax(start: "///"))
 
     public var syntax: FileSyntax {
         switch self {
@@ -167,15 +167,15 @@ public enum FileType {
             return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"))
 
         case .html, .xml:
-            return FileSyntax(blockCommentSyntax: FileType.htmlBlockComment, lineCommentSyntax: nil, requiredFirstLineToken: "<\u{21}DOCTYPE") // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+            return FileSyntax(blockCommentSyntax: FileType.htmlBlockComment, lineCommentSyntax: nil, requiredFirstLineToken: "<\u{21}DOCTYPE")
         case .markdown:
             return FileSyntax(blockCommentSyntax: FileType.htmlBlockComment, lineCommentSyntax: nil, semanticLineTerminalWhitespace: ["  "])
 
         case .lisp:
-            return FileSyntax(blockCommentSyntax: BlockCommentSyntax(start: "#|", end: "|#"), lineCommentSyntax: LineCommentSyntax(start: ";")) // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+            return FileSyntax(blockCommentSyntax: BlockCommentSyntax(start: "#|", end: "|#"), lineCommentSyntax: LineCommentSyntax(start: ";"))
 
         case .json:
-            return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: nil) // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+            return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: nil)
 
         case .deprecatedWorkspaceConfiguration: // Not actually used anymore.
             return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: nil)

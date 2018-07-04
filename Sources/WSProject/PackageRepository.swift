@@ -263,7 +263,7 @@ extension PackageRepository {
         return result
     }
 
-    public func fileHeader(output: Command.Output) throws -> StrictString { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+    public func fileHeader(output: Command.Output) throws -> StrictString {
         return try cached(in: &configurationCache.fileHeader) {
             return try configuration(output: output).fileHeaders.contents.resolve(configuration(output: output))
         }

@@ -19,21 +19,19 @@ internal struct BlockCommentSyntax {
 
     // MARK: - Initialization
 
-    internal init(start: String, end: String, stylisticIndent: String? = nil) {
+    internal init(start: String, end: String) {
         self.start = start
         self.end = end
-        self.stylisticIndent = stylisticIndent
     }
 
     // MARK: - Properties
 
     private let start: String
     private let end: String
-    private let stylisticIndent: String?
 
     // MARK: - Output
 
-    internal func comment(contents: String) -> String { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+    internal func comment(contents: String) -> String {
 
         let withEndToken = [contents, end].joinedAsLines()
 
@@ -41,14 +39,10 @@ internal struct BlockCommentSyntax {
 
         lines = lines.map { (line: String) -> String in
 
-            if let indent = stylisticIndent {
-                if line.isWhitespace {
-                    return line
-                } else {
-                    return indent + line
-                }
-            } else {
+            if line.isWhitespace {
                 return line
+            } else {
+                return " " + line
             }
         }
 
@@ -64,8 +58,7 @@ internal struct BlockCommentSyntax {
         var index = location
         if ¬string.scalars.advance(&index, over: start.scalars) {
             return false
-        } else { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
-             // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+        } else {
 
             if countDocumentationMarkup {
                 return true
@@ -83,15 +76,15 @@ internal struct BlockCommentSyntax {
         }
     }
 
-    internal func firstComment(in range: Range<String.ScalarView.Index>, of string: String) -> NestingLevel<String.ScalarView>? { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+    internal func firstComment(in range: Range<String.ScalarView.Index>, of string: String) -> NestingLevel<String.ScalarView>? {
         return string.scalars.firstNestingLevel(startingWith: start.scalars, endingWith: end.scalars)
     }
 
-    internal func contentsOfFirstComment(in range: Range<String.ScalarView.Index>, of string: String) -> String? { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+    internal func contentsOfFirstComment(in range: Range<String.ScalarView.Index>, of string: String) -> String? {
         guard let range = firstComment(in: range, of: string)?.contents.range else {
             return nil
         }
-        // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+        
         var lines = String(string[range]).lines.map({ String($0.line) })
         while let line = lines.first, line.isWhitespace {
             lines.removeFirst()
@@ -121,7 +114,7 @@ internal struct BlockCommentSyntax {
         return strings.joinedAsLines()
     }
 
-    internal func contentsOfFirstComment(in string: String) -> String? { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+    internal func contentsOfFirstComment(in string: String) -> String? {
         return contentsOfFirstComment(in: string.scalars.startIndex ..< string.scalars.endIndex, of: string)
     }
 }

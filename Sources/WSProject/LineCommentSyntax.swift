@@ -33,9 +33,9 @@ public struct LineCommentSyntax {
 
     // MARK: - Output
 
-    public func comment(contents: String, indent: String = "") -> String { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+    public func comment(contents: String, indent: String = "") -> String {
 
-        let spacing = stylisticSpacing ? " " : "" // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+        let spacing = stylisticSpacing ? " " : ""
 
         var first = true
         var result: [String] = []
@@ -45,7 +45,7 @@ public struct LineCommentSyntax {
                 modified += spacing + line
             }
             if let end = stylisticEnd {
-                modified += spacing + end // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+                modified += spacing + end
             }
 
             if first {
@@ -70,7 +70,7 @@ public struct LineCommentSyntax {
             // Comment
 
             if countDocumentationMarkup {
-                return true // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+                return true
             } else {
                 // Make shure this isn’t documentation.
 
@@ -79,7 +79,7 @@ public struct LineCommentSyntax {
                     if nextCharacter ∈ CharacterSet.whitespacesAndNewlines {
                         return true
                     }
-                } // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+                }
                 return false
             }
         }
@@ -90,15 +90,15 @@ public struct LineCommentSyntax {
         if let newline = string.scalars.firstMatch(for: ConditionalPattern({ $0 ∈ CharacterSet.newlines }), in: (index ..< range.upperBound).sameRange(in: string.scalars))?.range {
 
             return index ..< newline.lowerBound
-        } else { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
-            return index ..< range.upperBound // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+        } else {
+            return index ..< range.upperBound
         }
     }
 
     internal func rangeOfFirstComment(in range: Range<String.ScalarView.Index>, of string: String) -> Range<String.ScalarView.Index>? {
 
         guard let startRange = string.scalars.firstMatch(for: start.scalars, in: range)?.range else {
-            return nil // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+            return nil
         }
 
         var resultEnd = restOfLine(at: startRange.lowerBound, in: range, of: string).upperBound
@@ -118,9 +118,9 @@ public struct LineCommentSyntax {
         return startRange.lowerBound ..< resultEnd
     }
 
-    internal func contentsOfFirstComment(in range: Range<String.ScalarView.Index>, of string: String) -> String? { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+    internal func contentsOfFirstComment(in range: Range<String.ScalarView.Index>, of string: String) -> String? {
         guard let range = rangeOfFirstComment(in: range, of: string) else {
-            return nil // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+            return nil
         }
 
         let comment = String(string[range])
@@ -137,8 +137,8 @@ public struct LineCommentSyntax {
 
             var result = String(line.scalars.suffix(from: index))
             if let end = stylisticEnd {
-                if result.hasSuffix(end) { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
-                    result = String(result.scalars[..<result.index(result.scalars.endIndex, offsetBy: −end.scalars.count)]) // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+                if result.hasSuffix(end) {
+                    result = String(result.scalars[..<result.index(result.scalars.endIndex, offsetBy: −end.scalars.count)])
                 }
             }
             return result
@@ -146,7 +146,7 @@ public struct LineCommentSyntax {
         return lines.joinedAsLines()
     }
 
-    internal func contentsOfFirstComment(in string: String) -> String? { // [_Exempt from Test Coverage_] [_Workaround: Until headers are testable._]
+    internal func contentsOfFirstComment(in string: String) -> String? {
         return contentsOfFirstComment(in: string.startIndex ..< string.endIndex, of: string)
     }
 }

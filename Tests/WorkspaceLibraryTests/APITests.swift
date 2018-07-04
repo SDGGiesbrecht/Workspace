@@ -357,6 +357,7 @@ class APITests : TestCase {
             ["refresh", "github"],
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
+            ["refresh", "file‐headers"],
             ["refresh", "examples"],
             ["refresh", "inherited‐documentation"],
             ["normalize"]
@@ -432,6 +433,7 @@ class APITests : TestCase {
             ["refresh", "github"],
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
+            ["refresh", "file‐headers"],
             ["refresh", "examples"],
             ["refresh", "inherited‐documentation"],
             ["normalize"]

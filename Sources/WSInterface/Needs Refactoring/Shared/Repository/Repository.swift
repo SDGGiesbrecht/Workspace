@@ -20,38 +20,12 @@ public struct Repository {
 
     public static let packageRepository = PackageRepository(at: URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
 
-    static func paths(from urls: [URL]) -> [RelativePath] {
-        return urls.map { (url) in
-            return RelativePath(url.path(relativeTo: packageRepository.location))
-        }
-    }
-
-    static var standInOutput: Command.Output = {
-        var result: Command.Output?
-        _ = try? Command(name: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }), description: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }), directArguments: [], options: [], execution: { (_, _, output: Command.Output) in
-            result = output
-        }).execute(with: [])
-        return result!
-    }()
-
     // MARK: - Constants
 
     private static let fileManager = FileManager.default
     static let repositoryPath: AbsolutePath = AbsolutePath(fileManager.currentDirectoryPath)
     static let folderName = URL(fileURLWithPath: repositoryPath.string).lastPathComponent
     static let root: RelativePath = RelativePath("")
-
-    // MARK: - Repository
-
-    static var allFiles: [RelativePath] {
-        let urls = require { try packageRepository.allFiles() }
-        return paths(from: urls)
-    }
-
-    static var sourceFiles: [RelativePath] {
-        let urls = require { try packageRepository.sourceFiles(output: standInOutput) }
-        return paths(from: urls)
-    }
 
     // MARK: - Files
 

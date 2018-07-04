@@ -20,6 +20,9 @@ extension URL {
 
     public func isIgnored(by project: PackageRepository, output: Command.Output) throws -> Bool {
         let ignoredTypes = try project.configuration(output: output).repository.ignoredFileTypes
+        if lastPathComponent == ".Workspace Configuration.txt" {
+            return false // So it triggers a deprecation notice.
+        }
         return pathExtension ∈ ignoredTypes ∨ lastPathComponent ∈ ignoredTypes
     }
 }

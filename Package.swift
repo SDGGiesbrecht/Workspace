@@ -54,6 +54,7 @@ let package = Package(
             "WSGit",
             "WSGitHub",
             "WSContinuousIntegration",
+            "WSFileHeaders",
             "WSExamples",
             "WSXcode",
             "WSProofreading",
@@ -85,6 +86,12 @@ let package = Package(
             "WSGeneralImports",
             "WSProject",
             "WSDocumentation"
+            ]),
+
+        // File header management.
+        .target(name: "WSFileHeaders", dependencies: [
+            "WSGeneralImports",
+            "WSProject"
             ]),
 
         // Example management.

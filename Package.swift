@@ -78,6 +78,7 @@ let package = Package(
         // Licence management.
         .target(name: "WSLicence", dependencies: [
             "WSGeneralImports",
+            "WorkspaceConfiguration",
             "WSProject"
             ]),
 

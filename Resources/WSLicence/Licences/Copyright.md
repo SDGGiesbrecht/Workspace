@@ -12,6 +12,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  -->
 
-Copyright [_Copyright_] [_Authors_]. All rights reserved.
+Copyright #copyright #authors. All rights reserved.
 
 **This software is subject to copyright law. It may not be used, copied, distributed or modified without first obtaining a private licence from the copyright holder(s).**

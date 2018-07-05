@@ -26,7 +26,7 @@ public enum TravisCI {
             // [_Exempt from Test Coverage_] Does not occur locally.
             DispatchQueue.global().async {
                 while ¬complete {
-                    Thread.sleep(until: Date.init(timeIntervalSinceNow: TimeInterval(5 /* min */ × 60 /* s/min */)))
+                    Thread.sleep(until: Date.init(timeIntervalSinceNow: TimeInterval(60 /* s */)))
                     if ¬complete {
                         _ = try? Shell.default.run(command: ["echo", "...", ">", "/dev/tty"]) // [_Exempt from Test Coverage_] Tests had better not take that long!
                     }

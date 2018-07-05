@@ -40,6 +40,7 @@ extension Workspace {
                 GitHub.command,
                 ContinuousIntegration.command,
                 Resources.command,
+                FileHeaders.command,
                 Examples.command,
                 InheritedDocumentation.command
             ]

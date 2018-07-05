@@ -91,7 +91,7 @@ class APITests : TestCase {
         PackageRepository(mock: "CustomReadMe").test(commands: [
             ["refresh", "read‐me"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     }
+    }
 
     func testDefaults() {
         PackageRepository(mock: "Default").test(commands: [
@@ -111,7 +111,7 @@ class APITests : TestCase {
             ["proofread", "•xcode"],
             ["validate", "build", "•job", "macos‐swift‐package‐manager"]
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     }
+    }
 
     func testExecutable() {
         let configuration = WorkspaceConfiguration()
@@ -125,7 +125,7 @@ class APITests : TestCase {
             ["document"],
             ["validate", "documentation‐coverage"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     }
+    }
 
     func testFailingDocumentationCoverage() {
         let configuration = WorkspaceConfiguration()
@@ -133,7 +133,7 @@ class APITests : TestCase {
         PackageRepository(mock: "FailingDocumentationCoverage").test(commands: [
             ["validate", "documentation‐coverage"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     }
+    }
 
     func testFailingTests() {
         let configuration = WorkspaceConfiguration()
@@ -153,7 +153,7 @@ class APITests : TestCase {
             ["validate", "test‐coverage"],
             ["validate", "build", "•job", "miscellaneous"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     }
+    }
 
     func testHelp() {
         testCommand(Workspace.command, with: ["help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace)", overwriteSpecificationInsteadOfFailing: false)
@@ -168,13 +168,21 @@ class APITests : TestCase {
         PackageRepository(mock: "InvalidResourceDirectory").test(commands: [
             ["refresh", "resources"]
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     }
+    }
+
+    func testHeaders() {
+        PackageRepository(mock: "Headers").test(commands: [
+            ["refresh", "file‐headers"],
+            ["refresh", "examples"],
+            ["refresh", "inherited‐documentation"]
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
 
     func testInvalidTarget() {
         PackageRepository(mock: "InvalidTarget").test(commands: [
             ["refresh", "resources"]
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     }
+    }
 
     func testLocalizationIdentifier() {
         var dictionary: [LocalizationIdentifier: Bool] = [:]
@@ -246,7 +254,7 @@ class APITests : TestCase {
             ["validate", "documentation‐coverage"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
         #endif
-     }
+    }
 
     func testNoMacOSOrIOS() {
         #if !os(Linux)
@@ -259,7 +267,7 @@ class APITests : TestCase {
             ["validate", "documentation‐coverage"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
         #endif
-     }
+    }
 
     func testNoMacOSOrIOSOrWatchOS() {
         #if !os(Linux)
@@ -273,7 +281,7 @@ class APITests : TestCase {
             ["validate", "documentation‐coverage"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
         #endif
-     }
+    }
 
     func testOneProductMultipleModules() {
         let configuration = WorkspaceConfiguration()
@@ -301,7 +309,7 @@ class APITests : TestCase {
             ["refresh", "github"],
             ["document"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-     }
+    }
 
     func testSDGLibrary() {
         let configuration = WorkspaceConfiguration()
@@ -357,6 +365,7 @@ class APITests : TestCase {
             ["refresh", "github"],
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
+            ["refresh", "file‐headers"],
             ["refresh", "examples"],
             ["refresh", "inherited‐documentation"],
             ["normalize"]
@@ -374,7 +383,7 @@ class APITests : TestCase {
             ["proofread", "•xcode"]
             ])
         PackageRepository(mock: "SDGLibrary").test(commands: commands, configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
-     }
+    }
 
     func testSDGTool() {
         let configuration = WorkspaceConfiguration()
@@ -432,10 +441,11 @@ class APITests : TestCase {
             ["refresh", "github"],
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
+            ["refresh", "file‐headers"],
             ["refresh", "examples"],
             ["refresh", "inherited‐documentation"],
             ["normalize"]
-            ]
+        ]
         #if !os(Linux)
         commands.append(["refresh", "xcode"])
         #endif
@@ -449,7 +459,7 @@ class APITests : TestCase {
             ["proofread", "•xcode"]
             ])
         PackageRepository(mock: "SDGTool").test(commands: commands, configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
-     }
+    }
 
     func testSelfSpecificScripts() {
         do {
@@ -460,7 +470,7 @@ class APITests : TestCase {
         } catch {
             XCTFail("\(error)")
         }
-     }
+    }
 
     func testUnicodeSource() {
         #if !os(Linux)
@@ -473,5 +483,5 @@ class APITests : TestCase {
             ["validate", "documentation‐coverage"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
         #endif
-     }
+    }
 }

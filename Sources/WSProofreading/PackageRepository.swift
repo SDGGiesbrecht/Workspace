@@ -26,7 +26,8 @@ extension PackageRepository {
         let activeRules = try configuration(output: output).proofreading.rules
 
         for url in try sourceFiles(output: output)
-            where FileType(url: url) ≠ nil
+            where (try FileType(url: url) ≠ nil
+                ∧ ¬url.isIgnored(by: self, output: output))
                 ∧ FileType(url: url) ≠ .xcodeProject {
                     try autoreleasepool {
 

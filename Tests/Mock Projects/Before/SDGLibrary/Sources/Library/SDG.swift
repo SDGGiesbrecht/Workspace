@@ -1,3 +1,5 @@
+/* Header */
+
 struct SDG {
     func text(_ bool: Bool) -> String {
         if bool {

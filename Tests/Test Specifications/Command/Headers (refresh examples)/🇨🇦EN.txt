@@ -1,0 +1,6 @@
+$ workspace refresh examples •no‐colour
+
+Refreshing examples...
+
+Writing to “Sources/Headers/BlockExample.swift”...
+0

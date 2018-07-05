@@ -145,7 +145,7 @@ public struct TextFile {
     }
 
     public var body: String {
-        get {
+        get { // [_Exempt from Test Coverage_] [_Workaround: Until licence is testable._]
             return String(contents[headerEnd...])
         }
         set {

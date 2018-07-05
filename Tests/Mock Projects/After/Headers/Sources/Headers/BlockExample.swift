@@ -44,3 +44,6 @@ var example: Bool?
 /// ```swift
 /// var example: Bool?
 /// ```
+
+// Invalid, no related documentation:
+// #example(1, example)

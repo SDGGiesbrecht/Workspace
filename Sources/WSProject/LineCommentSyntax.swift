@@ -19,33 +19,24 @@ public struct LineCommentSyntax {
 
     // MARK: - Initialization
 
-    internal init(start: String, stylisticSpacing: Bool = true, stylisticEnd: String? = nil) {
+    internal init(start: String) {
         self.start = start
-        self.stylisticSpacing = stylisticSpacing
-        self.stylisticEnd = stylisticEnd
     }
 
     // MARK: - Properties
 
     private let start: String
-    private let stylisticSpacing: Bool
-    private let stylisticEnd: String?
 
     // MARK: - Output
 
     public func comment(contents: String, indent: String = "") -> String {
-
-        let spacing = stylisticSpacing ? " " : ""
 
         var first = true
         var result: [String] = []
         for line in contents.lines.map({ String($0.line) }) {
             var modified = start
             if ¬line.isWhitespace {
-                modified += spacing + line
-            }
-            if let end = stylisticEnd {
-                modified += spacing + end
+                modified += " " + line
             }
 
             if first {
@@ -131,17 +122,9 @@ public struct LineCommentSyntax {
             line.scalars.advance(&index, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
             line.scalars.advance(&index, over: start.scalars)
 
-            if stylisticSpacing {
-                line.scalars.advance(&index, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }), count: 0 ... 1))
-            }
+            line.scalars.advance(&index, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }), count: 0 ... 1))
 
-            var result = String(line.scalars.suffix(from: index))
-            if let end = stylisticEnd {
-                if result.hasSuffix(end) {
-                    result = String(result.scalars[..<result.index(result.scalars.endIndex, offsetBy: −end.scalars.count)])
-                }
-            }
-            return result
+            return String(line.scalars.suffix(from: index))
         }
         return lines.joinedAsLines()
     }

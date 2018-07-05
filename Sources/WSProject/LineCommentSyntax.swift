@@ -52,7 +52,7 @@ public struct LineCommentSyntax {
 
     // MARK: - Parsing
 
-    internal func commentExists(at location: String.ScalarView.Index, in string: String, countDocumentationMarkup: Bool = true) -> Bool {
+    internal func nonDocumentationCommentExists(at location: String.ScalarView.Index, in string: String) -> Bool {
 
         var index = location
         if ¬string.clusters.advance(&index, over: start.clusters) {
@@ -60,19 +60,14 @@ public struct LineCommentSyntax {
         } else {
             // Comment
 
-            if countDocumentationMarkup {
-                return true
-            } else {
-                // Make shure this isn’t documentation.
+            // Make shure this isn’t documentation.
+            if let nextCharacter = string[index...].unicodeScalars.first {
 
-                if let nextCharacter = string[index...].unicodeScalars.first {
-
-                    if nextCharacter ∈ CharacterSet.whitespacesAndNewlines {
-                        return true
-                    }
+                if nextCharacter ∈ CharacterSet.whitespacesAndNewlines {
+                    return true
                 }
-                return false
             }
+            return false
         }
     }
 

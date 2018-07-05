@@ -116,7 +116,7 @@ public struct FileSyntax {
         } else if let line = lineCommentSyntax?.contentsOfFirstComment(in: range, of: file.contents) {
             return line
         }
-        return nil
+        return nil // [_Exempt from Test Coverage_] Unreachable.
     }
 
     private static func advance(_ index: inout String.ScalarView.Index, pastLayoutSpacingIn string: String) {
@@ -151,7 +151,7 @@ public struct FileSyntax {
         }
 
         if let lineSyntax = lineCommentSyntax,
-            lineSyntax.commentExists(at: start, in: file.contents, countDocumentationMarkup: false),
+            lineSyntax.nonDocumentationCommentExists(at: start, in: file.contents),
             let line = lineSyntax.rangeOfFirstComment(in: start ..< file.contents.endIndex, of: file.contents)?.upperBound {
             return line
         }

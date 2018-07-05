@@ -53,26 +53,21 @@ internal struct BlockCommentSyntax {
 
     // MARK: - Parsing
 
-    internal func startOfCommentExists(at location: String.ScalarView.Index, in string: String, countDocumentationMarkup: Bool = true) -> Bool {
+    internal func startOfNonDocumentationCommentExists(at location: String.ScalarView.Index, in string: String) -> Bool {
 
         var index = location
         if ¬string.scalars.advance(&index, over: start.scalars) {
             return false
         } else {
 
-            if countDocumentationMarkup {
-                return true
-            } else {
-                // Make sure this isn’t documentation.
+            // Make sure this isn’t documentation.
+            if let nextCharacter = string.scalars[index...].first {
 
-                if let nextCharacter = string.scalars[index...].first {
-
-                    if nextCharacter ∈ CharacterSet.whitespacesAndNewlines {
-                        return true
-                    }
+                if nextCharacter ∈ CharacterSet.whitespacesAndNewlines {
+                    return true
                 }
-                return false
             }
+            return false
         }
     }
 
@@ -84,7 +79,7 @@ internal struct BlockCommentSyntax {
         guard let range = firstComment(in: range, of: string)?.contents.range else {
             return nil
         }
-        
+
         var lines = String(string[range]).lines.map({ String($0.line) })
         while let line = lines.first, line.isWhitespace {
             lines.removeFirst()

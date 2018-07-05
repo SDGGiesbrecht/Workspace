@@ -145,7 +145,7 @@ public struct FileSyntax {
         let start = file.headerStart
 
         if let blockSyntax = blockCommentSyntax,
-            blockSyntax.startOfCommentExists(at: start, in: file.contents, countDocumentationMarkup: false),
+            blockSyntax.startOfNonDocumentationCommentExists(at: start, in: file.contents),
             let block = blockSyntax.firstComment(in: start ..< file.contents.scalars.endIndex, of: file.contents)?.container.range.upperBound {
             return block
         }

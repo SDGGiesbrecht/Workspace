@@ -152,7 +152,7 @@ public struct TextFile {
             var new = newValue
             // Remove unnecessary initial spacing
             while new.hasPrefix("\n") {
-                new.scalars.removeFirst()
+                new.scalars.removeFirst() // [_Exempt from Test Coverage_] Should not be reachable.
             }
 
             let headerSource = String(contents[headerStart ..< headerEnd])

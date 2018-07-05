@@ -60,7 +60,7 @@ public struct LineCommentSyntax {
         } else {
             // Comment
 
-            // Make shure this isn’t documentation.
+            // Make sure this isn’t documentation.
             if let nextCharacter = string[index...].unicodeScalars.first {
 
                 if nextCharacter ∈ CharacterSet.whitespacesAndNewlines {
@@ -106,7 +106,7 @@ public struct LineCommentSyntax {
 
     internal func contentsOfFirstComment(in range: Range<String.ScalarView.Index>, of string: String) -> String? {
         guard let range = rangeOfFirstComment(in: range, of: string) else {
-            return nil
+            return nil // [_Exempt from Test Coverage_] Unreachable.
         }
 
         let comment = String(string[range])

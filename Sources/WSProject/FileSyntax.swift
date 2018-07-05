@@ -46,8 +46,8 @@ public struct FileSyntax {
             return blockSyntax.comment(contents: contents)
         } else if let lineSyntax = lineCommentSyntax {
             return lineSyntax.comment(contents: contents)
-        } else {
-            return nil
+        } else { // [_Exempt from Test Coverage_] Not currently reachable.
+            return nil  // [_Exempt from Test Coverage_]
         }
     }
 

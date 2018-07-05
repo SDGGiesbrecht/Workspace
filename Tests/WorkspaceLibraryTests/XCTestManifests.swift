@@ -26,6 +26,7 @@ extension APITests {
         ("testFailingDocumentationCoverage", testFailingDocumentationCoverage),
         ("testFailingTests", testFailingTests),
         ("testHelp", testHelp),
+        ("testHeaders", testHeaders),
         ("testInvalidResourceDirectory", testInvalidResourceDirectory),
         ("testInvalidTarget", testInvalidTarget),
         ("testLinuxMainGenerationCompatibility", testLinuxMainGenerationCompatibility),

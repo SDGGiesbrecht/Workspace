@@ -21,7 +21,7 @@ public enum FileType {
     // MARK: - Static Properties
 
     private static var unsupportedFileTypesEncountered: [String: URL] = [:]
-    public static func unsupportedTypesWarning(for project: PackageRepository, output: Command.Output?) throws -> StrictString? {
+    public static func unsupportedTypesWarning(for project: PackageRepository, output: Command.Output?) throws -> StrictString? { // [_Exempt from Test Coverage_] [_Workaround: Not testable yet._]
         // [_Workaround: “output” should not be optional, but is currently required for bridging with older code._]
 
         let expected = try project.configuration(output: output).repository.ignoredFileTypes

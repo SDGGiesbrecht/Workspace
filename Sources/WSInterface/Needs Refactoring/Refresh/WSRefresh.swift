@@ -53,13 +53,11 @@ func runRefresh(andExit shouldExit: Bool, arguments: DirectArguments, options: O
         try Workspace.Refresh.ReadMe.command.execute(withArguments: arguments, options: options, output: output)
     }
 
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
+    // Licence
+    // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
     if try options.project.configuration(output: output).licence.manage {
-
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        output.print("Updating licence...".formattedAsSectionHeader())
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-
-        try Licence.refreshLicence(output: output)
+        try Workspace.Refresh.Licence.command.execute(withArguments: arguments, options: options, output: output)
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

@@ -37,6 +37,7 @@ extension Workspace {
                 Scripts.command,
                 Git.command,
                 ReadMe.command,
+                Licence.command,
                 GitHub.command,
                 ContinuousIntegration.command,
                 Resources.command,

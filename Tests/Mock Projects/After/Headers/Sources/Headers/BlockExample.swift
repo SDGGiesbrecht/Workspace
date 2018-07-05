@@ -37,3 +37,10 @@ var example: Bool?
 /// ```swift
 /// var example: Bool?
 /// ```
+
+// #example(1, example)
+/// ...
+///
+/// ```swift
+/// var example: Bool?
+/// ```

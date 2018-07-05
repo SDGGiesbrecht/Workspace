@@ -31,3 +31,11 @@ var example: Bool?
 ///
 /// ```
 /// ```
+
+// #example(1, example)
+/**
+ ...
+
+ ```
+ ```
+ */

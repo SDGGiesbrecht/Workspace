@@ -46,4 +46,4 @@ var example: Bool?
 /// ```
 
 // Invalid, no related documentation:
-// @documenation(documentation)
+// #example(1, example)

@@ -172,7 +172,8 @@ class APITests : TestCase {
 
     func testHeaders() {
         PackageRepository(mock: "Headers").test(commands: [
-            ["refresh", "file‐headers"]
+            ["refresh", "file‐headers"],
+            ["refresh", "examples"]
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 

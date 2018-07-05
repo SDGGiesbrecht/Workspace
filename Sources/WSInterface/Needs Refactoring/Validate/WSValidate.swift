@@ -89,9 +89,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
 
         if try options.job.includes(job: .deployment)
             ∧ (try options.project.configuration(output: output).documentation.api.generate) {
-            try TravisCI.keepAlive {
-                try Workspace.Document.executeAsStep(outputDirectory: options.project.defaultDocumentationDirectory, options: options, validationStatus: &validationStatus, output: output)
-            }
+            try Workspace.Document.executeAsStep(outputDirectory: options.project.defaultDocumentationDirectory, options: options, validationStatus: &validationStatus, output: output)
         }
     #endif
 

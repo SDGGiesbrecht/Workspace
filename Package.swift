@@ -52,6 +52,7 @@ let package = Package(
             "WSProject",
             "WSValidation",
             "WSGit",
+            "WSLicence",
             "WSGitHub",
             "WSContinuousIntegration",
             "WSFileHeaders",
@@ -70,6 +71,12 @@ let package = Package(
 
         // Git management.
         .target(name: "WSGit", dependencies: [
+            "WSGeneralImports",
+            "WSProject"
+            ]),
+
+        // Licence management.
+        .target(name: "WSLicence", dependencies: [
             "WSGeneralImports",
             "WSProject"
             ]),

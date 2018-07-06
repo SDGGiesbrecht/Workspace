@@ -59,7 +59,6 @@ extension PackageRepository {
     private static var ignoreEntriesForJazzy: [String] {
         return [
             "undocumented.json",
-            // [_Workaround: Jazzy gzips undocumented.json. (jazzy --version 0.7.5)_]
             "*.tgz"
         ]
     }

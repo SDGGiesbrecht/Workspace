@@ -40,7 +40,7 @@ extension Workspace.Validate {
 
         static let command = Command(name: name, description: description, directArguments: [], options: [
             ContinuousIntegrationJob.option
-            ], execution: { (arguments: DirectArguments, options: Options, output: Command.Output) throws in // [_Exempt from Test Coverage_] [_Workaround: Not testable yet._]
+            ], execution: { (arguments: DirectArguments, options: Options, output: Command.Output) throws in
 
                 var validationStatus = ValidationStatus()
 

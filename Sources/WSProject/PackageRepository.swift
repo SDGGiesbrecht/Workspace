@@ -218,8 +218,7 @@ extension PackageRepository {
         }
     }
 
-    public func configuration(output: Command.Output?) throws -> WorkspaceConfiguration {
-        // [_Workaround: “output” should not be optional, but it is needed to bridge with older code._]
+    public func configuration(output: Command.Output) throws -> WorkspaceConfiguration {
         return try cached(in: &configurationCache.configuration) {
 
             // Provide the context in case resolution happens internally.
@@ -242,7 +241,7 @@ extension PackageRepository {
                     in: SDGSwift.Package(url: Metadata.packageURL),
                     at: Metadata.latestStableVersion,
                     context: try configurationContext(),
-                    reportProgress: { output?.print($0) })
+                    reportProgress: { output.print($0) })
             }
 
             // Force lazy options to resolve under the right context before it changes.

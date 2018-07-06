@@ -119,12 +119,13 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
+                let url = URL(string: "#installation", relativeTo: Metadata.packageURL)!
                 return [
                     StrictString("This validation used Workspace \(Metadata.latestStableVersion.string()), which is no longer up to date."),
                     "To update the version used by this project, run:",
                     StrictString("$ workspace refresh scripts •use‐version \(update.string)"),
                     "(This requires a full installation. See the following link.)",
-                    StrictString("\(DocumentationLink.installation.url.in(Underline.underlined))")
+                    StrictString("\(url.absoluteString.in(Underline.underlined))")
                     ].joinedAsLines()
             }
         }).resolved().formattedAsWarning().separated())

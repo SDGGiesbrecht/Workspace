@@ -40,7 +40,8 @@ extension Workspace {
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
-                        return StrictString("Workspace \(update.string()) is available.\nFor update instructions, see \(DocumentationLink.installation.url.in(Underline.underlined))")
+                        let url = URL(string: "#installation", relativeTo: Metadata.packageURL)!
+                        return StrictString("Workspace \(update.string()) is available.\nFor update instructions, see \(url.absoluteString.in(Underline.underlined))")
                     }
                 }).resolved())
             } else {

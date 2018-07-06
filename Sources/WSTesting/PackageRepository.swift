@@ -227,7 +227,7 @@ extension PackageRepository {
             let previousLineTokens = try configuration(output: output).testing.testCoverageExemptions.filter({ $0.scope == .previousLine }).map { StrictString($0.token) }
 
             var passing = true
-            for file in report.files where file.file.resolvingSymlinksInPath() ∉ irrelevantFiles ∧ ¬file.file.path.contains("/Needs Refactoring/") { // [_Workaround: “Needs Refactoring” is a temporary measure._]
+            for file in report.files where file.file.resolvingSymlinksInPath() ∉ irrelevantFiles {
                 CommandLineProofreadingReporter.default.reportParsing(file: file.file.path(relativeTo: location), to: output)
                 try autoreleasepool {
                     let sourceFile = try String(from: file.file)

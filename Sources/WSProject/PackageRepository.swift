@@ -303,7 +303,7 @@ extension PackageRepository {
                     ∧ ¬url.lastPathComponent.hasSuffix("~")
             }
             return files.sorted { $0.absoluteString.scalars.lexicographicallyPrecedes($1.absoluteString.scalars) } // So that output order is consistent.
-            // [_Workaround: Simple “sorted()” differs between operating systems. (Swift 4.1.2)_]
+            // [_Workaround: Simple “sorted” differs between operating systems. (Swift 4.1.2)_]
         }
     }
 

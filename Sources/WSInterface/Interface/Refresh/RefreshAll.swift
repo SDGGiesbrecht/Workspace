@@ -64,7 +64,7 @@ extension Workspace.Refresh {
                 ].joinedAsLines()
             }
 
-            output.print(success.formattedAsSuccess())
+            output.print(success.formattedAsSuccess().separated())
         })
 
         static func executeAsStep(withArguments arguments: DirectArguments, options: Options, output: Command.Output) throws {

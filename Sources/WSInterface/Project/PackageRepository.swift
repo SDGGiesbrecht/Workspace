@@ -49,12 +49,6 @@ extension PackageRepository {
         }
     }
 
-    // MARK: - Scripts
-
-    func refreshScripts(output: Command.Output) throws {
-        try Script.refreshRelevantScripts(for: self, output: output)
-    }
-
     // MARK: - Resources
 
     func resourceFiles(output: Command.Output) throws -> [URL] {

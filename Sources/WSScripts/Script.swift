@@ -18,7 +18,7 @@ import WSGeneralImports
 import WorkspaceProjectConfiguration
 import WSProject
 
-enum Script : Int, IterableEnumeration {
+internal enum Script : Int, IterableEnumeration {
 
     // MARK: - Cases
 
@@ -29,7 +29,7 @@ enum Script : Int, IterableEnumeration {
 
     // MARK: - Properties
 
-    var fileName: StrictString {
+    internal var fileName: StrictString {
         switch self {
         case .refreshMacOS:
             return refreshScriptMacOSFileName
@@ -53,7 +53,7 @@ enum Script : Int, IterableEnumeration {
             return "Validate Changes (Linux).sh"
         }
     }
-    private static let deprecatedFileNames: [StrictString] = {
+    internal static let deprecatedFileNames: [StrictString] = {
         var deprecated: Set<StrictString> = []
         for script in Script.cases {
             if let pre0_1_1 = script.deprecatedPre0_1_1FileName,
@@ -64,7 +64,7 @@ enum Script : Int, IterableEnumeration {
         return deprecated.sorted()
     }()
 
-    private var isRelevantOnCurrentDevice: Bool {
+    internal var isRelevantOnCurrentDevice: Bool {
         switch self {
         case .refreshMacOS, .validateMacOS:
             #if os(macOS)
@@ -81,7 +81,7 @@ enum Script : Int, IterableEnumeration {
         }
     }
 
-    private var isCheckedIn: Bool {
+    internal var isCheckedIn: Bool {
         switch self {
         case .refreshMacOS, .refreshLinux:
             return true
@@ -90,36 +90,17 @@ enum Script : Int, IterableEnumeration {
         }
     }
 
-    // MARK: - Refreshing
-
-    static func refreshRelevantScripts(for project: PackageRepository, output: Command.Output) throws {
-
-        for deprecated in Script.deprecatedFileNames {
-            project.delete(project.location.appendingPathComponent(String(deprecated)), output: output)
-        }
-
-        for script in cases where script.isRelevantOnCurrentDevice ∨ script.isCheckedIn {
-            try autoreleasepool {
-
-                var file = try TextFile(possiblyAt: project.location.appendingPathComponent(String(script.fileName)), executable: true)
-                file.contents.replaceSubrange(file.contents.startIndex ..< file.headerStart, with: String(script.shebang()))
-                file.body = String(try script.source(for: project, output: output))
-                try file.writeChanges(for: project, output: output)
-            }
-        }
-    }
-
     // MARK: - Source
 
-    func shebang() -> StrictString {
+    internal func shebang() -> StrictString {
         return "#!/bin/bash" + "\n\n"
     }
 
-    func stopOnFailure() -> StrictString {
+    private func stopOnFailure() -> StrictString {
         return "set \u{2D}e"
     }
 
-    func findRepository() -> StrictString {
+    private func findRepository() -> StrictString {
         // “REPOSITORY=\u{22}$(pwd)\u{22}”
         // Does not work for double‐click on macOS, or as a command on macOS or Linux from a different directory.
 
@@ -129,15 +110,15 @@ enum Script : Int, IterableEnumeration {
         return "REPOSITORY=\u{22}$( cd \u{22}$( dirname \u{22}${BASH_SOURCE[0]}\u{22} )\u{22} \u{26}& pwd )\u{22}"
     }
 
-    func enterRepository() -> StrictString {
+    private func enterRepository() -> StrictString {
         return "cd \u{22}${REPOSITORY}\u{22}"
     }
 
-    func openTerminal(andExecute script: StrictString) -> StrictString {
+    private func openTerminal(andExecute script: StrictString) -> StrictString {
         return "gnome\u{2D}terminal \u{2D}e \u{22}bash \u{2D}\u{2D}login \u{2D}c \u{5C}\u{22}source ~/.bashrc; ./" + script + "\u{5C} \u{5C}(macOS\u{5C}).command; exec bash\u{5C}\u{22}\u{22}"
     }
 
-    func getWorkspace(andExecute command: StrictString, for project: PackageRepository, output: Command.Output) throws -> [StrictString] {
+    private func getWorkspace(andExecute command: StrictString, for project: PackageRepository, output: Command.Output) throws -> [StrictString] {
         let command = command.appending(contentsOf: " $1 $2")
 
         if try project.isWorkspaceProject() {
@@ -175,7 +156,7 @@ enum Script : Int, IterableEnumeration {
         }
     }
 
-    func source(for project: PackageRepository, output: Command.Output) throws -> StrictString {
+    internal func source(for project: PackageRepository, output: Command.Output) throws -> StrictString {
         var lines: [StrictString] = [
             stopOnFailure(),
             findRepository(),

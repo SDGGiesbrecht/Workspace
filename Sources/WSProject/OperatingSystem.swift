@@ -20,7 +20,7 @@ extension OperatingSystem {
 
     // MARK: - Static Properties
 
-    static var current: OperatingSystem {
+    public static var current: OperatingSystem {
         #if os(macOS)
         return .macOS
         #elseif os(Linux)

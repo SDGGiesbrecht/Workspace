@@ -13,6 +13,8 @@
  */
 
 import WSGeneralImports
+import WSProject
+import WSScripts
 
 extension Workspace.Refresh {
 

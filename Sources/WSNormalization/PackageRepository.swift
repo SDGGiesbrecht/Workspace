@@ -16,11 +16,11 @@ import SDGCollections
 import WSGeneralImports
 import WSProject
 
-enum Normalization {
+extension PackageRepository {
 
-    static func normalize(project: PackageRepository, output: Command.Output) throws {
+    public func normalize(output: Command.Output) throws {
 
-        for url in try project.sourceFiles(output: output) {
+        for url in try sourceFiles(output: output) {
             try autoreleasepool {
 
                 if let syntax = FileType(url: url)?.syntax {
@@ -46,7 +46,7 @@ enum Normalization {
                     }
 
                     file.contents = normalizedLines.joinedAsLines()
-                    try file.writeChanges(for: project, output: output)
+                    try file.writeChanges(for: self, output: output)
                 }
             }
         }

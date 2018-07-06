@@ -51,14 +51,19 @@ let package = Package(
             "WorkspaceProjectConfiguration",
             "WSProject",
             "WSValidation",
+            "WSScripts",
             "WSGit",
+            "WSOpenSource",
             "WSLicence",
             "WSGitHub",
             "WSContinuousIntegration",
+            "WSResources",
             "WSFileHeaders",
             "WSExamples",
+            "WSNormalization",
             "WSXcode",
             "WSProofreading",
+            "WSTesting",
             "WSDocumentation",
             // [_Workaround: This module and its dependency list needs refactoring._]
             "WSSwift",
@@ -69,8 +74,20 @@ let package = Package(
             .productItem(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
             ]),
 
+        // Workspace scripts.
+        .target(name: "WSScripts", dependencies: [
+            "WSGeneralImports",
+            "WSProject"
+            ]),
+
         // Git management.
         .target(name: "WSGit", dependencies: [
+            "WSGeneralImports",
+            "WSProject"
+            ]),
+
+        // Open source management.
+        .target(name: "WSOpenSource", dependencies: [
             "WSGeneralImports",
             "WSProject"
             ]),
@@ -96,6 +113,12 @@ let package = Package(
             "WSDocumentation"
             ]),
 
+        // Resource management.
+        .target(name: "WSResources", dependencies: [
+            "WSGeneralImports",
+            "WSProject"
+            ]),
+
         // File header management.
         .target(name: "WSFileHeaders", dependencies: [
             "WSGeneralImports",
@@ -104,6 +127,12 @@ let package = Package(
 
         // Example management.
         .target(name: "WSExamples", dependencies: [
+            "WSGeneralImports",
+            "WSProject"
+            ]),
+
+        // Normalization.
+        .target(name: "WSNormalization", dependencies: [
             "WSGeneralImports",
             "WSProject"
             ]),
@@ -122,6 +151,12 @@ let package = Package(
             "WSProject",
             "WSThirdParty",
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
+            ]),
+
+        // Testing.
+        .target(name: "WSTesting", dependencies: [
+            "WSGeneralImports",
+            "WSProject"
             ]),
 
         // Documentation generation.

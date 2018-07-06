@@ -14,6 +14,8 @@
 
 import WSGeneralImports
 
+import WSNormalization
+
 extension Workspace {
     enum Normalize {
 
@@ -46,7 +48,7 @@ extension Workspace {
                 }).resolved().formattedAsSectionHeader())
             }
 
-            try Normalization.normalize(project: options.project, output: output)
+            try options.project.normalize(output: output)
         }
     }
 }

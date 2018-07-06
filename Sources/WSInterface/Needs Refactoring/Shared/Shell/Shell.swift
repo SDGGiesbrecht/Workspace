@@ -29,12 +29,12 @@ import SDGExternalProcess
             return result
         }
     } catch {
-        fatalError(message: [
+        fatalError([
             "Command failed:",
             "",
             arguments.joined(separator: " "),
             "",
             "See details above."
-            ])
+            ].joinedAsLines())
     }
 }

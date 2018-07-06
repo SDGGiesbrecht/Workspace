@@ -30,10 +30,10 @@ public struct Repository {
     // MARK: - Files
 
     static func unsupportedPathType() -> Never {
-        fatalError(message: [
+        fatalError([
             "Unsupported path type.",
             "This may indicate a bug in Workspace."
-            ])
+            ].joinedAsLines())
     }
 
     static func absolute<P : Path>(_ path: P) -> AbsolutePath {
@@ -117,11 +117,11 @@ public struct Repository {
 
     static func nameOfLinkedRepository(atURL url: String) -> String {
         guard let urlObject = URL(string: url) else {
-            fatalError(message: [
+            fatalError([
                 "Invalid URL:",
                 "",
                 url
-                ])
+                ].joinedAsLines())
         }
 
         let name = urlObject.lastPathComponent

@@ -1,5 +1,5 @@
 /*
- Output.swift
+ WSOutput.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -15,19 +15,14 @@
 import WSGeneralImports
 import WSProject
 
-func fatalError(message: [String]) -> Never {
-    fail(message: message)
+func fatalError(message: [String], project: PackageRepository, output: Command.Output) -> Never {
+    fail(message: message, project: project, output: output)
 }
 
 // MARK: - Generic Exiting
 
-func succeed(message: [String]) {
-    outputWarnings()
-    print(message, in: .green, spaced: true)
-}
-
-func fail(message: [String]) -> Never {
-    outputWarnings()
+func fail(message: [String], project: PackageRepository, output: Command.Output) -> Never {
+    try! output.listWarnings(for: project)
     print(message, in: .red, spaced: true)
     exit(ExitCode.failed)
 }
@@ -38,17 +33,6 @@ private var warnings: [[String]] = []
 func printWarning(_ message: [String]) {
     warnings.append(message)
 
-}
-private func outputWarnings() {
-
-    if let optional = try? FileType.unsupportedTypesWarning(for: Repository.packageRepository, output: nil),
-        let fileTypeWarning = optional {
-        printWarning([String(fileTypeWarning)])
-    }
-
-    for warning in warnings {
-        print(warning, in: .yellow, spaced: true)
-    }
 }
 
 func print(_ message: [String], in colour: OutputColour?, spaced: Bool = false) {

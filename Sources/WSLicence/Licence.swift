@@ -19,7 +19,7 @@ extension Licence {
 
     // MARK: - Properties
 
-    var text: StrictString {
+    internal var text: StrictString {
         var source: String
         switch self {
         case .apache2_0:

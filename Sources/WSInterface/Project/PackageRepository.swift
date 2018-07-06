@@ -55,12 +55,6 @@ extension PackageRepository {
         try Script.refreshRelevantScripts(for: self, output: output)
     }
 
-    // MARK: - Read‐Me
-
-    func refreshReadMe(output: Command.Output) throws {
-        try ReadMe.refreshReadMe(for: self, output: output)
-    }
-
     // MARK: - Resources
 
     func resourceFiles(output: Command.Output) throws -> [URL] {
@@ -112,43 +106,5 @@ extension PackageRepository {
                 try target.refresh(resources: resources, from: self, output: output)
             }
         }
-    }
-
-    // MARK: - Related Projects
-
-    public static func relatedPackage(_ package: SDGSwift.Package, output: Command.Output) throws -> PackageRepository {
-        let directoryName = StrictString(package.url.lastPathComponent)
-        let cache = FileManager.default.url(in: .cache, at: "Related Projects/\(directoryName)")
-
-        let commit = try package.latestCommitIdentifier()
-
-        let repositoryLocation = cache.appendingPathComponent(commit)
-
-        let repository: PackageRepository
-        if (try? repositoryLocation.checkResourceIsReachable()) == true {
-            repository = PackageRepository(at: cache)
-        } else {
-            try? FileManager.default.removeItem(at: cache) // Remove older commits.
-            do {
-
-                output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishCanada:
-                        return StrictString("Fetching “\(package.url.lastPathComponent)”...")
-                    }
-                }).resolved())
-
-                repository = try PackageRepository(cloning: package, to: repositoryLocation, at: .development, shallow: true)
-            } catch {
-                // Clean up if there is a failure.
-                try? FileManager.default.removeItem(at: cache)
-
-                throw error
-            }
-        }
-
-        // [_Warning: Verify that this deletes._]
-        try? FileManager.default.removeItem(at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent(".Workspace"))
-        return repository
     }
 }

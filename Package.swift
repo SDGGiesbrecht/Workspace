@@ -89,7 +89,8 @@ let package = Package(
         // Open source management.
         .target(name: "WSOpenSource", dependencies: [
             "WSGeneralImports",
-            "WSProject"
+            "WSProject",
+            "WSExamples"
             ]),
 
         // Licence management.

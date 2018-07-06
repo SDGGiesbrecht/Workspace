@@ -27,6 +27,7 @@ Documentation/🇮🇱עב Read Me.md
 Documentation/🇮🇱עב Related Projects.md
 Documentation/🇺🇸EN Read Me.md
 Documentation/🇺🇸EN Related Projects.md
+LICENSE.md
 Package.swift
 README.md
 Sources/Library/Resources.swift

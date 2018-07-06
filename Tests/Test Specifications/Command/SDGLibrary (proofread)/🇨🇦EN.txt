@@ -26,6 +26,7 @@ Documentation/🇮🇱עב Read Me.md
 Documentation/🇮🇱עב Related Projects.md
 Documentation/🇺🇸EN Read Me.md
 Documentation/🇺🇸EN Related Projects.md
+LICENSE.md
 Other/GeneratedData.json
 Package.swift
 README.md

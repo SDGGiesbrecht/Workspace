@@ -105,44 +105,4 @@ public struct Repository {
 
         try? fileManager.createDirectory(atPath: absolute(path).directory, withIntermediateDirectories: true, attributes: nil)
     }
-
-    // MARK: - Linked Repositories
-
-    static func linkedRepository(from url: URL) -> PackageRepository {
-        let name = Repository.nameOfLinkedRepository(atURL: url.absoluteString)
-        let repositoryLocation = URL(fileURLWithPath: linkedRepository(named: name).string)
-        let repository = PackageRepository(at: repositoryLocation)
-        return repository
-    }
-
-    static func nameOfLinkedRepository(atURL url: String) -> String {
-        guard let urlObject = URL(string: url) else {
-            fatalError([
-                "Invalid URL:",
-                "",
-                url
-                ].joinedAsLines())
-        }
-
-        let name = urlObject.lastPathComponent
-
-        let repository = Workspace.linkedRepositories.subfolderOrFile(name)
-
-        if ¬fileManager.fileExists(atPath: absolute(repository).string) {
-            prepareForWrite(path: repository)
-            try? fileManager.do(in: URL(fileURLWithPath: Workspace.linkedRepositories.string)) {
-                requireBash(["git", "clone", url])
-            }
-        }
-
-        try? fileManager.do(in: URL(fileURLWithPath: repository.string)) {
-            requireBash(["git", "pull"], silent: true)
-        }
-
-        return name
-    }
-
-    static func linkedRepository(named name: String) -> AbsolutePath {
-        return Workspace.linkedRepositories.subfolderOrFile(name)
-    }
 }

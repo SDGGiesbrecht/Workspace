@@ -113,4 +113,43 @@ extension PackageRepository {
             }
         }
     }
+
+    // MARK: - Related Projects
+
+    public static func relatedPackage(_ package: SDGSwift.Package, output: Command.Output) throws -> PackageRepository {
+        var directoryName = StrictString(package.url.absoluteString)
+        directoryName.scalars.replaceMatches(for: ConditionalPattern({ $0 ∉ CharacterSet.alphanumerics }), with: "_".scalars)
+        let cache = FileManager.default.url(in: .cache, at: "Related Projects/\(directoryName)")
+
+        let commit = try package.latestCommitIdentifier()
+
+        let repositoryLocation = cache.appendingPathComponent(commit)
+
+        let repository: PackageRepository
+        if (try? repositoryLocation.checkResourceIsReachable()) == true {
+            repository = PackageRepository(at: cache)
+        } else {
+            try? FileManager.default.removeItem(at: cache) // Remove older commits.
+            do {
+
+                output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return StrictString("Fetching “\(package.url.lastPathComponent)”...")
+                    }
+                }).resolved())
+
+                repository = try PackageRepository(cloning: package, to: repositoryLocation, at: .development, shallow: true)
+            } catch {
+                // Clean up if there is a failure.
+                try? FileManager.default.removeItem(at: cache)
+
+                throw error
+            }
+        }
+
+        // [_Warning: Verify that this deletes._]
+        try? FileManager.default.removeItem(at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent(".Workspace"))
+        return repository
+    }
 }

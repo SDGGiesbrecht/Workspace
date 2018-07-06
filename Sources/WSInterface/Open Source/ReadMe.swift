@@ -72,7 +72,7 @@ enum ReadMe {
             ]
 
             for entry in relatedProjects {
-                autoreleasepool {
+                try autoreleasepool {
                     switch entry {
                     case .heading(text: let translations):
                         if let text = translations[localization] {
@@ -82,7 +82,7 @@ enum ReadMe {
                             ]
                         }
                     case .project(url: let url):
-                        let package = Repository.linkedRepository(from: url)
+                        let package = try PackageRepository.relatedPackage(Package(url: url), output: output)
                         let name: StrictString
                         if let packageName = try? package.projectName() {
                             name = packageName

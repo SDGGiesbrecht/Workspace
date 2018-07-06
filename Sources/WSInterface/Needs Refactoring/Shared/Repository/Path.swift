@@ -14,7 +14,7 @@
 
 import WSGeneralImports
 
-protocol Path : CustomStringConvertible, Equatable, ExpressibleByStringLiteral {
+protocol Path {
 
     // MARK: - Initialization
 
@@ -43,17 +43,5 @@ extension Path {
 
     func subfolderOrFile(_ path: String) -> Self {
         return Self(string + "/" + path)
-    }
-
-    // MARK: - CustomStringConvertible
-
-    var description: String {
-        return string
-    }
-
-    // MARK: - Equatable
-
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.string == rhs.string
     }
 }

@@ -18,6 +18,7 @@ import WSGeneralImports
 
 import WSProject
 import WSValidation
+import WSTesting
 import WSContinuousIntegration
 
 extension Workspace.Validate {
@@ -40,7 +41,7 @@ extension Workspace.Validate {
 
         static let command = Command(name: name, description: description, directArguments: [], options: [ContinuousIntegrationJob.option], execution: { (_, options: Options, output: Command.Output) throws in
 
-            try validate(job: options.job, against: Tests.buildJobs, for: options.project, output: output)
+            try validate(job: options.job, against: ContinuousIntegrationJob.buildJobs, for: options.project, output: output)
 
             #if !os(Linux)
             if try options.project.configuration(output: output).xcode.manage {
@@ -76,10 +77,10 @@ extension Workspace.Validate {
         static func executeAsStep(options: Options, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
             for job in ContinuousIntegrationJob.cases
-                where try options.job.includes(job: job) ∧ (try Build.job(job, isRelevantTo: options.project, andAvailableJobs: Tests.buildJobs, output: output)) {
+                where try options.job.includes(job: job) ∧ (try Build.job(job, isRelevantTo: options.project, andAvailableJobs: ContinuousIntegrationJob.buildJobs, output: output)) {
                     try autoreleasepool {
 
-                        try Tests.build(options.project, for: job, validationStatus: &validationStatus, output: output)
+                        try options.project.build(for: job, validationStatus: &validationStatus, output: output)
                     }
             }
         }

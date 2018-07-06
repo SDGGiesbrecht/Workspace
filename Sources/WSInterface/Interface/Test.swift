@@ -45,7 +45,7 @@ extension Workspace {
             }
             #endif
 
-            try Validate.Build.validate(job: options.job, against: Tests.testJobs, for: options.project, output: output)
+            try Validate.Build.validate(job: options.job, against: ContinuousIntegrationJob.testJobs, for: options.project, output: output)
 
             var validationStatus = ValidationStatus()
 
@@ -57,7 +57,7 @@ extension Workspace {
         static func executeAsStep(options: Options, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
             for job in ContinuousIntegrationJob.cases
-                where try options.job.includes(job: job) ∧ (try Validate.Build.job(job, isRelevantTo: options.project, andAvailableJobs: Tests.testJobs, output: output)) {
+                where try options.job.includes(job: job) ∧ (try Validate.Build.job(job, isRelevantTo: options.project, andAvailableJobs: ContinuousIntegrationJob.testJobs, output: output)) {
                     try autoreleasepool {
 
                         if  try options.project.configuration(output: output).continuousIntegration.skipSimulatorOutsideContinuousIntegration,
@@ -73,7 +73,7 @@ extension Workspace {
                             return // and continue loop.
                         }
 
-                        try Tests.test(options.project, on: job, validationStatus: &validationStatus, output: output)
+                        try options.project.test(on: job, validationStatus: &validationStatus, output: output)
                     }
             }
         }

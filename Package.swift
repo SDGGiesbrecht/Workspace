@@ -157,7 +157,12 @@ let package = Package(
         // Testing.
         .target(name: "WSTesting", dependencies: [
             "WSGeneralImports",
-            "WSProject"
+            "WSProject",
+            "WSValidation",
+            "WSContinuousIntegration",
+            "WSProofreading",
+            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
+                .productItem(name: "SDGXcode", package: "SDGSwift")
             ]),
 
         // Documentation generation.

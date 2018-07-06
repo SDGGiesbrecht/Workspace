@@ -84,7 +84,7 @@ extension Workspace.Validate {
             #else
             if try options.project.configuration(output: output).testing.enforceCoverage {
                 if let job = options.job,
-                    job ∉ Tests.coverageJobs {
+                    job ∉ ContinuousIntegrationJob.coverageJobs {
                     // Coverage impossible to check.
                     try Workspace.Test.executeAsStep(options: options, validationStatus: &validationStatus, output: output)
                 } else {

@@ -117,7 +117,7 @@ extension PackageRepository {
     // MARK: - Related Projects
 
     public static func relatedPackage(_ package: SDGSwift.Package, output: Command.Output) throws -> PackageRepository {
-        var directoryName = StrictString(package.url.lastPathComponent)
+        let directoryName = StrictString(package.url.lastPathComponent)
         let cache = FileManager.default.url(in: .cache, at: "Related Projects/\(directoryName)")
 
         let commit = try package.latestCommitIdentifier()

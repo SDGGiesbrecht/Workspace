@@ -111,7 +111,7 @@ extension Workspace.Refresh {
             try Workspace.Refresh.Resources.command.execute(withArguments: arguments, options: options, output: output)
 
             // File Headers
-            if try Repository.packageRepository.configuration(output: output).fileHeaders.manage {
+            if try options.project.configuration(output: output).fileHeaders.manage {
                 try Workspace.Refresh.FileHeaders.command.execute(withArguments: arguments, options: options, output: output)
             }
 

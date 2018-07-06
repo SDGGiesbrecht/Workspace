@@ -25,9 +25,6 @@ struct RelativePath : ExpressibleByStringLiteral, Path {
     // MARK: - Properties
 
     var string: String
-    var url: URL {
-        return Repository.absolute(self).url
-    }
 
     // MARK: - ExpressibleByStringLiteral
 

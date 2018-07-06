@@ -394,7 +394,7 @@ extension PackageRepository {
 
         let repository: PackageRepository
         if (try? repositoryLocation.checkResourceIsReachable()) == true {
-            repository = PackageRepository(at: cache)
+            repository = PackageRepository(at: repositoryLocation)
         } else {
             try? FileManager.default.removeItem(at: cache) // Remove older commits.
             do {

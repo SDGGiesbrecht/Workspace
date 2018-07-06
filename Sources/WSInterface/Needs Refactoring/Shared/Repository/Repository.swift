@@ -16,10 +16,6 @@ import WSGeneralImports
 
 public struct Repository {
 
-    // MARK: - Bridging
-
-    public static let packageRepository = PackageRepository(at: URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
-
     // MARK: - Constants
 
     private static let fileManager = FileManager.default

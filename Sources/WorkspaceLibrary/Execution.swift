@@ -23,9 +23,6 @@ public func run() { // [_Exempt from Test Coverage_]
 
     DispatchQueue.global(qos: .utility).sync {
 
-        // [_Workaround: Make sure the correct repository gets loaded before moving into any other directory._]
-        _ = Repository.packageRepository
-
         ProcessInfo.applicationIdentifier = "ca.solideogloria.Workspace"
         ProcessInfo.version = Metadata.thisVersion
         ProcessInfo.packageURL = Metadata.packageURL

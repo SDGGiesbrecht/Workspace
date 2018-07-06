@@ -59,7 +59,7 @@ extension Workspace {
                     }
                 }))
             }
-            try validationStatus.reportOutcome(projectName: try options.project.projectName(), output: output)
+            try validationStatus.reportOutcome(project: options.project, output: output)
 
             #endif
         })

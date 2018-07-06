@@ -130,5 +130,5 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
         }).resolved().formattedAsWarning().separated())
     }
 
-    try validationStatus.reportOutcome(projectName: try options.project.projectName(), output: output)
+    try validationStatus.reportOutcome(project: options.project, output: output)
 }

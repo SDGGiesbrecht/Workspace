@@ -17,22 +17,14 @@ import WSProject
 
 extension Command.Output {
 
-    internal func succeed(message: StrictString, project: PackageRepository) throws {
+    public func succeed(message: StrictString, project: PackageRepository) throws {
         try listWarnings(for: project)
         print(message.formattedAsSuccess().separated())
     }
 
-    // [_Warning: Should be private._]
-    internal func listWarnings(for project: PackageRepository) throws {
-
+    public func listWarnings(for project: PackageRepository) throws {
         if let unsupportedFiles = try FileType.unsupportedTypesWarning(for: project, output: self) {
-            printWarning([String(unsupportedFiles)])
+            print(unsupportedFiles.formattedAsWarning().separated())
         }
-        /*
-        for warning in warnings {
-            print(warning, in: .yellow, spaced: true)
-        }*/
     }
-
-
 }

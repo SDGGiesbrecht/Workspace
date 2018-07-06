@@ -144,7 +144,8 @@ let package = Package(
 
         // Utilities for validation reports.
         .target(name: "WSValidation", dependencies: [
-            "WSGeneralImports"
+            "WSGeneralImports",
+            "WSProject"
             ]),
 
         // Utilities related to Swift syntax.

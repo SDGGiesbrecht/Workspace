@@ -52,7 +52,7 @@ extension Workspace.Validate {
 
             try executeAsStep(options: options, validationStatus: &validationStatus, output: output)
 
-            try validationStatus.reportOutcome(projectName: try options.project.projectName(), output: output)
+            try validationStatus.reportOutcome(project: options.project, output: output)
         })
 
         static func job(_ job: ContinuousIntegrationJob, isRelevantTo project: PackageRepository, andAvailableJobs validJobs: Set<ContinuousIntegrationJob>, output: Command.Output) throws -> Bool {

@@ -64,14 +64,7 @@ let package = Package(
             "WSXcode",
             "WSProofreading",
             "WSTesting",
-            "WSDocumentation",
-            // [_Workaround: This module and its dependency list needs refactoring._]
-            "WSSwift",
-            "WSThirdParty",
-            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
-            .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-            .productItem(name: "SDGXcode", package: "SDGSwift"),
-            .productItem(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
+            "WSDocumentation"
             ]),
 
         // Workspace scripts.
@@ -118,7 +111,9 @@ let package = Package(
         .target(name: "WSResources", dependencies: [
             "WSGeneralImports",
             "WSProject",
+            "WSSwift",
             .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
+            .productItem(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
             ]),
 
         // File header management.
@@ -174,6 +169,7 @@ let package = Package(
             "WSThirdParty",
             "WSXcode",
             "WSSwift",
+            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .productItem(name: "SDGXcode", package: "SDGSwift")
             ]),
 
@@ -202,7 +198,8 @@ let package = Package(
             "WorkspaceProjectConfiguration",
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-            .productItem(name: "SDGSwiftConfigurationLoading", package: "SDGSwift")
+            .productItem(name: "SDGSwiftConfigurationLoading", package: "SDGSwift"),
+            .productItem(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
             ]),
 
         // The API used in configuration files.

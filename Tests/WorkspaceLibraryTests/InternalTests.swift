@@ -26,17 +26,17 @@ class InternalTests : TestCase {
             "Package.swift",
             "Sources",
             "Tests",
-            "Package.pins",
             "Package.resolved",
 
             // Workspace
             "Workspace.swift",
             String(Script.refreshMacOS.fileName),
             String(Script.refreshLinux.fileName),
+            "Documentation",
+            "Resources"
 
             // Git
             ".gitignore",
-            ".gitattributes",
 
             // GitHub
             "README.md",
@@ -44,12 +44,7 @@ class InternalTests : TestCase {
             ".github",
 
             // Travis CI
-            ".travis.yml",
-
-            // Workspace Project
-            "Related Projects.md",
-            "Documentation",
-            "Resources"
+            ".travis.yml"
         ]
 
         do {

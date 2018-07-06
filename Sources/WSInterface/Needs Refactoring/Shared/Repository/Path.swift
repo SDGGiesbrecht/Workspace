@@ -27,18 +27,6 @@ protocol Path {
 
 extension Path {
 
-    // MARK: - Properties
-
-    var filename: String {
-        let url = URL(fileURLWithPath: string)
-        return url.lastPathComponent
-    }
-
-    var directory: String {
-        let url = URL(fileURLWithPath: string)
-        return url.deletingLastPathComponent().path
-    }
-
     // MARK: - Usage
 
     func subfolderOrFile(_ path: String) -> Self {

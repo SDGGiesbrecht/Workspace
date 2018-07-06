@@ -14,21 +14,9 @@
 
 import Foundation
 
-struct RelativePath : ExpressibleByStringLiteral, Path {
-
-    // MARK: - Initialization
-
-    init(_ string: String) {
-        self.string = string
-    }
+struct RelativePath {
 
     // MARK: - Properties
 
     var string: String
-
-    // MARK: - ExpressibleByStringLiteral
-
-    init(stringLiteral value: StringLiteralType) {
-        self.init(value)
-    }
 }

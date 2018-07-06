@@ -14,7 +14,7 @@
 
 import Foundation
 
-struct AbsolutePath : ExpressibleByStringLiteral, Path {
+struct AbsolutePath : Path {
 
     // MARK: - Initialization
 
@@ -25,14 +25,4 @@ struct AbsolutePath : ExpressibleByStringLiteral, Path {
     // MARK: - Properties
 
     var string: String
-
-    var url: URL {
-        return URL(fileURLWithPath: string)
-    }
-
-    // MARK: - ExpressibleByStringLiteral
-
-    init(stringLiteral value: StringLiteralType) {
-        self.init(value)
-    }
 }

@@ -25,25 +25,25 @@ import PackageModel
 
 extension PackageRepository {
 
-    struct Target : Hashable {
+    internal struct Target : Hashable {
 
         // MARK: - Initialization
 
-        init(packageDescriptionTarget: PackageDescription4.Target, package: PackageRepository) {
+        internal init(packageDescriptionTarget: PackageDescription4.Target, package: PackageRepository) {
             self.packageDescriptionTarget = packageDescriptionTarget
             self.package = package
         }
 
         // MARK: - Properties
 
-        let packageDescriptionTarget: PackageDescription4.Target
+        private let packageDescriptionTarget: PackageDescription4.Target
         private let package: PackageRepository
 
-        var name: String {
+        internal var name: String {
             return packageDescriptionTarget.name
         }
 
-        var sourceDirectory: URL {
+        private var sourceDirectory: URL {
             if let path = packageDescriptionTarget.path {
                 return URL(fileURLWithPath: path)
             } else {
@@ -59,7 +59,7 @@ extension PackageRepository {
 
         // MARK: - Resources
 
-        func refresh(resources: [URL], from package: PackageRepository, output: Command.Output) throws {
+        internal func refresh(resources: [URL], from package: PackageRepository, output: Command.Output) throws {
 
             var resourceFile = try TextFile(possiblyAt: sourceDirectory.appendingPathComponent("Resources.swift"))
             resourceFile.body = String(try generateSource(for: resources, of: package))
@@ -183,13 +183,13 @@ extension PackageRepository {
 
         // MARK: - Equatable
 
-        static func == (lhs: PackageRepository.Target, rhs: PackageRepository.Target) -> Bool {
+        internal static func == (lhs: PackageRepository.Target, rhs: PackageRepository.Target) -> Bool {
             return (lhs.name, lhs.sourceDirectory) == (rhs.name, rhs.sourceDirectory)
         }
 
         // MARK: - Hashable
 
-        var hashValue: Int {
+        internal var hashValue: Int {
             return name.hashValue
         }
     }

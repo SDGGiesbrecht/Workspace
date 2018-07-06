@@ -117,7 +117,8 @@ let package = Package(
         // Resource management.
         .target(name: "WSResources", dependencies: [
             "WSGeneralImports",
-            "WSProject"
+            "WSProject",
+            .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
             ]),
 
         // File header management.
@@ -162,7 +163,7 @@ let package = Package(
             "WSContinuousIntegration",
             "WSProofreading",
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
-                .productItem(name: "SDGXcode", package: "SDGSwift")
+            .productItem(name: "SDGXcode", package: "SDGSwift")
             ]),
 
         // Documentation generation.

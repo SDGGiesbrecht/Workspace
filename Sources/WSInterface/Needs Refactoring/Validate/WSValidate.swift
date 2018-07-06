@@ -29,13 +29,7 @@ func runValidate(andExit shouldExit: Bool, arguments: DirectArguments, options: 
     var validationStatus = ValidationStatus()
 
     if ¬ProcessInfo.isInContinuousIntegration {
-
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-        // Refreshing
-        // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••
-
-        try runRefresh(andExit: false, arguments: arguments, options: options, output: output)
-
+        try Workspace.Refresh.All.executeAsStep(withArguments: arguments, options: options, output: output)
     }
 
     // ••••••• ••••••• ••••••• ••••••• ••••••• ••••••• •••••••

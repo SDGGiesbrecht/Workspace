@@ -17,6 +17,8 @@ import WSGeneralTestImports
 
 import SDGExternalProcess
 
+import WSProject
+
 class APITests : TestCase {
 
     static var triggeredVersionChecks: Void?
@@ -26,6 +28,7 @@ class APITests : TestCase {
         cached(in: &APITests.triggeredVersionChecks) {
             triggerVersionChecks()
         }
+        PackageRepository.emptyRelatedProjectCache() // Make sure starting state is consistent.
     }
 
     func testBadStyle() {

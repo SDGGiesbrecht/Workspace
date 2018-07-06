@@ -384,9 +384,11 @@ extension PackageRepository {
 
     // MARK: - Related Projects
 
+    private static let relatedProjectCache = FileManager.default.url(in: .cache, at: "Related Projects")
+
     public static func relatedPackage(_ package: SDGSwift.Package, output: Command.Output) throws -> PackageRepository {
         let directoryName = StrictString(package.url.lastPathComponent)
-        let cache = FileManager.default.url(in: .cache, at: "Related Projects/\(directoryName)")
+        let cache = relatedProjectCache.appendingPathComponent(String(directoryName))
 
         let commit = try package.latestCommitIdentifier()
 
@@ -418,5 +420,9 @@ extension PackageRepository {
         // Remove deprecated cache.
         try? FileManager.default.removeItem(at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent(".Workspace"))
         return repository
+    }
+
+    public static func emptyRelatedProjectCache() {
+        try? FileManager.default.removeItem(at: relatedProjectCache)
     }
 }

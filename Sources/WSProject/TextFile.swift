@@ -29,7 +29,7 @@ public struct TextFile {
         let contents = try String(from: location)
         let executable: Bool
         #if os(Linux)
-            // [_Workaround: Linux has no implementation for resourcesValues(forKeys:) (Swift 4.0.2)_]
+            // [_Workaround: Linux has no implementation for resourcesValues(forKeys:) (Swift 4.1.2)_]
             executable = FileManager.default.isExecutableFile(atPath: location.path)
         #else
             executable = try location.resourceValues(forKeys: [.isExecutableKey]).isExecutable == true
@@ -53,7 +53,7 @@ public struct TextFile {
         }
     }
 
-    public init(mockFileWithContents contents: String, fileType: FileType) { // [_Exempt from Test Coverage_] [_Workaround: Until “licence” is testable._]
+    public init(mockFileWithContents contents: String, fileType: FileType) {
         let temporary = FileManager.default.url(in: .temporary, at: "Mock File")
         self.init(location: temporary, fileType: fileType, executable: false, contents: contents, isNew: true)
     }
@@ -145,7 +145,7 @@ public struct TextFile {
     }
 
     public var body: String {
-        get { // [_Exempt from Test Coverage_] [_Workaround: Until licence is testable._]
+        get {
             return String(contents[headerEnd...])
         }
         set {

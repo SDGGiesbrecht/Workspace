@@ -31,6 +31,15 @@ class APITests : TestCase {
         PackageRepository.emptyRelatedProjectCache() // Make sure starting state is consistent.
     }
 
+    func testAllTasks() {
+        let configuration = WorkspaceConfiguration()
+        configuration.optIntoAllTasks()
+        PackageRepository(mock: "AllTasks").test(commands: [
+            ["Refresh"],
+            ["validate"]
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
     func testBadStyle() {
         PackageRepository(mock: "BadStyle").test(commands: [
             ["proofread"],
@@ -98,7 +107,6 @@ class APITests : TestCase {
 
     func testDefaults() {
         PackageRepository(mock: "Default").test(commands: [
-            // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
             ["refresh", "resources"],
             ["refresh", "examples"],
@@ -112,7 +120,10 @@ class APITests : TestCase {
             ["validate", "documentation‐coverage"],
 
             ["proofread", "•xcode"],
-            ["validate", "build", "•job", "macos‐swift‐package‐manager"]
+            ["validate", "build", "•job", "macos‐swift‐package‐manager"],
+
+            ["refresh"],
+            ["validate"]
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
@@ -361,7 +372,6 @@ class APITests : TestCase {
         configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
 
         var commands: [[StrictString]] = [
-            // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
             ["refresh", "git"],
             ["refresh", "read‐me"],
@@ -438,7 +448,6 @@ class APITests : TestCase {
         configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
 
         var commands: [[StrictString]] = [
-            // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
             ["refresh", "git"],
             ["refresh", "read‐me"],

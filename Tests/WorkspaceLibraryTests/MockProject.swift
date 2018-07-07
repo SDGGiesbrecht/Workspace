@@ -180,12 +180,12 @@ extension PackageRepository {
                                 LiteralPattern("\n\n".scalars)
                                 ]), with: "[$ swiftlint...]\n\n".scalars)
 
-                            if command == ["validate"] {
+                            if command == ["validate"] ∨ command.hasPrefix(["validate", "•job"]) {
                                 // Refreshment occurs elswhere in continuous integration.
                                 output.scalars.replaceMatches(for: CompositePattern([
                                     LiteralPattern("\n".scalars),
                                     any,
-                                    LiteralPattern("\n\nValidating “".scalars)
+                                    LiteralPattern("\nValidating “".scalars)
                                     ]), with: "\n[Refreshing ...]\n\nValidating “".scalars)
                             }
                         }

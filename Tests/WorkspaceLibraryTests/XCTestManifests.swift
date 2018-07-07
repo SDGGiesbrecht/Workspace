@@ -16,6 +16,7 @@ import XCTest
 
 extension APITests {
     static let __allTests = [
+        ("testAllDisabled", testAllDisabled),
         ("testAllTasks", testAllTasks),
         ("testBadStyle", testBadStyle),
         ("testCheckForUpdates", testCheckForUpdates),

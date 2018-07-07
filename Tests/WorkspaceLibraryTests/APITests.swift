@@ -31,6 +31,17 @@ class APITests : TestCase {
         PackageRepository.emptyRelatedProjectCache() // Make sure starting state is consistent.
     }
 
+    func testAllDisabled() {
+        #if !os(Linux) // Significant differences. Each is covered individually elswhere.
+        let configuration = WorkspaceConfiguration()
+        configuration.testing.enforceCoverage = false
+        PackageRepository(mock: "AllDisabled").test(commands: [
+            ["Refresh"],
+            ["validate"]
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        #endif
+    }
+
     func testAllTasks() {
         #if !os(Linux) // Significant differences. Each is covered individually elswhere.
         let configuration = WorkspaceConfiguration()

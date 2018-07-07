@@ -56,7 +56,7 @@ extension Workspace.Validate {
         static func executeAsStep(validationStatus: inout ValidationStatus, arguments: DirectArguments, options: Options, output: Command.Output) throws {
 
             if ¬ProcessInfo.isInContinuousIntegration {
-                try Workspace.Refresh.All.executeAsStep(withArguments: arguments, options: options, output: output)
+                try Workspace.Refresh.All.executeAsStep(withArguments: arguments, options: options, output: output) // [_Exempt from Test Coverage_]
             }
 
             let projectName = StrictString(try options.project.projectName())

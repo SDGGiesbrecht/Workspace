@@ -129,7 +129,8 @@ class APITests : TestCase {
         #if !os(Linux) // Significant differences. Each is covered individually elswhere.
         commands.append(contentsOf: [
             ["refresh"],
-            ["validate"]
+            ["validate"],
+            ["validate", "•job", "macos‐swift‐package‐manager"]
             ])
         #endif
         PackageRepository(mock: "Default").test(commands: commands, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)

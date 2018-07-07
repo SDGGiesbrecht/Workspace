@@ -1,0 +1,41 @@
+$ workspace validate •job macos‐swift‐package‐manager •no‐colour
+
+Refreshing “Default”...
+
+
+Refreshing scripts...
+
+
+Refreshing resources...
+
+
+Refreshing examples...
+
+
+Refreshing inherited documentation...
+
+
+Normalizing files...
+
+
+Validating “Default”...
+
+
+Checking build for macOS with the Swift Package Manager... (§1)
+
+[$ swift...]
+
+Testing on macOS with the Swift Package Manager... (§2)
+
+[$ swift...]
+
+Summary
+
+
+✓ There are no compiler warnings for macOS with the Swift Package Manager.
+✓ Tests pass on macOS with the Swift Package Manager.
+
+
+“Default” passes validation.
+
+0

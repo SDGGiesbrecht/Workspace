@@ -78,8 +78,13 @@ class APITests : TestCase {
         let configuration = WorkspaceConfiguration()
         configuration.provideWorkflowScripts = false
         configuration.continuousIntegration.manage = true
+        configuration.licence.manage = true
+        configuration.licence.licence = .mit
+        configuration.fileHeaders.manage = true
         PackageRepository(mock: "ContinuousIntegrationWithoutScripts").test(commands: [
-            ["refresh", "continuous‐integration"]
+            ["refresh", "continuous‐integration"],
+            ["refresh", "licence"],
+            ["refresh", "file‐headers"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 

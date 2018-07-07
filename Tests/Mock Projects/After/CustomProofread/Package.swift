@@ -1,5 +1,15 @@
 // swift-tools-version:4.0
-// The swift-tools-version declares the minimum version of Swift required to build this package.
+
+/*
+ Package.swift
+
+ This source file is part of the CustomProofread open source project.
+
+ Copyright ©2018 the CustomProofread project contributors.
+
+ Licensed under the GNU General Public Licence, Version 3.0.
+ See http://www.gnu.org/licenses/ for licence information.
+ */
 
 import PackageDescription
 

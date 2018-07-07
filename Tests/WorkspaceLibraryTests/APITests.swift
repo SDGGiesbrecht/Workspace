@@ -95,9 +95,14 @@ class APITests : TestCase {
         for rule in ProofreadingRule.cases {
             _ = rule.category
         }
+        configuration.licence.manage = true
+        configuration.licence.licence = .gnuGeneralPublic3_0
+        configuration.fileHeaders.manage = true
         PackageRepository(mock: "CustomProofread").test(commands: [
             ["proofread"],
-            ["proofread", "•xcode"]
+            ["proofread", "•xcode"],
+            ["refresh", "licence"],
+            ["refresh", "file‐headers"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 

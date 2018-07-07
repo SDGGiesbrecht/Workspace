@@ -1,14 +1,11 @@
 # .gitignore
 #
-# This source file is part of the Workspace open source project.
-# https://github.com/SDGGiesbrecht/Workspace#workspace
+# This source file is part of the CustomProofread open source project.
 #
-# Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
+# Copyright ©2017–2018 the CustomProofread project contributors.
 #
-# Soli Deo gloria.
-#
-# Licensed under the Apache Licence, Version 2.0.
-# See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+# Licensed under the GNU General Public Licence, Version 3.0.
+# See http://www.gnu.org/licenses/ for licence information.
 
 .DS_Store
 *~

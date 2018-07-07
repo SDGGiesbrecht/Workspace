@@ -1,4 +1,13 @@
+<!--
+ README.md
 
+ This source file is part of the CustomReadMe open source project.
+
+ Copyright ©2018 the CustomReadMe project contributors.
+
+ Dedicated to the public domain.
+ See http://unlicense.org/ for more information.
+ -->
 
 [🇬🇧EN](Documentation/🇬🇧EN%20Read%20Me.md) <!--Skip in Jazzy-->
 

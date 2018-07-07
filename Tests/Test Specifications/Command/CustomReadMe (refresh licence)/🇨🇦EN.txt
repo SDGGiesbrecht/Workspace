@@ -1,0 +1,6 @@
+$ workspace refresh licence •no‐colour
+
+Refreshing licence...
+
+Writing to “LICENSE.md”...
+0

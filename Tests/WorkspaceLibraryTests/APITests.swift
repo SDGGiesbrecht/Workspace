@@ -129,8 +129,13 @@ class APITests : TestCase {
                 "```"
                 ].joinedAsLines())
         ]
+        configuration.licence.manage = true
+        configuration.licence.licence = .unlicense
+        configuration.fileHeaders.manage = true
         PackageRepository(mock: "CustomReadMe").test(commands: [
-            ["refresh", "read‐me"]
+            ["refresh", "read‐me"],
+            ["refresh", "licence"],
+            ["refresh", "file‐headers"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 

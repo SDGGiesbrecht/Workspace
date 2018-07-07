@@ -62,6 +62,16 @@ Summary
 ✓ Documentation coverage is complete for “Library”.
 
 
+Workspace encountered unsupported file types:
+
+xyz (Other/Unsupported Filetype.xyz)
+
+All such files were skipped.
+If these are standard file types, please report them at
+https://github.com/SDGGiesbrecht/Workspace/issues
+To silence this warning for non‐standard file types, configure “repository.ignoredFileTypes”.
+
+
 “SDG” passes validation.
 
 0

@@ -31,6 +31,7 @@ public enum FileType {
         if unexpectedTypes.isEmpty {
             return nil
         } else {
+            defer { unsupportedFileTypesEncountered = [:]} // [_Reset between tests._]
 
             var warning: [StrictString] = [
                 UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -44,7 +45,7 @@ public enum FileType {
             warning.append("")
 
             let types = unexpectedTypes.keys.sorted().map { key in
-                return StrictString("\(key) (\(unexpectedTypes[key]!.path(relativeTo: project.location))")
+                return StrictString("\(key) (\(unexpectedTypes[key]!.path(relativeTo: project.location)))")
             }
             warning.append(contentsOf: types)
 

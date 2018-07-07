@@ -45,7 +45,7 @@ extension Workspace.Validate {
                 var validationStatus = ValidationStatus()
 
                 if options.job == .deployment {
-                    try TravisCI.keepAlive {
+                    try TravisCI.keepAlive { // [_Exempt from Test Coverage_]
                         try executeAsStep(validationStatus: &validationStatus, arguments: arguments, options: options, output: output)
                     }
                 } else {

@@ -35,7 +35,7 @@ extension Workspace.Refresh {
         static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (arguments: DirectArguments, options: Options, output: Command.Output) throws in
 
             if options.job == .deployment {
-                try TravisCI.keepAlive {
+                try TravisCI.keepAlive { // [_Exempt from Test Coverage_]
                     try executeAsStep(withArguments: arguments, options: options, output: output)
                 }
             } else {

@@ -420,6 +420,9 @@ class APITests : TestCase {
 
             ["proofread", "•xcode"]
             ])
+        #if !os(Linux)
+        commands.append(["validate"])
+        #endif
         PackageRepository(mock: "SDGLibrary").test(commands: commands, configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
     }
 

@@ -115,7 +115,7 @@ extension Workspace.Validate {
             #endif
 
             // State
-            if ProcessInfo.isInContinuousIntegration ∧ ProcessInfo.isPullRequest {
+            if ProcessInfo.isInContinuousIntegration ∧ ProcessInfo.isPullRequest { // [_Exempt from Test Coverage_] Only reachable during pull request.
 
                 let state = validationStatus.newSection()
 
@@ -150,7 +150,7 @@ extension Workspace.Validate {
 
             // Workspace
             if let update = try Workspace.CheckForUpdates.checkForUpdates(output: output) {
-                output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in // [_Exempt from Test Coverage_] Determined externally.
                     switch localization {
                     case .englishCanada:
                         let url = URL(string: "#installation", relativeTo: Metadata.packageURL)!

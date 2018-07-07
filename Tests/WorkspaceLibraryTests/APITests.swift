@@ -34,7 +34,11 @@ class APITests : TestCase {
     func testAllDisabled() {
         #if !os(Linux) // Significant differences. Each is covered individually elswhere.
         let configuration = WorkspaceConfiguration()
+        configuration.provideWorkflowScripts = false
+        configuration.proofreading.rules = []
+        configuration.testing.prohibitCompilerWarnings = false
         configuration.testing.enforceCoverage = false
+        configuration.documentation.api.enforceCoverage = false
         PackageRepository(mock: "AllDisabled").test(commands: [
             ["Refresh"],
             ["validate"]

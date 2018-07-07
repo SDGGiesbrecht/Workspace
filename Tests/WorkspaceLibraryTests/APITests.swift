@@ -174,6 +174,7 @@ class APITests : TestCase {
         configuration.documentation.localizations = ["en"]
         configuration.documentation.readMe.quotation = Quotation(original: "Blah blah blah...")
         PackageRepository(mock: "Executable").test(commands: [
+            ["refresh", "licence"],
             ["refresh", "read‐me"],
             ["document"],
             ["validate", "documentation‐coverage"]

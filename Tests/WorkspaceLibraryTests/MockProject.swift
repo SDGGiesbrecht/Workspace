@@ -85,7 +85,7 @@ extension PackageRepository {
                     for command in commands {
 
                         if ProcessInfo.isInContinuousIntegration {
-                            // Travis CI needs period output of some sort; otherwise it assumes the tests have stalled.
+                            // Travis CI needs periodic output of some sort; otherwise it assumes the tests have stalled.
                             _ = try? Shell.default.run(command: ["echo", "Tests continuing...", ">", "/dev/tty"])
                         }
 
@@ -107,7 +107,10 @@ extension PackageRepository {
                                 // Expected.
                             }
                         }
-                        if ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil, command == ["test"] {
+                        if ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil,
+                            command == ["test"]
+                                ∨ command == ["validate"]
+                                ∨ command == ["validate", "•job", "macos‐swift‐package‐manager"] {
                             // Phases skipped within Xcode due to rerouting interference.
                             if location.lastPathComponent == "Default" {
                                 expectFailure()

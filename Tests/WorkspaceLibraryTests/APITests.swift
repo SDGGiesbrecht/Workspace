@@ -34,8 +34,10 @@ class APITests : TestCase {
     func testAllTasks() {
         let configuration = WorkspaceConfiguration()
         configuration.optIntoAllTasks()
+        configuration.documentation.localizations = ["🇮🇱עב"]
+        configuration.licence.licence = .copyright
         PackageRepository(mock: "AllTasks").test(commands: [
-            ["Refresh"],
+            ["refresh"],
             ["validate"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }

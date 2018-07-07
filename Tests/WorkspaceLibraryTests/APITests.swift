@@ -40,7 +40,7 @@ class APITests : TestCase {
         configuration.testing.enforceCoverage = false
         configuration.documentation.api.enforceCoverage = false
         PackageRepository(mock: "AllDisabled").test(commands: [
-            ["Refresh"],
+            ["refresh"],
             ["validate"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
         #endif

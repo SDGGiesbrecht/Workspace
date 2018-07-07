@@ -179,6 +179,15 @@ extension PackageRepository {
                                 any,
                                 LiteralPattern("\n\n".scalars)
                                 ]), with: "[$ swiftlint...]\n\n".scalars)
+
+                            if command == ["validate"] {
+                                // Refreshment occurs elswhere in continuous integration.
+                                output.scalars.replaceMatches(for: CompositePattern([
+                                    LiteralPattern("\n".scalars),
+                                    any,
+                                    LiteralPattern("\n\nValidating “".scalars)
+                                    ]), with: "\n[Refreshing ...]\n\nValidating “".scalars)
+                            }
                         }
 
                         testCommand(Workspace.command, with: command, localizations: localizations, uniqueTestName: specificationName, postprocess: postprocess, overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing, file: file, line: line)

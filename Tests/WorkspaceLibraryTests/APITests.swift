@@ -32,6 +32,7 @@ class APITests : TestCase {
     }
 
     func testAllTasks() {
+        #if !os(Linux) // Significant differences. Each is covered individually elswhere.
         let configuration = WorkspaceConfiguration()
         configuration.optIntoAllTasks()
         configuration.documentation.localizations = ["🇮🇱עב"]
@@ -40,6 +41,7 @@ class APITests : TestCase {
             ["refresh"],
             ["validate"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        #endif
     }
 
     func testBadStyle() {
@@ -108,7 +110,7 @@ class APITests : TestCase {
     }
 
     func testDefaults() {
-        PackageRepository(mock: "Default").test(commands: [
+        var commands = [
             ["refresh", "scripts"],
             ["refresh", "resources"],
             ["refresh", "examples"],
@@ -122,11 +124,15 @@ class APITests : TestCase {
             ["validate", "documentation‐coverage"],
 
             ["proofread", "•xcode"],
-            ["validate", "build", "•job", "macos‐swift‐package‐manager"],
-
+            ["validate", "build", "•job", "macos‐swift‐package‐manager"]
+        ]
+        #if !os(Linux) // Significant differences. Each is covered individually elswhere.
+        commands.append(contentsOf: [
             ["refresh"],
             ["validate"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ])
+        #endif
+        PackageRepository(mock: "Default").test(commands: commands, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testExecutable() {

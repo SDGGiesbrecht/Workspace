@@ -12,6 +12,7 @@ git regenerates the project’s Git configuration files.
 github regenerates the project’s GitHub configuration files.
 help displays usage information.
 inherited‐documentation synchronizes the project’s inherited documentation.
+licence regenerates the project’s licence file.
 read‐me regenerates the project’s read‐me file.
 resources regenerates code providing access to the project’s resources.
 scripts regenerates the project’s refresh and validation scripts.

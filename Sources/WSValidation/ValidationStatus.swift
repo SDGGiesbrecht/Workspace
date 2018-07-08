@@ -58,8 +58,12 @@ public struct ValidationStatus {
         return ¬summary.isEmpty
     }
 
-    public func reportOutcome(projectName: StrictString, output: Command.Output) throws {
+    public func reportOutcome(project: PackageRepository, output: Command.Output) throws {
         output.print(StrictString(summary.joined(separator: "\n".scalars)).separated())
+
+        try output.listWarnings(for: project)
+
+        let projectName = try project.projectName()
         if passing {
             output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
@@ -73,7 +77,7 @@ public struct ValidationStatus {
                 case .englishCanada:
                     return "“" + projectName + "” fails validation."
                 }
-            }))
+            }), exitCode: 2)
         }
     }
 }

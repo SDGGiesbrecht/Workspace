@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGCollections
 @testable import WSInterface
 import WSGeneralTestImports
 
@@ -58,6 +59,7 @@ extension PackageRepository {
                 defer {
                     unsetenv("SIMULATOR_UNAVAILABLE_FOR_TESTING")
                 }
+                _isDuringSpecificationTest = true
 
                 try? FileManager.default.removeItem(at: location)
                 #if os(Linux)
@@ -79,13 +81,13 @@ extension PackageRepository {
                         configuration.validateSDGStandards()
                     }
                     WorkspaceConfiguration.queue(mock: configuration)
-                    defer { _ = try? self.configuration(output: nil) } // Dequeue even if unused.
+                    defer { _ = try? self.configuration(output: Command.Output.mock ) } // Dequeue even if unused.
                     resetConfigurationCache(debugReason: "new test")
 
                     for command in commands {
 
                         if ProcessInfo.isInContinuousIntegration {
-                            // Travis CI needs period output of some sort; otherwise it assumes the tests have stalled.
+                            // Travis CI needs periodic output of some sort; otherwise it assumes the tests have stalled.
                             _ = try? Shell.default.run(command: ["echo", "Tests continuing...", ">", "/dev/tty"])
                         }
 
@@ -107,9 +109,12 @@ extension PackageRepository {
                                 // Expected.
                             }
                         }
-                        if ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil, command == ["test"] {
+                        if ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil,
+                            command == ["test"]
+                                ∨ command == ["validate"]
+                                ∨ command == ["validate", "•job", "macos‐swift‐package‐manager"] {
                             // Phases skipped within Xcode due to rerouting interference.
-                            if location.lastPathComponent == "Default" {
+                            if location.lastPathComponent ∈ Set(["Default", "AllTasks", "AllDisabled"]) ∧ ¬command.contains("macos‐swift‐package‐manager") {
                                 expectFailure()
                             } else {
                                 requireSuccess()
@@ -179,13 +184,22 @@ extension PackageRepository {
                                 any,
                                 LiteralPattern("\n\n".scalars)
                                 ]), with: "[$ swiftlint...]\n\n".scalars)
+
+                            if command == ["validate"] ∨ command.hasPrefix(["validate", "•job"]) {
+                                // Refreshment occurs elswhere in continuous integration.
+                                output.scalars.replaceMatches(for: CompositePattern([
+                                    LiteralPattern("\n".scalars),
+                                    any,
+                                    LiteralPattern("\nValidating “".scalars)
+                                    ]), with: "\n[Refreshing ...]\n\nValidating “".scalars)
+                            }
                         }
 
                         testCommand(Workspace.command, with: command, localizations: localizations, uniqueTestName: specificationName, postprocess: postprocess, overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing, file: file, line: line)
                     }
 
                     #if !os(Linux)
-                    // [_Workaround: Jazzy issues._]
+                    // [_Workaround: Jazzy issues. (jazzy --version 0.9.3)_]
                     if location.lastPathComponent == "UnicodeSource" {
                         let index = try String(from: location.appendingPathComponent("docs/\(location.lastPathComponent)/index.html"))
                         XCTAssert(¬index.contains("Skip in Jazzy"), "Failed to remove read‐me–only content.")

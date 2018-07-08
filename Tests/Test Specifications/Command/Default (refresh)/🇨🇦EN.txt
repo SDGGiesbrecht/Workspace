@@ -1,0 +1,23 @@
+$ workspace refresh •no‐colour
+
+Refreshing “Default”...
+
+
+Refreshing scripts...
+
+
+Refreshing resources...
+
+
+Refreshing examples...
+
+
+Refreshing inherited documentation...
+
+
+Normalizing files...
+
+
+“Default” is refreshed and ready.
+
+0

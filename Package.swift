@@ -51,26 +51,45 @@ let package = Package(
             "WorkspaceProjectConfiguration",
             "WSProject",
             "WSValidation",
+            "WSScripts",
             "WSGit",
+            "WSOpenSource",
+            "WSLicence",
             "WSGitHub",
             "WSContinuousIntegration",
+            "WSResources",
             "WSFileHeaders",
             "WSExamples",
+            "WSNormalization",
             "WSXcode",
             "WSProofreading",
-            "WSDocumentation",
-            // [_Workaround: This module and its dependency list needs refactoring._]
-            "WSSwift",
-            "WSThirdParty",
-            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
-            .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-            .productItem(name: "SDGXcode", package: "SDGSwift"),
-            .productItem(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
+            "WSTesting",
+            "WSDocumentation"
+            ]),
+
+        // Workspace scripts.
+        .target(name: "WSScripts", dependencies: [
+            "WSGeneralImports",
+            "WSProject"
             ]),
 
         // Git management.
         .target(name: "WSGit", dependencies: [
             "WSGeneralImports",
+            "WSProject"
+            ]),
+
+        // Open source management.
+        .target(name: "WSOpenSource", dependencies: [
+            "WSGeneralImports",
+            "WSProject",
+            "WSExamples"
+            ]),
+
+        // Licence management.
+        .target(name: "WSLicence", dependencies: [
+            "WSGeneralImports",
+            "WorkspaceConfiguration",
             "WSProject"
             ]),
 
@@ -88,6 +107,15 @@ let package = Package(
             "WSDocumentation"
             ]),
 
+        // Resource management.
+        .target(name: "WSResources", dependencies: [
+            "WSGeneralImports",
+            "WSProject",
+            "WSSwift",
+            .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
+            .productItem(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
+            ]),
+
         // File header management.
         .target(name: "WSFileHeaders", dependencies: [
             "WSGeneralImports",
@@ -96,6 +124,12 @@ let package = Package(
 
         // Example management.
         .target(name: "WSExamples", dependencies: [
+            "WSGeneralImports",
+            "WSProject"
+            ]),
+
+        // Normalization.
+        .target(name: "WSNormalization", dependencies: [
             "WSGeneralImports",
             "WSProject"
             ]),
@@ -116,6 +150,17 @@ let package = Package(
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone")
             ]),
 
+        // Testing.
+        .target(name: "WSTesting", dependencies: [
+            "WSGeneralImports",
+            "WSProject",
+            "WSValidation",
+            "WSContinuousIntegration",
+            "WSProofreading",
+            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
+            .productItem(name: "SDGXcode", package: "SDGSwift")
+            ]),
+
         // Documentation generation.
         .target(name: "WSDocumentation", dependencies: [
             "WSGeneralImports",
@@ -124,6 +169,7 @@ let package = Package(
             "WSThirdParty",
             "WSXcode",
             "WSSwift",
+            .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .productItem(name: "SDGXcode", package: "SDGSwift")
             ]),
 
@@ -136,7 +182,8 @@ let package = Package(
 
         // Utilities for validation reports.
         .target(name: "WSValidation", dependencies: [
-            "WSGeneralImports"
+            "WSGeneralImports",
+            "WSProject"
             ]),
 
         // Utilities related to Swift syntax.
@@ -151,7 +198,8 @@ let package = Package(
             "WorkspaceProjectConfiguration",
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .productItem(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-            .productItem(name: "SDGSwiftConfigurationLoading", package: "SDGSwift")
+            .productItem(name: "SDGSwiftConfigurationLoading", package: "SDGSwift"),
+            .productItem(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
             ]),
 
         // The API used in configuration files.

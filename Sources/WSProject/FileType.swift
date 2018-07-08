@@ -21,8 +21,7 @@ public enum FileType {
     // MARK: - Static Properties
 
     private static var unsupportedFileTypesEncountered: [String: URL] = [:]
-    public static func unsupportedTypesWarning(for project: PackageRepository, output: Command.Output?) throws -> StrictString? { // [_Exempt from Test Coverage_] [_Workaround: Not testable yet._]
-        // [_Workaround: “output” should not be optional, but is currently required for bridging with older code._]
+    public static func unsupportedTypesWarning(for project: PackageRepository, output: Command.Output) throws -> StrictString? {
 
         let expected = try project.configuration(output: output).repository.ignoredFileTypes
         var unexpectedTypes = unsupportedFileTypesEncountered.filter { key, _ in
@@ -32,6 +31,7 @@ public enum FileType {
         if unexpectedTypes.isEmpty {
             return nil
         } else {
+            defer { unsupportedFileTypesEncountered = [:]} // [_Reset between tests._]
 
             var warning: [StrictString] = [
                 UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -45,7 +45,7 @@ public enum FileType {
             warning.append("")
 
             let types = unexpectedTypes.keys.sorted().map { key in
-                return StrictString("\(key) (\(unexpectedTypes[key]!.path(relativeTo: project.location))")
+                return StrictString("\(key) (\(unexpectedTypes[key]!.path(relativeTo: project.location)))")
             }
             warning.append(contentsOf: types)
 

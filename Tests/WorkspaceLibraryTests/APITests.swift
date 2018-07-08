@@ -17,6 +17,8 @@ import WSGeneralTestImports
 
 import SDGExternalProcess
 
+import WSProject
+
 class APITests : TestCase {
 
     static var triggeredVersionChecks: Void?
@@ -26,6 +28,35 @@ class APITests : TestCase {
         cached(in: &APITests.triggeredVersionChecks) {
             triggerVersionChecks()
         }
+        PackageRepository.emptyRelatedProjectCache() // Make sure starting state is consistent.
+    }
+
+    func testAllDisabled() {
+        #if !os(Linux) // Significant differences. Each is covered individually elswhere.
+        let configuration = WorkspaceConfiguration()
+        configuration.provideWorkflowScripts = false
+        configuration.proofreading.rules = []
+        configuration.testing.prohibitCompilerWarnings = false
+        configuration.testing.enforceCoverage = false
+        configuration.documentation.api.enforceCoverage = false
+        PackageRepository(mock: "AllDisabled").test(commands: [
+            ["refresh"],
+            ["validate"]
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        #endif
+    }
+
+    func testAllTasks() {
+        #if !os(Linux) // Significant differences. Each is covered individually elswhere.
+        let configuration = WorkspaceConfiguration()
+        configuration.optIntoAllTasks()
+        configuration.documentation.localizations = ["🇮🇱עב"]
+        configuration.licence.licence = .copyright
+        PackageRepository(mock: "AllTasks").test(commands: [
+            ["refresh"],
+            ["validate"]
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        #endif
     }
 
     func testBadStyle() {
@@ -47,8 +78,13 @@ class APITests : TestCase {
         let configuration = WorkspaceConfiguration()
         configuration.provideWorkflowScripts = false
         configuration.continuousIntegration.manage = true
+        configuration.licence.manage = true
+        configuration.licence.licence = .mit
+        configuration.fileHeaders.manage = true
         PackageRepository(mock: "ContinuousIntegrationWithoutScripts").test(commands: [
-            ["refresh", "continuous‐integration"]
+            ["refresh", "continuous‐integration"],
+            ["refresh", "licence"],
+            ["refresh", "file‐headers"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
@@ -59,9 +95,14 @@ class APITests : TestCase {
         for rule in ProofreadingRule.cases {
             _ = rule.category
         }
+        configuration.licence.manage = true
+        configuration.licence.licence = .gnuGeneralPublic3_0
+        configuration.fileHeaders.manage = true
         PackageRepository(mock: "CustomProofread").test(commands: [
             ["proofread"],
-            ["proofread", "•xcode"]
+            ["proofread", "•xcode"],
+            ["refresh", "licence"],
+            ["refresh", "file‐headers"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
@@ -88,14 +129,18 @@ class APITests : TestCase {
                 "```"
                 ].joinedAsLines())
         ]
+        configuration.licence.manage = true
+        configuration.licence.licence = .unlicense
+        configuration.fileHeaders.manage = true
         PackageRepository(mock: "CustomReadMe").test(commands: [
-            ["refresh", "read‐me"]
+            ["refresh", "read‐me"],
+            ["refresh", "licence"],
+            ["refresh", "file‐headers"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testDefaults() {
-        PackageRepository(mock: "Default").test(commands: [
-            // [_Workaround: This should just be “validate” once it is possible._]
+        var commands: [[StrictString]] = [
             ["refresh", "scripts"],
             ["refresh", "resources"],
             ["refresh", "examples"],
@@ -110,7 +155,28 @@ class APITests : TestCase {
 
             ["proofread", "•xcode"],
             ["validate", "build", "•job", "macos‐swift‐package‐manager"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        ]
+        #if !os(Linux) // Significant differences. Each is covered individually elswhere.
+        commands.append(contentsOf: [
+            ["refresh"],
+            ["validate"],
+            ["validate", "•job", "macos‐swift‐package‐manager"]
+            ])
+        #endif
+        PackageRepository(mock: "Default").test(commands: commands, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testCheckedInDocumentation() {
+        #if !os(Linux)
+        let configuration = WorkspaceConfiguration()
+        configuration.documentation.api.enforceCoverage = false
+        configuration.documentation.api.generate = true
+        PackageRepository(mock: "CheckedInDocumentation").test(commands: [
+            ["refresh"],
+            ["validate", "•job", "documentation"],
+            ["validate", "•job", "deployment"]
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        #endif
     }
 
     func testExecutable() {
@@ -121,6 +187,7 @@ class APITests : TestCase {
         configuration.documentation.localizations = ["en"]
         configuration.documentation.readMe.quotation = Quotation(original: "Blah blah blah...")
         PackageRepository(mock: "Executable").test(commands: [
+            ["refresh", "licence"],
             ["refresh", "read‐me"],
             ["document"],
             ["validate", "documentation‐coverage"]
@@ -358,10 +425,10 @@ class APITests : TestCase {
         configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
 
         var commands: [[StrictString]] = [
-            // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
             ["refresh", "git"],
             ["refresh", "read‐me"],
+            ["refresh", "licence"],
             ["refresh", "github"],
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],
@@ -382,6 +449,9 @@ class APITests : TestCase {
 
             ["proofread", "•xcode"]
             ])
+        #if !os(Linux)
+        commands.append(["validate"])
+        #endif
         PackageRepository(mock: "SDGLibrary").test(commands: commands, configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
@@ -434,10 +504,10 @@ class APITests : TestCase {
         configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
 
         var commands: [[StrictString]] = [
-            // [_Workaround: This should just be “validate” once it is possible._]
             ["refresh", "scripts"],
             ["refresh", "git"],
             ["refresh", "read‐me"],
+            ["refresh", "licence"],
             ["refresh", "github"],
             ["refresh", "continuous‐integration"],
             ["refresh", "resources"],

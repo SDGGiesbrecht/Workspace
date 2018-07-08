@@ -12,13 +12,12 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-@testable import WSInterface
+@testable import WSScripts
 import WSGeneralTestImports
 
 class InternalTests : TestCase {
 
     func testGitIgnoreCoverage() {
-        // [_Workaround: Can this be moved to API Tests?_]
 
         let expectedPrefixes = [
 
@@ -26,17 +25,17 @@ class InternalTests : TestCase {
             "Package.swift",
             "Sources",
             "Tests",
-            "Package.pins",
             "Package.resolved",
 
             // Workspace
             "Workspace.swift",
             String(Script.refreshMacOS.fileName),
             String(Script.refreshLinux.fileName),
+            "Documentation",
+            "Resources",
 
             // Git
             ".gitignore",
-            ".gitattributes",
 
             // GitHub
             "README.md",
@@ -44,12 +43,7 @@ class InternalTests : TestCase {
             ".github",
 
             // Travis CI
-            ".travis.yml",
-
-            // Workspace Project
-            "Related Projects.md",
-            "Documentation",
-            "Resources"
+            ".travis.yml"
         ]
 
         do {

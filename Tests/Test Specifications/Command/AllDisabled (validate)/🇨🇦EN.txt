@@ -1,0 +1,39 @@
+$ workspace validate •no‐colour
+[Refreshing ...]
+
+Validating “AllDisabled”...
+
+
+Normalizing files...
+
+
+Proofreading source code... (§1)
+
+.gitignore
+Package.swift
+README.md
+Sources/AllDisabled/AllDisabled.swift
+Tests/AllDisabledTests/AllDisabledTests.swift
+Tests/AllDisabledTests/XCTestManifests.swift
+Tests/LinuxMain.swift
+
+[$ swiftlint...]
+
+Testing on macOS with the Swift Package Manager... (§2)
+
+[$ swift...]
+
+Testing on macOS with Xcode... (§3)
+
+The package has no Xcode project.
+Configure “xcode.manage” or create an Xcode project manually.
+
+Summary
+
+
+✗ Source code fails proofreading. (See [⌘F] “§1”)
+✓ Tests pass on macOS with the Swift Package Manager.
+✗ Tests fail on macOS with Xcode. (See [⌘F] “§3”)
+
+“AllDisabled” fails validation.
+2

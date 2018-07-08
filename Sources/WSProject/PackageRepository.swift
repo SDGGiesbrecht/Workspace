@@ -218,8 +218,7 @@ extension PackageRepository {
         }
     }
 
-    public func configuration(output: Command.Output?) throws -> WorkspaceConfiguration {
-        // [_Workaround: “output” should not be optional, but it is needed to bridge with older code._]
+    public func configuration(output: Command.Output) throws -> WorkspaceConfiguration {
         return try cached(in: &configurationCache.configuration) {
 
             // Provide the context in case resolution happens internally.
@@ -242,7 +241,7 @@ extension PackageRepository {
                     in: SDGSwift.Package(url: Metadata.packageURL),
                     at: Metadata.latestStableVersion,
                     context: try configurationContext(),
-                    reportProgress: { output?.print($0) })
+                    reportProgress: { output.print($0) })
             }
 
             // Force lazy options to resolve under the right context before it changes.
@@ -304,7 +303,7 @@ extension PackageRepository {
                     ∧ ¬url.lastPathComponent.hasSuffix("~")
             }
             return files.sorted { $0.absoluteString.scalars.lexicographicallyPrecedes($1.absoluteString.scalars) } // So that output order is consistent.
-            // [_Workaround: Simple “sorted()” differs between operating systems. (Swift 4.1)_]
+            // [_Workaround: Simple “sorted” differs between operating systems. (Swift 4.1.2)_]
         }
     }
 
@@ -381,5 +380,49 @@ extension PackageRepository {
                 resetFileCache(debugReason: location.lastPathComponent)
             }
         }
+    }
+
+    // MARK: - Related Projects
+
+    private static let relatedProjectCache = FileManager.default.url(in: .cache, at: "Related Projects")
+
+    public static func relatedPackage(_ package: SDGSwift.Package, output: Command.Output) throws -> PackageRepository {
+        let directoryName = StrictString(package.url.lastPathComponent)
+        let cache = relatedProjectCache.appendingPathComponent(String(directoryName))
+
+        let commit = try package.latestCommitIdentifier()
+
+        let repositoryLocation = cache.appendingPathComponent(commit)
+
+        let repository: PackageRepository
+        if (try? repositoryLocation.checkResourceIsReachable()) == true {
+            repository = PackageRepository(at: repositoryLocation)
+        } else {
+            try? FileManager.default.removeItem(at: cache) // Remove older commits.
+            do {
+
+                output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return StrictString("Fetching “\(package.url.lastPathComponent)”...")
+                    }
+                }).resolved())
+
+                repository = try PackageRepository(cloning: package, to: repositoryLocation, at: .development, shallow: true)
+            } catch {
+                // Clean up if there is a failure.
+                try? FileManager.default.removeItem(at: cache)
+
+                throw error
+            }
+        }
+
+        // Remove deprecated cache.
+        try? FileManager.default.removeItem(at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent(".Workspace"))
+        return repository
+    }
+
+    public static func emptyRelatedProjectCache() {
+        try? FileManager.default.removeItem(at: relatedProjectCache)
     }
 }

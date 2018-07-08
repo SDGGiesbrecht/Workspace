@@ -116,6 +116,7 @@ extension Workspace.Validate {
 
             // State
             if ProcessInfo.isInContinuousIntegration ∧ ProcessInfo.isPullRequest { // [_Exempt from Test Coverage_] Only reachable during pull request.
+                // [_Exempt from Test Coverage_]
 
                 let state = validationStatus.newSection()
 

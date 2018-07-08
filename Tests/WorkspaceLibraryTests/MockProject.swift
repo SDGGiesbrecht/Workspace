@@ -59,6 +59,7 @@ extension PackageRepository {
                 defer {
                     unsetenv("SIMULATOR_UNAVAILABLE_FOR_TESTING")
                 }
+                _isDuringSpecificationTest = true
 
                 try? FileManager.default.removeItem(at: location)
                 #if os(Linux)

@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGCollections
 @testable import WSInterface
 import WSGeneralTestImports
 
@@ -112,7 +113,7 @@ extension PackageRepository {
                                 ∨ command == ["validate"]
                                 ∨ command == ["validate", "•job", "macos‐swift‐package‐manager"] {
                             // Phases skipped within Xcode due to rerouting interference.
-                            if location.lastPathComponent == "Default" {
+                            if location.lastPathComponent ∈ Set(["Default", "AllTasks", "AllDisabled"]) ∧ ¬command.contains("macos‐swift‐package‐manager") {
                                 expectFailure()
                             } else {
                                 requireSuccess()

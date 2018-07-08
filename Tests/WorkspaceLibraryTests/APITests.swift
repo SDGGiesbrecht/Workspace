@@ -166,6 +166,18 @@ class APITests : TestCase {
         PackageRepository(mock: "Default").test(commands: commands, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
+    func testCheckedInDocumentation() {
+        #if !os(Linux)
+        let configuration = WorkspaceConfiguration()
+        configuration.documentation.api.enforceCoverage = false
+        configuration.documentation.api.generate = true
+        PackageRepository(mock: "CheckedInDocumentation").test(commands: [
+            ["validate", "•job", "documentation"],
+            ["validate", "•job", "deployment"]
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        #endif
+    }
+
     func testExecutable() {
         let configuration = WorkspaceConfiguration()
         configuration.supportedOperatingSystems.remove(.iOS)

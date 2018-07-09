@@ -20,6 +20,10 @@ extension ProofreadingRule {
 
     internal var parser: Rule.Type {
         switch self {
+        case .deprecatedTestExemptions:
+            return DeprecatedTestExemptions.self
+        case .deprecatedInheritanceDirectives:
+            return DeprecatedInheritanceDirectives.self
         case .deprecatedExampleDirectives:
             return DeprecatedExampleDirectives.self
         case .deprecatedGitManagement:

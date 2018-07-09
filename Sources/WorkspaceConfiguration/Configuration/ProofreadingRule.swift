@@ -127,7 +127,7 @@ public enum ProofreadingRule : String, Codable {
     /// Requires documented parameters to be grouped.
     case parameterGrouping
 
-    // [_Inherit Documentation: SDGCornerstone.IterableEnumeration.cases_]
+    // #workaround(jazzy --version 0.9.3, Allow automatic inheritance when documentation supports it.)
     /// An array containing every case of the enumeration.
     public static let cases: [ProofreadingRule] = [
         .deprecatedWarnings,

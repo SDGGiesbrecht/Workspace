@@ -35,7 +35,7 @@ public enum RelatedProjectEntry : Codable {
         case details
     }
 
-    // [_Inherit Documentation: SDGCornerstone.Encodable.encode(to:)_]
+    // #workaround(jazzy --version 0.9.3, Allow automatic inheritance when documentation supports it.)
     /// Encodes this value into the given encoder.
     ///
     /// - Parameters:
@@ -52,7 +52,7 @@ public enum RelatedProjectEntry : Codable {
         }
     }
 
-    // [_Inherit Documentation: SDGCornerstone.Decodable.init(from:)_]
+    // #workaround(jazzy --version 0.9.3, Allow automatic inheritance when documentation supports it.)
     /// Creates a new instance by decoding from the given decoder.
     ///
     /// - Parameters:

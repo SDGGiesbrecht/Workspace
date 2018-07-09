@@ -25,7 +25,7 @@ public struct DocumentationConfiguration : Codable {
     /// The semantic version of the current stable release of the project.
     ///
     /// There is no default version.
-    public var currentVersion: Version? // [_Use specific type._]
+    public var currentVersion: Version?
 
     /// The URL of the project website.
     ///

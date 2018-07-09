@@ -34,7 +34,7 @@ public enum OperatingSystem : String, Codable {
     /// tvOS
     case tvOS
 
-     // [_Inherit Documentation: SDGCornerstone.IterableEnumeration.cases_]
+    // #workaround(jazzy --version 0.9.3, Allow automatic inheritance when documentation supports it.)
     /// An array containing every case of the enumeration.
     public static let cases: [OperatingSystem] = [
         .macOS,

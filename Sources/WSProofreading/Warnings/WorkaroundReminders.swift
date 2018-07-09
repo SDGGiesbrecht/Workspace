@@ -39,7 +39,7 @@ internal struct WorkaroundReminders : Warning {
 
         var description = details
 
-        if let comma = details.scalars.firstMatch(for: ",".scalars) {
+        if let comma = details.scalars.firstMatch(for: ", ".scalars) {
             description = StrictString(details.scalars[comma.range.upperBound...])
 
             let versionCheckRange = details.scalars.startIndex ..< comma.range.lowerBound

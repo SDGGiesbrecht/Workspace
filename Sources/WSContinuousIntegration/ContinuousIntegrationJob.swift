@@ -212,7 +212,7 @@ public enum ContinuousIntegrationJob : Int, IterableEnumeration {
     public var operatingSystem: OperatingSystem {
         switch self {
         case .macOSSwiftPackageManager, .macOSXcode, .iOS, .watchOS, .tvOS, .documentation, .deployment:
-            // [_Workaround: Documentation can be switched to Linux when Jazzy supports it. (jazzy --version 0.9.3)_]
+            // #workaround(jazzy --version 0.9.3, Documentation can be switched to Linux when Jazzy supports it.)
             return .macOS
         case .linux, .miscellaneous:
             return .linux

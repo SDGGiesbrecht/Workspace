@@ -126,9 +126,9 @@ internal class Jazzy : RubyGem {
         }
         project.resetFileCache(debugReason: "jazzy")
 
-        // [_Workaround: Jazzy is incompatible with Jekyll. (jazzy --version 0.9.3)_]
+        // #workaround(jazzy --version 0.9.3, Jazzy is incompatible with Jekyll.)
         try preventJekyllInterference(in: outputDirectory, for: project, output: output)
-        // [_Workaround: Jazzy expects only ASCII. (jazzy --version 0.9.3)_]
+        // #workaround(jazzy --version 0.9.3, Jazzy expects only ASCII.)
         try fixSplitClusters(in: outputDirectory, for: project, output: output)
     }
 

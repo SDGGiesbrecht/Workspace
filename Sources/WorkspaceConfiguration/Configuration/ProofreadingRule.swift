@@ -43,7 +43,7 @@ public enum ProofreadingRule : String, Codable {
     ///
     /// Generic warnings are for times when you want to prevent the project from passing validation until you come back to fix something, but you still need the project to build while you are working on it.
     ///
-    /// The text, `[_Warning: Some description here._]`, will always trigger a warning during proofreading and cause validation to fail. It will not interrupt Swift or Xcode builds.
+    /// The text, `#warning(Some description here.)`, will always trigger a warning during proofreading and cause validation to fail. It will not interrupt Swift or Xcode builds.
     case manualWarnings
 
     /// Catches unimplemented code paths marked with SDGCornerstone functions.
@@ -53,32 +53,32 @@ public enum ProofreadingRule : String, Codable {
     ///
     /// Workaround reminders are for times when you need to implement a temporary workaround because of a problem in a dependency, and you would like to remind yourself to go back and remove the workaround once the dependency is fixed.
     ///
-    /// The text, `[_Workaround: Some description here._]` will trigger a warning during proofreading, but will still pass validation.
+    /// The text, `#workaround(Some description here.)` will trigger a warning during proofreading, but will still pass validation.
     ///
     /// ## Version Detection
     ///
     /// Optionally, a workaround reminder can specify the dependency and version were the problem exists. Then Workspace will ignore it until the problematic version is out of date.
     ///
-    /// `[_Workaround: Some description here. (SomeDependency 0.0.0)_]`
+    /// `#workaround(SomeDependency 0.0.0, Some description here.)`
     ///
     /// The dependency can be specified three different ways.
     ///
     /// - Package dependencies can be specified using the exact name of the package.
     ///
     ///   ```swift
-    ///   // [_Workaround: There is a problem in MyLibrary. (MyLibrary 1.0.0)_]
+    ///   // #workaround(MyLibrary 1.0.0, There is a problem in MyLibrary.)
     ///   ```
     ///
     /// - Swift itself can be specified with the string `Swift`.
     ///
     ///   ```swift
-    ///   // [_Workaround: There is a problem with Swift. (Swift 3.0.2)_]
+    ///   // #workaround(Swift 3.0.2, There is a problem with Swift.)
     ///   ```
     ///
     /// - Arbitrary dependencies can be specified by shell commands which output a version number. Workspace will look for the first group of the characters `0`–`9` and `.` in the command output. Only simple commands are supported; commands cannot contain quotation marks.
     ///
     ///   ```swift
-    ///   // [_Workaround: There is a problem with Git. (git --version 2.10.1)_]
+    ///   // #workaround(git --version 2.10.1, There is a problem with Git.)
     ///   ```
     case workaroundReminders
 

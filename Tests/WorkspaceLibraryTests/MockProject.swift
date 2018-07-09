@@ -199,7 +199,7 @@ extension PackageRepository {
                     }
 
                     #if !os(Linux)
-                    // [_Workaround: Jazzy issues. (jazzy --version 0.9.3)_]
+                    // #workaround(jazzy --version 0.9.3, Jazzy issues.)
                     if location.lastPathComponent == "UnicodeSource" {
                         let index = try String(from: location.appendingPathComponent("docs/\(location.lastPathComponent)/index.html"))
                         XCTAssert(¬index.contains("Skip in Jazzy"), "Failed to remove read‐me–only content.")

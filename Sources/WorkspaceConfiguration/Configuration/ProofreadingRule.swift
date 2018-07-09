@@ -19,6 +19,9 @@ public enum ProofreadingRule : String, Codable {
 
     // ••••••• Deprecation •••••••
 
+    /// Catches deprecated warnings.
+    case deprecatedWarnings
+
     /// Catches deprecated test exemptions.
     case deprecatedTestExemptions
 
@@ -127,6 +130,7 @@ public enum ProofreadingRule : String, Codable {
     // [_Inherit Documentation: SDGCornerstone.IterableEnumeration.cases_]
     /// An array containing every case of the enumeration.
     public static let cases: [ProofreadingRule] = [
+        .deprecatedWarnings,
         .deprecatedTestExemptions,
         .deprecatedInheritanceDirectives,
         .deprecatedExampleDirectives,
@@ -158,7 +162,7 @@ public enum ProofreadingRule : String, Codable {
     /// The category the rule belongs to.
     public var category: Category {
         switch self {
-        case .deprecatedTestExemptions, .deprecatedInheritanceDirectives, .deprecatedExampleDirectives, .deprecatedGitManagement, .deprecatedConfiguration, .deprecatedLinuxDocumentation:
+        case .deprecatedWarnings, .deprecatedTestExemptions, .deprecatedInheritanceDirectives, .deprecatedExampleDirectives, .deprecatedGitManagement, .deprecatedConfiguration, .deprecatedLinuxDocumentation:
             return .deprecation
 
         case .manualWarnings,

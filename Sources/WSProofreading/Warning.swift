@@ -31,7 +31,7 @@ extension Warning {
 
         for localizedTrigger in InterfaceLocalization.cases.map({ trigger.resolved(for: $0) }) {
 
-            let marker = ("[_\(localizedTrigger)", "_]")
+            let marker = ("#\(localizedTrigger)(", ")")
 
             var index = file.contents.scalars.startIndex
             while let match = file.contents.scalars.firstNestingLevel(startingWith: marker.0.scalars, endingWith: marker.1.scalars, in: index ..< file.contents.scalars.endIndex) {

@@ -37,8 +37,14 @@ internal struct WorkaroundReminders : Warning {
 
     internal static func message(for details: StrictString, in project: PackageRepository, output: Command.Output) throws -> UserFacing<StrictString, InterfaceLocalization>? {
 
-        if let versionCheck = details.scalars.firstNestingLevel(startingWith: "(".scalars, endingWith: ")".scalars) {
-            var parameters = versionCheck.contents.contents.components(separatedBy: " ".scalars)
+        var description = details
+
+        if let comma = details.scalars.firstMatch(for: ",".scalars) {
+            description = StrictString(details.scalars[comma.range.upperBound...])
+
+            let versionCheckRange = details.scalars.startIndex ..< comma.range.lowerBound
+            let versionCheck = details.scalars[versionCheckRange]
+            var parameters = versionCheck.components(separatedBy: " ".scalars)
             if ¬parameters.isEmpty,
                 let problemVersion = Version(String(StrictString(parameters.removeLast().contents))) {
 
@@ -47,7 +53,7 @@ internal struct WorkaroundReminders : Warning {
                 if dependency == "Swift" {
                     var newDetails = details
                     let script: StrictString = "swift \u{2D}\u{2D}version"
-                    newDetails.replaceSubrange(versionCheck.contents.range, with: "\(script) \(problemVersion.string())".scalars)
+                    newDetails.replaceSubrange(versionCheckRange, with: "\(script) \(problemVersion.string())".scalars)
                     if try message(for: newDetails, in: project, output: output) == nil {
                         return nil
                     }
@@ -67,7 +73,7 @@ internal struct WorkaroundReminders : Warning {
             case .englishCanada:
                 label = "Workaround: "
             }
-            return label + details
+            return label + description
         })
     }
 

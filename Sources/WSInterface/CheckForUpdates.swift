@@ -36,7 +36,7 @@ extension Workspace {
 
         static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, _, output: Command.Output) throws in
             if let update = try checkForUpdates(output: output) {
-                // [_Exempt from Test Coverage_] Execution path is determined externally.
+                // @exempt(from: tests) Execution path is determined externally.
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
@@ -45,7 +45,7 @@ extension Workspace {
                     }
                 }).resolved())
             } else {
-                // [_Exempt from Test Coverage_] Execution path is determined externally.
+                // @exempt(from: tests) Execution path is determined externally.
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
@@ -58,10 +58,10 @@ extension Workspace {
         static func checkForUpdates(output: Command.Output) throws -> Version? {
             let latestRemote = try Package(url: Metadata.packageURL).versions().sorted().last!
             if latestRemote ≠ Metadata.latestStableVersion {
-                // [_Exempt from Test Coverage_] Execution path is determined externally.
+                // @exempt(from: tests) Execution path is determined externally.
                 return latestRemote
-            } else { // [_Exempt from Test Coverage_] Execution path is determined externally.
-                // [_Exempt from Test Coverage_]
+            } else { // @exempt(from: tests) Execution path is determined externally.
+                // @exempt(from: tests)
                 return nil // Up to date.
             }
         }

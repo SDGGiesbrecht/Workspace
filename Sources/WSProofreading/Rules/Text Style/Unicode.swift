@@ -169,7 +169,7 @@ internal struct UnicodeRule : Rule {
                         continue
                     }
                 default:
-                    // [_Exempt from Test Coverage_] Probably not reachable.
+                    // @exempt(from: tests) Probably not reachable.
                     break
                 }
             }

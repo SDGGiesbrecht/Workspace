@@ -58,7 +58,7 @@ extension PackageRepository {
             for directory in locations where file.is(in: directory) {
                 return true
             }
-            // [_Exempt from Test Coverage_] False coverage result in Xcode 9.4.1.
+            // @exempt(from: tests) False coverage result in Xcode 9.4.1.
             return false
         }
         return result

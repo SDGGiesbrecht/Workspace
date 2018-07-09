@@ -175,7 +175,7 @@ extension PackageRepository {
 
             for warning in warnings {
                 output.print([
-                    warning.file.path(relativeTo: location) + ":" + String(warning.line?.inDigits() ?? ""), // [_Exempt from Test Coverage_] It is unknown what would cause a missing line number.
+                    warning.file.path(relativeTo: location) + ":" + String(warning.line?.inDigits() ?? ""), // @exempt(from: tests) It is unknown what would cause a missing line number.
                     warning.symbol,
                     ""
                     ].joinedAsLines().formattedAsError())

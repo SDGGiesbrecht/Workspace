@@ -23,7 +23,7 @@ public struct WorkspaceContext : Context {
     /// The context of the current project.
     public static var current: WorkspaceContext {
         get {
-            return _current ?? accept()! // [_Exempt from Test Coverage_]
+            return _current ?? accept()! // @exempt(from: tests)
         }
         set {
             _current = newValue

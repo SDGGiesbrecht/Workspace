@@ -77,9 +77,9 @@ internal class SwiftLint : SwiftPackage {
                 ]) {
                 return false // SwiftLint reported a violation.
             }
-            throw error // Error in SwiftLint set‐up. [_Exempt from Test Coverage_]
+            throw error // Error in SwiftLint set‐up. // @exempt(from: tests)
         } catch let error {
-            throw error // Error in SwiftLint set‐up. // [_Exempt from Test Coverage_]
+            throw error // Error in SwiftLint set‐up. // @exempt(from: tests)
         }
     }
 }

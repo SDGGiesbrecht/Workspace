@@ -59,7 +59,7 @@ extension Rule {
     internal static func line(after match: PatternMatch<String.ScalarView>, in file: TextFile) -> String.ScalarView.SubSequence? {
         let line = lineRange(for: match, in: file)
         guard line.upperBound ≠ file.contents.lines.endIndex else {
-            // [_Exempt from Test Coverage_] Would require additional SwiftLint violations (final empty line), whose order is not deterministic.
+            // @exempt(from: tests) Would require additional SwiftLint violations (final empty line), whose order is not deterministic.
             return nil
         }
         return file.contents.lines[line.upperBound].line

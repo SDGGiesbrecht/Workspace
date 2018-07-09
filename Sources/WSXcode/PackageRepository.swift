@@ -66,7 +66,7 @@ extension PackageRepository {
 
     private func script() throws -> String {
         if try isWorkspaceProject() {
-            return "swift run workspace proofread •xcode" // [_Exempt from Test Coverage_]
+            return "swift run workspace proofread •xcode" // @exempt(from: tests)
         } else {
             return "export PATH=\u{5C}\u{22}$HOME/.SDG/Registry:$PATH\u{5C}\u{22} ; if which workspace > /dev/null ; then workspace proofread •xcode •use‐version " + Metadata.latestStableVersion.string() + " ; else echo \u{5C}\u{22}warning: \(PackageRepository.instructions.resolved())\u{5C}\u{22} ; fi"
         }

@@ -46,8 +46,8 @@ public struct FileSyntax {
             return blockSyntax.comment(contents: contents)
         } else if let lineSyntax = lineCommentSyntax {
             return lineSyntax.comment(contents: contents)
-        } else { // [_Exempt from Test Coverage_] Not currently reachable.
-            return nil  // [_Exempt from Test Coverage_]
+        } else { // @exempt(from: tests) Not currently reachable.
+            return nil  // @exempt(from: tests)
         }
     }
 
@@ -116,7 +116,7 @@ public struct FileSyntax {
         } else if let line = lineCommentSyntax?.contentsOfFirstComment(in: range, of: file.contents) {
             return line
         }
-        return nil // [_Exempt from Test Coverage_] Unreachable.
+        return nil // @exempt(from: tests) Unreachable.
     }
 
     private static func advance(_ index: inout String.ScalarView.Index, pastLayoutSpacingIn string: String) {

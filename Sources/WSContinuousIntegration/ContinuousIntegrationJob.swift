@@ -189,7 +189,7 @@ public enum ContinuousIntegrationJob : Int, IterableEnumeration {
         switch self {
         case .macOSSwiftPackageManager, .macOSXcode:
             return try .macOS ∈ project.configuration(output: output).supportedOperatingSystems
-        case .linux: // [_Exempt from Test Coverage_] False coverage result in Xcode 9.2.
+        case .linux: // @exempt(from: tests) False coverage result in Xcode 9.2.
             return try .linux ∈ project.configuration(output: output).supportedOperatingSystems
         case .iOS:
             return try .iOS ∈ project.configuration(output: output).supportedOperatingSystems

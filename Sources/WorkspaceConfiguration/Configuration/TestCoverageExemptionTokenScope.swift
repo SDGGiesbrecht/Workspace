@@ -30,10 +30,10 @@ extension TestCoverageExemptionToken {
         /// // ...but the “assert” token causes it to be exempt.
         /// ```
         ///
-        /// This is also the scope of the general exemption directive, `[_Exempt from Test Coverage_]`.
+        /// This is also the scope of the general exemption, `@exempt(from: tests)`.
         ///
         /// ```swift
-        /// func untestableFunction() { // [_Exempt from Test Coverage_]
+        /// func untestableFunction() { // @exempt(from: tests)
         ///     // This is exempt.
         /// }
         /// ```

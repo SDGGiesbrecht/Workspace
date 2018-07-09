@@ -63,7 +63,7 @@ extension Workspace {
                         if  try options.project.configuration(output: output).continuousIntegration.skipSimulatorOutsideContinuousIntegration,
                             options.job == nil, // Not in continuous integration.
                             job ∈ ContinuousIntegrationJob.simulatorJobs {
-                             // [_Exempt from Test Coverage_] Tested separately.
+                             // @exempt(from: tests) Tested separately.
                             return // and continue loop.
                         }
 

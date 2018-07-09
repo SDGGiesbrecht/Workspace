@@ -45,7 +45,7 @@ extension Workspace.Validate {
                 var validationStatus = ValidationStatus()
 
                 if options.job == .deployment {
-                    try TravisCI.keepAlive { // [_Exempt from Test Coverage_]
+                    try TravisCI.keepAlive { // @exempt(from: tests)
                         try executeAsStep(validationStatus: &validationStatus, arguments: arguments, options: options, output: output)
                     }
                 } else {
@@ -56,7 +56,7 @@ extension Workspace.Validate {
         static func executeAsStep(validationStatus: inout ValidationStatus, arguments: DirectArguments, options: Options, output: Command.Output) throws {
 
             if ¬ProcessInfo.isInContinuousIntegration {
-                try Workspace.Refresh.All.executeAsStep(withArguments: arguments, options: options, output: output) // [_Exempt from Test Coverage_]
+                try Workspace.Refresh.All.executeAsStep(withArguments: arguments, options: options, output: output) // @exempt(from: tests)
             }
 
             let projectName = StrictString(try options.project.projectName())
@@ -115,8 +115,8 @@ extension Workspace.Validate {
             #endif
 
             // State
-            if ProcessInfo.isInContinuousIntegration ∧ ProcessInfo.isPullRequest ∧ ¬_isDuringSpecificationTest { // [_Exempt from Test Coverage_] Only reachable during pull request.
-                // [_Exempt from Test Coverage_]
+            if ProcessInfo.isInContinuousIntegration ∧ ProcessInfo.isPullRequest ∧ ¬_isDuringSpecificationTest { // @exempt(from: tests) Only reachable during pull request.
+                // @exempt(from: tests)
 
                 let state = validationStatus.newSection()
 
@@ -151,7 +151,7 @@ extension Workspace.Validate {
 
             // Workspace
             if let update = try Workspace.CheckForUpdates.checkForUpdates(output: output) {
-                output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in // [_Exempt from Test Coverage_] Determined externally.
+                output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in // @exempt(from: tests) Determined externally.
                     switch localization {
                     case .englishCanada:
                         let url = URL(string: "#installation", relativeTo: Metadata.packageURL)!

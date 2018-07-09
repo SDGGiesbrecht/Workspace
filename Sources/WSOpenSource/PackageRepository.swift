@@ -83,7 +83,7 @@ extension PackageRepository {
                         if let packageName = try? package.projectName() {
                             name = packageName
                         } else {
-                            // [_Exempt from Test Coverage_] Only reachable with a non‐package repository.
+                            // @exempt(from: tests) Only reachable with a non‐package repository.
                             name = StrictString(url.lastPathComponent)
                         }
 

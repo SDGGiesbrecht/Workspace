@@ -25,7 +25,7 @@ extension Warning {
 
     internal static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) throws {
         if file.location.lastPathComponent == "ProofreadingRule.swift" {
-            // [_Exempt from Test Coverage_]
+            // @exempt(from: tests)
             return
         }
 

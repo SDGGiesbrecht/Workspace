@@ -49,19 +49,19 @@ internal class Jazzy : RubyGem {
 
     internal static let `default` = Jazzy(version: Version(0, 9, 3))
 
-    internal override class var name: UserFacing<StrictString, InterfaceLocalization> { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
-        return UserFacing({ localization in // [_Exempt from Test Coverage_]
+    internal override class var name: UserFacing<StrictString, InterfaceLocalization> { // @exempt(from: tests) Reachable only with an incompatible version of Jazzy.
+        return UserFacing({ localization in // @exempt(from: tests)
             switch localization {
-            case .englishCanada: // [_Exempt from Test Coverage_]
+            case .englishCanada: // @exempt(from: tests)
                 return "Jazzy"
             }
         })
     }
 
-    internal override class var installationInstructionsURL: UserFacing<StrictString, InterfaceLocalization> { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
-        return UserFacing({ localization in // [_Exempt from Test Coverage_]
+    internal override class var installationInstructionsURL: UserFacing<StrictString, InterfaceLocalization> { // @exempt(from: tests) Reachable only with an incompatible version of Jazzy.
+        return UserFacing({ localization in // @exempt(from: tests)
             switch localization {
-            case .englishCanada: // [_Exempt from Test Coverage_]
+            case .englishCanada: // @exempt(from: tests)
                 return "https://github.com/realm/jazzy"
             }
         })
@@ -132,10 +132,10 @@ internal class Jazzy : RubyGem {
         try fixSplitClusters(in: outputDirectory, for: project, output: output)
     }
 
-    private func parseError(undocumented json: String) -> Command.Error { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
-        return Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in // [_Exempt from Test Coverage_]
+    private func parseError(undocumented json: String) -> Command.Error { // @exempt(from: tests) Reachable only with an incompatible version of Jazzy.
+        return Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in // @exempt(from: tests)
             switch localization {
-            case .englishCanada: // [_Exempt from Test Coverage_]
+            case .englishCanada: // @exempt(from: tests)
                 return StrictString("Error loading list of undocumented symbols:\n\(json)")
             }
         }))
@@ -146,11 +146,11 @@ internal class Jazzy : RubyGem {
         let json = try TextFile(alreadyAt: outputDirectory.appendingPathComponent("undocumented.json")).contents
 
         guard let information = try JSONSerialization.jsonObject(with: json.file, options: []) as? [String: Any] else {
-            throw parseError(undocumented: json) // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
+            throw parseError(undocumented: json) // @exempt(from: tests) Reachable only with an incompatible version of Jazzy.
         }
 
         guard let warnings = information["warnings"] as? [Any] else {
-            throw parseError(undocumented: json) // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
+            throw parseError(undocumented: json) // @exempt(from: tests) Reachable only with an incompatible version of Jazzy.
         }
 
         var result: [(file: URL, line: Int?, symbol: String)] = []
@@ -159,7 +159,7 @@ internal class Jazzy : RubyGem {
             guard let warning = entry as? [String: Any],
                 let path = warning["file"] as? String,
                 let symbol = warning["symbol"] as? String else {
-                    throw parseError(undocumented: json) // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
+                    throw parseError(undocumented: json) // @exempt(from: tests) Reachable only with an incompatible version of Jazzy.
             }
             let line = warning["line"] as? Int // Occasionally “null” for some reason.
 
@@ -196,7 +196,7 @@ internal class Jazzy : RubyGem {
                                 if first ∈ SwiftLanguage.operatorHeadCharactersIncludingDot {
                                     source.scalars.replaceSubrange(`class`, with: "o".scalars)
                                 } else {
-                                    // [_Exempt from Test Coverage_] Possibly no longer occurs in Jazzy output.
+                                    // @exempt(from: tests) Possibly no longer occurs in Jazzy output.
                                     source.scalars.replaceSubrange(`class`, with: "n".scalars)
                                 }
                             }

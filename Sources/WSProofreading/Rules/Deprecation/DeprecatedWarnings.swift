@@ -26,14 +26,14 @@ internal struct DeprecatedWarnings : Rule {
         }
     })
 
-    private static let warningMessage =  UserFacing<StrictString, InterfaceLocalization>({ (localization) in
+    private static let warningMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "This syntax is no longer recognized. Use “#warning” instead."
         }
     })
 
-    private static let workaroundMessage =  UserFacing<StrictString, InterfaceLocalization>({ (localization) in
+    private static let workaroundMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "This syntax is no longer recognized. Use “#workaround” instead."

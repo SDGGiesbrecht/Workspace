@@ -26,14 +26,14 @@ internal struct DeprecatedTestExemptions : Rule {
         }
     })
 
-    private static let replacement =  UserFacing<StrictString, InterfaceLocalization>({ (localization) in
+    private static let replacement = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "@exempt(from: tests)"
         }
     })
 
-    private static let message =  UserFacing<StrictString, InterfaceLocalization>({ (localization) in
+    private static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "This syntax is no longer recognized. Use “" + replacement.resolved() + "” instead."

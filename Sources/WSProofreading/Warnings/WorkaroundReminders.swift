@@ -17,6 +17,8 @@ import WSGeneralImports
 
 import SDGExternalProcess
 
+import WSProject
+
 internal struct WorkaroundReminders : Warning {
 
     internal static let noticeOnly = true
@@ -39,16 +41,19 @@ internal struct WorkaroundReminders : Warning {
 
         var description = details
 
-        if let comma = details.scalars.firstMatch(for: ", ".scalars) {
+        if let comma = details.scalars.firstMatch(for: ",".scalars) {
             description = StrictString(details.scalars[comma.range.upperBound...])
 
             let versionCheckRange = details.scalars.startIndex ..< comma.range.lowerBound
-            let versionCheck = details.scalars[versionCheckRange]
+            var versionCheck = StrictString(details.scalars[versionCheckRange])
+            versionCheck.trimMarginalWhitespace()
+
             var parameters = versionCheck.components(separatedBy: " ".scalars)
             if ¬parameters.isEmpty,
                 let problemVersion = Version(String(StrictString(parameters.removeLast().contents))) {
 
-                let dependency = parameters.map({ StrictString($0.contents) }).joined(separator: " ")
+                var dependency = parameters.map({ StrictString($0.contents) }).joined(separator: " ")
+                dependency.trimMarginalWhitespace()
 
                 if dependency == "Swift" {
                     var newDetails = details

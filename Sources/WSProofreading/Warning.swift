@@ -38,12 +38,7 @@ extension Warning {
                 index = match.container.range.upperBound
 
                 var details = StrictString(match.contents.contents)
-                if details.hasPrefix(":".scalars) {
-                    details.removeFirst()
-                }
-                if details.hasPrefix(" ".scalars) {
-                    details.removeFirst()
-                }
+                details.trimMarginalWhitespace()
 
                 if let description = try message(for: details, in: project, output: output) {
                     reportViolation(in: file, at: match.container.range, message: description, status: status, output: output)

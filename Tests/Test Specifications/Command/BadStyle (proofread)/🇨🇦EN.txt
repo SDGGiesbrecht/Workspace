@@ -72,6 +72,7 @@ Sources/BadStyle/Rules/Deprecation/TestExemption.swift
 Line 3
 This syntax is no longer recognized. Use “@exempt(from: tests)” instead. (deprecatedTestExemptions)
 // [_Exempt from Test Coverage_]
+// @exempt(from: tests)
 
 Sources/BadStyle/Rules/Deprecation/Warnings.swift
 Line 3

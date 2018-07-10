@@ -26,16 +26,23 @@ internal struct DeprecatedTestExemptions : Rule {
         }
     })
 
+    private static let replacement =  UserFacing<StrictString, InterfaceLocalization>({ (localization) in
+        switch localization {
+        case .englishCanada:
+            return "@exempt(from: tests)"
+        }
+    })
+
     private static let message =  UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
-            return "This syntax is no longer recognized. Use “@exempt(from: tests)” instead."
+            return "This syntax is no longer recognized. Use “" + replacement.resolved() + "” instead."
         }
     })
 
     internal static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
         for match in file.contents.scalars.matches(for: "[\u{5F}Exempt from Test Coverage_]".scalars) {
-            reportViolation(in: file, at: match.range, message: message, status: status, output: output)
+            reportViolation(in: file, at: match.range, replacementSuggestion: replacement.resolved(), message: message, status: status, output: output)
         }
     }
 }

@@ -76,7 +76,7 @@ internal struct UnicodeRule : Rule {
             }
 
             if allowInShellSource {
-                if fromStartOfLine(to: match, in: file).contains("[\u{5F}Workaround".scalars) {
+                if fromStartOfLine(to: match, in: file).contains("\u{23}workaround".scalars) {
                     continue
                 }
 

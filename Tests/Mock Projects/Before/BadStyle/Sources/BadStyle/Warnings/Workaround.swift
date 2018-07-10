@@ -1,13 +1,13 @@
 // Header
 
-// [_Workaround: This should trigger. The workaround may no longer be necessary. (Dependency 0.9.9)_]
-// [_Workaround: This should be silent. The workaround is still necessary. (Dependency 1.0.0)_]
+// #workaround(Dependency 0.9.9, This should trigger. The workaround may no longer be necessary.)
+// #workaround(Dependency 1.0.0, This should be silent. The workaround is still necessary.)
 
-// [_Workaround: This should trigger. The workaround may no longer be necessary. (Swift 3)_]
-// [_Workaround: This should be silent. The workaround is still necessary. (Swift 100)_]
+// #workaround(Swift 3, This should trigger. The workaround may no longer be necessary.)
+// #workaround(Swift 100, This should be silent. The workaround is still necessary.)
 
-// [_Workaround: This should trigger. The workaround may no longer be necessary. (echo 1.0.0 0.9.9)_]
-// [_Workaround: This should be silent. The workaround is still necessary. (echo 1.0.0 1.0.0)_]
+// #workaround(echo 1.0.0 0.9.9, This should trigger. The workaround may no longer be necessary.)
+// #workaround(echo 1.0.0 1.0.0, This should be silent. The workaround is still necessary.)
 
-// [_Workaround: This should trigger no matter what._]
-// [_Workaround: This malformed version check should trigger. (echo oops 1.0.0)_]
+// #workaround(This should trigger no matter what.)
+// #workaround(echo oops 1.0.0, This malformed version check should trigger.)

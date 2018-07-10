@@ -1,3 +1,3 @@
 // Header
 
-// [_Warning: This should trigger a warning._]
+// #warning(This should trigger a warning.)

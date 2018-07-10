@@ -151,8 +151,8 @@ extension Workspace.Validate {
 
             // Workspace
             if ¬_isDuringSpecificationTest,
-                let update = try Workspace.CheckForUpdates.checkForUpdates(output: output) {
-                output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in // @exempt(from: tests) Determined externally.
+                let update = try Workspace.CheckForUpdates.checkForUpdates(output: output) { // @exempt(from: tests) Determined externally.
+                output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in // @exempt(from: tests)
                     switch localization {
                     case .englishCanada:
                         let url = URL(string: "#installation", relativeTo: Metadata.packageURL)!

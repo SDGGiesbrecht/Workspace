@@ -33,7 +33,7 @@ internal struct WorkaroundReminders : Warning {
     internal static let trigger = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
-            return "Workaround"
+            return "workaround"
         }
     })
 

@@ -213,15 +213,15 @@ This should trigger a warning. (manualWarnings)
 
 Sources/BadStyle/Warnings/Workaround.swift
 Line 3
-Workaround: This should trigger. The workaround may no longer be necessary. (Dependency 0.9.9) (workaroundReminders)
+Workaround: This should trigger. The workaround may no longer be necessary. (workaroundReminders)
 // #workaround(Dependency 0.9.9, This should trigger. The workaround may no longer be necessary.)
 
 Line 6
-Workaround: This should trigger. The workaround may no longer be necessary. (Swift 3) (workaroundReminders)
+Workaround: This should trigger. The workaround may no longer be necessary. (workaroundReminders)
 // #workaround(Swift 3, This should trigger. The workaround may no longer be necessary.)
 
 Line 9
-Workaround: This should trigger. The workaround may no longer be necessary. (echo 1.0.0 0.9.9) (workaroundReminders)
+Workaround: This should trigger. The workaround may no longer be necessary. (workaroundReminders)
 // #workaround(echo 1.0.0 0.9.9, This should trigger. The workaround may no longer be necessary.)
 
 Line 12
@@ -229,7 +229,7 @@ Workaround: This should trigger no matter what. (workaroundReminders)
 // #workaround(This should trigger no matter what.)
 
 Line 13
-Workaround: This malformed version check should trigger. (echo oops 1.0.0) (workaroundReminders)
+Workaround: This malformed version check should trigger. (workaroundReminders)
 // #workaround(echo oops 1.0.0, This malformed version check should trigger.)
 
 Tests/BadStyleTests/BadStyleTests.swift

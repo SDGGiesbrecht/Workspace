@@ -72,6 +72,7 @@ internal struct WorkaroundReminders : Warning {
             }
         }
 
+        description.trimMarginalWhitespace()
         return UserFacing({ localization in
             let label: StrictString
             switch localization {

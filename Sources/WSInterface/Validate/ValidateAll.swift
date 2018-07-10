@@ -150,7 +150,8 @@ extension Workspace.Validate {
             output.print("Summary".formattedAsSectionHeader())
 
             // Workspace
-            if let update = try Workspace.CheckForUpdates.checkForUpdates(output: output) {
+            if ¬_isDuringSpecificationTest,
+                let update = try Workspace.CheckForUpdates.checkForUpdates(output: output) {
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in // @exempt(from: tests) Determined externally.
                     switch localization {
                     case .englishCanada:

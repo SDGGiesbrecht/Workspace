@@ -85,6 +85,10 @@ Incomplete heading syntax. Use “// MARK: - ”. (marks)
 // MARK: - This heading is malformed and should trigger.
 
 Sources/BadStyle/Rules/Functionality/SyntaxColouring.swift
+Line 3
+“/**” may not survive autoindent (⌃I). Use “///” instead. (autoindentResilience)
+/**
+
 Line 6
 U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
  - A list
@@ -92,10 +96,6 @@ U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (�
 Line 7
 U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
      - A sublist
-
-Line 3
-“/**” may not survive autoindent (⌃I). Use “///” instead. (autoindentResilience)
-/**
 
 Sources/BadStyle/Rules/Intentional/MissingImplementation.swift
 Line 4

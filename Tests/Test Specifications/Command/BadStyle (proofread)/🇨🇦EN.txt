@@ -52,10 +52,26 @@ This syntax is no longer recognized. Use “#example(1, anExample)” instead. (
 // [_Example 1: anExample_]
 // #example(1, anExample)
 
+Sources/BadStyle/Rules/Deprecation/InheritanceDirectives.swift
+Line 3
+This syntax is no longer recognized. Use “@documentation(This inheritance style is deprecated.)” instead. (deprecatedInheritanceDirectives)
+// [_Define Documentation: This inheritance style is deprecated._]
+// @documentation(This inheritance style is deprecated.)
+
+Line 7
+This syntax is no longer recognized. Use “#documentation(This inheritance style is deprecated.)” instead. (deprecatedInheritanceDirectives)
+// [_Inherit Documentation: This inheritance style is deprecated._]
+// #documentation(This inheritance style is deprecated.)
+
 Sources/BadStyle/Rules/Deprecation/LinuxDocumentation.swift
 Line 3
 Special compilation conditions are no longer necessary for Linux documentation. (deprecatedLinuxDocumentation)
 #if os(macOS) || LinuxDocs // Deprecated; should trigger.
+
+Sources/BadStyle/Rules/Deprecation/TestExemption.swift
+Line 3
+This syntax is no longer recognized. Use “@exempt(from: tests)” instead. (deprecatedTestExemptions)
+// [_Exempt from Test Coverage_]
 
 Sources/BadStyle/Rules/Deprecation/Warnings.swift
 Line 3

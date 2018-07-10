@@ -61,7 +61,7 @@ internal struct DeprecatedInheritanceDirectives : Rule {
             let directiveReplacement = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
                 switch localization {
                 case .englishCanada:
-                    return "\u{40}documentation(" + identifier + ")"
+                    return "\u{23}documentation(" + identifier + ")"
                 }
             }).resolved()
             reportViolation(in: file, at: directive.container.range, replacementSuggestion: directiveReplacement, message: message(replacement: directiveReplacement), status: status, output: output)

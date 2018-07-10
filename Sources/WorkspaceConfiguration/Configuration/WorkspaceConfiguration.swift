@@ -245,6 +245,9 @@ public final class WorkspaceConfiguration : Configuration {
         repository = try container.decode(RepositoryConfiguration.self, forKey: .repository)
         isSDG = try container.decode(Bool.self, forKey: .isSDG)
         try super.init(from: container.superDecoder())
+
+        // Because “registered” must be non‐nil:
+        WorkspaceConfiguration.registered = self
     }
 
     // MARK: - Configuration

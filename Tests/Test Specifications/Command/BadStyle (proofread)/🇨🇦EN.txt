@@ -57,6 +57,15 @@ Line 3
 Special compilation conditions are no longer necessary for Linux documentation. (deprecatedLinuxDocumentation)
 #if os(macOS) || LinuxDocs // Deprecated; should trigger.
 
+Sources/BadStyle/Rules/Deprecation/Warnings.swift
+Line 3
+This syntax is no longer recognized. Use “#warning” instead. (deprecatedWarnings)
+// [_Warning: This warning style is deprecated._]
+
+Line 4
+This syntax is no longer recognized. Use “#workaround” instead. (deprecatedWarnings)
+// [_Workaround: This workaround style is deprecated._]
+
 Sources/BadStyle/Rules/Documentation/CompilationConditions.swift
 Line 3
 Undocumented compilation condition. Add “// MARK: - #if...” on the next line. (documentationOfCompilationConditions)

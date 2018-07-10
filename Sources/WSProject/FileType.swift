@@ -31,7 +31,7 @@ public enum FileType {
         if unexpectedTypes.isEmpty {
             return nil
         } else {
-            defer { unsupportedFileTypesEncountered = [:]} // [_Reset between tests._]
+            defer { unsupportedFileTypesEncountered = [:]} // Reset between tests.
 
             var warning: [StrictString] = [
                 UserFacing<StrictString, InterfaceLocalization>({ localization in

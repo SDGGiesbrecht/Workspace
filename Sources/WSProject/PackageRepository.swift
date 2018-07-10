@@ -140,7 +140,7 @@ extension PackageRepository {
             let declaredTools: Set<String>
             switch try cachedManifest().package {
             case .v3:
-                // [_Exempt from Test Coverage_] Not officially supported anyway.
+                // @exempt(from: tests) Not officially supported anyway.
                 declaredTools = [] // No concept of products.
             case .v4(let manifest):
                 declaredTools = Set(manifest.products.map({ $0.name }))
@@ -303,7 +303,7 @@ extension PackageRepository {
                     ∧ ¬url.lastPathComponent.hasSuffix("~")
             }
             return files.sorted { $0.absoluteString.scalars.lexicographicallyPrecedes($1.absoluteString.scalars) } // So that output order is consistent.
-            // [_Workaround: Simple “sorted” differs between operating systems. (Swift 4.1.2)_]
+            // #workaround(Swift 4.1.2, Simple “sorted” differs between operating systems.)
         }
     }
 
@@ -375,7 +375,7 @@ extension PackageRepository {
 
             try? FileManager.default.removeItem(at: location)
             if location.pathExtension == "swift" {
-                resetManifestCache(debugReason: location.lastPathComponent) // [_Exempt from Test Coverage_] Nothing deletes Swift files yet.
+                resetManifestCache(debugReason: location.lastPathComponent) // @exempt(from: tests) Nothing deletes Swift files yet.
             } else {
                 resetFileCache(debugReason: location.lastPathComponent)
             }

@@ -83,9 +83,9 @@ extension PackageRepository {
             }
             output.print(description.formattedAsError())
 
-            validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in // [_Exempt from Test Coverage_]
+            validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in // @exempt(from: tests)
                 switch localization {
-                case .englishCanada: // [_Exempt from Test Coverage_]
+                case .englishCanada: // @exempt(from: tests)
                     return "Build failed for " + job.englishName + "." + section.crossReference.resolved(for: localization)
                 }
             }))
@@ -118,7 +118,7 @@ extension PackageRepository {
         let testCommand: (Command.Output) -> Bool
         switch job {
         case .macOSSwiftPackageManager, .linux:
-            // [_Exempt from Test Coverage_] Tested separately.
+            // @exempt(from: tests) Tested separately.
             testCommand = { output in
                 do {
                     try self.test(reportProgress: { output.print($0) })
@@ -181,13 +181,13 @@ extension PackageRepository {
         }).resolved().formattedAsSectionHeader())
 
         func failStepWithError(message: StrictString) {
-            // [_Exempt from Test Coverage_] Difficult to reach consistently.
+            // @exempt(from: tests) Difficult to reach consistently.
 
             output.print(message.formattedAsError())
 
-            validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in // [_Exempt from Test Coverage_]
+            validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in // @exempt(from: tests)
                 switch localization {
-                case .englishCanada: // [_Exempt from Test Coverage_]
+                case .englishCanada: // @exempt(from: tests)
                     let name = job.englishTargetOperatingSystemName
                     return StrictString("Test coverage could not be determined on \(name).") + section.crossReference.resolved(for: localization)
                 }
@@ -261,9 +261,9 @@ extension PackageRepository {
                     }
                 }))
             } else {
-                validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in // [_Exempt from Test Coverage_]
+                validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in // @exempt(from: tests)
                     switch localization {
-                    case .englishCanada: // [_Exempt from Test Coverage_]
+                    case .englishCanada: // @exempt(from: tests)
                         let name = job.englishTargetOperatingSystemName
                         return StrictString("Test coverage is incomplete on \(name).") + section.crossReference.resolved(for: localization)
                     }

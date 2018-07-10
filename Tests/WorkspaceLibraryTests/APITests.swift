@@ -231,17 +231,17 @@ class APITests : TestCase {
         testCommand(Workspace.command, with: ["validate", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace validate)", overwriteSpecificationInsteadOfFailing: false)
     }
 
-    func testInvalidResourceDirectory() {
-        PackageRepository(mock: "InvalidResourceDirectory").test(commands: [
-            ["refresh", "resources"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-    }
-
     func testHeaders() {
         PackageRepository(mock: "Headers").test(commands: [
             ["refresh", "file‐headers"],
             ["refresh", "examples"],
             ["refresh", "inherited‐documentation"]
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testInvalidResourceDirectory() {
+        PackageRepository(mock: "InvalidResourceDirectory").test(commands: [
+            ["refresh", "resources"]
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 

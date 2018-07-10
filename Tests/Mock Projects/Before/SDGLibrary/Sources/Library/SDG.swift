@@ -14,7 +14,7 @@ struct SDG {
         preconditionFailure()
     }
     
-    func exempt() { // [_Exempt from Test Coverage_]
+    func exempt() { // @exempt(from: tests)
         
     }
     
@@ -26,7 +26,7 @@ struct SDG {
         
     }
 
-    func defineExample() { // [_Exempt from Test Coverage_]
+    func defineExample() { // @exempt(from: tests)
         // @example(anExample)
         // This is source code.
 
@@ -46,7 +46,7 @@ struct SDG {
     ///
     /// ```
     /// ```
-    func useExample() {} // [_Exempt from Test Coverage_]
+    func useExample() {} // @exempt(from: tests)
 
     // @documentation(someDocumentation)
     /// This is documentation.

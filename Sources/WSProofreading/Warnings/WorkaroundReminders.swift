@@ -17,6 +17,8 @@ import WSGeneralImports
 
 import SDGExternalProcess
 
+import WSProject
+
 internal struct WorkaroundReminders : Warning {
 
     internal static let noticeOnly = true
@@ -31,23 +33,32 @@ internal struct WorkaroundReminders : Warning {
     internal static let trigger = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
-            return "Workaround"
+            return "workaround"
         }
     })
 
     internal static func message(for details: StrictString, in project: PackageRepository, output: Command.Output) throws -> UserFacing<StrictString, InterfaceLocalization>? {
 
-        if let versionCheck = details.scalars.firstNestingLevel(startingWith: "(".scalars, endingWith: ")".scalars) {
-            var parameters = versionCheck.contents.contents.components(separatedBy: " ".scalars)
+        var description = details
+
+        if let comma = details.scalars.firstMatch(for: ",".scalars) {
+            description = StrictString(details.scalars[comma.range.upperBound...])
+
+            let versionCheckRange = details.scalars.startIndex ..< comma.range.lowerBound
+            var versionCheck = StrictString(details.scalars[versionCheckRange])
+            versionCheck.trimMarginalWhitespace()
+
+            var parameters = versionCheck.components(separatedBy: " ".scalars)
             if ¬parameters.isEmpty,
                 let problemVersion = Version(String(StrictString(parameters.removeLast().contents))) {
 
-                let dependency = parameters.map({ StrictString($0.contents) }).joined(separator: " ")
+                var dependency = parameters.map({ StrictString($0.contents) }).joined(separator: " ")
+                dependency.trimMarginalWhitespace()
 
                 if dependency == "Swift" {
                     var newDetails = details
                     let script: StrictString = "swift \u{2D}\u{2D}version"
-                    newDetails.replaceSubrange(versionCheck.contents.range, with: "\(script) \(problemVersion.string())".scalars)
+                    newDetails.replaceSubrange(versionCheckRange, with: "\(script) \(problemVersion.string())".scalars)
                     if try message(for: newDetails, in: project, output: output) == nil {
                         return nil
                     }
@@ -61,13 +72,14 @@ internal struct WorkaroundReminders : Warning {
             }
         }
 
+        description.trimMarginalWhitespace()
         return UserFacing({ localization in
             let label: StrictString
             switch localization {
             case .englishCanada:
                 label = "Workaround: "
             }
-            return label + details
+            return label + description
         })
     }
 
@@ -84,7 +96,7 @@ internal struct WorkaroundReminders : Warning {
                 } else {
                     return nil
                 }
-            }) // [_Exempt from Test Coverage_] Meaningless coverage region.
+            }) // @exempt(from: tests) Meaningless coverage region.
         }
     }
 }

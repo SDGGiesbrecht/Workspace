@@ -25,25 +25,20 @@ extension Warning {
 
     internal static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) throws {
         if file.location.lastPathComponent == "ProofreadingRule.swift" {
-            // [_Exempt from Test Coverage_]
+            // @exempt(from: tests)
             return
         }
 
         for localizedTrigger in InterfaceLocalization.cases.map({ trigger.resolved(for: $0) }) {
 
-            let marker = ("[_\(localizedTrigger)", "_]")
+            let marker = ("#\(localizedTrigger)(", ")")
 
             var index = file.contents.scalars.startIndex
             while let match = file.contents.scalars.firstNestingLevel(startingWith: marker.0.scalars, endingWith: marker.1.scalars, in: index ..< file.contents.scalars.endIndex) {
                 index = match.container.range.upperBound
 
                 var details = StrictString(match.contents.contents)
-                if details.hasPrefix(":".scalars) {
-                    details.removeFirst()
-                }
-                if details.hasPrefix(" ".scalars) {
-                    details.removeFirst()
-                }
+                details.trimMarginalWhitespace()
 
                 if let description = try message(for: details, in: project, output: output) {
                     reportViolation(in: file, at: match.container.range, message: description, status: status, output: output)

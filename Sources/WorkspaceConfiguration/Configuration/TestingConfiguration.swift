@@ -39,7 +39,7 @@ public struct TestingConfiguration : Codable {
     /// The default tokens, taken straight from the source code, are:
     ///
     /// ```swift
-    /// TestCoverageExemptionToken("[_Exempt from Test Coverage_]", scope: .sameLine),
+    /// TestCoverageExemptionToken("@exempt(from: tests)", scope: .sameLine),
     /// TestCoverageExemptionToken("assert", scope: .sameLine),
     /// TestCoverageExemptionToken("assertionFailure", scope: .previousLine),
     /// TestCoverageExemptionToken("precondition", scope: .sameLine),
@@ -52,7 +52,7 @@ public struct TestingConfiguration : Codable {
     /// ```
     public var testCoverageExemptions: Set<TestCoverageExemptionToken> = [
         // @example(testCoverageExemptionTokens)
-        TestCoverageExemptionToken("[_Exempt from Test Coverage_]", scope: .sameLine),
+        TestCoverageExemptionToken("@exempt(from: tests)", scope: .sameLine),
         TestCoverageExemptionToken("assert", scope: .sameLine),
         TestCoverageExemptionToken("assertionFailure", scope: .previousLine),
         TestCoverageExemptionToken("precondition", scope: .sameLine),

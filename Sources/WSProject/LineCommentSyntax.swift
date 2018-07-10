@@ -106,7 +106,7 @@ public struct LineCommentSyntax {
 
     internal func contentsOfFirstComment(in range: Range<String.ScalarView.Index>, of string: String) -> String? {
         guard let range = rangeOfFirstComment(in: range, of: string) else {
-            return nil // [_Exempt from Test Coverage_] Unreachable.
+            return nil // @exempt(from: tests) Unreachable.
         }
 
         let comment = String(string[range])

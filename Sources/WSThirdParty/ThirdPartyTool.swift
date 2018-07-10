@@ -24,7 +24,7 @@ open class ThirdPartyTool {
 
     // MARK: - Initialization
 
-    public init(command: StrictString, repositoryURL: URL, version: Version, versionCheck: [StrictString]) { // [_Exempt from Test Coverage_] False positive with Xcode 9.3.
+    public init(command: StrictString, repositoryURL: URL, version: Version, versionCheck: [StrictString]) { // @exempt(from: tests) False positive with Xcode 9.3.
         self.command = command
         self.repositoryURL = repositoryURL
         self.version = version
@@ -54,7 +54,7 @@ open class ThirdPartyTool {
             output.print("")
             return
         }
-        // [_Exempt from Test Coverage_] Unreachable except with incompatible versions of tools.
+        // @exempt(from: tests) Unreachable except with incompatible versions of tools.
         try type(of: self).execute(command: command, version: version, with: arguments, versionCheck: versionCheck, repositoryURL: repositoryURL, cacheDirectory: ThirdPartyTool.toolsCache.appendingPathComponent(repositoryURL.lastPathComponent), output: output)
     }
 

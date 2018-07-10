@@ -58,7 +58,7 @@ extension PackageRepository {
             for directory in locations where file.is(in: directory) {
                 return true
             }
-            // [_Exempt from Test Coverage_] False coverage result in Xcode 9.4.1.
+            // @exempt(from: tests) False coverage result in Xcode 9.4.1.
             return false
         }
         return result
@@ -94,7 +94,7 @@ extension PackageRepository {
         }
 
         for (target, resources) in targets.keys.sorted(by: { $0.name.scalars.lexicographicallyPrecedes($1.name.scalars) }).map({ ($0, targets[$0]!) }) { // So that output order is consistent.
-            // [_Workaround: Simple “sorted” differs between operating systems. (Swift 4.1.2)_]
+            // #workaround(Swift 4.1.2, Simple “sorted” differs between operating systems.)
 
             try autoreleasepool {
                 try target.refresh(resources: resources, from: self, output: output)

@@ -29,7 +29,7 @@ public struct TextFile {
         let contents = try String(from: location)
         let executable: Bool
         #if os(Linux)
-            // [_Workaround: Linux has no implementation for resourcesValues (Swift 4.1.2)_]
+            // #workaround(Swift 4.1.2, Linux has no implementation for resourcesValues.)
             executable = FileManager.default.isExecutableFile(atPath: location.path)
         #else
             executable = try location.resourceValues(forKeys: [.isExecutableKey]).isExecutable == true
@@ -41,7 +41,7 @@ public struct TextFile {
         do {
             self = try TextFile(alreadyAt: location)
             if isExecutable ≠ executable {
-                // [_Exempt from Test Coverage_] Unreachable except with corrupt files.
+                // @exempt(from: tests) Unreachable except with corrupt files.
                 isExecutable = executable
                 hasChanged = true
             }
@@ -78,8 +78,8 @@ public struct TextFile {
     public let location: URL
 
     private var isExecutable: Bool {
-        willSet { // [_Exempt from Test Coverage_] Unreachable except with corrupt files.
-            if newValue ≠ isExecutable { // [_Exempt from Test Coverage_]
+        willSet { // @exempt(from: tests) Unreachable except with corrupt files.
+            if newValue ≠ isExecutable { // @exempt(from: tests)
                 hasChanged = true
             }
         }
@@ -152,7 +152,7 @@ public struct TextFile {
             var new = newValue
             // Remove unnecessary initial spacing
             while new.hasPrefix("\n") {
-                new.scalars.removeFirst() // [_Exempt from Test Coverage_] Should not be reachable.
+                new.scalars.removeFirst() // @exempt(from: tests) Should not be reachable.
             }
 
             let headerSource = String(contents[headerStart ..< headerEnd])
@@ -186,7 +186,7 @@ public struct TextFile {
             try contents.save(to: location)
             if isExecutable {
                 #if os(Linux)
-                    // [_Workaround: FileManager cannot change permissions on Linux. (Swift 4.1.2)_]
+                    // #workaround(Swift 4.1.2, FileManager cannot change permissions on Linux.)
                     try Shell.default.run(command: ["chmod", "+x", Shell.quote(location.path)])
                 #else
                     try FileManager.default.setAttributes([.posixPermissions: 0o777], ofItemAtPath: location.path)

@@ -8,7 +8,7 @@
 
 // Trigger, because this is not a minus sign: a - b
 
-// [_Workaround: Generic strokes may be necessary in version checks. (bash --version 1000.0.0)_]
+// #workaround(bash --version 1000.0.0, Generic strokes may be necessary in version checks.)
 
 /// Generic strokes may be necessary in inline shell source `swift -version`.
 

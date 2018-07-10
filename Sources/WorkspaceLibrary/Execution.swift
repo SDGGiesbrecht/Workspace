@@ -19,7 +19,7 @@ import Dispatch
 import WorkspaceProjectConfiguration
 import WSInterface
 
-public func run() { // [_Exempt from Test Coverage_]
+public func run() { // @exempt(from: tests)
 
     DispatchQueue.global(qos: .utility).sync {
 

@@ -50,7 +50,7 @@ extension ContinuousIntegrationJob {
         case .macOSSwiftPackageManager, .macOSXcode:
             return "macOS"
         case .linux:
-            return "Linux" // [_Exempt from Test Coverage_] Unreachable from macOS.
+            return "Linux" // @exempt(from: tests) Unreachable from macOS.
         case .iOS:
             return "iOS"
         case .watchOS:
@@ -94,10 +94,10 @@ extension ContinuousIntegrationJob {
         case .macOSXcode:
             return .macOS
         case .iOS:
-            // [_Exempt from Test Coverage_] Tested separately.
+            // @exempt(from: tests) Tested separately.
             return .iOS(simulator: true)
         case .tvOS:
-            // [_Exempt from Test Coverage_] Tested separately.
+            // @exempt(from: tests) Tested separately.
             return .tvOS(simulator: true)
         case .macOSSwiftPackageManager, .linux, .watchOS, .miscellaneous, .documentation, .deployment:
             unreachable()

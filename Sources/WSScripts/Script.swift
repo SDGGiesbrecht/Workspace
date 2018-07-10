@@ -167,7 +167,7 @@ internal enum Script : Int, IterableEnumeration {
         case .refreshLinux:
             lines.append(openTerminal(andExecute: "Refresh"))
         case .validateLinux:
-            // [_Exempt from Test Coverage_] Unreachable from macOS.
+            // @exempt(from: tests) Unreachable from macOS.
             lines.append(openTerminal(andExecute: "Validate"))
         case .refreshMacOS:
             lines.append(contentsOf: try getWorkspace(andExecute: "refresh", for: project, output: output))

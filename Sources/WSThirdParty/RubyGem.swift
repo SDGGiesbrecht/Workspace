@@ -32,10 +32,10 @@ open class RubyGem : ThirdPartyTool {
 
     // MARK: - Execution
 
-    private class func installationError(version: Version) -> Command.Error { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
-        return Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in // [_Exempt from Test Coverage_]
+    private class func installationError(version: Version) -> Command.Error { // @exempt(from: tests) Reachable only with an incompatible version of Jazzy.
+        return Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in // @exempt(from: tests)
             switch localization {
-            case .englishCanada: // [_Exempt from Test Coverage_]
+            case .englishCanada: // @exempt(from: tests)
                 let englishName = name.resolved(for: localization)
                 let url = installationInstructionsURL.resolved(for: localization)
                 return [
@@ -47,27 +47,27 @@ open class RubyGem : ThirdPartyTool {
         }))
     }
 
-    public final override class func execute(command: StrictString, version: Version, with arguments: [String], versionCheck: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: Command.Output) throws { // [_Exempt from Test Coverage_] Reachable only with an incompatible version of Jazzy.
+    public final override class func execute(command: StrictString, version: Version, with arguments: [String], versionCheck: [StrictString], repositoryURL: URL, cacheDirectory: URL, output: Command.Output) throws { // @exempt(from: tests) Reachable only with an incompatible version of Jazzy.
 
         let commandString: [String] = [String(command), "_" + version.string() + "_"]
-        let versionCheckString = versionCheck.map({ String($0) }) // [_Exempt from Test Coverage_]
+        let versionCheckString = versionCheck.map({ String($0) }) // @exempt(from: tests)
 
-        if (try? Shell.default.run(command: commandString + versionCheckString)) == nil { // [_Exempt from Test Coverage_]
-            do { // [_Exempt from Test Coverage_]
+        if (try? Shell.default.run(command: commandString + versionCheckString)) == nil { // @exempt(from: tests)
+            do { // @exempt(from: tests)
                 output.print("")
                 try Shell.default.run(command: [
                     "gem", "install", String(command),
                     "\u{2D}\u{2D}version", version.string()
-                    ], reportProgress: { output.print($0) }) // [_Exempt from Test Coverage_]
+                    ], reportProgress: { output.print($0) }) // @exempt(from: tests)
                 output.print("")
             } catch {
-                // [_Exempt from Test Coverage_]
+                // @exempt(from: tests)
                 throw installationError(version: version)
             }
-        } // [_Exempt from Test Coverage_]
+        } // @exempt(from: tests)
 
         output.print("")
-        try Shell.default.run(command: commandString + arguments, reportProgress: { output.print($0) }) // [_Exempt from Test Coverage_]
+        try Shell.default.run(command: commandString + arguments, reportProgress: { output.print($0) }) // @exempt(from: tests)
         output.print("")
     }
 }

@@ -76,7 +76,7 @@ internal struct UnicodeRule : Rule {
             }
 
             if allowInShellSource {
-                if fromStartOfLine(to: match, in: file).contains("[\u{5F}Workaround".scalars) {
+                if fromStartOfLine(to: match, in: file).contains("\u{23}workaround".scalars) {
                     continue
                 }
 
@@ -169,7 +169,7 @@ internal struct UnicodeRule : Rule {
                         continue
                     }
                 default:
-                    // [_Exempt from Test Coverage_] Probably not reachable.
+                    // @exempt(from: tests) Probably not reachable.
                     break
                 }
             }

@@ -60,7 +60,7 @@ public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hash
 
     // MARK: - ExpressibleByStringLiteral
 
-    // [_Inherit Documentation: SDGCornerstone.ExpressibleByStringLiteral.init(stringLiteral:)_]
+    // #workaround(jazzy --version 0.9.3, Allow automatic inheritance when documentation supports it.)
     /// Creates an instance from a string literal.
     ///
     /// - Parameters:
@@ -71,7 +71,7 @@ public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hash
 
     // MARK: - TransparentWrapper
 
-    // [_Inherit Documentation: SDGCornerstone.TransparentWrapper.wrapped_]
+    // #workaround(jazzy --version 0.9.3, Allow automatic inheritance when documentation supports it.)
     /// The wrapped instance.
     public var wrappedInstance: Any {
         if let content = _reasonableMatch {

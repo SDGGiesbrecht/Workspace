@@ -42,7 +42,7 @@ public let configuration: WorkspaceConfiguration = {
 
     configuration.documentation.readMe.shortProjectDescription["🇨🇦EN"] = "Workspace automates management of Swift projects."
 
-    configuration.documentation.readMe.quotation = Quotation(original: "Πᾶν ὅ τι ἐὰν ποιῆτε, ἐκ ψυχῆς ἐργάζεσθε, ὡς τῷ Κυρίῳ καὶ οὐκ ἀνθρώποις.")
+    configuration.documentation.readMe.quotation = Quotation(original: "Πᾶν ὅ τι ἐὰν ποιῆτε, ἐκ ψυχῆς ἐργάζεσθε, ὡς τῷ Κυρίῳ καὶ οὐκ ἀνθρώποις.")
     configuration.documentation.readMe.quotation?.translation["🇨🇦EN"] = "Whatever you do, work from the heart, as working for the Lord and not for men."
 
     configuration.documentation.readMe.quotation?.citation["🇨🇦EN"] = "‎שאול/Shaʼul"

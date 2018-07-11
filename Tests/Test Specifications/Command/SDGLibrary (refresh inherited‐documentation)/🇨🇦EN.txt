@@ -6,6 +6,5 @@ $ swift package resolve
 Fetching file://[Temporary]/Developer/Dependency
 Cloning file://[Temporary]/Developer/Dependency
 Resolving file://[Temporary]/Developer/Dependency at 1.0.0
-$ swift package resolve
 Writing to “Sources/Library/SDG.swift”...
 0

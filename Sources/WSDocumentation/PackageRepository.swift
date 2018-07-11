@@ -252,9 +252,6 @@ extension PackageRepository {
     private func documentationDefinitions(output: Command.Output) throws -> [StrictString: StrictString] {
         return try _withDocumentationCache {
 
-            try resolve(reportProgress: { output.print($0) })
-            resetFileCache(debugReason: "resolve")
-
             var list: [StrictString: StrictString] = [:]
 
             let dependencies = try allFiles().filter { url in
@@ -297,6 +294,9 @@ extension PackageRepository {
     }
 
     public func refreshInheritedDocumentation(output: Command.Output) throws {
+
+        try resolve(reportProgress: { output.print($0) })
+        resetFileCache(debugReason: "resolve")
 
         for url in try sourceFiles(output: output) {
             try autoreleasepool {

@@ -63,7 +63,7 @@ extension PackageRepository {
                 LiteralPattern("#".scalars),
                 LiteralPattern(exampleDirective.resolved(for: localization)),
                 LiteralPattern("(".scalars),
-                RepetitionPattern(ConditionalPattern({ $0 ≠ "," })),
+                RepetitionPattern(ConditionalPattern({ $0 ≠ "," ∧ $0 ≠ ")" })),
                 LiteralPattern(",".scalars),
                 RepetitionPattern(ConditionalPattern({ $0 ≠ ")" })),
                 LiteralPattern(")".scalars)

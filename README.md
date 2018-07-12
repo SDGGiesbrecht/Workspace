@@ -88,25 +88,25 @@ import WorkspaceConfiguration
 
 ## The Workspace Workflow
 
-*The Workspace project is managed by... Workspace! So let’s try it out by following along using the Workspace project itself.*
+(The following sample package is a real repository. You can use it to follow along.)
 
 ### When the Repository Is Cloned
 
-Workspace hides as much as it can from Git, so when a project using Workspace is pulled, pushed, or cloned...
+The need to hunt down workflow tools can deter contributors. On the other hand, including them in the repository causes a lot of clutter. To reduce both, when a project using Workspace is pulled, pushed, or cloned...
 
 ```shell
-git clone https://github.com/SDGGiesbrecht/Workspace
+git clone https://github.com/SDGGiesbrecht/SamplePackage
 ```
 
 ...only one small piece of Workspace comes with it: A short script called “Refresh” that comes in two variants, one for each operating system.
 
 *Hmm... I wish I had more tools at my disposal... Hey! What if I...*
 
-### Refresh the Workspace
+### Refresh the Project
 
-To refresh the workspace, double‐click the `Refresh` script for the corresponding operating system. (If you are on Linux and double‐clicking fails or opens a text file, see [here](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/linux-notes.html).)
+To refresh the project, double‐click the `Refresh` script for the corresponding operating system. (If you are on Linux and double‐clicking fails or opens a text file, see [here](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/linux-notes.html).)
 
-`Refresh` opens a terminal window, and in it Workspace reports its actions while it sets the project folder up for development.
+`Refresh` opens a terminal window, and in it Workspace reports its actions while it sets the project folder up for development. (This may take a while the first time, but subsequent runs are faster.)
 
 *This looks better. Let’s get coding!*
 

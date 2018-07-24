@@ -332,14 +332,7 @@ extension PackageRepository {
         let ignoredPaths = configuration.repository.ignoredPaths.map { location.appendingPathComponent($0) }
 
         return try cached(in: &fileCache.sourceFiles) { () -> [URL] in
-
-            let generatedURLs = [
-                "docs",
-                refreshScriptMacOSFileName,
-                refreshScriptLinuxFileName
-                ].map({ location.appendingPathComponent( String($0)) })
-
-            let result = try trackedFiles(output: output).filter { url in
+            return try trackedFiles(output: output).filter { url in
                 if url.path(relativeTo: location) == ".Workspace Configuration.txt" {
                     return true // So it triggers a deprecation notice.
                 }
@@ -348,14 +341,8 @@ extension PackageRepository {
                         return false
                     }
                 }
-                for generatedURL in generatedURLs {
-                    if url.is(in: generatedURL) {
-                        return false
-                    }
-                }
                 return url.pathExtension ∉ ignoredTypes ∧ url.lastPathComponent ∉ ignoredTypes
             }
-            return result
         }
     }
 

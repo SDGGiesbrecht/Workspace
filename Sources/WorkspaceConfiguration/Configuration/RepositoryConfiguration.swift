@@ -39,10 +39,19 @@ public struct RepositoryConfiguration : Codable {
         "xcworkspacedata"
     ]
 
+    /// :nodoc:
+    public static let _refreshScriptMacOSFileName: StrictString = "Refresh (macOS).command"
+    /// :nodoc:
+    public static let _refreshScriptLinuxFileName: StrictString = "Refresh (Linux).sh"
+
     /// Paths which source operations should ignore.
     ///
     /// Files in these paths will not receive headers or be proofread.
     ///
     /// The paths must be specified relative to the package root.
-    public var ignoredPaths: Set<String> = []
+    public var ignoredPaths: Set<String> = [
+        "docs",
+        String(RepositoryConfiguration._refreshScriptMacOSFileName),
+        String(RepositoryConfiguration._refreshScriptLinuxFileName)
+    ]
 }

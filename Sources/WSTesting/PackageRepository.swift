@@ -222,12 +222,17 @@ extension PackageRepository {
                     }
                 }
             }
+            let exemptPaths = try configuration(output: output).testing.exemptPaths.map({ location.appendingPathComponent($0) })
 
             let sameLineTokens = try configuration(output: output).testing.exemptionTokens.map { StrictString($0.token) }
             let previousLineTokens = try configuration(output: output).testing.exemptionTokens.filter({ $0.scope == .previousLine }).map { StrictString($0.token) }
 
             var passing = true
-            for file in report.files where file.file.resolvingSymlinksInPath() ∉ irrelevantFiles {
+            files: for file in report.files where file.file.resolvingSymlinksInPath() ∉ irrelevantFiles {
+                for path in exemptPaths where file.file.is(in: path) {
+                    continue files
+                }
+
                 CommandLineProofreadingReporter.default.reportParsing(file: file.file.path(relativeTo: location), to: output)
                 try autoreleasepool {
                     let sourceFile = try String(from: file.file)

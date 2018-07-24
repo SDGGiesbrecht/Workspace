@@ -50,7 +50,7 @@ public struct TestingConfiguration : Codable {
     /// TestCoverageExemptionToken("test", scope: .sameLine),
     /// TestCoverageExemptionToken("fail", scope: .sameLine)
     /// ```
-    public var testCoverageExemptions: Set<TestCoverageExemptionToken> = [
+    public var exemptionTokens: Set<TestCoverageExemptionToken> = [
         // @example(testCoverageExemptionTokens)
         TestCoverageExemptionToken("@exempt(from: tests)", scope: .sameLine),
         TestCoverageExemptionToken("assert", scope: .sameLine),

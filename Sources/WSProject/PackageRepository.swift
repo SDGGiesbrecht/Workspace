@@ -335,11 +335,14 @@ extension PackageRepository {
                 refreshScriptLinuxFileName
                 ].map({ location.appendingPathComponent( String($0)) })
 
-            let result = try trackedFiles(output: output).filter { (url) in
+            let result = try trackedFiles(output: output).filter { url in
                 for generatedURL in generatedURLs {
                     if url.is(in: generatedURL) {
                         return false
                     }
+                }
+                if try url.isIgnored(by: self, output: output) {
+                    return false
                 }
                 return true
             }

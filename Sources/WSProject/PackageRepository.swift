@@ -327,6 +327,10 @@ extension PackageRepository {
     }
 
     public func sourceFiles(output: Command.Output) throws -> [URL] {
+        let configuration = try self.configuration(output: output)
+        let ignoredTypes = configuration.repository.ignoredFileTypes
+        let ignoredPaths = configuration.repository.ignoredPaths.map { location.appendingPathComponent($0) }
+
         return try cached(in: &fileCache.sourceFiles) { () -> [URL] in
 
             let generatedURLs = [
@@ -336,15 +340,20 @@ extension PackageRepository {
                 ].map({ location.appendingPathComponent( String($0)) })
 
             let result = try trackedFiles(output: output).filter { url in
+                if url.path(relativeTo: location) == ".Workspace Configuration.txt" {
+                    return true // So it triggers a deprecation notice.
+                }
+                for path in ignoredPaths {
+                    if url.is(in: path) {
+                        return false
+                    }
+                }
                 for generatedURL in generatedURLs {
                     if url.is(in: generatedURL) {
                         return false
                     }
                 }
-                if try url.isIgnored(by: self, output: output) {
-                    return false
-                }
-                return true
+                return url.pathExtension ∉ ignoredTypes ∧ url.lastPathComponent ∉ ignoredTypes
             }
             return result
         }

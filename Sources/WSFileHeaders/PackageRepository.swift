@@ -35,25 +35,22 @@ extension PackageRepository {
         let template = try fileHeader(output: output)
 
         let skippedFiles = self.skippedFiles
-        for url in try sourceFiles(output: output)
-            where try url ∉ skippedFiles
-                ∧ ¬url.isIgnored(by: self, output: output) {
-                    try autoreleasepool {
+        for url in try sourceFiles(output: output) where url ∉ skippedFiles {
+            try autoreleasepool {
+                if let type = FileType(url: url),
+                    type.syntax.hasComments {
 
-                        if let type = FileType(url: url),
-                            type.syntax.hasComments {
+                    var file = try TextFile(alreadyAt: url)
+                    let oldHeader = file.header
+                    var header = template
 
-                            var file = try TextFile(alreadyAt: url)
-                            let oldHeader = file.header
-                            var header = template
+                    header = header.replacingMatches(for: "#filename", with: StrictString(url.lastPathComponent))
+                    header = header.replacingMatches(for: "#dates", with: copyright(fromText: oldHeader))
 
-                            header = header.replacingMatches(for: "#filename", with: StrictString(url.lastPathComponent))
-                            header = header.replacingMatches(for: "#dates", with: copyright(fromText: oldHeader))
-
-                            file.header = String(header)
-                            try file.writeChanges(for: self, output: output)
-                        }
-                    }
+                    file.header = String(header)
+                    try file.writeChanges(for: self, output: output)
+                }
+            }
         }
     }
 }

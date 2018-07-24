@@ -115,9 +115,6 @@ extension PackageRepository {
     public func refreshExamples(output: Command.Output) throws {
 
         files: for url in try sourceFiles(output: output) {
-            for path in try configuration(output: output).repository.ignoredPaths where url.is(in: location.appendingPathComponent(path)) {
-                continue files
-            }
 
             try autoreleasepool {
 

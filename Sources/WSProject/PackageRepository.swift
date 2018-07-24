@@ -332,9 +332,7 @@ extension PackageRepository {
             let generatedURLs = [
                 "docs",
                 refreshScriptMacOSFileName,
-                refreshScriptLinuxFileName,
-
-                "Tests/Mock Projects" // To prevent treating them as Workspace source files for headers, etc.
+                refreshScriptLinuxFileName
                 ].map({ location.appendingPathComponent( String($0)) })
 
             let result = try trackedFiles(output: output).filter { (url) in

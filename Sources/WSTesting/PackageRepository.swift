@@ -223,8 +223,8 @@ extension PackageRepository {
                 }
             }
 
-            let sameLineTokens = try configuration(output: output).testing.testCoverageExemptions.map { StrictString($0.token) }
-            let previousLineTokens = try configuration(output: output).testing.testCoverageExemptions.filter({ $0.scope == .previousLine }).map { StrictString($0.token) }
+            let sameLineTokens = try configuration(output: output).testing.exemptionTokens.map { StrictString($0.token) }
+            let previousLineTokens = try configuration(output: output).testing.exemptionTokens.filter({ $0.scope == .previousLine }).map { StrictString($0.token) }
 
             var passing = true
             for file in report.files where file.file.resolvingSymlinksInPath() ∉ irrelevantFiles {

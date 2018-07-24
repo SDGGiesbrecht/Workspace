@@ -23,6 +23,11 @@ extension URL {
         if lastPathComponent == ".Workspace Configuration.txt" {
             return false // So it triggers a deprecation notice.
         }
+        for path in try project.configuration(output: output).repository.ignoredPaths {
+            if `is`(in: project.location.appendingPathComponent(path)) {
+                return true
+            }
+        }
         return pathExtension ∈ ignoredTypes ∨ lastPathComponent ∈ ignoredTypes
     }
 }

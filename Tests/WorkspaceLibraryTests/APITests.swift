@@ -205,6 +205,7 @@ class APITests : TestCase {
     func testFailingTests() {
         let configuration = WorkspaceConfiguration()
         configuration.xcode.manage = true
+        configuration.testing.exemptPaths.insert("Sources/FailingTests/Exempt")
         // Attempt to remove existing derived data so that the build is clean.
         // Otherwise Xcode skips the build stages where the awaited warnings occur.
         do {

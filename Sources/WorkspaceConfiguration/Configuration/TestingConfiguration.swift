@@ -64,4 +64,9 @@ public struct TestingConfiguration : Codable {
         TestCoverageExemptionToken("fail", scope: .sameLine)
         // @endExample
     ]
+
+    /// Paths exempt from test coverage.
+    ///
+    /// The paths must be specified relative to the package root.
+    public var exemptPaths: Set<String> = []
 }

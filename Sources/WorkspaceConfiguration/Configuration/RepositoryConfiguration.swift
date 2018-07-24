@@ -38,4 +38,11 @@ public struct RepositoryConfiguration : Codable {
         "txt",
         "xcworkspacedata"
     ]
+
+    /// Paths which source operations should ignore.
+    ///
+    /// Files in these paths will not receive headers or be proofread.
+    ///
+    /// The paths must be specified relative to the package root.
+    public var ignoredPaths: Set<String> = []
 }

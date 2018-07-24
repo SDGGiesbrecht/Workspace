@@ -421,8 +421,8 @@ class APITests : TestCase {
             .heading(text: ["🇨🇦EN": "Heading"]),
             .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
         ]
-        configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
-        configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
+        configuration.testing.exemptionTokens.insert(TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
+        configuration.testing.exemptionTokens.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
 
         var commands: [[StrictString]] = [
             ["refresh", "scripts"],
@@ -500,8 +500,8 @@ class APITests : TestCase {
         configuration.documentation.relatedProjects = [
             .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
         ]
-        configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
-        configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
+        configuration.testing.exemptionTokens.insert(TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
+        configuration.testing.exemptionTokens.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
 
         var commands: [[StrictString]] = [
             ["refresh", "scripts"],

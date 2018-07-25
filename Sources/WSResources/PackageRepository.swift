@@ -54,7 +54,7 @@ extension PackageRepository {
     private func resourceFiles(output: Command.Output) throws -> [URL] {
         let locations = resourceDirectories()
 
-        let result = try sourceFiles(output: output).filter { (file) in
+        let result = try trackedFiles(output: output).filter { (file) in
             for directory in locations where file.is(in: directory) {
                 return true
             }

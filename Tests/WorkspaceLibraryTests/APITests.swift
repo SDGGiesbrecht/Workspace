@@ -205,6 +205,7 @@ class APITests : TestCase {
     func testFailingTests() {
         let configuration = WorkspaceConfiguration()
         configuration.xcode.manage = true
+        configuration.testing.exemptPaths.insert("Sources/FailingTests/Exempt")
         // Attempt to remove existing derived data so that the build is clean.
         // Otherwise Xcode skips the build stages where the awaited warnings occur.
         do {
@@ -421,8 +422,8 @@ class APITests : TestCase {
             .heading(text: ["🇨🇦EN": "Heading"]),
             .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
         ]
-        configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
-        configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
+        configuration.testing.exemptionTokens.insert(TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
+        configuration.testing.exemptionTokens.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
 
         var commands: [[StrictString]] = [
             ["refresh", "scripts"],
@@ -500,8 +501,8 @@ class APITests : TestCase {
         configuration.documentation.relatedProjects = [
             .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
         ]
-        configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
-        configuration.testing.testCoverageExemptions.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
+        configuration.testing.exemptionTokens.insert(TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
+        configuration.testing.exemptionTokens.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
 
         var commands: [[StrictString]] = [
             ["refresh", "scripts"],

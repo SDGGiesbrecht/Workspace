@@ -327,25 +327,22 @@ extension PackageRepository {
     }
 
     public func sourceFiles(output: Command.Output) throws -> [URL] {
+        let configuration = try self.configuration(output: output)
+        let ignoredTypes = configuration.repository.ignoredFileTypes
+        let ignoredPaths = configuration.repository.ignoredPaths.map { location.appendingPathComponent($0) }
+
         return try cached(in: &fileCache.sourceFiles) { () -> [URL] in
-
-            let generatedURLs = [
-                "docs",
-                refreshScriptMacOSFileName,
-                refreshScriptLinuxFileName,
-
-                "Tests/Mock Projects" // To prevent treating them as Workspace source files for headers, etc.
-                ].map({ location.appendingPathComponent( String($0)) })
-
-            let result = try trackedFiles(output: output).filter { (url) in
-                for generatedURL in generatedURLs {
-                    if url.is(in: generatedURL) {
+            return try trackedFiles(output: output).filter { url in
+                if url.path(relativeTo: location) == ".Workspace Configuration.txt" {
+                    return true // So it triggers a deprecation notice.
+                }
+                for path in ignoredPaths {
+                    if url.is(in: path) {
                         return false
                     }
                 }
-                return true
+                return url.pathExtension ∉ ignoredTypes ∧ url.lastPathComponent ∉ ignoredTypes
             }
-            return result
         }
     }
 

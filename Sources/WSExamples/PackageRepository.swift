@@ -114,7 +114,8 @@ extension PackageRepository {
 
     public func refreshExamples(output: Command.Output) throws {
 
-        for url in try sourceFiles(output: output) {
+        files: for url in try sourceFiles(output: output) {
+
             try autoreleasepool {
 
                 if FileType(url: url) == .swift {

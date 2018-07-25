@@ -32,9 +32,9 @@ internal enum Script : Int, IterableEnumeration {
     internal var fileName: StrictString {
         switch self {
         case .refreshMacOS:
-            return refreshScriptMacOSFileName
+            return RepositoryConfiguration._refreshScriptMacOSFileName
         case .refreshLinux:
-            return refreshScriptLinuxFileName
+            return RepositoryConfiguration._refreshScriptLinuxFileName
         case .validateMacOS:
             return "Validate (macOS).command"
         case .validateLinux:

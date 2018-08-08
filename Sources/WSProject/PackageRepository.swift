@@ -389,7 +389,7 @@ extension PackageRepository {
 
         let commit = try package.latestCommitIdentifier()
 
-        let repositoryLocation = cache.appendingPathComponent(commit)
+        let repositoryLocation = cache.appendingPathComponent(commit).appendingPathComponent(String(directoryName))
 
         let repository: PackageRepository
         if (try? repositoryLocation.checkResourceIsReachable()) == true {

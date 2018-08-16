@@ -146,7 +146,7 @@ extension PackageRepository {
                 declaredTools = Set(manifest.products.map({ $0.name }))
             }
 
-            for product in try cachedPackage().products {
+            for product in try cachedPackage().products where ¬product.name.hasPrefix("_") {
                 switch product.type {
                 case .library:
                     products.append(product)
@@ -168,7 +168,7 @@ extension PackageRepository {
         return try cached(in: &manifestCache.productModules) {
             var accountedFor: Set<String> = []
             var result: [Target] = []
-            for product in try cachedPackage().products where product.type.isLibrary {
+            for product in try cachedPackage().products where ¬product.name.hasPrefix("_") ∧ product.type.isLibrary {
                 for module in product.targets where module.name ∉ accountedFor {
                     accountedFor.insert(module.name)
                     result.append(module)

@@ -61,10 +61,22 @@ extension PackageRepository {
 
     // MARK: - Documentation
 
+    public func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output, usingJazzy: Bool) throws {
+        if ¬usingJazzy {
+            print("In‐House!")
+        } else {
+            #if !os(Linux)
+            try documentUsingJazzy(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
+            #endif
+        }
+    }
+
     #if !os(Linux)
     // MARK: - #if os(Linux)
 
-    public func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
+    // MARK: - Jazzy
+
+    private func documentUsingJazzy(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
         for product in try productModules() {
             try autoreleasepool {

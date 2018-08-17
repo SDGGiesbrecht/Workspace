@@ -17,16 +17,20 @@ import WSContinuousIntegration
 
 extension Options {
 
+    // MARK: - General
+
     public var job: ContinuousIntegrationJob? {
         return value(for: ContinuousIntegrationJob.option)
     }
 
-    var runAsXcodeBuildPhase: Bool {
-        return value(for: Workspace.Proofread.runAsXcodeBuildPhase)
+    var project: PackageRepository {
+        let url = value(for: Workspace.projectOption) ?? URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+        return PackageRepository(at: url)
     }
 
-    var project: PackageRepository {
-        let url = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-        return PackageRepository(at: url)
+    // MARK: - Proofreading
+
+    var runAsXcodeBuildPhase: Bool {
+        return value(for: Workspace.Proofread.runAsXcodeBuildPhase)
     }
 }

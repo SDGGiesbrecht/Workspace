@@ -20,6 +20,14 @@ import WSDocumentation
 extension Workspace {
     enum Document {
 
+        private static let inHouseName = UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishCanada:
+                return "in‐house"
+            }
+        })
+        private static let inHouse = Option(name: inHouseName, description: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }), type: ArgumentType.boolean, hidden: true)
+
         private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
@@ -34,7 +42,8 @@ extension Workspace {
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, options: Options, output: Command.Output) throws in
+        private static let options = BuildConfiguration.current == .debug ? [inHouse] : [] // #workaround(SDGCommandLine 0.3.3, Hidden options leak into “help”.)
+        static let command = Command(name: name, description: description, directArguments: [], options: options, execution: { (_, options: Options, output: Command.Output) throws in
 
             #if os(Linux)
             throw linuxJazzyError()

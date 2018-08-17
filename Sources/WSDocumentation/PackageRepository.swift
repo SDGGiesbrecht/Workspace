@@ -30,8 +30,8 @@ extension PackageRepository {
 
     // MARK: - Properties
 
-    public func hasTargetsToDocument() throws -> Bool {
-        return try cachedPackage().products.contains(where: { $0.type.isLibrary })
+    public func hasTargetsToDocument(usingJazzy: Bool) throws -> Bool {
+        return try cachedPackage().products.contains(where: { $0.type.isLibrary ∨ (¬usingJazzy ∧ $0.type == .executable) })
     }
 
     // MARK: - Configuration

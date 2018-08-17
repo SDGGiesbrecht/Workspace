@@ -45,11 +45,6 @@ extension Workspace {
         private static let options = BuildConfiguration.current == .debug ? [inHouse] : [] // #workaround(SDGCommandLine 0.3.3, Hidden options leak into “help”.)
         static let command = Command(name: name, description: description, directArguments: [], options: standardOptions + options, execution: { (_, options: Options, output: Command.Output) throws in
 
-            if options.inHouse {
-                print("In‐house!")
-                return
-            }
-
             #if os(Linux)
             throw linuxJazzyError()
             #else

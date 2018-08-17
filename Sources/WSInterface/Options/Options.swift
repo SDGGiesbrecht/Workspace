@@ -33,4 +33,10 @@ extension Options {
     var runAsXcodeBuildPhase: Bool {
         return value(for: Workspace.Proofread.runAsXcodeBuildPhase)
     }
+
+    // MARK: - Documentation
+
+    var inHouse: Bool {
+        return value(for: Workspace.Document.inHouse)
+    }
 }

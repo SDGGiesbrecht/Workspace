@@ -17,6 +17,7 @@ import SDGCollections
 import WSGeneralImports
 
 import SDGXcode
+import SDGSwiftSource
 
 import WSProject
 import WSValidation
@@ -77,8 +78,33 @@ extension PackageRepository {
             return
         }
 
-        try createRedirects(outputDirectory: outputDirectory)
-        try "Index".save(to: outputDirectory.appendingPathComponent("index.html"))
+        let section = validationStatus.newSection()
+        output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishCanada:
+                return "Generating documentation..." + section.anchor
+            }
+        }).resolved().formattedAsSectionHeader())
+        do {
+            try createRedirects(outputDirectory: outputDirectory)
+            _ = try gatherAPI(output: output)
+            try preventJekyllInterference(outputDirectory: outputDirectory)
+
+            validationStatus.passStep(message: UserFacing({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "Generated documentation."
+                }
+            }))
+        } catch {
+            output.print(error.localizedDescription.formattedAsError())
+            validationStatus.failStep(message: UserFacing({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "Failed to generate documentation." + section.crossReference.resolved(for: localization)
+                }
+            }))
+        }
     }
 
     private func createRedirects(outputDirectory: URL) throws {
@@ -95,6 +121,25 @@ extension PackageRepository {
                 try? FileManager.default.removeItem(at: file)
             }
         }
+    }
+
+    private func gatherAPI(output: Command.Output) throws -> [ModuleAPI] {
+        // #warning(Needs to collect executable interfaces too.)
+        var apis: [ModuleAPI] = []
+        for module in try productModules() {
+            output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return StrictString("Parsing “\(module.name)”...")
+                }
+            }).resolved())
+            apis.append(try ModuleAPI(module: module))
+        }
+        return apis
+    }
+
+    private func preventJekyllInterference(outputDirectory: URL) throws {
+        try Data().write(to: outputDirectory.appendingPathComponent(".nojekyll"))
     }
 
     #if !os(Linux)

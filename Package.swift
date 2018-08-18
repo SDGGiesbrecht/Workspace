@@ -171,7 +171,8 @@ let package = Package(
             "WSXcode",
             "WSSwift",
             .productItem(name: "SDGExternalProcess", package: "SDGCornerstone"),
-            .productItem(name: "SDGXcode", package: "SDGSwift")
+            .productItem(name: "SDGXcode", package: "SDGSwift"),
+            .productItem(name: "_SDGSwiftSource", package: "SDGSwift")
             ]),
 
         // Mechanism for embedding third party tools.

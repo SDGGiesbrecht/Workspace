@@ -78,12 +78,15 @@ extension PackageRepository {
         }
 
         try createRedirects(outputDirectory: outputDirectory)
+        try "Index".save(to: outputDirectory.appendingPathComponent("index.html"))
     }
 
     private func createRedirects(outputDirectory: URL) throws {
-        var generalRedirect = Resources.redirect
+        var template = TextFile(mockFileWithContents: Resources.redirect, fileType: .html)
+        template.header = ""
+        var generalRedirect = template.contents
         generalRedirect.scalars.replaceMatches(for: "[*target*]".scalars, with: "index.html".scalars)
-        var indexRedirect = Resources.redirect
+        var indexRedirect = template.contents
         indexRedirect.scalars.replaceMatches(for: "[*target*]".scalars, with: "../index.html".scalars)
         for file in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
             if file.pathExtension == "html" {
@@ -96,8 +99,6 @@ extension PackageRepository {
                 try? FileManager.default.removeItem(at: file)
             }
         }
-
-        try "Index".save(to: outputDirectory.appendingPathComponent("index.html"))
     }
 
     #if !os(Linux)

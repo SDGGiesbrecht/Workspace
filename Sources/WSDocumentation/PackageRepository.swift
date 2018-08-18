@@ -63,12 +63,41 @@ extension PackageRepository {
 
     public func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output, usingJazzy: Bool) throws {
         if ¬usingJazzy {
-            print("In‐House!")
+            try document(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
         } else {
             #if !os(Linux)
             try documentUsingJazzy(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
             #endif
         }
+    }
+
+    private func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
+
+        if ¬(try hasTargetsToDocument(usingJazzy: false)) {
+            return
+        }
+
+        try createRedirects(outputDirectory: outputDirectory)
+    }
+
+    private func createRedirects(outputDirectory: URL) throws {
+        var generalRedirect = Resources.redirect
+        generalRedirect.scalars.replaceMatches(for: "[*target*]".scalars, with: "index.html".scalars)
+        var indexRedirect = Resources.redirect
+        indexRedirect.scalars.replaceMatches(for: "[*target*]".scalars, with: "../index.html".scalars)
+        for file in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
+            if file.pathExtension == "html" {
+                if file.lastPathComponent == "index.html" {
+                    try indexRedirect.save(to: file)
+                } else {
+                    try generalRedirect.save(to: file)
+                }
+            } else {
+                try? FileManager.default.removeItem(at: file)
+            }
+        }
+
+        try "Index".save(to: outputDirectory.appendingPathComponent("index.html"))
     }
 
     #if !os(Linux)

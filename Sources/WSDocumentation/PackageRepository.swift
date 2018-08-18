@@ -82,18 +82,14 @@ extension PackageRepository {
     }
 
     private func createRedirects(outputDirectory: URL) throws {
-        var template = TextFile(mockFileWithContents: Resources.redirect, fileType: .html)
-        template.header = ""
-        var generalRedirect = template.contents
-        generalRedirect.scalars.replaceMatches(for: "[*target*]".scalars, with: "index.html".scalars)
-        var indexRedirect = template.contents
-        indexRedirect.scalars.replaceMatches(for: "[*target*]".scalars, with: "../index.html".scalars)
+        let generalRedirect = Redirect(target: "index.html")
+        let indexRedirect = Redirect(target: "../index.html")
         for file in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
             if file.pathExtension == "html" {
                 if file.lastPathComponent == "index.html" {
-                    try indexRedirect.save(to: file)
+                    try indexRedirect.contents.save(to: file)
                 } else {
-                    try generalRedirect.save(to: file)
+                    try generalRedirect.contents.save(to: file)
                 }
             } else {
                 try? FileManager.default.removeItem(at: file)

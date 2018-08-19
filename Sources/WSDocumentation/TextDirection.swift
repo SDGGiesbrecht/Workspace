@@ -13,6 +13,33 @@
  */
 
 internal enum TextDirection {
+
+    // MARK: - Cases
+
     case rightToLeft
     case leftToRight
+
+    // MARK: - Properties
+
+    internal var htmlAttribute: String {
+        switch self {
+        case .rightToLeft:
+            return "rtl"
+        case .leftToRight:
+            return "ltr"
+        }
+    }
+}
+
+extension Optional where Wrapped == TextDirection {
+
+    internal var htmlAttribute: String {
+        switch self {
+        case .some(let direction):
+            return direction.htmlAttribute
+        case .none:
+            return "auto"
+        }
+    }
+
 }

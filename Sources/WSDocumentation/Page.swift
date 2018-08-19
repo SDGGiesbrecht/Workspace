@@ -30,7 +30,8 @@ internal struct Page {
 
     internal init(title: StrictString, localization: LocalizationIdentifier) {
         var mutable = Page.template
-        mutable.replaceMatches(for: "[*localization code*]".scalars, with: localization.code.scalars)
+        mutable.replaceMatches(for: "[*localization*]".scalars, with: localization.code.scalars)
+        mutable.replaceMatches(for: "[*text direction*]".scalars, with: localization.textDirection.htmlAttribute.scalars)
         mutable.replaceMatches(for: "[*title*]", with: title)
         contents = mutable
     }

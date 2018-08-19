@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import WSGeneralImports
 
 import SDGSwiftSource
@@ -45,7 +46,14 @@ internal struct PackageInterface {
     private func outputPackagePages(to outputDirectory: URL) throws {
         for localization in localizations {
             let page = Page(title: name, localization: localization)
-            try page.contents.save(to: outputDirectory.appendingPathComponent(localization.code).appendingPathComponent(String(name) + ".html"))
+
+            let localizationDirectory = outputDirectory.appendingPathComponent(localization.code)
+            let redirectURL = localizationDirectory.appendingPathComponent("index.html")
+            let pageURL = localizationDirectory.appendingPathComponent(String(name) + ".html")
+            if redirectURL ≠ pageURL {
+                try Redirect(target: pageURL.lastPathComponent).contents.save(to: redirectURL)
+            }
+            try page.contents.save(to: pageURL)
         }
     }
 }

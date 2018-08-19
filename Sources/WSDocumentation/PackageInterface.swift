@@ -53,7 +53,7 @@ internal struct PackageInterface {
                 try Redirect(target: pageURL.lastPathComponent).contents.save(to: redirectURL)
             }
 
-            try Page(title: name, localization: localization, content: "").contents.save(to: pageURL)
+            try Page(localization: localization, pathToSiteRoot: "../", title: name, content: "").contents.save(to: pageURL)
         }
     }
 }

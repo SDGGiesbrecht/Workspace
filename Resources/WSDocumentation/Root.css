@@ -1,7 +1,5 @@
-<!DOCTYPE html>
-
-<!--
- Page.html
+/*
+ Root.css
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -12,19 +10,20 @@
 
  Licensed under the Apache Licence, Version 2.0.
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
- -->
+ */
 
-<html dir="[*text direction*]" lang="[*localization*]">
- <head>
-  <meta charset="utf-8">
-  <title>[*title*]</title>
-  <link rel="stylesheet" href="[*site root*]CSS/Root.css">
-  <link rel="stylesheet" href="[*site root*]CSS/Site.css">
- </head>
- <body>
-  <h1>[*title*]</h1>
+html, body {
+    margin: 0;
+    padding: 0;
+}
 
-[*content*]
-
- </body>
-</html>
+@media print {
+    html {
+        font-family: serif;
+    }
+}
+@media screen {
+    html {
+        font-family: sans-serif;
+    }
+}

@@ -87,11 +87,20 @@ extension PackageRepository {
         }).resolved().formattedAsSectionHeader())
         do {
             try createRedirects(outputDirectory: outputDirectory)
+
             let interface = PackageInterface(localizations: try configuration(output: output).documentation.localizations,
                                              developmentLocalization: try developmentLocalization(output: output),
                                              name: try manifest().name,
                                              modules: try gatherAPI(output: output))
             try interface.outputHTML(to: outputDirectory)
+
+            var rootCSS = TextFile(mockFileWithContents: Resources.root, fileType: .html)
+            rootCSS.header = ""
+            try rootCSS.contents.save(to: outputDirectory.appendingPathComponent("CSS/Root.css"))
+            var siteCSS = TextFile(mockFileWithContents: Resources.site, fileType: .html)
+            siteCSS.header = ""
+            try siteCSS.contents.save(to: outputDirectory.appendingPathComponent("CSS/Site.css"))
+
             try preventJekyllInterference(outputDirectory: outputDirectory)
 
             validationStatus.passStep(message: UserFacing({ localization in

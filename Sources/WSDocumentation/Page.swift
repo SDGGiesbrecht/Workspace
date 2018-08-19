@@ -28,11 +28,12 @@ internal struct Page {
 
     // MARK: - Initialization
 
-    internal init(title: StrictString, localization: LocalizationIdentifier) {
+    internal init(title: StrictString, localization: LocalizationIdentifier, content: StrictString) {
         var mutable = Page.template
         mutable.replaceMatches(for: "[*localization*]".scalars, with: localization.code.scalars)
         mutable.replaceMatches(for: "[*text direction*]".scalars, with: localization.textDirection.htmlAttribute.scalars)
         mutable.replaceMatches(for: "[*title*]", with: title)
+        mutable.replaceMatches(for: "[*content*]", with: content)
         contents = mutable
     }
 

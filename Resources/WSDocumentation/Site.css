@@ -22,4 +22,6 @@ html {
 html {
     font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
     font-size: 106.25%;
+    letter-spacing: -0.021em;
+    line-height: 1.52947;
 }

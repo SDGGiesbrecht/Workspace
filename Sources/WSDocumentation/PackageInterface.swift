@@ -23,8 +23,9 @@ internal struct PackageInterface {
 
     // MARK: - Initialization
 
-    init(localizations: [LocalizationIdentifier], name: String, modules: [ModuleAPI]) {
+    init(localizations: [LocalizationIdentifier], developmentLocalization: LocalizationIdentifier, name: String, modules: [ModuleAPI]) {
         self.localizations = localizations
+        self.developmentLocalization = developmentLocalization
         self.exactName = name.decomposedStringWithCanonicalMapping
         self.name = StrictString(name)
         self.modules = modules
@@ -32,10 +33,11 @@ internal struct PackageInterface {
 
     // MARK: - Properties
 
-    internal var localizations: [LocalizationIdentifier]
-    internal var exactName: String
-    internal var name: StrictString
-    internal var modules: [ModuleAPI]
+    internal let localizations: [LocalizationIdentifier]
+    internal let developmentLocalization: LocalizationIdentifier
+    internal let exactName: String
+    internal let name: StrictString
+    internal let modules: [ModuleAPI]
 
     // MARK: - Output
 
@@ -55,5 +57,6 @@ internal struct PackageInterface {
             }
             try page.contents.save(to: pageURL)
         }
+        try Redirect(target: developmentLocalization.code + "/index.html").contents.save(to: outputDirectory.appendingPathComponent("index.html"))
     }
 }

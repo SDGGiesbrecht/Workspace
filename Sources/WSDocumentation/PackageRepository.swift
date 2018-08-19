@@ -87,7 +87,10 @@ extension PackageRepository {
         }).resolved().formattedAsSectionHeader())
         do {
             try createRedirects(outputDirectory: outputDirectory)
-            let interface = PackageInterface(localizations: try configuration(output: output).documentation.localizations, name: try manifest().name, modules: try gatherAPI(output: output))
+            let interface = PackageInterface(localizations: try configuration(output: output).documentation.localizations,
+                                             developmentLocalization: try developmentLocalization(output: output),
+                                             name: try manifest().name,
+                                             modules: try gatherAPI(output: output))
             try interface.outputHTML(to: outputDirectory)
             try preventJekyllInterference(outputDirectory: outputDirectory)
 

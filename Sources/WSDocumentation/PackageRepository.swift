@@ -94,10 +94,10 @@ extension PackageRepository {
                                              modules: try gatherAPI(output: output))
             try interface.outputHTML(to: outputDirectory)
 
-            var rootCSS = TextFile(mockFileWithContents: Resources.root, fileType: .html)
+            var rootCSS = TextFile(mockFileWithContents: Resources.root, fileType: .css)
             rootCSS.header = ""
             try rootCSS.contents.save(to: outputDirectory.appendingPathComponent("CSS/Root.css"))
-            var siteCSS = TextFile(mockFileWithContents: Resources.site, fileType: .html)
+            var siteCSS = TextFile(mockFileWithContents: Resources.site, fileType: .css)
             siteCSS.header = ""
             try siteCSS.contents.save(to: outputDirectory.appendingPathComponent("CSS/Site.css"))
 

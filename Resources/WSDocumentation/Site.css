@@ -43,7 +43,7 @@ html {
 
 h1 {
     font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-    font-size: 2.5rem;
+    font-size: calc((40 / 17) * 1rem);
     font-weight: 500;
     letter-spacing: 0.008em;
     line-height: 1.05;

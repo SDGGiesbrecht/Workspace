@@ -16,7 +16,7 @@ import WSGeneralImports
 
 import WSProject
 
-internal struct Page {
+internal class Page {
 
     // MARK: - Static Properties
 

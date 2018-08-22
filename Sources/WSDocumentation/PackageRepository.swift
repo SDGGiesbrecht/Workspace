@@ -90,8 +90,7 @@ extension PackageRepository {
 
             let interface = PackageInterface(localizations: try configuration(output: output).documentation.localizations,
                                              developmentLocalization: try developmentLocalization(output: output),
-                                             name: try manifest().name,
-                                             modules: try gatherAPI(output: output))
+                                             api: try PackageAPI(package: cachedPackage()))
             try interface.outputHTML(to: outputDirectory)
 
             var rootCSS = TextFile(mockFileWithContents: Resources.root, fileType: .css)
@@ -134,21 +133,6 @@ extension PackageRepository {
                 try? FileManager.default.removeItem(at: file)
             }
         }
-    }
-
-    private func gatherAPI(output: Command.Output) throws -> [ModuleAPI] {
-        // #warning(Needs to collect executable interfaces too.)
-        var apis: [ModuleAPI] = []
-        for module in try productModules() {
-            output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishCanada:
-                    return StrictString("Parsing “\(module.name)”...")
-                }
-            }).resolved())
-            apis.append(try ModuleAPI(module: module))
-        }
-        return apis
     }
 
     private func preventJekyllInterference(outputDirectory: URL) throws {

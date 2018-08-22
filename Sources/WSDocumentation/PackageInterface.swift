@@ -23,19 +23,17 @@ internal struct PackageInterface {
 
     // MARK: - Initialization
 
-    init(localizations: [LocalizationIdentifier], developmentLocalization: LocalizationIdentifier, name: String, modules: [ModuleAPI]) {
+    init(localizations: [LocalizationIdentifier], developmentLocalization: LocalizationIdentifier, api: PackageAPI) {
         self.localizations = localizations
         self.developmentLocalization = developmentLocalization
-        self.name = StrictString(name)
-        self.modules = modules
+        self.api = api
     }
 
     // MARK: - Properties
 
-    internal let localizations: [LocalizationIdentifier]
-    internal let developmentLocalization: LocalizationIdentifier
-    internal let name: StrictString
-    internal let modules: [ModuleAPI]
+    private let localizations: [LocalizationIdentifier]
+    private let developmentLocalization: LocalizationIdentifier
+    private let api: PackageAPI
 
     // MARK: - Output
 
@@ -48,12 +46,12 @@ internal struct PackageInterface {
         for localization in localizations {
             let localizationDirectory = outputDirectory.appendingPathComponent(localization.code)
             let redirectURL = localizationDirectory.appendingPathComponent("index.html")
-            let pageURL = localizationDirectory.appendingPathComponent(String(name) + ".html")
+            let pageURL = localizationDirectory.appendingPathComponent(api.name + ".html")
             if redirectURL ≠ pageURL {
                 try Redirect(target: pageURL.lastPathComponent).contents.save(to: redirectURL)
             }
 
-            try Page(localization: localization, pathToSiteRoot: "../", title: name, content: "").contents.save(to: pageURL)
+            try Page(localization: localization, pathToSiteRoot: "../", title: StrictString(api.name), content: "").contents.save(to: pageURL)
         }
     }
 }

@@ -34,7 +34,7 @@ internal class SymbolPage : Page {
                 level ≠ navigationPath.index(before: navigationPath.endIndex) {
                 return HTMLElement("a", attributes: ["href": accumulatedNavigationPath.appending(contentsOf: ".html".scalars)], contents: StrictString(element.name), inline: true).source
             } else {
-                return StrictString(element.name)
+                return HTMLElement("span", attributes: [:], contents: StrictString(element.name), inline: true).source
             }
         }
 

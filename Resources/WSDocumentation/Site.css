@@ -38,6 +38,9 @@ h1 {
 html {
     color: #333333;
 }
+a {
+    color: #0070C9;
+}
 
 /* Fonts */
 
@@ -46,6 +49,13 @@ html {
     font-size: 106.25%;
     letter-spacing: -0.021em;
     line-height: 1.52947;
+}
+
+a:link, a:visited {
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
 }
 
 h1 {

@@ -29,6 +29,13 @@ html {
     position: -webkit-sticky;
     top: 0;
 }
+.navigation‐path {
+    height: calc((48 / 17) * 1rem);
+    padding-top: calc((4 / 17) * 1rem);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 
 .title {
     margin-top: 2rem;
@@ -68,7 +75,7 @@ a {
 /* Fonts */
 
 html {
-    font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    font-family: "SF Pro Text", "SF Pro Icons", "-apple-system", "BlinkMacSystemFont", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
     font-size: 106.25%;
     letter-spacing: -0.021em;
     line-height: 1.52947;
@@ -81,15 +88,21 @@ a:hover {
     text-decoration: underline;
 }
 
+.navigation‐path {
+    font-size: calc((15 / 17) * 1rem);
+    letter-spacing: -0.014em;
+    line-height: 1.26667;
+}
+
 .symbol‐type {
-    font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    font-family: "SF Pro Display", "SF Pro Icons", "-apple-system", "BlinkMacSystemFont", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
     font-size: calc((22 / 17) * 1rem);
     letter-spacing: 0.016em;
     line-height: 1;
 }
 
 h1 {
-    font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    font-family: "SF Pro Display", "SF Pro Icons", "-apple-system", "BlinkMacSystemFont", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
     font-size: calc((40 / 17) * 1rem);
     font-weight: 500;
     letter-spacing: 0.008em;
@@ -97,7 +110,7 @@ h1 {
 }
 
 .description {
-    font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    font-family: "SF Pro Display", "SF Pro Icons", "-apple-system", "BlinkMacSystemFont", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
     font-size: calc((22 / 17) * 1rem);
     font-weight: 300;
     letter-spacing: 0.016em;

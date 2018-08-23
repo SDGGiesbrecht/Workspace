@@ -27,7 +27,7 @@ internal class SymbolPage : Page {
 
         if let documentation = symbol.documentation {
             if let description = documentation.descriptionSection {
-                content.append(contentsOf: description.renderedHTML().scalars)
+                content.append(contentsOf: HTMLElement("section", attributes: ["class": "description"], contents: StrictString(description.renderedHTML())).source)
             }
         }
 

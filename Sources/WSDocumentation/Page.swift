@@ -28,10 +28,19 @@ internal class Page {
 
     // MARK: - Initialization
 
-    internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, title: StrictString, content: StrictString) {
+    internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, symbolType: StrictString?, title: StrictString, content: StrictString) {
         var mutable = Page.template
         mutable.replaceMatches(for: "[*localization*]".scalars, with: localization.code.scalars)
         mutable.replaceMatches(for: "[*text direction*]".scalars, with: localization.textDirection.htmlAttribute.scalars)
+
+        let symbolTypeLabel: StrictString
+        if let specified = symbolType {
+            symbolTypeLabel = HTMLElement("span", attributes: ["class": "symbol‐type"], contents: specified, inline: true).source
+        } else {
+            symbolTypeLabel = ""
+        }
+        mutable.replaceMatches(for: "[*symbol type*]", with: symbolTypeLabel)
+
         mutable.replaceMatches(for: "[*title*]", with: title)
         mutable.replaceMatches(for: "[*site root*]".scalars, with: pathToSiteRoot)
         mutable.replaceMatches(for: "[*content*]", with: content)

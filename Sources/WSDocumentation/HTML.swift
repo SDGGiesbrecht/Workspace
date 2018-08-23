@@ -12,14 +12,16 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import WSGeneralImports
 
 internal struct HTMLElement {
 
     // MARK: - Initialization
 
-    internal init(_ element: StrictString, attributes: [StrictString: StrictString], contents: StrictString) {
+    internal init(_ element: StrictString, attributes: [StrictString: StrictString], contents: StrictString, inline: Bool) {
         self.element = element
+        self.inline = inline
         self.attributes = attributes
         self.contents = contents
     }
@@ -27,6 +29,7 @@ internal struct HTMLElement {
     // MARK: - Properties
 
     private var element: StrictString
+    private var inline: Bool
     private var attributes: [StrictString: StrictString]
     private var contents: StrictString
 
@@ -45,9 +48,13 @@ internal struct HTMLElement {
         }
         result.append(">")
 
-        result.append("\n")
+        if ¬inline {
+            result.append("\n")
+        }
         result.append(contentsOf: contents)
-        result.append("\n")
+        if ¬inline {
+            result.append("\n")
+        }
 
         result.append(contentsOf: "</".scalars)
         result.append(contentsOf: element)

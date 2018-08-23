@@ -25,12 +25,29 @@ internal class SymbolPage : Page {
     internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, symbol: APIElement) {
         var content: StrictString = ""
 
+        let symbolType: StrictString
+        if symbol is PackageAPI {
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    symbolType = "Package"
+                }
+            } else {
+                symbolType = "Package" // From “let ... = Package(...)”
+            }
+        } else {
+            if BuildConfiguration.current == .debug {
+                print("Unrecognized symbol type: \(type(of: symbol))")
+            }
+            symbolType = ""
+        }
+
         if let documentation = symbol.documentation {
             if let description = documentation.descriptionSection {
-                content.append(contentsOf: HTMLElement("section", attributes: ["class": "description"], contents: StrictString(description.renderedHTML())).source)
+                content.append(contentsOf: HTMLElement("div", attributes: ["class": "description"], contents: StrictString(description.renderedHTML()), inline: false).source)
             }
         }
 
-        super.init(localization: localization, pathToSiteRoot: pathToSiteRoot, title: StrictString(symbol.name), content: content)
+        super.init(localization: localization, pathToSiteRoot: pathToSiteRoot, symbolType: symbolType, title: StrictString(symbol.name), content: content)
     }
 }

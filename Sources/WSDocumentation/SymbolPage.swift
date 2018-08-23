@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import WSGeneralImports
 
 import SDGSwiftSource
@@ -22,8 +23,20 @@ internal class SymbolPage : Page {
 
     // MARK: - Initialization
 
-    internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, symbol: APIElement) {
+    internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, navigationPath: [APIElement], symbol: APIElement) {
         var content: StrictString = ""
+
+        var accumulatedNavigationPath: StrictString = pathToSiteRoot.appending(contentsOf: localization.code.scalars)
+        let navigationPathLinks = navigationPath.indices.map { (level: Int) -> StrictString in
+            let element = navigationPath[level]
+            accumulatedNavigationPath.append(contentsOf: "/" + element.fileName)
+            if ¬navigationPath.isEmpty,
+                level ≠ navigationPath.index(before: navigationPath.endIndex) {
+                return HTMLElement("a", attributes: ["href": accumulatedNavigationPath.appending(contentsOf: ".html".scalars)], contents: StrictString(element.name), inline: true).source
+            } else {
+                return StrictString(element.name)
+            }
+        }
 
         let symbolType: StrictString
         if symbol is PackageAPI {
@@ -48,6 +61,6 @@ internal class SymbolPage : Page {
             }
         }
 
-        super.init(localization: localization, pathToSiteRoot: pathToSiteRoot, symbolType: symbolType, title: StrictString(symbol.name), content: content)
+        super.init(localization: localization, pathToSiteRoot: pathToSiteRoot, navigationPath: navigationPathLinks.joined(separator: "\n"), symbolType: symbolType, title: StrictString(symbol.name), content: content)
     }
 }

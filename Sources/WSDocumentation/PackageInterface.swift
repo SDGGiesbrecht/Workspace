@@ -51,7 +51,7 @@ internal struct PackageInterface {
                 try Redirect(target: pageURL.lastPathComponent).contents.save(to: redirectURL)
             }
 
-            try SymbolPage(localization: localization, pathToSiteRoot: "../", symbol: api).contents.save(to: pageURL)
+            try SymbolPage(localization: localization, pathToSiteRoot: "../", navigationPath: [api], symbol: api).contents.save(to: pageURL)
         }
     }
 }

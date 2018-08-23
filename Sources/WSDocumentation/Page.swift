@@ -18,6 +18,14 @@ import WSProject
 
 internal class Page {
 
+    internal static func sanitize(fileName: StrictString) -> StrictString {
+        // U+0000 is invalid to begin with.
+
+        // U+002F
+        // Brackets are not valid in either identifiers or operators, so no name clashes.
+        return fileName.replacingMatches(for: "/".scalars, with: "[U+002F]".scalars)
+    }
+
     // MARK: - Static Properties
 
     private static let template: StrictString = {
@@ -28,10 +36,12 @@ internal class Page {
 
     // MARK: - Initialization
 
-    internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, symbolType: StrictString?, title: StrictString, content: StrictString) {
+    internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, navigationPath: StrictString, symbolType: StrictString?, title: StrictString, content: StrictString) {
         var mutable = Page.template
         mutable.replaceMatches(for: "[*localization*]".scalars, with: localization.code.scalars)
         mutable.replaceMatches(for: "[*text direction*]".scalars, with: localization.textDirection.htmlAttribute.scalars)
+
+        mutable.replaceMatches(for: "[*navigation path*]", with: navigationPath.scalars)
 
         let symbolTypeLabel: StrictString
         if let specified = symbolType {

@@ -35,7 +35,7 @@ internal class Page {
 
         let symbolTypeLabel: StrictString
         if let specified = symbolType {
-            symbolTypeLabel = HTMLElement("span", attributes: ["class": "symbol‐type"], contents: specified, inline: true).source
+            symbolTypeLabel = HTMLElement("div", attributes: ["class": "symbol‐type"], contents: specified, inline: true).source
         } else {
             symbolTypeLabel = ""
         }

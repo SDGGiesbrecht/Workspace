@@ -21,9 +21,15 @@ html {
     box-sizing: border-box;
 }
 
-h1 {
+.title {
     margin-top: 2rem;
     margin-bottom: 1.5rem;
+}
+.symbol‐type {
+    margin-bottom: calc((20 / 17) * 1rem);
+}
+h1 {
+    margin: 0;
 }
 
 .description {
@@ -37,6 +43,9 @@ h1 {
 
 html {
     color: #333333;
+}
+.symbol‐type {
+    color: #666;
 }
 a {
     color: #0070C9;
@@ -56,6 +65,13 @@ a:link, a:visited {
 }
 a:hover {
     text-decoration: underline;
+}
+
+.symbol‐type {
+    font-family: "SF Pro Display", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    font-size: calc((22 / 17) * 1rem);
+    letter-spacing: 0.016em;
+    line-height: 1;
 }
 
 h1 {

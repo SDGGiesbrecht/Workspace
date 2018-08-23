@@ -14,27 +14,55 @@
 
 /* Layout */
 
-*, *:before, *:after {
+*, *::before, *::after {
     box-sizing: inherit;
 }
 html {
     box-sizing: border-box;
 }
 
-.navigation‐bar {
+header.navigation‐bar {
     box-sizing: content-box;
     height: calc((52 / 17) * 1rem);
     padding: 0 calc((22 / 17) * 1rem);
     position: sticky;
-    position: -webkit-sticky;
-    top: 0;
+     position: -webkit-sticky;
+     top: 0;
+}
+nav.navigation‐bar {
+    display: flex;
+     align-items: center;
+     justify-content: space-between;
+    height: 100%;
 }
 .navigation‐path {
-    height: calc((48 / 17) * 1rem);
-    padding-top: calc((4 / 17) * 1rem);
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+     align-items: center;
+     justify-content: space-between;
+     overflow: hidden;
+     flex-wrap: nowrap;
+     white-space: nowrap;
+     text-overflow: ellipsis;
+    height: 100%;
+}
+[dir="rtl"].navigation‐path a, [dir="rtl"].navigation‐path span {
+    margin-right: 1.05882rem;
+}
+[dir="ltr"].navigation‐path a, [dir="ltr"].navigation‐path span {
+    margin-left: 1.05882rem;
+}
+.navigation‐path a:first-child, .navigation‐path span:first-child {
+    margin-left: 0;
+    margin-right: 0;
+}
+[dir="rtl"].navigation‐path a::before, [dir="rtl"].navigation‐path span::before {
+    padding-left: 1.05882rem;
+}
+[dir="ltr"].navigation‐path a::before, [dir="ltr"].navigation‐path span::before {
+    padding-right: 1.05882rem;
+}
+.navigation‐path a:first-child::before, .navigation‐path span:first-child::before {
+    display: none;
 }
 
 .title {
@@ -92,6 +120,11 @@ a:hover {
     font-size: calc((15 / 17) * 1rem);
     letter-spacing: -0.014em;
     line-height: 1.26667;
+}
+.navigation‐path a::before, .navigation‐path span::before {
+    font-family: "SF Pro Icons", "-apple-system", "BlinkMacSystemFont", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    content: "‣";
+    line-height: 1;
 }
 
 .symbol‐type {

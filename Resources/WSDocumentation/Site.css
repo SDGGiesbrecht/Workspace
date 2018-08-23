@@ -21,6 +21,15 @@ html {
     box-sizing: border-box;
 }
 
+.navigation‐bar {
+    box-sizing: content-box;
+    height: calc((52 / 17) * 1rem);
+    padding: 0 calc((22 / 17) * 1rem);
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+}
+
 .title {
     margin-top: 2rem;
     margin-bottom: 1.5rem;
@@ -44,6 +53,11 @@ h1 {
 html {
     color: #333333;
 }
+.navigation‐bar {
+    background-color: #333;
+    color: #CCCCCC;
+}
+
 .symbol‐type {
     color: #666;
 }

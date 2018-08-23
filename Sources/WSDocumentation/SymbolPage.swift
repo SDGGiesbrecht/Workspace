@@ -26,7 +26,9 @@ internal class SymbolPage : Page {
         var content: StrictString = ""
 
         if let documentation = symbol.documentation {
-            content.append(contentsOf: documentation.text.scalars)
+            if let description = documentation.descriptionSection {
+                content.append(contentsOf: description.text.scalars)
+            }
         }
 
         super.init(localization: localization, pathToSiteRoot: pathToSiteRoot, title: StrictString(symbol.name), content: content)

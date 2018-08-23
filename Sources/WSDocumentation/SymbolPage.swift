@@ -14,13 +14,15 @@
 
 import WSGeneralImports
 
+import SDGSwiftSource
+
 import WSProject
 
 internal class SymbolPage : Page {
 
     // MARK: - Initialization
 
-    internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, symbol: Symbol) {
+    internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, symbol: APIElement) {
         super.init(localization: localization, pathToSiteRoot: pathToSiteRoot, title: StrictString(symbol.name), content: "")
     }
 }

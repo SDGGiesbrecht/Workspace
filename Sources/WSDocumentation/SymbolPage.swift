@@ -23,6 +23,12 @@ internal class SymbolPage : Page {
     // MARK: - Initialization
 
     internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, symbol: APIElement) {
-        super.init(localization: localization, pathToSiteRoot: pathToSiteRoot, title: StrictString(symbol.name), content: "")
+        var content: StrictString = ""
+
+        if let documentation = symbol.documentation {
+            content.append(contentsOf: documentation.text.scalars)
+        }
+
+        super.init(localization: localization, pathToSiteRoot: pathToSiteRoot, title: StrictString(symbol.name), content: content)
     }
 }

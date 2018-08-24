@@ -86,12 +86,14 @@ extension PackageRepository {
             }
         }).resolved().formattedAsSectionHeader())
         do {
+            let status = DocumentationStatus(output: output)
+
             try createRedirects(outputDirectory: outputDirectory)
 
             let interface = PackageInterface(localizations: try configuration(output: output).documentation.localizations,
                                              developmentLocalization: try developmentLocalization(output: output),
                                              api: try PackageAPI(package: cachedPackage()))
-            try interface.outputHTML(to: outputDirectory)
+            try interface.outputHTML(to: outputDirectory, status: status)
 
             var rootCSS = TextFile(mockFileWithContents: Resources.root, fileType: .css)
             rootCSS.header = ""
@@ -102,12 +104,21 @@ extension PackageRepository {
 
             try preventJekyllInterference(outputDirectory: outputDirectory)
 
-            validationStatus.passStep(message: UserFacing({ localization in
-                switch localization {
-                case .englishCanada:
-                    return "Generated documentation."
-                }
-            }))
+            if status.passing {
+                validationStatus.passStep(message: UserFacing({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return "Generated documentation."
+                    }
+                }))
+            } else {
+                validationStatus.failStep(message: UserFacing({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return "Generated documentation, but encountered warnings." + section.crossReference.resolved(for: localization)
+                    }
+                }))
+            }
         } catch {
             output.print(error.localizedDescription.formattedAsError())
             validationStatus.failStep(message: UserFacing({ localization in

@@ -37,11 +37,11 @@ internal struct PackageInterface {
 
     // MARK: - Output
 
-    internal func outputHTML(to outputDirectory: URL) throws {
-        try outputPackagePages(to: outputDirectory)
+    internal func outputHTML(to outputDirectory: URL, status: DocumentationStatus) throws {
+        try outputPackagePages(to: outputDirectory, status: status)
     }
 
-    private func outputPackagePages(to outputDirectory: URL) throws {
+    private func outputPackagePages(to outputDirectory: URL, status: DocumentationStatus) throws {
         try Redirect(target: developmentLocalization.code + "/index.html").contents.save(to: outputDirectory.appendingPathComponent("index.html"))
         for localization in localizations {
             let localizationDirectory = outputDirectory.appendingPathComponent(localization.code)
@@ -51,7 +51,7 @@ internal struct PackageInterface {
                 try Redirect(target: pageURL.lastPathComponent).contents.save(to: redirectURL)
             }
 
-            try SymbolPage(localization: localization, pathToSiteRoot: "../", navigationPath: [api], symbol: api).contents.save(to: pageURL)
+            try SymbolPage(localization: localization, pathToSiteRoot: "../", navigationPath: [api], symbol: api, status: status).contents.save(to: pageURL)
         }
     }
 }

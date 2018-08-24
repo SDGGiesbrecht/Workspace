@@ -23,7 +23,7 @@ internal class SymbolPage : Page {
 
     // MARK: - Initialization
 
-    internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, navigationPath: [APIElement], symbol: APIElement) {
+    internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, navigationPath: [APIElement], symbol: APIElement, status: DocumentationStatus) {
         var content: StrictString = ""
 
         var accumulatedNavigationPath: StrictString = pathToSiteRoot.appending(contentsOf: localization.code.scalars)
@@ -58,6 +58,39 @@ internal class SymbolPage : Page {
         if let documentation = symbol.documentation {
             if let description = documentation.descriptionSection {
                 content.append(contentsOf: HTMLElement("div", attributes: ["class": "description"], contents: StrictString(description.renderedHTML()), inline: false).source)
+            } else {
+                let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return "A symbol has no description:"
+                    }
+                })
+                let symbolName: StrictString
+                switch symbol {
+                case is PackageAPI, is ModuleAPI:
+                    symbolName = StrictString(symbol.name)
+                default:
+                    symbolName = navigationPath.dropFirst().map({ StrictString($0.name) }).joined(separator: ".")
+                }
+                var hint: UserFacing<StrictString, InterfaceLocalization>?
+                if symbol is PackageAPI {
+                    hint = UserFacing<StrictString, InterfaceLocalization>({ localization in
+                        switch localization {
+                        case .englishCanada:
+                            return "(The package can be documented in the package manifest the same way as other symbols. Workspace will look for documentation on the line above “Package(name: \u{22}" + StrictString(symbol.name) + "\u{22}”.)"
+                        }
+                    })
+                }
+                status.report(warning: UserFacing({ localization in
+                    var result: [StrictString] = [
+                        description.resolved(for: localization),
+                        symbolName
+                    ]
+                    if let theHint = hint {
+                        result.append(theHint.resolved(for: localization))
+                    }
+                    return result.joined(separator: "\n")
+                }))
             }
         }
 

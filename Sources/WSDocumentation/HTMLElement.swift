@@ -19,7 +19,7 @@ internal struct HTMLElement {
 
     // MARK: - Initialization
 
-    internal init(_ element: StrictString, attributes: [StrictString: StrictString], contents: StrictString, inline: Bool) {
+    internal init(_ element: StrictString, attributes: [StrictString: StrictString] = [:], contents: StrictString, inline: Bool) {
         self.element = element
         self.inline = inline
         self.attributes = attributes

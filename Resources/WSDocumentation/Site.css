@@ -75,12 +75,30 @@ nav.navigation‐bar {
 h1 {
     margin: 0;
 }
+h2 {
+    margin: 0;
+}
 
 .description {
     margin-bottom: 2rem;
 }
 .description p {
     margin: 0;
+}
+
+section {
+    margin-top: 3rem;
+}
+.declaration::before {
+    border-top: 1px solid #D6D6D6;
+    content: "";
+    display: block;
+}
+.declaration {
+    margin-top: 0;
+}
+.declaration h2 {
+    margin-top: 2rem;
 }
 
 /* Colours */
@@ -134,12 +152,20 @@ a:hover {
     line-height: 1;
 }
 
-h1 {
+h1, h2 {
     font-family: "SF Pro Display", "SF Pro Icons", "-apple-system", "BlinkMacSystemFont", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+h1 {
     font-size: calc((40 / 17) * 1rem);
     font-weight: 500;
     letter-spacing: 0.008em;
     line-height: 1.05;
+}
+h2 {
+    font-size: calc((32 / 17) * 1rem);
+    font-weight: 500;
+    letter-spacing: 0.011em;
+    line-height: 1.09375;
 }
 
 .description {

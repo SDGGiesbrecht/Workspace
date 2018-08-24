@@ -105,7 +105,7 @@ internal class SymbolPage : Page {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             declarationHeading = "Declaration"
         }
-        content.append(contentsOf: "\n" + HTMLElement("section", contents: HTMLElement("h2", contents: declarationHeading, inline: true).source, inline: false).source)
+        content.append(contentsOf: "\n" + HTMLElement("section", attributes: ["class": "declaration"], contents: HTMLElement("h2", contents: declarationHeading, inline: true).source, inline: false).source)
 
         super.init(localization: localization, pathToSiteRoot: pathToSiteRoot, navigationPath: navigationPathLinks.joined(separator: "\n"), symbolType: symbolType, title: StrictString(symbol.name), content: content)
     }

@@ -55,7 +55,7 @@ internal class SymbolPage : Page {
             symbolType = ""
         }
 
-        func reportMissingDocumentation() {
+        func reportMissingDescription() {
             let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
@@ -94,10 +94,10 @@ internal class SymbolPage : Page {
             if let description = documentation.descriptionSection {
                 content.append(contentsOf: HTMLElement("div", attributes: ["class": "description"], contents: StrictString(description.renderedHTML()), inline: false).source)
             } else {
-                reportMissingDocumentation()
+                reportMissingDescription()
             }
         } else {
-            reportMissingDocumentation()
+            reportMissingDescription()
         }
 
         super.init(localization: localization, pathToSiteRoot: pathToSiteRoot, navigationPath: navigationPathLinks.joined(separator: "\n"), symbolType: symbolType, title: StrictString(symbol.name), content: content)

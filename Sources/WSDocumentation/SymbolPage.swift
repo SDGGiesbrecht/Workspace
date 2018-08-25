@@ -113,7 +113,18 @@ internal class SymbolPage : Page {
         }
         content.append(contentsOf: "\n" + HTMLElement("section", attributes: ["class": "declaration"], contents: declarationSectionContents.joinedAsLines(), inline: false).source)
 
-        
+        let discussionHeading: StrictString
+        if symbol.children.isEmpty {
+            switch localization._bestMatch {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                discussionHeading = "Overview"
+            }
+        } else {
+            switch localization._bestMatch {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                discussionHeading = "Discussion"
+            }
+        }
 
         super.init(localization: localization, pathToSiteRoot: pathToSiteRoot, navigationPath: navigationPathLinks.joined(separator: "\n"), symbolType: symbolType, title: StrictString(symbol.name), content: content)
     }

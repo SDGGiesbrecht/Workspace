@@ -23,7 +23,7 @@ internal class SymbolPage : Page {
 
     // MARK: - Initialization
 
-    internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, navigationPath: [APIElement], symbol: APIElement, status: DocumentationStatus) {
+    internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, navigationPath: [APIElement], symbol: APIElement, packageIdentifiers: Set<String>, status: DocumentationStatus) {
         var content: StrictString = ""
 
         var accumulatedNavigationPath: StrictString = pathToSiteRoot.appending(contentsOf: localization.code.scalars)
@@ -108,9 +108,8 @@ internal class SymbolPage : Page {
         content.append(contentsOf: "\n" + HTMLElement("section", attributes: ["class": "declaration"], contents: HTMLElement("h2", contents: declarationHeading, inline: true).source, inline: false).source)
 
         if let declaration = symbol.declaration {
-            content.append(contentsOf: "\n" + StrictString(declaration.syntaxHighlightedHTML(inline: false, internalIdentifiers: [])))
+            content.append(contentsOf: "\n" + StrictString(declaration.syntaxHighlightedHTML(inline: false, internalIdentifiers: packageIdentifiers)))
             // #warning(Need to match surrounding style.)
-            // #warning(Need internal identifiers.)
         }
 
         super.init(localization: localization, pathToSiteRoot: pathToSiteRoot, navigationPath: navigationPathLinks.joined(separator: "\n"), symbolType: symbolType, title: StrictString(symbol.name), content: content)

@@ -35,6 +35,18 @@ internal struct PackageInterface {
     private let developmentLocalization: LocalizationIdentifier
     private let api: PackageAPI
 
+    private class Cache {
+        fileprivate init() {}
+        fileprivate var packageIdentifiers: Set<String>?
+    }
+    private let cache = Cache()
+
+    private var packageIdentifiers: Set<String> {
+        return cached(in: &cache.packageIdentifiers) {
+            return api.identifierList
+        }
+    }
+
     // MARK: - Output
 
     internal func outputHTML(to outputDirectory: URL, status: DocumentationStatus) throws {
@@ -51,7 +63,7 @@ internal struct PackageInterface {
                 try Redirect(target: pageURL.lastPathComponent).contents.save(to: redirectURL)
             }
 
-            try SymbolPage(localization: localization, pathToSiteRoot: "../", navigationPath: [api], symbol: api, status: status).contents.save(to: pageURL)
+            try SymbolPage(localization: localization, pathToSiteRoot: "../", navigationPath: [api], symbol: api, packageIdentifiers: packageIdentifiers, status: status).contents.save(to: pageURL)
         }
     }
 }

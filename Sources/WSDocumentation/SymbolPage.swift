@@ -87,6 +87,11 @@ internal class SymbolPage : Page {
             return ""
         }
 
+        if let variable = symbol as? VariableAPI,
+            variable.type == nil {
+
+        }
+
         let declarationHeading: StrictString
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:

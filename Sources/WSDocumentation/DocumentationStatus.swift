@@ -37,13 +37,7 @@ internal class DocumentationStatus {
         output.print(warning.resolved().formattedAsError())
     }
 
-    internal func reportMissingDescription(symbol: APIElement, navigationPath: [APIElement]) {
-        let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishCanada:
-                return "A symbol has no description:"
-            }
-        })
+    private func report(problem: UserFacing<StrictString, InterfaceLocalization>, with symbol: APIElement, navigationPath: [APIElement], hint: UserFacing<StrictString, InterfaceLocalization>? = nil) {
         let symbolName: StrictString
         switch symbol {
         case is PackageAPI, is ModuleAPI:
@@ -51,18 +45,9 @@ internal class DocumentationStatus {
         default:
             symbolName = navigationPath.dropFirst().map({ StrictString($0.name) }).joined(separator: ".")
         }
-        var hint: UserFacing<StrictString, InterfaceLocalization>?
-        if symbol is PackageAPI {
-            hint = UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishCanada:
-                    return "(The package can be documented in the package manifest the same way as other symbols. Workspace will look for documentation on the line above “Package(name: \u{22}" + StrictString(symbol.name) + "\u{22}”.)"
-                }
-            })
-        }
         report(warning: UserFacing({ localization in
             var result: [StrictString] = [
-                description.resolved(for: localization),
+                problem.resolved(for: localization),
                 symbolName
             ]
             if let theHint = hint {
@@ -70,5 +55,44 @@ internal class DocumentationStatus {
             }
             return result.joined(separator: "\n")
         }))
+    }
+
+    internal func reportMissingDescription(symbol: APIElement, navigationPath: [APIElement]) {
+        var hint: UserFacing<StrictString, InterfaceLocalization>?
+
+        var possibleSearch: StrictString?
+        if symbol is PackageAPI {
+            possibleSearch = "Package"
+        } else if symbol is ProductAPI {
+            possibleSearch = ".library"
+        } else if symbol is ModuleAPI {
+            possibleSearch = ".target"
+        }
+        if var search = possibleSearch {
+            search.append(contentsOf: "(name: \u{22}" + StrictString(symbol.name) + "\u{22}")
+
+            hint = UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.\nWorkspace will look for documentation on the line above “" + search + "”.)"
+                }
+            })
+        }
+
+        report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishCanada:
+                return "A symbol has no description:"
+            }
+        }), with: symbol, navigationPath: navigationPath, hint: hint)
+    }
+
+    internal func reportMissingVariableType(_ variable: VariableAPI, navigationPath: [APIElement]) {
+        report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishCanada:
+                return "A public variable has no explicit type:"
+            }
+        }), with: variable, navigationPath: navigationPath)
     }
 }

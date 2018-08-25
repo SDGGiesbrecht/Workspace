@@ -95,4 +95,18 @@ internal class DocumentationStatus {
             }
         }), with: variable, navigationPath: navigationPath)
     }
+
+    internal func reportExcessiveHeading(symbol: APIElement, navigationPath: [APIElement]) {
+        report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishCanada:
+                return "A symbol’s documentation contains excessively strong headings:"
+            }
+        }), with: symbol, navigationPath: navigationPath, hint: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishCanada:
+                return "(Use heading levels three to six. Levels one and two are reserved for the surrounding context.)"
+            }
+        }))
+    }
 }

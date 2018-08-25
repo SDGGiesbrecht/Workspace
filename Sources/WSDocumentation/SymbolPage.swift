@@ -27,8 +27,8 @@ internal class SymbolPage : Page {
 
         var content: [StrictString] = []
         content.append(SymbolPage.generateDescriptionSection(symbol: symbol, navigationPath: navigationPath, status: status))
-        content.append(SymbolPage.generateDeclarationSection(localization: localization, symbol: symbol, packageIdentifiers: packageIdentifiers))
-        content.append(SymbolPage.generateDiscussionSection(localization: localization, symbol: symbol))
+        content.append(SymbolPage.generateDeclarationSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, status: status))
+        content.append(SymbolPage.generateDiscussionSection(localization: localization, symbol: symbol, navigationPath: navigationPath, status: status))
 
         super.init(localization: localization,
                    pathToSiteRoot: pathToSiteRoot,
@@ -82,14 +82,14 @@ internal class SymbolPage : Page {
         return ""
     }
 
-    private static func generateDeclarationSection(localization: LocalizationIdentifier, symbol: APIElement, packageIdentifiers: Set<String>) -> StrictString {
+    private static func generateDeclarationSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, status: DocumentationStatus) -> StrictString {
         guard let declaration = symbol.declaration else {
             return ""
         }
 
         if let variable = symbol as? VariableAPI,
             variable.type == nil {
-
+            status.reportMissingVariableType(variable, navigationPath: navigationPath)
         }
 
         let declarationHeading: StrictString
@@ -106,7 +106,7 @@ internal class SymbolPage : Page {
         return HTMLElement("section", attributes: ["class": "declaration"], contents: sectionContents.joinedAsLines(), inline: false).source
     }
 
-    private static func generateDiscussionSection(localization: LocalizationIdentifier, symbol: APIElement) -> StrictString {
+    private static func generateDiscussionSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], status: DocumentationStatus) -> StrictString {
         guard let discussion = symbol.documentation?.discussionEntries,
             ¬discussion.isEmpty else {
                 return ""
@@ -125,9 +125,16 @@ internal class SymbolPage : Page {
             }
         }
 
-        let sectionContents: [StrictString] = [
+        var sectionContents: [StrictString] = [
             HTMLElement("h2", contents: discussionHeading, inline: true).source
         ]
+        for paragraph in discussion {
+            let rendered = StrictString(paragraph.renderedHTML())
+            if rendered.contains("<h1>".scalars) ∨ rendered.contains("<h2>".scalars) {
+                status.reportExcessiveHeading(symbol: symbol, navigationPath: navigationPath)
+            }
+            sectionContents.append(rendered)
+        }
 
         return HTMLElement("section", contents: sectionContents.joinedAsLines(), inline: false).source
     }

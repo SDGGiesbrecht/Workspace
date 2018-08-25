@@ -24,21 +24,9 @@ internal class SymbolPage : Page {
     // MARK: - Initialization
 
     internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, navigationPath: [APIElement], symbol: APIElement, packageIdentifiers: Set<String>, status: DocumentationStatus) {
-        var content: StrictString = ""
-        content.append(contentsOf: SymbolPage.generateDescriptionSection(symbol: symbol, navigationPath: navigationPath, status: status))
-
-        let declarationHeading: StrictString
-        switch localization._bestMatch {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            declarationHeading = "Declaration"
-        }
-        var declarationSectionContents: [StrictString] = [
-            HTMLElement("h2", contents: declarationHeading, inline: true).source
-        ]
-        if let declaration = symbol.declaration {
-            declarationSectionContents.append(StrictString(declaration.syntaxHighlightedHTML(inline: false, internalIdentifiers: packageIdentifiers)))
-        }
-        content.append(contentsOf: "\n" + HTMLElement("section", attributes: ["class": "declaration"], contents: declarationSectionContents.joinedAsLines(), inline: false).source)
+        var content: [StrictString] = []
+        content.append(SymbolPage.generateDescriptionSection(symbol: symbol, navigationPath: navigationPath, status: status))
+        content.append(SymbolPage.generateDeclarationSection(localization: localization, symbol: symbol, packageIdentifiers: packageIdentifiers))
 
         let discussionHeading: StrictString
         if symbol.children.isEmpty {
@@ -58,7 +46,7 @@ internal class SymbolPage : Page {
                    navigationPath: SymbolPage.generateNavigationPath(localization: localization, pathToSiteRoot: pathToSiteRoot, navigationPath: navigationPath),
                    symbolType: SymbolPage.generateSymbolType(localization: localization, symbol: symbol),
                    title: StrictString(symbol.name),
-                   content: content)
+                   content: content.joinedAsLines())
     }
 
     // MARK: - Generation
@@ -103,5 +91,20 @@ internal class SymbolPage : Page {
         }
         status.reportMissingDescription(symbol: symbol, navigationPath: navigationPath)
         return ""
+    }
+
+    private static func generateDeclarationSection(localization: LocalizationIdentifier, symbol: APIElement, packageIdentifiers: Set<String>) -> StrictString {
+        let declarationHeading: StrictString
+        switch localization._bestMatch {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            declarationHeading = "Declaration"
+        }
+        var declarationSectionContents: [StrictString] = [
+            HTMLElement("h2", contents: declarationHeading, inline: true).source
+        ]
+        if let declaration = symbol.declaration {
+            declarationSectionContents.append(StrictString(declaration.syntaxHighlightedHTML(inline: false, internalIdentifiers: packageIdentifiers)))
+        }
+        return HTMLElement("section", attributes: ["class": "declaration"], contents: declarationSectionContents.joinedAsLines(), inline: false).source
     }
 }

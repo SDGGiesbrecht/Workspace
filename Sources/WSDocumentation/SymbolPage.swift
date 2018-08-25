@@ -105,12 +105,15 @@ internal class SymbolPage : Page {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             declarationHeading = "Declaration"
         }
-        content.append(contentsOf: "\n" + HTMLElement("section", attributes: ["class": "declaration"], contents: HTMLElement("h2", contents: declarationHeading, inline: true).source, inline: false).source)
-
+        var declarationSectionContents: [StrictString] = [
+            HTMLElement("h2", contents: declarationHeading, inline: true).source
+        ]
         if let declaration = symbol.declaration {
-            content.append(contentsOf: "\n" + StrictString(declaration.syntaxHighlightedHTML(inline: false, internalIdentifiers: packageIdentifiers)))
-            // #warning(Need to match surrounding style.)
+            declarationSectionContents.append(StrictString(declaration.syntaxHighlightedHTML(inline: false, internalIdentifiers: packageIdentifiers)))
         }
+        content.append(contentsOf: "\n" + HTMLElement("section", attributes: ["class": "declaration"], contents: declarationSectionContents.joinedAsLines(), inline: false).source)
+
+        
 
         super.init(localization: localization, pathToSiteRoot: pathToSiteRoot, navigationPath: navigationPathLinks.joined(separator: "\n"), symbolType: symbolType, title: StrictString(symbol.name), content: content)
     }

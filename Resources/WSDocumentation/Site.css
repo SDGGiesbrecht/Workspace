@@ -100,6 +100,9 @@ section {
 .declaration h2 {
     margin-top: 2rem;
 }
+.declaration .swift.blockquote {
+    margin-top: 1rem;
+}
 
 /* Colours */
 
@@ -174,4 +177,8 @@ h2 {
     font-weight: 300;
     letter-spacing: 0.016em;
     line-height: 1.45455;
+}
+
+.declaration .swift.blockquote {
+    font-size: calc((15 / 17) * 1rem);
 }

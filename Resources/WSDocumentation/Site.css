@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-/* Layout */
+/* General Layout */
 
 *, *::before, *::after {
     box-sizing: inherit;
@@ -20,6 +20,31 @@
 html {
     box-sizing: border-box;
 }
+
+h1 {
+    margin: 0;
+}
+h2 {
+    margin: 0;
+}
+
+section {
+    margin-top: 3rem;
+}
+section:last-child {
+    margin-bottom: 3rem;
+}
+
+blockquote {
+    border-left: 0.25em solid #DFE2E5;
+    margin: 1.4em 0;
+    padding: 0 1em;
+}
+blockquote > p {
+    margin: 0;
+}
+
+/* Specific Layout */
 
 header.navigation‐bar {
     box-sizing: content-box;
@@ -72,12 +97,6 @@ nav.navigation‐bar {
 .symbol‐type {
     margin-bottom: calc((20 / 17) * 1rem);
 }
-h1 {
-    margin: 0;
-}
-h2 {
-    margin: 0;
-}
 
 .description {
     margin-bottom: 2rem;
@@ -86,12 +105,6 @@ h2 {
     margin: 0;
 }
 
-section {
-    margin-top: 3rem;
-}
-section:last-child {
-    margin-bottom: 3rem;
-}
 .declaration::before {
     border-top: 1px solid #D6D6D6;
     content: "";
@@ -124,7 +137,7 @@ a {
     color: #0070C9;
 }
 
-/* Fonts */
+/* General Fonts */
 
 html {
     font-family: "SF Pro Text", "SF Pro Icons", "-apple-system", "BlinkMacSystemFont", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
@@ -133,12 +146,34 @@ html {
     line-height: 1.52947;
 }
 
+h1, h2 {
+    font-family: "SF Pro Display", "SF Pro Icons", "-apple-system", "BlinkMacSystemFont", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+h1 {
+    font-size: calc((40 / 17) * 1rem);
+    font-weight: 500;
+    letter-spacing: 0.008em;
+    line-height: 1.05;
+}
+h2 {
+    font-size: calc((32 / 17) * 1rem);
+    font-weight: 500;
+    letter-spacing: 0.011em;
+    line-height: 1.09375;
+}
+
 a:link, a:visited {
     text-decoration: none;
 }
 a:hover {
     text-decoration: underline;
 }
+
+blockquote {
+    color: #6A737D;
+}
+
+/* Specific Fonts */
 
 .navigation‐path {
     font-size: calc((15 / 17) * 1rem);
@@ -156,22 +191,6 @@ a:hover {
     font-size: calc((22 / 17) * 1rem);
     letter-spacing: 0.016em;
     line-height: 1;
-}
-
-h1, h2 {
-    font-family: "SF Pro Display", "SF Pro Icons", "-apple-system", "BlinkMacSystemFont", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-}
-h1 {
-    font-size: calc((40 / 17) * 1rem);
-    font-weight: 500;
-    letter-spacing: 0.008em;
-    line-height: 1.05;
-}
-h2 {
-    font-size: calc((32 / 17) * 1rem);
-    font-weight: 500;
-    letter-spacing: 0.011em;
-    line-height: 1.09375;
 }
 
 .description {

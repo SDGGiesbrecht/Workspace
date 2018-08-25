@@ -24,22 +24,11 @@ internal class SymbolPage : Page {
     // MARK: - Initialization
 
     internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, navigationPath: [APIElement], symbol: APIElement, packageIdentifiers: Set<String>, status: DocumentationStatus) {
+
         var content: [StrictString] = []
         content.append(SymbolPage.generateDescriptionSection(symbol: symbol, navigationPath: navigationPath, status: status))
         content.append(SymbolPage.generateDeclarationSection(localization: localization, symbol: symbol, packageIdentifiers: packageIdentifiers))
-
-        let discussionHeading: StrictString
-        if symbol.children.isEmpty {
-            switch localization._bestMatch {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                discussionHeading = "Overview"
-            }
-        } else {
-            switch localization._bestMatch {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                discussionHeading = "Discussion"
-            }
-        }
+        content.append(SymbolPage.generateDiscussionSection(localization: localization, symbol: symbol))
 
         super.init(localization: localization,
                    pathToSiteRoot: pathToSiteRoot,
@@ -94,17 +83,47 @@ internal class SymbolPage : Page {
     }
 
     private static func generateDeclarationSection(localization: LocalizationIdentifier, symbol: APIElement, packageIdentifiers: Set<String>) -> StrictString {
+        guard let declaration = symbol.declaration else {
+            return ""
+        }
+
         let declarationHeading: StrictString
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             declarationHeading = "Declaration"
         }
-        var declarationSectionContents: [StrictString] = [
-            HTMLElement("h2", contents: declarationHeading, inline: true).source
+
+        let sectionContents: [StrictString] = [
+            HTMLElement("h2", contents: declarationHeading, inline: true).source,
+            StrictString(declaration.syntaxHighlightedHTML(inline: false, internalIdentifiers: packageIdentifiers))
         ]
-        if let declaration = symbol.declaration {
-            declarationSectionContents.append(StrictString(declaration.syntaxHighlightedHTML(inline: false, internalIdentifiers: packageIdentifiers)))
+
+        return HTMLElement("section", attributes: ["class": "declaration"], contents: sectionContents.joinedAsLines(), inline: false).source
+    }
+
+    private static func generateDiscussionSection(localization: LocalizationIdentifier, symbol: APIElement) -> StrictString {
+        guard let discussion = symbol.documentation?.discussionEntries,
+            ¬discussion.isEmpty else {
+                return ""
         }
-        return HTMLElement("section", attributes: ["class": "declaration"], contents: declarationSectionContents.joinedAsLines(), inline: false).source
+
+        let discussionHeading: StrictString
+        if symbol.children.isEmpty {
+            switch localization._bestMatch {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                discussionHeading = "Overview"
+            }
+        } else {
+            switch localization._bestMatch {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                discussionHeading = "Discussion"
+            }
+        }
+
+        let sectionContents: [StrictString] = [
+            HTMLElement("h2", contents: discussionHeading, inline: true).source
+        ]
+
+        return HTMLElement("section", contents: sectionContents.joinedAsLines(), inline: false).source
     }
 }

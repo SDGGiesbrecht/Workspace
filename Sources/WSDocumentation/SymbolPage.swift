@@ -109,9 +109,8 @@ internal class SymbolPage : Page {
 
         if let declaration = symbol.declaration {
             content.append(contentsOf: "\n" + StrictString(declaration.syntaxHighlightedHTML(inline: false, internalIdentifiers: [])))
-            // #warning(Need to escape for rendered Markdown too.)
-            // #warning(Need internal identifiers.)
             // #warning(Need to match surrounding style.)
+            // #warning(Need internal identifiers.)
         }
 
         super.init(localization: localization, pathToSiteRoot: pathToSiteRoot, navigationPath: navigationPathLinks.joined(separator: "\n"), symbolType: symbolType, title: StrictString(symbol.name), content: content)

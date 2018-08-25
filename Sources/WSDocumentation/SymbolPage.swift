@@ -25,16 +25,7 @@ internal class SymbolPage : Page {
 
     internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, navigationPath: [APIElement], symbol: APIElement, packageIdentifiers: Set<String>, status: DocumentationStatus) {
         var content: StrictString = ""
-
-        if let documentation = symbol.documentation {
-            if let description = documentation.descriptionSection {
-                content.append(contentsOf: HTMLElement("div", attributes: ["class": "description"], contents: StrictString(description.renderedHTML()), inline: false).source)
-            } else {
-                status.reportMissingDescription(symbol: symbol, navigationPath: navigationPath)
-            }
-        } else {
-            status.reportMissingDescription(symbol: symbol, navigationPath: navigationPath)
-        }
+        content.append(contentsOf: SymbolPage.generateDescriptionSection(symbol: symbol, navigationPath: navigationPath, status: status))
 
         let declarationHeading: StrictString
         switch localization._bestMatch {
@@ -103,5 +94,14 @@ internal class SymbolPage : Page {
             }
             return ""
         }
+    }
+
+    private static func generateDescriptionSection(symbol: APIElement, navigationPath: [APIElement], status: DocumentationStatus) -> StrictString {
+        if let documentation = symbol.documentation,
+            let description = documentation.descriptionSection {
+                return HTMLElement("div", attributes: ["class": "description"], contents: StrictString(description.renderedHTML()), inline: false).source
+        }
+        status.reportMissingDescription(symbol: symbol, navigationPath: navigationPath)
+        return ""
     }
 }

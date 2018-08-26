@@ -21,11 +21,12 @@ html {
     box-sizing: border-box;
 }
 
-h1 {
+h1, h2 {
     margin: 0;
 }
-h2 {
-    margin: 0;
+h3, h4, h5, h6 {
+    margin-top: 1.4em;
+    margin-bottom: 0;
 }
 
 section {
@@ -166,6 +167,26 @@ h2 {
     font-weight: 500;
     letter-spacing: 0.011em;
     line-height: 1.09375;
+}
+h3 {
+    font-size: calc((28 / 17) * 1rem);
+    font-weight: 500;
+    letter-spacing: 0.012em;
+    line-height: 1.1073;
+}
+h4, h5, h6 {
+    font-weight: 500;
+    letter-spacing: 0.015em;
+    line-height: 1.20849;
+}
+h4 {
+    font-size: calc((24 / 17) * 1rem);
+}
+h5 {
+    font-size: calc((20 / 17) * 1rem);
+}
+h6 {
+    font-size: calc((18 / 17) * 1rem);
 }
 
 a:link, a:visited {

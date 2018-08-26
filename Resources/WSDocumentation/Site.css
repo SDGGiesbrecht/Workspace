@@ -43,6 +43,12 @@ blockquote {
 blockquote > p {
     margin: 0;
 }
+[dir="rtl"] blockquote > p.citation {
+    text-align: left;
+}
+[dir="ltr"] blockquote > p.citation {
+    text-align: right;
+}
 
 /* Specific Layout */
 

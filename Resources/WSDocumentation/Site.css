@@ -36,9 +36,19 @@ section:last-child {
     margin-bottom: 3rem;
 }
 
+p {
+    margin: 0;
+}
+p:not(:first-child) {
+    margin: 0.7em;
+}
+
+blockquote {
+    margin: 1.4em 0;
+}
+
 blockquote {
     border-left: 0.25em solid #DFE2E5;
-    margin: 1.4em 0;
     padding: 0 1em;
 }
 blockquote > p {
@@ -49,6 +59,17 @@ blockquote > p {
 }
 [dir="ltr"] blockquote > p.citation {
     text-align: right;
+}
+
+ul, ol {
+    margin-top: 0.7em;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-bottom: 0;
+    padding: 0;
+}
+li:not(:first-child) {
+    margin-top: 0.7em;
 }
 
 /* Specific Layout */

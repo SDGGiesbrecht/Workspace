@@ -40,7 +40,7 @@ p {
     margin: 0;
 }
 p:not(:first-child) {
-    margin: 0.7em;
+    margin-top: 0.7em;
 }
 
 blockquote {
@@ -51,7 +51,7 @@ blockquote {
     border-left: 0.25em solid #DFE2E5;
     padding: 0 1em;
 }
-blockquote > p {
+blockquote > p, blockquote > p:not(:first-child) {
     margin: 0;
 }
 [dir="rtl"] blockquote > p.citation {

@@ -63,7 +63,7 @@ internal class DocumentationStatus {
         var possibleSearch: StrictString?
         if symbol is PackageAPI {
             possibleSearch = "Package"
-        } else if symbol is ProductAPI {
+        } else if symbol is LibraryAPI {
             possibleSearch = ".library"
         } else if symbol is ModuleAPI {
             possibleSearch = ".target"

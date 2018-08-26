@@ -30,6 +30,8 @@ internal class SymbolPage : Page {
         content.append(SymbolPage.generateDeclarationSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, status: status))
         content.append(SymbolPage.generateDiscussionSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, status: status))
 
+        content.append(SymbolPage.generateLibrariesSection(localization: localization, symbol: symbol, packageIdentifiers: packageIdentifiers))
+
         super.init(localization: localization,
                    pathToSiteRoot: pathToSiteRoot,
                    navigationPath: SymbolPage.generateNavigationPath(localization: localization, pathToSiteRoot: pathToSiteRoot, navigationPath: navigationPath),
@@ -136,6 +138,38 @@ internal class SymbolPage : Page {
             sectionContents.append(rendered)
         }
 
+        return HTMLElement("section", contents: sectionContents.joinedAsLines(), inline: false).source
+    }
+
+    private static func generateLibrariesSection(localization: LocalizationIdentifier, symbol: APIElement, packageIdentifiers: Set<String>) -> StrictString {
+        guard let package = symbol as? PackageAPI,
+            ¬package.libraries.isEmpty else {
+                return ""
+        }
+
+        let heading: StrictString
+        if let match = localization._reasonableMatch {
+            switch match {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                heading = "Libraries"
+            }
+        } else {
+            heading = "library" // From “products: [.library(...)]”
+        }
+
+        return SymbolPage.generateChildrenSection(heading: heading, children: package.libraries, packageIdentifiers: packageIdentifiers)
+    }
+
+    private static func generateChildrenSection(heading: StrictString, children: [APIElement], packageIdentifiers: Set<String>) -> StrictString {
+        var sectionContents: [StrictString] = [
+            HTMLElement("h2", contents: heading, inline: true).source
+        ]
+        for child in children {
+            sectionContents.append(HTMLElement("a", contents: StrictString(child.name), inline: true).source)
+            if let description = child.documentation?.descriptionSection {
+                sectionContents.append(StrictString(description.renderedHTML(internalIdentifiers: packageIdentifiers)))
+            }
+        }
         return HTMLElement("section", contents: sectionContents.joinedAsLines(), inline: false).source
     }
 }

@@ -51,6 +51,7 @@ internal struct PackageInterface {
 
     internal func outputHTML(to outputDirectory: URL, status: DocumentationStatus) throws {
         try outputPackagePages(to: outputDirectory, status: status)
+        try outputLibraryPages(to: outputDirectory, status: status)
     }
 
     private func outputPackagePages(to outputDirectory: URL, status: DocumentationStatus) throws {
@@ -58,12 +59,34 @@ internal struct PackageInterface {
         for localization in localizations {
             let localizationDirectory = outputDirectory.appendingPathComponent(localization.code)
             let redirectURL = localizationDirectory.appendingPathComponent("index.html")
-            let pageURL = localizationDirectory.appendingPathComponent(api.name + ".html")
+            let pageURL = localizationDirectory.appendingPathComponent(String(api.fileName) + ".html")
             if redirectURL ≠ pageURL {
                 try Redirect(target: pageURL.lastPathComponent).contents.save(to: redirectURL)
             }
 
             try SymbolPage(localization: localization, pathToSiteRoot: "../", navigationPath: [api], symbol: api, packageIdentifiers: packageIdentifiers, status: status).contents.save(to: pageURL)
+        }
+    }
+
+    private func outputLibraryPages(to outputDirectory: URL, status: DocumentationStatus) throws {
+        for localization in localizations {
+            let localizationDirectory = outputDirectory.appendingPathComponent(localization.code)
+
+            let librariesDirectoryName: String
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    librariesDirectoryName = "Libraries"
+                }
+            } else {
+                librariesDirectoryName = "library" // From “products: [.library(...)]”
+            }
+            let librariesDirectory = localizationDirectory.appendingPathComponent(librariesDirectoryName)
+
+            for library in api.libraries {
+                let location = librariesDirectory.appendingPathComponent(String(library.fileName) + ".html")
+                try SymbolPage(localization: localization, pathToSiteRoot: "../../", navigationPath: [api, library], symbol: library, packageIdentifiers: packageIdentifiers, status: status).contents.save(to: location)
+            }
         }
     }
 }

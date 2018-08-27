@@ -43,13 +43,12 @@ internal class SymbolPage : Page {
     // MARK: - Generation
 
     private static func generateNavigationPath(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, navigationPath: [APIElement]) -> StrictString {
-        var accumulatedNavigationPath: StrictString = pathToSiteRoot.appending(contentsOf: localization.code.scalars)
         let navigationPathLinks = navigationPath.indices.map { (level: Int) -> StrictString in
             let element = navigationPath[level]
-            accumulatedNavigationPath.append(contentsOf: "/" + element.fileName)
+            let url = pathToSiteRoot.appending(contentsOf: element.relativePagePath[localization]!)
             if ¬navigationPath.isEmpty,
                 level ≠ navigationPath.index(before: navigationPath.endIndex) {
-                return HTMLElement("a", attributes: ["href": accumulatedNavigationPath.appending(contentsOf: ".html".scalars)], contents: StrictString(element.name), inline: true).source
+                return HTMLElement("a", attributes: ["href": url], contents: StrictString(element.name), inline: true).source
             } else {
                 return HTMLElement("span", attributes: [:], contents: StrictString(element.name), inline: true).source
             }

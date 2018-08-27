@@ -22,7 +22,7 @@ extension APIElement {
 
     // MARK: - Paths
 
-    internal var fileName: StrictString {
+    private var fileName: StrictString {
         return Page.sanitize(fileName: StrictString(name))
     }
 

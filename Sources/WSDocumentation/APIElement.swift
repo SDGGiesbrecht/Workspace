@@ -16,15 +16,17 @@ import WSGeneralImports
 
 import SDGSwiftSource
 
+import WSProject
+
 extension APIElement {
 
     internal var fileName: StrictString {
         return Page.sanitize(fileName: StrictString(name))
     }
 
-    internal var relativePagePath: String {
+    internal var relativePagePath: [LocalizationIdentifier: String] {
         get {
-            return userInformation! as! String
+            return userInformation! as! [LocalizationIdentifier: String]
         }
         set {
             userInformation = newValue

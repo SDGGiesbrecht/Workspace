@@ -37,12 +37,23 @@ extension APIElement {
         return outputDirectory.appendingPathComponent(String(relativePagePath[localization]!))
     }
 
-    internal func determinePaths(for localizations: [LocalizationIdentifier]) {
-        for localization in localizations {
-            var result = StrictString(localization.code) + "/"
+    internal func determinePaths(for localization: LocalizationIdentifier) {
+        var result = StrictString(localization.code) + "/"
 
-            result += fileName + ".html"
-            relativePagePath[localization] = result
+        switch self {
+        case let package as PackageAPI :
+            for library in package.libraries {
+                library.determinePaths(for: localization)
+            }
+        case is LibraryAPI :
+            break
+        default:
+            if BuildConfiguration.current == .debug {
+                print("Unrecognized symbol type: \(type(of: self))")
+            }
         }
+
+        result += fileName + ".html"
+        relativePagePath[localization] = result
     }
 }

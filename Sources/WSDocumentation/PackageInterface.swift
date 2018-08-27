@@ -50,7 +50,9 @@ internal struct PackageInterface {
     // MARK: - Output
 
     internal func outputHTML(to outputDirectory: URL, status: DocumentationStatus) throws {
-        api.determinePaths(for: localizations)
+        for localization in localizations {
+            api.determinePaths(for: localization)
+        }
         try outputPackagePages(to: outputDirectory, status: status)
         try outputLibraryPages(to: outputDirectory, status: status)
     }

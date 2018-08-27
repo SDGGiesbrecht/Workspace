@@ -30,7 +30,7 @@ internal class SymbolPage : Page {
         content.append(SymbolPage.generateDeclarationSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, status: status))
         content.append(SymbolPage.generateDiscussionSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, status: status))
 
-        content.append(SymbolPage.generateLibrariesSection(localization: localization, symbol: symbol, packageIdentifiers: packageIdentifiers))
+        content.append(SymbolPage.generateLibrariesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers))
 
         super.init(localization: localization,
                    pathToSiteRoot: pathToSiteRoot,
@@ -122,7 +122,7 @@ internal class SymbolPage : Page {
         return HTMLElement("section", contents: sectionContents.joinedAsLines(), inline: false).source
     }
 
-    private static func generateLibrariesSection(localization: LocalizationIdentifier, symbol: APIElement, packageIdentifiers: Set<String>) -> StrictString {
+    private static func generateLibrariesSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>) -> StrictString {
         guard let package = symbol as? PackageAPI,
             ¬package.libraries.isEmpty else {
                 return ""
@@ -138,10 +138,10 @@ internal class SymbolPage : Page {
             heading = "library" // From “products: [.library(...)]”
         }
 
-        return generateChildrenSection(heading: heading, children: package.libraries, packageIdentifiers: packageIdentifiers)
+        return generateChildrenSection(localization: localization, heading: heading, children: package.libraries, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers)
     }
 
-    private static func generateChildrenSection(heading: StrictString, children: [APIElement], packageIdentifiers: Set<String>) -> StrictString {
+    private static func generateChildrenSection(localization: LocalizationIdentifier, heading: StrictString, children: [APIElement], pathToSiteRoot: StrictString, packageIdentifiers: Set<String>) -> StrictString {
         var sectionContents: [StrictString] = [
             HTMLElement("h2", contents: heading, inline: true).source
         ]
@@ -155,7 +155,8 @@ internal class SymbolPage : Page {
             }
             name = HTMLElement("code", attributes: ["class": "swift"], contents: name, inline: true).source
 
-            var entry = [HTMLElement("a", contents: name, inline: true).source]
+            let target = pathToSiteRoot + child.relativePagePath[localization]!
+            var entry = [HTMLElement("a", attributes: ["href": target], contents: name, inline: true).source]
             if let description = child.documentation?.descriptionSection {
                 entry.append(StrictString(description.renderedHTML(internalIdentifiers: packageIdentifiers)))
             }

@@ -49,7 +49,7 @@ internal struct ColonSpacing : Rule {
     })
 
     internal static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
-        if file.fileType == .swift {
+        if file.fileType ∈ Set([.swift, .swiftPackageManifest]) {
 
             for match in file.contents.scalars.matches(for: ":".scalars) {
 

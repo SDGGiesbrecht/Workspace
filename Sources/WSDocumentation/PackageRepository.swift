@@ -360,7 +360,8 @@ extension PackageRepository {
             for url in try dependencies + sourceFiles(output: output) {
                 try autoreleasepool {
 
-                    if FileType(url: url) == .swift {
+                    if let type = FileType(url: url),
+                        type ∈ Set([.swift, .swiftPackageManifest]) {
                         let file = try TextFile(alreadyAt: url)
 
                         for match in file.contents.scalars.matches(for: AlternativePatterns(PackageRepository.documentationDeclarationPatterns)) {
@@ -393,7 +394,9 @@ extension PackageRepository {
         for url in try sourceFiles(output: output) {
             try autoreleasepool {
 
-                if FileType(url: url) == .swift {
+                if let type = FileType(url: url),
+                    type ∈ Set([.swift, .swiftPackageManifest]) {
+
                     let documentationSyntax = FileType.swiftDocumentationSyntax
                     let lineDocumentationSyntax = documentationSyntax.lineCommentSyntax!
 

@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGCollections
 import WSGeneralImports
 
 import WSProject
@@ -118,7 +119,8 @@ extension PackageRepository {
 
             try autoreleasepool {
 
-                if FileType(url: url) == .swift {
+                if let type = FileType(url: url),
+                    type ∈ Set([.swift, .swiftPackageManifest]) {
                     let documentationSyntax = FileType.swiftDocumentationSyntax
                     let lineDocumentationSyntax = documentationSyntax.lineCommentSyntax!
 

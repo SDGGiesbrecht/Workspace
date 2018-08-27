@@ -58,9 +58,9 @@ internal struct PackageInterface {
     }
 
     private func outputPackagePages(to outputDirectory: URL, status: DocumentationStatus) throws {
-        try Redirect(target: developmentLocalization.code + "/index.html").contents.save(to: outputDirectory.appendingPathComponent("index.html"))
+        try Redirect(target: String(developmentLocalization.directoryName) + "/index.html").contents.save(to: outputDirectory.appendingPathComponent("index.html"))
         for localization in localizations {
-            let localizationDirectory = outputDirectory.appendingPathComponent(localization.code)
+            let localizationDirectory = outputDirectory.appendingPathComponent(String(localization.directoryName))
             let redirectURL = localizationDirectory.appendingPathComponent("index.html")
             let pageURL = api.pageURL(in: outputDirectory, for: localization)
             if redirectURL ≠ pageURL {

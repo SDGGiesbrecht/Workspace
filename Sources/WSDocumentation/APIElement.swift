@@ -70,7 +70,7 @@ extension APIElement {
     }
 
     internal func determinePaths(for localization: LocalizationIdentifier) {
-        var result = StrictString(localization.code) + "/"
+        var result = localization.directoryName + "/"
 
         switch self {
         case let package as PackageAPI :

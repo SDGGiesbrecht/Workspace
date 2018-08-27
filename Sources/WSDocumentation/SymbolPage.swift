@@ -157,7 +157,7 @@ internal class SymbolPage : Page {
             heading = "library" // From “products: [.library(...)]”
         }
 
-        return SymbolPage.generateChildrenSection(heading: heading, children: package.libraries, packageIdentifiers: packageIdentifiers)
+        return generateChildrenSection(heading: heading, children: package.libraries, packageIdentifiers: packageIdentifiers)
     }
 
     private static func generateChildrenSection(heading: StrictString, children: [APIElement], packageIdentifiers: Set<String>) -> StrictString {
@@ -165,12 +165,37 @@ internal class SymbolPage : Page {
             HTMLElement("h2", contents: heading, inline: true).source
         ]
         for child in children {
-            var entry = [HTMLElement("a", contents: StrictString(child.name), inline: true).source]
+            var name = StrictString(child.name)
+            if child is PackageAPI ∨ child is LibraryAPI {
+                name = HTMLElement("span", attributes: ["class": "text"], contents: name, inline: true).source
+                name = HTMLElement("span", attributes: ["class": "string"], contents: name, inline: true).source
+            } else {
+                name = highlight(name: name)
+            }
+            name = HTMLElement("code", attributes: ["class": "swift"], contents: name, inline: true).source
+
+            var entry = [HTMLElement("a", contents: name, inline: true).source]
             if let description = child.documentation?.descriptionSection {
                 entry.append(StrictString(description.renderedHTML(internalIdentifiers: packageIdentifiers)))
             }
             sectionContents.append(HTMLElement("div", attributes: ["class": "child"], contents: entry.joinedAsLines(), inline: false).source)
         }
         return HTMLElement("section", contents: sectionContents.joinedAsLines(), inline: false).source
+    }
+
+    private static func highlight(name: StrictString) -> StrictString {
+        var result = name
+        highlight("(", as: "punctuation", in: &result)
+        highlight(")", as: "punctuation", in: &result)
+        highlight(":", as: "punctuation", in: &result)
+        highlight("_", as: "keyword", in: &result)
+        highlight("[", as: "punctuation", in: &result)
+        highlight("]", as: "punctuation", in: &result)
+        result.prepend(contentsOf: "<span class\u{22}internal‐identifier\u{22}>")
+        result.append(contentsOf: "</span>")
+        return result
+    }
+    private static func highlight(_ token: StrictString, as class: StrictString, in name: inout StrictString) {
+        name.replaceMatches(for: token, with: "</span>" + HTMLElement("span", attributes: ["class": `class`], contents: token, inline: true).source + "<span class\u{22}internal‐identifier\u{22}>")
     }
 }

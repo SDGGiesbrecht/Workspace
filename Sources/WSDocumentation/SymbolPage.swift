@@ -58,7 +58,8 @@ internal class SymbolPage : Page {
     }
 
     private static func generateSymbolType(localization: LocalizationIdentifier, symbol: APIElement) -> StrictString {
-        if symbol is PackageAPI {
+        switch symbol {
+        case is PackageAPI :
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -67,7 +68,16 @@ internal class SymbolPage : Page {
             } else {
                 return "Package" // From “let ... = Package(...)”
             }
-        } else {
+        case is LibraryAPI :
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Library Product"
+                }
+            } else {
+                return "library" // From “products: [.library(...)]”
+            }
+        default:
             if BuildConfiguration.current == .debug {
                 print("Unrecognized symbol type: \(type(of: symbol))")
             }

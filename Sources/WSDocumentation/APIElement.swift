@@ -21,4 +21,13 @@ extension APIElement {
     internal var fileName: StrictString {
         return Page.sanitize(fileName: StrictString(name))
     }
+
+    internal var relativePagePath: String {
+        get {
+            return userInformation! as! String
+        }
+        set {
+            userInformation = newValue
+        }
+    }
 }

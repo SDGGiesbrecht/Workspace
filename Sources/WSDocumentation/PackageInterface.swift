@@ -50,8 +50,12 @@ internal struct PackageInterface {
     // MARK: - Output
 
     internal func outputHTML(to outputDirectory: URL, status: DocumentationStatus) throws {
+        determinePaths()
         try outputPackagePages(to: outputDirectory, status: status)
         try outputLibraryPages(to: outputDirectory, status: status)
+    }
+
+    private func determinePaths() {
     }
 
     private func outputPackagePages(to outputDirectory: URL, status: DocumentationStatus) throws {

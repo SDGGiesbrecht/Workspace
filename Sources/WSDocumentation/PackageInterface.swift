@@ -73,8 +73,13 @@ internal struct PackageInterface {
 
     private func outputLibraryPages(to outputDirectory: URL, status: DocumentationStatus) throws {
         for localization in localizations {
+            var redirected: Void?
             for library in api.libraries {
                 let location = library.pageURL(in: outputDirectory, for: localization)
+                _ = try cached(in: &redirected) {
+                    try Redirect(target: "../index.html").contents.save(to: location.deletingLastPathComponent().appendingPathComponent("index.html"))
+                    return ()
+                }
                 try SymbolPage(localization: localization, pathToSiteRoot: "../../", navigationPath: [api, library], symbol: library, packageIdentifiers: packageIdentifiers, status: status).contents.save(to: location)
             }
         }

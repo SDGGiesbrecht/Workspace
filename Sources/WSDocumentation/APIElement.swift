@@ -20,6 +20,36 @@ import WSProject
 
 extension APIElement {
 
+    // MARK: - Symbol Types
+
+    internal func symbolType(localization: LocalizationIdentifier) -> StrictString {
+        switch self {
+        case is PackageAPI :
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Package"
+                }
+            } else {
+                return "Package" // From “let ... = Package(...)”
+            }
+        case is LibraryAPI :
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Library Product"
+                }
+            } else {
+                return "library" // From “products: [.library(...)]”
+            }
+        default:
+            if BuildConfiguration.current == .debug {
+                print("Unrecognized symbol type: \(type(of: self))")
+            }
+            return ""
+        }
+    }
+
     // MARK: - Paths
 
     private var fileName: StrictString {

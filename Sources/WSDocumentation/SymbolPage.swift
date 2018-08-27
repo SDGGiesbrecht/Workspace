@@ -35,7 +35,7 @@ internal class SymbolPage : Page {
         super.init(localization: localization,
                    pathToSiteRoot: pathToSiteRoot,
                    navigationPath: SymbolPage.generateNavigationPath(localization: localization, pathToSiteRoot: pathToSiteRoot, navigationPath: navigationPath),
-                   symbolType: SymbolPage.generateSymbolType(localization: localization, symbol: symbol),
+                   symbolType: symbol.symbolType(localization: localization),
                    title: StrictString(symbol.name),
                    content: content.joinedAsLines())
     }
@@ -54,34 +54,6 @@ internal class SymbolPage : Page {
             }
         }
         return navigationPathLinks.joined(separator: "\n")
-    }
-
-    private static func generateSymbolType(localization: LocalizationIdentifier, symbol: APIElement) -> StrictString {
-        switch symbol {
-        case is PackageAPI :
-            if let match = localization._reasonableMatch {
-                switch match {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Package"
-                }
-            } else {
-                return "Package" // From “let ... = Package(...)”
-            }
-        case is LibraryAPI :
-            if let match = localization._reasonableMatch {
-                switch match {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Library Product"
-                }
-            } else {
-                return "library" // From “products: [.library(...)]”
-            }
-        default:
-            if BuildConfiguration.current == .debug {
-                print("Unrecognized symbol type: \(type(of: symbol))")
-            }
-            return ""
-        }
     }
 
     private static func generateDescriptionSection(symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, status: DocumentationStatus) -> StrictString {

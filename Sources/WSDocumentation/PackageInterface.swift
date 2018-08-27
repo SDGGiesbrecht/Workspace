@@ -73,21 +73,8 @@ internal struct PackageInterface {
 
     private func outputLibraryPages(to outputDirectory: URL, status: DocumentationStatus) throws {
         for localization in localizations {
-            let localizationDirectory = outputDirectory.appendingPathComponent(localization.code)
-
-            let librariesDirectoryName: String
-            if let match = localization._reasonableMatch {
-                switch match {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    librariesDirectoryName = "Libraries"
-                }
-            } else {
-                librariesDirectoryName = "library" // From “products: [.library(...)]”
-            }
-            let librariesDirectory = localizationDirectory.appendingPathComponent(librariesDirectoryName)
-
             for library in api.libraries {
-                let location = librariesDirectory.appendingPathComponent(String(library.fileName) + ".html")
+                let location = library.pageURL(in: outputDirectory, for: localization)
                 try SymbolPage(localization: localization, pathToSiteRoot: "../../", navigationPath: [api, library], symbol: library, packageIdentifiers: packageIdentifiers, status: status).contents.save(to: location)
             }
         }

@@ -20,6 +20,8 @@ import WSProject
 
 extension APIElement {
 
+    // MARK: - Paths
+
     internal var fileName: StrictString {
         return Page.sanitize(fileName: StrictString(name))
     }
@@ -46,7 +48,16 @@ extension APIElement {
                 library.determinePaths(for: localization)
             }
         case is LibraryAPI :
-            break
+            let librariesDirectoryName: StrictString
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    librariesDirectoryName = "Libraries"
+                }
+            } else {
+                librariesDirectoryName = "library" // From “products: [.library(...)]”
+            }
+            result += librariesDirectoryName + "/"
         default:
             if BuildConfiguration.current == .debug {
                 print("Unrecognized symbol type: \(type(of: self))")

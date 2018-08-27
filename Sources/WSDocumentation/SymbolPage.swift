@@ -161,7 +161,7 @@ internal class SymbolPage : Page {
         if let match = localization._reasonableMatch {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                heading = "Libraries"
+                heading = "Library Products"
             }
         } else {
             heading = "library" // From “products: [.library(...)]”

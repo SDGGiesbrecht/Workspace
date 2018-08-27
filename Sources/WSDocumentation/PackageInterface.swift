@@ -76,7 +76,7 @@ internal struct PackageInterface {
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    librariesDirectoryName = "Library Products"
+                    librariesDirectoryName = "Libraries"
                 }
             } else {
                 librariesDirectoryName = "library" // From “products: [.library(...)]”

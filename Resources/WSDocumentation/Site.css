@@ -163,17 +163,27 @@ h2 + .child {
 html {
     color: #333333;
 }
+
+a {
+    color: #0070C9;
+}
+
+blockquote {
+    color: #6A737D;
+}
+
 .navigation‐bar {
     background-color: #333;
     color: #CCCCCC;
+}
+.navigation‐bar a {
+    color: #FFFFFF;
 }
 
 .symbol‐type {
     color: #666;
 }
-a {
-    color: #0070C9;
-}
+
 
 /* General Fonts */
 
@@ -225,10 +235,6 @@ a:link, a:visited {
 }
 a:hover {
     text-decoration: underline;
-}
-
-blockquote {
-    color: #6A737D;
 }
 
 /* Specific Fonts */

@@ -165,10 +165,11 @@ internal class SymbolPage : Page {
             HTMLElement("h2", contents: heading, inline: true).source
         ]
         for child in children {
-            sectionContents.append(HTMLElement("a", contents: StrictString(child.name), inline: true).source)
+            var entry = [HTMLElement("a", contents: StrictString(child.name), inline: true).source]
             if let description = child.documentation?.descriptionSection {
-                sectionContents.append(StrictString(description.renderedHTML(internalIdentifiers: packageIdentifiers)))
+                entry.append(StrictString(description.renderedHTML(internalIdentifiers: packageIdentifiers)))
             }
+            sectionContents.append(HTMLElement("div", attributes: ["class": "child"], contents: entry.joinedAsLines(), inline: false).source)
         }
         return HTMLElement("section", contents: sectionContents.joinedAsLines(), inline: false).source
     }

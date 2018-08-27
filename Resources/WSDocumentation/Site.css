@@ -148,6 +148,16 @@ nav.navigation‐bar {
     margin-top: 1rem;
 }
 
+h2 + .child {
+    margin-top: 2rem;
+}
+.child:not(:last-child) {
+    margin-bottom: 1.5rem;
+}
+.child > p {
+    margin: 0 2.35294rem;
+}
+
 /* Colours */
 
 html {

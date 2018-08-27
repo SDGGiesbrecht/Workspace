@@ -24,12 +24,25 @@ extension APIElement {
         return Page.sanitize(fileName: StrictString(name))
     }
 
-    internal var relativePagePath: [LocalizationIdentifier: String] {
+    internal var relativePagePath: [LocalizationIdentifier: StrictString] {
         get {
-            return userInformation! as! [LocalizationIdentifier: String]
+            return (userInformation as? [LocalizationIdentifier: StrictString]) ?? [:]
         }
         set {
             userInformation = newValue
+        }
+    }
+
+    internal func pageURL(in outputDirectory: URL, for localization: LocalizationIdentifier) -> URL {
+        return outputDirectory.appendingPathComponent(String(relativePagePath[localization]!))
+    }
+
+    internal func determinePaths(for localizations: [LocalizationIdentifier]) {
+        for localization in localizations {
+            var result = StrictString(localization.code) + "/"
+
+            result += fileName + ".html"
+            relativePagePath[localization] = result
         }
     }
 }

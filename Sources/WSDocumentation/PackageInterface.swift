@@ -50,12 +50,9 @@ internal struct PackageInterface {
     // MARK: - Output
 
     internal func outputHTML(to outputDirectory: URL, status: DocumentationStatus) throws {
-        determinePaths()
+        api.determinePaths(for: localizations)
         try outputPackagePages(to: outputDirectory, status: status)
         try outputLibraryPages(to: outputDirectory, status: status)
-    }
-
-    private func determinePaths() {
     }
 
     private func outputPackagePages(to outputDirectory: URL, status: DocumentationStatus) throws {
@@ -63,7 +60,7 @@ internal struct PackageInterface {
         for localization in localizations {
             let localizationDirectory = outputDirectory.appendingPathComponent(localization.code)
             let redirectURL = localizationDirectory.appendingPathComponent("index.html")
-            let pageURL = localizationDirectory.appendingPathComponent(String(api.fileName) + ".html")
+            let pageURL = api.pageURL(in: outputDirectory, for: localization)
             if redirectURL ≠ pageURL {
                 try Redirect(target: pageURL.lastPathComponent).contents.save(to: redirectURL)
             }

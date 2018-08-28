@@ -193,11 +193,11 @@ internal class SymbolPage : Page {
         highlight("_", as: "keyword", in: &result)
         highlight("[", as: "punctuation", in: &result)
         highlight("]", as: "punctuation", in: &result)
-        result.prepend(contentsOf: "<span class\u{22}internal‐identifier\u{22}>")
+        result.prepend(contentsOf: "<span class=\u{22}internal identifier\u{22}>")
         result.append(contentsOf: "</span>")
         return result
     }
     private static func highlight(_ token: StrictString, as class: StrictString, in name: inout StrictString) {
-        name.replaceMatches(for: token, with: "</span>" + HTMLElement("span", attributes: ["class": `class`], contents: token, inline: true).source + "<span class\u{22}internal‐identifier\u{22}>")
+        name.replaceMatches(for: token, with: "</span>" + HTMLElement("span", attributes: ["class": `class`], contents: token, inline: true).source + "<span class=\u{22}internal identifier\u{22}>")
     }
 }

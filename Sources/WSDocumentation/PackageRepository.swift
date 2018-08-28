@@ -92,7 +92,7 @@ extension PackageRepository {
 
             let interface = PackageInterface(localizations: try configuration(output: output).documentation.localizations,
                                              developmentLocalization: try developmentLocalization(output: output),
-                                             api: try PackageAPI(package: cachedPackage()))
+                                             api: try PackageAPI(package: cachedPackage(), reportProgress: { output.print($0) }))
             try interface.outputHTML(to: outputDirectory, status: status)
 
             var rootCSS = TextFile(mockFileWithContents: Resources.root, fileType: .css)

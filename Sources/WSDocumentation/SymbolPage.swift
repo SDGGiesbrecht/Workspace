@@ -23,22 +23,22 @@ internal class SymbolPage : Page {
 
     // MARK: - Initialization
 
-    internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, navigationPath: [APIElement], symbol: APIElement, packageIdentifiers: Set<String>, status: DocumentationStatus) {
+    internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, navigationPath: [APIElement], symbol: APIElement, packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) {
 
         var content: [StrictString] = []
-        content.append(SymbolPage.generateDescriptionSection(symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, status: status))
-        content.append(SymbolPage.generateDeclarationSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, status: status))
-        content.append(SymbolPage.generateDiscussionSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, status: status))
+        content.append(SymbolPage.generateDescriptionSection(symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status))
+        content.append(SymbolPage.generateDeclarationSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status))
+        content.append(SymbolPage.generateDiscussionSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status))
 
-        content.append(SymbolPage.generateLibrariesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers))
+        content.append(SymbolPage.generateLibrariesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
 
-        content.append(SymbolPage.generateModulesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers))
+        content.append(SymbolPage.generateModulesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
 
-        content.append(SymbolPage.generateTypesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers))
-        content.append(SymbolPage.generateExtensionsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers))
-        content.append(SymbolPage.generateProtocolsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers))
-        content.append(SymbolPage.generateFunctionsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers))
-        content.append(SymbolPage.generateVariablesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers))
+        content.append(SymbolPage.generateTypesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
+        content.append(SymbolPage.generateExtensionsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
+        content.append(SymbolPage.generateProtocolsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
+        content.append(SymbolPage.generateFunctionsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
+        content.append(SymbolPage.generateVariablesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
 
         super.init(localization: localization,
                    pathToSiteRoot: pathToSiteRoot,
@@ -64,16 +64,16 @@ internal class SymbolPage : Page {
         return navigationPathLinks.joined(separator: "\n")
     }
 
-    private static func generateDescriptionSection(symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, status: DocumentationStatus) -> StrictString {
+    private static func generateDescriptionSection(symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
         if let documentation = symbol.documentation,
             let description = documentation.descriptionSection {
-                return HTMLElement("div", attributes: ["class": "description"], contents: StrictString(description.renderedHTML(internalIdentifiers: packageIdentifiers)), inline: false).source
+                return HTMLElement("div", attributes: ["class": "description"], contents: StrictString(description.renderedHTML(internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)), inline: false).source
         }
         status.reportMissingDescription(symbol: symbol, navigationPath: navigationPath)
         return ""
     }
 
-    private static func generateDeclarationSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, status: DocumentationStatus) -> StrictString {
+    private static func generateDeclarationSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
         guard let declaration = symbol.declaration else {
             return ""
         }
@@ -91,13 +91,13 @@ internal class SymbolPage : Page {
 
         let sectionContents: [StrictString] = [
             HTMLElement("h2", contents: declarationHeading, inline: true).source,
-            StrictString(declaration.syntaxHighlightedHTML(inline: false, internalIdentifiers: packageIdentifiers))
+            StrictString(declaration.syntaxHighlightedHTML(inline: false, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
         ]
 
         return HTMLElement("section", attributes: ["class": "declaration"], contents: sectionContents.joinedAsLines(), inline: false).source
     }
 
-    private static func generateDiscussionSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, status: DocumentationStatus) -> StrictString {
+    private static func generateDiscussionSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
         guard let discussion = symbol.documentation?.discussionEntries,
             ¬discussion.isEmpty else {
                 return ""
@@ -120,7 +120,7 @@ internal class SymbolPage : Page {
             HTMLElement("h2", contents: discussionHeading, inline: true).source
         ]
         for paragraph in discussion {
-            let rendered = StrictString(paragraph.renderedHTML(internalIdentifiers: packageIdentifiers))
+            let rendered = StrictString(paragraph.renderedHTML(internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
             if rendered.contains("<h1>".scalars) ∨ rendered.contains("<h2>".scalars) {
                 status.reportExcessiveHeading(symbol: symbol, navigationPath: navigationPath)
             }
@@ -130,7 +130,7 @@ internal class SymbolPage : Page {
         return HTMLElement("section", contents: sectionContents.joinedAsLines(), inline: false).source
     }
 
-    private static func generateLibrariesSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>) -> StrictString {
+    private static func generateLibrariesSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
         guard let package = symbol as? PackageAPI,
             ¬package.libraries.isEmpty else {
                 return ""
@@ -146,10 +146,10 @@ internal class SymbolPage : Page {
             heading = "library" // From “products: [.library(...)]”
         }
 
-        return generateChildrenSection(localization: localization, heading: heading, children: package.libraries, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers)
+        return generateChildrenSection(localization: localization, heading: heading, children: package.libraries, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
-    private static func generateModulesSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>) -> StrictString {
+    private static func generateModulesSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
         guard let library = symbol as? LibraryAPI,
             ¬library.modules.isEmpty else {
                 return ""
@@ -165,10 +165,10 @@ internal class SymbolPage : Page {
             heading = "target" // From “targets: [.target(...)]”
         }
 
-        return generateChildrenSection(localization: localization, heading: heading, children: library.modules, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers)
+        return generateChildrenSection(localization: localization, heading: heading, children: library.modules, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
-    private static func generateTypesSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>) -> StrictString {
+    private static func generateTypesSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
         guard let module = symbol as? ModuleAPI,
             ¬module.types.isEmpty else {
                 return ""
@@ -184,10 +184,10 @@ internal class SymbolPage : Page {
             heading = "struct/class/enum"
         }
 
-        return generateChildrenSection(localization: localization, heading: heading, children: module.types, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers)
+        return generateChildrenSection(localization: localization, heading: heading, children: module.types, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
-    private static func generateExtensionsSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>) -> StrictString {
+    private static func generateExtensionsSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
         guard let module = symbol as? ModuleAPI,
             ¬module.extensions.isEmpty else {
                 return ""
@@ -203,10 +203,10 @@ internal class SymbolPage : Page {
             heading = "extension"
         }
 
-        return generateChildrenSection(localization: localization, heading: heading, children: module.extensions, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers)
+        return generateChildrenSection(localization: localization, heading: heading, children: module.extensions, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
-    private static func generateProtocolsSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>) -> StrictString {
+    private static func generateProtocolsSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
         guard let module = symbol as? ModuleAPI,
             ¬module.protocols.isEmpty else {
                 return ""
@@ -222,10 +222,10 @@ internal class SymbolPage : Page {
             heading = "protocol"
         }
 
-        return generateChildrenSection(localization: localization, heading: heading, children: module.protocols, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers)
+        return generateChildrenSection(localization: localization, heading: heading, children: module.protocols, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
-    private static func generateFunctionsSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>) -> StrictString {
+    private static func generateFunctionsSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
         guard let module = symbol as? ModuleAPI,
             ¬module.functions.isEmpty else {
                 return ""
@@ -241,10 +241,10 @@ internal class SymbolPage : Page {
             heading = "func"
         }
 
-        return generateChildrenSection(localization: localization, heading: heading, children: module.functions, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers)
+        return generateChildrenSection(localization: localization, heading: heading, children: module.functions, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
-    private static func generateVariablesSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>) -> StrictString {
+    private static func generateVariablesSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
         guard let module = symbol as? ModuleAPI,
             ¬module.globalVariables.isEmpty else {
                 return ""
@@ -260,17 +260,17 @@ internal class SymbolPage : Page {
             heading = "var"
         }
 
-        return generateChildrenSection(localization: localization, heading: heading, children: module.globalVariables, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers)
+        return generateChildrenSection(localization: localization, heading: heading, children: module.globalVariables, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
-    private static func generateChildrenSection(localization: LocalizationIdentifier, heading: StrictString, children: [APIElement], pathToSiteRoot: StrictString, packageIdentifiers: Set<String>) -> StrictString {
+    private static func generateChildrenSection(localization: LocalizationIdentifier, heading: StrictString, children: [APIElement], pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
         var sectionContents: [StrictString] = [
             HTMLElement("h2", contents: heading, inline: true).source
         ]
         for child in children {
             var entry: [StrictString] = []
             if let conditions = child.compilationConditions {
-                entry.append(StrictString(conditions.syntaxHighlightedHTML(inline: true, internalIdentifiers: [])))
+                entry.append(StrictString(conditions.syntaxHighlightedHTML(inline: true, internalIdentifiers: [], symbolLinks: [:])))
                 entry.append("<br>")
             }
 
@@ -286,7 +286,7 @@ internal class SymbolPage : Page {
             let target = pathToSiteRoot + child.relativePagePath[localization]!
             entry.append(HTMLElement("a", attributes: ["href": target], contents: name, inline: true).source)
             if let description = child.documentation?.descriptionSection {
-                entry.append(StrictString(description.renderedHTML(internalIdentifiers: packageIdentifiers)))
+                entry.append(StrictString(description.renderedHTML(internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)))
             }
             sectionContents.append(HTMLElement("div", attributes: ["class": "child"], contents: entry.joinedAsLines(), inline: false).source)
         }

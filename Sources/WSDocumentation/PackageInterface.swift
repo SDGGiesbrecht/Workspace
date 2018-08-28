@@ -38,12 +38,19 @@ internal struct PackageInterface {
     private class Cache {
         fileprivate init() {}
         fileprivate var packageIdentifiers: Set<String>?
+        fileprivate var symbolLinks: [String: String]?
     }
     private let cache = Cache()
 
     private var packageIdentifiers: Set<String> {
         return cached(in: &cache.packageIdentifiers) {
             return api.identifierList
+        }
+    }
+
+    private var symbolLinks: [String: String] {
+        return cached(in: &cache.symbolLinks) {
+            return [:]
         }
     }
 
@@ -68,7 +75,7 @@ internal struct PackageInterface {
                 try Redirect(target: pageURL.lastPathComponent).contents.save(to: redirectURL)
             }
 
-            try SymbolPage(localization: localization, pathToSiteRoot: "../", navigationPath: [api], symbol: api, packageIdentifiers: packageIdentifiers, status: status).contents.save(to: pageURL)
+            try SymbolPage(localization: localization, pathToSiteRoot: "../", navigationPath: [api], symbol: api, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status).contents.save(to: pageURL)
         }
     }
 
@@ -81,7 +88,7 @@ internal struct PackageInterface {
                     try Redirect(target: "../index.html").contents.save(to: location.deletingLastPathComponent().appendingPathComponent("index.html"))
                     return ()
                 }
-                try SymbolPage(localization: localization, pathToSiteRoot: "../../", navigationPath: [api, library], symbol: library, packageIdentifiers: packageIdentifiers, status: status).contents.save(to: location)
+                try SymbolPage(localization: localization, pathToSiteRoot: "../../", navigationPath: [api, library], symbol: library, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status).contents.save(to: location)
             }
         }
     }
@@ -95,7 +102,7 @@ internal struct PackageInterface {
                     try Redirect(target: "../index.html").contents.save(to: location.deletingLastPathComponent().appendingPathComponent("index.html"))
                     return ()
                 }
-                try SymbolPage(localization: localization, pathToSiteRoot: "../../", navigationPath: [api, module], symbol: module, packageIdentifiers: packageIdentifiers, status: status).contents.save(to: location)
+                try SymbolPage(localization: localization, pathToSiteRoot: "../../", navigationPath: [api, module], symbol: module, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status).contents.save(to: location)
             }
         }
     }

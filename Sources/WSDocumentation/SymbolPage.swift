@@ -31,7 +31,14 @@ internal class SymbolPage : Page {
         content.append(SymbolPage.generateDiscussionSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, status: status))
 
         content.append(SymbolPage.generateLibrariesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers))
+
         content.append(SymbolPage.generateModulesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers))
+
+        content.append(SymbolPage.generateTypesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers))
+        content.append(SymbolPage.generateExtensionsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers))
+        content.append(SymbolPage.generateProtocolsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers))
+        content.append(SymbolPage.generateFunctionsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers))
+        content.append(SymbolPage.generateVariablesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers))
 
         super.init(localization: localization,
                    pathToSiteRoot: pathToSiteRoot,
@@ -159,6 +166,101 @@ internal class SymbolPage : Page {
         }
 
         return generateChildrenSection(localization: localization, heading: heading, children: library.modules, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers)
+    }
+
+    private static func generateTypesSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>) -> StrictString {
+        guard let module = symbol as? ModuleAPI,
+            ¬module.types.isEmpty else {
+                return ""
+        }
+
+        let heading: StrictString
+        if let match = localization._reasonableMatch {
+            switch match {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                heading = "Types"
+            }
+        } else {
+            heading = "struct/class/enum"
+        }
+
+        return generateChildrenSection(localization: localization, heading: heading, children: module.types, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers)
+    }
+
+    private static func generateExtensionsSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>) -> StrictString {
+        guard let module = symbol as? ModuleAPI,
+            ¬module.extensions.isEmpty else {
+                return ""
+        }
+
+        let heading: StrictString
+        if let match = localization._reasonableMatch {
+            switch match {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                heading = "Extensions"
+            }
+        } else {
+            heading = "extension"
+        }
+
+        return generateChildrenSection(localization: localization, heading: heading, children: module.extensions, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers)
+    }
+
+    private static func generateProtocolsSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>) -> StrictString {
+        guard let module = symbol as? ModuleAPI,
+            ¬module.protocols.isEmpty else {
+                return ""
+        }
+
+        let heading: StrictString
+        if let match = localization._reasonableMatch {
+            switch match {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                heading = "Protocols"
+            }
+        } else {
+            heading = "protocol"
+        }
+
+        return generateChildrenSection(localization: localization, heading: heading, children: module.protocols, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers)
+    }
+
+    private static func generateFunctionsSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>) -> StrictString {
+        guard let module = symbol as? ModuleAPI,
+            ¬module.functions.isEmpty else {
+                return ""
+        }
+
+        let heading: StrictString
+        if let match = localization._reasonableMatch {
+            switch match {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                heading = "Functions"
+            }
+        } else {
+            heading = "func"
+        }
+
+        return generateChildrenSection(localization: localization, heading: heading, children: module.functions, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers)
+    }
+
+    private static func generateVariablesSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>) -> StrictString {
+        guard let module = symbol as? ModuleAPI,
+            ¬module.globalVariables.isEmpty else {
+                return ""
+        }
+
+        let heading: StrictString
+        if let match = localization._reasonableMatch {
+            switch match {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                heading = "Global Variables"
+            }
+        } else {
+            heading = "var"
+        }
+
+        return generateChildrenSection(localization: localization, heading: heading, children: module.globalVariables, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers)
     }
 
     private static func generateChildrenSection(localization: LocalizationIdentifier, heading: StrictString, children: [APIElement], pathToSiteRoot: StrictString, packageIdentifiers: Set<String>) -> StrictString {

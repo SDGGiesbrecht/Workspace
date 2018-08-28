@@ -42,6 +42,41 @@ extension APIElement {
             } else {
                 return "library" // From “products: [.library(...)]”
             }
+        case let type as TypeAPI :
+            switch type.keyword {
+            case .classKeyword:
+                if let match = localization._reasonableMatch {
+                    switch match {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "Class"
+                    }
+                } else {
+                    return "class"
+                }
+            case .structKeyword:
+                if let match = localization._reasonableMatch {
+                    switch match {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "Structure"
+                    }
+                } else {
+                    return "struct"
+                }
+            case .enumKeyword:
+                if let match = localization._reasonableMatch {
+                    switch match {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "Enumeration"
+                    }
+                } else {
+                    return "enum"
+                }
+            default:
+                if BuildConfiguration.current == .debug {
+                    print("Unrecognized type keyword: \(type.keyword)")
+                }
+                return ""
+            }
         default:
             if BuildConfiguration.current == .debug {
                 print("Unrecognized symbol type: \(type(of: self))")
@@ -69,7 +104,7 @@ extension APIElement {
         return outputDirectory.appendingPathComponent(String(relativePagePath[localization]!))
     }
 
-    internal func determinePaths(for localization: LocalizationIdentifier) -> [String: String] {
+    internal func determinePaths(for localization: LocalizationIdentifier, namespace: StrictString = "") -> [String: String] {
         var links: [String: String] = [:]
         var path = localization.directoryName + "/"
 
@@ -107,6 +142,21 @@ extension APIElement {
 
             for child in module.children {
                 links = child.determinePaths(for: localization).mergedByOverwriting(from: links)
+            }
+        case is TypeAPI :
+            let typesDirectoryName: StrictString
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    typesDirectoryName = "Types"
+                }
+            } else {
+                typesDirectoryName = "struct"
+            }
+            path += namespace + typesDirectoryName + "/"
+
+            for child in children {
+                links = child.determinePaths(for: localization, namespace: fileName + "/").mergedByOverwriting(from: links)
             }
         default:
             if BuildConfiguration.current == .debug {

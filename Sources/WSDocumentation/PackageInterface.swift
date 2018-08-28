@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGCollections
 import WSGeneralImports
 
 import SDGSwiftSource
@@ -51,6 +52,7 @@ internal struct PackageInterface {
         try outputPackagePages(to: outputDirectory, status: status)
         try outputLibraryPages(to: outputDirectory, status: status)
         try outputModulePages(to: outputDirectory, status: status)
+        try outputTopLevelSymbols(to: outputDirectory, status: status)
     }
 
     private func outputPackagePages(to outputDirectory: URL, status: DocumentationStatus) throws {
@@ -91,6 +93,54 @@ internal struct PackageInterface {
                     return ()
                 }
                 try SymbolPage(localization: localization, pathToSiteRoot: "../../", navigationPath: [api, module], symbol: module, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks[localization]!, status: status).contents.save(to: location)
+            }
+        }
+    }
+
+    private func outputTopLevelSymbols(to outputDirectory: URL, status: DocumentationStatus) throws {
+        for localization in localizations {
+            var redirected: Set<URL> = []
+            for module in api.modules {
+                for symbol in module.children {
+                    let location = symbol.pageURL(in: outputDirectory, for: localization)
+                    let directory = location.deletingLastPathComponent()
+                    if directory ∉ redirected {
+                        redirected.insert(directory)
+                        try Redirect(target: "../index.html").contents.save(to: directory.appendingPathComponent("index.html"))
+                    }
+                    try SymbolPage(localization: localization, pathToSiteRoot: "../../", navigationPath: [api, symbol], symbol: symbol, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks[localization]!, status: status).contents.save(to: location)
+
+                    if let scope = symbol as? APIScope {
+                        try outputNestedSymbols(of: scope, namespace: [scope], to: outputDirectory, localization: localization, status: status)
+                    }
+                }
+            }
+        }
+    }
+
+    private func outputNestedSymbols(of parent: APIScope, namespace: [APIScope], to outputDirectory: URL, localization: LocalizationIdentifier, status: DocumentationStatus) throws {
+        var redirected: Set<URL> = []
+        for symbol in parent.children where symbol.receivesPage {
+            let location = symbol.pageURL(in: outputDirectory, for: localization)
+            let directory = location.deletingLastPathComponent()
+            if directory ∉ redirected {
+                redirected.insert(directory)
+                try Redirect(target: "../index.html").contents.save(to: directory.appendingPathComponent("index.html"))
+            }
+
+            var modifiedRoot: StrictString = "../../"
+            for _ in namespace.indices {
+                modifiedRoot += "../".scalars
+            }
+
+            var navigation: [APIElement] = [api]
+            navigation += namespace as [APIElement]
+            navigation += [symbol]
+
+            try SymbolPage(localization: localization, pathToSiteRoot: modifiedRoot, navigationPath: navigation, symbol: symbol, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks[localization]!, status: status).contents.save(to: location)
+
+            if let scope = symbol as? APIScope {
+                try outputNestedSymbols(of: scope, namespace: namespace + [scope], to: outputDirectory, localization: localization, status: status)
             }
         }
     }

@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import WSGeneralImports
 
 import SDGSwiftSource
@@ -87,6 +88,13 @@ extension APIElement {
 
     // MARK: - Paths
 
+    internal var receivesPage: Bool {
+        if self is ConformanceAPI {
+            return false
+        }
+        return true
+    }
+
     private var fileName: StrictString {
         return Page.sanitize(fileName: StrictString(name))
     }
@@ -155,9 +163,54 @@ extension APIElement {
             }
             path += namespace + typesDirectoryName + "/"
 
-            for child in children {
+            for child in children where child.receivesPage {
                 links = child.determinePaths(for: localization, namespace: fileName + "/").mergedByOverwriting(from: links)
             }
+        case is CaseAPI :
+            let casesDirectoryName: StrictString
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    casesDirectoryName = "Cases"
+                }
+            } else {
+                casesDirectoryName = "case"
+            }
+            path += namespace + casesDirectoryName + "/"
+        case let function as FunctionAPI :
+            let functionsDirectoryName: StrictString
+
+            if namespace.isEmpty {
+                if let match = localization._reasonableMatch {
+                    switch match {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        functionsDirectoryName = "Functions"
+                    }
+                } else {
+                    functionsDirectoryName = "func"
+                }
+            } else {
+                if function.typeMethodKeyword ≠ nil {
+                    if let match = localization._reasonableMatch {
+                        switch match {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            functionsDirectoryName = "Type Methods"
+                        }
+                    } else {
+                        functionsDirectoryName = "static func"
+                    }
+                } else {
+                    if let match = localization._reasonableMatch {
+                        switch match {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            functionsDirectoryName = "Methods"
+                        }
+                    } else {
+                        functionsDirectoryName = "func"
+                    }
+                }
+            }
+            path += namespace + functionsDirectoryName + "/"
         default:
             if BuildConfiguration.current == .debug {
                 print("Unrecognized symbol type: \(type(of: self))")

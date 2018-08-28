@@ -268,6 +268,12 @@ internal class SymbolPage : Page {
             HTMLElement("h2", contents: heading, inline: true).source
         ]
         for child in children {
+            var entry: [StrictString] = []
+            if let conditions = child.compilationConditions {
+                entry.append(StrictString(conditions.syntaxHighlightedHTML(inline: true, internalIdentifiers: [])))
+                entry.append("<br>")
+            }
+
             var name = StrictString(child.name)
             if child is PackageAPI ∨ child is LibraryAPI {
                 name = HTMLElement("span", attributes: ["class": "text"], contents: name, inline: true).source
@@ -278,7 +284,7 @@ internal class SymbolPage : Page {
             name = HTMLElement("code", attributes: ["class": "swift"], contents: name, inline: true).source
 
             let target = pathToSiteRoot + child.relativePagePath[localization]!
-            var entry = [HTMLElement("a", attributes: ["href": target], contents: name, inline: true).source]
+            entry.append(HTMLElement("a", attributes: ["href": target], contents: name, inline: true).source)
             if let description = child.documentation?.descriptionSection {
                 entry.append(StrictString(description.renderedHTML(internalIdentifiers: packageIdentifiers)))
             }

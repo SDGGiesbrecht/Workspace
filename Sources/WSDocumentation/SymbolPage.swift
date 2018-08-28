@@ -31,6 +31,7 @@ internal class SymbolPage : Page {
         content.append(SymbolPage.generateDiscussionSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, status: status))
 
         content.append(SymbolPage.generateLibrariesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers))
+        content.append(SymbolPage.generateModulesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers))
 
         super.init(localization: localization,
                    pathToSiteRoot: pathToSiteRoot,
@@ -139,6 +140,25 @@ internal class SymbolPage : Page {
         }
 
         return generateChildrenSection(localization: localization, heading: heading, children: package.libraries, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers)
+    }
+
+    private static func generateModulesSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>) -> StrictString {
+        guard let library = symbol as? LibraryAPI,
+            ¬library.modules.isEmpty else {
+                return ""
+        }
+
+        let heading: StrictString
+        if let match = localization._reasonableMatch {
+            switch match {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                heading = "Modules"
+            }
+        } else {
+            heading = "target" // From “targets: [.target(...)]”
+        }
+
+        return generateChildrenSection(localization: localization, heading: heading, children: library.modules, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers)
     }
 
     private static func generateChildrenSection(localization: LocalizationIdentifier, heading: StrictString, children: [APIElement], pathToSiteRoot: StrictString, packageIdentifiers: Set<String>) -> StrictString {

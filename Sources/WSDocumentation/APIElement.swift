@@ -77,7 +77,7 @@ extension APIElement {
             for library in package.libraries {
                 library.determinePaths(for: localization)
             }
-        case is LibraryAPI :
+        case let library as LibraryAPI :
             let librariesDirectoryName: StrictString
             if let match = localization._reasonableMatch {
                 switch match {
@@ -88,6 +88,25 @@ extension APIElement {
                 librariesDirectoryName = "library" // From “products: [.library(...)]”
             }
             result += librariesDirectoryName + "/"
+
+            for module in library.modules {
+                module.determinePaths(for: localization)
+            }
+        case let module as ModuleAPI :
+            let modulesDirectoryName: StrictString
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    modulesDirectoryName = "Modules"
+                }
+            } else {
+                modulesDirectoryName = "target" // From “targets: [.target(...)]”
+            }
+            result += modulesDirectoryName + "/"
+
+            for child in module.children {
+                child.determinePaths(for: localization)
+            }
         default:
             if BuildConfiguration.current == .debug {
                 print("Unrecognized symbol type: \(type(of: self))")

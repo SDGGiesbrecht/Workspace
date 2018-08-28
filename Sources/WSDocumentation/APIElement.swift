@@ -163,8 +163,11 @@ extension APIElement {
             }
             path += namespace + typesDirectoryName + "/"
 
+            var newNamespace = namespace
+            newNamespace.append(contentsOf: typesDirectoryName + "/")
+            newNamespace.append(contentsOf: fileName + "/")
             for child in children where child.receivesPage {
-                links = child.determinePaths(for: localization, namespace: fileName + "/").mergedByOverwriting(from: links)
+                links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
             }
         case is CaseAPI :
             let casesDirectoryName: StrictString

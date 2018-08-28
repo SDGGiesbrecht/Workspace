@@ -69,13 +69,14 @@ extension APIElement {
         return outputDirectory.appendingPathComponent(String(relativePagePath[localization]!))
     }
 
-    internal func determinePaths(for localization: LocalizationIdentifier) {
-        var result = localization.directoryName + "/"
+    internal func determinePaths(for localization: LocalizationIdentifier) -> [String: String] {
+        var links: [String: String] = [:]
+        var path = localization.directoryName + "/"
 
         switch self {
         case let package as PackageAPI :
             for library in package.libraries {
-                library.determinePaths(for: localization)
+                links = library.determinePaths(for: localization).mergedByOverwriting(from: links)
             }
         case let library as LibraryAPI :
             let librariesDirectoryName: StrictString
@@ -87,10 +88,10 @@ extension APIElement {
             } else {
                 librariesDirectoryName = "library" // From “products: [.library(...)]”
             }
-            result += librariesDirectoryName + "/"
+            path += librariesDirectoryName + "/"
 
             for module in library.modules {
-                module.determinePaths(for: localization)
+                links = module.determinePaths(for: localization).mergedByOverwriting(from: links)
             }
         case let module as ModuleAPI :
             let modulesDirectoryName: StrictString
@@ -102,10 +103,10 @@ extension APIElement {
             } else {
                 modulesDirectoryName = "target" // From “targets: [.target(...)]”
             }
-            result += modulesDirectoryName + "/"
+            path += modulesDirectoryName + "/"
 
             for child in module.children {
-                child.determinePaths(for: localization)
+                links = child.determinePaths(for: localization).mergedByOverwriting(from: links)
             }
         default:
             if BuildConfiguration.current == .debug {
@@ -113,7 +114,9 @@ extension APIElement {
             }
         }
 
-        result += fileName + ".html"
-        relativePagePath[localization] = result
+        path += fileName + ".html"
+        relativePagePath[localization] = path
+        links[name] = String(path)
+        return links
     }
 }

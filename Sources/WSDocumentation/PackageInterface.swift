@@ -27,6 +27,14 @@ internal struct PackageInterface {
         self.localizations = localizations
         self.developmentLocalization = developmentLocalization
         self.api = api
+
+        self.packageIdentifiers = api.identifierList
+
+        var paths: [LocalizationIdentifier: [String: String]] = [:]
+        for localization in localizations {
+            paths[localization] = api.determinePaths(for: localization)
+        }
+        self.symbolLinks = paths
     }
 
     // MARK: - Properties
@@ -34,32 +42,12 @@ internal struct PackageInterface {
     private let localizations: [LocalizationIdentifier]
     private let developmentLocalization: LocalizationIdentifier
     private let api: PackageAPI
-
-    private class Cache {
-        fileprivate init() {}
-        fileprivate var packageIdentifiers: Set<String>?
-        fileprivate var symbolLinks: [String: String]?
-    }
-    private let cache = Cache()
-
-    private var packageIdentifiers: Set<String> {
-        return cached(in: &cache.packageIdentifiers) {
-            return api.identifierList
-        }
-    }
-
-    private var symbolLinks: [String: String] {
-        return cached(in: &cache.symbolLinks) {
-            return [:]
-        }
-    }
+    private let packageIdentifiers: Set<String>
+    private let symbolLinks: [LocalizationIdentifier: [String: String]]
 
     // MARK: - Output
 
     internal func outputHTML(to outputDirectory: URL, status: DocumentationStatus) throws {
-        for localization in localizations {
-            api.determinePaths(for: localization)
-        }
         try outputPackagePages(to: outputDirectory, status: status)
         try outputLibraryPages(to: outputDirectory, status: status)
         try outputModulePages(to: outputDirectory, status: status)
@@ -75,7 +63,7 @@ internal struct PackageInterface {
                 try Redirect(target: pageURL.lastPathComponent).contents.save(to: redirectURL)
             }
 
-            try SymbolPage(localization: localization, pathToSiteRoot: "../", navigationPath: [api], symbol: api, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status).contents.save(to: pageURL)
+            try SymbolPage(localization: localization, pathToSiteRoot: "../", navigationPath: [api], symbol: api, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks[localization]!, status: status).contents.save(to: pageURL)
         }
     }
 
@@ -88,7 +76,7 @@ internal struct PackageInterface {
                     try Redirect(target: "../index.html").contents.save(to: location.deletingLastPathComponent().appendingPathComponent("index.html"))
                     return ()
                 }
-                try SymbolPage(localization: localization, pathToSiteRoot: "../../", navigationPath: [api, library], symbol: library, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status).contents.save(to: location)
+                try SymbolPage(localization: localization, pathToSiteRoot: "../../", navigationPath: [api, library], symbol: library, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks[localization]!, status: status).contents.save(to: location)
             }
         }
     }
@@ -102,7 +90,7 @@ internal struct PackageInterface {
                     try Redirect(target: "../index.html").contents.save(to: location.deletingLastPathComponent().appendingPathComponent("index.html"))
                     return ()
                 }
-                try SymbolPage(localization: localization, pathToSiteRoot: "../../", navigationPath: [api, module], symbol: module, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status).contents.save(to: location)
+                try SymbolPage(localization: localization, pathToSiteRoot: "../../", navigationPath: [api, module], symbol: module, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks[localization]!, status: status).contents.save(to: location)
             }
         }
     }

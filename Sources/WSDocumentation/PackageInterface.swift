@@ -55,6 +55,7 @@ internal struct PackageInterface {
         }
         try outputPackagePages(to: outputDirectory, status: status)
         try outputLibraryPages(to: outputDirectory, status: status)
+        try outputModulePages(to: outputDirectory, status: status)
     }
 
     private func outputPackagePages(to outputDirectory: URL, status: DocumentationStatus) throws {
@@ -81,6 +82,20 @@ internal struct PackageInterface {
                     return ()
                 }
                 try SymbolPage(localization: localization, pathToSiteRoot: "../../", navigationPath: [api, library], symbol: library, packageIdentifiers: packageIdentifiers, status: status).contents.save(to: location)
+            }
+        }
+    }
+
+    private func outputModulePages(to outputDirectory: URL, status: DocumentationStatus) throws {
+        for localization in localizations {
+            var redirected: Void?
+            for module in api.modules {
+                let location = module.pageURL(in: outputDirectory, for: localization)
+                _ = try cached(in: &redirected) {
+                    try Redirect(target: "../index.html").contents.save(to: location.deletingLastPathComponent().appendingPathComponent("index.html"))
+                    return ()
+                }
+                try SymbolPage(localization: localization, pathToSiteRoot: "../../", navigationPath: [api, module], symbol: module, packageIdentifiers: packageIdentifiers, status: status).contents.save(to: location)
             }
         }
     }

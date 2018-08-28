@@ -116,7 +116,11 @@ extension APIElement {
 
         path += fileName + ".html"
         relativePagePath[localization] = path
-        links[name] = String(path)
+        if let type = self as? TypeAPI {
+            links[type.name.truncated(before: "<")] = String(path)
+        } else {
+            links[name] = String(path)
+        }
         return links
     }
 }

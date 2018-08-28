@@ -180,6 +180,53 @@ extension APIElement {
                 casesDirectoryName = "case"
             }
             path += namespace + casesDirectoryName + "/"
+        case is InitializerAPI :
+            let initializersDirectoryName: StrictString
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom:
+                    initializersDirectoryName = "Initialisers"
+                case .englishUnitedStates, .englishCanada:
+                    initializersDirectoryName = "Initializers"
+                }
+            } else {
+                initializersDirectoryName = "init"
+            }
+            path += namespace + initializersDirectoryName + "/"
+        case let variable as VariableAPI :
+            let variablesDirectoryName: StrictString
+
+            if namespace.isEmpty {
+                if let match = localization._reasonableMatch {
+                    switch match {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        variablesDirectoryName = "Global Variables"
+                    }
+                } else {
+                    variablesDirectoryName = "var"
+                }
+            } else {
+                if variable.typePropertyKeyword ≠ nil {
+                    if let match = localization._reasonableMatch {
+                        switch match {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            variablesDirectoryName = "Type Properties"
+                        }
+                    } else {
+                        variablesDirectoryName = "static var"
+                    }
+                } else {
+                    if let match = localization._reasonableMatch {
+                        switch match {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            variablesDirectoryName = "Properties"
+                        }
+                    } else {
+                        variablesDirectoryName = "func"
+                    }
+                }
+            }
+            path += namespace + variablesDirectoryName + "/"
         case let function as FunctionAPI :
             let functionsDirectoryName: StrictString
 

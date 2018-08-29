@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGMathematics
 import WSGeneralImports
 
 import SDGSwiftSource
@@ -77,6 +78,115 @@ extension APIElement {
                     print("Unrecognized type keyword: \(type.keyword)")
                 }
                 return ""
+            }
+        case is ExtensionAPI :
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Extension"
+                }
+            } else {
+                return "extension"
+            }
+        case is ProtocolAPI :
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Protocol"
+                }
+            } else {
+                return "protocol"
+            }
+        case is CaseAPI :
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Case"
+                }
+            } else {
+                return "case"
+            }
+        case is InitializerAPI :
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom:
+                    return "Initialiser"
+                case .englishUnitedStates, .englishCanada:
+                    return "Initializer"
+                }
+            } else {
+                return "init"
+            }
+        case let variable as VariableAPI :
+            if relativePagePath[localization]!.components(separatedBy: "/").count ≤ 3 {
+                if let match = localization._reasonableMatch {
+                    switch match {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "Global Variable"
+                    }
+                } else {
+                    return "var"
+                }
+            } else {
+                if variable.typePropertyKeyword ≠ nil {
+                    if let match = localization._reasonableMatch {
+                        switch match {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "Type Property"
+                        }
+                    } else {
+                        return "var"
+                    }
+                } else {
+                    if let match = localization._reasonableMatch {
+                        switch match {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "Instance Property"
+                        }
+                    } else {
+                        return "var"
+                    }
+                }
+            }
+        case is SubscriptAPI :
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Subscript"
+                }
+            } else {
+                return "subscript"
+            }
+        case let function as FunctionAPI :
+            if relativePagePath[localization]!.components(separatedBy: "/").count ≤ 3 {
+                if let match = localization._reasonableMatch {
+                    switch match {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "Function"
+                    }
+                } else {
+                    return "func"
+                }
+            } else {
+                if function.typeMethodKeyword ≠ nil {
+                    if let match = localization._reasonableMatch {
+                        switch match {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "Type Method"
+                        }
+                    } else {
+                        return "func"
+                    }
+                } else {
+                    if let match = localization._reasonableMatch {
+                        switch match {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "Instance Method"
+                        }
+                    } else {
+                        return "func"
+                    }
+                }
             }
         default:
             if BuildConfiguration.current == .debug {

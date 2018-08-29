@@ -137,7 +137,7 @@ internal struct PackageInterface {
 
             var modifiedRoot: StrictString = "../../"
             for _ in namespace.indices {
-                modifiedRoot += "../".scalars
+                modifiedRoot += "../../".scalars
             }
 
             var navigation: [APIElement] = [api]

@@ -34,7 +34,7 @@ internal class DocumentationStatus {
 
     private func report(warning: UserFacing<StrictString, InterfaceLocalization>) {
         passing = false
-        output.print(warning.resolved().formattedAsError())
+        output.print(warning.resolved().formattedAsError().separated())
     }
 
     private func report(problem: UserFacing<StrictString, InterfaceLocalization>, with symbol: APIElement, navigationPath: [APIElement], hint: UserFacing<StrictString, InterfaceLocalization>? = nil) {

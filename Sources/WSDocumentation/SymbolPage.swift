@@ -70,7 +70,9 @@ internal class SymbolPage : Page {
             let description = documentation.descriptionSection {
                 return HTMLElement("div", attributes: ["class": "description"], contents: StrictString(description.renderedHTML(internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)), inline: false).source
         }
-        status.reportMissingDescription(symbol: symbol, navigationPath: navigationPath)
+        if ¬(symbol is ExtensionAPI) {
+            status.reportMissingDescription(symbol: symbol, navigationPath: navigationPath)
+        }
         return ""
     }
 

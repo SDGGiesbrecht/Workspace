@@ -44,6 +44,15 @@ extension APIElement {
             } else {
                 return "library" // From “products: [.library(...)]”
             }
+        case is ModuleAPI :
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Module"
+                }
+            } else {
+                return "target" // From “targets: [.target(...)]”
+            }
         case let type as TypeAPI :
             switch type.keyword {
             case .classKeyword:

@@ -51,7 +51,7 @@ internal class Page {
         let generatedUsing: StrictString
         switch resolved {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            generatedUsing = "Generated using " + link + "."
+            generatedUsing = "Generated with " + link + "."
         }
 
         let sdg: StrictString

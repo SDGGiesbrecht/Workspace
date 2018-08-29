@@ -72,6 +72,10 @@ li:not(:first-child) {
     margin-top: 0.7em;
 }
 
+footer {
+    padding: calc((21 / 17) * 1rem);
+}
+
 /* Specific Layout */
 
 header.navigation‐bar {
@@ -184,6 +188,11 @@ blockquote {
     color: #666;
 }
 
+footer {
+    background-color: #F2F2F2;
+    color: #888888;
+}
+
 
 /* General Fonts */
 
@@ -267,4 +276,10 @@ a:hover {
 
 .declaration .swift.blockquote {
     font-size: calc((15 / 17) * 1rem);
+}
+
+footer {
+    font-size: calc((11 / 17) * 1rem);
+    letter-spacing: calc((0.23999999463558197 / 17) * 1rem);
+    line-height: calc((14 / 17) * 1rem);
 }

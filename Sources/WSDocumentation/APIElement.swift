@@ -82,6 +82,24 @@ extension APIElement {
                 } else {
                     return "enum"
                 }
+            case .typealiasKeyword:
+                if let match = localization._reasonableMatch {
+                    switch match {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "Type Alias"
+                    }
+                } else {
+                    return "typealias"
+                }
+            case .associatedtypeKeyword:
+                if let match = localization._reasonableMatch {
+                    switch match {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "Associated Type"
+                    }
+                } else {
+                    return "associatedtype"
+                }
             default:
                 if BuildConfiguration.current == .debug {
                     print("Unrecognized type keyword: \(type.keyword)")

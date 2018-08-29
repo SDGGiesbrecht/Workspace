@@ -48,7 +48,14 @@ internal struct PackageInterface {
 
     // MARK: - Output
 
-    internal func outputHTML(to outputDirectory: URL, status: DocumentationStatus) throws {
+    internal func outputHTML(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output) throws {
+        output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishCanada:
+                return "Generating HTML..."
+            }
+        }).resolved())
+
         try outputPackagePages(to: outputDirectory, status: status)
         try outputLibraryPages(to: outputDirectory, status: status)
         try outputModulePages(to: outputDirectory, status: status)

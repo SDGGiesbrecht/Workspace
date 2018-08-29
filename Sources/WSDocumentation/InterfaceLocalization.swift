@@ -1,5 +1,5 @@
 /*
- LocalizationIdentifier.swift
+ InterfaceLocalization.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -14,18 +14,13 @@
 
 import WSGeneralImports
 
-import WSProject
+extension ContentLocalization {
 
-extension LocalizationIdentifier {
-
-    internal var textDirection: TextDirection? {
-        guard let supported = ContentLocalization(reasonableMatchFor: code) else {
-            return nil
+    // #workaround(SDGCornerstone 0.10.1, Until handled by SDGCornerstone.)
+    var textDirection: TextDirection {
+        switch self {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return .leftToRight
         }
-        return supported.textDirection
-    }
-
-    internal var directoryName: StrictString {
-        return icon ?? StrictString(code)
     }
 }

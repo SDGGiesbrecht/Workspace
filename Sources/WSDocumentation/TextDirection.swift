@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// #workaround(SDGCornerstone 0.10.1, Until handled by SDGCornerstone.)
 internal enum TextDirection {
 
     // MARK: - Cases

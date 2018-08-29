@@ -45,7 +45,7 @@ extension PackageRepository {
         return documentationDirectory.appendingPathComponent(target)
     }
 
-    private func resolvedCopyright(output: Command.Output) throws -> StrictString {
+    internal func resolvedCopyright(output: Command.Output) throws -> StrictString {
 
         var template = try documentationCopyright(output: output)
 
@@ -90,9 +90,18 @@ extension PackageRepository {
 
             try createRedirects(outputDirectory: outputDirectory)
 
-            let interface = PackageInterface(localizations: try configuration(output: output).documentation.localizations,
-                                             developmentLocalization: try developmentLocalization(output: output),
-                                             api: try PackageAPI(package: cachedPackage(), reportProgress: { output.print($0) }))
+            let configuration = try self.configuration(output: output)
+            let copyrightNotice = try resolvedCopyright(output: output)
+            var copyright: [LocalizationIdentifier: StrictString] = [:]
+            for localization in configuration.documentation.localizations {
+                copyright[localization] = copyrightNotice
+            }
+
+            let interface = PackageInterface(
+                localizations: configuration.documentation.localizations,
+                developmentLocalization: try developmentLocalization(output: output),
+                api: try PackageAPI(package: cachedPackage(), reportProgress: { output.print($0) }),
+                copyright: copyright)
             try interface.outputHTML(to: outputDirectory, status: status, output: output)
 
             var rootCSS = TextFile(mockFileWithContents: Resources.root, fileType: .css)

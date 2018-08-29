@@ -34,9 +34,41 @@ internal class Page {
         return StrictString(result.contents)
     }()
 
+    private static func watermark(localization: LocalizationIdentifier) -> StrictString {
+        let resolved = localization._bestMatch
+
+        // #workaround(Until self‐generated documentation is live—it can then be localized too.)
+        let targetURL: StrictString = "https://github.com/SDGGiesbrecht/Workspace#workspace"
+
+        let name: StrictString
+        switch resolved {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            name = "Workspace"
+        }
+
+        let link = HTMLElement("a", attributes: ["href": targetURL], contents: name, inline: true).source
+
+        let generatedUsing: StrictString
+        switch resolved {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            generatedUsing = "Generated using " + link + "."
+        }
+
+        let sdg: StrictString
+        switch resolved {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            sdg = HTMLElement("span", attributes: ["lang": "la-IT"], contents: "Soli Deo gloria.", inline: true).source
+        }
+
+        return HTMLElement("p", attributes: [
+            "lang": StrictString(resolved.code),
+            "dir": StrictString(resolved.textDirection.htmlAttribute)
+            ], contents: generatedUsing + " " + sdg, inline: true).source
+    }
+
     // MARK: - Initialization
 
-    internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, navigationPath: StrictString, symbolType: StrictString?, compilationConditions: StrictString?, title: StrictString, content: StrictString) {
+    internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, navigationPath: StrictString, symbolType: StrictString?, compilationConditions: StrictString?, title: StrictString, content: StrictString, copyright: StrictString) {
         var mutable = Page.template
         mutable.replaceMatches(for: "[*localization*]".scalars, with: localization.code.scalars)
         mutable.replaceMatches(for: "[*text direction*]".scalars, with: localization.textDirection.htmlAttribute.scalars)
@@ -61,7 +93,11 @@ internal class Page {
 
         mutable.replaceMatches(for: "[*title*]", with: title)
         mutable.replaceMatches(for: "[*site root*]".scalars, with: pathToSiteRoot)
+
         mutable.replaceMatches(for: "[*content*]", with: content)
+
+        mutable.replaceMatches(for: "[*copyright*]", with: HTMLElement("p", contents: copyright, inline: false).source)
+        mutable.replaceMatches(for: "[*workspace*]", with: Page.watermark(localization: localization))
         contents = mutable
     }
 

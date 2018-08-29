@@ -23,7 +23,7 @@ internal class SymbolPage : Page {
 
     // MARK: - Initialization
 
-    internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, navigationPath: [APIElement], symbol: APIElement, packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) {
+    internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, navigationPath: [APIElement], symbol: APIElement, copyright: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) {
         let adjustedSymbolLinks = symbolLinks.mapValues { String(pathToSiteRoot) + $0 }
 
         var content: [StrictString] = []
@@ -56,7 +56,7 @@ internal class SymbolPage : Page {
                    symbolType: symbol.symbolType(localization: localization),
                    compilationConditions: SymbolPage.generateCompilationConditions(symbol: symbol),
                    title: StrictString(symbol.name),
-                   content: content.joinedAsLines())
+                   content: content.joinedAsLines(), copyright: copyright)
     }
 
     // MARK: - Generation

@@ -24,10 +24,11 @@ internal struct PackageInterface {
 
     // MARK: - Initialization
 
-    init(localizations: [LocalizationIdentifier], developmentLocalization: LocalizationIdentifier, api: PackageAPI) {
+    init(localizations: [LocalizationIdentifier], developmentLocalization: LocalizationIdentifier, api: PackageAPI, copyright: [LocalizationIdentifier: StrictString]) {
         self.localizations = localizations
         self.developmentLocalization = developmentLocalization
         self.api = api
+        self.copyrightNotices = copyright
 
         self.packageIdentifiers = api.identifierList
 
@@ -43,8 +44,18 @@ internal struct PackageInterface {
     private let localizations: [LocalizationIdentifier]
     private let developmentLocalization: LocalizationIdentifier
     private let api: PackageAPI
+    private let copyrightNotices: [LocalizationIdentifier: StrictString]
     private let packageIdentifiers: Set<String>
     private let symbolLinks: [LocalizationIdentifier: [String: String]]
+
+    private func copyright(for localization: LocalizationIdentifier, status: DocumentationStatus) -> StrictString {
+        if let result = copyrightNotices[localization] {
+            return result
+        } else {
+            status.reportMissingCopyright(localization: localization)
+            return ""
+        }
+    }
 
     // MARK: - Output
 
@@ -72,7 +83,16 @@ internal struct PackageInterface {
                 try Redirect(target: pageURL.lastPathComponent).contents.save(to: redirectURL)
             }
 
-            try SymbolPage(localization: localization, pathToSiteRoot: "../", navigationPath: [api], symbol: api, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks[localization]!, status: status).contents.save(to: pageURL)
+            try SymbolPage(
+                localization: localization,
+                pathToSiteRoot: "../",
+                navigationPath: [api],
+                symbol: api,
+                copyright: copyright(for: localization, status: status),
+                packageIdentifiers: packageIdentifiers,
+                symbolLinks: symbolLinks[localization]!,
+                status: status
+                ).contents.save(to: pageURL)
         }
     }
 
@@ -85,7 +105,16 @@ internal struct PackageInterface {
                     try Redirect(target: "../index.html").contents.save(to: location.deletingLastPathComponent().appendingPathComponent("index.html"))
                     return ()
                 }
-                try SymbolPage(localization: localization, pathToSiteRoot: "../../", navigationPath: [api, library], symbol: library, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks[localization]!, status: status).contents.save(to: location)
+                try SymbolPage(
+                    localization: localization,
+                    pathToSiteRoot: "../../",
+                    navigationPath: [api, library],
+                    symbol: library,
+                    copyright: copyright(for: localization, status: status),
+                    packageIdentifiers: packageIdentifiers,
+                    symbolLinks: symbolLinks[localization]!,
+                    status: status
+                    ).contents.save(to: location)
             }
         }
     }
@@ -99,7 +128,16 @@ internal struct PackageInterface {
                     try Redirect(target: "../index.html").contents.save(to: location.deletingLastPathComponent().appendingPathComponent("index.html"))
                     return ()
                 }
-                try SymbolPage(localization: localization, pathToSiteRoot: "../../", navigationPath: [api, module], symbol: module, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks[localization]!, status: status).contents.save(to: location)
+                try SymbolPage(
+                    localization: localization,
+                    pathToSiteRoot: "../../",
+                    navigationPath: [api, module],
+                    symbol: module,
+                    copyright: copyright(for: localization, status: status),
+                    packageIdentifiers: packageIdentifiers,
+                    symbolLinks: symbolLinks[localization]!,
+                    status: status
+                    ).contents.save(to: location)
             }
         }
     }
@@ -115,7 +153,16 @@ internal struct PackageInterface {
                         redirected.insert(directory)
                         try Redirect(target: "../index.html").contents.save(to: directory.appendingPathComponent("index.html"))
                     }
-                    try SymbolPage(localization: localization, pathToSiteRoot: "../../", navigationPath: [api, symbol], symbol: symbol, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks[localization]!, status: status).contents.save(to: location)
+                    try SymbolPage(
+                        localization: localization,
+                        pathToSiteRoot: "../../",
+                        navigationPath: [api, symbol],
+                        symbol: symbol,
+                        copyright: copyright(for: localization, status: status),
+                        packageIdentifiers: packageIdentifiers,
+                        symbolLinks: symbolLinks[localization]!,
+                        status: status
+                        ).contents.save(to: location)
 
                     if let scope = symbol as? APIScope {
                         try outputNestedSymbols(of: scope, namespace: [scope], to: outputDirectory, localization: localization, status: status)
@@ -144,7 +191,16 @@ internal struct PackageInterface {
             navigation += namespace as [APIElement]
             navigation += [symbol]
 
-            try SymbolPage(localization: localization, pathToSiteRoot: modifiedRoot, navigationPath: navigation, symbol: symbol, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks[localization]!, status: status).contents.save(to: location)
+            try SymbolPage(
+                localization: localization,
+                pathToSiteRoot: modifiedRoot,
+                navigationPath: navigation,
+                symbol: symbol,
+                copyright: copyright(for: localization, status: status),
+                packageIdentifiers: packageIdentifiers,
+                symbolLinks: symbolLinks[localization]!,
+                status: status
+                ).contents.save(to: location)
 
             if let scope = symbol as? APIScope {
                 try outputNestedSymbols(of: scope, namespace: namespace + [scope], to: outputDirectory, localization: localization, status: status)

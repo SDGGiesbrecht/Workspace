@@ -56,6 +56,7 @@ public struct APIDocumentationConfiguration : Codable {
     ///
     /// Workspace will replace the dynamic element `#dates` with the file’s copyright dates. (e.g. “©2016–2017”).
     public var copyrightNotice: Lazy<StrictString> = Lazy<StrictString>(resolve: { configuration in
+        // #workaround(Needs to be localized once Jazzy is no longer default.)
         return configuration.fileHeaders.copyrightNotice.resolve(configuration) + " All rights reserved."
     })
 

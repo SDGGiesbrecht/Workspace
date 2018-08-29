@@ -16,6 +16,8 @@ import WSGeneralImports
 
 import SDGSwiftSource
 
+import WSProject
+
 internal class DocumentationStatus {
 
     // MARK: - Initialization
@@ -32,9 +34,9 @@ internal class DocumentationStatus {
 
     // MARK: - Reporting
 
-    private func report(warning: UserFacing<StrictString, InterfaceLocalization>) {
+    private func report(problem: UserFacing<StrictString, InterfaceLocalization>) {
         passing = false
-        output.print(warning.resolved().formattedAsError().separated())
+        output.print(problem.resolved().formattedAsError().separated())
     }
 
     private func report(problem: UserFacing<StrictString, InterfaceLocalization>, with symbol: APIElement, navigationPath: [APIElement], hint: UserFacing<StrictString, InterfaceLocalization>? = nil) {
@@ -45,7 +47,7 @@ internal class DocumentationStatus {
         default:
             symbolName = navigationPath.dropFirst().map({ StrictString($0.name) }).joined(separator: ".")
         }
-        report(warning: UserFacing({ localization in
+        report(problem: UserFacing({ localization in
             var result: [StrictString] = [
                 problem.resolved(for: localization),
                 symbolName
@@ -94,6 +96,18 @@ internal class DocumentationStatus {
                 return "A public variable has no explicit type:"
             }
         }), with: variable, navigationPath: navigationPath)
+    }
+
+    internal func reportMissingCopyright(localization: LocalizationIdentifier) {
+        report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishCanada:
+                return ([
+                    "A localization has no copyright specified: " + StrictString("\(localization)"),
+                    "(Configure it under “documentation.api.copyrightNotice”.)"
+                ] as [StrictString]).joinedAsLines()
+            }
+        }))
     }
 
     internal func reportExcessiveHeading(symbol: APIElement, navigationPath: [APIElement]) {

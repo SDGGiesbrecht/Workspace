@@ -169,6 +169,24 @@ extension APIElement {
             for child in children where child.receivesPage {
                 links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
             }
+        case is ProtocolAPI :
+            let protocolsDirectoryName: StrictString
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    protocolsDirectoryName = "Protocols"
+                }
+            } else {
+                protocolsDirectoryName = "protocol"
+            }
+            path += namespace + protocolsDirectoryName + "/"
+
+            var newNamespace = namespace
+            newNamespace.append(contentsOf: protocolsDirectoryName + "/")
+            newNamespace.append(contentsOf: fileName + "/")
+            for child in children where child.receivesPage {
+                links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
+            }
         case is CaseAPI :
             let casesDirectoryName: StrictString
             if let match = localization._reasonableMatch {
@@ -222,7 +240,7 @@ extension APIElement {
                             variablesDirectoryName = "Properties"
                         }
                     } else {
-                        variablesDirectoryName = "func"
+                        variablesDirectoryName = "var"
                     }
                 }
             }

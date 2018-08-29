@@ -169,6 +169,24 @@ extension APIElement {
             for child in children where child.receivesPage {
                 links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
             }
+        case is ExtensionAPI :
+            let extensionsDirectoryName: StrictString
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    extensionsDirectoryName = "Extensions"
+                }
+            } else {
+                extensionsDirectoryName = "extension"
+            }
+            path += namespace + extensionsDirectoryName + "/"
+
+            var newNamespace = namespace
+            newNamespace.append(contentsOf: extensionsDirectoryName + "/")
+            newNamespace.append(contentsOf: fileName + "/")
+            for child in children where child.receivesPage {
+                links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
+            }
         case is ProtocolAPI :
             let protocolsDirectoryName: StrictString
             if let match = localization._reasonableMatch {

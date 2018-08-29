@@ -124,12 +124,13 @@ internal class SymbolPage : Page {
         }
 
         let discussionHeading: StrictString
-        if symbol.children.isEmpty {
+        switch symbol {
+        case is APIScope, is PackageAPI, is LibraryAPI, is ModuleAPI :
             switch localization._bestMatch {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 discussionHeading = "Overview"
             }
-        } else {
+        default:
             switch localization._bestMatch {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 discussionHeading = "Discussion"

@@ -263,6 +263,17 @@ extension APIElement {
                 }
             }
             path += namespace + variablesDirectoryName + "/"
+        case is SubscriptAPI :
+            let subscriptsDirectoryName: StrictString
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    subscriptsDirectoryName = "Subscripts"
+                }
+            } else {
+                subscriptsDirectoryName = "subscript"
+            }
+            path += namespace + subscriptsDirectoryName + "/"
         case let function as FunctionAPI :
             let functionsDirectoryName: StrictString
 

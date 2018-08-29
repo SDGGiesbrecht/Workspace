@@ -36,7 +36,7 @@ internal class Page {
 
     // MARK: - Initialization
 
-    internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, navigationPath: StrictString, symbolType: StrictString?, title: StrictString, content: StrictString) {
+    internal init(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, navigationPath: StrictString, symbolType: StrictString?, compilationConditions: StrictString?, title: StrictString, content: StrictString) {
         var mutable = Page.template
         mutable.replaceMatches(for: "[*localization*]".scalars, with: localization.code.scalars)
         mutable.replaceMatches(for: "[*text direction*]".scalars, with: localization.textDirection.htmlAttribute.scalars)
@@ -50,6 +50,14 @@ internal class Page {
             symbolTypeLabel = ""
         }
         mutable.replaceMatches(for: "[*symbol type*]", with: symbolTypeLabel)
+
+        let conditions: StrictString
+        if let specified = compilationConditions {
+            conditions = specified
+        } else {
+            conditions = ""
+        }
+        mutable.replaceMatches(for: "[*compilation conditions*]", with: conditions)
 
         mutable.replaceMatches(for: "[*title*]", with: title)
         mutable.replaceMatches(for: "[*site root*]".scalars, with: pathToSiteRoot)

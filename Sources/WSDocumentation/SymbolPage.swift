@@ -45,6 +45,7 @@ internal class SymbolPage : Page {
                    pathToSiteRoot: pathToSiteRoot,
                    navigationPath: SymbolPage.generateNavigationPath(localization: localization, pathToSiteRoot: pathToSiteRoot, navigationPath: navigationPath),
                    symbolType: symbol.symbolType(localization: localization),
+                   compilationConditions: SymbolPage.generateCompilationConditions(symbol: symbol),
                    title: StrictString(symbol.name),
                    content: content.joinedAsLines())
     }
@@ -63,6 +64,13 @@ internal class SymbolPage : Page {
             }
         }
         return navigationPathLinks.joined(separator: "\n")
+    }
+
+    private static func generateCompilationConditions(symbol: APIElement) -> StrictString? {
+        if let conditions = symbol.compilationConditions?.syntaxHighlightedHTML(inline: true) {
+            return StrictString(conditions)
+        }
+        return nil
     }
 
     private static func generateDescriptionSection(symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {

@@ -86,6 +86,14 @@ internal struct PackageInterface {
         return result
     }
 
+    private static func generateIndices(for package: PackageAPI, localizations: [LocalizationIdentifier]) -> [LocalizationIdentifier: StrictString] {
+        var result: [LocalizationIdentifier: StrictString] = [:]
+        for localization in localizations {
+            result[localization] = ""
+        }
+        return result
+    }
+
     // MARK: - Initialization
 
     init(localizations: [LocalizationIdentifier],
@@ -108,6 +116,8 @@ internal struct PackageInterface {
             paths[localization] = api.determinePaths(for: localization)
         }
         self.symbolLinks = paths
+
+        self.indices = PackageInterface.generateIndices(for: api, localizations: localizations)
     }
 
     // MARK: - Properties
@@ -116,6 +126,7 @@ internal struct PackageInterface {
     private let developmentLocalization: LocalizationIdentifier
     private let api: PackageAPI
     private let packageImport: StrictString?
+    private let indices: [LocalizationIdentifier: StrictString]
     private let copyrightNotices: [LocalizationIdentifier: StrictString]
     private let packageIdentifiers: Set<String>
     private let symbolLinks: [LocalizationIdentifier: [String: String]]
@@ -160,6 +171,7 @@ internal struct PackageInterface {
                 pathToSiteRoot: "../",
                 navigationPath: [api],
                 packageImport: packageImport,
+                index: indices[localization]!,
                 symbol: api,
                 copyright: copyright(for: localization, status: status),
                 packageIdentifiers: packageIdentifiers,
@@ -183,6 +195,7 @@ internal struct PackageInterface {
                     pathToSiteRoot: "../../",
                     navigationPath: [api, library],
                     packageImport: packageImport,
+                    index: indices[localization]!,
                     symbol: library,
                     copyright: copyright(for: localization, status: status),
                     packageIdentifiers: packageIdentifiers,
@@ -207,6 +220,7 @@ internal struct PackageInterface {
                     pathToSiteRoot: "../../",
                     navigationPath: [api, module],
                     packageImport: packageImport,
+                    index: indices[localization]!,
                     symbol: module,
                     copyright: copyright(for: localization, status: status),
                     packageIdentifiers: packageIdentifiers,
@@ -233,6 +247,7 @@ internal struct PackageInterface {
                         pathToSiteRoot: "../../",
                         navigationPath: [api, symbol],
                         packageImport: packageImport,
+                        index: indices[localization]!,
                         symbol: symbol,
                         copyright: copyright(for: localization, status: status),
                         packageIdentifiers: packageIdentifiers,
@@ -272,6 +287,7 @@ internal struct PackageInterface {
                 pathToSiteRoot: modifiedRoot,
                 navigationPath: navigation,
                 packageImport: packageImport,
+                index: indices[localization]!,
                 symbol: symbol,
                 copyright: copyright(for: localization, status: status),
                 packageIdentifiers: packageIdentifiers,

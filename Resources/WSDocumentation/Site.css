@@ -129,6 +129,8 @@ header.index {
     max-width: 25%;
 }
 nav.index {
+    height: calc(100vh - calc((52 / 17) * 1rem));
+    overflow: scroll;
     position: sticky;
      position: -webkit-sticky;
      top: calc((52 / 17) * 1rem);

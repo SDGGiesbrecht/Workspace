@@ -180,7 +180,7 @@ blockquote {
     background-color: #333;
     color: #CCCCCC;
 }
-.navigation‐bar a {
+.navigation‐path a {
     color: #FFFFFF;
 }
 
@@ -248,7 +248,7 @@ a:hover {
 
 /* Specific Fonts */
 
-.navigation‐path {
+.navigation‐bar {
     font-size: calc((15 / 17) * 1rem);
     letter-spacing: -0.014em;
     line-height: 1.26667;

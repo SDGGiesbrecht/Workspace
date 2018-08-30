@@ -22,12 +22,83 @@ import WorkspaceConfiguration
 
 internal struct PackageInterface {
 
+    private static func specify(package: URL?, version: Version?) -> StrictString? {
+        guard let specified = package else {
+            return nil
+        }
+        let packageURL = StrictString(specified.absoluteString)
+
+        var result = [
+            HTMLElement("span", attributes: ["class": "punctuation"], contents: ".", inline: true).source,
+            HTMLElement("span", attributes: ["class": "external identifier"], contents: "package", inline: true).source,
+            HTMLElement("span", attributes: ["class": "punctuation"], contents: "(", inline: true).source,
+            HTMLElement("span", attributes: ["class": "external identifier"], contents: "url", inline: true).source,
+            HTMLElement("span", attributes: ["class": "punctuation"], contents: ":", inline: true).source,
+            " ",
+            HTMLElement("span", attributes: ["class": "string"], contents: [
+                HTMLElement("span", attributes: ["class": "punctuation"], contents: "\u{22}", inline: true).source,
+                HTMLElement("a", attributes: ["href": packageURL], contents: [
+                    HTMLElement("span", attributes: ["class": "text"], contents: packageURL, inline: true).source,
+                    ].joined(), inline: true).source,
+                HTMLElement("span", attributes: ["class": "punctuation"], contents: "\u{22}", inline: true).source
+                ].joined(), inline: true).source
+            ].joined()
+
+        if let specified = specify(version: version) {
+            result.append(contentsOf: [
+                HTMLElement("span", attributes: ["class": "punctuation"], contents: ",", inline: true).source,
+                " ",
+                specified
+                ].joined())
+        }
+
+        result.append(contentsOf: HTMLElement("span", attributes: ["class": "punctuation"], contents: ")", inline: true).source)
+
+        return HTMLElement("span", attributes: ["class": "swift blockquote"], contents: result, inline: true).source
+    }
+
+    private static func specify(version: Version?) -> StrictString? {
+        guard let specified = version else {
+            return nil
+        }
+
+        var result = [
+            HTMLElement("span", attributes: ["class": "external identifier"], contents: "from", inline: true).source,
+            HTMLElement("span", attributes: ["class": "punctuation"], contents: ":", inline: true).source,
+            " ",
+            HTMLElement("span", attributes: ["class": "string"], contents: [
+                HTMLElement("span", attributes: ["class": "punctuation"], contents: "\u{22}", inline: true).source,
+                HTMLElement("span", attributes: ["class": "text"], contents: StrictString(specified.string()), inline: true).source,
+                HTMLElement("span", attributes: ["class": "punctuation"], contents: "\u{22}", inline: true).source
+                ].joined(), inline: true).source
+            ].joined()
+
+        if specified.major == 0 {
+            result = [
+                HTMLElement("span", attributes: ["class": "punctuation"], contents: ".", inline: true).source,
+                HTMLElement("span", attributes: ["class": "external identifier"], contents: "upToNextMinor", inline: true).source,
+                HTMLElement("span", attributes: ["class": "punctuation"], contents: "(", inline: true).source,
+                result,
+                HTMLElement("span", attributes: ["class": "punctuation"], contents: ")", inline: true).source
+                ].joined()
+        }
+
+        return result
+    }
+
     // MARK: - Initialization
 
-    init(localizations: [LocalizationIdentifier], developmentLocalization: LocalizationIdentifier, api: PackageAPI, copyright: [LocalizationIdentifier: StrictString]) {
+    init(localizations: [LocalizationIdentifier],
+         developmentLocalization: LocalizationIdentifier,
+         api: PackageAPI,
+         packageURL: URL?,
+         version: Version?,
+         copyright: [LocalizationIdentifier: StrictString]) {
         self.localizations = localizations
         self.developmentLocalization = developmentLocalization
         self.api = api
+
+        self.packageImport = PackageInterface.specify(package: packageURL, version: version)
         self.copyrightNotices = copyright
 
         self.packageIdentifiers = api.identifierList
@@ -44,6 +115,7 @@ internal struct PackageInterface {
     private let localizations: [LocalizationIdentifier]
     private let developmentLocalization: LocalizationIdentifier
     private let api: PackageAPI
+    private let packageImport: StrictString?
     private let copyrightNotices: [LocalizationIdentifier: StrictString]
     private let packageIdentifiers: Set<String>
     private let symbolLinks: [LocalizationIdentifier: [String: String]]
@@ -87,6 +159,7 @@ internal struct PackageInterface {
                 localization: localization,
                 pathToSiteRoot: "../",
                 navigationPath: [api],
+                packageImport: packageImport,
                 symbol: api,
                 copyright: copyright(for: localization, status: status),
                 packageIdentifiers: packageIdentifiers,
@@ -109,6 +182,7 @@ internal struct PackageInterface {
                     localization: localization,
                     pathToSiteRoot: "../../",
                     navigationPath: [api, library],
+                    packageImport: packageImport,
                     symbol: library,
                     copyright: copyright(for: localization, status: status),
                     packageIdentifiers: packageIdentifiers,
@@ -132,6 +206,7 @@ internal struct PackageInterface {
                     localization: localization,
                     pathToSiteRoot: "../../",
                     navigationPath: [api, module],
+                    packageImport: packageImport,
                     symbol: module,
                     copyright: copyright(for: localization, status: status),
                     packageIdentifiers: packageIdentifiers,
@@ -157,6 +232,7 @@ internal struct PackageInterface {
                         localization: localization,
                         pathToSiteRoot: "../../",
                         navigationPath: [api, symbol],
+                        packageImport: packageImport,
                         symbol: symbol,
                         copyright: copyright(for: localization, status: status),
                         packageIdentifiers: packageIdentifiers,
@@ -195,6 +271,7 @@ internal struct PackageInterface {
                 localization: localization,
                 pathToSiteRoot: modifiedRoot,
                 navigationPath: navigation,
+                packageImport: packageImport,
                 symbol: symbol,
                 copyright: copyright(for: localization, status: status),
                 packageIdentifiers: packageIdentifiers,

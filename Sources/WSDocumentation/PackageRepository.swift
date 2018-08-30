@@ -101,6 +101,8 @@ extension PackageRepository {
                 localizations: configuration.documentation.localizations,
                 developmentLocalization: try developmentLocalization(output: output),
                 api: try PackageAPI(package: cachedPackage(), reportProgress: { output.print($0) }),
+                packageURL: configuration.documentation.repositoryURL,
+                version: configuration.documentation.currentVersion,
                 copyright: copyright)
             try interface.outputHTML(to: outputDirectory, status: status, output: output)
 

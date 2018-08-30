@@ -89,9 +89,37 @@ internal struct PackageInterface {
     private static func generateIndices(for package: PackageAPI, localizations: [LocalizationIdentifier]) -> [LocalizationIdentifier: StrictString] {
         var result: [LocalizationIdentifier: StrictString] = [:]
         for localization in localizations {
-            result[localization] = ""
+            result[localization] = generateIndex(for: package, localization: localization)
         }
         return result
+    }
+
+    private static func generateIndex(for package: PackageAPI, localization: LocalizationIdentifier) -> StrictString {
+        var result: [StrictString] = []
+
+        if ¬package.libraries.isEmpty {
+            result.append(generateIndexSection(named: SymbolPage.librariesHeader(localization: localization), apiEntries: package.libraries, localization: localization))
+        }
+        if ¬package.modules.isEmpty {
+            result.append(generateIndexSection(named: SymbolPage.modulesHeader(localization: localization), apiEntries: package.modules, localization: localization))
+        }
+
+        return result.joinedAsLines()
+    }
+
+    private static func generateIndexSection(named name: StrictString, apiEntries: [APIElement], localization: LocalizationIdentifier) -> StrictString {
+        var entries: [StrictString] = []
+        for entry in apiEntries {
+            entries.append(HTMLElement("a", attributes: ["href": StrictString("[*site root*]") + entry.relativePagePath[localization]!], contents: StrictString(entry.name), inline: false).source)
+        }
+        return generateIndexSection(named: name, contents: entries.joinedAsLines())
+    }
+
+    private static func generateIndexSection(named name: StrictString, contents: StrictString) -> StrictString {
+        return HTMLElement("details", contents: [
+            HTMLElement("summary", contents: name, inline: true).source,
+            contents
+            ].joinedAsLines(), inline: false).source
     }
 
     // MARK: - Initialization

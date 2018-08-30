@@ -130,7 +130,7 @@ header.index {
 }
 nav.index {
     height: calc(100vh - calc((52 / 17) * 1rem));
-    overflow: scroll;
+    overflow: auto;
     position: sticky;
      position: -webkit-sticky;
      top: calc((52 / 17) * 1rem);

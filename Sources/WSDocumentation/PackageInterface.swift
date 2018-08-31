@@ -94,8 +94,23 @@ internal struct PackageInterface {
         return result
     }
 
+    private static func packageHeader(localization: LocalizationIdentifier) -> StrictString {
+        if let match = localization._reasonableMatch {
+            switch match {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Package"
+            }
+        } else {
+            return "Package" // From “let ... = Package(...)”
+        }
+    }
+
     private static func generateIndex(for package: PackageAPI, localization: LocalizationIdentifier) -> StrictString {
         var result: [StrictString] = []
+
+        result.append(generateIndexSection(named: packageHeader(localization: localization), contents: [
+            HTMLElement("a", attributes: ["href": StrictString("[*site root*]") + package.relativePagePath[localization]!], contents: StrictString(package.name), inline: false).source
+            ].joinedAsLines()))
 
         if ¬package.libraries.isEmpty {
             result.append(generateIndexSection(named: SymbolPage.librariesHeader(localization: localization), apiEntries: package.libraries, localization: localization))

@@ -113,6 +113,9 @@ extension PackageRepository {
             var siteCSS = TextFile(mockFileWithContents: Resources.site, fileType: .css)
             siteCSS.header = ""
             try siteCSS.contents.save(to: outputDirectory.appendingPathComponent("CSS/Site.css"))
+            var siteJavaScript = TextFile(mockFileWithContents: Resources.script, fileType: .javaScript)
+            siteJavaScript.header = ""
+            try siteJavaScript.contents.save(to: outputDirectory.appendingPathComponent("JavaScript/Site.js"))
 
             try preventJekyllInterference(outputDirectory: outputDirectory)
 

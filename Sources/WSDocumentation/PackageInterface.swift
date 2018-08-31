@@ -117,7 +117,7 @@ internal struct PackageInterface {
 
     private static func generateIndexSection(named name: StrictString, contents: StrictString) -> StrictString {
         return HTMLElement("div", contents: [
-            HTMLElement("a", attributes: ["class": "heading"], contents: name, inline: true).source,
+            HTMLElement("a", attributes: ["class": "heading", "onclick": "toggleIndexSectionVisibility(this)"], contents: name, inline: true).source,
             contents
             ].joinedAsLines(), inline: false).source
     }

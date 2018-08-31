@@ -132,8 +132,10 @@ header.index {
 }
 
 .index a {
+    cursor: pointer;
     display: block;
     padding: 0.2em calc((22 / 17) * 1rem);
+    overflow: hidden;
 }
 .index a:not(:first-child) {
     padding-left: calc(1em + calc((22 / 17) * 1rem));

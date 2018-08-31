@@ -197,18 +197,13 @@ internal struct PackageInterface {
         try outputLibraryPages(to: outputDirectory, status: status)
         try outputModulePages(to: outputDirectory, status: status)
         try outputTopLevelSymbols(to: outputDirectory, status: status)
+
+        try outputRedirects(to: outputDirectory)
     }
 
     private func outputPackagePages(to outputDirectory: URL, status: DocumentationStatus) throws {
-        try Redirect(target: String(developmentLocalization.directoryName) + "/index.html").contents.save(to: outputDirectory.appendingPathComponent("index.html"))
         for localization in localizations {
-            let localizationDirectory = outputDirectory.appendingPathComponent(String(localization.directoryName))
-            let redirectURL = localizationDirectory.appendingPathComponent("index.html")
             let pageURL = api.pageURL(in: outputDirectory, for: localization)
-            if redirectURL ≠ pageURL {
-                try Redirect(target: pageURL.lastPathComponent).contents.save(to: redirectURL)
-            }
-
             try SymbolPage(
                 localization: localization,
                 pathToSiteRoot: "../",
@@ -226,13 +221,8 @@ internal struct PackageInterface {
 
     private func outputLibraryPages(to outputDirectory: URL, status: DocumentationStatus) throws {
         for localization in localizations {
-            var redirected: Void?
             for library in api.libraries {
                 let location = library.pageURL(in: outputDirectory, for: localization)
-                _ = try cached(in: &redirected) {
-                    try Redirect(target: "../index.html").contents.save(to: location.deletingLastPathComponent().appendingPathComponent("index.html"))
-                    return ()
-                }
                 try SymbolPage(
                     localization: localization,
                     pathToSiteRoot: "../../",
@@ -251,13 +241,8 @@ internal struct PackageInterface {
 
     private func outputModulePages(to outputDirectory: URL, status: DocumentationStatus) throws {
         for localization in localizations {
-            var redirected: Void?
             for module in api.modules {
                 let location = module.pageURL(in: outputDirectory, for: localization)
-                _ = try cached(in: &redirected) {
-                    try Redirect(target: "../index.html").contents.save(to: location.deletingLastPathComponent().appendingPathComponent("index.html"))
-                    return ()
-                }
                 try SymbolPage(
                     localization: localization,
                     pathToSiteRoot: "../../",
@@ -276,15 +261,9 @@ internal struct PackageInterface {
 
     private func outputTopLevelSymbols(to outputDirectory: URL, status: DocumentationStatus) throws {
         for localization in localizations {
-            var redirected: Set<URL> = []
             for module in api.modules {
                 for symbol in module.children {
                     let location = symbol.pageURL(in: outputDirectory, for: localization)
-                    let directory = location.deletingLastPathComponent()
-                    if directory ∉ redirected {
-                        redirected.insert(directory)
-                        try Redirect(target: "../index.html").contents.save(to: directory.appendingPathComponent("index.html"))
-                    }
                     try SymbolPage(
                         localization: localization,
                         pathToSiteRoot: "../../",
@@ -307,14 +286,8 @@ internal struct PackageInterface {
     }
 
     private func outputNestedSymbols(of parent: APIScope, namespace: [APIScope], to outputDirectory: URL, localization: LocalizationIdentifier, status: DocumentationStatus) throws {
-        var redirected: Set<URL> = []
         for symbol in parent.children where symbol.receivesPage {
             let location = symbol.pageURL(in: outputDirectory, for: localization)
-            let directory = location.deletingLastPathComponent()
-            if directory ∉ redirected {
-                redirected.insert(directory)
-                try Redirect(target: "../index.html").contents.save(to: directory.appendingPathComponent("index.html"))
-            }
 
             var modifiedRoot: StrictString = "../../"
             for _ in namespace.indices {
@@ -340,6 +313,37 @@ internal struct PackageInterface {
 
             if let scope = symbol as? APIScope {
                 try outputNestedSymbols(of: scope, namespace: namespace + [scope], to: outputDirectory, localization: localization, status: status)
+            }
+        }
+    }
+
+    private func outputRedirects(to outputDirectory: URL) throws {
+        // Out of directories.
+        var handled = Set<URL>()
+        for url in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
+            var directory = url.deletingLastPathComponent()
+            while directory ∉ handled,
+                directory.is(in: outputDirectory) {
+                    defer {
+                        handled.insert(directory)
+                        directory = directory.deletingLastPathComponent()
+                    }
+
+                    let redirect = directory.appendingPathComponent("index.html")
+                    if (try? redirect.checkResourceIsReachable()) ≠ true { // Do not overwrite if there is a file name clash.
+                        try Redirect(target: "../").contents.save(to: redirect)
+                    }
+            }
+        }
+
+        // To home page.
+        try Redirect(target: String(developmentLocalization.directoryName) + "/index.html").contents.save(to: outputDirectory.appendingPathComponent("index.html"))
+        for localization in localizations {
+            let localizationDirectory = outputDirectory.appendingPathComponent(String(localization.directoryName))
+            let redirectURL = localizationDirectory.appendingPathComponent("index.html")
+            let pageURL = api.pageURL(in: outputDirectory, for: localization)
+            if redirectURL ≠ pageURL {
+                try Redirect(target: pageURL.lastPathComponent).contents.save(to: redirectURL)
             }
         }
     }

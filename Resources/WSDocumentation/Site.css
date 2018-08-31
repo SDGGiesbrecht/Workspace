@@ -82,9 +82,6 @@ header.navigation‐bar {
     box-sizing: content-box;
     height: calc((52 / 17) * 1rem);
     padding: 0 calc((22 / 17) * 1rem);
-    position: sticky;
-     position: -webkit-sticky;
-     top: 0;
 }
 nav.navigation‐bar {
     display: flex;
@@ -122,21 +119,20 @@ nav.navigation‐bar {
     display: none;
 }
 
-.index‐container {
+.content‐container {
+    height: calc(100vh - calc((52 / 17) * 1rem) - calc((45 / 17) * 1rem));
+    width: 100%;
     display: flex;
 }
 header.index {
+    height: 100%;
     max-width: 25%;
-}
-nav.index {
-    height: calc(100vh - calc((52 / 17) * 1rem));
-    overflow: auto;
-    position: sticky;
-     position: -webkit-sticky;
-     top: calc((52 / 17) * 1rem);
+    overflow-y: auto;
 }
 
 main {
+    height: 100%;
+    overflow-y: auto;
     padding: 0 calc((22 / 17) * 1rem);
 }
 
@@ -181,7 +177,11 @@ h2 + .child {
 }
 
 footer {
-    padding: 1rem calc((22 / 17) * 1rem);
+    display: flex;
+     align-items: center;
+     justify-content: space-between;
+    height: calc((45 / 17) * 1rem);
+    padding: 0 calc((22 / 17) * 1rem);
 }
 
 /* Colours */

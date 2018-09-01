@@ -174,14 +174,16 @@ extension PackageRepository {
         let generalRedirect = Redirect(target: "index.html")
         let indexRedirect = Redirect(target: "../index.html")
         for file in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
-            if file.pathExtension == "html" {
-                if file.lastPathComponent == "index.html" {
-                    try indexRedirect.contents.save(to: file)
+            try autoreleasepool {
+                if file.pathExtension == "html" {
+                    if file.lastPathComponent == "index.html" {
+                        try indexRedirect.contents.save(to: file)
+                    } else {
+                        try generalRedirect.contents.save(to: file)
+                    }
                 } else {
-                    try generalRedirect.contents.save(to: file)
+                    try? FileManager.default.removeItem(at: file)
                 }
-            } else {
-                try? FileManager.default.removeItem(at: file)
             }
         }
     }

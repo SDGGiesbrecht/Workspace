@@ -89,7 +89,9 @@ internal struct PackageInterface {
     private static func generateIndices(for package: PackageAPI, localizations: [LocalizationIdentifier]) -> [LocalizationIdentifier: StrictString] {
         var result: [LocalizationIdentifier: StrictString] = [:]
         for localization in localizations {
-            result[localization] = generateIndex(for: package, localization: localization)
+            autoreleasepool {
+                result[localization] = generateIndex(for: package, localization: localization)
+            }
         }
         return result
     }
@@ -228,40 +230,44 @@ internal struct PackageInterface {
 
     private func outputPackagePages(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output) throws {
         for localization in localizations {
-            let pageURL = api.pageURL(in: outputDirectory, for: localization)
-            try SymbolPage(
-                localization: localization,
-                pathToSiteRoot: "../",
-                navigationPath: [api],
-                packageImport: packageImport,
-                index: indices[localization]!,
-                symbol: api,
-                copyright: copyright(for: localization, status: status),
-                packageIdentifiers: packageIdentifiers,
-                symbolLinks: symbolLinks[localization]!,
-                status: status,
-                output: output
-                ).contents.save(to: pageURL)
+            try autoreleasepool {
+                let pageURL = api.pageURL(in: outputDirectory, for: localization)
+                try SymbolPage(
+                    localization: localization,
+                    pathToSiteRoot: "../",
+                    navigationPath: [api],
+                    packageImport: packageImport,
+                    index: indices[localization]!,
+                    symbol: api,
+                    copyright: copyright(for: localization, status: status),
+                    packageIdentifiers: packageIdentifiers,
+                    symbolLinks: symbolLinks[localization]!,
+                    status: status,
+                    output: output
+                    ).contents.save(to: pageURL)
+            }
         }
     }
 
     private func outputLibraryPages(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output) throws {
         for localization in localizations {
             for library in api.libraries {
-                let location = library.pageURL(in: outputDirectory, for: localization)
-                try SymbolPage(
-                    localization: localization,
-                    pathToSiteRoot: "../../",
-                    navigationPath: [api, library],
-                    packageImport: packageImport,
-                    index: indices[localization]!,
-                    symbol: library,
-                    copyright: copyright(for: localization, status: status),
-                    packageIdentifiers: packageIdentifiers,
-                    symbolLinks: symbolLinks[localization]!,
-                    status: status,
-                    output: output
-                    ).contents.save(to: location)
+                try autoreleasepool {
+                    let location = library.pageURL(in: outputDirectory, for: localization)
+                    try SymbolPage(
+                        localization: localization,
+                        pathToSiteRoot: "../../",
+                        navigationPath: [api, library],
+                        packageImport: packageImport,
+                        index: indices[localization]!,
+                        symbol: library,
+                        copyright: copyright(for: localization, status: status),
+                        packageIdentifiers: packageIdentifiers,
+                        symbolLinks: symbolLinks[localization]!,
+                        status: status,
+                        output: output
+                        ).contents.save(to: location)
+                }
             }
         }
     }
@@ -269,20 +275,22 @@ internal struct PackageInterface {
     private func outputModulePages(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output) throws {
         for localization in localizations {
             for module in api.modules {
-                let location = module.pageURL(in: outputDirectory, for: localization)
-                try SymbolPage(
-                    localization: localization,
-                    pathToSiteRoot: "../../",
-                    navigationPath: [api, module],
-                    packageImport: packageImport,
-                    index: indices[localization]!,
-                    symbol: module,
-                    copyright: copyright(for: localization, status: status),
-                    packageIdentifiers: packageIdentifiers,
-                    symbolLinks: symbolLinks[localization]!,
-                    status: status,
-                    output: output
-                    ).contents.save(to: location)
+                try autoreleasepool {
+                    let location = module.pageURL(in: outputDirectory, for: localization)
+                    try SymbolPage(
+                        localization: localization,
+                        pathToSiteRoot: "../../",
+                        navigationPath: [api, module],
+                        packageImport: packageImport,
+                        index: indices[localization]!,
+                        symbol: module,
+                        copyright: copyright(for: localization, status: status),
+                        packageIdentifiers: packageIdentifiers,
+                        symbolLinks: symbolLinks[localization]!,
+                        status: status,
+                        output: output
+                        ).contents.save(to: location)
+                }
             }
         }
     }
@@ -291,23 +299,25 @@ internal struct PackageInterface {
         for localization in localizations {
             for module in api.modules {
                 for symbol in module.children {
-                    let location = symbol.pageURL(in: outputDirectory, for: localization)
-                    try SymbolPage(
-                        localization: localization,
-                        pathToSiteRoot: "../../",
-                        navigationPath: [api, symbol],
-                        packageImport: packageImport,
-                        index: indices[localization]!,
-                        symbol: symbol,
-                        copyright: copyright(for: localization, status: status),
-                        packageIdentifiers: packageIdentifiers,
-                        symbolLinks: symbolLinks[localization]!,
-                        status: status,
-                        output: output
-                        ).contents.save(to: location)
+                    try autoreleasepool {
+                        let location = symbol.pageURL(in: outputDirectory, for: localization)
+                        try SymbolPage(
+                            localization: localization,
+                            pathToSiteRoot: "../../",
+                            navigationPath: [api, symbol],
+                            packageImport: packageImport,
+                            index: indices[localization]!,
+                            symbol: symbol,
+                            copyright: copyright(for: localization, status: status),
+                            packageIdentifiers: packageIdentifiers,
+                            symbolLinks: symbolLinks[localization]!,
+                            status: status,
+                            output: output
+                            ).contents.save(to: location)
 
-                    if let scope = symbol as? APIScope {
-                        try outputNestedSymbols(of: scope, namespace: [scope], to: outputDirectory, localization: localization, status: status, output: output)
+                        if let scope = symbol as? APIScope {
+                            try outputNestedSymbols(of: scope, namespace: [scope], to: outputDirectory, localization: localization, status: status, output: output)
+                        }
                     }
                 }
             }
@@ -316,33 +326,35 @@ internal struct PackageInterface {
 
     private func outputNestedSymbols(of parent: APIScope, namespace: [APIScope], to outputDirectory: URL, localization: LocalizationIdentifier, status: DocumentationStatus, output: Command.Output) throws {
         for symbol in parent.children where symbol.receivesPage {
-            let location = symbol.pageURL(in: outputDirectory, for: localization)
+            try autoreleasepool {
+                let location = symbol.pageURL(in: outputDirectory, for: localization)
 
-            var modifiedRoot: StrictString = "../../"
-            for _ in namespace.indices {
-                modifiedRoot += "../../".scalars
-            }
+                var modifiedRoot: StrictString = "../../"
+                for _ in namespace.indices {
+                    modifiedRoot += "../../".scalars
+                }
 
-            var navigation: [APIElement] = [api]
-            navigation += namespace as [APIElement]
-            navigation += [symbol]
+                var navigation: [APIElement] = [api]
+                navigation += namespace as [APIElement]
+                navigation += [symbol]
 
-            try SymbolPage(
-                localization: localization,
-                pathToSiteRoot: modifiedRoot,
-                navigationPath: navigation,
-                packageImport: packageImport,
-                index: indices[localization]!,
-                symbol: symbol,
-                copyright: copyright(for: localization, status: status),
-                packageIdentifiers: packageIdentifiers,
-                symbolLinks: symbolLinks[localization]!,
-                status: status,
-                output: output
-                ).contents.save(to: location)
+                try SymbolPage(
+                    localization: localization,
+                    pathToSiteRoot: modifiedRoot,
+                    navigationPath: navigation,
+                    packageImport: packageImport,
+                    index: indices[localization]!,
+                    symbol: symbol,
+                    copyright: copyright(for: localization, status: status),
+                    packageIdentifiers: packageIdentifiers,
+                    symbolLinks: symbolLinks[localization]!,
+                    status: status,
+                    output: output
+                    ).contents.save(to: location)
 
-            if let scope = symbol as? APIScope {
-                try outputNestedSymbols(of: scope, namespace: namespace + [scope], to: outputDirectory, localization: localization, status: status, output: output)
+                if let scope = symbol as? APIScope {
+                    try outputNestedSymbols(of: scope, namespace: namespace + [scope], to: outputDirectory, localization: localization, status: status, output: output)
+                }
             }
         }
     }
@@ -351,18 +363,20 @@ internal struct PackageInterface {
         // Out of directories.
         var handled = Set<URL>()
         for url in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
-            var directory = url.deletingLastPathComponent()
-            while directory ∉ handled,
-                directory.is(in: outputDirectory) {
-                    defer {
-                        handled.insert(directory)
-                        directory = directory.deletingLastPathComponent()
-                    }
+            try autoreleasepool {
+                var directory = url.deletingLastPathComponent()
+                while directory ∉ handled,
+                    directory.is(in: outputDirectory) {
+                        defer {
+                            handled.insert(directory)
+                            directory = directory.deletingLastPathComponent()
+                        }
 
-                    let redirect = directory.appendingPathComponent("index.html")
-                    if (try? redirect.checkResourceIsReachable()) ≠ true { // Do not overwrite if there is a file name clash.
-                        try Redirect(target: "../index.html").contents.save(to: redirect)
-                    }
+                        let redirect = directory.appendingPathComponent("index.html")
+                        if (try? redirect.checkResourceIsReachable()) ≠ true { // Do not overwrite if there is a file name clash.
+                            try Redirect(target: "../index.html").contents.save(to: redirect)
+                        }
+                }
             }
         }
 

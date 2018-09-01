@@ -88,7 +88,8 @@ extension PackageRepository {
         do {
             let status = DocumentationStatus(output: output)
 
-            try createRedirects(outputDirectory: outputDirectory)
+            try retrievePublishedDocumentationIfAvailable(outputDirectory: outputDirectory, output: output)
+            try redirectExistingURLs(outputDirectory: outputDirectory)
 
             let configuration = try self.configuration(output: output)
             let copyrightNotice = try resolvedCopyright(output: output)
@@ -145,7 +146,30 @@ extension PackageRepository {
         }
     }
 
-    private func createRedirects(outputDirectory: URL) throws {
+    private func retrievePublishedDocumentationIfAvailable(outputDirectory: URL, output: Command.Output) throws {
+        if let packageURL = try configuration(output: output).documentation.repositoryURL {
+
+            output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "Checking for defunct URLs to redirect..."
+                }
+            }).resolved())
+
+            let temporary = FileManager.default.url(in: .temporary, at: "Published Documentation")
+            defer { try? FileManager.default.removeItem(at: temporary) }
+
+            let package = Package(url: packageURL)
+            do {
+                try Git.clone(package, to: temporary)
+                try Git.runCustomSubcommand(["checkout", "gh\u{2D}pages"], in: temporary)
+                try FileManager.default.removeItem(at: outputDirectory)
+                try FileManager.default.move(temporary, to: outputDirectory)
+            } catch {}
+        }
+    }
+
+    private func redirectExistingURLs(outputDirectory: URL) throws {
         let generalRedirect = Redirect(target: "index.html")
         let indexRedirect = Redirect(target: "../index.html")
         for file in try FileManager.default.deepFileEnumeration(in: outputDirectory) {

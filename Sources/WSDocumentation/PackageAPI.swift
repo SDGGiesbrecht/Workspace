@@ -51,7 +51,9 @@ extension PackageAPI {
 
         var extensions: [ExtensionAPI] = []
         for `extension` in unprocessedExtensions {
-            if true {
+            if ¬types.contains(where: { `extension`.isExtension(of: $0) }),
+                ¬protocols.contains(where: { `extension`.isExtension(of: $0) }),
+                ¬extensions.contains(where: { `extension`.extendsSameType(as: $0) }) {
                 extensions.append(`extension`)
             }
         }

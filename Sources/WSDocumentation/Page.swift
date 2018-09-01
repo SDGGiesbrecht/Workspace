@@ -60,7 +60,7 @@ internal class Page {
             sdg = HTMLElement("span", attributes: ["lang": "la-IT"], contents: "Soli Deo gloria.", inline: true).source
         }
 
-        return HTMLElement("p", attributes: [
+        return HTMLElement("span", attributes: [
             "lang": StrictString(resolved.code),
             "dir": StrictString(resolved.textDirection.htmlAttribute)
             ], contents: generatedUsing + " " + sdg, inline: true).source
@@ -108,7 +108,7 @@ internal class Page {
 
         mutable.replaceMatches(for: "[*title*]", with: title)
 
-        mutable.replaceMatches(for: "[*copyright*]", with: HTMLElement("p", contents: copyright, inline: false).source)
+        mutable.replaceMatches(for: "[*copyright*]", with: HTMLElement("span", contents: copyright, inline: false).source)
         mutable.replaceMatches(for: "[*workspace*]", with: Page.watermark(localization: localization))
 
         mutable.replaceMatches(for: "[*content*]", with: content)

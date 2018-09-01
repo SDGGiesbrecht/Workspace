@@ -42,7 +42,7 @@ internal class DocumentationStatus {
     private func report(problem: UserFacing<StrictString, InterfaceLocalization>, with symbol: APIElement, navigationPath: [APIElement], hint: UserFacing<StrictString, InterfaceLocalization>? = nil) {
         let symbolName: StrictString
         switch symbol {
-        case is PackageAPI, is ModuleAPI:
+        case is PackageAPI, is ModuleAPI :
             symbolName = StrictString(symbol.name)
         default:
             symbolName = navigationPath.dropFirst().map({ StrictString($0.name) }).joined(separator: ".")

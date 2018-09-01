@@ -33,6 +33,7 @@ internal struct UnicodeRule : Rule {
                               allowInShellSource: Bool = false,
                               allowInHTMLSource: Bool = false,
                               allowInCSSSource: Bool = false,
+                              allowInJavaScriptSource: Bool = false,
                               allowInSampleCode: Bool = false,
                               allowInMarkdownList: Bool = false,
                               allowInURLs: Bool = false,
@@ -54,6 +55,9 @@ internal struct UnicodeRule : Rule {
             return
         }
         if allowInCSSSource ∧ file.fileType == .css {
+            return
+        }
+        if allowInJavaScriptSource ∧ file.fileType == .javaScript {
             return
         }
 
@@ -250,6 +254,7 @@ internal struct UnicodeRule : Rule {
         check(file, for: "\u{2D}",
               allowInShellSource: true,
               allowInCSSSource: true,
+              allowInJavaScriptSource: true,
               allowInSampleCode: true,
               allowInMarkdownList: true,
               allowInURLs: true,
@@ -272,6 +277,8 @@ internal struct UnicodeRule : Rule {
               allowInSwiftSource: true,
               allowInShellSource: true,
               allowInHTMLSource: true,
+              allowInCSSSource: true,
+              allowInJavaScriptSource: true,
               allowInSampleCode: true,
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
@@ -306,6 +313,8 @@ internal struct UnicodeRule : Rule {
         check(file, for: "!",
               replacement: "¬",
               allowTrailing: true,
+              allowInHTMLSource: true,
+              allowInJavaScriptSource: true,
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["¬", "≠"],
               allowInHTMLComment: true,
@@ -362,6 +371,7 @@ internal struct UnicodeRule : Rule {
 
         check(file, for: " \u{2A} ",
               replacement: " × ",
+              allowInCSSSource: true,
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["×"],
               allowedDefaultImplementations: ["Numeric"],
@@ -386,6 +396,7 @@ internal struct UnicodeRule : Rule {
 
         check(file, for: " \u{2F} ",
               replacement: " ÷ ",
+              allowInCSSSource: true,
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["÷", "divide"],
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in

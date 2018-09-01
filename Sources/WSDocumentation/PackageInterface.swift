@@ -38,7 +38,7 @@ internal struct PackageInterface {
             HTMLElement("span", attributes: ["class": "string"], contents: [
                 HTMLElement("span", attributes: ["class": "punctuation"], contents: "\u{22}", inline: true).source,
                 HTMLElement("a", attributes: ["href": packageURL], contents: [
-                    HTMLElement("span", attributes: ["class": "text"], contents: packageURL, inline: true).source,
+                    HTMLElement("span", attributes: ["class": "text"], contents: packageURL, inline: true).source
                     ].joined(), inline: true).source,
                 HTMLElement("span", attributes: ["class": "punctuation"], contents: "\u{22}", inline: true).source
                 ].joined(), inline: true).source

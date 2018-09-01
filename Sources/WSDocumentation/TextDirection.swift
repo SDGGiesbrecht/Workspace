@@ -33,6 +33,7 @@ internal enum TextDirection {
 }
 
 extension Optional where Wrapped == TextDirection {
+    // MARK: - where Wrapped == TextDirection
 
     internal var htmlAttribute: String {
         switch self {

@@ -37,7 +37,7 @@ internal class Page {
     private static func watermark(localization: LocalizationIdentifier) -> StrictString {
         let resolved = localization._bestMatch
 
-        // #workaround(Until self‐generated documentation is live—it can then be localized too.)
+        // #workaround(workspace version 0.11.1, Until self‐generated documentation is live—it can then be localized too.)
         let targetURL: StrictString = "https://github.com/SDGGiesbrecht/Workspace#workspace"
 
         let name: StrictString
@@ -57,7 +57,7 @@ internal class Page {
         let sdg: StrictString
         switch resolved {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            sdg = HTMLElement("span", attributes: ["lang": "la-IT"], contents: "Soli Deo gloria.", inline: true).source
+            sdg = HTMLElement("span", attributes: ["lang": "la\u{2D}IT"], contents: "Soli Deo gloria.", inline: true).source
         }
 
         return HTMLElement("span", attributes: [

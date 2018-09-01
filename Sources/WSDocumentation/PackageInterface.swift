@@ -297,8 +297,11 @@ internal struct PackageInterface {
 
     private func outputTopLevelSymbols(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output) throws {
         for localization in localizations {
-            for module in api.modules {
-                for symbol in module.children {
+            for symbol in api.types as [APIElement]
+                + api.uniqueExtensions as [APIElement]
+                + api.protocols as [APIElement]
+                + api.functions as [APIElement]
+                + api.globalVariables as [APIElement] {
                     try autoreleasepool {
                         let location = symbol.pageURL(in: outputDirectory, for: localization)
                         try SymbolPage(
@@ -319,7 +322,6 @@ internal struct PackageInterface {
                             try outputNestedSymbols(of: scope, namespace: [scope], to: outputDirectory, localization: localization, status: status, output: output)
                         }
                     }
-                }
             }
         }
     }

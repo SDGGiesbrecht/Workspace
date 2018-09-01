@@ -35,13 +35,13 @@ internal class SymbolPage : Page {
                   status: DocumentationStatus,
                   output: Command.Output) {
 
-        if symbol.relativePagePath.first?.value.components(separatedBy: "/").count == 2 {
+        if symbol.relativePagePath.first?.value.components(separatedBy: "/").count == 3 {
             switch symbol {
             case is PackageAPI, is ModuleAPI, is TypeAPI, is ExtensionAPI, is ProtocolAPI :
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
-                        return "Documenting “" + StrictString(symbol.name) + "”..."
+                        return "..." + StrictString(symbol.name) + "..."
                     }
                 }).resolved())
             default:

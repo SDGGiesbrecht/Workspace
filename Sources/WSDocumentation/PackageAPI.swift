@@ -1,0 +1,114 @@
+/*
+ PackageAPI.swift
+
+ This source file is part of the Workspace open source project.
+ https://github.com/SDGGiesbrecht/Workspace#workspace
+
+ Copyright ©2018 Jeremy David Giesbrecht and the Workspace project contributors.
+
+ Soli Deo gloria.
+
+ Licensed under the Apache Licence, Version 2.0.
+ See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+ */
+
+import WSGeneralImports
+
+import WSProject
+
+import SDGSwiftSource
+
+extension PackageAPI {
+
+    internal func computeMergedAPI() {
+        var types: [TypeAPI] = []
+        var unprocessedExtensions: [ExtensionAPI] = []
+        var protocols: [ProtocolAPI] = []
+        var functions: [FunctionAPI] = []
+        var globalVariables: [VariableAPI] = []
+        for module in modules {
+            for element in module.children {
+                element.homeModule = Weak(module)
+
+                switch element {
+                case let type as TypeAPI :
+                    types.append(type)
+                case let `protocol` as ProtocolAPI :
+                    protocols.append(`protocol`)
+                case let `extension` as ExtensionAPI :
+                    unprocessedExtensions.append(`extension`)
+                case let function as FunctionAPI :
+                    functions.append(function)
+                case let globalVariable as VariableAPI :
+                    globalVariables.append(globalVariable)
+                default:
+                    if BuildConfiguration.current == .debug { // @exempt(from: tests) Should never occur.
+                        print("Unidentified API element: \(Swift.type(of: element))")
+                    }
+                }
+            }
+        }
+
+        var extensions: [ExtensionAPI] = []
+        for `extension` in unprocessedExtensions {
+            if true {
+                extensions.append(`extension`)
+            }
+        }
+
+        self.types = types.sorted()
+        self.uniqueExtensions = extensions.sorted()
+        self.protocols = protocols.sorted()
+        self.functions = functions.sorted()
+        self.globalVariables = globalVariables.sorted()
+    }
+
+    internal var types: [TypeAPI] {
+        get {
+            return extendedProperties[.types] as? [TypeAPI] ?? []
+        }
+        set {
+            extendedProperties[.types] = newValue
+        }
+    }
+
+    internal var uniqueExtensions: [ExtensionAPI] {
+        get {
+            return extendedProperties[.extensions] as? [ExtensionAPI] ?? []
+        }
+        set {
+            extendedProperties[.extensions] = newValue
+        }
+    }
+
+    internal var allExtensions: AnyBidirectionalCollection<ExtensionAPI> {
+        return AnyBidirectionalCollection(modules.map({ $0.extensions }).joined())
+    }
+
+    internal var protocols: [ProtocolAPI] {
+        get {
+            return extendedProperties[.protocols] as? [ProtocolAPI] ?? []
+        }
+        set {
+            extendedProperties[.protocols] = newValue
+        }
+    }
+
+    internal var functions: [FunctionAPI] {
+        get {
+            return extendedProperties[.functions] as? [FunctionAPI] ?? []
+        }
+        set {
+            extendedProperties[.functions] = newValue
+        }
+    }
+
+    internal var globalVariables: [VariableAPI] {
+        get {
+            return extendedProperties[.globalVariables] as? [VariableAPI] ?? []
+        }
+        set {
+            extendedProperties[.globalVariables] = newValue
+        }
+    }
+}

@@ -223,6 +223,44 @@ extension APIElement {
         }
     }
 
+    // MARK: - Properties
+
+    internal enum ExtendedPropertyKey {
+        case relativePagePath
+        case types
+        case `extensions`
+        case protocols
+        case functions
+        case globalVariables
+        case homeModule
+    }
+    internal var extendedProperties: [ExtendedPropertyKey: Any] {
+        get {
+            return (userInformation as? [ExtendedPropertyKey: Any]) ?? [:]
+        }
+        set {
+            userInformation = newValue
+        }
+    }
+
+    internal var relativePagePath: [LocalizationIdentifier: StrictString] {
+        get {
+            return (extendedProperties[.relativePagePath] as? [LocalizationIdentifier: StrictString]) ?? [:]
+        }
+        set {
+            extendedProperties[.relativePagePath] = newValue
+        }
+    }
+
+    internal var homeModule: Weak<ModuleAPI> {
+        get {
+            return (extendedProperties[.homeModule] as? Weak<ModuleAPI>) ?? Weak<ModuleAPI>(nil)
+        }
+        set {
+            extendedProperties[.homeModule] = newValue
+        }
+    }
+
     // MARK: - Paths
 
     internal var receivesPage: Bool {
@@ -234,15 +272,6 @@ extension APIElement {
 
     private var fileName: StrictString {
         return Page.sanitize(fileName: StrictString(name))
-    }
-
-    internal var relativePagePath: [LocalizationIdentifier: StrictString] {
-        get {
-            return (userInformation as? [LocalizationIdentifier: StrictString]) ?? [:]
-        }
-        set {
-            userInformation = newValue
-        }
     }
 
     internal func pageURL(in outputDirectory: URL, for localization: LocalizationIdentifier) -> URL {

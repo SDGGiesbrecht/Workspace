@@ -104,7 +104,8 @@ extension PackageRepository {
                 api: try PackageAPI(package: cachedPackage(), reportProgress: { output.print($0) }),
                 packageURL: configuration.documentation.repositoryURL,
                 version: configuration.documentation.currentVersion,
-                copyright: copyright)
+                copyright: copyright,
+                output: output)
             try interface.outputHTML(to: outputDirectory, status: status, output: output)
 
             var rootCSS = TextFile(mockFileWithContents: Resources.root, fileType: .css)

@@ -144,10 +144,20 @@ internal struct PackageInterface {
          api: PackageAPI,
          packageURL: URL?,
          version: Version?,
-         copyright: [LocalizationIdentifier: StrictString]) {
+         copyright: [LocalizationIdentifier: StrictString],
+         output: Command.Output) {
+
+        output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishCanada:
+                return "Processing API..."
+            }
+        }).resolved())
+
         self.localizations = localizations
         self.developmentLocalization = developmentLocalization
         self.api = api
+        api.computeMergedAPI()
 
         self.packageImport = PackageInterface.specify(package: packageURL, version: version)
         self.copyrightNotices = copyright

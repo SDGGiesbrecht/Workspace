@@ -31,6 +31,8 @@ internal struct UnicodeRule : Rule {
                               allowTrailing: Bool = false,
                               allowInSwiftSource: Bool = false,
                               allowInShellSource: Bool = false,
+                              allowInHTMLSource: Bool = false,
+                              allowInCSSSource: Bool = false,
                               allowInSampleCode: Bool = false,
                               allowInMarkdownList: Bool = false,
                               allowInURLs: Bool = false,
@@ -45,6 +47,13 @@ internal struct UnicodeRule : Rule {
                               message: UserFacing<StrictString, InterfaceLocalization>, status: ProofreadingStatus, output: Command.Output) {
 
         for protocolName in allowedDefaultImplementations where file.location.lastPathComponent == protocolName + ".swift" {
+            return
+        }
+
+        if allowInHTMLSource ∧ file.fileType == .html {
+            return
+        }
+        if allowInCSSSource ∧ file.fileType == .css {
             return
         }
 
@@ -240,6 +249,7 @@ internal struct UnicodeRule : Rule {
 
         check(file, for: "\u{2D}",
               allowInShellSource: true,
+              allowInCSSSource: true,
               allowInSampleCode: true,
               allowInMarkdownList: true,
               allowInURLs: true,
@@ -261,6 +271,7 @@ internal struct UnicodeRule : Rule {
         check(file, for: "\u{22}",
               allowInSwiftSource: true,
               allowInShellSource: true,
+              allowInHTMLSource: true,
               allowInSampleCode: true,
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {

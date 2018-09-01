@@ -279,214 +279,217 @@ extension APIElement {
     }
 
     internal func determinePaths(for localization: LocalizationIdentifier, namespace: StrictString = "") -> [String: String] {
-        var links: [String: String] = [:]
-        var path = localization.directoryName + "/"
+        return autoreleasepool {
 
-        switch self {
-        case let package as PackageAPI :
-            for library in package.libraries {
-                links = library.determinePaths(for: localization).mergedByOverwriting(from: links)
-            }
-        case let library as LibraryAPI :
-            let librariesDirectoryName: StrictString
-            if let match = localization._reasonableMatch {
-                switch match {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    librariesDirectoryName = "Libraries"
-                }
-            } else {
-                librariesDirectoryName = "library" // From “products: [.library(...)]”
-            }
-            path += librariesDirectoryName + "/"
+            var links: [String: String] = [:]
+            var path = localization.directoryName + "/"
 
-            for module in library.modules {
-                links = module.determinePaths(for: localization).mergedByOverwriting(from: links)
-            }
-        case let module as ModuleAPI :
-            let modulesDirectoryName: StrictString
-            if let match = localization._reasonableMatch {
-                switch match {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    modulesDirectoryName = "Modules"
+            switch self {
+            case let package as PackageAPI :
+                for library in package.libraries {
+                    links = library.determinePaths(for: localization).mergedByOverwriting(from: links)
                 }
-            } else {
-                modulesDirectoryName = "target" // From “targets: [.target(...)]”
-            }
-            path += modulesDirectoryName + "/"
-
-            for child in module.children {
-                links = child.determinePaths(for: localization).mergedByOverwriting(from: links)
-            }
-        case is TypeAPI :
-            let typesDirectoryName: StrictString
-            if let match = localization._reasonableMatch {
-                switch match {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    typesDirectoryName = "Types"
-                }
-            } else {
-                typesDirectoryName = "struct"
-            }
-            path += namespace + typesDirectoryName + "/"
-
-            var newNamespace = namespace
-            newNamespace.append(contentsOf: typesDirectoryName + "/")
-            newNamespace.append(contentsOf: fileName + "/")
-            for child in children where child.receivesPage {
-                links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
-            }
-        case is ExtensionAPI :
-            let extensionsDirectoryName: StrictString
-            if let match = localization._reasonableMatch {
-                switch match {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    extensionsDirectoryName = "Extensions"
-                }
-            } else {
-                extensionsDirectoryName = "extension"
-            }
-            path += namespace + extensionsDirectoryName + "/"
-
-            var newNamespace = namespace
-            newNamespace.append(contentsOf: extensionsDirectoryName + "/")
-            newNamespace.append(contentsOf: fileName + "/")
-            for child in children where child.receivesPage {
-                links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
-            }
-        case is ProtocolAPI :
-            let protocolsDirectoryName: StrictString
-            if let match = localization._reasonableMatch {
-                switch match {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    protocolsDirectoryName = "Protocols"
-                }
-            } else {
-                protocolsDirectoryName = "protocol"
-            }
-            path += namespace + protocolsDirectoryName + "/"
-
-            var newNamespace = namespace
-            newNamespace.append(contentsOf: protocolsDirectoryName + "/")
-            newNamespace.append(contentsOf: fileName + "/")
-            for child in children where child.receivesPage {
-                links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
-            }
-        case is CaseAPI :
-            let casesDirectoryName: StrictString
-            if let match = localization._reasonableMatch {
-                switch match {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    casesDirectoryName = "Cases"
-                }
-            } else {
-                casesDirectoryName = "case"
-            }
-            path += namespace + casesDirectoryName + "/"
-        case is InitializerAPI :
-            let initializersDirectoryName: StrictString
-            if let match = localization._reasonableMatch {
-                switch match {
-                case .englishUnitedKingdom:
-                    initializersDirectoryName = "Initialisers"
-                case .englishUnitedStates, .englishCanada:
-                    initializersDirectoryName = "Initializers"
-                }
-            } else {
-                initializersDirectoryName = "init"
-            }
-            path += namespace + initializersDirectoryName + "/"
-        case let variable as VariableAPI :
-            let variablesDirectoryName: StrictString
-
-            if namespace.isEmpty {
+            case let library as LibraryAPI :
+                let librariesDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        variablesDirectoryName = "Global Variables"
+                        librariesDirectoryName = "Libraries"
                     }
                 } else {
-                    variablesDirectoryName = "var"
+                    librariesDirectoryName = "library" // From “products: [.library(...)]”
                 }
-            } else {
-                if variable.typePropertyKeyword ≠ nil {
-                    if let match = localization._reasonableMatch {
-                        switch match {
-                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                            variablesDirectoryName = "Type Properties"
-                        }
-                    } else {
-                        variablesDirectoryName = "static var"
+                path += librariesDirectoryName + "/"
+
+                for module in library.modules {
+                    links = module.determinePaths(for: localization).mergedByOverwriting(from: links)
+                }
+            case let module as ModuleAPI :
+                let modulesDirectoryName: StrictString
+                if let match = localization._reasonableMatch {
+                    switch match {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        modulesDirectoryName = "Modules"
                     }
                 } else {
+                    modulesDirectoryName = "target" // From “targets: [.target(...)]”
+                }
+                path += modulesDirectoryName + "/"
+
+                for child in module.children {
+                    links = child.determinePaths(for: localization).mergedByOverwriting(from: links)
+                }
+            case is TypeAPI :
+                let typesDirectoryName: StrictString
+                if let match = localization._reasonableMatch {
+                    switch match {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        typesDirectoryName = "Types"
+                    }
+                } else {
+                    typesDirectoryName = "struct"
+                }
+                path += namespace + typesDirectoryName + "/"
+
+                var newNamespace = namespace
+                newNamespace.append(contentsOf: typesDirectoryName + "/")
+                newNamespace.append(contentsOf: fileName + "/")
+                for child in children where child.receivesPage {
+                    links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
+                }
+            case is ExtensionAPI :
+                let extensionsDirectoryName: StrictString
+                if let match = localization._reasonableMatch {
+                    switch match {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        extensionsDirectoryName = "Extensions"
+                    }
+                } else {
+                    extensionsDirectoryName = "extension"
+                }
+                path += namespace + extensionsDirectoryName + "/"
+
+                var newNamespace = namespace
+                newNamespace.append(contentsOf: extensionsDirectoryName + "/")
+                newNamespace.append(contentsOf: fileName + "/")
+                for child in children where child.receivesPage {
+                    links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
+                }
+            case is ProtocolAPI :
+                let protocolsDirectoryName: StrictString
+                if let match = localization._reasonableMatch {
+                    switch match {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        protocolsDirectoryName = "Protocols"
+                    }
+                } else {
+                    protocolsDirectoryName = "protocol"
+                }
+                path += namespace + protocolsDirectoryName + "/"
+
+                var newNamespace = namespace
+                newNamespace.append(contentsOf: protocolsDirectoryName + "/")
+                newNamespace.append(contentsOf: fileName + "/")
+                for child in children where child.receivesPage {
+                    links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
+                }
+            case is CaseAPI :
+                let casesDirectoryName: StrictString
+                if let match = localization._reasonableMatch {
+                    switch match {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        casesDirectoryName = "Cases"
+                    }
+                } else {
+                    casesDirectoryName = "case"
+                }
+                path += namespace + casesDirectoryName + "/"
+            case is InitializerAPI :
+                let initializersDirectoryName: StrictString
+                if let match = localization._reasonableMatch {
+                    switch match {
+                    case .englishUnitedKingdom:
+                        initializersDirectoryName = "Initialisers"
+                    case .englishUnitedStates, .englishCanada:
+                        initializersDirectoryName = "Initializers"
+                    }
+                } else {
+                    initializersDirectoryName = "init"
+                }
+                path += namespace + initializersDirectoryName + "/"
+            case let variable as VariableAPI :
+                let variablesDirectoryName: StrictString
+
+                if namespace.isEmpty {
                     if let match = localization._reasonableMatch {
                         switch match {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                            variablesDirectoryName = "Properties"
+                            variablesDirectoryName = "Global Variables"
                         }
                     } else {
                         variablesDirectoryName = "var"
                     }
+                } else {
+                    if variable.typePropertyKeyword ≠ nil {
+                        if let match = localization._reasonableMatch {
+                            switch match {
+                            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                                variablesDirectoryName = "Type Properties"
+                            }
+                        } else {
+                            variablesDirectoryName = "static var"
+                        }
+                    } else {
+                        if let match = localization._reasonableMatch {
+                            switch match {
+                            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                                variablesDirectoryName = "Properties"
+                            }
+                        } else {
+                            variablesDirectoryName = "var"
+                        }
+                    }
                 }
-            }
-            path += namespace + variablesDirectoryName + "/"
-        case is SubscriptAPI :
-            let subscriptsDirectoryName: StrictString
-            if let match = localization._reasonableMatch {
-                switch match {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    subscriptsDirectoryName = "Subscripts"
-                }
-            } else {
-                subscriptsDirectoryName = "subscript"
-            }
-            path += namespace + subscriptsDirectoryName + "/"
-        case let function as FunctionAPI :
-            let functionsDirectoryName: StrictString
-
-            if namespace.isEmpty {
+                path += namespace + variablesDirectoryName + "/"
+            case is SubscriptAPI :
+                let subscriptsDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        functionsDirectoryName = "Functions"
+                        subscriptsDirectoryName = "Subscripts"
                     }
                 } else {
-                    functionsDirectoryName = "func"
+                    subscriptsDirectoryName = "subscript"
                 }
-            } else {
-                if function.typeMethodKeyword ≠ nil {
+                path += namespace + subscriptsDirectoryName + "/"
+            case let function as FunctionAPI :
+                let functionsDirectoryName: StrictString
+
+                if namespace.isEmpty {
                     if let match = localization._reasonableMatch {
                         switch match {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                            functionsDirectoryName = "Type Methods"
-                        }
-                    } else {
-                        functionsDirectoryName = "static func"
-                    }
-                } else {
-                    if let match = localization._reasonableMatch {
-                        switch match {
-                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                            functionsDirectoryName = "Methods"
+                            functionsDirectoryName = "Functions"
                         }
                     } else {
                         functionsDirectoryName = "func"
                     }
+                } else {
+                    if function.typeMethodKeyword ≠ nil {
+                        if let match = localization._reasonableMatch {
+                            switch match {
+                            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                                functionsDirectoryName = "Type Methods"
+                            }
+                        } else {
+                            functionsDirectoryName = "static func"
+                        }
+                    } else {
+                        if let match = localization._reasonableMatch {
+                            switch match {
+                            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                                functionsDirectoryName = "Methods"
+                            }
+                        } else {
+                            functionsDirectoryName = "func"
+                        }
+                    }
+                }
+                path += namespace + functionsDirectoryName + "/"
+            default:
+                if BuildConfiguration.current == .debug {
+                    print("Unrecognized symbol type: \(type(of: self))")
                 }
             }
-            path += namespace + functionsDirectoryName + "/"
-        default:
-            if BuildConfiguration.current == .debug {
-                print("Unrecognized symbol type: \(type(of: self))")
-            }
-        }
 
-        path += fileName + ".html"
-        relativePagePath[localization] = path
-        if let type = self as? TypeAPI {
-            links[type.name.truncated(before: "<")] = String(path)
-        } else {
-            links[name] = String(path)
+            path += fileName + ".html"
+            relativePagePath[localization] = path
+            if let type = self as? TypeAPI {
+                links[type.name.truncated(before: "<")] = String(path)
+            } else {
+                links[name] = String(path)
+            }
+            return links
         }
-        return links
     }
 }

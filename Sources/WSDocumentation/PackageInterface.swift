@@ -118,6 +118,21 @@ internal struct PackageInterface {
         if ¬package.modules.isEmpty {
             result.append(generateIndexSection(named: SymbolPage.modulesHeader(localization: localization), apiEntries: package.modules, localization: localization))
         }
+        if ¬package.types.isEmpty {
+            result.append(generateIndexSection(named: SymbolPage.typesHeader(localization: localization), apiEntries: package.types, localization: localization))
+        }
+        if ¬package.uniqueExtensions.isEmpty {
+            result.append(generateIndexSection(named: SymbolPage.extensionsHeader(localization: localization), apiEntries: package.uniqueExtensions, localization: localization))
+        }
+        if ¬package.protocols.isEmpty {
+            result.append(generateIndexSection(named: SymbolPage.protocolsHeader(localization: localization), apiEntries: package.protocols, localization: localization))
+        }
+        if ¬package.functions.isEmpty {
+            result.append(generateIndexSection(named: SymbolPage.functionsHeader(localization: localization), apiEntries: package.functions, localization: localization))
+        }
+        if ¬package.globalVariables.isEmpty {
+            result.append(generateIndexSection(named: SymbolPage.variablesHeader(localization: localization), apiEntries: package.globalVariables, localization: localization))
+        }
 
         return result.joinedAsLines()
     }
@@ -203,15 +218,15 @@ internal struct PackageInterface {
             }
         }).resolved())
 
-        try outputPackagePages(to: outputDirectory, status: status)
-        try outputLibraryPages(to: outputDirectory, status: status)
-        try outputModulePages(to: outputDirectory, status: status)
-        try outputTopLevelSymbols(to: outputDirectory, status: status)
+        try outputPackagePages(to: outputDirectory, status: status, output: output)
+        try outputLibraryPages(to: outputDirectory, status: status, output: output)
+        try outputModulePages(to: outputDirectory, status: status, output: output)
+        try outputTopLevelSymbols(to: outputDirectory, status: status, output: output)
 
         try outputRedirects(to: outputDirectory)
     }
 
-    private func outputPackagePages(to outputDirectory: URL, status: DocumentationStatus) throws {
+    private func outputPackagePages(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output) throws {
         for localization in localizations {
             let pageURL = api.pageURL(in: outputDirectory, for: localization)
             try SymbolPage(
@@ -224,12 +239,13 @@ internal struct PackageInterface {
                 copyright: copyright(for: localization, status: status),
                 packageIdentifiers: packageIdentifiers,
                 symbolLinks: symbolLinks[localization]!,
-                status: status
+                status: status,
+                output: output
                 ).contents.save(to: pageURL)
         }
     }
 
-    private func outputLibraryPages(to outputDirectory: URL, status: DocumentationStatus) throws {
+    private func outputLibraryPages(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output) throws {
         for localization in localizations {
             for library in api.libraries {
                 let location = library.pageURL(in: outputDirectory, for: localization)
@@ -243,13 +259,14 @@ internal struct PackageInterface {
                     copyright: copyright(for: localization, status: status),
                     packageIdentifiers: packageIdentifiers,
                     symbolLinks: symbolLinks[localization]!,
-                    status: status
+                    status: status,
+                    output: output
                     ).contents.save(to: location)
             }
         }
     }
 
-    private func outputModulePages(to outputDirectory: URL, status: DocumentationStatus) throws {
+    private func outputModulePages(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output) throws {
         for localization in localizations {
             for module in api.modules {
                 let location = module.pageURL(in: outputDirectory, for: localization)
@@ -263,13 +280,14 @@ internal struct PackageInterface {
                     copyright: copyright(for: localization, status: status),
                     packageIdentifiers: packageIdentifiers,
                     symbolLinks: symbolLinks[localization]!,
-                    status: status
+                    status: status,
+                    output: output
                     ).contents.save(to: location)
             }
         }
     }
 
-    private func outputTopLevelSymbols(to outputDirectory: URL, status: DocumentationStatus) throws {
+    private func outputTopLevelSymbols(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output) throws {
         for localization in localizations {
             for module in api.modules {
                 for symbol in module.children {
@@ -284,18 +302,19 @@ internal struct PackageInterface {
                         copyright: copyright(for: localization, status: status),
                         packageIdentifiers: packageIdentifiers,
                         symbolLinks: symbolLinks[localization]!,
-                        status: status
+                        status: status,
+                        output: output
                         ).contents.save(to: location)
 
                     if let scope = symbol as? APIScope {
-                        try outputNestedSymbols(of: scope, namespace: [scope], to: outputDirectory, localization: localization, status: status)
+                        try outputNestedSymbols(of: scope, namespace: [scope], to: outputDirectory, localization: localization, status: status, output: output)
                     }
                 }
             }
         }
     }
 
-    private func outputNestedSymbols(of parent: APIScope, namespace: [APIScope], to outputDirectory: URL, localization: LocalizationIdentifier, status: DocumentationStatus) throws {
+    private func outputNestedSymbols(of parent: APIScope, namespace: [APIScope], to outputDirectory: URL, localization: LocalizationIdentifier, status: DocumentationStatus, output: Command.Output) throws {
         for symbol in parent.children where symbol.receivesPage {
             let location = symbol.pageURL(in: outputDirectory, for: localization)
 
@@ -318,11 +337,12 @@ internal struct PackageInterface {
                 copyright: copyright(for: localization, status: status),
                 packageIdentifiers: packageIdentifiers,
                 symbolLinks: symbolLinks[localization]!,
-                status: status
+                status: status,
+                output: output
                 ).contents.save(to: location)
 
             if let scope = symbol as? APIScope {
-                try outputNestedSymbols(of: scope, namespace: namespace + [scope], to: outputDirectory, localization: localization, status: status)
+                try outputNestedSymbols(of: scope, namespace: namespace + [scope], to: outputDirectory, localization: localization, status: status, output: output)
             }
         }
     }

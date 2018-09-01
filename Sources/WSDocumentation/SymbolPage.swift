@@ -32,7 +32,20 @@ internal class SymbolPage : Page {
                   copyright: StrictString,
                   packageIdentifiers: Set<String>,
                   symbolLinks: [String: String],
-                  status: DocumentationStatus) {
+                  status: DocumentationStatus,
+                  output: Command.Output) {
+
+        switch symbol {
+        case is PackageAPI, is ModuleAPI, is TypeAPI, is ExtensionAPI, is ProtocolAPI :
+            output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "Documenting “" + StrictString(symbol.name) + "”..."
+                }
+            }).resolved())
+        default:
+            break
+        }
 
         let adjustedSymbolLinks = symbolLinks.mapValues { String(pathToSiteRoot) + $0 }
 

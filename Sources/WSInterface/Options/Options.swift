@@ -33,10 +33,4 @@ extension Options {
     var runAsXcodeBuildPhase: Bool {
         return value(for: Workspace.Proofread.runAsXcodeBuildPhase)
     }
-
-    // MARK: - Documentation
-
-    var jazzy: Bool {
-        return true
-    }
 }

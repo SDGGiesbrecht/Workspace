@@ -34,7 +34,7 @@ Workspace automates management of Swift projects.
   - [Style proofreading](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/ProofreadingConfiguration.html) (including [SwiftLint](https://github.com/realm/SwiftLint))
   - [Reminders](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Enums/ProofreadingRule.html#/s:22WorkspaceConfiguration16ProofreadingRuleO14manualWarningsA2CmF)
   - [Continuous integration set‐up](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/ContinuousIntegrationConfiguration.html#/s:22WorkspaceConfiguration021ContinuousIntegrationB0V6manageSbvp) ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))
-- Generates API [documentation](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/APIDocumentationConfiguration.html#/s:22WorkspaceConfiguration016APIDocumentationB0V8generateSbvp) (except from Linux). (Using [Jazzy](https://github.com/realm/jazzy))
+- Generates API [documentation](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/APIDocumentationConfiguration.html#/s:22WorkspaceConfiguration016APIDocumentationB0V8generateSbvp).
 - Automates code maintenance:
   - [Embedded resources](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/resources.html)
   - [Inherited documentation](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/documentation-inheritance.html)

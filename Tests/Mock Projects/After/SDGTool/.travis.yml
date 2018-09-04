@@ -45,14 +45,7 @@ matrix:
         - "eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\""
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job miscellaneous"
-    - os: osx
-      env:
-        - JOB="Documentation"
-      osx_image: xcode9.4
-      script:
-        - "bash \"./Refresh (macOS).command\""
-        - "bash \"./Validate (macOS).command\" •job documentation"
-    - os: osx
+    - os: linux
       env:
         - JOB="Deployment"
         - secure: "0123456789abcdef"
@@ -63,9 +56,10 @@ matrix:
         local_dir: docs
         github_token: $GITHUB_TOKEN
         skip_cleanup: true
-      osx_image: xcode9.4
+      dist: trusty
       script:
-        - "bash \"./Refresh (macOS).command\""
+        - "export SWIFT_VERSION=4.1.2"
+        - "eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\""
         - "bash \"./Validate (macOS).command\" •job deployment"
 
 cache:

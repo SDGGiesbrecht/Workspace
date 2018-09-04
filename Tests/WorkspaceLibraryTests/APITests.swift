@@ -173,7 +173,7 @@ class APITests : TestCase {
         configuration.documentation.api.generate = true
         PackageRepository(mock: "CheckedInDocumentation").test(commands: [
             ["refresh"],
-            ["validate", "•job", "documentation"],
+            ["validate", "•job", "miscellaneous"],
             ["validate", "•job", "deployment"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
         #endif

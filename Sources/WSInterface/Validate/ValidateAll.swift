@@ -98,7 +98,7 @@ extension Workspace.Validate {
             #endif
 
             // Document
-            if options.job.includes(job: .documentation) {
+            if options.job.includes(job: .miscellaneous) {
                 if (try ¬options.project.configuration(output: output).documentation.api.generate
                     ∨ options.project.configuration(output: output).documentation.api.encryptedTravisCIDeploymentKey ≠ nil),
                     try options.project.configuration(output: output).documentation.api.enforceCoverage {

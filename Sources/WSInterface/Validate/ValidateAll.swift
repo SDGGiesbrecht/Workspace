@@ -99,16 +99,17 @@ extension Workspace.Validate {
 
             // Document
             if options.job.includes(job: .documentation) {
-                if try options.project.configuration(output: output).documentation.api.enforceCoverage {
+                if (try ¬options.project.configuration(output: output).documentation.api.generate
+                    ∨ options.project.configuration(output: output).documentation.api.encryptedTravisCIDeploymentKey ≠ nil),
+                    try options.project.configuration(output: output).documentation.api.enforceCoverage {
                     try Workspace.Validate.DocumentationCoverage.executeAsStep(options: options, validationStatus: &validationStatus, output: output)
-                } else if try options.project.configuration(output: output).documentation.api.generate
-                    ∧ (try options.project.configuration(output: output).documentation.api.encryptedTravisCIDeploymentKey == nil) {
+                } else if try options.project.configuration(output: output).documentation.api.generate {
                     try Workspace.Document.executeAsStep(outputDirectory: options.project.defaultDocumentationDirectory, options: options, validationStatus: &validationStatus, output: output)
                 }
             }
 
-            if try options.job.includes(job: .deployment)
-                ∧ (try options.project.configuration(output: output).documentation.api.generate) {
+            if options.job.includes(job: .deployment),
+                try options.project.configuration(output: output).documentation.api.generate {
                 try Workspace.Document.executeAsStep(outputDirectory: options.project.defaultDocumentationDirectory, options: options, validationStatus: &validationStatus, output: output)
             }
 

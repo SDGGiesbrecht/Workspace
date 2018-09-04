@@ -40,20 +40,53 @@ Undocumented compilation condition. Add “// MARK: - #if...” on the next line
 
 Tests/LinuxMain.swift
 
-[[$ swiftlint...]
+[$ swiftlint...]
+
+Checking build for macOS with the Swift Package Manager... (§2)
+
+[$ swift...]
+
+Checking build for macOS with Xcode... (§3)
+
+[$ xcodebuild...]
+
+Checking build for iOS... (§4)
+
+[$ xcodebuild...]
+
+Checking build for watchOS... (§5)
+
+[$ xcodebuild...]
+
+Checking build for tvOS... (§6)
+
+[$ xcodebuild...]
+
+Testing on macOS with Xcode... (§7)
+
+[$ xcodebuild...]
+
+Checking test coverage on macOS... (§8)
+
+Parsing report for “[Temporary]/AllTasks/Tests/AllTasksTests/AllTasksTests.swift”...
+
+Generating documentation for “AllTasks”... (§9)
+
+
+$ jazzy --module AllTasks --copyright "Copyright ©2018 the AllTasks project contributors. All rights reserved." --documentation=Documentation/*.md --clean --use-safe-filenames --output "[Temporary]/AllTasks/docs/AllTasks" --xcodebuild-arguments "-scheme,AllTasks-Package,-target,AllTasks,-sdk,macosx,-derivedDataPath,[Temporary]/Jazzy Build Artifacts"
+Running xcodebuild
+Parsing AllTasks.swift (1/1)
+building site
+building search index
+0% documentation coverage with 0 undocumented symbols
+skipped 1 private, fileprivate, or internal symbol (use `--min-acl` to specify a different minimum ACL)
+jam out ♪♫ to your fresh new docs in `docs/AllTasks`
 
 Writing to “docs/AllTasks/.nojekyll”...
 Writing to “docs/AllTasks/-read-me.html”...
 Writing to “docs/AllTasks/docsets/AllTasks.docset/Contents/Resources/Documents/-read-me.html”...
 Writing to “docs/AllTasks/docsets/AllTasks.docset/Contents/Resources/Documents/index.html”...
 Writing to “docs/AllTasks/index.html”...
-
-Checking documentation coverage... (§10)
-
-Parsing “AllTasks”...
-Processing API...
-Generating HTML...
-...AllTasks...
 
 Summary
 
@@ -67,7 +100,6 @@ Summary
 ✓ Tests pass on macOS with Xcode.
 ✓ Test coverage is complete on macOS.
 ✓ Generated documentation for “AllTasks”.
-✓ Documentation coverage is complete.
 
 “AllTasks” fails validation.
 2

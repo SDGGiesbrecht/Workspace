@@ -58,25 +58,7 @@ extension Workspace.Validate {
         })
 
         static func executeAsStep(options: Options, validationStatus: inout ValidationStatus, output: Command.Output) throws {
-
-            let outputDirectory: URL
-            let outputIsTemporary: Bool
-            if try options.project.configuration(output: output).documentation.api.encryptedTravisCIDeploymentKey ≠ nil
-                ∨ ¬(try options.project.configuration(output: output).documentation.api.generate) {
-
-                outputDirectory = FileManager.default.url(in: .temporary, at: "Documentation")
-                outputIsTemporary = true
-            } else {
-                outputDirectory = options.project.defaultDocumentationDirectory
-                outputIsTemporary = false
-            }
-            defer {
-                if outputIsTemporary {
-                    try? FileManager.default.removeItem(at: outputDirectory)
-                }
-            }
-
-            options.project.validateDocumentationCoverage(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
+            options.project.validateDocumentationCoverage(validationStatus: &validationStatus, output: output)
         }
     }
 }

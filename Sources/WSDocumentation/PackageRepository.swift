@@ -297,7 +297,7 @@ extension PackageRepository {
 
     // End Jazzy section.
 
-    public func validateDocumentationCoverage(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) {
+    public func validateDocumentationCoverage(validationStatus: inout ValidationStatus, output: Command.Output) {
 
         let section = validationStatus.newSection()
         output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -307,12 +307,11 @@ extension PackageRepository {
             }
         }).resolved().formattedAsSectionHeader())
         do {
-            try prepare(outputDirectory: outputDirectory, output: output)
+            let outputDirectory = FileManager.default.url(in: .temporary, at: "Documentation")
+            defer { try? FileManager.default.removeItem(at: outputDirectory) }
 
             let status = DocumentationStatus(output: output)
             try document(outputDirectory: outputDirectory, documentationStatus: status, validationStatus: &validationStatus, output: output)
-
-            try finalizeSite(outputDirectory: outputDirectory)
 
             if status.passing {
                 validationStatus.passStep(message: UserFacing({ localization in

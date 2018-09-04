@@ -312,46 +312,6 @@ class APITests : TestCase {
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
-    func testNoMacOS() {
-        #if !os(Linux)
-        let configuration = WorkspaceConfiguration()
-        configuration.supportedOperatingSystems.remove(.macOS)
-        configuration.xcode.manage = true
-        configuration.documentation.api.generate = true
-        configuration.documentation.api.yearFirstPublished = 2017
-        PackageRepository(mock: "NoMacOS").test(commands: [
-            ["validate", "documentation‐coverage"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-        #endif
-    }
-
-    func testNoMacOSOrIOS() {
-        #if !os(Linux)
-        let configuration = WorkspaceConfiguration()
-        configuration.supportedOperatingSystems.remove(.macOS)
-        configuration.supportedOperatingSystems.remove(.iOS)
-        configuration.xcode.manage = true
-        configuration.documentation.api.generate = true
-        PackageRepository(mock: "NoMacOSOrIOS").test(commands: [
-            ["validate", "documentation‐coverage"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-        #endif
-    }
-
-    func testNoMacOSOrIOSOrWatchOS() {
-        #if !os(Linux)
-        let configuration = WorkspaceConfiguration()
-        configuration.supportedOperatingSystems.remove(.macOS)
-        configuration.supportedOperatingSystems.remove(.iOS)
-        configuration.supportedOperatingSystems.remove(.watchOS)
-        configuration.xcode.manage = true
-        configuration.documentation.api.generate = true
-        PackageRepository(mock: "NoMacOSOrIOSOrWatchOS").test(commands: [
-            ["validate", "documentation‐coverage"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-        #endif
-    }
-
     func testOneProductMultipleModules() {
         let configuration = WorkspaceConfiguration()
         configuration.documentation.localizations = ["en"]

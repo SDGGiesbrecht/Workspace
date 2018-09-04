@@ -134,9 +134,7 @@ extension PackageRepository {
                             continue
                         }
                         if command == ["validate", "build", "•job", "macos‐swift‐package‐manager"]
-                            ∨ command == ["validate", "test‐coverage"]
-                            ∨ command == ["document"]
-                            ∨ command == ["validate", "documentation‐coverage"] {
+                            ∨ command == ["validate", "test‐coverage"] {
                             // Invalid on Linux
                             expectFailure()
                             continue
@@ -177,13 +175,13 @@ extension PackageRepository {
                             output.scalars.replaceMatches(for: CompositePattern([
                                 LiteralPattern("$ swiftlint".scalars),
                                 any,
-                                LiteralPattern("\n0".scalars)
-                                ]), with: "[$ swiftlint...]\n0".scalars)
-                            output.scalars.replaceMatches(for: CompositePattern([
-                                LiteralPattern("$ swiftlint".scalars),
-                                any,
                                 LiteralPattern("\n\n".scalars)
                                 ]), with: "[$ swiftlint...]\n\n".scalars)
+                            output.scalars.replaceMatches(for: CompositePattern([
+                                LiteralPattern("$ swiftlint ".scalars),
+                                any,
+                                LiteralPattern("\n0".scalars)
+                                ]), with: "[$ swiftlint...]\n0".scalars)
 
                             if command == ["validate"] ∨ command.hasPrefix(["validate", "•job"]) {
                                 // Refreshment occurs elswhere in continuous integration.

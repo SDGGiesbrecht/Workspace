@@ -40,12 +40,51 @@ Tests/LinuxMain.swift
 Tests/SDGTests/Resources.swift
 Tests/SDGTests/SDGTests.swift
 
-[[$ swiftlint...]
+[$ swiftlint...]
 
-Writing to “[Temporary]/Documentation/Library/.nojekyll”...
+Checking build for macOS with the Swift Package Manager... (§2)
 
-Checking documentation coverage for “Library”... (§10)
+[$ swift...]
 
+Checking build for macOS with Xcode... (§3)
+
+[$ xcodebuild...]
+
+Checking build for iOS... (§4)
+
+[$ xcodebuild...]
+
+Checking build for watchOS... (§5)
+
+[$ xcodebuild...]
+
+Checking build for tvOS... (§6)
+
+[$ xcodebuild...]
+
+Testing on macOS with Xcode... (§7)
+
+[$ xcodebuild...]
+
+Checking test coverage on macOS... (§8)
+
+Parsing report for “[Temporary]/SDGLibrary/Sources/Library/SDG.swift”...
+Parsing report for “[Temporary]/SDGLibrary/Tests/SDGTests/SDGTests.swift”...
+[Temporary]/SDGLibrary/Sources/Library/SDG.swift
+
+Checking documentation coverage... (§9)
+
+Parsing “Library”...
+Processing API...
+Generating HTML...
+...Library...
+...Library...
+...Library...
+...Library...
+...Library...
+...Library...
+...Library...
+...Library...
 
 Summary
 
@@ -58,8 +97,7 @@ Summary
 ✓ There are no compiler warnings for tvOS.
 ✓ Tests pass on macOS with Xcode.
 ✓ Test coverage is complete on macOS.
-✓ Generated documentation for “Library”.
-✓ Documentation coverage is complete for “Library”.
+✓ Documentation coverage is complete.
 
 
 Workspace encountered unsupported file types:

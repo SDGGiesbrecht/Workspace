@@ -3,7 +3,8 @@
 import PackageDescription
 
 /// A package.
-let package = Package(name: "SDG",
+let package = Package(
+    name: "SDG",
     products: [
         /// A library.
         .library(name: "Library", targets: ["Library"])

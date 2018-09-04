@@ -25,24 +25,6 @@ import WSProject
 import WSSwift
 import WSThirdParty
 
-#if os(Linux)
-// MARK: - #if os(Linux)
-
-public func linuxJazzyError() -> Command.Error {
-    return Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishCanada:
-            return StrictString([
-                "Workspace cannot perform documentation tasks from Linux, because Jazzy does not run on Linux.",
-                "You can file a request with Jazzy:",
-                "https://github.com/realm/jazzy/issues".in(Underline.underlined)
-                ].joinedAsLines())
-        }
-    }))
-}
-
-#else
-
 internal class Jazzy : RubyGem {
 
     // MARK: - Static Properties
@@ -210,5 +192,3 @@ internal class Jazzy : RubyGem {
         }
     }
 }
-
-#endif

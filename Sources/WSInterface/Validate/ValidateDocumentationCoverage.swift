@@ -38,10 +38,6 @@ extension Workspace.Validate {
 
         static let command = Command(name: name, description: description, directArguments: [], options: Workspace.standardOptions, execution: { (_, options: Options, output: Command.Output) throws in
 
-            #if os(Linux)
-            throw linuxJazzyError()
-            #else
-
             if try options.project.configuration(output: output).xcode.manage {
                 try Workspace.Refresh.Xcode.executeAsStep(options: options, output: output)
             }
@@ -59,8 +55,6 @@ extension Workspace.Validate {
             }
 
             try validationStatus.reportOutcome(project: options.project, output: output)
-
-            #endif
         })
 
         #if !os(Linux)

@@ -17,11 +17,11 @@ Proofreading source code... (§1)
 Documentation/🇮🇱עב Read Me.md
 LICENSE.md
 Package.swift
-Line 26
+Line 25
 U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
         // .package(url: /* package url */, from: "1.0.0"),
 
-Line 26
+Line 25
 U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
         // .package(url: /* package url */, from: "1.0.0"),
 
@@ -48,8 +48,12 @@ Writing to “docs/AllTasks/docsets/AllTasks.docset/Contents/Resources/Documents
 Writing to “docs/AllTasks/docsets/AllTasks.docset/Contents/Resources/Documents/index.html”...
 Writing to “docs/AllTasks/index.html”...
 
-Checking documentation coverage for “AllTasks”... (§10)
+Checking documentation coverage... (§10)
 
+Parsing “AllTasks”...
+Processing API...
+Generating HTML...
+...AllTasks...
 
 Summary
 
@@ -63,7 +67,7 @@ Summary
 ✓ Tests pass on macOS with Xcode.
 ✓ Test coverage is complete on macOS.
 ✓ Generated documentation for “AllTasks”.
-✓ Documentation coverage is complete for “AllTasks”.
+✓ Documentation coverage is complete.
 
 “AllTasks” fails validation.
 2

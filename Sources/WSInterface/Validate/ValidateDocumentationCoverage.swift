@@ -85,7 +85,7 @@ extension Workspace.Validate {
 
         #if !os(Linux)
         static func executeAsStep(outputDirectory: URL, options: Options, validationStatus: inout ValidationStatus, output: Command.Output) throws {
-            try options.project.validateDocumentationCoverage(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
+            options.project.validateDocumentationCoverage(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
         }
         #endif
     }

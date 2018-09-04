@@ -86,40 +86,12 @@ extension PackageRepository {
             }
         }).resolved().formattedAsSectionHeader())
         do {
+            try prepare(outputDirectory: outputDirectory, output: output)
+
             let status = DocumentationStatus(output: output)
+            try document(outputDirectory: outputDirectory, documentationStatus: status, validationStatus: &validationStatus, output: output)
 
-            try retrievePublishedDocumentationIfAvailable(outputDirectory: outputDirectory, output: output)
-            try redirectExistingURLs(outputDirectory: outputDirectory)
-
-            let configuration = try self.configuration(output: output)
-            let copyrightNotice = try resolvedCopyright(output: output)
-            var copyright: [LocalizationIdentifier: StrictString] = [:]
-            for localization in configuration.documentation.localizations {
-                copyright[localization] = copyrightNotice
-            }
-
-            let interface = PackageInterface(
-                localizations: configuration.documentation.localizations,
-                developmentLocalization: try developmentLocalization(output: output),
-                api: try PackageAPI(package: cachedPackage(), reportProgress: { output.print($0) }),
-                packageURL: configuration.documentation.repositoryURL,
-                version: configuration.documentation.currentVersion,
-                copyright: copyright,
-                output: output)
-            try interface.outputHTML(to: outputDirectory, status: status, output: output)
-
-            var rootCSS = TextFile(mockFileWithContents: Resources.root, fileType: .css)
-            rootCSS.header = ""
-            try rootCSS.contents.save(to: outputDirectory.appendingPathComponent("CSS/Root.css"))
-            try Syntax.css.save(to: outputDirectory.appendingPathComponent("CSS/Swift.css"))
-            var siteCSS = TextFile(mockFileWithContents: Resources.site, fileType: .css)
-            siteCSS.header = ""
-            try siteCSS.contents.save(to: outputDirectory.appendingPathComponent("CSS/Site.css"))
-            var siteJavaScript = TextFile(mockFileWithContents: Resources.script, fileType: .javaScript)
-            siteJavaScript.header = ""
-            try siteJavaScript.contents.save(to: outputDirectory.appendingPathComponent("JavaScript/Site.js"))
-
-            try preventJekyllInterference(outputDirectory: outputDirectory)
+            try finalizeSite(outputDirectory: outputDirectory)
 
             if status.passing {
                 validationStatus.passStep(message: UserFacing({ localization in
@@ -145,6 +117,50 @@ extension PackageRepository {
                 }
             }))
         }
+    }
+
+    // Preliminary steps irrelevent to validation.
+    private func prepare(outputDirectory: URL, output: Command.Output) throws {
+        try retrievePublishedDocumentationIfAvailable(outputDirectory: outputDirectory, output: output)
+        try redirectExistingURLs(outputDirectory: outputDirectory)
+    }
+
+    // Steps which participate in validation.
+    private func document(outputDirectory: URL, documentationStatus: DocumentationStatus, validationStatus: inout ValidationStatus, output: Command.Output) throws {
+
+        let configuration = try self.configuration(output: output)
+        let copyrightNotice = try resolvedCopyright(output: output)
+        var copyright: [LocalizationIdentifier: StrictString] = [:]
+        for localization in configuration.documentation.localizations {
+            copyright[localization] = copyrightNotice
+        }
+
+        let interface = PackageInterface(
+            localizations: configuration.documentation.localizations,
+            developmentLocalization: try developmentLocalization(output: output),
+            api: try PackageAPI(package: cachedPackage(), reportProgress: { output.print($0) }),
+            packageURL: configuration.documentation.repositoryURL,
+            version: configuration.documentation.currentVersion,
+            copyright: copyright,
+            output: output)
+        try interface.outputHTML(to: outputDirectory, status: documentationStatus, output: output)
+    }
+
+    // Final steps irrelevent to validation.
+    private func finalizeSite(outputDirectory: URL) throws {
+
+        var rootCSS = TextFile(mockFileWithContents: Resources.root, fileType: .css)
+        rootCSS.header = ""
+        try rootCSS.contents.save(to: outputDirectory.appendingPathComponent("CSS/Root.css"))
+        try Syntax.css.save(to: outputDirectory.appendingPathComponent("CSS/Swift.css"))
+        var siteCSS = TextFile(mockFileWithContents: Resources.site, fileType: .css)
+        siteCSS.header = ""
+        try siteCSS.contents.save(to: outputDirectory.appendingPathComponent("CSS/Site.css"))
+        var siteJavaScript = TextFile(mockFileWithContents: Resources.script, fileType: .javaScript)
+        siteJavaScript.header = ""
+        try siteJavaScript.contents.save(to: outputDirectory.appendingPathComponent("JavaScript/Site.js"))
+
+        try preventJekyllInterference(outputDirectory: outputDirectory)
     }
 
     private func retrievePublishedDocumentationIfAvailable(outputDirectory: URL, output: Command.Output) throws {
@@ -191,9 +207,6 @@ extension PackageRepository {
     private func preventJekyllInterference(outputDirectory: URL) throws {
         try Data().write(to: outputDirectory.appendingPathComponent(".nojekyll"))
     }
-
-    #if !os(Linux)
-    // MARK: - #if os(Linux)
 
     // MARK: - Jazzy
 
@@ -282,65 +295,50 @@ extension PackageRepository {
         }
     }
 
-    public func validateDocumentationCoverage(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
+    // End Jazzy section.
 
-        for product in try productModules() {
-            try autoreleasepool {
-                try validateDocumentationCoverage(for: product.name, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
-            }
-        }
-    }
-
-    private func validateDocumentationCoverage(for target: String, outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
+    public func validateDocumentationCoverage(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) {
 
         let section = validationStatus.newSection()
-
         output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
-                return "Checking documentation coverage for “" + StrictString(target) + "”..." + section.anchor
+                return "Checking documentation coverage..." + section.anchor
             }
         }).resolved().formattedAsSectionHeader())
-
         do {
+            try prepare(outputDirectory: outputDirectory, output: output)
 
-            let warnings = try Jazzy.default.warnings(outputDirectory: PackageRepository.subdirectory(for: target, in: outputDirectory))
+            let status = DocumentationStatus(output: output)
+            try document(outputDirectory: outputDirectory, documentationStatus: status, validationStatus: &validationStatus, output: output)
 
-            for warning in warnings {
-                output.print([
-                    warning.file.path(relativeTo: location) + ":" + String(warning.line?.inDigits() ?? ""), // @exempt(from: tests) It is unknown what would cause a missing line number.
-                    warning.symbol,
-                    ""
-                    ].joinedAsLines().formattedAsError())
-            }
+            try finalizeSite(outputDirectory: outputDirectory)
 
-            if warnings.isEmpty {
-                validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            if status.passing {
+                validationStatus.passStep(message: UserFacing({ localization in
                     switch localization {
                     case .englishCanada:
-                        return "Documentation coverage is complete for “" + StrictString(target) + "”."
+                        return "Documentation coverage is complete."
                     }
                 }))
             } else {
-                validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                validationStatus.failStep(message: UserFacing({ localization in
                     switch localization {
                     case .englishCanada:
-                        return "Documentation coverage is incomplete for “" + StrictString(target) + "”." + section.crossReference.resolved(for: localization)
+                        return "Documentation coverage is incomplete." + section.crossReference.resolved(for: localization)
                     }
                 }))
             }
         } catch {
             output.print(error.localizedDescription.formattedAsError())
-            validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            validationStatus.failStep(message: UserFacing({ localization in
                 switch localization {
                 case .englishCanada:
-                    return "Documentation coverage information is unavailable for “" + StrictString(target) + "”." + section.crossReference.resolved(for: localization)
+                    return "Failed to process documentation." + section.crossReference.resolved(for: localization)
                 }
             }))
         }
     }
-
-    #endif
 
     // MARK: - Inheritance
 

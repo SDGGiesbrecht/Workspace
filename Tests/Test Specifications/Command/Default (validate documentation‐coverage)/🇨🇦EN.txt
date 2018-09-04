@@ -1,16 +1,10 @@
 $ workspace validate documentation‐coverage •no‐colour
 
-Generating documentation for “Default”... (§1)
+Checking documentation coverage... (§1)
 
-The package has no Xcode project.
-Configure “xcode.manage” or create an Xcode project manually.
+There are no localizations specified. (documentation.localizations)
 
-Checking documentation coverage for “Default”... (§2)
-
-The file “undocumented.json” couldn’t be opened because there is no such file.
-
-✗ Failed to generate documentation for “Default”. (See [⌘F] “§1”)
-✗ Documentation coverage information is unavailable for “Default”. (See [⌘F] “§2”)
+✗ Failed to process documentation. (See [⌘F] “§1”)
 
 “Default” fails validation.
 2

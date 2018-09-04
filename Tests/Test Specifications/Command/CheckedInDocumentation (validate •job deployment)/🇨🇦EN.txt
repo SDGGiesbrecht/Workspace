@@ -4,15 +4,14 @@ $ workspace validate •job deployment •no‐colour
 Validating “CheckedInDocumentation”...
 
 
-Generating documentation for “CheckedInDocumentation”... (§1)
+Generating documentation... (§1)
 
-The package has no Xcode project.
-Configure “xcode.manage” or create an Xcode project manually.
+There are no localizations specified. (documentation.localizations)
 
 Summary
 
 
-✗ Failed to generate documentation for “CheckedInDocumentation”. (See [⌘F] “§1”)
+✗ Failed to generate documentation. (See [⌘F] “§1”)
 
 “CheckedInDocumentation” fails validation.
 2

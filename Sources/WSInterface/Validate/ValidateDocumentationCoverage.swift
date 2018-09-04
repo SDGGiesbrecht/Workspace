@@ -58,7 +58,7 @@ extension Workspace.Validate {
         })
 
         static func executeAsStep(options: Options, validationStatus: inout ValidationStatus, output: Command.Output) throws {
-            options.project.validateDocumentationCoverage(validationStatus: &validationStatus, output: output)
+            try options.project.validateDocumentationCoverage(validationStatus: &validationStatus, output: output)
         }
     }
 }

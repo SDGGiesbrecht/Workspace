@@ -31,8 +31,8 @@ extension PackageRepository {
 
     // MARK: - Properties
 
-    public func hasTargetsToDocument(usingJazzy: Bool) throws -> Bool {
-        return try cachedPackage().products.contains(where: { $0.type.isLibrary ∨ (¬usingJazzy ∧ $0.type == .executable) })
+    public func hasTargetsToDocument() throws -> Bool {
+        return try cachedPackage().products.contains(where: { $0.type.isLibrary })
     }
 
     // MARK: - Configuration
@@ -74,7 +74,7 @@ extension PackageRepository {
 
     private func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
-        if ¬(try hasTargetsToDocument(usingJazzy: false)) {
+        if try ¬hasTargetsToDocument() {
             return
         }
 
@@ -297,7 +297,11 @@ extension PackageRepository {
 
     // End Jazzy section.
 
-    public func validateDocumentationCoverage(validationStatus: inout ValidationStatus, output: Command.Output) {
+    public func validateDocumentationCoverage(validationStatus: inout ValidationStatus, output: Command.Output) throws {
+
+        if try ¬hasTargetsToDocument() {
+            return
+        }
 
         let section = validationStatus.newSection()
         output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in

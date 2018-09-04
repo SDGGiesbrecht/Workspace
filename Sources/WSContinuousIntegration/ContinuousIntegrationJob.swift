@@ -201,10 +201,10 @@ public enum ContinuousIntegrationJob : Int, IterableEnumeration {
             return true
         case .documentation:
             return try project.configuration(output: output).documentation.api.generate
-                ∧ project.hasTargetsToDocument(usingJazzy: true)
+                ∧ project.hasTargetsToDocument()
         case .deployment:
             return try project.configuration(output: output).documentation.api.generate
-                ∧ project.hasTargetsToDocument(usingJazzy: true)
+                ∧ project.hasTargetsToDocument()
                 ∧ (try project.configuration(output: output).documentation.api.encryptedTravisCIDeploymentKey) ≠ nil
         }
     }

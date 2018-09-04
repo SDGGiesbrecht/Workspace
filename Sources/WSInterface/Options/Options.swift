@@ -37,6 +37,6 @@ extension Options {
     // MARK: - Documentation
 
     var jazzy: Bool {
-        return ¬value(for: Workspace.Document.inHouse)
+        return true
     }
 }

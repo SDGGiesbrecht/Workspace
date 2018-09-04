@@ -43,7 +43,7 @@ extension Workspace.Validate {
             }
 
             var validationStatus = ValidationStatus()
-            try executeAsStepDocumentingFirst(options: options, validationStatus: &validationStatus, output: output)
+            try executeAsStep(options: options, validationStatus: &validationStatus, output: output)
 
             if ¬validationStatus.validatedSomething {
                 validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -57,14 +57,13 @@ extension Workspace.Validate {
             try validationStatus.reportOutcome(project: options.project, output: output)
         })
 
-        #if !os(Linux)
-        static func executeAsStepDocumentingFirst(options: Options, validationStatus: inout ValidationStatus, output: Command.Output) throws {
+        static func executeAsStep(options: Options, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
-            // Refresh documentation so that results are meaningful.
             let outputDirectory: URL
             let outputIsTemporary: Bool
             if try options.project.configuration(output: output).documentation.api.encryptedTravisCIDeploymentKey ≠ nil
                 ∨ ¬(try options.project.configuration(output: output).documentation.api.generate) {
+
                 outputDirectory = FileManager.default.url(in: .temporary, at: "Documentation")
                 outputIsTemporary = true
             } else {
@@ -77,16 +76,7 @@ extension Workspace.Validate {
                 }
             }
 
-            try Workspace.Document.executeAsStep(outputDirectory: outputDirectory, options: options, validationStatus: &validationStatus, output: output)
-
-            try executeAsStep(outputDirectory: outputDirectory, options: options, validationStatus: &validationStatus, output: output)
-        }
-        #endif
-
-        #if !os(Linux)
-        static func executeAsStep(outputDirectory: URL, options: Options, validationStatus: inout ValidationStatus, output: Command.Output) throws {
             options.project.validateDocumentationCoverage(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
         }
-        #endif
     }
 }

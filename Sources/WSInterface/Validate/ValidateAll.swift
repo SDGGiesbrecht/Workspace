@@ -98,10 +98,9 @@ extension Workspace.Validate {
             #endif
 
             // Document
-            #if !os(Linux)
             if options.job.includes(job: .documentation) {
                 if try options.project.configuration(output: output).documentation.api.enforceCoverage {
-                    try Workspace.Validate.DocumentationCoverage.executeAsStepDocumentingFirst(options: options, validationStatus: &validationStatus, output: output)
+                    try Workspace.Validate.DocumentationCoverage.executeAsStep(options: options, validationStatus: &validationStatus, output: output)
                 } else if try options.project.configuration(output: output).documentation.api.generate
                     ∧ (try options.project.configuration(output: output).documentation.api.encryptedTravisCIDeploymentKey == nil) {
                     try Workspace.Document.executeAsStep(outputDirectory: options.project.defaultDocumentationDirectory, options: options, validationStatus: &validationStatus, output: output)
@@ -112,7 +111,6 @@ extension Workspace.Validate {
                 ∧ (try options.project.configuration(output: output).documentation.api.generate) {
                 try Workspace.Document.executeAsStep(outputDirectory: options.project.defaultDocumentationDirectory, options: options, validationStatus: &validationStatus, output: output)
             }
-            #endif
 
             // State
             if ProcessInfo.isInContinuousIntegration ∧ ProcessInfo.isPullRequest ∧ ¬_isDuringSpecificationTest { // @exempt(from: tests) Only reachable during pull request.

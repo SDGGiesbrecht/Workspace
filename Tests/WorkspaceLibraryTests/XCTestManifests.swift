@@ -42,8 +42,7 @@ extension APITests {
         ("testPartialReadMe", testPartialReadMe),
         ("testSDGLibrary", testSDGLibrary),
         ("testSDGTool", testSDGTool),
-        ("testSelfSpecificScripts", testSelfSpecificScripts),
-        ("testUnicodeSource", testUnicodeSource)
+        ("testSelfSpecificScripts", testSelfSpecificScripts)
     ]
 }
 

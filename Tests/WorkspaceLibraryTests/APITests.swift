@@ -503,17 +503,4 @@ class APITests : TestCase {
             XCTFail("\(error)")
         }
     }
-
-    func testUnicodeSource() {
-        #if !os(Linux)
-        let configuration = WorkspaceConfiguration()
-        configuration.xcode.manage = true
-        configuration.documentation.api.generate = true
-        configuration.documentation.localizations = ["en"]
-        PackageRepository(mock: "UnicodeSource").test(commands: [
-            ["refresh", "read‐me"],
-            ["validate", "documentation‐coverage"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-        #endif
-    }
 }

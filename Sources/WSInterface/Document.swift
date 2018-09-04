@@ -30,7 +30,7 @@ extension Workspace {
         private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
-                return "generates API documentation for each library product."
+                return "generates API documentation."
             }
         })
 
@@ -56,7 +56,7 @@ extension Workspace {
                     case .englishCanada:
                         return [
                             "Nothing to document.",
-                            "The package manifest does not define any library products."
+                            "The package manifest does not define any products."
                             ].joinedAsLines()
                     }
                 }))

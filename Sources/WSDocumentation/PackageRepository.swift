@@ -62,17 +62,7 @@ extension PackageRepository {
 
     // MARK: - Documentation
 
-    public func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output, usingJazzy: Bool) throws {
-        if ¬usingJazzy {
-            try document(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
-        } else {
-            #if !os(Linux)
-            try documentUsingJazzy(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
-            #endif
-        }
-    }
-
-    private func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
+    public func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
         if try ¬hasTargetsToDocument() {
             return
@@ -187,18 +177,20 @@ extension PackageRepository {
     }
 
     private func redirectExistingURLs(outputDirectory: URL) throws {
-        let generalRedirect = Redirect(target: "index.html")
-        let indexRedirect = Redirect(target: "../index.html")
-        for file in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
-            try autoreleasepool {
-                if file.pathExtension == "html" {
-                    if file.lastPathComponent == "index.html" {
-                        try indexRedirect.contents.save(to: file)
+        if (try? outputDirectory.checkResourceIsReachable()) == true {
+            let generalRedirect = Redirect(target: "index.html")
+            let indexRedirect = Redirect(target: "../index.html")
+            for file in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
+                try autoreleasepool {
+                    if file.pathExtension == "html" {
+                        if file.lastPathComponent == "index.html" {
+                            try indexRedirect.contents.save(to: file)
+                        } else {
+                            try generalRedirect.contents.save(to: file)
+                        }
                     } else {
-                        try generalRedirect.contents.save(to: file)
+                        try? FileManager.default.removeItem(at: file)
                     }
-                } else {
-                    try? FileManager.default.removeItem(at: file)
                 }
             }
         }

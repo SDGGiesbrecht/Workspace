@@ -61,7 +61,7 @@ extension Workspace {
         })
 
         static func executeAsStep(outputDirectory: URL, options: Options, validationStatus: inout ValidationStatus, output: Command.Output) throws {
-            try options.project.document(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output, usingJazzy: options.jazzy)
+            try options.project.document(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
         }
     }
 }

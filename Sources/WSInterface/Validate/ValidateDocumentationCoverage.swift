@@ -38,10 +38,6 @@ extension Workspace.Validate {
 
         static let command = Command(name: name, description: description, directArguments: [], options: Workspace.standardOptions, execution: { (_, options: Options, output: Command.Output) throws in
 
-            if try options.project.configuration(output: output).xcode.manage {
-                try Workspace.Refresh.Xcode.executeAsStep(options: options, output: output)
-            }
-
             var validationStatus = ValidationStatus()
             try executeAsStep(options: options, validationStatus: &validationStatus, output: output)
 

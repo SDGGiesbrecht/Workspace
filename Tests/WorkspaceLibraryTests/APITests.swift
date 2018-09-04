@@ -196,6 +196,7 @@ class APITests : TestCase {
 
     func testFailingDocumentationCoverage() {
         let configuration = WorkspaceConfiguration()
+        configuration.documentation.localizations = ["zxx"]
         configuration.xcode.manage = true
         PackageRepository(mock: "FailingDocumentationCoverage").test(commands: [
             ["validate", "documentation‐coverage"]

@@ -1,34 +1,35 @@
 $ workspace validate documentation‐coverage •no‐colour
 
-Refreshing Xcode project...
+Checking documentation coverage... (§1)
 
-[$ swift...]
+Parsing “FailingDocumentationCoverage”...
+Processing API...
+Generating HTML...
 
-Writing to “FailingDocumentationCoverage.xcodeproj/project.pbxproj”...
+A symbol has no description:
+FailingDocumentationCoverage
+(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
+Workspace will look for documentation on the line above “Package(name: "FailingDocumentationCoverage"”.)
 
-Generating documentation for “FailingDocumentationCoverage”... (§1)
+
+A symbol has no description:
+FailingDocumentationCoverage
+(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
+Workspace will look for documentation on the line above “.library(name: "FailingDocumentationCoverage"”.)
+
+...FailingDocumentationCoverage...
+
+A symbol has no description:
+FailingDocumentationCoverage
+(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
+Workspace will look for documentation on the line above “.target(name: "FailingDocumentationCoverage"”.)
 
 
-$ jazzy --module FailingDocumentationCoverage --copyright "Copyright ©2018 the FailingDocumentationCoverage project contributors. All rights reserved." --documentation=Documentation/*.md --clean --use-safe-filenames --output "[Temporary]/Documentation/FailingDocumentationCoverage" --xcodebuild-arguments "-scheme,FailingDocumentationCoverage-Package,-target,FailingDocumentationCoverage,-sdk,macosx,-derivedDataPath,[Temporary]/Jazzy Build Artifacts"
-Running xcodebuild
-Parsing FailingDocumentationCoverage.swift (1/1)
-building site
-building search index
-0% documentation coverage with 1 undocumented symbol
-included 1 public or open symbol
-skipped 1 private, fileprivate, or internal symbol (use `--min-acl` to specify a different minimum ACL)
-jam out ♪♫ to your fresh new docs in `[Temporary]/Documentation/FailingDocumentationCoverage`
-
-Writing to “[Temporary]/Documentation/FailingDocumentationCoverage/.nojekyll”...
-
-Checking documentation coverage for “FailingDocumentationCoverage”... (§2)
-
-Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift:
+A symbol has no description:
 undocumented()
 
 
-✓ Generated documentation for “FailingDocumentationCoverage”.
-✗ Documentation coverage is incomplete for “FailingDocumentationCoverage”. (See [⌘F] “§2”)
+✗ Documentation coverage is incomplete. (See [⌘F] “§1”)
 
 “FailingDocumentationCoverage” fails validation.
 2

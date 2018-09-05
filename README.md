@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  -->
 
-[🇨🇦EN](Documentation/🇨🇦EN%20Read%20Me.md) <!--Skip in Jazzy-->
+[🇨🇦EN](Documentation/🇨🇦EN%20Read%20Me.md)
 
 macOS • Linux
 
@@ -48,7 +48,7 @@ Workspace automates management of Swift projects.
 - Manages projects for macOS, Linux, iOS, watchOS and tvOS.
 - [Configurable](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Classes/WorkspaceConfiguration.html)
 
-(For a list of related projects, see [here](Documentation/🇨🇦EN%20Related%20Projects.md).) <!--Skip in Jazzy-->
+(For a list of related projects, see [here](Documentation/🇨🇦EN%20Related%20Projects.md).)
 
 ## Installation
 

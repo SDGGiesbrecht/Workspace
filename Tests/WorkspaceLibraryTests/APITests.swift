@@ -66,6 +66,18 @@ class APITests : TestCase {
             ], localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
+    func testCheckedInDocumentation() {
+        let configuration = WorkspaceConfiguration()
+        configuration.documentation.api.enforceCoverage = false
+        configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "zxx"]
+        configuration.documentation.api.generate = true
+        PackageRepository(mock: "CheckedInDocumentation").test(commands: [
+            ["refresh"],
+            ["validate", "•job", "miscellaneous"],
+            ["validate", "•job", "deployment"]
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
     func testCheckForUpdates() {
         do {
             try Workspace.command.execute(with: ["check‐for‐updates"])
@@ -164,19 +176,6 @@ class APITests : TestCase {
             ])
         #endif
         PackageRepository(mock: "Default").test(commands: commands, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-    }
-
-    func testCheckedInDocumentation() {
-        #if !os(Linux)
-        let configuration = WorkspaceConfiguration()
-        configuration.documentation.api.enforceCoverage = false
-        configuration.documentation.api.generate = true
-        PackageRepository(mock: "CheckedInDocumentation").test(commands: [
-            ["refresh"],
-            ["validate", "•job", "miscellaneous"],
-            ["validate", "•job", "deployment"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-        #endif
     }
 
     func testExecutable() {

@@ -29,7 +29,7 @@ U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (un
 
 README.md
 Sources/CheckedInDocumentation/CheckedInDocumentation.swift
-Line 63
+Line 67
 Undocumented compilation condition. Add “// MARK: - #if...” on the next line. (documentationOfCompilationConditions)
 #if canImport(AppKit)
 

@@ -58,19 +58,12 @@ public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hash
 
     // MARK: - ExpressibleByStringLiteral
 
-    // #workaround(jazzy --version 0.9.3, Allow automatic inheritance when documentation supports it.)
-    /// Creates an instance from a string literal.
-    ///
-    /// - Parameters:
-    ///     - stringLiteral: The string literal.
     public init(stringLiteral: String) {
         self.init(stringLiteral)
     }
 
     // MARK: - TransparentWrapper
 
-    // #workaround(jazzy --version 0.9.3, Allow automatic inheritance when documentation supports it.)
-    /// The wrapped instance.
     public var wrappedInstance: Any {
         if let content = _reasonableMatch {
             return content

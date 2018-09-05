@@ -12,10 +12,12 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGControlFlow
+
 import WSLocalizations
 
 /// An operating system.
-public enum OperatingSystem : String, Codable {
+public enum OperatingSystem : String, Codable, IterableEnumeration {
 
     // MARK: - Cases
 
@@ -34,8 +36,6 @@ public enum OperatingSystem : String, Codable {
     /// tvOS
     case tvOS
 
-    // #workaround(jazzy --version 0.9.3, Allow automatic inheritance when documentation supports it.)
-    /// An array containing every case of the enumeration.
     public static let cases: [OperatingSystem] = [
         .macOS,
         .linux,

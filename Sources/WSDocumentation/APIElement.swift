@@ -253,7 +253,7 @@ extension APIElement {
     }
 
     internal var homeModule: Weak<ModuleAPI> {
-        get {
+        get { // @exempt(from: tests) #workaround(Not used yet.)
             return (extendedProperties[.homeModule] as? Weak<ModuleAPI>) ?? Weak<ModuleAPI>(nil)
         }
         set {
@@ -477,7 +477,7 @@ extension APIElement {
                 }
                 path += namespace + functionsDirectoryName + "/"
             default:
-                if BuildConfiguration.current == .debug {
+                if BuildConfiguration.current == .debug { // @exempt(from: tests)
                     print("Unrecognized symbol type: \(type(of: self))")
                 }
             }

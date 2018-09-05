@@ -25,6 +25,11 @@ FailingDocumentationCoverage
 Workspace will look for documentation on the line above “.target(name: "FailingDocumentationCoverage"”.)
 
 
+A symbol’s documentation contains excessively strong headings:
+excessiveHeading()
+(Use heading levels three to six. Levels one and two are reserved for the surrounding context.)
+
+
 A symbol has no description:
 undocumented()
 

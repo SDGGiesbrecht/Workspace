@@ -56,7 +56,6 @@ extension PackageRepository {
         fileprivate var package: PackageModel.Package?
         fileprivate var packageGraph: PackageGraph?
         fileprivate var products: [PackageModel.Product]?
-        fileprivate var productModules: [Target]?
         fileprivate var dependenciesByName: [String: ResolvedPackage]?
     }
     private static var manifestCaches: [URL: ManifestCache] = [:]
@@ -161,20 +160,6 @@ extension PackageRepository {
                 }
             }
             return products
-        }
-    }
-
-    public func productModules() throws -> [Target] {
-        return try cached(in: &manifestCache.productModules) {
-            var accountedFor: Set<String> = []
-            var result: [Target] = []
-            for product in try cachedPackage().products where ¬product.name.hasPrefix("_") ∧ product.type.isLibrary {
-                for module in product.targets where module.name ∉ accountedFor {
-                    accountedFor.insert(module.name)
-                    result.append(module)
-                }
-            }
-            return result
         }
     }
 

@@ -109,7 +109,7 @@ internal struct UnicodeRule : Rule {
 
             if allowInSampleCode {
                 switch file.fileType {
-                case .markdown, .swift:
+                case .markdown, .swift, .swiftPackageManifest:
                     if fromStartOfFile(to: match, in: file).contains("```".scalars)
                         ∧ upToEndOfFile(from: match, in: file).contains("```".scalars) {
                         continue
@@ -129,7 +129,7 @@ internal struct UnicodeRule : Rule {
                     if ¬fromStartOfLine(to: match, in: file).contains(where: { $0 ≠ " " }) {
                         continue
                     }
-                case .swift:
+                case .swift, .swiftPackageManifest:
                     if fromStartOfLine(to: match, in: file).hasSuffix(CompositePattern([
                         LiteralPattern("///".scalars),
                         RepetitionPattern(" ".scalars)
@@ -201,7 +201,7 @@ internal struct UnicodeRule : Rule {
             }
 
             if allowInFloatLiteral {
-                if file.fileType == .swift {
+                if file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
                     if fromStartOfLine(to: match, in: file).contains("let ln2".scalars) {
                         continue
                     }

@@ -129,7 +129,6 @@ public enum ProofreadingRule : String, Codable, IterableEnumeration {
     /// Requires documented parameters to be grouped.
     case parameterGrouping
 
-
     // @workaround(Until automatic inheritance can bridge module boundaries.)
     /// All cases.
     public static let cases: [ProofreadingRule] = [

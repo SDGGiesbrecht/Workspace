@@ -59,3 +59,8 @@ public func function() {}
 
 /// A global variable.
 public var globalVariable: Bool = false
+
+#if canImport(AppKit)
+/// Conditionally compiled.
+public func conditionallyCompiled() {}
+#endif

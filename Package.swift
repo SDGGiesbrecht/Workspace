@@ -95,7 +95,7 @@ import PackageDescription
 ///
 /// ### Applying Workspace to a Project
 ///
-/// To apply Workspace to a project, run the following command in the root of the project’s repository. (This requires a full install.
+/// To apply Workspace to a project, run the following command in the root of the project’s repository. (This requires a full install.)
 ///
 /// ```shell
 /// $ workspace refresh

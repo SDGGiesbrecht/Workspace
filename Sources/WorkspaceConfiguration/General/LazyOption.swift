@@ -29,11 +29,15 @@ public struct Lazy<Option> : Codable where Option : Codable {
 
     // MARK: - Encoding
 
+    // @workaround(Until automatic inheritance can bridge module boundaries.)
+    /// Encodes the option.
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(resolve(WorkspaceConfiguration.registered))
     }
 
+    // @workaround(Until automatic inheritance can bridge module boundaries.)
+    /// Decodes an option.
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let resolved = try container.decode(Option.self)

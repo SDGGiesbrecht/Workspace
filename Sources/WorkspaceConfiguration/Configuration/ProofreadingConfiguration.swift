@@ -18,7 +18,7 @@
 /// $ workspace proofread
 /// ```
 ///
-/// ## In Xcode
+/// ### In Xcode
 ///
 /// Proofreading also works within Xcode, provided Workspace has been [fully installed](https://github.com/SDGGiesbrecht/Workspace#installation) on the local device. (If not, a link to installation instructions will be displayed instead.)
 ///
@@ -26,7 +26,7 @@
 ///
 /// If Workspace is not in charge of Xcode, proofreading can still be activated for a project by copying the scheme over from a generated project.
 ///
-/// ## SwiftLint
+/// ### SwiftLint
 ///
 /// Workspace’s proofreading includes [SwiftLint](https://github.com/realm/SwiftLint).
 ///
@@ -34,7 +34,7 @@
 ///
 /// However, SwiftLint can instead be configured manually by placing a `.swiftlint.yml` file in the project root. If such a file is present, Workspace will not apply its own configuration to SwiftLint. For more information about `.swiftlint.yml`, see [SwiftLint’s own documentation](https://github.com/realm/SwiftLint).
 ///
-/// ## Special Thanks
+/// ### Special Thanks
 ///
 /// - Realm and [SwiftLint](https://github.com/realm/SwiftLint)
 public struct ProofreadingConfiguration : Codable {

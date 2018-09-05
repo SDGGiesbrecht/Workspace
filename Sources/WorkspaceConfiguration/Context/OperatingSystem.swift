@@ -36,6 +36,8 @@ public enum OperatingSystem : String, Codable, IterableEnumeration {
     /// tvOS
     case tvOS
 
+    // @workaround(Until automatic inheritance can bridge module boundaries.)
+    /// A list of all cases.
     public static let cases: [OperatingSystem] = [
         .macOS,
         .linux,

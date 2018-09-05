@@ -33,7 +33,7 @@
 ///
 /// Workspace will only check Swift files for definitions.
 ///
-/// ## Inheriting Documentation
+/// ### Inheriting Documentation
 ///
 /// To inherit for documentation defined elsewhere, place `#documentation(identifier)` where the documentation would go (or above it if it already exists). Anything on the same line will be ignored (such as `//`).
 ///

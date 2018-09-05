@@ -216,7 +216,6 @@ public struct ReadMeConfiguration : Codable {
     // MARK: - Useful components.
 
     private static let documentationDirectoryName = "Documentation"
-    /// :nodoc:
     public static func _documentationDirectory(for project: URL) -> URL {
         return project.appendingPathComponent(documentationDirectoryName)
     }
@@ -227,7 +226,6 @@ public struct ReadMeConfiguration : Codable {
         return _documentationDirectory(for: project).appendingPathComponent(String(fileName))
     }
 
-    /// :nodoc:
     public static func _readMeLocation(for project: URL, localization: LocalizationIdentifier) -> URL {
         let name: StrictString
         switch localization._bestMatch {
@@ -236,9 +234,6 @@ public struct ReadMeConfiguration : Codable {
         }
         return _locationOfDocumentationFile(named: name, for: localization, in: project)
     }
-
-    /// :nodoc:
-    public static let _skipInJazzy: StrictString = "<!\u{2D}\u{2D}Skip in Jazzy\u{2D}\u{2D}>"
 
     /// Constructs links to the read‐me in its other languages.
     public static func localizationLinks(_ localizations: [LocalizationIdentifier]) -> StrictString {
@@ -253,7 +248,7 @@ public struct ReadMeConfiguration : Codable {
             link += "(" + relativeURL + ")"
             links.append(link)
         }
-        return StrictString(links.joined(separator: " • ".scalars)) + " " + _skipInJazzy
+        return StrictString(links.joined(separator: " • ".scalars))
     }
 
     /// Attempts to construct API links based on the specified configuration.
@@ -283,7 +278,6 @@ public struct ReadMeConfiguration : Codable {
 
     // MARK: - Related Projects
 
-    /// :nodoc:
     public static func _relatedProjectsLocation(for project: URL, localization: LocalizationIdentifier) -> URL {
         let name: StrictString
         switch localization._bestMatch {
@@ -312,7 +306,7 @@ public struct ReadMeConfiguration : Codable {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             link = StrictString("(For a list of related projects, see [here](\(relativeURL)).)")
         }
-        return link + " " + _skipInJazzy
+        return link
     }
 
     // MARK: - Installation Instructions

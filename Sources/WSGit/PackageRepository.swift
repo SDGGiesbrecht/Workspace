@@ -56,20 +56,12 @@ extension PackageRepository {
         ]
     }
 
-    private static var ignoreEntriesForJazzy: [String] {
-        return [
-            "undocumented.json",
-            "*.tgz"
-        ]
-    }
-
     private static var ignoreEntries: [String] {
         return ignoreEntriesForMacOS
             + ignoreEntriesForLinux
             + ignoreEntriesForSwiftProjectManager
             + ignoreEntriesForWorkspace
             + ignoreEntriesForXcode
-            + ignoreEntriesForJazzy
     }
 
     public func refreshGitConfiguration(output: Command.Output) throws {

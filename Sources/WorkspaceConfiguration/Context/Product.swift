@@ -19,9 +19,8 @@ extension PackageManifest {
 
         // MARK: - Initialization
 
-        /// :nodoc:
-        public init(name: String, type: ProductType, modules: [String]) {
-            self.name = name
+        public init(_name: String, type: ProductType, modules: [String]) {
+            self.name = _name
             self.type = type
             self.modules = modules
         }

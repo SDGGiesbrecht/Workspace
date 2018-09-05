@@ -19,9 +19,8 @@ public struct PackageManifest : Codable {
 
     // MARK: - Initialization
 
-    /// :nodoc:
-    public init(packageName: String, products: [Product]) {
-        self.packageName = packageName
+    public init(_packageName: String, products: [Product]) {
+        self.packageName = _packageName
         self.products = products
     }
 

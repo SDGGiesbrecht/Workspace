@@ -210,11 +210,11 @@ extension PackageRepository {
                     unreachable()
                 }
 
-                return PackageManifest.Product(name: product.name, type: type, modules: modules)
+                return PackageManifest.Product(_name: product.name, type: type, modules: modules)
             }
 
-            let manifest = PackageManifest(packageName: String(try projectName()), products: products)
-            return WorkspaceContext(location: location, manifest: manifest)
+            let manifest = PackageManifest(_packageName: String(try projectName()), products: products)
+            return WorkspaceContext(_location: location, manifest: manifest)
         }
     }
 

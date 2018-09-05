@@ -49,11 +49,9 @@ public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hash
 
     // MARK: - Conversion
 
-    /// :nodoc:
     public var _reasonableMatch: ContentLocalization? {
         return ContentLocalization(reasonableMatchFor: code)
     }
-    /// :nodoc:
     public var _bestMatch: ContentLocalization {
         return _reasonableMatch ?? ContentLocalization.fallbackLocalization
     }

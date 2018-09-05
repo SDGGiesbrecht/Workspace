@@ -32,9 +32,8 @@ public struct WorkspaceContext : Context {
 
     // MARK: - Initialization
 
-    /// :nodoc:
-    public init(location: URL, manifest: PackageManifest) {
-        self.location = location
+    public init(_location: URL, manifest: PackageManifest) {
+        self.location = _location
         self.manifest = manifest
     }
 

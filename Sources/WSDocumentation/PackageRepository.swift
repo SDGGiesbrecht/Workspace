@@ -244,20 +244,12 @@ extension PackageRepository {
                 try Jazzy.default.document(target: target, scheme: try scheme(), buildOperatingSystem: buildOperatingSystem, copyright: copyrightText, gitHubURL: try configuration(output: output).documentation.repositoryURL, outputDirectory: outputSubdirectory, project: self, output: output)
             }
 
-            let transformedMarker = ReadMeConfiguration._skipInJazzy.replacingMatches(for: "\u{2D}\u{2D}".scalars, with: "&ndash;".scalars).replacingMatches(for: "<".scalars, with: "&lt;".scalars).replacingMatches(for: ">".scalars, with: "&gt;".scalars)
             for url in try trackedFiles(output: output) where url.is(in: outputSubdirectory) {
                 if let type = FileType(url: url),
                     type == .html {
                     try autoreleasepool {
 
-                        var file = try TextFile(alreadyAt: url)
-                        var source = file.contents
-                        while let skipMarker = source.scalars.firstMatch(for: transformedMarker.scalars) {
-                            let line = skipMarker.range.lines(in: source.lines)
-                            source.lines.removeSubrange(line)
-                        }
-
-                        file.contents = source
+                        let file = try TextFile(alreadyAt: url)
                         try file.writeChanges(for: self, output: output)
                     }
                 }

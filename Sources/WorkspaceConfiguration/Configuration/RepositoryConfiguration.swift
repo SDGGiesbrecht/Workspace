@@ -39,9 +39,7 @@ public struct RepositoryConfiguration : Codable {
         "xcworkspacedata"
     ]
 
-    /// :nodoc:
     public static let _refreshScriptMacOSFileName: StrictString = "Refresh (macOS).command"
-    /// :nodoc:
     public static let _refreshScriptLinuxFileName: StrictString = "Refresh (Linux).sh"
 
     /// Paths which source operations should ignore.

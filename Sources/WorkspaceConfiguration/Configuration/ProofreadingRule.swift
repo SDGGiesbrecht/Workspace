@@ -12,8 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGControlFlow
+
 /// A proofreading rule.
-public enum ProofreadingRule : String, Codable {
+public enum ProofreadingRule : String, Codable, IterableEnumeration {
 
     // MARK: - Cases
 
@@ -127,8 +129,6 @@ public enum ProofreadingRule : String, Codable {
     /// Requires documented parameters to be grouped.
     case parameterGrouping
 
-    // #workaround(jazzy --version 0.9.3, Allow automatic inheritance when documentation supports it.)
-    /// An array containing every case of the enumeration.
     public static let cases: [ProofreadingRule] = [
         .deprecatedWarnings,
         .deprecatedTestExemptions,

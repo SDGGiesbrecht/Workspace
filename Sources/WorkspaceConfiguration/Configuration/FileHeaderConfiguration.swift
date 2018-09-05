@@ -110,7 +110,7 @@ public struct FileHeaderConfiguration : Codable {
 
         header.append(configuration.fileHeaders.copyrightNotice.resolve(configuration))
 
-        if configuration.isSDG {
+        if configuration._isSDG {
             header.append(contentsOf: [
                 "",
                 "Soli Deo gloria."

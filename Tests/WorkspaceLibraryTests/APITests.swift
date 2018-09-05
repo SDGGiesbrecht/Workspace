@@ -342,7 +342,7 @@ class APITests : TestCase {
 
     func testSDGLibrary() {
         let configuration = WorkspaceConfiguration()
-        configuration.applySDGDefaults()
+        configuration._applySDGDefaults()
         configuration.licence.licence = .apache2_0
         configuration.documentation.currentVersion = Version(1, 0, 0)
         configuration.documentation.projectWebsite = URL(string: "https://example.github.io/SDG/SDG")!
@@ -419,7 +419,7 @@ class APITests : TestCase {
 
     func testSDGTool() {
         let configuration = WorkspaceConfiguration()
-        configuration.applySDGDefaults()
+        configuration._applySDGDefaults()
         configuration.supportedOperatingSystems.remove(.iOS)
         configuration.supportedOperatingSystems.remove(.watchOS)
         configuration.supportedOperatingSystems.remove(.tvOS)

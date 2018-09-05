@@ -77,8 +77,8 @@ extension PackageRepository {
 
                     WorkspaceContext.current = try configurationContext()
                     if sdg {
-                        configuration.applySDGOverrides()
-                        configuration.validateSDGStandards()
+                        configuration._applySDGOverrides()
+                        configuration._validateSDGStandards()
                     }
                     WorkspaceConfiguration.queue(mock: configuration)
                     defer { _ = try? self.configuration(output: Command.Output.mock ) } // Dequeue even if unused.

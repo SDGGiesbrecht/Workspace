@@ -91,8 +91,7 @@ public final class WorkspaceConfiguration : Configuration {
     /// Options related to the project repository.
     public var repository: RepositoryConfiguration = RepositoryConfiguration()
 
-    /// :nodoc:
-    internal var isSDG: Bool = false
+    internal var _isSDG: Bool = false
 
     // MARK: - Methods
 
@@ -110,10 +109,9 @@ public final class WorkspaceConfiguration : Configuration {
         documentation.api.generate = true
     }
 
-    /// :nodoc:
-    public func applySDGDefaults() {
+    public func _applySDGDefaults() {
 
-        isSDG = true
+        _isSDG = true
         optIntoAllTasks()
 
         documentation.primaryAuthor = "Jeremy David Giesbrecht"
@@ -128,8 +126,7 @@ public final class WorkspaceConfiguration : Configuration {
         documentation.relatedProjects.append(.project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!))
     }
 
-    /// :nodoc:
-    public func applySDGOverrides() {
+    public func _applySDGOverrides() {
         let project = WorkspaceContext.current.manifest.packageName
         let about = [
             "The \(project) project is maintained by Jeremy David Giesbrecht.",
@@ -145,8 +142,7 @@ public final class WorkspaceConfiguration : Configuration {
         }
     }
 
-    /// :nodoc:
-    public func validateSDGStandards(requireExamples: Bool = true) {
+    public func _validateSDGStandards(requireExamples: Bool = true) {
         let needsAPIDocumentation = WorkspaceContext.current.manifest.products.contains(where: { $0.type == .library })
 
         assert(documentation.currentVersion ≠ nil, "No version specified.")
@@ -221,7 +217,7 @@ public final class WorkspaceConfiguration : Configuration {
         try container.encode(documentation, forKey: .documentation)
         try container.encode(continuousIntegration, forKey: .continuousIntegration)
         try container.encode(repository, forKey: .repository)
-        try container.encode(isSDG, forKey: .isSDG)
+        try container.encode(_isSDG, forKey: .isSDG)
         try super.encode(to: container.superEncoder())
     }
 
@@ -244,7 +240,7 @@ public final class WorkspaceConfiguration : Configuration {
         documentation = try container.decode(DocumentationConfiguration.self, forKey: .documentation)
         continuousIntegration = try container.decode(ContinuousIntegrationConfiguration.self, forKey: .continuousIntegration)
         repository = try container.decode(RepositoryConfiguration.self, forKey: .repository)
-        isSDG = try container.decode(Bool.self, forKey: .isSDG)
+        _isSDG = try container.decode(Bool.self, forKey: .isSDG)
         try super.init(from: container.superDecoder())
 
         // Because “registered” must be non‐nil:

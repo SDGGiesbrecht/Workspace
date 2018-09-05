@@ -101,7 +101,7 @@ extension APIElement {
                     return "associatedtype"
                 }
             default:
-                if BuildConfiguration.current == .debug {
+                if BuildConfiguration.current == .debug { // @exempt(from: tests)
                     print("Unrecognized type keyword: \(type.keyword)")
                 }
                 return ""
@@ -216,7 +216,7 @@ extension APIElement {
                 }
             }
         default:
-            if BuildConfiguration.current == .debug {
+            if BuildConfiguration.current == .debug { // @exempt(from: tests)
                 print("Unrecognized symbol type: \(type(of: self))")
             }
             return ""

@@ -3,12 +3,16 @@ struct CheckedInDocumentation {
 }
 
 /// A class.
+///
+/// Overview.
 public class Class {}
 
 /// A structure.
 public struct Structure : Equatable {
 
     /// A type property.
+    ///
+    /// Discussion.
     public static var typeProperty: Bool = false
 
     /// A type method.

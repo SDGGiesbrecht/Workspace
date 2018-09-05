@@ -25,7 +25,7 @@ internal enum TextDirection {
     internal var htmlAttribute: String {
         switch self {
         case .rightToLeft:
-            return "rtl"
+            return "rtl" // @exempt(from: tests) Not used yet.
         case .leftToRight:
             return "ltr"
         }

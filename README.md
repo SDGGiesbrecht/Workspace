@@ -16,7 +16,7 @@
 
 macOS • Linux
 
-APIs: [WorkspaceConfiguration](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration)
+[Documentation](https://sdggiesbrecht.github.io/Workspace/%F0%9F%87%A8%F0%9F%87%A6EN)
 
 # Workspace
 

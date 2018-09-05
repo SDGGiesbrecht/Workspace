@@ -21,6 +21,9 @@ public enum FileType {
     // MARK: - Static Properties
 
     private static var unsupportedFileTypesEncountered: [String: URL] = [:]
+    public static func resetUnsupportedFileTypes() {
+        unsupportedFileTypesEncountered = [:]
+    }
     public static func unsupportedTypesWarning(for project: PackageRepository, output: Command.Output) throws -> StrictString? {
 
         let expected = try project.configuration(output: output).repository.ignoredFileTypes

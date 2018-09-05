@@ -19,6 +19,8 @@ import WSGeneralTestImports
 
 import SDGExternalProcess
 
+import WSProject
+
 extension PackageRepository {
 
     private static let mockProjectsDirectory = repositoryRoot.appendingPathComponent("Tests/Mock Projects")
@@ -85,6 +87,7 @@ extension PackageRepository {
                     resetConfigurationCache(debugReason: "new test")
 
                     for command in commands {
+                        FileType.resetUnsupportedFileTypes()
 
                         if ProcessInfo.isInContinuousIntegration {
                             // Travis CI needs periodic output of some sort; otherwise it assumes the tests have stalled.

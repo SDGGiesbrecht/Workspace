@@ -3,3 +3,5 @@ struct FailingDocumentationCoverage {
 }
 
 public func undocumented() {}
+
+public var inferredType = false

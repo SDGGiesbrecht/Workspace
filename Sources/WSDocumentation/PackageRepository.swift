@@ -95,7 +95,7 @@ extension PackageRepository {
                 }))
             }
         } catch {
-            output.print(error.localizedDescription.formattedAsError())
+            output.print(error.localizedDescription.formattedAsError()) // @exempt(from: tests) Unreachable without SwiftSyntax or file system failure.
             validationStatus.failStep(message: UserFacing({ localization in
                 switch localization {
                 case .englishCanada:

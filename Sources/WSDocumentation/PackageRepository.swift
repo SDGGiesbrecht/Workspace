@@ -41,10 +41,6 @@ extension PackageRepository {
         return location.appendingPathComponent(PackageRepository.documentationDirectoryName)
     }
 
-    private static func subdirectory(for target: String, in documentationDirectory: URL) -> URL {
-        return documentationDirectory.appendingPathComponent(target)
-    }
-
     internal func resolvedCopyright(output: Command.Output) throws -> StrictString {
 
         var template = try documentationCopyright(output: output)

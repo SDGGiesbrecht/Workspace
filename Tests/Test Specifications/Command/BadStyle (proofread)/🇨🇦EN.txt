@@ -20,6 +20,9 @@ Line 3
 Management sections are no longer used. Enable “git.manage” or remove the section markers. (deprecatedGitManagement)
 # [_Begin Workspace Section_]
 
+Other/CSS.css
+Other/HTML.html
+Other/JavaScript.js
 Package.swift
 Line 2
 U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)

@@ -36,7 +36,7 @@ internal class SymbolPage : Page {
                   output: Command.Output) {
 
         if symbol.relativePagePath.first?.value.components(separatedBy: "/").count == 3 {
-            switch symbol {
+            switch symbol { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
             case is PackageAPI, is ModuleAPI, is TypeAPI, is ExtensionAPI, is ProtocolAPI :
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
@@ -44,7 +44,7 @@ internal class SymbolPage : Page {
                         return "..." + StrictString(symbol.name) + "..."
                     }
                 }).resolved())
-            default:
+            default: // @exempt(from: tests) False coverage result in Xcode 9.4.1.
                 break
             }
         }

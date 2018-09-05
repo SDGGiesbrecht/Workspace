@@ -204,8 +204,8 @@ internal struct PackageInterface {
     private func copyright(for localization: LocalizationIdentifier, status: DocumentationStatus) -> StrictString {
         if let result = copyrightNotices[localization] {
             return result
-        } else {
-            status.reportMissingCopyright(localization: localization)
+        } else { // @exempt(from: tests) @workaround(Not reachable yet.)
+            status.reportMissingCopyright(localization: localization) // @exempt(from: tests) @workaround(Not reachable yet.)
             return ""
         }
     }

@@ -197,6 +197,7 @@ class APITests : TestCase {
         let configuration = WorkspaceConfiguration()
         configuration.documentation.localizations = ["zxx"]
         configuration.xcode.manage = true
+        configuration.documentation.repositoryURL = URL(string: "domain.tld")!
         PackageRepository(mock: "FailingDocumentationCoverage").test(commands: [
             ["validate", "documentation‐coverage"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)

@@ -53,7 +53,7 @@ extension PackageAPI {
         for `extension` in unprocessedExtensions {
             if ¬types.contains(where: { `extension`.isExtension(of: $0) }),
                 ¬protocols.contains(where: { `extension`.isExtension(of: $0) }),
-                ¬extensions.contains(where: { `extension`.extendsSameType(as: $0) }) {
+                ¬extensions.contains(where: { `extension`.extendsSameType(as: $0) }) { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
                 extensions.append(`extension`)
             }
         }
@@ -67,7 +67,7 @@ extension PackageAPI {
 
     internal var types: [TypeAPI] {
         get {
-            return extendedProperties[.types] as? [TypeAPI] ?? []
+            return extendedProperties[.types] as? [TypeAPI] ?? [] // @exempt(from: tests) Should never be nil.
         }
         set {
             extendedProperties[.types] = newValue
@@ -76,20 +76,20 @@ extension PackageAPI {
 
     internal var uniqueExtensions: [ExtensionAPI] {
         get {
-            return extendedProperties[.extensions] as? [ExtensionAPI] ?? []
+            return extendedProperties[.extensions] as? [ExtensionAPI] ?? [] // @exempt(from: tests) Should never be nil.
         }
         set {
             extendedProperties[.extensions] = newValue
         }
     }
 
-    internal var allExtensions: AnyBidirectionalCollection<ExtensionAPI> {
+    internal var allExtensions: AnyBidirectionalCollection<ExtensionAPI> { // @exempt(from: tests) @workaround(Not used yet.)
         return AnyBidirectionalCollection(modules.map({ $0.extensions }).joined())
     }
 
     internal var protocols: [ProtocolAPI] {
         get {
-            return extendedProperties[.protocols] as? [ProtocolAPI] ?? []
+            return extendedProperties[.protocols] as? [ProtocolAPI] ?? [] // @exempt(from: tests) Should never be nil.
         }
         set {
             extendedProperties[.protocols] = newValue
@@ -98,7 +98,7 @@ extension PackageAPI {
 
     internal var functions: [FunctionAPI] {
         get {
-            return extendedProperties[.functions] as? [FunctionAPI] ?? []
+            return extendedProperties[.functions] as? [FunctionAPI] ?? [] // @exempt(from: tests) Should never be nil.
         }
         set {
             extendedProperties[.functions] = newValue
@@ -107,7 +107,7 @@ extension PackageAPI {
 
     internal var globalVariables: [VariableAPI] {
         get {
-            return extendedProperties[.globalVariables] as? [VariableAPI] ?? []
+            return extendedProperties[.globalVariables] as? [VariableAPI] ?? [] // @exempt(from: tests) Should never be nil.
         }
         set {
             extendedProperties[.globalVariables] = newValue

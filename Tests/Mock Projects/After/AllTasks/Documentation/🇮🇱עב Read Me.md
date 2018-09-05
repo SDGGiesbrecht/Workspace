@@ -9,6 +9,6 @@
  It may not be used, copied, distributed or modified without first obtaining a private licence from the copyright holder(s).
  -->
 
-[🇮🇱עב](🇮🇱עב%20Read%20Me.md) <!--Skip in Jazzy-->
+[🇮🇱עב](🇮🇱עב%20Read%20Me.md)
 
 # AllTasks

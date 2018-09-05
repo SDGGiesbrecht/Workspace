@@ -51,26 +51,26 @@ public let configuration: WorkspaceConfiguration = {
 
     configuration.documentation.readMe.featureList["🇨🇦EN"] = [
         "\u{2D} Provides rigorous validation:",
-        "  \u{2D} [Test coverage](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/TestingConfiguration.html#/s:22WorkspaceConfiguration07TestingB0V15enforceCoverageSbvp)",
-        "  \u{2D} [Compiler warnings](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/TestingConfiguration.html#/s:22WorkspaceConfiguration07TestingB0V24prohibitCompilerWarningsSbvp)",
-        "  \u{2D} [Documentation coverage](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/APIDocumentationConfiguration.html#/s:22WorkspaceConfiguration016APIDocumentationB0V15enforceCoverageSbvp)",
-        "  \u{2D} [Example validation](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/examples.html)",
-        "  \u{2D} [Style proofreading](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/ProofreadingConfiguration.html) (including [SwiftLint](https://github.com/realm/SwiftLint))",
-        "  \u{2D} [Reminders](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Enums/ProofreadingRule.html#/s:22WorkspaceConfiguration16ProofreadingRuleO14manualWarningsA2CmF)",
-        "  \u{2D} [Continuous integration set‐up](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/ContinuousIntegrationConfiguration.html#/s:22WorkspaceConfiguration021ContinuousIntegrationB0V6manageSbvp) ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))",
-        "\u{2D} Generates API [documentation](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/APIDocumentationConfiguration.html#/s:22WorkspaceConfiguration016APIDocumentationB0V8generateSbvp).",
+        "  \u{2D} [Test coverage](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/TestingConfiguration/Properties/enforceCoverage.html)",
+        "  \u{2D} [Compiler warnings](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/TestingConfiguration/Properties/prohibitCompilerWarnings.html)",
+        "  \u{2D} [Documentation coverage](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/APIDocumentationConfiguration/Properties/enforceCoverage.html)",
+        "  \u{2D} [Example validation](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/Examples.html)",
+        "  \u{2D} [Style proofreading](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/ProofreadingConfiguration.html) (including [SwiftLint](https://github.com/realm/SwiftLint))",
+        "  \u{2D} [Reminders](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/ProofreadingRule/Cases/manualWarnings.html)",
+        "  \u{2D} [Continuous integration set‐up](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/ContinuousIntegrationConfiguration/Properties/manage.html) ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))",
+        "\u{2D} Generates API [documentation](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/APIDocumentationConfiguration/Properties/generate.html).",
         "\u{2D} Automates code maintenance:",
-        "  \u{2D} [Embedded resources](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/resources.html)",
-        "  \u{2D} [Inherited documentation](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/documentation-inheritance.html)",
-        "  \u{2D} [Xcode project generation](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/XcodeConfiguration.html#/s:22WorkspaceConfiguration05XcodeB0V6manageSbvp)",
+        "  \u{2D} [Embedded resources](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/PackageResources.html)",
+        "  \u{2D} [Inherited documentation](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/DocumentationInheritance.html)",
+        "  \u{2D} [Xcode project generation](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/XcodeConfiguration/Properties/manage.html)",
         "\u{2D} Automates open source details:",
-        "  \u{2D} [File headers](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/FileHeaderConfiguration.html)",
-        "  \u{2D} [Read‐me files](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/ReadMeConfiguration.html#/s:22WorkspaceConfiguration06ReadMeB0V6manageSbvp)",
-        "  \u{2D} [Licence notices](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/LicenceConfiguration.html#/s:22WorkspaceConfiguration07LicenceB0V6manageSbvp)",
-        "  \u{2D} [Contributing instructions](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Structs/GitHubConfiguration.html#/s:22WorkspaceConfiguration06GitHubB0V6manageSbvp)",
+        "  \u{2D} [File headers](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/FileHeaderConfiguration.html)",
+        "  \u{2D} [Read‐me files](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/ReadMeConfiguration.html)",
+        "  \u{2D} [Licence notices](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/LicenceConfiguration.html)",
+        "  \u{2D} [Contributing instructions](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/GitHubConfiguration.html)",
         "\u{2D} Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).",
         "\u{2D} Manages projects for macOS, Linux, iOS, watchOS and tvOS.",
-        "\u{2D} [Configurable](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Classes/WorkspaceConfiguration.html)"
+        "\u{2D} [Configurable](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Libraries/WorkspaceConfiguration.html)"
     ].joinedAsLines()
 
     configuration.documentation.readMe.other["🇨🇦EN"] = [
@@ -92,7 +92,7 @@ public let configuration: WorkspaceConfiguration = {
         "",
         "### Refresh the Project",
         "",
-        "To refresh the project, double‐click the `Refresh` script for the corresponding operating system. (If you are on Linux and double‐clicking fails or opens a text file, see [here](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/linux-notes.html).)",
+        "To refresh the project, double‐click the `Refresh` script for the corresponding operating system. (If you are on Linux and double‐clicking fails or opens a text file, see [here](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/Linux.html).)",
         "",
         "`Refresh` opens a terminal window, and in it Workspace reports its actions while it sets the project folder up for development. (This may take a while the first time, but subsequent runs are faster.)",
         "",
@@ -121,13 +121,13 @@ public let configuration: WorkspaceConfiguration = {
         "",
         "## Applying Workspace to a Project",
         "",
-        "To apply Workspace to a project, run the following command in the root of the project’s repository. (This requires a full install. See [Installation](#installation).)",
+        "To apply Workspace to a project, run the following command in the root of the project’s repository. (This requires a full install.)",
         "",
         "```shell",
         "$ workspace refresh",
         "```",
         "",
-        "By default, Workspace refrains from tasks which would involve modifying project files. Such tasks must be activated with a [configuration](https://sdggiesbrecht.github.io/Workspace/WorkspaceConfiguration/Classes/WorkspaceConfiguration.html) file."
+        "By default, Workspace refrains from tasks which would involve modifying project files. Such tasks must be activated with a [configuration](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Libraries/WorkspaceConfiguration.html) file."
         ].joinedAsLines()
 
     configuration.repository.ignoredPaths.insert("Tests/Mock Projects")

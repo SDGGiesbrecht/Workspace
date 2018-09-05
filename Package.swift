@@ -27,26 +27,26 @@ import PackageDescription
 /// ### Features
 ///
 /// - Provides rigorous validation:
-///     - Test coverage (→ `TestingConfiguration.enforceCoverage`)
-///     - Compiler warnings (→ `prohibitCompilerWarnings`)
-///     - Documentation coverage (→ `DocumentationConfiguration.enforceCoverage`)
-///     - Example validation (→ `Examples`)
-///     - Style proofreading, including [SwiftLint](https://github.com/realm/SwiftLint) (→ `ProofreadingConfiguration`)
-///     - Reminders (→ `manualWarnings`)
-///     - Continuous integration set‐up for [Travis CI](https://travis-ci.org) with the [Swift Version Manager](https://github.com/kylef/swiftenv) (→ `ContinuousIntegrationConfiguration.manage`)
-/// - Generates API documentation. (→ `DocumentationConfiguration.generate`)
+///     - [Test coverage](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/TestingConfiguration/Properties/enforceCoverage.html)
+///     - [Compiler warnings](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/TestingConfiguration/Properties/prohibitCompilerWarnings.html)
+///     - [Documentation coverage](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/APIDocumentationConfiguration/Properties/enforceCoverage.html)
+///     - [Example validation](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/Examples.html)
+///     - [Style proofreading](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/ProofreadingConfiguration.html) (including [SwiftLint](https://github.com/realm/SwiftLint))
+///     - [Reminders](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/ProofreadingRule/Cases/manualWarnings.html)
+///     - [Continuous integration set‐up](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/ContinuousIntegrationConfiguration/Properties/manage.html) ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))
+/// - Generates API [documentation](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/APIDocumentationConfiguration/Properties/generate.html).
 /// - Automates code maintenance:
-///     - Embedded resources (→ `PackageResources`)
-///     - Inherited documentation (→ `DocumentationInheritance`)
-///     - Xcode project generation (→ `XcodeConfiguration.manage`)
+///     - [Embedded resources](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/PackageResources.html)
+///     - [Inherited documentation](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/DocumentationInheritance.html)
+///     - [Xcode project generation](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/XcodeConfiguration/Properties/manage.html)
 /// - Automates open source details:
-///     - File headers (→ `FileHeaderConfiguration`)
-///     - Read‐me files (→ `ReadMeConfiguration`)
-///     - Licence notices (→ `LicenceConfiguration`)
-///     - Contributing instructions (→ `GitHubConfiguration`)
+///     - [File headers](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/FileHeaderConfiguration.html)
+///     - [Read‐me files](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/ReadMeConfiguration.html)
+///     - [Licence notices](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/LicenceConfiguration.html)
+///     - [Contributing instructions](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/GitHubConfiguration.html)
 /// - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
 /// - Manages projects for macOS, Linux, iOS, watchOS and tvOS.
-/// - Configurable (→ `WorkspaceConfiguration`)
+/// - [Configurable](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Libraries/WorkspaceConfiguration.html)
 ///
 /// ### The Workspace Workflow
 ///
@@ -66,7 +66,7 @@ import PackageDescription
 ///
 /// #### Refresh the Project
 ///
-/// To refresh the project, double‐click the `Refresh` script for the corresponding operating system. (If you are on Linux and double‐clicking fails or opens a text file, see `Linux`.
+/// To refresh the project, double‐click the `Refresh` script for the corresponding operating system. (If you are on Linux and double‐clicking fails or opens a text file, see [here](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/Linux.html).)
 ///
 /// `Refresh` opens a terminal window, and in it Workspace reports its actions while it sets the project folder up for development. (This may take a while the first time, but subsequent runs are faster.)
 ///
@@ -101,7 +101,7 @@ import PackageDescription
 /// $ workspace refresh
 /// ```
 ///
-/// By default, Workspace refrains from tasks which would involve modifying project files. Such tasks must be activated with a configuration file (→ `WorkspaceConfiguration`).
+/// By default, Workspace refrains from tasks which would involve modifying project files. Such tasks must be activated with a [configuration](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Libraries/WorkspaceConfiguration.html) file.
 let package = Package(
     name: "Workspace",
     products: [

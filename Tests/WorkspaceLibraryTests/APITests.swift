@@ -66,6 +66,18 @@ class APITests : TestCase {
             ], localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
+    func testCheckedInDocumentation() {
+        let configuration = WorkspaceConfiguration()
+        configuration.documentation.api.enforceCoverage = false
+        configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "zxx"]
+        configuration.documentation.api.generate = true
+        PackageRepository(mock: "CheckedInDocumentation").test(commands: [
+            ["refresh"],
+            ["validate", "•job", "miscellaneous"],
+            ["validate", "•job", "deployment"]
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
     func testCheckForUpdates() {
         do {
             try Workspace.command.execute(with: ["check‐for‐updates"])
@@ -166,19 +178,6 @@ class APITests : TestCase {
         PackageRepository(mock: "Default").test(commands: commands, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
-    func testCheckedInDocumentation() {
-        #if !os(Linux)
-        let configuration = WorkspaceConfiguration()
-        configuration.documentation.api.enforceCoverage = false
-        configuration.documentation.api.generate = true
-        PackageRepository(mock: "CheckedInDocumentation").test(commands: [
-            ["refresh"],
-            ["validate", "•job", "documentation"],
-            ["validate", "•job", "deployment"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-        #endif
-    }
-
     func testExecutable() {
         let configuration = WorkspaceConfiguration()
         configuration.supportedOperatingSystems.remove(.iOS)
@@ -196,7 +195,9 @@ class APITests : TestCase {
 
     func testFailingDocumentationCoverage() {
         let configuration = WorkspaceConfiguration()
+        configuration.documentation.localizations = ["zxx"]
         configuration.xcode.manage = true
+        configuration.documentation.repositoryURL = URL(string: "domain.tld")!
         PackageRepository(mock: "FailingDocumentationCoverage").test(commands: [
             ["validate", "documentation‐coverage"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
@@ -311,46 +312,6 @@ class APITests : TestCase {
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
-    func testNoMacOS() {
-        #if !os(Linux)
-        let configuration = WorkspaceConfiguration()
-        configuration.supportedOperatingSystems.remove(.macOS)
-        configuration.xcode.manage = true
-        configuration.documentation.api.generate = true
-        configuration.documentation.api.yearFirstPublished = 2017
-        PackageRepository(mock: "NoMacOS").test(commands: [
-            ["validate", "documentation‐coverage"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-        #endif
-    }
-
-    func testNoMacOSOrIOS() {
-        #if !os(Linux)
-        let configuration = WorkspaceConfiguration()
-        configuration.supportedOperatingSystems.remove(.macOS)
-        configuration.supportedOperatingSystems.remove(.iOS)
-        configuration.xcode.manage = true
-        configuration.documentation.api.generate = true
-        PackageRepository(mock: "NoMacOSOrIOS").test(commands: [
-            ["validate", "documentation‐coverage"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-        #endif
-    }
-
-    func testNoMacOSOrIOSOrWatchOS() {
-        #if !os(Linux)
-        let configuration = WorkspaceConfiguration()
-        configuration.supportedOperatingSystems.remove(.macOS)
-        configuration.supportedOperatingSystems.remove(.iOS)
-        configuration.supportedOperatingSystems.remove(.watchOS)
-        configuration.xcode.manage = true
-        configuration.documentation.api.generate = true
-        PackageRepository(mock: "NoMacOSOrIOSOrWatchOS").test(commands: [
-            ["validate", "documentation‐coverage"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-        #endif
-    }
-
     func testOneProductMultipleModules() {
         let configuration = WorkspaceConfiguration()
         configuration.documentation.localizations = ["en"]
@@ -381,7 +342,7 @@ class APITests : TestCase {
 
     func testSDGLibrary() {
         let configuration = WorkspaceConfiguration()
-        configuration.applySDGDefaults()
+        configuration._applySDGDefaults()
         configuration.licence.licence = .apache2_0
         configuration.documentation.currentVersion = Version(1, 0, 0)
         configuration.documentation.projectWebsite = URL(string: "https://example.github.io/SDG/SDG")!
@@ -458,7 +419,7 @@ class APITests : TestCase {
 
     func testSDGTool() {
         let configuration = WorkspaceConfiguration()
-        configuration.applySDGDefaults()
+        configuration._applySDGDefaults()
         configuration.supportedOperatingSystems.remove(.iOS)
         configuration.supportedOperatingSystems.remove(.watchOS)
         configuration.supportedOperatingSystems.remove(.tvOS)
@@ -541,18 +502,5 @@ class APITests : TestCase {
         } catch {
             XCTFail("\(error)")
         }
-    }
-
-    func testUnicodeSource() {
-        #if !os(Linux)
-        let configuration = WorkspaceConfiguration()
-        configuration.xcode.manage = true
-        configuration.documentation.api.generate = true
-        configuration.documentation.localizations = ["en"]
-        PackageRepository(mock: "UnicodeSource").test(commands: [
-            ["refresh", "read‐me"],
-            ["validate", "documentation‐coverage"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-        #endif
     }
 }

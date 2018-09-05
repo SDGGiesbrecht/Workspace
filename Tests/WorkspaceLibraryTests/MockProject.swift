@@ -19,6 +19,8 @@ import WSGeneralTestImports
 
 import SDGExternalProcess
 
+import WSProject
+
 extension PackageRepository {
 
     private static let mockProjectsDirectory = repositoryRoot.appendingPathComponent("Tests/Mock Projects")
@@ -77,14 +79,15 @@ extension PackageRepository {
 
                     WorkspaceContext.current = try configurationContext()
                     if sdg {
-                        configuration.applySDGOverrides()
-                        configuration.validateSDGStandards()
+                        configuration._applySDGOverrides()
+                        configuration._validateSDGStandards()
                     }
                     WorkspaceConfiguration.queue(mock: configuration)
                     defer { _ = try? self.configuration(output: Command.Output.mock ) } // Dequeue even if unused.
                     resetConfigurationCache(debugReason: "new test")
 
                     for command in commands {
+                        FileType.resetUnsupportedFileTypes()
 
                         if ProcessInfo.isInContinuousIntegration {
                             // Travis CI needs periodic output of some sort; otherwise it assumes the tests have stalled.
@@ -134,9 +137,7 @@ extension PackageRepository {
                             continue
                         }
                         if command == ["validate", "build", "•job", "macos‐swift‐package‐manager"]
-                            ∨ command == ["validate", "test‐coverage"]
-                            ∨ command == ["document"]
-                            ∨ command == ["validate", "documentation‐coverage"] {
+                            ∨ command == ["validate", "test‐coverage"] {
                             // Invalid on Linux
                             expectFailure()
                             continue
@@ -177,13 +178,13 @@ extension PackageRepository {
                             output.scalars.replaceMatches(for: CompositePattern([
                                 LiteralPattern("$ swiftlint".scalars),
                                 any,
-                                LiteralPattern("\n0".scalars)
-                                ]), with: "[$ swiftlint...]\n0".scalars)
-                            output.scalars.replaceMatches(for: CompositePattern([
-                                LiteralPattern("$ swiftlint".scalars),
-                                any,
                                 LiteralPattern("\n\n".scalars)
                                 ]), with: "[$ swiftlint...]\n\n".scalars)
+                            output.scalars.replaceMatches(for: CompositePattern([
+                                LiteralPattern("$ swiftlint ".scalars),
+                                any,
+                                LiteralPattern("\n0".scalars)
+                                ]), with: "[$ swiftlint...]\n0".scalars)
 
                             if command == ["validate"] ∨ command.hasPrefix(["validate", "•job"]) {
                                 // Refreshment occurs elswhere in continuous integration.
@@ -197,19 +198,6 @@ extension PackageRepository {
 
                         testCommand(Workspace.command, with: command, localizations: localizations, uniqueTestName: specificationName, postprocess: postprocess, overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing, file: file, line: line)
                     }
-
-                    #if !os(Linux)
-                    // #workaround(jazzy --version 0.9.3, Jazzy issues.)
-                    if location.lastPathComponent == "UnicodeSource" {
-                        let index = try String(from: location.appendingPathComponent("docs/\(location.lastPathComponent)/index.html"))
-                        XCTAssert(¬index.contains("Skip in Jazzy"), "Failed to remove read‐me–only content.")
-
-                        if location.lastPathComponent == "UnicodeSource" {
-                            let page = try String(from: location.appendingPathComponent("docs/UnicodeSource/Extensions/Bool.html"))
-                            XCTAssert(¬page.contains("\u{22}err\u{22}"), "Failed to clean up Jazzy output.")
-                        }
-                    }
-                    #endif
 
                     /// Commit hashes vary.
                     try? FileManager.default.removeItem(at: location.appendingPathComponent("Package.resolved"))

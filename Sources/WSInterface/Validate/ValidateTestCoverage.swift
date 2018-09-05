@@ -38,7 +38,7 @@ extension Workspace.Validate {
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [ContinuousIntegrationJob.option], execution: { (_, options: Options, output: Command.Output) throws in
+        static let command = Command(name: name, description: description, directArguments: [], options: Workspace.standardOptions + [ContinuousIntegrationJob.option], execution: { (_, options: Options, output: Command.Output) throws in
 
             #if !os(Linux)
             if try options.project.configuration(output: output).xcode.manage {

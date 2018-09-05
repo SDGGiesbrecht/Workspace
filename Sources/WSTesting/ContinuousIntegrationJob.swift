@@ -57,7 +57,7 @@ extension ContinuousIntegrationJob {
             return "watchOS"
         case .tvOS:
             return "tvOS"
-        case .miscellaneous, .documentation, .deployment:
+        case .miscellaneous, .deployment:
             unreachable()
         }
     }
@@ -67,7 +67,7 @@ extension ContinuousIntegrationJob {
             return "the Swift Package Manager"
         case .macOSXcode:
             return "Xcode"
-        case .linux, .iOS, .watchOS, .tvOS, .miscellaneous, .documentation, .deployment:
+        case .linux, .iOS, .watchOS, .tvOS, .miscellaneous, .deployment:
             return nil
         }
     }
@@ -84,7 +84,7 @@ extension ContinuousIntegrationJob {
             return .watchOS
         case .tvOS:
             return .tvOS(simulator: false)
-        case .macOSSwiftPackageManager, .linux, .miscellaneous, .documentation, .deployment:
+        case .macOSSwiftPackageManager, .linux, .miscellaneous, .deployment:
             unreachable()
         }
     }
@@ -99,7 +99,7 @@ extension ContinuousIntegrationJob {
         case .tvOS:
             // @exempt(from: tests) Tested separately.
             return .tvOS(simulator: true)
-        case .macOSSwiftPackageManager, .linux, .watchOS, .miscellaneous, .documentation, .deployment:
+        case .macOSSwiftPackageManager, .linux, .watchOS, .miscellaneous, .deployment:
             unreachable()
         }
     }

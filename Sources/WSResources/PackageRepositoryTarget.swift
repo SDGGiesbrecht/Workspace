@@ -162,7 +162,7 @@ extension PackageRepository {
             let fileExtension = resource.pathExtension
             let initializer: (StrictString, StrictString)
             switch fileExtension {
-            case "command", "md", "sh", "txt", "yml":
+            case "command", "css", "html", "js", "md", "sh", "txt", "yml":
                 initializer = ("String(data: ", ", encoding: String.Encoding.utf8)!")
             default:
                 initializer = ("", "")

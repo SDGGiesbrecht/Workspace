@@ -2,25 +2,21 @@
 
 import PackageDescription
 
-let packageName = "SDG"
-let library = "Library"
-let tests = packageName + "Tests"
-
-let developer = "file:///tmp/Developer/"
-let dependency = "Dependency"
-
+/// A package.
 let package = Package(
-    name: packageName,
+    name: "SDG",
     products: [
-        .library(name: library, targets: [library])
+        /// A library.
+        .library(name: "Library", targets: ["Library"])
         ],
     dependencies: [
-        .package(url: developer + dependency, from: Version(1, 0, 0))
+        .package(url: "file:///tmp/Developer/Dependency", from: Version(1, 0, 0))
     ],
     targets: [
-        .target(name: library, dependencies: [
-            .productItem(name: dependency, package: dependency)
+        /// A module.
+        .target(name: "Library", dependencies: [
+            .productItem(name: "Dependency", package: "Dependency")
             ]),
-        .testTarget(name: tests, dependencies: [.targetItem(name: library)])
+        .testTarget(name: "SDGTests", dependencies: [.targetItem(name: "Library")])
     ]
 )

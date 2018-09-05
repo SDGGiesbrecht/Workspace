@@ -14,13 +14,17 @@
 
 /// Options related to file headers.
 ///
+/// ```shell
+/// $ workspace refresh file‐headers
+/// ```
+///
 /// A file header is a commented section at the top of each file in a project. Typical uses for file headers include:
 ///
 /// - Identifing which project the file belongs to.
 /// - Indicating copyright.
 /// - Providing licence reminders.
 ///
-/// ## Precise Definition of a File Header
+/// ### Precise Definition of a File Header
 ///
 /// Because Workspace overwrites existing file headers, it is important to know how Workspace identifies them.
 ///
@@ -73,7 +77,7 @@ public struct FileHeaderConfiguration : Codable {
     ///
     /// Workspace will replace the dynamic element `#dates` with the file’s copyright dates. (e.g. “©2016–2017”).
     ///
-    /// ## Determination of the Dates
+    /// ### Determination of the Dates
     ///
     /// Workspace uses any pre‐existing start date if it can detect one already in the file header. Workspace searches for `©`, `(C)`, or `(c)` followed by an optional space and four digits. If none is found, Workspace will use the current date as the start date.
     ///
@@ -110,7 +114,7 @@ public struct FileHeaderConfiguration : Codable {
 
         header.append(configuration.fileHeaders.copyrightNotice.resolve(configuration))
 
-        if configuration.isSDG {
+        if configuration._isSDG {
             header.append(contentsOf: [
                 "",
                 "Soli Deo gloria."

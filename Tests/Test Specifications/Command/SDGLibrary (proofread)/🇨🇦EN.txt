@@ -37,4 +37,20 @@ Tests/SDGTests/Resources.swift
 Tests/SDGTests/SDGTests.swift
 
 [$ swiftlint...]
+
+✓ Source code passes proofreading.
+
+
+Workspace encountered unsupported file types:
+
+xyz (Other/Unsupported Filetype.xyz)
+
+All such files were skipped.
+If these are standard file types, please report them at
+https://github.com/SDGGiesbrecht/Workspace/issues
+To silence this warning for non‐standard file types, configure “repository.ignoredFileTypes”.
+
+
+“SDG” passes validation.
+
 0

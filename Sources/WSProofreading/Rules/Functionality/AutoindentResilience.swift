@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGCollections
 import WSGeneralImports
 
 import WSProject
@@ -34,7 +35,7 @@ internal struct AutoindentResilience : Rule {
     })
 
     internal static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
-        if file.fileType == .swift,
+        if file.fileType ∈ Set([.swift, .swiftPackageManifest]),
             file.location.lastPathComponent ≠ "FileHeaderConfiguration.swift" {
 
             for match in file.contents.scalars.matches(for: "/*\u{2A}".scalars) {

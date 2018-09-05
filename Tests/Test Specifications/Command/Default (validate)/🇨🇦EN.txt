@@ -78,14 +78,9 @@ Checking test coverage on macOS... (§8)
 The package has no Xcode project.
 Configure “xcode.manage” or create an Xcode project manually.
 
-Generating documentation for “Default”... (§9)
+Checking documentation coverage... (§9)
 
-The package has no Xcode project.
-Configure “xcode.manage” or create an Xcode project manually.
-
-Checking documentation coverage for “Default”... (§10)
-
-The file “undocumented.json” couldn’t be opened because there is no such file.
+There are no localizations specified. (documentation.localizations)
 
 Summary
 
@@ -98,8 +93,7 @@ Summary
 ✗ Build failed for tvOS. (See [⌘F] “§6”)
 ✗ Tests fail on macOS with Xcode. (See [⌘F] “§7”)
 ✗ Test coverage could not be determined on macOS. (See [⌘F] “§8”)
-✗ Failed to generate documentation for “Default”. (See [⌘F] “§9”)
-✗ Documentation coverage information is unavailable for “Default”. (See [⌘F] “§10”)
+✗ Failed to process documentation. (See [⌘F] “§9”)
 
 “Default” fails validation.
 2

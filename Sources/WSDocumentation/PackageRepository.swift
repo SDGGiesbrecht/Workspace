@@ -17,6 +17,7 @@ import SDGCollections
 import WSGeneralImports
 
 import SDGXcode
+import SDGSwiftSource
 
 import WSProject
 import WSValidation
@@ -40,11 +41,7 @@ extension PackageRepository {
         return location.appendingPathComponent(PackageRepository.documentationDirectoryName)
     }
 
-    private static func subdirectory(for target: String, in documentationDirectory: URL) -> URL {
-        return documentationDirectory.appendingPathComponent(target)
-    }
-
-    private func resolvedCopyright(output: Command.Output) throws -> StrictString {
+    internal func resolvedCopyright(output: Command.Output) throws -> StrictString {
 
         var template = try documentationCopyright(output: output)
 
@@ -61,153 +58,191 @@ extension PackageRepository {
 
     // MARK: - Documentation
 
-    #if !os(Linux)
-    // MARK: - #if os(Linux)
-
     public func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
-        for product in try productModules() {
-            try autoreleasepool {
-                try document(target: product.name, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
-            }
+        if try ¬hasTargetsToDocument() {
+            return
         }
-    }
-
-    private func document(target: String, outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
         let section = validationStatus.newSection()
-
         output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
-                return "Generating documentation for “" + StrictString(target) + "”..." + section.anchor
+                return "Generating documentation..." + section.anchor
             }
         }).resolved().formattedAsSectionHeader())
-
         do {
+            try prepare(outputDirectory: outputDirectory, output: output)
 
-            let outputSubdirectory = PackageRepository.subdirectory(for: target, in: outputDirectory)
+            let status = DocumentationStatus(output: output)
+            try document(outputDirectory: outputDirectory, documentationStatus: status, validationStatus: &validationStatus, output: output)
 
-            let buildOperatingSystem: OperatingSystem
-            if try .macOS ∈ configuration(output: output).supportedOperatingSystems {
-                buildOperatingSystem = .macOS
-            } else if try .iOS ∈ configuration(output: output).supportedOperatingSystems {
-                buildOperatingSystem = .iOS
-            } else if try .watchOS ∈ configuration(output: output).supportedOperatingSystems {
-                buildOperatingSystem = .watchOS
-            } else if try .tvOS ∈ configuration(output: output).supportedOperatingSystems {
-                buildOperatingSystem = .tvOS
-            } else {
-                buildOperatingSystem = .macOS
-            }
+            try finalizeSite(outputDirectory: outputDirectory)
 
-            let copyrightText = try resolvedCopyright(output: output)
-            try FileManager.default.do(in: location) {
-                try Jazzy.default.document(target: target, scheme: try scheme(), buildOperatingSystem: buildOperatingSystem, copyright: copyrightText, gitHubURL: try configuration(output: output).documentation.repositoryURL, outputDirectory: outputSubdirectory, project: self, output: output)
-            }
-
-            let transformedMarker = ReadMeConfiguration._skipInJazzy.replacingMatches(for: "\u{2D}\u{2D}".scalars, with: "&ndash;".scalars).replacingMatches(for: "<".scalars, with: "&lt;".scalars).replacingMatches(for: ">".scalars, with: "&gt;".scalars)
-            for url in try trackedFiles(output: output) where url.is(in: outputSubdirectory) {
-                if let type = FileType(url: url),
-                    type == .html {
-                    try autoreleasepool {
-
-                        var file = try TextFile(alreadyAt: url)
-                        var source = file.contents
-                        while let skipMarker = source.scalars.firstMatch(for: transformedMarker.scalars) {
-                            let line = skipMarker.range.lines(in: source.lines)
-                            source.lines.removeSubrange(line)
-                        }
-
-                        file.contents = source
-                        try file.writeChanges(for: self, output: output)
-                    }
-                }
-            }
-
-            validationStatus.passStep(message: UserFacing({ localization in
-                switch localization {
-                case .englishCanada:
-                    return "Generated documentation for “" + StrictString(target) + "”."
-                }
-            }))
-
-        } catch {
-            var description = StrictString(error.localizedDescription)
-            if let noXcode = error as? Xcode.Error,
-                noXcode == .noXcodeProject {
-                description += "\n" + PackageRepository.xcodeProjectInstructions.resolved()
-            }
-            output.print(description.formattedAsError())
-
-            validationStatus.failStep(message: UserFacing({ localization in
-                switch localization {
-                case .englishCanada:
-                    return "Failed to generate documentation for “" + StrictString(target) + "”." + section.crossReference.resolved(for: localization)
-                }
-            }))
-        }
-    }
-
-    public func validateDocumentationCoverage(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
-
-        for product in try productModules() {
-            try autoreleasepool {
-                try validateDocumentationCoverage(for: product.name, outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
-            }
-        }
-    }
-
-    private func validateDocumentationCoverage(for target: String, outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
-
-        let section = validationStatus.newSection()
-
-        output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishCanada:
-                return "Checking documentation coverage for “" + StrictString(target) + "”..." + section.anchor
-            }
-        }).resolved().formattedAsSectionHeader())
-
-        do {
-
-            let warnings = try Jazzy.default.warnings(outputDirectory: PackageRepository.subdirectory(for: target, in: outputDirectory))
-
-            for warning in warnings {
-                output.print([
-                    warning.file.path(relativeTo: location) + ":" + String(warning.line?.inDigits() ?? ""), // @exempt(from: tests) It is unknown what would cause a missing line number.
-                    warning.symbol,
-                    ""
-                    ].joinedAsLines().formattedAsError())
-            }
-
-            if warnings.isEmpty {
-                validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            if status.passing {
+                validationStatus.passStep(message: UserFacing({ localization in
                     switch localization {
                     case .englishCanada:
-                        return "Documentation coverage is complete for “" + StrictString(target) + "”."
+                        return "Generated documentation."
                     }
                 }))
             } else {
-                validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                validationStatus.failStep(message: UserFacing({ localization in
                     switch localization {
                     case .englishCanada:
-                        return "Documentation coverage is incomplete for “" + StrictString(target) + "”." + section.crossReference.resolved(for: localization)
+                        return "Generated documentation, but encountered warnings." + section.crossReference.resolved(for: localization)
+                    }
+                }))
+            }
+        } catch {
+            output.print(error.localizedDescription.formattedAsError()) // @exempt(from: tests) Unreachable without SwiftSyntax or file system failure.
+            validationStatus.failStep(message: UserFacing({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "Failed to generate documentation." + section.crossReference.resolved(for: localization)
+                }
+            }))
+        }
+    }
+
+    // Preliminary steps irrelevent to validation.
+    private func prepare(outputDirectory: URL, output: Command.Output) throws {
+        try retrievePublishedDocumentationIfAvailable(outputDirectory: outputDirectory, output: output)
+        try redirectExistingURLs(outputDirectory: outputDirectory)
+    }
+
+    // Steps which participate in validation.
+    private func document(outputDirectory: URL, documentationStatus: DocumentationStatus, validationStatus: inout ValidationStatus, output: Command.Output) throws {
+
+        let configuration = try self.configuration(output: output)
+        let copyrightNotice = try resolvedCopyright(output: output)
+        var copyright: [LocalizationIdentifier: StrictString] = [:]
+        for localization in configuration.documentation.localizations {
+            copyright[localization] = copyrightNotice
+        }
+
+        let interface = PackageInterface(
+            localizations: configuration.documentation.localizations,
+            developmentLocalization: try developmentLocalization(output: output),
+            api: try PackageAPI(package: cachedPackage(), reportProgress: { output.print($0) }),
+            packageURL: configuration.documentation.repositoryURL,
+            version: configuration.documentation.currentVersion,
+            copyright: copyright,
+            output: output)
+        try interface.outputHTML(to: outputDirectory, status: documentationStatus, output: output)
+    }
+
+    // Final steps irrelevent to validation.
+    private func finalizeSite(outputDirectory: URL) throws {
+
+        var rootCSS = TextFile(mockFileWithContents: Resources.root, fileType: .css)
+        rootCSS.header = ""
+        try rootCSS.contents.save(to: outputDirectory.appendingPathComponent("CSS/Root.css"))
+        try Syntax.css.save(to: outputDirectory.appendingPathComponent("CSS/Swift.css"))
+        var siteCSS = TextFile(mockFileWithContents: Resources.site, fileType: .css)
+        siteCSS.header = ""
+        try siteCSS.contents.save(to: outputDirectory.appendingPathComponent("CSS/Site.css"))
+        var siteJavaScript = TextFile(mockFileWithContents: Resources.script, fileType: .javaScript)
+        siteJavaScript.header = ""
+        try siteJavaScript.contents.save(to: outputDirectory.appendingPathComponent("JavaScript/Site.js"))
+
+        try preventJekyllInterference(outputDirectory: outputDirectory)
+    }
+
+    private func retrievePublishedDocumentationIfAvailable(outputDirectory: URL, output: Command.Output) throws {
+        if let packageURL = try configuration(output: output).documentation.repositoryURL {
+
+            output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "Checking for defunct URLs to redirect..."
+                }
+            }).resolved())
+
+            let temporary = FileManager.default.url(in: .temporary, at: "Published Documentation")
+            defer { try? FileManager.default.removeItem(at: temporary) }
+
+            let package = Package(url: packageURL)
+            do {
+                try Git.clone(package, to: temporary)
+                try Git.runCustomSubcommand(["checkout", "gh\u{2D}pages"], in: temporary)
+                try FileManager.default.removeItem(at: outputDirectory)
+                try FileManager.default.move(temporary, to: outputDirectory)
+            } catch {}
+        }
+    }
+
+    private func redirectExistingURLs(outputDirectory: URL) throws {
+        if (try? outputDirectory.checkResourceIsReachable()) == true {
+            let generalRedirect = Redirect(target: "index.html")
+            let indexRedirect = Redirect(target: "../index.html")
+            for file in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
+                try autoreleasepool {
+                    if file.pathExtension == "html" {
+                        if file.lastPathComponent == "index.html" {
+                            try indexRedirect.contents.save(to: file)
+                        } else {
+                            try generalRedirect.contents.save(to: file)
+                        }
+                    } else {
+                        try? FileManager.default.removeItem(at: file)
+                    }
+                }
+            }
+        }
+    }
+
+    private func preventJekyllInterference(outputDirectory: URL) throws {
+        try Data().write(to: outputDirectory.appendingPathComponent(".nojekyll"))
+    }
+
+    // MARK: - Validation
+
+    public func validateDocumentationCoverage(validationStatus: inout ValidationStatus, output: Command.Output) throws {
+
+        if try ¬hasTargetsToDocument() {
+            return
+        }
+
+        let section = validationStatus.newSection()
+        output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishCanada:
+                return "Checking documentation coverage..." + section.anchor
+            }
+        }).resolved().formattedAsSectionHeader())
+        do {
+            let outputDirectory = FileManager.default.url(in: .temporary, at: "Documentation")
+            defer { try? FileManager.default.removeItem(at: outputDirectory) }
+
+            let status = DocumentationStatus(output: output)
+            try document(outputDirectory: outputDirectory, documentationStatus: status, validationStatus: &validationStatus, output: output)
+
+            if status.passing {
+                validationStatus.passStep(message: UserFacing({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return "Documentation coverage is complete."
+                    }
+                }))
+            } else {
+                validationStatus.failStep(message: UserFacing({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return "Documentation coverage is incomplete." + section.crossReference.resolved(for: localization)
                     }
                 }))
             }
         } catch {
             output.print(error.localizedDescription.formattedAsError())
-            validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            validationStatus.failStep(message: UserFacing({ localization in
                 switch localization {
                 case .englishCanada:
-                    return "Documentation coverage information is unavailable for “" + StrictString(target) + "”." + section.crossReference.resolved(for: localization)
+                    return "Failed to process documentation." + section.crossReference.resolved(for: localization)
                 }
             }))
         }
     }
-
-    #endif
 
     // MARK: - Inheritance
 
@@ -268,7 +303,8 @@ extension PackageRepository {
             for url in try dependencies + sourceFiles(output: output) {
                 try autoreleasepool {
 
-                    if FileType(url: url) == .swift {
+                    if let type = FileType(url: url),
+                        type ∈ Set([.swift, .swiftPackageManifest]) {
                         let file = try TextFile(alreadyAt: url)
 
                         for match in file.contents.scalars.matches(for: AlternativePatterns(PackageRepository.documentationDeclarationPatterns)) {
@@ -298,10 +334,12 @@ extension PackageRepository {
         try resolve(reportProgress: { output.print($0) })
         resetFileCache(debugReason: "resolve")
 
-        for url in try sourceFiles(output: output) {
+        for url in try sourceFiles(output: output) where ¬url.path.hasSuffix("Sources/WorkspaceConfiguration/Documentation/DocumentationInheritance.swift") {
             try autoreleasepool {
 
-                if FileType(url: url) == .swift {
+                if let type = FileType(url: url),
+                    type ∈ Set([.swift, .swiftPackageManifest]) {
+
                     let documentationSyntax = FileType.swiftDocumentationSyntax
                     let lineDocumentationSyntax = documentationSyntax.lineCommentSyntax!
 

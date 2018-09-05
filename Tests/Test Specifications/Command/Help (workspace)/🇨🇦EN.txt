@@ -5,7 +5,7 @@ workspace automates management of Swift projects.
 Subcommands
 
 check‐for‐updates checks for available Workspace updates.
-document generates API documentation for each library product.
+document generates API documentation.
 help displays usage information.
 normalize normalizes the current project’s files by removing trailing whitespace, applying Unix newlines and performing canonical decomposition.
 proofread proofreads the current project’s source for style violations.

@@ -33,7 +33,7 @@ extension Workspace {
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_: DirectArguments, options: Options, output: Command.Output) throws in
+        static let command = Command(name: name, description: description, directArguments: [], options: standardOptions, execution: { (_: DirectArguments, options: Options, output: Command.Output) throws in
             try executeAsStep(options: options, output: output)
         })
 

@@ -49,29 +49,24 @@ public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hash
 
     // MARK: - Conversion
 
-    /// :nodoc:
     public var _reasonableMatch: ContentLocalization? {
         return ContentLocalization(reasonableMatchFor: code)
     }
-    /// :nodoc:
     public var _bestMatch: ContentLocalization {
         return _reasonableMatch ?? ContentLocalization.fallbackLocalization
     }
 
     // MARK: - ExpressibleByStringLiteral
 
-    // #workaround(jazzy --version 0.9.3, Allow automatic inheritance when documentation supports it.)
-    /// Creates an instance from a string literal.
-    ///
-    /// - Parameters:
-    ///     - stringLiteral: The string literal.
+    // @workaround(Until automatic inheritance can bridge module boundaries.)
+    /// Creates a localization identifier from a string literal.
     public init(stringLiteral: String) {
         self.init(stringLiteral)
     }
 
     // MARK: - TransparentWrapper
 
-    // #workaround(jazzy --version 0.9.3, Allow automatic inheritance when documentation supports it.)
+    // @workaround(Until automatic inheritance can bridge module boundaries.)
     /// The wrapped instance.
     public var wrappedInstance: Any {
         if let content = _reasonableMatch {

@@ -56,7 +56,7 @@ extension PackageRepository {
                     }
                     return ¬Xcode.warningsOccurred(during: log)
                 }
-            case .miscellaneous, .documentation, .deployment:
+            case .miscellaneous, .deployment:
                 unreachable()
             }
 
@@ -148,7 +148,7 @@ extension PackageRepository {
                     return false
                 }
             }
-        case .miscellaneous, .documentation, .deployment:
+        case .miscellaneous, .deployment:
             unreachable()
         }
 

@@ -39,7 +39,6 @@ public enum ContinuousIntegrationJob : Int, IterableEnumeration {
     case watchOS
     case tvOS
     case miscellaneous
-    case documentation
     case deployment
 
     public static let simulatorJobs: Set<ContinuousIntegrationJob> = [
@@ -98,13 +97,6 @@ public enum ContinuousIntegrationJob : Int, IterableEnumeration {
                 switch localization {
                 case .englishCanada:
                     return "Miscellaneous"
-                }
-            })
-        case .documentation:
-            return UserFacing({ (localization) in
-                switch localization {
-                case .englishCanada:
-                    return "Documentation"
                 }
             })
         case .deployment:
@@ -168,13 +160,6 @@ public enum ContinuousIntegrationJob : Int, IterableEnumeration {
                     return "miscellaneous"
                 }
             })
-        case .documentation:
-            return UserFacing({ (localization) in
-                switch localization {
-                case .englishCanada:
-                    return "documentation"
-                }
-            })
         case .deployment:
             return UserFacing({ (localization) in
                 switch localization {
@@ -199,9 +184,6 @@ public enum ContinuousIntegrationJob : Int, IterableEnumeration {
             return try .tvOS ∈ project.configuration(output: output).supportedOperatingSystems
         case .miscellaneous:
             return true
-        case .documentation:
-            return try project.configuration(output: output).documentation.api.generate
-                ∧ project.hasTargetsToDocument()
         case .deployment:
             return try project.configuration(output: output).documentation.api.generate
                 ∧ project.hasTargetsToDocument()
@@ -211,10 +193,9 @@ public enum ContinuousIntegrationJob : Int, IterableEnumeration {
 
     public var operatingSystem: OperatingSystem {
         switch self {
-        case .macOSSwiftPackageManager, .macOSXcode, .iOS, .watchOS, .tvOS, .documentation, .deployment:
-            // #workaround(jazzy --version 0.9.3, Documentation can be switched to Linux when Jazzy supports it.)
+        case .macOSSwiftPackageManager, .macOSXcode, .iOS, .watchOS, .tvOS:
             return .macOS
-        case .linux, .miscellaneous:
+        case .linux, .miscellaneous, .deployment:
             return .linux
         }
     }
@@ -236,7 +217,7 @@ public enum ContinuousIntegrationJob : Int, IterableEnumeration {
 
     private var travisSDKKey: String? {
         switch self {
-        case .macOSSwiftPackageManager, .macOSXcode, .linux, .watchOS, .miscellaneous, .documentation, .deployment:
+        case .macOSSwiftPackageManager, .macOSXcode, .linux, .watchOS, .miscellaneous, .deployment:
             return nil
         case .iOS:
             return "iphonesimulator"
@@ -315,7 +296,7 @@ extension Optional where Wrapped == ContinuousIntegrationJob {
         switch self {
         case .none:
             switch job {
-            case .macOSSwiftPackageManager, .macOSXcode, .linux, .iOS, .watchOS, .tvOS, .miscellaneous, .documentation:
+            case .macOSSwiftPackageManager, .macOSXcode, .linux, .iOS, .watchOS, .tvOS, .miscellaneous:
                 return true
             case .deployment:
                 return false

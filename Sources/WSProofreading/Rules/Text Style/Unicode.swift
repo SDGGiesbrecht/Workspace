@@ -31,6 +31,9 @@ internal struct UnicodeRule : Rule {
                               allowTrailing: Bool = false,
                               allowInSwiftSource: Bool = false,
                               allowInShellSource: Bool = false,
+                              allowInHTMLSource: Bool = false,
+                              allowInCSSSource: Bool = false,
+                              allowInJavaScriptSource: Bool = false,
                               allowInSampleCode: Bool = false,
                               allowInMarkdownList: Bool = false,
                               allowInURLs: Bool = false,
@@ -45,6 +48,16 @@ internal struct UnicodeRule : Rule {
                               message: UserFacing<StrictString, InterfaceLocalization>, status: ProofreadingStatus, output: Command.Output) {
 
         for protocolName in allowedDefaultImplementations where file.location.lastPathComponent == protocolName + ".swift" {
+            return
+        }
+
+        if allowInHTMLSource ∧ file.fileType == .html {
+            return
+        }
+        if allowInCSSSource ∧ file.fileType == .css {
+            return
+        }
+        if allowInJavaScriptSource ∧ file.fileType == .javaScript {
             return
         }
 
@@ -96,7 +109,7 @@ internal struct UnicodeRule : Rule {
 
             if allowInSampleCode {
                 switch file.fileType {
-                case .markdown, .swift:
+                case .markdown, .swift, .swiftPackageManifest:
                     if fromStartOfFile(to: match, in: file).contains("```".scalars)
                         ∧ upToEndOfFile(from: match, in: file).contains("```".scalars) {
                         continue
@@ -116,7 +129,7 @@ internal struct UnicodeRule : Rule {
                     if ¬fromStartOfLine(to: match, in: file).contains(where: { $0 ≠ " " }) {
                         continue
                     }
-                case .swift:
+                case .swift, .swiftPackageManifest:
                     if fromStartOfLine(to: match, in: file).hasSuffix(CompositePattern([
                         LiteralPattern("///".scalars),
                         RepetitionPattern(" ".scalars)
@@ -188,7 +201,7 @@ internal struct UnicodeRule : Rule {
             }
 
             if allowInFloatLiteral {
-                if file.fileType == .swift {
+                if file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
                     if fromStartOfLine(to: match, in: file).contains("let ln2".scalars) {
                         continue
                     }
@@ -240,6 +253,8 @@ internal struct UnicodeRule : Rule {
 
         check(file, for: "\u{2D}",
               allowInShellSource: true,
+              allowInCSSSource: true,
+              allowInJavaScriptSource: true,
               allowInSampleCode: true,
               allowInMarkdownList: true,
               allowInURLs: true,
@@ -261,6 +276,9 @@ internal struct UnicodeRule : Rule {
         check(file, for: "\u{22}",
               allowInSwiftSource: true,
               allowInShellSource: true,
+              allowInHTMLSource: true,
+              allowInCSSSource: true,
+              allowInJavaScriptSource: true,
               allowInSampleCode: true,
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
@@ -295,6 +313,8 @@ internal struct UnicodeRule : Rule {
         check(file, for: "!",
               replacement: "¬",
               allowTrailing: true,
+              allowInHTMLSource: true,
+              allowInJavaScriptSource: true,
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["¬", "≠"],
               allowInHTMLComment: true,
@@ -351,6 +371,7 @@ internal struct UnicodeRule : Rule {
 
         check(file, for: " \u{2A} ",
               replacement: " × ",
+              allowInCSSSource: true,
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["×"],
               allowedDefaultImplementations: ["Numeric"],
@@ -375,6 +396,7 @@ internal struct UnicodeRule : Rule {
 
         check(file, for: " \u{2F} ",
               replacement: " ÷ ",
+              allowInCSSSource: true,
               allowInConditionalCompilationStatement: true,
               allowedAliasDefinitions: ["÷", "divide"],
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in

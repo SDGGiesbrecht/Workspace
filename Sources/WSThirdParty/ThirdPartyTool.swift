@@ -48,13 +48,14 @@ open class ThirdPartyTool {
         if let systemVersionString = try? Shell.default.run(command: ([String(command)] + versionCheck.map({ String($0) }))),
             let systemVersion = Version(firstIn: systemVersionString),
             systemVersion == version {
+            // @exempt(from: tests) Reachability differs from device to device.
 
             output.print("")
             try Shell.default.run(command: [String(command)] + arguments, reportProgress: { output.print($0) })
             output.print("")
             return
         }
-        // @exempt(from: tests) Unreachable except with incompatible versions of tools.
+        // @exempt(from: tests) Reachability differs from device to device.
         try type(of: self).execute(command: command, version: version, with: arguments, versionCheck: versionCheck, repositoryURL: repositoryURL, cacheDirectory: ThirdPartyTool.toolsCache.appendingPathComponent(repositoryURL.lastPathComponent), output: output)
     }
 

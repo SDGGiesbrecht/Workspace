@@ -12,8 +12,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGControlFlow
+
 /// A proofreading rule.
-public enum ProofreadingRule : String, Codable {
+public enum ProofreadingRule : String, Codable, IterableEnumeration {
 
     // MARK: - Cases
 
@@ -58,7 +60,7 @@ public enum ProofreadingRule : String, Codable {
     ///
     /// The text, `#workaround(Some description here.)` will trigger a warning during proofreading, but will still pass validation.
     ///
-    /// ## Version Detection
+    /// ### Version Detection
     ///
     /// Optionally, a workaround reminder can specify the dependency and version were the problem exists. Then Workspace will ignore it until the problematic version is out of date.
     ///
@@ -127,8 +129,8 @@ public enum ProofreadingRule : String, Codable {
     /// Requires documented parameters to be grouped.
     case parameterGrouping
 
-    // #workaround(jazzy --version 0.9.3, Allow automatic inheritance when documentation supports it.)
-    /// An array containing every case of the enumeration.
+    // @workaround(Until automatic inheritance can bridge module boundaries.)
+    /// All cases.
     public static let cases: [ProofreadingRule] = [
         .deprecatedWarnings,
         .deprecatedTestExemptions,

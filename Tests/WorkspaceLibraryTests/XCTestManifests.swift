@@ -38,15 +38,11 @@ extension APITests {
         ("testMultipleProducts", testMultipleProducts),
         ("testNoLibraries", testNoLibraries),
         ("testNoLocalizations", testNoLocalizations),
-        ("testNoMacOS", testNoMacOS),
-        ("testNoMacOSOrIOS", testNoMacOSOrIOS),
-        ("testNoMacOSOrIOSOrWatchOS", testNoMacOSOrIOSOrWatchOS),
         ("testOneProductMultipleModules", testOneProductMultipleModules),
         ("testPartialReadMe", testPartialReadMe),
         ("testSDGLibrary", testSDGLibrary),
         ("testSDGTool", testSDGTool),
-        ("testSelfSpecificScripts", testSelfSpecificScripts),
-        ("testUnicodeSource", testUnicodeSource)
+        ("testSelfSpecificScripts", testSelfSpecificScripts)
     ]
 }
 

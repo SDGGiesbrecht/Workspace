@@ -29,21 +29,15 @@ public struct Lazy<Option> : Codable where Option : Codable {
 
     // MARK: - Encoding
 
-    // #workaround(jazzy --version 0.9.3, Allow automatic inheritance when documentation supports it.)
-    /// Encodes this value into the given encoder.
-    ///
-    /// - Parameters:
-    ///     - encoder: The encoder to write data to.
+    // @workaround(Until automatic inheritance can bridge module boundaries.)
+    /// Encodes the option.
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(resolve(WorkspaceConfiguration.registered))
     }
 
-    // #workaround(jazzy --version 0.9.3, Allow automatic inheritance when documentation supports it.)
-    /// Creates a new instance by decoding from the given decoder.
-    ///
-    /// - Parameters:
-    ///     - decoder: The decoder to read data from.
+    // @workaround(Until automatic inheritance can bridge module boundaries.)
+    /// Decodes an option.
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let resolved = try container.decode(Option.self)

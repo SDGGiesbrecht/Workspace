@@ -13,6 +13,10 @@
  */
 
 /// Options related to licencing.
+///
+/// ```shell
+/// $ workspace refresh licence
+/// ```
 public struct LicenceConfiguration : Codable {
 
     /// Whether or not to manage the project licence.

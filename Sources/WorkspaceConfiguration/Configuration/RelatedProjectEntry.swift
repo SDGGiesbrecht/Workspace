@@ -35,11 +35,8 @@ public enum RelatedProjectEntry : Codable {
         case details
     }
 
-    // #workaround(jazzy --version 0.9.3, Allow automatic inheritance when documentation supports it.)
-    /// Encodes this value into the given encoder.
-    ///
-    /// - Parameters:
-    ///     - encoder: The encoder to write data to.
+    // @workaround(Until automatic inheritance can bridge module boundaries.)
+    /// Encodes the entry.
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
@@ -52,11 +49,8 @@ public enum RelatedProjectEntry : Codable {
         }
     }
 
-    // #workaround(jazzy --version 0.9.3, Allow automatic inheritance when documentation supports it.)
-    /// Creates a new instance by decoding from the given decoder.
-    ///
-    /// - Parameters:
-    ///     - decoder: The decoder to read data from.
+    // @workaround(Until automatic inheritance can bridge module boundaries.)
+    /// Decodes an entry.
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(RelatedProjectEntryType.self, forKey: CodingKeys.type)

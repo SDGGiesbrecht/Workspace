@@ -45,7 +45,7 @@ extension Workspace {
             }
         }), type: ArgumentType.boolean)
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [runAsXcodeBuildPhase], execution: { (_: DirectArguments, options: Options, output: Command.Output) throws in
+        static let command = Command(name: name, description: description, directArguments: [], options: standardOptions + [runAsXcodeBuildPhase], execution: { (_: DirectArguments, options: Options, output: Command.Output) throws in
             var validationStatus = ValidationStatus()
             try executeAsStep(normalizingFirst: true, options: options, validationStatus: &validationStatus, output: output)
 

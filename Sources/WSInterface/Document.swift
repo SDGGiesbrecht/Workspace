@@ -30,19 +30,11 @@ extension Workspace {
         private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
-                return "generates API documentation for each library product."
+                return "generates API documentation."
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, options: Options, output: Command.Output) throws in
-
-            #if os(Linux)
-            throw linuxJazzyError()
-            #else
-
-            if try options.project.configuration(output: output).xcode.manage {
-                try Workspace.Refresh.Xcode.executeAsStep(options: options, output: output)
-            }
+        static let command = Command(name: name, description: description, directArguments: [], options: standardOptions, execution: { (_, options: Options, output: Command.Output) throws in
 
             var validationStatus = ValidationStatus()
             let outputDirectory = options.project.defaultDocumentationDirectory
@@ -54,20 +46,16 @@ extension Workspace {
                     case .englishCanada:
                         return [
                             "Nothing to document.",
-                            "The package manifest does not define any library products."
+                            "The package manifest does not define any products."
                             ].joinedAsLines()
                     }
                 }))
             }
             try validationStatus.reportOutcome(project: options.project, output: output)
-
-            #endif
         })
 
-        #if !os(Linux)
         static func executeAsStep(outputDirectory: URL, options: Options, validationStatus: inout ValidationStatus, output: Command.Output) throws {
             try options.project.document(outputDirectory: outputDirectory, validationStatus: &validationStatus, output: output)
         }
-        #endif
     }
 }

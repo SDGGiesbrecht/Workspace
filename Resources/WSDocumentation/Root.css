@@ -1,0 +1,44 @@
+/*
+ Root.css
+
+ This source file is part of the Workspace open source project.
+ https://github.com/SDGGiesbrecht/Workspace#workspace
+
+ Copyright ©2018 Jeremy David Giesbrecht and the Workspace project contributors.
+
+ Soli Deo gloria.
+
+ Licensed under the Apache Licence, Version 2.0.
+ See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+ */
+
+/* Layout */
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Colours */
+
+html {
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+/* Fonts */
+
+@media print {
+    html {
+        font-family: serif;
+    }
+}
+@media screen {
+    html {
+        font-family: sans-serif;
+    }
+}
+
+span[lang] {
+    font-style: italic;
+}

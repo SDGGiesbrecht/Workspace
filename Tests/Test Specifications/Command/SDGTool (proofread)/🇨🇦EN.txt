@@ -39,4 +39,10 @@ Tests/test‐tool/Resources.swift
 Tests/test‐tool/main.swift
 
 [$ swiftlint...]
+
+✓ Source code passes proofreading.
+
+
+“SDG” passes validation.
+
 0

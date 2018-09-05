@@ -17,11 +17,11 @@ Proofreading source code... (§1)
 Documentation/🇮🇱עב Read Me.md
 LICENSE.md
 Package.swift
-Line 26
+Line 25
 U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
         // .package(url: /* package url */, from: "1.0.0"),
 
-Line 26
+Line 25
 U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
         // .package(url: /* package url */, from: "1.0.0"),
 
@@ -40,16 +40,42 @@ Undocumented compilation condition. Add “// MARK: - #if...” on the next line
 
 Tests/LinuxMain.swift
 
-[[$ swiftlint...]
+[$ swiftlint...]
 
-Writing to “docs/AllTasks/.nojekyll”...
-Writing to “docs/AllTasks/-read-me.html”...
-Writing to “docs/AllTasks/docsets/AllTasks.docset/Contents/Resources/Documents/-read-me.html”...
-Writing to “docs/AllTasks/docsets/AllTasks.docset/Contents/Resources/Documents/index.html”...
-Writing to “docs/AllTasks/index.html”...
+Checking build for macOS with the Swift Package Manager... (§2)
 
-Checking documentation coverage for “AllTasks”... (§10)
+[$ swift...]
 
+Checking build for macOS with Xcode... (§3)
+
+[$ xcodebuild...]
+
+Checking build for iOS... (§4)
+
+[$ xcodebuild...]
+
+Checking build for watchOS... (§5)
+
+[$ xcodebuild...]
+
+Checking build for tvOS... (§6)
+
+[$ xcodebuild...]
+
+Testing on macOS with Xcode... (§7)
+
+[$ xcodebuild...]
+
+Checking test coverage on macOS... (§8)
+
+Parsing report for “[Temporary]/AllTasks/Tests/AllTasksTests/AllTasksTests.swift”...
+
+Generating documentation... (§9)
+
+Parsing “AllTasks”...
+Processing API...
+Generating HTML...
+...AllTasks...
 
 Summary
 
@@ -62,8 +88,7 @@ Summary
 ✓ There are no compiler warnings for tvOS.
 ✓ Tests pass on macOS with Xcode.
 ✓ Test coverage is complete on macOS.
-✓ Generated documentation for “AllTasks”.
-✓ Documentation coverage is complete for “AllTasks”.
+✓ Generated documentation.
 
 “AllTasks” fails validation.
 2

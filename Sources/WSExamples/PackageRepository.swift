@@ -115,7 +115,7 @@ extension PackageRepository {
 
     public func refreshExamples(output: Command.Output) throws {
 
-        files: for url in try sourceFiles(output: output) {
+        files: for url in try sourceFiles(output: output) where ¬url.path.hasSuffix("Sources/WorkspaceConfiguration/Documentation/Examples.swift") {
 
             try autoreleasepool {
 

@@ -334,7 +334,7 @@ extension PackageRepository {
         try resolve(reportProgress: { output.print($0) })
         resetFileCache(debugReason: "resolve")
 
-        for url in try sourceFiles(output: output) where ¬url.absoluteString.hasSuffix("Sources/WorkspaceConfiguration/Documentation/DocumentationInheritance.swift") {
+        for url in try sourceFiles(output: output) where ¬url.path.hasSuffix("Sources/WorkspaceConfiguration/Documentation/DocumentationInheritance.swift") {
             try autoreleasepool {
 
                 if let type = FileType(url: url),

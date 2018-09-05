@@ -16,10 +16,116 @@
 
 import PackageDescription
 
+/// Workspace automates management of Swift projects.
+///
+/// > [Πᾶν ὅ τι ἐὰν ποιῆτε, ἐκ ψυχῆς ἐργάζεσθε, ὡς τῷ Κυρίῳ καὶ οὐκ ἀνθρώποις.](https://www.biblegateway.com/passage/?search=Colossians+3&version=SBLGNT;NIV)
+/// >
+/// > [Whatever you do, work from the heart, as working for the Lord and not for men.](https://www.biblegateway.com/passage/?search=Colossians+3&version=SBLGNT;NIV)
+/// >
+/// > ―⁧שאול⁩/Shaʼul
+///
+/// ### Features
+///
+/// - Provides rigorous validation:
+///     - Test coverage (→ `TestingConfiguration.enforceCoverage`)
+///     - Compiler warnings (→ `prohibitCompilerWarnings`)
+///     - Documentation coverage (→ `DocumentationConfiguration.enforceCoverage`)
+///     - Example validation (→ `Examples`)
+///     - Style proofreading, including [SwiftLint](https://github.com/realm/SwiftLint) (→ `ProofreadingConfiguration`)
+///     - Reminders (→ `manualWarnings`)
+///     - Continuous integration set‐up for [Travis CI](https://travis-ci.org) with the [Swift Version Manager](https://github.com/kylef/swiftenv) (→ `ContinuousIntegrationConfiguration.manage`)
+/// - Generates API documentation. (→ `DocumentationConfiguration.generate`)
+/// - Automates code maintenance:
+///     - Embedded resources (→ `PackageResources`)
+///     - Inherited documentation (→ `DocumentationInheritance`)
+///     - Xcode project generation (→ `XcodeConfiguration.manage`)
+/// - Automates open source details:
+///     - File headers (→ `FileHeaderConfiguration`)
+///     - Read‐me files (→ `ReadMeConfiguration`)
+///     - Licence notices (→ `LicenceConfiguration`)
+///     - Contributing instructions (→ `GitHubConfiguration`)
+/// - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
+/// - Manages projects for macOS, Linux, iOS, watchOS and tvOS.
+/// - Configurable (→ `WorkspaceConfiguration`)
+///
+/// ### The Workspace Workflow
+///
+/// (The following sample package is a real repository. You can use it to follow along.)
+///
+/// #### When the Repository Is Cloned
+///
+/// The need to hunt down workflow tools can deter contributors. On the other hand, including them in the repository causes a lot of clutter. To reduce both, when a project using Workspace is pulled, pushed, or cloned...
+///
+/// ```shell
+/// git clone https://github.com/SDGGiesbrecht/SamplePackage
+/// ```
+///
+/// ...only one small piece of Workspace comes with it: A short script called “Refresh” that comes in two variants, one for each operating system.
+///
+/// *Hmm... I wish I had more tools at my disposal... Hey! What if I...*
+///
+/// #### Refresh the Project
+///
+/// To refresh the project, double‐click the `Refresh` script for the corresponding operating system. (If you are on Linux and double‐clicking fails or opens a text file, see `Linux`.
+///
+/// `Refresh` opens a terminal window, and in it Workspace reports its actions while it sets the project folder up for development. (This may take a while the first time, but subsequent runs are faster.)
+///
+/// *This looks better. Let’s get coding!*
+///
+/// *[Add this... Remove that... Change something over here...]*
+///
+/// *...All done. I wonder if I broke anything while I was working? Hey! It looks like I can...*
+///
+/// #### Validate Changes
+///
+/// When the project seems ready for a push, merge, or pull request, validate the current state of the project by double‐clicking the `Validate` script.
+///
+/// `Validate` opens a terminal window and in it Workspace runs the project through a series of checks.
+///
+/// When it finishes, it prints a summary of which tests passed and which tests failed.
+///
+/// *Oops! I never realized that would happen...*
+///
+/// #### Summary
+///
+/// 1. `Refresh` before working.
+/// 2. `Validate` when it looks complete.
+///
+/// *Wow! That was so much easier than doing it all manually!*
+///
+/// ### Applying Workspace to a Project
+///
+/// To apply Workspace to a project, run the following command in the root of the project’s repository. (This requires a full install.
+///
+/// ```shell
+/// $ workspace refresh
+/// ```
+///
+/// By default, Workspace refrains from tasks which would involve modifying project files. Such tasks must be activated with a configuration file (→ `WorkspaceConfiguration`).
 let package = Package(
     name: "Workspace",
     products: [
-        /// The API used in configuration files.
+        // #documentation(WorkspaceConfiguration)
+        /// The root API used in configuration files.
+        ///
+        /// Workspace can be configured by placing a Swift file named `Workspace.swift` in the project root.
+        ///
+        /// The contents of a configuration file might look something like this:
+        ///
+        /// ```swift
+        /// import WorkspaceConfiguration
+        ///
+        /// /*
+        ///  Exernal packages can be imported with this syntax:
+        ///  import [module] // [url], [version], [product]
+        ///  */
+        /// import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
+        ///
+        /// let configuration = WorkspaceConfiguration()
+        /// configuration.optIntoAllTasks()
+        /// configuration.documentation.readMe.manage = true
+        /// configuration.documentation.readMe.shortProjectDescription["en"] = "This is just an example."
+        /// ```
         .library(name: "WorkspaceConfiguration", targets: ["WorkspaceConfiguration"]),
 
         /// Workspace.
@@ -203,7 +309,27 @@ let package = Package(
             .productItem(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
             ]),
 
-        // The API used in configuration files.
+        // #documentation(WorkspaceConfiguration)
+        /// The root API used in configuration files.
+        ///
+        /// Workspace can be configured by placing a Swift file named `Workspace.swift` in the project root.
+        ///
+        /// The contents of a configuration file might look something like this:
+        ///
+        /// ```swift
+        /// import WorkspaceConfiguration
+        ///
+        /// /*
+        ///  Exernal packages can be imported with this syntax:
+        ///  import [module] // [url], [version], [product]
+        ///  */
+        /// import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
+        ///
+        /// let configuration = WorkspaceConfiguration()
+        /// configuration.optIntoAllTasks()
+        /// configuration.documentation.readMe.manage = true
+        /// configuration.documentation.readMe.shortProjectDescription["en"] = "This is just an example."
+        /// ```
         .target(name: "WorkspaceConfiguration", dependencies: [
             "WSLocalizations",
             .productItem(name: "SDGControlFlow", package: "SDGCornerstone"),

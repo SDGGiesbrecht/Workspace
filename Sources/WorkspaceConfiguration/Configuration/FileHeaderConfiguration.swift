@@ -14,6 +14,10 @@
 
 /// Options related to file headers.
 ///
+/// ```shell
+/// $ workspace refresh file‐headers
+/// ```
+///
 /// A file header is a commented section at the top of each file in a project. Typical uses for file headers include:
 ///
 /// - Identifing which project the file belongs to.

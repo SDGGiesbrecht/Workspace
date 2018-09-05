@@ -13,6 +13,10 @@
  */
 
 /// Options related to GitHub.
+///
+/// ```shell
+/// $ workspace refresh github
+/// ```
 public struct GitHubConfiguration : Codable {
 
     /// Whether or not to manage the project’s GitHub configuration files.

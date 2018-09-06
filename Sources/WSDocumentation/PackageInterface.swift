@@ -383,9 +383,9 @@ internal struct PackageInterface {
         }
 
         // To home page.
-        try Redirect(target: String(developmentLocalization.directoryName) + "/index.html").contents.save(to: outputDirectory.appendingPathComponent("index.html"))
+        try Redirect(target: String(developmentLocalization._directoryName) + "/index.html").contents.save(to: outputDirectory.appendingPathComponent("index.html"))
         for localization in localizations {
-            let localizationDirectory = outputDirectory.appendingPathComponent(String(localization.directoryName))
+            let localizationDirectory = outputDirectory.appendingPathComponent(String(localization._directoryName))
             let redirectURL = localizationDirectory.appendingPathComponent("index.html")
             let pageURL = api.pageURL(in: outputDirectory, for: localization)
             if redirectURL ≠ pageURL {

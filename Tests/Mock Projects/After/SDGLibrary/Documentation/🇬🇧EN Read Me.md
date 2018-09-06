@@ -16,7 +16,7 @@
 
 macOS • Linux • iOS • watchOS • tvOS
 
-APIs: [Library](https://example.github.io/SDG/Library)
+[Documentation](https://example.github.io/SDG/%F0%9F%87%AC%F0%9F%87%A7EN)
 
 # SDG
 

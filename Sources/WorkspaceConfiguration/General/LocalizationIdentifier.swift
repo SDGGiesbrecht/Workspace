@@ -47,6 +47,10 @@ public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hash
         return ContentLocalization.icon(for: code)
     }
 
+    public var _directoryName: StrictString {
+        return icon ?? StrictString(code)
+    }
+
     // MARK: - Conversion
 
     public var _reasonableMatch: ContentLocalization? {

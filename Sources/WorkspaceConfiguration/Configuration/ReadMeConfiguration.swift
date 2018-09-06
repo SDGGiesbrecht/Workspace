@@ -122,7 +122,7 @@ public struct ReadMeConfiguration : Codable {
                 ]
             }
 
-            if let api = apiLinks(for: configuration, in: localization) {
+            if let api = apiLink(for: configuration, in: localization) {
                 readMe += [
                     api,
                     ""
@@ -254,7 +254,7 @@ public struct ReadMeConfiguration : Codable {
     /// Attempts to construct API links based on the specified configuration.
     ///
     /// The result will be `nil` if `documentationURL` is not specified or if the requested localization is not supported.
-    public static func apiLinks(for configuration: WorkspaceConfiguration, in localization: LocalizationIdentifier) -> StrictString? {
+    public static func apiLink(for configuration: WorkspaceConfiguration, in localization: LocalizationIdentifier) -> StrictString? {
 
         guard let baseURL = configuration.documentation.documentationURL,
             let provided = localization._reasonableMatch else {
@@ -264,16 +264,12 @@ public struct ReadMeConfiguration : Codable {
         let label: StrictString
         switch provided {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            label = "APIs:"
+            label = "Documentation"
         }
 
-        let links: [StrictString] = WorkspaceContext.current.manifest.productModules.map { module in
-            var link: StrictString = "[" + StrictString(module) + "]"
-            link += "(" + StrictString(baseURL.appendingPathComponent(module).absoluteString) + ")"
-            return link
-        }
-
-        return label + " " + StrictString(links.joined(separator: " • ".scalars))
+        var link: StrictString = "[" + label + "]("
+        link += StrictString(baseURL.appendingPathComponent(String(localization._directoryName)).absoluteString) + ")"
+        return link
     }
 
     // MARK: - Related Projects

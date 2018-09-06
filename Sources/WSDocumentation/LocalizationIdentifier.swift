@@ -24,8 +24,4 @@ extension LocalizationIdentifier {
         }
         return supported.textDirection
     }
-
-    internal var directoryName: StrictString {
-        return icon ?? StrictString(code)
-    }
 }

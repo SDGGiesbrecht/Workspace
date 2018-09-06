@@ -14,6 +14,10 @@
 
 /// Workspace can make symbols inherit their documentation.
 ///
+/// ```shell
+/// $ workspace refresh inherited‐documentation
+/// ```
+///
 /// It can be tedious re‐writing the same documentation over again. Workspace can make documentation comments re‐usable—even by dependent packages.
 ///
 /// - Note: Both Xcode and Workspace now do this automatically in many situations when the child symbol is left undocumented, such as protocol conformances, default implementations and subclass overrides. The explicit directives described here should only be used as a fall‐back in situations where the tools cannot deduce the parent symbol automatically.

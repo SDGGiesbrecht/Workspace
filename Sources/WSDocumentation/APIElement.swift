@@ -282,7 +282,7 @@ extension APIElement {
         return autoreleasepool {
 
             var links: [String: String] = [:]
-            var path = localization.directoryName + "/"
+            var path = localization._directoryName + "/"
 
             switch self {
             case let package as PackageAPI :

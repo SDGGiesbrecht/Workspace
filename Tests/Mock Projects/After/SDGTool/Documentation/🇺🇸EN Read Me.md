@@ -16,7 +16,7 @@
 
 macOS • Linux
 
-APIs: [Library](https://example.github.io/SDG/Library)
+[Documentation](https://example.github.io/SDG/%F0%9F%87%BA%F0%9F%87%B8EN)
 
 # SDG
 

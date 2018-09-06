@@ -37,8 +37,7 @@ internal class Page {
     private static func watermark(localization: LocalizationIdentifier) -> StrictString {
         let resolved = localization._bestMatch
 
-        // #workaround(workspace version 0.11.1, Until self‐generated documentation is live—it can then be localized too.)
-        let targetURL: StrictString = "https://github.com/SDGGiesbrecht/Workspace#workspace"
+        let targetURL: StrictString = "https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Workspace.html"
 
         let name: StrictString
         switch resolved {

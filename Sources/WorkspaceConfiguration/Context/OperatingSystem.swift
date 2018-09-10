@@ -27,13 +27,13 @@ public enum OperatingSystem : String, Codable, IterableEnumeration {
     /// Linux.
     case linux
 
-    /// iOS
+    /// iOS.
     case iOS
 
-    /// watchOS
+    /// watchOS.
     case watchOS
 
-    /// tvOS
+    /// tvOS.
     case tvOS
 
     // @workaround(Until automatic inheritance can bridge module boundaries.)

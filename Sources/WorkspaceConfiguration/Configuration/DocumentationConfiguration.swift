@@ -33,8 +33,6 @@ public struct DocumentationConfiguration : Codable {
     public var projectWebsite: URL?
 
     /// The root URL where Workspace‐generated API documentation is hosted.
-    ///
-    /// Specify the directory for the package, not for an individual module. Workspace will link to each module individually.
     public var documentationURL: URL?
 
     /// The URL of the project repository.

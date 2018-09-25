@@ -141,7 +141,7 @@ let package = Package(
     ],
     targets: [
         // The executable. (Multiple products duplicate this with localized names.)
-        .target(name: "WorkspaceTool", dependencies: [.targetItem(name: "WorkspaceLibrary")]),
+        .target(name: "WorkspaceTool", dependencies: [.target(name: "WorkspaceLibrary")]),
         // The umbrella library. (Shared by the various localized executables.)
         .target(name: "WorkspaceLibrary", dependencies: [
             "WSGeneralImports",

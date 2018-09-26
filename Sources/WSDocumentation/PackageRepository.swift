@@ -138,7 +138,7 @@ extension PackageRepository {
         var rootCSS = TextFile(mockFileWithContents: Resources.root, fileType: .css)
         rootCSS.header = ""
         try rootCSS.contents.save(to: outputDirectory.appendingPathComponent("CSS/Root.css"))
-        try Syntax.css.save(to: outputDirectory.appendingPathComponent("CSS/Swift.css"))
+        try SyntaxHighlighter.css.save(to: outputDirectory.appendingPathComponent("CSS/Swift.css"))
         var siteCSS = TextFile(mockFileWithContents: Resources.site, fileType: .css)
         siteCSS.header = ""
         try siteCSS.contents.save(to: outputDirectory.appendingPathComponent("CSS/Site.css"))

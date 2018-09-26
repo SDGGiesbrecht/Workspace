@@ -19,7 +19,7 @@ import SDGExternalProcess
 
 public enum TravisCI {
 
-    @_inlineable public static func keepAlive(during task: () throws -> Void) rethrows {
+    @inlinable public static func keepAlive(during task: () throws -> Void) rethrows {
 
         var complete = false
         if ProcessInfo.isInContinuousIntegration {

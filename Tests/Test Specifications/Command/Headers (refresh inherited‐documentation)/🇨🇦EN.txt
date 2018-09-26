@@ -2,5 +2,5 @@ $ workspace refresh inherited‐documentation •no‐colour
 
 Refreshing inherited documentation...
 
-$ swift package resolve
+[$ swift...]
 0

@@ -23,7 +23,7 @@ extension PackageRepository {
     public func proofread(reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
         let status = ProofreadingStatus(reporter: reporter)
 
-        let activeRules = try configuration(output: output).proofreading.rules
+        let activeRules = try configuration(output: output).proofreading.rules.sorted()
 
         for url in try sourceFiles(output: output)
             where FileType(url: url) ≠ nil

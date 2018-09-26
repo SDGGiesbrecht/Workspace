@@ -52,7 +52,7 @@ internal class SymbolPage : Page {
         let adjustedSymbolLinks = symbolLinks.mapValues { String(pathToSiteRoot) + $0 }
 
         var content: [StrictString] = []
-        content.append(SymbolPage.generateDescriptionSection(symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks, status: status))
+        content.append(SymbolPage.generateDescriptionSection(symbol: symbol, navigationPath: navigationPath, localization: localization, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks, status: status))
         content.append(SymbolPage.generateDeclarationSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks, status: status))
         content.append(SymbolPage.generateDiscussionSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks, status: status))
 
@@ -109,10 +109,10 @@ internal class SymbolPage : Page {
         return nil
     }
 
-    private static func generateDescriptionSection(symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
+    private static func generateDescriptionSection(symbol: APIElement, navigationPath: [APIElement], localization: LocalizationIdentifier, packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
         if let documentation = symbol.documentation,
             let description = documentation.descriptionSection {
-                return HTMLElement("div", attributes: ["class": "description"], contents: StrictString(description.renderedHTML(internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)), inline: false).source
+            return HTMLElement("div", attributes: ["class": "description"], contents: StrictString(description.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)), inline: false).source
         }
         if ¬(symbol is ExtensionAPI) {
             status.reportMissingDescription(symbol: symbol, navigationPath: navigationPath)
@@ -168,7 +168,7 @@ internal class SymbolPage : Page {
             HTMLElement("h2", contents: discussionHeading, inline: true).source
         ]
         for paragraph in discussion {
-            let rendered = StrictString(paragraph.renderedHTML(internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
+            let rendered = StrictString(paragraph.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
             if rendered.contains("<h1>".scalars) ∨ rendered.contains("<h2>".scalars) {
                 status.reportExcessiveHeading(symbol: symbol, navigationPath: navigationPath)
             }
@@ -500,7 +500,7 @@ internal class SymbolPage : Page {
             let target = pathToSiteRoot + child.relativePagePath[localization]!
             entry.append(HTMLElement("a", attributes: ["href": target], contents: name, inline: true).source)
             if let description = child.documentation?.descriptionSection {
-                entry.append(StrictString(description.renderedHTML(internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)))
+                entry.append(StrictString(description.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)))
             }
             sectionContents.append(HTMLElement("div", attributes: ["class": "child"], contents: entry.joinedAsLines(), inline: false).source)
         }

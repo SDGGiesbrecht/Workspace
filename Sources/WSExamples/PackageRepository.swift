@@ -127,7 +127,7 @@ extension PackageRepository {
                     var file = try TextFile(alreadyAt: url)
 
                     var searchIndex = file.contents.scalars.startIndex
-                    while let match = file.contents.scalars.firstMatch(for: AlternativePatterns(PackageRepository.exampleDirectivePatterns), in: min(searchIndex, file.contents.scalars.endIndex) ..< file.contents.scalars.endIndex) {
+                    while let match = file.contents.scalars[min(searchIndex, file.contents.scalars.endIndex) ..< file.contents.scalars.endIndex].firstMatch(for: AlternativePatterns(PackageRepository.exampleDirectivePatterns)) {
                         searchIndex = match.range.upperBound
 
                         guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),
@@ -160,8 +160,8 @@ extension PackageRepository {
 
                                 var countingExampleIndex = 0
                                 var searchIndex = commentValue.scalars.startIndex
-                                exampleSearch: while let startRange = commentValue.scalars.firstMatch(for: "```".scalars, in: searchIndex ..< commentValue.scalars.endIndex)?.range,
-                                    let endRange = commentValue.scalars.firstMatch(for: "```".scalars, in: startRange.upperBound ..< commentValue.scalars.endIndex)?.range {
+                                exampleSearch: while let startRange = commentValue.scalars[searchIndex ..< commentValue.scalars.endIndex].firstMatch(for: "```".scalars)?.range,
+                                    let endRange = commentValue.scalars[startRange.upperBound ..< commentValue.scalars.endIndex].firstMatch(for: "```".scalars)?.range {
 
                                         let exampleRange = startRange.lowerBound ..< endRange.upperBound
 

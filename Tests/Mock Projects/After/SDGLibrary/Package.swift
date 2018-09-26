@@ -1,4 +1,4 @@
-// swift-tools-version:4.0
+// swift-tools-version:4.2
 
 /*
  Package.swift
@@ -29,8 +29,8 @@ let package = Package(
     targets: [
         /// A module.
         .target(name: "Library", dependencies: [
-            .productItem(name: "Dependency", package: "Dependency")
+            .product(name: "Dependency", package: "Dependency")
             ]),
-        .testTarget(name: "SDGTests", dependencies: [.targetItem(name: "Library")])
+        .testTarget(name: "SDGTests", dependencies: [.target(name: "Library")])
     ]
 )

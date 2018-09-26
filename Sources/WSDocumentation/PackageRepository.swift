@@ -346,7 +346,7 @@ extension PackageRepository {
                     var file = try TextFile(alreadyAt: url)
 
                     var searchIndex = file.contents.scalars.startIndex
-                    while let match = file.contents.scalars.firstMatch(for: AlternativePatterns(PackageRepository.documentationDirectivePatterns), in: min(searchIndex, file.contents.scalars.endIndex) ..< file.contents.scalars.endIndex) {
+                    while let match = file.contents.scalars[min(searchIndex, file.contents.scalars.endIndex) ..< file.contents.scalars.endIndex].firstMatch(for: AlternativePatterns(PackageRepository.documentationDirectivePatterns)) {
                         searchIndex = match.range.upperBound
 
                         guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),

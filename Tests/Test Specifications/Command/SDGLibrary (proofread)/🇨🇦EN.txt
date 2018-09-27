@@ -38,6 +38,7 @@ Tests/SDGTests/SDGTests.swift
 
 [$ swiftlint...]
 
+
 ✓ Source code passes proofreading.
 
 

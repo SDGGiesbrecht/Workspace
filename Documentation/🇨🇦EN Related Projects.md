@@ -16,6 +16,8 @@
 
 ### [Workspace](https://github.com/SDGGiesbrecht/Workspace)
 
+Workspace automates management of Swift projects.
+
 ### [SDGSwift](https://github.com/SDGGiesbrecht/SDGSwift)
 
 ### [SDGInterface](https://github.com/SDGGiesbrecht/SDGInterface)

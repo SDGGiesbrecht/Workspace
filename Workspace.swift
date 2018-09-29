@@ -136,5 +136,11 @@ public let configuration: WorkspaceConfiguration = {
 
     configuration._applySDGOverrides()
     configuration._validateSDGStandards(requireExamples: false)
+
+    #if os(Linux)
+    // #workaround(SwiftSyntax 0.40200.0, Compiler warnings on Linux.)
+    configuration.testing.prohibitCompilerWarnings = false
+    #endif
+
     return configuration
 }()

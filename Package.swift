@@ -134,9 +134,9 @@ let package = Package(
         .executable(name: "arbeitsbereich", targets: ["WorkspaceTool"])
     ],
     dependencies: [
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 11, 0))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 4, 0))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 3, 2))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 11, 1))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 4, 1))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 3, 3))),
         // #workaround(This should not be necessary.)
         .package(url: "https://github.com/apple/swift\u{2D}package\u{2D}manager", .exact(Version(0, 3, 0)))
     ],
@@ -404,3 +404,5 @@ let package = Package(
         ], path: "", sources: ["Workspace.swift"])
     ]
 )
+
+// #workaround(Swift 4.2, Spaces can be restored to directory names when SR‐8803 is fixed. https://bugs.swift.org/browse/SR-8803)

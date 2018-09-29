@@ -93,7 +93,7 @@ internal class Page {
         if let specified = symbolType {
             symbolTypeLabel = HTMLElement("div", attributes: ["class": "symbol‐type"], contents: specified, inline: true).source
         } else {
-            symbolTypeLabel = ""
+            symbolTypeLabel = "" // @exempt(from: tests) Unreachable yet.
         }
         mutable.replaceMatches(for: "[*symbol type*]", with: symbolTypeLabel)
 

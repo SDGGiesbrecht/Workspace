@@ -251,7 +251,7 @@ public enum ContinuousIntegrationJob : Int, IterableEnumeration {
 
         switch operatingSystem {
         case .macOS:
-            result.append("      osx_image: xcode9.4")
+            result.append("      osx_image: xcode10")
         case .linux:
             result.append("      dist: trusty")
         case .iOS, .watchOS, .tvOS:
@@ -275,7 +275,7 @@ public enum ContinuousIntegrationJob : Int, IterableEnumeration {
 
         if operatingSystem == .linux {
             result.append(contentsOf: [
-                commandEntry("export SWIFT_VERSION=4.1.2"),
+                commandEntry("export SWIFT_VERSION=4.2"),
                 commandEntry("eval \u{22}$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\u{22}")
                 ])
         }

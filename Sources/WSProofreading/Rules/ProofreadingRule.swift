@@ -16,7 +16,7 @@ import WSGeneralImports
 
 import WSProject
 
-extension ProofreadingRule {
+extension ProofreadingRule : Comparable {
 
     internal var parser: Rule.Type {
         switch self {
@@ -61,5 +61,11 @@ extension ProofreadingRule {
         case .parameterGrouping:
             return ParameterGrouping.self
         }
+    }
+
+    // MARK: - Comparable
+
+    public static func < (lhs: ProofreadingRule, rhs: ProofreadingRule) -> Bool {
+        return lhs.rawValue.scalars.lexicographicallyPrecedes(rhs.rawValue.scalars)
     }
 }

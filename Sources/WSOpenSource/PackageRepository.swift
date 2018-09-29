@@ -81,7 +81,7 @@ extension PackageRepository {
                         let package = try PackageRepository.relatedPackage(Package(url: url), output: output)
                         let name: StrictString
                         if let packageName = try? package.projectName() {
-                            name = packageName
+                            name = packageName // @exempt(from: tests) False positive in Xcode 10.
                         } else {
                             // @exempt(from: tests) Only reachable with a non‐package repository.
                             name = StrictString(url.lastPathComponent)
@@ -94,7 +94,7 @@ extension PackageRepository {
 
                         if let configuration = try? package.configuration(output: output),
                             let description = configuration.documentation.readMe.shortProjectDescription[localization] {
-                            markdown += [
+                            markdown += [ // @exempt(from: tests) False positive in Xcode 10.
                                 "",
                                 description
                             ]

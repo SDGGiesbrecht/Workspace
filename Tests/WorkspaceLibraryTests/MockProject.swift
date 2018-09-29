@@ -166,6 +166,11 @@ extension PackageRepository {
                                 any,
                                 LiteralPattern("\n\n".scalars)
                                 ]), with: "[$ swift...]\n\n".scalars)
+                            output.scalars.replaceMatches(for: CompositePattern([
+                                LiteralPattern("$ swift ".scalars),
+                                any,
+                                LiteralPattern("\n0".scalars)
+                                ]), with: "[$ swift...]\n0".scalars)
 
                             // Xcode order varies.
                             output.scalars.replaceMatches(for: CompositePattern([

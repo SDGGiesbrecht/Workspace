@@ -138,7 +138,7 @@ extension PackageRepository {
         var rootCSS = TextFile(mockFileWithContents: Resources.root, fileType: .css)
         rootCSS.header = ""
         try rootCSS.contents.save(to: outputDirectory.appendingPathComponent("CSS/Root.css"))
-        try Syntax.css.save(to: outputDirectory.appendingPathComponent("CSS/Swift.css"))
+        try SyntaxHighlighter.css.save(to: outputDirectory.appendingPathComponent("CSS/Swift.css"))
         var siteCSS = TextFile(mockFileWithContents: Resources.site, fileType: .css)
         siteCSS.header = ""
         try siteCSS.contents.save(to: outputDirectory.appendingPathComponent("CSS/Site.css"))
@@ -346,7 +346,7 @@ extension PackageRepository {
                     var file = try TextFile(alreadyAt: url)
 
                     var searchIndex = file.contents.scalars.startIndex
-                    while let match = file.contents.scalars.firstMatch(for: AlternativePatterns(PackageRepository.documentationDirectivePatterns), in: min(searchIndex, file.contents.scalars.endIndex) ..< file.contents.scalars.endIndex) {
+                    while let match = file.contents.scalars[min(searchIndex, file.contents.scalars.endIndex) ..< file.contents.scalars.endIndex].firstMatch(for: AlternativePatterns(PackageRepository.documentationDirectivePatterns)) {
                         searchIndex = match.range.upperBound
 
                         guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),

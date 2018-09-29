@@ -34,7 +34,7 @@ extension Warning {
             let marker = ("#\(localizedTrigger)(", ")")
 
             var index = file.contents.scalars.startIndex
-            while let match = file.contents.scalars.firstNestingLevel(startingWith: marker.0.scalars, endingWith: marker.1.scalars, in: index ..< file.contents.scalars.endIndex) {
+            while let match = file.contents.scalars[index ..< file.contents.scalars.endIndex].firstNestingLevel(startingWith: marker.0.scalars, endingWith: marker.1.scalars) {
                 index = match.container.range.upperBound
 
                 var details = StrictString(match.contents.contents)

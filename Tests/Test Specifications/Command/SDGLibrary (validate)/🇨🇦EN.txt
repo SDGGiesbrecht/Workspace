@@ -42,6 +42,7 @@ Tests/SDGTests/SDGTests.swift
 
 [$ swiftlint...]
 
+
 Checking build for macOS with the Swift Package Manager... (§2)
 
 [$ swift...]

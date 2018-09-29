@@ -23,7 +23,7 @@ internal class SwiftLint : SwiftPackage {
 
     // MARK: - Static Properties
 
-    internal static let `default` = SwiftLint(version: Version(0, 25, 1))
+    internal static let `default` = SwiftLint(version: Version(0, 27, 0))
 
     // MARK: - Initialization
 

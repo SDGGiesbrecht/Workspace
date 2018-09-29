@@ -119,7 +119,7 @@ extension Workspace.Validate {
 
                 let state = validationStatus.newSection()
 
-                output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in // @exempt(from: tests)
                     switch localization {
                     case .englishCanada:
                         return "Validating project state..." + state.anchor
@@ -137,7 +137,7 @@ extension Workspace.Validate {
                         }
                     }))
                 } else {
-                    validationStatus.passStep(message: UserFacing({ localization in
+                    validationStatus.passStep(message: UserFacing({ localization in // @exempt(from: tests)
                         switch localization {
                         case .englishCanada:
                             return "The project is up to date."

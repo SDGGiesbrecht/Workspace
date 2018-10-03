@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme
+   version = "1.3">
+   <BuildAction>
+      <BuildActionEntries>
+         <BuildActionEntry>
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "WORKSPACE_PROOFREAD_TARGET"
+               BuildableName = "Proofread"
+               BlueprintName = "Proofread"
+               ReferencedContainer = "container:[*project*]">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
+   </BuildAction>
+</Scheme>

@@ -108,6 +108,12 @@ extension PackageRepository {
             }
 
             try project.writeChanges(for: self, output: output)
+
+            var scheme = try TextFile(possiblyAt: projectBundle.appendingPathComponent("/xcshareddata/xcschemes/Proofread.xcscheme"))
+            var schemeDefinition = Resources.proofreadScheme
+            schemeDefinition.replaceMatches(for: "[*project*]", with: projectBundle.lastPathComponent)
+            scheme.contents = schemeDefinition
+            try scheme.writeChanges(for: self, output: output)
         }
     }
 

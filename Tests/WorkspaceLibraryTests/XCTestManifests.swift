@@ -54,7 +54,6 @@ extension InternalTests {
 }
 
 #if !os(macOS)
-// MARK: - #if !os(macOS)
 public func __allTests() -> [XCTestCaseEntry] {
     return [
         testCase(APITests.__allTests),

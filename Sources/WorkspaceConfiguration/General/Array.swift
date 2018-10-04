@@ -13,7 +13,6 @@
  */
 
 extension Array where Element : StringFamily {
-    // MARK: - where Element : StringFamily
 
     /// Joins an array of strings so that each entry in the array is a line of the string.
     public func joinedAsLines() -> Element {

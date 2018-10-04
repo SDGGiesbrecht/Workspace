@@ -290,7 +290,6 @@ public enum ContinuousIntegrationJob : Int, IterableEnumeration {
 }
 
 extension Optional where Wrapped == ContinuousIntegrationJob {
-    // MARK: - where Wrapped == ContinuousIntegrationJob
 
     public func includes(job: ContinuousIntegrationJob) -> Bool {
         switch self {

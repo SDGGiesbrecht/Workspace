@@ -29,7 +29,6 @@ extension PackageRepository {
     })
 
     #if !os(Linux)
-    // MARK: - #if !os(Linux)
 
     private static let proofreadTargetName = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {

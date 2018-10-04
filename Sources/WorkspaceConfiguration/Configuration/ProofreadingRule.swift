@@ -15,11 +15,14 @@
 import SDGControlFlow
 
 /// A proofreading rule.
-public enum ProofreadingRule : String, Codable, IterableEnumeration {
+public enum ProofreadingRule : String, CaseIterable, Codable {
 
     // MARK: - Cases
 
     // ••••••• Deprecation •••••••
+
+    /// Catches deprecated condition documentation.
+    case deprecatedConditionDocumentation
 
     /// Catches deprecated warnings.
     case deprecatedWarnings
@@ -104,12 +107,6 @@ public enum ProofreadingRule : String, Codable, IterableEnumeration {
 
     // ••••••• Documentation •••••••
 
-    /// Requires extension constraints to be documented.
-    case documentationOfExtensionConstraints
-
-    /// Requires compilation conditions to be documented.
-    case documentationOfCompilationConditions
-
     /// Requires Markdown code blocks to specify a language.
     case syntaxColouring
 
@@ -129,42 +126,12 @@ public enum ProofreadingRule : String, Codable, IterableEnumeration {
     /// Requires documented parameters to be grouped.
     case parameterGrouping
 
-    // @workaround(Until automatic inheritance can bridge module boundaries.)
-    /// All cases.
-    public static let cases: [ProofreadingRule] = [
-        .deprecatedWarnings,
-        .deprecatedTestExemptions,
-        .deprecatedInheritanceDirectives,
-        .deprecatedExampleDirectives,
-        .deprecatedGitManagement,
-        .deprecatedConfiguration,
-        .deprecatedLinuxDocumentation,
-
-        .manualWarnings,
-        .missingImplementation,
-        .workaroundReminders,
-
-        .compatibilityCharacters,
-        .autoindentResilience,
-        .marks,
-
-        .documentationOfExtensionConstraints,
-        .documentationOfCompilationConditions,
-        .syntaxColouring,
-
-        .unicode,
-
-        .colonSpacing,
-        .calloutCasing,
-        .parameterGrouping
-    ]
-
     // MARK: - Properties
 
     /// The category the rule belongs to.
     public var category: Category {
         switch self {
-        case .deprecatedWarnings, .deprecatedTestExemptions, .deprecatedInheritanceDirectives, .deprecatedExampleDirectives, .deprecatedGitManagement, .deprecatedConfiguration, .deprecatedLinuxDocumentation:
+        case .deprecatedConditionDocumentation, .deprecatedWarnings, .deprecatedTestExemptions, .deprecatedInheritanceDirectives, .deprecatedExampleDirectives, .deprecatedGitManagement, .deprecatedConfiguration, .deprecatedLinuxDocumentation:
             return .deprecation
 
         case .manualWarnings,
@@ -177,9 +144,7 @@ public enum ProofreadingRule : String, Codable, IterableEnumeration {
              .marks:
             return .functionality
 
-        case .documentationOfExtensionConstraints,
-             .documentationOfCompilationConditions,
-             .syntaxColouring:
+        case .syntaxColouring:
             return .documentation
 
         case .unicode:

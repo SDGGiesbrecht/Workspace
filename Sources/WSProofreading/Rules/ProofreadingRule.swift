@@ -20,6 +20,8 @@ extension ProofreadingRule : Comparable {
 
     internal var parser: Rule.Type {
         switch self {
+        case .deprecatedConditionDocumentation:
+            return DeprecatedConditionDocumentation.self
         case .deprecatedWarnings:
             return DeprecatedWarnings.self
         case .deprecatedTestExemptions:
@@ -46,10 +48,6 @@ extension ProofreadingRule : Comparable {
             return AutoindentResilience.self
         case .marks:
             return Marks.self
-        case .documentationOfExtensionConstraints:
-            return DocumentationOfExtensionConstraints.self
-        case .documentationOfCompilationConditions:
-            return DocumentationOfCompilationConditions.self
         case .syntaxColouring:
             return SyntaxColouring.self
         case .unicode:

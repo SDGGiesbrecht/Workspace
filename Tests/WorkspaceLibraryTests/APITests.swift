@@ -104,7 +104,7 @@ class APITests : TestCase {
         let configuration = WorkspaceConfiguration()
         configuration.proofreading.rules.remove(.colonSpacing)
         configuration.proofreading.rules.remove(.unicode)
-        for rule in ProofreadingRule.cases {
+        for rule in ProofreadingRule.allCases {
             _ = rule.category
         }
         configuration.licence.manage = true

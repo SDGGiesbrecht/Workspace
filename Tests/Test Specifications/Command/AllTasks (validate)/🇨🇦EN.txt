@@ -34,10 +34,6 @@ final class AllTasksTests: XCTestCase {
 final class AllTasksTests : XCTestCase {
 
 Tests/AllTasksTests/XCTestManifests.swift
-Line 14
-Undocumented compilation condition. Add “// MARK: - #if...” on the next line. (documentationOfCompilationConditions)
-#if !os(macOS)
-
 Tests/LinuxMain.swift
 
 [$ swiftlint...]

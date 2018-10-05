@@ -29,10 +29,6 @@ U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (un
 
 README.md
 Sources/CheckedInDocumentation/CheckedInDocumentation.swift
-Line 67
-Undocumented compilation condition. Add “// MARK: - #if...” on the next line. (documentationOfCompilationConditions)
-#if canImport(AppKit)
-
 Tests/CheckedInDocumentationTests/CheckedInDocumentationTests.swift
 Line 4
 Colons should be preceded by spaces when denoting protocols or superclasses. (colonSpacing)
@@ -40,10 +36,6 @@ final class CheckedInDocumentationTests: XCTestCase {
 final class CheckedInDocumentationTests : XCTestCase {
 
 Tests/CheckedInDocumentationTests/XCTestManifests.swift
-Line 3
-Undocumented compilation condition. Add “// MARK: - #if...” on the next line. (documentationOfCompilationConditions)
-#if !os(macOS)
-
 Tests/LinuxMain.swift
 
 [$ swiftlint...]

@@ -4,7 +4,6 @@ Normalizing files...
 
 Writing to “Sources/BadStyle/Normalization/Decomposition.swift”...
 Writing to “Sources/BadStyle/Normalization/EmptyIndents.swift”...
-Writing to “Sources/BadStyle/Rules/Documentation/ExtensionConstraints.swift”...
 Writing to “Sources/BadStyle/Rules/Functionality/SyntaxColouring.swift”...
 Writing to “Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift”...
 
@@ -66,6 +65,10 @@ This syntax is no longer recognized. Use “#documentation(This inheritance styl
 // #documentation(This inheritance style is deprecated.)
 
 Sources/BadStyle/Rules/Deprecation/LinuxDocumentation.swift
+Line 4
+Such headings are no longer necessary for the generated documentation. (deprecatedConditionDocumentation)
+    // MARK: - #if os(macOS)
+
 Line 3
 Special compilation conditions are no longer necessary for Linux documentation. (deprecatedLinuxDocumentation)
 #if os(macOS) || LinuxDocs // Deprecated; should trigger.
@@ -86,14 +89,14 @@ This syntax is no longer recognized. Use “#workaround” instead. (deprecatedW
 // [_Workaround: This workaround style is deprecated._]
 
 Sources/BadStyle/Rules/Documentation/CompilationConditions.swift
-Line 3
-Undocumented compilation condition. Add “// MARK: - #if...” on the next line. (documentationOfCompilationConditions)
-#if macOS // Should be documented; trigger.
+Line 10
+Such headings are no longer necessary for the generated documentation. (deprecatedConditionDocumentation)
+// MARK: - #if os(Linux) (Warn: This header is no longer needed.)
 
 Sources/BadStyle/Rules/Documentation/ExtensionConstraints.swift
-Line 3
-Undocumented extension constraint. Add “// MARK: - where...” on the next line. (documentationOfExtensionConstraints)
-extension Equatable where Self : Comparable { // Undocumented; should trigger.
+Line 10
+Such headings are no longer necessary for the generated documentation. (deprecatedConditionDocumentation)
+    // MARK: - where Self : Comparable (Warn. The heading is no longer necessary.)
 
 Sources/BadStyle/Rules/Documentation/SyntaxColouring.swift
 Line 7

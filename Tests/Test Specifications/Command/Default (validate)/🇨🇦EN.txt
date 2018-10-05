@@ -36,10 +36,6 @@ final class DefaultTests: XCTestCase {
 final class DefaultTests : XCTestCase {
 
 Tests/DefaultTests/XCTestManifests.swift
-Line 3
-Undocumented compilation condition. Add “// MARK: - #if...” on the next line. (documentationOfCompilationConditions)
-#if !canImport(ObjectiveC)
-
 Tests/LinuxMain.swift
 
 [$ swiftlint...]

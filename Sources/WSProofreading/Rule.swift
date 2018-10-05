@@ -56,15 +56,6 @@ extension Rule {
         return file.contents.lines[file.contents.lines.index(before: line.lowerBound)].line
     }
 
-    internal static func line(after match: PatternMatch<String.ScalarView>, in file: TextFile) -> String.ScalarView.SubSequence? {
-        let line = lineRange(for: match, in: file)
-        guard line.upperBound ≠ file.contents.lines.endIndex else {
-            // @exempt(from: tests) Would require additional SwiftLint violations (final empty line), whose order is not deterministic.
-            return nil
-        }
-        return file.contents.lines[line.upperBound].line
-    }
-
     internal static func fromStartOfLine(to match: PatternMatch<String.ScalarView>, in file: TextFile) -> String.ScalarView.SubSequence {
         let line = lineRange(for: match, in: file)
         let range = line.sameRange(in: file.contents.scalars).lowerBound ..< match.range.lowerBound
@@ -83,9 +74,5 @@ extension Rule {
 
     internal static func upToEndOfFile(from match: PatternMatch<String.ScalarView>, in file: TextFile) -> String.ScalarView.SubSequence {
         return file.contents.scalars[match.range.upperBound...]
-    }
-
-    internal static func from(_ match: PatternMatch<String.ScalarView>, toNext searchTerm: StrictString, in file: TextFile) -> String.ScalarView.SubSequence? {
-        return file.contents.scalars[match.range.upperBound...].prefix(upTo: String(searchTerm).scalars)?.contents
     }
 }

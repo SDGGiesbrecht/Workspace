@@ -117,7 +117,7 @@ public struct ReadMeConfiguration : Codable {
 
             if let provided = localization._reasonableMatch {
                 readMe += [
-                    OperatingSystem.cases.filter({ configuration.supportedOperatingSystems.contains($0) }).map({ $0.isolatedName(for: provided) }).joined(separator: " • "),
+                    OperatingSystem.allCases.filter({ configuration.supportedOperatingSystems.contains($0) }).map({ $0.isolatedName(for: provided) }).joined(separator: " • "),
                     ""
                 ]
             }

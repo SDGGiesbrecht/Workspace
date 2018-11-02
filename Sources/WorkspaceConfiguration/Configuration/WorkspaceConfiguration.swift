@@ -60,7 +60,7 @@ public final class WorkspaceConfiguration : Configuration {
     /// The operating systems the project supports.
     ///
     /// The default assumes support for all operating systems.
-    public var supportedOperatingSystems: Set<OperatingSystem> = Set(OperatingSystem.cases)
+    public var supportedOperatingSystems: Set<OperatingSystem> = Set(OperatingSystem.allCases)
 
     /// Options related to Git.
     public var git: GitConfiguration = GitConfiguration()

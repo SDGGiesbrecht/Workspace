@@ -17,7 +17,7 @@ import SDGControlFlow
 import WSLocalizations
 
 /// An operating system.
-public enum OperatingSystem : String, Codable, IterableEnumeration {
+public enum OperatingSystem : String, Codable, CaseIterable {
 
     // MARK: - Cases
 
@@ -35,16 +35,6 @@ public enum OperatingSystem : String, Codable, IterableEnumeration {
 
     /// tvOS.
     case tvOS
-
-    // @workaround(Until automatic inheritance can bridge module boundaries.)
-    /// A list of all cases.
-    public static let cases: [OperatingSystem] = [
-        .macOS,
-        .linux,
-        .iOS,
-        .watchOS,
-        .tvOS
-    ]
 
     // MARK: - Properties
 

@@ -18,7 +18,7 @@ import WSGeneralImports
 import WorkspaceProjectConfiguration
 import WSProject
 
-internal enum Script : Int, IterableEnumeration {
+internal enum Script : Int, CaseIterable {
 
     // MARK: - Cases
 
@@ -55,7 +55,7 @@ internal enum Script : Int, IterableEnumeration {
     }
     internal static let deprecatedFileNames: [StrictString] = {
         var deprecated: Set<StrictString> = []
-        for script in Script.cases {
+        for script in Script.allCases {
             if let pre0_1_1 = script.deprecatedPre0_1_1FileName,
                 pre0_1_1 ≠ script.fileName {
                 deprecated.insert(pre0_1_1)

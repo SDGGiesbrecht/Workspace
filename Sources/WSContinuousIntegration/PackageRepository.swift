@@ -36,7 +36,7 @@ extension PackageRepository {
             "  include:"
         ]
 
-        for job in ContinuousIntegrationJob.cases where try job.isRequired(by: self, output: output)
+        for job in ContinuousIntegrationJob.allCases where try job.isRequired(by: self, output: output)
             ∨ (job ∈ ContinuousIntegrationJob.simulatorJobs ∧ isWorkspaceProject()) { // Simulator is unavailable during normal test.
 
                 travisConfiguration.append(contentsOf: try job.script(configuration: configuration(output: output)))

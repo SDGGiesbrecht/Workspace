@@ -41,7 +41,7 @@ internal struct SyntaxColouring : Rule {
             let indent = String(fromStartOfLine(to: match, in: file))
 
             var isOdd = occurrenceCount[indent] ?? false
-            isOdd¬=
+            isOdd.toggle()
             occurrenceCount[indent] = isOdd
 
             if isOdd ∧ file.contents.scalars[match.range.upperBound...].hasPrefix("\n".scalars) {

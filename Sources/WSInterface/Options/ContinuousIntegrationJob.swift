@@ -40,7 +40,7 @@ extension ContinuousIntegrationJob {
         }
     })
 
-    private static let argument = ArgumentType.enumeration(name: argumentTypeName, cases: ContinuousIntegrationJob.cases.map { (job: ContinuousIntegrationJob) -> (value: ContinuousIntegrationJob, label: UserFacing<StrictString, InterfaceLocalization>) in
+    private static let argument = ArgumentType.enumeration(name: argumentTypeName, cases: ContinuousIntegrationJob.allCases.map { (job: ContinuousIntegrationJob) -> (value: ContinuousIntegrationJob, label: UserFacing<StrictString, InterfaceLocalization>) in
         return (value: job, label: job.argumentName)
     })
 }

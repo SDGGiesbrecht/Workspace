@@ -29,7 +29,7 @@ extension Warning {
             return
         }
 
-        for localizedTrigger in InterfaceLocalization.cases.map({ trigger.resolved(for: $0) }) {
+        for localizedTrigger in InterfaceLocalization.allCases.map({ trigger.resolved(for: $0) }) {
 
             let marker = ("#\(localizedTrigger)(", ")")
 

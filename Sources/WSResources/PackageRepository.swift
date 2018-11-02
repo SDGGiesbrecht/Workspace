@@ -44,7 +44,7 @@ extension PackageRepository {
 
     private func resourceDirectories() -> [URL] {
 
-        return InterfaceLocalization.cases.map { (localization) in
+        return InterfaceLocalization.allCases.map { (localization) in
             return location.appendingPathComponent(String(PackageRepository.resourceDirectoryName.resolved(for: localization)))
         }
     }

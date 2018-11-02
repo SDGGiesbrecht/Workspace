@@ -19,7 +19,6 @@ extension Command.Output {
     private enum MockLocalization : String, InputLocalization {
         case english = "en"
         static let fallbackLocalization: MockLocalization = .english
-        static let cases: [MockLocalization] = [.english]
     }
 
     static var mock: Command.Output = {

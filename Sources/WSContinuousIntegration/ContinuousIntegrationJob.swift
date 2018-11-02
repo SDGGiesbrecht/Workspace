@@ -19,7 +19,7 @@ import WSGeneralImports
 import WSProject
 import WSDocumentation
 
-public enum ContinuousIntegrationJob : Int, IterableEnumeration {
+public enum ContinuousIntegrationJob : Int, CaseIterable {
 
     // MARK: - Static Properties
 

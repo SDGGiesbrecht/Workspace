@@ -19,11 +19,7 @@ public enum InterfaceLocalization : String, InputLocalization, Localization {
     // MARK: - Cases
 
     case englishCanada = "en\u{2D}CA"
-    // Do not forget to register new localizations in “.Workspace Configuration.txt”, and to localize the configuration API.
-
-    public static let cases: [InterfaceLocalization] = [
-        .englishCanada
-    ]
+    // Do not forget to register new localizations in “Workspace.swift”, and to localize the configuration API.
 
     // MARK: - Localization
 

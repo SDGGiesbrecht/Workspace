@@ -73,7 +73,7 @@ extension PackageRepository {
             source += "internal enum " + enumName + " {}\n"
 
             var registeredAliases: Set<StrictString> = [enumName]
-            for alias in InterfaceLocalization.cases.map({ PackageRepository.Target.resourceNamespace.resolved(for: $0) }) where alias ∉ registeredAliases {
+            for alias in InterfaceLocalization.allCases.map({ PackageRepository.Target.resourceNamespace.resolved(for: $0) }) where alias ∉ registeredAliases {
                 registeredAliases.insert(alias)
                 source += "internal typealias "
                 source += alias

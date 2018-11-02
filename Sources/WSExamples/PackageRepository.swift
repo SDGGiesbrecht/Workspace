@@ -42,7 +42,7 @@ extension PackageRepository {
     })
 
     private static var exampleDeclarationPatterns: [CompositePattern<Unicode.Scalar>] {
-        return InterfaceLocalization.cases.map { localization in
+        return InterfaceLocalization.allCases.map { localization in
             return CompositePattern<Unicode.Scalar>([
                 LiteralPattern("@".scalars),
                 LiteralPattern(exampleAttribute.resolved(for: localization)),
@@ -59,7 +59,7 @@ extension PackageRepository {
     }
 
     private static var exampleDirectivePatterns: [CompositePattern<Unicode.Scalar>] {
-        return InterfaceLocalization.cases.map { localization in
+        return InterfaceLocalization.allCases.map { localization in
             return CompositePattern<Unicode.Scalar>([
                 LiteralPattern("#".scalars),
                 LiteralPattern(exampleDirective.resolved(for: localization)),

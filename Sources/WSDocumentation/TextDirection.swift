@@ -12,21 +12,17 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 0.10.1, Until handled by SDGCornerstone.)
-internal enum TextDirection {
+import WSGeneralImports
 
-    // MARK: - Cases
-
-    case rightToLeft
-    case leftToRight
+extension TextDirection {
 
     // MARK: - Properties
 
     internal var htmlAttribute: String {
         switch self {
-        case .rightToLeft:
+        case .rightToLeftTopToBottom:
             return "rtl" // @exempt(from: tests) Not used yet.
-        case .leftToRight:
+        case .leftToRightTopToBottom, .topToBottomRightToLeft:
             return "ltr"
         }
     }

@@ -287,8 +287,7 @@ extension PackageRepository {
                 return url.lastPathComponent ≠ ".DS_Store"
                     ∧ ¬url.lastPathComponent.hasSuffix("~")
             }
-            return files.sorted { $0.absoluteString.scalars.lexicographicallyPrecedes($1.absoluteString.scalars) } // So that output order is consistent.
-            // #workaround(Swift 4.1.2, Simple “sorted” differs between operating systems.)
+            return files.sorted()
         }
     }
 

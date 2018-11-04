@@ -25,7 +25,7 @@ import PackageModel
 
 extension PackageRepository {
 
-    internal struct Target : Hashable {
+    internal struct Target : Comparable, Hashable {
 
         // MARK: - Initialization
 
@@ -133,8 +133,7 @@ extension PackageRepository {
 
         private func source(for namespaceTree: [StrictString: Any]) throws -> StrictString {
             var result: StrictString = ""
-            for name in namespaceTree.keys.sorted(by: { $0.scalars.lexicographicallyPrecedes($1.scalars) }) {
-                // #workaround(Swift 4.1.2, Simple “sorted” differs between operating systems.)
+            for name in namespaceTree.keys.sorted() {
                 try autoreleasepool {
                     let value = namespaceTree[name]
 
@@ -179,6 +178,12 @@ extension PackageRepository {
             declaration += "\u{22})!"
             declaration += initializer.1
             return declaration
+        }
+
+        // MARK: - Comparable
+
+        internal static func < (lhs: PackageRepository.Target, rhs: PackageRepository.Target) -> Bool {
+            return (lhs.name, lhs.sourceDirectory) < (rhs.name, rhs.sourceDirectory)
         }
 
         // MARK: - Equatable

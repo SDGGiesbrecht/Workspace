@@ -16,14 +16,14 @@ matrix:
     - os: osx
       env:
         - JOB="macOS + Swift Package Manager"
-      osx_image: xcode10
+      osx_image: xcode10.1
       script:
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job macos‐swift‐package‐manager"
     - os: osx
       env:
         - JOB="macOS + Xcode"
-      osx_image: xcode10
+      osx_image: xcode10.1
       script:
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job macos‐xcode"
@@ -32,14 +32,14 @@ matrix:
         - JOB="Linux"
       dist: trusty
       script:
-        - "export SWIFT_VERSION=4.2"
+        - "export SWIFT_VERSION=4.2.1"
         - "eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\""
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job linux"
     - os: osx
       env:
         - JOB="iOS"
-      osx_image: xcode10
+      osx_image: xcode10.1
       language: objective-c
       xcode_sdk: iphonesimulator
       script:
@@ -48,14 +48,14 @@ matrix:
     - os: osx
       env:
         - JOB="watchOS"
-      osx_image: xcode10
+      osx_image: xcode10.1
       script:
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job watchos"
     - os: osx
       env:
         - JOB="tvOS"
-      osx_image: xcode10
+      osx_image: xcode10.1
       language: objective-c
       xcode_sdk: appletvsimulator
       script:
@@ -66,7 +66,7 @@ matrix:
         - JOB="Miscellaneous"
       dist: trusty
       script:
-        - "export SWIFT_VERSION=4.2"
+        - "export SWIFT_VERSION=4.2.1"
         - "eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\""
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job miscellaneous"
@@ -83,7 +83,7 @@ matrix:
         skip_cleanup: true
       dist: trusty
       script:
-        - "export SWIFT_VERSION=4.2"
+        - "export SWIFT_VERSION=4.2.1"
         - "eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\""
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job deployment"

@@ -136,7 +136,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 12, 0))),
         .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 4, 2))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 3, 6))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 3, 7))),
         // #workaround(This should not be necessary.)
         .package(url: "https://github.com/apple/swift\u{2D}package\u{2D}manager", .exact(Version(0, 3, 0)))
     ],

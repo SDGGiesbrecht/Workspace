@@ -232,7 +232,11 @@ internal struct UnicodeRule : Rule {
                             default:
                                 error = StrictString("“\(StrictString(match.contents))”")
                             }
-                            return error + " is obsolete."
+                            if match.contents.count == 1 {
+                                return "The character " + error + " is obsolete."
+                            } else {
+                                return "The character sequence " + error + " is obsolete."
+                            }
                         }
                     })
 

@@ -18,11 +18,11 @@ Documentation/🇮🇱עב Read Me.md
 LICENSE.md
 Package.swift
 Line 25
-U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
+The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
         // .package(url: /* package url */, from: "1.0.0"),
 
 Line 25
-U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
+The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
         // .package(url: /* package url */, from: "1.0.0"),
 
 README.md

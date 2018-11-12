@@ -113,6 +113,46 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
     // ••••••• Text Style •••••••
 
     /// Prohibits typewriter workarounds when proper Unicode characters are available.
+    ///
+    /// Examples include requiring:
+    ///
+    /// - Horizontal strokes:
+    ///   - Hyphens: “twenty‐one” (U+2010) instead of “twenty&#x2D;one” (U+002D)
+    ///   - Minus signs: “3 − 1 = 2” (U+2212) instead of “3 &#x2D; 1 = 2” (U+002D)
+    ///   - Dashes: “—” instead of “&#x2D;&#x2D;”
+    ///   - Bullets: “•” instead of “&#x2D;”
+    ///   - Range symbols: “Dec. 3–5” (U+2013) instead of “Dec. 3&#x2D;5” (U+002D)
+    /// - Raised marks:
+    ///   - Quotation marks: “... ‘...’ ...” (U+2018–U+201F) instead of &#x22;... &#x27;...&#x27; ...&#x22; (U+0022, U+0027)
+    ///   - Apostrophes: “it’s” (U+2019) instead of “it&#x27;s” (U+0027)
+    ///   - Degrees symbols: “20°C” instead of “20&#x27;C”
+    ///   - Prime symbols: 5′6′′ (U+2032) instead of 5&#x27;6&#x22; (U+0027, U+0022)
+    /// - “×” instead of “*”
+    /// - “÷” instead of “/”
+    /// - “≠” instead of “&#x21;=”
+    /// - “≤” instead of “&#x3C;=”
+    /// - “≥” instead of “&#x3E;=”
+    /// - “¬” instead of “&#x21;”
+    /// - “∧” instead of “&#x26;&#x26;”
+    /// - “∨” instead of “&#x7C;|”
+    ///
+    /// Workarounds are still allowed where the proper characters would be impossible to use:
+    ///
+    /// ```swift
+    /// // This prints "Hello, world!": // ✗
+    /// print("Hello, world!") // ← Allowed, because it is not replaceable.
+    /// ```
+    ///
+    /// Workarounds are also still allowed when creating aliases:
+    ///
+    /// ```swift
+    /// if x != y, // ✗
+    ///     a ≠ b { // ✓
+    /// }
+    /// func ≠ (a: Any, b: Any) -> Bool {
+    ///    return a != b // ← Allowed in order to create the alias “≠” function.
+    /// }
+    /// ```
     case unicode
 
     // ••••••• Source Code Style •••••••

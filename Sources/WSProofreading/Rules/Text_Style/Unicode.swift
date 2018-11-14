@@ -217,7 +217,7 @@ internal struct UnicodeRule : Rule {
             }
 
             if file.location.lastPathComponent == "ProofreadingRule.swift" {
-                // Deliberate violations occur to demonstrate rules in the documentation.
+                // Deliberate violations occur to demonstrate rules in the documentation. @exempt(from: tests)
                 if let allowed = file.contents.firstMatch(for: "if x \u{21}= y, \u{2F}/ ✗")?.range,
                     match.range ⊆ allowed {
                     continue

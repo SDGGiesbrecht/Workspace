@@ -216,6 +216,14 @@ internal struct UnicodeRule : Rule {
                 }
             }
 
+            if file.location.lastPathComponent == "ProofreadingRule.swift" {
+                // Deliberate violations occur to demonstrate rules in the documentation.
+                if let allowed = file.contents.firstMatch(for: "if x \u{21}= y, \u{2F}/ ✗")?.range,
+                    match.range ⊆ allowed {
+                    continue
+                }
+            }
+
             reportViolation(in: file, at: match.range, replacementSuggestion: replacement, message:
                 UserFacing<StrictString, InterfaceLocalization>({ localization in
                     let obsoleteMessage = UserFacing<StrictString, InterfaceLocalization>({ localization in

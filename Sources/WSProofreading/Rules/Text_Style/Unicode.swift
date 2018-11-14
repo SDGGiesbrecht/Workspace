@@ -216,6 +216,14 @@ internal struct UnicodeRule : Rule {
                 }
             }
 
+            if file.location.lastPathComponent == "ProofreadingRule.swift" {
+                // Deliberate violations occur to demonstrate rules in the documentation. @exempt(from: tests)
+                if let allowed = file.contents.firstMatch(for: "if x \u{21}= y, \u{2F}/ ✗")?.range,
+                    match.range ⊆ allowed {
+                    continue
+                }
+            }
+
             reportViolation(in: file, at: match.range, replacementSuggestion: replacement, message:
                 UserFacing<StrictString, InterfaceLocalization>({ localization in
                     let obsoleteMessage = UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -232,7 +240,11 @@ internal struct UnicodeRule : Rule {
                             default:
                                 error = StrictString("“\(StrictString(match.contents))”")
                             }
-                            return error + " is obsolete."
+                            if match.contents.count == 1 {
+                                return "The character " + error + " is obsolete."
+                            } else {
+                                return "The character sequence " + error + " is obsolete."
+                            }
                         }
                     })
 

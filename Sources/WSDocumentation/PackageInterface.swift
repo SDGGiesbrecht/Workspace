@@ -113,7 +113,7 @@ internal struct PackageInterface {
         result.append(generateIndexSection(named: packageHeader(localization: localization), contents: [
             HTMLElement("a", attributes: [
                 "href": StrictString("[*site root*]")
-                    + HTML.percentEncode(package.relativePagePath[localization]!, withAllowedCharacters: .urlPathAllowed)
+                    + HTML.percentEncodeURLPath(package.relativePagePath[localization]!)
                 ], contents: StrictString(package.name), inline: false).source
             ].joinedAsLines()))
 
@@ -147,7 +147,7 @@ internal struct PackageInterface {
         for entry in apiEntries {
             entries.append(HTMLElement("a", attributes: [
                 "href": StrictString("[*site root*]")
-                    + HTML.percentEncode(entry.relativePagePath[localization]!, withAllowedCharacters: .urlPathAllowed)
+                    + HTML.percentEncodeURLPath(entry.relativePagePath[localization]!)
                 ], contents: StrictString(entry.name), inline: false).source)
         }
         return generateIndexSection(named: name, contents: entries.joinedAsLines())
@@ -193,7 +193,7 @@ internal struct PackageInterface {
         }
         self.symbolLinks = paths.mapValues { localization in
             localization.mapValues { link in
-                return HTML.percentEncode(link, withAllowedCharacters: .urlPathAllowed)
+                return HTML.percentEncodeURLPath(link)
             }
         }
 

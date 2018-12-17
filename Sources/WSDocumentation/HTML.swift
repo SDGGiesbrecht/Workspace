@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGCollections
 import SDGText
 
 internal enum HTML {
@@ -35,9 +36,9 @@ internal enum HTML {
             .replacingMatches(for: "\u{22}".scalars, with: "&#x0022;".scalars))
     }
 
-    internal static func percentEncode<S>(_ string: S, withAllowedCharacters allowed: CharacterSet) -> S where S : StringFamily {
+    internal static func percentEncodeURLPath<S>(_ string: S) -> S where S : StringFamily {
         let swiftString = String(String.ScalarView(string.scalars))
-        let encoded = swiftString.addingPercentEncoding(withAllowedCharacters: allowed)!
+        let encoded = swiftString.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
         return S(S.ScalarView(encoded.scalars))
     }
 }

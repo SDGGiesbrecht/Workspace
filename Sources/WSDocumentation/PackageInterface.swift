@@ -191,7 +191,11 @@ internal struct PackageInterface {
         for localization in localizations {
             paths[localization] = api.determinePaths(for: localization)
         }
-        self.symbolLinks = paths
+        self.symbolLinks = paths.mapValues { localization in
+            localization.mapValues { link in
+                return HTML.percentEncode(link, withAllowedCharacters: .urlPathAllowed)
+            }
+        }
 
         self.indices = PackageInterface.generateIndices(for: api, localizations: localizations)
     }

@@ -34,4 +34,10 @@ internal enum HTML {
         return S(sharedEscape(string).scalars
             .replacingMatches(for: "\u{22}".scalars, with: "&#x0022;".scalars))
     }
+
+    internal static func percentEncode<S>(_ string: S, withAllowedCharacters allowed: CharacterSet) -> S where S : StringFamily {
+        let swiftString = String(String.ScalarView(string.scalars))
+        let encoded = swiftString.addingPercentEncoding(withAllowedCharacters: allowed)!
+        return S(S.ScalarView(encoded.scalars))
+    }
 }

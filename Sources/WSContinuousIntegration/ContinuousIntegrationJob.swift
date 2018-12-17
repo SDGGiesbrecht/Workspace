@@ -253,7 +253,7 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
         case .macOS:
             result.append("      osx_image: xcode10.1")
         case .linux:
-            result.append("      dist: trusty")
+            result.append("      dist: xenial")
         case .iOS, .watchOS, .tvOS:
             unreachable()
         }

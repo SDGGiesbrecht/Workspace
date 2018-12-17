@@ -94,7 +94,9 @@ internal class SymbolPage : Page {
             let url = pathToSiteRoot.appending(contentsOf: element.relativePagePath[localization]!)
             if ¬navigationPath.isEmpty,
                 level ≠ navigationPath.index(before: navigationPath.endIndex) {
-                return HTMLElement("a", attributes: ["href": url], contents: StrictString(element.name), inline: true).source
+                return HTMLElement("a", attributes: [
+                    "href": HTML.percentEncode(url, withAllowedCharacters: .urlPathAllowed)
+                    ], contents: StrictString(element.name), inline: true).source
             } else {
                 return HTMLElement("span", attributes: [:], contents: StrictString(element.name), inline: true).source
             }
@@ -498,7 +500,9 @@ internal class SymbolPage : Page {
             name = HTMLElement("code", attributes: ["class": "swift"], contents: name, inline: true).source
 
             let target = pathToSiteRoot + child.relativePagePath[localization]!
-            entry.append(HTMLElement("a", attributes: ["href": target], contents: name, inline: true).source)
+            entry.append(HTMLElement("a", attributes: [
+                "href": HTML.percentEncode(target, withAllowedCharacters: .urlPathAllowed)
+                ], contents: name, inline: true).source)
             if let description = child.documentation?.descriptionSection {
                 entry.append(StrictString(description.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)))
             }

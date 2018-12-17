@@ -111,7 +111,10 @@ internal struct PackageInterface {
         var result: [StrictString] = []
 
         result.append(generateIndexSection(named: packageHeader(localization: localization), contents: [
-            HTMLElement("a", attributes: ["href": StrictString("[*site root*]") + package.relativePagePath[localization]!], contents: StrictString(package.name), inline: false).source
+            HTMLElement("a", attributes: [
+                "href": StrictString("[*site root*]")
+                    + HTML.percentEncode(package.relativePagePath[localization]!, withAllowedCharacters: .urlPathAllowed)
+                ], contents: StrictString(package.name), inline: false).source
             ].joinedAsLines()))
 
         if ¬package.libraries.isEmpty {
@@ -142,7 +145,10 @@ internal struct PackageInterface {
     private static func generateIndexSection(named name: StrictString, apiEntries: [APIElement], localization: LocalizationIdentifier) -> StrictString {
         var entries: [StrictString] = []
         for entry in apiEntries {
-            entries.append(HTMLElement("a", attributes: ["href": StrictString("[*site root*]") + entry.relativePagePath[localization]!], contents: StrictString(entry.name), inline: false).source)
+            entries.append(HTMLElement("a", attributes: [
+                "href": StrictString("[*site root*]")
+                    + HTML.percentEncode(entry.relativePagePath[localization]!, withAllowedCharacters: .urlPathAllowed)
+                ], contents: StrictString(entry.name), inline: false).source)
         }
         return generateIndexSection(named: name, contents: entries.joinedAsLines())
     }

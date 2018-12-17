@@ -30,7 +30,7 @@ internal struct Redirect {
 
     internal init(target: String) {
         var mutable = Redirect.template
-        mutable.scalars.replaceMatches(for: "[*target*]".scalars, with: HTML.escapeAttribute(target).scalars)
+        mutable.scalars.replaceMatches(for: "[*target*]".scalars, with: HTML.percentEncode(HTML.escapeAttribute(target), withAllowedCharacters: .urlPathAllowed).scalars)
         contents = mutable
     }
 

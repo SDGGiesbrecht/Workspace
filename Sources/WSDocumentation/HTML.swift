@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import SDGCollections
 import SDGText
 
@@ -37,8 +38,10 @@ internal enum HTML {
     }
 
     internal static func percentEncodeURLPath<S>(_ string: S) -> S where S : StringFamily {
-        let swiftString = String(String.ScalarView(string.scalars))
-        let encoded = swiftString.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed)!
-        return S(S.ScalarView(encoded.scalars))
+        var result = string
+        result.scalars.mutateMatches(
+            for: ConditionalPattern({ $0.value < 0x80 ∧ $0 ∉ CharacterSet.urlPathAllowed }),
+            mutation: { return ("%" + String($0.contents.first!.value, radix: 16)).scalars })
+        return result
     }
 }

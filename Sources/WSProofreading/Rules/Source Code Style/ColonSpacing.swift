@@ -109,39 +109,5 @@ internal struct ColonSpacing : Rule {
             })
             try scanner.scan(swift)
         }
-
-        /*if file.fileType ∈ Set([.swift, .swiftPackageManifest]) {
-
-            for match in file.contents.scalars.matches(for: ":".scalars) {
-
-                let protocolOrSuperclass: Bool
-
-                if fromStartOfLine(to: match, in: file).contains("[") ∧ upToEndOfLine(from: match, in: file).contains("]") {
-                    // Dictionary Literal
-                    protocolOrSuperclass = false
-                } else if fromStartOfFile(to: match, in: file).hasSuffix("_".scalars) {
-                    protocolOrSuperclass = false
-                } else if let startOfPreviousIdentifier = fromStartOfLine(to: match, in: file).components(separatedBy: ConditionalPattern({ $0 ∈ (CharacterSet.whitespaces ∪ CharacterSet.punctuationCharacters) ∪ CharacterSet.symbols })).filter({ ¬$0.range.isEmpty }).last?.contents.first {
-                    protocolOrSuperclass = startOfPreviousIdentifier ∈ CharacterSet.uppercaseLetters
-                } else {
-                    protocolOrSuperclass = false
-                }
-
-                if let preceding = file.contents.scalars[..<match.range.lowerBound].last {
-                    if preceding == " " {
-                        if ¬protocolOrSuperclass,
-                            ¬fromStartOfLine(to: match, in: file).contains(" ? ".scalars) /* Ternary Conditional Operator */ {
-
-                            let precedingIndex = file.contents.scalars.index(before: match.range.lowerBound)
-                            let errorRange = precedingIndex ..< match.range.upperBound
-
-                            reportViolation(in: file, at: errorRange, replacementSuggestion: ":", message: precedingMessage, status: status, output: output)
-                        }
-                    } else if protocolOrSuperclass {
-                        reportViolation(in: file, at: match.range, replacementSuggestion: " :", message: conformanceMessage, status: status, output: output)
-                    }
-                }
-            }
-        }*/
     }
 }

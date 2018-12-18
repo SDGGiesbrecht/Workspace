@@ -26,7 +26,7 @@ extension APIElement {
 
     internal func symbolType(localization: LocalizationIdentifier) -> StrictString {
         switch self {
-        case is PackageAPI :
+        case is PackageAPI:
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -35,7 +35,7 @@ extension APIElement {
             } else {
                 return "Package" // From “let ... = Package(...)”
             }
-        case is LibraryAPI :
+        case is LibraryAPI:
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -44,7 +44,7 @@ extension APIElement {
             } else {
                 return "library" // From “products: [.library(...)]”
             }
-        case is ModuleAPI :
+        case is ModuleAPI:
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -53,7 +53,7 @@ extension APIElement {
             } else {
                 return "target" // From “targets: [.target(...)]”
             }
-        case let type as TypeAPI :
+        case let type as TypeAPI:
             switch type.keyword {
             case .classKeyword:
                 if let match = localization._reasonableMatch {
@@ -106,7 +106,7 @@ extension APIElement {
                 }
                 return ""
             }
-        case is ExtensionAPI :
+        case is ExtensionAPI:
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -115,7 +115,7 @@ extension APIElement {
             } else {
                 return "extension"
             }
-        case is ProtocolAPI :
+        case is ProtocolAPI:
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -124,7 +124,7 @@ extension APIElement {
             } else {
                 return "protocol"
             }
-        case is CaseAPI :
+        case is CaseAPI:
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -133,7 +133,7 @@ extension APIElement {
             } else {
                 return "case"
             }
-        case is InitializerAPI :
+        case is InitializerAPI:
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom:
@@ -144,7 +144,7 @@ extension APIElement {
             } else {
                 return "init"
             }
-        case let variable as VariableAPI :
+        case let variable as VariableAPI:
             if relativePagePath[localization]!.components(separatedBy: "/").count ≤ 3 {
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -175,7 +175,7 @@ extension APIElement {
                     }
                 }
             }
-        case is SubscriptAPI :
+        case is SubscriptAPI:
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -184,7 +184,7 @@ extension APIElement {
             } else {
                 return "subscript"
             }
-        case let function as FunctionAPI :
+        case let function as FunctionAPI:
             if relativePagePath[localization]!.components(separatedBy: "/").count ≤ 3 {
                 if let match = localization._reasonableMatch {
                     switch match {

@@ -16,9 +16,11 @@ import SDGLogic
 import SDGCollections
 import WSGeneralImports
 
+import SDGSwiftSource
+
 import WSProject
 
-internal struct ColonSpacing : TextRule {
+internal struct ColonSpacing : Rule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
@@ -48,7 +50,12 @@ internal struct ColonSpacing : TextRule {
         }
     })
 
-    internal static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
+    internal static func check(file: TextFile, syntax: SourceFileSyntax?, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
+
+        if let swift = syntax {
+
+        }
+
         if file.fileType ∈ Set([.swift, .swiftPackageManifest]) {
 
             for match in file.contents.scalars.matches(for: ":".scalars) {

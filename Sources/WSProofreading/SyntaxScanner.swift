@@ -48,6 +48,12 @@ internal class SyntaxScanner : SDGSwiftSource.SyntaxScanner {
 
     override func visit(_ node: ExtendedSyntax) -> Bool {
         checkExtendedSyntax(node)
+
+        // #workaround(SDGSwift 0.4.0, Block comments broken into fragments can cause invalid index use.)
+        if node is FragmentSyntax {
+            return false
+        }
+
         return true
     }
 

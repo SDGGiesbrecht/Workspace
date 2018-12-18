@@ -140,6 +140,10 @@ Callouts should be capitalized. (calloutCasing)
 Wwarning: This should trigger. It should have been capitalized.
 
 Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift
+Line 21
+“/**” may not survive autoindent (⌃I). Use “///” instead. (autoindentResilience)
+    /**
+
 Line 3
 Colons should be preceded by spaces when denoting protocols or superclasses. (colonSpacing)
 struct Conformance: Equatable { // This colon should trigger. It should be spaced.
@@ -154,6 +158,10 @@ Line 4
 Colons should be followed by spaces. (colonSpacing)
     static func == (lhs : Conformance, rhs:Conformance) -> Bool { // These colons should trigger. They need respacing.
     static func == (lhs : Conformance, rhs: Conformance) -> Bool { // These colons should trigger. They need respacing.
+
+Line 24
+The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
+     - Warning: Callout colons should be spaced like this.
 
 Sources/BadStyle/Rules/Source Code Style/ParameterStyle.swift
 Line 5

@@ -17,4 +17,11 @@ struct Conformance: Equatable { // This colon should trigger. It should be space
         let xyz: Int = 1 + 2 // Variable types should be allowed.
         let _: Int = 1 + 2 // Dropped variable types should be allowed.
     }
+
+    /**
+     ...
+
+     - Warning: Callout colons should be spaced like this.
+     */
+    func withCallouts() {}
 }

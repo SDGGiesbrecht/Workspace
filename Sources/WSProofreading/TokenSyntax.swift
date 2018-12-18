@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGMathematics
 
 // #workaround(SDGSwift 0.4.0, These belong in SDGSwiftSource.)
 
@@ -41,8 +42,27 @@ extension TokenSyntax {
 
     // MARK: - Syntax Tree
 
+    internal func firstPrecedingTrivia() -> TriviaPiece? {
+        return leadingTrivia.last() ?? previousToken()?.trailingTrivia.last()
+    }
+
     internal func firstFollowingTrivia() -> TriviaPiece? {
         return trailingTrivia.first ?? nextToken()?.leadingTrivia.first
+    }
+
+    internal func previousToken() -> TokenSyntax? {
+        func previousSibling(of relationship: (parent: Syntax, index: Int)) -> Syntax? {
+            return relationship.parent.child(at: relationship.index − 1)
+        }
+
+        let sharedAncestor = ancestorRelationships().first(where: { relationship in
+            if previousSibling(of: relationship) ≠ nil {
+                return true
+            }
+            return false
+        })
+
+        return sharedAncestor.flatMap({ previousSibling(of: $0) })?.lastToken()
     }
 
     internal func nextToken() -> TokenSyntax? {

@@ -25,6 +25,17 @@ extension Syntax {
         return children.first(where: { _ in true})!.firstToken()
     }
 
+    internal func lastToken() -> TokenSyntax {
+        if let token = self as? TokenSyntax {
+            return token
+        }
+        var lastChild: Syntax?
+        for child in children {
+            lastChild = child
+        }
+        return lastChild!.lastToken()
+    }
+
     private var parentRelationship: (parent: Syntax, index: Int)? {
         guard let parent = self.parent else {
             return nil

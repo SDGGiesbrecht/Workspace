@@ -37,7 +37,7 @@ internal class SymbolPage : Page {
 
         if symbol.relativePagePath.first?.value.components(separatedBy: "/").count == 3 {
             switch symbol { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
-            case is PackageAPI, is ModuleAPI, is TypeAPI, is ExtensionAPI, is ProtocolAPI :
+            case is PackageAPI, is ModuleAPI, is TypeAPI, is ExtensionAPI, is ProtocolAPI:
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
@@ -154,7 +154,7 @@ internal class SymbolPage : Page {
 
         let discussionHeading: StrictString
         switch symbol {
-        case is APIScope, is PackageAPI, is LibraryAPI, is ModuleAPI :
+        case is APIScope, is PackageAPI, is LibraryAPI, is ModuleAPI:
             switch localization._bestMatch {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 discussionHeading = "Overview"

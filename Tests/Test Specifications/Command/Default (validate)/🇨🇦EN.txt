@@ -31,7 +31,7 @@ README.md
 Sources/Default/Default.swift
 Tests/DefaultTests/DefaultTests.swift
 Line 4
-Colons should be preceded by spaces when denoting protocols or superclasses. (colonSpacing)
+Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition. (colonSpacing)
 final class DefaultTests: XCTestCase {
 final class DefaultTests : XCTestCase {
 

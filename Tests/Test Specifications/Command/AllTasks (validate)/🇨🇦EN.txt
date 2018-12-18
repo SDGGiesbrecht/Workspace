@@ -29,7 +29,7 @@ README.md
 Sources/AllTasks/AllTasks.swift
 Tests/AllTasksTests/AllTasksTests.swift
 Line 15
-Colons should be preceded by spaces when denoting protocols or superclasses. (colonSpacing)
+Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition. (colonSpacing)
 final class AllTasksTests: XCTestCase {
 final class AllTasksTests : XCTestCase {
 

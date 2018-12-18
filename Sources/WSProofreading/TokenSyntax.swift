@@ -81,7 +81,7 @@ extension TokenSyntax {
             if nextSibling(of: relationship) ≠ nil {
                 return true
             }
-            return false
+            return false // @exempt(from: tests)
         })
 
         return sharedAncestor.flatMap({ nextSibling(of: $0) })?.firstToken()

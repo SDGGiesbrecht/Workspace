@@ -52,7 +52,14 @@ extension TokenSyntax {
 
     internal func previousToken() -> TokenSyntax? {
         func previousSibling(of relationship: (parent: Syntax, index: Int)) -> Syntax? {
-            return relationship.parent.child(at: relationship.index − 1)
+            var previousIndex = relationship.index
+            while previousIndex > 0 {
+                previousIndex −= 1
+                if let exists = relationship.parent.child(at: previousIndex) {
+                    return exists
+                }
+            }
+            return nil
         }
 
         let sharedAncestor = ancestorRelationships().first(where: { relationship in

@@ -38,7 +38,7 @@ extension Syntax {
 
     private var parentRelationship: (parent: Syntax, index: Int)? {
         guard let parent = self.parent else {
-            return nil
+            return nil // @exempt(from: tests)
         }
         return (parent, indexInParent)
     }
@@ -46,8 +46,8 @@ extension Syntax {
     internal func ancestorRelationships() -> AnySequence<(parent: Syntax, index: Int)> {
         if let parentRelationship = self.parentRelationship {
             return AnySequence(sequence(first: parentRelationship, next: { $0.parent.parentRelationship }))
-        } else {
-            return AnySequence([])
+        } else { // @exempt(from: tests)
+            return AnySequence([]) // @exempt(from: tests)
         }
     }
 }

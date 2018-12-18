@@ -32,5 +32,5 @@ struct Conformance: Equatable { // This colon should trigger. It should be space
     }
 
     func function<T>(_ p: T) where `T`: Equatable // This colon should trigger. It should be spaced.
-    func withComment(parameter:/**/Bool) // This colon should trigger, it needs respacing.
+    func withComment(parameter:/* */Bool) // This colon should trigger, it needs respacing.
 }

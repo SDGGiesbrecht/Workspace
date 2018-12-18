@@ -27,6 +27,8 @@ $ workspace proofread •xcode •no‐colour
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift:3:19: warning: Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition. (colonSpacing)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift:4:24: warning: Colons should not be preceded by spaces. (colonSpacing)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift:4:43: warning: Colons should be followed by spaces. (colonSpacing)
+[Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift:34:39: warning: Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition. (colonSpacing)
+[Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift:35:31: warning: Colons should be followed by spaces. (colonSpacing)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift:24:6: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ParameterStyle.swift:5:1: warning: Parameters should be grouped under a single callout. (parameterGrouping)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:9:49: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)

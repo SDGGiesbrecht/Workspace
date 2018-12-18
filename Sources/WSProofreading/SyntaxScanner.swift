@@ -21,7 +21,7 @@ internal class SyntaxScanner : SDGSwiftSource.SyntaxScanner {
     // MARK: - Initialization
 
     init(
-        checkSyntax: @escaping (Syntax) -> Void = { _ in },
+        checkSyntax: @escaping (Syntax) -> Void,
         checkExtendedSyntax: @escaping (ExtendedSyntax) -> Void = { _ in },
         checkTrivia: @escaping (Trivia) -> Void = { _ in },
         checkTriviaPiece: @escaping (TriviaPiece) -> Void = { _ in }) {

@@ -40,7 +40,7 @@ internal struct ColonSpacing : Rule {
     private static let requiredSpaceMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
-            return "Colons should be preceded by spaces when denoting conformance, inheritance or a ternary conditional."
+            return "Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition."
         }
     })
     private static let requiredSpaceSuggestion: StrictString = " :"

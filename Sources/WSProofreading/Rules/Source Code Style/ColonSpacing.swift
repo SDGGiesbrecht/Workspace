@@ -57,13 +57,12 @@ internal struct ColonSpacing : Rule {
                 if let token = node as? TokenSyntax,
                     token.tokenKind == .colon {
 
-                    reportViolation(in: file, at: node.location(in: file.contents), replacementSuggestion: ": ", message: followingMessage, status: status, output: output)
+                    //reportViolation(in: file, at: node.location(in: file.contents), replacementSuggestion: ": ", message: followingMessage, status: status, output: output)
                 }
             })
             try scanner.scan(swift)
         }
 
-        /*
         if file.fileType ∈ Set([.swift, .swiftPackageManifest]) {
 
             for match in file.contents.scalars.matches(for: ":".scalars) {
@@ -115,6 +114,6 @@ internal struct ColonSpacing : Rule {
                     reportViolation(in: file, at: match.range, replacementSuggestion: ": ", message: followingMessage, status: status, output: output)
                 }
             }
-        }*/
+        }
     }
 }

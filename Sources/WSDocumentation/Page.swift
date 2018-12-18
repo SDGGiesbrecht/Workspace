@@ -87,7 +87,7 @@ internal class Page {
         mutable.replaceMatches(for: "[*package import*]", with: packageImport ?? "")
 
         mutable.replaceMatches(for: "[*index*]", with: index)
-        mutable.replaceMatches(for: "[*site root*]".scalars, with: pathToSiteRoot)
+        mutable.replaceMatches(for: "[*site root*]".scalars, with: HTML.escapeAttribute(pathToSiteRoot))
 
         let symbolTypeLabel: StrictString
         if let specified = symbolType {

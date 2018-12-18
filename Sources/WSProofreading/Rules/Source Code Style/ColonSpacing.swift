@@ -60,7 +60,13 @@ internal struct ColonSpacing : Rule {
                     token.tokenKind == .colon {
 
                     // Preceding
-                    let requiresPrecedingSpace = false
+                    let requiresPrecedingSpace: Bool
+                    if let inheritanceClause = token.parent as? TypeInheritanceClauseSyntax,
+                        inheritanceClause.colon.indexInParent == token.indexInParent {
+                        requiresPrecedingSpace = true
+                    } else {
+                        requiresPrecedingSpace = false
+                    }
 
                     var precedingViolation: (message: UserFacing<StrictString, InterfaceLocalization>, suggestion: StrictString, range: Range<String.ScalarView.Index>)?
                     if let precedingTrivia = token.firstPrecedingTrivia() {

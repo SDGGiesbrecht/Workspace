@@ -68,7 +68,9 @@ internal struct ColonSpacing : Rule {
                         }
                     } else {
                         // No trivia.
-                        trailingViolation = true
+                        if token.nextToken()?.tokenKind ≠ .rightSquareBracket /* Empty Dictionary Literal */ {
+                            trailingViolation = true
+                        }
                     }
 
                     if trailingViolation {
@@ -119,15 +121,6 @@ internal struct ColonSpacing : Rule {
                     } else if protocolOrSuperclass {
                         reportViolation(in: file, at: match.range, replacementSuggestion: " :", message: conformanceMessage, status: status, output: output)
                     }
-                }
-
-                if let following = file.contents.scalars[match.range.upperBound...].first,
-                    following ∉ CharacterSet.whitespacesAndNewlines ∪ [
-                        "]" /* Empty Dictionary Literal */,
-                        "/" /* URL */
-                    ] {
-
-                    reportViolation(in: file, at: match.range, replacementSuggestion: ": ", message: followingMessage, status: status, output: output)
                 }
             }
         }*/

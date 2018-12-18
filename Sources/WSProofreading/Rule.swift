@@ -15,12 +15,14 @@
 import SDGLogic
 import WSGeneralImports
 
+import SDGSwiftSource
+
 import WSProject
 
 internal protocol Rule {
     static var name: UserFacing<StrictString, InterfaceLocalization> { get }
     static var noticeOnly: Bool { get }
-    static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) throws
+    static func check(file: TextFile, syntax: SourceFileSyntax?, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) throws
 }
 
 extension Rule {

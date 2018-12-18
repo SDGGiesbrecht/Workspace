@@ -18,7 +18,7 @@ import WSGeneralImports
 
 import WSProject
 
-internal struct CalloutCasing : Rule {
+internal struct CalloutCasing : TextRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {

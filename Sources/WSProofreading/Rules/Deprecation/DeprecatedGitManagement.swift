@@ -16,7 +16,7 @@ import WSGeneralImports
 
 import WSProject
 
-internal struct DeprecatedGitManagement : Rule {
+internal struct DeprecatedGitManagement : TextRule {
     // Deprecated in 0.10.0 (2018‐07‐11)
     // (There is also clean‐up of the deprecated “.gitattributes” in WSGit.)
 

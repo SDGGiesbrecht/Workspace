@@ -16,7 +16,7 @@ import WSGeneralImports
 
 import WSProject
 
-internal struct DeprecatedLinuxDocumentation : Rule {
+internal struct DeprecatedLinuxDocumentation : TextRule {
     // Deprecated in 0.3.0 (2017‐11‐22)
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in

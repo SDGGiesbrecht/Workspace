@@ -16,7 +16,7 @@ import WSGeneralImports
 
 import WSProject
 
-internal struct MissingImplementation : Rule {
+internal struct MissingImplementation : TextRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {

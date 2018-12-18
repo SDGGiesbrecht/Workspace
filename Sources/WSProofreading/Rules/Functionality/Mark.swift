@@ -18,7 +18,7 @@ import WSGeneralImports
 
 import WSProject
 
-internal struct Marks : Rule {
+internal struct Marks : TextRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {

@@ -18,7 +18,7 @@ import WSGeneralImports
 
 import WSProject
 
-internal struct ColonSpacing : Rule {
+internal struct ColonSpacing : TextRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {

@@ -17,7 +17,7 @@ import WSGeneralImports
 
 import WSProject
 
-internal struct SyntaxColouring : Rule {
+internal struct SyntaxColouring : TextRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {

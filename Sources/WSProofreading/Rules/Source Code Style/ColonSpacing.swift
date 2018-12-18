@@ -67,6 +67,12 @@ internal struct ColonSpacing : Rule {
                     } else if let conformanceRequirement = token.parent as? ConformanceRequirementSyntax,
                         conformanceRequirement.colon.indexInParent == token.indexInParent {
                         requiresPrecedingSpace = true
+                    } else if let genericParameter = token.parent as? GenericParameterSyntax,
+                        genericParameter.colon?.indexInParent == token.indexInParent {
+                        requiresPrecedingSpace = true
+                    } else if let ternaryExpression = token.parent as? TernaryExprSyntax,
+                        ternaryExpression.colonMark.indexInParent == token.indexInParent {
+                        requiresPrecedingSpace = true
                     } else {
                         requiresPrecedingSpace = false
                     }

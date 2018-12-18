@@ -285,11 +285,11 @@ extension APIElement {
             var path = localization._directoryName + "/"
 
             switch self {
-            case let package as PackageAPI :
+            case let package as PackageAPI:
                 for library in package.libraries {
                     links = library.determinePaths(for: localization).mergedByOverwriting(from: links)
                 }
-            case let library as LibraryAPI :
+            case let library as LibraryAPI:
                 let librariesDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -304,7 +304,7 @@ extension APIElement {
                 for module in library.modules {
                     links = module.determinePaths(for: localization).mergedByOverwriting(from: links)
                 }
-            case let module as ModuleAPI :
+            case let module as ModuleAPI:
                 let modulesDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -319,7 +319,7 @@ extension APIElement {
                 for child in module.children {
                     links = child.determinePaths(for: localization).mergedByOverwriting(from: links)
                 }
-            case is TypeAPI :
+            case is TypeAPI:
                 let typesDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -337,7 +337,7 @@ extension APIElement {
                 for child in children where child.receivesPage {
                     links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
                 }
-            case is ExtensionAPI :
+            case is ExtensionAPI:
                 let extensionsDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -355,7 +355,7 @@ extension APIElement {
                 for child in children where child.receivesPage {
                     links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
                 }
-            case is ProtocolAPI :
+            case is ProtocolAPI:
                 let protocolsDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -373,7 +373,7 @@ extension APIElement {
                 for child in children where child.receivesPage {
                     links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
                 }
-            case is CaseAPI :
+            case is CaseAPI:
                 let casesDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -384,7 +384,7 @@ extension APIElement {
                     casesDirectoryName = "case"
                 }
                 path += namespace + casesDirectoryName + "/"
-            case is InitializerAPI :
+            case is InitializerAPI:
                 let initializersDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -397,7 +397,7 @@ extension APIElement {
                     initializersDirectoryName = "init"
                 }
                 path += namespace + initializersDirectoryName + "/"
-            case let variable as VariableAPI :
+            case let variable as VariableAPI:
                 let variablesDirectoryName: StrictString
 
                 if namespace.isEmpty {
@@ -431,7 +431,7 @@ extension APIElement {
                     }
                 }
                 path += namespace + variablesDirectoryName + "/"
-            case is SubscriptAPI :
+            case is SubscriptAPI:
                 let subscriptsDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -442,7 +442,7 @@ extension APIElement {
                     subscriptsDirectoryName = "subscript"
                 }
                 path += namespace + subscriptsDirectoryName + "/"
-            case let function as FunctionAPI :
+            case let function as FunctionAPI:
                 let functionsDirectoryName: StrictString
 
                 if namespace.isEmpty {

@@ -50,12 +50,20 @@ internal struct ColonSpacing : Rule {
         }
     })
 
-    internal static func check(file: TextFile, syntax: SourceFileSyntax?, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
+    internal static func check(file: TextFile, syntax: SourceFileSyntax?, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) throws {
 
         if let swift = syntax {
+            let scanner = SyntaxScanner(checkSyntax: { node in
+                if let token = node as? TokenSyntax,
+                    token.tokenKind == .colon {
 
+                    reportViolation(in: file, at: node.location(in: file.contents), replacementSuggestion: ": ", message: followingMessage, status: status, output: output)
+                }
+            })
+            try scanner.scan(swift)
         }
 
+        /*
         if file.fileType ∈ Set([.swift, .swiftPackageManifest]) {
 
             for match in file.contents.scalars.matches(for: ":".scalars) {
@@ -107,6 +115,6 @@ internal struct ColonSpacing : Rule {
                     reportViolation(in: file, at: match.range, replacementSuggestion: ": ", message: followingMessage, status: status, output: output)
                 }
             }
-        }
+        }*/
     }
 }

@@ -64,6 +64,9 @@ internal struct ColonSpacing : Rule {
                     if let inheritanceClause = token.parent as? TypeInheritanceClauseSyntax,
                         inheritanceClause.colon.indexInParent == token.indexInParent {
                         requiresPrecedingSpace = true
+                    } else if let conformanceRequirement = token.parent as? ConformanceRequirementSyntax,
+                        conformanceRequirement.colon.indexInParent == token.indexInParent {
+                        requiresPrecedingSpace = true
                     } else {
                         requiresPrecedingSpace = false
                     }
@@ -71,13 +74,13 @@ internal struct ColonSpacing : Rule {
                     var precedingViolation: (message: UserFacing<StrictString, InterfaceLocalization>, suggestion: StrictString, range: Range<String.ScalarView.Index>)?
                     if let precedingTrivia = token.firstPrecedingTrivia() {
                         switch precedingTrivia {
-                        case .spaces, .tabs, .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds, .garbageText:
+                        case .spaces, .tabs, .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds:
                             if ¬requiresPrecedingSpace {
                                 var range = token.tokenRange(in: file.contents)
                                 range = file.contents.scalars.index(range.lowerBound, offsetBy: −precedingTrivia.text.scalars.count) ..< range.upperBound
                                 precedingViolation = (prohibitedSpaceMessage, prohibitedSpaceSuggestion, range)
                             }
-                        case .backticks, .lineComment, .blockComment, .docLineComment, .docBlockComment:
+                        case .backticks, .lineComment, .blockComment, .docLineComment, .docBlockComment, .garbageText:
                             if requiresPrecedingSpace {
                                 precedingViolation = (requiredSpaceMessage, requiredSpaceSuggestion, token.tokenRange(in: file.contents))
                             }

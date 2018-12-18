@@ -59,19 +59,20 @@ internal struct ColonSpacing : Rule {
 
                     // Trailing
                     var trailingViolation = false
-                    if token.trailingTrivia.isEmpty {
-                        trailingViolation = true
-                    }
-                    if let trivia = token.trailingTrivia.first {
-                        switch trivia {
+                    if let followingTrivia = token.firstFollowingTrivia() {
+                        switch followingTrivia {
                         case .spaces, .tabs, .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds, .garbageText:
                             break
                         case .backticks, .lineComment, .blockComment, .docLineComment, .docBlockComment:
                             trailingViolation = true
                         }
+                    } else {
+                        // No trivia.
+                        trailingViolation = true
                     }
+
                     if trailingViolation {
-                        reportViolation(in: file, at: token.location(in: file.contents), replacementSuggestion: ": ", message: followingMessage, status: status, output: output)
+                        reportViolation(in: file, at: token.tokenRange(in: file.contents), replacementSuggestion: ": ", message: followingMessage, status: status, output: output)
                     }
                 }
             })

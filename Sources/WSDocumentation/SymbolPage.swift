@@ -478,10 +478,11 @@ internal class SymbolPage : Page {
             }
 
             var name = StrictString(child.name.source())
-            if child is PackageAPI ∨ child is LibraryAPI {
+            switch child {
+            case .package, .library:
                 name = HTMLElement("span", attributes: ["class": "text"], contents: name, inline: true).source
                 name = HTMLElement("span", attributes: ["class": "string"], contents: name, inline: true).source
-            } else {
+            case .module, .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .conformance:
                 name = highlight(name: name)
             }
             name = HTMLElement("code", attributes: ["class": "swift"], contents: name, inline: true).source

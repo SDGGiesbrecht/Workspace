@@ -268,7 +268,7 @@ extension APIElement {
     }
 
     private var fileName: StrictString {
-        return Page.sanitize(fileName: StrictString(name))
+        return Page.sanitize(fileName: StrictString(name.source()))
     }
 
     internal func pageURL(in outputDirectory: URL, for localization: LocalizationIdentifier) -> URL {

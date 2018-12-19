@@ -26,6 +26,6 @@ internal protocol MemberDeclaration : Syntax {
 extension MemberDeclaration {
 
     internal func isTypeMember() -> Bool {
-        return modifiers?.contains(where: { $0.name.tokenKind == .staticKeyword ∨ $0.name.tokenKind == .classKeyword }) == true
+        return modifiers?.contains(where: { $0.name.tokenKind == .staticKeyword ∨ $0.name.tokenKind == .classKeyword }) == true // @exempt(from: tests)
     }
 }

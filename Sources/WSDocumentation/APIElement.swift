@@ -516,7 +516,7 @@ extension APIElement {
         case .function(let function):
             return function.documentation
         case .conformance(let conformance):
-            return conformance.documentation
+            return conformance.documentation // @exempt(from: tests) Should never occur.
         }
     }
 }

@@ -32,7 +32,7 @@ extension PackageAPI {
 
                 switch element {
                 case .package, .library, .module, .case, .initializer, .subscript, .conformance:
-                    break
+                    break // @exempt(from: tests) Should never occur.
                 case .type(let type):
                     types.append(type)
                 case .protocol(let `protocol`):

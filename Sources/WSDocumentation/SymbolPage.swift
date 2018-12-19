@@ -36,15 +36,15 @@ internal class SymbolPage : Page {
                   output: Command.Output) {
 
         if symbol.relativePagePath.first?.value.components(separatedBy: "/").count == 3 {
-            switch symbol { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
-            case is PackageAPI, is ModuleAPI, is TypeAPI, is ExtensionAPI, is ProtocolAPI:
+            switch symbol {
+            case .package, .module, .type, .extension, .protocol:
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
-                        return "..." + StrictString(symbol.name) + "..."
+                        return "..." + StrictString(symbol.name.source()) + "..."
                     }
                 }).resolved())
-            default: // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+            default:
                 break
             }
         }

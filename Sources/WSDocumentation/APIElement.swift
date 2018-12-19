@@ -261,7 +261,7 @@ extension APIElement {
     // MARK: - Paths
 
     internal var receivesPage: Bool {
-        if self is ConformanceAPI {
+        if case .conformance = self {
             return false
         }
         return true

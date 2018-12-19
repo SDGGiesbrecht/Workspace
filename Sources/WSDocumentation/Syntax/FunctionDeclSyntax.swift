@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// #workaround(SDGSwift 0.4.0, This belongs in SDGSwiftSource.)
+
 import SDGSwiftSource
 
 extension FunctionDeclSyntax : MemberDeclaration {

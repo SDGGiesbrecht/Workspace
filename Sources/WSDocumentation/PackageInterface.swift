@@ -127,7 +127,7 @@ internal struct PackageInterface {
             result.append(generateIndexSection(named: SymbolPage.typesHeader(localization: localization), apiEntries: Array(APIElement.package(package).types.lazy.map({ APIElement.type($0) })), localization: localization))
         }
         if ¬package.uniqueExtensions.isEmpty {
-            result.append(generateIndexSection(named: SymbolPage.extensionsHeader(localization: localization), apiEntries: Array(APIElement.package(package).uniqueExtensions.lazy.map({ APIElement.extension($0) })), localization: localization))
+            result.append(generateIndexSection(named: SymbolPage.extensionsHeader(localization: localization), apiEntries: package.uniqueExtensions.lazy.map({ APIElement.extension($0) }), localization: localization))
         }
         if ¬package.protocols.isEmpty {
             result.append(generateIndexSection(named: SymbolPage.protocolsHeader(localization: localization), apiEntries: Array(APIElement.package(package).protocols.lazy.map({ APIElement.protocol($0) })), localization: localization))

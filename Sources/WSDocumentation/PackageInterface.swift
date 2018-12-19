@@ -338,7 +338,7 @@ internal struct PackageInterface {
         }
     }
 
-    private func outputNestedSymbols(of parent: APIScope, namespace: [APIScope], to outputDirectory: URL, localization: LocalizationIdentifier, status: DocumentationStatus, output: Command.Output) throws {
+    private func outputNestedSymbols(of parent: APIElement, namespace: [APIElement], to outputDirectory: URL, localization: LocalizationIdentifier, status: DocumentationStatus, output: Command.Output) throws {
         for symbol in parent.children where symbol.receivesPage {
             try autoreleasepool {
                 let location = symbol.pageURL(in: outputDirectory, for: localization)
@@ -366,7 +366,10 @@ internal struct PackageInterface {
                     output: output
                     ).contents.save(to: location)
 
-                if let scope = symbol as? APIScope {
+                switch symbol {
+                case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .conformance:
+                    break
+                case .type, .protocol, .extension:
                     try outputNestedSymbols(of: scope, namespace: namespace + [scope], to: outputDirectory, localization: localization, status: status, output: output)
                 }
             }

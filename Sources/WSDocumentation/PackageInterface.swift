@@ -370,7 +370,7 @@ internal struct PackageInterface {
                 case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .conformance:
                     break
                 case .type, .protocol, .extension:
-                    try outputNestedSymbols(of: scope, namespace: namespace + [scope], to: outputDirectory, localization: localization, status: status, output: output)
+                    try outputNestedSymbols(of: symbol, namespace: namespace + [symbol], to: outputDirectory, localization: localization, status: status, output: output)
                 }
             }
         }

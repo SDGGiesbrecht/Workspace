@@ -26,7 +26,7 @@ extension APIElement {
 
     internal func symbolType(localization: LocalizationIdentifier) -> StrictString {
         switch self {
-        case is PackageAPI:
+        case .package:
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -35,7 +35,7 @@ extension APIElement {
             } else {
                 return "Package" // From “let ... = Package(...)”
             }
-        case is LibraryAPI:
+        case .library:
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -44,7 +44,7 @@ extension APIElement {
             } else {
                 return "library" // From “products: [.library(...)]”
             }
-        case is ModuleAPI:
+        case .module:
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -53,9 +53,9 @@ extension APIElement {
             } else {
                 return "target" // From “targets: [.target(...)]”
             }
-        case let type as TypeAPI:
-            switch type.keyword {
-            case .classKeyword:
+        case .type(let type):
+            switch type.genericDeclaration {
+            case is ClassDeclSyntax:
                 if let match = localization._reasonableMatch {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -64,7 +64,7 @@ extension APIElement {
                 } else {
                     return "class"
                 }
-            case .structKeyword:
+            case is StructDeclSyntax:
                 if let match = localization._reasonableMatch {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -73,7 +73,7 @@ extension APIElement {
                 } else {
                     return "struct"
                 }
-            case .enumKeyword:
+            case is EnumDeclSyntax:
                 if let match = localization._reasonableMatch {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -82,7 +82,7 @@ extension APIElement {
                 } else {
                     return "enum"
                 }
-            case .typealiasKeyword:
+            case is TypealiasDeclSyntax:
                 if let match = localization._reasonableMatch {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -91,7 +91,7 @@ extension APIElement {
                 } else {
                     return "typealias"
                 }
-            case .associatedtypeKeyword:
+            case is AssociatedtypeDeclSyntax:
                 if let match = localization._reasonableMatch {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -102,11 +102,11 @@ extension APIElement {
                 }
             default:
                 if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                    print("Unrecognized type keyword: \(type.keyword)")
+                    print("Unrecognized type declaration: \(Swift.type(of: type.genericDeclaration))")
                 }
                 return ""
             }
-        case is ExtensionAPI:
+        case .extension:
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -115,7 +115,7 @@ extension APIElement {
             } else {
                 return "extension"
             }
-        case is ProtocolAPI:
+        case .protocol:
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -124,7 +124,7 @@ extension APIElement {
             } else {
                 return "protocol"
             }
-        case is CaseAPI:
+        case .case:
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -133,7 +133,7 @@ extension APIElement {
             } else {
                 return "case"
             }
-        case is InitializerAPI:
+        case .initializer:
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom:
@@ -144,7 +144,7 @@ extension APIElement {
             } else {
                 return "init"
             }
-        case let variable as VariableAPI:
+        case .variable(let variable):
             if relativePagePath[localization]!.components(separatedBy: "/").count ≤ 3 {
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -155,7 +155,7 @@ extension APIElement {
                     return "var"
                 }
             } else {
-                if variable.typePropertyKeyword ≠ nil {
+                if variable.declaration.modifiers?.contains(where: { $0.name.tokenKind == .staticKeyword ∨ $0.name.tokenKind == .classKeyword }) == true {
                     if let match = localization._reasonableMatch {
                         switch match {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -175,7 +175,7 @@ extension APIElement {
                     }
                 }
             }
-        case is SubscriptAPI:
+        case .subscript:
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -184,7 +184,7 @@ extension APIElement {
             } else {
                 return "subscript"
             }
-        case let function as FunctionAPI:
+        case .function(let function):
             if relativePagePath[localization]!.components(separatedBy: "/").count ≤ 3 {
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -195,7 +195,7 @@ extension APIElement {
                     return "func"
                 }
             } else {
-                if function.typeMethodKeyword ≠ nil {
+                if function.declaration.modifiers?.contains(where: { $0.name.tokenKind == .staticKeyword ∨ $0.name.tokenKind == .classKeyword }) == true {
                     if let match = localization._reasonableMatch {
                         switch match {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -215,11 +215,6 @@ extension APIElement {
                     }
                 }
             }
-        default:
-            if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                print("Unrecognized symbol type: \(type(of: self))")
-            }
-            return ""
         }
     }
 

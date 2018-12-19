@@ -215,11 +215,11 @@ internal class SymbolPage : Page {
     }
 
     private static func generateModulesSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
-        guard let library = symbol as? LibraryAPI,
+        guard case .library(let library) = symbol,
             ¬library.modules.isEmpty else {
                 return ""
         }
-        return generateChildrenSection(localization: localization, heading: modulesHeader(localization: localization), children: library.modules, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
+        return generateChildrenSection(localization: localization, heading: modulesHeader(localization: localization), children: library.modules.map({ APIElement.module($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
     internal static func typesHeader(localization: LocalizationIdentifier) -> StrictString {

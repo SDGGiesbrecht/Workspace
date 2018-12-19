@@ -332,8 +332,11 @@ internal struct PackageInterface {
                             output: output
                             ).contents.save(to: location)
 
-                        if let scope = symbol as? APIScope {
-                            try outputNestedSymbols(of: scope, namespace: [scope], to: outputDirectory, localization: localization, status: status, output: output)
+                        switch symbol {
+                        case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .conformance:
+                            break
+                        case .type, .protocol, .extension:
+                            try outputNestedSymbols(of: symbol, namespace: [symbol], to: outputDirectory, localization: localization, status: status, output: output)
                         }
                     }
             }

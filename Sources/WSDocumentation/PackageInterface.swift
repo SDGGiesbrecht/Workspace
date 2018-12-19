@@ -113,30 +113,30 @@ internal struct PackageInterface {
         result.append(generateIndexSection(named: packageHeader(localization: localization), contents: [
             HTMLElement("a", attributes: [
                 "href": StrictString("[*site root*]")
-                    + HTML.percentEncodeURLPath(package.relativePagePath[localization]!)
-                ], contents: StrictString(package.name), inline: false).source
+                    + HTML.percentEncodeURLPath(APIElement.package(package).relativePagePath[localization]!)
+                ], contents: StrictString(package.name.source()), inline: false).source
             ].joinedAsLines()))
 
         if ¬package.libraries.isEmpty {
-            result.append(generateIndexSection(named: SymbolPage.librariesHeader(localization: localization), apiEntries: package.libraries, localization: localization))
+            result.append(generateIndexSection(named: SymbolPage.librariesHeader(localization: localization), apiEntries: package.libraries.lazy.map({ APIElement.library($0) }), localization: localization))
         }
         if ¬package.modules.isEmpty {
-            result.append(generateIndexSection(named: SymbolPage.modulesHeader(localization: localization), apiEntries: package.modules, localization: localization))
+            result.append(generateIndexSection(named: SymbolPage.modulesHeader(localization: localization), apiEntries: package.modules.lazy.map({ APIElement.module($0) }), localization: localization))
         }
         if ¬package.types.isEmpty {
-            result.append(generateIndexSection(named: SymbolPage.typesHeader(localization: localization), apiEntries: package.types, localization: localization))
+            result.append(generateIndexSection(named: SymbolPage.typesHeader(localization: localization), apiEntries: package.types.lazy.map({ APIElement.type($0) }), localization: localization))
         }
         if ¬package.uniqueExtensions.isEmpty {
-            result.append(generateIndexSection(named: SymbolPage.extensionsHeader(localization: localization), apiEntries: package.uniqueExtensions, localization: localization))
+            result.append(generateIndexSection(named: SymbolPage.extensionsHeader(localization: localization), apiEntries: package.uniqueExtensions.lazy.map({ APIElement.extension($0) }), localization: localization))
         }
         if ¬package.protocols.isEmpty {
-            result.append(generateIndexSection(named: SymbolPage.protocolsHeader(localization: localization), apiEntries: package.protocols, localization: localization))
+            result.append(generateIndexSection(named: SymbolPage.protocolsHeader(localization: localization), apiEntries: package.protocols.lazy.map({ APIElement.protocol($0) }), localization: localization))
         }
         if ¬package.functions.isEmpty {
-            result.append(generateIndexSection(named: SymbolPage.functionsHeader(localization: localization), apiEntries: package.functions, localization: localization))
+            result.append(generateIndexSection(named: SymbolPage.functionsHeader(localization: localization), apiEntries: package.functions.lazy.map({ APIElement.function($0) }), localization: localization))
         }
         if ¬package.globalVariables.isEmpty {
-            result.append(generateIndexSection(named: SymbolPage.variablesHeader(localization: localization), apiEntries: package.globalVariables, localization: localization))
+            result.append(generateIndexSection(named: SymbolPage.variablesHeader(localization: localization), apiEntries: package.globalVariables.lazy.map({ APIElement.variable($0) }), localization: localization))
         }
 
         return result.joinedAsLines()
@@ -148,7 +148,7 @@ internal struct PackageInterface {
             entries.append(HTMLElement("a", attributes: [
                 "href": StrictString("[*site root*]")
                     + HTML.percentEncodeURLPath(entry.relativePagePath[localization]!)
-                ], contents: StrictString(entry.name), inline: false).source)
+                ], contents: StrictString(entry.name.source()), inline: false).source)
         }
         return generateIndexSection(named: name, contents: entries.joinedAsLines())
     }
@@ -179,17 +179,18 @@ internal struct PackageInterface {
 
         self.localizations = localizations
         self.developmentLocalization = developmentLocalization
-        self.api = api
+        self.packageAPI = api
+        self.api = APIElement.package(api)
         api.computeMergedAPI()
 
         self.packageImport = PackageInterface.specify(package: packageURL, version: version)
         self.copyrightNotices = copyright
 
-        self.packageIdentifiers = api.identifierList
+        self.packageIdentifiers = api.identifierList()
 
         var paths: [LocalizationIdentifier: [String: String]] = [:]
         for localization in localizations {
-            paths[localization] = api.determinePaths(for: localization)
+            paths[localization] = APIElement.package(api).determinePaths(for: localization)
         }
         self.symbolLinks = paths.mapValues { localization in
             localization.mapValues { link in
@@ -204,7 +205,8 @@ internal struct PackageInterface {
 
     private let localizations: [LocalizationIdentifier]
     private let developmentLocalization: LocalizationIdentifier
-    private let api: PackageAPI
+    private let packageAPI: PackageAPI
+    private let api: APIElement
     private let packageImport: StrictString?
     private let indices: [LocalizationIdentifier: StrictString]
     private let copyrightNotices: [LocalizationIdentifier: StrictString]
@@ -261,7 +263,7 @@ internal struct PackageInterface {
 
     private func outputLibraryPages(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output) throws {
         for localization in localizations {
-            for library in api.libraries {
+            for library in api.libraries.lazy.map({ APIElement.library($0) }) {
                 try autoreleasepool {
                     let location = library.pageURL(in: outputDirectory, for: localization)
                     try SymbolPage(
@@ -284,7 +286,7 @@ internal struct PackageInterface {
 
     private func outputModulePages(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output) throws {
         for localization in localizations {
-            for module in api.modules {
+            for module in api.modules.lazy.map({ APIElement.module($0) }) {
                 try autoreleasepool {
                     let location = module.pageURL(in: outputDirectory, for: localization)
                     try SymbolPage(
@@ -307,11 +309,13 @@ internal struct PackageInterface {
 
     private func outputTopLevelSymbols(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output) throws {
         for localization in localizations {
-            for symbol in api.types as [APIElement]
-                + api.uniqueExtensions as [APIElement]
-                + api.protocols as [APIElement]
-                + api.functions as [APIElement]
-                + api.globalVariables as [APIElement] {
+            for symbol in [
+                packageAPI.types.map({ APIElement.type($0) }),
+                packageAPI.uniqueExtensions.map({ APIElement.extension($0) }),
+                packageAPI.protocols.map({ APIElement.protocol($0) }),
+                packageAPI.functions.map({ APIElement.function($0) }),
+                packageAPI.globalVariables.map({ APIElement.variable($0) })
+                ].joined() {
                     try autoreleasepool {
                         let location = symbol.pageURL(in: outputDirectory, for: localization)
                         try SymbolPage(
@@ -328,15 +332,18 @@ internal struct PackageInterface {
                             output: output
                             ).contents.save(to: location)
 
-                        if let scope = symbol as? APIScope {
-                            try outputNestedSymbols(of: scope, namespace: [scope], to: outputDirectory, localization: localization, status: status, output: output)
+                        switch symbol {
+                        case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .conformance:
+                            break
+                        case .type, .protocol, .extension:
+                            try outputNestedSymbols(of: symbol, namespace: [symbol], to: outputDirectory, localization: localization, status: status, output: output)
                         }
                     }
             }
         }
     }
 
-    private func outputNestedSymbols(of parent: APIScope, namespace: [APIScope], to outputDirectory: URL, localization: LocalizationIdentifier, status: DocumentationStatus, output: Command.Output) throws {
+    private func outputNestedSymbols(of parent: APIElement, namespace: [APIElement], to outputDirectory: URL, localization: LocalizationIdentifier, status: DocumentationStatus, output: Command.Output) throws {
         for symbol in parent.children where symbol.receivesPage {
             try autoreleasepool {
                 let location = symbol.pageURL(in: outputDirectory, for: localization)
@@ -364,8 +371,11 @@ internal struct PackageInterface {
                     output: output
                     ).contents.save(to: location)
 
-                if let scope = symbol as? APIScope {
-                    try outputNestedSymbols(of: scope, namespace: namespace + [scope], to: outputDirectory, localization: localization, status: status, output: output)
+                switch symbol {
+                case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .conformance:
+                    break
+                case .type, .protocol, .extension:
+                    try outputNestedSymbols(of: symbol, namespace: namespace + [symbol], to: outputDirectory, localization: localization, status: status, output: output)
                 }
             }
         }

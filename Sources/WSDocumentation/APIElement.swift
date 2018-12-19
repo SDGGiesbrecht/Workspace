@@ -26,7 +26,7 @@ extension APIElement {
 
     internal func symbolType(localization: LocalizationIdentifier) -> StrictString {
         switch self {
-        case is PackageAPI:
+        case .package:
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -35,7 +35,7 @@ extension APIElement {
             } else {
                 return "Package" // From “let ... = Package(...)”
             }
-        case is LibraryAPI:
+        case .library:
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -44,7 +44,7 @@ extension APIElement {
             } else {
                 return "library" // From “products: [.library(...)]”
             }
-        case is ModuleAPI:
+        case .module:
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -53,9 +53,9 @@ extension APIElement {
             } else {
                 return "target" // From “targets: [.target(...)]”
             }
-        case let type as TypeAPI:
-            switch type.keyword {
-            case .classKeyword:
+        case .type(let type):
+            switch type.genericDeclaration {
+            case is ClassDeclSyntax:
                 if let match = localization._reasonableMatch {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -64,7 +64,7 @@ extension APIElement {
                 } else {
                     return "class"
                 }
-            case .structKeyword:
+            case is StructDeclSyntax:
                 if let match = localization._reasonableMatch {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -73,7 +73,7 @@ extension APIElement {
                 } else {
                     return "struct"
                 }
-            case .enumKeyword:
+            case is EnumDeclSyntax:
                 if let match = localization._reasonableMatch {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -82,7 +82,7 @@ extension APIElement {
                 } else {
                     return "enum"
                 }
-            case .typealiasKeyword:
+            case is TypealiasDeclSyntax:
                 if let match = localization._reasonableMatch {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -91,7 +91,7 @@ extension APIElement {
                 } else {
                     return "typealias"
                 }
-            case .associatedtypeKeyword:
+            case is AssociatedtypeDeclSyntax:
                 if let match = localization._reasonableMatch {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -102,11 +102,11 @@ extension APIElement {
                 }
             default:
                 if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                    print("Unrecognized type keyword: \(type.keyword)")
+                    print("Unrecognized type declaration: \(Swift.type(of: type.genericDeclaration))")
                 }
                 return ""
             }
-        case is ExtensionAPI:
+        case .extension:
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -115,7 +115,7 @@ extension APIElement {
             } else {
                 return "extension"
             }
-        case is ProtocolAPI:
+        case .protocol:
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -124,7 +124,7 @@ extension APIElement {
             } else {
                 return "protocol"
             }
-        case is CaseAPI:
+        case .case:
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -133,7 +133,7 @@ extension APIElement {
             } else {
                 return "case"
             }
-        case is InitializerAPI:
+        case .initializer:
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom:
@@ -144,7 +144,7 @@ extension APIElement {
             } else {
                 return "init"
             }
-        case let variable as VariableAPI:
+        case .variable(let variable):
             if relativePagePath[localization]!.components(separatedBy: "/").count ≤ 3 {
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -155,7 +155,7 @@ extension APIElement {
                     return "var"
                 }
             } else {
-                if variable.typePropertyKeyword ≠ nil {
+                if variable.declaration.isTypeMember() {
                     if let match = localization._reasonableMatch {
                         switch match {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -175,7 +175,7 @@ extension APIElement {
                     }
                 }
             }
-        case is SubscriptAPI:
+        case .subscript:
             if let match = localization._reasonableMatch {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -184,7 +184,7 @@ extension APIElement {
             } else {
                 return "subscript"
             }
-        case let function as FunctionAPI:
+        case .function(let function):
             if relativePagePath[localization]!.components(separatedBy: "/").count ≤ 3 {
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -195,7 +195,7 @@ extension APIElement {
                     return "func"
                 }
             } else {
-                if function.typeMethodKeyword ≠ nil {
+                if function.declaration.isTypeMember() {
                     if let match = localization._reasonableMatch {
                         switch match {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -215,11 +215,8 @@ extension APIElement {
                     }
                 }
             }
-        default:
-            if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                print("Unrecognized symbol type: \(type(of: self))")
-            }
-            return ""
+        case .conformance:
+            unreachable()
         }
     }
 
@@ -238,7 +235,7 @@ extension APIElement {
         get {
             return (userInformation as? [ExtendedPropertyKey: Any]) ?? [:]
         }
-        set {
+        nonmutating set {
             userInformation = newValue
         }
     }
@@ -247,7 +244,7 @@ extension APIElement {
         get {
             return (extendedProperties[.relativePagePath] as? [LocalizationIdentifier: StrictString]) ?? [:]
         }
-        set {
+        nonmutating set {
             extendedProperties[.relativePagePath] = newValue
         }
     }
@@ -256,7 +253,7 @@ extension APIElement {
         get { // @exempt(from: tests) #workaround(Not used yet.)
             return (extendedProperties[.homeModule] as? Weak<ModuleAPI>) ?? Weak<ModuleAPI>(nil)
         }
-        set {
+        nonmutating set {
             extendedProperties[.homeModule] = newValue
         }
     }
@@ -264,14 +261,14 @@ extension APIElement {
     // MARK: - Paths
 
     internal var receivesPage: Bool {
-        if self is ConformanceAPI {
+        if case .conformance = self {
             return false
         }
         return true
     }
 
     private var fileName: StrictString {
-        return Page.sanitize(fileName: StrictString(name))
+        return Page.sanitize(fileName: StrictString(name.source()))
     }
 
     internal func pageURL(in outputDirectory: URL, for localization: LocalizationIdentifier) -> URL {
@@ -285,11 +282,11 @@ extension APIElement {
             var path = localization._directoryName + "/"
 
             switch self {
-            case let package as PackageAPI:
+            case .package(let package):
                 for library in package.libraries {
-                    links = library.determinePaths(for: localization).mergedByOverwriting(from: links)
+                    links = APIElement.library(library).determinePaths(for: localization).mergedByOverwriting(from: links)
                 }
-            case let library as LibraryAPI:
+            case .library(let library):
                 let librariesDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -302,9 +299,9 @@ extension APIElement {
                 path += librariesDirectoryName + "/"
 
                 for module in library.modules {
-                    links = module.determinePaths(for: localization).mergedByOverwriting(from: links)
+                    links = APIElement.module(module).determinePaths(for: localization).mergedByOverwriting(from: links)
                 }
-            case let module as ModuleAPI:
+            case .module(let module):
                 let modulesDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -319,7 +316,7 @@ extension APIElement {
                 for child in module.children {
                     links = child.determinePaths(for: localization).mergedByOverwriting(from: links)
                 }
-            case is TypeAPI:
+            case .type:
                 let typesDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -337,7 +334,7 @@ extension APIElement {
                 for child in children where child.receivesPage {
                     links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
                 }
-            case is ExtensionAPI:
+            case .extension:
                 let extensionsDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -355,7 +352,7 @@ extension APIElement {
                 for child in children where child.receivesPage {
                     links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
                 }
-            case is ProtocolAPI:
+            case .protocol:
                 let protocolsDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -373,7 +370,7 @@ extension APIElement {
                 for child in children where child.receivesPage {
                     links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
                 }
-            case is CaseAPI:
+            case .case:
                 let casesDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -384,7 +381,7 @@ extension APIElement {
                     casesDirectoryName = "case"
                 }
                 path += namespace + casesDirectoryName + "/"
-            case is InitializerAPI:
+            case .initializer:
                 let initializersDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -397,7 +394,7 @@ extension APIElement {
                     initializersDirectoryName = "init"
                 }
                 path += namespace + initializersDirectoryName + "/"
-            case let variable as VariableAPI:
+            case .variable(let variable):
                 let variablesDirectoryName: StrictString
 
                 if namespace.isEmpty {
@@ -410,7 +407,7 @@ extension APIElement {
                         variablesDirectoryName = "var"
                     }
                 } else {
-                    if variable.typePropertyKeyword ≠ nil {
+                    if variable.declaration.isTypeMember() {
                         if let match = localization._reasonableMatch {
                             switch match {
                             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -431,7 +428,7 @@ extension APIElement {
                     }
                 }
                 path += namespace + variablesDirectoryName + "/"
-            case is SubscriptAPI:
+            case .subscript:
                 let subscriptsDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -442,7 +439,7 @@ extension APIElement {
                     subscriptsDirectoryName = "subscript"
                 }
                 path += namespace + subscriptsDirectoryName + "/"
-            case let function as FunctionAPI:
+            case .function(let function):
                 let functionsDirectoryName: StrictString
 
                 if namespace.isEmpty {
@@ -455,7 +452,7 @@ extension APIElement {
                         functionsDirectoryName = "func"
                     }
                 } else {
-                    if function.typeMethodKeyword ≠ nil {
+                    if function.declaration.isTypeMember() {
                         if let match = localization._reasonableMatch {
                             switch match {
                             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -476,20 +473,50 @@ extension APIElement {
                     }
                 }
                 path += namespace + functionsDirectoryName + "/"
-            default:
-                if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                    print("Unrecognized symbol type: \(type(of: self))")
-                }
+            case .conformance:
+                unreachable()
             }
 
             path += fileName + ".html"
             relativePagePath[localization] = path
-            if let type = self as? TypeAPI {
-                links[type.name.truncated(before: "<")] = String(path)
+            if case .type = self {
+                links[name.source().truncated(before: "<")] = String(path)
             } else {
-                links[name] = String(path)
+                links[name.source()] = String(path)
             }
             return links
+        }
+    }
+
+    // MARK: - SDGSwiftSource
+
+    // #workaround(SDGSwift 0.4.0, This belongs in SDGSwiftSource.)
+    internal var documentation: DocumentationSyntax? {
+        switch self {
+        case .package(let package):
+            return package.documentation
+        case .library(let library):
+            return library.documentation
+        case .module(let module):
+            return module.documentation
+        case .type(let type):
+            return type.documentation
+        case .protocol(let `protocol`):
+            return `protocol`.documentation
+        case .extension(let `extension`):
+            return `extension`.documentation
+        case .case(let `case`):
+            return `case`.documentation
+        case .initializer(let initializer):
+            return initializer.documentation
+        case .variable(let variable):
+            return variable.documentation
+        case .subscript(let `subscript`):
+            return `subscript`.documentation
+        case .function(let function):
+            return function.documentation
+        case .conformance(let conformance):
+            return conformance.documentation // @exempt(from: tests) Should never occur.
         }
     }
 }

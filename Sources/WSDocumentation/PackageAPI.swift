@@ -31,20 +31,18 @@ extension PackageAPI {
                 element.homeModule = Weak(module)
 
                 switch element {
-                case let type as TypeAPI:
+                case .package, .library, .module, .case, .initializer, .subscript, .conformance:
+                    break // @exempt(from: tests) Should never occur.
+                case .type(let type):
                     types.append(type)
-                case let `protocol` as ProtocolAPI:
+                case .protocol(let `protocol`):
                     protocols.append(`protocol`)
-                case let `extension` as ExtensionAPI:
+                case .extension(let `extension`):
                     unprocessedExtensions.append(`extension`)
-                case let function as FunctionAPI:
+                case .function(let function):
                     functions.append(function)
-                case let globalVariable as VariableAPI:
+                case .variable(let globalVariable):
                     globalVariables.append(globalVariable)
-                default:
-                    if BuildConfiguration.current == .debug { // @exempt(from: tests) Should never occur.
-                        print("Unidentified API element: \(Swift.type(of: element))")
-                    }
                 }
             }
         }
@@ -67,19 +65,19 @@ extension PackageAPI {
 
     internal var types: [TypeAPI] {
         get {
-            return extendedProperties[.types] as? [TypeAPI] ?? [] // @exempt(from: tests) Should never be nil.
+            return APIElement.package(self).extendedProperties[.types] as? [TypeAPI] ?? [] // @exempt(from: tests) Should never be nil.
         }
         set {
-            extendedProperties[.types] = newValue
+            APIElement.package(self).extendedProperties[.types] = newValue
         }
     }
 
     internal var uniqueExtensions: [ExtensionAPI] {
         get {
-            return extendedProperties[.extensions] as? [ExtensionAPI] ?? [] // @exempt(from: tests) Should never be nil.
+            return APIElement.package(self).extendedProperties[.extensions] as? [ExtensionAPI] ?? [] // @exempt(from: tests) Should never be nil.
         }
         set {
-            extendedProperties[.extensions] = newValue
+            APIElement.package(self).extendedProperties[.extensions] = newValue
         }
     }
 
@@ -89,28 +87,28 @@ extension PackageAPI {
 
     internal var protocols: [ProtocolAPI] {
         get {
-            return extendedProperties[.protocols] as? [ProtocolAPI] ?? [] // @exempt(from: tests) Should never be nil.
+            return APIElement.package(self).extendedProperties[.protocols] as? [ProtocolAPI] ?? [] // @exempt(from: tests) Should never be nil.
         }
         set {
-            extendedProperties[.protocols] = newValue
+            APIElement.package(self).extendedProperties[.protocols] = newValue
         }
     }
 
     internal var functions: [FunctionAPI] {
         get {
-            return extendedProperties[.functions] as? [FunctionAPI] ?? [] // @exempt(from: tests) Should never be nil.
+            return APIElement.package(self).extendedProperties[.functions] as? [FunctionAPI] ?? [] // @exempt(from: tests) Should never be nil.
         }
         set {
-            extendedProperties[.functions] = newValue
+            APIElement.package(self).extendedProperties[.functions] = newValue
         }
     }
 
     internal var globalVariables: [VariableAPI] {
         get {
-            return extendedProperties[.globalVariables] as? [VariableAPI] ?? [] // @exempt(from: tests) Should never be nil.
+            return APIElement.package(self).extendedProperties[.globalVariables] as? [VariableAPI] ?? [] // @exempt(from: tests) Should never be nil.
         }
         set {
-            extendedProperties[.globalVariables] = newValue
+            APIElement.package(self).extendedProperties[.globalVariables] = newValue
         }
     }
 }

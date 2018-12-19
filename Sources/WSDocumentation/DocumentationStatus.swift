@@ -42,10 +42,10 @@ internal class DocumentationStatus {
     private func report(problem: UserFacing<StrictString, InterfaceLocalization>, with symbol: APIElement, navigationPath: [APIElement], hint: UserFacing<StrictString, InterfaceLocalization>? = nil) {
         let symbolName: StrictString
         switch symbol {
-        case is PackageAPI, is ModuleAPI:
-            symbolName = StrictString(symbol.name)
-        default:
-            symbolName = navigationPath.dropFirst().map({ StrictString($0.name) }).joined(separator: ".")
+        case .package, .library, .module:
+            symbolName = StrictString(symbol.name.source())
+        case .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .conformance:
+            symbolName = navigationPath.dropFirst().map({ StrictString($0.name.source()) }).joined(separator: ".")
         }
         report(problem: UserFacing({ localization in
             var result: [StrictString] = [
@@ -63,15 +63,18 @@ internal class DocumentationStatus {
         var hint: UserFacing<StrictString, InterfaceLocalization>?
 
         var possibleSearch: StrictString?
-        if symbol is PackageAPI {
+        switch symbol {
+        case .package:
             possibleSearch = "Package"
-        } else if symbol is LibraryAPI {
+        case .library:
             possibleSearch = ".library"
-        } else if symbol is ModuleAPI {
+        case .module:
             possibleSearch = ".target"
+        case .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .conformance:
+            break
         }
         if var search = possibleSearch {
-            search.append(contentsOf: "(name: \u{22}" + StrictString(symbol.name) + "\u{22}")
+            search.append(contentsOf: "(name: \u{22}" + StrictString(symbol.name.source()) + "\u{22}")
 
             hint = UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
@@ -95,7 +98,7 @@ internal class DocumentationStatus {
             case .englishCanada:
                 return "A public variable has no explicit type:"
             }
-        }), with: variable, navigationPath: navigationPath)
+        }), with: APIElement.variable(variable), navigationPath: navigationPath)
     }
 
     internal func reportMissingCopyright(localization: LocalizationIdentifier) { // @exempt(from: tests) #workaround(Not used yet.)

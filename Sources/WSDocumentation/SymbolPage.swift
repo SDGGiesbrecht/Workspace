@@ -236,11 +236,10 @@ internal class SymbolPage : Page {
     }
 
     private static func generateTypesSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
-        guard case .module(let module) = symbol,
-            ¬module.types.isEmpty else {
+        guard ¬symbol.types.isEmpty else {
                 return ""
         }
-        return generateChildrenSection(localization: localization, heading: typesHeader(localization: localization), children: module.types.map({ APIElement.type($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
+        return generateChildrenSection(localization: localization, heading: typesHeader(localization: localization), children: symbol.types.map({ APIElement.type($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
     internal static func extensionsHeader(localization: LocalizationIdentifier) -> StrictString {
@@ -257,11 +256,10 @@ internal class SymbolPage : Page {
     }
 
     private static func generateExtensionsSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
-        guard case .module(let module) = symbol,
-            ¬module.extensions.isEmpty else {
+        guard ¬symbol.extensions.isEmpty else {
                 return ""
         }
-        return generateChildrenSection(localization: localization, heading: modulesHeader(localization: localization), children: module.extensions.map({ APIElement.extension($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
+        return generateChildrenSection(localization: localization, heading: modulesHeader(localization: localization), children: symbol.extensions.map({ APIElement.extension($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
     internal static func protocolsHeader(localization: LocalizationIdentifier) -> StrictString {
@@ -278,11 +276,10 @@ internal class SymbolPage : Page {
     }
 
     private static func generateProtocolsSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
-        guard case .module(let module) = symbol,
-            ¬module.protocols.isEmpty else {
+        guard ¬symbol.protocols.isEmpty else {
                 return ""
         }
-        return generateChildrenSection(localization: localization, heading: protocolsHeader(localization: localization), children: module.protocols.map({ APIElement.protocol($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
+        return generateChildrenSection(localization: localization, heading: protocolsHeader(localization: localization), children: symbol.protocols.map({ APIElement.protocol($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
     internal static func functionsHeader(localization: LocalizationIdentifier) -> StrictString {
@@ -299,11 +296,10 @@ internal class SymbolPage : Page {
     }
 
     private static func generateFunctionsSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
-        guard case .module(let module) = symbol,
-            ¬module.methods.isEmpty else {
+        guard ¬symbol.methods.isEmpty else {
                 return ""
         }
-        return generateChildrenSection(localization: localization, heading: functionsHeader(localization: localization), children: module.methods.map({ APIElement.function($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
+        return generateChildrenSection(localization: localization, heading: functionsHeader(localization: localization), children: symbol.methods.map({ APIElement.function($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
     internal static func variablesHeader(localization: LocalizationIdentifier) -> StrictString {
@@ -320,16 +316,14 @@ internal class SymbolPage : Page {
     }
 
     private static func generateVariablesSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
-        guard case .module(let module) = symbol,
-            ¬module.properties.isEmpty else {
+        guard ¬symbol.properties.isEmpty else {
                 return ""
         }
-        return generateChildrenSection(localization: localization, heading: variablesHeader(localization: localization), children: module.properties.map({ APIElement.variable($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
+        return generateChildrenSection(localization: localization, heading: variablesHeader(localization: localization), children: symbol.properties.map({ APIElement.variable($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
     private static func generateCasesSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
-        guard let scope = symbol as? APIScope,
-            ¬scope.cases.isEmpty else {
+        guard ¬symbol.cases.isEmpty else {
                 return ""
         }
 
@@ -343,12 +337,11 @@ internal class SymbolPage : Page {
             heading = "case"
         }
 
-        return generateChildrenSection(localization: localization, heading: heading, children: scope.cases, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
+        return generateChildrenSection(localization: localization, heading: heading, children: symbol.cases.map({ APIElement.case($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
     private static func generateNestedTypesSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
-        guard let scope = symbol as? APIScope,
-            ¬scope.subtypes.isEmpty else {
+        guard ¬symbol.types.isEmpty else {
                 return ""
         }
 
@@ -362,12 +355,11 @@ internal class SymbolPage : Page {
             heading = "struct/class/enum"
         }
 
-        return generateChildrenSection(localization: localization, heading: heading, children: scope.subtypes, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
+        return generateChildrenSection(localization: localization, heading: heading, children: symbol.types.map({ APIElement.type($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
     private static func generateTypePropertiesSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
-        guard let scope = symbol as? APIScope,
-            ¬scope.typeProperties.isEmpty else {
+        guard ¬symbol.typeProperties.isEmpty else {
                 return ""
         }
 
@@ -381,12 +373,11 @@ internal class SymbolPage : Page {
             heading = "static var"
         }
 
-        return generateChildrenSection(localization: localization, heading: heading, children: scope.typeProperties, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
+        return generateChildrenSection(localization: localization, heading: heading, children: symbol.typeProperties.map({ APIElement.variable($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
     private static func generateTypeMethodsSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
-        guard let scope = symbol as? APIScope,
-            ¬scope.typeMethods.isEmpty else {
+        guard ¬symbol.typeMethods.isEmpty else {
                 return ""
         }
 
@@ -400,12 +391,11 @@ internal class SymbolPage : Page {
             heading = "static func"
         }
 
-        return generateChildrenSection(localization: localization, heading: heading, children: scope.typeMethods, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
+        return generateChildrenSection(localization: localization, heading: heading, children: symbol.typeMethods.map({ APIElement.function($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
     private static func generateInitializersSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
-        guard let scope = symbol as? APIScope,
-            ¬scope.initializers.isEmpty else {
+        guard ¬symbol.initializers.isEmpty else {
                 return ""
         }
 
@@ -419,12 +409,11 @@ internal class SymbolPage : Page {
             heading = "init"
         }
 
-        return generateChildrenSection(localization: localization, heading: heading, children: scope.initializers, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
+        return generateChildrenSection(localization: localization, heading: heading, children: symbol.initializers.map({ APIElement.initializer($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
     private static func generatePropertiesSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
-        guard let scope = symbol as? APIScope,
-            ¬scope.properties.isEmpty else {
+        guard ¬symbol.properties.isEmpty else {
                 return ""
         }
 
@@ -438,12 +427,11 @@ internal class SymbolPage : Page {
             heading = "var"
         }
 
-        return generateChildrenSection(localization: localization, heading: heading, children: scope.properties, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
+        return generateChildrenSection(localization: localization, heading: heading, children: symbol.properties.map({ APIElement.variable($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
     private static func generateSubscriptsSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
-        guard let scope = symbol as? APIScope,
-            ¬scope.subscripts.isEmpty else {
+        guard ¬symbol.subscripts.isEmpty else {
                 return ""
         }
 
@@ -457,12 +445,11 @@ internal class SymbolPage : Page {
             heading = "subscript"
         }
 
-        return generateChildrenSection(localization: localization, heading: heading, children: scope.subscripts, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
+        return generateChildrenSection(localization: localization, heading: heading, children: symbol.subscripts.map({ APIElement.subscript($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
     private static func generateMethodsSection(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
-        guard let scope = symbol as? APIScope,
-            ¬scope.methods.isEmpty else {
+        guard ¬symbol.methods.isEmpty else {
                 return ""
         }
 
@@ -476,7 +463,7 @@ internal class SymbolPage : Page {
             heading = "func"
         }
 
-        return generateChildrenSection(localization: localization, heading: heading, children: scope.methods, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
+        return generateChildrenSection(localization: localization, heading: heading, children: symbol.methods.map({ APIElement.function($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
     private static func generateChildrenSection(localization: LocalizationIdentifier, heading: StrictString, children: [APIElement], pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {

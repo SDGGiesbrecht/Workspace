@@ -148,7 +148,7 @@ internal struct PackageInterface {
             entries.append(HTMLElement("a", attributes: [
                 "href": StrictString("[*site root*]")
                     + HTML.percentEncodeURLPath(entry.relativePagePath[localization]!)
-                ], contents: StrictString(entry.name), inline: false).source)
+                ], contents: StrictString(entry.name.source()), inline: false).source)
         }
         return generateIndexSection(named: name, contents: entries.joinedAsLines())
     }
@@ -179,17 +179,18 @@ internal struct PackageInterface {
 
         self.localizations = localizations
         self.developmentLocalization = developmentLocalization
-        self.api = api
+        self.packageAPI = api
+        self.api = APIElement.package(api)
         api.computeMergedAPI()
 
         self.packageImport = PackageInterface.specify(package: packageURL, version: version)
         self.copyrightNotices = copyright
 
-        self.packageIdentifiers = api.identifierList
+        self.packageIdentifiers = api.identifierList()
 
         var paths: [LocalizationIdentifier: [String: String]] = [:]
         for localization in localizations {
-            paths[localization] = api.determinePaths(for: localization)
+            paths[localization] = APIElement.package(api).determinePaths(for: localization)
         }
         self.symbolLinks = paths.mapValues { localization in
             localization.mapValues { link in
@@ -204,7 +205,8 @@ internal struct PackageInterface {
 
     private let localizations: [LocalizationIdentifier]
     private let developmentLocalization: LocalizationIdentifier
-    private let api: PackageAPI
+    private let packageAPI: PackageAPI
+    private let api: APIElement
     private let packageImport: StrictString?
     private let indices: [LocalizationIdentifier: StrictString]
     private let copyrightNotices: [LocalizationIdentifier: StrictString]
@@ -261,7 +263,7 @@ internal struct PackageInterface {
 
     private func outputLibraryPages(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output) throws {
         for localization in localizations {
-            for library in api.libraries {
+            for library in api.libraries.lazy.map({ APIElement.library($0) }) {
                 try autoreleasepool {
                     let location = library.pageURL(in: outputDirectory, for: localization)
                     try SymbolPage(
@@ -284,7 +286,7 @@ internal struct PackageInterface {
 
     private func outputModulePages(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output) throws {
         for localization in localizations {
-            for module in api.modules {
+            for module in api.modules.lazy.map({ APIElement.module($0) }) {
                 try autoreleasepool {
                     let location = module.pageURL(in: outputDirectory, for: localization)
                     try SymbolPage(
@@ -307,11 +309,11 @@ internal struct PackageInterface {
 
     private func outputTopLevelSymbols(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output) throws {
         for localization in localizations {
-            for symbol in api.types as [APIElement]
-                + api.uniqueExtensions as [APIElement]
-                + api.protocols as [APIElement]
-                + api.functions as [APIElement]
-                + api.globalVariables as [APIElement] {
+            for symbol in packageAPI.types.lazy.map({ APIElement.type($0) })
+                + packageAPI.uniqueExtensions.lazy.map({ APIElement.extension($0) })
+                + packageAPI.protocols.lazy.map({ APIElement.protocol($0) })
+                + packageAPI.functions.lazy.map({ APIElement.function($0) })
+                + packageAPI.globalVariables.lazy.map({ APIElement.variable($0) }) {
                     try autoreleasepool {
                         let location = symbol.pageURL(in: outputDirectory, for: localization)
                         try SymbolPage(

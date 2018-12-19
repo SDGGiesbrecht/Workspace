@@ -215,6 +215,8 @@ extension APIElement {
                     }
                 }
             }
+        case .conformance:
+            unreachable()
         }
     }
 

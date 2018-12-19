@@ -82,7 +82,7 @@ internal class SymbolPage : Page {
                    index: index,
                    symbolType: symbol.symbolType(localization: localization),
                    compilationConditions: SymbolPage.generateCompilationConditions(symbol: symbol),
-                   title: StrictString(symbol.name),
+                   title: StrictString(symbol.name.source()),
                    content: content.joinedAsLines(), copyright: copyright)
     }
 
@@ -96,9 +96,9 @@ internal class SymbolPage : Page {
                 level ≠ navigationPath.index(before: navigationPath.endIndex) {
                 return HTMLElement("a", attributes: [
                     "href": HTML.percentEncodeURLPath(url)
-                    ], contents: StrictString(element.name), inline: true).source
+                    ], contents: StrictString(element.name.source()), inline: true).source
             } else {
-                return HTMLElement("span", attributes: [:], contents: StrictString(element.name), inline: true).source
+                return HTMLElement("span", attributes: [:], contents: StrictString(element.name.source()), inline: true).source
             }
         }
         return navigationPathLinks.joined(separator: "\n")
@@ -490,7 +490,7 @@ internal class SymbolPage : Page {
                 entry.append("<br>")
             }
 
-            var name = StrictString(child.name)
+            var name = StrictString(child.name.source())
             if child is PackageAPI ∨ child is LibraryAPI {
                 name = HTMLElement("span", attributes: ["class": "text"], contents: name, inline: true).source
                 name = HTMLElement("span", attributes: ["class": "string"], contents: name, inline: true).source

@@ -235,7 +235,7 @@ extension APIElement {
         get {
             return (userInformation as? [ExtendedPropertyKey: Any]) ?? [:]
         }
-        set {
+        nonmutating set {
             userInformation = newValue
         }
     }
@@ -244,7 +244,7 @@ extension APIElement {
         get {
             return (extendedProperties[.relativePagePath] as? [LocalizationIdentifier: StrictString]) ?? [:]
         }
-        set {
+        nonmutating set {
             extendedProperties[.relativePagePath] = newValue
         }
     }
@@ -253,7 +253,7 @@ extension APIElement {
         get { // @exempt(from: tests) #workaround(Not used yet.)
             return (extendedProperties[.homeModule] as? Weak<ModuleAPI>) ?? Weak<ModuleAPI>(nil)
         }
-        set {
+        nonmutating set {
             extendedProperties[.homeModule] = newValue
         }
     }
@@ -479,10 +479,10 @@ extension APIElement {
 
             path += fileName + ".html"
             relativePagePath[localization] = path
-            if let type = self as? TypeAPI {
-                links[type.name.truncated(before: "<")] = String(path)
+            if case .type = self {
+                links[name.source().truncated(before: "<")] = String(path)
             } else {
-                links[name] = String(path)
+                links[name.source()] = String(path)
             }
             return links
         }

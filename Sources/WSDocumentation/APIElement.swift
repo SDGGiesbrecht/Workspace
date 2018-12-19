@@ -487,4 +487,36 @@ extension APIElement {
             return links
         }
     }
+
+    // MARK: - SDGSwiftSource
+
+    // #workaround(SDGSwift 0.4.0, This belongs in SDGSwiftSource.)
+    internal var documentation: DocumentationSyntax? {
+        switch self {
+        case .package(let package):
+            return package.documentation
+        case .library(let library):
+            return library.documentation
+        case .module(let module):
+            return module.documentation
+        case .type(let type):
+            return type.documentation
+        case .protocol(let `protocol`):
+            return `protocol`.documentation
+        case .extension(let `extension`):
+            return `extension`.documentation
+        case .case(let `case`):
+            return `case`.documentation
+        case .initializer(let initializer):
+            return initializer.documentation
+        case .variable(let variable):
+            return variable.documentation
+        case .subscript(let `subscript`):
+            return `subscript`.documentation
+        case .function(let function):
+            return function.documentation
+        case .conformance(let conformance):
+            return conformance.documentation
+        }
+    }
 }

@@ -113,30 +113,30 @@ internal struct PackageInterface {
         result.append(generateIndexSection(named: packageHeader(localization: localization), contents: [
             HTMLElement("a", attributes: [
                 "href": StrictString("[*site root*]")
-                    + HTML.percentEncodeURLPath(package.relativePagePath[localization]!)
-                ], contents: StrictString(package.name), inline: false).source
+                    + HTML.percentEncodeURLPath(APIElement.package(package).relativePagePath[localization]!)
+                ], contents: StrictString(package.name.source()), inline: false).source
             ].joinedAsLines()))
 
         if ¬package.libraries.isEmpty {
-            result.append(generateIndexSection(named: SymbolPage.librariesHeader(localization: localization), apiEntries: package.libraries, localization: localization))
+            result.append(generateIndexSection(named: SymbolPage.librariesHeader(localization: localization), apiEntries: Array(APIElement.package(package).libraries.lazy.map({ APIElement.library($0) })), localization: localization))
         }
         if ¬package.modules.isEmpty {
-            result.append(generateIndexSection(named: SymbolPage.modulesHeader(localization: localization), apiEntries: package.modules, localization: localization))
+            result.append(generateIndexSection(named: SymbolPage.modulesHeader(localization: localization), apiEntries: Array(APIElement.package(package).modules.lazy.map({ APIElement.module($0) })), localization: localization))
         }
         if ¬package.types.isEmpty {
-            result.append(generateIndexSection(named: SymbolPage.typesHeader(localization: localization), apiEntries: package.types, localization: localization))
+            result.append(generateIndexSection(named: SymbolPage.typesHeader(localization: localization), apiEntries: Array(APIElement.package(package).types.lazy.map({ APIElement.type($0) })), localization: localization))
         }
         if ¬package.uniqueExtensions.isEmpty {
-            result.append(generateIndexSection(named: SymbolPage.extensionsHeader(localization: localization), apiEntries: package.uniqueExtensions, localization: localization))
+            result.append(generateIndexSection(named: SymbolPage.extensionsHeader(localization: localization), apiEntries: Array(APIElement.package(package).uniqueExtensions.lazy.map({ APIElement.extension($0) })), localization: localization))
         }
         if ¬package.protocols.isEmpty {
-            result.append(generateIndexSection(named: SymbolPage.protocolsHeader(localization: localization), apiEntries: package.protocols, localization: localization))
+            result.append(generateIndexSection(named: SymbolPage.protocolsHeader(localization: localization), apiEntries: Array(APIElement.package(package).protocols.lazy.map({ APIElement.protocol($0) })), localization: localization))
         }
         if ¬package.functions.isEmpty {
-            result.append(generateIndexSection(named: SymbolPage.functionsHeader(localization: localization), apiEntries: package.functions, localization: localization))
+            result.append(generateIndexSection(named: SymbolPage.functionsHeader(localization: localization), apiEntries: Array(APIElement.package(package).methods.lazy.map({ APIElement.function($0) })), localization: localization))
         }
         if ¬package.globalVariables.isEmpty {
-            result.append(generateIndexSection(named: SymbolPage.variablesHeader(localization: localization), apiEntries: package.globalVariables, localization: localization))
+            result.append(generateIndexSection(named: SymbolPage.variablesHeader(localization: localization), apiEntries: Array(APIElement.package(package).properties.lazy.map({ APIElement.variable($0) })), localization: localization))
         }
 
         return result.joinedAsLines()

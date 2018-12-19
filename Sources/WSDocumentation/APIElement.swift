@@ -155,7 +155,7 @@ extension APIElement {
                     return "var"
                 }
             } else {
-                if variable.declaration.modifiers?.contains(where: { $0.name.tokenKind == .staticKeyword ∨ $0.name.tokenKind == .classKeyword }) == true {
+                if variable.declaration.isTypeMember() {
                     if let match = localization._reasonableMatch {
                         switch match {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -195,7 +195,7 @@ extension APIElement {
                     return "func"
                 }
             } else {
-                if function.declaration.modifiers?.contains(where: { $0.name.tokenKind == .staticKeyword ∨ $0.name.tokenKind == .classKeyword }) == true {
+                if function.declaration.isTypeMember() {
                     if let match = localization._reasonableMatch {
                         switch match {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -282,11 +282,11 @@ extension APIElement {
             var path = localization._directoryName + "/"
 
             switch self {
-            case let package as PackageAPI:
+            case .package(let package):
                 for library in package.libraries {
-                    links = library.determinePaths(for: localization).mergedByOverwriting(from: links)
+                    links = APIElement.library(library).determinePaths(for: localization).mergedByOverwriting(from: links)
                 }
-            case let library as LibraryAPI:
+            case .library(let library):
                 let librariesDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -299,9 +299,9 @@ extension APIElement {
                 path += librariesDirectoryName + "/"
 
                 for module in library.modules {
-                    links = module.determinePaths(for: localization).mergedByOverwriting(from: links)
+                    links = APIElement.module(module).determinePaths(for: localization).mergedByOverwriting(from: links)
                 }
-            case let module as ModuleAPI:
+            case .module(let module):
                 let modulesDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -316,7 +316,7 @@ extension APIElement {
                 for child in module.children {
                     links = child.determinePaths(for: localization).mergedByOverwriting(from: links)
                 }
-            case is TypeAPI:
+            case .type:
                 let typesDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -334,7 +334,7 @@ extension APIElement {
                 for child in children where child.receivesPage {
                     links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
                 }
-            case is ExtensionAPI:
+            case .extension:
                 let extensionsDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -352,7 +352,7 @@ extension APIElement {
                 for child in children where child.receivesPage {
                     links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
                 }
-            case is ProtocolAPI:
+            case .protocol:
                 let protocolsDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -370,7 +370,7 @@ extension APIElement {
                 for child in children where child.receivesPage {
                     links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
                 }
-            case is CaseAPI:
+            case .case:
                 let casesDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -381,7 +381,7 @@ extension APIElement {
                     casesDirectoryName = "case"
                 }
                 path += namespace + casesDirectoryName + "/"
-            case is InitializerAPI:
+            case .initializer:
                 let initializersDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -394,7 +394,7 @@ extension APIElement {
                     initializersDirectoryName = "init"
                 }
                 path += namespace + initializersDirectoryName + "/"
-            case let variable as VariableAPI:
+            case .variable(let variable):
                 let variablesDirectoryName: StrictString
 
                 if namespace.isEmpty {
@@ -407,7 +407,7 @@ extension APIElement {
                         variablesDirectoryName = "var"
                     }
                 } else {
-                    if variable.typePropertyKeyword ≠ nil {
+                    if variable.declaration.isTypeMember() {
                         if let match = localization._reasonableMatch {
                             switch match {
                             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -428,7 +428,7 @@ extension APIElement {
                     }
                 }
                 path += namespace + variablesDirectoryName + "/"
-            case is SubscriptAPI:
+            case .subscript:
                 let subscriptsDirectoryName: StrictString
                 if let match = localization._reasonableMatch {
                     switch match {
@@ -439,7 +439,7 @@ extension APIElement {
                     subscriptsDirectoryName = "subscript"
                 }
                 path += namespace + subscriptsDirectoryName + "/"
-            case let function as FunctionAPI:
+            case .function(let function):
                 let functionsDirectoryName: StrictString
 
                 if namespace.isEmpty {
@@ -452,7 +452,7 @@ extension APIElement {
                         functionsDirectoryName = "func"
                     }
                 } else {
-                    if function.typeMethodKeyword ≠ nil {
+                    if function.declaration.isTypeMember() {
                         if let match = localization._reasonableMatch {
                             switch match {
                             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -473,10 +473,8 @@ extension APIElement {
                     }
                 }
                 path += namespace + functionsDirectoryName + "/"
-            default:
-                if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                    print("Unrecognized symbol type: \(type(of: self))")
-                }
+            case .conformance:
+                unreachable()
             }
 
             path += fileName + ".html"

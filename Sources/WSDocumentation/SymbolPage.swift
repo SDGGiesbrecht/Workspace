@@ -116,7 +116,7 @@ internal class SymbolPage : Page {
             let description = documentation.descriptionSection {
             return HTMLElement("div", attributes: ["class": "description"], contents: StrictString(description.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)), inline: false).source
         }
-        if ¬(symbol is ExtensionAPI) {
+        if case .extension = symbol {} else {
             status.reportMissingDescription(symbol: symbol, navigationPath: navigationPath)
         }
         return ""
@@ -127,8 +127,8 @@ internal class SymbolPage : Page {
             return ""
         }
 
-        if let variable = symbol as? VariableAPI,
-            variable.type == nil {
+        if case .variable(let variable) = symbol,
+            variable.declaration.bindings.first?.typeAnnotation == nil {
             status.reportMissingVariableType(variable, navigationPath: navigationPath)
         }
 

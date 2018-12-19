@@ -131,7 +131,7 @@ internal class SymbolPage : Page {
         }
 
         if case .variable(let variable) = symbol,
-            variable.declaration.bindings.first?.typeAnnotation == nil {
+            variable.declaration.bindings.first?.typeAnnotation ≠ nil {
             status.reportMissingVariableType(variable, navigationPath: navigationPath)
         }
 

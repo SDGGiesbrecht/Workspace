@@ -154,12 +154,12 @@ internal class SymbolPage : Page {
 
         let discussionHeading: StrictString
         switch symbol {
-        case is APIScope, is PackageAPI, is LibraryAPI, is ModuleAPI:
+        case .package, .library, .module, .type, .protocol, .extension:
             switch localization._bestMatch {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 discussionHeading = "Overview"
             }
-        default:
+        case .case, .initializer, .variable, .subscript, .function, .conformance:
             switch localization._bestMatch {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 discussionHeading = "Discussion"

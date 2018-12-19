@@ -31,15 +31,15 @@ extension PackageAPI {
                 element.homeModule = Weak(module)
 
                 switch element {
-                case let type as TypeAPI :
+                case let type as TypeAPI:
                     types.append(type)
-                case let `protocol` as ProtocolAPI :
+                case let `protocol` as ProtocolAPI:
                     protocols.append(`protocol`)
-                case let `extension` as ExtensionAPI :
+                case let `extension` as ExtensionAPI:
                     unprocessedExtensions.append(`extension`)
-                case let function as FunctionAPI :
+                case let function as FunctionAPI:
                     functions.append(function)
-                case let globalVariable as VariableAPI :
+                case let globalVariable as VariableAPI:
                     globalVariables.append(globalVariable)
                 default:
                     if BuildConfiguration.current == .debug { // @exempt(from: tests) Should never occur.

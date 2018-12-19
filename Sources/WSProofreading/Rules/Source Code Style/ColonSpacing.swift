@@ -16,6 +16,8 @@ import SDGLogic
 import SDGCollections
 import WSGeneralImports
 
+import SDGSwiftSource
+
 import WSProject
 
 internal struct ColonSpacing : Rule {
@@ -27,19 +29,21 @@ internal struct ColonSpacing : Rule {
         }
     })
 
-    private static let precedingMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
+    private static let prohibitedSpaceMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Colons should not be preceded by spaces."
         }
     })
+    private static let prohibitedSpaceSuggestion: StrictString = ":"
 
-    private static let conformanceMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
+    private static let requiredSpaceMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
-            return "Colons should be preceded by spaces when denoting protocols or superclasses."
+            return "Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition."
         }
     })
+    private static let requiredSpaceSuggestion: StrictString = " :"
 
     private static let followingMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
@@ -48,58 +52,77 @@ internal struct ColonSpacing : Rule {
         }
     })
 
-    internal static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
-        if file.fileType ∈ Set([.swift, .swiftPackageManifest]) {
+    internal static func check(file: TextFile, syntax: SourceFileSyntax?, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) throws {
 
-            for match in file.contents.scalars.matches(for: ":".scalars) {
+        if let swift = syntax {
+            let scanner = SyntaxScanner(checkSyntax: { node in
+                if let token = node as? TokenSyntax,
+                    token.tokenKind == .colon {
 
-                if fromStartOfLine(to: match, in: file).contains("\u{22}") ∧ upToEndOfLine(from: match, in: file).contains("\u{22}") {
-                    // String Literal
-                    continue
-                }
+                    // Preceding
+                    let requiresPrecedingSpace: Bool
+                    if let inheritanceClause = token.parent as? TypeInheritanceClauseSyntax,
+                        inheritanceClause.colon.indexInParent == token.indexInParent {
+                        requiresPrecedingSpace = true
+                    } else if let conformanceRequirement = token.parent as? ConformanceRequirementSyntax,
+                        conformanceRequirement.colon.indexInParent == token.indexInParent {
+                        requiresPrecedingSpace = true
+                    } else if let genericParameter = token.parent as? GenericParameterSyntax,
+                        genericParameter.colon?.indexInParent == token.indexInParent {
+                        requiresPrecedingSpace = true
+                    } else if let ternaryExpression = token.parent as? TernaryExprSyntax,
+                        ternaryExpression.colonMark.indexInParent == token.indexInParent {
+                        requiresPrecedingSpace = true
+                    } else {
+                        requiresPrecedingSpace = false
+                    }
 
-                if fromStartOfLine(to: match, in: file).contains("//".scalars) {
-                    // Comment
-                    continue
-                }
-
-                let protocolOrSuperclass: Bool
-
-                if fromStartOfLine(to: match, in: file).contains("[") ∧ upToEndOfLine(from: match, in: file).contains("]") {
-                    // Dictionary Literal
-                    protocolOrSuperclass = false
-                } else if fromStartOfFile(to: match, in: file).hasSuffix("_".scalars) {
-                    protocolOrSuperclass = false
-                } else if let startOfPreviousIdentifier = fromStartOfLine(to: match, in: file).components(separatedBy: ConditionalPattern({ $0 ∈ (CharacterSet.whitespaces ∪ CharacterSet.punctuationCharacters) ∪ CharacterSet.symbols })).filter({ ¬$0.range.isEmpty }).last?.contents.first {
-                    protocolOrSuperclass = startOfPreviousIdentifier ∈ CharacterSet.uppercaseLetters
-                } else {
-                    protocolOrSuperclass = false
-                }
-
-                if let preceding = file.contents.scalars[..<match.range.lowerBound].last {
-                    if preceding == " " {
-                        if ¬protocolOrSuperclass,
-                            ¬fromStartOfLine(to: match, in: file).contains(" ? ".scalars) /* Ternary Conditional Operator */ {
-
-                            let precedingIndex = file.contents.scalars.index(before: match.range.lowerBound)
-                            let errorRange = precedingIndex ..< match.range.upperBound
-
-                            reportViolation(in: file, at: errorRange, replacementSuggestion: ":", message: precedingMessage, status: status, output: output)
+                    var precedingViolation: (message: UserFacing<StrictString, InterfaceLocalization>, suggestion: StrictString, range: Range<String.ScalarView.Index>)?
+                    if let precedingTrivia = token.firstPrecedingTrivia() {
+                        switch precedingTrivia {
+                        case .spaces, .tabs, .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds:
+                            if ¬requiresPrecedingSpace {
+                                var range = token.tokenRange(in: file.contents)
+                                range = file.contents.scalars.index(range.lowerBound, offsetBy: −precedingTrivia.text.scalars.count) ..< range.upperBound
+                                precedingViolation = (prohibitedSpaceMessage, prohibitedSpaceSuggestion, range)
+                            }
+                        case .backticks, .lineComment, .blockComment, .docLineComment, .docBlockComment, .garbageText:
+                            if requiresPrecedingSpace {
+                                precedingViolation = (requiredSpaceMessage, requiredSpaceSuggestion, token.tokenRange(in: file.contents))
+                            }
                         }
-                    } else if protocolOrSuperclass {
-                        reportViolation(in: file, at: match.range, replacementSuggestion: " :", message: conformanceMessage, status: status, output: output)
+                    } else {
+                        // No trivia.
+                        if requiresPrecedingSpace {
+                            precedingViolation = (requiredSpaceMessage, requiredSpaceSuggestion, token.tokenRange(in: file.contents))
+                        }
+                    }
+                    if let violation = precedingViolation {
+                        reportViolation(in: file, at: violation.range, replacementSuggestion: violation.suggestion, message: violation.message, status: status, output: output)
+                    }
+
+                    // Trailing
+                    var trailingViolation = false
+                    if let followingTrivia = token.firstFollowingTrivia() {
+                        switch followingTrivia {
+                        case .spaces, .tabs, .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds, .garbageText:
+                            break
+                        case .backticks, .lineComment, .blockComment, .docLineComment, .docBlockComment:
+                            trailingViolation = true
+                        }
+                    } else {
+                        // No trivia.
+                        if token.nextToken()?.tokenKind ≠ .rightSquareBracket /* Empty Dictionary Literal */ {
+                            trailingViolation = true
+                        }
+                    }
+
+                    if trailingViolation {
+                        reportViolation(in: file, at: token.tokenRange(in: file.contents), replacementSuggestion: ": ", message: followingMessage, status: status, output: output)
                     }
                 }
-
-                if let following = file.contents.scalars[match.range.upperBound...].first,
-                    following ∉ CharacterSet.whitespacesAndNewlines ∪ [
-                        "]" /* Empty Dictionary Literal */,
-                        "/" /* URL */
-                    ] {
-
-                    reportViolation(in: file, at: match.range, replacementSuggestion: ": ", message: followingMessage, status: status, output: output)
-                }
-            }
+            })
+            try scanner.scan(swift)
         }
     }
 }

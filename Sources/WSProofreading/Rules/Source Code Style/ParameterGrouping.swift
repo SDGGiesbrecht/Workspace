@@ -16,7 +16,7 @@ import WSGeneralImports
 
 import WSProject
 
-internal struct ParameterGrouping : Rule {
+internal struct ParameterGrouping : TextRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {

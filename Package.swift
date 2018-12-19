@@ -254,7 +254,8 @@ let package = Package(
             "WSGeneralImports",
             "WSProject",
             "WSThirdParty",
-            .product(name: "SDGExternalProcess", package: "SDGCornerstone")
+            .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
+            .product(name: "_SDGSwiftSource", package: "SDGSwift")
             ]),
 
         // Testing.

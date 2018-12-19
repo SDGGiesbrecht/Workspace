@@ -18,7 +18,7 @@ import WSGeneralImports
 
 import WSProject
 
-internal struct AutoindentResilience : Rule {
+internal struct AutoindentResilience : TextRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {

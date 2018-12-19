@@ -16,7 +16,7 @@ import WSGeneralImports
 
 import WSProject
 
-internal protocol Warning : Rule {
+internal protocol Warning : TextRule {
     static var trigger: UserFacing<StrictString, InterfaceLocalization> { get }
     static func message(for details: StrictString, in project: PackageRepository, output: Command.Output) throws -> UserFacing<StrictString, InterfaceLocalization>?
 }

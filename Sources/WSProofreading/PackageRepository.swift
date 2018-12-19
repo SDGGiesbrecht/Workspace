@@ -16,6 +16,8 @@ import SDGLogic
 import SDGCollections
 import WSGeneralImports
 
+import SDGSwiftSource
+
 import WSProject
 
 extension PackageRepository {
@@ -31,11 +33,15 @@ extension PackageRepository {
                     try autoreleasepool {
 
                         let file = try TextFile(alreadyAt: url)
+                        var syntax: SourceFileSyntax?
+                        if file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
+                            syntax = try SyntaxTreeParser.parse(url)
+                        }
 
                         reporter.reportParsing(file: file.location.path(relativeTo: location), to: output)
 
                         for rule in activeRules {
-                            try rule.parser.check(file: file, in: self, status: status, output: output)
+                            try rule.parser.check(file: file, syntax: syntax, in: self, status: status, output: output)
                         }
                     }
         }

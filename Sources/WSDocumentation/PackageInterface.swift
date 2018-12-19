@@ -309,11 +309,13 @@ internal struct PackageInterface {
 
     private func outputTopLevelSymbols(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output) throws {
         for localization in localizations {
-            for symbol in packageAPI.types.lazy.map({ APIElement.type($0) })
-                + packageAPI.uniqueExtensions.lazy.map({ APIElement.extension($0) })
-                + packageAPI.protocols.lazy.map({ APIElement.protocol($0) })
-                + packageAPI.functions.lazy.map({ APIElement.function($0) })
-                + packageAPI.globalVariables.lazy.map({ APIElement.variable($0) }) {
+            for symbol in [
+                packageAPI.types.map({ APIElement.type($0) }),
+                packageAPI.uniqueExtensions.map({ APIElement.extension($0) }),
+                packageAPI.protocols.map({ APIElement.protocol($0) }),
+                packageAPI.methods.map({ APIElement.function($0) }),
+                packageAPI.properties.map({ APIElement.variable($0) })
+                ].joined() {
                     try autoreleasepool {
                         let location = symbol.pageURL(in: outputDirectory, for: localization)
                         try SymbolPage(

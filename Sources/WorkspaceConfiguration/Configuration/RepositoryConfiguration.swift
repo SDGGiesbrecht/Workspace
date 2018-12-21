@@ -24,6 +24,8 @@ public struct RepositoryConfiguration : Codable {
         "dsidx",
         "DS_Store",
         "entitlements",
+        "gyb",
+        "inc",
         "modulemap",
         "nojekyll",
         "pep8",

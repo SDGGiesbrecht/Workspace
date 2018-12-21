@@ -259,7 +259,7 @@ internal struct UnicodeRule : TextRule {
         case .json, .xcodeProject, .xml:
             // Likely generated, not written.
             return
-        case .c, .css, .deprecatedWorkspaceConfiguration, .gitIgnore, .html, .javaScript, .lisp, .markdown, .objectiveC, .shell, .swift, .swiftPackageManifest, .yaml:
+        case .c, .css, .deprecatedWorkspaceConfiguration, .gitIgnore, .html, .javaScript, .lisp, .markdown, .objectiveC, .shell, .swift, .swiftPackageManifest, .python, .yaml:
             break
         }
 

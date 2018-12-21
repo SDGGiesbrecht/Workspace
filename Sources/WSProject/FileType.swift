@@ -110,6 +110,7 @@ public enum FileType {
     case lisp
     case markdown
     case objectiveC
+    case python
     case shell
     case swift
     case swiftPackageManifest
@@ -138,8 +139,10 @@ public enum FileType {
         "js": .javaScript,
         "json": .json,
         "m": .objectiveC,
+        "mailmap": .gitIgnore,
         "md": .markdown,
         "pbxproj": .xcodeProject,
+        "py": .python,
         "sh": .shell,
         "swift": .swift,
         "xcscheme": .xml,
@@ -176,6 +179,8 @@ public enum FileType {
 
         case .lisp:
             return FileSyntax(blockCommentSyntax: BlockCommentSyntax(start: "#|", end: "|#"), lineCommentSyntax: LineCommentSyntax(start: ";"))
+        case .python:
+            return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"), requiredFirstLineToken: "#!")
 
         case .json:
             return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: nil)

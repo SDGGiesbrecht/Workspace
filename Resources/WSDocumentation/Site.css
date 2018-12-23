@@ -76,6 +76,16 @@ li:not(:first-child) {
     margin-top: 0.7em;
 }
 
+.callout {
+    border-left-width: calc((6 / 17) * 1rem) solid
+    border-left-style: solid;
+    border-right-color: transparent;
+    border-right-width: calc((6 / 17) * 1rem);
+    border-right-style: solid;
+    border-radius: calc((6 / 17) * 1rem);
+    margin-top: 1.4em;
+}
+
 /* Specific Layout */
 
 header.navigation‐bar {
@@ -231,11 +241,15 @@ blockquote {
     color: #666;
 }
 
+.callout {
+    background-color: #FAFAFA;
+    border-color: #E6E6E6;
+}
+
 footer {
     background-color: #F2F2F2;
     color: #888888;
 }
-
 
 /* General Fonts */
 

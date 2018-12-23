@@ -79,6 +79,7 @@ li:not(:first-child) {
 .callout {
     border-left-width: calc((6 / 17) * 1rem);
     border-left-style: solid;
+    border-right-color: transparent;
     border-right-width: calc((6 / 17) * 1rem);
     border-right-style: solid;
     border-radius: calc((6 / 17) * 1rem);
@@ -243,8 +244,15 @@ blockquote {
 
 .callout {
     background-color: #FAFAFA;
-    border-color: #E6E6E6;
-    border-right-color: transparent;
+    border-left-color: #E6E6E6;
+}
+.callout.attention, .callout.important {
+    background-color: #FBF8E8;
+    border-left-color: #FEE450;
+}
+.callout.warning {
+    background-color: #F2DBDC;
+    border-left-color: #AE272F;
 }
 
 footer {

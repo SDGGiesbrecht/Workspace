@@ -29,6 +29,14 @@ The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime
 
 README.md
 Sources/CheckedInDocumentation/CheckedInDocumentation.swift
+Line 60
+Parameters should be grouped under a single callout. (parameterGrouping)
+    /// - Parameter parameterOne: The first parameter.
+
+Line 61
+Parameters should be grouped under a single callout. (parameterGrouping)
+    /// - Parameter parameterTwo: The second parameter.
+
 Tests/CheckedInDocumentationTests/CheckedInDocumentationTests.swift
 Line 4
 Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition. (colonSpacing)

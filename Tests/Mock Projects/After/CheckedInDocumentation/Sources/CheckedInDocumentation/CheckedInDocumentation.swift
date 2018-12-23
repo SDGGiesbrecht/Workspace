@@ -5,6 +5,8 @@ struct CheckedInDocumentation {
 /// A class.
 ///
 /// Overview.
+///
+/// - Warning: A warning.
 public class Class {}
 
 /// A structure.

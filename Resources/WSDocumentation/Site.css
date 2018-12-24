@@ -76,6 +76,17 @@ li:not(:first-child) {
     margin-top: 0.7em;
 }
 
+.callout {
+    border-left-width: calc((6 / 17) * 1rem);
+    border-left-style: solid;
+    border-right-color: transparent;
+    border-right-width: calc((6 / 17) * 1rem);
+    border-right-style: solid;
+    border-radius: calc((6 / 17) * 1rem);
+    margin-top: 1.4em;
+    padding: 0.94118rem;
+}
+
 /* Specific Layout */
 
 header.navigation‐bar {
@@ -231,11 +242,23 @@ blockquote {
     color: #666;
 }
 
+.callout {
+    background-color: #FAFAFA;
+    border-left-color: #E6E6E6;
+}
+.callout.attention, .callout.important {
+    background-color: #FBF8E8;
+    border-left-color: #FEE450;
+}
+.callout.warning {
+    background-color: #F2DBDC;
+    border-left-color: #AE272F;
+}
+
 footer {
     background-color: #F2F2F2;
     color: #888888;
 }
-
 
 /* General Fonts */
 
@@ -287,6 +310,10 @@ a:link, a:visited {
 }
 a:hover {
     text-decoration: underline;
+}
+
+.callout‐label {
+    font-weight: 600;
 }
 
 /* Specific Fonts */

@@ -5,6 +5,44 @@ struct CheckedInDocumentation {
 /// A class.
 ///
 /// Overview.
+///
+/// - Attention: Something to be attentive to.
+///
+/// - Author: The author.
+///
+/// - Authors: The authors.
+///
+/// - Bug: A bug.
+///
+/// - Copyright: ©0000 Someone.
+///
+/// - Date: 0000‐00‐00
+///
+/// - Experiment: An experiment.
+///
+/// - Important: Something important.
+///
+/// - LocalizationKey: SOME_KEY
+///
+/// - Note: A note.
+///
+/// - Remark: A remark.
+///
+/// - Remarks: Some remarks.
+///
+/// - SeeAlso: Something related.
+///
+/// - Since: The time it became available.
+///
+/// - Tag: A tag.
+///
+/// - ToDo: Something that still needs doing.
+///
+/// - Version: 0.0.0
+///
+/// - Warning: A warning.
+///
+/// - Keyword: keyword
 public class Class {}
 
 /// A structure.
@@ -16,9 +54,34 @@ public struct Structure : Equatable {
     public static var typeProperty: Bool = false
 
     /// A type method.
-    public static func typeMethod() {}
+    ///
+    /// - Complexity: O(?)
+    ///
+    /// - Parameter parameterOne: The first parameter.
+    /// - Parameter parameterTwo: The second parameter.
+    ///
+    /// - Invariant: Something invariant.
+    ///
+    /// - Postcondition: Something true after the method is executed.
+    ///
+    /// - Precondition: Some initial requirement.
+    ///
+    /// - Returns: A return value.
+    ///
+    /// - Requires: A requirement.
+    ///
+    /// - Throws: Several errors.
+    ///
+    /// - Recommended: better()
+    ///
+    /// - RecommendedOver: worse()
+    public static func typeMethod(parameterOne: Int, parameterTwo: Int) throws -> Int {}
 
     /// An operator.
+    ///
+    /// - Parameters:
+    ///     - lhs: The preceding parameter.
+    ///     - rhs: The following parameter.
     public static func ==(lhs: Structure, rhs: Structure) -> Bool {
         return true
     }
@@ -48,6 +111,10 @@ public typealias TypeAlias = Structure
 extension Bool {
 
     /// An extension method.
+    ///
+    /// - MutatingVariant: mutatingVariant()
+    ///
+    /// - NonmutatingVariant: nonmutatingVariant()
     public func extensionMethod() {}
 }
 

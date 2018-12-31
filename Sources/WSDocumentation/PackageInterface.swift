@@ -38,7 +38,7 @@ internal struct PackageInterface {
             HTMLElement("span", attributes: ["class": "string"], contents: [
                 HTMLElement("span", attributes: ["class": "punctuation"], contents: "\u{22}", inline: true).source,
                 HTMLElement("a", attributes: ["href": packageURL], contents: [
-                    HTMLElement("span", attributes: ["class": "text"], contents: packageURL, inline: true).source
+                    HTMLElement("span", attributes: ["class": "text"], contents: HTML.escape(packageURL), inline: true).source
                     ].joined(), inline: true).source,
                 HTMLElement("span", attributes: ["class": "punctuation"], contents: "\u{22}", inline: true).source
                 ].joined(), inline: true).source
@@ -114,7 +114,7 @@ internal struct PackageInterface {
             HTMLElement("a", attributes: [
                 "href": StrictString("[*site root*]")
                     + HTML.percentEncodeURLPath(APIElement.package(package).relativePagePath[localization]!)
-                ], contents: StrictString(package.name.source()), inline: false).source
+                ], contents: HTML.escape(StrictString(package.name.source())), inline: false).source
             ].joinedAsLines()))
 
         if ¬package.libraries.isEmpty {
@@ -148,14 +148,14 @@ internal struct PackageInterface {
             entries.append(HTMLElement("a", attributes: [
                 "href": StrictString("[*site root*]")
                     + HTML.percentEncodeURLPath(entry.relativePagePath[localization]!)
-                ], contents: StrictString(entry.name.source()), inline: false).source)
+                ], contents: HTML.escape(StrictString(entry.name.source())), inline: false).source)
         }
         return generateIndexSection(named: name, contents: entries.joinedAsLines())
     }
 
     private static func generateIndexSection(named name: StrictString, contents: StrictString) -> StrictString {
         return HTMLElement("div", contents: [
-            HTMLElement("a", attributes: ["class": "heading", "onclick": "toggleIndexSectionVisibility(this)"], contents: name, inline: true).source,
+            HTMLElement("a", attributes: ["class": "heading", "onclick": "toggleIndexSectionVisibility(this)"], contents: HTML.escape(name), inline: true).source,
             contents
             ].joinedAsLines(), inline: false).source
     }

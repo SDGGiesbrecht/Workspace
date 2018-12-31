@@ -99,9 +99,9 @@ internal class SymbolPage : Page {
                 level ≠ navigationPath.index(before: navigationPath.endIndex) {
                 return HTMLElement("a", attributes: [
                     "href": HTML.percentEncodeURLPath(url)
-                    ], contents: StrictString(element.name.source()), inline: true).source
+                    ], contents: HTML.escape(StrictString(element.name.source())), inline: true).source
             } else {
-                return HTMLElement("span", attributes: [:], contents: StrictString(element.name.source()), inline: true).source
+                return HTMLElement("span", attributes: [:], contents: HTML.escape(StrictString(element.name.source())), inline: true).source
             }
         }
         return navigationPathLinks.joined(separator: "\n")
@@ -471,7 +471,7 @@ internal class SymbolPage : Page {
 
     private static func generateChildrenSection(localization: LocalizationIdentifier, heading: StrictString, children: [APIElement], pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
         var sectionContents: [StrictString] = [
-            HTMLElement("h2", contents: heading, inline: true).source
+            HTMLElement("h2", contents: HTML.escape(heading), inline: true).source
         ]
         for child in children {
             var entry: [StrictString] = []
@@ -483,7 +483,7 @@ internal class SymbolPage : Page {
             var name = StrictString(child.name.source())
             switch child {
             case .package, .library:
-                name = HTMLElement("span", attributes: ["class": "text"], contents: name, inline: true).source
+                name = HTMLElement("span", attributes: ["class": "text"], contents: HTML.escape(name), inline: true).source
                 name = HTMLElement("span", attributes: ["class": "string"], contents: name, inline: true).source
             case .module, .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .conformance:
                 name = highlight(name: name)
@@ -503,7 +503,7 @@ internal class SymbolPage : Page {
     }
 
     private static func highlight(name: StrictString) -> StrictString {
-        var result = name
+        var result = HTML.escape(name)
         highlight("(", as: "punctuation", in: &result)
         highlight(")", as: "punctuation", in: &result)
         highlight(":", as: "punctuation", in: &result)

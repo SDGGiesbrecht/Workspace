@@ -105,7 +105,7 @@ internal class Page {
         }
         mutable.replaceMatches(for: "[*compilation conditions*]", with: conditions)
 
-        mutable.replaceMatches(for: "[*title*]", with: title)
+        mutable.replaceMatches(for: "[*title*]", with: HTML.escape(title))
 
         mutable.replaceMatches(for: "[*copyright*]", with: HTMLElement("span", contents: copyright, inline: false).source)
         mutable.replaceMatches(for: "[*workspace*]", with: Page.watermark(localization: localization))

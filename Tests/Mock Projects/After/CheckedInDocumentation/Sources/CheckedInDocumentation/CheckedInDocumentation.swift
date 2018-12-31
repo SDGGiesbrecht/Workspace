@@ -135,3 +135,6 @@ public var globalVariable: Bool = false
 /// Conditionally compiled.
 public func conditionallyCompiled() {}
 #endif
+
+/// A generic structure.
+public struct GenericStructure<GenericParameter> {}

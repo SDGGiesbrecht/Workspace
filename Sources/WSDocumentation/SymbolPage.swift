@@ -480,10 +480,10 @@ internal class SymbolPage : Page {
                 entry.append("<br>")
             }
 
-            var name = HTML.escape(StrictString(child.name.source()))
+            var name = StrictString(child.name.source())
             switch child {
             case .package, .library:
-                name = HTMLElement("span", attributes: ["class": "text"], contents: name, inline: true).source
+                name = HTMLElement("span", attributes: ["class": "text"], contents: HTML.escape(name), inline: true).source
                 name = HTMLElement("span", attributes: ["class": "string"], contents: name, inline: true).source
             case .module, .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .conformance:
                 name = highlight(name: name)

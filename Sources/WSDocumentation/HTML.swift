@@ -23,6 +23,15 @@ internal enum HTML {
             .replacingMatches(for: "&".scalars, with: "&#x0026;".scalars))
     }
 
+    internal static func escape<S>(_ string: S) -> S where S : StringFamily {
+        return S(sharedEscape(string).scalars
+            .replacingMatches(for: "<".scalars, with: "&#x003C;".scalars)
+            .replacingMatches(for: "\u{2066}".scalars, with: "<bdi dir=\u{22}ltr\u{22}>".scalars)
+            .replacingMatches(for: "\u{2067}".scalars, with: "<bdi dir=\u{22}rtl\u{22}>".scalars)
+            .replacingMatches(for: "\u{2068}".scalars, with: "<bdi dir=\u{22}auto\u{22}>".scalars)
+            .replacingMatches(for: "\u{2069}".scalars, with: "</bdi>".scalars))
+    }
+
     internal static func escapeAttribute<S>(_ string: S) -> S where S : StringFamily {
         return S(sharedEscape(string).scalars
             .replacingMatches(for: "\u{22}".scalars, with: "&#x0022;".scalars))

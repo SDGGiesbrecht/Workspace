@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2017–2019 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -52,6 +52,7 @@ class APITests : TestCase {
         configuration.optIntoAllTasks()
         configuration.documentation.localizations = ["🇮🇱עב"]
         configuration.licence.licence = .copyright
+        configuration.documentation.api.yearFirstPublished = 2018
         PackageRepository(mock: "AllTasks").test(commands: [
             ["refresh"],
             ["validate"]
@@ -71,6 +72,7 @@ class APITests : TestCase {
         configuration.documentation.api.enforceCoverage = false
         configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "zxx"]
         configuration.documentation.api.generate = true
+        configuration.documentation.api.yearFirstPublished = 2018
         PackageRepository(mock: "CheckedInDocumentation").test(commands: [
             ["refresh"],
             ["validate", "•job", "miscellaneous"],
@@ -328,6 +330,7 @@ class APITests : TestCase {
         configuration.documentation.currentVersion = Version(0, 1, 0)
         configuration.documentation.repositoryURL = URL(string: "https://somewhere.com")!
         configuration.documentation.localizations = ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"]
+        configuration.documentation.api.yearFirstPublished = 2018
         configuration.documentation.readMe.quotation = Quotation(original: "Blah blah blah...")
         configuration.documentation.readMe.quotation?.link["🇨🇦EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=SBLGNT;NIV")!
         configuration.documentation.readMe.quotation?.link["🇬🇧EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=SBLGNT;NIVUK")!

@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2018 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2018–2019 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -157,7 +157,6 @@ public final class WorkspaceConfiguration : Configuration {
         assert(documentation.readMe.quotation ≠ nil, "No quotation specified.")
 
         if needsAPIDocumentation {
-            assert(documentation.api.yearFirstPublished ≠ nil, "No first year of publication specified.")
             assert(documentation.api.encryptedTravisCIDeploymentKey ≠ nil, "No Travis CI deployment key specified.")
         }
 

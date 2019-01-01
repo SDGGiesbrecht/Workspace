@@ -6,7 +6,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2017–2019 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -305,6 +305,7 @@ let package = Package(
             "WSGeneralImports",
             "WorkspaceConfiguration",
             "WorkspaceProjectConfiguration",
+            .product(name: "SDGCalendar", package: "SDGCornerstone"),
             .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
             .product(name: "SDGSwiftConfigurationLoading", package: "SDGSwift"),

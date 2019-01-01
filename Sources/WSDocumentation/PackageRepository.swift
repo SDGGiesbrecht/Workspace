@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2017–2018 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2017–2019 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -41,7 +41,7 @@ extension PackageRepository {
         return location.appendingPathComponent(PackageRepository.documentationDirectoryName)
     }
 
-    internal func resolvedCopyright(output: Command.Output) throws -> StrictString {
+    internal func resolvedCopyright(documentationStatus: DocumentationStatus, output: Command.Output) throws -> StrictString {
 
         var template = try documentationCopyright(output: output)
 
@@ -49,6 +49,7 @@ extension PackageRepository {
         if let specified = try configuration(output: output).documentation.api.yearFirstPublished {
             dates = StrictString(WSProject.copyright(fromText: "©\(specified.inEnglishDigits())"))
         } else {
+            documentationStatus.reportMissingYearFirstPublished()
             dates = StrictString(WSProject.copyright(fromText: ""))
         }
         template.replaceMatches(for: "#dates", with: dates)
@@ -115,7 +116,7 @@ extension PackageRepository {
     private func document(outputDirectory: URL, documentationStatus: DocumentationStatus, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
         let configuration = try self.configuration(output: output)
-        let copyrightNotice = try resolvedCopyright(output: output)
+        let copyrightNotice = try resolvedCopyright(documentationStatus: documentationStatus, output: output)
         var copyright: [LocalizationIdentifier: StrictString] = [:]
         for localization in configuration.documentation.localizations {
             copyright[localization] = copyrightNotice

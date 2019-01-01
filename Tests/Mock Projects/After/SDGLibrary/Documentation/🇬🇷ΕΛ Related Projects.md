@@ -4,7 +4,7 @@
  This source file is part of the SDG open source project.
  https://example.github.io/SDG/SDG
 
- Copyright ©2018 John Doe and the SDG project contributors.
+ Copyright ©2019 John Doe and the SDG project contributors.
 
  Soli Deo gloria.
 

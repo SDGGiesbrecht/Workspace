@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2018 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2018–2019 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -14,6 +14,8 @@
 
 import SDGCollections
 import WSGeneralImports
+
+import SDGCalendar
 
 public func copyright(fromText text: String) -> StrictString {
 
@@ -31,9 +33,7 @@ public func copyright(fromText text: String) -> StrictString {
             }
         }
     }
-    let currentDate = Date()
-    let calendar = NSCalendar(identifier: NSCalendar.Identifier.gregorian)!
-    let currentYear = "\(calendar.component(.year, from: currentDate))"
+    let currentYear = String(CalendarDate.gregorianNow().gregorianYear.inEnglishDigits())
     let copyrightStart = oldStartDate ?? currentYear
 
     var copyright = "©"

@@ -4,7 +4,7 @@
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2018 Jeremy David Giesbrecht and the Workspace project contributors.
+ Copyright ©2018–2019 Jeremy David Giesbrecht and the Workspace project contributors.
 
  Soli Deo gloria.
 
@@ -38,6 +38,8 @@ public struct APIDocumentationConfiguration : Codable {
     public var enforceCoverage: Bool = true
 
     /// The year the documentation was first published.
+    ///
+    /// This will be used as the lower bound when generating copyright dates. (The upper bound will always be the present.)
     public var yearFirstPublished: GregorianYear?
 
     /// The copyright notice.

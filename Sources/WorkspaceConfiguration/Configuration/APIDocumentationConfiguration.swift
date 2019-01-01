@@ -38,6 +38,8 @@ public struct APIDocumentationConfiguration : Codable {
     public var enforceCoverage: Bool = true
 
     /// The year the documentation was first published.
+    ///
+    /// This will be used as the lower bound when generating copyright dates. (The upper bound will always be the present.)
     public var yearFirstPublished: GregorianYear?
 
     /// The copyright notice.

@@ -71,6 +71,7 @@ class APITests : TestCase {
         configuration.documentation.api.enforceCoverage = false
         configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "zxx"]
         configuration.documentation.api.generate = true
+        configuration.documentation.api.yearFirstPublished = 2018
         PackageRepository(mock: "CheckedInDocumentation").test(commands: [
             ["refresh"],
             ["validate", "•job", "miscellaneous"],

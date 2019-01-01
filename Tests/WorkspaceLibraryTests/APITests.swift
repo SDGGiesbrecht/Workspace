@@ -52,6 +52,7 @@ class APITests : TestCase {
         configuration.optIntoAllTasks()
         configuration.documentation.localizations = ["🇮🇱עב"]
         configuration.licence.licence = .copyright
+        configuration.documentation.api.yearFirstPublished = 2018
         PackageRepository(mock: "AllTasks").test(commands: [
             ["refresh"],
             ["validate"]

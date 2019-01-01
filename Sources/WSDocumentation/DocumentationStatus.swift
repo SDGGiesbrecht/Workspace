@@ -101,6 +101,18 @@ internal class DocumentationStatus {
         }), with: APIElement.variable(variable), navigationPath: navigationPath)
     }
 
+    internal func reportMissingYearFirstPublished() {
+        report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishCanada:
+                return ([
+                    "No original copyright date is specified.",
+                    "(Configure it under “documentation.api.yearFirstPublished”.)"
+                    ] as [StrictString]).joinedAsLines()
+            }
+        }))
+    }
+
     internal func reportMissingCopyright(localization: LocalizationIdentifier) { // @exempt(from: tests) #workaround(Not used yet.)
         report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {

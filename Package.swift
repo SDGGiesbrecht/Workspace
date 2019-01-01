@@ -305,6 +305,7 @@ let package = Package(
             "WSGeneralImports",
             "WorkspaceConfiguration",
             "WorkspaceProjectConfiguration",
+            .product(name: "SDGCalendar", package: "SDGCornerstone"),
             .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
             .product(name: "SDGSwiftConfigurationLoading", package: "SDGSwift"),

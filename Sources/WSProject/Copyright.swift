@@ -15,6 +15,8 @@
 import SDGCollections
 import WSGeneralImports
 
+import SDGCalendar
+
 public func copyright(fromText text: String) -> StrictString {
 
     var oldStartDate: String?
@@ -31,9 +33,7 @@ public func copyright(fromText text: String) -> StrictString {
             }
         }
     }
-    let currentDate = Date()
-    let calendar = NSCalendar(identifier: NSCalendar.Identifier.gregorian)!
-    let currentYear = "\(calendar.component(.year, from: currentDate))"
+    let currentYear = String(CalendarDate.gregorianNow().gregorianYear.inEnglishDigits())
     let copyrightStart = oldStartDate ?? currentYear
 
     var copyright = "©"

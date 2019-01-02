@@ -85,7 +85,7 @@ internal class SymbolPage : Page {
                    index: index,
                    symbolType: symbol.symbolType(localization: localization),
                    compilationConditions: SymbolPage.generateCompilationConditions(symbol: symbol),
-                   constraints: SymbolPage.generateConstraints(symbol: symbol),
+                   constraints: SymbolPage.generateConstraints(symbol: symbol, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks),
                    title: StrictString(symbol.name.source()),
                    content: content.joinedAsLines(), copyright: copyright)
     }
@@ -115,10 +115,10 @@ internal class SymbolPage : Page {
         return nil
     }
 
-    private static func generateConstraints(symbol: APIElement) -> StrictString? {
+    private static func generateConstraints(symbol: APIElement, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString? {
         if let constraints = symbol.constraints {
             let withoutSpace = constraints.withWhereKeyword(constraints.whereKeyword.withLeadingTrivia([]))
-            return StrictString(withoutSpace.syntaxHighlightedHTML(inline: true))
+            return StrictString(withoutSpace.syntaxHighlightedHTML(inline: true, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
         }
         return nil
     }

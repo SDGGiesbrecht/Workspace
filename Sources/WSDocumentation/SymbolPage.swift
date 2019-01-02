@@ -85,6 +85,7 @@ internal class SymbolPage : Page {
                    index: index,
                    symbolType: symbol.symbolType(localization: localization),
                    compilationConditions: SymbolPage.generateCompilationConditions(symbol: symbol),
+                   constraints: SymbolPage.generateConstraints(symbol: symbol, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks),
                    title: StrictString(symbol.name.source()),
                    content: content.joinedAsLines(), copyright: copyright)
     }
@@ -114,6 +115,14 @@ internal class SymbolPage : Page {
         return nil
     }
 
+    private static func generateConstraints(symbol: APIElement, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString? {
+        if let constraints = symbol.constraints {
+            let withoutSpace = constraints.withWhereKeyword(constraints.whereKeyword.withLeadingTrivia([]))
+            return StrictString(withoutSpace.syntaxHighlightedHTML(inline: true, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
+        }
+        return nil
+    }
+
     private static func generateDescriptionSection(symbol: APIElement, navigationPath: [APIElement], localization: LocalizationIdentifier, packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
         if let documentation = symbol.documentation,
             let description = documentation.descriptionSection {
@@ -126,8 +135,12 @@ internal class SymbolPage : Page {
     }
 
     private static func generateDeclarationSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
-        guard let declaration = symbol.declaration else {
+        guard var declaration = symbol.declaration else {
             return ""
+        }
+        if let constraints = symbol.constraints,
+            let constrained = declaration as? Constrained {
+            declaration = constrained.withGenericWhereClause(constraints)
         }
 
         if case .variable(let variable) = symbol,
@@ -262,7 +275,7 @@ internal class SymbolPage : Page {
         guard ¬symbol.extensions.isEmpty else {
                 return ""
         }
-        return generateChildrenSection(localization: localization, heading: modulesHeader(localization: localization), children: symbol.extensions.map({ APIElement.extension($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
+        return generateChildrenSection(localization: localization, heading: extensionsHeader(localization: localization), children: symbol.extensions.map({ APIElement.extension($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
     internal static func protocolsHeader(localization: LocalizationIdentifier) -> StrictString {
@@ -489,6 +502,9 @@ internal class SymbolPage : Page {
                 name = highlight(name: name)
             }
             name = HTMLElement("code", attributes: ["class": "swift"], contents: name, inline: true).source
+            if let constraints = child.constraints {
+                name += StrictString(constraints.syntaxHighlightedHTML(inline: true, internalIdentifiers: packageIdentifiers))
+            }
 
             let target = pathToSiteRoot + child.relativePagePath[localization]!
             entry.append(HTMLElement("a", attributes: [

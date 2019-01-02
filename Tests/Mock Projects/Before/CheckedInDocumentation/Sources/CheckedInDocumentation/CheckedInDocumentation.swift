@@ -138,3 +138,8 @@ public func conditionallyCompiled() {}
 
 /// A generic structure.
 public struct GenericStructure<GenericParameter> {}
+
+extension Array where Element : Equatable {
+    /// A constrained method.
+    public func constrained() {}
+}

@@ -74,6 +74,7 @@ internal class Page {
                   index: StrictString,
                   symbolType: StrictString?,
                   compilationConditions: StrictString?,
+                  constraints: StrictString?,
                   title: StrictString,
                   content: StrictString,
                   copyright: StrictString) { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
@@ -97,15 +98,9 @@ internal class Page {
         }
         mutable.replaceMatches(for: "[*symbol type*]", with: symbolTypeLabel)
 
-        let conditions: StrictString
-        if let specified = compilationConditions {
-            conditions = specified
-        } else {
-            conditions = ""
-        }
-        mutable.replaceMatches(for: "[*compilation conditions*]", with: conditions)
-
+        mutable.replaceMatches(for: "[*compilation conditions*]", with: compilationConditions ?? "")
         mutable.replaceMatches(for: "[*title*]", with: HTML.escape(title))
+        mutable.replaceMatches(for: "[*constraints*]", with: constraints ?? "")
 
         mutable.replaceMatches(for: "[*copyright*]", with: HTMLElement("span", contents: copyright, inline: false).source)
         mutable.replaceMatches(for: "[*workspace*]", with: Page.watermark(localization: localization))

@@ -116,8 +116,9 @@ internal class SymbolPage : Page {
     }
 
     private static func generateConstraints(symbol: APIElement) -> StrictString? {
-        if let constraints = symbol.constraints?.syntaxHighlightedHTML(inline: true) {
-            return StrictString(constraints)
+        if let constraints = symbol.constraints {
+            let withoutSpace = constraints.withWhereKeyword(constraints.whereKeyword.withLeadingTrivia([]))
+            return StrictString(withoutSpace.syntaxHighlightedHTML(inline: true))
         }
         return nil
     }

@@ -85,6 +85,7 @@ internal class SymbolPage : Page {
                    index: index,
                    symbolType: symbol.symbolType(localization: localization),
                    compilationConditions: SymbolPage.generateCompilationConditions(symbol: symbol),
+                   constraints: SymbolPage.generateConstraints(symbol: symbol),
                    title: StrictString(symbol.name.source()),
                    content: content.joinedAsLines(), copyright: copyright)
     }
@@ -110,6 +111,13 @@ internal class SymbolPage : Page {
     private static func generateCompilationConditions(symbol: APIElement) -> StrictString? {
         if let conditions = symbol.compilationConditions?.syntaxHighlightedHTML(inline: true) {
             return StrictString(conditions)
+        }
+        return nil
+    }
+
+    private static func generateConstraints(symbol: APIElement) -> StrictString? {
+        if let constraints = symbol.constraints?.syntaxHighlightedHTML(inline: true) {
+            return StrictString(constraints)
         }
         return nil
     }

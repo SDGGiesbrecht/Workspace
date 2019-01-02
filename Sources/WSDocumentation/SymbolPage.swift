@@ -498,6 +498,9 @@ internal class SymbolPage : Page {
                 name = highlight(name: name)
             }
             name = HTMLElement("code", attributes: ["class": "swift"], contents: name, inline: true).source
+            if let constraints = child.constraints {
+                name += StrictString(constraints.syntaxHighlightedHTML(inline: true, internalIdentifiers: packageIdentifiers))
+            }
 
             let target = pathToSiteRoot + child.relativePagePath[localization]!
             entry.append(HTMLElement("a", attributes: [

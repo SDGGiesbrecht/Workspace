@@ -135,8 +135,12 @@ internal class SymbolPage : Page {
     }
 
     private static func generateDeclarationSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
-        guard let declaration = symbol.declaration else {
+        guard var declaration = symbol.declaration else {
             return ""
+        }
+        if let constraints = symbol.constraints,
+            let constrained = declaration as? Constrained {
+            declaration = constrained.withGenericWhereClause(constraints)
         }
 
         if case .variable(let variable) = symbol,

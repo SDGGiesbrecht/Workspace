@@ -262,7 +262,7 @@ internal class SymbolPage : Page {
         guard ¬symbol.extensions.isEmpty else {
                 return ""
         }
-        return generateChildrenSection(localization: localization, heading: modulesHeader(localization: localization), children: symbol.extensions.map({ APIElement.extension($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
+        return generateChildrenSection(localization: localization, heading: extensionsHeader(localization: localization), children: symbol.extensions.map({ APIElement.extension($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
     internal static func protocolsHeader(localization: LocalizationIdentifier) -> StrictString {

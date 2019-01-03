@@ -15,8 +15,6 @@
 import SDGLogic
 import WSGeneralImports
 
-import SDGExternalProcess
-
 public struct TextFile {
 
     // MARK: - Initialization
@@ -185,7 +183,7 @@ public struct TextFile {
 
             try contents.save(to: location)
             if isExecutable {
-                try FileManager.default.setAttributes([.posixPermissions: NSNumber(0o777)], ofItemAtPath: location.path)
+                try FileManager.default.setAttributes([.posixPermissions: NSNumber(value: 0o777)], ofItemAtPath: location.path)
             }
 
             if location.pathExtension == "swift" {

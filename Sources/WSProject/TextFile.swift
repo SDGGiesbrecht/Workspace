@@ -15,8 +15,6 @@
 import SDGLogic
 import WSGeneralImports
 
-import SDGExternalProcess
-
 public struct TextFile {
 
     // MARK: - Initialization
@@ -185,12 +183,7 @@ public struct TextFile {
 
             try contents.save(to: location)
             if isExecutable {
-                #if os(Linux)
-                    // #workaround(Swift 4.1.2, FileManager cannot change permissions on Linux.)
-                    try Shell.default.run(command: ["chmod", "+x", Shell.quote(location.path)])
-                #else
-                    try FileManager.default.setAttributes([.posixPermissions: 0o777], ofItemAtPath: location.path)
-                #endif
+                try FileManager.default.setAttributes([.posixPermissions: NSNumber(value: 0o777)], ofItemAtPath: location.path)
             }
 
             if location.pathExtension == "swift" {

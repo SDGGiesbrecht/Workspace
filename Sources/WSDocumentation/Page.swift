@@ -77,7 +77,7 @@ internal class Page {
                   constraints: StrictString?,
                   title: StrictString,
                   content: StrictString,
-                  copyright: StrictString) { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+                  copyright: StrictString) {
 
         var mutable = Page.template
         mutable.replaceMatches(for: "[*localization*]".scalars, with: localization.code.scalars)

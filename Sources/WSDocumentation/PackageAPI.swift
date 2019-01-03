@@ -51,7 +51,7 @@ extension PackageAPI {
         for `extension` in unprocessedExtensions {
             if ¬types.contains(where: { `extension`.isExtension(of: $0) }),
                 ¬protocols.contains(where: { `extension`.isExtension(of: $0) }),
-                ¬extensions.contains(where: { `extension`.extendsSameType(as: $0) }) { // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+                ¬extensions.contains(where: { `extension`.extendsSameType(as: $0) }) {
                 extensions.append(`extension`)
             }
         }

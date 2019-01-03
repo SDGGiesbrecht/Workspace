@@ -24,7 +24,7 @@ open class ThirdPartyTool {
 
     // MARK: - Initialization
 
-    public init(command: StrictString, repositoryURL: URL, version: Version, versionCheck: [StrictString]) { // @exempt(from: tests) False positive with Xcode 9.3.
+    public init(command: StrictString, repositoryURL: URL, version: Version, versionCheck: [StrictString]) {
         self.command = command
         self.repositoryURL = repositoryURL
         self.version = version

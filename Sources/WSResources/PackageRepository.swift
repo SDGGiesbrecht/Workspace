@@ -54,11 +54,11 @@ extension PackageRepository {
     private func resourceFiles(output: Command.Output) throws -> [URL] {
         let locations = resourceDirectories()
 
-        let result = try trackedFiles(output: output).filter { (file) in
+        let result = try trackedFiles(output: output).filter { file in
             for directory in locations where file.is(in: directory) {
                 return true
             }
-            // @exempt(from: tests) False coverage result in Xcode 9.4.1.
+            // @exempt(from: tests) False coverage result in Xcode 10.1.
             return false
         }
         return result

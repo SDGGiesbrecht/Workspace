@@ -21,7 +21,6 @@ import WSProject
 import WSSwift
 
 import PackageDescription4
-import PackageModel
 
 extension PackageRepository {
 

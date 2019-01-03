@@ -11,7 +11,7 @@ html {
     box-sizing: border-box;
 }
 
-main {
+.main‐text‐column {
     max-width: 50em;
 }
 
@@ -143,8 +143,11 @@ header.index {
 }
 
 main {
+    flex-grow: 1;
     height: 100%;
     overflow-y: auto;
+}
+.main‐text‐column {
     padding: 0 calc((22 / 17) * 1rem);
 }
 

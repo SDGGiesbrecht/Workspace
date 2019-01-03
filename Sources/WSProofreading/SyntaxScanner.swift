@@ -16,6 +16,7 @@ import WSGeneralImports
 
 import SDGSwiftSource
 
+// #workaround(SDGSwift 0.4.0, This will become redundant.)
 internal class SyntaxScanner : SDGSwiftSource.SyntaxScanner {
 
     // MARK: - Initialization

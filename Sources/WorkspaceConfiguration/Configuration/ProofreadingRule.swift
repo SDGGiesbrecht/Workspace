@@ -42,9 +42,6 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
     /// Catches deprecated configurations.
     case deprecatedConfiguration
 
-    /// Prohibits deprecated compiler conditions for Linux documentation.
-    case deprecatedLinuxDocumentation
-
     // ••••••• Intentional •••••••
 
     /// Catches generic manual warnings.
@@ -171,7 +168,7 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
     /// The category the rule belongs to.
     public var category: Category {
         switch self {
-        case .deprecatedConditionDocumentation, .deprecatedWarnings, .deprecatedTestExemptions, .deprecatedInheritanceDirectives, .deprecatedExampleDirectives, .deprecatedGitManagement, .deprecatedConfiguration, .deprecatedLinuxDocumentation:
+        case .deprecatedConditionDocumentation, .deprecatedWarnings, .deprecatedTestExemptions, .deprecatedInheritanceDirectives, .deprecatedExampleDirectives, .deprecatedGitManagement, .deprecatedConfiguration:
             return .deprecation
 
         case .manualWarnings,

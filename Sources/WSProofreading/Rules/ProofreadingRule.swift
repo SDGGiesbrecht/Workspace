@@ -34,8 +34,6 @@ extension ProofreadingRule : Comparable {
             return .text(DeprecatedGitManagement.self)
         case .deprecatedConfiguration:
             return .text(DeprecatedConfiguration.self)
-        case .deprecatedLinuxDocumentation:
-            return .text(DeprecatedLinuxDocumentation.self)
         case .manualWarnings:
             return .text(ManualWarnings.self)
         case .missingImplementation:

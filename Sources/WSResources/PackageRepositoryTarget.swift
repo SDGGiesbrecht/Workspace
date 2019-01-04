@@ -193,8 +193,8 @@ extension PackageRepository {
 
         // MARK: - Hashable
 
-        internal var hashValue: Int {
-            return name.hashValue
+        internal func hash(into hasher: inout Hasher) {
+            hasher.combine(name)
         }
     }
 }

@@ -26,24 +26,61 @@ extension PackageRepository {
         let status = ProofreadingStatus(reporter: reporter)
 
         let activeRules = try configuration(output: output).proofreading.rules.sorted()
+        if ¬activeRules.isEmpty {
 
-        for url in try sourceFiles(output: output)
-            where FileType(url: url) ≠ nil
-                ∧ FileType(url: url) ≠ .xcodeProject {
-                    try autoreleasepool {
+            var textRules: [TextRule.Type] = []
+            var syntaxRules: [SyntaxRule.Type] = []
+            for rule in activeRules.lazy.map({ $0.parser }) {
+                switch rule {
+                case .text(let textParser):
+                    textRules.append(textParser)
+                case .syntax(let syntaxParser):
+                    syntaxRules.append(syntaxParser)
+                }
+            }
 
-                        let file = try TextFile(alreadyAt: url)
-                        var syntax: SourceFileSyntax?
-                        if file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
-                            syntax = try SyntaxTreeParser.parse(url)
+            for url in try sourceFiles(output: output)
+                where FileType(url: url) ≠ nil
+                    ∧ FileType(url: url) ≠ .xcodeProject {
+                        try autoreleasepool {
+
+                            let file = try TextFile(alreadyAt: url)
+                            reporter.reportParsing(file: file.location.path(relativeTo: location), to: output)
+
+                            for rule in textRules {
+                                try rule.check(file: file, in: self, status: status, output: output)
+                            }
+
+                            if ¬syntaxRules.isEmpty,
+                                file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
+                                // #workaround(SDGSwift 0.4.0, This should use “parseAndRetry”)
+                                let syntax = try SyntaxTreeParser.parse(url)
+
+                                #warning("This should be refactored.")
+                                try SyntaxScanner(
+                                    checkSyntax: { node in
+                                        for rule in syntaxRules {
+                                            rule.check(node, in: file, in: self, status: status, output: output)
+                                        }
+                                },
+                                    checkExtendedSyntax: { node in
+                                        for rule in syntaxRules {
+                                            rule.check(node, in: file, in: self, status: status, output: output)
+                                        }
+                                },
+                                    checkTrivia: { trivia in
+                                        for rule in syntaxRules {
+                                            rule.check(trivia, in: file, in: self, status: status, output: output)
+                                        }
+                                },
+                                    checkTriviaPiece: { trivia in
+                                        for rule in syntaxRules {
+                                            rule.check(trivia, in: file, in: self, status: status, output: output)
+                                        }
+                                }).scan(syntax)
+                            }
                         }
-
-                        reporter.reportParsing(file: file.location.path(relativeTo: location), to: output)
-
-                        for rule in activeRules {
-                            try rule.parser.check(file: file, syntax: syntax, in: self, status: status, output: output)
-                        }
-                    }
+            }
         }
 
         try proofreadWithSwiftLint(status: status, forXcode: reporter is XcodeProofreadingReporter, output: output)

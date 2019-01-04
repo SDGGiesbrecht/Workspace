@@ -18,46 +18,46 @@ import WSProject
 
 extension ProofreadingRule : Comparable {
 
-    internal var parser: RuleProtocol.Type {
+    internal var parser: Rule {
         switch self {
         case .deprecatedConditionDocumentation:
-            return DeprecatedConditionDocumentation.self
+            return .text(DeprecatedConditionDocumentation.self)
         case .deprecatedWarnings:
-            return DeprecatedWarnings.self
+            return .text(DeprecatedWarnings.self)
         case .deprecatedTestExemptions:
-            return DeprecatedTestExemptions.self
+            return .text(DeprecatedTestExemptions.self)
         case .deprecatedInheritanceDirectives:
-            return DeprecatedInheritanceDirectives.self
+            return .text(DeprecatedInheritanceDirectives.self)
         case .deprecatedExampleDirectives:
-            return DeprecatedExampleDirectives.self
+            return .text(DeprecatedExampleDirectives.self)
         case .deprecatedGitManagement:
-            return DeprecatedGitManagement.self
+            return .text(DeprecatedGitManagement.self)
         case .deprecatedConfiguration:
-            return DeprecatedConfiguration.self
+            return .text(DeprecatedConfiguration.self)
         case .deprecatedLinuxDocumentation:
-            return DeprecatedLinuxDocumentation.self
+            return .text(DeprecatedLinuxDocumentation.self)
         case .manualWarnings:
-            return ManualWarnings.self
+            return .text(ManualWarnings.self)
         case .missingImplementation:
-            return MissingImplementation.self
+            return .text(MissingImplementation.self)
         case .workaroundReminders:
-            return WorkaroundReminders.self
+            return .text(WorkaroundReminders.self)
         case .compatibilityCharacters:
-            return CompatibilityCharacters.self
+            return .text(CompatibilityCharacters.self)
         case .autoindentResilience:
-            return AutoindentResilience.self
+            return .text(AutoindentResilience.self)
         case .marks:
-            return Marks.self
+            return .text(Marks.self)
         case .syntaxColouring:
-            return SyntaxColouring.self
+            return .text(SyntaxColouring.self)
         case .unicode:
-            return UnicodeRule.self
+            return .text(UnicodeRule.self)
         case .colonSpacing:
-            return ColonSpacing.self
+            return .syntax(ColonSpacing.self)
         case .calloutCasing:
-            return CalloutCasing.self
+            return .text(CalloutCasing.self)
         case .parameterGrouping:
-            return ParameterGrouping.self
+            return .text(ParameterGrouping.self)
         }
     }
 

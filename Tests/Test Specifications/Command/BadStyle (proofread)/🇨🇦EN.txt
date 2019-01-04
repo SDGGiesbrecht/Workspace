@@ -144,6 +144,10 @@ Line 21
 “/**” may not survive autoindent (⌃I). Use “///” instead. (autoindentResilience)
     /**
 
+Line 24
+The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
+     - Warning: Callout colons should be spaced like this.
+
 Line 3
 Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition. (colonSpacing)
 struct Conformance: Equatable { // This colon should trigger. It should be spaced.
@@ -168,10 +172,6 @@ Line 35
 Colons should be followed by spaces. (colonSpacing)
     func withComment(parameter:/* */Bool) // This colon should trigger, it needs respacing.
     func withComment(parameter: /* */Bool) // This colon should trigger, it needs respacing.
-
-Line 24
-The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
-     - Warning: Callout colons should be spaced like this.
 
 Sources/BadStyle/Rules/Source Code Style/ParameterStyle.swift
 Line 5

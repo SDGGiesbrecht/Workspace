@@ -20,7 +20,7 @@ import SDGSwiftSource
 
 import WSProject
 
-internal struct ColonSpacing : Rule {
+internal struct ColonSpacing : SyntaxRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {

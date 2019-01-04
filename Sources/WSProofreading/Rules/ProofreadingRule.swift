@@ -18,7 +18,7 @@ import WSProject
 
 extension ProofreadingRule : Comparable {
 
-    internal var parser: Rule.Type {
+    internal var parser: RuleProtocol.Type {
         switch self {
         case .deprecatedConditionDocumentation:
             return DeprecatedConditionDocumentation.self

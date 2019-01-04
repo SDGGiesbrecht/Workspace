@@ -16,39 +16,47 @@ import WSGeneralImports
 
 import SDGSwiftSource
 
-// #workaround(SDGSwift 0.4.0, This will become redundant.)
-internal class SyntaxScanner : SDGSwiftSource.SyntaxScanner {
+import WSProject
+
+internal class RuleSyntaxScanner : SyntaxScanner {
 
     // MARK: - Initialization
 
-    init(
-        checkSyntax: @escaping (Syntax) -> Void,
-        checkExtendedSyntax: @escaping (ExtendedSyntax) -> Void = { _ in },
-        checkTrivia: @escaping (Trivia) -> Void = { _ in },
-        checkTriviaPiece: @escaping (TriviaPiece) -> Void = { _ in }) {
+    internal init(
+        rules: [SyntaxRule.Type],
+        file: TextFile,
+        project: PackageRepository,
+        status: ProofreadingStatus,
+        output: Command.Output) {
 
-        self.checkSyntax = checkSyntax
-        self.checkExtendedSyntax = checkExtendedSyntax
-        self.checkTrivia = checkTrivia
-        self.checkTriviaPiece = checkTriviaPiece
+        self.rules = rules
+        self.file = file
+        self.project = project
+        self.status = status
+        self.output = output
     }
 
     // MARK: - Properties
 
-    private let checkSyntax: (Syntax) -> Void
-    private let checkExtendedSyntax: (ExtendedSyntax) -> Void
-    private let checkTrivia: (Trivia) -> Void
-    private let checkTriviaPiece: (TriviaPiece) -> Void
+    private let rules: [SyntaxRule.Type]
+    private let file: TextFile
+    private let project: PackageRepository
+    private let status: ProofreadingStatus
+    private let output: Command.Output
 
     // MARK: - SyntaxScanner
 
     internal override func visit(_ node: Syntax) -> Bool {
-        checkSyntax(node)
+        for rule in rules {
+            rule.check(node, in: file, in: project, status: status, output: output)
+        }
         return true
     }
 
-    override func visit(_ node: ExtendedSyntax) -> Bool {
-        checkExtendedSyntax(node)
+    internal override func visit(_ node: ExtendedSyntax) -> Bool {
+        for rule in rules {
+            rule.check(node, in: file, in: project, status: status, output: output)
+        }
 
         // #workaround(SDGSwift 0.4.0, Block comments broken into fragments can cause invalid index use.)
         if node is FragmentSyntax {
@@ -58,13 +66,17 @@ internal class SyntaxScanner : SDGSwiftSource.SyntaxScanner {
         return true
     }
 
-    override func visit(_ node: Trivia) -> Bool {
-        checkTrivia(node)
+    internal override func visit(_ node: Trivia) -> Bool {
+        for rule in rules {
+            rule.check(node, in: file, in: project, status: status, output: output)
+        }
         return true
     }
 
-    override func visit(_ node: TriviaPiece) -> Bool {
-        checkTriviaPiece(node)
+    internal override func visit(_ node: TriviaPiece) -> Bool {
+        for rule in rules {
+            rule.check(node, in: file, in: project, status: status, output: output)
+        }
         return true
     }
 }

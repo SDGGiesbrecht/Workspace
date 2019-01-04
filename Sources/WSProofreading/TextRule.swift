@@ -18,15 +18,10 @@ import SDGSwiftSource
 
 import WSProject
 
-internal protocol TextRule : Rule {
+internal protocol TextRule : RuleProtocol {
     static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) throws
 }
 
 extension TextRule {
 
-    // MARK: - Rule
-
-    internal static func check(file: TextFile, syntax: SourceFileSyntax?, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) throws {
-        try check(file: file, in: project, status: status, output: output)
-    }
 }

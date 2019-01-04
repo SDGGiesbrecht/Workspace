@@ -9,13 +9,6 @@ Normalizing files...
 
 Proofreading source code... (§1)
 
-.gitignore
-Package.swift
-README.md
-Sources/AllDisabled/AllDisabled.swift
-Tests/AllDisabledTests/AllDisabledTests.swift
-Tests/AllDisabledTests/XCTestManifests.swift
-Tests/LinuxMain.swift
 
 [$ swiftlint...]
 

@@ -12,6 +12,12 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-internal protocol SyntaxRule : RuleProtocol {
+import WSGeneralImports
 
+import SDGSwiftSource
+
+import WSProject
+
+internal protocol SyntaxRule : RuleProtocol {
+    static func check(file: TextFile, syntax: SourceFileSyntax?, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) throws
 }

@@ -24,9 +24,4 @@ internal protocol TextRule : RuleProtocol {
 
 extension TextRule {
 
-    // MARK: - Rule
-
-    internal static func check(file: TextFile, syntax: SourceFileSyntax?, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) throws {
-        try check(file: file, in: project, status: status, output: output)
-    }
 }

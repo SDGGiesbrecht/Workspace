@@ -55,29 +55,12 @@ extension PackageRepository {
                                 file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
                                 // #workaround(SDGSwift 0.4.0, This should use “parseAndRetry”)
                                 let syntax = try SyntaxTreeParser.parse(url)
-
-                                #warning("This should be refactored.")
-                                try SyntaxScanner(
-                                    checkSyntax: { node in
-                                        for rule in syntaxRules {
-                                            rule.check(node, in: file, in: self, status: status, output: output)
-                                        }
-                                },
-                                    checkExtendedSyntax: { node in
-                                        for rule in syntaxRules {
-                                            rule.check(node, in: file, in: self, status: status, output: output)
-                                        }
-                                },
-                                    checkTrivia: { trivia in
-                                        for rule in syntaxRules {
-                                            rule.check(trivia, in: file, in: self, status: status, output: output)
-                                        }
-                                },
-                                    checkTriviaPiece: { trivia in
-                                        for rule in syntaxRules {
-                                            rule.check(trivia, in: file, in: self, status: status, output: output)
-                                        }
-                                }).scan(syntax)
+                                try RuleSyntaxScanner(
+                                    rules: syntaxRules,
+                                    file: file,
+                                    project: self,
+                                    status: status,
+                                    output: output).scan(syntax)
                             }
                         }
             }

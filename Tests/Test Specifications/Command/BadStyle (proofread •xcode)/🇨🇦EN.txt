@@ -9,7 +9,6 @@ $ workspace proofread •xcode •no‐colour
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Deprecation/InheritanceDirectives.swift:3:4: warning: This syntax is no longer recognized. Use “@documentation(This inheritance style is deprecated.)” instead. (deprecatedInheritanceDirectives)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Deprecation/InheritanceDirectives.swift:7:4: warning: This syntax is no longer recognized. Use “#documentation(This inheritance style is deprecated.)” instead. (deprecatedInheritanceDirectives)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Deprecation/LinuxDocumentation.swift:4:8: warning: Such headings are no longer necessary for the generated documentation. (deprecatedConditionDocumentation)
-[Temporary]/BadStyle/Sources/BadStyle/Rules/Deprecation/LinuxDocumentation.swift:3:18: warning: Special compilation conditions are no longer necessary for Linux documentation. (deprecatedLinuxDocumentation)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Deprecation/TestExemption.swift:3:4: warning: This syntax is no longer recognized. Use “@exempt(from: tests)” instead. (deprecatedTestExemptions)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Deprecation/Warnings.swift:3:4: warning: This syntax is no longer recognized. Use “#warning” instead. (deprecatedWarnings)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Deprecation/Warnings.swift:4:4: warning: This syntax is no longer recognized. Use “#workaround” instead. (deprecatedWarnings)

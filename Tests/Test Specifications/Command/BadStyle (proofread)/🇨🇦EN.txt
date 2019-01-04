@@ -69,10 +69,6 @@ Line 4
 Such headings are no longer necessary for the generated documentation. (deprecatedConditionDocumentation)
     // MARK: - #if os(macOS)
 
-Line 3
-Special compilation conditions are no longer necessary for Linux documentation. (deprecatedLinuxDocumentation)
-#if os(macOS) || LinuxDocs // Deprecated; should trigger.
-
 Sources/BadStyle/Rules/Deprecation/TestExemption.swift
 Line 3
 This syntax is no longer recognized. Use “@exempt(from: tests)” instead. (deprecatedTestExemptions)

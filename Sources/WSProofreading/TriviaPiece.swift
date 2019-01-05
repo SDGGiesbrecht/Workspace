@@ -42,18 +42,4 @@ extension TriviaPiece {
         }
         return result
     }
-
-    private func upperBound(in string: String, lowerBound: String.ScalarView.Index) -> String.ScalarView.Index {
-        return string.scalars.index(lowerBound, offsetBy: text.scalars.count)
-    }
-    internal func upperBound(in string: String, token: TokenSyntax, triviaPosition: TriviaPosition, index: Trivia.Index) -> String.ScalarView.Index { // @exempt(from: tests)
-        let lowerBound = self.lowerBound(in: string, token: token, triviaPosition: triviaPosition, index: index)
-        return upperBound(in: string, lowerBound: lowerBound)
-    }
-
-    internal func range(in string: String, token: TokenSyntax, triviaPosition: TriviaPosition, index: Trivia.Index) -> Range<String.ScalarView.Index> {
-        let lowerBound = self.lowerBound(in: string, token: token, triviaPosition: triviaPosition, index: index)
-        let upperBound = self.upperBound(in: string, lowerBound: lowerBound)
-        return lowerBound ..< upperBound
-    }
 }

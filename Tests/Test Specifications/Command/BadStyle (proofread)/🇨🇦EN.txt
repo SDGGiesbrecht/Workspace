@@ -112,10 +112,6 @@ Incomplete heading syntax. Use “// MARK: - ”. (marks)
 // MARK: - This heading is malformed and should trigger.
 
 Sources/BadStyle/Rules/Functionality/SyntaxColouring.swift
-Line 3
-“/**” may not survive autoindent (⌃I). Use “///” instead. (autoindentResilience)
-/**
-
 Line 6
 The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
  - A list
@@ -123,6 +119,10 @@ The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (�
 Line 7
 The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
      - A sublist
+
+Line 3
+“/**” may not survive autoindent (⌃I). Use “///” instead. (autoindentResilience)
+/**
 
 Sources/BadStyle/Rules/Intentional/MissingImplementation.swift
 Line 4
@@ -136,10 +136,6 @@ Callouts should be capitalized. (calloutCasing)
 Wwarning: This should trigger. It should have been capitalized.
 
 Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift
-Line 21
-“/**” may not survive autoindent (⌃I). Use “///” instead. (autoindentResilience)
-    /**
-
 Line 24
 The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
      - Warning: Callout colons should be spaced like this.
@@ -158,6 +154,10 @@ Line 4
 Colons should be followed by spaces. (colonSpacing)
     static func == (lhs : Conformance, rhs:Conformance) -> Bool { // These colons should trigger. They need respacing.
     static func == (lhs : Conformance, rhs: Conformance) -> Bool { // These colons should trigger. They need respacing.
+
+Line 21
+“/**” may not survive autoindent (⌃I). Use “///” instead. (autoindentResilience)
+    /**
 
 Line 34
 Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition. (colonSpacing)

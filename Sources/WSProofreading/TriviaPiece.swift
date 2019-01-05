@@ -33,7 +33,7 @@ extension TriviaPiece {
             result = token.lowerTriviaBound(in: string)
             trivia = token.leadingTrivia
         case .trailing:
-            result = token.upperTokenBound(in: string)
+            result = token.upperTokenBound(in: string) // @exempt(from: tests)
             trivia = token.trailingTrivia
         }
         for pieceIndex in trivia.indices where pieceIndex < index {

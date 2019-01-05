@@ -18,7 +18,9 @@ import WSGeneralImports
 
 import WSProject
 
-internal struct AutoindentResilience : TextRule {
+import SDGSwiftSource
+
+internal struct AutoindentResilience : SyntaxRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
@@ -34,13 +36,16 @@ internal struct AutoindentResilience : TextRule {
         }
     })
 
-    internal static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
-        if file.fileType ∈ Set([.swift, .swiftPackageManifest]),
-            file.location.lastPathComponent ≠ "FileHeaderConfiguration.swift" {
-
-            for match in file.contents.scalars.matches(for: "/*\u{2A}".scalars) {
-                reportViolation(in: file, at: match.range, message: message, status: status, output: output)
+    static func check(_ node: TriviaPiece, token: TokenSyntax, triviaPosition: TriviaPosition, index: Trivia.Index, in file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
+        switch node {
+        case .docBlockComment:
+            if file.location.lastPathComponent ≠ "FileHeaderConfiguration.swift" {
+                let start = node.lowerBound(in: file.contents, token: token, triviaPosition: triviaPosition, index: index)
+                let end = file.contents.scalars.index(start, offsetBy: 3)
+                reportViolation(in: file, at: start ..< end, message: message, status: status, output: output)
             }
+        default:
+            break
         }
     }
 }

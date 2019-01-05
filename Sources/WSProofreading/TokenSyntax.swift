@@ -40,6 +40,10 @@ extension TokenSyntax {
         return lowerTokenBound(in: string) ..< upperTokenBound(in: string)
     }
 
+    internal func lowerTriviaBound(in string: String) -> String.ScalarView.Index {
+        return index(in: string, for: position)
+    }
+
     // MARK: - Syntax Tree
 
     internal func firstPrecedingTrivia() -> TriviaPiece? {

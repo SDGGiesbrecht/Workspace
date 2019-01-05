@@ -47,9 +47,30 @@ internal class RuleSyntaxScanner : SyntaxScanner {
     // MARK: - SyntaxScanner
 
     internal override func visit(_ node: Syntax) -> Bool {
+        // #workaround(SDGSwift 0.4.0, The necessary information is unavailable if left to SDGSwiftSource.)
+        if let token = node as? TokenSyntax {
+            for index in token.leadingTrivia.indices {
+                let trivia = token.leadingTrivia[index]
+                for rule in rules {
+                    rule.check(trivia, token: token, triviaPosition: .leading, index: index, in: file, in: project, status: status, output: output)
+                }
+            }
+        }
+
         for rule in rules {
             rule.check(node, in: file, in: project, status: status, output: output)
         }
+
+        // #workaround(SDGSwift 0.4.0, The necessary information is unavailable if left to SDGSwiftSource.)
+        if let token = node as? TokenSyntax {
+            for index in token.trailingTrivia.indices {
+                let trivia = token.trailingTrivia[index]
+                for rule in rules {
+                    rule.check(trivia, token: token, triviaPosition: .trailing, index: index, in: file, in: project, status: status, output: output)
+                }
+            }
+        }
+
         return true
     }
 
@@ -74,9 +95,6 @@ internal class RuleSyntaxScanner : SyntaxScanner {
     }
 
     internal override func visit(_ node: TriviaPiece) -> Bool {
-        for rule in rules {
-            rule.check(node, in: file, in: project, status: status, output: output)
-        }
         return true
     }
 }

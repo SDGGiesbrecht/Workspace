@@ -43,7 +43,7 @@ extension ProofreadingRule : Comparable {
         case .compatibilityCharacters:
             return .text(CompatibilityCharacters.self)
         case .autoindentResilience:
-            return .text(AutoindentResilience.self)
+            return .syntax(AutoindentResilience.self)
         case .marks:
             return .text(Marks.self)
         case .syntaxColouring:

@@ -333,7 +333,7 @@ internal struct PackageInterface {
                             ).contents.save(to: location)
 
                         switch symbol {
-                        case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .conformance:
+                        case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
                             break
                         case .type, .protocol, .extension:
                             try outputNestedSymbols(of: symbol, namespace: [symbol], to: outputDirectory, localization: localization, status: status, output: output)
@@ -372,7 +372,7 @@ internal struct PackageInterface {
                     ).contents.save(to: location)
 
                 switch symbol {
-                case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .conformance:
+                case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
                     break
                 case .type, .protocol, .extension:
                     try outputNestedSymbols(of: symbol, namespace: namespace + [symbol], to: outputDirectory, localization: localization, status: status, output: output)

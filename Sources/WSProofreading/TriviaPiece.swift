@@ -12,7 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGSwift 0.4.0, These belong in SDGSwiftSource.)
+// #workaround(SDGSwift 0.4.1, These belong in SDGSwiftSource.)
 
 import SDGSwiftSource
 
@@ -33,7 +33,7 @@ extension TriviaPiece {
             result = token.lowerTriviaBound(in: string)
             trivia = token.leadingTrivia
         case .trailing:
-            result = token.upperTokenBound(in: string) // @exempt(from: tests)
+            result = token.upperSyntaxBound(in: string) // @exempt(from: tests)
             trivia = token.trailingTrivia
         }
         for pieceIndex in trivia.indices where pieceIndex < index {

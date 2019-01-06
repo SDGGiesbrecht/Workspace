@@ -500,7 +500,7 @@ internal class SymbolPage : Page {
             case .package, .library:
                 name = HTMLElement("span", attributes: ["class": "text"], contents: HTML.escape(name), inline: true).source
                 name = HTMLElement("span", attributes: ["class": "string"], contents: name, inline: true).source
-            case .module, .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .conformance:
+            case .module, .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
                 name = highlight(name: name)
             }
             name = HTMLElement("code", attributes: ["class": "swift"], contents: name, inline: true).source

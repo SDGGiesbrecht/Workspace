@@ -144,5 +144,5 @@ extension Array where Element : Equatable {
     public func constrained() {}
 }
 
-infix operator ≠ {}
+infix operator ≠
 precedencegroup Precedence {}

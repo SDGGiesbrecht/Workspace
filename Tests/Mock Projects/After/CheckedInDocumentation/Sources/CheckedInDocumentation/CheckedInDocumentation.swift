@@ -143,3 +143,6 @@ extension Array where Element : Equatable {
     /// A constrained method.
     public func constrained() {}
 }
+
+infix operator ≠
+precedencegroup Precedence {}

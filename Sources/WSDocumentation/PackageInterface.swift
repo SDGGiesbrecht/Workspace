@@ -320,7 +320,9 @@ internal struct PackageInterface {
                 packageAPI.uniqueExtensions.map({ APIElement.extension($0) }),
                 packageAPI.protocols.map({ APIElement.protocol($0) }),
                 packageAPI.functions.map({ APIElement.function($0) }),
-                packageAPI.globalVariables.map({ APIElement.variable($0) })
+                packageAPI.globalVariables.map({ APIElement.variable($0) }),
+                packageAPI.operators.map({ APIElement.operator($0) }),
+                packageAPI.precedenceGroups.map({ APIElement.precedence($0) })
                 ].joined() {
                     try autoreleasepool {
                         let location = symbol.pageURL(in: outputDirectory, for: localization)

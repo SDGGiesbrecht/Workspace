@@ -44,7 +44,7 @@ internal class DocumentationStatus {
         switch symbol {
         case .package, .library, .module:
             symbolName = StrictString(symbol.name.source())
-        case .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .conformance:
+        case .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
             symbolName = navigationPath.dropFirst().map({ StrictString($0.name.source()) }).joined(separator: ".")
         }
         report(problem: UserFacing({ localization in
@@ -70,7 +70,7 @@ internal class DocumentationStatus {
             possibleSearch = ".library"
         case .module:
             possibleSearch = ".target"
-        case .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .conformance:
+        case .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
             break
         }
         if var search = possibleSearch {

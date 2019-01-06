@@ -229,6 +229,8 @@ extension APIElement {
         case protocols
         case functions
         case globalVariables
+        case operators
+        case precedenceGroups
         case homeModule
     }
     internal var extendedProperties: [ExtendedPropertyKey: Any] {

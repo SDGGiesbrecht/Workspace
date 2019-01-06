@@ -138,6 +138,12 @@ internal struct PackageInterface {
         if ¬package.globalVariables.isEmpty {
             result.append(generateIndexSection(named: SymbolPage.variablesHeader(localization: localization), apiEntries: package.globalVariables.lazy.map({ APIElement.variable($0) }), localization: localization))
         }
+        if ¬package.operators.isEmpty {
+            result.append(generateIndexSection(named: SymbolPage.operatorsHeader(localization: localization), apiEntries: package.operators.lazy.map({ APIElement.operator($0) }), localization: localization))
+        }
+        if ¬package.functions.isEmpty {
+            result.append(generateIndexSection(named: SymbolPage.precedenceGroupsHeader(localization: localization), apiEntries: package.precedenceGroups.lazy.map({ APIElement.precedence($0) }), localization: localization))
+        }
 
         return result.joinedAsLines()
     }

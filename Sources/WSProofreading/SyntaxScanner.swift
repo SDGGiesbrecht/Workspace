@@ -47,7 +47,7 @@ internal class RuleSyntaxScanner : SyntaxScanner {
     // MARK: - SyntaxScanner
 
     internal override func visit(_ node: Syntax) -> Bool {
-        // #workaround(SDGSwift 0.4.0, The necessary information is unavailable if left to SDGSwiftSource.)
+        // #workaround(SDGSwift 0.4.1, The necessary information is unavailable if left to SDGSwiftSource.)
         if let token = node as? TokenSyntax {
             for index in token.leadingTrivia.indices {
                 let trivia = token.leadingTrivia[index]
@@ -61,7 +61,7 @@ internal class RuleSyntaxScanner : SyntaxScanner {
             rule.check(node, in: file, in: project, status: status, output: output)
         }
 
-        // #workaround(SDGSwift 0.4.0, The necessary information is unavailable if left to SDGSwiftSource.)
+        // #workaround(SDGSwift 0.4.1, The necessary information is unavailable if left to SDGSwiftSource.)
         if let token = node as? TokenSyntax {
             for index in token.trailingTrivia.indices {
                 let trivia = token.trailingTrivia[index]
@@ -78,12 +78,6 @@ internal class RuleSyntaxScanner : SyntaxScanner {
         for rule in rules {
             rule.check(node, in: file, in: project, status: status, output: output)
         }
-
-        // #workaround(SDGSwift 0.4.0, Block comments broken into fragments can cause invalid index use.)
-        if node is FragmentSyntax {
-            return false
-        }
-
         return true
     }
 

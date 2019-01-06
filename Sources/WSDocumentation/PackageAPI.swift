@@ -26,6 +26,8 @@ extension PackageAPI {
         var protocols: [ProtocolAPI] = []
         var functions: [FunctionAPI] = []
         var globalVariables: [VariableAPI] = []
+        var operators: [OperatorAPI] = []
+        var precedenceGroups: [PrecedenceAPI] = []
         for module in modules {
             for element in module.children {
                 element.homeModule = Weak(module)
@@ -43,6 +45,10 @@ extension PackageAPI {
                     functions.append(function)
                 case .variable(let globalVariable):
                     globalVariables.append(globalVariable)
+                case .operator(let `operator`):
+                    operators.append(`operator`)
+                case .precedence(let precedence):
+                    precedenceGroups.append(precedence)
                 }
             }
         }
@@ -61,6 +67,8 @@ extension PackageAPI {
         self.protocols = protocols.sorted()
         self.functions = functions.sorted()
         self.globalVariables = globalVariables.sorted()
+        self.operators = operators.sorted()
+        self.precedenceGroups = precedenceGroups.sorted()
     }
 
     internal var types: [TypeAPI] {
@@ -109,6 +117,24 @@ extension PackageAPI {
         }
         set {
             APIElement.package(self).extendedProperties[.globalVariables] = newValue
+        }
+    }
+
+    internal var operators: [OperatorAPI] {
+        get {
+            return APIElement.package(self).extendedProperties[.operators] as? [OperatorAPI] ?? [] // @exempt(from: tests) Should never be nil.
+        }
+        set {
+            APIElement.package(self).extendedProperties[.operators] = newValue
+        }
+    }
+
+    internal var precedenceGroups: [PrecedenceAPI] {
+        get {
+            return APIElement.package(self).extendedProperties[.precedenceGroups] as? [PrecedenceAPI] ?? [] // @exempt(from: tests) Should never be nil.
+        }
+        set {
+            APIElement.package(self).extendedProperties[.precedenceGroups] = newValue
         }
     }
 }

@@ -53,8 +53,7 @@ extension PackageRepository {
 
                             if ¬syntaxRules.isEmpty,
                                 file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
-                                // #workaround(SDGSwift 0.4.0, This should use “parseAndRetry”)
-                                let syntax = try SyntaxTreeParser.parse(url)
+                                let syntax = try SyntaxTreeParser.parseAndRetry(url)
                                 try RuleSyntaxScanner(
                                     rules: syntaxRules,
                                     file: file,

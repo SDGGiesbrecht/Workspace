@@ -215,6 +215,24 @@ extension APIElement {
                     }
                 }
             }
+        case .operator:
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Operator"
+                }
+            } else {
+                return "operator"
+            }
+        case .precedence:
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Precedence Group"
+                }
+            } else {
+                return "precedencegroup"
+            }
         case .conformance:
             unreachable()
         }
@@ -229,6 +247,8 @@ extension APIElement {
         case protocols
         case functions
         case globalVariables
+        case operators
+        case precedenceGroups
         case homeModule
     }
     internal var extendedProperties: [ExtendedPropertyKey: Any] {
@@ -473,6 +493,28 @@ extension APIElement {
                     }
                 }
                 path += namespace + functionsDirectoryName + "/"
+            case .operator:
+                let operatorsDirectoryName: StrictString
+                if let match = localization._reasonableMatch {
+                    switch match {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        operatorsDirectoryName = "Operators"
+                    }
+                } else {
+                    operatorsDirectoryName = "operator"
+                }
+                path += namespace + operatorsDirectoryName + "/"
+            case .precedence:
+                let precedenceGroupsDirectoryName: StrictString
+                if let match = localization._reasonableMatch {
+                    switch match {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        precedenceGroupsDirectoryName = "Precedence Groups"
+                    }
+                } else {
+                    precedenceGroupsDirectoryName = "precedencegroup"
+                }
+                path += namespace + precedenceGroupsDirectoryName + "/"
             case .conformance:
                 unreachable()
             }
@@ -485,38 +527,6 @@ extension APIElement {
                 links[name.source()] = String(path)
             }
             return links
-        }
-    }
-
-    // MARK: - SDGSwiftSource
-
-    // #workaround(SDGSwift 0.4.0, This belongs in SDGSwiftSource.)
-    internal var documentation: DocumentationSyntax? {
-        switch self {
-        case .package(let package):
-            return package.documentation
-        case .library(let library):
-            return library.documentation
-        case .module(let module):
-            return module.documentation
-        case .type(let type):
-            return type.documentation
-        case .protocol(let `protocol`):
-            return `protocol`.documentation
-        case .extension(let `extension`):
-            return `extension`.documentation
-        case .case(let `case`):
-            return `case`.documentation
-        case .initializer(let initializer):
-            return initializer.documentation
-        case .variable(let variable):
-            return variable.documentation
-        case .subscript(let `subscript`):
-            return `subscript`.documentation
-        case .function(let function):
-            return function.documentation
-        case .conformance(let conformance):
-            return conformance.documentation // @exempt(from: tests) Should never occur.
         }
     }
 }

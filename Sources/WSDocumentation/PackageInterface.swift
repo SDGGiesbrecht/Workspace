@@ -138,6 +138,12 @@ internal struct PackageInterface {
         if ¬package.globalVariables.isEmpty {
             result.append(generateIndexSection(named: SymbolPage.variablesHeader(localization: localization), apiEntries: package.globalVariables.lazy.map({ APIElement.variable($0) }), localization: localization))
         }
+        if ¬package.operators.isEmpty {
+            result.append(generateIndexSection(named: SymbolPage.operatorsHeader(localization: localization), apiEntries: package.operators.lazy.map({ APIElement.operator($0) }), localization: localization))
+        }
+        if ¬package.functions.isEmpty {
+            result.append(generateIndexSection(named: SymbolPage.precedenceGroupsHeader(localization: localization), apiEntries: package.precedenceGroups.lazy.map({ APIElement.precedence($0) }), localization: localization))
+        }
 
         return result.joinedAsLines()
     }
@@ -314,7 +320,9 @@ internal struct PackageInterface {
                 packageAPI.uniqueExtensions.map({ APIElement.extension($0) }),
                 packageAPI.protocols.map({ APIElement.protocol($0) }),
                 packageAPI.functions.map({ APIElement.function($0) }),
-                packageAPI.globalVariables.map({ APIElement.variable($0) })
+                packageAPI.globalVariables.map({ APIElement.variable($0) }),
+                packageAPI.operators.map({ APIElement.operator($0) }),
+                packageAPI.precedenceGroups.map({ APIElement.precedence($0) })
                 ].joined() {
                     try autoreleasepool {
                         let location = symbol.pageURL(in: outputDirectory, for: localization)
@@ -333,7 +341,7 @@ internal struct PackageInterface {
                             ).contents.save(to: location)
 
                         switch symbol {
-                        case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .conformance:
+                        case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
                             break
                         case .type, .protocol, .extension:
                             try outputNestedSymbols(of: symbol, namespace: [symbol], to: outputDirectory, localization: localization, status: status, output: output)
@@ -372,7 +380,7 @@ internal struct PackageInterface {
                     ).contents.save(to: location)
 
                 switch symbol {
-                case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .conformance:
+                case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
                     break
                 case .type, .protocol, .extension:
                     try outputNestedSymbols(of: symbol, namespace: namespace + [symbol], to: outputDirectory, localization: localization, status: status, output: output)

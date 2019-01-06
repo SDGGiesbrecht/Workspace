@@ -80,19 +80,19 @@ internal struct ColonSpacing : SyntaxRule {
                 switch precedingTrivia {
                 case .spaces, .tabs, .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds:
                     if ¬requiresPrecedingSpace {
-                        var range = token.tokenRange(in: file.contents)
+                        var range = token.syntaxRange(in: file.contents)
                         range = file.contents.scalars.index(range.lowerBound, offsetBy: −precedingTrivia.text.scalars.count) ..< range.upperBound
                         precedingViolation = (prohibitedSpaceMessage, prohibitedSpaceSuggestion, range)
                     }
                 case .backticks, .lineComment, .blockComment, .docLineComment, .docBlockComment, .garbageText:
                     if requiresPrecedingSpace {
-                        precedingViolation = (requiredSpaceMessage, requiredSpaceSuggestion, token.tokenRange(in: file.contents))
+                        precedingViolation = (requiredSpaceMessage, requiredSpaceSuggestion, token.syntaxRange(in: file.contents))
                     }
                 }
             } else {
                 // No trivia.
                 if requiresPrecedingSpace {
-                    precedingViolation = (requiredSpaceMessage, requiredSpaceSuggestion, token.tokenRange(in: file.contents))
+                    precedingViolation = (requiredSpaceMessage, requiredSpaceSuggestion, token.syntaxRange(in: file.contents))
                 }
             }
             if let violation = precedingViolation {
@@ -116,7 +116,7 @@ internal struct ColonSpacing : SyntaxRule {
             }
 
             if trailingViolation {
-                reportViolation(in: file, at: token.tokenRange(in: file.contents), replacementSuggestion: ": ", message: followingMessage, status: status, output: output)
+                reportViolation(in: file, at: token.syntaxRange(in: file.contents), replacementSuggestion: ": ", message: followingMessage, status: status, output: output)
             }
         }
     }

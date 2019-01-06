@@ -493,6 +493,28 @@ extension APIElement {
                     }
                 }
                 path += namespace + functionsDirectoryName + "/"
+            case .operator:
+                let operatorsDirectoryName: StrictString
+                if let match = localization._reasonableMatch {
+                    switch match {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        operatorsDirectoryName = "Operators"
+                    }
+                } else {
+                    operatorsDirectoryName = "operator"
+                }
+                path += namespace + operatorsDirectoryName + "/"
+            case .precedence:
+                let precedenceGroupsDirectoryName: StrictString
+                if let match = localization._reasonableMatch {
+                    switch match {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        precedenceGroupsDirectoryName = "Precedence Groups"
+                    }
+                } else {
+                    precedenceGroupsDirectoryName = "precedencegroup"
+                }
+                path += namespace + precedenceGroupsDirectoryName + "/"
             case .conformance:
                 unreachable()
             }
@@ -535,6 +557,10 @@ extension APIElement {
             return `subscript`.documentation
         case .function(let function):
             return function.documentation
+        case .operator(let `operator`):
+            return `operator`.documentation
+        case .precedence(let precedence):
+            return precedence.documentation
         case .conformance(let conformance):
             return conformance.documentation // @exempt(from: tests) Should never occur.
         }

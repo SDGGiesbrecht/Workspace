@@ -215,6 +215,24 @@ extension APIElement {
                     }
                 }
             }
+        case .operator:
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Operator"
+                }
+            } else {
+                return "operator"
+            }
+        case .precedence:
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Precedence Group"
+                }
+            } else {
+                return "precedencegroup"
+            }
         case .conformance:
             unreachable()
         }

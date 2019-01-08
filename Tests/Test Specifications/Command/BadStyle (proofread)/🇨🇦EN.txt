@@ -169,6 +169,16 @@ Colons should be followed by spaces. (colonSpacing)
     func withComment(parameter:/* */Bool) // This colon should trigger, it needs respacing.
     func withComment(parameter: /* */Bool) // This colon should trigger, it needs respacing.
 
+Line 38
+Colons should not be followed by spaces when denoting an empty dictionary literal or a function name. (colonSpacing)
+    let x = String.insert(_: at: ) // These colons should trigger. They should not be spaced.
+    let x = String.insert(_:at: ) // These colons should trigger. They should not be spaced.
+
+Line 38
+Colons should not be followed by spaces when denoting an empty dictionary literal or a function name. (colonSpacing)
+    let x = String.insert(_: at: ) // These colons should trigger. They should not be spaced.
+    let x = String.insert(_: at:) // These colons should trigger. They should not be spaced.
+
 Sources/BadStyle/Rules/Source Code Style/ParameterStyle.swift
 Line 5
 Parameters should be grouped under a single callout. (parameterGrouping)

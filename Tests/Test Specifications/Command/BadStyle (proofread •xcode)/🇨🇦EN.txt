@@ -29,6 +29,8 @@ $ workspace proofread •xcode •no‐colour
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift:21:5: warning: “/**” may not survive autoindent (⌃I). Use “///” instead. (autoindentResilience)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift:34:39: warning: Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition. (colonSpacing)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift:35:31: warning: Colons should be followed by spaces. (colonSpacing)
+[Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift:38:28: warning: Colons should not be followed by spaces when denoting an empty dictionary literal or a function name. (colonSpacing)
+[Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift:38:32: warning: Colons should not be followed by spaces when denoting an empty dictionary literal or a function name. (colonSpacing)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ParameterStyle.swift:5:1: warning: Parameters should be grouped under a single callout. (parameterGrouping)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:9:49: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:5:4: warning: The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)

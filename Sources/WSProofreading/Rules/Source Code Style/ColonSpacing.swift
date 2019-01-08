@@ -126,8 +126,8 @@ internal struct ColonSpacing : SyntaxRule {
                 case .spaces, .tabs, .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds, .garbageText:
                     if ¬requiresFollowingSpace {
                         var range = token.syntaxRange(in: file.contents)
-                        range = range.lowerBound ..< file.contents.scalars.index(range.upperBound, offsetBy: −followingTrivia.text.scalars.count)
-                        trailingViolation = (prohibitedFollowingSpaceMessage, prohibitedFollowingSpaceSuggestion, token.syntaxRange(in: file.contents))
+                        range = range.lowerBound ..< file.contents.scalars.index(range.upperBound, offsetBy: followingTrivia.text.scalars.count)
+                        trailingViolation = (prohibitedFollowingSpaceMessage, prohibitedFollowingSpaceSuggestion, range)
                     }
                 case .backticks, .lineComment, .blockComment, .docLineComment, .docBlockComment:
                     if requiresFollowingSpace {

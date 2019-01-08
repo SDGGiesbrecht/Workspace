@@ -29,28 +29,37 @@ internal struct ColonSpacing : SyntaxRule {
         }
     })
 
-    private static let prohibitedSpaceMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
+    private static let prohibitedPrecedingSpaceMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Colons should not be preceded by spaces."
         }
     })
-    private static let prohibitedSpaceSuggestion: StrictString = ":"
+    private static let prohibitedPrecedingSpaceSuggestion: StrictString = ":"
 
-    private static let requiredSpaceMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
+    private static let requiredPrecedingSpaceMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition."
         }
     })
-    private static let requiredSpaceSuggestion: StrictString = " :"
+    private static let requiredPrecedingSpaceSuggestion: StrictString = " :"
 
-    private static let followingMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
+    private static let requiredFollowingSpaceMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Colons should be followed by spaces."
         }
     })
+    private static let requiredFollowingSpaceSuggestion: StrictString = ": "
+
+    private static let prohibitedFollowingSpaceMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
+        switch localization {
+        case .englishCanada:
+            return "Colons should not be followed by spaces when denoting an empty dictionary literal or a function name."
+        }
+    })
+    private static let prohibitedFollowingSpaceSuggestion: StrictString = ":"
 
     internal static func check(_ node: Syntax, in file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
 
@@ -82,17 +91,17 @@ internal struct ColonSpacing : SyntaxRule {
                     if ¬requiresPrecedingSpace {
                         var range = token.syntaxRange(in: file.contents)
                         range = file.contents.scalars.index(range.lowerBound, offsetBy: −precedingTrivia.text.scalars.count) ..< range.upperBound
-                        precedingViolation = (prohibitedSpaceMessage, prohibitedSpaceSuggestion, range)
+                        precedingViolation = (prohibitedPrecedingSpaceMessage, prohibitedPrecedingSpaceSuggestion, range)
                     }
                 case .backticks, .lineComment, .blockComment, .docLineComment, .docBlockComment, .garbageText:
                     if requiresPrecedingSpace {
-                        precedingViolation = (requiredSpaceMessage, requiredSpaceSuggestion, token.syntaxRange(in: file.contents))
+                        precedingViolation = (requiredPrecedingSpaceMessage, requiredPrecedingSpaceSuggestion, token.syntaxRange(in: file.contents))
                     }
                 }
             } else {
                 // No trivia.
                 if requiresPrecedingSpace {
-                    precedingViolation = (requiredSpaceMessage, requiredSpaceSuggestion, token.syntaxRange(in: file.contents))
+                    precedingViolation = (requiredPrecedingSpaceMessage, requiredPrecedingSpaceSuggestion, token.syntaxRange(in: file.contents))
                 }
             }
             if let violation = precedingViolation {
@@ -100,23 +109,40 @@ internal struct ColonSpacing : SyntaxRule {
             }
 
             // Trailing
-            var trailingViolation = false
+            let requiresFollowingSpace: Bool
+            if let dictionary = token.parent as? DictionaryExprSyntax,
+                dictionary.content.indexInParent == token.indexInParent {
+                requiresFollowingSpace = false
+            } else if let nameArgument = token.parent as? DeclNameArgumentSyntax,
+                nameArgument.colon.indexInParent == token.indexInParent {
+                requiresFollowingSpace = false
+            } else {
+                requiresFollowingSpace = true
+            }
+
+            var trailingViolation: (message: UserFacing<StrictString, InterfaceLocalization>, suggestion: StrictString, range: Range<String.ScalarView.Index>)?
             if let followingTrivia = token.firstFollowingTrivia() {
                 switch followingTrivia {
                 case .spaces, .tabs, .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds, .garbageText:
-                    break
+                    if ¬requiresFollowingSpace {
+                        var range = token.syntaxRange(in: file.contents)
+                        range = range.lowerBound ..< file.contents.scalars.index(range.upperBound, offsetBy: followingTrivia.text.scalars.count)
+                        trailingViolation = (prohibitedFollowingSpaceMessage, prohibitedFollowingSpaceSuggestion, range)
+                    }
                 case .backticks, .lineComment, .blockComment, .docLineComment, .docBlockComment:
-                    trailingViolation = true
+                    if requiresFollowingSpace {
+                        trailingViolation = (requiredFollowingSpaceMessage, requiredFollowingSpaceSuggestion, token.syntaxRange(in: file.contents))
+                    }
                 }
             } else {
                 // No trivia.
-                if token.nextToken()?.tokenKind ≠ .rightSquareBracket /* Empty Dictionary Literal */ {
-                    trailingViolation = true
+                if requiresFollowingSpace {
+                    trailingViolation = (requiredFollowingSpaceMessage, requiredFollowingSpaceSuggestion, token.syntaxRange(in: file.contents))
                 }
             }
 
-            if trailingViolation {
-                reportViolation(in: file, at: token.syntaxRange(in: file.contents), replacementSuggestion: ": ", message: followingMessage, status: status, output: output)
+            if let violation = trailingViolation {
+                reportViolation(in: file, at: violation.range, replacementSuggestion: violation.suggestion, message: violation.message, status: status, output: output)
             }
         }
     }

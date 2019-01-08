@@ -110,7 +110,10 @@ internal struct ColonSpacing : SyntaxRule {
 
             // Trailing
             let requiresFollowingSpace: Bool
-            if let nameArgument = token.parent as? DeclNameArgumentSyntax,
+            if let dictionary = token.parent as? DictionaryExprSyntax,
+                dictionary.content.indexInParent == token.indexInParent {
+                requiresFollowingSpace = false
+            } else if let nameArgument = token.parent as? DeclNameArgumentSyntax,
                 nameArgument.colon.indexInParent == token.indexInParent {
                 requiresFollowingSpace = false
             } else {

@@ -36,7 +36,7 @@ internal struct AutoindentResilience : SyntaxRule {
         }
     })
 
-    static func check(_ node: TriviaPiece, context: TriviaPieceContext, token: TokenSyntax, file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
+    static func check(_ node: TriviaPiece, context: TriviaPieceContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
         switch node {
         case .docBlockComment:
             if file.location.lastPathComponent ≠ "FileHeaderConfiguration.swift" {

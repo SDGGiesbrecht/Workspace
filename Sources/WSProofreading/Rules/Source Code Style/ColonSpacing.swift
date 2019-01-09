@@ -120,8 +120,7 @@ internal struct ColonSpacing : SyntaxRule {
             } else if let functionParameter = token.parent as? FunctionParameterSyntax,
                 let parameterList = functionParameter.parent as? FunctionParameterListSyntax {
                 // “init(_:)” ends up as an InitializerDeclSyntax.
-                let remainder = file.contents.scalars[token.upperSyntaxBound(in: context)...]
-                if remainder.first == ")" ∨ remainder.hasPrefix(" )".scalars) {
+                if token.nextToken()?.tokenKind == .rightParen {
                     // It’s the last argument of a name if it’s immediately followed by the terminal parenthesis.
                     requiresFollowingSpace = false
                 } else if parameterList.count ≤ 1 {

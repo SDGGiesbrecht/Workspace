@@ -61,7 +61,7 @@ internal struct ColonSpacing : SyntaxRule {
     })
     private static let prohibitedFollowingSpaceSuggestion: StrictString = ":"
 
-    internal static func check(_ node: Syntax, in file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
+    internal static func check(_ node: Syntax, context: SyntaxContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
 
         if let token = node as? TokenSyntax,
             token.tokenKind == .colon {
@@ -89,19 +89,19 @@ internal struct ColonSpacing : SyntaxRule {
                 switch precedingTrivia {
                 case .spaces, .tabs, .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds:
                     if ¬requiresPrecedingSpace {
-                        var range = token.syntaxRange(in: file.contents)
+                        var range = token.syntaxRange(in: context)
                         range = file.contents.scalars.index(range.lowerBound, offsetBy: −precedingTrivia.text.scalars.count) ..< range.upperBound
                         precedingViolation = (prohibitedPrecedingSpaceMessage, prohibitedPrecedingSpaceSuggestion, range)
                     }
                 case .backticks, .lineComment, .blockComment, .docLineComment, .docBlockComment, .garbageText:
                     if requiresPrecedingSpace {
-                        precedingViolation = (requiredPrecedingSpaceMessage, requiredPrecedingSpaceSuggestion, token.syntaxRange(in: file.contents))
+                        precedingViolation = (requiredPrecedingSpaceMessage, requiredPrecedingSpaceSuggestion, token.syntaxRange(in: context))
                     }
                 }
             } else {
                 // No trivia.
                 if requiresPrecedingSpace {
-                    precedingViolation = (requiredPrecedingSpaceMessage, requiredPrecedingSpaceSuggestion, token.syntaxRange(in: file.contents))
+                    precedingViolation = (requiredPrecedingSpaceMessage, requiredPrecedingSpaceSuggestion, token.syntaxRange(in: context))
                 }
             }
             if let violation = precedingViolation {
@@ -125,19 +125,19 @@ internal struct ColonSpacing : SyntaxRule {
                 switch followingTrivia {
                 case .spaces, .tabs, .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds, .garbageText:
                     if ¬requiresFollowingSpace {
-                        var range = token.syntaxRange(in: file.contents)
+                        var range = token.syntaxRange(in: context)
                         range = range.lowerBound ..< file.contents.scalars.index(range.upperBound, offsetBy: followingTrivia.text.scalars.count)
                         trailingViolation = (prohibitedFollowingSpaceMessage, prohibitedFollowingSpaceSuggestion, range)
                     }
                 case .backticks, .lineComment, .blockComment, .docLineComment, .docBlockComment:
                     if requiresFollowingSpace {
-                        trailingViolation = (requiredFollowingSpaceMessage, requiredFollowingSpaceSuggestion, token.syntaxRange(in: file.contents))
+                        trailingViolation = (requiredFollowingSpaceMessage, requiredFollowingSpaceSuggestion, token.syntaxRange(in: context))
                     }
                 }
             } else {
                 // No trivia.
                 if requiresFollowingSpace {
-                    trailingViolation = (requiredFollowingSpaceMessage, requiredFollowingSpaceSuggestion, token.syntaxRange(in: file.contents))
+                    trailingViolation = (requiredFollowingSpaceMessage, requiredFollowingSpaceSuggestion, token.syntaxRange(in: context))
                 }
             }
 

@@ -36,11 +36,11 @@ internal struct AutoindentResilience : SyntaxRule {
         }
     })
 
-    static func check(_ node: TriviaPiece, token: TokenSyntax, triviaPosition: TriviaPosition, index: Trivia.Index, in file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
+    static func check(_ node: TriviaPiece, context: TriviaPieceContext, token: TokenSyntax, file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
         switch node {
         case .docBlockComment:
             if file.location.lastPathComponent ≠ "FileHeaderConfiguration.swift" {
-                let start = node.lowerBound(in: file.contents, token: token, triviaPosition: triviaPosition, index: index)
+                let start = node.lowerBound(in: context)
                 let end = file.contents.scalars.index(start, offsetBy: 3)
                 reportViolation(in: file, at: start ..< end, message: message, status: status, output: output)
             }

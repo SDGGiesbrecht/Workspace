@@ -117,22 +117,32 @@ internal struct ColonSpacing : SyntaxRule {
             } else if let nameArgument = token.parent as? DeclNameArgumentSyntax,
                 nameArgument.colon.indexInParent == token.indexInParent {
                 requiresFollowingSpace = false
-            } else if let functionParameter = token.parent as? FunctionParameterSyntax,
-                let parameterList = functionParameter.parent as? FunctionParameterListSyntax {
+            } else if let functionParameter = token.parent as? FunctionParameterSyntax {
                 // “init(_:)” ends up as an InitializerDeclSyntax.
-                if token.nextToken()?.tokenKind == .rightParen {
-                    // It’s the last argument of a name if it’s immediately followed by the terminal parenthesis.
-                    requiresFollowingSpace = false
-                } else if parameterList.count ≤ 1 {
-                    // If it is the only element, but isn’t followed immediaetly by the parenthesis, it’s not a name.
-                    requiresFollowingSpace = true
-                } else if parameterList.contains(where: { $0.trailingComma?.isPresent == true ∨ $0.ellipsis?.text == "," }) {
-                    // If the list is separated by commata, its a function call or declaration.
-                    requiresFollowingSpace = true
+                if let parameterList = functionParameter.parent as? FunctionParameterListSyntax {
+                    if token.nextToken()?.tokenKind == .rightParen {
+                        // It’s the last argument of a name if it’s immediately followed by the terminal parenthesis.
+                        requiresFollowingSpace = false
+                    } else if parameterList.count ≤ 1 {
+                        // If it is the only element, but isn’t followed immediaetly by the parenthesis, it’s not a name.
+                        requiresFollowingSpace = true
+                    } else if parameterList.contains(where: { $0.trailingComma?.isPresent == true ∨ $0.ellipsis?.text == "," }) {
+                        // If the list is separated by commata, its a function call or declaration.
+                        requiresFollowingSpace = true
+                    } else {
+                        // The list is not separated by commata (and has more than one element), so it must be a name.
+                        requiresFollowingSpace = false
+                    }
+                } else if functionParameter.parent is UnknownSyntax {
+                    // SwiftSyntax is confused. Skip.
+                    return
                 } else {
-                    // The list is not separated by commata (and has more than one element), so it must be a name.
-                    requiresFollowingSpace = false
+                    // General case.
+                    requiresFollowingSpace = true
                 }
+            } else if token.parent is UnknownSyntax {
+                // SwiftSyntax is confused. Skip.
+                return
             } else {
                 requiresFollowingSpace = true
             }

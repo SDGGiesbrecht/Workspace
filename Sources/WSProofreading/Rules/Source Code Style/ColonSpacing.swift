@@ -140,7 +140,8 @@ internal struct ColonSpacing : SyntaxRule {
                     // General case.
                     requiresFollowingSpace = true
                 }
-            } else if token.parent is UnknownSyntax {
+            } else if token.parent is UnknownSyntax
+                ∨ token.parent is UnknownStmtSyntax {
                 // SwiftSyntax is confused. Skip.
                 return
             } else {

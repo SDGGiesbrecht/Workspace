@@ -39,5 +39,7 @@ struct Conformance: Equatable { // This colon should trigger. It should be space
 
     /// `init(_:)` ← This colon should not trigger. It is spaced correctly.
     /// `init(a:b:c:d:e:)` ← These colons should not trigger. They are spaced correctly.
+    /// `do(_:)` ← This colon should not trigger. It is spaced correctly.
+    /// `where AssociatedType : Conformance` ← This colon should not trigger. It is spaced correctly.
     let x = 0
 }

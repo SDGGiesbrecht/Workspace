@@ -81,6 +81,9 @@ internal struct ColonSpacing : SyntaxRule {
             } else if let ternaryExpression = token.parent as? TernaryExprSyntax,
                 ternaryExpression.colonMark.indexInParent == token.indexInParent {
                 requiresPrecedingSpace = true
+            } else if token.parent is UnknownStmtSyntax {
+                // SwiftSyntax is confused.
+                return
             } else {
                 requiresPrecedingSpace = false
             }

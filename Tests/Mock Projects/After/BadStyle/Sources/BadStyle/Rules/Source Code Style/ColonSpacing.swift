@@ -36,4 +36,10 @@ struct Conformance: Equatable { // This colon should trigger. It should be space
 
     let x = String.insert(_:at:) // Function names should be spaced like this.
     let x = String.insert(_: at: ) // These colons should trigger. They should not be spaced.
+
+    /// `init(_:)` ← This colon should not trigger. It is spaced correctly.
+    /// `init(a:b:c:d:e:)` ← These colons should not trigger. They are spaced correctly.
+    /// `do(_:)` ← This colon should not trigger. It is spaced correctly.
+    /// `where AssociatedType : Conformance` ← This colon should not trigger. It is spaced correctly.
+    let x = 0
 }

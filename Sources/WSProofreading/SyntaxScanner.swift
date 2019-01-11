@@ -46,49 +46,31 @@ internal class RuleSyntaxScanner : SyntaxScanner {
 
     // MARK: - SyntaxScanner
 
-    internal override func visit(_ node: Syntax) -> Bool {
-        // #workaround(SDGSwift 0.4.1, The necessary information is unavailable if left to SDGSwiftSource.)
-        if let token = node as? TokenSyntax {
-            for index in token.leadingTrivia.indices {
-                let trivia = token.leadingTrivia[index]
-                for rule in rules {
-                    rule.check(trivia, token: token, triviaPosition: .leading, index: index, in: file, in: project, status: status, output: output)
-                }
-            }
-        }
-
+    internal override func visit(_ node: Syntax, context: SyntaxContext) -> Bool {
         for rule in rules {
-            rule.check(node, in: file, in: project, status: status, output: output)
-        }
-
-        // #workaround(SDGSwift 0.4.1, The necessary information is unavailable if left to SDGSwiftSource.)
-        if let token = node as? TokenSyntax {
-            for index in token.trailingTrivia.indices {
-                let trivia = token.trailingTrivia[index]
-                for rule in rules {
-                    rule.check(trivia, token: token, triviaPosition: .trailing, index: index, in: file, in: project, status: status, output: output)
-                }
-            }
-        }
-
-        return true
-    }
-
-    internal override func visit(_ node: ExtendedSyntax) -> Bool {
-        for rule in rules {
-            rule.check(node, in: file, in: project, status: status, output: output)
+            rule.check(node, context: context, file: file, project: project, status: status, output: output)
         }
         return true
     }
 
-    internal override func visit(_ node: Trivia) -> Bool {
+    internal override func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
         for rule in rules {
-            rule.check(node, in: file, in: project, status: status, output: output)
+            rule.check(node, context: context, file: file, project: project, status: status, output: output)
         }
         return true
     }
 
-    internal override func visit(_ node: TriviaPiece) -> Bool {
+    internal override func visit(_ node: Trivia, context: TriviaContext) -> Bool {
+        for rule in rules {
+            rule.check(node, context: context, file: file, project: project, status: status, output: output)
+        }
+        return true
+    }
+
+    internal override func visit(_ node: TriviaPiece, context: TriviaPieceContext) -> Bool {
+        for rule in rules {
+            rule.check(node, context: context, file: file, project: project, status: status, output: output)
+        }
         return true
     }
 }

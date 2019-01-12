@@ -15,9 +15,11 @@
 import SDGLogic
 import WSGeneralImports
 
+import SDGSwiftSource
+
 import WSProject
 
-internal struct SyntaxColouring : TextRule {
+internal struct SyntaxColouring : SyntaxRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
@@ -33,19 +35,15 @@ internal struct SyntaxColouring : TextRule {
         }
     })
 
-    internal static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
+    internal static func check(_ node: ExtendedSyntax, context: ExtendedSyntaxContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
 
-        var occurrenceCount: [String: Bool] = [:]
+        if let codeDelimiter = node as? ExtendedTokenSyntax,
+            codeDelimiter.kind == .codeDelimiter,
+            let codeBlock = codeDelimiter.parent as? CodeBlockSyntax,
+            codeBlock.openingDelimiter.indexInParent == codeDelimiter.indexInParent {
 
-        for match in file.contents.scalars.matches(for: "```".scalars) {
-            let indent = String(fromStartOfLine(to: match, in: file))
-
-            var isOdd = occurrenceCount[indent] ?? false
-            isOdd.toggle()
-            occurrenceCount[indent] = isOdd
-
-            if isOdd ∧ file.contents.scalars[match.range.upperBound...].hasPrefix("\n".scalars) {
-                reportViolation(in: file, at: match.range, message: message, status: status, output: output)
+            if codeBlock.language == nil {
+                reportViolation(in: file, at: codeDelimiter.range(in: context), message: message, status: status, output: output)
             }
         }
     }

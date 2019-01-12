@@ -47,7 +47,7 @@ extension ProofreadingRule : Comparable {
         case .marks:
             return .text(Marks.self)
         case .syntaxColouring:
-            return .text(SyntaxColouring.self)
+            return .syntax(SyntaxColouring.self)
         case .unicode:
             return .text(UnicodeRule.self)
         case .colonSpacing:

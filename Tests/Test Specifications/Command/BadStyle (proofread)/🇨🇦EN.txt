@@ -133,7 +133,7 @@ Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift
 Line 5
 Callouts should be capitalized. (calloutCasing)
 /// - warning: This should trigger. It should have been capitalized.
-Wwarning: This should trigger. It should have been capitalized.
+/// - Warning: This should trigger. It should have been capitalized.
 
 Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift
 Line 24

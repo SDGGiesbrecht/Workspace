@@ -53,7 +53,7 @@ extension ProofreadingRule : Comparable {
         case .colonSpacing:
             return .syntax(ColonSpacing.self)
         case .calloutCasing:
-            return .text(CalloutCasing.self)
+            return .syntax(CalloutCasing.self)
         case .parameterGrouping:
             return .text(ParameterGrouping.self)
         }

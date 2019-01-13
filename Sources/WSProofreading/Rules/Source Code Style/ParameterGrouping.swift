@@ -16,7 +16,9 @@ import WSGeneralImports
 
 import WSProject
 
-internal struct ParameterGrouping : TextRule {
+import SDGSwiftSource
+
+internal struct ParameterGrouping : SyntaxRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
@@ -32,11 +34,13 @@ internal struct ParameterGrouping : TextRule {
         }
     })
 
-    internal static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
-        if file.fileType == .swift {
-            for match in file.contents.scalars.matches(for: "//\u{2F} \u{2D} Parameter ".scalars) {
-                reportViolation(in: file, at: match.range, message: message, status: status, output: output)
-            }
+    internal static func check(_ node: ExtendedSyntax, context: ExtendedSyntaxContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
+
+        if let token = node as? ExtendedTokenSyntax,
+            token.kind == .callout,
+            token.text.lowercased() == "parameter" {
+
+            reportViolation(in: file, at: token.range(in: context), message: message, status: status, output: output)
         }
     }
 }

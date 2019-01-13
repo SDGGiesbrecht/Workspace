@@ -55,7 +55,7 @@ extension ProofreadingRule : Comparable {
         case .calloutCasing:
             return .syntax(CalloutCasing.self)
         case .parameterGrouping:
-            return .text(ParameterGrouping.self)
+            return .syntax(ParameterGrouping.self)
         }
     }
 

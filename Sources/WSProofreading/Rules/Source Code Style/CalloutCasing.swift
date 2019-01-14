@@ -18,7 +18,9 @@ import WSGeneralImports
 
 import WSProject
 
-internal struct CalloutCasing : TextRule {
+import SDGSwiftSource
+
+internal struct CalloutCasing : SyntaxRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
@@ -34,22 +36,18 @@ internal struct CalloutCasing : TextRule {
         }
     })
 
-    internal static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
-        if file.fileType ∈ Set([.swift, .swiftPackageManifest]) {
-            for match in file.contents.scalars.matches(for: "//\u{2F} \u{2D} ".scalars) {
-                if let next = upToEndOfFile(from: match, in: file).first,
-                    next ∈ CharacterSet.lowercaseLetters {
+    internal static func check(_ node: ExtendedSyntax, context: ExtendedSyntaxContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
 
-                    var endOfWord = match.range.upperBound
-                    file.contents.scalars.advance(&endOfWord, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.letters })))
-                    if endOfWord ≠ file.contents.scalars.endIndex,
-                        file.contents.scalars[endOfWord] == ":" {
+        if let token = node as? ExtendedTokenSyntax,
+            token.kind == .callout,
+            let first = token.text.scalars.first,
+            first ∈ CharacterSet.lowercaseLetters {
 
-                        let replacement = StrictString(String(next).uppercased())
-                        reportViolation(in: file, at: match.range, replacementSuggestion: replacement, message: message, status: status, output: output)
-                    }
-                }
-            }
+            var replacement = token.text
+            let first = replacement.removeFirst()
+            replacement.prepend(contentsOf: String(first).uppercased())
+
+            reportViolation(in: file, at: token.range(in: context), replacementSuggestion: StrictString(replacement), message: message, status: status, output: output)
         }
     }
 }

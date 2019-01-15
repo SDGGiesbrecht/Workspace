@@ -98,7 +98,7 @@ internal struct UnicodeRule : SyntaxRule {
 
     private static func check(
         _ node: String,
-        range: Range<String.ScalarView.Index>,
+        range: @escaping @autoclosure () -> Range<String.ScalarView.Index>,
         textFreedom: TextFreedom,
         isPrefix: @escaping @autoclosure () -> Bool,
         isInfix: @escaping @autoclosure () -> Bool,
@@ -148,15 +148,16 @@ internal struct UnicodeRule : SyntaxRule {
             if allowInToolsVersion {
                 if file.fileType == .swiftPackageManifest,
                     let endOfFirstLine = file.contents.lines.first?.line.endIndex,
-                    endOfFirstLine ≥ range.upperBound {
+                    endOfFirstLine ≥ range().upperBound {
                     return
                 }
             }
 
             for match in node.scalars.matches(for: obsolete.scalars) {
+                let resolvedRange = range()
                 let startOffset = node.scalars.distance(from: node.scalars.startIndex, to: match.range.lowerBound)
                 let length = node.scalars.distance(from: match.range.lowerBound, to: match.range.upperBound)
-                let lowerBound = file.contents.scalars.index(range.lowerBound, offsetBy: startOffset)
+                let lowerBound = file.contents.scalars.index(resolvedRange.lowerBound, offsetBy: startOffset)
                 let upperBound = file.contents.scalars.index(lowerBound, offsetBy: length)
                 reportViolation(in: file, at: lowerBound ..< upperBound, replacementSuggestion: replacement, message:
                     UserFacing<StrictString, InterfaceLocalization>({ localization in

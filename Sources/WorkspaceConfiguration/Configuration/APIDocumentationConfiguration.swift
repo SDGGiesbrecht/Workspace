@@ -56,7 +56,7 @@ public struct APIDocumentationConfiguration : Codable {
     ///
     /// By specifying this, projects with continuous integration management active can avoid checking generated files into the main branch.
     ///
-    /// With the following set‐up, Workspace will only generate documentation in continuous integration and stop generating it locally. (If needed for coverage checks, Workspace may still do so in a temporary directory.) The generated documentation will be automatically published to GitHub Pages via the gh&#x2D;pages branch, making the `docs` directory unnecessary.
+    /// With the following set‐up, Workspace will only generate documentation in continuous integration and stop generating it locally. (If needed for coverage checks, Workspace may still do so in a temporary directory.) The generated documentation will be automatically published to GitHub Pages via the `gh-pages` branch, making the `docs` directory unnecessary.
     ///
     /// Requirements:
     ///
@@ -68,7 +68,7 @@ public struct APIDocumentationConfiguration : Codable {
     /// 1. Navigate to a local clone of the repository. `$ cd some‐path`.
     /// 2. Encrypt the access token: `$ travis encrypt "GITHUB_TOKEN=some‐token"`
     /// 3. Specify the encrypted access token for this option.
-    /// 5. Set GitHub Pages to [serve from the gh&#x2D;pages branch](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#enabling-github-pages-to-publish-your-site-from-master-or-gh-pages).
+    /// 5. Set GitHub Pages to [serve from the `gh-pages` branch](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#enabling-github-pages-to-publish-your-site-from-master-or-gh-pages).
     ///
     /// - Important: Workspace does not understand Travis’ encryption, and does not attempt to read or use the key. All this option does is tell Workspace to (a) include the encrypted key when configuring Travis CI, and (b) keep generated documentation out of the repository.
     public var encryptedTravisCIDeploymentKey: String?

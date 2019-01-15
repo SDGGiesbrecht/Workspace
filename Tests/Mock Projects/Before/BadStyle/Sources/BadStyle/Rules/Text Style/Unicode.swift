@@ -18,7 +18,7 @@
 ///
 /// - RecommendedOver: -
 func −(lhs: Int, rhs: Int) -> Int {
-    return lhs - rhs // Generic strokes must be allowed when aliasing them.
+    return lhs - rhs // Generic strokes must be allowed when aliasing them. @exempt(from: unicode)
 }
 
 func useNumeric() -> Int {
@@ -42,7 +42,7 @@ func shellSource() {
 
 // MARK: - Logic
 
-// Trigger, because this is not a not sign: !a
+
 // Trigger, because this is not a conjunction sign: a && b
 // Trigger, because this is not a disjunction sign: a || b
 

@@ -189,65 +189,55 @@ Line 19
 The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 /// - RecommendedOver: -
 
-Line 39
+Line 41
 The character U+0027 is obsolete. Use an apostrophe (’), quotation marks (‘, ’), degrees (°) or prime (′). (unicode)
 // 'These quotation marks are generic and should trigger.'
 
-Line 39
+Line 41
 The character U+0027 is obsolete. Use an apostrophe (’), quotation marks (‘, ’), degrees (°) or prime (′). (unicode)
 // 'These quotation marks are generic and should trigger.'
 
-Line 49
+Line 51
 The character sequence “!=” is obsolete. Use the not equal sign (≠). (unicode)
 // Trigger, because this is not a not‐equal sign: a != b
 // Trigger, because this is not a not‐equal sign: a ≠ b
 
-Line 43
-The character “!” is obsolete. Use the not sign (¬). (unicode)
-// Trigger, because this is not a not sign: !a
-// Trigger, because this is not a not sign: ¬a
-
-Line 49
-The character “!” is obsolete. Use the not sign (¬). (unicode)
-// Trigger, because this is not a not‐equal sign: a != b
-// Trigger, because this is not a not‐equal sign: a ¬= b
-
-Line 44
+Line 46
 The character sequence “&&” is obsolete. Use the conjunction sign (∧). (unicode)
 // Trigger, because this is not a conjunction sign: a && b
 // Trigger, because this is not a conjunction sign: a ∧ b
 
-Line 45
+Line 47
 The character sequence “||” is obsolete. Use the disjunction sign (∨). (unicode)
 // Trigger, because this is not a disjunction sign: a || b
 // Trigger, because this is not a disjunction sign: a ∨ b
 
-Line 50
+Line 52
 The character sequence “<=” is obsolete. Use the less‐than‐or‐equal sign (≤). (unicode)
 // Trigger, because this is not a less‐than‐or‐equal‐to sign: a <= b
 // Trigger, because this is not a less‐than‐or‐equal‐to sign: a ≤ b
 
-Line 51
+Line 53
 The character sequence “>=” is obsolete. Use the greater‐than‐or‐equal sign (≥). (unicode)
 // Trigger, because this is not a greater‐than‐or‐equal‐to sign: a >= b
 // Trigger, because this is not a greater‐than‐or‐equal‐to sign: a ≥ b
 
-Line 55
+Line 57
 The character sequence “ * ” is obsolete. Use the multiplication sign (×). (unicode)
 // Trigger, because this is not a multiplication sign: a * b
 // Trigger, because this is not a multiplication sign: a × b
 
-Line 56
+Line 58
 The character sequence “*=” is obsolete. Use the multiplication sign (×). (unicode)
 // Trigger, because this is not a multiplication sign: a *= b
 // Trigger, because this is not a multiplication sign: a ×= b
 
-Line 57
+Line 59
 The character sequence “ / ” is obsolete. Use the division sign (÷). (unicode)
 // Trigger, because this is not a division sign: a / b
 // Trigger, because this is not a division sign: a ÷ b
 
-Line 58
+Line 60
 The character sequence “/=” is obsolete. Use the division sign (÷). (unicode)
 // Trigger, because this is not a division sign: a /= b
 // Trigger, because this is not a division sign: a ÷= b

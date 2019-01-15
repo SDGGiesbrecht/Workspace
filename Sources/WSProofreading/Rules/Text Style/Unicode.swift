@@ -50,6 +50,14 @@ internal struct UnicodeRule : SyntaxRule {
                 }
             }
 
+            func isFloatLiteral() -> Bool {
+                if case .floatingLiteral = token.tokenKind {
+                    return true
+                } else {
+                    return false
+                }
+            }
+
             func isConditionalCompilationOperator() -> Bool {
                 return token.ancestors().contains(where: { ancestor in
                     if let parent = ancestor.parent as? IfConfigClauseSyntax,
@@ -66,6 +74,7 @@ internal struct UnicodeRule : SyntaxRule {
                 textFreedom: token.textFreedom,
                 isPrefix: isPrefix(),
                 isInfix: isInfix(),
+                isFloatLiteral: isFloatLiteral(),
                 isConditionalCompilationOperator: isConditionalCompilationOperator(),
                 file: file, project: project, status: status, output: output)
         }
@@ -87,6 +96,7 @@ internal struct UnicodeRule : SyntaxRule {
                 textFreedom: token.kind.textFreedom,
                 isPrefix: false,
                 isInfix: false,
+                isFloatLiteral: false,
                 isConditionalCompilationOperator: false,
                 file: file, project: project, status: status, output: output)
         }
@@ -98,6 +108,7 @@ internal struct UnicodeRule : SyntaxRule {
         textFreedom: TextFreedom,
         isPrefix: @escaping @autoclosure () -> Bool,
         isInfix: @escaping @autoclosure () -> Bool,
+        isFloatLiteral: @escaping @autoclosure () -> Bool,
         isConditionalCompilationOperator: @escaping @autoclosure () -> Bool,
         file: TextFile,
         project: PackageRepository,
@@ -111,6 +122,7 @@ internal struct UnicodeRule : SyntaxRule {
         func check(for obsolete: String, replacement: StrictString? = nil,
                    onlyProhibitPrefixUse: Bool = false,
                    onlyProhibitInfixUse: Bool = false,
+                   allowInFloatLiteral: Bool = false,
                    allowAsConditionalCompilationOperator: Bool = false,
                    allowInToolsVersion: Bool = false,
                    allowInWorkarounds: Bool = false,
@@ -121,6 +133,10 @@ internal struct UnicodeRule : SyntaxRule {
             }
 
             if onlyProhibitInfixUse ∧ ¬isInfix() {
+                return
+            }
+
+            if allowInFloatLiteral ∧ isFloatLiteral() {
                 return
             }
 
@@ -184,6 +200,7 @@ internal struct UnicodeRule : SyntaxRule {
         }
 
         check(for: "\u{2D}",
+              allowInFloatLiteral: true,
               allowInToolsVersion: true,
               allowInWorkarounds: true,
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in

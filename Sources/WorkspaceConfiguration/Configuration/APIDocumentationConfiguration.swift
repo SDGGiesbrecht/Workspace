@@ -65,7 +65,7 @@ public struct APIDocumentationConfiguration : Codable {
     ///
     /// Set‐Up:
     ///
-    /// 1. Navigate to a local clone of the repository. `$ cd some/path`.
+    /// 1. Navigate to a local clone of the repository. `$ cd some‐path`.
     /// 2. Encrypt the access token: `$ travis encrypt "GITHUB_TOKEN=some‐token"`
     /// 3. Specify the encrypted access token for this option.
     /// 5. Set GitHub Pages to [serve from the gh&#x2D;pages branch](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#enabling-github-pages-to-publish-your-site-from-master-or-gh-pages).

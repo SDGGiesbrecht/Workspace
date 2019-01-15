@@ -67,3 +67,5 @@ let x = !y // This should trigger; it is a prefix operator.
 
 #if !os(macOS) || os(iOS) && os(tvOS) // Conditional compilation must be allowed.
 #endif
+
+/// Entities (&#x2D;) should be allowed.

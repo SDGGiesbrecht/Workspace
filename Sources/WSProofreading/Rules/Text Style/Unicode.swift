@@ -71,14 +71,6 @@ internal struct UnicodeRule : SyntaxRule {
     internal static func check(_ node: ExtendedSyntax, context: ExtendedSyntaxContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
         if let token = node as? ExtendedTokenSyntax {
 
-            func isCommentText() -> Bool {
-                if case .commentText = token.kind {
-                    return true
-                } else {
-                    return false
-                }
-            }
-
             check(
                 token.text, range: token.range(in: context),
                 textFreedom: token.kind.textFreedom,

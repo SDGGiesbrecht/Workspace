@@ -61,25 +61,12 @@ internal struct UnicodeRule : SyntaxRule {
                 })
             }
 
-            func isDefiningAlias(for correct: String) -> Bool {
-                return token.ancestors().contains(where: { ancestor in
-                    if let declaration = ancestor as? FunctionDeclSyntax,
-                        String(declaration.identifier.text).contains(correct) {
-                        return true
-                    } else {
-                        return false
-                    }
-                })
-            }
-
             check(
                 token.text, range: token.syntaxRange(in: context),
                 textFreedom: token.textFreedom,
                 isPrefix: isPrefix(),
                 isInfix: isInfix(),
                 isConditionalCompilationOperator: isConditionalCompilationOperator(),
-                isCommentText: false,
-                isDefiningAlias: isDefiningAlias,
                 file: file, project: project, status: status, output: output)
         }
     }
@@ -101,8 +88,6 @@ internal struct UnicodeRule : SyntaxRule {
                 isPrefix: false,
                 isInfix: false,
                 isConditionalCompilationOperator: false,
-                isCommentText: isCommentText(),
-                isDefiningAlias: { _ in false },
                 file: file, project: project, status: status, output: output)
         }
     }
@@ -114,8 +99,6 @@ internal struct UnicodeRule : SyntaxRule {
         isPrefix: @escaping @autoclosure () -> Bool,
         isInfix: @escaping @autoclosure () -> Bool,
         isConditionalCompilationOperator: @escaping @autoclosure () -> Bool,
-        isCommentText: @escaping @autoclosure () -> Bool,
-        isDefiningAlias: @escaping (String) -> Bool,
         file: TextFile,
         project: PackageRepository,
         status: ProofreadingStatus,
@@ -129,7 +112,6 @@ internal struct UnicodeRule : SyntaxRule {
                    onlyProhibitPrefixUse: Bool = false,
                    onlyProhibitInfixUse: Bool = false,
                    allowAsConditionalCompilationOperator: Bool = false,
-                   allowedAliasDefinitions: [StrictString] = [],
                    allowInToolsVersion: Bool = false,
                    allowInWorkarounds: Bool = false,
                    message: UserFacing<StrictString, InterfaceLocalization>, status: ProofreadingStatus, output: Command.Output) {
@@ -146,28 +128,12 @@ internal struct UnicodeRule : SyntaxRule {
                 return
             }
 
-            if textFreedom == .aliasable {
-                var aliases = allowedAliasDefinitions
-                if let recommended = replacement {
-                    aliases.append(recommended)
-                }
-                for alias in aliases {
-                    if isDefiningAlias(String(alias)) {
-                        return
-                    }
-                }
-            }
-
             if allowInToolsVersion {
                 if file.fileType == .swiftPackageManifest,
                     let endOfFirstLine = file.contents.lines.first?.line.endIndex,
                     endOfFirstLine ≥ range().upperBound {
                     return
                 }
-            }
-
-            if allowInWorkarounds ∧ isCommentText() ∧ node.contains("#workaround") {
-                return
             }
 
             for match in node.scalars.matches(for: obsolete.scalars) {
@@ -218,7 +184,6 @@ internal struct UnicodeRule : SyntaxRule {
         }
 
         check(for: "\u{2D}",
-              allowedAliasDefinitions: ["−", "subtract"],
               allowInToolsVersion: true,
               allowInWorkarounds: true,
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -320,7 +285,6 @@ internal struct UnicodeRule : SyntaxRule {
         check(for: "\u{2F}",
               replacement: "÷",
               onlyProhibitInfixUse: true,
-              allowedAliasDefinitions: ["divide"],
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:

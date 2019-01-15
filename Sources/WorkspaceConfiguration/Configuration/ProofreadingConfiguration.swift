@@ -42,5 +42,7 @@ public struct ProofreadingConfiguration : Codable {
     /// The set of active proofreading rules.
     ///
     /// All rules are active by default.
+    ///
+    /// Individual proofreading violations can be suppressed by placing `@exempt(from: ruleIdentifier)` on the same line.
     public var rules: Set<ProofreadingRule> = Set(ProofreadingRule.allCases)
 }

@@ -83,7 +83,7 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
     /// - Arbitrary dependencies can be specified by shell commands which output a version number. Workspace will look for the first group of the characters `0`–`9` and `.` in the command output. Only simple commands are supported; commands cannot contain quotation marks.
     ///
     ///   ```swift
-    ///   // #workaround(git --version 2.10.1, There is a problem with Git.)
+    ///   // #workaround(git --version 2.10.1, There is a problem with Git.) @exempt(from: unicode)
     ///   ```
     case workaroundReminders
 

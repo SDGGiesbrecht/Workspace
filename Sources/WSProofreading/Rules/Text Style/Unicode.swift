@@ -118,20 +118,20 @@ internal struct UnicodeRule : SyntaxRule {
                 return
             }
 
-            if allowInToolsVersion {
-                if file.fileType == .swiftPackageManifest,
-                    let endOfFirstLine = file.contents.lines.first?.line.endIndex,
-                    endOfFirstLine ≥ range().upperBound {
-                    return
-                }
-            }
-
-            for match in node.scalars.matches(for: obsolete.scalars) {
+            matchSearch: for match in node.scalars.matches(for: obsolete.scalars) {
                 let resolvedRange = range()
                 let startOffset = node.scalars.distance(from: node.scalars.startIndex, to: match.range.lowerBound)
                 let length = node.scalars.distance(from: match.range.lowerBound, to: match.range.upperBound)
                 let lowerBound = file.contents.scalars.index(resolvedRange.lowerBound, offsetBy: startOffset)
                 let upperBound = file.contents.scalars.index(lowerBound, offsetBy: length)
+
+                if allowInToolsVersion {
+                    if file.fileType == .swiftPackageManifest,
+                        let endOfFirstLine = file.contents.lines.first?.line.endIndex,
+                        endOfFirstLine ≥ upperBound {
+                        continue matchSearch
+                    }
+                }
                 reportViolation(in: file, at: lowerBound ..< upperBound, replacementSuggestion: replacement, message:
                     UserFacing<StrictString, InterfaceLocalization>({ localization in
                         let obsoleteMessage = UserFacing<StrictString, InterfaceLocalization>({ localization in

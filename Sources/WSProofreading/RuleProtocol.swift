@@ -35,6 +35,18 @@ extension RuleProtocol {
     // MARK: - Reporting
 
     internal static func reportViolation(in file: TextFile, at location: Range<String.ScalarView.Index>, replacementSuggestion: StrictString? = nil, message: UserFacing<StrictString, InterfaceLocalization>, status: ProofreadingStatus, output: Command.Output) {
+
+        let fileLines = file.contents.lines
+        let lineIndex = location.lowerBound.line(in: fileLines)
+        let line = String(fileLines[lineIndex].line)
+        if line.contains("@exempt") {
+            for localization in InterfaceLocalization.allCases {
+                if line.contains("@exempt(from: \(name.resolved(for: localization)))") {
+                    return
+                }
+            }
+        }
+
         status.report(violation: StyleViolation(in: file, at: location, replacementSuggestion: replacementSuggestion, noticeOnly: noticeOnly, ruleIdentifier: Self.name, message: message), to: output)
     }
 

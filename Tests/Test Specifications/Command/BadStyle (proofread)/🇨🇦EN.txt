@@ -173,17 +173,21 @@ Parameters should be grouped under a single callout. (parameterGrouping)
 /// - Parameter one: A parameter documented the wrong way, so trigger.
 
 Sources/BadStyle/Rules/Text Style/Unicode.swift
+Line 5
+The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
+// "These quotation marks are generic and should trigger."
+
+Line 5
+The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
+// "These quotation marks are generic and should trigger."
+
 Line 9
 The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 // Trigger, because this is not a minus sign: a - b
 
-Line 5
-The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
-// "These quotation marks are generic and should trigger."
-
-Line 5
-The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
-// "These quotation marks are generic and should trigger."
+Line 19
+The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
+/// - RecommendedOver: -
 
 Line 39
 The character U+0027 is obsolete. Use an apostrophe (’), quotation marks (‘, ’), degrees (°) or prime (′). (unicode)

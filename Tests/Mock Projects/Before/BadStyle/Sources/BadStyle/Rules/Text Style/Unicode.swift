@@ -10,7 +10,9 @@
 
 // #workaround(bash --version 1000.0.0, Generic strokes may be necessary in version checks.)
 
-/// Generic strokes may be necessary in inline shell source `swift -version`.
+/// ```shell
+/// Generic strokes may be necessary in shell source: “swift -version”
+/// ```
 
 /// Blah blah blah...
 ///
@@ -20,7 +22,7 @@ func −(lhs: Int, rhs: Int) -> Int {
 }
 
 func useNumeric() -> Int {
-    return 1 - 2 // Swift.Numeric must be usable when commented on.
+    return 1 - 2 // @exempt(from: unicode)
 }
 
 let ln2: Float80 = 0x1.62E42FEFA39EF358p-1 // Generic stroke must be allowed in float literals.

@@ -299,9 +299,27 @@ internal struct UnicodeRule : SyntaxRule {
                 }
               }), status: status, output: output)
 
+        check(for: "\u{2A}=",
+              replacement: "×=",
+              message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "Use the multiplication sign (×)."
+                }
+              }), status: status, output: output)
+
         check(for: "\u{2F}",
               replacement: "÷",
               onlyProhibitInfixUse: true,
+              message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "Use the division sign (÷)."
+                }
+              }), status: status, output: output)
+
+        check(for: "\u{2F}=",
+              replacement: "÷=",
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:

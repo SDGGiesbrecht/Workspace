@@ -78,6 +78,7 @@ internal struct UnicodeRule : SyntaxRule {
                 isPrefix: isPrefix(),
                 isInfix: isInfix(),
                 isConditionalCompilationOperator: isConditionalCompilationOperator(),
+                isCommentText: false,
                 isDefiningAlias: isDefiningAlias,
                 file: file, project: project, status: status, output: output)
         }
@@ -85,12 +86,22 @@ internal struct UnicodeRule : SyntaxRule {
 
     internal static func check(_ node: ExtendedSyntax, context: ExtendedSyntaxContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
         if let token = node as? ExtendedTokenSyntax {
+
+            func isCommentText() -> Bool {
+                if case .commentText = token.kind {
+                    return true
+                } else {
+                    return false
+                }
+            }
+
             check(
                 token.text, range: token.range(in: context),
                 textFreedom: token.kind.textFreedom,
                 isPrefix: false,
                 isInfix: false,
                 isConditionalCompilationOperator: false,
+                isCommentText: isCommentText(),
                 isDefiningAlias: { _ in false },
                 file: file, project: project, status: status, output: output)
         }
@@ -103,6 +114,7 @@ internal struct UnicodeRule : SyntaxRule {
         isPrefix: @escaping @autoclosure () -> Bool,
         isInfix: @escaping @autoclosure () -> Bool,
         isConditionalCompilationOperator: @escaping @autoclosure () -> Bool,
+        isCommentText: @escaping @autoclosure () -> Bool,
         isDefiningAlias: @escaping (String) -> Bool,
         file: TextFile,
         project: PackageRepository,
@@ -119,6 +131,7 @@ internal struct UnicodeRule : SyntaxRule {
                    allowAsConditionalCompilationOperator: Bool = false,
                    allowedAliasDefinitions: [StrictString] = [],
                    allowInToolsVersion: Bool = false,
+                   allowInWorkarounds: Bool = false,
                    message: UserFacing<StrictString, InterfaceLocalization>, status: ProofreadingStatus, output: Command.Output) {
 
             if onlyProhibitPrefixUse ∧ ¬isPrefix() {
@@ -151,6 +164,10 @@ internal struct UnicodeRule : SyntaxRule {
                     endOfFirstLine ≥ range().upperBound {
                     return
                 }
+            }
+
+            if allowInWorkarounds ∧ isCommentText() ∧ node.contains("#workaround") {
+                return
             }
 
             for match in node.scalars.matches(for: obsolete.scalars) {
@@ -203,6 +220,7 @@ internal struct UnicodeRule : SyntaxRule {
         check(for: "\u{2D}",
               allowedAliasDefinitions: ["−", "subtract"],
               allowInToolsVersion: true,
+              allowInWorkarounds: true,
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 // Note to localizers: Adapt the recommendations for the target localization.

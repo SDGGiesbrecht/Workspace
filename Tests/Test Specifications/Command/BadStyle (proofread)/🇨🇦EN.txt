@@ -4,7 +4,7 @@ Normalizing files...
 
 Writing to “Sources/BadStyle/Normalization/Decomposition.swift”...
 Writing to “Sources/BadStyle/Normalization/EmptyIndents.swift”...
-Writing to “Sources/BadStyle/Rules/Functionality/SyntaxColouring.swift”...
+Writing to “Sources/BadStyle/Rules/Functionality/AutoindentResilience.swift”...
 Writing to “Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift”...
 
 Proofreading source code... (§1)
@@ -99,6 +99,11 @@ Line 7
 Language specifier missing. Specify a language for syntax colouring. (syntaxColouring)
 /// ```
 
+Sources/BadStyle/Rules/Functionality/AutoindentResilience.swift
+Line 3
+“/**” may not survive autoindent (⌃I). Use “///” instead. (autoindentResilience)
+/**
+
 Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift
 Line 3
 U+00B2 may be lost in normalization; use “2” instead. (compatibilityCharacters)
@@ -110,19 +115,6 @@ Line 3
 Incomplete heading syntax. Use “// MARK: - ”. (marks)
 /// MARK: This heading is malformed and should trigger.
 // MARK: - This heading is malformed and should trigger.
-
-Sources/BadStyle/Rules/Functionality/SyntaxColouring.swift
-Line 6
-The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
- - A list
-
-Line 7
-The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
-     - A sublist
-
-Line 3
-“/**” may not survive autoindent (⌃I). Use “///” instead. (autoindentResilience)
-/**
 
 Sources/BadStyle/Rules/Intentional/MissingImplementation.swift
 Line 4
@@ -136,10 +128,6 @@ Callouts should be capitalized. (calloutCasing)
 /// - Warning: This should trigger. It should have been capitalized.
 
 Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift
-Line 24
-The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
-     - Warning: Callout colons should be spaced like this.
-
 Line 3
 Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition. (colonSpacing)
 struct Conformance: Equatable { // This colon should trigger. It should be spaced.

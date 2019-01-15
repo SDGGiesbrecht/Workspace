@@ -59,9 +59,11 @@ func shellSource() {
 
 // Trigger, because this is not a division sign: a /= b
 
+// MARK: - Shared Conditions
+
 let x = y - z // This should trigger and mention aliasing.
 
-let x = !y // This should trigger; it should be “¬”.
+let x = !y // This should trigger; it is a prefix operator.
 
 #if !os(macOS) || os(iOS) && os(tvOS) // Conditional compilation must be allowed.
 #endif

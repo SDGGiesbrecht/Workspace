@@ -58,3 +58,5 @@ func shellSource() {
 // Trigger, because this is not a multiplication sign: a *= b
 
 // Trigger, because this is not a division sign: a /= b
+
+let x = y - z // This should trigger and mention aliasing.

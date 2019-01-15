@@ -232,6 +232,10 @@ The character sequence “/=” is obsolete. Use the division sign (÷). (unicod
 // Trigger, because this is not a division sign: a /= b
 // Trigger, because this is not a division sign: a ÷= b
 
+Line 62
+The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (Create an alias if necessary.) (unicode)
+let x = y - z // This should trigger and mention aliasing.
+
 Sources/BadStyle/SwiftLint.swift
 Sources/BadStyle/Warnings/Warning.swift
 Line 3

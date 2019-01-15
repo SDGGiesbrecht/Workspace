@@ -191,8 +191,7 @@ internal struct UnicodeRule : SyntaxRule {
 
                         var result = obsoleteMessage.resolved(for: localization) + " " + message.resolved(for: localization)
                         if textFreedom == .aliasable {
-                            #warning("Temporarily disabled.")
-                            //result += " " + aliasMessage.resolved(for: localization)
+                            result += " " + aliasMessage.resolved(for: localization)
                         }
                         return result
                     }), status: status, output: output)

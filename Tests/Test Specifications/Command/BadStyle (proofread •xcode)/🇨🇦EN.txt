@@ -42,6 +42,7 @@ $ workspace proofread •xcode •no‐colour
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:53:68: warning: The character sequence “>=” is obsolete. Use the greater‐than‐or‐equal sign (≥). (unicode)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:58:58: warning: The character sequence “*=” is obsolete. Use the multiplication sign (×). (unicode)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:60:52: warning: The character sequence “/=” is obsolete. Use the division sign (÷). (unicode)
+[Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:62:11: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (Create an alias if necessary.) (unicode)
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Warning.swift:3:4: warning: This should trigger a warning. (manualWarnings)
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:3:4: warning: Workaround: This should trigger. The workaround may no longer be necessary. (workaroundReminders)
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:6:4: warning: Workaround: This should trigger. The workaround may no longer be necessary. (workaroundReminders)

@@ -60,3 +60,8 @@ func shellSource() {
 // Trigger, because this is not a division sign: a /= b
 
 let x = y - z // This should trigger and mention aliasing.
+
+let x = !y // This should trigger; it should be “¬”.
+
+#if !os(macOS) || os(iOS) && os(tvOS) // Conditional compilation must be allowed.
+#endif

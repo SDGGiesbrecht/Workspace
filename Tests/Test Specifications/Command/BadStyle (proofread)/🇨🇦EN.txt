@@ -236,6 +236,11 @@ Line 62
 The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (Create an alias if necessary.) (unicode)
 let x = y - z // This should trigger and mention aliasing.
 
+Line 64
+The character “!” is obsolete. Use the not sign (¬). (Create an alias if necessary.) (unicode)
+let x = !y // This should trigger; it should be “¬”.
+let x = ¬y // This should trigger; it should be “¬”.
+
 Sources/BadStyle/SwiftLint.swift
 Sources/BadStyle/Warnings/Warning.swift
 Line 3

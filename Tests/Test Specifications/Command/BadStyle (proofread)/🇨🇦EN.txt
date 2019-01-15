@@ -197,11 +197,6 @@ Line 41
 The character U+0027 is obsolete. Use an apostrophe (’), quotation marks (‘, ’), degrees (°) or prime (′). (unicode)
 // 'These quotation marks are generic and should trigger.'
 
-Line 51
-The character sequence “!=” is obsolete. Use the not equal sign (≠). (unicode)
-// Trigger, because this is not a not‐equal sign: a != b
-// Trigger, because this is not a not‐equal sign: a ≠ b
-
 Line 46
 The character sequence “&&” is obsolete. Use the conjunction sign (∧). (unicode)
 // Trigger, because this is not a conjunction sign: a && b
@@ -211,6 +206,11 @@ Line 47
 The character sequence “||” is obsolete. Use the disjunction sign (∨). (unicode)
 // Trigger, because this is not a disjunction sign: a || b
 // Trigger, because this is not a disjunction sign: a ∨ b
+
+Line 51
+The character sequence “!=” is obsolete. Use the not equal sign (≠). (unicode)
+// Trigger, because this is not a not‐equal sign: a != b
+// Trigger, because this is not a not‐equal sign: a ≠ b
 
 Line 52
 The character sequence “<=” is obsolete. Use the less‐than‐or‐equal sign (≤). (unicode)
@@ -222,20 +222,10 @@ The character sequence “>=” is obsolete. Use the greater‐than‐or‐equal
 // Trigger, because this is not a greater‐than‐or‐equal‐to sign: a >= b
 // Trigger, because this is not a greater‐than‐or‐equal‐to sign: a ≥ b
 
-Line 57
-The character sequence “ * ” is obsolete. Use the multiplication sign (×). (unicode)
-// Trigger, because this is not a multiplication sign: a * b
-// Trigger, because this is not a multiplication sign: a × b
-
 Line 58
 The character sequence “*=” is obsolete. Use the multiplication sign (×). (unicode)
 // Trigger, because this is not a multiplication sign: a *= b
 // Trigger, because this is not a multiplication sign: a ×= b
-
-Line 59
-The character sequence “ / ” is obsolete. Use the division sign (÷). (unicode)
-// Trigger, because this is not a division sign: a / b
-// Trigger, because this is not a division sign: a ÷ b
 
 Line 60
 The character sequence “/=” is obsolete. Use the division sign (÷). (unicode)

@@ -54,7 +54,7 @@ func shellSource() {
 
 // MARK: - Mathematics
 
-// Trigger, because this is not a multiplication sign: a * b
+
 // Trigger, because this is not a multiplication sign: a *= b
-// Trigger, because this is not a division sign: a / b
+
 // Trigger, because this is not a division sign: a /= b

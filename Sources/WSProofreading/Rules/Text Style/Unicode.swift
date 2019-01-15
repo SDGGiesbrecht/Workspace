@@ -58,24 +58,12 @@ internal struct UnicodeRule : SyntaxRule {
                 }
             }
 
-            func isConditionalCompilationOperator() -> Bool {
-                return token.ancestors().contains(where: { ancestor in
-                    if let parent = ancestor.parent as? IfConfigClauseSyntax,
-                        parent.condition?.indexInParent == ancestor.indexInParent {
-                        return true
-                    } else {
-                        return false
-                    }
-                })
-            }
-
             check(
                 token.text, range: token.syntaxRange(in: context),
                 textFreedom: token.textFreedom,
                 isPrefix: isPrefix(),
                 isInfix: isInfix(),
                 isFloatLiteral: isFloatLiteral(),
-                isConditionalCompilationOperator: isConditionalCompilationOperator(),
                 file: file, project: project, status: status, output: output)
         }
     }
@@ -97,7 +85,6 @@ internal struct UnicodeRule : SyntaxRule {
                 isPrefix: false,
                 isInfix: false,
                 isFloatLiteral: false,
-                isConditionalCompilationOperator: false,
                 file: file, project: project, status: status, output: output)
         }
     }
@@ -109,7 +96,6 @@ internal struct UnicodeRule : SyntaxRule {
         isPrefix: @escaping @autoclosure () -> Bool,
         isInfix: @escaping @autoclosure () -> Bool,
         isFloatLiteral: @escaping @autoclosure () -> Bool,
-        isConditionalCompilationOperator: @escaping @autoclosure () -> Bool,
         file: TextFile,
         project: PackageRepository,
         status: ProofreadingStatus,
@@ -137,10 +123,6 @@ internal struct UnicodeRule : SyntaxRule {
             }
 
             if allowInFloatLiteral ∧ isFloatLiteral() {
-                return
-            }
-
-            if allowAsConditionalCompilationOperator ∧ isConditionalCompilationOperator() {
                 return
             }
 

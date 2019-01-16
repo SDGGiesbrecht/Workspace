@@ -355,7 +355,7 @@ public struct ReadMeConfiguration : Codable {
             }).resolved(for: localization),
             "",
             "```shell",
-            StrictString("curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s \(projectName) \u{22}\(packageURL.absoluteString)\u{22} \(version.string()) \u{22}\(toolNames.first!) help\u{22} " + toolNames.joined(separator: " ")),
+            StrictString("curl \u{2D}sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash \u{2D}s \(projectName) \u{22}\(packageURL.absoluteString)\u{22} \(version.string()) \u{22}\(toolNames.first!) help\u{22} " + toolNames.joined(separator: " ")),
             "```"
             ].joinedAsLines()
     }
@@ -394,7 +394,7 @@ public struct ReadMeConfiguration : Codable {
                     } else {
                         result += "libraries"
                     }
-                    result += " for use with the [Swift Package Manager](https://swift.org/package-manager/)."
+                    result += " for use with the [Swift Package Manager](https://swift.org/package\u{2D}manager/)."
                     return result
                 }
             }).resolved(for: localization),

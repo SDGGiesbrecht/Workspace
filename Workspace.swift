@@ -57,7 +57,7 @@ public let configuration: WorkspaceConfiguration = {
         "  \u{2D} [Example validation](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/Examples.html)",
         "  \u{2D} [Style proofreading](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/ProofreadingConfiguration.html) (including [SwiftLint](https://github.com/realm/SwiftLint))",
         "  \u{2D} [Reminders](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/ProofreadingRule/Cases/manualWarnings.html)",
-        "  \u{2D} [Continuous integration set‐up](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/ContinuousIntegrationConfiguration/Properties/manage.html) ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))",
+        "  \u{2D} [Continuous integration set‐up](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/ContinuousIntegrationConfiguration/Properties/manage.html) ([Travis CI](https://travis\u{2D}ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))",
         "\u{2D} Generates API [documentation](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/APIDocumentationConfiguration/Properties/generate.html).",
         "\u{2D} Automates code maintenance:",
         "  \u{2D} [Embedded resources](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/PackageResources.html)",
@@ -68,7 +68,7 @@ public let configuration: WorkspaceConfiguration = {
         "  \u{2D} [Read‐me files](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/ReadMeConfiguration.html)",
         "  \u{2D} [Licence notices](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/LicenceConfiguration.html)",
         "  \u{2D} [Contributing instructions](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/GitHubConfiguration.html)",
-        "\u{2D} Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).",
+        "\u{2D} Designed to interoperate with the [Swift Package Manager](https://swift.org/package\u{2D}manager/).",
         "\u{2D} Manages projects for macOS, Linux, iOS, watchOS and tvOS.",
         "\u{2D} [Configurable](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Libraries/WorkspaceConfiguration.html)"
     ].joinedAsLines()

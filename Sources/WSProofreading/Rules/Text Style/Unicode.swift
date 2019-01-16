@@ -13,12 +13,15 @@
  */
 
 import SDGLogic
+import SDGMathematics
 import SDGCollections
 import WSGeneralImports
 
 import WSProject
 
-internal struct UnicodeRule : TextRule {
+import SDGSwiftSource
+
+internal struct UnicodeRule : SyntaxRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
@@ -27,256 +30,169 @@ internal struct UnicodeRule : TextRule {
         }
     })
 
-    private static func check(_ file: TextFile, for obsolete: String, replacement: StrictString? = nil,
-                              allowTrailing: Bool = false,
-                              allowInSwiftSource: Bool = false,
-                              allowInShellSource: Bool = false,
-                              allowInHTMLSource: Bool = false,
-                              allowInCSSSource: Bool = false,
-                              allowInJavaScriptSource: Bool = false,
-                              allowInSampleCode: Bool = false,
-                              allowInMarkdownList: Bool = false,
-                              allowInURLs: Bool = false,
-                              allowInConditionalCompilationStatement: Bool = false,
-                              allowedAliasDefinitions: [StrictString] = [],
-                              allowedDefaultImplementations: [String] = [],
-                              allowInReturnArrow: Bool = false,
-                              allowInHTMLComment: Bool = false,
-                              allowInHeading: Bool = false,
-                              allowInFloatLiteral: Bool = false,
-                              allowInToolsVersion: Bool = false,
-                              message: UserFacing<StrictString, InterfaceLocalization>, status: ProofreadingStatus, output: Command.Output) {
+    internal static func check(_ node: Syntax, context: SyntaxContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
+        if let token = node as? TokenSyntax {
 
-        for protocolName in allowedDefaultImplementations where file.location.lastPathComponent == protocolName + ".swift" {
-            return
-        }
-
-        if allowInHTMLSource ∧ file.fileType == .html {
-            return
-        }
-        if allowInCSSSource ∧ file.fileType == .css {
-            return
-        }
-        if allowInJavaScriptSource ∧ file.fileType == .javaScript {
-            return
-        }
-
-        matchesLoop: for match in file.contents.scalars.matches(for: obsolete.scalars) {
-
-            if allowTrailing {
-                if match.range.upperBound ≠ file.contents.scalars.endIndex {
-                    if file.contents.scalars[match.range.upperBound] ∈ CharacterSet.whitespacesAndNewlines ∪ [
-                        "!", "\u{22}", "\u{27}", ")", "*", ",", ".", "/",
-                        ":", ";", "?",
-                        "\u{5C}", "]", "\u{5F}",
-                        "|", "}",
-                        "„", "“", "”", "«", "»", "‚", "‘", "’", "‹", "›"] {
-                        continue
-                    }
+            func isPrefix() -> Bool {
+                if case .prefixOperator = token.tokenKind {
+                    return true
+                } else {
+                    return false
                 }
             }
 
-            if allowInSwiftSource {
-                switch file.fileType {
-                case .swift, .swiftPackageManifest:
-                    if ¬fromStartOfLine(to: match, in: file).contains("/\u{2F} ".scalars) /* Not a comment */
-                        ∧ ¬fromStartOfFile(to: match, in: file).hasSuffix("\u{5C}".scalars) /* Not a string literal (escaped) */ {
-                        continue
-                    }
+            func isInfix() -> Bool {
+                switch token.tokenKind {
+                case .spacedBinaryOperator, .unspacedBinaryOperator:
+                    return true
                 default:
-                    break
+                    return false
                 }
             }
 
-            if allowInShellSource {
-                if fromStartOfLine(to: match, in: file).contains("\u{23}workaround".scalars) {
-                    continue
-                }
-
-                switch file.fileType {
-                case .shell, .yaml, .gitIgnore:
-                    if ¬fromStartOfLine(to: match, in: file).contains("#".scalars) /* Not a comment */ {
-                        continue
-                    }
-                case .markdown:
-                    if fromStartOfFile(to: match, in: file).contains("```shell".scalars) ∧ upToEndOfFile(from: match, in: file).contains("```".scalars) {
-                        continue
-                    }
-                default:
-                    break
+            func isFloatLiteral() -> Bool {
+                if case .floatingLiteral = token.tokenKind {
+                    return true
+                } else {
+                    return false
                 }
             }
 
-            if allowInSampleCode {
-                switch file.fileType {
-                case .markdown, .swift, .swiftPackageManifest:
-                    if fromStartOfFile(to: match, in: file).contains("```".scalars)
-                        ∧ upToEndOfFile(from: match, in: file).contains("```".scalars) {
-                        continue
-                    }
-                    if fromStartOfLine(to: match, in: file).contains("`")
-                        ∧ upToEndOfLine(from: match, in: file).contains("`") {
-                        continue
-                    }
-                default:
-                    break
-                }
-            }
-
-            if allowInMarkdownList {
-                switch file.fileType {
-                case .markdown, .yaml:
-                    if ¬fromStartOfLine(to: match, in: file).contains(where: { $0 ≠ " " }) {
-                        continue
-                    }
-                case .swift, .swiftPackageManifest:
-                    if fromStartOfLine(to: match, in: file).hasSuffix(CompositePattern([
-                        LiteralPattern("///".scalars),
-                        RepetitionPattern(" ".scalars)
-                        ])) {
-                        continue
-                    }
-                default:
-                    break
-                }
-            }
-
-            if allowInURLs {
-                if line(of: match, in: file).contains("http".scalars) {
-                    continue
-                }
-                switch file.fileType {
-                case .markdown:
-                    if line(of: match, in: file).contains("](".scalars) {
-                        continue
-                    }
-                default:
-                    break
-                }
-            }
-
-            if allowInConditionalCompilationStatement {
-                if line(of: match, in: file).contains("\u{23}if".scalars) ∨ line(of: match, in: file).contains("\u{23}elseif".scalars) {
-                    continue
-                }
-            }
-
-            for alias in allowedAliasDefinitions {
-                if line(before: match, in: file).contains(("func " + String(alias)).scalars) {
-                    continue matchesLoop
-                } else if line(of: match, in: file).contains("RecommendedOver".scalars) {
-                    continue matchesLoop
-                }
-            }
-
-            for implementation in allowedDefaultImplementations {
-                if line(of: match, in: file).contains(implementation.scalars) {
-                    continue matchesLoop
-                }
-            }
-
-            if allowInReturnArrow {
-                switch file.fileType {
-                case .swift, .swiftPackageManifest:
-                    if upToEndOfFile(from: match, in: file).hasPrefix(">".scalars) {
-                        continue
-                    }
-                default:
-                    // @exempt(from: tests) Probably not reachable.
-                    break
-                }
-            }
-
-            if allowInHTMLComment {
-                if line(of: match, in: file).contains("<\u{21}\u{2D}\u{2D}".scalars)
-                    ∨ line(of: match, in: file).contains("\u{2D}\u{2D}>".scalars) {
-                    continue
-                }
-            }
-
-            if allowInHeading {
-                if fromStartOfFile(to: match, in: file).hasSuffix("MAR\u{4B}: ".scalars) {
-                    continue
-                }
-            }
-
-            if allowInFloatLiteral {
-                if file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
-                    if fromStartOfLine(to: match, in: file).contains("let ln2".scalars) {
-                        continue
-                    }
-                }
-            }
-
-            if allowInToolsVersion {
-                if file.fileType == .swiftPackageManifest {
-                    if lineRange(for: match, in: file).lowerBound == file.contents.lines.startIndex {
-                        continue
-                    }
-                }
-            }
-
-            if file.location.lastPathComponent == "ProofreadingRule.swift" {
-                // Deliberate violations occur to demonstrate rules in the documentation. @exempt(from: tests)
-                if let allowed = file.contents.firstMatch(for: "if x \u{21}= y, \u{2F}/ ✗")?.range,
-                    match.range ⊆ allowed {
-                    continue
-                }
-            }
-
-            reportViolation(in: file, at: match.range, replacementSuggestion: replacement, message:
-                UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    let obsoleteMessage = UserFacing<StrictString, InterfaceLocalization>({ localization in
-                        switch localization {
-                        case .englishCanada:
-                            let error: StrictString
-                            switch String(match.contents) {
-                            case "\u{2D}":
-                                error = "U+002D"
-                            case "\u{22}":
-                                error = "U+0022"
-                            case "\u{27}":
-                                error = "U+0027"
-                            default:
-                                error = StrictString("“\(StrictString(match.contents))”")
-                            }
-                            if match.contents.count == 1 {
-                                return "The character " + error + " is obsolete."
-                            } else {
-                                return "The character sequence " + error + " is obsolete."
-                            }
-                        }
-                    })
-
-                    return obsoleteMessage.resolved(for: localization) + " " + message.resolved(for: localization)
-                }), status: status, output: output)
+            check(
+                token.text, range: token.syntaxRange(in: context),
+                textFreedom: token.textFreedom,
+                isPrefix: isPrefix(),
+                isInfix: isInfix(),
+                isFloatLiteral: isFloatLiteral(),
+                isMarkdownEntity: false,
+                file: file, project: project, status: status, output: output)
         }
     }
 
-    internal static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
+    internal static func check(_ node: ExtendedSyntax, context: ExtendedSyntaxContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
+        if let token = node as? ExtendedTokenSyntax {
 
-        switch file.fileType {
-        case .json, .xcodeProject, .xml:
-            // Likely generated, not written.
+            func isMarkdownEntity() -> Bool {
+                if token.kind == .documentationText,
+                    token.nextToken()?.kind == .documentationText,
+                    token.previousToken()?.kind == .documentationText {
+                    return true
+                } else {
+                    return false
+                }
+            }
+
+            check(
+                token.text, range: token.range(in: context),
+                textFreedom: token.kind.textFreedom,
+                isPrefix: false,
+                isInfix: false,
+                isFloatLiteral: false,
+                isMarkdownEntity: isMarkdownEntity(),
+                file: file, project: project, status: status, output: output)
+        }
+    }
+
+    private static func check(
+        _ node: String,
+        range: @escaping @autoclosure () -> Range<String.ScalarView.Index>,
+        textFreedom: TextFreedom,
+        isPrefix: @escaping @autoclosure () -> Bool,
+        isInfix: @escaping @autoclosure () -> Bool,
+        isFloatLiteral: @escaping @autoclosure () -> Bool,
+        isMarkdownEntity: @escaping @autoclosure() -> Bool,
+        file: TextFile,
+        project: PackageRepository,
+        status: ProofreadingStatus,
+        output: Command.Output) {
+
+        if textFreedom == .invariable {
             return
-        case .c, .css, .deprecatedWorkspaceConfiguration, .gitIgnore, .html, .javaScript, .lisp, .markdown, .objectiveC, .shell, .swift, .swiftPackageManifest, .python, .yaml:
-            break
         }
 
-        check(file, for: "\u{2D}",
-              allowInShellSource: true,
-              allowInCSSSource: true,
-              allowInJavaScriptSource: true,
-              allowInSampleCode: true,
-              allowInMarkdownList: true,
-              allowInURLs: true,
-              allowedAliasDefinitions: ["−", "subtract"],
-              allowedDefaultImplementations: ["Negatable", "Numeric", "SignedNumeric"],
-              allowInReturnArrow: true,
-              allowInHTMLComment: true,
-              allowInHeading: true,
+        func check(for obsolete: String, replacement: StrictString? = nil,
+                   onlyProhibitPrefixUse: Bool = false,
+                   onlyProhibitInfixUse: Bool = false,
+                   allowInFloatLiteral: Bool = false,
+                   allowAsConditionalCompilationOperator: Bool = false,
+                   allowInToolsVersion: Bool = false,
+                   allowInWorkarounds: Bool = false,
+                   message: UserFacing<StrictString, InterfaceLocalization>, status: ProofreadingStatus, output: Command.Output) {
+
+            if onlyProhibitPrefixUse ∧ ¬isPrefix() {
+                return
+            }
+
+            if onlyProhibitInfixUse ∧ ¬isInfix() {
+                return
+            }
+
+            if allowInFloatLiteral ∧ isFloatLiteral() {
+                return
+            }
+
+            if isMarkdownEntity() {
+                return
+            }
+
+            matchSearch: for match in node.scalars.matches(for: obsolete.scalars) {
+                let resolvedRange = range()
+                let startOffset = node.scalars.distance(from: node.scalars.startIndex, to: match.range.lowerBound)
+                let length = node.scalars.distance(from: match.range.lowerBound, to: match.range.upperBound)
+                let lowerBound = file.contents.scalars.index(resolvedRange.lowerBound, offsetBy: startOffset)
+                let upperBound = file.contents.scalars.index(lowerBound, offsetBy: length)
+
+                if allowInToolsVersion {
+                    if file.fileType == .swiftPackageManifest,
+                        let endOfFirstLine = file.contents.lines.first?.line.endIndex,
+                        endOfFirstLine ≥ upperBound {
+                        continue matchSearch
+                    }
+                }
+                reportViolation(in: file, at: lowerBound ..< upperBound, replacementSuggestion: replacement, message:
+                    UserFacing<StrictString, InterfaceLocalization>({ localization in
+                        let obsoleteMessage = UserFacing<StrictString, InterfaceLocalization>({ localization in
+                            switch localization {
+                            case .englishCanada:
+                                let error: StrictString
+                                switch String(match.contents) {
+                                case "\u{2D}":
+                                    error = "U+002D"
+                                case "\u{22}":
+                                    error = "U+0022"
+                                case "\u{27}":
+                                    error = "U+0027"
+                                default:
+                                    error = StrictString("“\(StrictString(match.contents))”")
+                                }
+                                if match.contents.count == 1 {
+                                    return "The character " + error + " is obsolete."
+                                } else {
+                                    return "The character sequence " + error + " is obsolete."
+                                }
+                            }
+                        })
+
+                        let aliasMessage = UserFacing<StrictString, InterfaceLocalization>({ localization in
+                            switch localization {
+                            case .englishCanada:
+                                return "(Create an alias if necessary.)"
+                            }
+                        })
+
+                        var result = obsoleteMessage.resolved(for: localization) + " " + message.resolved(for: localization)
+                        if textFreedom == .aliasable {
+                            result += " " + aliasMessage.resolved(for: localization)
+                        }
+                        return result
+                    }), status: status, output: output)
+            }
+        }
+
+        check(for: "\u{2D}",
               allowInFloatLiteral: true,
               allowInToolsVersion: true,
+              allowInWorkarounds: true,
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 // Note to localizers: Adapt the recommendations for the target localization.
@@ -285,13 +201,7 @@ internal struct UnicodeRule : TextRule {
                 }
               }), status: status, output: output)
 
-        check(file, for: "\u{22}",
-              allowInSwiftSource: true,
-              allowInShellSource: true,
-              allowInHTMLSource: true,
-              allowInCSSSource: true,
-              allowInJavaScriptSource: true,
-              allowInSampleCode: true,
+        check(for: "\u{22}",
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 // Note to localizers: Adapt the recommendations for the target localization.
@@ -300,9 +210,7 @@ internal struct UnicodeRule : TextRule {
                 }
               }), status: status, output: output)
 
-        check(file, for: "\u{27}",
-              allowInShellSource: true,
-              allowInSampleCode: true,
+        check(for: "\u{27}",
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 // Note to localizers: Adapt the recommendations for the target localization.
@@ -311,10 +219,8 @@ internal struct UnicodeRule : TextRule {
                 }
               }), status: status, output: output)
 
-        check(file, for: "\u{21}\u{3D}",
+        check(for: "\u{21}\u{3D}",
               replacement: "≠",
-              allowInShellSource: true,
-              allowedAliasDefinitions: ["≠"],
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
@@ -322,14 +228,10 @@ internal struct UnicodeRule : TextRule {
                 }
               }), status: status, output: output)
 
-        check(file, for: "!",
+        check(for: "!",
               replacement: "¬",
-              allowTrailing: true,
-              allowInHTMLSource: true,
-              allowInJavaScriptSource: true,
-              allowInConditionalCompilationStatement: true,
-              allowedAliasDefinitions: ["¬", "≠"],
-              allowInHTMLComment: true,
+              onlyProhibitPrefixUse: true,
+              allowAsConditionalCompilationOperator: true,
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
@@ -337,10 +239,9 @@ internal struct UnicodeRule : TextRule {
                 }
               }), status: status, output: output)
 
-        check(file, for: "&\u{26}",
+        check(for: "&\u{26}",
               replacement: "∧",
-              allowInConditionalCompilationStatement: true,
-              allowedAliasDefinitions: ["∧"],
+              allowAsConditionalCompilationOperator: true,
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
@@ -348,10 +249,9 @@ internal struct UnicodeRule : TextRule {
                 }
               }), status: status, output: output)
 
-        check(file, for: "\u{7C}|",
+        check(for: "\u{7C}|",
               replacement: "∨",
-              allowInConditionalCompilationStatement: true,
-              allowedAliasDefinitions: ["∨"],
+              allowAsConditionalCompilationOperator: true,
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
@@ -359,10 +259,9 @@ internal struct UnicodeRule : TextRule {
                 }
               }), status: status, output: output)
 
-        check(file, for: "\u{3C}=",
+        check(for: "\u{3C}=",
               replacement: "≤",
-              allowInConditionalCompilationStatement: true,
-              allowedAliasDefinitions: ["≤"],
+              allowAsConditionalCompilationOperator: true,
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
@@ -370,10 +269,9 @@ internal struct UnicodeRule : TextRule {
                 }
               }), status: status, output: output)
 
-        check(file, for: "\u{3E}=",
+        check(for: "\u{3E}=",
               replacement: "≥",
-              allowInConditionalCompilationStatement: true,
-              allowedAliasDefinitions: ["≥"],
+              allowAsConditionalCompilationOperator: true,
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
@@ -381,12 +279,9 @@ internal struct UnicodeRule : TextRule {
                 }
               }), status: status, output: output)
 
-        check(file, for: " \u{2A} ",
-              replacement: " × ",
-              allowInCSSSource: true,
-              allowInConditionalCompilationStatement: true,
-              allowedAliasDefinitions: ["×"],
-              allowedDefaultImplementations: ["Numeric"],
+        check(for: "\u{2A}",
+              replacement: "×",
+              onlyProhibitInfixUse: true,
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
@@ -394,11 +289,8 @@ internal struct UnicodeRule : TextRule {
                 }
               }), status: status, output: output)
 
-        check(file, for: "\u{2A}=",
+        check(for: "\u{2A}=",
               replacement: "×=",
-              allowInConditionalCompilationStatement: true,
-              allowedAliasDefinitions: ["×"],
-              allowedDefaultImplementations: ["Numeric"],
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
@@ -406,11 +298,9 @@ internal struct UnicodeRule : TextRule {
                 }
               }), status: status, output: output)
 
-        check(file, for: " \u{2F} ",
-              replacement: " ÷ ",
-              allowInCSSSource: true,
-              allowInConditionalCompilationStatement: true,
-              allowedAliasDefinitions: ["÷", "divide"],
+        check(for: "\u{2F}",
+              replacement: "÷",
+              onlyProhibitInfixUse: true,
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
@@ -418,10 +308,8 @@ internal struct UnicodeRule : TextRule {
                 }
               }), status: status, output: output)
 
-        check(file, for: "\u{2F}=",
+        check(for: "\u{2F}=",
               replacement: "÷=",
-              allowInConditionalCompilationStatement: true,
-              allowedAliasDefinitions: ["÷", "divide"],
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:

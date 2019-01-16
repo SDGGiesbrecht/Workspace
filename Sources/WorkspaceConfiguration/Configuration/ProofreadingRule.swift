@@ -83,7 +83,7 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
     /// - Arbitrary dependencies can be specified by shell commands which output a version number. Workspace will look for the first group of the characters `0`–`9` and `.` in the command output. Only simple commands are supported; commands cannot contain quotation marks.
     ///
     ///   ```swift
-    ///   // #workaround(git --version 2.10.1, There is a problem with Git.)
+    ///   // #workaround(git --version 2.10.1, There is a problem with Git.) @exempt(from: unicode)
     ///   ```
     case workaroundReminders
 
@@ -111,7 +111,21 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
 
     /// Prohibits typewriter workarounds when proper Unicode characters are available.
     ///
-    /// Examples include requiring:
+    /// This rule still permits most uses where the proper characters would not work:
+    ///
+    /// ```swift
+    /// print("Hello, world!") // ← Allowed, because quotation marks cannot be used instead.
+    /// ```
+    ///
+    /// In some contexts, such as when creating aliases, marked exemptions may be necessary:
+    ///
+    /// ```swift
+    /// func ≠ (a: Any, b: Any) -> Bool {
+    ///    return a != b // @exempt(from: unicode)
+    /// }
+    /// ```
+    ///
+    /// This rule covers:
     ///
     /// - Horizontal strokes:
     ///   - Hyphens: “twenty‐one” (U+2010) instead of “twenty&#x2D;one” (U+002D).
@@ -132,24 +146,6 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
     /// - “¬” instead of “&#x21;”.
     /// - “∧” instead of “&#x26;&#x26;”.
     /// - “∨” instead of “&#x7C;|”.
-    ///
-    /// Workarounds are still allowed where the proper characters would be impossible to use:
-    ///
-    /// ```swift
-    /// // This prints "Hello, world!": // ✗
-    /// print("Hello, world!") // ← Allowed, because it is not replaceable.
-    /// ```
-    ///
-    /// Workarounds are also still allowed when creating aliases:
-    ///
-    /// ```swift
-    /// if x != y, // ✗
-    ///     a ≠ b { // ✓
-    /// }
-    /// func ≠ (a: Any, b: Any) -> Bool {
-    ///    return a != b // ← Allowed in order to create the alias “≠” function.
-    /// }
-    /// ```
     case unicode
 
     // ••••••• Source Code Style •••••••

@@ -110,7 +110,7 @@ extension PackageRepository {
 
             var scheme = try TextFile(possiblyAt: projectBundle.appendingPathComponent("/xcshareddata/xcschemes/Proofread.xcscheme"))
             var schemeDefinition = Resources.proofreadScheme
-            schemeDefinition.drop(through: "-->\n\n")
+            schemeDefinition.drop(through: "\u{2D}\u{2D}>\n\n")
             schemeDefinition.replaceMatches(for: "[*project*]", with: projectBundle.lastPathComponent)
             scheme.contents = schemeDefinition
             try scheme.writeChanges(for: self, output: output)

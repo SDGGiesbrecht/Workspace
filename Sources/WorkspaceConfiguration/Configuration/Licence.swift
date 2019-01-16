@@ -46,7 +46,7 @@ public enum Licence : String, Codable {
         case .apache2_0:
             result = [
                 "Licensed under the Apache Licence, Version 2.0.",
-                "See http://www.apache.org/licenses/LICENSE-2.0 for licence information."
+                "See http://www.apache.org/licenses/LICENSE\u{2D}2.0 for licence information."
             ]
         case .mit:
             result = [

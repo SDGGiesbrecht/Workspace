@@ -49,7 +49,7 @@ extension ProofreadingRule : Comparable {
         case .syntaxColouring:
             return .syntax(SyntaxColouring.self)
         case .unicode:
-            return .text(UnicodeRule.self)
+            return .syntax(UnicodeRule.self)
         case .colonSpacing:
             return .syntax(ColonSpacing.self)
         case .calloutCasing:

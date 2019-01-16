@@ -133,21 +133,18 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
     /// - “∧” instead of “&#x26;&#x26;”.
     /// - “∨” instead of “&#x7C;|”.
     ///
-    /// Workarounds are still allowed where the proper characters would be impossible to use:
+    /// Workarounds are still allowed in most cases where the proper characters would be impossible to use:
     ///
     /// ```swift
     /// // This prints "Hello, world!": // ✗
     /// print("Hello, world!") // ← Allowed, because it is not replaceable.
     /// ```
     ///
-    /// Workarounds are also still allowed when creating aliases:
+    /// In some contexts, such as when creating aliases, marked exemptions may still be necessary:
     ///
     /// ```swift
-    /// if x != y, // ✗
-    ///     a ≠ b { // ✓
-    /// }
     /// func ≠ (a: Any, b: Any) -> Bool {
-    ///    return a != b // ← Allowed in order to create the alias “≠” function.
+    ///    return a != b // @exempt(from: unicode)
     /// }
     /// ```
     case unicode

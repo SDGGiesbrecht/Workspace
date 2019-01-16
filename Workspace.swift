@@ -68,7 +68,7 @@ public let configuration: WorkspaceConfiguration = {
         "  \u{2D} [Read‐me files](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/ReadMeConfiguration.html)",
         "  \u{2D} [Licence notices](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/LicenceConfiguration.html)",
         "  \u{2D} [Contributing instructions](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/GitHubConfiguration.html)",
-        "\u{2D} Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).",
+        "\u{2D} Designed to interoperate with the [Swift Package Manager](https://swift.org/package\u{2D}manager/).",
         "\u{2D} Manages projects for macOS, Linux, iOS, watchOS and tvOS.",
         "\u{2D} [Configurable](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Libraries/WorkspaceConfiguration.html)"
     ].joinedAsLines()

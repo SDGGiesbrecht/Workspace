@@ -76,6 +76,6 @@ public struct APIDocumentationConfiguration : Codable {
     /// 3. Specify the encrypted access token for this option.
     /// 5. Set GitHub Pages to [serve from the “gh&#x2D;pages” branch](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#enabling-github-pages-to-publish-your-site-from-master-or-gh-pages).
     ///
-    /// - Important: Workspace does not understand Travis’ encryption, and does not attempt to read or use the key. All this option does is tell Workspace to (a) include the encrypted key when configuring Travis CI, and (b) keep generated documentation out of the repository.
+    /// - Workspace does not understand Travis’ encryption, and does not attempt to read or use the key. All this option does is tell Workspace to (a) include the encrypted key when configuring Travis CI, and (b) keep generated documentation out of the repository.
     public var encryptedTravisCIDeploymentKey: String?
 }

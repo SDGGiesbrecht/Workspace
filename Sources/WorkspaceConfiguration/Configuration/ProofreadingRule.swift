@@ -111,7 +111,21 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
 
     /// Prohibits typewriter workarounds when proper Unicode characters are available.
     ///
-    /// Examples include requiring:
+    /// This rule still permits most uses where the proper characters would not work:
+    ///
+    /// ```swift
+    /// print("Hello, world!") // ← Allowed, because quotation marks cannot be used instead.
+    /// ```
+    ///
+    /// In some contexts, such as when creating aliases, marked exemptions may be necessary:
+    ///
+    /// ```swift
+    /// func ≠ (a: Any, b: Any) -> Bool {
+    ///    return a != b // @exempt(from: unicode)
+    /// }
+    /// ```
+    ///
+    /// This rule covers:
     ///
     /// - Horizontal strokes:
     ///   - Hyphens: “twenty‐one” (U+2010) instead of “twenty&#x2D;one” (U+002D).
@@ -132,21 +146,6 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
     /// - “¬” instead of “&#x21;”.
     /// - “∧” instead of “&#x26;&#x26;”.
     /// - “∨” instead of “&#x7C;|”.
-    ///
-    /// Workarounds are still allowed in most cases where the proper characters would be impossible to use:
-    ///
-    /// ```swift
-    /// // This prints "Hello, world!": // ✗
-    /// print("Hello, world!") // ← Allowed, because it is not replaceable.
-    /// ```
-    ///
-    /// In some contexts, such as when creating aliases, marked exemptions may still be necessary:
-    ///
-    /// ```swift
-    /// func ≠ (a: Any, b: Any) -> Bool {
-    ///    return a != b // @exempt(from: unicode)
-    /// }
-    /// ```
     case unicode
 
     // ••••••• Source Code Style •••••••

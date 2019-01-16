@@ -149,11 +149,6 @@ internal struct UnicodeRule : SyntaxRule {
                         continue matchSearch
                     }
                 }
-                if file.location.lastPathComponent == "ProofreadingRule.swift",
-                    (try? project.package().name) == "Workspace" {
-                    // Deliberate violations are used to demonstrate rules. Some cannot be escaped.
-                    return
-                }
                 reportViolation(in: file, at: lowerBound ..< upperBound, replacementSuggestion: replacement, message:
                     UserFacing<StrictString, InterfaceLocalization>({ localization in
                         let obsoleteMessage = UserFacing<StrictString, InterfaceLocalization>({ localization in

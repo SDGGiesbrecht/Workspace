@@ -37,14 +37,30 @@ internal struct BraceSpacing : SyntaxRule {
     private static let requiredOpeningInternalSpaceSuggestion: StrictString = "{ "
     private static let requiredClosingInternalSpaceSuggestion: StrictString = " }"
 
+    private static let requiredExternalSpaceMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
+        switch localization {
+        case .englishCanada:
+            return "Braces should be separated from their context by a space."
+        }
+    })
+    private static let requiredOpeningExternalSpaceSuggestion: StrictString = " {"
+    private static let requiredClosingExternalSpaceSuggestion: StrictString = "} "
+
     private static let prohibitedInternalSpaceMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
             return "Empty braces should not contain spaces."
         }
     })
-    private static let prohibitedOpeningInternalSpaceSuggestion: StrictString = "{"
-    private static let prohibitedClosingInternalSpaceSuggestion: StrictString = "}"
+    private static let prohibitedExternalSpaceMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
+        switch localization {
+        case .englishCanada:
+            // #warning(???)
+            return "..."
+        }
+    })
+    private static let prohibitedOpeningSpaceSuggestion: StrictString = "{"
+    private static let prohibitedClosingSpaceSuggestion: StrictString = "}"
 
     internal static func check(_ node: Syntax, context: SyntaxContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
 
@@ -57,9 +73,12 @@ internal struct BraceSpacing : SyntaxRule {
                 getInternalTrivia: (TokenSyntax) -> Trivia,
                 getOppositeInternalTrivia: (TokenSyntax) -> Trivia,
                 getFirstInternalTrivia: (TokenSyntax) -> TriviaPiece?,
+                getFirstExternalTrivia: (TokenSyntax) -> TriviaPiece?,
                 extendInternalBound: (Range<String.ScalarView.Index>, Int) -> Range<String.ScalarView.Index>,
+                extendExternalBound: (Range<String.ScalarView.Index>, Int) -> Range<String.ScalarView.Index>,
                 requiredInternalSuggestion: StrictString,
-                prohibitedInternalSuggestion: StrictString) {
+                requiredExternalSuggestion: StrictString,
+                prohibitedSuggestion: StrictString) {
 
                 if token.tokenKind == kind {
 
@@ -81,7 +100,7 @@ internal struct BraceSpacing : SyntaxRule {
                             if ¬requiresInternalSpace {
                                 var range = token.syntaxRange(in: context)
                                 range = extendInternalBound(range, firstInternalTrivia.text.scalars.count)
-                                internalViolation = (prohibitedInternalSpaceMessage, prohibitedInternalSuggestion, range)
+                                internalViolation = (prohibitedInternalSpaceMessage, prohibitedSuggestion, range)
                             }
                         case .backticks, .lineComment, .blockComment, .docLineComment, .docBlockComment, .garbageText:
                             if requiresInternalSpace {
@@ -97,6 +116,38 @@ internal struct BraceSpacing : SyntaxRule {
                     if let violation = internalViolation {
                         reportViolation(in: file, at: violation.range, replacementSuggestion: violation.suggestion, message: violation.message, status: status, output: output)
                     }
+
+                    // External
+                    let requiresExternalSpace: Bool
+                    if false {
+                        requiresExternalSpace = false
+                    } else {
+                        requiresExternalSpace = true
+                    }
+
+                    var externalViolation: (message: UserFacing<StrictString, InterfaceLocalization>, suggestion: StrictString, range: Range<String.ScalarView.Index>)?
+                    if let firstExternalTrivia = getFirstExternalTrivia(token) {
+                        switch firstExternalTrivia {
+                        case .spaces, .tabs, .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds:
+                            if ¬requiresExternalSpace {
+                                var range = token.syntaxRange(in: context)
+                                range = extendExternalBound(range, firstExternalTrivia.text.scalars.count)
+                                externalViolation = (prohibitedExternalSpaceMessage, prohibitedSuggestion, range)
+                            }
+                        case .backticks, .lineComment, .blockComment, .docLineComment, .docBlockComment, .garbageText:
+                            if requiresExternalSpace {
+                                externalViolation = (requiredExternalSpaceMessage, requiredExternalSuggestion, token.syntaxRange(in: context))
+                            }
+                        }
+                    } else {
+                        // No trivia.
+                        if requiresExternalSpace {
+                            externalViolation = (requiredExternalSpaceMessage, requiredExternalSuggestion, token.syntaxRange(in: context))
+                        }
+                    }
+                    if let violation = externalViolation {
+                        reportViolation(in: file, at: violation.range, replacementSuggestion: violation.suggestion, message: violation.message, status: status, output: output)
+                    }
                 }
             }
 
@@ -107,9 +158,12 @@ internal struct BraceSpacing : SyntaxRule {
                 getInternalTrivia: { $0.trailingTrivia },
                 getOppositeInternalTrivia: { $0.leadingTrivia },
                 getFirstInternalTrivia: { $0.firstFollowingTrivia() },
+                getFirstExternalTrivia: { $0.firstPrecedingTrivia() },
                 extendInternalBound: { $0.lowerBound ..< file.contents.scalars.index($0.upperBound, offsetBy: $1) },
+                extendExternalBound: { file.contents.scalars.index($0.lowerBound, offsetBy: −$1) ..< $0.upperBound },
                 requiredInternalSuggestion: requiredOpeningInternalSpaceSuggestion,
-                prohibitedInternalSuggestion: prohibitedOpeningInternalSpaceSuggestion)
+                requiredExternalSuggestion: requiredOpeningExternalSpaceSuggestion,
+                prohibitedSuggestion: prohibitedOpeningSpaceSuggestion)
             check(
                 kind: .rightBrace,
                 oppositeKind: .leftBrace,
@@ -117,9 +171,12 @@ internal struct BraceSpacing : SyntaxRule {
                 getInternalTrivia: { $0.leadingTrivia },
                 getOppositeInternalTrivia: { $0.trailingTrivia },
                 getFirstInternalTrivia: { $0.firstPrecedingTrivia() },
+                getFirstExternalTrivia: { $0.firstFollowingTrivia() },
                 extendInternalBound: { file.contents.scalars.index($0.lowerBound, offsetBy: −$1) ..< $0.upperBound },
+                extendExternalBound: { $0.lowerBound ..< file.contents.scalars.index($0.upperBound, offsetBy: $1) },
                 requiredInternalSuggestion: requiredClosingInternalSpaceSuggestion,
-                prohibitedInternalSuggestion: prohibitedClosingInternalSpaceSuggestion)
+                requiredExternalSuggestion: requiredClosingExternalSpaceSuggestion,
+                prohibitedSuggestion: prohibitedClosingSpaceSuggestion)
         }
     }
 }

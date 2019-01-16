@@ -132,16 +132,6 @@ Braces should be separated from their contents by a space. (braceSpacing)
 let x = [].map {$0} // These braces should trigger; They should be spaced.
 let x = [].map {$0 } // These braces should trigger; They should be spaced.
 
-Line 5
-Braces should be separated from their context by a space. (braceSpacing)
-func z(){}// These braces should trigger; they should be spaced.
-func z() {}// These braces should trigger; they should be spaced.
-
-Line 5
-Braces should be separated from their context by a space. (braceSpacing)
-func z(){}// These braces should trigger; they should be spaced.
-func z(){} // These braces should trigger; they should be spaced.
-
 Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift
 Line 5
 Callouts should be capitalized. (calloutCasing)

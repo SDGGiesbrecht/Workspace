@@ -150,6 +150,9 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
 
     // ••••••• Source Code Style •••••••
 
+    /// Enforces consistent spacing around braces.
+    case braceSpacing
+
     /// Enforces consistent spacing around colons.
     case colonSpacing
 
@@ -183,7 +186,7 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
         case .unicode:
             return .textStyle
 
-        case .colonSpacing, .calloutCasing, .parameterGrouping:
+        case .braceSpacing, .colonSpacing, .calloutCasing, .parameterGrouping:
             return .sourceCodeStyle
         }
     }

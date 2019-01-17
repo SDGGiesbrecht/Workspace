@@ -365,7 +365,7 @@ class APITests : TestCase {
             configuration.documentation.readMe.featureList[localization] = "..."
             configuration.documentation.readMe.other[localization] = "..."
             configuration.documentation.readMe.about[localization] = "..."
-            configuration.documentation.readMe.exampleUsage[localization] = Markdown("\u{23}example(Read‐Me \(localization.icon.flatMap({String($0)}) ?? localization.code))")
+            configuration.documentation.readMe.exampleUsage[localization] = Markdown("\u{23}example(Read‐Me \(localization.icon.flatMap({ String($0) }) ?? localization.code))")
         }
         configuration.documentation.readMe.shortProjectDescription["🇨🇦EN"] = "This project does stuff."
         configuration.documentation.readMe.quotation?.translation["🇨🇦EN"] = "“...”"
@@ -445,7 +445,7 @@ class APITests : TestCase {
             configuration.documentation.readMe.featureList[localization] = "..."
             configuration.documentation.readMe.other[localization] = "..."
             configuration.documentation.readMe.about[localization] = "..."
-            configuration.documentation.readMe.exampleUsage[localization] = Markdown("\u{23}example(Read‐Me \(localization.icon.flatMap({String($0)}) ?? localization.code))")
+            configuration.documentation.readMe.exampleUsage[localization] = Markdown("\u{23}example(Read‐Me \(localization.icon.flatMap({ String($0) }) ?? localization.code))")
         }
         configuration.documentation.readMe.shortProjectDescription["🇨🇦EN"] = "This project does stuff."
         configuration.documentation.readMe.quotation?.translation["🇨🇦EN"] = "“...”"

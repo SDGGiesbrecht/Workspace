@@ -41,6 +41,6 @@ public struct Lazy<Option> : Codable where Option : Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         let resolved = try container.decode(Option.self)
-        resolve = {_ in resolved }
+        resolve = { _ in resolved }
     }
 }

@@ -22,9 +22,7 @@ public class CommandLineProofreadingReporter : ProofreadingReporter {
 
     // MARK: - Initialization
 
-    private init() {
-
-    }
+    private init() {}
 
     // MARK: - ProofreadingReporter
 

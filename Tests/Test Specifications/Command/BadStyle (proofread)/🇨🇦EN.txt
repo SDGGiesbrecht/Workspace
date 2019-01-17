@@ -121,6 +121,27 @@ Line 4
 Missing implementation. (missingImplementation)
     notImplementedYet() // This should trigger a warning.
 
+Sources/BadStyle/Rules/Source Code Style/BraceSpacing.swift
+Line 3
+Braces should be separated from their contents by a space. (braceSpacing)
+let x = [].map {$0} // These braces should trigger; they should be spaced.
+let x = [].map { $0} // These braces should trigger; they should be spaced.
+
+Line 3
+Braces should be separated from their contents by a space. (braceSpacing)
+let x = [].map {$0} // These braces should trigger; they should be spaced.
+let x = [].map {$0 } // These braces should trigger; they should be spaced.
+
+Line 5
+Braces should be separated from their contents by a space. (braceSpacing)
+func z() {/* These braces should trigger; they should be spaced. */}
+func z() { /* These braces should trigger; they should be spaced. */}
+
+Line 5
+Braces should be separated from their contents by a space. (braceSpacing)
+func z() {/* These braces should trigger; they should be spaced. */}
+func z() {/* These braces should trigger; they should be spaced. */ }
+
 Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift
 Line 5
 Callouts should be capitalized. (calloutCasing)
@@ -188,6 +209,18 @@ The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (�
 Line 19
 The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 /// - RecommendedOver: -
+
+Line 35
+Empty braces should not contain spaces. (braceSpacing)
+func shellSource() {
+
+func shellSource() {
+Line 35
+Empty braces should not contain spaces. (braceSpacing)
+func shellSource() {
+
+}
+func shellSource() {}
 
 Line 41
 The character U+0027 is obsolete. Use an apostrophe (’), quotation marks (‘, ’), degrees (°) or prime (′). (unicode)

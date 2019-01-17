@@ -50,6 +50,8 @@ extension ProofreadingRule : Comparable {
             return .syntax(SyntaxColouring.self)
         case .unicode:
             return .syntax(UnicodeRule.self)
+        case .braceSpacing:
+            return .syntax(BraceSpacing.self)
         case .colonSpacing:
             return .syntax(ColonSpacing.self)
         case .calloutCasing:

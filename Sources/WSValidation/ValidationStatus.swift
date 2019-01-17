@@ -27,9 +27,7 @@ public struct ValidationStatus {
 
     // MARK: - Initialization
 
-    public init() {
-
-    }
+    public init() {}
 
     // MARK: - Properties
 

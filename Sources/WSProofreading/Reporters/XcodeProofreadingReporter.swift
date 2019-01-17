@@ -22,9 +22,7 @@ public class XcodeProofreadingReporter : ProofreadingReporter {
 
     // MARK: - Initialization
 
-    private init() {
-
-    }
+    private init() {}
 
     // MARK: - ProofreadingReporter
 

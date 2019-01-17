@@ -91,14 +91,14 @@ public struct LineCommentSyntax {
         var testIndex: String.ScalarView.Index = resultEnd
         string.scalars.advance(&testIndex, over: RepetitionPattern(CharacterSet.newlinePattern, count: 0 ... 1))
 
-        string.scalars.advance(&testIndex, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces})))
+        string.scalars.advance(&testIndex, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
 
         while string.scalars.suffix(from: testIndex).hasPrefix(start.scalars) {
             resultEnd = restOfLine(at: testIndex, in: range, of: string).upperBound
             testIndex = resultEnd
             string.scalars.advance(&testIndex, over: RepetitionPattern(CharacterSet.newlinePattern, count: 0 ... 1))
 
-            string.scalars.advance(&testIndex, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces})))
+            string.scalars.advance(&testIndex, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
         }
 
         return startRange.lowerBound ..< resultEnd

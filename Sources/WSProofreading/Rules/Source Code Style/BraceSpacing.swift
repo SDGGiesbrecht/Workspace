@@ -95,8 +95,7 @@ internal struct BraceSpacing : SyntaxRule {
                         }
                     }
                     if let violation = internalViolation {
-                        let lineStart = violation.range.lowerBound.line(in: file.contents.lines).samePosition(in: file.contents.scalars)
-                        if ¬file.contents.scalars[lineStart ..< violation.range.lowerBound].contains("///".scalars) {
+                        if ¬context.isFragmented() {
                             reportViolation(in: file, at: violation.range, replacementSuggestion: violation.suggestion, message: violation.message, status: status, output: output)
                         }
                     }

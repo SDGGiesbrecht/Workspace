@@ -124,13 +124,23 @@ Missing implementation. (missingImplementation)
 Sources/BadStyle/Rules/Source Code Style/BraceSpacing.swift
 Line 3
 Braces should be separated from their contents by a space. (braceSpacing)
-let x = [].map {$0} // These braces should trigger; They should be spaced.
-let x = [].map { $0} // These braces should trigger; They should be spaced.
+let x = [].map {$0} // These braces should trigger; they should be spaced.
+let x = [].map { $0} // These braces should trigger; they should be spaced.
 
 Line 3
 Braces should be separated from their contents by a space. (braceSpacing)
-let x = [].map {$0} // These braces should trigger; They should be spaced.
-let x = [].map {$0 } // These braces should trigger; They should be spaced.
+let x = [].map {$0} // These braces should trigger; they should be spaced.
+let x = [].map {$0 } // These braces should trigger; they should be spaced.
+
+Line 5
+Braces should be separated from their contents by a space. (braceSpacing)
+func z() {/* These braces should trigger; they should be spaced. */}
+func z() { /* These braces should trigger; they should be spaced. */}
+
+Line 5
+Braces should be separated from their contents by a space. (braceSpacing)
+func z() {/* These braces should trigger; they should be spaced. */}
+func z() {/* These braces should trigger; they should be spaced. */ }
 
 Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift
 Line 5

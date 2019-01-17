@@ -7,3 +7,12 @@ func z() {/* These braces should trigger; they should be spaced. */}
 func þ() { // This brace should not trigger; it’s not empty.
     // ...
 } // This brace should not trigger; it’s not empty.
+
+/// ...
+///
+/// ```swift
+/// func þ() { // This brace should not trigger; it’s not empty.
+///     // ...
+/// } // This brace should not trigger; it’s not empty.
+/// ```
+func a() {}

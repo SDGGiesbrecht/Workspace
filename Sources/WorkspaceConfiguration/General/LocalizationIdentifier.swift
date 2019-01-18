@@ -62,16 +62,12 @@ public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hash
 
     // MARK: - ExpressibleByStringLiteral
 
-    // #workaround(Until automatic inheritance can bridge module boundaries.)
-    /// Creates a localization identifier from a string literal.
     public init(stringLiteral: String) {
         self.init(stringLiteral)
     }
 
     // MARK: - TransparentWrapper
 
-    // #workaround(Until automatic inheritance can bridge module boundaries.)
-    /// The wrapped instance.
     public var wrappedInstance: Any {
         if let content = _reasonableMatch {
             return content

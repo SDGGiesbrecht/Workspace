@@ -35,6 +35,8 @@ public enum RelatedProjectEntry : Codable {
         case details
     }
 
+    // #workaround(Until automatic inheritance can bridge module boundaries.)
+    /// Encodes the entry.
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
@@ -47,6 +49,8 @@ public enum RelatedProjectEntry : Codable {
         }
     }
 
+    // #workaround(Until automatic inheritance can bridge module boundaries.)
+    /// Decodes an entry.
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(RelatedProjectEntryType.self, forKey: CodingKeys.type)

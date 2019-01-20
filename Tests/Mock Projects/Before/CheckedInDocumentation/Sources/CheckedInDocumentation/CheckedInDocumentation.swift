@@ -82,7 +82,12 @@ public struct Structure : Equatable {
     /// - Parameters:
     ///     - lhs: The preceding parameter.
     ///     - rhs: The following parameter.
+    public static func <(lhs: Structure, rhs: Structure) -> Bool {
+        return true
+    }
+
     public static func ==(lhs: Structure, rhs: Structure) -> Bool {
+        // A conformance.
         return true
     }
 

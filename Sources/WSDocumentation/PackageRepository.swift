@@ -125,7 +125,7 @@ extension PackageRepository {
         let interface = PackageInterface(
             localizations: configuration.documentation.localizations,
             developmentLocalization: try developmentLocalization(output: output),
-            api: try PackageAPI(package: cachedPackage(), reportProgress: { output.print($0) }),
+            api: try PackageAPI(package: cachedPackageGraph(), reportProgress: { output.print($0) }),
             packageURL: configuration.documentation.repositoryURL,
             version: configuration.documentation.currentVersion,
             copyright: copyright,

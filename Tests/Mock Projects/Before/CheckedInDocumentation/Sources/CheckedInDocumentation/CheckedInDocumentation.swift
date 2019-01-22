@@ -98,6 +98,9 @@ public struct Structure : Equatable {
     public var typeProperty: Bool = false
 
     /// A subscript.
+    ///
+    /// - Parameters:
+    ///     - subscript: The subscript index.
     public subscript(_ subscript: Bool) -> Bool {
         return `subscript`
     }

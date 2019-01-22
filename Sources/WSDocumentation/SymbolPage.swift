@@ -57,6 +57,8 @@ internal class SymbolPage : Page {
         content.append(SymbolPage.generateDeclarationSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks, status: status))
         content.append(SymbolPage.generateDiscussionSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks, status: status))
         content.append(SymbolPage.generateParemetersSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status))
+        content.append(SymbolPage.generateThrowsSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status))
+        content.append(SymbolPage.generateReturnsSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status))
 
         content.append(SymbolPage.generateLibrariesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
 
@@ -253,6 +255,30 @@ internal class SymbolPage : Page {
             HTMLElement("h2", contents: parametersHeading, inline: true).source,
             HTMLElement("dl", contents: list.map({ $0.source }).joinedAsLines(), inline: true).source,
         ]
+        return HTMLElement("section", contents: section.joinedAsLines(), inline: false).source
+    }
+
+    private static func generateThrowsSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
+        guard let callout = symbol.documentation?.throwsCallout else {
+            return ""
+        }
+        let throwsHeading: StrictString = Callout.throws.localizedText(localization.code)
+        var section = [HTMLElement("h2", contents: throwsHeading, inline: true).source]
+        for contents in callout.contents {
+            section.append(StrictString(contents.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)))
+        }
+        return HTMLElement("section", contents: section.joinedAsLines(), inline: false).source
+    }
+
+    private static func generateReturnsSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
+        guard let callout = symbol.documentation?.returnsCallout else {
+            return ""
+        }
+        let returnsHeading: StrictString = Callout.returns.localizedText(localization.code)
+        var section = [HTMLElement("h2", contents: returnsHeading, inline: true).source]
+        for contents in callout.contents {
+            section.append(StrictString(contents.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)))
+        }
         return HTMLElement("section", contents: section.joinedAsLines(), inline: false).source
     }
 

@@ -13,3 +13,10 @@ private func forSwiftSyntax() {}
 ///
 /// ### Heading
 public func excessiveHeading() {}
+
+/// ...
+///
+/// - Parameters:
+///     - paramOne: Misnamed parameter.
+///     - parameterTwo: Non‐existent parameter.
+public func mismatchedParameters(parameterOne: Int) {}

@@ -92,7 +92,10 @@ public struct Structure : Equatable {
     }
 
     /// An initializer.
-    public init() {}
+    ///
+    /// - Parameters:
+    ///     - parameter: A parameter.
+    public init(label parameter: Bool) {}
 
     /// A property.
     public var typeProperty: Bool = false

@@ -191,14 +191,22 @@ internal class SymbolPage : Page {
         var sectionContents: [StrictString] = [
             HTMLElement("h2", contents: discussionHeading, inline: true).source
         ]
+
+        var empty = true
         for paragraph in discussion {
             let rendered = StrictString(paragraph.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
             if rendered.contains("<h1>".scalars) ∨ rendered.contains("<h2>".scalars) {
                 status.reportExcessiveHeading(symbol: symbol, navigationPath: navigationPath)
             }
+            if empty, ¬rendered.isWhitespace {
+                empty = false
+            }
             sectionContents.append(rendered)
         }
 
+        if empty {
+            return ""
+        }
         return HTMLElement("section", contents: sectionContents.joinedAsLines(), inline: false).source
     }
 

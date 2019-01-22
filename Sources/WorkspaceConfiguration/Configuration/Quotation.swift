@@ -18,6 +18,9 @@ public struct Quotation : Codable {
     // MARK: - Initialization
 
     /// Creates a quotation.
+    ///
+    /// - Parameters:
+    ///     - original: The quotation in its original language.
     public init(original: StrictString) {
         self.original = original
     }

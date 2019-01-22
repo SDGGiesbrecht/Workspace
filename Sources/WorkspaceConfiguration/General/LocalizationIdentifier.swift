@@ -21,11 +21,17 @@ public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hash
     // MARK: - Initialization
 
     /// Creates an identifier from a localization.
+    ///
+    /// - Parameters:
+    ///     - localization: The localization.
     public init<L>(_ localization: L) where L : Localization {
         code = localization.code
     }
 
     /// Creates a localization identifier from an IETF language tag or a language icon.
+    ///
+    /// - Parameters:
+    ///     - identifier: The IETF language tag or language icon.
     public init(_ identifier: String) {
         if let icon = ContentLocalization.icon(for: identifier),
             let fromIcon = ContentLocalization.code(for: icon) {

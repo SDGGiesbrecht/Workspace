@@ -18,6 +18,10 @@ public struct TestCoverageExemptionToken : Codable, Hashable {
     // MARK: - Initialization
 
     /// Creates a test coverage exemption token.
+    ///
+    /// - Parameters:
+    ///     - token: The text of the token.
+    ///     - scope: The scope of the token’s effect.
     public init(_ token: StrictString, scope: Scope) {
         self.token = token
         self.scope = scope

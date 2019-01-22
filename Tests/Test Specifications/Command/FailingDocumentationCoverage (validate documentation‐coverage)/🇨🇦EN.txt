@@ -38,6 +38,14 @@ excessiveHeading()
 (Use heading levels three to six. Levels one and two are reserved for the surrounding context.)
 
 
+A parameter has no description:
+mismatchedParameters(parameterOne:).parameterOne
+
+
+A described parameter does not exist:
+mismatchedParameters(parameterOne:).parameterTwo
+
+
 A symbol has no description:
 undocumented()
 

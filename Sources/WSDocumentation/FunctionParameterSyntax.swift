@@ -27,7 +27,7 @@ extension FunctionParameterSyntax {
             ¬result.isEmpty {
             return result
         } else { // @exempt(from: tests) One of the two should exist.
-            return ""
+            return "" // @exempt(from: tests)
         }
     }
 }

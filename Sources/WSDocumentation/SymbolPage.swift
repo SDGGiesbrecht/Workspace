@@ -56,6 +56,7 @@ internal class SymbolPage : Page {
         content.append(SymbolPage.generateDescriptionSection(symbol: symbol, navigationPath: navigationPath, localization: localization, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks, status: status))
         content.append(SymbolPage.generateDeclarationSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks, status: status))
         content.append(SymbolPage.generateDiscussionSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks, status: status))
+        content.append(SymbolPage.generateParemetersSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status))
 
         content.append(SymbolPage.generateLibrariesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
 
@@ -219,8 +220,10 @@ internal class SymbolPage : Page {
             }
             validatedParameters.append(documentation)
         }
-        for extra in parameterDocumentation.suffix(from: parameters.count) {
-            status.reportNonExistentParameter(extra.parameter.text, symbol: symbol, navigationPath: navigationPath)
+        if parameterDocumentation.count > parameters.count {
+            for extra in parameterDocumentation[parameters.endIndex...] {
+                status.reportNonExistentParameter(extra.parameter.text, symbol: symbol, navigationPath: navigationPath)
+            }
         }
 
         guard ¬validatedParameters.isEmpty else {

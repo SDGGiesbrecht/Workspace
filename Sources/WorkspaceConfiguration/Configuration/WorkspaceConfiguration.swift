@@ -198,6 +198,8 @@ public final class WorkspaceConfiguration : Configuration {
         case isSDG
     }
 
+    // #workaround(Until automatic inheritance can bridge module boundaries.)
+    /// Encodes the configuration.
     public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(provideWorkflowScripts, forKey: .provideWorkflowScripts)
@@ -216,6 +218,8 @@ public final class WorkspaceConfiguration : Configuration {
         try super.encode(to: container.superEncoder())
     }
 
+    // #workaround(Until automatic inheritance can bridge module boundaries.)
+    /// Decodes the configuration.
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         provideWorkflowScripts = try container.decode(Bool.self, forKey: .provideWorkflowScripts)

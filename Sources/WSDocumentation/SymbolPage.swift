@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGCollections
 import WSGeneralImports
 
 import SDGSwiftSource
@@ -198,6 +199,50 @@ internal class SymbolPage : Page {
         }
 
         return HTMLElement("section", contents: sectionContents.joinedAsLines(), inline: false).source
+    }
+
+    private static func generateParemetersSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
+        let parameters = symbol.parameters()
+        let parameterDocumentation = symbol.documentation?.normalizedParameters ?? []
+
+        var validatedParameters: [(parameter: ExtendedTokenSyntax, description: [ExtendedSyntax])] = []
+        for index in parameters.indices {
+            let name = parameters[index]
+            if index ∉ parameterDocumentation.indices {
+                status.reportMissingParameter(name, symbol: symbol, navigationPath: navigationPath)
+                continue
+            }
+            let documentation = parameterDocumentation[index]
+            if name ≠ documentation.parameter.text {
+                status.reportMissingParameter(name, symbol: symbol, navigationPath: navigationPath)
+                continue
+            }
+            validatedParameters.append(documentation)
+        }
+        for extra in parameterDocumentation.suffix(from: parameters.count) {
+            status.reportNonExistentParameter(extra.parameter.text, symbol: symbol, navigationPath: navigationPath)
+        }
+
+        guard ¬validatedParameters.isEmpty else {
+            return ""
+        }
+
+        let parametersHeading: StrictString = Callout.parameters.localizedText(localization.code)
+
+        var list: [HTMLElement] = []
+        for entry in validatedParameters {
+            let term = StrictString(entry.parameter.syntaxHighlightedHTML(inline: true, internalIdentifiers: [entry.parameter.text], symbolLinks: [:]))
+            list.append(HTMLElement("dt", contents: term, inline: true))
+
+            let description = entry.description.map({ $0.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks) })
+            list.append(HTMLElement("dd", contents: StrictString(description.joinedAsLines()), inline: true))
+        }
+
+        let section = [
+            HTMLElement("h2", contents: parametersHeading, inline: true).source,
+            HTMLElement("dl", contents: list.map({ $0.source }).joinedAsLines(), inline: true).source,
+        ]
+        return HTMLElement("section", contents: section.joinedAsLines(), inline: false).source
     }
 
     internal static func librariesHeader(localization: LocalizationIdentifier) -> StrictString {

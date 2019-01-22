@@ -92,6 +92,24 @@ internal class DocumentationStatus {
         }), with: symbol, navigationPath: navigationPath, hint: hint)
     }
 
+    internal func reportMissingParameter(_ parameter: String, symbol: APIElement, navigationPath: [APIElement]) {
+        report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishCanada:
+                return "A parameter has no description:"
+            }
+        }), with: symbol, navigationPath: navigationPath)
+    }
+
+    internal func reportNonExistentParameter(_ parameter: String, symbol: APIElement, navigationPath: [APIElement]) {
+        report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishCanada:
+                return "A described parameter does not exist:"
+            }
+        }), with: symbol, navigationPath: navigationPath)
+    }
+
     internal func reportMissingVariableType(_ variable: VariableAPI, navigationPath: [APIElement]) {
         report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {

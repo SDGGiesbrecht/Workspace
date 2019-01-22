@@ -529,4 +529,19 @@ extension APIElement {
             return links
         }
     }
+
+    // MARK: - Parameters
+
+    func parameters() -> [String] {
+        switch self {
+        case .package, .library, .module, .type, .protocol, .extension, .case, .variable, .operator, .precedence, .conformance:
+            return []
+        case .initializer(let initializer):
+            return initializer.declaration.parameters.parameterList.map { $0.parameterName }
+        case .subscript(let `subscript`):
+            return `subscript`.declaration.indices.parameterList.map { $0.parameterName }
+        case .function(let function):
+            return function.declaration.signature.input.parameterList.map { $0.parameterName }
+        }
+    }
 }

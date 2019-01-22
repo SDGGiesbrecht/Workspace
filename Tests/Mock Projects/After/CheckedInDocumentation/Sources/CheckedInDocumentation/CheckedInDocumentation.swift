@@ -94,8 +94,8 @@ public struct Structure : Equatable {
     /// An initializer.
     ///
     /// - Parameters:
-    ///     - parameter: A parameter.
-    public init(label parameter: Bool) {}
+    ///     - parameterName: A parameter.
+    public init(label parameterName: Bool) {}
 
     /// A property.
     public var typeProperty: Bool = false

@@ -35,7 +35,7 @@ extension Parameter {
             result.append(first)
         }
 
-        if let type = self.optionalType {
+        if let type = optionalType {
             result.append(contentsOf: type.parameterNames())
         }
         return result

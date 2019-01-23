@@ -13,10 +13,19 @@
  */
 
 import SDGSwiftSource
+import WSGeneralImports
+
+import SDGSwiftSource
 
 extension TupleTypeElementSyntax : Parameter {
     var firstName: TokenSyntax? {
-        return name
+        if let name = self.name,
+            ¬name.source().isEmpty {
+            return name
+        } else {
+            // #workaround(SwiftSyntax 0.40200.0, Misidentified.)
+            return inOut
+        }
     }
     var optionalType: TypeSyntax? {
         return type

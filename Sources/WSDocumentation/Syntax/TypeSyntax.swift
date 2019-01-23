@@ -60,7 +60,6 @@ extension TypeSyntax {
             var result: [String] = []
             for element in function.arguments {
                 result.append(contentsOf: element.parameterNames())
-                result.append(contentsOf: element.type.parameterNames())
             }
             return result
         case let attributed as AttributedTypeSyntax:

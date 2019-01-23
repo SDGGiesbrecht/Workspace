@@ -18,7 +18,11 @@ public struct Lazy<Option> : Decodable, Encodable where Option : Codable {
     // MARK: - Initialization
 
     /// Creates a lazy option with a resolution algorithm.
-    public init(resolve: @escaping (WorkspaceConfiguration) -> Option) {
+    ///
+    /// - Parameters:
+    ///     - resolve: An closure which resolves the option.
+    ///     - configuration: The configuration from which to derive the result.
+    public init(resolve: @escaping (_ configuration: WorkspaceConfiguration) -> Option) {
         self.resolve = resolve
     }
 

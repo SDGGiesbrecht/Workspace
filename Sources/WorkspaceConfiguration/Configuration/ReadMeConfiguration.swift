@@ -236,6 +236,9 @@ public struct ReadMeConfiguration : Codable {
     }
 
     /// Constructs links to the read‐me in its other languages.
+    ///
+    /// - Parameters:
+    ///     - localizations: An array of localizations to include.
     public static func localizationLinks(_ localizations: [LocalizationIdentifier]) -> StrictString {
         var links: [StrictString] = []
         for targetLocalization in localizations {
@@ -254,6 +257,10 @@ public struct ReadMeConfiguration : Codable {
     /// Attempts to construct API links based on the specified configuration.
     ///
     /// The result will be `nil` if `documentationURL` is not specified or if the requested localization is not supported.
+    ///
+    /// - Parameters:
+    ///     - configuration: The configuration based on which the links should be constructed.
+    ///     - localization: The localization to use.
     public static func apiLink(for configuration: WorkspaceConfiguration, in localization: LocalizationIdentifier) -> StrictString? {
 
         guard let baseURL = configuration.documentation.documentationURL,
@@ -286,6 +293,10 @@ public struct ReadMeConfiguration : Codable {
     /// Attempts to construct a link to the related projects page.
     ///
     /// The result will be `nil` if there are no related projects or if the localization is not supported.
+    ///
+    /// - Parameters:
+    ///     - configuration: The configuration on which to base the links.
+    ///     - localization: The localization to use.
     public static func relatedProjectsLink(for configuration: WorkspaceConfiguration, in localization: LocalizationIdentifier) -> StrictString? {
 
         guard ¬configuration.documentation.relatedProjects.isEmpty,

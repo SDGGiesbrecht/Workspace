@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGCollections
 import WSGeneralImports
 
 import SDGSwiftSource
@@ -55,6 +56,9 @@ internal class SymbolPage : Page {
         content.append(SymbolPage.generateDescriptionSection(symbol: symbol, navigationPath: navigationPath, localization: localization, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks, status: status))
         content.append(SymbolPage.generateDeclarationSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks, status: status))
         content.append(SymbolPage.generateDiscussionSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks, status: status))
+        content.append(SymbolPage.generateParemetersSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status))
+        content.append(SymbolPage.generateThrowsSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status))
+        content.append(SymbolPage.generateReturnsSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status))
 
         content.append(SymbolPage.generateLibrariesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
 
@@ -189,15 +193,93 @@ internal class SymbolPage : Page {
         var sectionContents: [StrictString] = [
             HTMLElement("h2", contents: discussionHeading, inline: true).source
         ]
+
+        var empty = true
         for paragraph in discussion {
             let rendered = StrictString(paragraph.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
             if rendered.contains("<h1>".scalars) ∨ rendered.contains("<h2>".scalars) {
                 status.reportExcessiveHeading(symbol: symbol, navigationPath: navigationPath)
             }
+            if empty, ¬rendered.isWhitespace {
+                empty = false
+            }
             sectionContents.append(rendered)
         }
 
+        if empty {
+            return ""
+        }
         return HTMLElement("section", contents: sectionContents.joinedAsLines(), inline: false).source
+    }
+
+    private static func generateParemetersSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
+        let parameters = symbol.parameters()
+        let parameterDocumentation = symbol.documentation?.normalizedParameters ?? []
+
+        var validatedParameters: [(parameter: ExtendedTokenSyntax, description: [ExtendedSyntax])] = []
+        for index in parameters.indices {
+            let name = parameters[index]
+            if index ∉ parameterDocumentation.indices {
+                status.reportMissingParameter(name, symbol: symbol, navigationPath: navigationPath)
+                continue
+            }
+            let documentation = parameterDocumentation[index]
+            if name ≠ documentation.parameter.text {
+                status.reportMissingParameter(name, symbol: symbol, navigationPath: navigationPath)
+                continue
+            }
+            validatedParameters.append(documentation)
+        }
+        if parameterDocumentation.count > parameters.count {
+            for extra in parameterDocumentation[parameters.endIndex...] {
+                status.reportNonExistentParameter(extra.parameter.text, symbol: symbol, navigationPath: navigationPath)
+            }
+        }
+
+        guard ¬validatedParameters.isEmpty else {
+            return ""
+        }
+
+        let parametersHeading: StrictString = Callout.parameters.localizedText(localization.code)
+
+        var list: [HTMLElement] = []
+        for entry in validatedParameters {
+            let term = StrictString(entry.parameter.syntaxHighlightedHTML(inline: true, internalIdentifiers: [entry.parameter.text], symbolLinks: [:]))
+            list.append(HTMLElement("dt", contents: term, inline: true))
+
+            let description = entry.description.map({ $0.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks) })
+            list.append(HTMLElement("dd", contents: StrictString(description.joinedAsLines()), inline: true))
+        }
+
+        let section = [
+            HTMLElement("h2", contents: parametersHeading, inline: true).source,
+            HTMLElement("dl", contents: list.map({ $0.source }).joinedAsLines(), inline: true).source
+        ]
+        return HTMLElement("section", contents: section.joinedAsLines(), inline: false).source
+    }
+
+    private static func generateThrowsSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
+        guard let callout = symbol.documentation?.throwsCallout else {
+            return ""
+        }
+        let throwsHeading: StrictString = Callout.throws.localizedText(localization.code)
+        var section = [HTMLElement("h2", contents: throwsHeading, inline: true).source]
+        for contents in callout.contents {
+            section.append(StrictString(contents.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)))
+        }
+        return HTMLElement("section", contents: section.joinedAsLines(), inline: false).source
+    }
+
+    private static func generateReturnsSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
+        guard let callout = symbol.documentation?.returnsCallout else {
+            return ""
+        }
+        let returnsHeading: StrictString = Callout.returns.localizedText(localization.code)
+        var section = [HTMLElement("h2", contents: returnsHeading, inline: true).source]
+        for contents in callout.contents {
+            section.append(StrictString(contents.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)))
+        }
+        return HTMLElement("section", contents: section.joinedAsLines(), inline: false).source
     }
 
     internal static func librariesHeader(localization: LocalizationIdentifier) -> StrictString {

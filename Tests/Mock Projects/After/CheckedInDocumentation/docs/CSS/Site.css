@@ -66,6 +66,14 @@ li:not(:first-child) {
     margin-top: 0.7em;
 }
 
+dt {
+    padding-left: 1rem;
+    padding-top: 1.64706rem;
+}
+dt:first-child {
+    padding-top: 0;
+}
+
 .callout {
     border-left-width: calc((6 / 17) * 1rem);
     border-left-style: solid;

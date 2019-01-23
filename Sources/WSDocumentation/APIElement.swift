@@ -529,4 +529,21 @@ extension APIElement {
             return links
         }
     }
+
+    // MARK: - Parameters
+
+    func parameters() -> [String] {
+        let parameterList: FunctionParameterListSyntax
+        switch self {
+        case .package, .library, .module, .type, .protocol, .extension, .case, .variable, .operator, .precedence, .conformance:
+            return []
+        case .initializer(let initializer):
+            parameterList = initializer.declaration.parameters.parameterList
+        case .subscript(let `subscript`):
+            parameterList = `subscript`.declaration.indices.parameterList
+        case .function(let function):
+            parameterList = function.declaration.signature.input.parameterList
+        }
+        return Array(parameterList.lazy.map({ $0.parameterNames() }).joined())
+    }
 }

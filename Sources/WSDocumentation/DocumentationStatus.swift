@@ -39,13 +39,16 @@ internal class DocumentationStatus {
         output.print(problem.resolved().formattedAsError().separated())
     }
 
-    private func report(problem: UserFacing<StrictString, InterfaceLocalization>, with symbol: APIElement, navigationPath: [APIElement], hint: UserFacing<StrictString, InterfaceLocalization>? = nil) {
-        let symbolName: StrictString
+    private func report(problem: UserFacing<StrictString, InterfaceLocalization>, with symbol: APIElement, navigationPath: [APIElement], parameter: String? = nil, hint: UserFacing<StrictString, InterfaceLocalization>? = nil) {
+        var symbolName: StrictString
         switch symbol {
         case .package, .library, .module:
             symbolName = StrictString(symbol.name.source())
         case .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
             symbolName = navigationPath.dropFirst().map({ StrictString($0.name.source()) }).joined(separator: ".")
+        }
+        if let specificParameter = parameter {
+            symbolName += "." + StrictString(specificParameter)
         }
         report(problem: UserFacing({ localization in
             var result: [StrictString] = [
@@ -90,6 +93,24 @@ internal class DocumentationStatus {
                 return "A symbol has no description:"
             }
         }), with: symbol, navigationPath: navigationPath, hint: hint)
+    }
+
+    internal func reportMissingParameter(_ parameter: String, symbol: APIElement, navigationPath: [APIElement]) {
+        report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishCanada:
+                return "A parameter has no description:"
+            }
+        }), with: symbol, navigationPath: navigationPath, parameter: parameter)
+    }
+
+    internal func reportNonExistentParameter(_ parameter: String, symbol: APIElement, navigationPath: [APIElement]) {
+        report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishCanada:
+                return "A described parameter does not exist:"
+            }
+        }), with: symbol, navigationPath: navigationPath, parameter: parameter)
     }
 
     internal func reportMissingVariableType(_ variable: VariableAPI, navigationPath: [APIElement]) {

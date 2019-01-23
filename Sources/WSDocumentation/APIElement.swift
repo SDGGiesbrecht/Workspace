@@ -533,15 +533,17 @@ extension APIElement {
     // MARK: - Parameters
 
     func parameters() -> [String] {
+        let parameterList: FunctionParameterListSyntax
         switch self {
         case .package, .library, .module, .type, .protocol, .extension, .case, .variable, .operator, .precedence, .conformance:
             return []
         case .initializer(let initializer):
-            return initializer.declaration.parameters.parameterList.map { $0.parameterName }
+            parameterList = initializer.declaration.parameters.parameterList
         case .subscript(let `subscript`):
-            return `subscript`.declaration.indices.parameterList.map { $0.parameterName }
+            parameterList = `subscript`.declaration.indices.parameterList
         case .function(let function):
-            return function.declaration.signature.input.parameterList.map { $0.parameterName }
+            parameterList = function.declaration.signature.input.parameterList
         }
+        return Array(parameterList.lazy.map({ $0.parameterNames() }).joined())
     }
 }

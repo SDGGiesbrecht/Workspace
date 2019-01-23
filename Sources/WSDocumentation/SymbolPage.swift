@@ -253,7 +253,7 @@ internal class SymbolPage : Page {
 
         let section = [
             HTMLElement("h2", contents: parametersHeading, inline: true).source,
-            HTMLElement("dl", contents: list.map({ $0.source }).joinedAsLines(), inline: true).source,
+            HTMLElement("dl", contents: list.map({ $0.source }).joinedAsLines(), inline: true).source
         ]
         return HTMLElement("section", contents: section.joinedAsLines(), inline: false).source
     }

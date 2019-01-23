@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import WSGeneralImports
 
 import SDGSwiftSource
@@ -22,8 +23,10 @@ extension TypeSyntax {
         switch self {
         case let simple as SimpleTypeIdentifierSyntax:
             var result: [String] = []
-            if let genericArguments = simple.genericArgumentClause?.arguments {
-                for argument in genericArguments {
+            if let genericArgumentClause = simple.genericArgumentClause,
+                // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index.)
+                genericArgumentClause.source() ≠ "" {
+                for argument in genericArgumentClause.arguments {
                     result.append(contentsOf: argument.argumentType.parameterNames())
                 }
             }

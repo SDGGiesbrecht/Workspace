@@ -176,6 +176,18 @@ precedencegroup Precedence {}
 ///     - tuple: A tuple parameter.
 ///     - nestedInTuple: A nested parameter.
 ///     - alsoNestedInTuple: A nested parameter.
+public func demonstrateParameters(
+    simple: Simple<(_ nestedInSimple: Bool) -> Void>,
+    metatype: Metatype<(_ nestedInMetatype: Bool) -> Void>.Type,
+    member: BaseType<(_ nestedInMember: Bool) -> Void>.Member,
+    optional: Optional<(_ nestedInOptional: Bool) -> Void>?,
+    unwrapped: Unwrapped<(_ nestedInUnwrapped: Bool) -> Void>!,
+    tuple: (nestedInTuple: Bool, alsoNestedInTuple: Bool)
+    ) {}
+
+/// ...
+///
+/// - Parameters:
 ///     - composition: A composition parameter.
 ///     - nestedInComposition: A nested parameter.
 ///     - array: An array parameter.
@@ -187,13 +199,7 @@ precedencegroup Precedence {}
 ///     - nestedInFunction: A nested parameter.
 ///     - attributed: An attributed parameter.
 ///     - nestedInAttributed: A nested parameter.
-public func demonstrateParameters(
-    simple: Simple<(_ nestedInSimple: Bool) -> Void>,
-    metatype: Metatype<(_ nestedInMetatype: Bool) -> Void>.Type,
-    member: BaseType<(_ nestedInMember: Bool) -> Void>.Member,
-    optional: Optional<(_ nestedInOptional: Bool) -> Void>?,
-    unwrapped: Unwrapped<(_ nestedInUnwrapped: Bool) -> Void>!,
-    tuple: (nestedInTuple: Bool, alsoNestedInTuple: Bool),
+public func demonstrateMoreParameters(
     composition: Composition & Simple<(_ nestedInComposition: Bool) -> Void>,
     array: [Simple<(_ nestedInArray: Bool) -> Void>],
     dictionary: [Simple<(_ nestedInDictionaryKey: Bool) -> Void>: Simple<(_ nestedInDictionaryValue: Bool) -> Void>],

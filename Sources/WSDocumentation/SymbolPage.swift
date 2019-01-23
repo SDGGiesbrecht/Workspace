@@ -91,6 +91,7 @@ internal class SymbolPage : Page {
                    navigationPath: SymbolPage.generateNavigationPath(localization: localization, pathToSiteRoot: pathToSiteRoot, navigationPath: navigationPath),
                    packageImport: packageImport,
                    index: index,
+                   mainModuleGroup: "<div class=\u{22}module‐group‐header\u{22}>...</div>",
                    symbolType: symbol.symbolType(localization: localization),
                    compilationConditions: SymbolPage.generateCompilationConditions(symbol: symbol),
                    constraints: SymbolPage.generateConstraints(symbol: symbol, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks),

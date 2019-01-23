@@ -72,6 +72,7 @@ internal class Page {
                   navigationPath: StrictString,
                   packageImport: StrictString?,
                   index: StrictString,
+                  mainModuleGroup: StrictString,
                   symbolType: StrictString?,
                   compilationConditions: StrictString?,
                   constraints: StrictString?,
@@ -89,6 +90,8 @@ internal class Page {
 
         mutable.replaceMatches(for: "[*index*]", with: index)
         mutable.replaceMatches(for: "[*site root*]".scalars, with: HTML.escapeAttribute(pathToSiteRoot))
+
+        mutable.replaceMatches(for: "[*module group header*]".scalars, with: mainModuleGroup)
 
         let symbolTypeLabel: StrictString
         if let specified = symbolType {

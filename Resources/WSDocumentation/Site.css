@@ -178,7 +178,12 @@ main {
 }
 .module‐group‐header {
     transform: rotate(180deg);
-    writing-mode: vertical-lr;
+    writing-mode: vertical-rl;
+}
+.module‐group‐header .swift.blockquote {
+    /* Rotates margins. */
+    margin: 0;
+    padding: 0.94118em 0.35294em;
 }
 
 .title {

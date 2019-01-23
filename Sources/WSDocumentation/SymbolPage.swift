@@ -91,7 +91,7 @@ internal class SymbolPage : Page {
                    navigationPath: SymbolPage.generateNavigationPath(localization: localization, pathToSiteRoot: pathToSiteRoot, navigationPath: navigationPath),
                    packageImport: packageImport,
                    index: index,
-                   mainModuleGroup: "<div class=\u{22}module‐group‐header\u{22}>...</div>",
+                   mainModuleGroup: SymbolPage.generateImportStatement(for: symbol, localization: localization, pathToSiteRoot: pathToSiteRoot),
                    symbolType: symbol.symbolType(localization: localization),
                    compilationConditions: SymbolPage.generateCompilationConditions(symbol: symbol),
                    constraints: SymbolPage.generateConstraints(symbol: symbol, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks),
@@ -115,6 +115,37 @@ internal class SymbolPage : Page {
             }
         }
         return navigationPathLinks.joined(separator: "\n")
+    }
+
+    private static func generateImportStatement(for symbol: APIElement, localization: LocalizationIdentifier, pathToSiteRoot: StrictString) -> StrictString {
+
+        guard let module = symbol.homeModule.pointee else {
+            return ""
+        }
+        let moduleName = module.name.text
+
+        let importStatement = SyntaxFactory.makeImportDecl(
+            attributes: nil,
+            modifiers: nil,
+            importTok: SyntaxFactory.makeToken(.importKeyword, trailingTrivia: .spaces(1)),
+            importKind: nil,
+            path: SyntaxFactory.makeAccessPath([
+                SyntaxFactory.makeAccessPathComponent(
+                    name: SyntaxFactory.makeToken(.identifier(moduleName)),
+                    trailingDot: nil)
+                ]))
+
+        var links: [String: String] = [:]
+        if let link = APIElement.module(module).relativePagePath[localization] {
+            links[moduleName] = String(pathToSiteRoot + link)
+        }
+
+        let source = importStatement.syntaxHighlightedHTML(
+            inline: false,
+            internalIdentifiers: [moduleName],
+            symbolLinks: links)
+
+        return HTMLElement("div", attributes: ["class": "module‐group‐header"], contents: StrictString(source), inline: false).source
     }
 
     private static func generateCompilationConditions(symbol: APIElement) -> StrictString? {

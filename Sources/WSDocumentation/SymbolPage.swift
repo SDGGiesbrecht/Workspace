@@ -145,6 +145,7 @@ internal class SymbolPage : Page {
             internalIdentifiers: [moduleName],
             symbolLinks: links)
 
+        #warning("Needs refactoring.")
         return HTMLElement("div", attributes: ["class": "module‐group‐header"], contents: StrictString(source), inline: false).source
     }
 

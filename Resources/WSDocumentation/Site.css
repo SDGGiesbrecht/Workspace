@@ -165,25 +165,8 @@ main {
     height: 100%;
     overflow-y: auto;
 }
-.module‐group {
-    display: flex;
-}
 .main‐text‐column {
-    flex-grow: 1;
     padding: 0 calc((22 / 17) * 1rem);
-}
-
-.module‐group‐header‐bar {
-    width: calc((52 / 17) * 1rem);
-}
-.module‐group‐header {
-    transform: rotate(180deg);
-    writing-mode: vertical-rl;
-}
-.module‐group‐header .swift.blockquote {
-    /* Rotates margins. */
-    margin: 0;
-    padding: 0.94118em 0.35294em;
 }
 
 .title {
@@ -264,10 +247,6 @@ blockquote {
 }
 .index a.heading {
     color: #333;
-}
-
-.module‐group‐header‐bar:not(:first-child) {
-    border-top: 1px solid #D6D6D6;
 }
 
 .symbol‐type {

@@ -87,6 +87,8 @@ internal class SymbolPage : Page {
             break
         }
 
+        var extensions: [StrictString] = []
+
         super.init(localization: localization,
                    pathToSiteRoot: pathToSiteRoot,
                    navigationPath: SymbolPage.generateNavigationPath(localization: localization, pathToSiteRoot: pathToSiteRoot, navigationPath: navigationPath),
@@ -97,7 +99,9 @@ internal class SymbolPage : Page {
                    compilationConditions: SymbolPage.generateCompilationConditions(symbol: symbol),
                    constraints: SymbolPage.generateConstraints(symbol: symbol, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks),
                    title: StrictString(symbol.name.source()),
-                   content: content.joinedAsLines(), copyright: copyright)
+                   content: content.joinedAsLines(),
+                   extensions: extensions.joinedAsLines(),
+                   copyright: copyright)
     }
 
     // MARK: - Generation

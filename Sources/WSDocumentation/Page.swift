@@ -78,6 +78,7 @@ internal class Page {
                   constraints: StrictString?,
                   title: StrictString,
                   content: StrictString,
+                  extensions: StrictString,
                   copyright: StrictString) {
 
         var mutable = Page.template
@@ -109,6 +110,9 @@ internal class Page {
         mutable.replaceMatches(for: "[*workspace*]", with: Page.watermark(localization: localization))
 
         mutable.replaceMatches(for: "[*content*]", with: content)
+
+        mutable.replaceMatches(for: "[*extensions*]".scalars, with: extensions)
+
         contents = mutable
     }
 

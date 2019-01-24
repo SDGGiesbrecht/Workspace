@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<!--
+
+ -->
+
+<html dir="ltr" lang="en-CA">
+ <head>
+  <meta charset="utf&#x002D;8">
+  <title>ProofreadingRule</title>
+  <link rel="stylesheet" href="../../CSS/Root.css">
+  <link rel="stylesheet" href="../../CSS/Swift.css">
+  <link rel="stylesheet" href="../../CSS/Site.css">
+  <script src="../../JavaScript/Site.js"></script>
+ </head>
+ <body>
+  <header class="navigation‐bar">
+   <nav class="navigation‐bar">
+    <div class="navigation‐path" dir="ltr">
+
+<a href="../../🇨🇦EN/Workspace.html">Workspace</a>
+<span>ProofreadingRule</span>
+
+    </div>
+    <div>
+     <span class="swift blockquote"><span class="punctuation">.</span><span class="external identifier">package</span><span class="punctuation">(</span><span class="external identifier">url</span><span class="punctuation">:</span> <span class="string"><span class="punctuation">"</span><a href="https://github.com/SDGGiesbrecht/Workspace"><span class="text">https://github.com/SDGGiesbrecht/Workspace</span></a><span class="punctuation">"</span></span><span class="punctuation">,</span> <span class="punctuation">.</span><span class="external identifier">upToNextMinor</span><span class="punctuation">(</span><span class="external identifier">from</span><span class="punctuation">:</span> <span class="string"><span class="punctuation">"</span><span class="text">0.16.0</span><span class="punctuation">"</span></span><span class="punctuation">)</span><span class="punctuation">)</span></span>
+    </div>
+   </nav>
+  </header>
+  <div class="content‐container">
+   <header class="index">
+    <nav class="index">
+
+<div>
+<a class="heading" onclick="toggleIndexSectionVisibility(this)">Package</a>
+<a href="../../🇨🇦EN/Workspace.html">
+Workspace
+</a>
+</div>
+<div>
+<a class="heading" onclick="toggleIndexSectionVisibility(this)">Library Products</a>
+<a href="../../🇨🇦EN/Libraries/WorkspaceConfiguration.html">
+WorkspaceConfiguration
+</a>
+</div>
+<div>
+<a class="heading" onclick="toggleIndexSectionVisibility(this)">Modules</a>
+<a href="../../🇨🇦EN/Modules/WorkspaceConfiguration.html">
+WorkspaceConfiguration
+</a>
+</div>
+<div>
+<a class="heading" onclick="toggleIndexSectionVisibility(this)">Types</a>
+<a href="../../🇨🇦EN/Types/APIDocumentationConfiguration.html">
+APIDocumentationConfiguration
+</a>
+<a href="../../🇨🇦EN/Types/ContinuousIntegrationConfiguration.html">
+ContinuousIntegrationConfiguration
+</a>
+<a href="../../🇨🇦EN/Types/DocumentationConfiguration.html">
+DocumentationConfiguration
+</a>
+<a href="../../🇨🇦EN/Types/DocumentationInheritance.html">
+DocumentationInheritance
+</a>
+<a href="../../🇨🇦EN/Types/Examples.html">
+Examples
+</a>
+<a href="../../🇨🇦EN/Types/FileHeaderConfiguration.html">
+FileHeaderConfiguration
+</a>
+<a href="../../🇨🇦EN/Types/GitConfiguration.html">
+GitConfiguration
+</a>
+<a href="../../🇨🇦EN/Types/GitHubConfiguration.html">
+GitHubConfiguration
+</a>
+<a href="../../🇨🇦EN/Types/Lazy%3cOption%3e.html">
+Lazy&#x003C;Option>
+</a>
+<a href="../../🇨🇦EN/Types/Licence.html">
+Licence
+</a>
+<a href="../../🇨🇦EN/Types/LicenceConfiguration.html">
+LicenceConfiguration
+</a>
+<a href="../../🇨🇦EN/Types/Linux.html">
+Linux
+</a>
+<a href="../../🇨🇦EN/Types/LocalizationIdentifier.html">
+LocalizationIdentifier
+</a>
+<a href="../../🇨🇦EN/Types/Markdown.html">
+Markdown
+</a>
+<a href="../../🇨🇦EN/Types/OperatingSystem.html">
+OperatingSystem
+</a>
+<a href="../../🇨🇦EN/Types/PackageManifest.html">
+PackageManifest
+</a>
+<a href="../../🇨🇦EN/Types/PackageResources.html">
+PackageResources
+</a>
+<a href="../../🇨🇦EN/Types/ProofreadingConfiguration.html">
+ProofreadingConfiguration
+</a>
+<a href="../../🇨🇦EN/Types/ProofreadingRule.html">
+ProofreadingRule
+</a>
+<a href="../../🇨🇦EN/Types/Quotation.html">
+Quotation
+</a>
+<a href="../../🇨🇦EN/Types/ReadMeConfiguration.html">
+ReadMeConfiguration
+</a>
+<a href="../../🇨🇦EN/Types/RelatedProjectEntry.html">
+RelatedProjectEntry
+</a>
+<a href="../../🇨🇦EN/Types/RepositoryConfiguration.html">
+RepositoryConfiguration
+</a>
+<a href="../../🇨🇦EN/Types/TestCoverageExemptionToken.html">
+TestCoverageExemptionToken
+</a>
+<a href="../../🇨🇦EN/Types/TestingConfiguration.html">
+TestingConfiguration
+</a>
+<a href="../../🇨🇦EN/Types/WorkspaceConfiguration.html">
+WorkspaceConfiguration
+</a>
+<a href="../../🇨🇦EN/Types/WorkspaceContext.html">
+WorkspaceContext
+</a>
+<a href="../../🇨🇦EN/Types/XcodeConfiguration.html">
+XcodeConfiguration
+</a>
+</div>
+<div>
+<a class="heading" onclick="toggleIndexSectionVisibility(this)">Extensions</a>
+<a href="../../🇨🇦EN/Extensions/Array.html">
+Array
+</a>
+<a href="../../🇨🇦EN/Extensions/Dictionary.html">
+Dictionary
+</a>
+</div>
+
+    </nav>
+   </header>
+   <main>
+
+<div class="import‐header">
+<code class="swift blockquote"><span class="keyword">import</span> <a href="../../🇨🇦EN/Modules/WorkspaceConfiguration.html"><span class="internal identifier">WorkspaceConfiguration</span></a></code>
+<code class="swift blockquote"><span class="punctuation">.</span><span class="external identifier">product</span><span class="punctuation">(</span><span class="external identifier">name</span><span class="punctuation">:</span> <span class="string"><span class="string‐punctuation">"</span><span class="text">WorkspaceConfiguration</span><span class="string‐punctuation">"</span></span><span class="punctuation">,</span> <span class="external identifier">package</span><span class="punctuation">:</span> <span class="string"><span class="string‐punctuation">"</span><span class="text">Workspace</span><span class="string‐punctuation">"</span></span><span class="punctuation">)</span></code>
+</div>
+
+    <div class="main‐text‐column">
+     <div class="title">
+      <div class="symbol‐type">Enumeration</div>
+      
+      <h1>ProofreadingRule</h1>
+      
+     </div>
+
+<div class="description">
+<p>A proofreading rule.</p>
+</div>
+<section class="declaration">
+<h2>Declaration</h2>
+<code class="swift blockquote"><span class="keyword">enum</span> <a href="../../🇨🇦EN/Types/ProofreadingRule.html"><span class="internal identifier">ProofreadingRule</span></a></code>
+</section>
+
+
+
+
+
+
+<section>
+<h2>Cases</h2>
+<div class="child">
+<a href="../../🇨🇦EN/Types/ProofreadingRule/Cases/autoindentResilience.html"><code class="swift"><span class="internal identifier">autoindentResilience</span></code></a>
+<p>Prohibits documentation comments vulnerable to auto‐indent.</p>
+</div>
+<div class="child">
+<a href="../../🇨🇦EN/Types/ProofreadingRule/Cases/braceSpacing.html"><code class="swift"><span class="internal identifier">braceSpacing</span></code></a>
+<p>Enforces consistent spacing around braces.</p>
+</div>
+<div class="child">
+<a href="../../🇨🇦EN/Types/ProofreadingRule/Cases/calloutCasing.html"><code class="swift"><span class="internal identifier">calloutCasing</span></code></a>
+<p>Requires documentation callouts to be capitalized.</p>
+</div>
+<div class="child">
+<a href="../../🇨🇦EN/Types/ProofreadingRule/Cases/colonSpacing.html"><code class="swift"><span class="internal identifier">colonSpacing</span></code></a>
+<p>Enforces consistent spacing around colons.</p>
+</div>
+<div class="child">
+<a href="../../🇨🇦EN/Types/ProofreadingRule/Cases/compatibilityCharacters.html"><code class="swift"><span class="internal identifier">compatibilityCharacters</span></code></a>
+<p>Prohibits compatiblity characters.</p>
+</div>
+<div class="child">
+<a href="../../🇨🇦EN/Types/ProofreadingRule/Cases/deprecatedConditionDocumentation.html"><code class="swift"><span class="internal identifier">deprecatedConditionDocumentation</span></code></a>
+<p>Catches deprecated condition documentation.</p>
+</div>
+<div class="child">
+<a href="../../🇨🇦EN/Types/ProofreadingRule/Cases/deprecatedConfiguration.html"><code class="swift"><span class="internal identifier">deprecatedConfiguration</span></code></a>
+<p>Catches deprecated configurations.</p>
+</div>
+<div class="child">
+<a href="../../🇨🇦EN/Types/ProofreadingRule/Cases/deprecatedExampleDirectives.html"><code class="swift"><span class="internal identifier">deprecatedExampleDirectives</span></code></a>
+<p>Catches deprecated example directives.</p>
+</div>
+<div class="child">
+<a href="../../🇨🇦EN/Types/ProofreadingRule/Cases/deprecatedGitManagement.html"><code class="swift"><span class="internal identifier">deprecatedGitManagement</span></code></a>
+<p>Catches deprecated Git management notices.</p>
+</div>
+<div class="child">
+<a href="../../🇨🇦EN/Types/ProofreadingRule/Cases/deprecatedInheritanceDirectives.html"><code class="swift"><span class="internal identifier">deprecatedInheritanceDirectives</span></code></a>
+<p>Catches deprecated documentation directives.</p>
+</div>
+<div class="child">
+<a href="../../🇨🇦EN/Types/ProofreadingRule/Cases/deprecatedTestExemptions.html"><code class="swift"><span class="internal identifier">deprecatedTestExemptions</span></code></a>
+<p>Catches deprecated test exemptions.</p>
+</div>
+<div class="child">
+<a href="../../🇨🇦EN/Types/ProofreadingRule/Cases/deprecatedWarnings.html"><code class="swift"><span class="internal identifier">deprecatedWarnings</span></code></a>
+<p>Catches deprecated warnings.</p>
+</div>
+<div class="child">
+<a href="../../🇨🇦EN/Types/ProofreadingRule/Cases/manualWarnings.html"><code class="swift"><span class="internal identifier">manualWarnings</span></code></a>
+<p>Catches generic manual warnings.</p>
+</div>
+<div class="child">
+<a href="../../🇨🇦EN/Types/ProofreadingRule/Cases/marks.html"><code class="swift"><span class="internal identifier">marks</span></code></a>
+<p>Catches broken syntax in source code headings.</p>
+</div>
+<div class="child">
+<a href="../../🇨🇦EN/Types/ProofreadingRule/Cases/missingImplementation.html"><code class="swift"><span class="internal identifier">missingImplementation</span></code></a>
+<p>Catches unimplemented code paths marked with SDGCornerstone functions.</p>
+</div>
+<div class="child">
+<a href="../../🇨🇦EN/Types/ProofreadingRule/Cases/parameterGrouping.html"><code class="swift"><span class="internal identifier">parameterGrouping</span></code></a>
+<p>Requires documented parameters to be grouped.</p>
+</div>
+<div class="child">
+<a href="../../🇨🇦EN/Types/ProofreadingRule/Cases/syntaxColouring.html"><code class="swift"><span class="internal identifier">syntaxColouring</span></code></a>
+<p>Requires Markdown code blocks to specify a language.</p>
+</div>
+<div class="child">
+<a href="../../🇨🇦EN/Types/ProofreadingRule/Cases/unicode.html"><code class="swift"><span class="internal identifier">unicode</span></code></a>
+<p>Prohibits typewriter workarounds when proper Unicode characters are available.</p>
+</div>
+<div class="child">
+<a href="../../🇨🇦EN/Types/ProofreadingRule/Cases/workaroundReminders.html"><code class="swift"><span class="internal identifier">workaroundReminders</span></code></a>
+<p>Catches outdated workaround reminders.</p>
+</div>
+</section>
+<section>
+<h2>Nested Types</h2>
+<div class="child">
+<a href="../../🇨🇦EN/Types/ProofreadingRule/Types/Category.html"><code class="swift"><span class="internal identifier">Category</span></code></a>
+<p>A category of proofreading rule.</p>
+</div>
+</section>
+
+
+
+<section>
+<h2>Properties</h2>
+<div class="child">
+<a href="../../🇨🇦EN/Types/ProofreadingRule/Properties/category.html"><code class="swift"><span class="internal identifier">category</span></code></a>
+<p>The category the rule belongs to.</p>
+</div>
+</section>
+
+
+
+    </div>
+
+
+
+   </main>
+  </div>
+  <footer dir="ltr">
+   <span>
+Copyright ©2017–2019 Jeremy David Giesbrecht and the Workspace project contributors. All rights reserved.
+</span>
+   <span dir="ltr" lang="en-CA">Generated with <a href="https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Workspace.html">Workspace</a>. <span lang="la-IT">Soli Deo gloria.</span></span>
+  </footer>
+  <script>contractIndex();</script>
+ </body>
+</html>

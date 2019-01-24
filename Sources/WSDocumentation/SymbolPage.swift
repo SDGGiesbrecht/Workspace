@@ -87,7 +87,8 @@ internal class SymbolPage : Page {
             break
         }
 
-        var extensions: [StrictString] = []
+        let extensions: [StrictString] = []
+        // #workaround(Not used yet.)
 
         super.init(localization: localization,
                    pathToSiteRoot: pathToSiteRoot,

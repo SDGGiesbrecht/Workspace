@@ -97,7 +97,7 @@ dt:first-child {
 
 /* Specific Layout */
 
-header.navigation‐bar {
+header.navigation‐bar, div.import‐header {
     box-sizing: content-box;
     height: calc((52 / 17) * 1rem);
     padding: 0 calc((22 / 17) * 1rem);
@@ -247,6 +247,10 @@ blockquote {
 }
 .index a.heading {
     color: #333;
+}
+
+.import‐header {
+    background-color: #F2F2F2;
 }
 
 .symbol‐type {

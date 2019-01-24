@@ -91,7 +91,7 @@ internal class SymbolPage : Page {
                    navigationPath: SymbolPage.generateNavigationPath(localization: localization, pathToSiteRoot: pathToSiteRoot, navigationPath: navigationPath),
                    packageImport: packageImport,
                    index: index,
-                   mainModuleGroup: SymbolPage.generateImportStatement(for: symbol, localization: localization, pathToSiteRoot: pathToSiteRoot),
+                   symbolImports: SymbolPage.generateImportStatement(for: symbol, localization: localization, pathToSiteRoot: pathToSiteRoot),
                    symbolType: symbol.symbolType(localization: localization),
                    compilationConditions: SymbolPage.generateCompilationConditions(symbol: symbol),
                    constraints: SymbolPage.generateConstraints(symbol: symbol, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks),
@@ -145,8 +145,7 @@ internal class SymbolPage : Page {
             internalIdentifiers: [moduleName],
             symbolLinks: links)
 
-        #warning("Needs refactoring.")
-        return HTMLElement("div", attributes: ["class": "module‐group‐header"], contents: StrictString(source), inline: false).source
+        return HTMLElement("div", attributes: ["class": "import‐header"], contents: StrictString(source), inline: false).source
     }
 
     private static func generateCompilationConditions(symbol: APIElement) -> StrictString? {

@@ -250,6 +250,7 @@ extension APIElement {
         case operators
         case precedenceGroups
         case homeModule
+        case homeProduct
     }
     internal var extendedProperties: [ExtendedPropertyKey: Any] {
         get {
@@ -270,11 +271,20 @@ extension APIElement {
     }
 
     internal var homeModule: Weak<ModuleAPI> {
-        get { // @exempt(from: tests) #workaround(Not used yet.)
+        get {
             return (extendedProperties[.homeModule] as? Weak<ModuleAPI>) ?? Weak<ModuleAPI>(nil)
         }
         nonmutating set {
             extendedProperties[.homeModule] = newValue
+        }
+    }
+
+    internal var homeProduct: Weak<LibraryAPI> {
+        get {
+            return (extendedProperties[.homeProduct] as? Weak<LibraryAPI>) ?? Weak<LibraryAPI>(nil)
+        }
+        nonmutating set {
+            extendedProperties[.homeProduct] = newValue
         }
     }
 

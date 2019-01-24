@@ -169,6 +169,11 @@ main {
     height: 100%;
     overflow-y: auto;
 }
+.import‐header {
+    display: flex;
+     align-items: center;
+     justify-content: flex-end;
+}
 .main‐text‐column {
     padding: 0 calc((22 / 17) * 1rem);
 }
@@ -337,7 +342,7 @@ a:hover {
 
 /* Specific Fonts */
 
-.navigation‐bar {
+.navigation‐bar, .import‐header {
     font-size: calc((15 / 17) * 1rem);
     letter-spacing: -0.014em;
     line-height: 1.26667;

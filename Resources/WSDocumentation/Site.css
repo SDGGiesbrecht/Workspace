@@ -176,6 +176,10 @@ main {
     display: flex;
      align-items: center;
      justify-content: flex-end;
+
+     position: -webkit-sticky;
+    position: sticky;
+    top: 0;
 }
 .main‐text‐column {
     padding: 0 calc((22 / 17) * 1rem);

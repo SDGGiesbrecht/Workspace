@@ -141,6 +141,9 @@ nav.navigation‐bar {
 header.navigation‐bar .swift.blockquote, .import‐header .swift.blockquote {
     margin: 0;
 }
+.import‐header .swift.blockquote:not(:first-child) {
+    margin-left: calc((22 / 17) * 1rem)
+}
 
 .content‐container {
     height: calc(100vh - calc((52 / 17) * 1rem) - calc((45 / 17) * 1rem));

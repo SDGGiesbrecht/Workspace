@@ -392,8 +392,10 @@ internal class SymbolPage : Page {
         return extensions.map({ (`extension`: ExtensionAPI) -> StrictString in
             var result: [StrictString] = []
             result.append(generateImportStatement(for: APIElement.extension(`extension`), package: package, localization: localization, pathToSiteRoot: pathToSiteRoot))
-            result.append(contentsOf: generateMembersSections(localization: localization, symbol: APIElement.extension(`extension`), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
-            return HTMLElement("div", attributes: ["class": "main‐text‐column"], contents: result.joinedAsLines(), inline: false).source
+
+            let sections = generateMembersSections(localization: localization, symbol: APIElement.extension(`extension`), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
+            result.append(HTMLElement("div", attributes: ["class": "main‐text‐column"], contents: sections.joinedAsLines(), inline: false).source)
+            return result.joinedAsLines()
         })
     }
 

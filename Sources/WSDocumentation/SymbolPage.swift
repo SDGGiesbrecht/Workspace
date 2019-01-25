@@ -149,7 +149,7 @@ internal class SymbolPage : Page {
                     label: SyntaxFactory.makeToken(.identifier("package")),
                     colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
                     expression: SyntaxFactory.makeStringLiteralExpr(packageName),
-                    trailingComma: nil),
+                    trailingComma: nil)
                 ]),
             rightParen: SyntaxFactory.makeToken(.rightParen),
             trailingClosure: nil)

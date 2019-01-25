@@ -87,8 +87,7 @@ internal class SymbolPage : Page {
             break
         }
 
-        let extensions: [StrictString] = []
-        // #workaround(Not used yet.)
+        let extensions: [StrictString] = SymbolPage.generateOtherModuleExtensionsSections(symbol: symbol, package: package)
 
         super.init(localization: localization,
                    pathToSiteRoot: pathToSiteRoot,
@@ -360,6 +359,30 @@ internal class SymbolPage : Page {
             section.append(StrictString(contents.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)))
         }
         return HTMLElement("section", contents: section.joinedAsLines(), inline: false).source
+    }
+
+    private static func generateOtherModuleExtensionsSections(symbol: APIElement, package: PackageAPI) -> [StrictString] {
+        var extensions: [ExtensionAPI] = []
+        for `extension` in package.extensions {
+            switch symbol {
+            case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
+                break
+            case .type(let type):
+                if `extension`.isExtension(of: type) {
+                    extensions.append(`extension`)
+                }
+            case .protocol(let `protocol`):
+                if `extension`.isExtension(of: `protocol`) {
+                    extensions.append(`extension`)
+                }
+            case .extension(let `extension`):
+                if `extension`.extendsSameType(as: `extension`) {
+                    extensions.append(`extension`)
+                }
+            }
+        }
+
+        return []
     }
 
     internal static func librariesHeader(localization: LocalizationIdentifier) -> StrictString {

@@ -87,7 +87,7 @@ dt:first-child {
 
 /* Specific Layout */
 
-header.navigation‐bar {
+header.navigation‐bar, .import‐header {
     box-sizing: content-box;
     height: calc((52 / 17) * 1rem);
     padding: 0 calc((22 / 17) * 1rem);
@@ -128,6 +128,13 @@ nav.navigation‐bar {
     display: none;
 }
 
+header.navigation‐bar .swift.blockquote, .import‐header .swift.blockquote {
+    margin: 0;
+}
+.import‐header .swift.blockquote:not(:first-child) {
+    margin-left: calc((22 / 17) * 1rem)
+}
+
 .content‐container {
     height: calc(100vh - calc((52 / 17) * 1rem) - calc((45 / 17) * 1rem));
     width: 100%;
@@ -154,6 +161,15 @@ main {
     flex-grow: 1;
     height: 100%;
     overflow-y: auto;
+}
+.import‐header {
+    display: flex;
+     align-items: center;
+     justify-content: flex-end;
+
+     position: -webkit-sticky;
+    position: sticky;
+    top: 0;
 }
 .main‐text‐column {
     padding: 0 calc((22 / 17) * 1rem);
@@ -239,6 +255,10 @@ blockquote {
     color: #333;
 }
 
+.import‐header {
+    background-color: #F2F2F2;
+}
+
 .symbol‐type {
     color: #666;
 }
@@ -319,7 +339,7 @@ a:hover {
 
 /* Specific Fonts */
 
-.navigation‐bar {
+.navigation‐bar, .import‐header {
     font-size: calc((15 / 17) * 1rem);
     letter-spacing: -0.014em;
     line-height: 1.26667;

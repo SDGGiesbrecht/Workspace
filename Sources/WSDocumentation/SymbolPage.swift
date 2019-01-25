@@ -87,7 +87,7 @@ internal class SymbolPage : Page {
             break
         }
 
-        let extensions: [StrictString] = SymbolPage.generateOtherModuleExtensionsSections(symbol: symbol, package: package)
+        let extensions: [StrictString] = SymbolPage.generateOtherModuleExtensionsSections(symbol: symbol, package: package, localization: localization, pathToSiteRoot: pathToSiteRoot)
 
         super.init(localization: localization,
                    pathToSiteRoot: pathToSiteRoot,
@@ -361,7 +361,7 @@ internal class SymbolPage : Page {
         return HTMLElement("section", contents: section.joinedAsLines(), inline: false).source
     }
 
-    private static func generateOtherModuleExtensionsSections(symbol: APIElement, package: PackageAPI) -> [StrictString] {
+    private static func generateOtherModuleExtensionsSections(symbol: APIElement, package: PackageAPI, localization: LocalizationIdentifier, pathToSiteRoot: StrictString) -> [StrictString] {
         var extensions: [ExtensionAPI] = []
         for `extension` in package.extensions {
             switch symbol {
@@ -382,7 +382,11 @@ internal class SymbolPage : Page {
             }
         }
 
-        return []
+        return Array(extensions.map({ (`extension`: ExtensionAPI) -> [StrictString] in
+            var result: [StrictString] = []
+            result.append(generateImportStatement(for: APIElement.extension(`extension`), package: package, localization: localization, pathToSiteRoot: pathToSiteRoot))
+            return result
+        }).joined())
     }
 
     internal static func librariesHeader(localization: LocalizationIdentifier) -> StrictString {

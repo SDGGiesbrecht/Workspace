@@ -569,7 +569,7 @@ internal class SymbolPage : Page {
                 heading = "Precedence Groups"
             }
         } else {
-            heading = "precedence"
+            heading = "precedencegroup"
         }
         return heading
     }

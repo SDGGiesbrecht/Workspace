@@ -127,7 +127,7 @@ internal class SymbolPage : Page {
 
         guard let module = symbol.homeModule.pointee,
             let product = APIElement.module(module).homeProduct.pointee else {
-            return ""
+                return "" // @exempt(from: tests) Should never be nil.
         }
         let libraryName = product.name.text
         let packageName = package.name.text

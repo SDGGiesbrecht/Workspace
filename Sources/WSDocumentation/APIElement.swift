@@ -281,7 +281,7 @@ extension APIElement {
 
     internal var homeProduct: Weak<LibraryAPI> {
         get {
-            return (extendedProperties[.homeProduct] as? Weak<LibraryAPI>) ?? Weak<LibraryAPI>(nil)
+            return (extendedProperties[.homeProduct] as? Weak<LibraryAPI>) ?? Weak<LibraryAPI>(nil) // @exempt(from: tests) Should never be nil.
         }
         nonmutating set {
             extendedProperties[.homeProduct] = newValue

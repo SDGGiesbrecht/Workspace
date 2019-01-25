@@ -30,6 +30,7 @@ internal class SymbolPage : Page {
                   packageImport: StrictString?,
                   index: StrictString,
                   symbol: APIElement,
+                  package: PackageAPI,
                   copyright: StrictString,
                   packageIdentifiers: Set<String>,
                   symbolLinks: [String: String],
@@ -86,16 +87,22 @@ internal class SymbolPage : Page {
             break
         }
 
+        let extensions: [StrictString] = []
+        // #workaround(Not used yet.)
+
         super.init(localization: localization,
                    pathToSiteRoot: pathToSiteRoot,
                    navigationPath: SymbolPage.generateNavigationPath(localization: localization, pathToSiteRoot: pathToSiteRoot, navigationPath: navigationPath),
                    packageImport: packageImport,
                    index: index,
+                   symbolImports: SymbolPage.generateImportStatement(for: symbol, package: package, localization: localization, pathToSiteRoot: pathToSiteRoot),
                    symbolType: symbol.symbolType(localization: localization),
                    compilationConditions: SymbolPage.generateCompilationConditions(symbol: symbol),
                    constraints: SymbolPage.generateConstraints(symbol: symbol, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks),
                    title: StrictString(symbol.name.source()),
-                   content: content.joinedAsLines(), copyright: copyright)
+                   content: content.joinedAsLines(),
+                   extensions: extensions.joinedAsLines(),
+                   copyright: copyright)
     }
 
     // MARK: - Generation
@@ -114,6 +121,79 @@ internal class SymbolPage : Page {
             }
         }
         return navigationPathLinks.joined(separator: "\n")
+    }
+
+    private static func generateDependencyStatement(for symbol: APIElement, package: PackageAPI, localization: LocalizationIdentifier, pathToSiteRoot: StrictString) -> StrictString {
+
+        guard let module = symbol.homeModule.pointee,
+            let product = APIElement.module(module).homeProduct.pointee else {
+                return "" // @exempt(from: tests) Should never be nil.
+        }
+        let libraryName = product.name.text
+        let packageName = package.name.text
+
+        let dependencyStatement = SyntaxFactory.makeFunctionCallExpr(
+            calledExpression: SyntaxFactory.makeMemberAccessExpr(
+                base: SyntaxFactory.makeBlankUnknownExpr(),
+                dot: SyntaxFactory.makeToken(.period),
+                name: SyntaxFactory.makeToken(.identifier("product")),
+                declNameArguments: nil),
+            leftParen: SyntaxFactory.makeToken(.leftParen),
+            argumentList: SyntaxFactory.makeFunctionCallArgumentList([
+                SyntaxFactory.makeFunctionCallArgument(
+                    label: SyntaxFactory.makeToken(.identifier("name")),
+                    colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
+                    expression: SyntaxFactory.makeStringLiteralExpr(libraryName),
+                    trailingComma: SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1))),
+                SyntaxFactory.makeFunctionCallArgument(
+                    label: SyntaxFactory.makeToken(.identifier("package")),
+                    colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
+                    expression: SyntaxFactory.makeStringLiteralExpr(packageName),
+                    trailingComma: nil)
+                ]),
+            rightParen: SyntaxFactory.makeToken(.rightParen),
+            trailingClosure: nil)
+
+        let source = dependencyStatement.syntaxHighlightedHTML(
+            inline: false,
+            internalIdentifiers: [],
+            symbolLinks: [:])
+
+        return StrictString(source)
+    }
+
+    private static func generateImportStatement(for symbol: APIElement, package: PackageAPI, localization: LocalizationIdentifier, pathToSiteRoot: StrictString) -> StrictString {
+
+        guard let module = symbol.homeModule.pointee else {
+            return ""
+        }
+        let moduleName = module.name.text
+
+        let importStatement = SyntaxFactory.makeImportDecl(
+            attributes: nil,
+            modifiers: nil,
+            importTok: SyntaxFactory.makeToken(.importKeyword, trailingTrivia: .spaces(1)),
+            importKind: nil,
+            path: SyntaxFactory.makeAccessPath([
+                SyntaxFactory.makeAccessPathComponent(
+                    name: SyntaxFactory.makeToken(.identifier(moduleName)),
+                    trailingDot: nil)
+                ]))
+
+        var links: [String: String] = [:]
+        if let link = APIElement.module(module).relativePagePath[localization] {
+            links[moduleName] = String(pathToSiteRoot + link)
+        }
+
+        let source = importStatement.syntaxHighlightedHTML(
+            inline: false,
+            internalIdentifiers: [moduleName],
+            symbolLinks: links)
+
+        return HTMLElement("div", attributes: ["class": "import‐header"], contents: [
+            StrictString(source),
+            SymbolPage.generateDependencyStatement(for: symbol, package: package, localization: localization, pathToSiteRoot: pathToSiteRoot)
+            ].joinedAsLines(), inline: false).source
     }
 
     private static func generateCompilationConditions(symbol: APIElement) -> StrictString? {

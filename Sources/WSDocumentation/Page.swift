@@ -72,11 +72,13 @@ internal class Page {
                   navigationPath: StrictString,
                   packageImport: StrictString?,
                   index: StrictString,
+                  symbolImports: StrictString,
                   symbolType: StrictString?,
                   compilationConditions: StrictString?,
                   constraints: StrictString?,
                   title: StrictString,
                   content: StrictString,
+                  extensions: StrictString,
                   copyright: StrictString) {
 
         var mutable = Page.template
@@ -89,6 +91,8 @@ internal class Page {
 
         mutable.replaceMatches(for: "[*index*]", with: index)
         mutable.replaceMatches(for: "[*site root*]".scalars, with: HTML.escapeAttribute(pathToSiteRoot))
+
+        mutable.replaceMatches(for: "[*imports*]".scalars, with: symbolImports)
 
         let symbolTypeLabel: StrictString
         if let specified = symbolType {
@@ -106,6 +110,9 @@ internal class Page {
         mutable.replaceMatches(for: "[*workspace*]", with: Page.watermark(localization: localization))
 
         mutable.replaceMatches(for: "[*content*]", with: content)
+
+        mutable.replaceMatches(for: "[*extensions*]".scalars, with: extensions)
+
         contents = mutable
     }
 

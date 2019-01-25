@@ -19,6 +19,7 @@ let package = Package(
     targets: [
         /// A module.
         .target(name: "CheckedInDocumentation", dependencies: []),
+        /// Extensions.
         .target(name: "Extensions", dependencies: ["CheckedInDocumentation"]),
         .testTarget(
             name: "CheckedInDocumentationTests",

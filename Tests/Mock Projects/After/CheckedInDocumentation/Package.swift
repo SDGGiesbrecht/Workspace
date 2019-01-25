@@ -9,6 +9,8 @@ let package = Package(
     products: [
         /// A library.
         .library(name: "CheckedInDocumentation", targets: ["CheckedInDocumentation"]),
+        /// Extensions.
+        .library(name: "Extensions", targets: ["Extensions"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -17,6 +19,8 @@ let package = Package(
     targets: [
         /// A module.
         .target(name: "CheckedInDocumentation", dependencies: []),
+        /// Extensions.
+        .target(name: "Extensions", dependencies: ["CheckedInDocumentation"]),
         .testTarget(
             name: "CheckedInDocumentationTests",
             dependencies: ["CheckedInDocumentation"]),

@@ -369,7 +369,7 @@ internal class SymbolPage : Page {
 
     private static func generateOtherModuleExtensionsSections(symbol: APIElement, package: PackageAPI, localization: LocalizationIdentifier, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> [StrictString] {
         var extensions: [ExtensionAPI] = []
-        for `extension` in package.extensions {
+        for `extension` in package.allExtensions {
             switch symbol {
             case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
                 break

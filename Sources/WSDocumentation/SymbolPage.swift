@@ -389,12 +389,12 @@ internal class SymbolPage : Page {
             }
         }
 
-        return Array(extensions.map({ (`extension`: ExtensionAPI) -> [StrictString] in
+        return extensions.map({ (`extension`: ExtensionAPI) -> StrictString in
             var result: [StrictString] = []
             result.append(generateImportStatement(for: APIElement.extension(`extension`), package: package, localization: localization, pathToSiteRoot: pathToSiteRoot))
             result.append(contentsOf: generateMembersSections(localization: localization, symbol: APIElement.extension(`extension`), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
-            return result
-        }).joined())
+            return HTMLElement("div", attributes: ["class": "main‐text‐column"], contents: result.joinedAsLines(), inline: false).source
+        })
     }
 
     internal static func librariesHeader(localization: LocalizationIdentifier) -> StrictString {

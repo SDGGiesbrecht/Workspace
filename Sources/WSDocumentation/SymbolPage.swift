@@ -381,8 +381,9 @@ internal class SymbolPage : Page {
                 if `extension`.isExtension(of: `protocol`) {
                     extensions.append(`extension`)
                 }
-            case .extension(let `extension`):
-                if `extension`.extendsSameType(as: `extension`) {
+            case .extension(let `rootExtension`):
+                if ¬(`extension` === `rootExtension`),
+                    `extension`.extendsSameType(as: `rootExtension`) {
                     extensions.append(`extension`)
                 }
             }

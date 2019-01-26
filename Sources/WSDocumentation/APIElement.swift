@@ -276,6 +276,9 @@ extension APIElement {
         }
         nonmutating set {
             extendedProperties[.homeModule] = newValue
+            for child in children {
+                child.extendedProperties[.homeModule] = newValue
+            }
         }
     }
 

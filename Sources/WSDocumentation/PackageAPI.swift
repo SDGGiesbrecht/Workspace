@@ -90,7 +90,7 @@ extension PackageAPI {
         }
     }
 
-    internal var allExtensions: AnyBidirectionalCollection<ExtensionAPI> { // @exempt(from: tests) #workaround(Not used yet.)
+    internal var allExtensions: AnyBidirectionalCollection<ExtensionAPI> {
         return AnyBidirectionalCollection(modules.map({ $0.extensions }).joined())
     }
 

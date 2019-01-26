@@ -75,20 +75,12 @@ internal class SymbolPage : Page {
             content.append(SymbolPage.generateOperatorsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
             content.append(SymbolPage.generatePrecedenceGroupsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
         case .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .conformance:
-            content.append(SymbolPage.generateCasesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
-            content.append(SymbolPage.generateNestedTypesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
-            content.append(SymbolPage.generateTypePropertiesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
-            content.append(SymbolPage.generateTypeMethodsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
-            content.append(SymbolPage.generateInitializersSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
-            content.append(SymbolPage.generatePropertiesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
-            content.append(SymbolPage.generateSubscriptsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
-            content.append(SymbolPage.generateMethodsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
+            content.append(contentsOf: SymbolPage.generateMembersSections(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
         case .operator, .precedence:
             break
         }
 
-        let extensions: [StrictString] = []
-        // #workaround(Not used yet.)
+        let extensions: [StrictString] = SymbolPage.generateOtherModuleExtensionsSections(symbol: symbol, package: package, localization: localization, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks)
 
         super.init(localization: localization,
                    pathToSiteRoot: pathToSiteRoot,
@@ -106,6 +98,19 @@ internal class SymbolPage : Page {
     }
 
     // MARK: - Generation
+
+    private static func generateMembersSections(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> [StrictString] {
+        var result: [StrictString] = []
+        result.append(SymbolPage.generateCasesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
+        result.append(SymbolPage.generateNestedTypesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
+        result.append(SymbolPage.generateTypePropertiesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
+        result.append(SymbolPage.generateTypeMethodsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
+        result.append(SymbolPage.generateInitializersSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
+        result.append(SymbolPage.generatePropertiesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
+        result.append(SymbolPage.generateSubscriptsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
+        result.append(SymbolPage.generateMethodsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
+        return result
+    }
 
     private static func generateNavigationPath(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, navigationPath: [APIElement]) -> StrictString {
         let navigationPathLinks = navigationPath.indices.map { (level: Int) -> StrictString in
@@ -362,6 +367,38 @@ internal class SymbolPage : Page {
         return HTMLElement("section", contents: section.joinedAsLines(), inline: false).source
     }
 
+    private static func generateOtherModuleExtensionsSections(symbol: APIElement, package: PackageAPI, localization: LocalizationIdentifier, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> [StrictString] {
+        var extensions: [ExtensionAPI] = []
+        for `extension` in package.allExtensions {
+            switch symbol {
+            case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
+                break
+            case .type(let type):
+                if `extension`.isExtension(of: type) {
+                    extensions.append(`extension`)
+                }
+            case .protocol(let `protocol`):
+                if `extension`.isExtension(of: `protocol`) {
+                    extensions.append(`extension`)
+                }
+            case .extension(let `rootExtension`):
+                if ¬(`extension` === `rootExtension`),
+                    `extension`.extendsSameType(as: `rootExtension`) {
+                    extensions.append(`extension`)
+                }
+            }
+        }
+
+        return extensions.map({ (`extension`: ExtensionAPI) -> StrictString in
+            var result: [StrictString] = []
+            result.append(generateImportStatement(for: APIElement.extension(`extension`), package: package, localization: localization, pathToSiteRoot: pathToSiteRoot))
+
+            let sections = generateMembersSections(localization: localization, symbol: APIElement.extension(`extension`), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
+            result.append(HTMLElement("div", attributes: ["class": "main‐text‐column"], contents: sections.joinedAsLines(), inline: false).source)
+            return result.joinedAsLines()
+        })
+    }
+
     internal static func librariesHeader(localization: LocalizationIdentifier) -> StrictString {
         let heading: StrictString
         if let match = localization._reasonableMatch {
@@ -532,7 +569,7 @@ internal class SymbolPage : Page {
                 heading = "Precedence Groups"
             }
         } else {
-            heading = "precedence"
+            heading = "precedencegroup"
         }
         return heading
     }

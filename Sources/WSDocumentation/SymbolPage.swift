@@ -771,7 +771,7 @@ internal class SymbolPage : Page {
                 name = HTMLElement("span", attributes: ["class": "text"], contents: HTML.escape(name), inline: true).source
                 name = HTMLElement("span", attributes: ["class": "string"], contents: name, inline: true).source
             case .module, .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
-                name = highlight(name: name)
+                name = highlight(name: name, internal: child.relativePagePath[localization] ≠ nil)
             }
             name = HTMLElement("code", attributes: ["class": "swift"], contents: name, inline: true).source
             if let constraints = child.constraints {
@@ -794,19 +794,19 @@ internal class SymbolPage : Page {
         return HTMLElement("section", contents: sectionContents.joinedAsLines(), inline: false).source
     }
 
-    private static func highlight(name: StrictString) -> StrictString {
+    private static func highlight(name: StrictString, internal: Bool = true) -> StrictString {
         var result = HTML.escape(name)
-        highlight("(", as: "punctuation", in: &result)
-        highlight(")", as: "punctuation", in: &result)
-        highlight(":", as: "punctuation", in: &result)
-        highlight("_", as: "keyword", in: &result)
-        highlight("[", as: "punctuation", in: &result)
-        highlight("]", as: "punctuation", in: &result)
-        result.prepend(contentsOf: "<span class=\u{22}internal identifier\u{22}>")
+        highlight("(", as: "punctuation", in: &result, internal: `internal`)
+        highlight(")", as: "punctuation", in: &result, internal: `internal`)
+        highlight(":", as: "punctuation", in: &result, internal: `internal`)
+        highlight("_", as: "keyword", in: &result, internal: `internal`)
+        highlight("[", as: "punctuation", in: &result, internal: `internal`)
+        highlight("]", as: "punctuation", in: &result, internal: `internal`)
+        result.prepend(contentsOf: "<span class=\u{22}" + (`internal` ? "internal" : "external") as StrictString + " identifier\u{22}>")
         result.append(contentsOf: "</span>")
         return result
     }
-    private static func highlight(_ token: StrictString, as class: StrictString, in name: inout StrictString) {
-        name.replaceMatches(for: token, with: "</span>" + HTMLElement("span", attributes: ["class": `class`], contents: token, inline: true).source + "<span class=\u{22}internal identifier\u{22}>")
+    private static func highlight(_ token: StrictString, as class: StrictString, in name: inout StrictString, internal: Bool) {
+        name.replaceMatches(for: token, with: "</span>" + HTMLElement("span", attributes: ["class": `class`], contents: token, inline: true).source + "<span class=\u{22}" + (`internal` ? "internal" : "external") as StrictString + " identifier\u{22}>")
     }
 }

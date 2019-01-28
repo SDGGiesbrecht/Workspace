@@ -76,7 +76,6 @@ internal class SymbolPage : Page {
             content.append(SymbolPage.generatePrecedenceGroupsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
         case .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .conformance:
             content.append(contentsOf: SymbolPage.generateMembersSections(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
-            content.append(contentsOf: SymbolPage.generateConformanceSections(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
         case .operator, .precedence:
             break
         }
@@ -110,6 +109,7 @@ internal class SymbolPage : Page {
         result.append(SymbolPage.generatePropertiesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
         result.append(SymbolPage.generateSubscriptsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
         result.append(SymbolPage.generateMethodsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
+        result.append(contentsOf: SymbolPage.generateConformanceSections(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
         return result
     }
 

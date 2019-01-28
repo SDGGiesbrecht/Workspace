@@ -76,6 +76,7 @@ internal class SymbolPage : Page {
             content.append(SymbolPage.generatePrecedenceGroupsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
         case .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .conformance:
             content.append(contentsOf: SymbolPage.generateMembersSections(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
+            content.append(contentsOf: SymbolPage.generateConformanceSections(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
         case .operator, .precedence:
             break
         }
@@ -725,9 +726,13 @@ internal class SymbolPage : Page {
         return generateChildrenSection(localization: localization, heading: heading, children: symbol.instanceMethods.map({ APIElement.function($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
+    private static func generateHeading(_ heading: StrictString, escaped: Bool) -> StrictString {
+        return HTMLElement("h2", contents: escaped ? HTML.escape(heading) : heading, inline: true).source
+    }
+
     private static func generateChildrenSection(localization: LocalizationIdentifier, heading: StrictString, children: [APIElement], pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
         var sectionContents: [StrictString] = [
-            HTMLElement("h2", contents: HTML.escape(heading), inline: true).source
+            generateHeading(heading, escaped: true)
         ]
         for child in children {
             var entry: [StrictString] = []
@@ -759,6 +764,18 @@ internal class SymbolPage : Page {
             sectionContents.append(HTMLElement("div", attributes: ["class": "child"], contents: entry.joinedAsLines(), inline: false).source)
         }
         return HTMLElement("section", contents: sectionContents.joinedAsLines(), inline: false).source
+    }
+
+    private static func generateConformanceSections(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> [StrictString] {
+        var result: [StrictString] = []
+        for conformance in symbol.conformances {
+            var section: [StrictString] = []
+            let name = conformance.type.syntaxHighlightedHTML(inline: true, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
+            section.append(generateHeading(StrictString(name), escaped: false))
+
+            result.append(HTMLElement("section", contents: section.joinedAsLines(), inline: false).source)
+        }
+        return result
     }
 
     private static func highlight(name: StrictString) -> StrictString {

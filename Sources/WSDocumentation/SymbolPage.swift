@@ -778,12 +778,16 @@ internal class SymbolPage : Page {
                 name += StrictString(constraints.syntaxHighlightedHTML(inline: true, internalIdentifiers: packageIdentifiers))
             }
 
-            let target = pathToSiteRoot + child.relativePagePath[localization]!
-            entry.append(HTMLElement("a", attributes: [
-                "href": HTML.percentEncodeURLPath(target)
-                ], contents: name, inline: true).source)
-            if let description = child.documentation?.descriptionSection {
-                entry.append(StrictString(description.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)))
+            if let local = child.relativePagePath[localization] {
+                let target = pathToSiteRoot + local
+                entry.append(HTMLElement("a", attributes: [
+                    "href": HTML.percentEncodeURLPath(target)
+                    ], contents: name, inline: true).source)
+                if let description = child.documentation?.descriptionSection {
+                    entry.append(StrictString(description.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)))
+                }
+            } else {
+                entry.append(name)
             }
             sectionContents.append(HTMLElement("div", attributes: ["class": "child"], contents: entry.joinedAsLines(), inline: false).source)
         }

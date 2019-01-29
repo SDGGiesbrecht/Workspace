@@ -109,6 +109,7 @@ internal class SymbolPage : Page {
         result.append(SymbolPage.generatePropertiesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
         result.append(SymbolPage.generateSubscriptsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
         result.append(SymbolPage.generateMethodsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
+        result.append(contentsOf: SymbolPage.generateConformanceSections(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
         return result
     }
 
@@ -725,9 +726,37 @@ internal class SymbolPage : Page {
         return generateChildrenSection(localization: localization, heading: heading, children: symbol.instanceMethods.map({ APIElement.function($0) }), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
     }
 
-    private static func generateChildrenSection(localization: LocalizationIdentifier, heading: StrictString, children: [APIElement], pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
+    private static func generateConformanceSections(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> [StrictString] {
+        var result: [StrictString] = []
+        for conformance in symbol.conformances {
+            let name = conformance.type.syntaxHighlightedHTML(inline: true, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
+
+            var children: [APIElement] = []
+            if let reference = conformance.reference {
+                var apiElement: APIElement?
+                switch reference {
+                case .protocol(let `protocol`):
+                    if let pointee = `protocol`.pointee {
+                        apiElement = .protocol(pointee)
+                    }
+                case .superclass(let superclass):
+                    if let pointee = superclass.pointee {
+                        apiElement = .type(pointee)
+                    }
+                }
+                if let found = apiElement?.children {
+                    children = found
+                }
+            }
+
+            result.append(generateChildrenSection(localization: localization, heading: StrictString(name), escapeHeading: false, children: children, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
+        }
+        return result
+    }
+
+    private static func generateChildrenSection(localization: LocalizationIdentifier, heading: StrictString, escapeHeading: Bool = true, children: [APIElement], pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
         var sectionContents: [StrictString] = [
-            HTMLElement("h2", contents: HTML.escape(heading), inline: true).source
+            HTMLElement("h2", contents: escapeHeading ? HTML.escape(heading) : heading, inline: true).source
         ]
         for child in children {
             var entry: [StrictString] = []
@@ -742,38 +771,42 @@ internal class SymbolPage : Page {
                 name = HTMLElement("span", attributes: ["class": "text"], contents: HTML.escape(name), inline: true).source
                 name = HTMLElement("span", attributes: ["class": "string"], contents: name, inline: true).source
             case .module, .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
-                name = highlight(name: name)
+                name = highlight(name: name, internal: child.relativePagePath[localization] ≠ nil)
             }
             name = HTMLElement("code", attributes: ["class": "swift"], contents: name, inline: true).source
             if let constraints = child.constraints {
                 name += StrictString(constraints.syntaxHighlightedHTML(inline: true, internalIdentifiers: packageIdentifiers))
             }
 
-            let target = pathToSiteRoot + child.relativePagePath[localization]!
-            entry.append(HTMLElement("a", attributes: [
-                "href": HTML.percentEncodeURLPath(target)
-                ], contents: name, inline: true).source)
-            if let description = child.documentation?.descriptionSection {
-                entry.append(StrictString(description.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)))
+            if let local = child.relativePagePath[localization] {
+                let target = pathToSiteRoot + local
+                entry.append(HTMLElement("a", attributes: [
+                    "href": HTML.percentEncodeURLPath(target)
+                    ], contents: name, inline: true).source)
+                if let description = child.documentation?.descriptionSection {
+                    entry.append(StrictString(description.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)))
+                }
+            } else {
+                entry.append(name)
             }
             sectionContents.append(HTMLElement("div", attributes: ["class": "child"], contents: entry.joinedAsLines(), inline: false).source)
         }
         return HTMLElement("section", contents: sectionContents.joinedAsLines(), inline: false).source
     }
 
-    private static func highlight(name: StrictString) -> StrictString {
+    private static func highlight(name: StrictString, internal: Bool = true) -> StrictString {
         var result = HTML.escape(name)
-        highlight("(", as: "punctuation", in: &result)
-        highlight(")", as: "punctuation", in: &result)
-        highlight(":", as: "punctuation", in: &result)
-        highlight("_", as: "keyword", in: &result)
-        highlight("[", as: "punctuation", in: &result)
-        highlight("]", as: "punctuation", in: &result)
-        result.prepend(contentsOf: "<span class=\u{22}internal identifier\u{22}>")
+        highlight("(", as: "punctuation", in: &result, internal: `internal`)
+        highlight(")", as: "punctuation", in: &result, internal: `internal`)
+        highlight(":", as: "punctuation", in: &result, internal: `internal`)
+        highlight("_", as: "keyword", in: &result, internal: `internal`)
+        highlight("[", as: "punctuation", in: &result, internal: `internal`)
+        highlight("]", as: "punctuation", in: &result, internal: `internal`)
+        result.prepend(contentsOf: "<span class=\u{22}" + (`internal` ? "internal" : "external") as StrictString + " identifier\u{22}>")
         result.append(contentsOf: "</span>")
         return result
     }
-    private static func highlight(_ token: StrictString, as class: StrictString, in name: inout StrictString) {
-        name.replaceMatches(for: token, with: "</span>" + HTMLElement("span", attributes: ["class": `class`], contents: token, inline: true).source + "<span class=\u{22}internal identifier\u{22}>")
+    private static func highlight(_ token: StrictString, as class: StrictString, in name: inout StrictString, internal: Bool) {
+        name.replaceMatches(for: token, with: "</span>" + HTMLElement("span", attributes: ["class": `class`], contents: token, inline: true).source + "<span class=\u{22}" + (`internal` ? "internal" : "external") as StrictString + " identifier\u{22}>")
     }
 }

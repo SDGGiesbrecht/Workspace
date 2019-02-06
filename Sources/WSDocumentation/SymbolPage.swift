@@ -24,18 +24,20 @@ internal class SymbolPage : Page {
 
     // MARK: - Initialization
 
-    internal init(localization: LocalizationIdentifier,
-                  pathToSiteRoot: StrictString,
-                  navigationPath: [APIElement],
-                  packageImport: StrictString?,
-                  index: StrictString,
-                  symbol: APIElement,
-                  package: PackageAPI,
-                  copyright: StrictString,
-                  packageIdentifiers: Set<String>,
-                  symbolLinks: [String: String],
-                  status: DocumentationStatus,
-                  output: Command.Output) {
+    internal convenience init?(
+        localization: LocalizationIdentifier,
+        pathToSiteRoot: StrictString,
+        navigationPath: [APIElement],
+        packageImport: StrictString?,
+        index: StrictString,
+        symbol: APIElement,
+        package: PackageAPI,
+        copyright: StrictString,
+        packageIdentifiers: Set<String>,
+        symbolLinks: [String: String],
+        status: DocumentationStatus,
+        output: Command.Output,
+        coverageCheckOnly: Bool = false) {
 
         if symbol.relativePagePath.first?.value.components(separatedBy: "/").count == 3 {
             switch symbol {
@@ -60,6 +62,41 @@ internal class SymbolPage : Page {
         content.append(SymbolPage.generateParemetersSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status))
         content.append(SymbolPage.generateThrowsSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status))
         content.append(SymbolPage.generateReturnsSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status))
+
+        if coverageCheckOnly {
+            return nil
+        }
+
+        self.init(
+            localization: localization,
+            pathToSiteRoot: pathToSiteRoot,
+            navigationPath: navigationPath,
+            packageImport: packageImport,
+            index: index,
+            symbol: symbol,
+            package: package,
+            copyright: copyright,
+            packageIdentifiers: packageIdentifiers,
+            symbolLinks: symbolLinks,
+            adjustedSymbolLinks: adjustedSymbolLinks,
+            partiallyConstructedContent: content)
+    }
+
+    /// Final initialization which can be skipped when only checking coverage.
+    private init(
+        localization: LocalizationIdentifier,
+        pathToSiteRoot: StrictString,
+        navigationPath: [APIElement],
+        packageImport: StrictString?,
+        index: StrictString,
+        symbol: APIElement,
+        package: PackageAPI,
+        copyright: StrictString,
+        packageIdentifiers: Set<String>,
+        symbolLinks: [String: String],
+        adjustedSymbolLinks: [String: String],
+        partiallyConstructedContent: [StrictString]) {
+        var content = partiallyConstructedContent
 
         content.append(SymbolPage.generateLibrariesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
 

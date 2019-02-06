@@ -263,7 +263,7 @@ internal struct PackageInterface {
                     symbolLinks: symbolLinks[localization]!,
                     status: status,
                     output: output
-                    ).contents.save(to: pageURL)
+                    )?.contents.save(to: pageURL)
             }
         }
     }
@@ -286,7 +286,7 @@ internal struct PackageInterface {
                         symbolLinks: symbolLinks[localization]!,
                         status: status,
                         output: output
-                        ).contents.save(to: location)
+                        )?.contents.save(to: location)
                 }
             }
         }
@@ -310,7 +310,7 @@ internal struct PackageInterface {
                         symbolLinks: symbolLinks[localization]!,
                         status: status,
                         output: output
-                        ).contents.save(to: location)
+                        )?.contents.save(to: location)
                 }
             }
         }
@@ -342,7 +342,7 @@ internal struct PackageInterface {
                             symbolLinks: symbolLinks[localization]!,
                             status: status,
                             output: output
-                            ).contents.save(to: location)
+                            )?.contents.save(to: location)
 
                         switch symbol {
                         case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
@@ -382,7 +382,7 @@ internal struct PackageInterface {
                     symbolLinks: symbolLinks[localization]!,
                     status: status,
                     output: output
-                    ).contents.save(to: location)
+                    )?.contents.save(to: location)
 
                 switch symbol {
                 case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:

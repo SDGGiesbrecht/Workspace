@@ -206,3 +206,15 @@ public func demonstrateMoreParameters(
     function: (_ nestedInFunction: Bool) -> Void,
     attributed: inout Simple<(_ nestedInAttributed: Bool) -> Void>
     ) {}
+
+/// An intermediate protocol.
+public protocol IntermediateProtocol : Protocol {
+    /// A method from the intermediate protocol.
+    func intermediateProtocolMethod()
+}
+
+/// A top‐level conformer.
+public struct TopConformer : IntermediateProtocol {
+    public typealias AssociatedType = Bool
+    public func intermediateProtocolMethod() {}
+}

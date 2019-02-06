@@ -37,7 +37,7 @@ internal class SymbolPage : Page {
         symbolLinks: [String: String],
         status: DocumentationStatus,
         output: Command.Output,
-        coverageCheckOnly: Bool = false) {
+        coverageCheckOnly: Bool) {
 
         if symbol.relativePagePath.first?.value.components(separatedBy: "/").count == 3 {
             switch symbol {

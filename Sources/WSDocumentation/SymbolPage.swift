@@ -24,6 +24,9 @@ internal class SymbolPage : Page {
 
     // MARK: - Initialization
 
+    /// Begins creating a symbol page.
+    ///
+    /// If `coverageCheckOnly` is `true`, initialization will be aborted and `nil` returned once validation is complete. No other circumstances will cause initialization to fail.
     internal convenience init?(
         localization: LocalizationIdentifier,
         pathToSiteRoot: StrictString,

@@ -76,7 +76,7 @@ extension PackageRepository {
             try prepare(outputDirectory: outputDirectory, output: output)
 
             let status = DocumentationStatus(output: output)
-            try document(outputDirectory: outputDirectory, documentationStatus: status, validationStatus: &validationStatus, output: output)
+            try document(outputDirectory: outputDirectory, documentationStatus: status, validationStatus: &validationStatus, output: output, coverageCheckOnly: false)
 
             try finalizeSite(outputDirectory: outputDirectory)
 
@@ -113,7 +113,7 @@ extension PackageRepository {
     }
 
     // Steps which participate in validation.
-    private func document(outputDirectory: URL, documentationStatus: DocumentationStatus, validationStatus: inout ValidationStatus, output: Command.Output) throws {
+    private func document(outputDirectory: URL, documentationStatus: DocumentationStatus, validationStatus: inout ValidationStatus, output: Command.Output, coverageCheckOnly: Bool) throws {
 
         let configuration = try self.configuration(output: output)
         let copyrightNotice = try resolvedCopyright(documentationStatus: documentationStatus, output: output)
@@ -130,7 +130,7 @@ extension PackageRepository {
             version: configuration.documentation.currentVersion,
             copyright: copyright,
             output: output)
-        try interface.outputHTML(to: outputDirectory, status: documentationStatus, output: output)
+        try interface.outputHTML(to: outputDirectory, status: documentationStatus, output: output, coverageCheckOnly: coverageCheckOnly)
     }
 
     // Final steps irrelevent to validation.
@@ -217,7 +217,7 @@ extension PackageRepository {
             defer { try? FileManager.default.removeItem(at: outputDirectory) }
 
             let status = DocumentationStatus(output: output)
-            try document(outputDirectory: outputDirectory, documentationStatus: status, validationStatus: &validationStatus, output: output)
+            try document(outputDirectory: outputDirectory, documentationStatus: status, validationStatus: &validationStatus, output: output, coverageCheckOnly: true)
 
             if status.passing {
                 validationStatus.passStep(message: UserFacing({ localization in

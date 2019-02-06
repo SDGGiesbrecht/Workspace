@@ -230,7 +230,7 @@ internal struct PackageInterface {
 
     // MARK: - Output
 
-    internal func outputHTML(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output) throws {
+    internal func outputHTML(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output, coverageCheckOnly: Bool) throws {
         output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
@@ -238,15 +238,19 @@ internal struct PackageInterface {
             }
         }).resolved())
 
-        try outputPackagePages(to: outputDirectory, status: status, output: output)
-        try outputLibraryPages(to: outputDirectory, status: status, output: output)
-        try outputModulePages(to: outputDirectory, status: status, output: output)
-        try outputTopLevelSymbols(to: outputDirectory, status: status, output: output)
+        try outputPackagePages(to: outputDirectory, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
+        try outputLibraryPages(to: outputDirectory, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
+        try outputModulePages(to: outputDirectory, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
+        try outputTopLevelSymbols(to: outputDirectory, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
+
+        if coverageCheckOnly {
+            return
+        }
 
         try outputRedirects(to: outputDirectory)
     }
 
-    private func outputPackagePages(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output) throws {
+    private func outputPackagePages(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output, coverageCheckOnly: Bool) throws {
         for localization in localizations {
             try autoreleasepool {
                 let pageURL = api.pageURL(in: outputDirectory, for: localization)
@@ -262,13 +266,14 @@ internal struct PackageInterface {
                     packageIdentifiers: packageIdentifiers,
                     symbolLinks: symbolLinks[localization]!,
                     status: status,
-                    output: output
-                    ).contents.save(to: pageURL)
+                    output: output,
+                    coverageCheckOnly: coverageCheckOnly
+                    )?.contents.save(to: pageURL)
             }
         }
     }
 
-    private func outputLibraryPages(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output) throws {
+    private func outputLibraryPages(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output, coverageCheckOnly: Bool) throws {
         for localization in localizations {
             for library in api.libraries.lazy.map({ APIElement.library($0) }) {
                 try autoreleasepool {
@@ -285,14 +290,15 @@ internal struct PackageInterface {
                         packageIdentifiers: packageIdentifiers,
                         symbolLinks: symbolLinks[localization]!,
                         status: status,
-                        output: output
-                        ).contents.save(to: location)
+                        output: output,
+                        coverageCheckOnly: coverageCheckOnly
+                        )?.contents.save(to: location)
                 }
             }
         }
     }
 
-    private func outputModulePages(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output) throws {
+    private func outputModulePages(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output, coverageCheckOnly: Bool) throws {
         for localization in localizations {
             for module in api.modules.lazy.map({ APIElement.module($0) }) {
                 try autoreleasepool {
@@ -309,14 +315,15 @@ internal struct PackageInterface {
                         packageIdentifiers: packageIdentifiers,
                         symbolLinks: symbolLinks[localization]!,
                         status: status,
-                        output: output
-                        ).contents.save(to: location)
+                        output: output,
+                        coverageCheckOnly: coverageCheckOnly
+                        )?.contents.save(to: location)
                 }
             }
         }
     }
 
-    private func outputTopLevelSymbols(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output) throws {
+    private func outputTopLevelSymbols(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output, coverageCheckOnly: Bool) throws {
         for localization in localizations {
             for symbol in [
                 packageAPI.types.map({ APIElement.type($0) }),
@@ -341,21 +348,22 @@ internal struct PackageInterface {
                             packageIdentifiers: packageIdentifiers,
                             symbolLinks: symbolLinks[localization]!,
                             status: status,
-                            output: output
-                            ).contents.save(to: location)
+                            output: output,
+                            coverageCheckOnly: coverageCheckOnly
+                            )?.contents.save(to: location)
 
                         switch symbol {
                         case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
                             break
                         case .type, .protocol, .extension:
-                            try outputNestedSymbols(of: symbol, namespace: [symbol], to: outputDirectory, localization: localization, status: status, output: output)
+                            try outputNestedSymbols(of: symbol, namespace: [symbol], to: outputDirectory, localization: localization, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
                         }
                     }
             }
         }
     }
 
-    private func outputNestedSymbols(of parent: APIElement, namespace: [APIElement], to outputDirectory: URL, localization: LocalizationIdentifier, status: DocumentationStatus, output: Command.Output) throws {
+    private func outputNestedSymbols(of parent: APIElement, namespace: [APIElement], to outputDirectory: URL, localization: LocalizationIdentifier, status: DocumentationStatus, output: Command.Output, coverageCheckOnly: Bool) throws {
         for symbol in parent.children where symbol.receivesPage {
             try autoreleasepool {
                 let location = symbol.pageURL(in: outputDirectory, for: localization)
@@ -381,14 +389,15 @@ internal struct PackageInterface {
                     packageIdentifiers: packageIdentifiers,
                     symbolLinks: symbolLinks[localization]!,
                     status: status,
-                    output: output
-                    ).contents.save(to: location)
+                    output: output,
+                    coverageCheckOnly: coverageCheckOnly
+                    )?.contents.save(to: location)
 
                 switch symbol {
                 case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
                     break
                 case .type, .protocol, .extension:
-                    try outputNestedSymbols(of: symbol, namespace: namespace + [symbol], to: outputDirectory, localization: localization, status: status, output: output)
+                    try outputNestedSymbols(of: symbol, namespace: namespace + [symbol], to: outputDirectory, localization: localization, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
                 }
             }
         }

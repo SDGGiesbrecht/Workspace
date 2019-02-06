@@ -789,7 +789,15 @@ internal class SymbolPage : Page {
                 }
             }
 
-            result.append(generateChildrenSection(localization: localization, heading: StrictString(name), escapeHeading: false, children: children, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
+            let subconformancesFiltered = children.filter { child in
+                switch child {
+                case .package, .library, .module, .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .operator, .precedence:
+                    return true
+                case .conformance:
+                    return false
+                }
+            }
+            result.append(generateChildrenSection(localization: localization, heading: StrictString(name), escapeHeading: false, children: subconformancesFiltered, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
         }
         return result
     }

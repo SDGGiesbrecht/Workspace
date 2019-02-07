@@ -327,7 +327,7 @@ internal struct PackageInterface {
         for localization in localizations {
             for symbol in [
                 packageAPI.types.map({ APIElement.type($0) }),
-                packageAPI.allExtensions.map({ APIElement.extension($0) }),
+                packageAPI.uniqueExtensions.map({ APIElement.extension($0) }),
                 packageAPI.protocols.map({ APIElement.protocol($0) }),
                 packageAPI.functions.map({ APIElement.function($0) }),
                 packageAPI.globalVariables.map({ APIElement.variable($0) }),

@@ -360,6 +360,11 @@ internal struct PackageInterface {
                         }
                     }
             }
+
+            for `extension` in packageAPI.allExtensions.filter({ ¬packageAPI.uniqueExtensions.contains($0) }) {
+                let apiElement = APIElement.extension(`extension`)
+                try outputNestedSymbols(of: apiElement, namespace: [apiElement], to: outputDirectory, localization: localization, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
+            }
         }
     }
 

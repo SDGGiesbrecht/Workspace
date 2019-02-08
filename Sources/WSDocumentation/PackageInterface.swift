@@ -327,7 +327,7 @@ internal struct PackageInterface {
         for localization in localizations {
             for symbol in [
                 packageAPI.types.map({ APIElement.type($0) }),
-                packageAPI.allExtensions.map({ APIElement.extension($0) }),
+                packageAPI.uniqueExtensions.map({ APIElement.extension($0) }),
                 packageAPI.protocols.map({ APIElement.protocol($0) }),
                 packageAPI.functions.map({ APIElement.function($0) }),
                 packageAPI.globalVariables.map({ APIElement.variable($0) }),
@@ -359,6 +359,11 @@ internal struct PackageInterface {
                             try outputNestedSymbols(of: symbol, namespace: [symbol], to: outputDirectory, localization: localization, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
                         }
                     }
+            }
+
+            for `extension` in packageAPI.allExtensions.filter({ ¬packageAPI.uniqueExtensions.contains($0) }) {
+                let apiElement = APIElement.extension(`extension`)
+                try outputNestedSymbols(of: apiElement, namespace: [apiElement], to: outputDirectory, localization: localization, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
             }
         }
     }

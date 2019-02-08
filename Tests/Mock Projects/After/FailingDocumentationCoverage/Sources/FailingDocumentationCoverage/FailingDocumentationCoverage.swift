@@ -20,3 +20,9 @@ public func excessiveHeading() {}
 ///     - paramOne: Misnamed parameter.
 ///     - parameterTwo: Non‐existent parameter.
 public func mismatchedParameters(parameterOne: Int) {}
+
+/// ...
+///
+/// - Parameters:
+///     - closure: ...
+public func unlabelled(closure: (Int) -> Int) {}

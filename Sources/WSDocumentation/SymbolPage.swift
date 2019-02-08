@@ -383,7 +383,7 @@ internal class SymbolPage : Page {
                     }
                 }
             }
-            //Scanner(status: status, symbol: symbol, navigationPath: navigationPath).visit(declaration)
+            Scanner(status: status, symbol: symbol, navigationPath: navigationPath).visit(declaration)
         }
 
         guard ¬validatedParameters.isEmpty else {

@@ -50,6 +50,10 @@ A symbol has no description:
 undocumented()
 
 
+A closure parameter has no label:
+unlabelled(closure:).(Int) -> Int
+
+
 A symbol has no description:
 inferredType
 

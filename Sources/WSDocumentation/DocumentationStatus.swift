@@ -113,6 +113,15 @@ internal class DocumentationStatus {
         }), with: symbol, navigationPath: navigationPath, parameter: parameter)
     }
 
+    internal func reportUnlabelledParameter(_ closureType: String, symbol: APIElement, navigationPath: [APIElement]) {
+        report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishCanada:
+                return "A closure parameter has no label:"
+            }
+        }), with: symbol, navigationPath: navigationPath, parameter: closureType)
+    }
+
     internal func reportMissingVariableType(_ variable: VariableAPI, navigationPath: [APIElement]) {
         report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {

@@ -342,6 +342,7 @@ internal class SymbolPage : Page {
         let parameters = symbol.parameters()
         let parameterDocumentation = symbol.documentation?.normalizedParameters ?? []
 
+        // Check that parameters correspond.
         var validatedParameters: [(parameter: ExtendedTokenSyntax, description: [ExtendedSyntax])] = []
         for index in parameters.indices {
             let name = parameters[index]
@@ -360,6 +361,29 @@ internal class SymbolPage : Page {
             for extra in parameterDocumentation[parameters.endIndex...] {
                 status.reportNonExistentParameter(extra.parameter.text, symbol: symbol, navigationPath: navigationPath)
             }
+        }
+
+        /// Check that closure parameters are labelled.
+        if let declaration = symbol.declaration {
+            class Scanner : SyntaxVisitor {
+                init(status: DocumentationStatus, symbol: APIElement, navigationPath: [APIElement]) {
+                    self.status = status
+                    self.symbol = symbol
+                    self.navigationPath = navigationPath
+                }
+                let status: DocumentationStatus
+                let symbol: APIElement
+                let navigationPath: [APIElement]
+                override func visit(_ node: FunctionTypeSyntax) {
+                    for argument in node.arguments {
+                        if argument.secondName?.text == nil ∨ argument.secondName?.text == "_",
+                            argument.firstName?.text == nil ∨ argument.firstName?.text == "_" {
+                            status.reportUnlabelledParameter(node.source(), symbol: symbol, navigationPath: navigationPath)
+                        }
+                    }
+                }
+            }
+            Scanner(status: status, symbol: symbol, navigationPath: navigationPath).visit(declaration)
         }
 
         guard ¬validatedParameters.isEmpty else {

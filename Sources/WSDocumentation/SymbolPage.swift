@@ -376,8 +376,8 @@ internal class SymbolPage : Page {
                 let navigationPath: [APIElement]
                 override func visit(_ node: FunctionTypeSyntax) {
                     for argument in node.arguments {
-                        if argument.secondName?.text == nil ∨ argument.secondName?.text == "_",
-                            argument.firstName?.text == nil ∨ argument.firstName?.text == "_" {
+                        if argument.secondName?.text.isEmpty ≠ false ∨ argument.secondName?.text == "_",
+                            argument.firstName?.text.isEmpty ≠ false ∨ argument.firstName?.text == "_" {
                             status.reportUnlabelledParameter(node.source(), symbol: symbol, navigationPath: navigationPath)
                         }
                     }

@@ -375,11 +375,10 @@ internal class SymbolPage : Page {
                 let symbol: APIElement
                 let navigationPath: [APIElement]
                 override func visit(_ node: FunctionTypeSyntax) {
-                    for argument in node.arguments {
-                        if argument.secondName?.text.isEmpty ≠ false ∨ argument.secondName?.text == "_",
-                            argument.firstName?.text.isEmpty ≠ false ∨ argument.firstName?.text == "_" {
-                            status.reportUnlabelledParameter(node.source(), symbol: symbol, navigationPath: navigationPath)
-                        }
+                    for argument in node.arguments
+                        where argument.secondName?.text.isEmpty ≠ false ∨ argument.secondName?.text == "_",
+                    argument.firstName?.text.isEmpty ≠ false ∨ argument.firstName?.text == "_" {
+                        status.reportUnlabelledParameter(node.source(), symbol: symbol, navigationPath: navigationPath)
                     }
                 }
             }

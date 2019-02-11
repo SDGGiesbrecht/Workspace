@@ -254,7 +254,7 @@ let package = Package(
             "WSProject",
             "WSThirdParty",
             .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-            .product(name: "_SDGSwiftSource", package: "SDGSwift")
+            .product(name: "SDGSwiftSource", package: "SDGSwift")
             ]),
 
         // Testing.
@@ -278,7 +278,7 @@ let package = Package(
             "WSSwift",
             .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .product(name: "SDGXcode", package: "SDGSwift"),
-            .product(name: "_SDGSwiftSource", package: "SDGSwift")
+            .product(name: "SDGSwiftSource", package: "SDGSwift")
             ]),
 
         // Mechanism for embedding third party tools.

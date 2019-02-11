@@ -376,7 +376,7 @@ internal class SymbolPage : Page {
                 let navigationPath: [APIElement]
                 override func visit(_ node: FunctionTypeSyntax) {
                     for argument in node.arguments
-                        where (argument.secondName?.text.isEmpty ≠ false ∨ argument.secondName?.text == "_")
+                        where (argument.secondName?.text.isEmpty ≠ false ∨ argument.secondName?.text == "_") // @exempt(from: tests) #workaround(SwiftSyntax 0.40200.0, Wildcard is never detected by SwiftSyntax.)
                             ∧ (argument.firstName?.text.isEmpty ≠ false ∨ argument.firstName?.text == "_") {
                                 status.reportUnlabelledParameter(node.source(), symbol: symbol, navigationPath: navigationPath)
                     }

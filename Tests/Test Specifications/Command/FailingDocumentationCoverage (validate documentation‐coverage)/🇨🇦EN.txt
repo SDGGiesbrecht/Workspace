@@ -33,6 +33,14 @@ FailingDocumentationCoverage
 Workspace will look for documentation on the line above “.target(name: "FailingDocumentationCoverage"”.)
 
 
+A parameter has no description:
+anotherUnlabelled(closure:)._
+
+
+A closure parameter has no label:
+anotherUnlabelled(closure:).(_ _: Int) -> Int
+
+
 A symbol’s documentation contains excessively strong headings:
 excessiveHeading()
 (Use heading levels three to six. Levels one and two are reserved for the surrounding context.)
@@ -48,6 +56,10 @@ mismatchedParameters(parameterOne:).parameterTwo
 
 A symbol has no description:
 undocumented()
+
+
+A closure parameter has no label:
+unlabelled(closure:).(Int) -> Int
 
 
 A symbol has no description:

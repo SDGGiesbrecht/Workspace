@@ -29,7 +29,7 @@ public struct Lazy<Option> : Decodable, Encodable where Option : Codable {
     // MARK: - Properties
 
     /// The algorithm for resolving the value.
-    public var resolve: (WorkspaceConfiguration) -> Option
+    public var resolve: (_ configuration: WorkspaceConfiguration) -> Option
 
     // MARK: - Encoding
 

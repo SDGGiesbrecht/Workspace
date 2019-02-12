@@ -136,7 +136,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 13, 0))),
         .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 5, 1))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 4, 5))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 4, 6))),
         .package(url: "https://github.com/apple/swift\u{2D}package\u{2D}manager", .exact(Version(0, 3, 0)))
     ],
     targets: [
@@ -254,7 +254,7 @@ let package = Package(
             "WSProject",
             "WSThirdParty",
             .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-            .product(name: "_SDGSwiftSource", package: "SDGSwift")
+            .product(name: "SDGSwiftSource", package: "SDGSwift")
             ]),
 
         // Testing.
@@ -278,7 +278,7 @@ let package = Package(
             "WSSwift",
             .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .product(name: "SDGXcode", package: "SDGSwift"),
-            .product(name: "_SDGSwiftSource", package: "SDGSwift")
+            .product(name: "SDGSwiftSource", package: "SDGSwift")
             ]),
 
         // Mechanism for embedding third party tools.

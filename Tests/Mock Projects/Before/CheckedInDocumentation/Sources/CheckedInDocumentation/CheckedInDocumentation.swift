@@ -218,3 +218,9 @@ public struct TopConformer : IntermediateProtocol {
     public typealias AssociatedType = Bool
     public func intermediateProtocolMethod() {}
 }
+
+/// A variable with a closure type.
+///
+/// - Parameters:
+///     - parameter: A parameter.
+public var variable: (_ parameter: Type) -> Void

@@ -222,5 +222,5 @@ public struct TopConformer : IntermediateProtocol {
 /// A variable with a closure type.
 ///
 /// - Parameters:
-///     - parameter: A parameter.
-public var variable: (_ parameter: Type) -> Void
+///     - aParameter: A parameter.
+public var variable: (_ aParameter: Type) -> Void

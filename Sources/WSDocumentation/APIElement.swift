@@ -548,8 +548,10 @@ extension APIElement {
     func parameters() -> [String] {
         let parameterList: FunctionParameterListSyntax
         switch self {
-        case .package, .library, .module, .type, .protocol, .extension, .case, .variable, .operator, .precedence, .conformance:
+        case .package, .library, .module, .type, .protocol, .extension, .case, .operator, .precedence, .conformance:
             return []
+        case .variable(let variable):
+            return variable.declaration.bindings.first?.typeAnnotation?.type.parameterNames() ?? []
         case .initializer(let initializer):
             parameterList = initializer.declaration.parameters.parameterList
         case .subscript(let `subscript`):

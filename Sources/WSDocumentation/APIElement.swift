@@ -551,6 +551,13 @@ extension APIElement {
         case .package, .library, .module, .type, .protocol, .extension, .case, .operator, .precedence, .conformance:
             return []
         case .variable(let variable):
+
+            // #workaround(SwiftSyntax 0.40200.0, Works around invalid index.)
+            guard let typeAnnotation = variable.declaration.bindings.first?.typeAnnotation,
+                typeAnnotation.source() ≠ "" else {
+                    return []
+            }
+
             return variable.declaration.bindings.first?.typeAnnotation?.type.parameterNames() ?? []
         case .initializer(let initializer):
             parameterList = initializer.declaration.parameters.parameterList

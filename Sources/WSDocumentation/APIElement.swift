@@ -558,7 +558,7 @@ extension APIElement {
                     return []
             }
 
-            return variable.declaration.bindings.first?.typeAnnotation?.type.parameterNames() ?? []
+            return typeAnnotation.type.parameterNames()
         case .initializer(let initializer):
             parameterList = initializer.declaration.parameters.parameterList
         case .subscript(let `subscript`):

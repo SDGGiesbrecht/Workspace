@@ -548,8 +548,17 @@ extension APIElement {
     func parameters() -> [String] {
         let parameterList: FunctionParameterListSyntax
         switch self {
-        case .package, .library, .module, .type, .protocol, .extension, .case, .variable, .operator, .precedence, .conformance:
+        case .package, .library, .module, .type, .protocol, .extension, .case, .operator, .precedence, .conformance:
             return []
+        case .variable(let variable):
+
+            // #workaround(SwiftSyntax 0.40200.0, Works around invalid index.)
+            guard let typeAnnotation = variable.declaration.bindings.first?.typeAnnotation,
+                typeAnnotation.source() ≠ "" else {
+                    return []
+            }
+
+            return typeAnnotation.type.parameterNames()
         case .initializer(let initializer):
             parameterList = initializer.declaration.parameters.parameterList
         case .subscript(let `subscript`):

@@ -18,6 +18,7 @@ matrix:
         - JOB="macOS + Swift Package Manager"
       osx_image: xcode10.1
       script:
+        - "git config --global protocol.version 1"
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job macos‐swift‐package‐manager"
     - os: osx
@@ -25,6 +26,7 @@ matrix:
         - JOB="macOS + Xcode"
       osx_image: xcode10.1
       script:
+        - "git config --global protocol.version 1"
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job macos‐xcode"
     - os: linux

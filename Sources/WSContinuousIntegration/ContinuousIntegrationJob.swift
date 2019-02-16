@@ -273,6 +273,12 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
             return "        \u{2D} \u{22}\(escapedCommand)\u{22}"
         }
 
+        if operatingSystem == .macOS {
+            result.append(contentsOf: [
+                commandEntry("git config \u{2D}\u{2D}global protocol.version 1")
+                ])
+        }
+
         if operatingSystem == .linux {
             result.append(contentsOf: [
                 commandEntry("export SWIFT_VERSION=4.2.1"),

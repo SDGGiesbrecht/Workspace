@@ -224,3 +224,12 @@ public struct TopConformer : IntermediateProtocol {
 /// - Parameters:
 ///     - aParameter: A parameter.
 public var variable: (_ aParameter: Type) -> Void
+
+/// A function with a closure in a tuple.
+///
+/// - Parameters:
+///     - aParameter: A parameter.
+///     - tupleHalfA: The first element of the tuple.
+///     - closureParameter: The parameter of the closure.
+///     - tupleHalfB: The second element of the tuple.
+public func function(parameter aParameter: (tupleHalfA: (_ closureParameter: Int) -> Void, tupleHalfB: Bool)) {}

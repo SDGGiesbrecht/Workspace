@@ -43,7 +43,6 @@ extension TypeSyntax {
             var result: [String] = []
             for element in tuple.elements {
                 result.append(contentsOf: element.parameterNames())
-                result.append(contentsOf: element.type.parameterNames())
             }
             return result
         case let composition as CompositionTypeSyntax:

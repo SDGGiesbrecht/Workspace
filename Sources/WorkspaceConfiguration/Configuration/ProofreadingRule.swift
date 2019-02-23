@@ -150,14 +150,20 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
 
     // ••••••• Source Code Style •••••••
 
+    // Punctuation
+
     /// Enforces consistent spacing around braces.
     case braceSpacing
 
     /// Enforces consistent spacing around colons.
     case colonSpacing
 
+    // Tokens
+
     /// Requires documentation callouts to be capitalized.
     case calloutCasing
+
+    // Complex nodes
 
     /// Requires documented parameters to be grouped.
     case parameterGrouping

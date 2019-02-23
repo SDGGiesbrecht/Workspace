@@ -165,6 +165,9 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
 
     // Complex nodes
 
+    /// Requires closure signatures to be on the same line as the closure’s opening brace.
+    case closureSignaturePosition
+
     /// Requires documented parameters to be grouped.
     case parameterGrouping
 
@@ -192,7 +195,7 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
         case .unicode:
             return .textStyle
 
-        case .braceSpacing, .colonSpacing, .calloutCasing, .parameterGrouping:
+        case .braceSpacing, .colonSpacing, .calloutCasing, .closureSignaturePosition, .parameterGrouping:
             return .sourceCodeStyle
         }
     }

@@ -20,7 +20,7 @@ extension TriviaPiece {
     internal var isNewLine: Bool {
         switch self {
         case .spaces, .tabs, .backticks, .lineComment, .blockComment, .docLineComment, .docBlockComment, .garbageText:
-            return false
+            return false // @exempt(from: tests)
         case .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds:
             return true
         }

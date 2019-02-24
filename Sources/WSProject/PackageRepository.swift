@@ -280,8 +280,7 @@ extension PackageRepository {
     // MARK: - Files
 
     public func allFiles() throws -> [URL] {
-        return try cached(in: &fileCache.allFiles) {
-            () -> [URL] in
+        return try cached(in: &fileCache.allFiles) { () -> [URL] in
             let files = try FileManager.default.deepFileEnumeration(in: location).filter { url in
                 // Skip irrelevant operating system files.
                 return url.lastPathComponent ≠ ".DS_Store"
@@ -292,8 +291,7 @@ extension PackageRepository {
     }
 
     public func trackedFiles(output: Command.Output) throws -> [URL] {
-        return try cached(in: &fileCache.trackedFiles) {
-            () -> [URL] in
+        return try cached(in: &fileCache.trackedFiles) { () -> [URL] in
 
             var ignoredURLs: [URL] = try ignoredFiles()
             ignoredURLs.append(location.appendingPathComponent(".git"))

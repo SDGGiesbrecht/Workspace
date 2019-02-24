@@ -56,6 +56,8 @@ extension ProofreadingRule : Comparable {
             return .syntax(ColonSpacing.self)
         case .calloutCasing:
             return .syntax(CalloutCasing.self)
+        case .closureSignaturePosition:
+            return .syntax(ClosureSignaturePosition.self)
         case .parameterGrouping:
             return .syntax(ParameterGrouping.self)
         }

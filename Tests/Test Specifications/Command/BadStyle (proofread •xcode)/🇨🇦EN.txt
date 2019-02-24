@@ -24,6 +24,7 @@ $ workspace proofread •xcode •no‐colour
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/BraceSpacing.swift:5:10: warning: Braces should be separated from their contents by a space. (braceSpacing)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/BraceSpacing.swift:5:68: warning: Braces should be separated from their contents by a space. (braceSpacing)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift:5:7: warning: Callouts should be capitalized. (calloutCasing)
+[Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ClosureSignaturePosition.swift:6:5: warning: A closure’s signature should be on the same line as its opening brace. (closureSignaturePosition)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift:3:19: warning: Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition. (colonSpacing)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift:4:24: warning: Colons should not be preceded by spaces. (colonSpacing)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift:4:43: warning: Colons should be followed by spaces. (colonSpacing)

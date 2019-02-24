@@ -116,19 +116,13 @@ public struct TextFile {
     // MARK: - File Headers
 
     public var headerStart: String.ScalarView.Index {
-
-        return cached(in: &cache.headerStart) {
-            () -> String.ScalarView.Index in
-
+        return cached(in: &cache.headerStart) { () -> String.ScalarView.Index in
             return fileType.syntax.headerStart(file: self)
         }
     }
 
     internal var headerEnd: String.ScalarView.Index {
-
-        return cached(in: &cache.headerEnd) {
-            () -> String.ScalarView.Index in
-
+        return cached(in: &cache.headerEnd) { () -> String.ScalarView.Index in
             return fileType.syntax.headerEnd(file: self)
         }
     }

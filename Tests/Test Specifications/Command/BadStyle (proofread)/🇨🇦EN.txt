@@ -148,6 +148,11 @@ Callouts should be capitalized. (calloutCasing)
 /// - warning: This should trigger. It should have been capitalized.
 /// - Warning: This should trigger. It should have been capitalized.
 
+Sources/BadStyle/Rules/Source Code Style/ClosureSignaturePosition.swift
+Line 6
+A closure’s signature should be on the same line as its opening brace. (closureSignaturePosition)
+    parameter in // Wrong position; should trigger.
+
 Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift
 Line 3
 Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition. (colonSpacing)

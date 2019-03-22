@@ -52,8 +52,11 @@ public struct TextFile {
     }
 
     public init(mockFileWithContents contents: String, fileType: FileType) {
-        let temporary = FileManager.default.url(in: .temporary, at: "Mock File")
-        self.init(location: temporary, fileType: fileType, executable: false, contents: contents, isNew: true)
+        var url: URL?
+        FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporary in
+            url = temporary
+        }
+        self.init(location: url!, fileType: fileType, executable: false, contents: contents, isNew: true)
     }
 
     private init(location: URL, fileType: FileType, executable: Bool, contents: String, isNew: Bool) {

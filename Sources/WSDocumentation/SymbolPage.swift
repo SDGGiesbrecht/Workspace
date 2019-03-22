@@ -393,7 +393,7 @@ internal class SymbolPage : Page {
 
         var list: [HTMLElement] = []
         for entry in validatedParameters {
-            let term = StrictString(entry.parameter.syntaxHighlightedHTML(inline: true, internalIdentifiers: [entry.parameter.text], symbolLinks: [:]))
+            let term = StrictString(entry.name.syntaxHighlightedHTML(inline: true, internalIdentifiers: [entry.name.text], symbolLinks: [:]))
             list.append(HTMLElement("dt", contents: term, inline: true))
 
             let description = entry.description.map({ $0.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks) })

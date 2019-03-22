@@ -160,16 +160,15 @@ extension PackageRepository {
                 }
             }).resolved())
 
-            let temporary = FileManager.default.url(in: .temporary, at: "Published Documentation")
-            defer { try? FileManager.default.removeItem(at: temporary) }
-
-            let package = Package(url: packageURL)
-            do {
-                try Git.clone(package, to: temporary)
-                try Git.runCustomSubcommand(["checkout", "gh\u{2D}pages"], in: temporary)
-                try FileManager.default.removeItem(at: outputDirectory)
-                try FileManager.default.move(temporary, to: outputDirectory)
-            } catch {}
+            FileManager.default.withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
+                let package = Package(url: packageURL)
+                do {
+                    try Git.clone(package, to: temporary)
+                    try Git.runCustomSubcommand(["checkout", "gh\u{2D}pages"], in: temporary)
+                    try FileManager.default.removeItem(at: outputDirectory)
+                    try FileManager.default.move(temporary, to: outputDirectory)
+                } catch {}
+            }
         }
     }
 

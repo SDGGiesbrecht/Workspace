@@ -212,26 +212,26 @@ extension PackageRepository {
             }
         }).resolved().formattedAsSectionHeader())
         do {
-            let outputDirectory = FileManager.default.url(in: .temporary, at: "Documentation")
-            defer { try? FileManager.default.removeItem(at: outputDirectory) }
+            try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { outputDirectory in
 
-            let status = DocumentationStatus(output: output)
-            try document(outputDirectory: outputDirectory, documentationStatus: status, validationStatus: &validationStatus, output: output, coverageCheckOnly: true)
+                let status = DocumentationStatus(output: output)
+                try document(outputDirectory: outputDirectory, documentationStatus: status, validationStatus: &validationStatus, output: output, coverageCheckOnly: true)
 
-            if status.passing {
-                validationStatus.passStep(message: UserFacing({ localization in
-                    switch localization {
-                    case .englishCanada:
-                        return "Documentation coverage is complete."
-                    }
-                }))
-            } else {
-                validationStatus.failStep(message: UserFacing({ localization in
-                    switch localization {
-                    case .englishCanada:
-                        return "Documentation coverage is incomplete." + section.crossReference.resolved(for: localization)
-                    }
-                }))
+                if status.passing {
+                    validationStatus.passStep(message: UserFacing({ localization in
+                        switch localization {
+                        case .englishCanada:
+                            return "Documentation coverage is complete."
+                        }
+                    }))
+                } else {
+                    validationStatus.failStep(message: UserFacing({ localization in
+                        switch localization {
+                        case .englishCanada:
+                            return "Documentation coverage is incomplete." + section.crossReference.resolved(for: localization)
+                        }
+                    }))
+                }
             }
         } catch {
             output.print(error.localizedDescription.formattedAsError())

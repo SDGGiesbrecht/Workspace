@@ -343,7 +343,7 @@ internal class SymbolPage : Page {
         let parameterDocumentation = symbol.documentation?.normalizedParameters ?? []
 
         // Check that parameters correspond.
-        var validatedParameters: [(parameter: ExtendedTokenSyntax, description: [ExtendedSyntax])] = []
+        var validatedParameters: [ParameterDocumentation] = []
         for index in parameters.indices {
             let name = parameters[index]
             if index ∉ parameterDocumentation.indices {
@@ -351,7 +351,7 @@ internal class SymbolPage : Page {
                 continue
             }
             let documentation = parameterDocumentation[index]
-            if name ≠ documentation.parameter.text {
+            if name ≠ documentation.name.text {
                 status.reportMissingParameter(name, symbol: symbol, navigationPath: navigationPath)
                 continue
             }
@@ -359,7 +359,7 @@ internal class SymbolPage : Page {
         }
         if parameterDocumentation.count > parameters.count {
             for extra in parameterDocumentation[parameters.endIndex...] {
-                status.reportNonExistentParameter(extra.parameter.text, symbol: symbol, navigationPath: navigationPath)
+                status.reportNonExistentParameter(extra.name.text, symbol: symbol, navigationPath: navigationPath)
             }
         }
 
@@ -393,7 +393,7 @@ internal class SymbolPage : Page {
 
         var list: [HTMLElement] = []
         for entry in validatedParameters {
-            let term = StrictString(entry.parameter.syntaxHighlightedHTML(inline: true, internalIdentifiers: [entry.parameter.text], symbolLinks: [:]))
+            let term = StrictString(entry.name.syntaxHighlightedHTML(inline: true, internalIdentifiers: [entry.name.text], symbolLinks: [:]))
             list.append(HTMLElement("dt", contents: term, inline: true))
 
             let description = entry.description.map({ $0.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks) })

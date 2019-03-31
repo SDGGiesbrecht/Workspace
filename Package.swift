@@ -104,6 +104,9 @@ import PackageDescription
 /// By default, Workspace refrains from tasks which would involve modifying project files. Such tasks must be activated with a [configuration](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Libraries/WorkspaceConfiguration.html) file.
 let package = Package(
     name: "Workspace",
+    platforms: [
+        .macOS(.v10_13)
+    ],
     products: [
         // #documentation(WorkspaceConfiguration)
         /// The root API used in configuration files.

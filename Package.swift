@@ -1,4 +1,4 @@
-// swift-tools-version:4.2
+// swift-tools-version:5.0
 
 /*
  Package.swift
@@ -134,10 +134,9 @@ let package = Package(
         .executable(name: "arbeitsbereich", targets: ["WorkspaceTool"])
     ],
     dependencies: [
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 14, 0))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 5, 2))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 5, 0))),
-        .package(url: "https://github.com/apple/swift\u{2D}package\u{2D}manager", .exact(Version(0, 3, 0)))
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 15, 0))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 6, 0))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 6, 0)))
     ],
     targets: [
         // The executable. (Multiple products duplicate this with localized names.)
@@ -218,8 +217,7 @@ let package = Package(
             "WSGeneralImports",
             "WSProject",
             "WSSwift",
-            .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-            .product(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
+            .product(name: "SDGSwiftPackageManager", package: "SDGSwift")
             ]),
 
         // File header management.
@@ -306,8 +304,7 @@ let package = Package(
             "WorkspaceProjectConfiguration",
             .product(name: "SDGCalendar", package: "SDGCornerstone"),
             .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-            .product(name: "SDGSwiftConfigurationLoading", package: "SDGSwift"),
-            .product(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
+            .product(name: "SDGSwiftConfigurationLoading", package: "SDGSwift")
             ]),
 
         // #documentation(WorkspaceConfiguration)

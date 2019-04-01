@@ -20,7 +20,7 @@ import SDGSwiftPackageManager
 import WSProject
 import WSSwift
 
-import PackageDescription4
+import PackageModel
 
 extension PackageRepository {
 
@@ -28,26 +28,26 @@ extension PackageRepository {
 
         // MARK: - Initialization
 
-        internal init(packageDescriptionTarget: PackageDescription4.Target, package: PackageRepository) {
-            self.packageDescriptionTarget = packageDescriptionTarget
+        internal init(description: TargetDescription, package: PackageRepository) {
+            self.description = description
             self.package = package
         }
 
         // MARK: - Properties
 
-        private let packageDescriptionTarget: PackageDescription4.Target
+        private let description: TargetDescription
         private let package: PackageRepository
 
         internal var name: String {
-            return packageDescriptionTarget.name
+            return description.name
         }
 
         private var sourceDirectory: URL {
-            if let path = packageDescriptionTarget.path {
+            if let path = description.path {
                 return URL(fileURLWithPath: path)
             } else {
                 let base: URL
-                if packageDescriptionTarget.isTest {
+                if description.isTest {
                     base = package.location.appendingPathComponent("Tests")
                 } else {
                     base = package.location.appendingPathComponent("Sources")

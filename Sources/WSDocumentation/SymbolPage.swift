@@ -383,7 +383,7 @@ internal class SymbolPage : Page {
                     return .visitChildren
                 }
             }
-            _ = Scanner(status: status, symbol: symbol, navigationPath: navigationPath).visit(declaration)
+            declaration.walk(Scanner(status: status, symbol: symbol, navigationPath: navigationPath))
         }
 
         guard ¬validatedParameters.isEmpty else {

@@ -2,7 +2,6 @@ $ workspace proofread •no‐colour
 
 Normalizing files...
 
-Writing to “.swiftlint.yml”...
 
 Proofreading source code... (§1)
 

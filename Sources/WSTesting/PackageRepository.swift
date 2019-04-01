@@ -213,12 +213,12 @@ extension PackageRepository {
                 case .executable:
                     // Not testable.
                     for path in target.sources.paths {
-                        irrelevantFiles.insert(URL(fileURLWithPath: path.asString).resolvingSymlinksInPath())
+                        irrelevantFiles.insert(URL(fileURLWithPath: path.pathString).resolvingSymlinksInPath())
                     }
                 case .test:
                     // Coverage unimportant.
                     for path in target.sources.paths {
-                        irrelevantFiles.insert(URL(fileURLWithPath: path.asString).resolvingSymlinksInPath())
+                        irrelevantFiles.insert(URL(fileURLWithPath: path.pathString).resolvingSymlinksInPath())
                     }
                 }
             }

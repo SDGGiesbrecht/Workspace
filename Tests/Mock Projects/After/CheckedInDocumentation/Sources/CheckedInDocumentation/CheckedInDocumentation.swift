@@ -233,3 +233,14 @@ public var variable: (_ aParameter: Type) -> Void
 ///     - closureParameter: The parameter of the closure.
 ///     - tupleHalfB: The second element of the tuple.
 public func function(parameter aParameter: (tupleHalfA: (_ closureParameter: Int) -> Void, tupleHalfB: Bool)) {}
+
+/// A base class.
+public class BaseClass {
+    /// A base class method.
+    public func baseClassMethod() {}
+}
+
+/// A subclass.
+public class Subclass : BaseClass {
+    public override func baseClassMethod() {}
+}

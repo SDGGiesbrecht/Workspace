@@ -24,10 +24,6 @@ class APITests : TestCase {
     static var triggeredVersionChecks: Void?
     override func setUp() {
         super.setUp()
-        // Get version checks over with, so that they are not in the output.
-        cached(in: &APITests.triggeredVersionChecks) {
-            triggerVersionChecks()
-        }
         PackageRepository.emptyRelatedProjectCache() // Make sure starting state is consistent.
     }
 

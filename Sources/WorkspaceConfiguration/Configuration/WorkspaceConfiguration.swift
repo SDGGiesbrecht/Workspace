@@ -92,8 +92,6 @@ public final class WorkspaceConfiguration : Configuration {
     /// Options related to the project repository.
     public var repository: RepositoryConfiguration = RepositoryConfiguration()
 
-    internal var _isSDG: Bool = false
-
     /// Custom tasks to perform when refreshing the project.
     public var customRefreshmentTasks: [CustomTask] = []
 
@@ -102,6 +100,8 @@ public final class WorkspaceConfiguration : Configuration {
 
     /// Custom tasks to perform when validating the project.
     public var customValidationTasks: [CustomTask] = []
+
+    internal var _isSDG: Bool = false
 
     // MARK: - Methods
 
@@ -204,6 +204,9 @@ public final class WorkspaceConfiguration : Configuration {
         case documentation
         case continuousIntegration
         case repository
+        case customRefreshmentTasks
+        case customProofreadingTasks
+        case customValidationTasks
         case isSDG
     }
 
@@ -221,6 +224,9 @@ public final class WorkspaceConfiguration : Configuration {
         try container.encode(documentation, forKey: .documentation)
         try container.encode(continuousIntegration, forKey: .continuousIntegration)
         try container.encode(repository, forKey: .repository)
+        try container.encode(customRefreshmentTasks, forKey: .customRefreshmentTasks)
+        try container.encode(customProofreadingTasks, forKey: .customProofreadingTasks)
+        try container.encode(customValidationTasks, forKey: .customValidationTasks)
         try container.encode(_isSDG, forKey: .isSDG)
         try super.encode(to: container.superEncoder())
     }
@@ -239,6 +245,9 @@ public final class WorkspaceConfiguration : Configuration {
         documentation = try container.decode(DocumentationConfiguration.self, forKey: .documentation)
         continuousIntegration = try container.decode(ContinuousIntegrationConfiguration.self, forKey: .continuousIntegration)
         repository = try container.decode(RepositoryConfiguration.self, forKey: .repository)
+        customRefreshmentTasks = try container.decode([CustomTask].self, forKey: .customRefreshmentTasks)
+        customProofreadingTasks = try container.decode([CustomTask].self, forKey: .customProofreadingTasks)
+        customValidationTasks = try container.decode([CustomTask].self, forKey: .customValidationTasks)
         _isSDG = try container.decode(Bool.self, forKey: .isSDG)
         try super.init(from: container.superDecoder())
 

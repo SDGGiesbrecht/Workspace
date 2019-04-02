@@ -25,6 +25,7 @@ class APITests : TestCase {
     override func setUp() {
         super.setUp()
         PackageRepository.emptyRelatedProjectCache() // Make sure starting state is consistent.
+        CustomTask.emptyCache()
     }
 
     func testAllDisabled() {
@@ -149,6 +150,24 @@ class APITests : TestCase {
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
+    func testCustomTasks() {
+        #if !os(Linux) // Significant differences. Each is covered individually elswhere.
+        let configuration = WorkspaceConfiguration()
+        let passing = CustomTask(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCommandLine")!, version: Version(0, 6, 0), executable: "test‐tool", arguments: [])
+        configuration.customRefreshmentTasks.append(passing)
+        configuration.customValidationTasks.append(passing)
+        configuration.provideWorkflowScripts = false
+        configuration.proofreading.rules = []
+        configuration.testing.prohibitCompilerWarnings = false
+        configuration.testing.enforceCoverage = false
+        configuration.documentation.api.enforceCoverage = false
+        PackageRepository(mock: "CustomTasks").test(commands: [
+            ["refresh"],
+            ["validate"]
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        #endif
+    }
+
     func testDefaults() {
         var commands: [[StrictString]] = [
             ["refresh", "scripts"],
@@ -189,6 +208,24 @@ class APITests : TestCase {
             ["document"],
             ["validate", "documentation‐coverage"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testFailingCustomTasks() {
+        #if !os(Linux) // Significant differences. Each is covered individually elswhere.
+        let configuration = WorkspaceConfiguration()
+        let passing = CustomTask(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCommandLine")!, version: Version(0, 6, 0), executable: "test‐tool", arguments: ["fail"])
+        configuration.customRefreshmentTasks.append(passing)
+        configuration.customValidationTasks.append(passing)
+        configuration.provideWorkflowScripts = false
+        configuration.proofreading.rules = []
+        configuration.testing.prohibitCompilerWarnings = false
+        configuration.testing.enforceCoverage = false
+        configuration.documentation.api.enforceCoverage = false
+        PackageRepository(mock: "FailingCustomTasks").test(commands: [
+            ["refresh"],
+            ["validate"]
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        #endif
     }
 
     func testFailingDocumentationCoverage() {

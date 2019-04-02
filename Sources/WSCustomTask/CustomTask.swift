@@ -24,7 +24,7 @@ extension CustomTask {
 
     // MARK: - Static Properties
 
-    private static let cache = FileManager.default.url(in: .cache, at: "Custom Tasks")
+    internal static let cache = FileManager.default.url(in: .cache, at: "Custom Tasks")
 
     // MARK: - Execution
 

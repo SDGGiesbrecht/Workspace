@@ -379,6 +379,7 @@ let package = Package(
             ]),
         .testTarget(name: "WorkspaceLibraryTests", dependencies: [
             "WSGeneralTestImports",
+            "WSCustomTask",
             .product(name: "SDGExternalProcess", package: "SDGCornerstone")
             ]),
         .target(name: "test‐ios‐simulator", dependencies: [

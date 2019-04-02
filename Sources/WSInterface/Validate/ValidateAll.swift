@@ -113,6 +113,33 @@ extension Workspace.Validate {
                 try Workspace.Document.executeAsStep(outputDirectory: options.project.defaultDocumentationDirectory, options: options, validationStatus: &validationStatus, output: output)
             }
 
+            // Custom
+            for task in try options.project.configuration(output: output).customValidationTasks {
+                let state = validationStatus.newSection()
+                output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return "Executing custom validation: “" + task.executable + "”..." + state.anchor
+                    }
+                }).resolved().formattedAsSectionHeader())
+                do {
+                    try task.execute(output: output)
+                    validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                        switch localization {
+                        case .englishCanada:
+                            return "Custom validation passes: “" + task.executable + "”"
+                        }
+                    }))
+                } catch {
+                    validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                        switch localization {
+                        case .englishCanada:
+                            return "Custom validation fails: “" + task.executable + "”" + state.crossReference.resolved(for: localization)
+                        }
+                    }))
+                }
+            }
+
             // State
             if ProcessInfo.isInContinuousIntegration ∧ ProcessInfo.isPullRequest ∧ ¬_isDuringSpecificationTest { // @exempt(from: tests) Only reachable during pull request.
                 // @exempt(from: tests)

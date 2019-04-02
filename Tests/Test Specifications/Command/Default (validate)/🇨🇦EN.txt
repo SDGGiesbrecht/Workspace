@@ -38,8 +38,6 @@ final class DefaultTests : XCTestCase {
 Tests/DefaultTests/XCTestManifests.swift
 Tests/LinuxMain.swift
 
-[$ swiftlint...]
-
 Checking build for macOS with the Swift Package Manager... (§2)
 
 [$ swift...]

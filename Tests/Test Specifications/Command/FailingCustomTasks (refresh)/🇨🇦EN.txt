@@ -1,0 +1,21 @@
+$ workspace refresh •no‐colour
+
+Refreshing “FailingCustomTasks”...
+
+
+Refreshing resources...
+
+
+Refreshing examples...
+
+
+Refreshing inherited documentation...
+
+[$ swift...]
+
+Normalizing files...
+
+
+“FailingCustomTasks” is refreshed and ready.
+
+0

@@ -253,7 +253,6 @@ let package = Package(
         .target(name: "WSProofreading", dependencies: [
             "WSGeneralImports",
             "WSProject",
-            "WSThirdParty",
             .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .product(name: "SDGSwiftSource", package: "SDGSwift")
             ]),
@@ -274,7 +273,6 @@ let package = Package(
             "WSGeneralImports",
             "WSProject",
             "WSValidation",
-            "WSThirdParty",
             "WSXcode",
             "WSSwift",
             .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
@@ -283,7 +281,7 @@ let package = Package(
             ]),
 
         // Mechanism for embedding third party tools.
-        .target(name: "WSThirdParty", dependencies: [
+        .target(name: "WSCustomTask", dependencies: [
             "WSGeneralImports",
             "WorkspaceConfiguration",
             .product(name: "SDGExternalProcess", package: "SDGCornerstone")

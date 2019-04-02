@@ -64,28 +64,11 @@ extension PackageRepository {
                         }
             }
         }
-
-        try proofreadWithSwiftLint(status: status, forXcode: reporter is XcodeProofreadingReporter, output: output)
+        
+        if false {
+            status.failExternalPhase()
+        }
 
         return status.passing
-    }
-
-    private func proofreadWithSwiftLint(status: ProofreadingStatus, forXcode: Bool, output: Command.Output) throws {
-
-        try FileManager.default.do(in: location) {
-
-            let configuration: URL?
-            if SwiftLint.default.isConfigured() {
-                configuration = nil
-            } else {
-                let standard = FileManager.default.url(in: .cache, at: "SwiftLint/Configuration.yml")
-                configuration = standard
-                try SwiftLint.default.standardConfiguration().save(to: standard)
-            }
-
-            if ¬(try SwiftLint.default.proofread(withConfiguration: configuration, forXcode: forXcode, output: output)) {
-                status.failExternalPhase()
-            }
-        }
     }
 }

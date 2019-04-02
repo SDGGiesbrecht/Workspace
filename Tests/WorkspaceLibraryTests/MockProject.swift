@@ -178,18 +178,6 @@ extension PackageRepository {
                                 LiteralPattern("\n\n".scalars)
                                 ]), with: "[$ xcodebuild...]\n\n".scalars)
 
-                            // SwiftLint order varies.
-                            output.scalars.replaceMatches(for: CompositePattern([
-                                LiteralPattern("$ swiftlint".scalars),
-                                any,
-                                LiteralPattern("\n\n".scalars)
-                                ]), with: "[$ swiftlint...]\n\n".scalars)
-                            output.scalars.replaceMatches(for: CompositePattern([
-                                LiteralPattern("$ swiftlint ".scalars),
-                                any,
-                                LiteralPattern("\n0".scalars)
-                                ]), with: "[$ swiftlint...]\n0".scalars)
-
                             if command == ["validate"] ∨ command.hasPrefix(["validate", "•job"]) {
                                 // Refreshment occurs elswhere in continuous integration.
                                 output.scalars.replaceMatches(for: CompositePattern([

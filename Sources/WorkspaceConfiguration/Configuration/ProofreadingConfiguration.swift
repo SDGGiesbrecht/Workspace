@@ -25,18 +25,6 @@
 /// Workspace will automatically set up a proofreading scheme if it is in charge of Xcode.
 ///
 /// If Workspace is not in charge of Xcode, proofreading can still be activated for a project by copying the scheme over from a generated project.
-///
-/// ### SwiftLint
-///
-/// Workspace’s proofreading includes [SwiftLint](https://github.com/realm/SwiftLint).
-///
-/// By default, Workspace provides SwiftLint with a standard configuration that interoperates well with Workspace and the Swift Package Manager.
-///
-/// However, SwiftLint can instead be configured manually by placing a `.swiftlint.yml` file in the project root. If such a file is present, Workspace will not apply its own configuration to SwiftLint. For more information about `.swiftlint.yml`, see [SwiftLint’s own documentation](https://github.com/realm/SwiftLint).
-///
-/// ### Special Thanks
-///
-/// - Realm and [SwiftLint](https://github.com/realm/SwiftLint)
 public struct ProofreadingConfiguration : Codable {
 
     /// The set of active proofreading rules.

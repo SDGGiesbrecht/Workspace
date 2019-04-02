@@ -253,6 +253,7 @@ let package = Package(
         .target(name: "WSProofreading", dependencies: [
             "WSGeneralImports",
             "WSProject",
+            "WSCustomTask",
             .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .product(name: "SDGSwiftSource", package: "SDGSwift")
             ]),
@@ -284,6 +285,7 @@ let package = Package(
         .target(name: "WSCustomTask", dependencies: [
             "WSGeneralImports",
             "WorkspaceConfiguration",
+            .product(name: "SDGSwift", package: "SDGSwift"),
             .product(name: "SDGExternalProcess", package: "SDGCornerstone")
             ]),
 

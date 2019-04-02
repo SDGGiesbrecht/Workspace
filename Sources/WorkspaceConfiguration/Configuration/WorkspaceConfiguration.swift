@@ -94,6 +94,15 @@ public final class WorkspaceConfiguration : Configuration {
 
     internal var _isSDG: Bool = false
 
+    /// Custom tasks to perform when refreshing the project.
+    public var customRefreshmentTasks: [CustomTask] = []
+
+    /// Custom tasks to perform when proofreading.
+    public var customProofreadingTasks: [CustomTask] = []
+
+    /// Custom tasks to perform when validating the project.
+    public var customValidationTasks: [CustomTask] = []
+
     // MARK: - Methods
 
     /// Opts into all tasks which are off by default.

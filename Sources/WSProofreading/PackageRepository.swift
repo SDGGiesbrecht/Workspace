@@ -19,6 +19,7 @@ import WSGeneralImports
 import SDGSwiftSource
 
 import WSProject
+import WSCustomTask
 
 extension PackageRepository {
 
@@ -64,9 +65,13 @@ extension PackageRepository {
                         }
             }
         }
-        
-        if false {
-            status.failExternalPhase()
+
+        for task in try configuration(output: output).customProofreadingTasks {
+            do {
+                try task.execute(output: output)
+            } catch {
+                status.failExternalPhase()
+            }
         }
 
         return status.passing

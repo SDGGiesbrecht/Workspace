@@ -36,8 +36,6 @@ final class AllTasksTests : XCTestCase {
 Tests/AllTasksTests/XCTestManifests.swift
 Tests/LinuxMain.swift
 
-[$ swiftlint...]
-
 Checking build for macOS with the Swift Package Manager... (§2)
 
 [$ swift...]

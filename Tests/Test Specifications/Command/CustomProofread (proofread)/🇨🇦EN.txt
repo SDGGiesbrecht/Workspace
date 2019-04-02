@@ -13,9 +13,6 @@ Sources/CustomProofread/CustomProofread.swift
 Tests/CustomProofreadTests/CustomProofreadTests.swift
 Tests/LinuxMain.swift
 
-[$ swiftlint...]
-
-
 ✓ Source code passes proofreading.
 
 

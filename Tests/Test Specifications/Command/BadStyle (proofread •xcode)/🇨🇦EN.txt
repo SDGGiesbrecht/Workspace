@@ -60,6 +60,4 @@ $ workspace proofread •xcode •no‐colour
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:12:4: warning: Workaround: This should trigger no matter what. (workaroundReminders)
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:13:4: warning: Workaround: This malformed version check should trigger. (workaroundReminders)
 [Temporary]/BadStyle/Tests/BadStyleTests/BadStyleTests.swift:4:20: warning: Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition. (colonSpacing)
-
-[$ swiftlint...]
 0

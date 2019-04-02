@@ -38,9 +38,6 @@ Tests/SDGTests/SDGTests.swift
 Tests/test‐tool/Resources.swift
 Tests/test‐tool/main.swift
 
-[$ swiftlint...]
-
-
 ✓ Source code passes proofreading.
 
 

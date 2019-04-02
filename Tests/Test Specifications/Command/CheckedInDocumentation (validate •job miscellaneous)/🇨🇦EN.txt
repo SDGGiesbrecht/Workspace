@@ -47,8 +47,6 @@ final class CheckedInDocumentationTests : XCTestCase {
 Tests/CheckedInDocumentationTests/XCTestManifests.swift
 Tests/LinuxMain.swift
 
-[$ swiftlint...]
-
 Generating documentation... (§2)
 
 Parsing “CheckedInDocumentation”...

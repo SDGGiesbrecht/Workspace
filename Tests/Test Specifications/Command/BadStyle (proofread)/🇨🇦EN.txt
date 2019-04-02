@@ -324,8 +324,6 @@ class BadStyleTests : XCTestCase {
 
 Tests/LinuxMain.swift
 
-[$ swiftlint...]
-
 ✗ Source code fails proofreading. (See [⌘F] “§1”)
 
 “BadStyle” fails validation.

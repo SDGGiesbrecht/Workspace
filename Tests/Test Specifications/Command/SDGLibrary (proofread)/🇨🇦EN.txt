@@ -36,9 +36,6 @@ Tests/LinuxMain.swift
 Tests/SDGTests/Resources.swift
 Tests/SDGTests/SDGTests.swift
 
-[$ swiftlint...]
-
-
 ✓ Source code passes proofreading.
 
 

@@ -4,6 +4,4 @@ $ workspace proofread •xcode •no‐colour
 [Temporary]/Default/Package.swift:16:51: warning: The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
 [Temporary]/Default/Package.swift:16:57: warning: The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
 [Temporary]/Default/Tests/DefaultTests/DefaultTests.swift:4:25: warning: Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition. (colonSpacing)
-
-[$ swiftlint...]
 0

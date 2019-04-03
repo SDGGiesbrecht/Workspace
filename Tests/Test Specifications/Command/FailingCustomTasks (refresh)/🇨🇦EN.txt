@@ -16,6 +16,14 @@ Refreshing inherited documentation...
 Normalizing files...
 
 
-“FailingCustomTasks” is refreshed and ready.
+Executing custom task: “Dependency”...
 
-0
+
+[$ git...]
+
+[$ swift...]
+
+$ Dependency fail
+Hello, world!
+Hello, world!
+9223372036854775807

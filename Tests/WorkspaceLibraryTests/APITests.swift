@@ -224,7 +224,7 @@ class APITests : TestCase {
         PackageRepository(mock: "FailingCustomTasks").test(commands: [
             ["refresh"],
             ["validate"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
         #endif
     }
 

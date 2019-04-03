@@ -161,6 +161,7 @@ class APITests : TestCase {
         configuration.testing.prohibitCompilerWarnings = false
         configuration.testing.enforceCoverage = false
         configuration.documentation.api.enforceCoverage = false
+        configuration.xcode.manage = true
         PackageRepository(mock: "CustomTasks").test(commands: [
             ["refresh"],
             ["validate"]

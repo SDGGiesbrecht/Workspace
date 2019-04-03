@@ -16,8 +16,7 @@ Testing on macOS with the Swift Package Manager... (§2)
 
 Testing on macOS with Xcode... (§3)
 
-The package has no Xcode project.
-Configure “xcode.manage” or create an Xcode project manually.
+[$ xcodebuild...]
 
 Executing custom validation: “Dependency”... (§4)
 
@@ -30,8 +29,10 @@ Summary
 
 ✓ Source code passes proofreading.
 ✓ Tests pass on macOS with the Swift Package Manager.
-✗ Tests fail on macOS with Xcode. (See [⌘F] “§3”)
+✓ Tests pass on macOS with Xcode.
 ✓ Custom validation passes: “Dependency”
 
-“CustomTasks” fails validation.
-2
+
+“CustomTasks” passes validation.
+
+0

@@ -34,8 +34,6 @@ final class DefaultTests : XCTestCase {
 Tests/DefaultTests/XCTestManifests.swift
 Tests/LinuxMain.swift
 
-[$ swiftlint...]
-
 ✗ Source code fails proofreading. (See [⌘F] “§1”)
 
 “Default” fails validation.

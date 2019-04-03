@@ -24,11 +24,8 @@ class APITests : TestCase {
     static var triggeredVersionChecks: Void?
     override func setUp() {
         super.setUp()
-        // Get version checks over with, so that they are not in the output.
-        cached(in: &APITests.triggeredVersionChecks) {
-            triggerVersionChecks()
-        }
         PackageRepository.emptyRelatedProjectCache() // Make sure starting state is consistent.
+        CustomTask.emptyCache()
     }
 
     func testAllDisabled() {
@@ -61,10 +58,13 @@ class APITests : TestCase {
     }
 
     func testBadStyle() {
+        let configuration = WorkspaceConfiguration()
+        let failing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: ["fail"])
+        configuration.customProofreadingTasks.append(failing)
         PackageRepository(mock: "BadStyle").test(commands: [
             ["proofread"],
             ["proofread", "•xcode"]
-            ], localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCheckedInDocumentation() {
@@ -112,12 +112,14 @@ class APITests : TestCase {
         configuration.licence.manage = true
         configuration.licence.licence = .gnuGeneralPublic3_0
         configuration.fileHeaders.manage = true
+        let passing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: [])
+        configuration.customProofreadingTasks.append(passing)
         PackageRepository(mock: "CustomProofread").test(commands: [
             ["proofread"],
             ["proofread", "•xcode"],
             ["refresh", "licence"],
             ["refresh", "file‐headers"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCustomReadMe() {
@@ -151,6 +153,25 @@ class APITests : TestCase {
             ["refresh", "licence"],
             ["refresh", "file‐headers"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testCustomTasks() {
+        #if !os(Linux) // Significant differences. Each is covered individually elswhere.
+        let configuration = WorkspaceConfiguration()
+        let passing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: [])
+        configuration.customRefreshmentTasks.append(passing)
+        configuration.customValidationTasks.append(passing)
+        configuration.provideWorkflowScripts = false
+        configuration.proofreading.rules = []
+        configuration.testing.prohibitCompilerWarnings = false
+        configuration.testing.enforceCoverage = false
+        configuration.documentation.api.enforceCoverage = false
+        configuration.xcode.manage = true
+        PackageRepository(mock: "CustomTasks").test(commands: [
+            ["refresh"],
+            ["validate"]
+            ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
+        #endif
     }
 
     func testDefaults() {
@@ -193,6 +214,38 @@ class APITests : TestCase {
             ["document"],
             ["validate", "documentation‐coverage"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testFailingCustomTasks() {
+        #if !os(Linux) // Significant differences. Each is covered individually elswhere.
+        let configuration = WorkspaceConfiguration()
+        let failing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: ["fail"])
+        configuration.customRefreshmentTasks.append(failing)
+        configuration.provideWorkflowScripts = false
+        configuration.proofreading.rules = []
+        configuration.testing.prohibitCompilerWarnings = false
+        configuration.testing.enforceCoverage = false
+        configuration.documentation.api.enforceCoverage = false
+        PackageRepository(mock: "FailingCustomTasks").test(commands: [
+            ["refresh"]
+            ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
+        #endif
+    }
+
+    func testFailingCustomValidation() {
+        #if !os(Linux) // Significant differences. Each is covered individually elswhere.
+        let configuration = WorkspaceConfiguration()
+        let failing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: ["fail"])
+        configuration.customValidationTasks.append(failing)
+        configuration.provideWorkflowScripts = false
+        configuration.proofreading.rules = []
+        configuration.testing.prohibitCompilerWarnings = false
+        configuration.testing.enforceCoverage = false
+        configuration.documentation.api.enforceCoverage = false
+        PackageRepository(mock: "FailingCustomValidation").test(commands: [
+            ["validate"]
+            ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
+        #endif
     }
 
     func testFailingDocumentationCoverage() {

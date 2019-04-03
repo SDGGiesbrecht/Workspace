@@ -130,6 +130,17 @@ extension Workspace.Refresh {
                 try Workspace.Refresh.Xcode.command.execute(withArguments: arguments, options: options, output: output)
             }
             #endif
+
+            // Custom
+            for task in try options.project.configuration(output: output).customRefreshmentTasks {
+                output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return "Executing custom task: “" + task.executable + "”..."
+                    }
+                }).resolved().formattedAsSectionHeader())
+                try task.execute(output: output)
+            }
         }
     }
 }

@@ -38,16 +38,24 @@ extension PackageRepository {
         self.init(at: URL(fileURLWithPath: "/tmp").appendingPathComponent(name))
     }
 
-    func test<L>(commands: [[StrictString]], configuration: WorkspaceConfiguration = WorkspaceConfiguration(), sdg: Bool = false, localizations: L.Type, withDependency: Bool = false, overwriteSpecificationInsteadOfFailing: Bool, file: StaticString = #file, line: UInt = #line) where L : InputLocalization {
+    func test<L>(commands: [[StrictString]], configuration: WorkspaceConfiguration = WorkspaceConfiguration(), sdg: Bool = false, localizations: L.Type, withDependency: Bool = false, withCustomTask: Bool = false, overwriteSpecificationInsteadOfFailing: Bool, file: StaticString = #file, line: UInt = #line) where L : InputLocalization {
         do {
             try autoreleasepool {
                 let developer = URL(fileURLWithPath: "/tmp/Developer")
                 try? FileManager.default.removeItem(at: developer)
                 defer { try? FileManager.default.removeItem(at: developer) }
-                if withDependency {
+                if withDependency ∨ withCustomTask {
+
                     let dependency = developer.appendingPathComponent("Dependency")
                     try FileManager.default.do(in: dependency) {
-                        try Shell.default.run(command: ["swift", "package", "init"])
+                        var initialize = ["swift", "package", "init"]
+                        if withCustomTask {
+                            initialize += ["\u{2D}\u{2D}type", "executable"]
+                        }
+                        try Shell.default.run(command: initialize)
+                        if withCustomTask {
+                            try "import Foundation\nprint(\u{22}Hello, world!\u{22})\nif ProcessInfo.processInfo.arguments.count > 1 {\n    exit(1)\n}".save(to: dependency.appendingPathComponent("Sources/Dependency/main.swift"))
+                        }
                         try Shell.default.run(command: ["git", "init"])
                         try Shell.default.run(command: ["git", "add", "."])
                         try Shell.default.run(command: ["git", "commit", "\u{2D}m", "Initialized."])
@@ -117,7 +125,7 @@ extension PackageRepository {
                                 ∨ command == ["validate"]
                                 ∨ command == ["validate", "•job", "macos‐swift‐package‐manager"] {
                             // Phases skipped within Xcode due to rerouting interference.
-                            if location.lastPathComponent ∈ Set(["Default", "AllTasks", "AllDisabled"]) ∧ ¬command.contains("macos‐swift‐package‐manager") {
+                            if location.lastPathComponent ∈ Set(["Default", "AllTasks", "AllDisabled", "FailingCustomValidation"]) ∧ ¬command.contains("macos‐swift‐package‐manager") {
                                 expectFailure()
                             } else {
                                 requireSuccess()
@@ -159,6 +167,13 @@ extension PackageRepository {
                             output.scalars.replaceMatches(for: "⌘F".scalars, with: "[⌘F]".scalars)
                             output.scalars.replaceMatches(for: "Ctrl + F".scalars, with: "[⌘F]".scalars)
 
+                            // Git paths vary.
+                            output.scalars.replaceMatches(for: CompositePattern([
+                                LiteralPattern("$ git ".scalars),
+                                any,
+                                LiteralPattern("\n\n".scalars)
+                                ]), with: "[$ git...]\n\n".scalars)
+
                             // Swift order varies.
                             output.scalars.replaceMatches(for: CompositePattern([
                                 LiteralPattern("$ swift ".scalars),
@@ -177,18 +192,6 @@ extension PackageRepository {
                                 any,
                                 LiteralPattern("\n\n".scalars)
                                 ]), with: "[$ xcodebuild...]\n\n".scalars)
-
-                            // SwiftLint order varies.
-                            output.scalars.replaceMatches(for: CompositePattern([
-                                LiteralPattern("$ swiftlint".scalars),
-                                any,
-                                LiteralPattern("\n\n".scalars)
-                                ]), with: "[$ swiftlint...]\n\n".scalars)
-                            output.scalars.replaceMatches(for: CompositePattern([
-                                LiteralPattern("$ swiftlint ".scalars),
-                                any,
-                                LiteralPattern("\n0".scalars)
-                                ]), with: "[$ swiftlint...]\n0".scalars)
 
                             if command == ["validate"] ∨ command.hasPrefix(["validate", "•job"]) {
                                 // Refreshment occurs elswhere in continuous integration.

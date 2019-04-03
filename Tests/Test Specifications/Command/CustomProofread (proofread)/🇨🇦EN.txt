@@ -2,7 +2,6 @@ $ workspace proofread •no‐colour
 
 Normalizing files...
 
-Writing to “.swiftlint.yml”...
 
 Proofreading source code... (§1)
 
@@ -14,8 +13,12 @@ Sources/CustomProofread/CustomProofread.swift
 Tests/CustomProofreadTests/CustomProofreadTests.swift
 Tests/LinuxMain.swift
 
-[$ swiftlint...]
+[$ git...]
 
+[$ swift...]
+
+$ Dependency 
+Hello, world!
 
 ✓ Source code passes proofreading.
 

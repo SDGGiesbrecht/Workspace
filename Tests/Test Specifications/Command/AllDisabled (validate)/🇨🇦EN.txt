@@ -10,8 +10,6 @@ Normalizing files...
 Proofreading source code... (§1)
 
 
-[$ swiftlint...]
-
 Testing on macOS with the Swift Package Manager... (§2)
 
 [$ swift...]
@@ -24,7 +22,7 @@ Configure “xcode.manage” or create an Xcode project manually.
 Summary
 
 
-✗ Source code fails proofreading. (See [⌘F] “§1”)
+✓ Source code passes proofreading.
 ✓ Tests pass on macOS with the Swift Package Manager.
 ✗ Tests fail on macOS with Xcode. (See [⌘F] “§3”)
 

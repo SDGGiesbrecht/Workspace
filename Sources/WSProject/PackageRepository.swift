@@ -136,14 +136,7 @@ extension PackageRepository {
             var products: [PackageModel.Product] = []
 
             // Filter out tools which have not been declared as products.
-            let declaredTools: Set<String>
-            switch try cachedManifest().package {
-            case .v3:
-                // @exempt(from: tests) Not officially supported anyway.
-                declaredTools = [] // No concept of products.
-            case .v4(let manifest):
-                declaredTools = Set(manifest.products.map({ $0.name }))
-            }
+            let declaredTools: Set<String> = Set(try cachedManifest().products.lazy.map({ $0.name }))
 
             for product in try cachedPackage().products where ¬product.name.hasPrefix("_") {
                 switch product.type {

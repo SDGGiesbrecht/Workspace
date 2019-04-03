@@ -324,7 +324,12 @@ class BadStyleTests : XCTestCase {
 
 Tests/LinuxMain.swift
 
-[$ swiftlint...]
+[$ git...]
+
+[$ swift...]
+
+$ Dependency fail
+Hello, world!
 
 ✗ Source code fails proofreading. (See [⌘F] “§1”)
 

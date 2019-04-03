@@ -374,15 +374,16 @@ internal class SymbolPage : Page {
                 let status: DocumentationStatus
                 let symbol: APIElement
                 let navigationPath: [APIElement]
-                override func visit(_ node: FunctionTypeSyntax) {
+                override func visit(_ node: FunctionTypeSyntax) -> SyntaxVisitorContinueKind {
                     for argument in node.arguments
                         where (argument.secondName?.text.isEmpty ≠ false ∨ argument.secondName?.text == "_") // @exempt(from: tests) #workaround(SwiftSyntax 0.40200.0, Wildcard is never detected by SwiftSyntax.)
                             ∧ (argument.firstName?.text.isEmpty ≠ false ∨ argument.firstName?.text == "_") {
                                 status.reportUnlabelledParameter(node.source(), symbol: symbol, navigationPath: navigationPath)
                     }
+                    return .visitChildren
                 }
             }
-            Scanner(status: status, symbol: symbol, navigationPath: navigationPath).visit(declaration)
+            declaration.walk(Scanner(status: status, symbol: symbol, navigationPath: navigationPath))
         }
 
         guard ¬validatedParameters.isEmpty else {

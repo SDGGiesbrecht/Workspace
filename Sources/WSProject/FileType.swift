@@ -102,6 +102,7 @@ public enum FileType {
     // MARK: - Cases
 
     case c
+    case cPlusPlus
     case css
     case gitIgnore
     case html
@@ -128,6 +129,7 @@ public enum FileType {
 
     private static let fileExtensions: [String: FileType] = [
         "c": .c,
+        "cpp": .cPlusPlus,
         "command": .shell,
         "css": .css,
         "el": .lisp,
@@ -162,7 +164,7 @@ public enum FileType {
     public var syntax: FileSyntax {
         switch self {
 
-        case  .swift, .c, .css, .javaScript, .objectiveC, .xcodeProject:
+        case  .swift, .c, .cPlusPlus, .css, .javaScript, .objectiveC, .xcodeProject:
             return FileSyntax(blockCommentSyntax: FileType.swiftBlockCommentSyntax, lineCommentSyntax: FileType.swiftLineCommentSyntax)
         case .swiftPackageManifest:
             return FileSyntax(blockCommentSyntax: FileType.swiftBlockCommentSyntax, lineCommentSyntax: FileType.swiftLineCommentSyntax, requiredFirstLineToken: "/\u{2F} swift\u{2D}tools\u{2D}version:")

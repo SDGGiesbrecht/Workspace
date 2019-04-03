@@ -1,0 +1,38 @@
+$ workspace validate •no‐colour
+[Refreshing ...]
+
+Validating “CustomTasks”...
+
+
+Normalizing files...
+
+
+Proofreading source code... (§1)
+
+
+Testing on macOS with the Swift Package Manager... (§2)
+
+[$ swift...]
+
+Testing on macOS with Xcode... (§3)
+
+[$ xcodebuild...]
+
+Executing custom validation: “Dependency”... (§4)
+
+
+$ Dependency 
+Hello, world!
+
+Summary
+
+
+✓ Source code passes proofreading.
+✓ Tests pass on macOS with the Swift Package Manager.
+✓ Tests pass on macOS with Xcode.
+✓ Custom validation passes: “Dependency”
+
+
+“CustomTasks” passes validation.
+
+0

@@ -1,4 +1,4 @@
-// swift-tools-version:4.2
+// swift-tools-version:5.0
 
 /*
  Package.swift
@@ -31,7 +31,7 @@ import PackageDescription
 ///     - [Compiler warnings](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/TestingConfiguration/Properties/prohibitCompilerWarnings.html)
 ///     - [Documentation coverage](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/APIDocumentationConfiguration/Properties/enforceCoverage.html)
 ///     - [Example validation](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/Examples.html)
-///     - [Style proofreading](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/ProofreadingConfiguration.html) (including [SwiftLint](https://github.com/realm/SwiftLint))
+///     - [Style proofreading](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/ProofreadingConfiguration.html)
 ///     - [Reminders](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/ProofreadingRule/Cases/manualWarnings.html)
 ///     - [Continuous integration set‐up](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/ContinuousIntegrationConfiguration/Properties/manage.html) ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))
 /// - Generates API [documentation](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/APIDocumentationConfiguration/Properties/generate.html).
@@ -104,6 +104,9 @@ import PackageDescription
 /// By default, Workspace refrains from tasks which would involve modifying project files. Such tasks must be activated with a [configuration](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Libraries/WorkspaceConfiguration.html) file.
 let package = Package(
     name: "Workspace",
+    platforms: [
+        .macOS(.v10_13)
+    ],
     products: [
         // #documentation(WorkspaceConfiguration)
         /// The root API used in configuration files.
@@ -134,10 +137,9 @@ let package = Package(
         .executable(name: "arbeitsbereich", targets: ["WorkspaceTool"])
     ],
     dependencies: [
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 14, 0))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 5, 2))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 5, 0))),
-        .package(url: "https://github.com/apple/swift\u{2D}package\u{2D}manager", .exact(Version(0, 3, 0)))
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 15, 0))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 6, 0))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 6, 0)))
     ],
     targets: [
         // The executable. (Multiple products duplicate this with localized names.)
@@ -218,8 +220,7 @@ let package = Package(
             "WSGeneralImports",
             "WSProject",
             "WSSwift",
-            .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-            .product(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
+            .product(name: "SDGSwiftPackageManager", package: "SDGSwift")
             ]),
 
         // File header management.
@@ -252,7 +253,7 @@ let package = Package(
         .target(name: "WSProofreading", dependencies: [
             "WSGeneralImports",
             "WSProject",
-            "WSThirdParty",
+            "WSCustomTask",
             .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .product(name: "SDGSwiftSource", package: "SDGSwift")
             ]),
@@ -273,7 +274,6 @@ let package = Package(
             "WSGeneralImports",
             "WSProject",
             "WSValidation",
-            "WSThirdParty",
             "WSXcode",
             "WSSwift",
             .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
@@ -282,9 +282,10 @@ let package = Package(
             ]),
 
         // Mechanism for embedding third party tools.
-        .target(name: "WSThirdParty", dependencies: [
+        .target(name: "WSCustomTask", dependencies: [
             "WSGeneralImports",
             "WorkspaceConfiguration",
+            .product(name: "SDGSwift", package: "SDGSwift"),
             .product(name: "SDGExternalProcess", package: "SDGCornerstone")
             ]),
 
@@ -306,8 +307,7 @@ let package = Package(
             "WorkspaceProjectConfiguration",
             .product(name: "SDGCalendar", package: "SDGCornerstone"),
             .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-            .product(name: "SDGSwiftConfigurationLoading", package: "SDGSwift"),
-            .product(name: "SwiftPM", package: "swift\u{2D}package\u{2D}manager")
+            .product(name: "SDGSwiftConfigurationLoading", package: "SDGSwift")
             ]),
 
         // #documentation(WorkspaceConfiguration)
@@ -379,6 +379,7 @@ let package = Package(
             ]),
         .testTarget(name: "WorkspaceLibraryTests", dependencies: [
             "WSGeneralTestImports",
+            "WSCustomTask",
             .product(name: "SDGExternalProcess", package: "SDGCornerstone")
             ]),
         .target(name: "test‐ios‐simulator", dependencies: [

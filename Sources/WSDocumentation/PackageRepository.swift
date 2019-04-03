@@ -13,6 +13,7 @@
  */
 
 import SDGLogic
+import SDGMathematics
 import SDGCollections
 import WSGeneralImports
 
@@ -114,6 +115,17 @@ extension PackageRepository {
 
     // Steps which participate in validation.
     private func document(outputDirectory: URL, documentationStatus: DocumentationStatus, validationStatus: inout ValidationStatus, output: Command.Output, coverageCheckOnly: Bool) throws {
+
+        // #workaround(SwiftSyntax 0.50000.0, SwiftSyntax is too slow for Travis CI.)
+        if try manifest().name == "Workspace" {
+            // @exempt(from: tests)
+            DispatchQueue.global(qos: .background).async {
+                while true {
+                    print("...")
+                    Thread.sleep(until: Date(timeIntervalSinceNow: 9 × 60))
+                }
+            }
+        }
 
         let configuration = try self.configuration(output: output)
         let copyrightNotice = try resolvedCopyright(documentationStatus: documentationStatus, output: output)

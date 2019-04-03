@@ -23,8 +23,8 @@ extension PackageRepository {
     // MARK: - Structure
 
     private func targets() throws -> [Target] {
-        return try cachedPackage().manifest.package.targets.map { primitiveTarget in
-            return Target(packageDescriptionTarget: primitiveTarget, package: self)
+        return try cachedPackage().manifest.targets.lazy.map { description in
+            return Target(description: description, package: self)
         }
     }
     private func targetsByName() throws -> [String: Target] {

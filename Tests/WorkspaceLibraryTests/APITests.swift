@@ -215,7 +215,6 @@ class APITests : TestCase {
         let configuration = WorkspaceConfiguration()
         let passing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: ["fail"])
         configuration.customRefreshmentTasks.append(passing)
-        configuration.customValidationTasks.append(passing)
         configuration.provideWorkflowScripts = false
         configuration.proofreading.rules = []
         configuration.testing.prohibitCompilerWarnings = false
@@ -231,7 +230,6 @@ class APITests : TestCase {
         #if !os(Linux) // Significant differences. Each is covered individually elswhere.
         let configuration = WorkspaceConfiguration()
         let passing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: ["fail"])
-        configuration.customRefreshmentTasks.append(passing)
         configuration.customValidationTasks.append(passing)
         configuration.provideWorkflowScripts = false
         configuration.proofreading.rules = []

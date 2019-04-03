@@ -231,7 +231,7 @@ class APITests : TestCase {
             ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
         #endif
     }
-    
+
     func testFailingCustomValidation() {
         #if !os(Linux) // Significant differences. Each is covered individually elswhere.
         let configuration = WorkspaceConfiguration()

@@ -1,0 +1,29 @@
+$ workspace validate •no‐colour
+
+Refreshing “FailingCustomValidation”...
+
+
+Refreshing resources...
+
+
+Refreshing examples...
+
+
+Refreshing inherited documentation...
+
+[$ swift...]
+
+Normalizing files...
+
+
+Executing custom task: “Dependency”...
+
+
+[$ git...]
+
+[$ swift...]
+
+$ Dependency fail
+Hello, world!
+Hello, world!
+9223372036854775807

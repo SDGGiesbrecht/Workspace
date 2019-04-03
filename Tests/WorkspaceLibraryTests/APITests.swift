@@ -222,7 +222,23 @@ class APITests : TestCase {
         configuration.testing.enforceCoverage = false
         configuration.documentation.api.enforceCoverage = false
         PackageRepository(mock: "FailingCustomTasks").test(commands: [
-            ["refresh"],
+            ["refresh"]
+            ], configuration: configuration, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+        #endif
+    }
+    
+    func testFailingCustomValidation() {
+        #if !os(Linux) // Significant differences. Each is covered individually elswhere.
+        let configuration = WorkspaceConfiguration()
+        let passing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: ["fail"])
+        configuration.customRefreshmentTasks.append(passing)
+        configuration.customValidationTasks.append(passing)
+        configuration.provideWorkflowScripts = false
+        configuration.proofreading.rules = []
+        configuration.testing.prohibitCompilerWarnings = false
+        configuration.testing.enforceCoverage = false
+        configuration.documentation.api.enforceCoverage = false
+        PackageRepository(mock: "FailingCustomValidation").test(commands: [
             ["validate"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
         #endif

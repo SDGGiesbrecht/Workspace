@@ -153,7 +153,7 @@ class APITests : TestCase {
     func testCustomTasks() {
         #if !os(Linux) // Significant differences. Each is covered individually elswhere.
         let configuration = WorkspaceConfiguration()
-        let passing = CustomTask(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCommandLine")!, version: Version(0, 6, 0), executable: "test‐tool", arguments: [])
+        let passing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: [])
         configuration.customRefreshmentTasks.append(passing)
         configuration.customValidationTasks.append(passing)
         configuration.provideWorkflowScripts = false
@@ -164,7 +164,7 @@ class APITests : TestCase {
         PackageRepository(mock: "CustomTasks").test(commands: [
             ["refresh"],
             ["validate"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
         #endif
     }
 

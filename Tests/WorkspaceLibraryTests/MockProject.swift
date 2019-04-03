@@ -47,7 +47,7 @@ extension PackageRepository {
                 if withDependency {
                     let dependency = developer.appendingPathComponent("Dependency")
                     try FileManager.default.do(in: dependency) {
-                        try Shell.default.run(command: ["swift", "package", "init"])
+                        try Shell.default.run(command: ["swift", "package", "init", "\u{2D}\u{2D}type", "executable"])
                         try Shell.default.run(command: ["git", "init"])
                         try Shell.default.run(command: ["git", "add", "."])
                         try Shell.default.run(command: ["git", "commit", "\u{2D}m", "Initialized."])
@@ -159,6 +159,13 @@ extension PackageRepository {
                             output.scalars.replaceMatches(for: "⌘F".scalars, with: "[⌘F]".scalars)
                             output.scalars.replaceMatches(for: "Ctrl + F".scalars, with: "[⌘F]".scalars)
 
+                            // Git paths vary.
+                            output.scalars.replaceMatches(for: CompositePattern([
+                                LiteralPattern("$ git ".scalars),
+                                any,
+                                LiteralPattern("\n\n".scalars)
+                                ]), with: "[$ git...]\n\n".scalars)
+                            
                             // Swift order varies.
                             output.scalars.replaceMatches(for: CompositePattern([
                                 LiteralPattern("$ swift ".scalars),

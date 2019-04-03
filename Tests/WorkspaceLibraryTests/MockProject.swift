@@ -49,7 +49,7 @@ extension PackageRepository {
                     let dependency = developer.appendingPathComponent("Dependency")
                     try FileManager.default.do(in: dependency) {
                         try Shell.default.run(command: ["swift", "package", "init", "\u{2D}\u{2D}type", "executable"])
-                        try "import Foundation\nif ProcessInfo.processInfo.arguments.count > 1 {\n    exit(1)\n}".save(to: dependency.appendingPathComponent("Sources/Dependency/main.swift"))
+                        try "import Foundation\nprint(\u{22}Hello, world!\u{22})\nif ProcessInfo.processInfo.arguments.count > 1 {\n    exit(1)\n}".save(to: dependency.appendingPathComponent("Sources/Dependency/main.swift"))
                         try Shell.default.run(command: ["git", "init"])
                         try Shell.default.run(command: ["git", "add", "."])
                         try Shell.default.run(command: ["git", "commit", "\u{2D}m", "Initialized."])

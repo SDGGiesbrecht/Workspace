@@ -109,12 +109,14 @@ class APITests : TestCase {
         configuration.licence.manage = true
         configuration.licence.licence = .gnuGeneralPublic3_0
         configuration.fileHeaders.manage = true
+        let passing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: [])
+        configuration.customProofreadingTasks.append(passing)
         PackageRepository(mock: "CustomProofread").test(commands: [
             ["proofread"],
             ["proofread", "•xcode"],
             ["refresh", "licence"],
             ["refresh", "file‐headers"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCustomReadMe() {
@@ -214,8 +216,8 @@ class APITests : TestCase {
     func testFailingCustomTasks() {
         #if !os(Linux) // Significant differences. Each is covered individually elswhere.
         let configuration = WorkspaceConfiguration()
-        let passing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: ["fail"])
-        configuration.customRefreshmentTasks.append(passing)
+        let failing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: ["fail"])
+        configuration.customRefreshmentTasks.append(failing)
         configuration.provideWorkflowScripts = false
         configuration.proofreading.rules = []
         configuration.testing.prohibitCompilerWarnings = false
@@ -230,8 +232,8 @@ class APITests : TestCase {
     func testFailingCustomValidation() {
         #if !os(Linux) // Significant differences. Each is covered individually elswhere.
         let configuration = WorkspaceConfiguration()
-        let passing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: ["fail"])
-        configuration.customValidationTasks.append(passing)
+        let failing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: ["fail"])
+        configuration.customValidationTasks.append(failing)
         configuration.provideWorkflowScripts = false
         configuration.proofreading.rules = []
         configuration.testing.prohibitCompilerWarnings = false

@@ -13,6 +13,13 @@ Sources/CustomProofread/CustomProofread.swift
 Tests/CustomProofreadTests/CustomProofreadTests.swift
 Tests/LinuxMain.swift
 
+[$ git...]
+
+[$ swift...]
+
+$ Dependency 
+Hello, world!
+
 ✓ Source code passes proofreading.
 
 

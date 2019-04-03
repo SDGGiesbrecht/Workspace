@@ -45,9 +45,11 @@ extension PackageRepository {
                 try? FileManager.default.removeItem(at: developer)
                 defer { try? FileManager.default.removeItem(at: developer) }
                 if withDependency {
+
                     let dependency = developer.appendingPathComponent("Dependency")
                     try FileManager.default.do(in: dependency) {
                         try Shell.default.run(command: ["swift", "package", "init", "\u{2D}\u{2D}type", "executable"])
+                        try "import Foundation\nif ProcessInfo.processInfo.arguments.count > 1 {\n    exit(1)\n}".save(to: dependency.appendingPathComponent("Sources/Dependency/main.swift"))
                         try Shell.default.run(command: ["git", "init"])
                         try Shell.default.run(command: ["git", "add", "."])
                         try Shell.default.run(command: ["git", "commit", "\u{2D}m", "Initialized."])
@@ -165,7 +167,7 @@ extension PackageRepository {
                                 any,
                                 LiteralPattern("\n\n".scalars)
                                 ]), with: "[$ git...]\n\n".scalars)
-                            
+
                             // Swift order varies.
                             output.scalars.replaceMatches(for: CompositePattern([
                                 LiteralPattern("$ swift ".scalars),

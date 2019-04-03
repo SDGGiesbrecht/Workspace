@@ -213,7 +213,7 @@ class APITests : TestCase {
     func testFailingCustomTasks() {
         #if !os(Linux) // Significant differences. Each is covered individually elswhere.
         let configuration = WorkspaceConfiguration()
-        let passing = CustomTask(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCommandLine")!, version: Version(0, 6, 0), executable: "test‐tool", arguments: ["fail"])
+        let passing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: ["fail"])
         configuration.customRefreshmentTasks.append(passing)
         configuration.customValidationTasks.append(passing)
         configuration.provideWorkflowScripts = false

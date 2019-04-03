@@ -58,10 +58,13 @@ class APITests : TestCase {
     }
 
     func testBadStyle() {
+        let configuration = WorkspaceConfiguration()
+        let failing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: ["fail"])
+        configuration.customProofreadingTasks.append(failing)
         PackageRepository(mock: "BadStyle").test(commands: [
             ["proofread"],
             ["proofread", "•xcode"]
-            ], localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCheckedInDocumentation() {

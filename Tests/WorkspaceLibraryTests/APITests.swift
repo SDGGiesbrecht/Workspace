@@ -64,7 +64,7 @@ class APITests : TestCase {
         PackageRepository(mock: "BadStyle").test(commands: [
             ["proofread"],
             ["proofread", "•xcode"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCheckedInDocumentation() {
@@ -119,7 +119,7 @@ class APITests : TestCase {
             ["proofread", "•xcode"],
             ["refresh", "licence"],
             ["refresh", "file‐headers"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCustomReadMe() {
@@ -170,7 +170,7 @@ class APITests : TestCase {
         PackageRepository(mock: "CustomTasks").test(commands: [
             ["refresh"],
             ["validate"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
         #endif
     }
 
@@ -228,7 +228,7 @@ class APITests : TestCase {
         configuration.documentation.api.enforceCoverage = false
         PackageRepository(mock: "FailingCustomTasks").test(commands: [
             ["refresh"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
         #endif
     }
     
@@ -244,7 +244,7 @@ class APITests : TestCase {
         configuration.documentation.api.enforceCoverage = false
         PackageRepository(mock: "FailingCustomValidation").test(commands: [
             ["validate"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
         #endif
     }
 

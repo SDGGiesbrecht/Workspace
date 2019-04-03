@@ -20,9 +20,15 @@ public struct CustomTask : Decodable, Encodable {
     // MARK: - Initialization
 
     /// Creates a custom task.
-    public init(url: URL, version: Version, executable: StrictString, arguments: [String] = []) {
+    ///
+    /// - Parameters:
+    ///     - url: The URL of the Swift package defining the task.
+    ///     - release: The version of the Swift package defining the task.
+    ///     - executable: The name of the executable for the task.
+    ///     - arguments: Any arguments for the executable.
+    public init(url: URL, version release: Version, executable: StrictString, arguments: [String] = []) {
         self.url = url
-        self.version = version
+        self.version = release
         self.executable = executable
         self.arguments = arguments
     }

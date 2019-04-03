@@ -139,7 +139,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 15, 0))),
         .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 6, 0))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 6, 0)))
+        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 6, 1)))
     ],
     targets: [
         // The executable. (Multiple products duplicate this with localized names.)

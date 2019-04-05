@@ -119,10 +119,18 @@ public final class WorkspaceConfiguration : Configuration {
         documentation.api.generate = true
     }
 
-    public func _applySDGDefaults() {
+    public func _applySDGDefaults(openSource: Bool = true) {
 
         _isSDG = true
         optIntoAllTasks()
+        if ¬openSource {
+            documentation.api.generate = false
+            documentation.api.enforceCoverage = false
+            documentation.readMe.manage = false
+            licence.manage = false
+            gitHub.manage = false
+            continuousIntegration.manage = false
+        }
 
         documentation.primaryAuthor = "Jeremy David Giesbrecht"
         gitHub.administrators = ["SDGGiesbrecht"]
@@ -152,40 +160,41 @@ public final class WorkspaceConfiguration : Configuration {
         }
     }
 
-    public func _validateSDGStandards(requireExamples: Bool = true) {
+    public func _validateSDGStandards(openSource: Bool = true, requireExamples: Bool = true) {
         let needsAPIDocumentation = WorkspaceContext.current.manifest.products.contains(where: { $0.type == .library })
 
         assert(documentation.currentVersion ≠ nil, "No version specified.")
-
-        assert(documentation.projectWebsite ≠ nil, "No project website specified.")
-        if needsAPIDocumentation {
-            assert(documentation.documentationURL ≠ nil, "No documentation URL specified.")
-        }
-        assert(documentation.repositoryURL ≠ nil, "No repository URL specified.")
-
-        assert(documentation.readMe.quotation ≠ nil, "No quotation specified.")
-
-        if needsAPIDocumentation {
-            assert(documentation.api.encryptedTravisCIDeploymentKey ≠ nil, "No Travis CI deployment key specified.")
-        }
-
         assert(¬documentation.localizations.isEmpty, "No localizations specified.")
 
-        for localization in documentation.localizations {
-            assert(documentation.readMe.shortProjectDescription[localization] ≠ nil, "No short project description specified for “\(localization)”.")
-
-            if localization ≠ "🇮🇱עב" ∧ localization ≠ "🇬🇷ΕΛ" {
-                assert(documentation.readMe.quotation?.translation[localization] ≠ nil, "No translation specified for “\(localization)”.")
+        if openSource {
+            assert(documentation.projectWebsite ≠ nil, "No project website specified.")
+            if needsAPIDocumentation {
+                assert(documentation.documentationURL ≠ nil, "No documentation URL specified.")
             }
-            assert(documentation.readMe.quotation?.citation[localization] ≠ nil, "No citation specified for “\(localization)”.")
-            assert(documentation.readMe.quotation?.link[localization] ≠ nil, "No quotation link specified for “\(localization)”.")
+            assert(documentation.repositoryURL ≠ nil, "No repository URL specified.")
 
-            assert(documentation.readMe.featureList[localization] ≠ nil, "No features specified for “\(localization)”.")
-            if requireExamples {
-                assert(documentation.readMe.exampleUsage[localization] ≠ nil, "No examples specified for “\(localization)”.")
+            assert(documentation.readMe.quotation ≠ nil, "No quotation specified.")
+
+            if needsAPIDocumentation {
+                assert(documentation.api.encryptedTravisCIDeploymentKey ≠ nil, "No Travis CI deployment key specified.")
             }
 
-            assert(documentation.readMe.about ≠ nil, "About not localized for “\(localization)”.")
+            for localization in documentation.localizations {
+                assert(documentation.readMe.shortProjectDescription[localization] ≠ nil, "No short project description specified for “\(localization)”.")
+
+                if localization ≠ "🇮🇱עב" ∧ localization ≠ "🇬🇷ΕΛ" {
+                    assert(documentation.readMe.quotation?.translation[localization] ≠ nil, "No translation specified for “\(localization)”.")
+                }
+                assert(documentation.readMe.quotation?.citation[localization] ≠ nil, "No citation specified for “\(localization)”.")
+                assert(documentation.readMe.quotation?.link[localization] ≠ nil, "No quotation link specified for “\(localization)”.")
+
+                assert(documentation.readMe.featureList[localization] ≠ nil, "No features specified for “\(localization)”.")
+                if requireExamples {
+                    assert(documentation.readMe.exampleUsage[localization] ≠ nil, "No examples specified for “\(localization)”.")
+                }
+
+                assert(documentation.readMe.about ≠ nil, "About not localized for “\(localization)”.")
+            }
         }
     }
 

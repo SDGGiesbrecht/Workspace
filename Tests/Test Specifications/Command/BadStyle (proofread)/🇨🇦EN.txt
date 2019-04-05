@@ -322,7 +322,6 @@ Colons should be preceded by spaces when denoting conformance, inheritance or a 
 class BadStyleTests: XCTestCase {
 class BadStyleTests : XCTestCase {
 
-Tests/LinuxMain.swift
 
 [$ git...]
 

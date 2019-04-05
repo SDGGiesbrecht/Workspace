@@ -17,6 +17,7 @@ import WSGeneralTestImports
 
 import SDGExternalProcess
 
+import WorkspaceConfiguration
 import WSProject
 
 class APITests : TestCase {
@@ -86,6 +87,12 @@ class APITests : TestCase {
         } catch {
             XCTFail("\(error)")
         }
+    }
+
+    func testConfiguration() {
+        let configuration = WorkspaceConfiguration()
+        configuration._applySDGDefaults(openSource: false)
+        XCTAssertFalse(configuration.documentation.readMe.manage)
     }
 
     func testContinuousIntegrationWithoutScripts() {

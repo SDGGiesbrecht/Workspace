@@ -11,6 +11,7 @@ extension APITests {
         ("testBadStyle", testBadStyle),
         ("testCheckedInDocumentation", testCheckedInDocumentation),
         ("testCheckForUpdates", testCheckForUpdates),
+        ("testConfiguration", testConfiguration),
         ("testContinuousIntegrationWithoutScripts", testContinuousIntegrationWithoutScripts),
         ("testCustomProofread", testCustomProofread),
         ("testCustomReadMe", testCustomReadMe),

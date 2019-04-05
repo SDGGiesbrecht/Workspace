@@ -174,6 +174,8 @@ let package = Package(
             "WSProofreading",
             "WSTesting",
             "WSDocumentation"
+            ], swiftSettings: [
+                .define("TEST_SHIMS", .when(configuration: .debug))
             ]),
 
         // Workspace scripts.

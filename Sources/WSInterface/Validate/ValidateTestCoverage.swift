@@ -77,11 +77,12 @@ extension Workspace.Validate {
                             return // and continue loop.
                         }
 
-                        if BuildConfiguration.current == .debug,
-                            job ∈ ContinuousIntegrationJob.simulatorJobs,
+                        #if TEST_SHIMS
+                        if job ∈ ContinuousIntegrationJob.simulatorJobs,
                             ProcessInfo.processInfo.environment["SIMULATOR_UNAVAILABLE_FOR_TESTING"] ≠ nil { // Simulators are not available to all CI jobs and must be tested separately.
                             return // and continue loop.
                         }
+                        #endif
 
                         try options.project.test(on: job, validationStatus: &validationStatus, output: output)
                         try options.project.validateCodeCoverage(on: job, validationStatus: &validationStatus, output: output)

@@ -33,8 +33,9 @@ FailingDocumentationCoverage
 Workspace will look for documentation on the line above “.target(name: "FailingDocumentationCoverage"”.)
 
 
-A parameter has no description:
-anotherUnlabelled(closure:)._
+A symbol has mismatched parameter descriptions:
+anotherUnlabelled(closure:)
+(Expected: closure, _)
 
 
 A closure parameter has no label:
@@ -46,12 +47,9 @@ excessiveHeading()
 (Use heading levels three to six. Levels one and two are reserved for the surrounding context.)
 
 
-A parameter has no description:
-mismatchedParameters(parameterOne:).parameterOne
-
-
-A described parameter does not exist:
-mismatchedParameters(parameterOne:).parameterTwo
+A symbol has mismatched parameter descriptions:
+mismatchedParameters(parameterOne:)
+(Expected: parameterOne)
 
 
 A symbol has no description:

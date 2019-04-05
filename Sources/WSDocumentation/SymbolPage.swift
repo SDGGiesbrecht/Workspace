@@ -341,27 +341,12 @@ internal class SymbolPage : Page {
     private static func generateParemetersSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
         let parameters = symbol.parameters()
         let parameterDocumentation = symbol.documentation?.normalizedParameters ?? []
+        let documentedParameters = parameterDocumentation.map { $0.name.text }
 
-        // Check that parameters correspond.
-        var validatedParameters: [ParameterDocumentation] = []
-        for index in parameters.indices {
-            let name = parameters[index]
-            if index ∉ parameterDocumentation.indices {
-                status.reportMissingParameter(name, symbol: symbol, navigationPath: navigationPath)
-                continue
-            }
-            let documentation = parameterDocumentation[index]
-            if name ≠ documentation.name.text {
-                status.reportMissingParameter(name, symbol: symbol, navigationPath: navigationPath)
-                continue
-            }
-            validatedParameters.append(documentation)
+        if parameters ≠ documentedParameters {
+            status.reportMismatchedParameters(documentedParameters, expected: parameters, symbol: symbol, navigationPath: navigationPath)
         }
-        if parameterDocumentation.count > parameters.count {
-            for extra in parameterDocumentation[parameters.endIndex...] {
-                status.reportNonExistentParameter(extra.name.text, symbol: symbol, navigationPath: navigationPath)
-            }
-        }
+        let validatedParameters = parameterDocumentation.filter { parameters.contains($0.name.text) }
 
         /// Check that closure parameters are labelled.
         if let declaration = symbol.declaration {

@@ -268,6 +268,8 @@ let package = Package(
             "WSProofreading",
             .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .product(name: "SDGXcode", package: "SDGSwift")
+            ], swiftSettings: [
+                .define("TEST_SHIMS", .when(configuration: .debug))
             ]),
 
         // Documentation generation.

@@ -107,13 +107,14 @@ extension PackageRepository {
             }
         }).resolved().formattedAsSectionHeader())
 
-        if BuildConfiguration.current == .debug,
-            job == .macOSSwiftPackageManager,
+        #if TEST_SHIMS
+        if job == .macOSSwiftPackageManager,
             ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil {
             // “swift test” gets confused inside Xcode’s test sandbox. This skips it while testing Workspace.
             output.print("Skipping due to sandbox...")
             return
         }
+        #endif
 
         let testCommand: (Command.Output) -> Bool
         switch job {

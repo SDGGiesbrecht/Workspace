@@ -105,6 +105,7 @@ import PackageDescription
 let package = Package(
     name: "Workspace",
     platforms: [
+        // These must also be updated in Sources/WSProject/PackageRepository.swift.
         .macOS(.v10_13)
     ],
     products: [

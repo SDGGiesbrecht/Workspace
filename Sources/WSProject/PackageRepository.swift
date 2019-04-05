@@ -23,6 +23,8 @@ import WorkspaceProjectConfiguration
 
 extension PackageRepository {
 
+    private static let macOSDeploymentVersion = Version(10, 13)
+
     // MARK: - Cache
 
     // This needs to be reset if any files are added, renamed, or deleted.
@@ -218,6 +220,7 @@ extension PackageRepository {
                     linkingAgainst: "WorkspaceConfiguration",
                     in: SDGSwift.Package(url: Metadata.packageURL),
                     at: Metadata.latestStableVersion,
+                    minimumMacOSVersion: PackageRepository.macOSDeploymentVersion,
                     context: try configurationContext(),
                     reportProgress: { output.print($0) })
             }

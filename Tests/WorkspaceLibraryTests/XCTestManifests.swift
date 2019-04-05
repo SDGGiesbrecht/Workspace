@@ -31,7 +31,6 @@ extension APITests {
         ("testHeaders", testHeaders),
         ("testInvalidResourceDirectory", testInvalidResourceDirectory),
         ("testInvalidTarget", testInvalidTarget),
-        ("testLinuxMainGenerationCompatibility", testLinuxMainGenerationCompatibility),
         ("testLocalizationIdentifier", testLocalizationIdentifier),
         ("testMissingExample", testMissingExample),
         ("testMissingReadMeLocalization", testMissingReadMeLocalization),
@@ -48,8 +47,7 @@ extension APITests {
 
 extension InternalTests {
     static let __allTests = [
-        ("testGitIgnoreCoverage", testGitIgnoreCoverage),
-        ("testLinuxMainGenerationCompatibility", testLinuxMainGenerationCompatibility)
+        ("testGitIgnoreCoverage", testGitIgnoreCoverage)
     ]
 }
 

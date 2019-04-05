@@ -308,6 +308,8 @@ let package = Package(
             .product(name: "SDGCalendar", package: "SDGCornerstone"),
             .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
             .product(name: "SDGSwiftConfigurationLoading", package: "SDGSwift")
+            ], swiftSettings: [
+                .define("CACHE_LOG", .when(configuration: .debug))
             ]),
 
         // #documentation(WorkspaceConfiguration)

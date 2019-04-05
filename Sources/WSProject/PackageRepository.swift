@@ -43,9 +43,9 @@ extension PackageRepository {
 
     public func resetFileCache(debugReason: String) {
         PackageRepository.fileCaches[location] = FileCache()
-        if BuildConfiguration.current == .debug {
-            print("(Debug notice: File cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)")
-        }
+        #if CACHE_LOG
+        print("(Debug notice: File cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)")
+        #endif
     }
 
     // This only needs to be reset if a Swift source file is added, renamed, or removed.
@@ -68,9 +68,9 @@ extension PackageRepository {
     public func resetManifestCache(debugReason: String) {
         resetFileCache(debugReason: debugReason)
         PackageRepository.manifestCaches[location] = ManifestCache()
-        if BuildConfiguration.current == .debug {
-            print("(Debug notice: Manifest cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)")
-        }
+        #if CACHE_LOG
+        print("(Debug notice: Manifest cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)")
+        #endif
     }
 
     // These do not need to be reset during the execution of any command. (They do between tests.)
@@ -96,9 +96,9 @@ extension PackageRepository {
     public func resetConfigurationCache(debugReason: String) {
         resetManifestCache(debugReason: "testing")
         PackageRepository.configurationCaches[location] = ConfigurationCache()
-        if BuildConfiguration.current == .debug {
-            print("(Debug notice: Configuration cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)")
-        }
+        #if CACHE_LOG
+        print("(Debug notice: Configuration cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)")
+        #endif
     }
 
     // MARK: - Miscellaneous Properties

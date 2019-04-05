@@ -64,9 +64,8 @@ extension TypeSyntax {
         case let attributed as AttributedTypeSyntax:
             return attributed.baseType.parameterNames()
         default:
-            if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                print("Unidentified type syntax class: \(type(of: self))")
-            }
+            // @exempt(from: tests)
+            warnUnidentified()
             return []
         }
     }

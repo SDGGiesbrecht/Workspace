@@ -101,9 +101,8 @@ extension APIElement {
                     return "associatedtype"
                 }
             default:
-                if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                    print("Unrecognized type declaration: \(Swift.type(of: type.genericDeclaration))")
-                }
+                // @exempt(from: tests)
+                type.genericDeclaration.warnUnidentified()
                 return ""
             }
         case .extension:

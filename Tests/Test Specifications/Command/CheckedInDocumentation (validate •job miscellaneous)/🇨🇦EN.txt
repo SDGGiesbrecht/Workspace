@@ -44,8 +44,6 @@ Colons should be preceded by spaces when denoting conformance, inheritance or a 
 final class CheckedInDocumentationTests: XCTestCase {
 final class CheckedInDocumentationTests : XCTestCase {
 
-Tests/CheckedInDocumentationTests/XCTestManifests.swift
-Tests/LinuxMain.swift
 
 Generating documentation... (§2)
 

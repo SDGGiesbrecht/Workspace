@@ -117,13 +117,10 @@ extension PackageRepository {
     private func document(outputDirectory: URL, documentationStatus: DocumentationStatus, validationStatus: inout ValidationStatus, output: Command.Output, coverageCheckOnly: Bool) throws {
 
         // #workaround(SwiftSyntax 0.50000.0, SwiftSyntax is too slow for Travis CI.)
-        if try manifest().name == "Workspace" {
-            // @exempt(from: tests)
-            DispatchQueue.global(qos: .background).async {
-                while true {
-                    print("...")
-                    Thread.sleep(until: Date(timeIntervalSinceNow: 9 × 60))
-                }
+        DispatchQueue.global(qos: .background).async { // @exempt(from: tests)
+            while true { // @exempt(from: tests)
+                print("...")
+                Thread.sleep(until: Date(timeIntervalSinceNow: 9 × 60))
             }
         }
 

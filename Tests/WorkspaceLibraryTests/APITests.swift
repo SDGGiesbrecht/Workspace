@@ -74,6 +74,7 @@ class APITests : TestCase {
         configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "zxx"]
         configuration.documentation.api.generate = true
         configuration.documentation.api.yearFirstPublished = 2018
+        configuration.provideWorkflowScripts = false
         PackageRepository(mock: "CheckedInDocumentation").test(commands: [
             ["refresh"],
             ["validate", "•job", "miscellaneous"],

@@ -24,7 +24,7 @@ extension TypeSyntax {
         case let simple as SimpleTypeIdentifierSyntax:
             var result: [String] = []
             if let genericArgumentClause = simple.genericArgumentClause,
-                // #workaround(SwiftSyntax 0.40200.0, Prevents invalid index.)
+                // #workaround(SwiftSyntax 0.50000.0, Prevents invalid index.)
                 genericArgumentClause.source() ≠ "" {
                 for argument in genericArgumentClause.arguments {
                     result.append(contentsOf: argument.argumentType.parameterNames())
@@ -64,9 +64,8 @@ extension TypeSyntax {
         case let attributed as AttributedTypeSyntax:
             return attributed.baseType.parameterNames()
         default:
-            if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                print("Unidentified type syntax class: \(type(of: self))")
-            }
+            // @exempt(from: tests)
+            warnUnidentified()
             return []
         }
     }

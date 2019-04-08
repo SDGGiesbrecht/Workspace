@@ -17,6 +17,7 @@ import WSGeneralTestImports
 
 import SDGExternalProcess
 
+import WorkspaceConfiguration
 import WSProject
 
 class APITests : TestCase {
@@ -73,6 +74,7 @@ class APITests : TestCase {
         configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "zxx"]
         configuration.documentation.api.generate = true
         configuration.documentation.api.yearFirstPublished = 2018
+        configuration.provideWorkflowScripts = false
         PackageRepository(mock: "CheckedInDocumentation").test(commands: [
             ["refresh"],
             ["validate", "•job", "miscellaneous"],
@@ -86,6 +88,12 @@ class APITests : TestCase {
         } catch {
             XCTFail("\(error)")
         }
+    }
+
+    func testConfiguration() {
+        let configuration = WorkspaceConfiguration()
+        configuration._applySDGDefaults(openSource: false)
+        XCTAssertFalse(configuration.documentation.readMe.manage)
     }
 
     func testContinuousIntegrationWithoutScripts() {

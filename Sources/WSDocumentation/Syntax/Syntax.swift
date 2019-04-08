@@ -1,5 +1,5 @@
 /*
- TupleTypeElementSyntax.swift
+ Syntax.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -12,22 +12,16 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGSwiftSource
 import WSGeneralImports
 
 import SDGSwiftSource
 
-extension TupleTypeElementSyntax : Parameter {
-    var firstName: TokenSyntax? {
-        if let name = self.name,
-            ¬name.source().isEmpty {
-            return name
-        } else {
-            // #workaround(SwiftSyntax 0.50000.0, Misidentified.)
-            return inOut
-        }
-    }
-    var optionalType: TypeSyntax? {
-        return type
+extension Syntax {
+
+    internal func warnUnidentified(file: StaticString = #file, function: StaticString = #function) { // @exempt(from: tests)
+        #if UNIDENTIFIED_SYNTAX_WARNINGS
+        let fileName = URL(fileURLWithPath: "\(file)").deletingPathExtension().lastPathComponent
+        print("Unidentified syntax node: \(Swift.type(of: self)) (\(fileName).\(function))")
+        #endif
     }
 }

@@ -27,6 +27,7 @@ public struct RepositoryConfiguration : Codable {
         "entitlements",
         "gyb",
         "inc",
+        "LinuxMain.swift",
         "modulemap",
         "nojekyll",
         "pep8",
@@ -39,6 +40,7 @@ public struct RepositoryConfiguration : Codable {
         "testspec",
         "tgz",
         "txt",
+        "XCTestManifests.swift",
         "xcworkspacedata"
     ]
 

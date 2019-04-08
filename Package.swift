@@ -105,6 +105,7 @@ import PackageDescription
 let package = Package(
     name: "Workspace",
     platforms: [
+        // These must also be updated in Sources/WSProject/PackageRepository.swift.
         .macOS(.v10_13)
     ],
     products: [
@@ -137,9 +138,9 @@ let package = Package(
         .executable(name: "arbeitsbereich", targets: ["WorkspaceTool"])
     ],
     dependencies: [
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 15, 0))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 6, 0))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 6, 1)))
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 16, 0))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 6, 1))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 7, 0)))
     ],
     targets: [
         // The executable. (Multiple products duplicate this with localized names.)
@@ -173,6 +174,8 @@ let package = Package(
             "WSProofreading",
             "WSTesting",
             "WSDocumentation"
+            ], swiftSettings: [
+                .define("TEST_SHIMS", .when(configuration: .debug))
             ]),
 
         // Workspace scripts.
@@ -267,6 +270,8 @@ let package = Package(
             "WSProofreading",
             .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .product(name: "SDGXcode", package: "SDGSwift")
+            ], swiftSettings: [
+                .define("TEST_SHIMS", .when(configuration: .debug))
             ]),
 
         // Documentation generation.
@@ -279,6 +284,8 @@ let package = Package(
             .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .product(name: "SDGXcode", package: "SDGSwift"),
             .product(name: "SDGSwiftSource", package: "SDGSwift")
+            ], swiftSettings: [
+                .define("UNIDENTIFIED_SYNTAX_WARNINGS", .when(configuration: .debug))
             ]),
 
         // Mechanism for embedding third party tools.
@@ -308,6 +315,8 @@ let package = Package(
             .product(name: "SDGCalendar", package: "SDGCornerstone"),
             .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
             .product(name: "SDGSwiftConfigurationLoading", package: "SDGSwift")
+            ], swiftSettings: [
+                .define("CACHE_LOG", .when(configuration: .debug))
             ]),
 
         // #documentation(WorkspaceConfiguration)

@@ -11,7 +11,6 @@ Package.swift
 README.md
 Sources/CustomProofread/CustomProofread.swift
 Tests/CustomProofreadTests/CustomProofreadTests.swift
-Tests/LinuxMain.swift
 
 [$ git...]
 

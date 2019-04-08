@@ -95,22 +95,18 @@ internal class DocumentationStatus {
         }), with: symbol, navigationPath: navigationPath, hint: hint)
     }
 
-    internal func reportMissingParameter(_ parameter: String, symbol: APIElement, navigationPath: [APIElement]) {
+    internal func reportMismatchedParameters(_ parameters: [String], expected: [String], symbol: APIElement, navigationPath: [APIElement]) {
         report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
-                return "A parameter has no description:"
+                return "A symbol has mismatched parameter descriptions:"
             }
-        }), with: symbol, navigationPath: navigationPath, parameter: parameter)
-    }
-
-    internal func reportNonExistentParameter(_ parameter: String, symbol: APIElement, navigationPath: [APIElement]) {
-        report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
+        }), with: symbol, navigationPath: navigationPath, hint: UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
-                return "A described parameter does not exist:"
+                return "(Expected: \(expected.joined(separator: ", ")))"
             }
-        }), with: symbol, navigationPath: navigationPath, parameter: parameter)
+        }))
     }
 
     internal func reportUnlabelledParameter(_ closureType: String, symbol: APIElement, navigationPath: [APIElement]) {

@@ -101,9 +101,8 @@ extension APIElement {
                     return "associatedtype"
                 }
             default:
-                if BuildConfiguration.current == .debug { // @exempt(from: tests)
-                    print("Unrecognized type declaration: \(Swift.type(of: type.genericDeclaration))")
-                }
+                // @exempt(from: tests)
+                type.genericDeclaration.warnUnidentified()
                 return ""
             }
         case .extension:
@@ -552,7 +551,7 @@ extension APIElement {
             return []
         case .variable(let variable):
 
-            // #workaround(SwiftSyntax 0.40200.0, Works around invalid index.)
+            // #workaround(SwiftSyntax 0.50000.0, Works around invalid index.)
             guard let typeAnnotation = variable.declaration.bindings.first?.typeAnnotation,
                 typeAnnotation.source() ≠ "" else {
                     return []

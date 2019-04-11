@@ -9,4 +9,5 @@
  See http://www.gnu.org/licenses/ for licence information.
  */
 
-let xyz = true && true // This should be allowed because the Unicode rule is disabled.
+let badlySpacedColon :Bool = true // This should be allowed because colon spacing is disabled.
+let string = "a && b" // This should be allowed because ambiguous scope is disabled.

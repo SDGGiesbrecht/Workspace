@@ -113,7 +113,7 @@ class APITests : TestCase {
     func testCustomProofread() {
         let configuration = WorkspaceConfiguration()
         configuration.proofreading.rules.remove(.colonSpacing)
-        configuration.proofreading.rules.remove(.unicode)
+        configuration.proofreading.unicodeRuleScope.remove(.ambiguous)
         for rule in ProofreadingRule.allCases {
             _ = rule.category
         }

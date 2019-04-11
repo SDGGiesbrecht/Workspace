@@ -138,6 +138,11 @@ internal struct UnicodeRule : SyntaxRule {
                 scope = .humanLanguage
             }
         }
+        let configuredScope = try? project.configuration(output: output).proofreading.unicodeRuleScope
+        let applicableScope = configuredScope ?? Set(UnicodeRuleScope.allCases) // @exempt(from: tests) Reaching here required that the configuration has already been successfully loaded and cached.
+        if scope ∉ applicableScope {
+            return // Skip.
+        }
 
         func check(for obsolete: String, replacement: StrictString? = nil,
                    onlyProhibitPrefixUse: Bool = false,

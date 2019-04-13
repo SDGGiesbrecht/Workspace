@@ -33,4 +33,7 @@ public struct ProofreadingConfiguration : Codable {
     ///
     /// Individual proofreading violations can be suppressed by placing `@exempt(from: ruleIdentifier)` on the same line.
     public var rules: Set<ProofreadingRule> = Set(ProofreadingRule.allCases)
+
+    /// The scope in which to apply the `unicode` rule.
+    public var unicodeRuleScope: Set<UnicodeRuleScope> = Set(UnicodeRuleScope.allCases)
 }

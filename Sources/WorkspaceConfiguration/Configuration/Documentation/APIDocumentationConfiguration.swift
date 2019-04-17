@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGCollections
+
 /// Options related to API documentation.
 public struct APIDocumentationConfiguration : Codable {
 
@@ -47,9 +49,17 @@ public struct APIDocumentationConfiguration : Codable {
     /// By default, this is assembled from the file header copyright notice.
     ///
     /// Workspace will replace the dynamic element `#dates` with the computed copyright dates. (e.g. “©2016–2017”).
-    public var copyrightNotice: Lazy<StrictString> = Lazy<StrictString>(resolve: { configuration in
-        // #workaround(Should be localized.)
-        return configuration.fileHeaders.copyrightNotice.resolve(configuration) + " All rights reserved."
+    public var copyrightNotice: Lazy<[LocalizationIdentifier: StrictString]> = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
+        return configuration.fileHeaders.copyrightNotice.resolve(configuration).mapKeyValuePairs { localization, notice in
+            if let provided = localization._reasonableMatch {
+                switch provided {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return (localization, notice + " All rights reserved.")
+                }
+            } else {
+                return (localization, notice)
+            }
+        }
     })
 
     /// An encrypted Travis CI deployment key.

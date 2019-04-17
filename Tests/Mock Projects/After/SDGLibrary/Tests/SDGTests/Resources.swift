@@ -5,6 +5,7 @@
  https://example.github.io/SDG/SDG
 
  Copyright ©2019 John Doe and the SDG project contributors.
+ ©2019
 
  Soli Deo gloria.
 

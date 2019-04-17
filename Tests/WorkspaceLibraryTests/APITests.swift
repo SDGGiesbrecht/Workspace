@@ -51,6 +51,12 @@ class APITests : TestCase {
         configuration.documentation.localizations = ["🇮🇱עב"]
         configuration.licence.licence = .copyright
         configuration.documentation.api.yearFirstPublished = 2018
+        let builtIn = configuration.fileHeaders.copyrightNotice
+        configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
+            var result = builtIn.resolve(configuration)
+            result["🇮🇱עב"] = "#dates"
+            return result
+        })
         PackageRepository(mock: "AllTasks").test(commands: [
             ["refresh"],
             ["validate"]
@@ -74,6 +80,12 @@ class APITests : TestCase {
         configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "zxx"]
         configuration.documentation.api.generate = true
         configuration.documentation.api.yearFirstPublished = 2018
+        let builtIn = configuration.fileHeaders.copyrightNotice
+        configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
+            var result = builtIn.resolve(configuration)
+            result["zxx"] = "#dates"
+            return result
+        })
         configuration.provideWorkflowScripts = false
         PackageRepository(mock: "CheckedInDocumentation").test(commands: [
             ["refresh"],
@@ -297,11 +309,13 @@ class APITests : TestCase {
     }
 
     func testHeaders() {
+        let configuration = WorkspaceConfiguration()
+        configuration.documentation.localizations = ["🇨🇦EN"]
         PackageRepository(mock: "Headers").test(commands: [
             ["refresh", "file‐headers"],
             ["refresh", "examples"],
             ["refresh", "inherited‐documentation"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testInvalidResourceDirectory() {
@@ -397,6 +411,16 @@ class APITests : TestCase {
         configuration.documentation.readMe.quotation?.link["🇬🇧EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=SBLGNT;NIVUK")!
         configuration.documentation.readMe.quotation?.link["🇺🇸EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=SBLGNT;NIV")!
         configuration.gitHub.developmentNotes = "..."
+        let builtIn = configuration.fileHeaders.copyrightNotice
+        configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
+            var result = builtIn.resolve(configuration)
+            result["🇩🇪DE"] = "#dates"
+            result["🇫🇷FR"] = "#dates"
+            result["🇬🇷ΕΛ"] = "#dates"
+            result["🇮🇱עב"] = "#dates"
+            result["zxx"] = "#dates"
+            return result
+        })
         PackageRepository(mock: "PartialReadMe").test(commands: [
             ["refresh", "read‐me"],
             ["refresh", "github"],
@@ -450,6 +474,16 @@ class APITests : TestCase {
         configuration.testing.exemptionTokens.insert(TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
         configuration.testing.exemptionTokens.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
 
+        let builtIn = configuration.fileHeaders.copyrightNotice
+        configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
+            var result = builtIn.resolve(configuration)
+            result["🇩🇪DE"] = "#dates"
+            result["🇫🇷FR"] = "#dates"
+            result["🇬🇷ΕΛ"] = "#dates"
+            result["🇮🇱עב"] = "#dates"
+            result["zxx"] = "#dates"
+            return result
+        })
         var commands: [[StrictString]] = [
             ["refresh", "scripts"],
             ["refresh", "git"],
@@ -529,6 +563,16 @@ class APITests : TestCase {
         configuration.testing.exemptionTokens.insert(TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
         configuration.testing.exemptionTokens.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
 
+        let builtIn = configuration.fileHeaders.copyrightNotice
+        configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
+            var result = builtIn.resolve(configuration)
+            result["🇩🇪DE"] = "#dates"
+            result["🇫🇷FR"] = "#dates"
+            result["🇬🇷ΕΛ"] = "#dates"
+            result["🇮🇱עב"] = "#dates"
+            result["zxx"] = "#dates"
+            return result
+        })
         var commands: [[StrictString]] = [
             ["refresh", "scripts"],
             ["refresh", "git"],

@@ -82,13 +82,20 @@ public struct FileHeaderConfiguration : Codable {
     /// Workspace uses any pre‐existing start date if it can detect one already in the file header. Workspace searches for `©`, `(C)`, or `(c)` followed by an optional space and four digits. If none is found, Workspace will use the current date as the start date.
     ///
     /// Workspace always uses the current date as the end date.
-    public var copyrightNotice: Lazy<StrictString> = Lazy<StrictString>(resolve: { configuration in
+    public var copyrightNotice: Lazy<[LocalizationIdentifier: StrictString]> = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
         let project = StrictString(WorkspaceContext.current.manifest.packageName)
-        if let author = configuration.documentation.primaryAuthor {
-            let components: [StrictString] = ["Copyright #dates ", author, " and the ", project, " project contributors."]
-            return components.joined()
-        } else {
-            return "Copyright #dates the " + project + " project contributors."
+        return configuration.localizationDictionary { localization in
+            if let author = configuration.documentation.primaryAuthor {
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Copyright #dates \(author) and the \(project) project contributors."
+                }
+            } else {
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Copyright #dates the \(project) project contributors."
+                }
+            }
         }
     })
 
@@ -99,26 +106,41 @@ public struct FileHeaderConfiguration : Codable {
     /// Workspace will replace the dynamic element `#filename` with the name of the particular file.
     public var contents: Lazy<StrictString> = Lazy<StrictString>(resolve: { configuration in
 
+        let localizations = configuration.documentation.localizations
         let packageName = StrictString(WorkspaceContext.current.manifest.packageName)
 
         var header: [StrictString] = [
             "#filename",
-            "",
-            "This source file is part of the " + packageName + " open source project."
+            ""
         ]
+
+        header.append(contentsOf: configuration.sequentialLocalizations({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "This source file is part of the " + packageName + " open source project."
+            }
+        }))
         if let site = configuration.documentation.projectWebsite {
             header.append(StrictString(site.absoluteString))
         }
 
         header.append("")
 
-        header.append(configuration.fileHeaders.copyrightNotice.resolve(configuration))
+        let copyrightNotices = configuration.fileHeaders.copyrightNotice.resolve(configuration)
+        var orderedNotices = configuration.sequentialLocalizations(copyrightNotices)
+        if orderedNotices.isEmpty {
+            orderedNotices = ["#dates"]
+        }
+        header.append(contentsOf: orderedNotices)
 
         if configuration._isSDG {
-            header.append(contentsOf: [
-                "",
-                "Soli Deo gloria."
-                ])
+            header.append("")
+            header.append(contentsOf: configuration.sequentialLocalizations({ localization in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Soli Deo gloria."
+                }
+            }))
         }
 
         if let licence = configuration.licence.licence {

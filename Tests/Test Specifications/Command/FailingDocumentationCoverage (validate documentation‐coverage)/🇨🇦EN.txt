@@ -14,6 +14,10 @@ Loading inheritance from “XCTest”...
 Processing API...
 Generating HTML...
 
+A localization has no copyright specified: zxx
+(Configure it under “documentation.api.copyrightNotice”.)
+
+
 A symbol has no description:
 FailingDocumentationCoverage
 (Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.

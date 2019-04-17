@@ -83,7 +83,7 @@ extension PackageRepository {
         // Nothing modifies the configuration.
         fileprivate var configuration: WorkspaceConfiguration?
         fileprivate var fileHeader: StrictString?
-        fileprivate var documentationCopyright: StrictString?
+        fileprivate var documentationCopyright: [LocalizationIdentifier: StrictString]?
         fileprivate var readMe: [LocalizationIdentifier: StrictString]?
         fileprivate var contributingInstructions: StrictString?
         fileprivate var issueTemplate: StrictString?
@@ -249,7 +249,7 @@ extension PackageRepository {
         }
     }
 
-    public func documentationCopyright(output: Command.Output) throws -> StrictString {
+    public func documentationCopyright(output: Command.Output) throws -> [LocalizationIdentifier: StrictString] {
         return try cached(in: &configurationCache.documentationCopyright) {
             return try configuration(output: output).documentation.api.copyrightNotice.resolve(configuration(output: output))
         }

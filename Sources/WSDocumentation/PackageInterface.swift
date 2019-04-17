@@ -173,7 +173,7 @@ internal struct PackageInterface {
          api: PackageAPI,
          packageURL: URL?,
          version: Version?,
-         copyright: [LocalizationIdentifier: StrictString],
+         copyright: [LocalizationIdentifier?: StrictString],
          output: Command.Output) {
 
         output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -215,16 +215,16 @@ internal struct PackageInterface {
     private let api: APIElement
     private let packageImport: StrictString?
     private let indices: [LocalizationIdentifier: StrictString]
-    private let copyrightNotices: [LocalizationIdentifier: StrictString]
+    private let copyrightNotices: [LocalizationIdentifier?: StrictString]
     private let packageIdentifiers: Set<String>
     private let symbolLinks: [LocalizationIdentifier: [String: String]]
 
     private func copyright(for localization: LocalizationIdentifier, status: DocumentationStatus) -> StrictString {
         if let result = copyrightNotices[localization] {
             return result
-        } else { // @exempt(from: tests) #workaround(Not reachable yet.)
-            status.reportMissingCopyright(localization: localization) // @exempt(from: tests) #workaround(Not reachable yet.)
-            return ""
+        } else {
+            status.reportMissingCopyright(localization: localization)
+            return copyrightNotices[nil]!
         }
     }
 

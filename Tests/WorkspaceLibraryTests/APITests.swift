@@ -405,6 +405,16 @@ class APITests : TestCase {
         configuration.documentation.readMe.quotation?.link["🇬🇧EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=SBLGNT;NIVUK")!
         configuration.documentation.readMe.quotation?.link["🇺🇸EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=SBLGNT;NIV")!
         configuration.gitHub.developmentNotes = "..."
+        let builtIn = configuration.fileHeaders.copyrightNotice
+        configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
+            var result = builtIn.resolve(configuration)
+            result["🇩🇪DE"] = "#dates"
+            result["🇫🇷FR"] = "#dates"
+            result["🇬🇷ΕΛ"] = "#dates"
+            result["🇮🇱עב"] = "#dates"
+            result["zxx"] = "#dates"
+            return result
+        })
         PackageRepository(mock: "PartialReadMe").test(commands: [
             ["refresh", "read‐me"],
             ["refresh", "github"],

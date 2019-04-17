@@ -468,6 +468,16 @@ class APITests : TestCase {
         configuration.testing.exemptionTokens.insert(TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
         configuration.testing.exemptionTokens.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
 
+        let builtIn = configuration.fileHeaders.copyrightNotice
+        configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
+            var result = builtIn.resolve(configuration)
+            result["🇩🇪DE"] = "#dates"
+            result["🇫🇷FR"] = "#dates"
+            result["🇬🇷ΕΛ"] = "#dates"
+            result["🇮🇱עב"] = "#dates"
+            result["zxx"] = "#dates"
+            return result
+        })
         var commands: [[StrictString]] = [
             ["refresh", "scripts"],
             ["refresh", "git"],
@@ -496,7 +506,7 @@ class APITests : TestCase {
         #if !os(Linux)
         commands.append(["validate"])
         #endif
-        PackageRepository(mock: "SDGLibrary").test(commands: commands, configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "SDGLibrary").test(commands: commands, configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: true)
     }
 
     func testSDGTool() {
@@ -547,6 +557,16 @@ class APITests : TestCase {
         configuration.testing.exemptionTokens.insert(TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
         configuration.testing.exemptionTokens.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
 
+        let builtIn = configuration.fileHeaders.copyrightNotice
+        configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
+            var result = builtIn.resolve(configuration)
+            result["🇩🇪DE"] = "#dates"
+            result["🇫🇷FR"] = "#dates"
+            result["🇬🇷ΕΛ"] = "#dates"
+            result["🇮🇱עב"] = "#dates"
+            result["zxx"] = "#dates"
+            return result
+        })
         var commands: [[StrictString]] = [
             ["refresh", "scripts"],
             ["refresh", "git"],
@@ -572,7 +592,7 @@ class APITests : TestCase {
 
             ["proofread", "•xcode"]
             ])
-        PackageRepository(mock: "SDGTool").test(commands: commands, configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "SDGTool").test(commands: commands, configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: true)
     }
 
     func testSelfSpecificScripts() {

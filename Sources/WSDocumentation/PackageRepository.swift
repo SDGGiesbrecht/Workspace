@@ -42,9 +42,10 @@ extension PackageRepository {
         return location.appendingPathComponent(PackageRepository.documentationDirectoryName)
     }
 
-    internal func resolvedCopyright(documentationStatus: DocumentationStatus, output: Command.Output) throws -> [LocalizationIdentifier: StrictString] {
+    internal func resolvedCopyright(documentationStatus: DocumentationStatus, output: Command.Output) throws -> [LocalizationIdentifier?: StrictString] {
 
-        var template = try documentationCopyright(output: output)
+        var template: [LocalizationIdentifier?: StrictString] = try documentationCopyright(output: output).mapKeys { $0 }
+        template[nil] = "#dates"
 
         let dates: StrictString
         if let specified = try configuration(output: output).documentation.api.yearFirstPublished {

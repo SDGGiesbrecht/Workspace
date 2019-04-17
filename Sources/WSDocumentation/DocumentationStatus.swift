@@ -31,6 +31,7 @@ internal class DocumentationStatus {
 
     internal var passing: Bool
     internal let output: Command.Output
+    private var missingCopyrightLocalizations: Set<LocalizationIdentifier> = []
 
     // MARK: - Reporting
 
@@ -140,15 +141,18 @@ internal class DocumentationStatus {
     }
 
     internal func reportMissingCopyright(localization: LocalizationIdentifier) {
-        report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishCanada:
-                return ([
-                    "A localization has no copyright specified: " + StrictString("\(localization)"),
-                    "(Configure it under “documentation.api.copyrightNotice”.)"
-                ] as [StrictString]).joinedAsLines()
-            }
-        }))
+        if ¬missingCopyrightLocalizations.contains(localization) {
+            missingCopyrightLocalizations.insert(localization)
+            report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return ([
+                        "A localization has no copyright specified: " + StrictString("\(localization)"),
+                        "(Configure it under “documentation.api.copyrightNotice”.)"
+                        ] as [StrictString]).joinedAsLines()
+                }
+            }))
+        }
     }
 
     internal func reportExcessiveHeading(symbol: APIElement, navigationPath: [APIElement]) {

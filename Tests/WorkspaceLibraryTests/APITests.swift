@@ -74,6 +74,12 @@ class APITests : TestCase {
         configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "zxx"]
         configuration.documentation.api.generate = true
         configuration.documentation.api.yearFirstPublished = 2018
+        let builtIn = configuration.fileHeaders.copyrightNotice
+        configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
+            var result = builtIn.resolve(configuration)
+            result["zxx"] = "#dates"
+            return result
+        })
         configuration.provideWorkflowScripts = false
         PackageRepository(mock: "CheckedInDocumentation").test(commands: [
             ["refresh"],

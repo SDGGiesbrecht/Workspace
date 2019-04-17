@@ -42,7 +42,7 @@ extension PackageRepository {
         return location.appendingPathComponent(PackageRepository.documentationDirectoryName)
     }
 
-    internal func resolvedCopyright(documentationStatus: DocumentationStatus, output: Command.Output) throws -> StrictString {
+    internal func resolvedCopyright(documentationStatus: DocumentationStatus, output: Command.Output) throws -> [LocalizationIdentifier: StrictString] {
 
         var template = try documentationCopyright(output: output)
 
@@ -53,7 +53,7 @@ extension PackageRepository {
             documentationStatus.reportMissingYearFirstPublished()
             dates = StrictString(WSProject.copyright(fromText: ""))
         }
-        template.replaceMatches(for: "#dates", with: dates)
+        template = template.mapValues { $0.replacingMatches(for: "#dates", with: dates) }
 
         return template
     }

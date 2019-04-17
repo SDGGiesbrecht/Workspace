@@ -139,7 +139,7 @@ internal class DocumentationStatus {
         }))
     }
 
-    internal func reportMissingCopyright(localization: LocalizationIdentifier) { // @exempt(from: tests) #workaround(Not used yet.)
+    internal func reportMissingCopyright(localization: LocalizationIdentifier) {
         report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:

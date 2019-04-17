@@ -84,26 +84,19 @@ public struct FileHeaderConfiguration : Codable {
     /// Workspace always uses the current date as the end date.
     public var copyrightNotice: Lazy<[LocalizationIdentifier: StrictString]> = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
         let project = StrictString(WorkspaceContext.current.manifest.packageName)
-        var result: [LocalizationIdentifier: StrictString] = [:]
-        for localization in configuration.documentation.localizations {
-            if let provided = localization._reasonableMatch {
-                let resolved: StrictString = {
-                    if let author = configuration.documentation.primaryAuthor {
-                        switch provided {
-                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                            return "Copyright #dates \(author) and the \(project) project contributors."
-                        }
-                    } else {
-                        switch provided {
-                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                            return "Copyright #dates the \(project) project contributors."
-                        }
-                    }
-                }()
-                result[localization] = resolved
+        return configuration.localizationDictionary { localization in
+            if let author = configuration.documentation.primaryAuthor {
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Copyright #dates \(author) and the \(project) project contributors."
+                }
+            } else {
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Copyright #dates the \(project) project contributors."
+                }
             }
         }
-        return result
     })
 
     /// The entire contents of the file header.
@@ -113,13 +106,20 @@ public struct FileHeaderConfiguration : Codable {
     /// Workspace will replace the dynamic element `#filename` with the name of the particular file.
     public var contents: Lazy<StrictString> = Lazy<StrictString>(resolve: { configuration in
 
+        let localizations = configuration.documentation.localizations
         let packageName = StrictString(WorkspaceContext.current.manifest.packageName)
 
         var header: [StrictString] = [
             "#filename",
-            "",
-            "This source file is part of the " + packageName + " open source project."
+            ""
         ]
+
+        header.append(contentsOf: configuration.sequentialLocalizations({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "This source file is part of the " + packageName + " open source project."
+            }
+        }))
         if let site = configuration.documentation.projectWebsite {
             header.append(StrictString(site.absoluteString))
         }

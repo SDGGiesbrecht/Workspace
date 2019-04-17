@@ -16,6 +16,8 @@ import SDGLogic
 
 import SDGSwiftConfiguration
 
+import WSLocalizations
+
 // @documentation(WorkspaceConfiguration)
 // #example(1, sampleConfiguration)
 /// The root API used in configuration files.
@@ -103,7 +105,7 @@ public final class WorkspaceConfiguration : Configuration {
 
     internal var _isSDG: Bool = false
 
-    // MARK: - Methods
+    // MARK: - Opting In & Out
 
     /// Opts into all tasks which are off by default.
     ///
@@ -196,6 +198,38 @@ public final class WorkspaceConfiguration : Configuration {
                 assert(documentation.readMe.about ≠ nil, "About not localized for “\(localization)”.")
             }
         }
+    }
+
+    // MARK: - Localization
+
+    private func resolvedLocalizations<T>(_ localize: (ContentLocalization) -> T) -> [(localization: LocalizationIdentifier, value: T)] {
+        let localizations = documentation.localizations
+        var result: [(localization: LocalizationIdentifier, value: T)] = []
+        for localization in localizations {
+            if let provided = localization._reasonableMatch {
+                result.append((localization: localization, value: localize(provided)))
+            }
+        }
+        return result
+    }
+
+    internal func localizationDictionary<T>(_ localize: (ContentLocalization) -> T) -> [LocalizationIdentifier: T] {
+        var dictionary: [LocalizationIdentifier: T] = [:]
+        for pair in resolvedLocalizations(localize) {
+            dictionary[pair.localization] = pair.value
+        }
+        return dictionary
+    }
+
+    internal func sequentialLocalizations<T>(_ localize: (ContentLocalization) -> T) -> [T] where T : Equatable {
+        var array: [T] = []
+        for pair in resolvedLocalizations(localize) {
+            let value = pair.value
+            if ¬array.contains(value) {
+                array.append(value)
+            }
+        }
+        return array
     }
 
     // MARK: - Encoding

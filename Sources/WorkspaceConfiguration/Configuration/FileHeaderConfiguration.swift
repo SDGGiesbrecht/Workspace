@@ -82,14 +82,28 @@ public struct FileHeaderConfiguration : Codable {
     /// Workspace uses any pre‐existing start date if it can detect one already in the file header. Workspace searches for `©`, `(C)`, or `(c)` followed by an optional space and four digits. If none is found, Workspace will use the current date as the start date.
     ///
     /// Workspace always uses the current date as the end date.
-    public var copyrightNotice: Lazy<StrictString> = Lazy<StrictString>(resolve: { configuration in
+    public var copyrightNotice: Lazy<[LocalizationIdentifier: StrictString]> = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
         let project = StrictString(WorkspaceContext.current.manifest.packageName)
-        if let author = configuration.documentation.primaryAuthor {
-            let components: [StrictString] = ["Copyright #dates ", author, " and the ", project, " project contributors."]
-            return components.joined()
-        } else {
-            return "Copyright #dates the " + project + " project contributors."
+        var result: [LocalizationIdentifier: StrictString] = [:]
+        for localization in configuration.documentation.localizations {
+            if let provided = localization._reasonableMatch {
+                let resolved: StrictString = {
+                    if let author = configuration.documentation.primaryAuthor {
+                        switch provided {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "Copyright #dates \(author) and the \(project) project contributors."
+                        }
+                    } else {
+                        switch provided {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "Copyright #dates the \(project) project contributors."
+                        }
+                    }
+                }()
+                result[localization] = resolved
+            }
         }
+        return result
     })
 
     /// The entire contents of the file header.

@@ -143,8 +143,8 @@ internal class DocumentationStatus {
     internal func reportMissingCopyright(localization: LocalizationIdentifier) {
         if ¬missingCopyrightLocalizations.contains(localization) {
             missingCopyrightLocalizations.insert(localization)
-            report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
+            report(problem: UserFacing<StrictString, InterfaceLocalization>({ warningLocalization in
+                switch warningLocalization {
                 case .englishCanada:
                     return ([
                         "A localization has no copyright specified: " + StrictString("\(localization)"),

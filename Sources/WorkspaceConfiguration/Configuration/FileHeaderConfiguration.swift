@@ -127,7 +127,11 @@ public struct FileHeaderConfiguration : Codable {
         header.append("")
 
         let copyrightNotices = configuration.fileHeaders.copyrightNotice.resolve(configuration)
-        header.append(contentsOf: configuration.sequentialLocalizations(copyrightNotices))
+        var orderedNotices = configuration.sequentialLocalizations(copyrightNotices)
+        if orderedNotices.isEmpty {
+            orderedNotices = ["#dates"]
+        }
+        header.append(contentsOf: orderedNotices)
 
         if configuration._isSDG {
             header.append("")

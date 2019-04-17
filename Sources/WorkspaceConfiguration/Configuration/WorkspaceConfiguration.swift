@@ -221,6 +221,16 @@ public final class WorkspaceConfiguration : Configuration {
         return dictionary
     }
 
+    internal func sequentialLocalizations<T>(_ unordered: [LocalizationIdentifier: T]) -> [T] where T : Equatable {
+        var result: [T] = []
+        for localization in documentation.localizations {
+            if let value = unordered[localization],
+                ¬result.contains(value) {
+                result.append(value)
+            }
+        }
+        return result
+    }
     internal func sequentialLocalizations<T>(_ localize: (ContentLocalization) -> T) -> [T] where T : Equatable {
         var array: [T] = []
         for pair in resolvedLocalizations(localize) {

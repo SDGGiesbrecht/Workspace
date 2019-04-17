@@ -126,13 +126,17 @@ public struct FileHeaderConfiguration : Codable {
 
         header.append("")
 
-        header.append(configuration.fileHeaders.copyrightNotice.resolve(configuration))
+        let copyrightNotices = configuration.fileHeaders.copyrightNotice.resolve(configuration)
+        header.append(contentsOf: configuration.sequentialLocalizations(copyrightNotices))
 
         if configuration._isSDG {
-            header.append(contentsOf: [
-                "",
-                "Soli Deo gloria."
-                ])
+            header.append("")
+            header.append(contentsOf: configuration.sequentialLocalizations({ localization in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Soli Deo gloria."
+                }
+            }))
         }
 
         if let licence = configuration.licence.licence {

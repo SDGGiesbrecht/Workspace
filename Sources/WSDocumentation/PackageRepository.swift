@@ -127,11 +127,7 @@ extension PackageRepository {
         }
 
         let configuration = try self.configuration(output: output)
-        let copyrightNotice = try resolvedCopyright(documentationStatus: documentationStatus, output: output)
-        var copyright: [LocalizationIdentifier: StrictString] = [:]
-        for localization in configuration.documentation.localizations {
-            copyright[localization] = copyrightNotice
-        }
+        let copyright = try resolvedCopyright(documentationStatus: documentationStatus, output: output)
 
         let interface = PackageInterface(
             localizations: configuration.documentation.localizations,

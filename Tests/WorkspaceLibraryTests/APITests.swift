@@ -51,6 +51,12 @@ class APITests : TestCase {
         configuration.documentation.localizations = ["🇮🇱עב"]
         configuration.licence.licence = .copyright
         configuration.documentation.api.yearFirstPublished = 2018
+        let builtIn = configuration.fileHeaders.copyrightNotice
+        configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
+            var result = builtIn.resolve(configuration)
+            result["🇮🇱עב"] = "#dates"
+            return result
+        })
         PackageRepository(mock: "AllTasks").test(commands: [
             ["refresh"],
             ["validate"]

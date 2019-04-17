@@ -303,11 +303,13 @@ class APITests : TestCase {
     }
 
     func testHeaders() {
+        let configuration = WorkspaceConfiguration()
+        configuration.documentation.localizations = ["🇨🇦EN"]
         PackageRepository(mock: "Headers").test(commands: [
             ["refresh", "file‐headers"],
             ["refresh", "examples"],
             ["refresh", "inherited‐documentation"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testInvalidResourceDirectory() {

@@ -137,8 +137,5 @@ public let configuration: WorkspaceConfiguration = {
     configuration._applySDGOverrides()
     configuration._validateSDGStandards(requireExamples: false)
 
-    // #workaround(SwiftSyntax 0.50000.0, Compiler warnings.)
-    configuration.testing.prohibitCompilerWarnings = false
-
     return configuration
 }()

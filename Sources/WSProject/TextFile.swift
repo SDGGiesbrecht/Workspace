@@ -25,13 +25,7 @@ public struct TextFile {
         }
 
         let contents = try String(from: location)
-        let executable: Bool
-        #if os(Linux)
-            // #workaround(Swift 5.0, Linux has no implementation for resourcesValues.)
-            executable = FileManager.default.isExecutableFile(atPath: location.path)
-        #else
-            executable = try location.resourceValues(forKeys: [.isExecutableKey]).isExecutable == true
-        #endif
+        let executable = FileManager.default.isExecutableFile(atPath: location.path)
         self.init(location: location, fileType: fileType, executable: executable, contents: contents, isNew: false)
     }
 

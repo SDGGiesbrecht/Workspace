@@ -226,6 +226,7 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
             }
 
             result.append(contentsOf: [
+                "      env:",
                 "        \u{2D} secure: \u{22}" + key + "\u{22}",
                 "      if: branch = master and (not type = pull_request)",
                 "",

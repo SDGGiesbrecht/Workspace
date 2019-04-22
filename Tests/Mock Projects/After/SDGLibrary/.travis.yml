@@ -14,34 +14,30 @@
 language: generic
 matrix:
   include:
-    - os: osx
-      env:
-        - JOB="macOS + Swift Package Manager"
+    - name: "macOS + Swift Package Manager"
+      os: osx
       osx_image: xcode10.2
       script:
         - "git config --global protocol.version 1"
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job macos‐swift‐package‐manager"
-    - os: osx
-      env:
-        - JOB="macOS + Xcode"
+    - name: "macOS + Xcode"
+      os: osx
       osx_image: xcode10.2
       script:
         - "git config --global protocol.version 1"
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job macos‐xcode"
-    - os: linux
-      env:
-        - JOB="Linux"
+    - name: "Linux"
+      os: linux
       dist: xenial
       script:
         - "export SWIFT_VERSION=5.0"
         - "eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\""
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job linux"
-    - os: osx
-      env:
-        - JOB="iOS"
+    - name: "iOS"
+      os: osx
       osx_image: xcode10.2
       language: objective-c
       xcode_sdk: iphonesimulator
@@ -49,17 +45,15 @@ matrix:
         - "git config --global protocol.version 1"
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job ios"
-    - os: osx
-      env:
-        - JOB="watchOS"
+    - name: "watchOS"
+      os: osx
       osx_image: xcode10.2
       script:
         - "git config --global protocol.version 1"
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job watchos"
-    - os: osx
-      env:
-        - JOB="tvOS"
+    - name: "tvOS"
+      os: osx
       osx_image: xcode10.2
       language: objective-c
       xcode_sdk: appletvsimulator
@@ -67,18 +61,17 @@ matrix:
         - "git config --global protocol.version 1"
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job tvos"
-    - os: linux
-      env:
-        - JOB="Miscellaneous"
+    - name: "Miscellaneous"
+      os: linux
       dist: xenial
       script:
         - "export SWIFT_VERSION=5.0"
         - "eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\""
         - "bash \"./Refresh (macOS).command\""
         - "bash \"./Validate (macOS).command\" •job miscellaneous"
-    - os: linux
+    - name: "Deployment"
+      os: linux
       env:
-        - JOB="Deployment"
         - secure: "0123456789abcdef"
       if: branch = master and (not type = pull_request)
 

@@ -21,15 +21,6 @@ import WSDocumentation
 
 public enum ContinuousIntegrationJob : Int, CaseIterable {
 
-    // MARK: - Static Properties
-
-    private static let environmentVariableName = UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishCanada:
-            return "JOB"
-        }
-    })
-
     // MARK: - Cases
 
     case macOSSwiftPackageManager
@@ -211,10 +202,6 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
         }
     }
 
-    private var environmentLabel: String {
-        return String(ContinuousIntegrationJob.environmentVariableName.resolved(for: .englishCanada)) + "=\u{22}" + String(name.resolved(for: .englishCanada)) + "\u{22}"
-    }
-
     private var travisSDKKey: String? {
         switch self {
         case .macOSSwiftPackageManager, .macOSXcode, .linux, .watchOS, .miscellaneous, .deployment:
@@ -227,10 +214,11 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
     }
 
     internal func script(configuration: WorkspaceConfiguration) throws -> [String] {
+        let configuredLocalization = configuration.documentation.localizations.first.flatMap { InterfaceLocalization(reasonableMatchFor: $0.code) }
+        let localization = configuredLocalization ?? InterfaceLocalization.fallbackLocalization
         var result: [String] = [
-            "    \u{2D} os: " + travisOperatingSystemKey,
-            "      env:",
-            "        \u{2D} " + environmentLabel
+            "    \u{2D} name: \u{22}" + String(name.resolved(for: localization)) + "\u{22}",
+            "      os: " + travisOperatingSystemKey
         ]
         if self == .deployment {
             guard let key = configuration.documentation.api.encryptedTravisCIDeploymentKey else {
@@ -238,6 +226,7 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
             }
 
             result.append(contentsOf: [
+                "      env:",
                 "        \u{2D} secure: \u{22}" + key + "\u{22}",
                 "      if: branch = master and (not type = pull_request)",
                 "",

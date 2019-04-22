@@ -218,7 +218,7 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
         let localization = configuredLocalization ?? InterfaceLocalization.fallbackLocalization
         var result: [String] = [
             "    \u{2D} os: " + travisOperatingSystemKey,
-            "      name: \u{22} " + String(name.resolved(for: localization)) + "\u{22}"
+            "      name: \u{22}" + String(name.resolved(for: localization)) + "\u{22}"
         ]
         if self == .deployment {
             guard let key = configuration.documentation.api.encryptedTravisCIDeploymentKey else {

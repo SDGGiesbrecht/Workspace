@@ -2,21 +2,12 @@
   "object": {
     "pins": [
       {
-        "package": "SDGCommandLine",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCommandLine",
-        "state": {
-          "branch": null,
-          "revision": "a92bc4a4ac9d58c9dbf0407927113756382cbc23",
-          "version": "0.6.1"
-        }
-      },
-      {
         "package": "SDGCornerstone",
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCornerstone",
         "state": {
           "branch": null,
-          "revision": "0674531dc65578d95135cc05e79111b132cc3aab",
-          "version": "0.16.0"
+          "revision": "8359e13f0749408ce8f2dc6055e3f4f5c2a3b307",
+          "version": "0.17.0"
         }
       },
       {
@@ -24,8 +15,26 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
         "state": {
           "branch": null,
-          "revision": "2cb575eaec979136a85d568ff069c5f462483e9c",
-          "version": "0.7.1"
+          "revision": "817872d60908f4bb12df4c457d25c023701ef1d9",
+          "version": "0.8.0"
+        }
+      },
+      {
+        "package": "llbuild",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-llbuild.git",
+        "state": {
+          "branch": null,
+          "revision": "ed2b4e08e46be355edff390c8aa245e929af1331",
+          "version": "0.0.50000"
+        }
+      },
+      {
+        "package": "SwiftPM",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-package-manager",
+        "state": {
+          "branch": null,
+          "revision": "964c312fc4112dcb24ee71a53ad297db69c1a720",
+          "version": "0.0.50000"
         }
       },
       {

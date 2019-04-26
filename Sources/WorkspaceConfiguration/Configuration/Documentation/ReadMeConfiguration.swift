@@ -221,7 +221,7 @@ public struct ReadMeConfiguration : Codable {
     }
 
     private static func _locationOfDocumentationFile(named name: StrictString, for localization: LocalizationIdentifier, in project: URL) -> URL {
-        let icon = ContentLocalization.icon(for: localization.code) ?? StrictString("[" + localization.code + "]")
+        let icon = ContentLocalization.icon(for: localization.code) ?? "[\(localization.code)]"
         let fileName: StrictString = icon + " " + name + ".md"
         return _documentationDirectory(for: project).appendingPathComponent(String(fileName))
     }
@@ -242,7 +242,7 @@ public struct ReadMeConfiguration : Codable {
     public static func localizationLinks(_ localizations: [LocalizationIdentifier]) -> StrictString {
         var links: [StrictString] = []
         for targetLocalization in localizations {
-            let linkText = ContentLocalization.icon(for: targetLocalization.code) ?? StrictString("[" + targetLocalization.code + "]")
+            let linkText = ContentLocalization.icon(for: targetLocalization.code) ?? "[\(targetLocalization.code)]"
             let absoluteURL = _readMeLocation(for: WorkspaceContext.current.location, localization: targetLocalization)
             var relativeURL = StrictString(absoluteURL.path(relativeTo: WorkspaceContext.current.location))
             relativeURL.replaceMatches(for: " ".scalars, with: "%20".scalars)
@@ -311,7 +311,7 @@ public struct ReadMeConfiguration : Codable {
         let link: StrictString
         switch provided {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            link = StrictString("(For a list of related projects, see [here](\(relativeURL)).)")
+            link = "(For a list of related projects, see [here](\(relativeURL)).)"
         }
         return link
     }
@@ -340,7 +340,7 @@ public struct ReadMeConfiguration : Codable {
             UserFacing<StrictString, ContentLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    var result = StrictString("\(projectName) provides ")
+                    var result: StrictString = "\(projectName) provides "
                     if tools.count == 1 {
                         result += "a command line tool"
                     } else {
@@ -354,7 +354,7 @@ public struct ReadMeConfiguration : Codable {
             UserFacing<StrictString, ContentLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    var result = StrictString("Paste the following into a terminal to install or update ")
+                    var result: StrictString = "Paste the following into a terminal to install or update "
                     if tools.count == 1 {
                         result += "it"
                     } else {
@@ -366,7 +366,7 @@ public struct ReadMeConfiguration : Codable {
             }).resolved(for: localization),
             "",
             "```shell",
-            StrictString("curl \u{2D}sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash \u{2D}s \(projectName) \u{22}\(packageURL.absoluteString)\u{22} \(version.string()) \u{22}\(toolNames.first!) help\u{22} " + toolNames.joined(separator: " ")),
+            "curl \u{2D}sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash \u{2D}s \(projectName) \u{22}\(packageURL.absoluteString)\u{22} \(version.string()) \u{22}\(toolNames.first!) help\u{22} \(toolNames.joined(separator: " "))",
             "```"
             ].joinedAsLines()
     }
@@ -383,9 +383,9 @@ public struct ReadMeConfiguration : Codable {
 
         var versionSpecification: StrictString
         if version.major == 0 {
-            versionSpecification = StrictString(".upToNextMinor(from: Version(\(version.major.inDigits()), \(version.minor.inDigits()), \(version.patch.inDigits())))")
+            versionSpecification = ".upToNextMinor(from: Version(\(version.major.inDigits()), \(version.minor.inDigits()), \(version.patch.inDigits())))"
         } else {
-            versionSpecification = StrictString("from: Version(\(version.major.inDigits()), \(version.minor.inDigits()), \(version.patch.inDigits()))")
+            versionSpecification = "from: Version(\(version.major.inDigits()), \(version.minor.inDigits()), \(version.patch.inDigits()))"
         }
 
         var result = [
@@ -399,7 +399,7 @@ public struct ReadMeConfiguration : Codable {
             UserFacing<StrictString, ContentLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    var result = StrictString("\(projectName) provides ")
+                    var result: StrictString = "\(projectName) provides "
                     if libraries.count == 1 {
                         result += "a library"
                     } else {
@@ -413,7 +413,7 @@ public struct ReadMeConfiguration : Codable {
             UserFacing<StrictString, ContentLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    var result = StrictString("Simply add \(projectName) as a dependency in `Package.swift`")
+                    var result: StrictString = "Simply add \(projectName) as a dependency in `Package.swift`"
                     if libraries.count == 1 {
                         result += ":"
                     } else {
@@ -424,32 +424,32 @@ public struct ReadMeConfiguration : Codable {
             }).resolved(for: localization),
             "",
             "```swift",
-            StrictString("let ") + UserFacing<StrictString, ContentLocalization>({ localization in
+            "let " + UserFacing<StrictString, ContentLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "package"
                 }
             }).resolved(for: localization) + " = Package(",
-            (StrictString("    name: \u{22}") + UserFacing<StrictString, ContentLocalization>({ localization in
+            ("    name: \u{22}" + UserFacing<StrictString, ContentLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "MyPackage"
                 }
-            }).resolved(for: localization) + StrictString("\u{22},")) as StrictString,
+            }).resolved(for: localization) + "\u{22},") as StrictString,
             "    dependencies: [",
-            StrictString("        .package(url: \u{22}\(packageURL.absoluteString)\u{22}, \(versionSpecification)),"),
+            "        .package(url: \u{22}\(packageURL.absoluteString)\u{22}, \(versionSpecification)),",
             "    ],",
             "    targets: [",
-            (StrictString("        .target(name: \u{22}") + UserFacing<StrictString, ContentLocalization>({ localization in
+            ("        .target(name: \u{22}" + UserFacing<StrictString, ContentLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "MyTarget"
                 }
-            }).resolved(for: localization) + StrictString("\u{22}, dependencies: [")) as StrictString
+            }).resolved(for: localization) + "\u{22}, dependencies: [") as StrictString
         ]
 
         for library in libraries {
-            result += [StrictString("            .productItem(name: \u{22}\(library.name)\u{22}, package: \u{22}\(projectName)\u{22}),")]
+            result += ["            .productItem(name: \u{22}\(library.name)\u{22}, package: \u{22}\(projectName)\u{22}),"]
         }
 
         result += [
@@ -461,7 +461,7 @@ public struct ReadMeConfiguration : Codable {
             UserFacing<StrictString, ContentLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    var result = StrictString("The ")
+                    var result: StrictString = "The "
                     if libraries.count == 1 {
                         result += "library’s "
                         if libraries.first!.modules.count == 1 {
@@ -481,7 +481,7 @@ public struct ReadMeConfiguration : Codable {
         ]
 
         for module in WorkspaceContext.current.manifest.productModules {
-            result += [StrictString("import \(module)")]
+            result += ["import \(module)"]
         }
 
         result += [

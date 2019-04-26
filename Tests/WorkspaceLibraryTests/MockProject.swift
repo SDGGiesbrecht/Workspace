@@ -103,7 +103,7 @@ extension PackageRepository {
                         }
 
                         print(StrictString("$ workspace ") + command.joined(separator: " "))
-                        let specificationName: StrictString = StrictString("\(location.lastPathComponent) (") + command.joined(separator: " ") + ")"
+                        let specificationName: StrictString = "\(location.lastPathComponent) (\(command.joined(separator: " ")))"
 
                         // Special handling of commands with platform differences
                         func requireSuccess() {

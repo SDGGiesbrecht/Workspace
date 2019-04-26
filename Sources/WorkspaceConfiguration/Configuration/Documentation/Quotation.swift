@@ -63,6 +63,6 @@ public struct Quotation : Codable {
             result += [indent + "―" + StrictString(cited)]
         }
 
-        return StrictString("> ") + StrictString(result.joined(separator: "\n".scalars)).replacingMatches(for: "\n".scalars, with: "<br>".scalars)
+        return "> " + StrictString(result.joined(separator: "\n".scalars)).replacingMatches(for: "\n".scalars, with: "<br>".scalars)
     }
 }

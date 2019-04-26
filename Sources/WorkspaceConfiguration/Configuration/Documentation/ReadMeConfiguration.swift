@@ -383,9 +383,9 @@ public struct ReadMeConfiguration : Codable {
 
         var versionSpecification: StrictString
         if version.major == 0 {
-            versionSpecification = StrictString(".upToNextMinor(from: Version(\(version.major), \(version.minor), \(version.patch)))")
+            versionSpecification = StrictString(".upToNextMinor(from: Version(\(version.major.inDigits()), \(version.minor.inDigits()), \(version.patch.inDigits())))")
         } else {
-            versionSpecification = StrictString("from: Version(\(version.major), \(version.minor), \(version.patch))")
+            versionSpecification = StrictString("from: Version(\(version.major.inDigits()), \(version.minor.inDigits()), \(version.patch.inDigits()))")
         }
 
         var result = [

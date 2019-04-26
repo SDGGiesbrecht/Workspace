@@ -27,7 +27,7 @@ extension PackageRepository {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ errorLocalization in
                 switch errorLocalization {
                 case .englishCanada:
-                    return StrictString("There is no read‐me for “\(localization)”. (documentation.readMe.contents)")
+                    return StrictString("There is no read‐me for “\(arbitraryDescriptionOf: localization)”. (documentation.readMe.contents)")
                 }
             }))
         }

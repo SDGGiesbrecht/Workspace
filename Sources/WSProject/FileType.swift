@@ -111,6 +111,7 @@ public enum FileType {
     case lisp
     case markdown
     case objectiveC
+    case objectiveCPlusPlus
     case python
     case shell
     case swift
@@ -129,6 +130,8 @@ public enum FileType {
 
     private static let fileExtensions: [String: FileType] = [
         "c": .c,
+        "cc": .cPlusPlus,
+        "clang\u{2D}format": .yaml,
         "cpp": .cPlusPlus,
         "command": .shell,
         "css": .css,
@@ -143,6 +146,7 @@ public enum FileType {
         "m": .objectiveC,
         "mailmap": .gitIgnore,
         "md": .markdown,
+        "mm": .objectiveCPlusPlus,
         "pbxproj": .xcodeProject,
         "py": .python,
         "sh": .shell,

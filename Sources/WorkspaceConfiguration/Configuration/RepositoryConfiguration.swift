@@ -21,13 +21,20 @@ public struct RepositoryConfiguration : Codable {
     ///
     /// Workspace automatically skips files it does not understand, but it prints a warning first. These warnings can be silenced by adding the file type to this list. For standard file types related to Swift projects, please [request that support be added](https://github.com/SDGGiesbrecht/Workspace/issues).
     public var ignoredFileTypes: Set<String> = [
+        "04",
         "cfg",
+        "cmake",
         "dsidx",
         "DS_Store",
+        "dtrace",
         "entitlements",
         "gyb",
+        "gz",
+        "in",
         "inc",
         "LinuxMain.swift",
+        "llbuild",
+        "LLVM",
         "modulemap",
         "nojekyll",
         "pep8",
@@ -40,6 +47,7 @@ public struct RepositoryConfiguration : Codable {
         "testspec",
         "tgz",
         "txt",
+        "TXT",
         "XCTestManifests.swift",
         "xcworkspacedata"
     ]

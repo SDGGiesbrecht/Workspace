@@ -70,7 +70,7 @@ extension PackageRepository {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ (localization) in
                 switch localization {
                 case .englishCanada:
-                    return StrictString("No target specified for resource:\n\(path)\nFiles must be in subdirectories named corresponding to the intended target.")
+                    return "No target specified for resource:\n\(path)\nFiles must be in subdirectories named corresponding to the intended target."
                 }
             }))
         }
@@ -78,7 +78,7 @@ extension PackageRepository {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ (localization) in
                 switch localization {
                 case .englishCanada:
-                    return StrictString("No target named “\(targetName)”.\nResources must be in subdirectories named corresponding to the intended target.")
+                    return "No target named “\(targetName)”.\nResources must be in subdirectories named corresponding to the intended target."
                 }
             }))
         }

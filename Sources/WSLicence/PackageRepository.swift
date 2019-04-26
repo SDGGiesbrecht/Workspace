@@ -23,7 +23,7 @@ extension PackageRepository {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
-                    return StrictString("No licence has been selected. (licence.licence)")
+                    return "No licence has been selected. (licence.licence)"
                 }
             }))
         }

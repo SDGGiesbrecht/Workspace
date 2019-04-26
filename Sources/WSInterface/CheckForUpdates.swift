@@ -41,7 +41,7 @@ extension Workspace {
                     switch localization {
                     case .englishCanada:
                         let url = URL(string: "#installation", relativeTo: Metadata.packageURL)!
-                        return StrictString("Workspace \(update.string()) is available.\nFor update instructions, see \(url.absoluteString.in(Underline.underlined))")
+                        return "Workspace \(update.string()) is available.\nFor update instructions, see \(url.absoluteString.in(Underline.underlined))"
                     }
                 }).resolved())
             } else {

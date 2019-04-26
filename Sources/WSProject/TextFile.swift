@@ -163,7 +163,7 @@ public struct TextFile {
         output.print(UserFacingDynamic<StrictString, InterfaceLocalization, String>({ localization, path in
             switch localization {
             case .englishCanada:
-                return StrictString("Writing to “\(path)”...")
+                return "Writing to “\(path)”..."
             }
         }).resolved(using: location.path(relativeTo: repository.location)))
     }

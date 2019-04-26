@@ -64,7 +64,7 @@ extension Workspace {
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
-                        return StrictString("Proofreading source code...") + section.anchor
+                        return "Proofreading source code..." + section.anchor
                     }
                 }).resolved().formattedAsSectionHeader())
             }
@@ -87,7 +87,7 @@ extension Workspace {
                 validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
-                        return StrictString("Source code fails proofreading.") + section.crossReference.resolved(for: localization)
+                        return "Source code fails proofreading." + section.crossReference.resolved(for: localization)
                     }
                 }))
             }

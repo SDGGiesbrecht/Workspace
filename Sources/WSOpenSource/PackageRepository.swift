@@ -27,7 +27,7 @@ extension PackageRepository {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ errorLocalization in
                 switch errorLocalization {
                 case .englishCanada:
-                    return StrictString("There is no read‐me for “\(arbitraryDescriptionOf: localization)”. (documentation.readMe.contents)")
+                    return "There is no read‐me for “\(arbitraryDescriptionOf: localization)”. (documentation.readMe.contents)"
                 }
             }))
         }
@@ -35,7 +35,7 @@ extension PackageRepository {
         // Word Elements
 
         for (key, example) in try examples(output: output) {
-            readMe.replaceMatches(for: StrictString("\u{23}example(\(key))"), with: [
+            readMe.replaceMatches(for: "\u{23}example(\(key))", with: [
                 "```swift",
                 StrictString(example),
                 "```"
@@ -59,7 +59,7 @@ extension PackageRepository {
         let relatedProjects = try configuration(output: output).documentation.relatedProjects
         if ¬relatedProjects.isEmpty {
             var markdown: [StrictString] = [
-                StrictString("# ") + UserFacing<StrictString, ContentLocalization>({ localization in
+                "# " + UserFacing<StrictString, ContentLocalization>({ localization in
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Related Projects"
@@ -74,7 +74,7 @@ extension PackageRepository {
                         if let text = translations[localization] {
                             markdown += [
                                 "",
-                                StrictString("## \(text)")
+                                "## \(text)"
                             ]
                         }
                     case .project(url: let url):
@@ -89,7 +89,7 @@ extension PackageRepository {
 
                         markdown += [
                             "",
-                            StrictString("### [\(name)](\(url.absoluteString))")
+                            "### [\(name)](\(url.absoluteString))"
                         ]
 
                         if let configuration = try? package.configuration(output: output),

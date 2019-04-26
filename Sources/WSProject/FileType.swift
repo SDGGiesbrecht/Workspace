@@ -48,7 +48,7 @@ public enum FileType {
             warning.append("")
 
             let types = unexpectedTypes.keys.sorted().map { key in
-                return StrictString("\(key) (\(unexpectedTypes[key]!.path(relativeTo: project.location)))")
+                return "\(key) (\(unexpectedTypes[key]!.path(relativeTo: project.location)))" as StrictString
             }
             warning.append(contentsOf: types)
 

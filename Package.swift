@@ -138,7 +138,7 @@ let package = Package(
         .executable(name: "arbeitsbereich", targets: ["WorkspaceTool"])
     ],
     dependencies: [
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 17, 0))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 17, 1))),
         .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 6, 2))),
         .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 8, 0)))
     ],

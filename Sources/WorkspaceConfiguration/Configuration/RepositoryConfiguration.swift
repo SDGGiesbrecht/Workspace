@@ -36,6 +36,7 @@ public struct RepositoryConfiguration : Codable {
         "llbuild",
         "LLVM",
         "modulemap",
+        "ninja",
         "nojekyll",
         "pep8",
         "pc",
@@ -44,10 +45,13 @@ public struct RepositoryConfiguration : Codable {
         "png",
         "resolved",
         "svg",
+        "swift\u{2D}build",
         "testspec",
         "tgz",
         "txt",
         "TXT",
+        "xcconfig",
+        "xcsettings",
         "XCTestManifests.swift",
         "xcworkspacedata"
     ]

@@ -168,7 +168,7 @@ public enum FileType {
     public var syntax: FileSyntax {
         switch self {
 
-        case  .swift, .c, .cPlusPlus, .css, .javaScript, .objectiveC, .xcodeProject:
+        case  .swift, .c, .cPlusPlus, .css, .javaScript, .objectiveC, .objectiveCPlusPlus, .xcodeProject:
             return FileSyntax(blockCommentSyntax: FileType.swiftBlockCommentSyntax, lineCommentSyntax: FileType.swiftLineCommentSyntax)
         case .swiftPackageManifest:
             return FileSyntax(blockCommentSyntax: FileType.swiftBlockCommentSyntax, lineCommentSyntax: FileType.swiftLineCommentSyntax, requiredFirstLineToken: "/\u{2F} swift\u{2D}tools\u{2D}version:")

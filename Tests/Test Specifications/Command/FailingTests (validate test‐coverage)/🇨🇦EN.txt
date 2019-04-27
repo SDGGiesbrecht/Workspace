@@ -19,7 +19,6 @@ Parsing report for “[Temporary]/FailingTests/Tests/FailingTestsTests/FailingTe
 Line 6
     func notCovered() -> String {
         return "???"
-    }
 
 
 ✗ Tests fail on macOS with Xcode. (See [⌘F] “§1”)

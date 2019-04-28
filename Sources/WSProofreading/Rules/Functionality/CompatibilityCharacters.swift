@@ -35,7 +35,7 @@ internal struct CompatibilityCharacters : TextRule {
                 reportViolation(in: file, at: index ..< file.contents.scalars.index(after: index), replacementSuggestion: StrictString(normalized), message: UserFacing<StrictString, InterfaceLocalization>({ (localization) in
                     switch localization {
                     case .englishCanada:
-                        return StrictString("U+\(scalar.hexadecimalCode) may be lost in normalization; use “\(normalized)” instead.")
+                        return "U+\(scalar.hexadecimalCode) may be lost in normalization; use “\(normalized)” instead."
                     }
                 }), status: status, output: output)
             }

@@ -48,7 +48,7 @@ public enum FileType {
             warning.append("")
 
             let types = unexpectedTypes.keys.sorted().map { key in
-                return StrictString("\(key) (\(unexpectedTypes[key]!.path(relativeTo: project.location)))")
+                return "\(key) (\(unexpectedTypes[key]!.path(relativeTo: project.location)))" as StrictString
             }
             warning.append(contentsOf: types)
 
@@ -111,6 +111,7 @@ public enum FileType {
     case lisp
     case markdown
     case objectiveC
+    case objectiveCPlusPlus
     case python
     case shell
     case swift
@@ -129,6 +130,8 @@ public enum FileType {
 
     private static let fileExtensions: [String: FileType] = [
         "c": .c,
+        "cc": .cPlusPlus,
+        "clang\u{2D}format": .yaml,
         "cpp": .cPlusPlus,
         "command": .shell,
         "css": .css,
@@ -143,6 +146,7 @@ public enum FileType {
         "m": .objectiveC,
         "mailmap": .gitIgnore,
         "md": .markdown,
+        "mm": .objectiveCPlusPlus,
         "pbxproj": .xcodeProject,
         "py": .python,
         "sh": .shell,
@@ -164,7 +168,7 @@ public enum FileType {
     public var syntax: FileSyntax {
         switch self {
 
-        case  .swift, .c, .cPlusPlus, .css, .javaScript, .objectiveC, .xcodeProject:
+        case  .swift, .c, .cPlusPlus, .css, .javaScript, .objectiveC, .objectiveCPlusPlus, .xcodeProject:
             return FileSyntax(blockCommentSyntax: FileType.swiftBlockCommentSyntax, lineCommentSyntax: FileType.swiftLineCommentSyntax)
         case .swiftPackageManifest:
             return FileSyntax(blockCommentSyntax: FileType.swiftBlockCommentSyntax, lineCommentSyntax: FileType.swiftLineCommentSyntax, requiredFirstLineToken: "/\u{2F} swift\u{2D}tools\u{2D}version:")

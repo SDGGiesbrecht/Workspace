@@ -236,7 +236,7 @@ extension PackageRepository {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishCanada:
-                    return StrictString("There are no localizations specified. (documentation.localizations)")
+                    return "There are no localizations specified. (documentation.localizations)"
                 }
             }))
         }
@@ -344,7 +344,7 @@ extension PackageRepository {
             output.print(UserFacingDynamic<StrictString, InterfaceLocalization, String>({ localization, path in
                 switch localization {
                 case .englishCanada:
-                    return StrictString("Deleting “\(path)”...")
+                    return "Deleting “\(path)”..."
                 }
             }).resolved(using: location.path(relativeTo: self.location)))
 
@@ -379,7 +379,7 @@ extension PackageRepository {
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
-                        return StrictString("Fetching “\(package.url.lastPathComponent)”...")
+                        return "Fetching “\(package.url.lastPathComponent)”..."
                     }
                 }).resolved())
 

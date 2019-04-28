@@ -112,8 +112,7 @@ internal struct PackageInterface {
 
         result.append(generateIndexSection(named: packageHeader(localization: localization), contents: [
             HTMLElement("a", attributes: [
-                "href": StrictString("[*site root*]")
-                    + HTML.percentEncodeURLPath(APIElement.package(package).relativePagePath[localization]!)
+                "href": "[*site root*]\(HTML.percentEncodeURLPath(APIElement.package(package).relativePagePath[localization]!))"
                 ], contents: HTML.escape(StrictString(package.name.source())), inline: false).source
             ].joinedAsLines()))
 
@@ -152,8 +151,7 @@ internal struct PackageInterface {
         var entries: [StrictString] = []
         for entry in apiEntries {
             entries.append(HTMLElement("a", attributes: [
-                "href": StrictString("[*site root*]")
-                    + HTML.percentEncodeURLPath(entry.relativePagePath[localization]!)
+                "href": "[*site root*]\(HTML.percentEncodeURLPath(entry.relativePagePath[localization]!))"
                 ], contents: HTML.escape(StrictString(entry.name.source())), inline: false).source)
         }
         return generateIndexSection(named: name, contents: entries.joinedAsLines())

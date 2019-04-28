@@ -177,7 +177,7 @@ extension PackageRepository {
             switch localization {
             case .englishCanada:
                 let name = job.englishTargetOperatingSystemName
-                return StrictString("Checking test coverage on \(name)...") + section.anchor
+                return "Checking test coverage on \(name)..." + section.anchor
             }
         }).resolved().formattedAsSectionHeader())
 
@@ -190,7 +190,7 @@ extension PackageRepository {
                 switch localization {
                 case .englishCanada: // @exempt(from: tests)
                     let name = job.englishTargetOperatingSystemName
-                    return StrictString("Test coverage could not be determined on \(name).") + section.crossReference.resolved(for: localization)
+                    return "Test coverage could not be determined on \(name)." + section.crossReference.resolved(for: localization)
                 }
             }))
         }
@@ -267,7 +267,7 @@ extension PackageRepository {
                     switch localization {
                     case .englishCanada:
                         let name = job.englishTargetOperatingSystemName
-                        return StrictString("Test coverage is complete on \(name).")
+                        return "Test coverage is complete on \(name)."
                     }
                 }))
             } else {
@@ -275,7 +275,7 @@ extension PackageRepository {
                     switch localization {
                     case .englishCanada: // @exempt(from: tests)
                         let name = job.englishTargetOperatingSystemName
-                        return StrictString("Test coverage is incomplete on \(name).") + section.crossReference.resolved(for: localization)
+                        return "Test coverage is incomplete on \(name)." + section.crossReference.resolved(for: localization)
                     }
                 }))
             }

@@ -32,7 +32,7 @@ internal struct Marks : TextRule {
     private static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishCanada:
-            return StrictString("Incomplete heading syntax. Use “\(expectedSyntax)”.")
+            return "Incomplete heading syntax. Use “\(expectedSyntax)”."
         }
     })
 

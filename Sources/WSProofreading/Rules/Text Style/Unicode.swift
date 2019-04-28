@@ -197,7 +197,7 @@ internal struct UnicodeRule : SyntaxRule {
                                 case "\u{27}":
                                     error = "U+0027"
                                 default:
-                                    error = StrictString("“\(StrictString(match.contents))”")
+                                    error = "“\(StrictString(match.contents))”"
                                 }
                                 if match.contents.count == 1 {
                                     return "The character " + error + " is obsolete."

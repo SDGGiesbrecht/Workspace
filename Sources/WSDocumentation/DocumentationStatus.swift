@@ -147,7 +147,7 @@ internal class DocumentationStatus {
                 switch warningLocalization {
                 case .englishCanada:
                     return ([
-                        "A localization has no copyright specified: " + StrictString("\(localization)"),
+                        "A localization has no copyright specified: \(arbitraryDescriptionOf: localization)",
                         "(Configure it under “documentation.api.copyrightNotice”.)"
                         ] as [StrictString]).joinedAsLines()
                 }

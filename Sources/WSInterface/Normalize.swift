@@ -43,7 +43,7 @@ extension Workspace {
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
-                        return StrictString("Normalizing files...")
+                        return "Normalizing files..."
                     }
                 }).resolved().formattedAsSectionHeader())
             }

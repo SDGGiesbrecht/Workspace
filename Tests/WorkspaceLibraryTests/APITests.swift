@@ -32,6 +32,7 @@ class APITests : TestCase {
     func testAllDisabled() {
         #if !os(Linux) // Significant differences. Each is covered individually elswhere.
         let configuration = WorkspaceConfiguration()
+        configuration.optimizeForTests()
         configuration.provideWorkflowScripts = false
         configuration.proofreading.rules = []
         configuration.testing.prohibitCompilerWarnings = false
@@ -47,6 +48,7 @@ class APITests : TestCase {
     func testAllTasks() {
         #if !os(Linux) // Significant differences. Each is covered individually elswhere.
         let configuration = WorkspaceConfiguration()
+        configuration.optimizeForTests()
         configuration.optIntoAllTasks()
         configuration.documentation.localizations = ["🇮🇱עב"]
         configuration.licence.licence = .copyright
@@ -178,6 +180,7 @@ class APITests : TestCase {
     func testCustomTasks() {
         #if !os(Linux) // Significant differences. Each is covered individually elswhere.
         let configuration = WorkspaceConfiguration()
+        configuration.optimizeForTests()
         let passing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: [])
         configuration.customRefreshmentTasks.append(passing)
         configuration.customValidationTasks.append(passing)
@@ -223,6 +226,7 @@ class APITests : TestCase {
 
     func testExecutable() {
         let configuration = WorkspaceConfiguration()
+        configuration.optimizeForTests()
         configuration.supportedOperatingSystems.remove(.iOS)
         configuration.supportedOperatingSystems.remove(.watchOS)
         configuration.supportedOperatingSystems.remove(.tvOS)
@@ -255,6 +259,7 @@ class APITests : TestCase {
     func testFailingCustomValidation() {
         #if !os(Linux) // Significant differences. Each is covered individually elswhere.
         let configuration = WorkspaceConfiguration()
+        configuration.optimizeForTests()
         let failing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: ["fail"])
         configuration.customValidationTasks.append(failing)
         configuration.provideWorkflowScripts = false
@@ -270,6 +275,7 @@ class APITests : TestCase {
 
     func testFailingDocumentationCoverage() {
         let configuration = WorkspaceConfiguration()
+        configuration.optimizeForTests()
         configuration.documentation.localizations = ["zxx"]
         configuration.xcode.manage = true
         configuration.documentation.repositoryURL = URL(string: "domain.tld")!
@@ -401,6 +407,7 @@ class APITests : TestCase {
 
     func testPartialReadMe() {
         let configuration = WorkspaceConfiguration()
+        configuration.optimizeForTests()
         configuration.xcode.manage = true
         configuration.documentation.currentVersion = Version(0, 1, 0)
         configuration.documentation.repositoryURL = URL(string: "https://somewhere.com")!
@@ -431,6 +438,7 @@ class APITests : TestCase {
     func testSDGLibrary() {
         let configuration = WorkspaceConfiguration()
         configuration._applySDGDefaults()
+        configuration.optimizeForTests()
         configuration.licence.licence = .apache2_0
         configuration.documentation.currentVersion = Version(1, 0, 0)
         configuration.documentation.projectWebsite = URL(string: "https://example.github.io/SDG/SDG")!
@@ -518,6 +526,7 @@ class APITests : TestCase {
     func testSDGTool() {
         let configuration = WorkspaceConfiguration()
         configuration._applySDGDefaults()
+        configuration.optimizeForTests()
         configuration.supportedOperatingSystems.remove(.iOS)
         configuration.supportedOperatingSystems.remove(.watchOS)
         configuration.supportedOperatingSystems.remove(.tvOS)

@@ -88,4 +88,9 @@ public struct APIDocumentationConfiguration : Codable {
     ///
     /// - Workspace does not understand Travis’ encryption, and does not attempt to read or use the key. All this option does is tell Workspace to (a) include the encrypted key when configuring Travis CI, and (b) keep generated documentation out of the repository.
     public var encryptedTravisCIDeploymentKey: String?
+
+    /// Dependency module names known to be irrelevant to documentation.
+    ///
+    /// Parsing can be sped up by specifing dependencies to skip, but if a dependency is skipped, its API will not be available to participate in inheritance resolution.
+    public var ignoredDependencies: Set<String> = []
 }

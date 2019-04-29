@@ -137,5 +137,69 @@ public let configuration: WorkspaceConfiguration = {
     configuration._applySDGOverrides()
     configuration._validateSDGStandards(requireExamples: false)
 
+    // Optimizations
+    configuration.documentation.api.ignoredDependencies = [
+
+        // llbuild
+        "libllbuild",
+        "llbuildBasic",
+        "llbuildBuildSystem",
+        "llbuildCore",
+        "llbuildSwift",
+        "llvmSupport",
+
+        // SDGCommandLine
+        "SDGCommandLine",
+        "SDGCommandLineLocalizations",
+        "SDGCommandLineTestUtilities",
+
+        // SDGCornerstone
+        "SDGCalendar",
+        "SDGCollections",
+        "SDGCornerstoneLocalizations",
+        "SDGExternalProcess",
+        "SDGLocalization",
+        "SDGLocalizationTestUtilities",
+        "SDGLogic",
+        "SDGMathematics",
+        "SDGPersistence",
+        "SDGPersistenceTestUtilities",
+        "SDGTesting",
+        "SDGText",
+        "SDGXCTestUtilities",
+
+        // SDGSwift
+        "SDGCMarkShims",
+        "SDGSwift",
+        "SDGSwiftConfigurationLoading",
+        "SDGSwiftLocalizations",
+        "SDGSwiftPackageManager",
+        "SDGSwiftSource",
+        "SDGXcode",
+
+        // Swift
+        "Foundation",
+        "Dispatch",
+        "XCTest",
+
+        // SwiftPM
+        "Basic",
+        "Build",
+        "clibc",
+        "POSIX",
+        "PackageGraph",
+        "PackageLoading",
+        "PackageModel",
+        "SPMLLBuild",
+        "SPMLibc",
+        "SPMUtility",
+        "SourceControl",
+        "Workspace",
+        "Xcodeproj",
+
+        // SwiftSyntax
+        "SwiftSyntax",
+    ]
+
     return configuration
 }()

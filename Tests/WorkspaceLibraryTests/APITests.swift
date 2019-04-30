@@ -198,8 +198,6 @@ class APITests : TestCase {
     }
 
     func testDefaults() {
-        let configuration = WorkspaceConfiguration()
-        configuration.optimizeForTests()
         var commands: [[StrictString]] = [
             ["refresh", "scripts"],
             ["refresh", "resources"],
@@ -223,7 +221,7 @@ class APITests : TestCase {
             ["validate", "•job", "macos‐swift‐package‐manager"]
             ])
         #endif
-        PackageRepository(mock: "Default").test(commands: commands, configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "Default").test(commands: commands, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testExecutable() {

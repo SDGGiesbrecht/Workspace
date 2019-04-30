@@ -130,6 +130,7 @@ extension PackageRepository {
         let configuration = try self.configuration(output: output)
         let copyright = try resolvedCopyright(documentationStatus: documentationStatus, output: output)
 
+        let developmentLocalization = try self.developmentLocalization(output: output)
         let api = try PackageAPI(
             package: cachedPackageGraph(),
             ignoredDependencies: configuration.documentation.api.ignoredDependencies,
@@ -137,7 +138,7 @@ extension PackageRepository {
 
         let interface = PackageInterface(
             localizations: configuration.documentation.localizations,
-            developmentLocalization: try developmentLocalization(output: output),
+            developmentLocalization: developmentLocalization,
             api: api,
             packageURL: configuration.documentation.repositoryURL,
             version: configuration.documentation.currentVersion,

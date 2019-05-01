@@ -76,6 +76,7 @@ extension PackageRepository {
                 }))
             }
         } catch {
+            // @exempt(from: tests) Unreachable on Linux.
             var description = StrictString(error.localizedDescription)
             if let noXcode = error as? Xcode.Error,
                 noXcode == .noXcodeProject {
@@ -298,6 +299,7 @@ extension PackageRepository {
                 }))
             }
         } catch {
+            // @exempt(from: tests) Unreachable on Linux.
             var description = StrictString(error.localizedDescription)
             if let noXcode = error as? Xcode.Error,
                 noXcode == .noXcodeProject {

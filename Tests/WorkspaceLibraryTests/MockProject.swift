@@ -151,15 +151,17 @@ extension PackageRepository {
                             expectFailure()
                             continue
                         }
+                        // Differing task sets on Linux.
                         if (command == ["refresh"] ∧ location.lastPathComponent ∈ Set(["AllTasks", "CustomTasks"]))
                             ∨ (command == ["validate"] ∧ location.lastPathComponent ∈ Set(["AllDisabled", "AllTasks", "CustomTasks", "SDGLibrary"]))
                             ∨ (command == ["validate", "test‐coverage"] ∧ location.lastPathComponent ∈ Set(["Default", "SDGLibrary", "SDGTool"]))
                             ∨ (command == ["validate", "•job", "macos‐swift‐package‐manager"] ∧ location.lastPathComponent ∈ Set(["Default"])){
-                            // Differing task set on Linux.
                             requireSuccess()
+                            continue
                         } else if (command == ["validate"] ∧ location.lastPathComponent ∈ Set(["Default", "FailingCustomValidation"]))
                             ∨ (command == ["validate", "test‐coverage"] ∧ location.lastPathComponent ∈ Set(["FailingTests"])) {
                             expectFailure()
+                            continue
                         }
                         #endif
 

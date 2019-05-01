@@ -166,7 +166,7 @@ internal enum Script : Int, CaseIterable {
         switch self {
         case .refreshLinux:
             lines.append(openTerminal(andExecute: "Refresh"))
-        case .validateLinux:
+        case .validateLinux: // @exempt(from: tests)
             // @exempt(from: tests) Unreachable from macOS.
             lines.append(openTerminal(andExecute: "Validate"))
         case .refreshMacOS:

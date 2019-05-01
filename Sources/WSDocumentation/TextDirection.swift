@@ -20,7 +20,7 @@ extension TextDirection {
 
     internal var htmlAttribute: String {
         switch self {
-        case .rightToLeftTopToBottom:
+        case .rightToLeftTopToBottom: // @exempt(from: tests)
             return "rtl" // @exempt(from: tests) Not used yet.
         case .leftToRightTopToBottom, .topToBottomRightToLeft:
             return "ltr"

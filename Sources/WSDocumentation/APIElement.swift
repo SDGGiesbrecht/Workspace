@@ -100,7 +100,7 @@ extension APIElement {
                 } else {
                     return "associatedtype"
                 }
-            default:
+            default: // @exempt(from: tests)
                 // @exempt(from: tests)
                 type.genericDeclaration.warnUnidentified()
                 return ""

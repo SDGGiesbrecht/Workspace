@@ -6,11 +6,21 @@ Refreshing Xcode project...
 
 Writing to “SDG.xcodeproj/project.pbxproj”...
 
-Testing on macOS with Xcode... (§1)
+Testing on macOS with the Swift Package Manager... (§1)
+
+[$ swift...]
+
+Checking test coverage on macOS... (§2)
+
+Parsing report for “Sources/Library/SDG.swift”...
+Parsing report for “Tests/SDGTests/SDGTests.swift”...
+Sources/Library/SDG.swift
+
+Testing on macOS with Xcode... (§3)
 
 [$ xcodebuild...]
 
-Checking test coverage on macOS... (§2)
+Checking test coverage on macOS... (§4)
 
 Parsing report for “[Temporary]/SDGTool/Sources/Library/SDG.swift”...
 Parsing report for “[Temporary]/SDGTool/Sources/tool/main.swift”...
@@ -18,6 +28,8 @@ Parsing report for “[Temporary]/SDGTool/Tests/SDGTests/SDGTests.swift”...
 Parsing report for “[Temporary]/SDGTool/Tests/test‐tool/main.swift”...
 [Temporary]/SDGTool/Sources/Library/SDG.swift
 
+✓ Tests pass on macOS with the Swift Package Manager.
+✓ Test coverage is complete on macOS.
 ✓ Tests pass on macOS with Xcode.
 ✓ Test coverage is complete on macOS.
 

@@ -54,15 +54,23 @@ Checking build for tvOS... (§6)
 
 [$ xcodebuild...]
 
-Testing on macOS with Xcode... (§7)
+Testing on macOS with the Swift Package Manager... (§7)
 
-[$ xcodebuild...]
+[$ swift...]
 
 Checking test coverage on macOS... (§8)
 
+Parsing report for “Tests/AllTasksTests/AllTasksTests.swift”...
+
+Testing on macOS with Xcode... (§9)
+
+[$ xcodebuild...]
+
+Checking test coverage on macOS... (§10)
+
 Parsing report for “[Temporary]/AllTasks/Tests/AllTasksTests/AllTasksTests.swift”...
 
-Generating documentation... (§9)
+Generating documentation... (§11)
 
 Parsing “AllTasks”...
 Processing API...
@@ -78,6 +86,8 @@ Summary
 ✓ There are no compiler warnings for iOS.
 ✓ There are no compiler warnings for watchOS.
 ✓ There are no compiler warnings for tvOS.
+✓ Tests pass on macOS with the Swift Package Manager.
+✓ Test coverage is complete on macOS.
 ✓ Tests pass on macOS with Xcode.
 ✓ Test coverage is complete on macOS.
 ✓ Generated documentation.

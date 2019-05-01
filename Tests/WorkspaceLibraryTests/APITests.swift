@@ -78,10 +78,12 @@ class APITests : TestCase {
 
     func testCheckedInDocumentation() {
         let configuration = WorkspaceConfiguration()
+        configuration.optimizeForTests()
         configuration.documentation.api.enforceCoverage = false
         configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "zxx"]
         configuration.documentation.api.generate = true
         configuration.documentation.api.yearFirstPublished = 2018
+        configuration.documentation.api.ignoredDependencies.remove("Swift")
         let builtIn = configuration.fileHeaders.copyrightNotice
         configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
             var result = builtIn.resolve(configuration)

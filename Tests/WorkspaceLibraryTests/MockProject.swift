@@ -123,9 +123,10 @@ extension PackageRepository {
                         if ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil,
                             command == ["test"]
                                 ∨ command == ["validate"]
+                                ∨ command == ["validate", "test‐coverage"]
                                 ∨ command == ["validate", "•job", "macos‐swift‐package‐manager"] {
                             // Phases skipped within Xcode due to rerouting interference.
-                            if location.lastPathComponent ∈ Set(["Default", "AllTasks", "AllDisabled", "FailingCustomValidation"]) ∧ ¬command.contains("macos‐swift‐package‐manager") {
+                            if location.lastPathComponent ∈ Set(["Default", "AllTasks", "AllDisabled", "FailingCustomValidation"]) {
                                 expectFailure()
                             } else {
                                 requireSuccess()

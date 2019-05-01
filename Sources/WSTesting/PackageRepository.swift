@@ -199,7 +199,7 @@ extension PackageRepository {
             let report: TestCoverageReport
             switch job {
             case .macOSSwiftPackageManager, .linux:
-                guard let fromPackageManager = try codeCoverageReport(ignoreCoveredRegions: true, reportProgress: { output.print($0) }) else {
+                guard let fromPackageManager = try codeCoverageReport(ignoreCoveredRegions: true, reportProgress: { output.print($0) }) else { // @exempt(from: tests) Untestable in Xcode due to interference.
                     failStepWithError(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
                         case .englishCanada:
@@ -208,7 +208,7 @@ extension PackageRepository {
                     }).resolved())
                     return
                 }
-                report = fromPackageManager
+                report = fromPackageManager // @exempt(from: tests) 
             case .macOSXcode, .iOS, .watchOS, .tvOS:
                 guard let fromXcode = try codeCoverageReport(on: job.testSDK, ignoreCoveredRegions: true, reportProgress: { output.print($0) }) else {
                     failStepWithError(message: UserFacing<StrictString, InterfaceLocalization>({ localization in

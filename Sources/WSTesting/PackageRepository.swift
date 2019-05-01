@@ -196,14 +196,32 @@ extension PackageRepository {
         }
 
         do {
-            guard let report = try codeCoverageReport(on: job.testSDK, ignoreCoveredRegions: true, reportProgress: { output.print($0) }) else {
-                failStepWithError(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishCanada:
-                        return "Xcode has not produced a test coverage report."
-                    }
-                }).resolved())
-                return
+            let report: TestCoverageReport
+            switch job {
+            case .macOSSwiftPackageManager, .linux:
+                guard let fromPackageManager = try codeCoverageReport(ignoreCoveredRegions: true, reportProgress: { output.print($0) }) else {
+                    failStepWithError(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                        switch localization {
+                        case .englishCanada:
+                            return "The package manager has not produced a test coverage report."
+                        }
+                    }).resolved())
+                    return
+                }
+                report = fromPackageManager
+            case .macOSXcode, .iOS, .watchOS, .tvOS:
+                guard let fromXcode = try codeCoverageReport(on: job.testSDK, ignoreCoveredRegions: true, reportProgress: { output.print($0) }) else {
+                    failStepWithError(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                        switch localization {
+                        case .englishCanada:
+                            return "Xcode has not produced a test coverage report."
+                        }
+                    }).resolved())
+                    return
+                }
+                report = fromXcode
+            case .miscellaneous, .deployment:
+                unreachable()
             }
 
             var irrelevantFiles: Set<URL> = []

@@ -46,7 +46,6 @@ class APITests : TestCase {
     }
 
     func testAllTasks() {
-        #if !os(Linux) // Significant differences. Each is covered individually elswhere.
         let configuration = WorkspaceConfiguration()
         configuration.optimizeForTests()
         configuration.optIntoAllTasks()
@@ -63,7 +62,6 @@ class APITests : TestCase {
             ["refresh"],
             ["validate"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-        #endif
     }
 
     func testBadStyle() {

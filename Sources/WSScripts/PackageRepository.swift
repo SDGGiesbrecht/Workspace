@@ -24,7 +24,7 @@ extension PackageRepository {
             delete(location.appendingPathComponent(String(deprecated)), output: output)
         }
 
-        for script in Script.allCases where script.isRelevantOnCurrentDevice ∨ script.isCheckedIn {
+        for script in Script.allCases where script.isCheckedIn ∨ script.isRelevantOnCurrentDevice {
             try autoreleasepool {
 
                 var file = try TextFile(possiblyAt: location.appendingPathComponent(String(script.fileName)), executable: true)

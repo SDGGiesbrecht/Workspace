@@ -39,22 +39,22 @@ extension ContinuousIntegrationJob {
     internal var englishName: StrictString {
         var result = englishTargetOperatingSystemName
         if let tool = englishTargetBuildSystemName {
-            result += " with " + tool
+            result += " with " + tool // @exempt(from: tests) Unreachable from Linux.
         }
         return result
     }
 
     internal var englishTargetOperatingSystemName: StrictString {
         switch self {
-        case .macOSSwiftPackageManager, .macOSXcode:
+        case .macOSSwiftPackageManager, .macOSXcode: // @exempt(from: tests) Unreachable from Linux.
             return "macOS"
         case .linux:  // @exempt(from: tests)
             return "Linux" // @exempt(from: tests) Unreachable from macOS.
-        case .iOS:
+        case .iOS: // @exempt(from: tests) Unreachable from Linux.
             return "iOS"
-        case .watchOS:
+        case .watchOS: // @exempt(from: tests) Unreachable from Linux.
             return "watchOS"
-        case .tvOS:
+        case .tvOS: // @exempt(from: tests) Unreachable from Linux.
             return "tvOS"
         case .miscellaneous, .deployment:
             unreachable()
@@ -62,9 +62,9 @@ extension ContinuousIntegrationJob {
     }
     internal var englishTargetBuildSystemName: StrictString? {
         switch self {
-        case .macOSSwiftPackageManager:
+        case .macOSSwiftPackageManager: // @exempt(from: tests) Unreachable from Linux.
             return "the Swift Package Manager"
-        case .macOSXcode:
+        case .macOSXcode: // @exempt(from: tests) Unreachable from Linux.
             return "Xcode"
         case .linux, .iOS, .watchOS, .tvOS, .miscellaneous, .deployment:
             return nil
@@ -74,7 +74,7 @@ extension ContinuousIntegrationJob {
     // MARK: - SDK
 
     internal var buildSDK: Xcode.SDK {
-        switch self {
+        switch self { // @exempt(from: tests) Unreachable from Linux.
         case .macOSXcode:
             return .macOS
         case .iOS:
@@ -89,7 +89,7 @@ extension ContinuousIntegrationJob {
     }
 
     internal var testSDK: Xcode.SDK {
-        switch self {
+        switch self { // @exempt(from: tests) Unreachable from Linux.
         case .macOSXcode:
             return .macOS
         case .iOS: // @exempt(from: tests)

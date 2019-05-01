@@ -47,7 +47,7 @@ extension PackageRepository {
                     let log = try self.build(releaseConfiguration: false, staticallyLinkStandardLibrary: false, reportProgress: { output.print($0) })
                     return ¬SwiftCompiler.warningsOccurred(during: log)
                 }
-            case .macOSXcode, .iOS, .watchOS, .tvOS:
+            case .macOSXcode, .iOS, .watchOS, .tvOS: // @exempt(from: tests) Unreachable from Linux.
                 buildCommand = { output in
                     let log = try self.build(for: job.buildSDK) { report in
                         if let relevant = Xcode.abbreviate(output: report) {
@@ -101,7 +101,7 @@ extension PackageRepository {
             case .englishCanada:
                 var name = job.englishTargetOperatingSystemName
                 if let tool = job.englishTargetBuildSystemName {
-                    name += " with " + tool
+                    name += " with " + tool // @exempt(from: tests) Unreachable from Linux.
                 }
                 return "Testing on " + job.englishName + "..." + section.anchor
             }
@@ -128,7 +128,7 @@ extension PackageRepository {
                     return false
                 }
             }
-        case .macOSXcode, .iOS, .watchOS, .tvOS:
+        case .macOSXcode, .iOS, .watchOS, .tvOS: // @exempt(from: tests) Unreachable from Linux.
             testCommand = { output in
                 do {
                     try self.test(on: job.testSDK) { report in
@@ -209,7 +209,7 @@ extension PackageRepository {
                     return
                 }
                 report = fromPackageManager // @exempt(from: tests) 
-            case .macOSXcode, .iOS, .watchOS, .tvOS:
+            case .macOSXcode, .iOS, .watchOS, .tvOS: // @exempt(from: tests) Unreachable from Linux.
                 guard let fromXcode = try codeCoverageReport(on: job.testSDK, ignoreCoveredRegions: true, reportProgress: { output.print($0) }) else {
                     failStepWithError(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {

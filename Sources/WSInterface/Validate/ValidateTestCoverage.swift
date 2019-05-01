@@ -50,15 +50,6 @@ extension Workspace.Validate {
 
             var validationStatus = ValidationStatus()
 
-            #if os(Linux)
-            validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishCanada:
-                    return "Test coverage validation requires Xcode, which is unavailable on Linux."
-                }
-            }))
-            #endif
-
             try executeAsStep(options: options, validationStatus: &validationStatus, output: output)
 
             try validationStatus.reportOutcome(project: options.project, output: output)

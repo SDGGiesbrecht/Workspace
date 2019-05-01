@@ -23,14 +23,13 @@ extension ContinuousIntegrationJob {
     // MARK: - Sets
 
     public static let coverageJobs: Set<ContinuousIntegrationJob> = [
+        .macOSSwiftPackageManager,
         .macOSXcode,
+        .linux,
         .iOS,
         .tvOS
     ]
-    public static let testJobs: Set<ContinuousIntegrationJob> = coverageJobs ∪ [
-        .macOSSwiftPackageManager,
-        .linux
-    ]
+    public static let testJobs: Set<ContinuousIntegrationJob> = coverageJobs
     public static let buildJobs: Set<ContinuousIntegrationJob> = testJobs ∪ [
         .watchOS
     ]

@@ -126,8 +126,8 @@ extension PackageRepository {
                                 ∨ command == ["validate", "test‐coverage"]
                                 ∨ command == ["validate", "•job", "macos"] {
                             // Phases skipped within Xcode due to rerouting interference.
-                            if location.lastPathComponent ∈ Set(["Default", "AllTasks", "FailingCustomValidation", "FailingTests"])
-                                ∨ (command ≠ ["test"] ∧ location.lastPathComponent.hasPrefix("SDG")) {
+                            if location.lastPathComponent ∈ Set(["AllTasks", "FailingCustomValidation", "FailingTests"])
+                                ∨ (command ≠ ["test"] ∧ location.lastPathComponent ∈ Set(["Default", "SDGLibrary", "SDGTool"])) {
                                 expectFailure()
                             } else {
                                 requireSuccess()

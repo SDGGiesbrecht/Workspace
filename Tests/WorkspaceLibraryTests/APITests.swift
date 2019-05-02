@@ -194,7 +194,7 @@ class APITests : TestCase {
     }
 
     func testDefaults() {
-        var commands: [[StrictString]] = [
+        let commands: [[StrictString]] = [
             ["refresh", "scripts"],
             ["refresh", "resources"],
             ["refresh", "examples"],

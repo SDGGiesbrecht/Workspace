@@ -47,7 +47,7 @@ extension PackageRepository {
                     let log = try self.build(releaseConfiguration: false, staticallyLinkStandardLibrary: false, reportProgress: { output.print($0) })
                     return ¬SwiftCompiler.warningsOccurred(during: log)
                 }
-            case .macOSXcode, .iOS, .watchOS, .tvOS:
+            case .macOSXcode, .iOS, .watchOS, .tvOS: // @exempt(from: tests) Unreachable from Linux.
                 buildCommand = { output in
                     let log = try self.build(for: job.buildSDK) { report in
                         if let relevant = Xcode.abbreviate(output: report) {
@@ -76,6 +76,7 @@ extension PackageRepository {
                 }))
             }
         } catch {
+            // @exempt(from: tests) Unreachable on Linux.
             var description = StrictString(error.localizedDescription)
             if let noXcode = error as? Xcode.Error,
                 noXcode == .noXcodeProject {
@@ -101,7 +102,7 @@ extension PackageRepository {
             case .englishCanada:
                 var name = job.englishTargetOperatingSystemName
                 if let tool = job.englishTargetBuildSystemName {
-                    name += " with " + tool
+                    name += " with " + tool // @exempt(from: tests) Unreachable from Linux.
                 }
                 return "Testing on " + job.englishName + "..." + section.anchor
             }
@@ -128,7 +129,7 @@ extension PackageRepository {
                     return false
                 }
             }
-        case .macOSXcode, .iOS, .watchOS, .tvOS:
+        case .macOSXcode, .iOS, .watchOS, .tvOS: // @exempt(from: tests) Unreachable from Linux.
             testCommand = { output in
                 do {
                     try self.test(on: job.testSDK) { report in
@@ -196,14 +197,32 @@ extension PackageRepository {
         }
 
         do {
-            guard let report = try codeCoverageReport(on: job.testSDK, ignoreCoveredRegions: true, reportProgress: { output.print($0) }) else {
-                failStepWithError(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishCanada:
-                        return "Xcode has not produced a test coverage report."
-                    }
-                }).resolved())
-                return
+            let report: TestCoverageReport
+            switch job {
+            case .macOSSwiftPackageManager, .linux:
+                guard let fromPackageManager = try codeCoverageReport(ignoreCoveredRegions: true, reportProgress: { output.print($0) }) else { // @exempt(from: tests) Untestable in Xcode due to interference.
+                    failStepWithError(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                        switch localization {
+                        case .englishCanada:
+                            return "The package manager has not produced a test coverage report."
+                        }
+                    }).resolved())
+                    return
+                }
+                report = fromPackageManager // @exempt(from: tests)
+            case .macOSXcode, .iOS, .watchOS, .tvOS: // @exempt(from: tests) Unreachable from Linux.
+                guard let fromXcode = try codeCoverageReport(on: job.testSDK, ignoreCoveredRegions: true, reportProgress: { output.print($0) }) else {
+                    failStepWithError(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                        switch localization {
+                        case .englishCanada:
+                            return "Xcode has not produced a test coverage report."
+                        }
+                    }).resolved())
+                    return
+                }
+                report = fromXcode
+            case .miscellaneous, .deployment:
+                unreachable()
             }
 
             var irrelevantFiles: Set<URL> = []
@@ -280,6 +299,7 @@ extension PackageRepository {
                 }))
             }
         } catch {
+            // @exempt(from: tests) Unreachable on Linux.
             var description = StrictString(error.localizedDescription)
             if let noXcode = error as? Xcode.Error,
                 noXcode == .noXcodeProject {

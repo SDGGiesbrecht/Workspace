@@ -63,7 +63,7 @@ extension TypeSyntax {
             return result
         case let attributed as AttributedTypeSyntax:
             return attributed.baseType.parameterNames()
-        default:
+        default: // @exempt(from: tests)
             // @exempt(from: tests)
             warnUnidentified()
             return []

@@ -50,7 +50,7 @@ extension Workspace.Refresh {
                 }
             }).resolved()
 
-            if let xcodeProject = (try? options.project.xcodeProject())??.lastPathComponent {
+            if let xcodeProject = (try? options.project.xcodeProject())??.lastPathComponent { // @exempt(from: tests) Unreachable on Linux.
                 let xcodeInstructions = UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:

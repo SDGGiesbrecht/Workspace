@@ -34,7 +34,7 @@ extension PackageAPI {
                 element.homeModule = Weak(module)
 
                 switch element {
-                case .package, .library, .module, .case, .initializer, .subscript, .conformance:
+                case .package, .library, .module, .case, .initializer, .subscript, .conformance: // @exempt(from: tests)
                     break // @exempt(from: tests) Should never occur.
                 case .type(let type):
                     types.append(type)

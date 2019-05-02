@@ -123,9 +123,11 @@ extension PackageRepository {
                         if ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil,
                             command == ["test"]
                                 ∨ command == ["validate"]
+                                ∨ command == ["validate", "test‐coverage"]
                                 ∨ command == ["validate", "•job", "macos‐swift‐package‐manager"] {
                             // Phases skipped within Xcode due to rerouting interference.
-                            if location.lastPathComponent ∈ Set(["Default", "AllTasks", "AllDisabled", "FailingCustomValidation"]) ∧ ¬command.contains("macos‐swift‐package‐manager") {
+                            if location.lastPathComponent ∈ Set(["Default", "AllTasks", "AllDisabled", "FailingCustomValidation", "FailingTests"])
+                                ∨ (command ≠ ["test"] ∧ location.lastPathComponent.hasPrefix("SDG")) {
                                 expectFailure()
                             } else {
                                 requireSuccess()
@@ -144,9 +146,20 @@ extension PackageRepository {
                             }
                             continue
                         }
-                        if command == ["validate", "build", "•job", "macos‐swift‐package‐manager"]
-                            ∨ command == ["validate", "test‐coverage"] {
+                        if command == ["validate", "build", "•job", "macos‐swift‐package‐manager"] {
                             // Invalid on Linux
+                            expectFailure()
+                            continue
+                        }
+                        // Differing task sets on Linux.
+                        if (command == ["refresh"] ∧ location.lastPathComponent ∈ Set(["AllTasks", "CustomTasks"]))
+                            ∨ (command == ["validate"] ∧ location.lastPathComponent ∈ Set(["AllDisabled", "CustomTasks", "SDGLibrary"]))
+                            ∨ (command == ["validate", "test‐coverage"] ∧ location.lastPathComponent ∈ Set(["Default", "SDGLibrary", "SDGTool"]))
+                            ∨ (command == ["validate", "•job", "macos‐swift‐package‐manager"] ∧ location.lastPathComponent ∈ Set(["Default"])){
+                            requireSuccess()
+                            continue
+                        } else if (command == ["validate"] ∧ location.lastPathComponent ∈ Set(["AllTasks", "Default", "FailingCustomValidation"]))
+                            ∨ (command == ["validate", "test‐coverage"] ∧ location.lastPathComponent ∈ Set(["FailingTests"])) {
                             expectFailure()
                             continue
                         }

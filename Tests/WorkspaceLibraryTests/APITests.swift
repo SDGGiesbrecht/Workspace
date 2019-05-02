@@ -30,7 +30,6 @@ class APITests : TestCase {
     }
 
     func testAllDisabled() {
-        #if !os(Linux) // Significant differences. Each is covered individually elswhere.
         let configuration = WorkspaceConfiguration()
         configuration.optimizeForTests()
         configuration.provideWorkflowScripts = false
@@ -42,11 +41,9 @@ class APITests : TestCase {
             ["refresh"],
             ["validate"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-        #endif
     }
 
     func testAllTasks() {
-        #if !os(Linux) // Significant differences. Each is covered individually elswhere.
         let configuration = WorkspaceConfiguration()
         configuration.optimizeForTests()
         configuration.optIntoAllTasks()
@@ -63,7 +60,6 @@ class APITests : TestCase {
             ["refresh"],
             ["validate"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
-        #endif
     }
 
     func testBadStyle() {
@@ -78,10 +74,12 @@ class APITests : TestCase {
 
     func testCheckedInDocumentation() {
         let configuration = WorkspaceConfiguration()
+        configuration.optimizeForTests()
         configuration.documentation.api.enforceCoverage = false
         configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "zxx"]
         configuration.documentation.api.generate = true
         configuration.documentation.api.yearFirstPublished = 2018
+        configuration.documentation.api.ignoredDependencies.remove("Swift")
         let builtIn = configuration.fileHeaders.copyrightNotice
         configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
             var result = builtIn.resolve(configuration)
@@ -178,7 +176,6 @@ class APITests : TestCase {
     }
 
     func testCustomTasks() {
-        #if !os(Linux) // Significant differences. Each is covered individually elswhere.
         let configuration = WorkspaceConfiguration()
         configuration.optimizeForTests()
         let passing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: [])
@@ -194,7 +191,6 @@ class APITests : TestCase {
             ["refresh"],
             ["validate"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
-        #endif
     }
 
     func testDefaults() {
@@ -212,15 +208,12 @@ class APITests : TestCase {
             ["validate", "documentation‐coverage"],
 
             ["proofread", "•xcode"],
-            ["validate", "build", "•job", "macos‐swift‐package‐manager"]
-        ]
-        #if !os(Linux) // Significant differences. Each is covered individually elswhere.
-        commands.append(contentsOf: [
+            ["validate", "build", "•job", "macos‐swift‐package‐manager"],
+
             ["refresh"],
             ["validate"],
             ["validate", "•job", "macos‐swift‐package‐manager"]
-            ])
-        #endif
+        ]
         PackageRepository(mock: "Default").test(commands: commands, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
@@ -241,7 +234,6 @@ class APITests : TestCase {
     }
 
     func testFailingCustomTasks() {
-        #if !os(Linux) // Significant differences. Each is covered individually elswhere.
         let configuration = WorkspaceConfiguration()
         let failing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: ["fail"])
         configuration.customRefreshmentTasks.append(failing)
@@ -253,11 +245,9 @@ class APITests : TestCase {
         PackageRepository(mock: "FailingCustomTasks").test(commands: [
             ["refresh"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
-        #endif
     }
 
     func testFailingCustomValidation() {
-        #if !os(Linux) // Significant differences. Each is covered individually elswhere.
         let configuration = WorkspaceConfiguration()
         configuration.optimizeForTests()
         let failing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: ["fail"])
@@ -270,7 +260,6 @@ class APITests : TestCase {
         PackageRepository(mock: "FailingCustomValidation").test(commands: [
             ["validate"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
-        #endif
     }
 
     func testFailingDocumentationCoverage() {
@@ -305,10 +294,16 @@ class APITests : TestCase {
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
-    func testHelp() {
+    func testHelp() throws {
         testCommand(Workspace.command, with: ["help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace)", overwriteSpecificationInsteadOfFailing: false)
         testCommand(Workspace.command, with: ["proofread", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace proofread)", overwriteSpecificationInsteadOfFailing: false)
-        #if !os(Linux) // Linux has no “xcode” subcommand.
+        #if os(Linux) // Linux has no “xcode” subcommand, causing spec mis‐match.
+        for localization in InterfaceLocalization.allCases {
+            try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+                _ = try Workspace.command.execute(with: ["refresh", "help"])
+            }
+        }
+        #else
         testCommand(Workspace.command, with: ["refresh", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace refresh)", overwriteSpecificationInsteadOfFailing: false)
         #endif
         testCommand(Workspace.command, with: ["validate", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace validate)", overwriteSpecificationInsteadOfFailing: false)
@@ -515,11 +510,9 @@ class APITests : TestCase {
             ["validate", "test‐coverage"],
             ["validate", "documentation‐coverage"],
 
-            ["proofread", "•xcode"]
+            ["proofread", "•xcode"],
+            ["validate"]
             ])
-        #if !os(Linux)
-        commands.append(["validate"])
-        #endif
         PackageRepository(mock: "SDGLibrary").test(commands: commands, configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
     }
 

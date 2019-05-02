@@ -78,10 +78,6 @@ extension Workspace.Validate {
             }
 
             // Test
-            #if os(Linux)
-            // Coverage irrelevant.
-            try Workspace.Test.executeAsStep(options: options, validationStatus: &validationStatus, output: output)
-            #else
             if try options.project.configuration(output: output).testing.enforceCoverage {
                 if let job = options.job,
                     job ∉ ContinuousIntegrationJob.coverageJobs {
@@ -95,7 +91,6 @@ extension Workspace.Validate {
                 // Coverage irrelevant.
                 try Workspace.Test.executeAsStep(options: options, validationStatus: &validationStatus, output: output)
             }
-            #endif
 
             // Document
             if options.job.includes(job: .miscellaneous) {

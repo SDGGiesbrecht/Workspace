@@ -124,7 +124,7 @@ extension PackageRepository {
                             command == ["test"]
                                 ∨ command == ["validate"]
                                 ∨ command == ["validate", "test‐coverage"]
-                                ∨ command == ["validate", "•job", "macos‐swift‐package‐manager"] {
+                                ∨ command == ["validate", "•job", "macos"] {
                             // Phases skipped within Xcode due to rerouting interference.
                             if location.lastPathComponent ∈ Set(["Default", "AllTasks", "FailingCustomValidation", "FailingTests"])
                                 ∨ (command ≠ ["test"] ∧ location.lastPathComponent.hasPrefix("SDG")) {

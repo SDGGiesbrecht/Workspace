@@ -1,10 +1,10 @@
-$ workspace validate build •job macos‐swift‐package‐manager •no‐colour
+$ workspace validate build •job macos •no‐colour
 
-Checking build for macOS with the Swift Package Manager... (§1)
+Checking build for macOS... (§1)
 
 [$ swift...]
 
-✓ There are no compiler warnings for macOS with the Swift Package Manager.
+✓ There are no compiler warnings for macOS.
 
 
 “Default” passes validation.

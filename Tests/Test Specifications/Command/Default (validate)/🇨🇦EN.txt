@@ -36,49 +36,34 @@ final class DefaultTests: XCTestCase {
 final class DefaultTests : XCTestCase {
 
 
-Checking build for macOS with the Swift Package Manager... (§2)
+Checking build for macOS... (§2)
 
 [$ swift...]
 
-Checking build for macOS with Xcode... (§3)
+Checking build for iOS... (§3)
 
 The package has no Xcode project.
 Configure “xcode.manage” or create an Xcode project manually.
 
-Checking build for iOS... (§4)
+Checking build for watchOS... (§4)
 
 The package has no Xcode project.
 Configure “xcode.manage” or create an Xcode project manually.
 
-Checking build for watchOS... (§5)
+Checking build for tvOS... (§5)
 
 The package has no Xcode project.
 Configure “xcode.manage” or create an Xcode project manually.
 
-Checking build for tvOS... (§6)
-
-The package has no Xcode project.
-Configure “xcode.manage” or create an Xcode project manually.
-
-Testing on macOS with the Swift Package Manager... (§7)
+Testing on macOS... (§6)
 
 [$ swift...]
 
-Checking test coverage on macOS... (§8)
+Checking test coverage on macOS... (§7)
 
 Parsing report for “Tests/DefaultTests/DefaultTests.swift”...
 
-Testing on macOS with Xcode... (§9)
-
-The package has no Xcode project.
-Configure “xcode.manage” or create an Xcode project manually.
-
-Checking test coverage on macOS... (§10)
-
-The package has no Xcode project.
-Configure “xcode.manage” or create an Xcode project manually.
-
-Checking documentation coverage... (§11)
+Checking documentation coverage... (§8)
 
 
 No original copyright date is specified.
@@ -90,16 +75,13 @@ Summary
 
 
 ✗ Source code fails proofreading. (See [⌘F] “§1”)
-✓ There are no compiler warnings for macOS with the Swift Package Manager.
-✗ Build failed for macOS with Xcode. (See [⌘F] “§3”)
-✗ Build failed for iOS. (See [⌘F] “§4”)
-✗ Build failed for watchOS. (See [⌘F] “§5”)
-✗ Build failed for tvOS. (See [⌘F] “§6”)
-✓ Tests pass on macOS with the Swift Package Manager.
+✓ There are no compiler warnings for macOS.
+✗ Build failed for iOS. (See [⌘F] “§3”)
+✗ Build failed for watchOS. (See [⌘F] “§4”)
+✗ Build failed for tvOS. (See [⌘F] “§5”)
+✓ Tests pass on macOS.
 ✓ Test coverage is complete on macOS.
-✗ Tests fail on macOS with Xcode. (See [⌘F] “§9”)
-✗ Test coverage could not be determined on macOS. (See [⌘F] “§10”)
-✗ Failed to process documentation. (See [⌘F] “§11”)
+✗ Failed to process documentation. (See [⌘F] “§8”)
 
 “Default” fails validation.
 2

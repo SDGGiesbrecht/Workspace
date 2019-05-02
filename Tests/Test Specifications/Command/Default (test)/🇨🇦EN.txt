@@ -1,16 +1,12 @@
 $ workspace test •no‐colour
 
-Testing on macOS with the Swift Package Manager... (§1)
+Testing on macOS... (§1)
 
 [$ swift...]
 
-Testing on macOS with Xcode... (§2)
+✓ Tests pass on macOS.
 
-The package has no Xcode project.
-Configure “xcode.manage” or create an Xcode project manually.
 
-✓ Tests pass on macOS with the Swift Package Manager.
-✗ Tests fail on macOS with Xcode. (See [⌘F] “§2”)
+“Default” passes validation.
 
-“Default” fails validation.
-2
+0

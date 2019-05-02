@@ -36,14 +36,10 @@ extension ContinuousIntegrationJob {
     // MARK: - Description
 
     internal var englishName: StrictString {
-        var result = englishTargetOperatingSystemName
-        if let tool = englishTargetBuildSystemName {
-            result += " with " + tool // @exempt(from: tests) Unreachable from Linux.
-        }
-        return result
+        return englishTargetOperatingSystemName
     }
 
-    internal var englishTargetOperatingSystemName: StrictString {
+    private var englishTargetOperatingSystemName: StrictString {
         switch self {
         case .macOS: // @exempt(from: tests) Unreachable from Linux.
             return "macOS"

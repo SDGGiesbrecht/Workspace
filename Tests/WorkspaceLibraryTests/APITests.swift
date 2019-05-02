@@ -208,11 +208,11 @@ class APITests : TestCase {
             ["validate", "documentation‐coverage"],
 
             ["proofread", "•xcode"],
-            ["validate", "build", "•job", "macos‐swift‐package‐manager"],
+            ["validate", "build", "•job", "macos"],
 
             ["refresh"],
             ["validate"],
-            ["validate", "•job", "macos‐swift‐package‐manager"]
+            ["validate", "•job", "macos"]
         ]
         PackageRepository(mock: "Default").test(commands: commands, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }

@@ -23,8 +23,7 @@ extension ContinuousIntegrationJob {
     // MARK: - Sets
 
     public static let coverageJobs: Set<ContinuousIntegrationJob> = [
-        .macOSSwiftPackageManager,
-        .macOSXcode,
+        .macOS,
         .linux,
         .iOS,
         .tvOS
@@ -46,7 +45,7 @@ extension ContinuousIntegrationJob {
 
     internal var englishTargetOperatingSystemName: StrictString {
         switch self {
-        case .macOSSwiftPackageManager, .macOSXcode: // @exempt(from: tests) Unreachable from Linux.
+        case .macOS: // @exempt(from: tests) Unreachable from Linux.
             return "macOS"
         case .linux:  // @exempt(from: tests)
             return "Linux" // @exempt(from: tests) Unreachable from macOS.
@@ -60,45 +59,31 @@ extension ContinuousIntegrationJob {
             unreachable()
         }
     }
-    internal var englishTargetBuildSystemName: StrictString? {
-        switch self {
-        case .macOSSwiftPackageManager: // @exempt(from: tests) Unreachable from Linux.
-            return "the Swift Package Manager"
-        case .macOSXcode: // @exempt(from: tests) Unreachable from Linux.
-            return "Xcode"
-        case .linux, .iOS, .watchOS, .tvOS, .miscellaneous, .deployment:
-            return nil
-        }
-    }
 
     // MARK: - SDK
 
     internal var buildSDK: Xcode.SDK {
         switch self { // @exempt(from: tests) Unreachable from Linux.
-        case .macOSXcode:
-            return .macOS
         case .iOS:
             return .iOS(simulator: false)
         case .watchOS:
             return .watchOS
         case .tvOS:
             return .tvOS(simulator: false)
-        case .macOSSwiftPackageManager, .linux, .miscellaneous, .deployment:
+        case .macOS, .linux, .miscellaneous, .deployment:
             unreachable()
         }
     }
 
     internal var testSDK: Xcode.SDK {
         switch self { // @exempt(from: tests) Unreachable from Linux.
-        case .macOSXcode:
-            return .macOS
         case .iOS: // @exempt(from: tests)
             // @exempt(from: tests) Tested separately.
             return .iOS(simulator: true)
         case .tvOS: // @exempt(from: tests)
             // @exempt(from: tests) Tested separately.
             return .tvOS(simulator: true)
-        case .macOSSwiftPackageManager, .linux, .watchOS, .miscellaneous, .deployment:
+        case .macOS, .linux, .watchOS, .miscellaneous, .deployment:
             unreachable()
         }
     }

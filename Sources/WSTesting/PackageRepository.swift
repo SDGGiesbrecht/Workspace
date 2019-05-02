@@ -209,7 +209,7 @@ extension PackageRepository {
                     }).resolved())
                     return
                 }
-                report = fromPackageManager // @exempt(from: tests) 
+                report = fromPackageManager // @exempt(from: tests)
             case .macOSXcode, .iOS, .watchOS, .tvOS: // @exempt(from: tests) Unreachable from Linux.
                 guard let fromXcode = try codeCoverageReport(on: job.testSDK, ignoreCoveredRegions: true, reportProgress: { output.print($0) }) else {
                     failStepWithError(message: UserFacing<StrictString, InterfaceLocalization>({ localization in

@@ -6,16 +6,11 @@ Refreshing Xcode project...
 
 Writing to “SDG.xcodeproj/project.pbxproj”...
 
-Testing on macOS with the Swift Package Manager... (§1)
+Testing on macOS... (§1)
 
 [$ swift...]
 
-Testing on macOS with Xcode... (§2)
-
-[$ xcodebuild...]
-
-✓ Tests pass on macOS with the Swift Package Manager.
-✓ Tests pass on macOS with Xcode.
+✓ Tests pass on macOS.
 
 
 “SDG” passes validation.

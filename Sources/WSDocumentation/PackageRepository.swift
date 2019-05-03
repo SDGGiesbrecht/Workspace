@@ -304,18 +304,7 @@ extension PackageRepository {
 
             var list: [StrictString: StrictString] = [:]
 
-            let dependencies = try allFiles().filter { url in
-                guard url.is(in: location.appendingPathComponent("Packages"))
-                    ∨ url.is(in: location.appendingPathComponent(".build/checkouts")) else {
-                        return false
-                }
-                if url.absoluteString.contains(".git") ∨ url.absoluteString.contains("/docs/") {
-                    return false
-                }
-                return true
-            }
-
-            for url in try dependencies + sourceFiles(output: output) {
+            for url in try sourceFiles(output: output) {
                 try autoreleasepool {
 
                     if let type = FileType(url: url),

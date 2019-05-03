@@ -146,7 +146,7 @@ extension PackageRepository {
                             }
                             continue
                         }
-                        if command == ["validate", "build", "•job", "macos‐swift‐package‐manager"] {
+                        if command == ["validate", "build", "•job", "macos"] {
                             // Invalid on Linux
                             expectFailure()
                             continue
@@ -155,7 +155,7 @@ extension PackageRepository {
                         if (command == ["refresh"] ∧ location.lastPathComponent ∈ Set(["AllTasks", "CustomTasks"]))
                             ∨ (command == ["validate"] ∧ location.lastPathComponent ∈ Set(["AllDisabled", "CustomTasks", "SDGLibrary"]))
                             ∨ (command == ["validate", "test‐coverage"] ∧ location.lastPathComponent ∈ Set(["Default", "SDGLibrary", "SDGTool"]))
-                            ∨ (command == ["validate", "•job", "macos‐swift‐package‐manager"] ∧ location.lastPathComponent ∈ Set(["Default"])){
+                            ∨ (command == ["validate", "•job", "macos"] ∧ location.lastPathComponent ∈ Set(["Default"])){
                             requireSuccess()
                             continue
                         } else if (command == ["validate"] ∧ location.lastPathComponent ∈ Set(["AllTasks", "Default", "FailingCustomValidation"]))

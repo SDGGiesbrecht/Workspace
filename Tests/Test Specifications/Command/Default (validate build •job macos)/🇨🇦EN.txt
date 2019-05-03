@@ -1,0 +1,12 @@
+$ workspace validate build •job macos •no‐colour
+
+Checking build for macOS... (§1)
+
+[$ swift...]
+
+✓ There are no compiler warnings for macOS.
+
+
+“Default” passes validation.
+
+0

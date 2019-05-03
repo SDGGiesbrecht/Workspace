@@ -23,8 +23,7 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
 
     // MARK: - Cases
 
-    case macOSSwiftPackageManager
-    case macOSXcode
+    case macOS
     case linux
     case iOS
     case watchOS
@@ -41,18 +40,11 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
 
     private var name: UserFacing<StrictString, InterfaceLocalization> {
         switch self {
-        case .macOSSwiftPackageManager:
+        case .macOS:
             return UserFacing({ (localization) in
                 switch localization {
                 case .englishCanada:
-                    return "macOS + Swift Package Manager"
-                }
-            })
-        case .macOSXcode:
-            return UserFacing({ (localization) in
-                switch localization {
-                case .englishCanada:
-                    return "macOS + Xcode"
+                    return "macOS"
                 }
             })
         case .linux:
@@ -102,18 +94,11 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
 
     public var argumentName: UserFacing<StrictString, InterfaceLocalization> {
         switch self {
-        case .macOSSwiftPackageManager:
+        case .macOS:
             return UserFacing({ (localization) in
                 switch localization {
                 case .englishCanada:
-                    return "macos‐swift‐package‐manager"
-                }
-            })
-        case .macOSXcode:
-            return UserFacing({ (localization) in
-                switch localization {
-                case .englishCanada:
-                    return "macos‐xcode"
+                    return "macos"
                 }
             })
         case .linux:
@@ -163,7 +148,7 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
 
     public func isRequired(by project: PackageRepository, output: Command.Output) throws -> Bool {
         switch self {
-        case .macOSSwiftPackageManager, .macOSXcode:
+        case .macOS:
             return try .macOS ∈ project.configuration(output: output).supportedOperatingSystems
         case .linux:
             return try .linux ∈ project.configuration(output: output).supportedOperatingSystems
@@ -184,7 +169,7 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
 
     public var operatingSystem: OperatingSystem {
         switch self {
-        case .macOSSwiftPackageManager, .macOSXcode, .iOS, .watchOS, .tvOS:
+        case .macOS, .iOS, .watchOS, .tvOS:
             return .macOS
         case .linux, .miscellaneous, .deployment:
             return .linux
@@ -204,7 +189,7 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
 
     private var travisSDKKey: String? {
         switch self {
-        case .macOSSwiftPackageManager, .macOSXcode, .linux, .watchOS, .miscellaneous, .deployment:
+        case .macOS, .linux, .watchOS, .miscellaneous, .deployment:
             return nil
         case .iOS:
             return "iphonesimulator"
@@ -290,7 +275,7 @@ extension Optional where Wrapped == ContinuousIntegrationJob {
         switch self {
         case .none:
             switch job {
-            case .macOSSwiftPackageManager, .macOSXcode, .linux, .iOS, .watchOS, .tvOS, .miscellaneous:
+            case .macOS, .linux, .iOS, .watchOS, .tvOS, .miscellaneous:
                 return true
             case .deployment:
                 return false

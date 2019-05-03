@@ -1,34 +1,28 @@
 $ workspace validate build •no‐colour
 
-Checking build for macOS with the Swift Package Manager... (§1)
+Checking build for macOS... (§1)
 
 [$ swift...]
 
-Checking build for macOS with Xcode... (§2)
+Checking build for iOS... (§2)
 
 The package has no Xcode project.
 Configure “xcode.manage” or create an Xcode project manually.
 
-Checking build for iOS... (§3)
+Checking build for watchOS... (§3)
 
 The package has no Xcode project.
 Configure “xcode.manage” or create an Xcode project manually.
 
-Checking build for watchOS... (§4)
+Checking build for tvOS... (§4)
 
 The package has no Xcode project.
 Configure “xcode.manage” or create an Xcode project manually.
 
-Checking build for tvOS... (§5)
-
-The package has no Xcode project.
-Configure “xcode.manage” or create an Xcode project manually.
-
-✓ There are no compiler warnings for macOS with the Swift Package Manager.
-✗ Build failed for macOS with Xcode. (See [⌘F] “§2”)
-✗ Build failed for iOS. (See [⌘F] “§3”)
-✗ Build failed for watchOS. (See [⌘F] “§4”)
-✗ Build failed for tvOS. (See [⌘F] “§5”)
+✓ There are no compiler warnings for macOS.
+✗ Build failed for iOS. (See [⌘F] “§2”)
+✗ Build failed for watchOS. (See [⌘F] “§3”)
+✗ Build failed for tvOS. (See [⌘F] “§4”)
 
 “Default” fails validation.
 2

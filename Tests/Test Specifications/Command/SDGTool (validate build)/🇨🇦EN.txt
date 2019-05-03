@@ -6,16 +6,11 @@ Refreshing Xcode project...
 
 Writing to “SDG.xcodeproj/project.pbxproj”...
 
-Checking build for macOS with the Swift Package Manager... (§1)
+Checking build for macOS... (§1)
 
 [$ swift...]
 
-Checking build for macOS with Xcode... (§2)
-
-[$ xcodebuild...]
-
-✓ There are no compiler warnings for macOS with the Swift Package Manager.
-✓ There are no compiler warnings for macOS with Xcode.
+✓ There are no compiler warnings for macOS.
 
 
 “SDG” passes validation.

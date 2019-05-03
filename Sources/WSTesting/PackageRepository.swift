@@ -42,12 +42,12 @@ extension PackageRepository {
         do {
             let buildCommand: (Command.Output) throws -> Bool
             switch job {
-            case .macOSSwiftPackageManager, .linux:
+            case .macOS, .linux:
                 buildCommand = { output in
                     let log = try self.build(releaseConfiguration: false, staticallyLinkStandardLibrary: false, reportProgress: { output.print($0) })
                     return ¬SwiftCompiler.warningsOccurred(during: log)
                 }
-            case .macOSXcode, .iOS, .watchOS, .tvOS: // @exempt(from: tests) Unreachable from Linux.
+            case .iOS, .watchOS, .tvOS: // @exempt(from: tests) Unreachable from Linux.
                 buildCommand = { output in
                     let log = try self.build(for: job.buildSDK) { report in
                         if let relevant = Xcode.abbreviate(output: report) {
@@ -100,16 +100,12 @@ extension PackageRepository {
         output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
-                var name = job.englishTargetOperatingSystemName
-                if let tool = job.englishTargetBuildSystemName {
-                    name += " with " + tool // @exempt(from: tests) Unreachable from Linux.
-                }
                 return "Testing on " + job.englishName + "..." + section.anchor
             }
         }).resolved().formattedAsSectionHeader())
 
         #if TEST_SHIMS
-        if job == .macOSSwiftPackageManager,
+        if job == .macOS,
             ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil {
             // “swift test” gets confused inside Xcode’s test sandbox. This skips it while testing Workspace.
             output.print("Skipping due to sandbox...")
@@ -119,7 +115,7 @@ extension PackageRepository {
 
         let testCommand: (Command.Output) -> Bool
         switch job {
-        case .macOSSwiftPackageManager, .linux:
+        case .macOS, .linux:
             // @exempt(from: tests) Tested separately.
             testCommand = { output in
                 do {
@@ -129,7 +125,7 @@ extension PackageRepository {
                     return false
                 }
             }
-        case .macOSXcode, .iOS, .watchOS, .tvOS: // @exempt(from: tests) Unreachable from Linux.
+        case .iOS, .watchOS, .tvOS: // @exempt(from: tests) Unreachable from Linux.
             testCommand = { output in
                 do {
                     try self.test(on: job.testSDK) { report in
@@ -177,8 +173,7 @@ extension PackageRepository {
         output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
-                let name = job.englishTargetOperatingSystemName
-                return "Checking test coverage on \(name)..." + section.anchor
+                return "Checking test coverage on \(job.englishName)..." + section.anchor
             }
         }).resolved().formattedAsSectionHeader())
 
@@ -190,8 +185,7 @@ extension PackageRepository {
             validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in // @exempt(from: tests)
                 switch localization {
                 case .englishCanada: // @exempt(from: tests)
-                    let name = job.englishTargetOperatingSystemName
-                    return "Test coverage could not be determined on \(name)." + section.crossReference.resolved(for: localization)
+                    return "Test coverage could not be determined on \(job.englishName)." + section.crossReference.resolved(for: localization)
                 }
             }))
         }
@@ -199,7 +193,7 @@ extension PackageRepository {
         do {
             let report: TestCoverageReport
             switch job {
-            case .macOSSwiftPackageManager, .linux:
+            case .macOS, .linux:
                 guard let fromPackageManager = try codeCoverageReport(ignoreCoveredRegions: true, reportProgress: { output.print($0) }) else { // @exempt(from: tests) Untestable in Xcode due to interference.
                     failStepWithError(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
@@ -210,7 +204,7 @@ extension PackageRepository {
                     return
                 }
                 report = fromPackageManager // @exempt(from: tests)
-            case .macOSXcode, .iOS, .watchOS, .tvOS: // @exempt(from: tests) Unreachable from Linux.
+            case .iOS, .watchOS, .tvOS: // @exempt(from: tests) Unreachable from Linux.
                 guard let fromXcode = try codeCoverageReport(on: job.testSDK, ignoreCoveredRegions: true, reportProgress: { output.print($0) }) else {
                     failStepWithError(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
@@ -285,16 +279,14 @@ extension PackageRepository {
                 validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
-                        let name = job.englishTargetOperatingSystemName
-                        return "Test coverage is complete on \(name)."
+                        return "Test coverage is complete on \(job.englishName)."
                     }
                 }))
             } else {
                 validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in // @exempt(from: tests)
                     switch localization {
                     case .englishCanada: // @exempt(from: tests)
-                        let name = job.englishTargetOperatingSystemName
-                        return "Test coverage is incomplete on \(name)." + section.crossReference.resolved(for: localization)
+                        return "Test coverage is incomplete on \(job.englishName)." + section.crossReference.resolved(for: localization)
                     }
                 }))
             }

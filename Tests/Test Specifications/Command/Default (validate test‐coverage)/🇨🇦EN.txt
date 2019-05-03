@@ -1,6 +1,6 @@
 $ workspace validate test‐coverage •no‐colour
 
-Testing on macOS with the Swift Package Manager... (§1)
+Testing on macOS... (§1)
 
 [$ swift...]
 
@@ -8,20 +8,10 @@ Checking test coverage on macOS... (§2)
 
 Parsing report for “Tests/DefaultTests/DefaultTests.swift”...
 
-Testing on macOS with Xcode... (§3)
-
-The package has no Xcode project.
-Configure “xcode.manage” or create an Xcode project manually.
-
-Checking test coverage on macOS... (§4)
-
-The package has no Xcode project.
-Configure “xcode.manage” or create an Xcode project manually.
-
-✓ Tests pass on macOS with the Swift Package Manager.
+✓ Tests pass on macOS.
 ✓ Test coverage is complete on macOS.
-✗ Tests fail on macOS with Xcode. (See [⌘F] “§3”)
-✗ Test coverage could not be determined on macOS. (See [⌘F] “§4”)
 
-“Default” fails validation.
-2
+
+“Default” passes validation.
+
+0

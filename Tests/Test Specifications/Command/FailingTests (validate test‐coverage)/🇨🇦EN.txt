@@ -6,7 +6,7 @@ Refreshing Xcode project...
 
 Writing to “FailingTests.xcodeproj/project.pbxproj”...
 
-Testing on macOS with the Swift Package Manager... (§1)
+Testing on macOS... (§1)
 
 [$ swift...]
 
@@ -20,25 +20,8 @@ Line 7
         return "???"
 
 
-Testing on macOS with Xcode... (§3)
-
-[$ xcodebuild...]
-
-Checking test coverage on macOS... (§4)
-
-Parsing report for “[Temporary]/FailingTests/Sources/FailingTests/Exempt/Exempt.swift”...
-Parsing report for “[Temporary]/FailingTests/Sources/FailingTests/FailingTests.swift”...
-Parsing report for “[Temporary]/FailingTests/Tests/FailingTestsTests/FailingTestsTests.swift”...
-[Temporary]/FailingTests/Sources/FailingTests/FailingTests.swift
-Line 6
-    func notCovered() -> String {
-        return "???"
-
-
-✗ Tests fail on macOS with the Swift Package Manager. (See [⌘F] “§1”)
+✗ Tests fail on macOS. (See [⌘F] “§1”)
 ✗ Test coverage is incomplete on macOS. (See [⌘F] “§2”)
-✗ Tests fail on macOS with Xcode. (See [⌘F] “§3”)
-✗ Test coverage is incomplete on macOS. (See [⌘F] “§4”)
 
 “FailingTests” fails validation.
 2

@@ -1,0 +1,29 @@
+$ workspace validate •job macos •no‐colour
+[Refreshing ...]
+
+Validating “Default”...
+
+
+Checking build for macOS... (§1)
+
+[$ swift...]
+
+Testing on macOS... (§2)
+
+[$ swift...]
+
+Checking test coverage on macOS... (§3)
+
+Parsing report for “Tests/DefaultTests/DefaultTests.swift”...
+
+Summary
+
+
+✓ There are no compiler warnings for macOS.
+✓ Tests pass on macOS.
+✓ Test coverage is complete on macOS.
+
+
+“Default” passes validation.
+
+0

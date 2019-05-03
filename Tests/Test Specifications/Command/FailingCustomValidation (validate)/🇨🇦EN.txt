@@ -10,16 +10,11 @@ Normalizing files...
 Proofreading source code... (§1)
 
 
-Testing on macOS with the Swift Package Manager... (§2)
+Testing on macOS... (§2)
 
 [$ swift...]
 
-Testing on macOS with Xcode... (§3)
-
-The package has no Xcode project.
-Configure “xcode.manage” or create an Xcode project manually.
-
-Executing custom validation: “Dependency”... (§4)
+Executing custom validation: “Dependency”... (§3)
 
 
 [$ git...]
@@ -33,9 +28,8 @@ Summary
 
 
 ✓ Source code passes proofreading.
-✓ Tests pass on macOS with the Swift Package Manager.
-✗ Tests fail on macOS with Xcode. (See [⌘F] “§3”)
-✗ Custom validation fails: “Dependency” (See [⌘F] “§4”)
+✓ Tests pass on macOS.
+✗ Custom validation fails: “Dependency” (See [⌘F] “§3”)
 
 “FailingCustomValidation” fails validation.
 2

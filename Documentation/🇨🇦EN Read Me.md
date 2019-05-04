@@ -57,7 +57,7 @@ Workspace provides command line tools.
 Paste the following into a terminal to install or update them:
 
 ```shell
-curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.19.0 "workspace help" workspace arbeitsbereich
+curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.20.0 "workspace help" workspace arbeitsbereich
 ```
 
 ## Importing
@@ -70,7 +70,7 @@ Simply add Workspace as a dependency in `Package.swift`:
 let package = Package(
     name: "MyPackage",
     dependencies: [
-        .package(url: "https://github.com/SDGGiesbrecht/Workspace", .upToNextMinor(from: Version(0, 19, 0))),
+        .package(url: "https://github.com/SDGGiesbrecht/Workspace", .upToNextMinor(from: Version(0, 20, 0))),
     ],
     targets: [
         .target(name: "MyTarget", dependencies: [

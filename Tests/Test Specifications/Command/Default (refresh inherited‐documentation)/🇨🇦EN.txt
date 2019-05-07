@@ -2,5 +2,4 @@ $ workspace refresh inherited‐documentation •no‐colour
 
 Refreshing inherited documentation...
 
-[$ swift...]
 0

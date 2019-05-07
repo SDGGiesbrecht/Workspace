@@ -335,9 +335,6 @@ extension PackageRepository {
 
     public func refreshInheritedDocumentation(output: Command.Output) throws {
 
-        try resolve(reportProgress: { output.print($0) })
-        resetFileCache(debugReason: "resolve")
-
         for url in try sourceFiles(output: output) where ¬url.path.hasSuffix("Sources/WorkspaceConfiguration/Documentation/DocumentationInheritance.swift") {
             try autoreleasepool {
 

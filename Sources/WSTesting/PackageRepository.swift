@@ -165,6 +165,45 @@ extension PackageRepository {
                 }
             }))
         }
+
+        try updateTestManifests(job: job, validationStatus: &validationStatus, output: output)
+    }
+
+    private func updateTestManifests(
+        job: ContinuousIntegrationJob,
+        validationStatus: inout ValidationStatus,
+        output: Command.Output) throws {
+
+        let configuration = try self.configuration(output: output)
+        if configuration.supportedOperatingSystems.contains(where: { ¬$0.supportsObjectiveC }),
+            job == .macOS { // @exempt(from: tests) Unreachable on Linux.
+
+            let section = validationStatus.newSection()
+
+            output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "Updating test manifests..." + section.anchor
+                }
+            }).resolved().formattedAsSectionHeader())
+
+            do {
+                try regenerateTestLists(reportProgress: { output.print($0) })
+                validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return "Updated test manifests" + job.englishName + "."
+                    }
+                }))
+            } catch {
+                validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return "Failed to update test manifests." + section.crossReference.resolved(for: localization)
+                    }
+                }))
+            }
+        }
     }
 
     public func validateCodeCoverage(on job: ContinuousIntegrationJob, validationStatus: inout ValidationStatus, output: Command.Output) throws {

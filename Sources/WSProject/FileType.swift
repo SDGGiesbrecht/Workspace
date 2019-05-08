@@ -114,6 +114,7 @@ public enum FileType {
     case objectiveCPlusPlus
     case python
     case shell
+    case strings
     case swift
     case swiftPackageManifest
     case xcodeProject
@@ -151,6 +152,7 @@ public enum FileType {
         "py": .python,
         "sh": .shell,
         "swift": .swift,
+        "strings": .strings,
         "xcscheme": .xml,
         "xml": .xml,
         "yaml": .yaml,
@@ -168,7 +170,7 @@ public enum FileType {
     public var syntax: FileSyntax {
         switch self {
 
-        case  .swift, .c, .cPlusPlus, .css, .javaScript, .objectiveC, .objectiveCPlusPlus, .xcodeProject:
+        case  .swift, .c, .cPlusPlus, .css, .javaScript, .objectiveC, .objectiveCPlusPlus, .strings, .xcodeProject:
             return FileSyntax(blockCommentSyntax: FileType.swiftBlockCommentSyntax, lineCommentSyntax: FileType.swiftLineCommentSyntax)
         case .swiftPackageManifest:
             return FileSyntax(blockCommentSyntax: FileType.swiftBlockCommentSyntax, lineCommentSyntax: FileType.swiftLineCommentSyntax, requiredFirstLineToken: "/\u{2F} swift\u{2D}tools\u{2D}version:")

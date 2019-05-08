@@ -603,14 +603,10 @@ class APITests : TestCase {
         PackageRepository(mock: "SDGTool").test(commands: commands, configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
-    func testSelfSpecificScripts() {
-        do {
-            try FileManager.default.do(in: repositoryRoot) {
-                try Workspace.command.execute(with: ["refresh", "scripts"])
-                try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
-            }
-        } catch {
-            XCTFail("\(error)")
+    func testSelfSpecificScripts() throws {
+        try FileManager.default.do(in: repositoryRoot) {
+            try Workspace.command.execute(with: ["refresh", "scripts"])
+            try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
         }
     }
 }

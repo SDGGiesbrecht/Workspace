@@ -1,13 +1,18 @@
 $ workspace validate test‐coverage •no‐colour
 
-Testing on macOS... (§1)
+Updating test manifests... (§1)
 
 [$ swift...]
 
-Checking test coverage on macOS... (§2)
+Testing on macOS... (§2)
+
+[$ swift...]
+
+Checking test coverage on macOS... (§3)
 
 Parsing report for “Tests/DefaultTests/DefaultTests.swift”...
 
+✓ Updated test manifests.
 ✓ Tests pass on macOS.
 ✓ Test coverage is complete on macOS.
 

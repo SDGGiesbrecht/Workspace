@@ -10,11 +10,15 @@ Normalizing files...
 Proofreading source code... (§1)
 
 
-Testing on macOS... (§2)
+Updating test manifests... (§2)
 
 [$ swift...]
 
-Executing custom validation: “Dependency”... (§3)
+Testing on macOS... (§3)
+
+[$ swift...]
+
+Executing custom validation: “Dependency”... (§4)
 
 
 $ Dependency 
@@ -24,6 +28,7 @@ Summary
 
 
 ✓ Source code passes proofreading.
+✓ Updated test manifests.
 ✓ Tests pass on macOS.
 ✓ Custom validation passes: “Dependency”
 

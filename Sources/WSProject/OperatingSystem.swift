@@ -27,4 +27,13 @@ extension OperatingSystem {
         return .linux
         #endif
     }
+
+    public var supportsObjectiveC: Bool {
+        switch self {
+        case .macOS, .iOS, .watchOS, .tvOS:
+            return true
+        case .linux:
+            return false
+        }
+    }
 }

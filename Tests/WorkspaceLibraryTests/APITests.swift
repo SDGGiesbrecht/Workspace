@@ -72,6 +72,12 @@ class APITests : TestCase {
             ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
+    func testBrokenTests() {
+        PackageRepository(mock: "BrokenTests").test(commands: [
+            ["test"]
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
     func testCheckedInDocumentation() {
         let configuration = WorkspaceConfiguration()
         configuration.optimizeForTests()

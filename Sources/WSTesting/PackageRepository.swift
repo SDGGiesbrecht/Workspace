@@ -95,6 +95,8 @@ extension PackageRepository {
 
     public func test(on job: ContinuousIntegrationJob, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
+        try updateTestManifests(job: job, validationStatus: &validationStatus, output: output)
+
         let section = validationStatus.newSection()
 
         output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -164,6 +166,63 @@ extension PackageRepository {
                     return "Tests fail on " + job.englishName + "." + section.crossReference.resolved(for: localization)
                 }
             }))
+        }
+    }
+
+    private func updateTestManifests(
+        job: ContinuousIntegrationJob,
+        validationStatus: inout ValidationStatus,
+        output: Command.Output) throws {
+
+        let configuration = try self.configuration(output: output)
+        if configuration.supportedOperatingSystems.contains(where: { ¬$0.supportsObjectiveC }),
+            job == .macOS { // @exempt(from: tests) Unreachable on Linux.
+
+            let section = validationStatus.newSection()
+
+            output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "Updating test manifests..." + section.anchor
+                }
+            }).resolved().formattedAsSectionHeader())
+
+            #if TEST_SHIMS
+            if job == .macOS,
+                ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil {
+                // “swift test” gets confused inside Xcode’s test sandbox. This skips it while testing Workspace.
+                output.print("Skipping due to sandbox...")
+                return
+            }
+            #endif
+
+            do {
+                do {
+                    try regenerateTestLists(reportProgress: { output.print($0) })
+                } catch {
+                    // #workaround(SDGSwift 0.9.0, The package manager trips over profiling relics.)
+                    if let executionError = error as? ExternalProcess.Error,
+                        executionError.output.contains("___llvm_profile_") {
+                        _ = try? SwiftCompiler.runCustomSubcommand(["package", "clean"])
+                        try regenerateTestLists(reportProgress: { output.print($0) })
+                    } else {
+                        throw error
+                    }
+                }
+                validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return "Updated test manifests."
+                    }
+                }))
+            } catch {
+                validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishCanada:
+                        return "Failed to update test manifests." + section.crossReference.resolved(for: localization)
+                    }
+                }))
+            }
         }
     }
 

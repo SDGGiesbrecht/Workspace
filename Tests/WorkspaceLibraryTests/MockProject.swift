@@ -81,8 +81,9 @@ extension PackageRepository {
 
                 try FileManager.default.do(in: location) {
                     _ = try? Shell.default.run(command: ["git", "init"])
-                    if (try? location.appendingPathComponent(".gitignore").checkResourceIsReachable()) ≠ true {
-                        _ = try? FileManager.default.copy(repositoryRoot.appendingPathComponent(".gitignore"), to: location.appendingPathComponent(".gitignore"))
+                    let gitIgnore = location.appendingPathComponent(".gitignore")
+                    if (try? gitIgnore.checkResourceIsReachable()) ≠ true {
+                        _ = try? FileManager.default.copy(repositoryRoot.appendingPathComponent(".gitignore"), to: gitIgnore)
                     }
 
                     WorkspaceContext.current = try configurationContext()
@@ -139,7 +140,7 @@ extension PackageRepository {
                             ∨ command == ["validate", "build"]
                             ∨ command == ["test"] {
                             // Differing task set on Linux.
-                            if location.lastPathComponent == "FailingTests" {
+                            if location.lastPathComponent ∈ Set(["BrokenTests", "FailingTests"]) {
                                 expectFailure()
                             } else {
                                 requireSuccess()
@@ -221,6 +222,12 @@ extension PackageRepository {
 
                     /// Commit hashes vary.
                     try? FileManager.default.removeItem(at: location.appendingPathComponent("Package.resolved"))
+                    /// Manifest updates only on macOS.
+                    try? FileManager.default.removeItem(at: location.appendingPathComponent("Tests/LinuxMain.swift"))
+                    for manifest in ((try? FileManager.default.deepFileEnumeration(in: location)) ?? [])
+                        where manifest.lastPathComponent == "XCTestManifests.swift" {
+                            try? FileManager.default.removeItem(at: manifest)
+                    }
                     /// Documentation not generated on Linux.
                     if location.lastPathComponent == "PartialReadMe" {
                         try? FileManager.default.removeItem(at: location.appendingPathComponent("docs"))

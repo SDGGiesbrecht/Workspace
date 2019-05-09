@@ -9,6 +9,7 @@ extension APITests {
         ("testAllDisabled", testAllDisabled),
         ("testAllTasks", testAllTasks),
         ("testBadStyle", testBadStyle),
+        ("testBrokenTests", testBrokenTests),
         ("testCheckedInDocumentation", testCheckedInDocumentation),
         ("testCheckForUpdates", testCheckForUpdates),
         ("testConfiguration", testConfiguration),

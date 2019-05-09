@@ -90,7 +90,7 @@ internal struct WorkaroundReminders : Warning {
             return Version(version)
         } else {
             return cached(in: &dependencyVersionCache[dependency], {
-                if let shellOutput = try? Shell.default.run(command: String(dependency).components(separatedBy: " ")),
+                if let shellOutput = try? Shell.default.run(command: String(dependency).components(separatedBy: " ")).get(),
                     let version = Version(firstIn: shellOutput) {
                     return version
                 } else {

@@ -55,15 +55,19 @@ Checking build for tvOS... (§5)
 The package has no Xcode project.
 Configure “xcode.manage” or create an Xcode project manually.
 
-Testing on macOS... (§6)
+Updating test manifests... (§6)
 
 [$ swift...]
 
-Checking test coverage on macOS... (§7)
+Testing on macOS... (§7)
+
+[$ swift...]
+
+Checking test coverage on macOS... (§8)
 
 Parsing report for “Tests/DefaultTests/DefaultTests.swift”...
 
-Checking documentation coverage... (§8)
+Checking documentation coverage... (§9)
 
 
 No original copyright date is specified.
@@ -79,9 +83,10 @@ Summary
 ✗ Build failed for iOS. (See [⌘F] “§3”)
 ✗ Build failed for watchOS. (See [⌘F] “§4”)
 ✗ Build failed for tvOS. (See [⌘F] “§5”)
+✓ Updated test manifests.
 ✓ Tests pass on macOS.
 ✓ Test coverage is complete on macOS.
-✗ Failed to process documentation. (See [⌘F] “§8”)
+✗ Failed to process documentation. (See [⌘F] “§9”)
 
 “Default” fails validation.
 2

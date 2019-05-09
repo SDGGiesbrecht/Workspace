@@ -22,12 +22,16 @@ extension Command.Output {
     }
 
     static var mock: Command.Output = {
-        #warning("Is this file used?")
         var result: Command.Output?
         do {
-            try Command(name: UserFacing<StrictString, MockLocalization>({ _ in "" }), description: UserFacing<StrictString, MockLocalization>({ _ in "" }), directArguments: [], options: [], execution: { (_, _, output: Command.Output) in
+            _ = try Command(
+                name: UserFacing<StrictString, MockLocalization>({ _ in "" }),
+                description: UserFacing<StrictString, MockLocalization>({ _ in "" }),
+                directArguments: [],
+                options: [],
+                execution: { (_, _, output: Command.Output) in
                 result = output
-            }).execute(with: [])
+            }).execute(with: []).get()
         } catch {}
         return result!
     }()

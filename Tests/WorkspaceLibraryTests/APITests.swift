@@ -607,8 +607,8 @@ class APITests : TestCase {
 
     func testSelfSpecificScripts() throws {
         try FileManager.default.do(in: repositoryRoot) {
-            try Workspace.command.execute(with: ["refresh", "scripts"])
-            try Workspace.command.execute(with: ["refresh", "continuous‐integration"])
+            _ = try Workspace.command.execute(with: ["refresh", "scripts"]).get()
+            _ = try Workspace.command.execute(with: ["refresh", "continuous‐integration"]).get()
         }
     }
 }

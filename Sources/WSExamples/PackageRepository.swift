@@ -142,7 +142,7 @@ extension PackageRepository {
                         var identifier = StrictString(file.contents.scalars[comma.range.upperBound ..< closingParenthesis.range.lowerBound])
                         identifier.trimMarginalWhitespace()
 
-                        let index = try Int(possibleDecimal: indexString)
+                        let index = try Int.parse(possibleDecimal: indexString).get()
                         guard let example = try examples(output: output)[identifier] else {
                             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                                 switch localization {

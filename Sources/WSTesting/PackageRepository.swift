@@ -95,6 +95,8 @@ extension PackageRepository {
 
     public func test(on job: ContinuousIntegrationJob, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
+        try updateTestManifests(job: job, validationStatus: &validationStatus, output: output)
+
         let section = validationStatus.newSection()
 
         output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -165,8 +167,6 @@ extension PackageRepository {
                 }
             }))
         }
-
-        try updateTestManifests(job: job, validationStatus: &validationStatus, output: output)
     }
 
     private func updateTestManifests(
@@ -186,6 +186,15 @@ extension PackageRepository {
                     return "Updating test manifests..." + section.anchor
                 }
             }).resolved().formattedAsSectionHeader())
+
+            #if TEST_SHIMS
+            if job == .macOS,
+                ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil {
+                // “swift test” gets confused inside Xcode’s test sandbox. This skips it while testing Workspace.
+                output.print("Skipping due to sandbox...")
+                return
+            }
+            #endif
 
             do {
                 do {

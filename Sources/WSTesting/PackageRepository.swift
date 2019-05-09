@@ -188,7 +188,18 @@ extension PackageRepository {
             }).resolved().formattedAsSectionHeader())
 
             do {
-                try regenerateTestLists(reportProgress: { output.print($0) })
+                do {
+                    try regenerateTestLists(reportProgress: { output.print($0) })
+                } catch {
+                    // #workaround(SDGSwift 0.9.0, The package manager trips over profiling relics.)
+                    if let executionError = error as? ExternalProcess.Error,
+                        executionError.output.contains("___llvm_profile_") {
+                        _ = try? SwiftCompiler.runCustomSubcommand(["package", "clean"])
+                        try regenerateTestLists(reportProgress: { output.print($0) })
+                    } else {
+                        throw error
+                    }
+                }
                 validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:

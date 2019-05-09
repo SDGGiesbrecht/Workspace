@@ -356,9 +356,23 @@ extension PackageRepository {
         } catch {
             // @exempt(from: tests) Unreachable on Linux.
             var description = StrictString(error.localizedDescription)
-            if let noXcode = error as? Xcode.Error,
-                noXcode == .noXcodeProject {
-                description += "\n" + PackageRepository.xcodeProjectInstructions.resolved()
+            if let coverageError = error as? Xcode.CoverageReportingError {
+                switch coverageError {
+                case .buildDirectoryError(let directoryError):
+                    switch directoryError {
+                    case .noBuildDirectory:
+                        break
+                    case .schemeError(let schemeError):
+                        switch schemeError {
+                        case .foundationError, .noPackageScheme, .xcodeError:
+                            break
+                        case .noXcodeProject:
+                            description += "\n" + PackageRepository.xcodeProjectInstructions.resolved()
+                        }
+                    }
+                case .corruptTestCoverageReport, .foundationError, .hostDestinationError, .xcodeError:
+                    break
+                }
             }
             failStepWithError(message: description)
         }

@@ -81,9 +81,11 @@ extension PackageRepository {
 
                 try FileManager.default.do(in: location) {
                     _ = try? Shell.default.run(command: ["git", "init"])
-                    if (try? location.appendingPathComponent(".gitignore").checkResourceIsReachable()) ≠ true {
-                        _ = try? FileManager.default.copy(repositoryRoot.appendingPathComponent(".gitignore"), to: location.appendingPathComponent(".gitignore"))
+                    let gitIgnore = location.appendingPathComponent(".gitignore")
+                    if (try? gitIgnore.checkResourceIsReachable()) ≠ true {
+                        _ = try? FileManager.default.copy(repositoryRoot.appendingPathComponent(".gitignore"), to: gitIgnore)
                     }
+                    try String(from: gitIgnore).appending("\nLinuxMain.swift\nXCTestManifests.swift\n").save(to: gitIgnore)
 
                     WorkspaceContext.current = try configurationContext()
                     if sdg {

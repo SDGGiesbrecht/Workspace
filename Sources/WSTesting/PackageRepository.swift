@@ -208,8 +208,8 @@ extension PackageRepository {
                         switch processError {
                         case .foundationError:
                             throw error
-                        case .processError(code: _, output: let output):
-                            if output.contains("___llvm_profile_") {
+                        case .processError(code: _, output: let regenerationOutput):
+                            if regenerationOutput.contains("___llvm_profile_") {
                                 SwiftCompiler.runCustomSubcommand(["package", "clean"])
                                 _ = try regenerateTestLists(reportProgress: { output.print($0) }).get()
                             } else {

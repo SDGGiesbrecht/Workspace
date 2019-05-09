@@ -10,11 +10,11 @@ Normalizing files...
 Proofreading source code... (§1)
 
 
-Testing on macOS... (§2)
+Updating test manifests... (§2)
 
 [$ swift...]
 
-Updating test manifests... (§3)
+Testing on macOS... (§3)
 
 [$ swift...]
 
@@ -22,8 +22,8 @@ Summary
 
 
 ✓ Source code passes proofreading.
-✓ Tests pass on macOS.
 ✓ Updated test manifests.
+✓ Tests pass on macOS.
 
 
 “AllDisabled” passes validation.

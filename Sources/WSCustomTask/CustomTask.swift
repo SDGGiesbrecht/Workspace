@@ -29,6 +29,6 @@ extension CustomTask {
     // MARK: - Execution
 
     public func execute(output: Command.Output) throws {
-        try Package(url: url).execute(.version(version), of: [executable], with: arguments, cacheDirectory: CustomTask.cache, reportProgress: { output.print($0) })
+        _ = try Package(url: url).execute(.version(version), of: [executable], with: arguments, cacheDirectory: CustomTask.cache, reportProgress: { output.print($0) }).get()
     }
 }

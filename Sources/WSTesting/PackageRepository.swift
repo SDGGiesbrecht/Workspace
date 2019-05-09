@@ -78,9 +78,13 @@ extension PackageRepository {
         } catch {
             // @exempt(from: tests) Unreachable on Linux.
             var description = StrictString(error.localizedDescription)
-            if let noXcode = error as? Xcode.Error,
-                noXcode == .noXcodeProject {
-                description += "\n" + PackageRepository.xcodeProjectInstructions.resolved()
+            if let schemeError = error as? Xcode.SchemeError {
+                switch schemeError {
+                case .foundationError, .noPackageScheme, .xcodeError:
+                    break
+                case .noXcodeProject:
+                    description += "\n" + PackageRepository.xcodeProjectInstructions.resolved()
+                }
             }
             output.print(description.formattedAsError())
 

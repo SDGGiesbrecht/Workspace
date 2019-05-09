@@ -85,7 +85,6 @@ extension PackageRepository {
                     if (try? gitIgnore.checkResourceIsReachable()) ≠ true {
                         _ = try? FileManager.default.copy(repositoryRoot.appendingPathComponent(".gitignore"), to: gitIgnore)
                     }
-                    try String(from: gitIgnore).appending("\nLinuxMain.swift\nXCTestManifests.swift\n").save(to: gitIgnore)
 
                     WorkspaceContext.current = try configurationContext()
                     if sdg {
@@ -223,6 +222,12 @@ extension PackageRepository {
 
                     /// Commit hashes vary.
                     try? FileManager.default.removeItem(at: location.appendingPathComponent("Package.resolved"))
+                    /// Manifest updates only on macOS.
+                    try? FileManager.default.removeItem(at: location.appendingPathComponent("Tests/LinuxMain.swift"))
+                    for manifest in ((try? FileManager.default.deepFileEnumeration(in: location)) ?? [])
+                        where manifest.lastPathComponent == "XCTestManifests.swift" {
+                            try? FileManager.default.removeItem(at: manifest)
+                    }
                     /// Documentation not generated on Linux.
                     if location.lastPathComponent == "PartialReadMe" {
                         try? FileManager.default.removeItem(at: location.appendingPathComponent("docs"))

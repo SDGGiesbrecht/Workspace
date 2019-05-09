@@ -203,7 +203,7 @@ extension PackageRepository {
                 validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
                     case .englishCanada:
-                        return "Updated test manifests" + job.englishName + "."
+                        return "Updated test manifests."
                     }
                 }))
             } catch {

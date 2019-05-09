@@ -25,8 +25,8 @@ do {
 
     let mockProject = repositoryRoot.appendingPathComponent("Tests/Mock Projects/After/Default")
     try FileManager.default.do(in: mockProject) {
-        try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj", "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage"])
-        try Workspace.command.execute(with: ["validate", "test‐coverage", "•job", "ios"])
+        _ = try Shell.default.run(command: ["swift", "package", "generate\u{2D}xcodeproj", "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage"]).get()
+        _ = try Workspace.command.execute(with: ["validate", "test‐coverage", "•job", "ios"]).get()
     }
 
 } catch {

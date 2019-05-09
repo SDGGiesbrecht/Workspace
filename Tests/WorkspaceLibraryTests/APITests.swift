@@ -100,12 +100,8 @@ class APITests : TestCase {
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
-    func testCheckForUpdates() {
-        do {
-            try Workspace.command.execute(with: ["check‐for‐updates"])
-        } catch {
-            XCTFail("\(error)")
-        }
+    func testCheckForUpdates() throws {
+        _ = try Workspace.command.execute(with: ["check‐for‐updates"]).get()
     }
 
     func testConfiguration() {

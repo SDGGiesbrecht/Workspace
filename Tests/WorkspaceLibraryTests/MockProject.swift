@@ -90,7 +90,7 @@ extension PackageRepository {
                 defer { try? FileManager.default.removeItem(at: location) }
 
                 try FileManager.default.do(in: location) {
-                    _ = try? Shell.default.run(command: ["git", "init"])
+                    Shell.default.run(command: ["git", "init"])
                     let gitIgnore = location.appendingPathComponent(".gitignore")
                     if (try? gitIgnore.checkResourceIsReachable()) ≠ true {
                         _ = try? FileManager.default.copy(repositoryRoot.appendingPathComponent(".gitignore"), to: gitIgnore)
@@ -110,7 +110,7 @@ extension PackageRepository {
 
                         if ProcessInfo.isInContinuousIntegration {
                             // Travis CI needs periodic output of some sort; otherwise it assumes the tests have stalled.
-                            _ = try? Shell.default.run(command: ["echo", "Tests continuing...", ">", "/dev/tty"])
+                            Shell.default.run(command: ["echo", "Tests continuing...", ">", "/dev/tty"])
                         }
 
                         print(StrictString("$ workspace ") + command.joined(separator: " "))
@@ -119,14 +119,14 @@ extension PackageRepository {
                         // Special handling of commands with platform differences
                         func requireSuccess() {
                             do {
-                                try Workspace.command.execute(with: command)
+                                _ = try Workspace.command.execute(with: command).get()
                             } catch {
                                 XCTFail("\(error)", file: file, line: line)
                             }
                         }
                         func expectFailure() {
                             do {
-                                XCTFail(String(try Workspace.command.execute(with: command)), file: file, line: line)
+                                XCTFail(String(try Workspace.command.execute(with: command).get()), file: file, line: line)
                             } catch {
                                 // Expected.
                             }

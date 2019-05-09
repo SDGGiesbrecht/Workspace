@@ -14,11 +14,16 @@ Testing on macOS... (§2)
 
 [$ swift...]
 
+Updating test manifests... (§3)
+
+[$ swift...]
+
 Summary
 
 
 ✓ Source code passes proofreading.
 ✓ Tests pass on macOS.
+✓ Updated test manifests.
 
 
 “AllDisabled” passes validation.

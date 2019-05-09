@@ -133,23 +133,23 @@ extension PackageRepository {
             }
         case .iOS, .watchOS, .tvOS: // @exempt(from: tests) Unreachable from Linux.
             testCommand = { output in
-                do {
-                    _ = try self.test(on: job.testSDK, reportProgress: { report in
-                        if let relevant = Xcode.abbreviate(output: report) {
-                            output.print(relevant)
-                        }
-                    }).get()
-                    return true
-                } catch {
-                    var description = StrictString(error.localizedDescription)
-                    if error as? ExternalProcess.Error == nil { // ← Description would be redundant.
-                        if let noXcode = error as? Xcode.Error,
-                            noXcode == .noXcodeProject {
-                            description += "\n" + PackageRepository.xcodeProjectInstructions.resolved()
-                        }
-                        output.print(description.formattedAsError())
+                switch self.test(on: job.testSDK, reportProgress: { report in
+                    if let relevant = Xcode.abbreviate(output: report) {
+                        output.print(relevant)
                     }
+                }) {
+                case .failure(let error):
+                    var description = StrictString(error.localizedDescription)
+                    switch error {
+                    case .foundationError, .noPackageScheme, .xcodeError:
+                        break
+                    case .noXcodeProject:
+                        description += "\n" + PackageRepository.xcodeProjectInstructions.resolved()
+                    }
+                    output.print(description.formattedAsError())
                     return false
+                case .success:
+                    return true
                 }
             }
         case .miscellaneous, .deployment:

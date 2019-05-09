@@ -201,17 +201,26 @@ extension PackageRepository {
             #endif
 
             do {
-                do {
-                    _ = try regenerateTestLists(reportProgress: { output.print($0) }).get()
-                } catch {
-                    // #workaround(SDGSwift 0.9.0, The package manager trips over profiling relics.)
-                    if let executionError = error as? ExternalProcess.Error,
-                        executionError.output.contains("___llvm_profile_") {
-                        SwiftCompiler.runCustomSubcommand(["package", "clean"])
-                        try regenerateTestLists(reportProgress: { output.print($0) }).get()
-                    } else {
+                switch regenerateTestLists(reportProgress: { output.print($0) }) {
+                case .failure(let error):
+                    switch error {
+                    case .executionError(let processError):
+                        switch processError {
+                        case .foundationError:
+                            throw error
+                        case .processError(code: _, output: let output):
+                            if output.contains("___llvm_profile_") {
+                                SwiftCompiler.runCustomSubcommand(["package", "clean"])
+                                _ = try regenerateTestLists(reportProgress: { output.print($0) }).get()
+                            } else {
+                                throw error
+                            }
+                        }
+                    case .locationError:
                         throw error
                     }
+                case .success:
+                    break
                 }
                 validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {

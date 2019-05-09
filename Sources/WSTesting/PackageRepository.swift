@@ -44,16 +44,16 @@ extension PackageRepository {
             switch job {
             case .macOS, .linux:
                 buildCommand = { output in
-                    let log = try self.build(releaseConfiguration: false, staticallyLinkStandardLibrary: false, reportProgress: { output.print($0) })
+                    let log = try self.build(releaseConfiguration: false, staticallyLinkStandardLibrary: false, reportProgress: { output.print($0) }).get()
                     return ¬SwiftCompiler.warningsOccurred(during: log)
                 }
             case .iOS, .watchOS, .tvOS: // @exempt(from: tests) Unreachable from Linux.
                 buildCommand = { output in
-                    let log = try self.build(for: job.buildSDK) { report in
+                    let log = try self.build(for: job.buildSDK, reportProgress: { report in
                         if let relevant = Xcode.abbreviate(output: report) {
                             output.print(relevant)
                         }
-                    }
+                    }).get()
                     return ¬Xcode.warningsOccurred(during: log)
                 }
             case .miscellaneous, .deployment:
@@ -121,7 +121,7 @@ extension PackageRepository {
             // @exempt(from: tests) Tested separately.
             testCommand = { output in
                 do {
-                    try self.test(reportProgress: { output.print($0) })
+                    _ = try self.test(reportProgress: { output.print($0) }).get()
                     return true
                 } catch {
                     return false
@@ -130,11 +130,11 @@ extension PackageRepository {
         case .iOS, .watchOS, .tvOS: // @exempt(from: tests) Unreachable from Linux.
             testCommand = { output in
                 do {
-                    try self.test(on: job.testSDK) { report in
+                    _ = try self.test(on: job.testSDK, reportProgress: { report in
                         if let relevant = Xcode.abbreviate(output: report) {
                             output.print(relevant)
                         }
-                    }
+                    }).get()
                     return true
                 } catch {
                     var description = StrictString(error.localizedDescription)
@@ -198,13 +198,13 @@ extension PackageRepository {
 
             do {
                 do {
-                    try regenerateTestLists(reportProgress: { output.print($0) })
+                    _ = try regenerateTestLists(reportProgress: { output.print($0) }).get()
                 } catch {
                     // #workaround(SDGSwift 0.9.0, The package manager trips over profiling relics.)
                     if let executionError = error as? ExternalProcess.Error,
                         executionError.output.contains("___llvm_profile_") {
-                        _ = try? SwiftCompiler.runCustomSubcommand(["package", "clean"])
-                        try regenerateTestLists(reportProgress: { output.print($0) })
+                        SwiftCompiler.runCustomSubcommand(["package", "clean"])
+                        try regenerateTestLists(reportProgress: { output.print($0) }).get()
                     } else {
                         throw error
                     }
@@ -253,7 +253,7 @@ extension PackageRepository {
             let report: TestCoverageReport
             switch job {
             case .macOS, .linux:
-                guard let fromPackageManager = try codeCoverageReport(ignoreCoveredRegions: true, reportProgress: { output.print($0) }) else { // @exempt(from: tests) Untestable in Xcode due to interference.
+                guard let fromPackageManager = try codeCoverageReport(ignoreCoveredRegions: true, reportProgress: { output.print($0) }).get() else { // @exempt(from: tests) Untestable in Xcode due to interference.
                     failStepWithError(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
                         case .englishCanada:
@@ -264,7 +264,7 @@ extension PackageRepository {
                 }
                 report = fromPackageManager // @exempt(from: tests)
             case .iOS, .watchOS, .tvOS: // @exempt(from: tests) Unreachable from Linux.
-                guard let fromXcode = try codeCoverageReport(on: job.testSDK, ignoreCoveredRegions: true, reportProgress: { output.print($0) }) else {
+                guard let fromXcode = try codeCoverageReport(on: job.testSDK, ignoreCoveredRegions: true, reportProgress: { output.print($0) }).get() else {
                     failStepWithError(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
                         case .englishCanada:
@@ -279,7 +279,7 @@ extension PackageRepository {
             }
 
             var irrelevantFiles: Set<URL> = []
-            for target in try package().targets {
+            for target in try package().get().targets {
                 switch target.type {
                 case .library, .systemModule:
                 break // Coverage matters.

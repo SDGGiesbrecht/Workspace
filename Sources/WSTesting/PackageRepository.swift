@@ -80,7 +80,7 @@ extension PackageRepository {
             var description = StrictString(error.localizedDescription)
             if let schemeError = error as? Xcode.SchemeError {
                 switch schemeError {
-                case .foundationError, .noPackageScheme, .xcodeError:
+                case .foundationError, .noPackageScheme, .xcodeError: // @exempt(from: tests)
                     break
                 case .noXcodeProject:
                     description += "\n" + PackageRepository.xcodeProjectInstructions.resolved()
@@ -206,7 +206,7 @@ extension PackageRepository {
                     switch error {
                     case .executionError(let processError):
                         switch processError {
-                        case .foundationError:
+                        case .foundationError: // @exempt(from: tests)
                             throw error
                         case .processError(code: _, output: let regenerationOutput):
                             if regenerationOutput.contains("___llvm_profile_") {
@@ -216,7 +216,7 @@ extension PackageRepository {
                                 throw error
                             }
                         }
-                    case .locationError:
+                    case .locationError: // @exempt(from: tests)
                         throw error
                     }
                 case .success:

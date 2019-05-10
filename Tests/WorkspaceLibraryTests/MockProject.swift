@@ -38,7 +38,17 @@ extension PackageRepository {
         self.init(at: URL(fileURLWithPath: "/tmp").appendingPathComponent(name))
     }
 
-    func test<L>(commands: [[StrictString]], configuration: WorkspaceConfiguration = WorkspaceConfiguration(), sdg: Bool = false, localizations: L.Type, withDependency: Bool = false, withCustomTask: Bool = false, overwriteSpecificationInsteadOfFailing: Bool, file: StaticString = #file, line: UInt = #line) where L : InputLocalization {
+    func test<L>(
+        commands: [[StrictString]],
+        configuration: WorkspaceConfiguration = WorkspaceConfiguration(),
+        sdg: Bool = false,
+        localizations: L.Type,
+        withDependency: Bool = false,
+        withCustomTask: Bool = false,
+        overwriteSpecificationInsteadOfFailing: Bool,
+        file: StaticString = #file,
+        line: UInt = #line) where L : InputLocalization {
+
         do {
             try autoreleasepool {
                 let developer = URL(fileURLWithPath: "/tmp/Developer")
@@ -52,14 +62,14 @@ extension PackageRepository {
                         if withCustomTask {
                             initialize += ["\u{2D}\u{2D}type", "executable"]
                         }
-                        try Shell.default.run(command: initialize)
+                        _ = try Shell.default.run(command: initialize).get()
                         if withCustomTask {
                             try "import Foundation\nprint(\u{22}Hello, world!\u{22})\nif ProcessInfo.processInfo.arguments.count > 1 {\n    exit(1)\n}".save(to: dependency.appendingPathComponent("Sources/Dependency/main.swift"))
                         }
-                        try Shell.default.run(command: ["git", "init"])
-                        try Shell.default.run(command: ["git", "add", "."])
-                        try Shell.default.run(command: ["git", "commit", "\u{2D}m", "Initialized."])
-                        try Shell.default.run(command: ["git", "tag", "1.0.0"])
+                        _ = try Shell.default.run(command: ["git", "init"]).get()
+                        _ = try Shell.default.run(command: ["git", "add", "."]).get()
+                        _ = try Shell.default.run(command: ["git", "commit", "\u{2D}m", "Initialized."]).get()
+                        _ = try Shell.default.run(command: ["git", "tag", "1.0.0"]).get()
                     }
                 }
                 let beforeLocation = PackageRepository.beforeDirectory(for: location.lastPathComponent)
@@ -80,7 +90,7 @@ extension PackageRepository {
                 defer { try? FileManager.default.removeItem(at: location) }
 
                 try FileManager.default.do(in: location) {
-                    _ = try? Shell.default.run(command: ["git", "init"])
+                    Shell.default.run(command: ["git", "init"])
                     let gitIgnore = location.appendingPathComponent(".gitignore")
                     if (try? gitIgnore.checkResourceIsReachable()) ≠ true {
                         _ = try? FileManager.default.copy(repositoryRoot.appendingPathComponent(".gitignore"), to: gitIgnore)
@@ -100,7 +110,7 @@ extension PackageRepository {
 
                         if ProcessInfo.isInContinuousIntegration {
                             // Travis CI needs periodic output of some sort; otherwise it assumes the tests have stalled.
-                            _ = try? Shell.default.run(command: ["echo", "Tests continuing...", ">", "/dev/tty"])
+                            Shell.default.run(command: ["echo", "Tests continuing...", ">", "/dev/tty"])
                         }
 
                         print(StrictString("$ workspace ") + command.joined(separator: " "))
@@ -109,14 +119,14 @@ extension PackageRepository {
                         // Special handling of commands with platform differences
                         func requireSuccess() {
                             do {
-                                try Workspace.command.execute(with: command)
+                                _ = try Workspace.command.execute(with: command).get()
                             } catch {
                                 XCTFail("\(error)", file: file, line: line)
                             }
                         }
                         func expectFailure() {
                             do {
-                                XCTFail(String(try Workspace.command.execute(with: command)), file: file, line: line)
+                                XCTFail(String(try Workspace.command.execute(with: command).get()), file: file, line: line)
                             } catch {
                                 // Expected.
                             }

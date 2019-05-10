@@ -113,19 +113,19 @@ extension PackageRepository {
 
     public func cachedManifest() throws -> PackageModel.Manifest {
         return try cached(in: &manifestCache.manifest) {
-            return try manifest()
+            return try manifest().get()
         }
     }
 
     public func cachedPackage() throws -> PackageModel.Package {
         return try cached(in: &manifestCache.package) {
-            return try package()
+            return try package().get()
         }
     }
 
     public func cachedPackageGraph() throws -> PackageGraph {
         return try cached(in: &manifestCache.packageGraph) {
-            return try packageGraph()
+            return try packageGraph().get()
         }
     }
 
@@ -222,7 +222,7 @@ extension PackageRepository {
                     at: Metadata.latestStableVersion,
                     minimumMacOSVersion: PackageRepository.macOSDeploymentVersion,
                     context: try configurationContext(),
-                    reportProgress: { output.print($0) })
+                    reportProgress: { output.print($0) }).get()
             }
 
             // Force lazy options to resolve under the right context before it changes.
@@ -289,7 +289,7 @@ extension PackageRepository {
     public func trackedFiles(output: Command.Output) throws -> [URL] {
         return try cached(in: &fileCache.trackedFiles) { () -> [URL] in
 
-            var ignoredURLs: [URL] = try ignoredFiles()
+            var ignoredURLs: [URL] = try ignoredFiles().get()
             ignoredURLs.append(location.appendingPathComponent(".git"))
 
             let result = try allFiles().filter { (url) in
@@ -365,7 +365,7 @@ extension PackageRepository {
         let directoryName = StrictString(package.url.lastPathComponent)
         let cache = relatedProjectCache.appendingPathComponent(String(directoryName))
 
-        let commit = try package.latestCommitIdentifier()
+        let commit = try package.latestCommitIdentifier().get()
 
         let repositoryLocation = cache.appendingPathComponent(commit).appendingPathComponent(String(directoryName))
 
@@ -383,7 +383,7 @@ extension PackageRepository {
                     }
                 }).resolved())
 
-                repository = try PackageRepository(cloning: package, to: repositoryLocation, at: .development, shallow: true)
+                repository = try PackageRepository.clone(package, to: repositoryLocation, at: .development, shallow: true).get()
             } catch {
                 // Clean up if there is a failure.
                 try? FileManager.default.removeItem(at: cache)

@@ -82,7 +82,7 @@ extension PackageRepository {
     }
 
     public func refreshXcodeProject(output: Command.Output) throws {
-        try generateXcodeProject(reportProgress: { output.print($0) })
+        _ = try generateXcodeProject(reportProgress: { output.print($0) }).get()
         resetFileCache(debugReason: "generate\u{2D}xcodeproj")
         output.print("")
 

@@ -178,8 +178,8 @@ extension PackageRepository {
             FileManager.default.withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
                 let package = Package(url: packageURL)
                 do {
-                    try Git.clone(package, to: temporary)
-                    try Git.runCustomSubcommand(["checkout", "gh\u{2D}pages"], in: temporary)
+                    _ = try Git.clone(package, to: temporary).get()
+                    _ = try Git.runCustomSubcommand(["checkout", "gh\u{2D}pages"], in: temporary).get()
                     try FileManager.default.removeItem(at: outputDirectory)
                     try FileManager.default.move(temporary, to: outputDirectory)
                 } catch {}

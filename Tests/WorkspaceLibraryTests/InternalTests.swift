@@ -17,7 +17,7 @@ import WSGeneralTestImports
 
 class InternalTests : TestCase {
 
-    func testGitIgnoreCoverage() {
+    func testGitIgnoreCoverage() throws {
 
         let expectedPrefixes = [
 
@@ -46,8 +46,12 @@ class InternalTests : TestCase {
             ".travis.yml"
         ]
 
-        do {
-            _ = try Command(name: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }), description: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }), directArguments: [], options: [], execution: { (_, _, output: Command.Output) in
+        _ = try Command(
+            name: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }),
+            description: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }),
+            directArguments: [],
+            options: [],
+            execution: { (_, _, output: Command.Output) in
 
                 let tracked = try PackageRepository(at: repositoryRoot).trackedFiles(output: output)
                 let relative = tracked.map { $0.path(relativeTo: repositoryRoot) }
@@ -67,9 +71,6 @@ class InternalTests : TestCase {
                     unexpected.joinedAsLines()
                     ].joinedAsLines())
 
-            }).execute(with: [])
-        } catch {
-            XCTFail("\(error)")
-        }
+        }).execute(with: []).get()
     }
 }

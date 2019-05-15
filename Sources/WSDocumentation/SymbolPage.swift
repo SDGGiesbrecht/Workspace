@@ -846,7 +846,21 @@ internal class SymbolPage : Page {
             } else {
                 entry.append(name)
             }
-            sectionContents.append(HTMLElement("div", attributes: ["class": "child"], contents: entry.joinedAsLines(), inline: false).source)
+
+            var attributes: [StrictString: StrictString] = ["class": "child"]
+            let conformanceAttributeName: StrictString = "data\u{2D}conformance"
+            if child.isProtocolRequirement {
+                if child.hasDefaultImplementation {
+                    attributes[conformanceAttributeName] = "customizable"
+                } else {
+                    attributes[conformanceAttributeName] = "requirement"
+                }
+            }
+            sectionContents.append(HTMLElement(
+                "div",
+                attributes: attributes,
+                contents: entry.joinedAsLines(),
+                inline: false).source)
         }
         return HTMLElement("section", contents: sectionContents.joinedAsLines(), inline: false).source
     }

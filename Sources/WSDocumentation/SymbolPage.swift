@@ -170,6 +170,7 @@ internal class SymbolPage : Page {
             "input",
             attributes: [
                 "name": "conformance filter",
+                "onchange": "switchConformanceMode(this)",
                 "type": "radio",
                 "value": value
             ],

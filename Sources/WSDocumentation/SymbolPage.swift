@@ -191,6 +191,7 @@ internal class SymbolPage : Page {
             value: "customizable"))
         return HTMLElement(
             "div",
+            attributes: ["class": "conformance‐filter"],
             contents: contents,
             inline: false).source
     }

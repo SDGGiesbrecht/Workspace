@@ -134,6 +134,19 @@ public protocol Protocol {
 
     /// An associated type.
     associatedtype AssociatedType
+
+    /// A protocol requirement.
+    func protocolRequirement()
+
+    /// A customization point.
+    func customizationPoint()
+}
+extension Protocol {
+
+    public func customizationPoint() {}
+
+    /// A provided extension.
+    public func providedExtension() {}
 }
 
 /// A function.

@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCommandLine",
         "state": {
           "branch": null,
-          "revision": "9b4357b9ca15719e98aa0c8b6934da694f000198",
-          "version": "0.7.0"
+          "revision": "cf60a10c41b68ea65eb48ff1c9469a58fc792400",
+          "version": "0.7.1"
         }
       },
       {
@@ -24,8 +24,17 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
         "state": {
           "branch": null,
-          "revision": "b03041d3a32628a2352f33fcb31499d0c8235b5b",
-          "version": "0.9.0"
+          "revision": "b12df3622de47ce1c7d5646b3e9b85dc7aaa5b99",
+          "version": "0.10.0"
+        }
+      },
+      {
+        "package": "CommonMark",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-cmark",
+        "state": {
+          "branch": null,
+          "revision": "861f0db6f553305ad7c40c5df5ab7f9af9e88dd4",
+          "version": "0.0.50000"
         }
       },
       {

@@ -74,7 +74,7 @@ dt:first-child {
     padding-top: 0;
 }
 
-.callout {
+.callout, .conformance‐filter {
     border-left-width: calc((6 / 17) * 1rem);
     border-left-style: solid;
     border-right-color: transparent;
@@ -263,7 +263,7 @@ blockquote {
     color: #666;
 }
 
-.callout {
+.callout, .conformance‐filter {
     background-color: #FAFAFA;
     border-left-color: #E6E6E6;
 }

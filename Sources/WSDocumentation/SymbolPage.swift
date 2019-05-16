@@ -142,6 +142,13 @@ internal class SymbolPage : Page {
 
     // MARK: - Generation
 
+    internal static func conformanceFilterLabel(localization: LocalizationIdentifier) -> StrictString {
+        switch localization._bestMatch {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Filter"
+        }
+    }
+
     internal static func conformanceFilterOff(localization: LocalizationIdentifier) -> StrictString {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -180,6 +187,11 @@ internal class SymbolPage : Page {
 
     private static func protocolModeInterface(localization: LocalizationIdentifier) -> StrictString {
         var contents: StrictString = ""
+        contents.append(contentsOf: HTMLElement(
+            "p",
+            attributes: ["class": "conformance‐filter‐label"],
+            contents: conformanceFilterLabel(localization: localization),
+            inline: false).source)
         contents.append(contentsOf: conformanceFilterButton(
             labelled: conformanceFilterOff(localization: localization),
             value: "all"))

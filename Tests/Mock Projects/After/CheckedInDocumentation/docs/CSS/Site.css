@@ -85,6 +85,10 @@ dt:first-child {
     padding: 0.94118rem;
 }
 
+.conformance‐filter > input {
+    margin-left: 2em;
+}
+
 /* Specific Layout */
 
 header.navigation‐bar, .import‐header {

@@ -74,7 +74,7 @@ dt:first-child {
     padding-top: 0;
 }
 
-.callout {
+.callout, .conformance‐filter {
     border-left-width: calc((6 / 17) * 1rem);
     border-left-style: solid;
     border-right-color: transparent;
@@ -83,6 +83,10 @@ dt:first-child {
     border-radius: calc((6 / 17) * 1rem);
     margin-top: 1.4em;
     padding: 0.94118rem;
+}
+
+.conformance‐filter > input {
+    margin-left: 2em;
 }
 
 /* Specific Layout */
@@ -263,7 +267,7 @@ blockquote {
     color: #666;
 }
 
-.callout {
+.callout, .conformance‐filter {
     background-color: #FAFAFA;
     border-left-color: #E6E6E6;
 }
@@ -333,7 +337,7 @@ a:hover {
     text-decoration: underline;
 }
 
-.callout‐label {
+.callout‐label, .conformance‐filter‐label {
     font-weight: 600;
 }
 

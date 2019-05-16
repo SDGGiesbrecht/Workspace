@@ -343,7 +343,7 @@ a:hover {
     text-decoration: underline;
 }
 
-.callout‐label {
+.callout‐label, conformance‐filter‐label {
     font-weight: 600;
 }
 

@@ -115,6 +115,9 @@ internal class SymbolPage : Page {
             content.append(SymbolPage.generateOperatorsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
             content.append(SymbolPage.generatePrecedenceGroupsSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
         case .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .conformance:
+            if case .protocol = symbol {
+                content.append(SymbolPage.protocolModeInterface(localization: localization))
+            }
             content.append(contentsOf: SymbolPage.generateMembersSections(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
         case .operator, .precedence:
             break
@@ -138,6 +141,72 @@ internal class SymbolPage : Page {
     }
 
     // MARK: - Generation
+
+    internal static func conformanceFilterLabel(localization: LocalizationIdentifier) -> StrictString {
+        switch localization._bestMatch {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Filter"
+        }
+    }
+
+    internal static func conformanceFilterOff(localization: LocalizationIdentifier) -> StrictString {
+        switch localization._bestMatch {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "All"
+        }
+    }
+
+    internal static func conformanceFilterRequired(localization: LocalizationIdentifier) -> StrictString {
+        switch localization._bestMatch {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Conformance Requirements"
+        }
+    }
+
+    internal static func conformanceFilterCustomizable(localization: LocalizationIdentifier) -> StrictString {
+        switch localization._bestMatch {
+        case .englishUnitedKingdom:
+            return "Customisation Points"
+        case .englishUnitedStates, .englishCanada:
+            return "Customization Points"
+        }
+    }
+
+    internal static func conformanceFilterButton(labelled label: StrictString, value: StrictString) -> StrictString {
+        return HTMLElement(
+            "input",
+            attributes: [
+                "name": "conformance filter",
+                "onchange": "switchConformanceMode(this)",
+                "type": "radio",
+                "value": value
+            ],
+            contents: label,
+            inline: false).source
+    }
+
+    private static func protocolModeInterface(localization: LocalizationIdentifier) -> StrictString {
+        var contents: StrictString = ""
+        contents.append(contentsOf: HTMLElement(
+            "p",
+            attributes: ["class": "conformance‐filter‐label"],
+            contents: conformanceFilterLabel(localization: localization),
+            inline: false).source)
+        contents.append(contentsOf: conformanceFilterButton(
+            labelled: conformanceFilterOff(localization: localization),
+            value: "all"))
+        contents.append(contentsOf: conformanceFilterButton(
+            labelled: conformanceFilterRequired(localization: localization),
+            value: "required"))
+        contents.append(contentsOf: conformanceFilterButton(
+            labelled: conformanceFilterCustomizable(localization: localization),
+            value: "customizable"))
+        return HTMLElement(
+            "div",
+            attributes: ["class": "conformance‐filter"],
+            contents: contents,
+            inline: false).source
+    }
 
     private static func generateMembersSections(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> [StrictString] {
         var result: [StrictString] = []
@@ -846,7 +915,21 @@ internal class SymbolPage : Page {
             } else {
                 entry.append(name)
             }
-            sectionContents.append(HTMLElement("div", attributes: ["class": "child"], contents: entry.joinedAsLines(), inline: false).source)
+
+            var attributes: [StrictString: StrictString] = ["class": "child"]
+            let conformanceAttributeName: StrictString = "data\u{2D}conformance"
+            if child.isProtocolRequirement {
+                if child.hasDefaultImplementation {
+                    attributes[conformanceAttributeName] = "customizable"
+                } else {
+                    attributes[conformanceAttributeName] = "requirement"
+                }
+            }
+            sectionContents.append(HTMLElement(
+                "div",
+                attributes: attributes,
+                contents: entry.joinedAsLines(),
+                inline: false).source)
         }
         return HTMLElement("section", contents: sectionContents.joinedAsLines(), inline: false).source
     }

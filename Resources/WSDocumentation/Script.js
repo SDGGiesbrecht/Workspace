@@ -12,13 +12,22 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+function hideElement(element) {
+    element.style["padding-top"] = 0;
+    element.style["padding-bottom"] = 0;
+    element.style.height = 0;
+    element.style["overflow"] = "hidden";
+}
+
+function unhideElement(element) {
+    element.removeAttribute("style");
+}
+
 function toggleLinkVisibility(link) {
     if (link.hasAttribute("style")) {
-        link.removeAttribute("style");
+        unhideElement(link);
     } else {
-        link.style["padding-top"] = 0;
-        link.style["padding-bottom"] = 0;
-        link.style.height = 0;
+        hideElement(link);
     }
 }
 
@@ -41,6 +50,29 @@ function contractIndex() {
         for (var linkIndex = 1; linkIndex < links.length; linkIndex++) {
             var link = links[linkIndex]
             toggleLinkVisibility(link)
+        }
+    }
+}
+
+function switchConformanceMode(sender) {
+    var children = document.getElementsByClassName("child");
+    for (var index = 0; index < children.length; ++index) {
+        let child = children[index];
+        if (sender.value == "required") {
+            if (child.getAttribute("data-conformance") == "requirement") {
+                unhideElement(child);
+            } else {
+                hideElement(child);
+            }
+        } else if (sender.value == "customizable") {
+            if (child.getAttribute("data-conformance") == "requirement"
+                || child.getAttribute("data-conformance") == "customizable") {
+                unhideElement(child);
+            } else {
+                hideElement(child);
+            }
+        } else {
+            unhideElement(child);
         }
     }
 }

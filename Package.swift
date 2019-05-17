@@ -194,7 +194,8 @@ let package = Package(
         .target(name: "WSOpenSource", dependencies: [
             "WSGeneralImports",
             "WSProject",
-            "WSExamples"
+            "WSExamples",
+            .product(name: "SDGSwiftSource", package: "SDGSwift")
             ]),
 
         // Licence management.

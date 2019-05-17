@@ -19,6 +19,8 @@ import WSGeneralImports
 import WSProject
 import WSExamples
 
+import SDGSwiftSource
+
 extension PackageRepository {
 
     private func refreshReadMe(at location: URL, for localization: LocalizationIdentifier, atProjectRoot: Bool, output: Command.Output) throws {
@@ -92,11 +94,11 @@ extension PackageRepository {
                             "### [\(name)](\(url.absoluteString))"
                         ]
 
-                        if let configuration = try? package.configuration(output: output),
-                            let description = configuration.documentation.readMe.shortProjectDescription[localization] {
-                            markdown += [ // @exempt(from: tests) False positive in Xcode 10.
+                        if let documentation = try? PackageAPI.documentation(for: package.package().get()),
+                            let description = documentation.descriptionSection {
+                            markdown += [
                                 "",
-                                description
+                                StrictString(description.text)
                             ]
                         }
                     }

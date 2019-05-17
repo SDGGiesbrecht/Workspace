@@ -34,6 +34,18 @@ extension PackageRepository {
             }))
         }
 
+        var fromDocumentation: StrictString = ""
+        if let documentation = try? PackageAPI.documentation(for: package().get()) {
+            if let description = documentation.descriptionSection {
+                fromDocumentation.append(contentsOf: description.text.scalars)
+            }
+            for paragraph in documentation.discussionEntries {
+                fromDocumentation.append(contentsOf: "\n\n")
+                fromDocumentation.append(contentsOf: paragraph.text.scalars)
+            }
+        }
+        readMe.replaceMatches(for: "#packageDocumentation".scalars, with: fromDocumentation)
+
         // Word Elements
 
         for (key, example) in try examples(output: output) {

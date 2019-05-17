@@ -40,7 +40,6 @@ extension PackageRepository {
                 fromDocumentation.append(contentsOf: description.text.scalars)
             }
             for paragraph in documentation.discussionEntries {
-                fromDocumentation.append(contentsOf: "\n\n")
                 fromDocumentation.append(contentsOf: paragraph.text.scalars)
             }
         }

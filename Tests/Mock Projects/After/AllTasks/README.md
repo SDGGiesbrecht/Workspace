@@ -11,3 +11,5 @@
 [🇮🇱עב](Documentation/🇮🇱עב%20Read%20Me.md)
 
 # AllTasks
+
+A package with all tasks configured.

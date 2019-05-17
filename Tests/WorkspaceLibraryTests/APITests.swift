@@ -149,8 +149,6 @@ class APITests : TestCase {
         configuration.documentation.currentVersion = Version(1, 2, 3)
         configuration.documentation.repositoryURL = URL(string: "https://github.com/User/Repository")!
         configuration.documentation.localizations = ["en"]
-        configuration.documentation.readMe.quotation = Quotation(original: "Blah blah blah...")
-        configuration.documentation.readMe.quotation?.link["en"] = URL(string: "http://somewhere.com")!
         configuration.documentation.readMe.installationInstructions = Lazy(resolve: { configuration in
             return [
                 "en": StrictString([
@@ -226,7 +224,6 @@ class APITests : TestCase {
         configuration.supportedOperatingSystems.remove(.watchOS)
         configuration.supportedOperatingSystems.remove(.tvOS)
         configuration.documentation.localizations = ["en"]
-        configuration.documentation.readMe.quotation = Quotation(original: "Blah blah blah...")
         PackageRepository(mock: "Executable").test(commands: [
             ["refresh", "licence"],
             ["refresh", "read‐me"],
@@ -410,10 +407,6 @@ class APITests : TestCase {
         configuration.documentation.repositoryURL = URL(string: "https://somewhere.com")!
         configuration.documentation.localizations = ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"]
         configuration.documentation.api.yearFirstPublished = 2018
-        configuration.documentation.readMe.quotation = Quotation(original: "Blah blah blah...")
-        configuration.documentation.readMe.quotation?.link["🇨🇦EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=SBLGNT;NIV")!
-        configuration.documentation.readMe.quotation?.link["🇬🇧EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=SBLGNT;NIVUK")!
-        configuration.documentation.readMe.quotation?.link["🇺🇸EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=SBLGNT;NIV")!
         configuration.gitHub.developmentNotes = "..."
         let builtIn = configuration.fileHeaders.copyrightNotice
         configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
@@ -446,31 +439,10 @@ class APITests : TestCase {
         configuration.documentation.api.encryptedTravisCIDeploymentKey = "0123456789abcdef"
         configuration.gitHub.administrators = ["John Doe"]
         configuration.documentation.localizations = ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"]
-        configuration.documentation.readMe.quotation = Quotation(original: "« ... »")
         for localization in configuration.documentation.localizations {
-            configuration.documentation.readMe.shortProjectDescription[localization] = "..."
-            configuration.documentation.readMe.quotation?.translation[localization] = "..."
-            configuration.documentation.readMe.quotation?.citation[localization] = "..."
-            configuration.documentation.readMe.quotation?.link[localization] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=WLC;NIV")!
-            configuration.documentation.readMe.featureList[localization] = "..."
-            configuration.documentation.readMe.other[localization] = "..."
             configuration.documentation.readMe.about[localization] = "..."
             configuration.documentation.readMe.exampleUsage[localization] = Markdown("\u{23}example(Read‐Me \(localization.icon.flatMap({ String($0) }) ?? localization.code))")
         }
-        configuration.documentation.readMe.shortProjectDescription["🇨🇦EN"] = "This project does stuff."
-        configuration.documentation.readMe.quotation?.translation["🇨🇦EN"] = "“...”"
-        configuration.documentation.readMe.quotation?.citation["🇨🇦EN"] = "someone"
-        configuration.documentation.readMe.quotation?.link["🇬🇧EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=WLC;NIVUK")!
-        configuration.documentation.readMe.featureList["🇨🇦EN"] = [
-            "\u{2D} Stuff.",
-            "\u{2D} More stuff.",
-            "\u{2D} Even more stuff."
-            ].joinedAsLines()
-        configuration.documentation.readMe.other["🇨🇦EN"] = [
-            "## Other",
-            "",
-            "..."
-            ].joinedAsLines()
         configuration.documentation.readMe.about["🇨🇦EN"] = "This project is just a test."
         configuration.documentation.relatedProjects = [
             .heading(text: ["🇨🇦EN": "Heading"]),
@@ -535,31 +507,10 @@ class APITests : TestCase {
         configuration.documentation.api.encryptedTravisCIDeploymentKey = "0123456789abcdef"
         configuration.gitHub.administrators = ["John Doe"]
         configuration.documentation.localizations = ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"]
-        configuration.documentation.readMe.quotation = Quotation(original: "« ... »")
         for localization in configuration.documentation.localizations {
-            configuration.documentation.readMe.shortProjectDescription[localization] = "..."
-            configuration.documentation.readMe.quotation?.translation[localization] = "..."
-            configuration.documentation.readMe.quotation?.citation[localization] = "..."
-            configuration.documentation.readMe.quotation?.link[localization] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=WLC;NIV")!
-            configuration.documentation.readMe.featureList[localization] = "..."
-            configuration.documentation.readMe.other[localization] = "..."
             configuration.documentation.readMe.about[localization] = "..."
             configuration.documentation.readMe.exampleUsage[localization] = Markdown("\u{23}example(Read‐Me \(localization.icon.flatMap({ String($0) }) ?? localization.code))")
         }
-        configuration.documentation.readMe.shortProjectDescription["🇨🇦EN"] = "This project does stuff."
-        configuration.documentation.readMe.quotation?.translation["🇨🇦EN"] = "“...”"
-        configuration.documentation.readMe.quotation?.citation["🇨🇦EN"] = "someone"
-        configuration.documentation.readMe.quotation?.link["🇬🇧EN"] = URL(string: "https://www.biblegateway.com/passage/?search=Chapter+1&version=WLC;NIVUK")!
-        configuration.documentation.readMe.featureList["🇨🇦EN"] = [
-            "\u{2D} Stuff.",
-            "\u{2D} More stuff.",
-            "\u{2D} Even more stuff."
-            ].joinedAsLines()
-        configuration.documentation.readMe.other["🇨🇦EN"] = [
-            "## Other",
-            "",
-            "..."
-            ].joinedAsLines()
         configuration.documentation.readMe.about["🇨🇦EN"] = "This project is just a test."
         configuration.documentation.relatedProjects = [
             .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)

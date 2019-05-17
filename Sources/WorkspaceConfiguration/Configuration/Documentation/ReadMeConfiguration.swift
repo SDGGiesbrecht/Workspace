@@ -32,6 +32,8 @@ public struct ReadMeConfiguration : Codable {
     /// This is off by default.
     public var manage: Bool = false
 
+    #warning("Rethink these.")
+
     /// Installation instructions.
     ///
     /// Default instructions exist for executable and library products if `repositoryURL` and `currentVersion` are defined.

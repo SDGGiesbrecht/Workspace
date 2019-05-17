@@ -127,8 +127,8 @@ let package = Package(
         ///
         /// let configuration = WorkspaceConfiguration()
         /// configuration.optIntoAllTasks()
-        /// configuration.documentation.readMe.manage = true
-        /// configuration.documentation.readMe.shortProjectDescription["en"] = "This is just an example."
+        /// configuration.documentation.api.generate = true
+        /// configuration.documentation.api.yearFirstPublished = 2017
         /// ```
         .library(name: "WorkspaceConfiguration", targets: ["WorkspaceConfiguration"]),
 
@@ -338,8 +338,8 @@ let package = Package(
         ///
         /// let configuration = WorkspaceConfiguration()
         /// configuration.optIntoAllTasks()
-        /// configuration.documentation.readMe.manage = true
-        /// configuration.documentation.readMe.shortProjectDescription["en"] = "This is just an example."
+        /// configuration.documentation.api.generate = true
+        /// configuration.documentation.api.yearFirstPublished = 2017
         /// ```
         .target(name: "WorkspaceConfiguration", dependencies: [
             "WSLocalizations",

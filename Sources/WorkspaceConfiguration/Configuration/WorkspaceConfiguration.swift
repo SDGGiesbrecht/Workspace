@@ -37,8 +37,8 @@ import WSLocalizations
 ///
 /// let configuration = WorkspaceConfiguration()
 /// configuration.optIntoAllTasks()
-/// configuration.documentation.readMe.manage = true
-/// configuration.documentation.readMe.shortProjectDescription["en"] = "This is just an example."
+/// configuration.documentation.api.generate = true
+/// configuration.documentation.api.yearFirstPublished = 2017
 /// ```
 public final class WorkspaceConfiguration : Configuration {
 

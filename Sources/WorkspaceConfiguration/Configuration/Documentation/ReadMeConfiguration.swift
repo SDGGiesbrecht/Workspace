@@ -113,7 +113,10 @@ public struct ReadMeConfiguration : Codable {
 
             readMe += ["# " + WorkspaceContext.current.manifest.packageName.scalars]
 
-            readMe += ["#packageDocumentation"]
+            readMe += [
+                "",
+                "#packageDocumentation"
+            ]
 
             if let related = relatedProjectsLink(for: configuration, in: localization) {
                 readMe += [

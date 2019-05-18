@@ -2,7 +2,14 @@
 
 import PackageDescription
 
+// @example(1, Read‐Me 🇨🇦EN)
 /// A package.
+///
+/// ### Example Usage
+///
+/// ```swift
+/// // 🇨🇦EN
+/// ```
 let package = Package(
     name: "SDG",
     products: [

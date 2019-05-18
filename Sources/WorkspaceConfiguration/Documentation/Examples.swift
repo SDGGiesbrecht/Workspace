@@ -70,8 +70,4 @@
 ///     return lhs.rawValue == rhs.rawValue
 /// }
 /// ```
-///
-/// ### Read‐Me
-///
-/// Examples can also be included in the read‐me. See `exampleUsage`.
 public enum Examples {}

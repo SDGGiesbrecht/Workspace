@@ -23,6 +23,6 @@ import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0
 
 let configuration = WorkspaceConfiguration()
 configuration.optIntoAllTasks()
-configuration.documentation.readMe.manage = true
-configuration.documentation.readMe.shortProjectDescription["en"] = "This is just an example."
+configuration.documentation.api.generate = true
+configuration.documentation.api.yearFirstPublished = 2017
 // @endExample

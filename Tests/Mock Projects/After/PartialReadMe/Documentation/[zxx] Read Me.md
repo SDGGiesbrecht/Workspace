@@ -4,4 +4,4 @@
 
 # PartialReadMe
 
-> Blah blah blah...
+A package.

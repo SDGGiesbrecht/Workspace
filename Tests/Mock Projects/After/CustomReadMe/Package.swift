@@ -13,6 +13,7 @@
 
 import PackageDescription
 
+/// > [Blah blah blah...](http://somewhere.com)
 let package = Package(
     name: "CustomReadMe",
     products: [

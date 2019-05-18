@@ -2,6 +2,7 @@
 
 import PackageDescription
 
+/// > Blah blah blah...
 let package = Package(
     name: "Executable",
     products: [

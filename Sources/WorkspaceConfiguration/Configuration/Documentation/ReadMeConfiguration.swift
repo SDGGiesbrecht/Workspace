@@ -32,21 +32,6 @@ public struct ReadMeConfiguration : Codable {
     /// This is off by default.
     public var manage: Bool = false
 
-    /// A short description of the project.
-    ///
-    /// There is no default description.
-    public var shortProjectDescription: [LocalizationIdentifier: Markdown] = [:]
-
-    /// A quotation to go with the project.
-    ///
-    /// There is no default quotation.
-    public var quotation: Quotation?
-
-    /// A list of features.
-    ///
-    /// There is no default feature list.
-    public var featureList: [LocalizationIdentifier: Markdown] = [:]
-
     /// Installation instructions.
     ///
     /// Default instructions exist for executable and library products if `repositoryURL` and `currentVersion` are defined.
@@ -94,17 +79,14 @@ public struct ReadMeConfiguration : Codable {
     /// Arbitrary examples can be parsed from the project source by including placeholders of the form “&#x23;example(someExampleIdentifier)” in the markdown.
     public var exampleUsage: [LocalizationIdentifier: Markdown] = [:]
 
-    /// Other read‐me content.
-    ///
-    /// There is nothing by default.
-    public var other: [LocalizationIdentifier: Markdown] = [:]
-
     /// The about section.
     public var about: [LocalizationIdentifier: Markdown] = [:]
 
     /// The entire contents of the read‐me.
     ///
     /// By default, this is assembled from the other documentation and read‐me options.
+    ///
+    /// Workspace will replace the dynamic element `#packageDocumentation` with the documentation comment parsed from the package manifest.
     public var contents: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>(resolve: { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
 
         var result: [LocalizationIdentifier: Markdown] = [:]
@@ -131,33 +113,10 @@ public struct ReadMeConfiguration : Codable {
 
             readMe += ["# " + WorkspaceContext.current.manifest.packageName.scalars]
 
-            if let description = configuration.documentation.readMe.shortProjectDescription[localization] {
-                readMe += [
-                    "",
-                    description
-                ]
-            }
-
-            if let quotation = configuration.documentation.readMe.quotation {
-                readMe += [
-                    "",
-                    quotation.source(for: localization)
-                ]
-            }
-
-            if let features = configuration.documentation.readMe.featureList[localization] {
-                let header: StrictString
-                switch localization._bestMatch {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    header = "Features"
-                }
-                readMe += [
-                    "",
-                    "## " + header,
-                    "",
-                    features
-                ]
-            }
+            readMe += [
+                "",
+                "#packageDocumentation"
+            ]
 
             if let related = relatedProjectsLink(for: configuration, in: localization) {
                 readMe += [
@@ -184,13 +143,6 @@ public struct ReadMeConfiguration : Codable {
                     "## " + header,
                     "",
                     examples
-                ]
-            }
-
-            if let other = configuration.documentation.readMe.other[localization] {
-                readMe += [
-                    "",
-                    other
                 ]
             }
 

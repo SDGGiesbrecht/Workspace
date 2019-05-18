@@ -158,13 +158,6 @@ class APITests : TestCase {
                     ].joinedAsLines())
             ]
         })
-        configuration.documentation.readMe.exampleUsage = [
-            "en": StrictString([
-                "```swift",
-                "let x = something()",
-                "```"
-                ].joinedAsLines())
-        ]
         configuration.licence.manage = true
         configuration.licence.licence = .unlicense
         configuration.fileHeaders.manage = true
@@ -441,7 +434,6 @@ class APITests : TestCase {
         configuration.documentation.localizations = ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"]
         for localization in configuration.documentation.localizations {
             configuration.documentation.readMe.about[localization] = "..."
-            configuration.documentation.readMe.exampleUsage[localization] = Markdown("\u{23}example(Read‐Me \(localization.icon.flatMap({ String($0) }) ?? localization.code))")
         }
         configuration.documentation.readMe.about["🇨🇦EN"] = "This project is just a test."
         configuration.documentation.relatedProjects = [
@@ -509,7 +501,6 @@ class APITests : TestCase {
         configuration.documentation.localizations = ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"]
         for localization in configuration.documentation.localizations {
             configuration.documentation.readMe.about[localization] = "..."
-            configuration.documentation.readMe.exampleUsage[localization] = Markdown("\u{23}example(Read‐Me \(localization.icon.flatMap({ String($0) }) ?? localization.code))")
         }
         configuration.documentation.readMe.about["🇨🇦EN"] = "This project is just a test."
         configuration.documentation.relatedProjects = [

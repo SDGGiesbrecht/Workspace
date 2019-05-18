@@ -23,6 +23,12 @@ macOS • Linux • iOS • watchOS • tvOS
 
 A package.
 
+### Example Usage
+
+```swift
+// 🇨🇦EN
+```
+
 (For a list of related projects, see [here](Documentation/🇨🇦EN%20Related%20Projects.md).)
 
 ## Importing
@@ -49,12 +55,6 @@ The library’s module can then be imported in source files:
 
 ```swift
 import Library
-```
-
-## Example Usage
-
-```swift
-// 🇨🇦EN
 ```
 
 ## About

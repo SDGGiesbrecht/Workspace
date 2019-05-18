@@ -162,7 +162,7 @@ public final class WorkspaceConfiguration : Configuration {
         }
     }
 
-    public func _validateSDGStandards(openSource: Bool = true, requireExamples: Bool = true) {
+    public func _validateSDGStandards(openSource: Bool = true) {
         let needsAPIDocumentation = WorkspaceContext.current.manifest.products.contains(where: { $0.type == .library })
 
         assert(documentation.currentVersion ≠ nil, "No version specified.")
@@ -180,11 +180,6 @@ public final class WorkspaceConfiguration : Configuration {
             }
 
             for localization in documentation.localizations {
-
-                if requireExamples {
-                    assert(documentation.readMe.exampleUsage[localization] ≠ nil, "No examples specified for “\(localization)”.")
-                }
-
                 assert(documentation.readMe.about ≠ nil, "About not localized for “\(localization)”.")
             }
         }

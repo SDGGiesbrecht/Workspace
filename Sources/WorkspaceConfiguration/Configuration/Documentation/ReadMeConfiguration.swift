@@ -72,13 +72,6 @@ public struct ReadMeConfiguration : Codable {
         return result
     })
 
-    /// Example usage.
-    ///
-    /// There are no examples by default.
-    ///
-    /// Arbitrary examples can be parsed from the project source by including placeholders of the form “&#x23;example(someExampleIdentifier)” in the markdown.
-    public var exampleUsage: [LocalizationIdentifier: Markdown] = [:]
-
     /// The about section.
     public var about: [LocalizationIdentifier: Markdown] = [:]
 
@@ -129,20 +122,6 @@ public struct ReadMeConfiguration : Codable {
                 readMe += [
                     "",
                     instructions
-                ]
-            }
-
-            if let examples = configuration.documentation.readMe.exampleUsage[localization] {
-                let header: StrictString
-                switch localization._bestMatch {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    header = "Example Usage"
-                }
-                readMe += [
-                    "",
-                    "## " + header,
-                    "",
-                    examples
                 ]
             }
 

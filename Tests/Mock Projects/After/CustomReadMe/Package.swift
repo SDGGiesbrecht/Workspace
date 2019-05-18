@@ -14,6 +14,12 @@
 import PackageDescription
 
 /// > [Blah blah blah...](http://somewhere.com)
+///
+/// ## Example Usage
+///
+/// ```swift
+/// let x = something()
+/// ```
 let package = Package(
     name: "CustomReadMe",
     products: [

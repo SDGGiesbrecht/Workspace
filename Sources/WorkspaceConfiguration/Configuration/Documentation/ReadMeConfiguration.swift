@@ -125,20 +125,6 @@ public struct ReadMeConfiguration : Codable {
                 ]
             }
 
-            if let examples = configuration.documentation.readMe.exampleUsage[localization] {
-                let header: StrictString
-                switch localization._bestMatch {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    header = "Example Usage"
-                }
-                readMe += [
-                    "",
-                    "## " + header,
-                    "",
-                    examples
-                ]
-            }
-
             if let about = configuration.documentation.readMe.about[localization] {
                 let header: StrictString
                 switch localization._bestMatch {

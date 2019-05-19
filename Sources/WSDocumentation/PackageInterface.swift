@@ -230,6 +230,7 @@ internal struct PackageInterface {
         api.computeMergedAPI()
 
         self.packageImport = PackageInterface.specify(package: packageURL, version: version)
+        self.about = about
         self.copyrightNotices = copyright
 
         self.packageIdentifiers = api.identifierList()
@@ -258,6 +259,7 @@ internal struct PackageInterface {
     private let api: APIElement
     private let packageImport: StrictString?
     private let indices: [LocalizationIdentifier: StrictString]
+    private let about: [LocalizationIdentifier: Markdown]
     private let copyrightNotices: [LocalizationIdentifier?: StrictString]
     private let packageIdentifiers: Set<String>
     private let symbolLinks: [LocalizationIdentifier: [String: String]]
@@ -294,6 +296,7 @@ internal struct PackageInterface {
             to: outputDirectory,
             location: PackageInterface.aboutLocation,
             title: PackageInterface.about,
+            content: about,
             status: status,
             output: output)
 
@@ -462,34 +465,59 @@ internal struct PackageInterface {
         to outputDirectory: URL,
         location: (LocalizationIdentifier) -> StrictString,
         title: (LocalizationIdentifier) -> StrictString,
+        content: [LocalizationIdentifier: Markdown],
         status: DocumentationStatus,
         output: Command.Output) throws {
         for localization in localizations {
-            let pathToSiteRoot: StrictString = "../"
-            let pageTitle = title(localization)
-            let pagePath = location(localization)
-            let page = Page(
-                localization: localization,
-                pathToSiteRoot: pathToSiteRoot,
-                navigationPath: SymbolPage.generateNavigationPath(
+            if let specifiedContent = content[localization] {
+                let pathToSiteRoot: StrictString = "../"
+                let pageTitle = title(localization)
+                let pagePath = location(localization)
+
+                // Parse via proxy Swift file.
+                var documentationMarkup = StrictString(specifiedContent.lines.lazy.map({ line in
+                    return "/// " + StrictString(line.line)
+                }).joined(separator: "\n"))
+                documentationMarkup.append(contentsOf: "\npublic func function() {}\n")
+                let parsed = try SyntaxTreeParser.parse(String(documentationMarkup))
+                let documentation = parsed.api().first!.documentation
+
+                var content = ""
+                if let firstParagraph = documentation?.descriptionSection?.renderedHTML(
+                    localization: localization.code,
+                    symbolLinks: symbolLinks[localization]!) {
+                    content.append(contentsOf: firstParagraph)
+                }
+                for paragraph in documentation?.discussionEntries ?? [] {
+                    content.append("\n")
+                    content.append(contentsOf: paragraph.renderedHTML(
+                        localization: localization.code,
+                        symbolLinks: symbolLinks[localization]!))
+                }
+
+                let page = Page(
                     localization: localization,
                     pathToSiteRoot: pathToSiteRoot,
-                    navigationPath: [
-                        (label: StrictString(api.name.source()), path: api.relativePagePath[localization]!),
-                        (label: pageTitle, path: pagePath)
-                    ]),
-                packageImport: packageImport,
-                index: indices[localization]!,
-                symbolImports: "",
-                symbolType: nil,
-                compilationConditions: nil,
-                constraints: nil,
-                title: HTML.escape(pageTitle),
-                content: "...", // #warning("Not implemented.")
-                extensions: "",
-                copyright: copyright(for: localization, status: status))
-            let url = outputDirectory.appendingPathComponent(String(location(localization)))
-            try page.contents.save(to: url)
+                    navigationPath: SymbolPage.generateNavigationPath(
+                        localization: localization,
+                        pathToSiteRoot: pathToSiteRoot,
+                        navigationPath: [
+                            (label: StrictString(api.name.source()), path: api.relativePagePath[localization]!),
+                            (label: pageTitle, path: pagePath)
+                        ]),
+                    packageImport: packageImport,
+                    index: indices[localization]!,
+                    symbolImports: "",
+                    symbolType: nil,
+                    compilationConditions: nil,
+                    constraints: nil,
+                    title: HTML.escape(pageTitle),
+                    content: StrictString(content),
+                    extensions: "",
+                    copyright: copyright(for: localization, status: status))
+                let url = outputDirectory.appendingPathComponent(String(location(localization)))
+                try page.contents.save(to: url)
+            }
         }
     }
 

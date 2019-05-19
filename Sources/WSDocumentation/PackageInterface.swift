@@ -86,11 +86,17 @@ internal struct PackageInterface {
         return result
     }
 
-    private static func generateIndices(for package: PackageAPI, localizations: [LocalizationIdentifier]) -> [LocalizationIdentifier: StrictString] {
+    private static func generateIndices(
+        for package: PackageAPI,
+        about: [LocalizationIdentifier: StrictString],
+        localizations: [LocalizationIdentifier]) -> [LocalizationIdentifier: StrictString] {
         var result: [LocalizationIdentifier: StrictString] = [:]
         for localization in localizations {
             autoreleasepool {
-                result[localization] = generateIndex(for: package, localization: localization)
+                result[localization] = generateIndex(
+                    for: package,
+                    hasAbout: about[localization] ≠ nil,
+                    localization: localization)
             }
         }
         return result
@@ -107,7 +113,10 @@ internal struct PackageInterface {
         }
     }
 
-    private static func generateIndex(for package: PackageAPI, localization: LocalizationIdentifier) -> StrictString {
+    private static func generateIndex(
+        for package: PackageAPI,
+        hasAbout: Bool,
+        localization: LocalizationIdentifier) -> StrictString {
         var result: [StrictString] = []
 
         result.append(generateIndexSection(named: packageHeader(localization: localization), contents: [
@@ -144,6 +153,15 @@ internal struct PackageInterface {
             result.append(generateIndexSection(named: SymbolPage.precedenceGroupsHeader(localization: localization), apiEntries: package.precedenceGroups.lazy.map({ APIElement.precedence($0) }), localization: localization))
         }
 
+        if hasAbout {
+            let aboutLabel = about(localization: localization)
+            result.append(generateIndexSection(named: aboutLabel, contents: [
+                HTMLElement("a", attributes: [
+                    "href": "[*site root*]\(HTML.percentEncodeURLPath(aboutLabel))"
+                    ], contents: HTML.escape(aboutLabel), inline: false).source
+                ].joinedAsLines()))
+        }
+
         return result.joinedAsLines()
     }
 
@@ -171,6 +189,7 @@ internal struct PackageInterface {
          api: PackageAPI,
          packageURL: URL?,
          version: Version?,
+         about: [LocalizationIdentifier: StrictString],
          copyright: [LocalizationIdentifier?: StrictString],
          output: Command.Output) {
 
@@ -202,7 +221,10 @@ internal struct PackageInterface {
             }
         }
 
-        self.indices = PackageInterface.generateIndices(for: api, localizations: localizations)
+        self.indices = PackageInterface.generateIndices(
+            for: api,
+            about: about,
+            localizations: localizations)
     }
 
     // MARK: - Properties
@@ -403,6 +425,13 @@ internal struct PackageInterface {
                     try outputNestedSymbols(of: symbol, namespace: namespace + [symbol], to: outputDirectory, localization: localization, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
                 }
             }
+        }
+    }
+
+    private static func about(localization: LocalizationIdentifier) -> StrictString {
+        switch localization._bestMatch {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "About"
         }
     }
 

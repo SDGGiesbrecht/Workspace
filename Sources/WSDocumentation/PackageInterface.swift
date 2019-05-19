@@ -155,11 +155,8 @@ internal struct PackageInterface {
 
         if hasAbout {
             let aboutLabel = about(localization: localization)
-            result.append(generateIndexSection(named: aboutLabel, contents: [
-                HTMLElement("a", attributes: [
-                    "href": "[*site root*]\(HTML.percentEncodeURLPath(aboutLabel))"
-                    ], contents: HTML.escape(aboutLabel), inline: false).source
-                ].joinedAsLines()))
+            let file = localization._directoryName + "/" + aboutLabel + ".html"
+            result.append(generateLoneIndexEntry(named: aboutLabel, target: file))
         }
 
         return result.joinedAsLines()
@@ -176,10 +173,26 @@ internal struct PackageInterface {
     }
 
     private static func generateIndexSection(named name: StrictString, contents: StrictString) -> StrictString {
-        return HTMLElement("div", contents: [
-            HTMLElement("a", attributes: ["class": "heading", "onclick": "toggleIndexSectionVisibility(this)"], contents: HTML.escape(name), inline: true).source,
-            contents
-            ].joinedAsLines(), inline: false).source
+        return HTMLElement(
+            "div",
+            contents: [
+                HTMLElement("a", attributes: [
+                    "class": "heading",
+                    "onclick": "toggleIndexSectionVisibility(this)"
+                    ], contents: HTML.escape(name), inline: true).source,
+                contents
+                ].joinedAsLines(),
+            inline: false).source
+    }
+
+    private static func generateLoneIndexEntry(named name: StrictString, target: StrictString) -> StrictString {
+        return HTMLElement(
+            "div",
+            contents: HTMLElement("a", attributes: [
+                "class": "heading",
+                "href": "[*site root*]\(HTML.percentEncodeURLPath(target))"
+                ], contents: HTML.escape(name), inline: true).source,
+            inline: false).source
     }
 
     // MARK: - Initialization

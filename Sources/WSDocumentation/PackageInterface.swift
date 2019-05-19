@@ -465,17 +465,26 @@ internal struct PackageInterface {
         status: DocumentationStatus,
         output: Command.Output) throws {
         for localization in localizations {
+            let pathToSiteRoot: StrictString = "../"
+            let pageTitle = title(localization)
+            let pagePath = location(localization)
             let page = Page(
                 localization: localization,
-                pathToSiteRoot: "../",
-                navigationPath: "", // #warning("Not implemented.")
+                pathToSiteRoot: pathToSiteRoot,
+                navigationPath: SymbolPage.generateNavigationPath(
+                    localization: localization,
+                    pathToSiteRoot: pathToSiteRoot,
+                    navigationPath: [
+                        (label: StrictString(api.name.source()), path: api.relativePagePath[localization]!),
+                        (label: pageTitle, path: pagePath)
+                    ]),
                 packageImport: packageImport,
                 index: indices[localization]!,
-                symbolImports: "", // #warning("Not implemented.")
+                symbolImports: "",
                 symbolType: nil,
                 compilationConditions: nil,
                 constraints: nil,
-                title: HTML.escape(title(localization)),
+                title: HTML.escape(pageTitle),
                 content: "...", // #warning("Not implemented.")
                 extensions: "",
                 copyright: copyright(for: localization, status: status))

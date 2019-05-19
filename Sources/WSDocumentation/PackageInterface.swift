@@ -154,9 +154,9 @@ internal struct PackageInterface {
         }
 
         if hasAbout {
-            let aboutLabel = about(localization: localization)
-            let file = localization._directoryName + "/" + aboutLabel + ".html"
-            result.append(generateLoneIndexEntry(named: aboutLabel, target: file))
+            result.append(generateLoneIndexEntry(
+                named: about(localization: localization),
+                target: aboutLocation(localization: localization)))
         }
 
         return result.joinedAsLines()
@@ -446,6 +446,10 @@ internal struct PackageInterface {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "About"
         }
+    }
+
+    private static func aboutLocation(localization: LocalizationIdentifier) -> StrictString {
+        return "\(localization._directoryName)/\(about(localization: localization)).html"
     }
 
     private func outputRedirects(to outputDirectory: URL) throws {

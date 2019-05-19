@@ -195,6 +195,16 @@ internal struct PackageInterface {
             inline: false).source
     }
 
+    private static func about(localization: LocalizationIdentifier) -> StrictString {
+        switch localization._bestMatch {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "About"
+        }
+    }
+    private static func aboutLocation(localization: LocalizationIdentifier) -> StrictString {
+        return "\(localization._directoryName)/\(about(localization: localization)).html"
+    }
+
     // MARK: - Initialization
 
     init(localizations: [LocalizationIdentifier],
@@ -279,6 +289,13 @@ internal struct PackageInterface {
         if coverageCheckOnly {
             return
         }
+
+        try outputGeneralPage(
+            to: outputDirectory,
+            location: PackageInterface.aboutLocation,
+            title: PackageInterface.about,
+            status: status,
+            output: output)
 
         try outputRedirects(to: outputDirectory)
     }
@@ -441,15 +458,30 @@ internal struct PackageInterface {
         }
     }
 
-    private static func about(localization: LocalizationIdentifier) -> StrictString {
-        switch localization._bestMatch {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "About"
+    private func outputGeneralPage(
+        to outputDirectory: URL,
+        location: (LocalizationIdentifier) -> StrictString,
+        title: (LocalizationIdentifier) -> StrictString,
+        status: DocumentationStatus,
+        output: Command.Output) throws {
+        for localization in localizations {
+            let page = Page(
+                localization: localization,
+                pathToSiteRoot: "../",
+                navigationPath: "", // #warning("Not implemented.")
+                packageImport: packageImport,
+                index: indices[localization]!,
+                symbolImports: "", // #warning("Not implemented.")
+                symbolType: nil,
+                compilationConditions: nil,
+                constraints: nil,
+                title: HTML.escape(title(localization)),
+                content: "...", // #warning("Not implemented.")
+                extensions: "",
+                copyright: copyright(for: localization, status: status))
+            let url = outputDirectory.appendingPathComponent(String(location(localization)))
+            try page.contents.save(to: url)
         }
-    }
-
-    private static func aboutLocation(localization: LocalizationIdentifier) -> StrictString {
-        return "\(localization._directoryName)/\(about(localization: localization)).html"
     }
 
     private func outputRedirects(to outputDirectory: URL) throws {

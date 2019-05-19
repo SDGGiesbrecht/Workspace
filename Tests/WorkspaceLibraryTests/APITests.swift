@@ -84,6 +84,7 @@ class APITests : TestCase {
         configuration.documentation.api.enforceCoverage = false
         configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "zxx"]
         configuration.documentation.api.generate = true
+        configuration.documentation.readMe.about["🇨🇦EN"] = "Stuff about the creators...\n\n...and more stuff..."
         configuration.documentation.api.yearFirstPublished = 2018
         configuration.documentation.api.ignoredDependencies.remove("Swift")
         let builtIn = configuration.fileHeaders.copyrightNotice

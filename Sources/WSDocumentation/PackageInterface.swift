@@ -86,11 +86,17 @@ internal struct PackageInterface {
         return result
     }
 
-    private static func generateIndices(for package: PackageAPI, localizations: [LocalizationIdentifier]) -> [LocalizationIdentifier: StrictString] {
+    private static func generateIndices(
+        for package: PackageAPI,
+        about: [LocalizationIdentifier: StrictString],
+        localizations: [LocalizationIdentifier]) -> [LocalizationIdentifier: StrictString] {
         var result: [LocalizationIdentifier: StrictString] = [:]
         for localization in localizations {
             autoreleasepool {
-                result[localization] = generateIndex(for: package, localization: localization)
+                result[localization] = generateIndex(
+                    for: package,
+                    hasAbout: about[localization] ≠ nil,
+                    localization: localization)
             }
         }
         return result
@@ -107,7 +113,10 @@ internal struct PackageInterface {
         }
     }
 
-    private static func generateIndex(for package: PackageAPI, localization: LocalizationIdentifier) -> StrictString {
+    private static func generateIndex(
+        for package: PackageAPI,
+        hasAbout: Bool,
+        localization: LocalizationIdentifier) -> StrictString {
         var result: [StrictString] = []
 
         result.append(generateIndexSection(named: packageHeader(localization: localization), contents: [
@@ -144,6 +153,12 @@ internal struct PackageInterface {
             result.append(generateIndexSection(named: SymbolPage.precedenceGroupsHeader(localization: localization), apiEntries: package.precedenceGroups.lazy.map({ APIElement.precedence($0) }), localization: localization))
         }
 
+        if hasAbout {
+            result.append(generateLoneIndexEntry(
+                named: about(localization: localization),
+                target: aboutLocation(localization: localization)))
+        }
+
         return result.joinedAsLines()
     }
 
@@ -158,10 +173,36 @@ internal struct PackageInterface {
     }
 
     private static func generateIndexSection(named name: StrictString, contents: StrictString) -> StrictString {
-        return HTMLElement("div", contents: [
-            HTMLElement("a", attributes: ["class": "heading", "onclick": "toggleIndexSectionVisibility(this)"], contents: HTML.escape(name), inline: true).source,
-            contents
-            ].joinedAsLines(), inline: false).source
+        return HTMLElement(
+            "div",
+            contents: [
+                HTMLElement("a", attributes: [
+                    "class": "heading",
+                    "onclick": "toggleIndexSectionVisibility(this)"
+                    ], contents: HTML.escape(name), inline: true).source,
+                contents
+                ].joinedAsLines(),
+            inline: false).source
+    }
+
+    private static func generateLoneIndexEntry(named name: StrictString, target: StrictString) -> StrictString {
+        return HTMLElement(
+            "div",
+            contents: HTMLElement("a", attributes: [
+                "class": "heading",
+                "href": "[*site root*]\(HTML.percentEncodeURLPath(target))"
+                ], contents: HTML.escape(name), inline: true).source,
+            inline: false).source
+    }
+
+    private static func about(localization: LocalizationIdentifier) -> StrictString {
+        switch localization._bestMatch {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "About"
+        }
+    }
+    private static func aboutLocation(localization: LocalizationIdentifier) -> StrictString {
+        return "\(localization._directoryName)/\(about(localization: localization)).html"
     }
 
     // MARK: - Initialization
@@ -171,6 +212,7 @@ internal struct PackageInterface {
          api: PackageAPI,
          packageURL: URL?,
          version: Version?,
+         about: [LocalizationIdentifier: StrictString],
          copyright: [LocalizationIdentifier?: StrictString],
          output: Command.Output) {
 
@@ -188,6 +230,7 @@ internal struct PackageInterface {
         api.computeMergedAPI()
 
         self.packageImport = PackageInterface.specify(package: packageURL, version: version)
+        self.about = about
         self.copyrightNotices = copyright
 
         self.packageIdentifiers = api.identifierList()
@@ -202,7 +245,10 @@ internal struct PackageInterface {
             }
         }
 
-        self.indices = PackageInterface.generateIndices(for: api, localizations: localizations)
+        self.indices = PackageInterface.generateIndices(
+            for: api,
+            about: about,
+            localizations: localizations)
     }
 
     // MARK: - Properties
@@ -213,6 +259,7 @@ internal struct PackageInterface {
     private let api: APIElement
     private let packageImport: StrictString?
     private let indices: [LocalizationIdentifier: StrictString]
+    private let about: [LocalizationIdentifier: Markdown]
     private let copyrightNotices: [LocalizationIdentifier?: StrictString]
     private let packageIdentifiers: Set<String>
     private let symbolLinks: [LocalizationIdentifier: [String: String]]
@@ -244,6 +291,14 @@ internal struct PackageInterface {
         if coverageCheckOnly {
             return
         }
+
+        try outputGeneralPage(
+            to: outputDirectory,
+            location: PackageInterface.aboutLocation,
+            title: PackageInterface.about,
+            content: about,
+            status: status,
+            output: output)
 
         try outputRedirects(to: outputDirectory)
     }
@@ -402,6 +457,66 @@ internal struct PackageInterface {
                 case .type, .protocol, .extension:
                     try outputNestedSymbols(of: symbol, namespace: namespace + [symbol], to: outputDirectory, localization: localization, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
                 }
+            }
+        }
+    }
+
+    private func outputGeneralPage(
+        to outputDirectory: URL,
+        location: (LocalizationIdentifier) -> StrictString,
+        title: (LocalizationIdentifier) -> StrictString,
+        content: [LocalizationIdentifier: Markdown],
+        status: DocumentationStatus,
+        output: Command.Output) throws {
+        for localization in localizations {
+            if let specifiedContent = content[localization] {
+                let pathToSiteRoot: StrictString = "../"
+                let pageTitle = title(localization)
+                let pagePath = location(localization)
+
+                // Parse via proxy Swift file.
+                var documentationMarkup = StrictString(specifiedContent.lines.lazy.map({ line in
+                    return "/// " + StrictString(line.line)
+                }).joined(separator: "\n"))
+                documentationMarkup.append(contentsOf: "\npublic func function() {}\n")
+                let parsed = try SyntaxTreeParser.parse(String(documentationMarkup))
+                let documentation = parsed.api().first!.documentation
+
+                var content = ""
+                if let firstParagraph = documentation?.descriptionSection?.renderedHTML(
+                    localization: localization.code,
+                    symbolLinks: symbolLinks[localization]!) {
+                    content.append(contentsOf: firstParagraph)
+                }
+                for paragraph in documentation?.discussionEntries ?? [] { // @exempt(from: tests)
+                    content.append("\n")
+                    content.append(contentsOf: paragraph.renderedHTML(
+                        localization: localization.code,
+                        symbolLinks: symbolLinks[localization]!))
+                }
+
+                let page = Page(
+                    localization: localization,
+                    pathToSiteRoot: pathToSiteRoot,
+                    navigationPath: SymbolPage.generateNavigationPath(
+                        localization: localization,
+                        pathToSiteRoot: pathToSiteRoot,
+                        navigationPath: [
+                            (label: StrictString(api.name.source()), path: api.relativePagePath[localization]!),
+                            (label: pageTitle, path: pagePath)
+                        ]),
+                    packageImport: packageImport,
+                    index: indices[localization]!,
+                    symbolImports: "",
+                    symbolType: nil,
+                    compilationConditions: nil,
+                    constraints: nil,
+                    title: HTML.escape(pageTitle),
+                    content: StrictString(content),
+                    extensions: "",
+                    copyright: copyright(for: localization, status: status))
+                let url = outputDirectory.appendingPathComponent(String(location(localization)))
+                try page.contents.save(to: url)
             }
         }
     }

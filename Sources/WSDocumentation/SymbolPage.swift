@@ -222,17 +222,32 @@ internal class SymbolPage : Page {
         return result
     }
 
-    private static func generateNavigationPath(localization: LocalizationIdentifier, pathToSiteRoot: StrictString, navigationPath: [APIElement]) -> StrictString {
+    private static func generateNavigationPath(
+        localization: LocalizationIdentifier,
+        pathToSiteRoot: StrictString,
+        navigationPath: [APIElement]) -> StrictString {
+        return generateNavigationPath(
+            localization: localization,
+            pathToSiteRoot: pathToSiteRoot,
+            navigationPath: navigationPath.map({ element in
+                return (StrictString(element.name.source()), element.relativePagePath[localization]!)
+            }))
+    }
+
+    internal static func generateNavigationPath(
+        localization: LocalizationIdentifier,
+        pathToSiteRoot: StrictString,
+        navigationPath: [(label: StrictString, path: StrictString)]) -> StrictString {
         let navigationPathLinks = navigationPath.indices.map { (level: Int) -> StrictString in
-            let element = navigationPath[level]
-            let url = pathToSiteRoot.appending(contentsOf: element.relativePagePath[localization]!)
+            let (label, path) = navigationPath[level]
+            let url = pathToSiteRoot.appending(contentsOf: path)
             if ¬navigationPath.isEmpty,
                 level ≠ navigationPath.index(before: navigationPath.endIndex) {
                 return HTMLElement("a", attributes: [
                     "href": HTML.percentEncodeURLPath(url)
-                    ], contents: HTML.escape(StrictString(element.name.source())), inline: true).source
+                    ], contents: HTML.escape(label), inline: true).source
             } else {
-                return HTMLElement("span", attributes: [:], contents: HTML.escape(StrictString(element.name.source())), inline: true).source
+                return HTMLElement("span", attributes: [:], contents: HTML.escape(label), inline: true).source
             }
         }
         return navigationPathLinks.joined(separator: "\n")

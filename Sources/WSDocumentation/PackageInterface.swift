@@ -351,6 +351,20 @@ internal struct PackageInterface {
 
         try outputGeneralPage(
             to: outputDirectory,
+            location: PackageInterface.installationLocation,
+            title: PackageInterface.installation,
+            content: installation,
+            status: status,
+            output: output)
+        try outputGeneralPage(
+            to: outputDirectory,
+            location: PackageInterface.importingLocation,
+            title: PackageInterface.importing,
+            content: importing,
+            status: status,
+            output: output)
+        try outputGeneralPage(
+            to: outputDirectory,
             location: PackageInterface.aboutLocation,
             title: PackageInterface.about,
             content: about,

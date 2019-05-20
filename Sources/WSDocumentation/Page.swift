@@ -92,7 +92,9 @@ internal class Page {
         mutable.replaceMatches(for: "[*package import*]", with: packageImport ?? "")
 
         mutable.replaceMatches(for: "[*index*]", with: index)
-        mutable.replaceMatches(for: "[*site root*]".scalars, with: WSHTML.escapeAttribute(pathToSiteRoot))
+        mutable.replaceMatches(
+            for: "[*site root*]".scalars,
+            with: HTML.escapeTextForAttribute(pathToSiteRoot))
 
         mutable.replaceMatches(for: "[*imports*]".scalars, with: symbolImports)
 

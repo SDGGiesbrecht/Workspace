@@ -14,6 +14,8 @@
 
 import WSGeneralImports
 
+import enum SDGHTML.HTML
+
 import WSProject
 
 internal struct Redirect {
@@ -30,7 +32,7 @@ internal struct Redirect {
 
     internal init(target: String) {
         var mutable = Redirect.template
-        mutable.scalars.replaceMatches(for: "[*target*]".scalars, with: WSHTML.percentEncodeURLPath(WSHTML.escapeAttribute(target)).scalars)
+        mutable.scalars.replaceMatches(for: "[*target*]".scalars, with: WSHTML.percentEncodeURLPath(HTML.escapeTextForAttribute(target)).scalars)
         contents = mutable
     }
 

@@ -15,6 +15,8 @@
 import SDGLogic
 import WSGeneralImports
 
+import enum SDGHTML.HTML
+
 internal struct HTMLElement {
 
     // MARK: - Initialization
@@ -43,7 +45,7 @@ internal struct HTMLElement {
             result.append(" ")
             result.append(contentsOf: attribute)
             result.append(contentsOf: "=\u{22}".scalars)
-            result.append(contentsOf: WSHTML.escapeAttribute(attributes[attribute]!))
+            result.append(contentsOf: HTML.escapeTextForAttribute(attributes[attribute]!))
             result.append("\u{22}")
         }
         result.append(">")

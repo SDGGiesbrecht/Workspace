@@ -23,11 +23,6 @@ internal enum WSHTML {
             .replacingMatches(for: "&".scalars, with: "&#x0026;".scalars))
     }
 
-    internal static func escapeAttribute<S>(_ string: S) -> S where S : StringFamily {
-        return S(sharedEscape(string).scalars
-            .replacingMatches(for: "\u{22}".scalars, with: "&#x0022;".scalars))
-    }
-
     internal static func percentEncodeURLPath<S>(_ string: S) -> S where S : StringFamily {
         var result = string
         result.scalars.mutateMatches(

@@ -15,6 +15,7 @@
 import WSGeneralImports
 
 import enum SDGHTML.HTML
+import struct SDGHTML.ElementSyntax
 
 import WSProject
 
@@ -47,7 +48,7 @@ internal class Page {
             name = "Workspace"
         }
 
-        let link = HTMLElement("a", attributes: ["href": targetURL], contents: name, inline: true).source
+        let link = ElementSyntax("a", attributes: ["href": targetURL], contents: name, inline: true).source
 
         let generatedUsing: StrictString
         switch resolved {
@@ -58,10 +59,10 @@ internal class Page {
         let sdg: StrictString
         switch resolved {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            sdg = HTMLElement("span", attributes: ["lang": "la\u{2D}IT"], contents: "Soli Deo gloria.", inline: true).source
+            sdg = ElementSyntax("span", attributes: ["lang": "la\u{2D}IT"], contents: "Soli Deo gloria.", inline: true).source
         }
 
-        return HTMLElement("span", attributes: [
+        return ElementSyntax("span", attributes: [
             "lang": StrictString(resolved.code),
             "dir": StrictString(resolved.textDirection.htmlAttribute)
             ], contents: generatedUsing + " " + sdg, inline: true).source
@@ -100,7 +101,7 @@ internal class Page {
 
         let symbolTypeLabel: StrictString
         if let specified = symbolType {
-            symbolTypeLabel = HTMLElement("div", attributes: ["class": "symbol‐type"], contents: specified, inline: true).source
+            symbolTypeLabel = ElementSyntax("div", attributes: ["class": "symbol‐type"], contents: specified, inline: true).source
         } else {
             symbolTypeLabel = "" // @exempt(from: tests) Unreachable yet.
         }
@@ -110,7 +111,7 @@ internal class Page {
         mutable.replaceMatches(for: "[*title*]", with: HTML.escapeTextForCharacterData(title))
         mutable.replaceMatches(for: "[*constraints*]", with: constraints ?? "")
 
-        mutable.replaceMatches(for: "[*copyright*]", with: HTMLElement("span", contents: copyright, inline: false).source)
+        mutable.replaceMatches(for: "[*copyright*]", with: ElementSyntax("span", contents: copyright, inline: false).source)
         mutable.replaceMatches(for: "[*workspace*]", with: Page.watermark(localization: localization))
 
         mutable.replaceMatches(for: "[*content*]", with: content)

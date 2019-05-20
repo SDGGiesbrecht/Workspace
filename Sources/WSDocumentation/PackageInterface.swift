@@ -18,6 +18,7 @@ import WSGeneralImports
 
 import SDGSwiftSource
 import enum SDGHTML.HTML
+import struct SDGHTML.ElementSyntax
 
 import WorkspaceConfiguration
 
@@ -30,36 +31,36 @@ internal struct PackageInterface {
         let packageURL = StrictString(specified.absoluteString)
 
         var result = [
-            HTMLElement("span", attributes: ["class": "punctuation"], contents: ".", inline: true).source,
-            HTMLElement("span", attributes: ["class": "external identifier"], contents: "package", inline: true).source,
-            HTMLElement("span", attributes: ["class": "punctuation"], contents: "(", inline: true).source,
-            HTMLElement("span", attributes: ["class": "external identifier"], contents: "url", inline: true).source,
-            HTMLElement("span", attributes: ["class": "punctuation"], contents: ":", inline: true).source,
+            ElementSyntax("span", attributes: ["class": "punctuation"], contents: ".", inline: true).source,
+            ElementSyntax("span", attributes: ["class": "external identifier"], contents: "package", inline: true).source,
+            ElementSyntax("span", attributes: ["class": "punctuation"], contents: "(", inline: true).source,
+            ElementSyntax("span", attributes: ["class": "external identifier"], contents: "url", inline: true).source,
+            ElementSyntax("span", attributes: ["class": "punctuation"], contents: ":", inline: true).source,
             " ",
-            HTMLElement("span", attributes: ["class": "string"], contents: [
-                HTMLElement("span", attributes: ["class": "punctuation"], contents: "\u{22}", inline: true).source,
-                HTMLElement("a", attributes: ["href": packageURL], contents: [
-                    HTMLElement(
+            ElementSyntax("span", attributes: ["class": "string"], contents: [
+                ElementSyntax("span", attributes: ["class": "punctuation"], contents: "\u{22}", inline: true).source,
+                ElementSyntax("a", attributes: ["href": packageURL], contents: [
+                    ElementSyntax(
                         "span",
                         attributes: ["class": "text"],
                         contents: HTML.escapeTextForCharacterData(packageURL),
                         inline: true).source
                     ].joined(), inline: true).source,
-                HTMLElement("span", attributes: ["class": "punctuation"], contents: "\u{22}", inline: true).source
+                ElementSyntax("span", attributes: ["class": "punctuation"], contents: "\u{22}", inline: true).source
                 ].joined(), inline: true).source
             ].joined()
 
         if let specified = specify(version: version) {
             result.append(contentsOf: [
-                HTMLElement("span", attributes: ["class": "punctuation"], contents: ",", inline: true).source,
+                ElementSyntax("span", attributes: ["class": "punctuation"], contents: ",", inline: true).source,
                 " ",
                 specified
                 ].joined())
         }
 
-        result.append(contentsOf: HTMLElement("span", attributes: ["class": "punctuation"], contents: ")", inline: true).source)
+        result.append(contentsOf: ElementSyntax("span", attributes: ["class": "punctuation"], contents: ")", inline: true).source)
 
-        return HTMLElement("span", attributes: ["class": "swift blockquote"], contents: result, inline: true).source
+        return ElementSyntax("span", attributes: ["class": "swift blockquote"], contents: result, inline: true).source
     }
 
     private static func specify(version: Version?) -> StrictString? {
@@ -68,23 +69,23 @@ internal struct PackageInterface {
         }
 
         var result = [
-            HTMLElement("span", attributes: ["class": "external identifier"], contents: "from", inline: true).source,
-            HTMLElement("span", attributes: ["class": "punctuation"], contents: ":", inline: true).source,
+            ElementSyntax("span", attributes: ["class": "external identifier"], contents: "from", inline: true).source,
+            ElementSyntax("span", attributes: ["class": "punctuation"], contents: ":", inline: true).source,
             " ",
-            HTMLElement("span", attributes: ["class": "string"], contents: [
-                HTMLElement("span", attributes: ["class": "punctuation"], contents: "\u{22}", inline: true).source,
-                HTMLElement("span", attributes: ["class": "text"], contents: StrictString(specified.string()), inline: true).source,
-                HTMLElement("span", attributes: ["class": "punctuation"], contents: "\u{22}", inline: true).source
+            ElementSyntax("span", attributes: ["class": "string"], contents: [
+                ElementSyntax("span", attributes: ["class": "punctuation"], contents: "\u{22}", inline: true).source,
+                ElementSyntax("span", attributes: ["class": "text"], contents: StrictString(specified.string()), inline: true).source,
+                ElementSyntax("span", attributes: ["class": "punctuation"], contents: "\u{22}", inline: true).source
                 ].joined(), inline: true).source
             ].joined()
 
         if specified.major == 0 {
             result = [
-                HTMLElement("span", attributes: ["class": "punctuation"], contents: ".", inline: true).source,
-                HTMLElement("span", attributes: ["class": "external identifier"], contents: "upToNextMinor", inline: true).source,
-                HTMLElement("span", attributes: ["class": "punctuation"], contents: "(", inline: true).source,
+                ElementSyntax("span", attributes: ["class": "punctuation"], contents: ".", inline: true).source,
+                ElementSyntax("span", attributes: ["class": "external identifier"], contents: "upToNextMinor", inline: true).source,
+                ElementSyntax("span", attributes: ["class": "punctuation"], contents: "(", inline: true).source,
                 result,
-                HTMLElement("span", attributes: ["class": "punctuation"], contents: ")", inline: true).source
+                ElementSyntax("span", attributes: ["class": "punctuation"], contents: ")", inline: true).source
                 ].joined()
         }
 
@@ -125,7 +126,7 @@ internal struct PackageInterface {
         var result: [StrictString] = []
 
         result.append(generateIndexSection(named: packageHeader(localization: localization), contents: [
-            HTMLElement(
+            ElementSyntax(
                 "a",
                 attributes: [
                 "href": "[*site root*]\(HTML.percentEncodeURLPath(APIElement.package(package).relativePagePath[localization]!))"
@@ -174,7 +175,7 @@ internal struct PackageInterface {
     private static func generateIndexSection(named name: StrictString, apiEntries: [APIElement], localization: LocalizationIdentifier) -> StrictString {
         var entries: [StrictString] = []
         for entry in apiEntries {
-            entries.append(HTMLElement(
+            entries.append(ElementSyntax(
                 "a",
                 attributes: [
                 "href": "[*site root*]\(HTML.percentEncodeURLPath(entry.relativePagePath[localization]!))"
@@ -186,10 +187,10 @@ internal struct PackageInterface {
     }
 
     private static func generateIndexSection(named name: StrictString, contents: StrictString) -> StrictString {
-        return HTMLElement(
+        return ElementSyntax(
             "div",
             contents: [
-                HTMLElement("a", attributes: [
+                ElementSyntax("a", attributes: [
                     "class": "heading",
                     "onclick": "toggleIndexSectionVisibility(this)"
                     ], contents: HTML.escapeTextForCharacterData(name), inline: true).source,
@@ -199,9 +200,9 @@ internal struct PackageInterface {
     }
 
     private static func generateLoneIndexEntry(named name: StrictString, target: StrictString) -> StrictString {
-        return HTMLElement(
+        return ElementSyntax(
             "div",
-            contents: HTMLElement("a", attributes: [
+            contents: ElementSyntax("a", attributes: [
                 "class": "heading",
                 "href": "[*site root*]\(HTML.percentEncodeURLPath(target))"
                 ], contents: HTML.escapeTextForCharacterData(name), inline: true).source,

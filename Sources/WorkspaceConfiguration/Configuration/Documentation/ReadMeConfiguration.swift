@@ -122,10 +122,30 @@ public struct ReadMeConfiguration : Codable {
                 ]
             }
 
-            if let instructions = configuration.documentation.readMe.installationInstructions.resolve(configuration)[localization] {
+            if let installation = configuration.documentation.readMe.installationInstructions.resolve(configuration)[localization] {
+                let header: StrictString
+                switch localization._bestMatch {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    header = "Installation"
+                }
                 readMe += [
                     "",
-                    instructions
+                    "## " + header,
+                    "",
+                    installation
+                ]
+            }
+            if let importing = configuration.documentation.readMe.importingInstructions.resolve(configuration)[localization] {
+                let header: StrictString
+                switch localization._bestMatch {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    header = "Importing"
+                }
+                readMe += [
+                    "",
+                    "## " + header,
+                    "",
+                    importing
                 ]
             }
 
@@ -265,13 +285,6 @@ public struct ReadMeConfiguration : Codable {
         let toolNames = tools.map { $0.name }
 
         return [
-            "## " + UserFacing<StrictString, ContentLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Installation"
-                }
-            }).resolved(for: localization),
-            "",
             UserFacing<StrictString, ContentLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -324,13 +337,6 @@ public struct ReadMeConfiguration : Codable {
         }
 
         var result = [
-            "## " + UserFacing<StrictString, ContentLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Importing"
-                }
-            }).resolved(for: localization),
-            "",
             UserFacing<StrictString, ContentLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:

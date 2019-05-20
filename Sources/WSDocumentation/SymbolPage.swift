@@ -17,6 +17,7 @@ import SDGCollections
 import WSGeneralImports
 
 import SDGSwiftSource
+import enum SDGHTML.HTML
 
 import WSProject
 
@@ -245,9 +246,13 @@ internal class SymbolPage : Page {
                 level ≠ navigationPath.index(before: navigationPath.endIndex) {
                 return HTMLElement("a", attributes: [
                     "href": WSHTML.percentEncodeURLPath(url)
-                    ], contents: WSHTML.escape(label), inline: true).source
+                    ], contents: HTML.escapeTextForCharacterData(label), inline: true).source
             } else {
-                return HTMLElement("span", attributes: [:], contents: WSHTML.escape(label), inline: true).source
+                return HTMLElement(
+                    "span",
+                    attributes: [:],
+                    contents: HTML.escapeTextForCharacterData(label),
+                    inline: true).source
             }
         }
         return navigationPathLinks.joined(separator: "\n")
@@ -897,7 +902,10 @@ internal class SymbolPage : Page {
 
     private static func generateChildrenSection(localization: LocalizationIdentifier, heading: StrictString, escapeHeading: Bool = true, children: [APIElement], pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
         var sectionContents: [StrictString] = [
-            HTMLElement("h2", contents: escapeHeading ? WSHTML.escape(heading) : heading, inline: true).source
+            HTMLElement(
+                "h2",
+                contents: escapeHeading ? HTML.escapeTextForCharacterData(heading) : heading,
+                inline: true).source
         ]
         for child in children {
             var entry: [StrictString] = []
@@ -909,7 +917,11 @@ internal class SymbolPage : Page {
             var name = StrictString(child.name.source())
             switch child {
             case .package, .library:
-                name = HTMLElement("span", attributes: ["class": "text"], contents: WSHTML.escape(name), inline: true).source
+                name = HTMLElement(
+                    "span",
+                    attributes: ["class": "text"],
+                    contents: HTML.escapeTextForCharacterData(name),
+                    inline: true).source
                 name = HTMLElement("span", attributes: ["class": "string"], contents: name, inline: true).source
             case .module, .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
                 name = highlight(name: name, internal: child.relativePagePath[localization] ≠ nil)
@@ -950,7 +962,7 @@ internal class SymbolPage : Page {
     }
 
     private static func highlight(name: StrictString, internal: Bool = true) -> StrictString {
-        var result = WSHTML.escape(name)
+        var result = HTML.escapeTextForCharacterData(name)
         highlight("(", as: "punctuation", in: &result, internal: `internal`)
         highlight(")", as: "punctuation", in: &result, internal: `internal`)
         highlight(":", as: "punctuation", in: &result, internal: `internal`)

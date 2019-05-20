@@ -14,6 +14,8 @@
 
 import WSGeneralImports
 
+import enum SDGHTML.HTML
+
 import WSProject
 
 internal class Page {
@@ -103,7 +105,7 @@ internal class Page {
         mutable.replaceMatches(for: "[*symbol type*]", with: symbolTypeLabel)
 
         mutable.replaceMatches(for: "[*compilation conditions*]", with: compilationConditions ?? "")
-        mutable.replaceMatches(for: "[*title*]", with: WSHTML.escape(title))
+        mutable.replaceMatches(for: "[*title*]", with: HTML.escapeTextForCharacterData(title))
         mutable.replaceMatches(for: "[*constraints*]", with: constraints ?? "")
 
         mutable.replaceMatches(for: "[*copyright*]", with: HTMLElement("span", contents: copyright, inline: false).source)

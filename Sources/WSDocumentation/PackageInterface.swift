@@ -17,6 +17,7 @@ import SDGCollections
 import WSGeneralImports
 
 import SDGSwiftSource
+import enum SDGHTML.HTML
 
 import WorkspaceConfiguration
 
@@ -38,7 +39,11 @@ internal struct PackageInterface {
             HTMLElement("span", attributes: ["class": "string"], contents: [
                 HTMLElement("span", attributes: ["class": "punctuation"], contents: "\u{22}", inline: true).source,
                 HTMLElement("a", attributes: ["href": packageURL], contents: [
-                    HTMLElement("span", attributes: ["class": "text"], contents: WSHTML.escape(packageURL), inline: true).source
+                    HTMLElement(
+                        "span",
+                        attributes: ["class": "text"],
+                        contents: HTML.escapeTextForCharacterData(packageURL),
+                        inline: true).source
                     ].joined(), inline: true).source,
                 HTMLElement("span", attributes: ["class": "punctuation"], contents: "\u{22}", inline: true).source
                 ].joined(), inline: true).source
@@ -120,9 +125,13 @@ internal struct PackageInterface {
         var result: [StrictString] = []
 
         result.append(generateIndexSection(named: packageHeader(localization: localization), contents: [
-            HTMLElement("a", attributes: [
+            HTMLElement(
+                "a",
+                attributes: [
                 "href": "[*site root*]\(WSHTML.percentEncodeURLPath(APIElement.package(package).relativePagePath[localization]!))"
-                ], contents: WSHTML.escape(StrictString(package.name.source())), inline: false).source
+                ],
+                contents: HTML.escapeTextForCharacterData(StrictString(package.name.source())),
+                inline: false).source
             ].joinedAsLines()))
 
         if ¬package.libraries.isEmpty {
@@ -165,9 +174,13 @@ internal struct PackageInterface {
     private static func generateIndexSection(named name: StrictString, apiEntries: [APIElement], localization: LocalizationIdentifier) -> StrictString {
         var entries: [StrictString] = []
         for entry in apiEntries {
-            entries.append(HTMLElement("a", attributes: [
+            entries.append(HTMLElement(
+                "a",
+                attributes: [
                 "href": "[*site root*]\(WSHTML.percentEncodeURLPath(entry.relativePagePath[localization]!))"
-                ], contents: WSHTML.escape(StrictString(entry.name.source())), inline: false).source)
+                ],
+                contents: HTML.escapeTextForCharacterData(StrictString(entry.name.source())),
+                inline: false).source)
         }
         return generateIndexSection(named: name, contents: entries.joinedAsLines())
     }
@@ -179,7 +192,7 @@ internal struct PackageInterface {
                 HTMLElement("a", attributes: [
                     "class": "heading",
                     "onclick": "toggleIndexSectionVisibility(this)"
-                    ], contents: WSHTML.escape(name), inline: true).source,
+                    ], contents: HTML.escapeTextForCharacterData(name), inline: true).source,
                 contents
                 ].joinedAsLines(),
             inline: false).source
@@ -191,7 +204,7 @@ internal struct PackageInterface {
             contents: HTMLElement("a", attributes: [
                 "class": "heading",
                 "href": "[*site root*]\(WSHTML.percentEncodeURLPath(target))"
-                ], contents: WSHTML.escape(name), inline: true).source,
+                ], contents: HTML.escapeTextForCharacterData(name), inline: true).source,
             inline: false).source
     }
 
@@ -511,7 +524,7 @@ internal struct PackageInterface {
                     symbolType: nil,
                     compilationConditions: nil,
                     constraints: nil,
-                    title: WSHTML.escape(pageTitle),
+                    title: HTML.escapeTextForCharacterData(pageTitle),
                     content: StrictString(content),
                     extensions: "",
                     copyright: copyright(for: localization, status: status))

@@ -1,5 +1,5 @@
 /*
- HTMLElement.swift
+ ElementSyntax.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -50,7 +50,7 @@ extension ElementSyntax {
                 closingTag: ClosingTagSyntax(name: name)))
     }
 
-    var source: StrictString {
+    func normalizedSource() -> StrictString {
         return StrictString(source())
     }
 }

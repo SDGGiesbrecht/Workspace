@@ -184,7 +184,7 @@ internal class SymbolPage : Page {
                 "value": value
             ],
             contents: label,
-            inline: false).source
+            inline: false).normalizedSource()
     }
 
     private static func protocolModeInterface(localization: LocalizationIdentifier) -> StrictString {
@@ -193,7 +193,7 @@ internal class SymbolPage : Page {
             "p",
             attributes: ["class": "conformance‐filter‐label"],
             contents: conformanceFilterLabel(localization: localization),
-            inline: false).source)
+            inline: false).normalizedSource())
         contents.append(contentsOf: conformanceFilterButton(
             labelled: conformanceFilterOff(localization: localization),
             value: "all"))
@@ -207,7 +207,7 @@ internal class SymbolPage : Page {
             "div",
             attributes: ["class": "conformance‐filter"],
             contents: contents,
-            inline: false).source
+            inline: false).normalizedSource()
     }
 
     private static func generateMembersSections(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> [StrictString] {
@@ -247,13 +247,13 @@ internal class SymbolPage : Page {
                 level ≠ navigationPath.index(before: navigationPath.endIndex) {
                 return ElementSyntax("a", attributes: [
                     "href": HTML.percentEncodeURLPath(url)
-                    ], contents: HTML.escapeTextForCharacterData(label), inline: true).source
+                    ], contents: HTML.escapeTextForCharacterData(label), inline: true).normalizedSource()
             } else {
                 return ElementSyntax(
                     "span",
                     attributes: [:],
                     contents: HTML.escapeTextForCharacterData(label),
-                    inline: true).source
+                    inline: true).normalizedSource()
             }
         }
         return navigationPathLinks.joined(separator: "\n")
@@ -329,7 +329,7 @@ internal class SymbolPage : Page {
         return ElementSyntax("div", attributes: ["class": "import‐header"], contents: [
             StrictString(source),
             SymbolPage.generateDependencyStatement(for: symbol, package: package, localization: localization, pathToSiteRoot: pathToSiteRoot)
-            ].joinedAsLines(), inline: false).source
+            ].joinedAsLines(), inline: false).normalizedSource()
     }
 
     private static func generateCompilationConditions(symbol: APIElement) -> StrictString? {
@@ -350,7 +350,7 @@ internal class SymbolPage : Page {
     private static func generateDescriptionSection(symbol: APIElement, navigationPath: [APIElement], localization: LocalizationIdentifier, packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
         if let documentation = symbol.documentation,
             let description = documentation.descriptionSection {
-            return ElementSyntax("div", attributes: ["class": "description"], contents: StrictString(description.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)), inline: false).source
+            return ElementSyntax("div", attributes: ["class": "description"], contents: StrictString(description.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)), inline: false).normalizedSource()
         }
         if case .extension = symbol {} else {
             status.reportMissingDescription(symbol: symbol, navigationPath: navigationPath)
@@ -379,11 +379,11 @@ internal class SymbolPage : Page {
         }
 
         let sectionContents: [StrictString] = [
-            ElementSyntax("h2", contents: declarationHeading, inline: true).source,
+            ElementSyntax("h2", contents: declarationHeading, inline: true).normalizedSource(),
             StrictString(declaration.syntaxHighlightedHTML(inline: false, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
         ]
 
-        return ElementSyntax("section", attributes: ["class": "declaration"], contents: sectionContents.joinedAsLines(), inline: false).source
+        return ElementSyntax("section", attributes: ["class": "declaration"], contents: sectionContents.joinedAsLines(), inline: false).normalizedSource()
     }
 
     private static func generateDiscussionSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
@@ -407,7 +407,7 @@ internal class SymbolPage : Page {
         }
 
         var sectionContents: [StrictString] = [
-            ElementSyntax("h2", contents: discussionHeading, inline: true).source
+            ElementSyntax("h2", contents: discussionHeading, inline: true).normalizedSource()
         ]
 
         var empty = true
@@ -425,7 +425,7 @@ internal class SymbolPage : Page {
         if empty {
             return ""
         }
-        return ElementSyntax("section", contents: sectionContents.joinedAsLines(), inline: false).source
+        return ElementSyntax("section", contents: sectionContents.joinedAsLines(), inline: false).normalizedSource()
     }
 
     private static func generateParemetersSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
@@ -477,10 +477,10 @@ internal class SymbolPage : Page {
         }
 
         let section = [
-            ElementSyntax("h2", contents: parametersHeading, inline: true).source,
-            ElementSyntax("dl", contents: list.map({ $0.source }).joinedAsLines(), inline: true).source
+            ElementSyntax("h2", contents: parametersHeading, inline: true).normalizedSource(),
+            ElementSyntax("dl", contents: list.map({ $0.normalizedSource() }).joinedAsLines(), inline: true).normalizedSource()
         ]
-        return ElementSyntax("section", contents: section.joinedAsLines(), inline: false).source
+        return ElementSyntax("section", contents: section.joinedAsLines(), inline: false).normalizedSource()
     }
 
     private static func generateThrowsSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
@@ -488,11 +488,11 @@ internal class SymbolPage : Page {
             return ""
         }
         let throwsHeading: StrictString = Callout.throws.localizedText(localization.code)
-        var section = [ElementSyntax("h2", contents: throwsHeading, inline: true).source]
+        var section = [ElementSyntax("h2", contents: throwsHeading, inline: true).normalizedSource()]
         for contents in callout.contents {
             section.append(StrictString(contents.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)))
         }
-        return ElementSyntax("section", contents: section.joinedAsLines(), inline: false).source
+        return ElementSyntax("section", contents: section.joinedAsLines(), inline: false).normalizedSource()
     }
 
     private static func generateReturnsSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
@@ -500,11 +500,11 @@ internal class SymbolPage : Page {
             return ""
         }
         let returnsHeading: StrictString = Callout.returns.localizedText(localization.code)
-        var section = [ElementSyntax("h2", contents: returnsHeading, inline: true).source]
+        var section = [ElementSyntax("h2", contents: returnsHeading, inline: true).normalizedSource()]
         for contents in callout.contents {
             section.append(StrictString(contents.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)))
         }
-        return ElementSyntax("section", contents: section.joinedAsLines(), inline: false).source
+        return ElementSyntax("section", contents: section.joinedAsLines(), inline: false).normalizedSource()
     }
 
     private static func generateOtherModuleExtensionsSections(symbol: APIElement, package: PackageAPI, localization: LocalizationIdentifier, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> [StrictString] {
@@ -534,7 +534,7 @@ internal class SymbolPage : Page {
             result.append(generateImportStatement(for: APIElement.extension(`extension`), package: package, localization: localization, pathToSiteRoot: pathToSiteRoot))
 
             let sections = generateMembersSections(localization: localization, symbol: APIElement.extension(`extension`), pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
-            result.append(ElementSyntax("div", attributes: ["class": "main‐text‐column"], contents: sections.joinedAsLines(), inline: false).source)
+            result.append(ElementSyntax("div", attributes: ["class": "main‐text‐column"], contents: sections.joinedAsLines(), inline: false).normalizedSource())
             return result.joinedAsLines()
         })
     }
@@ -906,7 +906,7 @@ internal class SymbolPage : Page {
             ElementSyntax(
                 "h2",
                 contents: escapeHeading ? HTML.escapeTextForCharacterData(heading) : heading,
-                inline: true).source
+                inline: true).normalizedSource()
         ]
         for child in children {
             var entry: [StrictString] = []
@@ -922,12 +922,12 @@ internal class SymbolPage : Page {
                     "span",
                     attributes: ["class": "text"],
                     contents: HTML.escapeTextForCharacterData(name),
-                    inline: true).source
-                name = ElementSyntax("span", attributes: ["class": "string"], contents: name, inline: true).source
+                    inline: true).normalizedSource()
+                name = ElementSyntax("span", attributes: ["class": "string"], contents: name, inline: true).normalizedSource()
             case .module, .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
                 name = highlight(name: name, internal: child.relativePagePath[localization] ≠ nil)
             }
-            name = ElementSyntax("code", attributes: ["class": "swift"], contents: name, inline: true).source
+            name = ElementSyntax("code", attributes: ["class": "swift"], contents: name, inline: true).normalizedSource()
             if let constraints = child.constraints {
                 name += StrictString(constraints.syntaxHighlightedHTML(inline: true, internalIdentifiers: packageIdentifiers))
             }
@@ -936,7 +936,7 @@ internal class SymbolPage : Page {
                 let target = pathToSiteRoot + local
                 entry.append(ElementSyntax("a", attributes: [
                     "href": HTML.percentEncodeURLPath(target)
-                    ], contents: name, inline: true).source)
+                    ], contents: name, inline: true).normalizedSource())
                 if let description = child.documentation?.descriptionSection {
                     entry.append(StrictString(description.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)))
                 }
@@ -957,9 +957,9 @@ internal class SymbolPage : Page {
                 "div",
                 attributes: attributes,
                 contents: entry.joinedAsLines(),
-                inline: false).source)
+                inline: false).normalizedSource())
         }
-        return ElementSyntax("section", contents: sectionContents.joinedAsLines(), inline: false).source
+        return ElementSyntax("section", contents: sectionContents.joinedAsLines(), inline: false).normalizedSource()
     }
 
     private static func highlight(name: StrictString, internal: Bool = true) -> StrictString {
@@ -975,6 +975,6 @@ internal class SymbolPage : Page {
         return result
     }
     private static func highlight(_ token: StrictString, as class: StrictString, in name: inout StrictString, internal: Bool) {
-        name.replaceMatches(for: token, with: "</span>" + ElementSyntax("span", attributes: ["class": `class`], contents: token, inline: true).source + "<span class=\u{22}" + (`internal` ? "internal" : "external") as StrictString + " identifier\u{22}>")
+        name.replaceMatches(for: token, with: "</span>" + ElementSyntax("span", attributes: ["class": `class`], contents: token, inline: true).normalizedSource() + "<span class=\u{22}" + (`internal` ? "internal" : "external") as StrictString + " identifier\u{22}>")
     }
 }

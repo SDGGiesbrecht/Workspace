@@ -48,7 +48,7 @@ internal class Page {
             name = "Workspace"
         }
 
-        let link = ElementSyntax("a", attributes: ["href": targetURL], contents: name, inline: true).source
+        let link = ElementSyntax("a", attributes: ["href": targetURL], contents: name, inline: true).normalizedSource()
 
         let generatedUsing: StrictString
         switch resolved {
@@ -59,13 +59,13 @@ internal class Page {
         let sdg: StrictString
         switch resolved {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            sdg = ElementSyntax("span", attributes: ["lang": "la\u{2D}IT"], contents: "Soli Deo gloria.", inline: true).source
+            sdg = ElementSyntax("span", attributes: ["lang": "la\u{2D}IT"], contents: "Soli Deo gloria.", inline: true).normalizedSource()
         }
 
         return ElementSyntax("span", attributes: [
             "lang": StrictString(resolved.code),
             "dir": StrictString(resolved.textDirection.htmlAttribute)
-            ], contents: generatedUsing + " " + sdg, inline: true).source
+            ], contents: generatedUsing + " " + sdg, inline: true).normalizedSource()
     }
 
     // MARK: - Initialization
@@ -101,7 +101,7 @@ internal class Page {
 
         let symbolTypeLabel: StrictString
         if let specified = symbolType {
-            symbolTypeLabel = ElementSyntax("div", attributes: ["class": "symbol‐type"], contents: specified, inline: true).source
+            symbolTypeLabel = ElementSyntax("div", attributes: ["class": "symbol‐type"], contents: specified, inline: true).normalizedSource()
         } else {
             symbolTypeLabel = "" // @exempt(from: tests) Unreachable yet.
         }
@@ -111,7 +111,7 @@ internal class Page {
         mutable.replaceMatches(for: "[*title*]", with: HTML.escapeTextForCharacterData(title))
         mutable.replaceMatches(for: "[*constraints*]", with: constraints ?? "")
 
-        mutable.replaceMatches(for: "[*copyright*]", with: ElementSyntax("span", contents: copyright, inline: false).source)
+        mutable.replaceMatches(for: "[*copyright*]", with: ElementSyntax("span", contents: copyright, inline: false).normalizedSource())
         mutable.replaceMatches(for: "[*workspace*]", with: Page.watermark(localization: localization))
 
         mutable.replaceMatches(for: "[*content*]", with: content)

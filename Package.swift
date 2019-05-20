@@ -286,7 +286,8 @@ let package = Package(
             .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .product(name: "SDGXcode", package: "SDGSwift"),
             .product(name: "SDGSwiftSource", package: "SDGSwift"),
-            .product(name: "SDGHTML", package: "SDGWeb")
+            .product(name: "SDGHTML", package: "SDGWeb"),
+            .product(name: "SDGCSS", package: "SDGWeb")
             ], swiftSettings: [
                 .define("UNIDENTIFIED_SYNTAX_WARNINGS", .when(configuration: .debug))
             ]),

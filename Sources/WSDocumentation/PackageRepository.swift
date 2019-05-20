@@ -20,6 +20,7 @@ import WSGeneralImports
 import SDGXcode
 import SDGSwiftSource
 import SDGHTML
+import SDGCSS
 
 import WSProject
 import WSValidation
@@ -153,9 +154,7 @@ extension PackageRepository {
     // Final steps irrelevent to validation.
     private func finalizeSite(outputDirectory: URL) throws {
 
-        var rootCSS = TextFile(mockFileWithContents: Resources.root, fileType: .css)
-        rootCSS.header = ""
-        try rootCSS.contents.save(to: outputDirectory.appendingPathComponent("CSS/Root.css"))
+        try CSS.root.save(to: outputDirectory.appendingPathComponent("CSS/Root.css"))
         try SyntaxHighlighter.css.save(to: outputDirectory.appendingPathComponent("CSS/Swift.css"))
         var siteCSS = TextFile(mockFileWithContents: Resources.site, fileType: .css)
         siteCSS.header = ""

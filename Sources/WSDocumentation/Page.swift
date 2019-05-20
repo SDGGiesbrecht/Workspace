@@ -14,8 +14,7 @@
 
 import WSGeneralImports
 
-import enum SDGHTML.HTML
-import struct SDGHTML.ElementSyntax
+import SDGHTML
 
 import WSProject
 

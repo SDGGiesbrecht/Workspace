@@ -14,7 +14,7 @@
 
 import WSGeneralImports
 
-import enum SDGHTML.HTML
+import SDGHTML
 
 import WSProject
 

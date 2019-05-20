@@ -29,6 +29,15 @@
         }
       },
       {
+        "package": "SDGWeb",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/SDGWeb",
+        "state": {
+          "branch": null,
+          "revision": "ed3f2cbaa94e1be77dfa1acd8618926260898de6",
+          "version": "0.1.0"
+        }
+      },
+      {
         "package": "CommonMark",
         "repositoryURL": "https://github.com/SDGGiesbrecht/swift-cmark",
         "state": {

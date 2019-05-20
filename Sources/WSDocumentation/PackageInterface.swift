@@ -38,7 +38,7 @@ internal struct PackageInterface {
             HTMLElement("span", attributes: ["class": "string"], contents: [
                 HTMLElement("span", attributes: ["class": "punctuation"], contents: "\u{22}", inline: true).source,
                 HTMLElement("a", attributes: ["href": packageURL], contents: [
-                    HTMLElement("span", attributes: ["class": "text"], contents: HTML.escape(packageURL), inline: true).source
+                    HTMLElement("span", attributes: ["class": "text"], contents: WSHTML.escape(packageURL), inline: true).source
                     ].joined(), inline: true).source,
                 HTMLElement("span", attributes: ["class": "punctuation"], contents: "\u{22}", inline: true).source
                 ].joined(), inline: true).source
@@ -121,8 +121,8 @@ internal struct PackageInterface {
 
         result.append(generateIndexSection(named: packageHeader(localization: localization), contents: [
             HTMLElement("a", attributes: [
-                "href": "[*site root*]\(HTML.percentEncodeURLPath(APIElement.package(package).relativePagePath[localization]!))"
-                ], contents: HTML.escape(StrictString(package.name.source())), inline: false).source
+                "href": "[*site root*]\(WSHTML.percentEncodeURLPath(APIElement.package(package).relativePagePath[localization]!))"
+                ], contents: WSHTML.escape(StrictString(package.name.source())), inline: false).source
             ].joinedAsLines()))
 
         if ¬package.libraries.isEmpty {
@@ -166,8 +166,8 @@ internal struct PackageInterface {
         var entries: [StrictString] = []
         for entry in apiEntries {
             entries.append(HTMLElement("a", attributes: [
-                "href": "[*site root*]\(HTML.percentEncodeURLPath(entry.relativePagePath[localization]!))"
-                ], contents: HTML.escape(StrictString(entry.name.source())), inline: false).source)
+                "href": "[*site root*]\(WSHTML.percentEncodeURLPath(entry.relativePagePath[localization]!))"
+                ], contents: WSHTML.escape(StrictString(entry.name.source())), inline: false).source)
         }
         return generateIndexSection(named: name, contents: entries.joinedAsLines())
     }
@@ -179,7 +179,7 @@ internal struct PackageInterface {
                 HTMLElement("a", attributes: [
                     "class": "heading",
                     "onclick": "toggleIndexSectionVisibility(this)"
-                    ], contents: HTML.escape(name), inline: true).source,
+                    ], contents: WSHTML.escape(name), inline: true).source,
                 contents
                 ].joinedAsLines(),
             inline: false).source
@@ -190,8 +190,8 @@ internal struct PackageInterface {
             "div",
             contents: HTMLElement("a", attributes: [
                 "class": "heading",
-                "href": "[*site root*]\(HTML.percentEncodeURLPath(target))"
-                ], contents: HTML.escape(name), inline: true).source,
+                "href": "[*site root*]\(WSHTML.percentEncodeURLPath(target))"
+                ], contents: WSHTML.escape(name), inline: true).source,
             inline: false).source
     }
 
@@ -241,7 +241,7 @@ internal struct PackageInterface {
         }
         self.symbolLinks = paths.mapValues { localization in
             localization.mapValues { link in
-                return HTML.percentEncodeURLPath(link)
+                return WSHTML.percentEncodeURLPath(link)
             }
         }
 
@@ -511,7 +511,7 @@ internal struct PackageInterface {
                     symbolType: nil,
                     compilationConditions: nil,
                     constraints: nil,
-                    title: HTML.escape(pageTitle),
+                    title: WSHTML.escape(pageTitle),
                     content: StrictString(content),
                     extensions: "",
                     copyright: copyright(for: localization, status: status))

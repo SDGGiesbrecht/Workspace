@@ -244,10 +244,10 @@ internal class SymbolPage : Page {
             if ¬navigationPath.isEmpty,
                 level ≠ navigationPath.index(before: navigationPath.endIndex) {
                 return HTMLElement("a", attributes: [
-                    "href": HTML.percentEncodeURLPath(url)
-                    ], contents: HTML.escape(label), inline: true).source
+                    "href": WSHTML.percentEncodeURLPath(url)
+                    ], contents: WSHTML.escape(label), inline: true).source
             } else {
-                return HTMLElement("span", attributes: [:], contents: HTML.escape(label), inline: true).source
+                return HTMLElement("span", attributes: [:], contents: WSHTML.escape(label), inline: true).source
             }
         }
         return navigationPathLinks.joined(separator: "\n")
@@ -897,7 +897,7 @@ internal class SymbolPage : Page {
 
     private static func generateChildrenSection(localization: LocalizationIdentifier, heading: StrictString, escapeHeading: Bool = true, children: [APIElement], pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
         var sectionContents: [StrictString] = [
-            HTMLElement("h2", contents: escapeHeading ? HTML.escape(heading) : heading, inline: true).source
+            HTMLElement("h2", contents: escapeHeading ? WSHTML.escape(heading) : heading, inline: true).source
         ]
         for child in children {
             var entry: [StrictString] = []
@@ -909,7 +909,7 @@ internal class SymbolPage : Page {
             var name = StrictString(child.name.source())
             switch child {
             case .package, .library:
-                name = HTMLElement("span", attributes: ["class": "text"], contents: HTML.escape(name), inline: true).source
+                name = HTMLElement("span", attributes: ["class": "text"], contents: WSHTML.escape(name), inline: true).source
                 name = HTMLElement("span", attributes: ["class": "string"], contents: name, inline: true).source
             case .module, .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
                 name = highlight(name: name, internal: child.relativePagePath[localization] ≠ nil)
@@ -922,7 +922,7 @@ internal class SymbolPage : Page {
             if let local = child.relativePagePath[localization] {
                 let target = pathToSiteRoot + local
                 entry.append(HTMLElement("a", attributes: [
-                    "href": HTML.percentEncodeURLPath(target)
+                    "href": WSHTML.percentEncodeURLPath(target)
                     ], contents: name, inline: true).source)
                 if let description = child.documentation?.descriptionSection {
                     entry.append(StrictString(description.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)))
@@ -950,7 +950,7 @@ internal class SymbolPage : Page {
     }
 
     private static func highlight(name: StrictString, internal: Bool = true) -> StrictString {
-        var result = HTML.escape(name)
+        var result = WSHTML.escape(name)
         highlight("(", as: "punctuation", in: &result, internal: `internal`)
         highlight(")", as: "punctuation", in: &result, internal: `internal`)
         highlight(":", as: "punctuation", in: &result, internal: `internal`)

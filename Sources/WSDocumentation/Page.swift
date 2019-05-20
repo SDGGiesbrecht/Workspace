@@ -90,7 +90,7 @@ internal class Page {
         mutable.replaceMatches(for: "[*package import*]", with: packageImport ?? "")
 
         mutable.replaceMatches(for: "[*index*]", with: index)
-        mutable.replaceMatches(for: "[*site root*]".scalars, with: HTML.escapeAttribute(pathToSiteRoot))
+        mutable.replaceMatches(for: "[*site root*]".scalars, with: WSHTML.escapeAttribute(pathToSiteRoot))
 
         mutable.replaceMatches(for: "[*imports*]".scalars, with: symbolImports)
 
@@ -103,7 +103,7 @@ internal class Page {
         mutable.replaceMatches(for: "[*symbol type*]", with: symbolTypeLabel)
 
         mutable.replaceMatches(for: "[*compilation conditions*]", with: compilationConditions ?? "")
-        mutable.replaceMatches(for: "[*title*]", with: HTML.escape(title))
+        mutable.replaceMatches(for: "[*title*]", with: WSHTML.escape(title))
         mutable.replaceMatches(for: "[*constraints*]", with: constraints ?? "")
 
         mutable.replaceMatches(for: "[*copyright*]", with: HTMLElement("span", contents: copyright, inline: false).source)

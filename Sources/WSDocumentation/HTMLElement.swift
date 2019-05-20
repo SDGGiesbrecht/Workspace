@@ -43,7 +43,7 @@ internal struct HTMLElement {
             result.append(" ")
             result.append(contentsOf: attribute)
             result.append(contentsOf: "=\u{22}".scalars)
-            result.append(contentsOf: HTML.escapeAttribute(attributes[attribute]!))
+            result.append(contentsOf: WSHTML.escapeAttribute(attributes[attribute]!))
             result.append("\u{22}")
         }
         result.append(">")

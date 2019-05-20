@@ -16,7 +16,7 @@ import SDGLogic
 import SDGCollections
 import SDGText
 
-internal enum HTML {
+internal enum WSHTML {
 
     private static func sharedEscape<S>(_ string: S) -> S where S : StringFamily {
         return S(string.scalars

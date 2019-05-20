@@ -93,6 +93,8 @@ internal struct PackageInterface {
 
     private static func generateIndices(
         for package: PackageAPI,
+        installation: [LocalizationIdentifier: StrictString],
+        importing: [LocalizationIdentifier: StrictString],
         about: [LocalizationIdentifier: StrictString],
         localizations: [LocalizationIdentifier]) -> [LocalizationIdentifier: StrictString] {
         var result: [LocalizationIdentifier: StrictString] = [:]
@@ -100,6 +102,8 @@ internal struct PackageInterface {
             autoreleasepool {
                 result[localization] = generateIndex(
                     for: package,
+                    hasInstallation: installation[localization] ≠ nil,
+                    hasImporting: importing[localization] ≠ nil,
                     hasAbout: about[localization] ≠ nil,
                     localization: localization)
             }
@@ -120,6 +124,8 @@ internal struct PackageInterface {
 
     private static func generateIndex(
         for package: PackageAPI,
+        hasInstallation: Bool,
+        hasImporting: Bool,
         hasAbout: Bool,
         localization: LocalizationIdentifier) -> StrictString {
         var result: [StrictString] = []
@@ -133,6 +139,17 @@ internal struct PackageInterface {
                 contents: HTML.escapeTextForCharacterData(StrictString(package.name.source())),
                 inline: false).normalizedSource()
             ].joinedAsLines()))
+
+        if hasInstallation {
+            result.append(generateLoneIndexEntry(
+                named: installation(localization: localization),
+                target: installationLocation(localization: localization)))
+        }
+        if hasImporting {
+            result.append(generateLoneIndexEntry(
+                named: importing(localization: localization),
+                target: importingLocation(localization: localization)))
+        }
 
         if ¬package.libraries.isEmpty {
             result.append(generateIndexSection(named: SymbolPage.librariesHeader(localization: localization), apiEntries: package.libraries.lazy.map({ APIElement.library($0) }), localization: localization))
@@ -161,7 +178,6 @@ internal struct PackageInterface {
         if ¬package.functions.isEmpty {
             result.append(generateIndexSection(named: SymbolPage.precedenceGroupsHeader(localization: localization), apiEntries: package.precedenceGroups.lazy.map({ APIElement.precedence($0) }), localization: localization))
         }
-
         if hasAbout {
             result.append(generateLoneIndexEntry(
                 named: about(localization: localization),
@@ -208,6 +224,26 @@ internal struct PackageInterface {
             inline: false).normalizedSource()
     }
 
+    private static func installation(localization: LocalizationIdentifier) -> StrictString {
+        switch localization._bestMatch {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Installation"
+        }
+    }
+    private static func installationLocation(localization: LocalizationIdentifier) -> StrictString {
+        return "\(localization._directoryName)/\(installation(localization: localization)).html"
+    }
+
+    private static func importing(localization: LocalizationIdentifier) -> StrictString {
+        switch localization._bestMatch {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Importing"
+        }
+    }
+    private static func importingLocation(localization: LocalizationIdentifier) -> StrictString {
+        return "\(localization._directoryName)/\(importing(localization: localization)).html"
+    }
+
     private static func about(localization: LocalizationIdentifier) -> StrictString {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -225,6 +261,8 @@ internal struct PackageInterface {
          api: PackageAPI,
          packageURL: URL?,
          version: Version?,
+         installation: [LocalizationIdentifier: StrictString],
+         importing: [LocalizationIdentifier: StrictString],
          about: [LocalizationIdentifier: StrictString],
          copyright: [LocalizationIdentifier?: StrictString],
          output: Command.Output) {
@@ -243,6 +281,8 @@ internal struct PackageInterface {
         api.computeMergedAPI()
 
         self.packageImport = PackageInterface.specify(package: packageURL, version: version)
+        self.installation = installation
+        self.importing = importing
         self.about = about
         self.copyrightNotices = copyright
 
@@ -260,6 +300,8 @@ internal struct PackageInterface {
 
         self.indices = PackageInterface.generateIndices(
             for: api,
+            installation: installation,
+            importing: importing,
             about: about,
             localizations: localizations)
     }
@@ -272,6 +314,8 @@ internal struct PackageInterface {
     private let api: APIElement
     private let packageImport: StrictString?
     private let indices: [LocalizationIdentifier: StrictString]
+    private let installation: [LocalizationIdentifier: Markdown]
+    private let importing: [LocalizationIdentifier: Markdown]
     private let about: [LocalizationIdentifier: Markdown]
     private let copyrightNotices: [LocalizationIdentifier?: StrictString]
     private let packageIdentifiers: Set<String>

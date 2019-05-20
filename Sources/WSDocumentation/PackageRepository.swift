@@ -19,6 +19,7 @@ import WSGeneralImports
 
 import SDGXcode
 import SDGSwiftSource
+import SDGHTML
 
 import WSProject
 import WSValidation

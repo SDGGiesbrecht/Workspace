@@ -34,7 +34,7 @@ public struct ReadMeConfiguration : Codable {
 
     /// Installation instructions.
     ///
-    /// Default instructions exist for executable and library products if `repositoryURL` and `currentVersion` are defined.
+    /// Default instructions exist for executable products if `repositoryURL` and `currentVersion` are defined.
     public var installationInstructions: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>(resolve: { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
 
         guard let packageURL = configuration.documentation.repositoryURL,
@@ -45,28 +45,32 @@ public struct ReadMeConfiguration : Codable {
         var result: [LocalizationIdentifier: StrictString] = [:]
         for localization in configuration.documentation.localizations {
             if let provided = localization._reasonableMatch {
+                result[localization] = localizedToolInstallationInstructions(
+                    packageURL: packageURL,
+                    version: version,
+                    localization: provided)
+            }
+        }
+        return result
+    })
 
-                var instructions: [StrictString] = []
-                var precedingSection = false
+    /// Importing instructions.
+    ///
+    /// Default instructions exist for library products if `repositoryURL` and `currentVersion` are defined.
+    public var importingInstructions: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>(resolve: { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
 
-                if let toolInstallation = localizedToolInstallationInstructions(packageURL: packageURL, version: version, localization: provided) {
-                    precedingSection = true
+        guard let packageURL = configuration.documentation.repositoryURL,
+            let version = configuration.documentation.currentVersion else {
+                return [:]
+        }
 
-                    instructions += [toolInstallation]
-                }
-
-                if let libraryLinking = localizedLibraryImportingInstructions(packageURL: packageURL, version: version, localization: provided) {
-                    if precedingSection {
-                        instructions += [""]
-                    }
-                    precedingSection = true
-
-                    instructions += [libraryLinking]
-                }
-
-                if ¬instructions.isEmpty {
-                    result[localization] = instructions.joinedAsLines()
-                }
+        var result: [LocalizationIdentifier: StrictString] = [:]
+        for localization in configuration.documentation.localizations {
+            if let provided = localization._reasonableMatch {
+                result[localization] = localizedLibraryImportingInstructions(
+                    packageURL: packageURL,
+                    version: version,
+                    localization: provided)
             }
         }
         return result

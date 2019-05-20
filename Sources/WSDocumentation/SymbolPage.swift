@@ -245,7 +245,7 @@ internal class SymbolPage : Page {
             if ¬navigationPath.isEmpty,
                 level ≠ navigationPath.index(before: navigationPath.endIndex) {
                 return HTMLElement("a", attributes: [
-                    "href": WSHTML.percentEncodeURLPath(url)
+                    "href": HTML.percentEncodeURLPath(url)
                     ], contents: HTML.escapeTextForCharacterData(label), inline: true).source
             } else {
                 return HTMLElement(
@@ -934,7 +934,7 @@ internal class SymbolPage : Page {
             if let local = child.relativePagePath[localization] {
                 let target = pathToSiteRoot + local
                 entry.append(HTMLElement("a", attributes: [
-                    "href": WSHTML.percentEncodeURLPath(target)
+                    "href": HTML.percentEncodeURLPath(target)
                     ], contents: name, inline: true).source)
                 if let description = child.documentation?.descriptionSection {
                     entry.append(StrictString(description.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)))

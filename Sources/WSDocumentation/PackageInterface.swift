@@ -128,7 +128,7 @@ internal struct PackageInterface {
             HTMLElement(
                 "a",
                 attributes: [
-                "href": "[*site root*]\(WSHTML.percentEncodeURLPath(APIElement.package(package).relativePagePath[localization]!))"
+                "href": "[*site root*]\(HTML.percentEncodeURLPath(APIElement.package(package).relativePagePath[localization]!))"
                 ],
                 contents: HTML.escapeTextForCharacterData(StrictString(package.name.source())),
                 inline: false).source
@@ -177,7 +177,7 @@ internal struct PackageInterface {
             entries.append(HTMLElement(
                 "a",
                 attributes: [
-                "href": "[*site root*]\(WSHTML.percentEncodeURLPath(entry.relativePagePath[localization]!))"
+                "href": "[*site root*]\(HTML.percentEncodeURLPath(entry.relativePagePath[localization]!))"
                 ],
                 contents: HTML.escapeTextForCharacterData(StrictString(entry.name.source())),
                 inline: false).source)
@@ -203,7 +203,7 @@ internal struct PackageInterface {
             "div",
             contents: HTMLElement("a", attributes: [
                 "class": "heading",
-                "href": "[*site root*]\(WSHTML.percentEncodeURLPath(target))"
+                "href": "[*site root*]\(HTML.percentEncodeURLPath(target))"
                 ], contents: HTML.escapeTextForCharacterData(name), inline: true).source,
             inline: false).source
     }
@@ -254,7 +254,7 @@ internal struct PackageInterface {
         }
         self.symbolLinks = paths.mapValues { localization in
             localization.mapValues { link in
-                return WSHTML.percentEncodeURLPath(link)
+                return HTML.percentEncodeURLPath(link)
             }
         }
 

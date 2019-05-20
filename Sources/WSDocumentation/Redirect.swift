@@ -32,7 +32,7 @@ internal struct Redirect {
 
     internal init(target: String) {
         var mutable = Redirect.template
-        mutable.scalars.replaceMatches(for: "[*target*]".scalars, with: WSHTML.percentEncodeURLPath(HTML.escapeTextForAttribute(target)).scalars)
+        mutable.scalars.replaceMatches(for: "[*target*]".scalars, with: HTML.percentEncodeURLPath(HTML.escapeTextForAttribute(target)).scalars)
         contents = mutable
     }
 

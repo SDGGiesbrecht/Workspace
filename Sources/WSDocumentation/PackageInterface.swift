@@ -488,7 +488,7 @@ internal struct PackageInterface {
                     symbolLinks: symbolLinks[localization]!) {
                     content.append(contentsOf: firstParagraph)
                 }
-                for paragraph in documentation?.discussionEntries ?? [] {
+                for paragraph in documentation?.discussionEntries ?? [] { // @exempt(from: tests)
                     content.append("\n")
                     content.append(contentsOf: paragraph.renderedHTML(
                         localization: localization.code,

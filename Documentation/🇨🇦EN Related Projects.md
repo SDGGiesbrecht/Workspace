@@ -30,6 +30,10 @@ SDGInterface provides tools for implementing a graphical user interface.
 
 SDGCommandLine provides tools for implementing a command line interface.
 
+### [SDGWeb](https://github.com/SDGGiesbrecht/SDGWeb)
+
+SDGWeb provides tools for generating websites.
+
 ### [SDGCornerstone](https://github.com/SDGGiesbrecht/SDGCornerstone)
 
 SDGCornerstone forms the foundation of the SDG module family. It establishes design patterns and provides general‐use extensions to the [Swift Standard Library](https://developer.apple.com/reference/swift) and [Foundation](https://developer.apple.com/reference/foundation).

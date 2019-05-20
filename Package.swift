@@ -140,7 +140,8 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 18, 0))),
         .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 7, 1))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 10, 0)))
+        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 10, 0))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", .exact(Version(0, 1, 0)))
     ],
     targets: [
         // The executable. (Multiple products duplicate this with localized names.)
@@ -284,7 +285,9 @@ let package = Package(
             "WSSwift",
             .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .product(name: "SDGXcode", package: "SDGSwift"),
-            .product(name: "SDGSwiftSource", package: "SDGSwift")
+            .product(name: "SDGSwiftSource", package: "SDGSwift"),
+            .product(name: "SDGHTML", package: "SDGWeb"),
+            .product(name: "SDGCSS", package: "SDGWeb")
             ], swiftSettings: [
                 .define("UNIDENTIFIED_SYNTAX_WARNINGS", .when(configuration: .debug))
             ]),

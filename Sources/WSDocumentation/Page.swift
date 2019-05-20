@@ -14,6 +14,8 @@
 
 import WSGeneralImports
 
+import SDGHTML
+
 import WSProject
 
 internal class Page {
@@ -45,7 +47,7 @@ internal class Page {
             name = "Workspace"
         }
 
-        let link = HTMLElement("a", attributes: ["href": targetURL], contents: name, inline: true).source
+        let link = ElementSyntax("a", attributes: ["href": targetURL], contents: name, inline: true).normalizedSource()
 
         let generatedUsing: StrictString
         switch resolved {
@@ -56,13 +58,13 @@ internal class Page {
         let sdg: StrictString
         switch resolved {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            sdg = HTMLElement("span", attributes: ["lang": "la\u{2D}IT"], contents: "Soli Deo gloria.", inline: true).source
+            sdg = ElementSyntax("span", attributes: ["lang": "la\u{2D}IT"], contents: "Soli Deo gloria.", inline: true).normalizedSource()
         }
 
-        return HTMLElement("span", attributes: [
+        return ElementSyntax("span", attributes: [
             "lang": StrictString(resolved.code),
             "dir": StrictString(resolved.textDirection.htmlAttribute)
-            ], contents: generatedUsing + " " + sdg, inline: true).source
+            ], contents: generatedUsing + " " + sdg, inline: true).normalizedSource()
     }
 
     // MARK: - Initialization
@@ -90,23 +92,25 @@ internal class Page {
         mutable.replaceMatches(for: "[*package import*]", with: packageImport ?? "")
 
         mutable.replaceMatches(for: "[*index*]", with: index)
-        mutable.replaceMatches(for: "[*site root*]".scalars, with: HTML.escapeAttribute(pathToSiteRoot))
+        mutable.replaceMatches(
+            for: "[*site root*]".scalars,
+            with: HTML.escapeTextForAttribute(pathToSiteRoot))
 
         mutable.replaceMatches(for: "[*imports*]".scalars, with: symbolImports)
 
         let symbolTypeLabel: StrictString
         if let specified = symbolType {
-            symbolTypeLabel = HTMLElement("div", attributes: ["class": "symbol‐type"], contents: specified, inline: true).source
+            symbolTypeLabel = ElementSyntax("div", attributes: ["class": "symbol‐type"], contents: specified, inline: true).normalizedSource()
         } else {
             symbolTypeLabel = "" // @exempt(from: tests) Unreachable yet.
         }
         mutable.replaceMatches(for: "[*symbol type*]", with: symbolTypeLabel)
 
         mutable.replaceMatches(for: "[*compilation conditions*]", with: compilationConditions ?? "")
-        mutable.replaceMatches(for: "[*title*]", with: HTML.escape(title))
+        mutable.replaceMatches(for: "[*title*]", with: HTML.escapeTextForCharacterData(title))
         mutable.replaceMatches(for: "[*constraints*]", with: constraints ?? "")
 
-        mutable.replaceMatches(for: "[*copyright*]", with: HTMLElement("span", contents: copyright, inline: false).source)
+        mutable.replaceMatches(for: "[*copyright*]", with: ElementSyntax("span", contents: copyright, inline: false).normalizedSource())
         mutable.replaceMatches(for: "[*workspace*]", with: Page.watermark(localization: localization))
 
         mutable.replaceMatches(for: "[*content*]", with: content)

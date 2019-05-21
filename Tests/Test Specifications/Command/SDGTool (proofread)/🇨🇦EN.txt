@@ -12,21 +12,13 @@ Proofreading source code... (§1)
 .gitignore
 .travis.yml
 Documentation/[zxx] Read Me.md
-Documentation/[zxx] Related Projects.md
 Documentation/🇨🇦EN Read Me.md
-Documentation/🇨🇦EN Related Projects.md
 Documentation/🇩🇪DE Read Me.md
-Documentation/🇩🇪DE Related Projects.md
 Documentation/🇫🇷FR Read Me.md
-Documentation/🇫🇷FR Related Projects.md
 Documentation/🇬🇧EN Read Me.md
-Documentation/🇬🇧EN Related Projects.md
 Documentation/🇬🇷ΕΛ Read Me.md
-Documentation/🇬🇷ΕΛ Related Projects.md
 Documentation/🇮🇱עב Read Me.md
-Documentation/🇮🇱עב Related Projects.md
 Documentation/🇺🇸EN Read Me.md
-Documentation/🇺🇸EN Related Projects.md
 LICENSE.md
 Package.swift
 README.md

@@ -67,71 +67,15 @@ extension PackageRepository {
         try file.writeChanges(for: self, output: output)
     }
 
-    private func refreshRelatedProjects(at location: URL, for localization: LocalizationIdentifier, output: Command.Output) throws {
-
-        let relatedProjects = try configuration(output: output).documentation.relatedProjects
-        if ¬relatedProjects.isEmpty {
-            var markdown: [StrictString] = [
-                "# " + UserFacing<StrictString, ContentLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "Related Projects"
-                    }
-                }).resolved()
-            ]
-
-            for entry in relatedProjects {
-                try autoreleasepool {
-                    switch entry {
-                    case .heading(text: let translations):
-                        if let text = translations[localization] {
-                            markdown += [
-                                "",
-                                "## \(text)"
-                            ]
-                        }
-                    case .project(url: let url):
-                        let package = try PackageRepository.relatedPackage(Package(url: url), output: output)
-                        let name: StrictString
-                        if let packageName = try? package.projectName() {
-                            name = packageName // @exempt(from: tests) False positive in Xcode 10.
-                        } else {
-                            // @exempt(from: tests) Only reachable with a non‐package repository.
-                            name = StrictString(url.lastPathComponent)
-                        }
-
-                        markdown += [
-                            "",
-                            "### [\(name)](\(url.absoluteString))"
-                        ]
-
-                        if let documentation = try? PackageAPI.documentation(for: package.package().get()),
-                            let description = documentation.descriptionSection {
-                            markdown += [
-                                "",
-                                StrictString(description.text)
-                            ]
-                        }
-                    }
-                }
-            }
-
-            let body = String(markdown.joinedAsLines())
-            var file = try TextFile(possiblyAt: location)
-            file.body = body
-            try file.writeChanges(for: self, output: output)
-        } else {
-            delete(location, output: output)
-        }
-    }
-
     public func refreshReadMe(output: Command.Output) throws {
 
         for localization in try configuration(output: output).documentation.localizations {
             try autoreleasepool {
 
                 try refreshReadMe(at: ReadMeConfiguration._readMeLocation(for: location, localization: localization), for: localization, atProjectRoot: false, output: output)
-                try refreshRelatedProjects(at: ReadMeConfiguration._relatedProjectsLocation(for: location, localization: localization), for: localization, output: output)
+
+                // Deprecated file locations.
+                delete(ReadMeConfiguration._relatedProjectsLocation(for: location, localization: localization), output: output)
             }
         }
 

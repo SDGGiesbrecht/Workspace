@@ -61,6 +61,53 @@ extension PackageRepository {
         return template
     }
 
+    internal func relatedProjects(output: Command.Output) throws -> [LocalizationIdentifier: Markdown] {
+        let relatedProjects = try configuration(output: output).documentation.relatedProjects
+        var result: [LocalizationIdentifier: Markdown] = [:]
+        for localization in try configuration(output: output).documentation.localizations {
+            var markdown: [Markdown] = []
+            for entry in relatedProjects {
+                try autoreleasepool {
+                    switch entry {
+                    case .heading(text: let translations):
+                        if let text = translations[localization] {
+                            markdown += [
+                                "",
+                                "### \(text)"
+                            ]
+                        }
+                    case .project(url: let url):
+                        let package = try PackageRepository.relatedPackage(Package(url: url), output: output)
+                        let name: StrictString
+                        if let packageName = try? package.projectName() {
+                            name = packageName // @exempt(from: tests) False positive in Xcode 10.
+                        } else {
+                            // @exempt(from: tests) Only reachable with a non‐package repository.
+                            name = StrictString(url.lastPathComponent)
+                        }
+
+                        markdown += [
+                            "",
+                            "#### [\(name)](\(url.absoluteString))"
+                        ]
+
+                        if let documentation = try? PackageAPI.documentation(for: package.package().get()),
+                            let description = documentation.descriptionSection {
+                            markdown += [
+                                "",
+                                StrictString(description.text)
+                            ]
+                        }
+                    }
+                }
+            }
+            if ¬markdown.isEmpty {
+                result[localization] = markdown.joinedAsLines()
+            }
+        }
+        return result
+    }
+
     // MARK: - Documentation
 
     public func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
@@ -146,6 +193,7 @@ extension PackageRepository {
             version: configuration.documentation.currentVersion,
             installation: configuration.documentation.installationInstructions.resolve(configuration),
             importing: configuration.documentation.importingInstructions.resolve(configuration),
+            relatedProjects: try relatedProjects(output: output),
             about: configuration.documentation.about,
             copyright: copyright,
             output: output)

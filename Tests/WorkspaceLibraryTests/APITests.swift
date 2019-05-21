@@ -290,6 +290,16 @@ class APITests : TestCase {
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
+    func testHeaders() {
+        let configuration = WorkspaceConfiguration()
+        configuration.documentation.localizations = ["🇨🇦EN"]
+        PackageRepository(mock: "Headers").test(commands: [
+            ["refresh", "file‐headers"],
+            ["refresh", "examples"],
+            ["refresh", "inherited‐documentation"]
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
     func testHelp() throws {
         testCommand(Workspace.command, with: ["help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace)", overwriteSpecificationInsteadOfFailing: false)
         testCommand(Workspace.command, with: ["proofread", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace proofread)", overwriteSpecificationInsteadOfFailing: false)
@@ -303,16 +313,6 @@ class APITests : TestCase {
         testCommand(Workspace.command, with: ["refresh", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace refresh)", overwriteSpecificationInsteadOfFailing: false)
         #endif
         testCommand(Workspace.command, with: ["validate", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace validate)", overwriteSpecificationInsteadOfFailing: false)
-    }
-
-    func testHeaders() {
-        let configuration = WorkspaceConfiguration()
-        configuration.documentation.localizations = ["🇨🇦EN"]
-        PackageRepository(mock: "Headers").test(commands: [
-            ["refresh", "file‐headers"],
-            ["refresh", "examples"],
-            ["refresh", "inherited‐documentation"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testInvalidResourceDirectory() {

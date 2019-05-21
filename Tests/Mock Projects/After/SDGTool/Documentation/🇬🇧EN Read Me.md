@@ -29,8 +29,6 @@ A package.
 // 🇨🇦EN
 ```
 
-(For a list of related projects, see [here](🇬🇧EN%20Related%20Projects.md).)
-
 ## Installation
 
 SDG provides a command line tool.

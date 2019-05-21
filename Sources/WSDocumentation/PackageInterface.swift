@@ -95,6 +95,7 @@ internal struct PackageInterface {
         for package: PackageAPI,
         installation: [LocalizationIdentifier: StrictString],
         importing: [LocalizationIdentifier: StrictString],
+        relatedProjects: [LocalizationIdentifier: StrictString],
         about: [LocalizationIdentifier: StrictString],
         localizations: [LocalizationIdentifier]) -> [LocalizationIdentifier: StrictString] {
         var result: [LocalizationIdentifier: StrictString] = [:]
@@ -104,6 +105,7 @@ internal struct PackageInterface {
                     for: package,
                     hasInstallation: installation[localization] ≠ nil,
                     hasImporting: importing[localization] ≠ nil,
+                    hasRelatedProjects: relatedProjects[localization] ≠ nil,
                     hasAbout: about[localization] ≠ nil,
                     localization: localization)
             }
@@ -126,6 +128,7 @@ internal struct PackageInterface {
         for package: PackageAPI,
         hasInstallation: Bool,
         hasImporting: Bool,
+        hasRelatedProjects: Bool,
         hasAbout: Bool,
         localization: LocalizationIdentifier) -> StrictString {
         var result: [StrictString] = []
@@ -177,6 +180,11 @@ internal struct PackageInterface {
         }
         if ¬package.functions.isEmpty {
             result.append(generateIndexSection(named: SymbolPage.precedenceGroupsHeader(localization: localization), apiEntries: package.precedenceGroups.lazy.map({ APIElement.precedence($0) }), localization: localization))
+        }
+        if hasRelatedProjects {
+            result.append(generateLoneIndexEntry(
+                named: relatedProjects(localization: localization),
+                target: relatedProjectsLocation(localization: localization)))
         }
         if hasAbout {
             result.append(generateLoneIndexEntry(
@@ -244,6 +252,16 @@ internal struct PackageInterface {
         return "\(localization._directoryName)/\(importing(localization: localization)).html"
     }
 
+    private static func relatedProjects(localization: LocalizationIdentifier) -> StrictString {
+        switch localization._bestMatch {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Related Projects"
+        }
+    }
+    private static func relatedProjectsLocation(localization: LocalizationIdentifier) -> StrictString {
+        return "\(localization._directoryName)/\(relatedProjects(localization: localization)).html"
+    }
+
     private static func about(localization: LocalizationIdentifier) -> StrictString {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -263,6 +281,7 @@ internal struct PackageInterface {
          version: Version?,
          installation: [LocalizationIdentifier: StrictString],
          importing: [LocalizationIdentifier: StrictString],
+         relatedProjects: [LocalizationIdentifier: StrictString],
          about: [LocalizationIdentifier: StrictString],
          copyright: [LocalizationIdentifier?: StrictString],
          output: Command.Output) {
@@ -283,6 +302,7 @@ internal struct PackageInterface {
         self.packageImport = PackageInterface.specify(package: packageURL, version: version)
         self.installation = installation
         self.importing = importing
+        self.relatedProjects = relatedProjects
         self.about = about
         self.copyrightNotices = copyright
 
@@ -302,6 +322,7 @@ internal struct PackageInterface {
             for: api,
             installation: installation,
             importing: importing,
+            relatedProjects: relatedProjects,
             about: about,
             localizations: localizations)
     }
@@ -316,6 +337,7 @@ internal struct PackageInterface {
     private let indices: [LocalizationIdentifier: StrictString]
     private let installation: [LocalizationIdentifier: Markdown]
     private let importing: [LocalizationIdentifier: Markdown]
+    private let relatedProjects: [LocalizationIdentifier: Markdown]
     private let about: [LocalizationIdentifier: Markdown]
     private let copyrightNotices: [LocalizationIdentifier?: StrictString]
     private let packageIdentifiers: Set<String>
@@ -361,6 +383,13 @@ internal struct PackageInterface {
             location: PackageInterface.importingLocation,
             title: PackageInterface.importing,
             content: importing,
+            status: status,
+            output: output)
+        try outputGeneralPage(
+            to: outputDirectory,
+            location: PackageInterface.relatedProjectsLocation,
+            title: PackageInterface.relatedProjects,
+            content: relatedProjects,
             status: status,
             output: output)
         try outputGeneralPage(

@@ -105,8 +105,6 @@ $ workspace refresh
 
 By default, Workspace refrains from tasks which would involve modifying project files. Such tasks must be activated with a [configuration](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Libraries/WorkspaceConfiguration.html) file.
 
-(For a list of related projects, see [here](🇨🇦EN%20Related%20Projects.md).)
-
 ## Installation
 
 Workspace provides command line tools.

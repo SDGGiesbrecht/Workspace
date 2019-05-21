@@ -68,13 +68,6 @@ public struct ReadMeConfiguration : Codable {
                 "#packageDocumentation"
             ]
 
-            if let related = relatedProjectsLink(for: configuration, in: localization) {
-                readMe += [
-                    "",
-                    related
-                ]
-            }
-
             if let installation = configuration.documentation.installationInstructions.resolve(configuration)[localization] {
                 let header: StrictString
                 switch localization._bestMatch {
@@ -196,31 +189,5 @@ public struct ReadMeConfiguration : Codable {
             name = "Related Projects"
         }
         return _locationOfDocumentationFile(named: name, for: localization, in: project)
-    }
-
-    /// Attempts to construct a link to the related projects page.
-    ///
-    /// The result will be `nil` if there are no related projects or if the localization is not supported.
-    ///
-    /// - Parameters:
-    ///     - configuration: The configuration on which to base the links.
-    ///     - localization: The localization to use.
-    public static func relatedProjectsLink(for configuration: WorkspaceConfiguration, in localization: LocalizationIdentifier) -> StrictString? {
-
-        guard ¬configuration.documentation.relatedProjects.isEmpty,
-            let provided = localization._reasonableMatch else {
-            return nil
-        }
-
-        let absoluteURL = _relatedProjectsLocation(for: WorkspaceContext.current.location, localization: localization)
-        var relativeURL = StrictString(absoluteURL.path(relativeTo: WorkspaceContext.current.location))
-        relativeURL.replaceMatches(for: " ".scalars, with: "%20".scalars)
-
-        let link: StrictString
-        switch provided {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            link = "(For a list of related projects, see [here](\(relativeURL)).)"
-        }
-        return link
     }
 }

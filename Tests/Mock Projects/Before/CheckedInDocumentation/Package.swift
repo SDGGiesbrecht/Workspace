@@ -10,7 +10,9 @@ let package = Package(
         /// A library.
         .library(name: "CheckedInDocumentation", targets: ["CheckedInDocumentation"]),
         /// Extensions.
-        .library(name: "Extensions", targets: ["Extensions"])
+        .library(name: "Extensions", targets: ["Extensions"]),
+        /// An executable.
+        .executable(name: "executable", targets: ["Tool"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -21,6 +23,8 @@ let package = Package(
         .target(name: "CheckedInDocumentation", dependencies: []),
         /// Extensions.
         .target(name: "Extensions", dependencies: ["CheckedInDocumentation"]),
+        /// An executable.
+        .target(name: "Tool"),
         .testTarget(
             name: "CheckedInDocumentationTests",
             dependencies: ["CheckedInDocumentation"]),

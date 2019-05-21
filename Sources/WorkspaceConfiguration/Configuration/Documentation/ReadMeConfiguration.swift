@@ -34,7 +34,7 @@ public struct ReadMeConfiguration : Codable {
 
     /// Installation instructions.
     ///
-    /// Default instructions exist for executable and library products if `repositoryURL` and `currentVersion` are defined.
+    /// Default instructions exist for executable products if `repositoryURL` and `currentVersion` are defined.
     public var installationInstructions: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>(resolve: { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
 
         guard let packageURL = configuration.documentation.repositoryURL,
@@ -45,28 +45,32 @@ public struct ReadMeConfiguration : Codable {
         var result: [LocalizationIdentifier: StrictString] = [:]
         for localization in configuration.documentation.localizations {
             if let provided = localization._reasonableMatch {
+                result[localization] = localizedToolInstallationInstructions(
+                    packageURL: packageURL,
+                    version: version,
+                    localization: provided)
+            }
+        }
+        return result
+    })
 
-                var instructions: [StrictString] = []
-                var precedingSection = false
+    /// Importing instructions.
+    ///
+    /// Default instructions exist for library products if `repositoryURL` and `currentVersion` are defined.
+    public var importingInstructions: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>(resolve: { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
 
-                if let toolInstallation = localizedToolInstallationInstructions(packageURL: packageURL, version: version, localization: provided) {
-                    precedingSection = true
+        guard let packageURL = configuration.documentation.repositoryURL,
+            let version = configuration.documentation.currentVersion else {
+                return [:]
+        }
 
-                    instructions += [toolInstallation]
-                }
-
-                if let libraryLinking = localizedLibraryImportingInstructions(packageURL: packageURL, version: version, localization: provided) {
-                    if precedingSection {
-                        instructions += [""]
-                    }
-                    precedingSection = true
-
-                    instructions += [libraryLinking]
-                }
-
-                if ¬instructions.isEmpty {
-                    result[localization] = instructions.joinedAsLines()
-                }
+        var result: [LocalizationIdentifier: StrictString] = [:]
+        for localization in configuration.documentation.localizations {
+            if let provided = localization._reasonableMatch {
+                result[localization] = localizedLibraryImportingInstructions(
+                    packageURL: packageURL,
+                    version: version,
+                    localization: provided)
             }
         }
         return result
@@ -118,10 +122,30 @@ public struct ReadMeConfiguration : Codable {
                 ]
             }
 
-            if let instructions = configuration.documentation.readMe.installationInstructions.resolve(configuration)[localization] {
+            if let installation = configuration.documentation.readMe.installationInstructions.resolve(configuration)[localization] {
+                let header: StrictString
+                switch localization._bestMatch {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    header = "Installation"
+                }
                 readMe += [
                     "",
-                    instructions
+                    "## " + header,
+                    "",
+                    installation
+                ]
+            }
+            if let importing = configuration.documentation.readMe.importingInstructions.resolve(configuration)[localization] {
+                let header: StrictString
+                switch localization._bestMatch {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    header = "Importing"
+                }
+                readMe += [
+                    "",
+                    "## " + header,
+                    "",
+                    importing
                 ]
             }
 
@@ -261,13 +285,6 @@ public struct ReadMeConfiguration : Codable {
         let toolNames = tools.map { $0.name }
 
         return [
-            "## " + UserFacing<StrictString, ContentLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Installation"
-                }
-            }).resolved(for: localization),
-            "",
             UserFacing<StrictString, ContentLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -285,7 +302,13 @@ public struct ReadMeConfiguration : Codable {
             UserFacing<StrictString, ContentLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    var result: StrictString = "Paste the following into a terminal to install or update "
+                    var result: StrictString = ""
+                    if tools.count == 1 {
+                        result += "It"
+                    } else {
+                        result += "They"
+                    }
+                    result += " can be installed any way Swift packages can be installed. The most direct method is pasting the following into a terminal, which will either install or update "
                     if tools.count == 1 {
                         result += "it"
                     } else {
@@ -320,13 +343,6 @@ public struct ReadMeConfiguration : Codable {
         }
 
         var result = [
-            "## " + UserFacing<StrictString, ContentLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Importing"
-                }
-            }).resolved(for: localization),
-            "",
             UserFacing<StrictString, ContentLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:

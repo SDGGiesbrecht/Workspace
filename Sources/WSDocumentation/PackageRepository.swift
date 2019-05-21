@@ -144,6 +144,8 @@ extension PackageRepository {
             api: api,
             packageURL: configuration.documentation.repositoryURL,
             version: configuration.documentation.currentVersion,
+            installation: configuration.documentation.readMe.installationInstructions.resolve(configuration),
+            importing: configuration.documentation.readMe.importingInstructions.resolve(configuration),
             about: configuration.documentation.readMe.about,
             copyright: copyright,
             output: output)

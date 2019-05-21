@@ -111,7 +111,7 @@ By default, Workspace refrains from tasks which would involve modifying project 
 
 Workspace provides command line tools.
 
-Paste the following into a terminal to install or update them:
+They can be installed any way Swift packages can be installed. The most direct method is pasting the following into a terminal, which will either install or update them:
 
 ```shell
 curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.20.0 "workspace help" workspace arbeitsbereich

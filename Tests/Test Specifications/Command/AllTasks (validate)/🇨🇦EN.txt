@@ -14,7 +14,6 @@ Proofreading source code... (§1)
 .github/PULL_REQUEST_TEMPLATE.md
 .gitignore
 .travis.yml
-Documentation/🇮🇱עב Read Me.md
 LICENSE.md
 Package.swift
 Line 24

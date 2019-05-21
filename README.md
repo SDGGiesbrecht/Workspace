@@ -12,8 +12,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  -->
 
-[🇨🇦EN](Documentation/🇨🇦EN%20Read%20Me.md)
-
 macOS • Linux
 
 [Documentation](https://sdggiesbrecht.github.io/Workspace/%F0%9F%87%A8%F0%9F%87%A6EN)

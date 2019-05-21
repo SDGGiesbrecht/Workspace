@@ -42,10 +42,7 @@ public struct ReadMeConfiguration : Codable {
         var result: [LocalizationIdentifier: Markdown] = [:]
         for localization in configuration.documentation.localizations {
 
-            var readMe: [StrictString] = [
-                localizationLinks(configuration.documentation.localizations),
-                ""
-            ]
+            var readMe: [StrictString] = []
 
             if let provided = localization._reasonableMatch {
                 readMe += [
@@ -134,25 +131,6 @@ public struct ReadMeConfiguration : Codable {
             name = "Read Me"
         }
         return _locationOfDocumentationFile(named: name, for: localization, in: project)
-    }
-
-    /// Constructs links to the read‐me in its other languages.
-    ///
-    /// - Parameters:
-    ///     - localizations: An array of localizations to include.
-    public static func localizationLinks(_ localizations: [LocalizationIdentifier]) -> StrictString {
-        var links: [StrictString] = []
-        for targetLocalization in localizations {
-            let linkText = ContentLocalization.icon(for: targetLocalization.code) ?? "[\(targetLocalization.code)]"
-            let absoluteURL = _readMeLocation(for: WorkspaceContext.current.location, localization: targetLocalization)
-            var relativeURL = StrictString(absoluteURL.path(relativeTo: WorkspaceContext.current.location))
-            relativeURL.replaceMatches(for: " ".scalars, with: "%20".scalars)
-
-            var link: StrictString = "[" + linkText + "]"
-            link += "(" + relativeURL + ")"
-            links.append(link)
-        }
-        return StrictString(links.joined(separator: " • ".scalars))
     }
 
     /// Attempts to construct API links based on the specified configuration.

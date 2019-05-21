@@ -29,8 +29,6 @@ A package.
 // 🇨🇦EN
 ```
 
-(For a list of related projects, see [here](🇺🇸EN%20Related%20Projects.md).)
-
 ## Importing
 
 SDG provides a library for use with the [Swift Package Manager](https://swift.org/package-manager/).

@@ -69,19 +69,15 @@ extension PackageRepository {
 
     public func refreshReadMe(output: Command.Output) throws {
 
-        for localization in try configuration(output: output).documentation.localizations {
-            try autoreleasepool {
-
-                try refreshReadMe(at: ReadMeConfiguration._readMeLocation(for: location, localization: localization), for: localization, atProjectRoot: false, output: output)
-
-                // Deprecated file locations.
-                delete(ReadMeConfiguration._relatedProjectsLocation(for: location, localization: localization), output: output)
-            }
-        }
-
         try refreshReadMe(at: location.appendingPathComponent("README.md"), for: try developmentLocalization(output: output), atProjectRoot: true, output: output)
 
         // Deprecated file locations.
         delete(location.appendingPathComponent("Documentation/Related Projects.md"), output: output)
+        for localization in try configuration(output: output).documentation.localizations {
+            autoreleasepool {
+                delete(ReadMeConfiguration._readMeLocation(for: location, localization: localization), output: output)
+                delete(ReadMeConfiguration._relatedProjectsLocation(for: location, localization: localization), output: output)
+            }
+        }
     }
 }

@@ -75,7 +75,7 @@ public struct ReadMeConfiguration : Codable {
                 ]
             }
 
-            if let installation = configuration.documentation.readMe.installationInstructions.resolve(configuration)[localization] {
+            if let installation = configuration.documentation.installationInstructions.resolve(configuration)[localization] {
                 let header: StrictString
                 switch localization._bestMatch {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -88,7 +88,7 @@ public struct ReadMeConfiguration : Codable {
                     installation
                 ]
             }
-            if let importing = configuration.documentation.readMe.importingInstructions.resolve(configuration)[localization] {
+            if let importing = configuration.documentation.importingInstructions.resolve(configuration)[localization] {
                 let header: StrictString
                 switch localization._bestMatch {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -102,7 +102,7 @@ public struct ReadMeConfiguration : Codable {
                 ]
             }
 
-            if let about = configuration.documentation.readMe.about[localization] {
+            if let about = configuration.documentation.about[localization] {
                 let header: StrictString
                 switch localization._bestMatch {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:

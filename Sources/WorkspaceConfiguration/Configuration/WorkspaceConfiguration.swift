@@ -163,7 +163,7 @@ public final class WorkspaceConfiguration : Configuration {
             "> ―‎ישוע/Yeshuʼa"
             ].joinedAsLines()
         for localization in ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN"] as [LocalizationIdentifier] {
-            documentation.readMe.about[localization] = Markdown(about)
+            documentation.about[localization] = Markdown(about)
         }
     }
 
@@ -185,7 +185,7 @@ public final class WorkspaceConfiguration : Configuration {
             }
 
             for localization in documentation.localizations {
-                assert(documentation.readMe.about ≠ nil, "About not localized for “\(localization)”.")
+                assert(documentation.about ≠ nil, "About not localized for “\(localization)”.")
             }
         }
     }

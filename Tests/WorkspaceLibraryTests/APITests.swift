@@ -86,8 +86,8 @@ class APITests : TestCase {
         configuration.documentation.api.enforceCoverage = false
         configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "zxx"]
         configuration.documentation.api.generate = true
-        configuration.documentation.readMe.about["🇨🇦EN"] = "Stuff about the creators...\n\n...and more stuff..."
-        configuration.documentation.readMe.about["🇺🇸EN"] = ""
+        configuration.documentation.about["🇨🇦EN"] = "Stuff about the creators...\n\n...and more stuff..."
+        configuration.documentation.about["🇺🇸EN"] = ""
         configuration.documentation.api.yearFirstPublished = 2018
         configuration.documentation.api.ignoredDependencies.remove("Swift")
         let builtIn = configuration.fileHeaders.copyrightNotice
@@ -153,7 +153,7 @@ class APITests : TestCase {
         configuration.documentation.currentVersion = Version(1, 2, 3)
         configuration.documentation.repositoryURL = URL(string: "https://github.com/User/Repository")!
         configuration.documentation.localizations = ["en"]
-        configuration.documentation.readMe.installationInstructions = Lazy(resolve: { configuration in
+        configuration.documentation.installationInstructions = Lazy(resolve: { configuration in
             return [
                 "en": StrictString([
                     "## Installation",
@@ -437,9 +437,9 @@ class APITests : TestCase {
         configuration.gitHub.administrators = ["John Doe"]
         configuration.documentation.localizations = ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"]
         for localization in configuration.documentation.localizations {
-            configuration.documentation.readMe.about[localization] = "..."
+            configuration.documentation.about[localization] = "..."
         }
-        configuration.documentation.readMe.about["🇨🇦EN"] = "This project is just a test."
+        configuration.documentation.about["🇨🇦EN"] = "This project is just a test."
         configuration.documentation.relatedProjects = [
             .heading(text: ["🇨🇦EN": "Heading"]),
             .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
@@ -504,9 +504,9 @@ class APITests : TestCase {
         configuration.gitHub.administrators = ["John Doe"]
         configuration.documentation.localizations = ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"]
         for localization in configuration.documentation.localizations {
-            configuration.documentation.readMe.about[localization] = "..."
+            configuration.documentation.about[localization] = "..."
         }
-        configuration.documentation.readMe.about["🇨🇦EN"] = "This project is just a test."
+        configuration.documentation.about["🇨🇦EN"] = "This project is just a test."
         configuration.documentation.relatedProjects = [
             .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
         ]

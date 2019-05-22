@@ -1,7 +1,5 @@
 
 
-[🇨🇦EN](Documentation/🇨🇦EN%20Read%20Me.md) • [🇬🇧EN](Documentation/🇬🇧EN%20Read%20Me.md) • [🇺🇸EN](Documentation/🇺🇸EN%20Read%20Me.md) • [🇩🇪DE](Documentation/🇩🇪DE%20Read%20Me.md) • [🇫🇷FR](Documentation/🇫🇷FR%20Read%20Me.md) • [🇬🇷ΕΛ](Documentation/🇬🇷ΕΛ%20Read%20Me.md) • [🇮🇱עב](Documentation/🇮🇱עב%20Read%20Me.md) • [[zxx]](Documentation/[zxx]%20Read%20Me.md)
-
 macOS • Linux • iOS • watchOS • tvOS
 
 # PartialReadMe

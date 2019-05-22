@@ -38,7 +38,7 @@ public enum OperatingSystem : String, Codable, CaseIterable {
 
     // MARK: - Properties
 
-    internal func isolatedName(for localization: ContentLocalization) -> StrictString {
+    public func _isolatedName(for localization: ContentLocalization) -> StrictString {
         switch self {
         case .macOS:
             switch localization {

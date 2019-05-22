@@ -49,8 +49,7 @@ extension PackageRepository {
         for localization in try configuration(output: output).documentation.localizations {
             var list: [StrictString] = []
             for platform in try configuration(output: output).supportedOperatingSystems {
-                #warning("Placeholder.")
-                list.append(StrictString(platform.rawValue))
+                list.append(platform._isolatedName(for: localization._bestMatch))
             }
             result[localization] = list.sorted()
         }

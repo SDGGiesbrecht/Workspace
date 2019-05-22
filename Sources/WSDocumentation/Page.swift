@@ -74,6 +74,7 @@ internal class Page {
                   navigationPath: StrictString,
                   packageImport: StrictString?,
                   index: StrictString,
+                  platforms: StrictString,
                   symbolImports: StrictString,
                   symbolType: StrictString?,
                   compilationConditions: StrictString?,
@@ -92,6 +93,7 @@ internal class Page {
         mutable.replaceMatches(for: "[*package import*]", with: packageImport ?? "")
 
         mutable.replaceMatches(for: "[*index*]", with: index)
+        mutable.replaceMatches(for: "[*platforms*]", with: platforms)
         mutable.replaceMatches(
             for: "[*site root*]".scalars,
             with: HTML.escapeTextForAttribute(pathToSiteRoot))

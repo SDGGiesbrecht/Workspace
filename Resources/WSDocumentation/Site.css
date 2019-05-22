@@ -172,6 +172,9 @@ header.index, header.platforms {
 .index a:not(:first-child) {
     padding-left: calc(1em + calc((22 / 17) * 1rem));
 }
+.platforms span {
+    text-align: right;
+}
 
 main {
     flex-grow: 1;

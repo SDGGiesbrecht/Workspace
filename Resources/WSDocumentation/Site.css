@@ -154,20 +154,20 @@ header.navigation‐bar .swift.blockquote, .import‐header .swift.blockquote {
     width: 100%;
     display: flex;
 }
-header.index {
+header.index, header.platforms {
     height: 100%;
     max-width: 25%;
     padding: calc((12 / 17) * 1rem) 0;
     overflow-y: auto;
 }
 
-.index a {
+.index a, .platforms a {
     cursor: pointer;
     display: block;
     padding: 0.2em calc((22 / 17) * 1rem);
     overflow: hidden;
 }
-.index a:not(:first-child) {
+.index a:not(:first-child), .platforms a:not(:first-child) {
     padding-left: calc(1em + calc((22 / 17) * 1rem));
 }
 
@@ -259,13 +259,13 @@ blockquote {
     color: #FFFFFF;
 }
 
-.index {
+.index, .platforms {
     background-color: #F2F2F2;
 }
-.index a {
+.index a, .platforms a {
     color: #555555;
 }
-.index a.heading {
+.index a.heading, .platforms a.heading {
     color: #333;
 }
 
@@ -364,12 +364,12 @@ a:hover {
     line-height: 1;
 }
 
-.index {
+.index, .platforms {
     font-size: calc((12 / 17) * 1rem);
     letter-spacing: .015em;
     line-height: calc((20 / 17) * 1rem);
 }
-.index a.heading {
+.index a.heading, .platforms a.heading {
     font-weight: 600;
 }
 

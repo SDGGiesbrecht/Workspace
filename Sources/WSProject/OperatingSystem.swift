@@ -16,11 +16,11 @@ import WSGeneralImports
 
 import WorkspaceConfiguration
 
-extension OperatingSystem {
+extension Platform {
 
     // MARK: - Static Properties
 
-    public static var current: OperatingSystem {
+    public static var current: Platform {
         #if os(macOS)
         return .macOS
         #elseif os(Linux)

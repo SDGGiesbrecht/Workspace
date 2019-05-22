@@ -16,8 +16,8 @@ import SDGControlFlow
 
 import WSLocalizations
 
-/// An operating system.
-public enum OperatingSystem : String, Codable, CaseIterable {
+/// A platform.
+public enum Platform : String, Codable, CaseIterable {
 
     // MARK: - Cases
 

@@ -179,7 +179,7 @@ extension PackageRepository {
         output: Command.Output) throws {
 
         let configuration = try self.configuration(output: output)
-        if configuration.supportedOperatingSystems.contains(where: { ¬$0.supportsObjectiveC }),
+        if configuration.supportedPlatforms.contains(where: { ¬$0.supportsObjectiveC }),
             job == .macOS { // @exempt(from: tests) Unreachable on Linux.
 
             let section = validationStatus.newSection()

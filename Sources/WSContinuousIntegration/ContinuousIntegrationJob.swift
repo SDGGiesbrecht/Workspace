@@ -149,15 +149,15 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
     public func isRequired(by project: PackageRepository, output: Command.Output) throws -> Bool {
         switch self {
         case .macOS:
-            return try .macOS ∈ project.configuration(output: output).supportedOperatingSystems
+            return try .macOS ∈ project.configuration(output: output).supportedPlatforms
         case .linux:
-            return try .linux ∈ project.configuration(output: output).supportedOperatingSystems
+            return try .linux ∈ project.configuration(output: output).supportedPlatforms
         case .iOS:
-            return try .iOS ∈ project.configuration(output: output).supportedOperatingSystems
+            return try .iOS ∈ project.configuration(output: output).supportedPlatforms
         case .watchOS:
-            return try .watchOS ∈ project.configuration(output: output).supportedOperatingSystems
+            return try .watchOS ∈ project.configuration(output: output).supportedPlatforms
         case .tvOS:
-            return try .tvOS ∈ project.configuration(output: output).supportedOperatingSystems
+            return try .tvOS ∈ project.configuration(output: output).supportedPlatforms
         case .miscellaneous:
             return true
         case .deployment:
@@ -167,7 +167,7 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
         }
     }
 
-    public var operatingSystem: OperatingSystem {
+    public var platform: Platform {
         switch self {
         case .macOS, .iOS, .watchOS, .tvOS:
             return .macOS
@@ -177,7 +177,7 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
     }
 
     private var travisOperatingSystemKey: String {
-        switch operatingSystem {
+        switch platform {
         case .macOS:
             return "osx"
         case .linux:
@@ -223,7 +223,7 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
                 ])
         }
 
-        switch operatingSystem {
+        switch platform {
         case .macOS:
             result.append("      osx_image: xcode10.2")
         case .linux:
@@ -247,13 +247,13 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
             return "        \u{2D} \u{22}\(escapedCommand)\u{22}"
         }
 
-        if operatingSystem == .macOS {
+        if platform == .macOS {
             result.append(contentsOf: [
                 commandEntry("git config \u{2D}\u{2D}global protocol.version 1")
                 ])
         }
 
-        if operatingSystem == .linux {
+        if platform == .linux {
             result.append(contentsOf: [
                 commandEntry("export SWIFT_VERSION=5.0"),
                 commandEntry("eval \u{22}$(curl \u{2D}sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv\u{2D}install.sh)\u{22}")

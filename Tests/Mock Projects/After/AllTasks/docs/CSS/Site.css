@@ -144,7 +144,7 @@ header.navigation‐bar .swift.blockquote, .import‐header .swift.blockquote {
     width: 100%;
     display: flex;
 }
-header.index {
+header.index, header.platforms {
     height: 100%;
     max-width: 25%;
     padding: calc((12 / 17) * 1rem) 0;
@@ -153,6 +153,8 @@ header.index {
 
 .index a {
     cursor: pointer;
+}
+.index a, .platforms span {
     display: block;
     padding: 0.2em calc((22 / 17) * 1rem);
     overflow: hidden;
@@ -249,10 +251,10 @@ blockquote {
     color: #FFFFFF;
 }
 
-.index {
+.index, .platforms {
     background-color: #F2F2F2;
 }
-.index a {
+.index a, .platforms span {
     color: #555555;
 }
 .index a.heading {
@@ -354,7 +356,7 @@ a:hover {
     line-height: 1;
 }
 
-.index {
+.index, .platforms {
     font-size: calc((12 / 17) * 1rem);
     letter-spacing: .015em;
     line-height: calc((20 / 17) * 1rem);

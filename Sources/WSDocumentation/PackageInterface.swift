@@ -575,7 +575,8 @@ internal struct PackageInterface {
                 let pagePath = location(localization)
 
                 // Parse via proxy Swift file.
-                var documentationMarkup = StrictString(specifiedContent.lines.lazy.map({ line in
+                var documentationMarkup: StrictString = "/// ...\n///\n"
+                documentationMarkup += StrictString(specifiedContent.lines.lazy.map({ line in
                     return "/// " + StrictString(line.line)
                 }).joined(separator: "\n"))
                 documentationMarkup.append(contentsOf: "\npublic func function() {}\n")
@@ -583,11 +584,6 @@ internal struct PackageInterface {
                 let documentation = parsed.api().first!.documentation
 
                 var content = ""
-                if let firstParagraph = documentation?.descriptionSection?.renderedHTML(
-                    localization: localization.code,
-                    symbolLinks: symbolLinks[localization]!) {
-                    content.append(contentsOf: firstParagraph)
-                }
                 for paragraph in documentation?.discussionEntries ?? [] { // @exempt(from: tests)
                     content.append("\n")
                     content.append(contentsOf: paragraph.renderedHTML(

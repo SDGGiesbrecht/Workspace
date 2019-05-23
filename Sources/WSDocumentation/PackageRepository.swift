@@ -73,7 +73,7 @@ extension PackageRepository {
         }).lazy.map({ $0.name })
         build(releaseConfiguration: false)
         let toolLocations = Array(toolNames.map({ productsURL.appendingPathComponent($0) }))
-        return PackageCLI(tools: toolLocations)
+        return PackageCLI(tools: toolLocations, localizations: try configuration(output: output).documentation.localizations)
     }
 
     internal func resolvedCopyright(documentationStatus: DocumentationStatus, output: Command.Output) throws -> [LocalizationIdentifier?: StrictString] {

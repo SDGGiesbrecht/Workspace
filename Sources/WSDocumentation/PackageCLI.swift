@@ -12,14 +12,29 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+import WSGeneralImports
+
+import SDGExportedCommandLineInterface
+
+import WSProject
 
 internal struct PackageCLI {
 
     // MARK: - Initialization
 
-    internal init(tools: [URL]) {
-        #warning("Not implemented yet.")
-        print(tools)
+    internal init(tools: [URL], localizations: [LocalizationIdentifier]) {
+        var commands: [StrictString: [LocalizationIdentifier: CommandInterface]] = [:]
+        for tool in tools {
+            for localization in localizations {
+                if let interface = try? CommandInterface.loadInterface(of: tool, in: localization.code).get() {
+                    commands[interface.identifier, default: [:]][localization] = interface
+                }
+            }
+        }
+        self.commands = commands
     }
+
+    // MARK: - Properties
+
+    let commands: [StrictString: [LocalizationIdentifier: CommandInterface]]
 }

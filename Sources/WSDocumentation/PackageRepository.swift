@@ -57,8 +57,12 @@ extension PackageRepository {
     }
 
     private func loadCommandLineInterface(output: Command.Output) throws -> PackageCLI {
-        #warning("Needs debug directory—not release!")
-        let productsURL = try releaseProductsDirectory().get()
+        var productsURL = try releaseProductsDirectory().get()
+
+        // #workaround(SDGSwift 0.10.1, Should just get debug directly.)
+        productsURL.deleteLastPathComponent()
+        productsURL.appendPathComponent("debug", isDirectory: true)
+
         let toolNames = try configurationContext().manifest.products.lazy.filter({ product in
             switch product.type {
             case .library:

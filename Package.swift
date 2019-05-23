@@ -286,6 +286,7 @@ let package = Package(
             .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .product(name: "SDGXcode", package: "SDGSwift"),
             .product(name: "SDGSwiftSource", package: "SDGSwift"),
+            .product(name: "SDGExportedCommandLineInterface", package: "SDGCommandLine"),
             .product(name: "SDGHTML", package: "SDGWeb"),
             .product(name: "SDGCSS", package: "SDGWeb")
             ], swiftSettings: [

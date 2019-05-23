@@ -288,6 +288,7 @@ internal struct PackageInterface {
     init(localizations: [LocalizationIdentifier],
          developmentLocalization: LocalizationIdentifier,
          api: PackageAPI,
+         cli: PackageCLI,
          packageURL: URL?,
          version: Version?,
          platforms: [LocalizationIdentifier: [StrictString]],

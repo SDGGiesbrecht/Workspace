@@ -56,6 +56,22 @@ extension PackageRepository {
         return result
     }
 
+    private func loadCommandLineInterface(output: Command.Output) throws -> PackageCLI {
+        #warning("Needs debug directory—not release!")
+        let productsURL = try releaseProductsDirectory().get()
+        let toolNames = try configurationContext().manifest.products.lazy.filter({ product in
+            switch product.type {
+            case .library:
+                return false
+            case .executable:
+                return true
+            }
+        }).lazy.map({ $0.name })
+        build(releaseConfiguration: false)
+        let toolLocations = Array(toolNames.map({ productsURL.appendingPathComponent($0) }))
+        return PackageCLI(tools: toolLocations)
+    }
+
     internal func resolvedCopyright(documentationStatus: DocumentationStatus, output: Command.Output) throws -> [LocalizationIdentifier?: StrictString] {
 
         var template: [LocalizationIdentifier?: StrictString] = try documentationCopyright(output: output).mapKeys { $0 }
@@ -196,11 +212,13 @@ extension PackageRepository {
             package: cachedPackageGraph(),
             ignoredDependencies: configuration.documentation.api.ignoredDependencies,
             reportProgress: { output.print($0) })
+        let cli = try loadCommandLineInterface(output: output)
 
         let interface = PackageInterface(
             localizations: configuration.documentation.localizations,
             developmentLocalization: developmentLocalization,
             api: api,
+            cli: cli,
             packageURL: configuration.documentation.repositoryURL,
             version: configuration.documentation.currentVersion,
             platforms: try platforms(output: output),

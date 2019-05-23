@@ -594,11 +594,12 @@ internal struct PackageInterface {
                 let pagePath = location(localization)
 
                 // Parse via proxy Swift file.
-                var documentationMarkup = StrictString(specifiedContent.lines.lazy.map({ line in
-                    return "/// " + StrictString(line.line)
-                }).joined(separator: "\n"))
-                if ¬documentationMarkup.isEmpty {
-                    documentationMarkup.prepend(contentsOf: StrictString("/// ...\n///\n"))
+                var documentationMarkup: StrictString = ""
+                if ¬specifiedContent.isEmpty {
+                    documentationMarkup.append(contentsOf: StrictString("/// ...\n///\n"))
+                    documentationMarkup.append(contentsOf: StrictString(specifiedContent.lines.lazy.map({ line in
+                        return "/// " + StrictString(line.line)
+                    }).joined(separator: "\n")))
                 }
                 documentationMarkup.append(contentsOf: "\npublic func function() {}\n")
                 let parsed = try SyntaxTreeParser.parse(String(documentationMarkup))

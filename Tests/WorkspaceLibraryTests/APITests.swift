@@ -217,9 +217,9 @@ class APITests : TestCase {
     func testExecutable() {
         let configuration = WorkspaceConfiguration()
         configuration.optimizeForTests()
-        configuration.supportedOperatingSystems.remove(.iOS)
-        configuration.supportedOperatingSystems.remove(.watchOS)
-        configuration.supportedOperatingSystems.remove(.tvOS)
+        configuration.supportedPlatforms.remove(.iOS)
+        configuration.supportedPlatforms.remove(.watchOS)
+        configuration.supportedPlatforms.remove(.tvOS)
         configuration.documentation.localizations = ["en"]
         PackageRepository(mock: "Executable").test(commands: [
             ["refresh", "licence"],
@@ -490,9 +490,9 @@ class APITests : TestCase {
         let configuration = WorkspaceConfiguration()
         configuration._applySDGDefaults()
         configuration.optimizeForTests()
-        configuration.supportedOperatingSystems.remove(.iOS)
-        configuration.supportedOperatingSystems.remove(.watchOS)
-        configuration.supportedOperatingSystems.remove(.tvOS)
+        configuration.supportedPlatforms.remove(.iOS)
+        configuration.supportedPlatforms.remove(.watchOS)
+        configuration.supportedPlatforms.remove(.tvOS)
         configuration.licence.licence = .apache2_0
         configuration.documentation.currentVersion = Version(1, 0, 0)
         configuration.documentation.projectWebsite = URL(string: "https://example.github.io/SDG/SDG")!

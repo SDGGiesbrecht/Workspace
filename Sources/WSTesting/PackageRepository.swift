@@ -110,15 +110,6 @@ extension PackageRepository {
             }
         }).resolved().formattedAsSectionHeader())
 
-        #if TEST_SHIMS
-        if job == .macOS,
-            ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil {
-            // “swift test” gets confused inside Xcode’s test sandbox. This skips it while testing Workspace.
-            output.print("Skipping due to sandbox...")
-            return
-        }
-        #endif
-
         let testCommand: (Command.Output) -> Bool
         switch job {
         case .macOS, .linux:
@@ -179,7 +170,7 @@ extension PackageRepository {
         output: Command.Output) throws {
 
         let configuration = try self.configuration(output: output)
-        if configuration.supportedOperatingSystems.contains(where: { ¬$0.supportsObjectiveC }),
+        if configuration.supportedPlatforms.contains(where: { ¬$0.supportsObjectiveC }),
             job == .macOS { // @exempt(from: tests) Unreachable on Linux.
 
             let section = validationStatus.newSection()
@@ -190,15 +181,6 @@ extension PackageRepository {
                     return "Updating test manifests..." + section.anchor
                 }
             }).resolved().formattedAsSectionHeader())
-
-            #if TEST_SHIMS
-            if job == .macOS,
-                ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil {
-                // “swift test” gets confused inside Xcode’s test sandbox. This skips it while testing Workspace.
-                output.print("Skipping due to sandbox...")
-                return
-            }
-            #endif
 
             do {
                 switch regenerateTestLists(reportProgress: { output.print($0) }) {

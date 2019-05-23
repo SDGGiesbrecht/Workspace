@@ -131,20 +131,7 @@ extension PackageRepository {
                                 // Expected.
                             }
                         }
-                        if ProcessInfo.processInfo.environment["__XCODE_BUILT_PRODUCTS_DIR_PATHS"] ≠ nil,
-                            command == ["test"]
-                                ∨ command == ["validate"]
-                                ∨ command == ["validate", "test‐coverage"]
-                                ∨ command == ["validate", "•job", "macos"] {
-                            // Phases skipped within Xcode due to rerouting interference.
-                            if location.lastPathComponent ∈ Set(["AllTasks", "FailingCustomValidation", "FailingTests"])
-                                ∨ (command ≠ ["test"] ∧ location.lastPathComponent ∈ Set(["Default", "SDGLibrary", "SDGTool"])) {
-                                expectFailure()
-                            } else {
-                                requireSuccess()
-                            }
-                            continue
-                        }
+
                         #if os(Linux)
                         if command == ["refresh", "scripts"]
                             ∨ command == ["validate", "build"]

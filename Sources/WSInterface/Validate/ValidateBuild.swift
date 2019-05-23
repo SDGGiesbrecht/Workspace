@@ -59,7 +59,7 @@ extension Workspace.Validate {
         static func job(_ job: ContinuousIntegrationJob, isRelevantTo project: PackageRepository, andAvailableJobs validJobs: Set<ContinuousIntegrationJob>, output: Command.Output) throws -> Bool {
             return try job ∈ validJobs
                 ∧ ((try job.isRequired(by: project, output: output))
-                    ∧ job.operatingSystem == OperatingSystem.current)
+                    ∧ job.platform == Platform.current)
         }
 
         static func validate(job: ContinuousIntegrationJob?, against validJobs: Set<ContinuousIntegrationJob>, for project: PackageRepository, output: Command.Output) throws {

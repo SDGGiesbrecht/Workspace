@@ -27,9 +27,9 @@ public let configuration: WorkspaceConfiguration = {
     let configuration = WorkspaceConfiguration()
     configuration._applySDGDefaults()
 
-    configuration.supportedOperatingSystems.remove(.iOS)
-    configuration.supportedOperatingSystems.remove(.watchOS)
-    configuration.supportedOperatingSystems.remove(.tvOS)
+    configuration.supportedPlatforms.remove(.iOS)
+    configuration.supportedPlatforms.remove(.watchOS)
+    configuration.supportedPlatforms.remove(.tvOS)
 
     configuration.documentation.currentVersion = Metadata.latestStableVersion
     configuration.documentation.projectWebsite = URL(string: "https://github.com/SDGGiesbrecht/Workspace#workspace")!
@@ -49,6 +49,9 @@ public let configuration: WorkspaceConfiguration = {
 
     // Optimizations
     configuration.documentation.api.ignoredDependencies = [
+
+        // CommonMark
+        "CCommonMark",
 
         // llbuild
         "libllbuild",
@@ -87,6 +90,11 @@ public let configuration: WorkspaceConfiguration = {
         "SDGSwiftSource",
         "SDGXcode",
 
+        // SDGWeb
+        "SDGCSS",
+        "SDGHTML",
+        "SDGWebLocalizations",
+
         // Swift
         "Foundation",
         "Dispatch",
@@ -108,7 +116,7 @@ public let configuration: WorkspaceConfiguration = {
         "Xcodeproj",
 
         // SwiftSyntax
-        "SwiftSyntax",
+        "SwiftSyntax"
     ]
 
     return configuration

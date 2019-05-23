@@ -44,6 +44,18 @@ extension PackageRepository {
         return location.appendingPathComponent(PackageRepository.documentationDirectoryName)
     }
 
+    private func platforms(output: Command.Output) throws -> [LocalizationIdentifier: [StrictString]] {
+        var result: [LocalizationIdentifier: [StrictString]] = [:]
+        for localization in try configuration(output: output).documentation.localizations {
+            var list: [StrictString] = []
+            for platform in try configuration(output: output).supportedPlatforms {
+                list.append(platform._isolatedName(for: localization._bestMatch))
+            }
+            result[localization] = list.sorted()
+        }
+        return result
+    }
+
     internal func resolvedCopyright(documentationStatus: DocumentationStatus, output: Command.Output) throws -> [LocalizationIdentifier?: StrictString] {
 
         var template: [LocalizationIdentifier?: StrictString] = try documentationCopyright(output: output).mapKeys { $0 }
@@ -61,7 +73,7 @@ extension PackageRepository {
         return template
     }
 
-    internal func relatedProjects(output: Command.Output) throws -> [LocalizationIdentifier: Markdown] {
+    private func relatedProjects(output: Command.Output) throws -> [LocalizationIdentifier: Markdown] {
         let relatedProjects = try configuration(output: output).documentation.relatedProjects
         var result: [LocalizationIdentifier: Markdown] = [:]
         for localization in try configuration(output: output).documentation.localizations {
@@ -191,6 +203,7 @@ extension PackageRepository {
             api: api,
             packageURL: configuration.documentation.repositoryURL,
             version: configuration.documentation.currentVersion,
+            platforms: try platforms(output: output),
             installation: configuration.documentation.installationInstructions.resolve(configuration),
             importing: configuration.documentation.importingInstructions.resolve(configuration),
             relatedProjects: try relatedProjects(output: output),

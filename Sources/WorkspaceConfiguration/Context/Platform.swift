@@ -1,5 +1,5 @@
 /*
- OperatingSystem.swift
+ Platform.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -16,8 +16,8 @@ import SDGControlFlow
 
 import WSLocalizations
 
-/// An operating system.
-public enum OperatingSystem : String, Codable, CaseIterable {
+/// A platform.
+public enum Platform : String, Codable, CaseIterable {
 
     // MARK: - Cases
 
@@ -38,7 +38,7 @@ public enum OperatingSystem : String, Codable, CaseIterable {
 
     // MARK: - Properties
 
-    internal func isolatedName(for localization: ContentLocalization) -> StrictString {
+    public func _isolatedName(for localization: ContentLocalization) -> StrictString {
         switch self {
         case .macOS:
             switch localization {

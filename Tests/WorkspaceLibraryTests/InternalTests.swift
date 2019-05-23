@@ -31,7 +31,6 @@ class InternalTests : TestCase {
             "Workspace.swift",
             String(Script.refreshMacOS.fileName),
             String(Script.refreshLinux.fileName),
-            "Documentation",
             "Resources",
 
             // Git

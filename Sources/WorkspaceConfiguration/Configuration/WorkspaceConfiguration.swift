@@ -59,10 +59,10 @@ public final class WorkspaceConfiguration : Configuration {
     /// These scripts are provided to reduce refreshment and validation to a simple double‐click. They will also ensure that the same version of Workspace gets used for the project on every machine it is cloned to.
     public var provideWorkflowScripts: Bool = true
 
-    /// The operating systems the project supports.
+    /// The platforms the project supports.
     ///
-    /// The default assumes support for all operating systems.
-    public var supportedOperatingSystems: Set<OperatingSystem> = Set(OperatingSystem.allCases)
+    /// The default assumes support for all platforms.
+    public var supportedPlatforms: Set<Platform> = Set(Platform.allCases)
 
     /// Options related to Git.
     public var git: GitConfiguration = GitConfiguration()
@@ -236,7 +236,7 @@ public final class WorkspaceConfiguration : Configuration {
 
     private enum CodingKeys : CodingKey {
         case provideWorkflowScripts
-        case supportedOperatingSystems
+        case supportedPlatforms
         case git
         case licence
         case fileHeaders
@@ -256,7 +256,7 @@ public final class WorkspaceConfiguration : Configuration {
     public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(provideWorkflowScripts, forKey: .provideWorkflowScripts)
-        try container.encode(supportedOperatingSystems, forKey: .supportedOperatingSystems)
+        try container.encode(supportedPlatforms, forKey: .supportedPlatforms)
         try container.encode(git, forKey: .git)
         try container.encode(licence, forKey: .licence)
         try container.encode(fileHeaders, forKey: .fileHeaders)
@@ -277,7 +277,7 @@ public final class WorkspaceConfiguration : Configuration {
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         provideWorkflowScripts = try container.decode(Bool.self, forKey: .provideWorkflowScripts)
-        supportedOperatingSystems = try container.decode(Set<OperatingSystem>.self, forKey: .supportedOperatingSystems)
+        supportedPlatforms = try container.decode(Set<Platform>.self, forKey: .supportedPlatforms)
         git = try container.decode(GitConfiguration.self, forKey: .git)
         licence = try container.decode(LicenceConfiguration.self, forKey: .licence)
         fileHeaders = try container.decode(FileHeaderConfiguration.self, forKey: .fileHeaders)

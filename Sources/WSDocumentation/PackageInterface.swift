@@ -272,6 +272,17 @@ internal struct PackageInterface {
         return "\(localization._directoryName)/\(about(localization: localization)).html"
     }
 
+    private static func generate(platforms: [StrictString]) -> StrictString {
+        var result: [StrictString] = []
+        for platform in platforms.sorted() {
+            result.append(ElementSyntax(
+                "span",
+                contents: HTML.escapeTextForCharacterData(platform),
+                inline: false).normalizedSource())
+        }
+        return result.joinedAsLines()
+    }
+
     // MARK: - Initialization
 
     init(localizations: [LocalizationIdentifier],
@@ -279,6 +290,7 @@ internal struct PackageInterface {
          api: PackageAPI,
          packageURL: URL?,
          version: Version?,
+         platforms: [LocalizationIdentifier: [StrictString]],
          installation: [LocalizationIdentifier: StrictString],
          importing: [LocalizationIdentifier: StrictString],
          relatedProjects: [LocalizationIdentifier: StrictString],
@@ -325,6 +337,7 @@ internal struct PackageInterface {
             relatedProjects: relatedProjects,
             about: about,
             localizations: localizations)
+        self.platforms = platforms.mapValues { PackageInterface.generate(platforms: $0) }
     }
 
     // MARK: - Properties
@@ -335,6 +348,7 @@ internal struct PackageInterface {
     private let api: APIElement
     private let packageImport: StrictString?
     private let indices: [LocalizationIdentifier: StrictString]
+    private let platforms: [LocalizationIdentifier: StrictString]
     private let installation: [LocalizationIdentifier: Markdown]
     private let importing: [LocalizationIdentifier: Markdown]
     private let relatedProjects: [LocalizationIdentifier: Markdown]
@@ -413,6 +427,7 @@ internal struct PackageInterface {
                     navigationPath: [api],
                     packageImport: packageImport,
                     index: indices[localization]!,
+                    platforms: platforms[localization]!,
                     symbol: api,
                     package: packageAPI,
                     copyright: copyright(for: localization, status: status),
@@ -437,6 +452,7 @@ internal struct PackageInterface {
                         navigationPath: [api, library],
                         packageImport: packageImport,
                         index: indices[localization]!,
+                        platforms: platforms[localization]!,
                         symbol: library,
                         package: packageAPI,
                         copyright: copyright(for: localization, status: status),
@@ -462,6 +478,7 @@ internal struct PackageInterface {
                         navigationPath: [api, module],
                         packageImport: packageImport,
                         index: indices[localization]!,
+                        platforms: platforms[localization]!,
                         symbol: module,
                         package: packageAPI,
                         copyright: copyright(for: localization, status: status),
@@ -495,6 +512,7 @@ internal struct PackageInterface {
                             navigationPath: [api, symbol],
                             packageImport: packageImport,
                             index: indices[localization]!,
+                            platforms: platforms[localization]!,
                             symbol: symbol,
                             package: packageAPI,
                             copyright: copyright(for: localization, status: status),
@@ -541,6 +559,7 @@ internal struct PackageInterface {
                     navigationPath: navigation,
                     packageImport: packageImport,
                     index: indices[localization]!,
+                    platforms: platforms[localization]!,
                     symbol: symbol,
                     package: packageAPI,
                     copyright: copyright(for: localization, status: status),
@@ -575,19 +594,18 @@ internal struct PackageInterface {
                 let pagePath = location(localization)
 
                 // Parse via proxy Swift file.
-                var documentationMarkup = StrictString(specifiedContent.lines.lazy.map({ line in
-                    return "/// " + StrictString(line.line)
-                }).joined(separator: "\n"))
+                var documentationMarkup: StrictString = ""
+                if ¬specifiedContent.isEmpty {
+                    documentationMarkup.append(contentsOf: StrictString("/// ...\n///\n"))
+                    documentationMarkup.append(contentsOf: StrictString(specifiedContent.lines.lazy.map({ line in
+                        return "/// " + StrictString(line.line)
+                    }).joined(separator: "\n")))
+                }
                 documentationMarkup.append(contentsOf: "\npublic func function() {}\n")
                 let parsed = try SyntaxTreeParser.parse(String(documentationMarkup))
                 let documentation = parsed.api().first!.documentation
 
                 var content = ""
-                if let firstParagraph = documentation?.descriptionSection?.renderedHTML(
-                    localization: localization.code,
-                    symbolLinks: symbolLinks[localization]!) {
-                    content.append(contentsOf: firstParagraph)
-                }
                 for paragraph in documentation?.discussionEntries ?? [] { // @exempt(from: tests)
                     content.append("\n")
                     content.append(contentsOf: paragraph.renderedHTML(
@@ -607,6 +625,7 @@ internal struct PackageInterface {
                         ]),
                     packageImport: packageImport,
                     index: indices[localization]!,
+                    platforms: platforms[localization]!,
                     symbolImports: "",
                     symbolType: nil,
                     compilationConditions: nil,

@@ -28,6 +28,7 @@ The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime
         // .package(url: /* package url */, from: "1.0.0"),
 
 README.md
+Resources/Tool/.gitignore
 Sources/CheckedInDocumentation/CheckedInDocumentation.swift
 Line 60
 Parameters should be grouped under a single callout. (parameterGrouping)
@@ -38,6 +39,7 @@ Parameters should be grouped under a single callout. (parameterGrouping)
     /// - Parameter parameterTwo: The second parameter.
 
 Sources/Extensions/Extensions.swift
+Sources/Tool/.gitignore
 Sources/Tool/main.swift
 Tests/CheckedInDocumentationTests/CheckedInDocumentationTests.swift
 Line 4

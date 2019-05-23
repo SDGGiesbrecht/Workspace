@@ -78,7 +78,12 @@ class APITests : TestCase {
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
-    func testCheckedInDocumentation() {
+    func testCheckedInDocumentation() throws {
+        let output = try mockCommand.withRootBehaviour().execute(with: ["export‐interface", "•language", "en"]).get()
+        try output.save(
+            to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
+                .appendingPathComponent("Resources/Tool/English.txt"))
+
         let configuration = WorkspaceConfiguration()
         configuration.optimizeForTests()
         configuration.documentation.repositoryURL = URL(string: "does://not.exist.git")!

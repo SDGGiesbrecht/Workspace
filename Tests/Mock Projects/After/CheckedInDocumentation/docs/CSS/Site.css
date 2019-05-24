@@ -275,7 +275,7 @@ blockquote {
 .command {
     color: rgb(0, 198, 0);
 }
-.argument, .argument‐type {
+.option, .argument‐type {
     color: rgb(0, 190, 204);
 }
 
@@ -349,7 +349,7 @@ a:hover {
     text-decoration: underline;
 }
 
-.command, .argument {
+.command, .option {
     font-weight: bold;
 }
 

@@ -1,3 +1,5 @@
+import EnableBuild
+
 struct CheckedInDocumentation {
     var text = "Hello, World!"
 }
@@ -75,7 +77,9 @@ public struct Structure : Equatable {
     /// - Recommended: better()
     ///
     /// - RecommendedOver: worse()
-    public static func typeMethod(parameterOne: Int, parameterTwo: Int) throws -> Int {}
+    public static func typeMethod(parameterOne: Int, parameterTwo: Int) throws -> Int {
+        return 0
+    }
 
     /// An operator.
     ///
@@ -230,13 +234,14 @@ public protocol IntermediateProtocol : Protocol {
 public struct TopConformer : IntermediateProtocol {
     public typealias AssociatedType = Bool
     public func intermediateProtocolMethod() {}
+    public func protocolRequirement() {}
 }
 
 /// A variable with a closure type.
 ///
 /// - Parameters:
 ///     - aParameter: A parameter.
-public var variable: (_ aParameter: Type) -> Void
+public var variable: (_ aParameter: Type) -> Void = { _ in }
 
 /// A function with a closure in a tuple.
 ///

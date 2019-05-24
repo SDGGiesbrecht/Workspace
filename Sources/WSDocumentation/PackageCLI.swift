@@ -39,6 +39,9 @@ internal struct PackageCLI {
 
     internal init(tools: [URL], localizations: [LocalizationIdentifier]) {
         var commands: [StrictString: CommandInterfaceInformation] = [:]
+        #warning("Temporary.")
+        self.commands = commands
+        return
         for tool in tools {
             for localization in localizations {
                 if let interface = try? CommandInterface.loadInterface(of: tool, in: localization.code).get() {

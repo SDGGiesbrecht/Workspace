@@ -125,14 +125,13 @@ internal class CommandPage : Page {
         return SymbolPage.generateParameterLikeSection(
             heading: heading,
             entries: interface.options
-                .lazy.filter({ $0.identifier ≠ "Boolean" })
                 .sorted(by: { $0.name < $1.name })
                 .map({ option in
 
                 let optionElement = ElementSyntax(
                     "span",
                     attributes: ["class": "option"],
-                    contents: option.name,
+                    contents: "•" + option.name,
                     inline: true)
 
                 let type = ElementSyntax(

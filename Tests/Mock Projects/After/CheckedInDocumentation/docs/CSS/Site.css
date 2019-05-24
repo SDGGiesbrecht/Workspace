@@ -272,6 +272,10 @@ blockquote {
     color: #666;
 }
 
+.command {
+    color: rgb(0, 198, 0);
+}
+
 .callout, .conformance‐filter {
     background-color: #FAFAFA;
     border-left-color: #E6E6E6;
@@ -340,6 +344,10 @@ a:link, a:visited {
 }
 a:hover {
     text-decoration: underline;
+}
+
+.command {
+    font-weight: bold;
 }
 
 .callout‐label, .conformance‐filter‐label {

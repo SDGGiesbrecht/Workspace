@@ -576,7 +576,8 @@ internal class SymbolPage : Page {
         return generateChildrenSection(
             localization: localization,
             heading: toolsHeader(localization: localization),
-            children: commands,
+            children: commands.values.sorted(
+                by: { $0.interfaces[localization]!.name < $1.interfaces[localization]!.name }),
             pathToSiteRoot: pathToSiteRoot)
     }
 
@@ -946,11 +947,40 @@ internal class SymbolPage : Page {
         localization: LocalizationIdentifier,
         heading: StrictString,
         escapeHeading: Bool = true,
-        children: [StrictString: CommandInterfaceInformation],
+        children: [CommandInterfaceInformation],
         pathToSiteRoot: StrictString) -> StrictString {
 
-        #warning("Not implemented yet.")
-        return ""
+        func getEntryContents(_ child: CommandInterfaceInformation) -> [StrictString] {
+            var entry: [StrictString] = []
+
+            let target = pathToSiteRoot + child.relativePagePath[localization]!
+            entry.append(ElementSyntax(
+                "a",
+                attributes: ["href": HTML.percentEncodeURLPath(target)],
+                contents: ElementSyntax(
+                    "code",
+                    attributes: ["class": "shell"],
+                    contents: ElementSyntax(
+                        "span",
+                        attributes: ["class": "command"],
+                        contents: child.interfaces[localization]!.name,
+                        inline: true).normalizedSource(),
+                    inline: true).normalizedSource(),
+                inline: true).normalizedSource())
+
+            entry.append(ElementSyntax(
+                "p",
+                contents: child.interfaces[localization]!.description,
+                inline: false).normalizedSource())
+
+            return entry
+        }
+
+        return generateChildrenSection(
+            heading: heading,
+            escapeHeading: escapeHeading,
+            children: children,
+            childContents: getEntryContents)
     }
 
     private static func generateChildrenSection(
@@ -1025,7 +1055,7 @@ internal class SymbolPage : Page {
         escapeHeading: Bool,
         children: [T],
         childContents: (T) -> [StrictString],
-        childAttributes: (T) -> [StrictString: StrictString]) -> StrictString {
+        childAttributes: (T) -> [StrictString: StrictString] = { _ in [:] }) -> StrictString {
 
         var sectionContents: [StrictString] = [
             ElementSyntax(

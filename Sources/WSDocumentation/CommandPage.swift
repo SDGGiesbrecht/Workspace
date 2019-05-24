@@ -95,7 +95,7 @@ internal class CommandPage : Page {
         let arguments = interface.arguments.map { argument in
             ElementSyntax(
                 "span",
-                attributes: ["class": "argument"],
+                attributes: ["class": "argument‐type"],
                 contents: "[" + argument.name + "]",
                 inline: true)
         }

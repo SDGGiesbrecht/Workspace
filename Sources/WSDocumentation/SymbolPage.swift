@@ -358,10 +358,23 @@ internal class SymbolPage : Page {
         return nil
     }
 
-    private static func generateDescriptionSection(symbol: APIElement, navigationPath: [APIElement], localization: LocalizationIdentifier, packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
+    private static func generateDescriptionSection(
+        symbol: APIElement,
+        navigationPath: [APIElement],
+        localization: LocalizationIdentifier,
+        packageIdentifiers: Set<String>,
+        symbolLinks: [String: String],
+        status: DocumentationStatus) -> StrictString {
         if let documentation = symbol.documentation,
             let description = documentation.descriptionSection {
-            return ElementSyntax("div", attributes: ["class": "description"], contents: StrictString(description.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)), inline: false).normalizedSource()
+            return ElementSyntax(
+                "div",
+                attributes: ["class": "description"],
+                contents: StrictString(description.renderedHTML(
+                    localization: localization.code,
+                    internalIdentifiers: packageIdentifiers,
+                    symbolLinks: symbolLinks)),
+                inline: false).normalizedSource()
         }
         if case .extension = symbol {} else {
             status.reportMissingDescription(symbol: symbol, navigationPath: navigationPath)

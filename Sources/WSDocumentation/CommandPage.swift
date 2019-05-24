@@ -14,6 +14,8 @@
 
 import WSGeneralImports
 
+import SDGHTML
+
 import WSProject
 
 internal class CommandPage : Page {
@@ -46,14 +48,22 @@ internal class CommandPage : Page {
             symbolType = "executable" // From “products: [.executable(...)]”
         }
 
-        let content: [StrictString] = ["[Content]"]
-
         let navigationPathLinks = navigationPath.map { commandInformation in
             return (
                 label: commandInformation.interfaces[localization]!.name,
                 path: commandInformation.relativePagePath[localization]!
             )
         }
+
+        var content: [StrictString] = ["[Content]"]
+        content.append(ElementSyntax(
+            "div",
+            attributes: ["class": "description"],
+            contents: ElementSyntax(
+                "p",
+                contents: command.interfaces[localization]!.description,
+                inline: false).normalizedSource(),
+            inline: false).normalizedSource())
 
         super.init(
             localization: localization,

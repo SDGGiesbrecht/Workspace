@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import WSGeneralImports
 
 import SDGExportedCommandLineInterface
@@ -123,12 +124,15 @@ internal class CommandPage : Page {
 
         return SymbolPage.generateParameterLikeSection(
             heading: heading,
-            entries: interface.options.map({ option in
+            entries: interface.options
+                .lazy.filter({ $0.identifier ≠ "Boolean" })
+                .sorted(by: { $0.name < $1.name })
+                .map({ option in
 
                 let optionElement = ElementSyntax(
                     "span",
                     attributes: ["class": "option"],
-                    contents: interface.name,
+                    contents: option.name,
                     inline: true)
 
                 let type = ElementSyntax(
@@ -139,7 +143,7 @@ internal class CommandPage : Page {
 
                 let term = ElementSyntax(
                     "code",
-                    attributes: ["class": "swift blockquote"],
+                    attributes: ["class": "swift code"],
                     contents: ([optionElement, type]).map({ $0.normalizedSource() }).joined(separator: " "),
                     inline: true).normalizedSource()
 
@@ -179,7 +183,7 @@ internal class CommandPage : Page {
 
                 let term = ElementSyntax(
                     "code",
-                    attributes: ["class": "swift blockquote"],
+                    attributes: ["class": "swift code"],
                     contents: argumentElement.normalizedSource(),
                     inline: true).normalizedSource()
 

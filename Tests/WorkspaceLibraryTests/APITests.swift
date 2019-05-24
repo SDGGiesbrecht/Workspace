@@ -107,7 +107,7 @@ class APITests : TestCase {
             ["refresh"],
             ["validate", "•job", "miscellaneous"],
             ["validate", "•job", "deployment"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: true)
     }
 
     func testCheckForUpdates() throws {

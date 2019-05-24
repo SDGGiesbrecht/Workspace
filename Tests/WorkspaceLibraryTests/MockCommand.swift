@@ -29,6 +29,6 @@ let mockCommand = Command(
             return "does something."
         }
     }),
-    directArguments: [],
+    directArguments: [ArgumentType.string],
     options: [],
     execution: { _, _, _ in })

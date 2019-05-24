@@ -1,6 +1,10 @@
 {
   "arguments" : [
-
+    {
+      "description" : "An arbitrary string.",
+      "identifier" : "string",
+      "name" : "string"
+    }
   ],
   "description" : "does something.",
   "identifier" : "do‐something",

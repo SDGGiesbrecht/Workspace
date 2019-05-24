@@ -25,6 +25,7 @@ class APITests : TestCase {
     static var triggeredVersionChecks: Void?
     override func setUp() {
         super.setUp()
+        Command.Output.testMode = true
         PackageRepository.emptyRelatedProjectCache() // Make sure starting state is consistent.
         CustomTask.emptyCache()
     }

@@ -20,14 +20,44 @@ import WSProject
 
 internal struct PackageCLI {
 
+    // MARK: - Static Methods
+
+    private static func toolsDirectory(for localization: LocalizationIdentifier) -> StrictString {
+        var result = localization._directoryName + "/"
+        if let match = localization._reasonableMatch {
+            switch match {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                result += "Tools"
+            }
+        } else {
+            result += "executable"
+        }
+        return result
+    }
+
     // MARK: - Initialization
 
     internal init(tools: [URL], localizations: [LocalizationIdentifier]) {
-        var commands: [StrictString: [LocalizationIdentifier: CommandInterface]] = [:]
+        var commands: [StrictString: CommandInterfaceInformation] = [:]
         for tool in tools {
             for localization in localizations {
                 if let interface = try? CommandInterface.loadInterface(of: tool, in: localization.code).get() {
-                    commands[interface.identifier, default: [:]][localization] = interface
+                    commands[
+                        interface.identifier,
+                        default: CommandInterfaceInformation()].interfaces[localization] = interface
+
+                    let directory = PackageCLI.toolsDirectory(for: localization)
+                    let filename = Page.sanitize(fileName: interface.name)
+                    let path = directory + "/" + filename + ".html"
+
+                    commands[
+                        interface.identifier,
+                        default: CommandInterfaceInformation()].relativePagePath[localization] = path
+                } else {
+                    #warning("Debugging only.")
+                    print(tool)
+                    print(CommandInterface.loadInterface(of: tool, in: localization.code))
+                    assertionFailure("Failed.")
                 }
             }
         }
@@ -36,5 +66,5 @@ internal struct PackageCLI {
 
     // MARK: - Properties
 
-    let commands: [StrictString: [LocalizationIdentifier: CommandInterface]]
+    let commands: [StrictString: CommandInterfaceInformation]
 }

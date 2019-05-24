@@ -105,6 +105,7 @@ internal class SymbolPage : Page {
         partiallyConstructedContent: [StrictString]) {
         var content = partiallyConstructedContent
 
+        #warning("Need to generate tool section too.")
         content.append(SymbolPage.generateLibrariesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
 
         content.append(SymbolPage.generateModulesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
@@ -540,6 +541,19 @@ internal class SymbolPage : Page {
             result.append(ElementSyntax("div", attributes: ["class": "main‐text‐column"], contents: sections.joinedAsLines(), inline: false).normalizedSource())
             return result.joinedAsLines()
         })
+    }
+
+    internal static func toolsHeader(localization: LocalizationIdentifier) -> StrictString {
+        let heading: StrictString
+        if let match = localization._reasonableMatch {
+            switch match {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                heading = "Command Line Tools"
+            }
+        } else {
+            heading = "executable" // From “products: [.executable(...)]”
+        }
+        return heading
     }
 
     internal static func librariesHeader(localization: LocalizationIdentifier) -> StrictString {

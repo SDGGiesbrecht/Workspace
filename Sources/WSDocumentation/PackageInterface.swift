@@ -93,6 +93,7 @@ internal struct PackageInterface {
 
     private static func generateIndices(
         for package: PackageAPI,
+        tools: PackageCLI,
         installation: [LocalizationIdentifier: StrictString],
         importing: [LocalizationIdentifier: StrictString],
         relatedProjects: [LocalizationIdentifier: StrictString],
@@ -103,6 +104,7 @@ internal struct PackageInterface {
             autoreleasepool {
                 result[localization] = generateIndex(
                     for: package,
+                    tools: tools,
                     hasInstallation: installation[localization] ≠ nil,
                     hasImporting: importing[localization] ≠ nil,
                     hasRelatedProjects: relatedProjects[localization] ≠ nil,
@@ -126,6 +128,7 @@ internal struct PackageInterface {
 
     private static func generateIndex(
         for package: PackageAPI,
+        tools: PackageCLI,
         hasInstallation: Bool,
         hasImporting: Bool,
         hasRelatedProjects: Bool,
@@ -152,6 +155,14 @@ internal struct PackageInterface {
             result.append(generateLoneIndexEntry(
                 named: importing(localization: localization),
                 target: importingLocation(localization: localization)))
+        }
+
+        if ¬tools.commands.isEmpty {
+            #warning("Still using libraries as children.")
+            result.append(generateIndexSection(
+                named: SymbolPage.toolsHeader(localization: localization),
+                apiEntries: package.libraries.lazy.map({ APIElement.library($0) }),
+                localization: localization))
         }
 
         if ¬package.libraries.isEmpty {
@@ -205,6 +216,23 @@ internal struct PackageInterface {
                 ],
                 contents: HTML.escapeTextForCharacterData(StrictString(entry.name.source())),
                 inline: false).normalizedSource())
+        }
+        return generateIndexSection(named: name, contents: entries.joinedAsLines())
+    }
+
+    private static func generateIndexSection(named name: StrictString, tools: PackageCLI, localization: LocalizationIdentifier) -> StrictString {
+        var entries: [StrictString] = []
+        for (_, entry) in tools.commands {
+            if let interface = entry.interfaces[localization] {
+                entries.append(ElementSyntax(
+                    "a",
+                    attributes: [
+                        "href": "[*site root*]\(HTML.percentEncodeURLPath(entry.relativePagePath[localization]!))"
+                    ],
+                    contents: HTML.escapeTextForCharacterData(StrictString(interface.name)),
+                    inline: false).normalizedSource())
+            }
+
         }
         return generateIndexSection(named: name, contents: entries.joinedAsLines())
     }
@@ -333,6 +361,7 @@ internal struct PackageInterface {
 
         self.indices = PackageInterface.generateIndices(
             for: api,
+            tools: cli,
             installation: installation,
             importing: importing,
             relatedProjects: relatedProjects,

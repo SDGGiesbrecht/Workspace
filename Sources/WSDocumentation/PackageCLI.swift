@@ -53,11 +53,6 @@ internal struct PackageCLI {
                     commands[
                         interface.identifier,
                         default: CommandInterfaceInformation()].relativePagePath[localization] = path
-                } else {
-                    #warning("Debugging only.")
-                    print(tool)
-                    print(CommandInterface.loadInterface(of: tool, in: localization.code))
-                    assertionFailure("Failed.")
                 }
             }
         }

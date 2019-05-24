@@ -158,10 +158,9 @@ internal struct PackageInterface {
         }
 
         if ¬tools.commands.isEmpty {
-            #warning("Still using libraries as children.")
             result.append(generateIndexSection(
                 named: SymbolPage.toolsHeader(localization: localization),
-                apiEntries: package.libraries.lazy.map({ APIElement.library($0) }),
+                tools: tools,
                 localization: localization))
         }
 

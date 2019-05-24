@@ -473,6 +473,33 @@ internal struct PackageInterface {
         }
     }
 
+    private func outputToolPages(
+        to outputDirectory: URL,
+        status: DocumentationStatus,
+        output: Command.Output,
+        coverageCheckOnly: Bool) throws {
+        if coverageCheckOnly {
+            return
+        }
+        for localization in localizations {
+            for tool in cli.commands.values {
+                try autoreleasepool {
+                    let location = tool.pageURL(in: outputDirectory, for: localization)
+                    try CommandPage(
+                        localization: localization,
+                        pathToSiteRoot: "../../",
+                        navigationPath: [tool],
+                        packageImport: packageImport,
+                        index: indices[localization]!,
+                        platforms: platforms[localization]!,
+                        command: tool,
+                        copyright: copyright(for: localization, status: status),
+                        output: output).contents.save(to: location)
+                }
+            }
+        }
+    }
+
     private func outputLibraryPages(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output, coverageCheckOnly: Bool) throws {
         for localization in localizations {
             for library in api.libraries.lazy.map({ APIElement.library($0) }) {

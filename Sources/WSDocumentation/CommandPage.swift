@@ -128,27 +128,30 @@ internal class CommandPage : Page {
                 .sorted(by: { $0.name < $1.name })
                 .map({ option in
 
-                let optionElement = ElementSyntax(
-                    "span",
-                    attributes: ["class": "option"],
-                    contents: "•" + option.name,
-                    inline: true)
+                    let optionElement = ElementSyntax(
+                        "span",
+                        attributes: ["class": "option"],
+                        contents: "•" + option.name,
+                        inline: true)
 
-                let type = ElementSyntax(
-                    "span",
-                    attributes: ["class": "argument‐type"],
-                    contents: "[" + option.type.name + "]",
-                    inline: true)
+                    var tokens = [optionElement]
+                    if ¬option.isFlag {
+                        tokens.append(ElementSyntax(
+                            "span",
+                            attributes: ["class": "argument‐type"],
+                            contents: "[" + option.type.name + "]",
+                            inline: true))
+                    }
 
-                let term = ElementSyntax(
-                    "code",
-                    attributes: ["class": "swift code"],
-                    contents: ([optionElement, type]).map({ $0.normalizedSource() }).joined(separator: " "),
-                    inline: true).normalizedSource()
+                    let term = ElementSyntax(
+                        "code",
+                        attributes: ["class": "swift code"],
+                        contents: tokens.map({ $0.normalizedSource() }).joined(separator: " "),
+                        inline: true).normalizedSource()
 
-                let description = ElementSyntax("p", contents: option.description, inline: true).normalizedSource()
-                return (term: term, description: description)
-            }))
+                    let description = ElementSyntax("p", contents: option.description, inline: true).normalizedSource()
+                    return (term: term, description: description)
+                }))
     }
 
     private static func generateArgumentTypesSection(
@@ -165,10 +168,11 @@ internal class CommandPage : Page {
         for argument in interface.arguments {
             arguments[argument.identifier] = argument
         }
-        for option in interface.options {
+        for option in interface.options where ¬option.isFlag {
             arguments[option.type.identifier] = option.type
         }
-        let sortedArguments = arguments.values.sorted(by: { $0.name < $1.name })
+        let sortedArguments = arguments.values
+            .sorted(by: { $0.name < $1.name })
 
         return SymbolPage.generateParameterLikeSection(
             heading: heading,

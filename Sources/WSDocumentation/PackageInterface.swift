@@ -407,10 +407,31 @@ internal struct PackageInterface {
             }
         }).resolved())
 
-        try outputPackagePages(to: outputDirectory, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
-        try outputLibraryPages(to: outputDirectory, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
-        try outputModulePages(to: outputDirectory, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
-        try outputTopLevelSymbols(to: outputDirectory, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
+        try outputPackagePages(
+            to: outputDirectory,
+            status: status,
+            output: output,
+            coverageCheckOnly: coverageCheckOnly)
+        try outputToolPages(
+            to: outputDirectory,
+            status: status,
+            output: output,
+            coverageCheckOnly: coverageCheckOnly)
+        try outputLibraryPages(
+            to: outputDirectory,
+            status: status,
+            output: output,
+            coverageCheckOnly: coverageCheckOnly)
+        try outputModulePages(
+            to: outputDirectory,
+            status: status,
+            output: output,
+            coverageCheckOnly: coverageCheckOnly)
+        try outputTopLevelSymbols(
+            to: outputDirectory,
+            status: status,
+            output: output,
+            coverageCheckOnly: coverageCheckOnly)
 
         if coverageCheckOnly {
             return

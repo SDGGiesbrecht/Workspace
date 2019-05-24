@@ -61,6 +61,8 @@ internal class CommandPage : Page {
         var content: [StrictString] = []
         content.append(SymbolPage.generateDescriptionSection(contents: interface.description))
         content.append(CommandPage.generateDeclarationSection(localization: localization, interface: interface))
+        content.append(CommandPage.generateOptionsSection(localization: localization, interface: interface))
+        content.append(CommandPage.generateArgumentTypesSection(localization: localization, interface: interface))
 
         super.init(
             localization: localization,

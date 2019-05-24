@@ -14,6 +14,7 @@
 
 import WSGeneralImports
 
+import SDGExportedCommandLineInterface
 import SDGHTML
 
 import WSProject
@@ -31,10 +32,12 @@ internal class CommandPage : Page {
         copyright: StrictString,
         output: Command.Output) {
 
+        let interface = command.interfaces[localization]!
+
         output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
-                return "..." + StrictString(command.interfaces[localization]!.name) + "..."
+                return "..." + StrictString(interface.name) + "..."
             }
         }).resolved())
 
@@ -55,15 +58,9 @@ internal class CommandPage : Page {
             )
         }
 
-        var content: [StrictString] = ["[Content]"]
-        content.append(ElementSyntax(
-            "div",
-            attributes: ["class": "description"],
-            contents: ElementSyntax(
-                "p",
-                contents: command.interfaces[localization]!.description,
-                inline: false).normalizedSource(),
-            inline: false).normalizedSource())
+        var content: [StrictString] = []
+        content.append(SymbolPage.generateDescriptionSection(contents: interface.description))
+        content.append(CommandPage.generateDeclarationSection(localization: localization, interface: interface))
 
         super.init(
             localization: localization,
@@ -79,9 +76,36 @@ internal class CommandPage : Page {
             symbolType: symbolType,
             compilationConditions: nil,
             constraints: nil,
-            title: command.interfaces[localization]!.name,
+            title: interface.name,
             content: content.joinedAsLines(),
             extensions: "",
             copyright: copyright)
+    }
+
+    private static func generateDeclarationSection(
+        localization: LocalizationIdentifier,
+        interface: CommandInterface) -> StrictString {
+
+        let command = ElementSyntax(
+            "span",
+            attributes: ["class": "command"],
+            contents: interface.name,
+            inline: true)
+
+        let arguments = interface.arguments.map { argument in
+            ElementSyntax(
+                "span",
+                attributes: ["class": "argument"],
+                contents: "[" + argument.name + "]",
+                inline: true)
+        }
+
+        return SymbolPage.generateDeclarationSection(
+            localization: localization,
+            declaration: ElementSyntax(
+                "code",
+                attributes: ["class": "swift blockquote"],
+                contents: ([command] + arguments).map({ $0.normalizedSource() }).joined(separator: " "),
+                inline: true).normalizedSource())
     }
 }

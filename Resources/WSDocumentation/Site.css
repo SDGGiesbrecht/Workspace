@@ -285,6 +285,9 @@ blockquote {
 .command {
     color: rgb(0, 198, 0);
 }
+.argument, .argument‐type {
+    color: rgb(0, 190, 204);
+}
 
 .callout, .conformance‐filter {
     background-color: #FAFAFA;
@@ -356,7 +359,7 @@ a:hover {
     text-decoration: underline;
 }
 
-.command {
+.command, .argument {
     font-weight: bold;
 }
 

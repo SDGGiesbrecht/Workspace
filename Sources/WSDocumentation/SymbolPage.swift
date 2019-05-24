@@ -358,6 +358,14 @@ internal class SymbolPage : Page {
         return nil
     }
 
+    internal static func generateDescriptionSection(contents: StrictString) -> StrictString {
+        return ElementSyntax(
+            "div",
+            attributes: ["class": "description"],
+            contents: contents,
+            inline: false).normalizedSource()
+    }
+
     private static func generateDescriptionSection(
         symbol: APIElement,
         navigationPath: [APIElement],
@@ -367,14 +375,10 @@ internal class SymbolPage : Page {
         status: DocumentationStatus) -> StrictString {
         if let documentation = symbol.documentation,
             let description = documentation.descriptionSection {
-            return ElementSyntax(
-                "div",
-                attributes: ["class": "description"],
-                contents: StrictString(description.renderedHTML(
-                    localization: localization.code,
-                    internalIdentifiers: packageIdentifiers,
-                    symbolLinks: symbolLinks)),
-                inline: false).normalizedSource()
+            return generateDescriptionSection(contents: StrictString(description.renderedHTML(
+                localization: localization.code,
+                internalIdentifiers: packageIdentifiers,
+                symbolLinks: symbolLinks)))
         }
         if case .extension = symbol {} else {
             status.reportMissingDescription(symbol: symbol, navigationPath: navigationPath)
@@ -382,7 +386,32 @@ internal class SymbolPage : Page {
         return ""
     }
 
-    private static func generateDeclarationSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
+    internal static func generateDeclarationSection(
+        localization: LocalizationIdentifier,
+        declaration: StrictString) -> StrictString {
+
+        let declarationHeading: StrictString
+        switch localization._bestMatch {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            declarationHeading = "Declaration"
+        }
+
+        let sectionContents: [StrictString] = [
+            ElementSyntax("h2", contents: declarationHeading, inline: true).normalizedSource(),
+            declaration
+        ]
+
+        return ElementSyntax("section", attributes: ["class": "declaration"], contents: sectionContents.joinedAsLines(), inline: false).normalizedSource()
+    }
+
+    private static func generateDeclarationSection(
+        localization: LocalizationIdentifier,
+        symbol: APIElement,
+        navigationPath: [APIElement],
+        packageIdentifiers: Set<String>,
+        symbolLinks: [String: String],
+        status: DocumentationStatus) -> StrictString {
+
         guard var declaration = symbol.declaration else {
             return ""
         }
@@ -396,18 +425,12 @@ internal class SymbolPage : Page {
             status.reportMissingVariableType(variable, navigationPath: navigationPath)
         }
 
-        let declarationHeading: StrictString
-        switch localization._bestMatch {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            declarationHeading = "Declaration"
-        }
-
-        let sectionContents: [StrictString] = [
-            ElementSyntax("h2", contents: declarationHeading, inline: true).normalizedSource(),
-            StrictString(declaration.syntaxHighlightedHTML(inline: false, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
-        ]
-
-        return ElementSyntax("section", attributes: ["class": "declaration"], contents: sectionContents.joinedAsLines(), inline: false).normalizedSource()
+        return generateDeclarationSection(
+            localization: localization,
+            declaration: StrictString(declaration.syntaxHighlightedHTML(
+                inline: false,
+                internalIdentifiers: packageIdentifiers,
+                symbolLinks: symbolLinks)))
     }
 
     private static func generateDiscussionSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {

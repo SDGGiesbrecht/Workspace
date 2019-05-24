@@ -337,6 +337,7 @@ internal struct PackageInterface {
         self.developmentLocalization = developmentLocalization
         self.packageAPI = api
         self.api = APIElement.package(api)
+        self.cli = cli
         api.computeMergedAPI()
 
         self.packageImport = PackageInterface.specify(package: packageURL, version: version)
@@ -375,6 +376,7 @@ internal struct PackageInterface {
     private let developmentLocalization: LocalizationIdentifier
     private let packageAPI: PackageAPI
     private let api: APIElement
+    private let cli: PackageCLI
     private let packageImport: StrictString?
     private let indices: [LocalizationIdentifier: StrictString]
     private let platforms: [LocalizationIdentifier: StrictString]
@@ -459,6 +461,7 @@ internal struct PackageInterface {
                     platforms: platforms[localization]!,
                     symbol: api,
                     package: packageAPI,
+                    tools: cli,
                     copyright: copyright(for: localization, status: status),
                     packageIdentifiers: packageIdentifiers,
                     symbolLinks: symbolLinks[localization]!,

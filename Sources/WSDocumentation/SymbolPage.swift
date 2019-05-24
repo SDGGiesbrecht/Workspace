@@ -37,6 +37,7 @@ internal class SymbolPage : Page {
         platforms: StrictString,
         symbol: APIElement,
         package: PackageAPI,
+        tools: PackageCLI? = nil,
         copyright: StrictString,
         packageIdentifiers: Set<String>,
         symbolLinks: [String: String],
@@ -81,6 +82,7 @@ internal class SymbolPage : Page {
             platforms: platforms,
             symbol: symbol,
             package: package,
+            tools: tools,
             copyright: copyright,
             packageIdentifiers: packageIdentifiers,
             symbolLinks: symbolLinks,
@@ -98,6 +100,7 @@ internal class SymbolPage : Page {
         platforms: StrictString,
         symbol: APIElement,
         package: PackageAPI,
+        tools: PackageCLI?,
         copyright: StrictString,
         packageIdentifiers: Set<String>,
         symbolLinks: [String: String],
@@ -105,7 +108,11 @@ internal class SymbolPage : Page {
         partiallyConstructedContent: [StrictString]) {
         var content = partiallyConstructedContent
 
-        #warning("Need to generate tool section too.")
+        content.append(SymbolPage.generateToolsSection(
+            localization: localization,
+            tools: tools,
+            pathToSiteRoot: pathToSiteRoot))
+
         content.append(SymbolPage.generateLibrariesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
 
         content.append(SymbolPage.generateModulesSection(localization: localization, symbol: symbol, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks))
@@ -556,6 +563,23 @@ internal class SymbolPage : Page {
         return heading
     }
 
+    internal static func generateToolsSection(
+        localization: LocalizationIdentifier,
+        tools: PackageCLI?,
+        pathToSiteRoot: StrictString) -> StrictString {
+
+        guard let commands = tools?.commands,
+            ¬commands.isEmpty else {
+            return ""
+        }
+
+        return generateChildrenSection(
+            localization: localization,
+            heading: toolsHeader(localization: localization),
+            children: commands,
+            pathToSiteRoot: pathToSiteRoot)
+    }
+
     internal static func librariesHeader(localization: LocalizationIdentifier) -> StrictString {
         let heading: StrictString
         if let match = localization._reasonableMatch {
@@ -918,14 +942,27 @@ internal class SymbolPage : Page {
         return result
     }
 
-    private static func generateChildrenSection(localization: LocalizationIdentifier, heading: StrictString, escapeHeading: Bool = true, children: [APIElement], pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString {
-        var sectionContents: [StrictString] = [
-            ElementSyntax(
-                "h2",
-                contents: escapeHeading ? HTML.escapeTextForCharacterData(heading) : heading,
-                inline: true).normalizedSource()
-        ]
-        for child in children {
+    private static func generateChildrenSection(
+        localization: LocalizationIdentifier,
+        heading: StrictString,
+        escapeHeading: Bool = true,
+        children: [StrictString: CommandInterfaceInformation],
+        pathToSiteRoot: StrictString) -> StrictString {
+
+        #warning("Not implemented yet.")
+        return ""
+    }
+
+    private static func generateChildrenSection(
+        localization: LocalizationIdentifier,
+        heading: StrictString,
+        escapeHeading: Bool = true,
+        children: [APIElement],
+        pathToSiteRoot: StrictString,
+        packageIdentifiers: Set<String>,
+        symbolLinks: [String: String]) -> StrictString {
+
+        func getEntryContents(_ child: APIElement) -> [StrictString] {
             var entry: [StrictString] = []
             if let conditions = child.compilationConditions {
                 entry.append(StrictString(conditions.syntaxHighlightedHTML(inline: true, internalIdentifiers: [], symbolLinks: [:])))
@@ -961,15 +998,47 @@ internal class SymbolPage : Page {
                 entry.append(name)
             }
 
-            var attributes: [StrictString: StrictString] = ["class": "child"]
-            let conformanceAttributeName: StrictString = "data\u{2D}conformance"
+            return entry
+        }
+        func getAttributes(_ child: APIElement) -> [StrictString: StrictString] {
             if child.isProtocolRequirement {
+                let conformanceAttributeName: StrictString = "data\u{2D}conformance"
                 if child.hasDefaultImplementation {
-                    attributes[conformanceAttributeName] = "customizable"
+                    return [conformanceAttributeName: "customizable"]
                 } else {
-                    attributes[conformanceAttributeName] = "requirement"
+                    return [conformanceAttributeName: "requirement"]
                 }
             }
+            return [:]
+        }
+
+        return generateChildrenSection(
+            heading: heading,
+            escapeHeading: escapeHeading,
+            children: children,
+            childContents: getEntryContents,
+            childAttributes: getAttributes)
+    }
+
+    private static func generateChildrenSection<T>(
+        heading: StrictString,
+        escapeHeading: Bool,
+        children: [T],
+        childContents: (T) -> [StrictString],
+        childAttributes: (T) -> [StrictString: StrictString]) -> StrictString {
+
+        var sectionContents: [StrictString] = [
+            ElementSyntax(
+                "h2",
+                contents: escapeHeading ? HTML.escapeTextForCharacterData(heading) : heading,
+                inline: true).normalizedSource()
+        ]
+        for child in children {
+            let entry = childContents(child)
+
+            var attributes: [StrictString: StrictString] = ["class": "child"]
+            attributes.merge(childAttributes(child), uniquingKeysWith: { _, second in return second })
+
             sectionContents.append(ElementSyntax(
                 "div",
                 attributes: attributes,

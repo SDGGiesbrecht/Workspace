@@ -65,7 +65,7 @@ internal class SymbolPage : Page {
         content.append(SymbolPage.generateDescriptionSection(symbol: symbol, navigationPath: navigationPath, localization: localization, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks, status: status))
         content.append(SymbolPage.generateDeclarationSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks, status: status))
         content.append(SymbolPage.generateDiscussionSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks, status: status))
-        content.append(SymbolPage.generateParemetersSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status))
+        content.append(SymbolPage.generateParametersSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status))
         content.append(SymbolPage.generateThrowsSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status))
         content.append(SymbolPage.generateReturnsSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status))
 
@@ -475,13 +475,48 @@ internal class SymbolPage : Page {
         return ElementSyntax("section", contents: sectionContents.joinedAsLines(), inline: false).normalizedSource()
     }
 
-    private static func generateParemetersSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
+    internal static func generateParameterLikeSection(
+        heading: StrictString,
+        entries: [(term: StrictString, description: StrictString)]) -> StrictString {
+
+        guard ¬entries.isEmpty else {
+            return ""
+        }
+
+        var list: [ElementSyntax] = []
+        for entry in entries {
+            list.append(ElementSyntax("dt", contents: entry.term, inline: true))
+            list.append(ElementSyntax("dd", contents: entry.description, inline: true))
+        }
+
+        let section = [
+            ElementSyntax("h2", contents: heading, inline: true).normalizedSource(),
+            ElementSyntax(
+                "dl",
+                contents: list.map({ $0.normalizedSource() }).joinedAsLines(),
+                inline: true).normalizedSource()
+        ]
+        return ElementSyntax("section", contents: section.joinedAsLines(), inline: false).normalizedSource()
+    }
+
+    private static func generateParametersSection(
+        localization: LocalizationIdentifier,
+        symbol: APIElement,
+        navigationPath: [APIElement],
+        packageIdentifiers: Set<String>,
+        symbolLinks: [String: String],
+        status: DocumentationStatus) -> StrictString {
+
         let parameters = symbol.parameters()
         let parameterDocumentation = symbol.documentation?.normalizedParameters ?? []
         let documentedParameters = parameterDocumentation.map { $0.name.text }
 
         if parameters ≠ documentedParameters {
-            status.reportMismatchedParameters(documentedParameters, expected: parameters, symbol: symbol, navigationPath: navigationPath)
+            status.reportMismatchedParameters(
+                documentedParameters,
+                expected: parameters,
+                symbol: symbol,
+                navigationPath: navigationPath)
         }
         let validatedParameters = parameterDocumentation.filter { parameters.contains($0.name.text) }
 
@@ -500,7 +535,10 @@ internal class SymbolPage : Page {
                     for argument in node.arguments
                         where (argument.secondName?.text.isEmpty ≠ false ∨ argument.secondName?.text == "_") // @exempt(from: tests) #workaround(SwiftSyntax 0.50000.0, Wildcard is never detected by SwiftSyntax.)
                             ∧ (argument.firstName?.text.isEmpty ≠ false ∨ argument.firstName?.text == "_") {
-                                status.reportUnlabelledParameter(node.source(), symbol: symbol, navigationPath: navigationPath)
+                                status.reportUnlabelledParameter(
+                                    node.source(),
+                                    symbol: symbol,
+                                    navigationPath: navigationPath)
                     }
                     return .visitChildren
                 }
@@ -508,26 +546,21 @@ internal class SymbolPage : Page {
             declaration.walk(Scanner(status: status, symbol: symbol, navigationPath: navigationPath))
         }
 
-        guard ¬validatedParameters.isEmpty else {
-            return ""
-        }
-
         let parametersHeading: StrictString = Callout.parameters.localizedText(localization.code)
+        return generateParameterLikeSection(
+            heading: parametersHeading,
+            entries: validatedParameters.map({ (entry: ParameterDocumentation) -> (term: StrictString, description: StrictString) in
+                let term = StrictString(entry.name.syntaxHighlightedHTML(
+                    inline: true,
+                    internalIdentifiers: [entry.name.text],
+                    symbolLinks: [:]))
 
-        var list: [ElementSyntax] = []
-        for entry in validatedParameters {
-            let term = StrictString(entry.name.syntaxHighlightedHTML(inline: true, internalIdentifiers: [entry.name.text], symbolLinks: [:]))
-            list.append(ElementSyntax("dt", contents: term, inline: true))
-
-            let description = entry.description.map({ $0.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks) })
-            list.append(ElementSyntax("dd", contents: StrictString(description.joinedAsLines()), inline: true))
-        }
-
-        let section = [
-            ElementSyntax("h2", contents: parametersHeading, inline: true).normalizedSource(),
-            ElementSyntax("dl", contents: list.map({ $0.normalizedSource() }).joinedAsLines(), inline: true).normalizedSource()
-        ]
-        return ElementSyntax("section", contents: section.joinedAsLines(), inline: false).normalizedSource()
+                let description = entry.description.map({ $0.renderedHTML(
+                    localization: localization.code,
+                    internalIdentifiers: packageIdentifiers,
+                    symbolLinks: symbolLinks) })
+                return (term: term, description: StrictString(description.joinedAsLines()))
+            }))
     }
 
     private static func generateThrowsSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {

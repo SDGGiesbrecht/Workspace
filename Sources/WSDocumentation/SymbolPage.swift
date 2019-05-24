@@ -959,7 +959,7 @@ internal class SymbolPage : Page {
                 attributes: ["href": HTML.percentEncodeURLPath(target)],
                 contents: ElementSyntax(
                     "code",
-                    attributes: ["class": "shell"],
+                    attributes: ["class": "swift code"],
                     contents: ElementSyntax(
                         "span",
                         attributes: ["class": "command"],

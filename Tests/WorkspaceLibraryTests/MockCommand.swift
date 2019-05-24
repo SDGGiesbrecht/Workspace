@@ -30,5 +30,20 @@ let mockCommand = Command(
         }
     }),
     directArguments: [ArgumentType.string],
-    options: [],
+    options: [mockOption],
     execution: { _, _, _ in })
+
+let mockOption = Option(
+    name: UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishCanada:
+            return "alternative"
+        }
+    }),
+    description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishCanada:
+            return "An alternative."
+        }
+    }),
+    type: ArgumentType.string)

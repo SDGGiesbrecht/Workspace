@@ -11,6 +11,16 @@
   "name" : "do‐something",
   "options" : [
     {
+      "description" : "An alternative.",
+      "identifier" : "alternative",
+      "name" : "alternative",
+      "type" : {
+        "description" : "An arbitrary string.",
+        "identifier" : "string",
+        "name" : "string"
+      }
+    },
+    {
       "description" : "Removes colour from the output.",
       "identifier" : "no‐colour",
       "name" : "no‐colour",

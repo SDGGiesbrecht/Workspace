@@ -108,4 +108,84 @@ internal class CommandPage : Page {
                 contents: ([command] + arguments).map({ $0.normalizedSource() }).joined(separator: " "),
                 inline: true).normalizedSource())
     }
+
+    private static func generateOptionsSection(
+        localization: LocalizationIdentifier,
+        interface: CommandInterface) -> StrictString {
+
+        let heading: StrictString
+        switch localization._bestMatch {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            heading = "Options"
+        }
+
+        return SymbolPage.generateParameterLikeSection(
+            heading: heading,
+            entries: interface.options.map({ option in
+
+                let optionElement = ElementSyntax(
+                    "span",
+                    attributes: ["class": "option"],
+                    contents: interface.name,
+                    inline: true)
+
+                let type = ElementSyntax(
+                    "span",
+                    attributes: ["class": "argument‐type"],
+                    contents: "[" + option.type.name + "]",
+                    inline: true)
+
+                let term = ElementSyntax(
+                    "code",
+                    attributes: ["class": "swift blockquote"],
+                    contents: ([optionElement, type]).map({ $0.normalizedSource() }).joined(separator: " "),
+                    inline: true).normalizedSource()
+
+                let description = ElementSyntax("p", contents: option.description, inline: true).normalizedSource()
+                return (term: term, description: description)
+            }))
+    }
+
+    private static func generateArgumentTypesSection(
+        localization: LocalizationIdentifier,
+        interface: CommandInterface) -> StrictString {
+
+        let heading: StrictString
+        switch localization._bestMatch {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            heading = "Argument Types"
+        }
+
+        var arguments: [StrictString: ArgumentInterface] = [:]
+        for argument in interface.arguments {
+            arguments[argument.identifier] = argument
+        }
+        for option in interface.options {
+            arguments[option.type.identifier] = option.type
+        }
+        let sortedArguments = arguments.values.sorted(by: { $0.name < $1.name })
+
+        return SymbolPage.generateParameterLikeSection(
+            heading: heading,
+            entries: sortedArguments.map({ argument in
+
+                let argumentElement = ElementSyntax(
+                    "span",
+                    attributes: ["class": "argument‐type"],
+                    contents: "[" + argument.name + "]",
+                    inline: true)
+
+                let term = ElementSyntax(
+                    "code",
+                    attributes: ["class": "swift blockquote"],
+                    contents: argumentElement.normalizedSource(),
+                    inline: true).normalizedSource()
+
+                let description = ElementSyntax(
+                    "p",
+                    contents: argument.description,
+                    inline: true).normalizedSource()
+                return (term: term, description: description)
+            }))
+    }
 }

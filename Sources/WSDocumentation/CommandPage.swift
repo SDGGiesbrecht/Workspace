@@ -62,6 +62,7 @@ internal class CommandPage : Page {
         var content: [StrictString] = []
         content.append(SymbolPage.generateDescriptionSection(contents: interface.description))
         content.append(CommandPage.generateDeclarationSection(localization: localization, interface: interface))
+        content.append(CommandPage.generateSubcommandsSection(localization: localization, interface: interface))
         content.append(CommandPage.generateOptionsSection(localization: localization, interface: interface))
         content.append(CommandPage.generateArgumentTypesSection(localization: localization, interface: interface))
 
@@ -110,6 +111,48 @@ internal class CommandPage : Page {
                 attributes: ["class": "swift blockquote"],
                 contents: ([command] + arguments).map({ $0.normalizedSource() }).joined(separator: " "),
                 inline: true).normalizedSource())
+    }
+
+    private static func generateSubcommandsSection(
+        localization: LocalizationIdentifier,
+        interface: CommandInterface) -> StrictString {
+
+        let heading: StrictString
+        switch localization._bestMatch {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            heading = "Subcommands"
+        }
+
+        return SymbolPage.generateParameterLikeSection(
+            heading: heading,
+            entries: interface.subcommands
+                .sorted(by: { $0.name < $1.name })
+                .map({ subcommand in
+
+                    let command = ElementSyntax(
+                        "span",
+                        attributes: ["class": "command"],
+                        contents: subcommand.name,
+                        inline: true)
+
+                    let arguments = subcommand.arguments.map { argument in
+                        ElementSyntax(
+                            "span",
+                            attributes: ["class": "argument‐type"],
+                            contents: "[" + argument.name + "]",
+                            inline: true)
+                    }
+                    let tokens = [command] + arguments
+
+                    let term = ElementSyntax(
+                        "code",
+                        attributes: ["class": "swift code"],
+                        contents: tokens.map({ $0.normalizedSource() }).joined(separator: " "),
+                        inline: true).normalizedSource()
+
+                    let description = ElementSyntax("p", contents: subcommand.description, inline: true).normalizedSource()
+                    return (term: term, description: description)
+                }))
     }
 
     private static func generateOptionsSection(

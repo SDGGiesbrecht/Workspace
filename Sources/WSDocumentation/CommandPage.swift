@@ -113,6 +113,13 @@ internal class CommandPage : Page {
                 inline: true).normalizedSource())
     }
 
+    private static func subcommandsDirectoryName(for localization: LocalizationIdentifier) -> StrictString {
+        switch localization._bestMatch {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Subcommands"
+        }
+    }
+
     private static func generateSubcommandsSection(
         localization: LocalizationIdentifier,
         interface: CommandInterface) -> StrictString {
@@ -144,10 +151,21 @@ internal class CommandPage : Page {
                     }
                     let tokens = [command] + arguments
 
+                    var link = Page.sanitize(fileName: interface.name)
+                    link += "/"
+                    link += CommandPage.subcommandsDirectoryName(for: localization)
+                    link += "/"
+                    link += subcommand.name
+                    link += ".html"
+
                     let term = ElementSyntax(
-                        "code",
-                        attributes: ["class": "swift code"],
-                        contents: tokens.map({ $0.normalizedSource() }).joined(separator: " "),
+                        "a",
+                        attributes: ["href": HTML.percentEncodeURLPath(link)],
+                        contents: ElementSyntax(
+                            "code",
+                            attributes: ["class": "swift code"],
+                            contents: tokens.map({ $0.normalizedSource() }).joined(separator: " "),
+                            inline: true).normalizedSource(),
                         inline: true).normalizedSource()
 
                     let description = ElementSyntax("p", contents: subcommand.description, inline: true).normalizedSource()

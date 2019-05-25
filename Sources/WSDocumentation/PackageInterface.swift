@@ -509,6 +509,7 @@ internal struct PackageInterface {
                     try CommandPage(
                         localization: localization,
                         pathToSiteRoot: "../../",
+                        package: api,
                         navigationPath: [tool],
                         packageImport: packageImport,
                         index: indices[localization]!,
@@ -718,6 +719,7 @@ internal struct PackageInterface {
                 try CommandPage(
                     localization: localization,
                     pathToSiteRoot: modifiedRoot,
+                    package: api,
                     navigationPath: navigation,
                     packageImport: packageImport,
                     index: indices[localization]!,

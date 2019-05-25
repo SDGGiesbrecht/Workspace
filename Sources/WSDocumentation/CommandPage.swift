@@ -13,10 +13,12 @@
  */
 
 import SDGLogic
+import SDGMathematics
 import WSGeneralImports
 
 import SDGExportedCommandLineInterface
 import SDGHTML
+import SDGSwiftSource
 
 import WSProject
 
@@ -25,6 +27,7 @@ internal class CommandPage : Page {
     internal init(
         localization: LocalizationIdentifier,
         pathToSiteRoot: StrictString,
+        package: APIElement,
         navigationPath: [CommandInterfaceInformation],
         packageImport: StrictString?,
         index: StrictString,
@@ -43,25 +46,39 @@ internal class CommandPage : Page {
         }).resolved())
 
         let symbolType: StrictString
-        if let match = localization._reasonableMatch {
-            switch match {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                symbolType = "Command Line Tool"
+        if navigationPath.count ≤ 1 {
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    symbolType = "Command Line Tool"
+                }
+            } else {
+                symbolType = "executable" // From “products: [.executable(...)]”
             }
         } else {
-            symbolType = "executable" // From “products: [.executable(...)]”
+            switch localization._bestMatch {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                symbolType = "Subcommand"
+            }
         }
 
-        let navigationPathLinks = navigationPath.map { commandInformation in
+        var navigationPathLinks = navigationPath.map { commandInformation in
             return (
                 label: commandInformation.interfaces[localization]!.name,
                 path: commandInformation.relativePagePath[localization]!
             )
         }
+        navigationPathLinks.prepend((
+            StrictString(package.name.source()),
+            package.relativePagePath[localization]!
+        ))
 
         var content: [StrictString] = []
         content.append(SymbolPage.generateDescriptionSection(contents: interface.description))
-        content.append(CommandPage.generateDeclarationSection(localization: localization, interface: interface))
+        content.append(CommandPage.generateDeclarationSection(
+            navigationPath: navigationPath,
+            localization: localization,
+            interface: interface))
         content.append(CommandPage.generateSubcommandsSection(localization: localization, interface: interface))
         content.append(CommandPage.generateOptionsSection(localization: localization, interface: interface))
         content.append(CommandPage.generateArgumentTypesSection(localization: localization, interface: interface))
@@ -87,17 +104,21 @@ internal class CommandPage : Page {
     }
 
     private static func generateDeclarationSection(
+        navigationPath: [CommandInterfaceInformation],
         localization: LocalizationIdentifier,
         interface: CommandInterface) -> StrictString {
 
-        let command = ElementSyntax(
-            "span",
-            attributes: ["class": "command"],
-            contents: interface.name,
-            inline: true)
+        let commands: [ElementSyntax] = navigationPath.map { command in
+            let name = command.interfaces[localization]!.name
+            return ElementSyntax(
+                "span",
+                attributes: ["class": "command"],
+                contents: name,
+                inline: true)
+        }
 
         let arguments = interface.arguments.map { argument in
-            ElementSyntax(
+            return ElementSyntax(
                 "span",
                 attributes: ["class": "argument‐type"],
                 contents: "[" + argument.name + "]",
@@ -109,7 +130,7 @@ internal class CommandPage : Page {
             declaration: ElementSyntax(
                 "code",
                 attributes: ["class": "swift blockquote"],
-                contents: ([command] + arguments).map({ $0.normalizedSource() }).joined(separator: " "),
+                contents: (commands + arguments).map({ $0.normalizedSource() }).joined(separator: " "),
                 inline: true).normalizedSource())
     }
 

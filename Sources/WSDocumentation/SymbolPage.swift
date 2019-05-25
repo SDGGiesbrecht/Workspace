@@ -1039,7 +1039,7 @@ internal class SymbolPage : Page {
 
             entry.append(ElementSyntax(
                 "p",
-                contents: child.interfaces[localization]!.description,
+                contents: HTML.escapeTextForCharacterData(child.interfaces[localization]!.description),
                 inline: false).normalizedSource())
 
             return entry

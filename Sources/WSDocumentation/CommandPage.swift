@@ -74,7 +74,8 @@ internal class CommandPage : Page {
         ))
 
         var content: [StrictString] = []
-        content.append(SymbolPage.generateDescriptionSection(contents: interface.description))
+        content.append(SymbolPage.generateDescriptionSection(
+            contents: HTML.escapeTextForCharacterData(interface.description)))
         content.append(CommandPage.generateDeclarationSection(
             navigationPath: navigationPath,
             localization: localization,
@@ -113,7 +114,7 @@ internal class CommandPage : Page {
             return ElementSyntax(
                 "span",
                 attributes: ["class": "command"],
-                contents: name,
+                contents: HTML.escapeTextForCharacterData(name),
                 inline: true)
         }
 
@@ -121,7 +122,7 @@ internal class CommandPage : Page {
             return ElementSyntax(
                 "span",
                 attributes: ["class": "argument‐type"],
-                contents: "[" + argument.name + "]",
+                contents: "[" + HTML.escapeTextForCharacterData(argument.name) + "]",
                 inline: true)
         }
 
@@ -160,14 +161,14 @@ internal class CommandPage : Page {
                     let command = ElementSyntax(
                         "span",
                         attributes: ["class": "command"],
-                        contents: subcommand.name,
+                        contents: HTML.escapeTextForCharacterData(subcommand.name),
                         inline: true)
 
                     let arguments = subcommand.arguments.map { argument in
                         ElementSyntax(
                             "span",
                             attributes: ["class": "argument‐type"],
-                            contents: "[" + argument.name + "]",
+                            contents: "[" + HTML.escapeTextForCharacterData(argument.name) + "]",
                             inline: true)
                     }
                     let tokens = [command] + arguments
@@ -189,7 +190,7 @@ internal class CommandPage : Page {
                             inline: true).normalizedSource(),
                         inline: true).normalizedSource()
 
-                    let description = ElementSyntax("p", contents: subcommand.description, inline: true).normalizedSource()
+                    let description = ElementSyntax("p", contents: HTML.escapeTextForCharacterData(subcommand.description), inline: true).normalizedSource()
                     return (term: term, description: description)
                 }))
     }
@@ -213,7 +214,7 @@ internal class CommandPage : Page {
                     let optionElement = ElementSyntax(
                         "span",
                         attributes: ["class": "option"],
-                        contents: "•" + option.name,
+                        contents: "•" + HTML.escapeTextForCharacterData(option.name),
                         inline: true)
 
                     var tokens = [optionElement]
@@ -221,7 +222,7 @@ internal class CommandPage : Page {
                         tokens.append(ElementSyntax(
                             "span",
                             attributes: ["class": "argument‐type"],
-                            contents: "[" + option.type.name + "]",
+                            contents: "[" + HTML.escapeTextForCharacterData(option.type.name) + "]",
                             inline: true))
                     }
 
@@ -231,7 +232,7 @@ internal class CommandPage : Page {
                         contents: tokens.map({ $0.normalizedSource() }).joined(separator: " "),
                         inline: true).normalizedSource()
 
-                    let description = ElementSyntax("p", contents: option.description, inline: true).normalizedSource()
+                    let description = ElementSyntax("p", contents: HTML.escapeTextForCharacterData(option.description), inline: true).normalizedSource()
                     return (term: term, description: description)
                 }))
     }
@@ -263,7 +264,7 @@ internal class CommandPage : Page {
                 let argumentElement = ElementSyntax(
                     "span",
                     attributes: ["class": "argument‐type"],
-                    contents: "[" + argument.name + "]",
+                    contents: "[" + HTML.escapeTextForCharacterData(argument.name) + "]",
                     inline: true)
 
                 let term = ElementSyntax(
@@ -274,7 +275,7 @@ internal class CommandPage : Page {
 
                 let description = ElementSyntax(
                     "p",
-                    contents: argument.description,
+                    contents: HTML.escapeTextForCharacterData(argument.description),
                     inline: true).normalizedSource()
                 return (term: term, description: description)
             }))

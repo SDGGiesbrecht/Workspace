@@ -619,7 +619,15 @@ internal struct PackageInterface {
         }
     }
 
-    private func outputNestedSymbols(of parent: APIElement, namespace: [APIElement], to outputDirectory: URL, localization: LocalizationIdentifier, status: DocumentationStatus, output: Command.Output, coverageCheckOnly: Bool) throws {
+    private func outputNestedSymbols(
+        of parent: APIElement,
+        namespace: [APIElement],
+        to outputDirectory: URL,
+        localization: LocalizationIdentifier,
+        status: DocumentationStatus,
+        output: Command.Output,
+        coverageCheckOnly: Bool) throws {
+
         for symbol in parent.children where symbol.receivesPage {
             try autoreleasepool {
                 let location = symbol.pageURL(in: outputDirectory, for: localization)
@@ -654,8 +662,69 @@ internal struct PackageInterface {
                 case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
                     break
                 case .type, .protocol, .extension:
-                    try outputNestedSymbols(of: symbol, namespace: namespace + [symbol], to: outputDirectory, localization: localization, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
+                    try outputNestedSymbols(
+                        of: symbol,
+                        namespace: namespace + [symbol],
+                        to: outputDirectory,
+                        localization: localization,
+                        status: status,
+                        output: output,
+                        coverageCheckOnly: coverageCheckOnly)
                 }
+            }
+        }
+    }
+
+    private func outputNestedCommands(
+        of parent: CommandInterfaceInformation,
+        namespace: [CommandInterfaceInformation],
+        to outputDirectory: URL,
+        localization: LocalizationIdentifier,
+        status: DocumentationStatus,
+        output: Command.Output) throws {
+
+        for subcommand in parent.interfaces[localization]!.subcommands {
+            try autoreleasepool {
+                var information = CommandInterfaceInformation()
+                information.interfaces[localization] = subcommand
+
+                var nestedPagePath = parent.relativePagePath[localization]!
+                nestedPagePath.removeLast(5) // .html
+                nestedPagePath += "/"
+                nestedPagePath += CommandPage.subcommandsDirectoryName(for: localization)
+                nestedPagePath += "/"
+                nestedPagePath += Page.sanitize(fileName: subcommand.name)
+                nestedPagePath += ".html"
+                information.relativePagePath[localization] = nestedPagePath
+
+                let location = information.pageURL(in: outputDirectory, for: localization)
+
+                var modifiedRoot: StrictString = "../../"
+                for _ in namespace.indices {
+                    modifiedRoot += "../../".scalars
+                }
+
+                var navigation = namespace
+                navigation.append(information)
+
+                try CommandPage(
+                    localization: localization,
+                    pathToSiteRoot: modifiedRoot,
+                    navigationPath: navigation,
+                    packageImport: packageImport,
+                    index: indices[localization]!,
+                    platforms: platforms[localization]!,
+                    command: information,
+                    copyright: copyright(for: localization, status: status),
+                    output: output).contents.save(to: location)
+
+                try outputNestedCommands(
+                    of: information,
+                    namespace: navigation,
+                    to: outputDirectory,
+                    localization: localization,
+                    status: status,
+                    output: output)
             }
         }
     }

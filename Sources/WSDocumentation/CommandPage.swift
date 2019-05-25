@@ -113,7 +113,7 @@ internal class CommandPage : Page {
                 inline: true).normalizedSource())
     }
 
-    private static func subcommandsDirectoryName(for localization: LocalizationIdentifier) -> StrictString {
+    internal static func subcommandsDirectoryName(for localization: LocalizationIdentifier) -> StrictString {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Subcommands"

@@ -7,6 +7,7 @@
     }
   ],
   "description" : "does something.",
+  "discussion" : null,
   "identifier" : "do‐something",
   "name" : "do‐something",
   "options" : [
@@ -47,6 +48,7 @@
 
       ],
       "description" : "displays usage information.",
+      "discussion" : null,
       "identifier" : "עזרה",
       "name" : "help",
       "options" : [
@@ -80,6 +82,7 @@
 
       ],
       "description" : "displays the version in use.",
+      "discussion" : null,
       "identifier" : "version",
       "name" : "version",
       "options" : [
@@ -110,6 +113,7 @@
 
           ],
           "description" : "displays usage information.",
+          "discussion" : null,
           "identifier" : "עזרה",
           "name" : "help",
           "options" : [
@@ -149,6 +153,7 @@
         }
       ],
       "description" : "sets the language preference. (Omit the argument to revert to the system preferences.)",
+      "discussion" : null,
       "identifier" : "set‐language",
       "name" : "set‐language",
       "options" : [
@@ -179,6 +184,7 @@
 
           ],
           "description" : "displays usage information.",
+          "discussion" : null,
           "identifier" : "עזרה",
           "name" : "help",
           "options" : [
@@ -214,6 +220,7 @@
 
       ],
       "description" : "removes any cached data.",
+      "discussion" : null,
       "identifier" : "empty‐cache",
       "name" : "empty‐cache",
       "options" : [
@@ -244,6 +251,7 @@
 
           ],
           "description" : "displays usage information.",
+          "discussion" : null,
           "identifier" : "עזרה",
           "name" : "help",
           "options" : [

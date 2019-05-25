@@ -80,6 +80,7 @@ internal class CommandPage : Page {
             navigationPath: navigationPath,
             localization: localization,
             interface: interface))
+        content.append(CommandPage.generateDiscussionSection(localization: localization, interface: interface))
         content.append(CommandPage.generateSubcommandsSection(localization: localization, interface: interface))
         content.append(CommandPage.generateOptionsSection(localization: localization, interface: interface))
         content.append(CommandPage.generateArgumentTypesSection(localization: localization, interface: interface))

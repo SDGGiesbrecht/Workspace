@@ -29,6 +29,12 @@ let mockCommand = Command(
             return "does something."
         }
     }),
+    discussion: UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishCanada:
+            return "Paragraph one.\nLine two.\n\nParagraph two."
+        }
+    }),
     directArguments: [ArgumentType.string],
     options: [mockOption],
     execution: { _, _, _ in })

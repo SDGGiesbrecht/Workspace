@@ -7,7 +7,7 @@
     }
   ],
   "description" : "does something.",
-  "discussion" : null,
+  "discussion" : "Paragraph one.\nLine two.\n\nParagraph two.",
   "identifier" : "do‐something",
   "name" : "do‐something",
   "options" : [

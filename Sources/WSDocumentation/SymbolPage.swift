@@ -433,23 +433,29 @@ internal class SymbolPage : Page {
                 symbolLinks: symbolLinks)))
     }
 
-    private static func generateDiscussionSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
-        guard let discussion = symbol.documentation?.discussionEntries,
-            ¬discussion.isEmpty else {
+    internal static func generateDiscussionSection(
+        localization: LocalizationIdentifier,
+        symbol: APIElement?,
+        content: StrictString?) -> StrictString {
+
+        guard let discussion = content else {
                 return ""
         }
 
-        let discussionHeading: StrictString
-        switch symbol {
-        case .package, .library, .module, .type, .protocol, .extension:
-            switch localization._bestMatch {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                discussionHeading = "Overview"
-            }
-        case .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
-            switch localization._bestMatch {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                discussionHeading = "Discussion"
+        var discussionHeading: StrictString
+        switch localization._bestMatch {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            discussionHeading = "Discussion"
+        }
+        if let swiftSymbol = symbol {
+            switch swiftSymbol {
+            case .package, .library, .module, .type, .protocol, .extension:
+                switch localization._bestMatch {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    discussionHeading = "Overview"
+                }
+            case .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
+                break
             }
         }
 
@@ -457,9 +463,32 @@ internal class SymbolPage : Page {
             ElementSyntax("h2", contents: discussionHeading, inline: true).normalizedSource()
         ]
 
+        sectionContents.append(discussion)
+
+        return ElementSyntax("section", contents: sectionContents.joinedAsLines(), inline: false).normalizedSource()
+    }
+
+    private static func generateDiscussionSection(
+        localization: LocalizationIdentifier,
+        symbol: APIElement,
+        navigationPath: [APIElement],
+        packageIdentifiers: Set<String>,
+        symbolLinks: [String: String],
+        status: DocumentationStatus) -> StrictString {
+
+        guard let discussion = symbol.documentation?.discussionEntries,
+            ¬discussion.isEmpty else {
+                return ""
+        }
+
+        var sectionContents: [StrictString] = []
+
         var empty = true
         for paragraph in discussion {
-            let rendered = StrictString(paragraph.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
+            let rendered = StrictString(paragraph.renderedHTML(
+                localization: localization.code,
+                internalIdentifiers: packageIdentifiers,
+                symbolLinks: symbolLinks))
             if rendered.contains("<h1>".scalars) ∨ rendered.contains("<h2>".scalars) {
                 status.reportExcessiveHeading(symbol: symbol, navigationPath: navigationPath)
             }
@@ -472,7 +501,10 @@ internal class SymbolPage : Page {
         if empty {
             return ""
         }
-        return ElementSyntax("section", contents: sectionContents.joinedAsLines(), inline: false).normalizedSource()
+        return generateDiscussionSection(
+            localization: localization,
+            symbol: symbol,
+            content: sectionContents.joinedAsLines())
     }
 
     internal static func generateParameterLikeSection(

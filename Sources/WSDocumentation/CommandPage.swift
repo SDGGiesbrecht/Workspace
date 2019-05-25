@@ -135,6 +135,24 @@ internal class CommandPage : Page {
                 inline: true).normalizedSource())
     }
 
+    private static func generateDiscussionSection(
+        localization: LocalizationIdentifier,
+        interface: CommandInterface) -> StrictString {
+
+        var discussion: StrictString? = interface.discussion.map { HTML.escapeTextForCharacterData($0) }
+        discussion?.replaceMatches(for: "\n\n", with: "</p><p>")
+        discussion?.replaceMatches(for: "\n", with: "<br>")
+
+        if let content = discussion {
+            discussion = ElementSyntax("p", contents: content, inline: false).normalizedSource()
+        }
+
+        return SymbolPage.generateDiscussionSection(
+            localization: localization,
+            symbol: nil,
+            content: discussion)
+    }
+
     internal static func subcommandsDirectoryName(for localization: LocalizationIdentifier) -> StrictString {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:

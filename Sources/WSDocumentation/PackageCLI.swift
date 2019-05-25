@@ -44,12 +44,7 @@ internal struct PackageCLI {
             for localization in localizations {
                 if let interface = try? CommandInterface.loadInterface(of: tool, in: localization.code).get() {
                     var modifiedInterface = interface
-                    if let first = modifiedInterface.description.first,
-                        first ∈ CharacterSet.lowercaseLetters {
-                        modifiedInterface.description.scalars.removeFirst()
-                        modifiedInterface.description.scalars.prepend(
-                            contentsOf: first.properties.titlecaseMapping.scalars)
-                    }
+                    modifiedInterface.sentenceCaseDescriptions()
 
                     commands[
                         interface.identifier,

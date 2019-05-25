@@ -516,6 +516,14 @@ internal struct PackageInterface {
                         command: tool,
                         copyright: copyright(for: localization, status: status),
                         output: output).contents.save(to: location)
+
+                    try outputNestedCommands(
+                        of: tool,
+                        namespace: [tool],
+                        to: outputDirectory,
+                        localization: localization,
+                        status: status,
+                        output: output)
                 }
             }
         }

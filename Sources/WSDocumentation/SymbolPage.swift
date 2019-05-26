@@ -678,7 +678,7 @@ internal class SymbolPage : Page {
             localization: localization,
             heading: toolsHeader(localization: localization),
             children: commands.values.sorted(
-                by: { $0.interfaces[localization]!.name < $1.interfaces[localization]!.name }),
+                by: { $0.interfaces[localization]!.name < $1.interfaces[localization]!.name }), // @exempt(from: tests)
             pathToSiteRoot: pathToSiteRoot)
     }
 
@@ -1168,7 +1168,7 @@ internal class SymbolPage : Page {
             let entry = childContents(child)
 
             var attributes: [StrictString: StrictString] = ["class": "child"]
-            attributes.merge(childAttributes(child), uniquingKeysWith: { _, second in return second })
+            attributes.merge(childAttributes(child), uniquingKeysWith: { _, second in return second }) // @exempt(from. tests) Keys always unique.
 
             sectionContents.append(ElementSyntax(
                 "div",

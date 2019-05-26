@@ -54,9 +54,7 @@ internal struct PackageCLI {
                     let filename = Page.sanitize(fileName: interface.name)
                     let path = directory + "/" + filename + ".html"
 
-                    commands[
-                        interface.identifier,
-                        default: CommandInterfaceInformation()].relativePagePath[localization] = path
+                    commands[interface.identifier]!.relativePagePath[localization] = path
                 }
             }
         }

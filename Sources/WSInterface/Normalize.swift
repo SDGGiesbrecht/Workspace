@@ -29,7 +29,7 @@ extension Workspace {
         private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
-                return "normalizes the current project’s files by removing trailing whitespace, applying Unix newlines and performing canonical decomposition."
+                return "normalizes the project’s files by removing trailing whitespace, applying Unix newlines and performing canonical decomposition."
             }
         })
 

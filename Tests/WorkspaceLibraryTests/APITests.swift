@@ -80,7 +80,13 @@ class APITests : TestCase {
     }
 
     func testCheckedInDocumentation() throws {
-        let output = try mockCommand.withRootBehaviour().execute(with: ["export‐interface", "•language", "en"]).get()
+        var output = try mockCommand.withRootBehaviour().execute(with: ["export‐interface", "•language", "en"]).get()
+        // macOS & Linux have different JSON whitespace.
+        output.scalars.replaceMatches(for: CompositePattern([
+            LiteralPattern("\n".scalars),
+            RepetitionPattern(" ".scalars),
+            LiteralPattern("\n".scalars)
+            ]), with: "\n\n".scalars)
         try output.save(
             to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
                 .appendingPathComponent("Resources/Tool/English.txt"))

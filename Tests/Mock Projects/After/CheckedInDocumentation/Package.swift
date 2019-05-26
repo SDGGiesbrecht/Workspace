@@ -20,11 +20,12 @@ let package = Package(
     ],
     targets: [
         /// A module.
-        .target(name: "CheckedInDocumentation", dependencies: []),
+        .target(name: "CheckedInDocumentation", dependencies: ["EnableBuild"]),
+        .target(name: "EnableBuild"),
         /// Extensions.
         .target(name: "Extensions", dependencies: ["CheckedInDocumentation"]),
         /// An executable.
-        .target(name: "Tool"),
+        .target(name: "Tool", dependencies: ["EnableBuild"]),
         .testTarget(
             name: "CheckedInDocumentationTests",
             dependencies: ["CheckedInDocumentation"]),

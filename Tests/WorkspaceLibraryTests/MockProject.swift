@@ -24,7 +24,7 @@ import WSProject
 extension PackageRepository {
 
     private static let mockProjectsDirectory = repositoryRoot.appendingPathComponent("Tests/Mock Projects")
-    private static func beforeDirectory(for mockProject: String) -> URL {
+    internal static func beforeDirectory(for mockProject: String) -> URL {
         return mockProjectsDirectory.appendingPathComponent("Before").appendingPathComponent(mockProject)
     }
     private static func afterDirectory(for mockProject: String) -> URL {

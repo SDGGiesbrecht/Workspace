@@ -93,6 +93,7 @@ internal struct PackageInterface {
 
     private static func generateIndices(
         for package: PackageAPI,
+        tools: PackageCLI,
         installation: [LocalizationIdentifier: StrictString],
         importing: [LocalizationIdentifier: StrictString],
         relatedProjects: [LocalizationIdentifier: StrictString],
@@ -103,6 +104,7 @@ internal struct PackageInterface {
             autoreleasepool {
                 result[localization] = generateIndex(
                     for: package,
+                    tools: tools,
                     hasInstallation: installation[localization] ≠ nil,
                     hasImporting: importing[localization] ≠ nil,
                     hasRelatedProjects: relatedProjects[localization] ≠ nil,
@@ -126,6 +128,7 @@ internal struct PackageInterface {
 
     private static func generateIndex(
         for package: PackageAPI,
+        tools: PackageCLI,
         hasInstallation: Bool,
         hasImporting: Bool,
         hasRelatedProjects: Bool,
@@ -152,6 +155,13 @@ internal struct PackageInterface {
             result.append(generateLoneIndexEntry(
                 named: importing(localization: localization),
                 target: importingLocation(localization: localization)))
+        }
+
+        if ¬tools.commands.isEmpty {
+            result.append(generateIndexSection(
+                named: SymbolPage.toolsHeader(localization: localization),
+                tools: tools,
+                localization: localization))
         }
 
         if ¬package.libraries.isEmpty {
@@ -205,6 +215,23 @@ internal struct PackageInterface {
                 ],
                 contents: HTML.escapeTextForCharacterData(StrictString(entry.name.source())),
                 inline: false).normalizedSource())
+        }
+        return generateIndexSection(named: name, contents: entries.joinedAsLines())
+    }
+
+    private static func generateIndexSection(named name: StrictString, tools: PackageCLI, localization: LocalizationIdentifier) -> StrictString {
+        var entries: [StrictString] = []
+        for (_, entry) in tools.commands {
+            if let interface = entry.interfaces[localization] {
+                entries.append(ElementSyntax(
+                    "a",
+                    attributes: [
+                        "href": "[*site root*]\(HTML.percentEncodeURLPath(entry.relativePagePath[localization]!))"
+                    ],
+                    contents: HTML.escapeTextForCharacterData(StrictString(interface.name)),
+                    inline: false).normalizedSource())
+            }
+
         }
         return generateIndexSection(named: name, contents: entries.joinedAsLines())
     }
@@ -288,6 +315,7 @@ internal struct PackageInterface {
     init(localizations: [LocalizationIdentifier],
          developmentLocalization: LocalizationIdentifier,
          api: PackageAPI,
+         cli: PackageCLI,
          packageURL: URL?,
          version: Version?,
          platforms: [LocalizationIdentifier: [StrictString]],
@@ -309,6 +337,7 @@ internal struct PackageInterface {
         self.developmentLocalization = developmentLocalization
         self.packageAPI = api
         self.api = APIElement.package(api)
+        self.cli = cli
         api.computeMergedAPI()
 
         self.packageImport = PackageInterface.specify(package: packageURL, version: version)
@@ -332,6 +361,7 @@ internal struct PackageInterface {
 
         self.indices = PackageInterface.generateIndices(
             for: api,
+            tools: cli,
             installation: installation,
             importing: importing,
             relatedProjects: relatedProjects,
@@ -346,6 +376,7 @@ internal struct PackageInterface {
     private let developmentLocalization: LocalizationIdentifier
     private let packageAPI: PackageAPI
     private let api: APIElement
+    private let cli: PackageCLI
     private let packageImport: StrictString?
     private let indices: [LocalizationIdentifier: StrictString]
     private let platforms: [LocalizationIdentifier: StrictString]
@@ -376,10 +407,31 @@ internal struct PackageInterface {
             }
         }).resolved())
 
-        try outputPackagePages(to: outputDirectory, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
-        try outputLibraryPages(to: outputDirectory, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
-        try outputModulePages(to: outputDirectory, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
-        try outputTopLevelSymbols(to: outputDirectory, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
+        try outputPackagePages(
+            to: outputDirectory,
+            status: status,
+            output: output,
+            coverageCheckOnly: coverageCheckOnly)
+        try outputToolPages(
+            to: outputDirectory,
+            status: status,
+            output: output,
+            coverageCheckOnly: coverageCheckOnly)
+        try outputLibraryPages(
+            to: outputDirectory,
+            status: status,
+            output: output,
+            coverageCheckOnly: coverageCheckOnly)
+        try outputModulePages(
+            to: outputDirectory,
+            status: status,
+            output: output,
+            coverageCheckOnly: coverageCheckOnly)
+        try outputTopLevelSymbols(
+            to: outputDirectory,
+            status: status,
+            output: output,
+            coverageCheckOnly: coverageCheckOnly)
 
         if coverageCheckOnly {
             return
@@ -430,6 +482,7 @@ internal struct PackageInterface {
                     platforms: platforms[localization]!,
                     symbol: api,
                     package: packageAPI,
+                    tools: cli,
                     copyright: copyright(for: localization, status: status),
                     packageIdentifiers: packageIdentifiers,
                     symbolLinks: symbolLinks[localization]!,
@@ -437,6 +490,42 @@ internal struct PackageInterface {
                     output: output,
                     coverageCheckOnly: coverageCheckOnly
                     )?.contents.save(to: pageURL)
+            }
+        }
+    }
+
+    private func outputToolPages(
+        to outputDirectory: URL,
+        status: DocumentationStatus,
+        output: Command.Output,
+        coverageCheckOnly: Bool) throws {
+        if coverageCheckOnly {
+            return
+        }
+        for localization in localizations {
+            for tool in cli.commands.values {
+                try autoreleasepool {
+                    let location = tool.pageURL(in: outputDirectory, for: localization)
+                    try CommandPage(
+                        localization: localization,
+                        pathToSiteRoot: "../../",
+                        package: api,
+                        navigationPath: [tool],
+                        packageImport: packageImport,
+                        index: indices[localization]!,
+                        platforms: platforms[localization]!,
+                        command: tool,
+                        copyright: copyright(for: localization, status: status),
+                        output: output).contents.save(to: location)
+
+                    try outputNestedCommands(
+                        of: tool,
+                        namespace: [tool],
+                        to: outputDirectory,
+                        localization: localization,
+                        status: status,
+                        output: output)
+                }
             }
         }
     }
@@ -539,7 +628,15 @@ internal struct PackageInterface {
         }
     }
 
-    private func outputNestedSymbols(of parent: APIElement, namespace: [APIElement], to outputDirectory: URL, localization: LocalizationIdentifier, status: DocumentationStatus, output: Command.Output, coverageCheckOnly: Bool) throws {
+    private func outputNestedSymbols(
+        of parent: APIElement,
+        namespace: [APIElement],
+        to outputDirectory: URL,
+        localization: LocalizationIdentifier,
+        status: DocumentationStatus,
+        output: Command.Output,
+        coverageCheckOnly: Bool) throws {
+
         for symbol in parent.children where symbol.receivesPage {
             try autoreleasepool {
                 let location = symbol.pageURL(in: outputDirectory, for: localization)
@@ -574,8 +671,70 @@ internal struct PackageInterface {
                 case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
                     break
                 case .type, .protocol, .extension:
-                    try outputNestedSymbols(of: symbol, namespace: namespace + [symbol], to: outputDirectory, localization: localization, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
+                    try outputNestedSymbols(
+                        of: symbol,
+                        namespace: namespace + [symbol],
+                        to: outputDirectory,
+                        localization: localization,
+                        status: status,
+                        output: output,
+                        coverageCheckOnly: coverageCheckOnly)
                 }
+            }
+        }
+    }
+
+    private func outputNestedCommands(
+        of parent: CommandInterfaceInformation,
+        namespace: [CommandInterfaceInformation],
+        to outputDirectory: URL,
+        localization: LocalizationIdentifier,
+        status: DocumentationStatus,
+        output: Command.Output) throws {
+
+        for subcommand in parent.interfaces[localization]!.subcommands {
+            try autoreleasepool {
+                var information = CommandInterfaceInformation()
+                information.interfaces[localization] = subcommand
+
+                var nestedPagePath = parent.relativePagePath[localization]!
+                nestedPagePath.removeLast(5) // .html
+                nestedPagePath += "/"
+                nestedPagePath += CommandPage.subcommandsDirectoryName(for: localization)
+                nestedPagePath += "/"
+                nestedPagePath += Page.sanitize(fileName: subcommand.name)
+                nestedPagePath += ".html"
+                information.relativePagePath[localization] = nestedPagePath
+
+                let location = information.pageURL(in: outputDirectory, for: localization)
+
+                var modifiedRoot: StrictString = "../../"
+                for _ in namespace.indices {
+                    modifiedRoot += "../../".scalars
+                }
+
+                var navigation = namespace
+                navigation.append(information)
+
+                try CommandPage(
+                    localization: localization,
+                    pathToSiteRoot: modifiedRoot,
+                    package: api,
+                    navigationPath: navigation,
+                    packageImport: packageImport,
+                    index: indices[localization]!,
+                    platforms: platforms[localization]!,
+                    command: information,
+                    copyright: copyright(for: localization, status: status),
+                    output: output).contents.save(to: location)
+
+                try outputNestedCommands(
+                    of: information,
+                    namespace: navigation,
+                    to: outputDirectory,
+                    localization: localization,
+                    status: status,
+                    output: output)
             }
         }
     }

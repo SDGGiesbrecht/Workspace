@@ -139,7 +139,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 18, 1))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 7, 1))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 7, 2))),
         .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 10, 1))),
         .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", .exact(Version(0, 1, 1)))
     ],
@@ -286,6 +286,7 @@ let package = Package(
             .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .product(name: "SDGXcode", package: "SDGSwift"),
             .product(name: "SDGSwiftSource", package: "SDGSwift"),
+            .product(name: "SDGExportedCommandLineInterface", package: "SDGCommandLine"),
             .product(name: "SDGHTML", package: "SDGWeb"),
             .product(name: "SDGCSS", package: "SDGWeb")
             ], swiftSettings: [
@@ -393,7 +394,8 @@ let package = Package(
         .testTarget(name: "WorkspaceLibraryTests", dependencies: [
             "WSGeneralTestImports",
             "WSCustomTask",
-            .product(name: "SDGExternalProcess", package: "SDGCornerstone")
+            .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
+            .product(name: "SDGCommandLine", package: "SDGCommandLine")
             ]),
         .target(name: "test‐ios‐simulator", dependencies: [
             "WSGeneralImports",

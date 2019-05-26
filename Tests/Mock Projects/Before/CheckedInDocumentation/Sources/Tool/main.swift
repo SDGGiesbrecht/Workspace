@@ -1,1 +1,3 @@
-print("Hello, world!")
+import EnableBuild
+
+print(Resources.english)

@@ -1,6 +1,6 @@
 $ workspace proofread help •no‐colour
 
-workspace proofread proofreads the current project’s source for style violations.
+workspace proofread proofreads the project’s source for style violations.
 
 Subcommands
 

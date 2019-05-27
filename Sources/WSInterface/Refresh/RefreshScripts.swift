@@ -58,7 +58,7 @@ extension Workspace.Refresh {
                     "",
                     "To register the location of `swift` even for new terminal sessions, run the following command, substituting the real location of the Swift install.",
                     "",
-                    "$ echo 'export PATH=/path/to/swift-0.0.0-RELEASE-ubuntu00.00/usr/bin:\u{22}${PATH}\u{22}' >>~/.profile",
+                    "$ echo \u{27}export PATH=/path/to/swift\u{2D}0.0.0\u{2D}RELEASE\u{2D}ubuntu00.00/usr/bin:\u{22}${PATH}\u{22}\u{27} >>~/.profile",
                     "",
                     "If Swift is not even istalled yet, see the Swift website for instructions: https://swift.org/download/",
                     "",

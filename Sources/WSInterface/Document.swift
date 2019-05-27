@@ -40,7 +40,7 @@ extension Workspace {
                 return [
                     "By default, the generated documentation will be placed in a “docs” folder at the project root. The GitHub settings described in the following link can be adjusted to automatically host the documentation directly from the repository.",
                    "",
-                   "https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch",
+                   "https://help.github.com/articles/configuring\u{2D}a\u{2D}publishing\u{2D}source\u{2D}for\u{2D}github\u{2D}pages/#publishing\u{2D}your\u{2D}github\u{2D}pages\u{2D}site\u{2D}from\u{2D}a\u{2D}docs\u{2D}folder\u{2D}on\u{2D}your\u{2D}master\u{2D}branch",
                     "",
                     "(If you wish to avoid checking generated files into “master”, see the documentation of the “encryptedTravisCIDeploymentKey” configuration option for a more advanced method.)"
                     ].joinedAsLines()

@@ -38,11 +38,11 @@ extension Workspace.Refresh {
                 return [
                     "Workspace will create a “.travis.yml” file at the project root, which configures Travis CI to run all the tests from “Validate” on every operating system supported by the project.",
                     "",
-                    "Note: Workspace cannot turn Travis CI on. It is still necessary to log into Travis CI (https://travis-ci.org) and activate it for the project’s repository.",
+                    "Note: Workspace cannot turn Travis CI on. It is still necessary to log into Travis CI (https://travis\u{2D}ci.org) and activate it for the project’s repository.",
                     "",
                     "Special Thanks:",
                     "",
-                    "• Travis CI (https://travis-ci.org)",
+                    "• Travis CI (https://travis\u{2D}ci.org)",
                     "",
                     "• Kyle Fuller and Swift Version Manager (https://github.com/kylef/swiftenv), which makes continuous integration possible on Linux.",
                     ].joinedAsLines()

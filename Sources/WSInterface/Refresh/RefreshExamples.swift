@@ -78,7 +78,7 @@ extension Workspace.Refresh {
                     "/// ```swift",
                     "///",
                     "/// ```",
-                    "func == (lhs: Thing, rhs: Thing) -> Bool {",
+                    "func == (lhs: Thing, rhs: Thing) \u{2D}> Bool {",
                     "    return lhs.rawValue == rhs.rawValue",
                     "}",
                     ].joinedAsLines()

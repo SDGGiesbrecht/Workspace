@@ -32,7 +32,30 @@ extension Workspace.Refresh {
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: Workspace.standardOptions, execution: { (_, options: Options, output: Command.Output) throws in
+        private static let discussion = UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishCanada:
+                return [
+                    "Workspace will create a “.travis.yml” file at the project root, which configures Travis CI to run all the tests from “Validate” on every operating system supported by the project.",
+                    "",
+                    "Note: Workspace cannot turn Travis CI on. It is still necessary to log into Travis CI (https://travis-ci.org) and activate it for the project’s repository.",
+                    "",
+                    "Special Thanks:",
+                    "",
+                    "• Travis CI (https://travis-ci.org)",
+                    "",
+                    "• Kyle Fuller and Swift Version Manager (https://github.com/kylef/swiftenv), which makes continuous integration possible on Linux.",
+                    ].joinedAsLines()
+            }
+        })
+
+        static let command = Command(
+            name: name,
+            description: description,
+            discussion: discussion,
+            directArguments: [],
+            options: Workspace.standardOptions,
+            execution: { (_, options: Options, output: Command.Output) throws in
 
             output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {

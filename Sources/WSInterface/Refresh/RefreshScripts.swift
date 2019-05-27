@@ -60,7 +60,7 @@ extension Workspace.Refresh {
                     "",
                     "$ echo 'export PATH=/path/to/swift-0.0.0-RELEASE-ubuntu00.00/usr/bin:\u{22}${PATH}\u{22}' >>~/.profile",
                     "",
-                    "(If Swift is not even istalled yet, see the Swift website—https://swift.org/download/—for instructions.)",
+                    "If Swift is not even istalled yet, see the Swift website for instructions: https://swift.org/download/",
                     "",
                     "• Running from a Terminal",
                     "",

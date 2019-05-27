@@ -34,7 +34,26 @@ extension Workspace {
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: standardOptions, execution: { (_, options: Options, output: Command.Output) throws in
+        private static let discussion = UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishCanada:
+                return [
+                    "By default, the generated documentation will be placed in a “docs” folder at the project root. The GitHub settings described in the following link can be adjusted to automatically host the documentation directly from the repository.",
+                   "",
+                   "https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch",
+                    "",
+                    "(If you wish to avoid checking generated files into “master”, see the documentation of the “encryptedTravisCIDeploymentKey” configuration option for a more advanced method.)"
+                    ].joinedAsLines()
+            }
+        })
+
+        static let command = Command(
+            name: name,
+            description: description,
+            discussion: discussion,
+            directArguments: [],
+            options: standardOptions,
+            execution: { (_, options: Options, output: Command.Output) throws in
 
             var validationStatus = ValidationStatus()
             let outputDirectory = options.project.defaultDocumentationDirectory

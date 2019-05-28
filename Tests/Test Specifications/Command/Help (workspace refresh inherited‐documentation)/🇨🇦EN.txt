@@ -1,0 +1,47 @@
+$ workspace refresh inherited‐documentation help •no‐colour
+
+workspace refresh inherited‐documentation synchronizes the project’s inherited documentation.
+
+It can be tedious re‐writing the same documentation over again. Workspace can make documentation comments re‐usable.
+
+Note: Both Xcode and Workspace now do this automatically in many situations when the child symbol is left undocumented, such as protocol conformances, default implementations and subclass overrides. The explicit directives described here should only be used as a fall‐back in situations where the tools cannot deduce the parent symbol automatically.
+
+To designate a documentation comment as a definition, place “@documentation(identifier)” on the line above. Anything on the same line will be ignored (such as “//”).
+
+protocol Rambler {
+    // @documentation(MyLibrary.Rambler.ramble)
+    /// Rambles on and on and on and on...
+    func ramble() -> Never
+}
+
+Workspace can find definitions in any Swift file in the project.
+
+To inherit the documentation elsewhere, place “#documentation(identifier)” where the documentation would go (or above it if it already exists). Anything on the same line will be ignored (such as “//”).
+
+struct Teacher : Rambler {
+    // #documentation(MyLibrary.Rambler.ramble)
+    /// (Workspace will automatically fill this in whenever the project is refreshed.)
+    func ramble() -> Never {
+        print("Blah")
+        while true {
+            print(", blah")
+        }
+    }
+}
+
+Subcommands
+
+help displays usage information.
+
+Options
+
+•language [language preference] A language to use instead of the one specified in preferences.
+•no‐colour Removes colour from the output.
+•project [path] The location of the target project if it is not at the current working directory.
+
+Argument Types
+
+[language preference] A list of IETF language tags or SDGCornerstone language icons. Semicolons indicate fallback order. Commas indicate that multiple languages should be used. Examples: “en-CA” or “🇨🇦EN” → Canadian English, “cwd,en;fr” → both Woods Cree and English, otherwise French
+[path] A file system path. The form “/...” indicates an absolute path. The form “~/...” indicates a path relative to the home directory. Anything else is interpreted relative to the current working directory.
+
+0

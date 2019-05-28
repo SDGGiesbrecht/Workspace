@@ -421,7 +421,7 @@ extension PackageRepository {
 
     public func refreshInheritedDocumentation(output: Command.Output) throws {
 
-        for url in try sourceFiles(output: output) where ¬url.path.hasSuffix("Sources/WorkspaceConfiguration/Documentation/DocumentationInheritance.swift") {
+        for url in try sourceFiles(output: output) {
             try autoreleasepool {
 
                 if let type = FileType(url: url),

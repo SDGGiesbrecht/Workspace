@@ -1,6 +1,16 @@
-$ workspace proofread help •no‐colour
+$ workspace refresh continuous‐integration help •no‐colour
 
-workspace proofread proofreads the project’s source for style violations.
+workspace refresh continuous‐integration regenerates the project’s continuous integration configuration files.
+
+Workspace will create a “.travis.yml” file at the project root, which configures Travis CI to run all the tests from “Validate” on every operating system supported by the project.
+
+Note: Workspace cannot turn Travis CI on. It is still necessary to log into Travis CI (https://travis-ci.org) and activate it for the project’s repository.
+
+Special Thanks:
+
+• Travis CI (https://travis-ci.org)
+
+• Kyle Fuller and Swift Version Manager (https://github.com/kylef/swiftenv), which makes continuous integration possible on Linux.
 
 Subcommands
 
@@ -11,7 +21,6 @@ Options
 •language [language preference] A language to use instead of the one specified in preferences.
 •no‐colour Removes colour from the output.
 •project [path] The location of the target project if it is not at the current working directory.
-•xcode behaves as an xcode build phase.
 
 Argument Types
 

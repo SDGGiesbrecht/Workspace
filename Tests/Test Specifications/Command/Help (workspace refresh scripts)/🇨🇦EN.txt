@@ -1,0 +1,52 @@
+$ workspace refresh scripts help •no‐colour
+
+workspace refresh scripts regenerates the project’s refresh and validation scripts.
+
+Linux may require some additional set‐up before the generated scripts work with a double‐click. This applies to both “Refresh (Linux).sh” and “Validate (Linux).sh”.
+
+Solutions to common errors are found below.
+
+If the necessary fix is undesirable, it is possible to run these scripts from a terminal instead. (See the bottom of this page.)
+
+• Error: The Script Opens in a Text Editor
+
+Linux needs to be set to run executable scripts when they are double‐clicked instead of opening them to edit.
+
+On Ubuntu, the setting is found at:
+
+“Files” → “Edit” → “Preferences” → “Behavior” → “Run execuatable text files when they are opened”
+
+• Error: Swift Is Unavailable
+
+Because the script opens a new terminal to display its output, brand‐new terminal sessions need to be able to find the `swift` command without additional set‐up.
+
+To register the location of `swift` even for new terminal sessions, run the following command, substituting the real location of the Swift install.
+
+$ echo 'export PATH=/path/to/swift-0.0.0-RELEASE-ubuntu00.00/usr/bin:"${PATH}"' >>~/.profile
+
+If Swift is not even istalled yet, see the Swift website for instructions: https://swift.org/download/
+
+• Running from a Terminal
+
+While double‐clicking is usually the most convenient, it can be bypassed by manually running the macOS equivalent from a terminal:
+
+$ "./Refresh (macOS).command"
+
+This is exactly what the Linux script does internally. It just opens a new terminal window first to display the output.
+
+Subcommands
+
+help displays usage information.
+
+Options
+
+•language [language preference] A language to use instead of the one specified in preferences.
+•no‐colour Removes colour from the output.
+•project [path] The location of the target project if it is not at the current working directory.
+
+Argument Types
+
+[language preference] A list of IETF language tags or SDGCornerstone language icons. Semicolons indicate fallback order. Commas indicate that multiple languages should be used. Examples: “en-CA” or “🇨🇦EN” → Canadian English, “cwd,en;fr” → both Woods Cree and English, otherwise French
+[path] A file system path. The form “/...” indicates an absolute path. The form “~/...” indicates a path relative to the home directory. Anything else is interpreted relative to the current working directory.
+
+0

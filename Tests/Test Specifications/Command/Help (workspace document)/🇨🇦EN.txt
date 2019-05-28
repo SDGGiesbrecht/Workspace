@@ -1,6 +1,12 @@
-$ workspace proofread help •no‐colour
+$ workspace document help •no‐colour
 
-workspace proofread proofreads the project’s source for style violations.
+workspace document generates API documentation.
+
+By default, the generated documentation will be placed in a “docs” folder at the project root. The GitHub settings described in the following link can be adjusted to automatically host the documentation directly from the repository.
+
+https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch
+
+(If you wish to avoid checking generated files into “master”, see the documentation of the “encryptedTravisCIDeploymentKey” configuration option for a more advanced method.)
 
 Subcommands
 
@@ -11,7 +17,6 @@ Options
 •language [language preference] A language to use instead of the one specified in preferences.
 •no‐colour Removes colour from the output.
 •project [path] The location of the target project if it is not at the current working directory.
-•xcode behaves as an xcode build phase.
 
 Argument Types
 

@@ -325,6 +325,12 @@ class APITests : TestCase {
         testCommand(Workspace.command, with: ["refresh", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace refresh)", overwriteSpecificationInsteadOfFailing: false)
         #endif
         testCommand(Workspace.command, with: ["validate", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace validate)", overwriteSpecificationInsteadOfFailing: false)
+        testCommand(Workspace.command, with: ["document", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace document)", overwriteSpecificationInsteadOfFailing: false)
+        testCommand(Workspace.command, with: ["refresh", "continuous‐integration", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace refresh continuous‐integration)", overwriteSpecificationInsteadOfFailing: false)
+        testCommand(Workspace.command, with: ["refresh", "examples", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace refresh examples)", overwriteSpecificationInsteadOfFailing: false)
+        testCommand(Workspace.command, with: ["refresh", "inherited‐documentation", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace refresh inherited‐documentation)", overwriteSpecificationInsteadOfFailing: false)
+        testCommand(Workspace.command, with: ["refresh", "resources", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace refresh resources)", overwriteSpecificationInsteadOfFailing: false)
+        testCommand(Workspace.command, with: ["refresh", "scripts", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace refresh scripts)", overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testInvalidResourceDirectory() {

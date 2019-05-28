@@ -29,7 +29,7 @@ extension Workspace {
         private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
-                return "proofreads the current project’s source for style violations."
+                return "proofreads the project’s source for style violations."
             }
         })
 

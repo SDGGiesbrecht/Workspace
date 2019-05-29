@@ -26,6 +26,7 @@ internal class CommandPage : Page {
 
     internal init(
         localization: LocalizationIdentifier,
+        allLocalizations: [LocalizationIdentifier],
         pathToSiteRoot: StrictString,
         package: APIElement,
         navigationPath: [CommandInterfaceInformation],
@@ -91,6 +92,9 @@ internal class CommandPage : Page {
             navigationPath: SymbolPage.generateNavigationPath(
                 localization: localization,
                 pathToSiteRoot: pathToSiteRoot,
+                allLocalizations: allLocalizations.map({ localization in
+                    return (localization: localization, path: command.relativePagePath[localization]!)
+                }),
                 navigationPath: navigationPathLinks),
             packageImport: packageImport,
             index: index,

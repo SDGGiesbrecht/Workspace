@@ -475,6 +475,7 @@ internal struct PackageInterface {
                 let pageURL = api.pageURL(in: outputDirectory, for: localization)
                 try SymbolPage(
                     localization: localization,
+                    allLocalizations: localizations,
                     pathToSiteRoot: "../",
                     navigationPath: [api],
                     packageImport: packageImport,
@@ -508,6 +509,7 @@ internal struct PackageInterface {
                     let location = tool.pageURL(in: outputDirectory, for: localization)
                     try CommandPage(
                         localization: localization,
+                        allLocalizations: localizations,
                         pathToSiteRoot: "../../",
                         package: api,
                         navigationPath: [tool],
@@ -537,6 +539,7 @@ internal struct PackageInterface {
                     let location = library.pageURL(in: outputDirectory, for: localization)
                     try SymbolPage(
                         localization: localization,
+                        allLocalizations: localizations,
                         pathToSiteRoot: "../../",
                         navigationPath: [api, library],
                         packageImport: packageImport,
@@ -563,6 +566,7 @@ internal struct PackageInterface {
                     let location = module.pageURL(in: outputDirectory, for: localization)
                     try SymbolPage(
                         localization: localization,
+                        allLocalizations: localizations,
                         pathToSiteRoot: "../../",
                         navigationPath: [api, module],
                         packageImport: packageImport,
@@ -597,6 +601,7 @@ internal struct PackageInterface {
                         let location = symbol.pageURL(in: outputDirectory, for: localization)
                         try SymbolPage(
                             localization: localization,
+                            allLocalizations: localizations,
                             pathToSiteRoot: "../../",
                             navigationPath: [api, symbol],
                             packageImport: packageImport,
@@ -652,6 +657,7 @@ internal struct PackageInterface {
 
                 try SymbolPage(
                     localization: localization,
+                    allLocalizations: localizations,
                     pathToSiteRoot: modifiedRoot,
                     navigationPath: navigation,
                     packageImport: packageImport,
@@ -718,6 +724,7 @@ internal struct PackageInterface {
 
                 try CommandPage(
                     localization: localization,
+                    allLocalizations: localizations,
                     pathToSiteRoot: modifiedRoot,
                     package: api,
                     navigationPath: navigation,
@@ -778,6 +785,9 @@ internal struct PackageInterface {
                     navigationPath: SymbolPage.generateNavigationPath(
                         localization: localization,
                         pathToSiteRoot: pathToSiteRoot,
+                        allLocalizations: localizations.map({ localization in
+                            return (localization: localization, path: location(localization))
+                        }),
                         navigationPath: [
                             (label: StrictString(api.name.source()), path: api.relativePagePath[localization]!),
                             (label: pageTitle, path: pagePath)

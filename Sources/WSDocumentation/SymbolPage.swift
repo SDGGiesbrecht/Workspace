@@ -268,7 +268,10 @@ internal class SymbolPage : Page {
 
         var elements: [ElementSyntax] = []
         if allLocalizations.count > 1 {
-
+            elements.append(ElementSyntax(
+                "a",
+                contents: HTML.escapeTextForCharacterData(localization._iconOrCode),
+                inline: true))
         }
 
         elements.append(contentsOf: navigationPath.indices.lazy.map { (level: Int) -> ElementSyntax in

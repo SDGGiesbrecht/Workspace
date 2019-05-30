@@ -53,8 +53,11 @@ public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hash
         return ContentLocalization.icon(for: code)
     }
 
-    public var _directoryName: StrictString {
+    public var _iconOrCode: StrictString {
         return icon ?? StrictString(code)
+    }
+    public var _directoryName: StrictString {
+        return _iconOrCode
     }
 
     // MARK: - Conversion

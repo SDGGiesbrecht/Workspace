@@ -291,7 +291,7 @@ internal class SymbolPage : Page {
                 contents: allLocalizations.lazy.filter({ $0.localization ≠ localization }).map({ entry in
                     return ElementSyntax(
                         "a",
-                        attributes: ["href": HTML.percentEncodeURLPath(entry.path)],
+                        attributes: ["href": pathToSiteRoot + HTML.percentEncodeURLPath(entry.path)],
                         contents: HTML.escapeTextForCharacterData(entry.localization._iconOrCode),
                         inline: true).normalizedSource()
                 }).joinedAsLines(),
@@ -992,7 +992,9 @@ internal class SymbolPage : Page {
         let heading: StrictString
         if let match = localization._reasonableMatch {
             switch match {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            case .englishUnitedKingdom:
+                heading = "Initialisers"
+            case .englishUnitedStates, .englishCanada:
                 heading = "Initializers"
             }
         } else {

@@ -30,6 +30,7 @@ internal class SymbolPage : Page {
     /// If `coverageCheckOnly` is `true`, initialization will be aborted and `nil` returned once validation is complete. No other circumstances will cause initialization to fail.
     internal convenience init?(
         localization: LocalizationIdentifier,
+        allLocalizations: [LocalizationIdentifier],
         pathToSiteRoot: StrictString,
         navigationPath: [APIElement],
         packageImport: StrictString?,
@@ -75,6 +76,7 @@ internal class SymbolPage : Page {
 
         self.init(
             localization: localization,
+            allLocalizations: allLocalizations,
             pathToSiteRoot: pathToSiteRoot,
             navigationPath: navigationPath,
             packageImport: packageImport,
@@ -93,6 +95,7 @@ internal class SymbolPage : Page {
     /// Final initialization which can be skipped when only checking coverage.
     private init(
         localization: LocalizationIdentifier,
+        allLocalizations: [LocalizationIdentifier],
         pathToSiteRoot: StrictString,
         navigationPath: [APIElement],
         packageImport: StrictString?,
@@ -106,6 +109,7 @@ internal class SymbolPage : Page {
         symbolLinks: [String: String],
         adjustedSymbolLinks: [String: String],
         partiallyConstructedContent: [StrictString]) {
+
         var content = partiallyConstructedContent
 
         content.append(SymbolPage.generateToolsSection(
@@ -137,20 +141,27 @@ internal class SymbolPage : Page {
 
         let extensions: [StrictString] = SymbolPage.generateOtherModuleExtensionsSections(symbol: symbol, package: package, localization: localization, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks)
 
-        super.init(localization: localization,
-                   pathToSiteRoot: pathToSiteRoot,
-                   navigationPath: SymbolPage.generateNavigationPath(localization: localization, pathToSiteRoot: pathToSiteRoot, navigationPath: navigationPath),
-                   packageImport: packageImport,
-                   index: index,
-                   platforms: platforms,
-                   symbolImports: SymbolPage.generateImportStatement(for: symbol, package: package, localization: localization, pathToSiteRoot: pathToSiteRoot),
-                   symbolType: symbol.symbolType(localization: localization),
-                   compilationConditions: SymbolPage.generateCompilationConditions(symbol: symbol),
-                   constraints: SymbolPage.generateConstraints(symbol: symbol, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks),
-                   title: StrictString(symbol.name.source()),
-                   content: content.joinedAsLines(),
-                   extensions: extensions.joinedAsLines(),
-                   copyright: copyright)
+        super.init(
+            localization: localization,
+            pathToSiteRoot: pathToSiteRoot,
+            navigationPath: SymbolPage.generateNavigationPath(
+                localization: localization,
+                pathToSiteRoot: pathToSiteRoot,
+                allLocalizations: allLocalizations.map({ localization in
+                    return (localization: localization, path: symbol.relativePagePath[localization]!)
+                }),
+                navigationPath: navigationPath),
+            packageImport: packageImport,
+            index: index,
+            platforms: platforms,
+            symbolImports: SymbolPage.generateImportStatement(for: symbol, package: package, localization: localization, pathToSiteRoot: pathToSiteRoot),
+            symbolType: symbol.symbolType(localization: localization),
+            compilationConditions: SymbolPage.generateCompilationConditions(symbol: symbol),
+            constraints: SymbolPage.generateConstraints(symbol: symbol, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks),
+            title: StrictString(symbol.name.source()),
+            content: content.joinedAsLines(),
+            extensions: extensions.joinedAsLines(),
+            copyright: copyright)
     }
 
     // MARK: - Generation
@@ -238,10 +249,12 @@ internal class SymbolPage : Page {
     private static func generateNavigationPath(
         localization: LocalizationIdentifier,
         pathToSiteRoot: StrictString,
+        allLocalizations: [(localization: LocalizationIdentifier, path: StrictString)],
         navigationPath: [APIElement]) -> StrictString {
         return generateNavigationPath(
             localization: localization,
             pathToSiteRoot: pathToSiteRoot,
+            allLocalizations: allLocalizations,
             navigationPath: navigationPath.map({ element in
                 return (StrictString(element.name.source()), element.relativePagePath[localization]!)
             }))
@@ -250,24 +263,59 @@ internal class SymbolPage : Page {
     internal static func generateNavigationPath(
         localization: LocalizationIdentifier,
         pathToSiteRoot: StrictString,
+        allLocalizations: [(localization: LocalizationIdentifier, path: StrictString)],
         navigationPath: [(label: StrictString, path: StrictString)]) -> StrictString {
-        let navigationPathLinks = navigationPath.indices.map { (level: Int) -> StrictString in
+
+        var elements: [ElementSyntax] = []
+        if allLocalizations.count > 1 {
+            elements.append(ElementSyntax(
+                "a",
+                attributes: [
+                    "id": "current‐language‐icon",
+                    "onmouseenter": "showLanguageSwitch(this)"
+                ],
+                contents: [
+                    ElementSyntax(
+                        "span",
+                        contents: HTML.escapeTextForCharacterData(localization._iconOrCode),
+                        inline: true),
+                    ].lazy.map({ $0.normalizedSource() }).joinedAsLines(),
+                inline: true))
+
+            elements.append(ElementSyntax(
+                "div",
+                attributes: [
+                    "id": "language‐switch",
+                    "onmouseleave": "hideLanguageSwitch(this)"
+                ],
+                contents: allLocalizations.lazy.filter({ $0.localization ≠ localization }).map({ entry in
+                    return ElementSyntax(
+                        "a",
+                        attributes: ["href": pathToSiteRoot + HTML.percentEncodeURLPath(entry.path)],
+                        contents: HTML.escapeTextForCharacterData(entry.localization._iconOrCode),
+                        inline: true).normalizedSource()
+                }).joinedAsLines(),
+                inline: false))
+        }
+
+        elements.append(contentsOf: navigationPath.indices.lazy.map { (level: Int) -> ElementSyntax in
             let (label, path) = navigationPath[level]
             let url = pathToSiteRoot.appending(contentsOf: path)
             if ¬navigationPath.isEmpty,
                 level ≠ navigationPath.index(before: navigationPath.endIndex) {
                 return ElementSyntax("a", attributes: [
                     "href": HTML.percentEncodeURLPath(url)
-                    ], contents: HTML.escapeTextForCharacterData(label), inline: true).normalizedSource()
+                    ], contents: HTML.escapeTextForCharacterData(label), inline: true)
             } else {
                 return ElementSyntax(
                     "span",
                     attributes: [:],
                     contents: HTML.escapeTextForCharacterData(label),
-                    inline: true).normalizedSource()
+                    inline: true)
             }
-        }
-        return navigationPathLinks.joined(separator: "\n")
+        })
+
+        return elements.lazy.map({ $0.normalizedSource() }).joined(separator: "\n")
     }
 
     private static func generateDependencyStatement(for symbol: APIElement, package: PackageAPI, localization: LocalizationIdentifier, pathToSiteRoot: StrictString) -> StrictString {
@@ -944,7 +992,9 @@ internal class SymbolPage : Page {
         let heading: StrictString
         if let match = localization._reasonableMatch {
             switch match {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            case .englishUnitedKingdom:
+                heading = "Initialisers"
+            case .englishUnitedStates, .englishCanada:
                 heading = "Initializers"
             }
         } else {

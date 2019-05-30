@@ -268,9 +268,35 @@ internal class SymbolPage : Page {
 
         var elements: [ElementSyntax] = []
         if allLocalizations.count > 1 {
+            var languageSwitch = ElementSyntax(
+                "div",
+                attributes: [
+                    "id": "language‐switch",
+                    "onmouseout": "hideLanguageSwitch(this)"
+                ],
+                contents: allLocalizations.lazy.filter({ $0.localization ≠ localization }).map({ entry in
+                    return ElementSyntax(
+                        "a",
+                        attributes: ["href": HTML.percentEncodeURLPath(entry.path)],
+                        contents: HTML.escapeTextForCharacterData(localization._iconOrCode),
+                        inline: true).normalizedSource()
+                }).joinedAsLines(),
+                inline: false)
+            languageSwitch.openingTag.attributes!.attributes!.append(
+                AttributeSyntax(name: TokenSyntax(kind: .attributeName("hidden"))))
             elements.append(ElementSyntax(
                 "a",
-                contents: HTML.escapeTextForCharacterData(localization._iconOrCode),
+                attributes: [
+                    "id": "current‐language‐icon",
+                    "onmouseover": "showLanguageSwitch(this)"
+                ],
+                contents: [
+                    ElementSyntax(
+                        "span",
+                        contents: HTML.escapeTextForCharacterData(localization._iconOrCode)
+                            + languageSwitch.normalizedSource(),
+                        inline: true),
+                    ].lazy.map({ $0.normalizedSource() }).joinedAsLines(),
                 inline: true))
         }
 

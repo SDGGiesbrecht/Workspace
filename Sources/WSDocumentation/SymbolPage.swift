@@ -268,7 +268,21 @@ internal class SymbolPage : Page {
 
         var elements: [ElementSyntax] = []
         if allLocalizations.count > 1 {
-            let languageSwitch = ElementSyntax(
+            elements.append(ElementSyntax(
+                "a",
+                attributes: [
+                    "id": "current‐language‐icon",
+                    "onmouseover": "showLanguageSwitch(this)"
+                ],
+                contents: [
+                    ElementSyntax(
+                        "span",
+                        contents: HTML.escapeTextForCharacterData(localization._iconOrCode),
+                        inline: true),
+                    ].lazy.map({ $0.normalizedSource() }).joinedAsLines(),
+                inline: true))
+
+            elements.append(ElementSyntax(
                 "div",
                 attributes: [
                     "id": "language‐switch",
@@ -281,22 +295,7 @@ internal class SymbolPage : Page {
                         contents: HTML.escapeTextForCharacterData(entry.localization._iconOrCode),
                         inline: true).normalizedSource()
                 }).joinedAsLines(),
-                inline: false)
-
-            elements.append(ElementSyntax(
-                "a",
-                attributes: [
-                    "id": "current‐language‐icon",
-                    "onmouseover": "showLanguageSwitch(this)"
-                ],
-                contents: [
-                    ElementSyntax(
-                        "span",
-                        contents: HTML.escapeTextForCharacterData(localization._iconOrCode),
-                        inline: true),
-                    languageSwitch,
-                    ].lazy.map({ $0.normalizedSource() }).joinedAsLines(),
-                inline: true))
+                inline: false))
         }
 
         elements.append(contentsOf: navigationPath.indices.lazy.map { (level: Int) -> ElementSyntax in

@@ -272,7 +272,7 @@ internal class SymbolPage : Page {
                 "a",
                 attributes: [
                     "id": "current‐language‐icon",
-                    "onmouseover": "showLanguageSwitch(this)"
+                    "onmouseenter": "showLanguageSwitch(this)"
                 ],
                 contents: [
                     ElementSyntax(
@@ -286,7 +286,7 @@ internal class SymbolPage : Page {
                 "div",
                 attributes: [
                     "id": "language‐switch",
-                    "onmouseout": "hideLanguageSwitch(this)"
+                    "onmouseleave": "hideLanguageSwitch(this)"
                 ],
                 contents: allLocalizations.lazy.filter({ $0.localization ≠ localization }).map({ entry in
                     return ElementSyntax(

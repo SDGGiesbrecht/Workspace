@@ -278,7 +278,7 @@ internal class SymbolPage : Page {
                     return ElementSyntax(
                         "a",
                         attributes: ["href": HTML.percentEncodeURLPath(entry.path)],
-                        contents: HTML.escapeTextForCharacterData(localization._iconOrCode),
+                        contents: HTML.escapeTextForCharacterData(entry.localization._iconOrCode),
                         inline: true).normalizedSource()
                 }).joinedAsLines(),
                 inline: false)

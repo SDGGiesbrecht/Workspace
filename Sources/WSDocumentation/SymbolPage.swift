@@ -265,24 +265,30 @@ internal class SymbolPage : Page {
         pathToSiteRoot: StrictString,
         allLocalizations: [(localization: LocalizationIdentifier, path: StrictString)],
         navigationPath: [(label: StrictString, path: StrictString)]) -> StrictString {
-        #warning("Need to use other localizations.")
-        let navigationPathLinks = navigationPath.indices.map { (level: Int) -> StrictString in
+
+        var elements: [ElementSyntax] = []
+        if allLocalizations.count > 1 {
+
+        }
+
+        elements.append(contentsOf: navigationPath.indices.lazy.map { (level: Int) -> ElementSyntax in
             let (label, path) = navigationPath[level]
             let url = pathToSiteRoot.appending(contentsOf: path)
             if ¬navigationPath.isEmpty,
                 level ≠ navigationPath.index(before: navigationPath.endIndex) {
                 return ElementSyntax("a", attributes: [
                     "href": HTML.percentEncodeURLPath(url)
-                    ], contents: HTML.escapeTextForCharacterData(label), inline: true).normalizedSource()
+                    ], contents: HTML.escapeTextForCharacterData(label), inline: true)
             } else {
                 return ElementSyntax(
                     "span",
                     attributes: [:],
                     contents: HTML.escapeTextForCharacterData(label),
-                    inline: true).normalizedSource()
+                    inline: true)
             }
-        }
-        return navigationPathLinks.joined(separator: "\n")
+        })
+
+        return elements.lazy.map({ $0.normalizedSource() }).joined(separator: "\n")
     }
 
     private static func generateDependencyStatement(for symbol: APIElement, package: PackageAPI, localization: LocalizationIdentifier, pathToSiteRoot: StrictString) -> StrictString {

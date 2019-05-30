@@ -150,6 +150,7 @@ nav.navigation‐bar {
     position: absolute;
     left: 0;
     top: calc((52 / 17) * 1rem); /* Same as header bar height. */
+    padding-bottom: calc((12 / 17) * 1rem);
 }
 #language‐switch > a {
     display: block;

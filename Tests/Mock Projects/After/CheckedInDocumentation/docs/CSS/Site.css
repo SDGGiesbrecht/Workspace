@@ -348,6 +348,9 @@ a:link, a:visited {
 a:hover {
     text-decoration: underline;
 }
+#current‐language‐icon:hover {
+    text-decoration: none;
+}
 
 .command, .option {
     font-weight: bold;

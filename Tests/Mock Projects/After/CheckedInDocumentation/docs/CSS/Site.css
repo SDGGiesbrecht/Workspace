@@ -131,6 +131,10 @@ nav.navigation‐bar {
 .navigation‐path a:first-child::before, .navigation‐path span:first-child::before {
     display: none;
 }
+#language‐switch {
+    display: none;
+    position: relative;
+}
 
 header.navigation‐bar .swift.blockquote, .import‐header .swift.blockquote {
     margin: 0;

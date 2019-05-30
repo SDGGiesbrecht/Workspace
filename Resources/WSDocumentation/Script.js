@@ -77,12 +77,12 @@ function switchConformanceMode(sender) {
     }
 }
 
-func showLanguageSwitch(sender) {
+function showLanguageSwitch(sender) {
     var popup = document.getElementByID("language‐switch");
     popup.style["display"] = "block";
 }
 
-func hideLanguageSwitch(sender) {
+function hideLanguageSwitch(sender) {
     var popup = document.getElementByID("language‐switch");
     popup.style["display"] = "none";
 }

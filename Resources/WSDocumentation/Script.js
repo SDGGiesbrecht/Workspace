@@ -76,3 +76,13 @@ function switchConformanceMode(sender) {
         }
     }
 }
+
+func showLanguageSwitch(sender) {
+    var popup = document.getElementByID("language‐switch");
+    popup.style["display"] = "block";
+}
+
+func hideLanguageSwitch(sender) {
+    var popup = document.getElementByID("language‐switch");
+    popup.style["display"] = "none";
+}

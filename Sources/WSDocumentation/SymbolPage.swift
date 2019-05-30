@@ -268,7 +268,7 @@ internal class SymbolPage : Page {
 
         var elements: [ElementSyntax] = []
         if allLocalizations.count > 1 {
-            var languageSwitch = ElementSyntax(
+            let languageSwitch = ElementSyntax(
                 "div",
                 attributes: [
                     "id": "language‐switch",
@@ -282,8 +282,7 @@ internal class SymbolPage : Page {
                         inline: true).normalizedSource()
                 }).joinedAsLines(),
                 inline: false)
-            languageSwitch.openingTag.attributes!.attributes!.append(
-                AttributeSyntax(name: TokenSyntax(kind: .attributeName("hidden"))))
+
             elements.append(ElementSyntax(
                 "a",
                 attributes: [

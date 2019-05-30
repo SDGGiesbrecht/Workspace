@@ -703,14 +703,16 @@ internal struct PackageInterface {
                 var information = CommandInterfaceInformation()
                 information.interfaces[localization] = subcommand
 
-                var nestedPagePath = parent.relativePagePath[localization]!
-                nestedPagePath.removeLast(5) // .html
-                nestedPagePath += "/"
-                nestedPagePath += CommandPage.subcommandsDirectoryName(for: localization)
-                nestedPagePath += "/"
-                nestedPagePath += Page.sanitize(fileName: subcommand.name)
-                nestedPagePath += ".html"
-                information.relativePagePath[localization] = nestedPagePath
+                for localization in localizations {
+                    var nestedPagePath = parent.relativePagePath[localization]!
+                    nestedPagePath.removeLast(5) // .html
+                    nestedPagePath += "/"
+                    nestedPagePath += CommandPage.subcommandsDirectoryName(for: localization)
+                    nestedPagePath += "/"
+                    nestedPagePath += Page.sanitize(fileName: subcommand.name)
+                    nestedPagePath += ".html"
+                    information.relativePagePath[localization] = nestedPagePath
+                }
 
                 let location = information.pageURL(in: outputDirectory, for: localization)
 

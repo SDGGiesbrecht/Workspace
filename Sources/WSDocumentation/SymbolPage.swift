@@ -292,9 +292,9 @@ internal class SymbolPage : Page {
                 contents: [
                     ElementSyntax(
                         "span",
-                        contents: HTML.escapeTextForCharacterData(localization._iconOrCode)
-                            + languageSwitch.normalizedSource(),
+                        contents: HTML.escapeTextForCharacterData(localization._iconOrCode),
                         inline: true),
+                    languageSwitch,
                     ].lazy.map({ $0.normalizedSource() }).joinedAsLines(),
                 inline: true))
         }

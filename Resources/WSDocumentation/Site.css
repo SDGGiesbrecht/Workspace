@@ -103,7 +103,7 @@ dt:first-child {
 
 header.navigation‐bar, .import‐header {
     box-sizing: content-box;
-    height: calc((52 / 17) * 1rem);
+    height: calc((52 / 17) * 1rem);  /* Same as language switch start. */
     padding: 0 calc((22 / 17) * 1rem);
 }
 nav.navigation‐bar {
@@ -128,6 +128,10 @@ nav.navigation‐bar {
 [dir="ltr"].navigation‐path a, [dir="ltr"].navigation‐path span {
     margin-left: 1.05882rem;
 }
+#language‐switch a {
+    margin-left: 1.05882rem;
+    margin-right: 1.05882rem;
+}
 .navigation‐path a:first-child, .navigation‐path span:first-child {
     margin-left: 0;
     margin-right: 0;
@@ -144,6 +148,8 @@ nav.navigation‐bar {
 #language‐switch {
     display: none;
     position: absolute;
+    left: 0;
+    top: calc((52 / 17) * 1rem); /* Same as header bar height. */
 }
 #language‐switch > a {
     display: block;
@@ -175,6 +181,10 @@ header.index, header.platforms {
     display: block;
     padding: 0.2em calc((22 / 17) * 1rem);
     overflow: hidden;
+}
+#language‐switch a {
+    margin: 0;
+    padding: 0.2em calc((22 / 17) * 1rem);
 }
 .index a:not(:first-child) {
     padding-left: calc(1em + calc((22 / 17) * 1rem));
@@ -266,6 +276,9 @@ blockquote {
 .navigation‐bar {
     background-color: #333;
     color: #CCCCCC;
+}
+#language‐switch {
+    background-color: #333;
 }
 .navigation‐path a {
     color: #FFFFFF;

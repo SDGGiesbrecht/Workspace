@@ -133,7 +133,10 @@ nav.navigation‐bar {
 }
 #language‐switch {
     display: none;
-    position: relative;
+    position: absolute;
+}
+#language‐switch > a {
+    display: block;
 }
 
 header.navigation‐bar .swift.blockquote, .import‐header .swift.blockquote {
@@ -375,6 +378,9 @@ a:hover {
     font-family: "SF Pro Icons", "-apple-system", "BlinkMacSystemFont", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
     content: "‣";
     line-height: 1;
+}
+#language‐switch a::before {
+    content: none;
 }
 
 .index, .platforms {

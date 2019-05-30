@@ -57,8 +57,7 @@ extension PackageRepository {
     }
 
     private func loadCommandLineInterface(output: Command.Output) throws -> PackageCLI {
-        var productsURL = try productsDirectory(releaseConfiguration: false).get()
-
+        let productsURL = try productsDirectory(releaseConfiguration: false).get()
         let toolNames = try configurationContext().manifest.products.lazy.filter({ product in
             switch product.type {
             case .library:

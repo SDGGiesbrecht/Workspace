@@ -18,12 +18,13 @@ import WSGeneralImports
 
 import WSProject
 import WSExamples
+import WSDocumentation
 
 import SDGSwiftSource
 
 extension PackageRepository {
 
-    private func refreshReadMe(at location: URL, for localization: LocalizationIdentifier, output: Command.Output) throws {
+    private func refreshReadMe(at location: URL, for localization: LocalizationIdentifier, allLocalizations: [LocalizationIdentifier], output: Command.Output) throws {
 
         guard var readMe = try readMe(output: output)[localization] else {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ errorLocalization in
@@ -35,8 +36,9 @@ extension PackageRepository {
         }
 
         var fromDocumentation: StrictString = ""
-        #warning("Should localize.")
-        if let documentation = try? PackageAPI.documentation(for: package().get()).last?.documentationComment {
+        if let documentation = try? PackageAPI.documentation(
+            for: package().get()).resolved(localizations: allLocalizations)[localization] {
+
             if let description = documentation.descriptionSection {
                 fromDocumentation.append(contentsOf: description.text.scalars)
             }
@@ -63,7 +65,11 @@ extension PackageRepository {
 
     public func refreshReadMe(output: Command.Output) throws {
 
-        try refreshReadMe(at: location.appendingPathComponent("README.md"), for: try developmentLocalization(output: output), output: output)
+        try refreshReadMe(
+            at: location.appendingPathComponent("README.md"),
+            for: try developmentLocalization(output: output),
+            allLocalizations: try configuration(output: output).documentation.localizations,
+            output: output)
 
         // Deprecated file locations.
         delete(location.appendingPathComponent("Documentation/Related Projects.md"), output: output)

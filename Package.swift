@@ -196,6 +196,7 @@ let package = Package(
             "WSGeneralImports",
             "WSProject",
             "WSExamples",
+            "WSDocumentation",
             .product(name: "SDGSwiftSource", package: "SDGSwift")
             ]),
 

@@ -20,7 +20,7 @@ import WSProject
 
 extension Array where Element == SymbolDocumentation {
 
-    internal func resolved(
+    public func resolved(
         localizations: [LocalizationIdentifier]) -> [LocalizationIdentifier: DocumentationSyntax] {
         var result: [LocalizationIdentifier: DocumentationSyntax] = [:]
 

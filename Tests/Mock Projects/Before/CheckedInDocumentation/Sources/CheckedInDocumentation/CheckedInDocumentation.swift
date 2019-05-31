@@ -48,14 +48,17 @@ struct CheckedInDocumentation {
 /// - Keyword: keyword
 public class Class {}
 
+// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
 /// A structure.
 public struct Structure : Equatable {
 
+    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
     /// A type property.
     ///
     /// Discussion.
     public static var typeProperty: Bool = false
 
+    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
     /// A type method.
     ///
     /// - Complexity: O(?)
@@ -186,6 +189,7 @@ public func conditionallyCompiled() {}
 public struct GenericStructure<GenericParameter> {}
 
 extension Array where Element : Equatable {
+    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
     /// A constrained method.
     public func constrained() {}
 }
@@ -195,6 +199,7 @@ extension Array where Element : Equatable {
 // @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇬🇧EN)
 /// An operator.
 infix operator ≠
+// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
 /// A precedence.
 precedencegroup Precedence {}
 

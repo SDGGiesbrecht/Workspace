@@ -303,34 +303,7 @@ extension APIElement {
     // MARK: - Localization
 
     internal func determine(localizations: [LocalizationIdentifier]) {
-        if localizations.count == 1 {
-            if localizedDocumentation.isEmpty {
-                for localization in localizations {
-                    localizedDocumentation[localization] = documentation.last?.documentationComment
-                }
-            }
-        } else {
-            for documentation in self.documentation {
-                for comment in documentation.developerComments {
-                    let content = StrictString(comment.content.text)
-                    for match in content.matches(
-                        for: AlternativePatterns(PackageRepository.localizationDeclarationPatterns)) {
-
-                            guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),
-                                let closingParenthesis = match.contents.lastMatch(for: ")".scalars) else {
-                                    unreachable()
-                            }
-
-                            var identifier = StrictString(content[openingParenthesis.range.upperBound ..< closingParenthesis.range.lowerBound])
-                            identifier.trimMarginalWhitespace()
-
-                            let localization = LocalizationIdentifier(String(identifier))
-                            localizedDocumentation[localization] = documentation.documentationComment
-                    }
-                }
-            }
-        }
-
+        localizedDocumentation = documentation.resolved(localizations: localizations)
         for child in children {
             child.determine(localizations: localizations)
         }

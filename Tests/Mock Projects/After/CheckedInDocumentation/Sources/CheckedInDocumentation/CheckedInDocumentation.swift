@@ -172,6 +172,9 @@ extension Array where Element : Equatable {
     public func constrained() {}
 }
 
+// @localization(zxx)
+/// ...
+// @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇬🇧EN)
 /// An operator.
 infix operator ≠
 /// A precedence.

@@ -17,6 +17,7 @@
 
 import PackageDescription
 
+// @localization(🇨🇦EN)
 // @example(1, Read‐Me 🇨🇦EN)
 /// A package.
 ///

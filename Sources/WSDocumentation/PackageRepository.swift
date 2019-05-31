@@ -118,7 +118,8 @@ extension PackageRepository {
                             "#### [\(name)](\(url.absoluteString))"
                         ]
 
-                        if let documentation = try? PackageAPI.documentation(for: package.package().get()),
+                        #warning("Should localize.")
+                        if let documentation = try? PackageAPI.documentation(for: package.package().get()).last?.documentationComment,
                             let description = documentation.descriptionSection {
                             markdown += [
                                 "",

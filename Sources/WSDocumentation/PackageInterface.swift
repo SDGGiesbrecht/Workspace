@@ -771,10 +771,10 @@ internal struct PackageInterface {
                 }
                 documentationMarkup.append(contentsOf: "\npublic func function() {}\n")
                 let parsed = try SyntaxTreeParser.parse(String(documentationMarkup))
-                let documentation = parsed.api().first!.documentation
+                let documentation = parsed.api().first!.documentation.last!.documentationComment
 
                 var content = ""
-                for paragraph in documentation?.discussionEntries ?? [] { // @exempt(from: tests)
+                for paragraph in documentation.discussionEntries {
                     content.append("\n")
                     content.append(contentsOf: paragraph.renderedHTML(
                         localization: localization.code,

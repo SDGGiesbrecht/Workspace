@@ -138,6 +138,27 @@ extension PackageRepository {
 
     // MARK: - Documentation
 
+    private static let localizationAttribute: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishCanada:
+            return "localization"
+        }
+    })
+
+    internal static var localizationDeclarationPatterns: [CompositePattern<Unicode.Scalar>] {
+        return InterfaceLocalization.allCases.map { localization in
+            return CompositePattern<Unicode.Scalar>([
+                LiteralPattern("@".scalars),
+                LiteralPattern(localizationAttribute.resolved(for: localization)),
+                LiteralPattern("(".scalars),
+                RepetitionPattern(
+                    ConditionalPattern({ $0 ≠ ")" ∧ $0 ∉ CharacterSet.newlines }),
+                    consumption: .greedy),
+                LiteralPattern(")".scalars)
+                ])
+        }
+    }
+
     public func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
         if try ¬hasTargetsToDocument() {

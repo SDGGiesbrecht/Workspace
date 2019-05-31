@@ -240,6 +240,7 @@ extension APIElement {
     // MARK: - Properties
 
     internal enum ExtendedPropertyKey {
+        case localizedDocumentation
         case relativePagePath
         case types
         case `extensions`
@@ -257,6 +258,15 @@ extension APIElement {
         }
         nonmutating set {
             userInformation = newValue
+        }
+    }
+
+    internal var localizedDocumentation: [LocalizationIdentifier: DocumentationSyntax] {
+        get {
+            return (extendedProperties[.localizedDocumentation] as? [LocalizationIdentifier: DocumentationSyntax]) ?? [:]
+        }
+        nonmutating set {
+            extendedProperties[.localizedDocumentation] = newValue
         }
     }
 
@@ -287,6 +297,33 @@ extension APIElement {
         }
         nonmutating set {
             extendedProperties[.homeProduct] = newValue
+        }
+    }
+
+    // MARK: - Localization
+
+    internal func determineLocalizations() {
+        for documentation in self.documentation {
+            for comment in documentation.developerComments {
+                let content = StrictString(comment.content.text)
+                for match in content.matches(
+                    for: AlternativePatterns(PackageRepository.localizationDeclarationPatterns)) {
+
+                        guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),
+                            let closingParenthesis = match.contents.lastMatch(for: ")".scalars) else {
+                                unreachable()
+                        }
+
+                        var identifier = StrictString(content[openingParenthesis.range.upperBound ..< closingParenthesis.range.lowerBound])
+                        identifier.trimMarginalWhitespace()
+
+                        let localization = LocalizationIdentifier(String(identifier))
+                        localizedDocumentation[localization] = documentation.documentationComment
+                }
+            }
+        }
+        for child in children {
+            child.determineLocalizations()
         }
     }
 

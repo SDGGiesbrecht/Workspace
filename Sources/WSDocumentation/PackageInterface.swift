@@ -349,6 +349,7 @@ internal struct PackageInterface {
 
         self.packageIdentifiers = api.identifierList()
 
+        APIElement.package(api).determineLocalizations()
         var paths: [LocalizationIdentifier: [String: String]] = [:]
         for localization in localizations {
             paths[localization] = APIElement.package(api).determinePaths(for: localization)

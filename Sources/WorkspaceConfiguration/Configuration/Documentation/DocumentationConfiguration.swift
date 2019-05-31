@@ -19,6 +19,7 @@ public struct DocumentationConfiguration : Codable {
 
     // MARK: - Properties
 
+    #warning("Needs to describe how symbol documentation can be localized.")
     /// The localizations supported by the project.
     ///
     /// The default contains no localizations, but some tasks may throw errors if they require localizations to be specified.

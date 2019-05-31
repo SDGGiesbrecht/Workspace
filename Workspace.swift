@@ -63,6 +63,7 @@ public let configuration: WorkspaceConfiguration = {
 
         // SDGCommandLine
         "SDGCommandLine",
+        "SDGExportedCommandLineInterface",
         "SDGCommandLineLocalizations",
         "SDGCommandLineTestUtilities",
 

@@ -430,6 +430,7 @@ internal class SymbolPage : Page {
                 symbolLinks: symbolLinks)))
         }
         if case .extension = symbol {} else {
+            #warning("Should report localization too.")
             status.reportMissingDescription(symbol: symbol, navigationPath: navigationPath)
         }
         return ""

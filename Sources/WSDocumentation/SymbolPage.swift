@@ -422,8 +422,7 @@ internal class SymbolPage : Page {
         symbolLinks: [String: String],
         status: DocumentationStatus) -> StrictString {
 
-        #warning("Should localize.")
-        if let documentation = symbol.documentation.last?.documentationComment,
+        if let documentation = symbol.localizedDocumentation[localization],
             let description = documentation.descriptionSection {
             return generateDescriptionSection(contents: StrictString(description.renderedHTML(
                 localization: localization.code,
@@ -526,8 +525,7 @@ internal class SymbolPage : Page {
         symbolLinks: [String: String],
         status: DocumentationStatus) -> StrictString {
 
-        #warning("Should localize.")
-        guard let discussion = symbol.documentation.last?.documentationComment.discussionEntries,
+        guard let discussion = symbol.localizedDocumentation[localization]?.discussionEntries,
             ¬discussion.isEmpty else {
                 return ""
         }
@@ -591,8 +589,7 @@ internal class SymbolPage : Page {
         status: DocumentationStatus) -> StrictString {
 
         let parameters = symbol.parameters()
-        #warning("Should localize.")
-        let parameterDocumentation = symbol.documentation.last?.documentationComment.normalizedParameters ?? []
+        let parameterDocumentation = symbol.localizedDocumentation[localization]?.normalizedParameters ?? []
         let documentedParameters = parameterDocumentation.map { $0.name.text }
 
         if parameters ≠ documentedParameters {
@@ -648,8 +645,7 @@ internal class SymbolPage : Page {
     }
 
     private static func generateThrowsSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
-        #warning("Should localize.")
-        guard let callout = symbol.documentation.last?.documentationComment.throwsCallout else {
+        guard let callout = symbol.localizedDocumentation[localization]?.throwsCallout else {
             return ""
         }
         let throwsHeading: StrictString = Callout.throws.localizedText(localization.code)
@@ -661,8 +657,7 @@ internal class SymbolPage : Page {
     }
 
     private static func generateReturnsSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
-        #warning("Should localize.")
-        guard let callout = symbol.documentation.last?.documentationComment.returnsCallout else {
+        guard let callout = symbol.localizedDocumentation[localization]?.returnsCallout else {
             return ""
         }
         let returnsHeading: StrictString = Callout.returns.localizedText(localization.code)
@@ -1178,8 +1173,7 @@ internal class SymbolPage : Page {
                 entry.append(ElementSyntax("a", attributes: [
                     "href": HTML.percentEncodeURLPath(target)
                     ], contents: name, inline: true).normalizedSource())
-                #warning("Should localize.")
-                if let description = child.documentation.last?.documentationComment.descriptionSection {
+                if let description = child.localizedDocumentation[localization]?.descriptionSection {
                     entry.append(StrictString(description.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)))
                 }
             } else {

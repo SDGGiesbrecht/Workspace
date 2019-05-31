@@ -302,28 +302,37 @@ extension APIElement {
 
     // MARK: - Localization
 
-    internal func determineLocalizations() {
-        for documentation in self.documentation {
-            for comment in documentation.developerComments {
-                let content = StrictString(comment.content.text)
-                for match in content.matches(
-                    for: AlternativePatterns(PackageRepository.localizationDeclarationPatterns)) {
+    internal func determine(localizations: [LocalizationIdentifier]) {
+        if localizations.count == 1 {
+            if localizedDocumentation.isEmpty {
+                for localization in localizations {
+                    localizedDocumentation[localization] = documentation.last?.documentationComment
+                }
+            }
+        } else {
+            for documentation in self.documentation {
+                for comment in documentation.developerComments {
+                    let content = StrictString(comment.content.text)
+                    for match in content.matches(
+                        for: AlternativePatterns(PackageRepository.localizationDeclarationPatterns)) {
 
-                        guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),
-                            let closingParenthesis = match.contents.lastMatch(for: ")".scalars) else {
-                                unreachable()
-                        }
+                            guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),
+                                let closingParenthesis = match.contents.lastMatch(for: ")".scalars) else {
+                                    unreachable()
+                            }
 
-                        var identifier = StrictString(content[openingParenthesis.range.upperBound ..< closingParenthesis.range.lowerBound])
-                        identifier.trimMarginalWhitespace()
+                            var identifier = StrictString(content[openingParenthesis.range.upperBound ..< closingParenthesis.range.lowerBound])
+                            identifier.trimMarginalWhitespace()
 
-                        let localization = LocalizationIdentifier(String(identifier))
-                        localizedDocumentation[localization] = documentation.documentationComment
+                            let localization = LocalizationIdentifier(String(identifier))
+                            localizedDocumentation[localization] = documentation.documentationComment
+                    }
                 }
             }
         }
+
         for child in children {
-            child.determineLocalizations()
+            child.determine(localizations: localizations)
         }
     }
 

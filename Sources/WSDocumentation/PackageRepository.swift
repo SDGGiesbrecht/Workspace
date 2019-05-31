@@ -90,8 +90,9 @@ extension PackageRepository {
 
     private func relatedProjects(output: Command.Output) throws -> [LocalizationIdentifier: Markdown] {
         let relatedProjects = try configuration(output: output).documentation.relatedProjects
+        let localizations = try configuration(output: output).documentation.localizations
         var result: [LocalizationIdentifier: Markdown] = [:]
-        for localization in try configuration(output: output).documentation.localizations {
+        for localization in localizations {
             var markdown: [Markdown] = []
             for entry in relatedProjects {
                 try autoreleasepool {
@@ -118,8 +119,9 @@ extension PackageRepository {
                             "#### [\(name)](\(url.absoluteString))"
                         ]
 
-                        #warning("Should localize.")
-                        if let documentation = try? PackageAPI.documentation(for: package.package().get()).last?.documentationComment,
+                        if let packageDocumentation = try? PackageAPI.documentation(for: package.package().get()),
+                            let documentation = packageDocumentation.resolved(
+                                localizations: localizations)[localization],
                             let description = documentation.descriptionSection {
                             markdown += [
                                 "",

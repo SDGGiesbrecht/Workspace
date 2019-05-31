@@ -2,6 +2,7 @@
 
 import PackageDescription
 
+// @localization(🇨🇦EN)
 /// A package.
 let package = Package(
     name: "PartialReadMe",

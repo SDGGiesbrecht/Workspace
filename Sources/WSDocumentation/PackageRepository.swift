@@ -114,7 +114,7 @@ extension PackageRepository {
                             name = StrictString(url.lastPathComponent)
                         }
 
-                        markdown += [ // @exempt(from: tests) Not testable (until after merge). #workaround(Remove exemption after merge.)
+                        markdown += [
                             "",
                             "#### [\(name)](\(url.absoluteString))"
                         ]
@@ -123,7 +123,7 @@ extension PackageRepository {
                             let documentation = packageDocumentation.resolved(
                                 localizations: localizations)[localization],
                             let description = documentation.descriptionSection {
-                            markdown += [
+                            markdown += [ // @exempt(from: tests) Not testable (until after merge). #workaround(Remove exemption after merge.)
                                 "",
                                 StrictString(description.text)
                             ]

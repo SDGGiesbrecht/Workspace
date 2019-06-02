@@ -40,7 +40,13 @@ internal class DocumentationStatus {
         output.print(problem.resolved().formattedAsError().separated())
     }
 
-    private func report(problem: UserFacing<StrictString, InterfaceLocalization>, with symbol: APIElement, navigationPath: [APIElement], parameter: String? = nil, hint: UserFacing<StrictString, InterfaceLocalization>? = nil) {
+    private func report(
+        problem: UserFacing<StrictString, InterfaceLocalization>,
+        with symbol: APIElement,
+        navigationPath: [APIElement],
+        parameter: String? = nil,
+        localization: LocalizationIdentifier? = nil,
+        hint: UserFacing<StrictString, InterfaceLocalization>? = nil) {
         var symbolName: StrictString
         switch symbol {
         case .package, .library, .module:
@@ -50,6 +56,9 @@ internal class DocumentationStatus {
         }
         if let specificParameter = parameter {
             symbolName += "." + StrictString(specificParameter)
+        }
+        if let localized = localization {
+            symbolName += "." + localized._iconOrCode
         }
         report(problem: UserFacing({ localization in
             var result: [StrictString] = [
@@ -63,7 +72,10 @@ internal class DocumentationStatus {
         }))
     }
 
-    internal func reportMissingDescription(symbol: APIElement, navigationPath: [APIElement]) {
+    internal func reportMissingDescription(
+        symbol: APIElement,
+        navigationPath: [APIElement],
+        localization: LocalizationIdentifier) {
         var hint: UserFacing<StrictString, InterfaceLocalization>?
 
         var possibleSearch: StrictString?
@@ -93,24 +105,37 @@ internal class DocumentationStatus {
             case .englishCanada:
                 return "A symbol has no description:"
             }
-        }), with: symbol, navigationPath: navigationPath, hint: hint)
+        }), with: symbol, navigationPath: navigationPath, localization: localization, hint: hint)
     }
 
-    internal func reportMismatchedParameters(_ parameters: [String], expected: [String], symbol: APIElement, navigationPath: [APIElement]) {
-        report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishCanada:
-                return "A symbol has mismatched parameter descriptions:"
-            }
-        }), with: symbol, navigationPath: navigationPath, hint: UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishCanada:
-                return "(Expected: \(expected.joined(separator: ", ")))"
-            }
-        }))
+    internal func reportMismatchedParameters(
+        _ parameters: [String],
+        expected: [String],
+        symbol: APIElement,
+        navigationPath: [APIElement],
+        localization: LocalizationIdentifier) {
+        report(
+            problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "A symbol has mismatched parameter descriptions:"
+                }
+            }),
+            with: symbol,
+            navigationPath: navigationPath,
+            localization: localization,
+            hint: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "(Expected: \(expected.joined(separator: ", ")))"
+                }
+            }))
     }
 
-    internal func reportUnlabelledParameter(_ closureType: String, symbol: APIElement, navigationPath: [APIElement]) {
+    internal func reportUnlabelledParameter(
+        _ closureType: String,
+        symbol: APIElement,
+        navigationPath: [APIElement]) {
         report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishCanada:
@@ -155,17 +180,25 @@ internal class DocumentationStatus {
         }
     }
 
-    internal func reportExcessiveHeading(symbol: APIElement, navigationPath: [APIElement]) {
-        report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishCanada:
-                return "A symbol’s documentation contains excessively strong headings:"
-            }
-        }), with: symbol, navigationPath: navigationPath, hint: UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishCanada:
-                return "(Use heading levels three to six. Levels one and two are reserved for the surrounding context.)"
-            }
-        }))
+    internal func reportExcessiveHeading(
+        symbol: APIElement,
+        navigationPath: [APIElement],
+        localization: LocalizationIdentifier) {
+        report(
+            problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "A symbol’s documentation contains excessively strong headings:"
+                }
+            }),
+            with: symbol,
+            navigationPath: navigationPath,
+            localization: localization,
+            hint: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishCanada:
+                    return "(Use heading levels three to six. Levels one and two are reserved for the surrounding context.)"
+                }
+            }))
     }
 }

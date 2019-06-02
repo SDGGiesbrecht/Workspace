@@ -430,8 +430,10 @@ internal class SymbolPage : Page {
                 symbolLinks: symbolLinks)))
         }
         if case .extension = symbol {} else {
-            #warning("Should report localization too.")
-            status.reportMissingDescription(symbol: symbol, navigationPath: navigationPath)
+            status.reportMissingDescription(
+                symbol: symbol,
+                navigationPath: navigationPath,
+                localization: localization)
         }
         return ""
     }
@@ -540,7 +542,10 @@ internal class SymbolPage : Page {
                 internalIdentifiers: packageIdentifiers,
                 symbolLinks: symbolLinks))
             if rendered.contains("<h1>".scalars) ∨ rendered.contains("<h2>".scalars) {
-                status.reportExcessiveHeading(symbol: symbol, navigationPath: navigationPath)
+                status.reportExcessiveHeading(
+                    symbol: symbol,
+                    navigationPath: navigationPath,
+                    localization: localization)
             }
             if empty, ¬rendered.isWhitespace {
                 empty = false
@@ -598,7 +603,8 @@ internal class SymbolPage : Page {
                 documentedParameters,
                 expected: parameters,
                 symbol: symbol,
-                navigationPath: navigationPath)
+                navigationPath: navigationPath,
+                localization: localization)
         }
         let validatedParameters = parameterDocumentation.filter { parameters.contains($0.name.text) }
 

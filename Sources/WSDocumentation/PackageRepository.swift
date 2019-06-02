@@ -114,7 +114,7 @@ extension PackageRepository {
                             name = StrictString(url.lastPathComponent)
                         }
 
-                        markdown += [
+                        markdown += [ // @exempt(from: tests) Not testable (until after merge). #workaround(Remove exemption after merge.)
                             "",
                             "#### [\(name)](\(url.absoluteString))"
                         ]

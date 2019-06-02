@@ -16,6 +16,7 @@
 
 import PackageDescription
 
+// @localization(🇨🇦EN)
 /// Workspace automates management of Swift projects.
 ///
 /// > [Πᾶν ὅ τι ἐὰν ποιῆτε, ἐκ ψυχῆς ἐργάζεσθε, ὡς τῷ Κυρίῳ καὶ οὐκ ἀνθρώποις.](https://www.biblegateway.com/passage/?search=Colossians+3&version=SBLGNT;NIV)

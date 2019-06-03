@@ -298,3 +298,17 @@ public class BaseClass {
 public class Subclass : BaseClass {
     public override func baseClassMethod() {}
 }
+
+// @localization(zxx)
+/// ...
+// @localization(🇨🇦EN)
+/// Does something in Canadian English.
+public func doSomethingInCanadianEnglish() {}
+
+// @localization(🇬🇧EN)
+/// Does something in British English.
+public func doSomethingInBritishEnglish() {}
+
+// @localization(🇺🇸EN)
+/// Does something in American English.
+public func doSomethingInAmericanEnglish() {}

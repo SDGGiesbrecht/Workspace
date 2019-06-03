@@ -349,6 +349,7 @@ extension APIElement {
                 continue tree
             }
             #warning("Should warn of invalid cross‐reference.")
+            break tree
         }
         return StrictString(root.name.source())
     }

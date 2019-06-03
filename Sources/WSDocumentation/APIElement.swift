@@ -326,10 +326,19 @@ extension APIElement {
         let parsed = documentation.resolved(localizations: localizations)
         localizedDocumentation = parsed.documentation
         parentLocalization = parsed.parentLocalization
+        var groups: [StrictString: [APIElement]] = [:]
         for child in children {
             child.determine(localizations: localizations)
+            groups[child.rootLocalization(siblings: children), default: []].append(child)
         }
-        #warning("Needs to group children by root localization and then provide each other’s cross links.")
+        for (_, group) in groups {
+            for elementA in group {
+                for elementB in group {
+                    elementA.addLocalizedPaths(from: elementB)
+                    elementB.addLocalizedPaths(from: elementA)
+                }
+            }
+        }
     }
 
     private func rootLocalization(siblings: [APIElement]) -> StrictString {
@@ -342,6 +351,12 @@ extension APIElement {
             #warning("Should warn of invalid cross‐reference.")
         }
         return StrictString(root.name.source())
+    }
+
+    private func addLocalizedPaths(from other: APIElement) {
+        for (localization, _) in other.localizedDocumentation {
+            localizedEquivalentPaths[localization] = other.relativePagePath[localization]
+        }
     }
 
     // MARK: - Paths

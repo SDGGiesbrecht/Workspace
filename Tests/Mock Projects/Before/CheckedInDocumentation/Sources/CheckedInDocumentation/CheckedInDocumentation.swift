@@ -305,10 +305,10 @@ public class Subclass : BaseClass {
 /// Does something in Canadian English.
 public func doSomethingInCanadianEnglish() {}
 
-// @localization(🇬🇧EN)
+// @localization(🇬🇧EN) @localized(doSomethingInCanadianEnglish())
 /// Does something in British English.
 public func doSomethingInBritishEnglish() {}
 
-// @localization(🇺🇸EN)
+// @localization(🇺🇸EN) @localized(doSomethingInCanadianEnglish())
 /// Does something in American English.
 public func doSomethingInAmericanEnglish() {}

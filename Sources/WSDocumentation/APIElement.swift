@@ -346,6 +346,7 @@ extension APIElement {
         tree: while let parent = root.parentLocalization {
             for sibling in siblings
                 where StrictString(sibling.name.source().scalars.filter({ $0 ≠ ")" })) == parent {
+                    // (Filtering parentheses enables optimizations during parsing.)
                 root = sibling
                 continue tree
             }

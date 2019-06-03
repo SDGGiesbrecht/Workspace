@@ -241,7 +241,7 @@ extension APIElement {
 
     internal enum ExtendedPropertyKey {
         case localizedDocumentation
-        case parentLocalization
+        case crossReference
         case localizedEquivalentPaths
         case relativePagePath
         case types
@@ -272,12 +272,12 @@ extension APIElement {
         }
     }
 
-    internal var parentLocalization: StrictString? {
+    internal var crossReference: StrictString? {
         get {
-            return extendedProperties[.parentLocalization] as? StrictString
+            return extendedProperties[.crossReference] as? StrictString
         }
         nonmutating set {
-            extendedProperties[.parentLocalization] = newValue
+            extendedProperties[.crossReference] = newValue
         }
     }
 
@@ -329,11 +329,13 @@ extension APIElement {
     internal func determine(localizations: [LocalizationIdentifier]) {
         let parsed = documentation.resolved(localizations: localizations)
         localizedDocumentation = parsed.documentation
-        parentLocalization = parsed.parentLocalization
+        crossReference = parsed.crossReference
         var groups: [StrictString: [APIElement]] = [:]
         for child in children {
             child.determine(localizations: localizations)
-            groups[child.rootLocalization(siblings: children), default: []].append(child)
+            if let crossReference = child.crossReference {
+                groups[crossReference, default: []].append(child)
+            }
         }
         for (_, group) in groups {
             for elementA in group {
@@ -343,22 +345,6 @@ extension APIElement {
                 }
             }
         }
-    }
-
-    private func rootLocalization(siblings: [APIElement]) -> StrictString {
-        var root: APIElement = self
-        tree: while let parent = root.parentLocalization {
-            for sibling in siblings
-                where StrictString(sibling.name.source().scalars.filter({ $0 ≠ ")" })) == parent {
-                    // (Filtering the final parenthesis enables optimizations during parsing.)
-                root = sibling
-                continue tree
-            }
-            #warning("Should warn of invalid cross‐reference.")
-            print("Invalid cross‐reference: \(parent)")
-            break tree
-        }
-        return StrictString(root.name.source())
     }
 
     private func addLocalizedPaths(from other: APIElement) {

@@ -301,14 +301,14 @@ public class Subclass : BaseClass {
 
 // @localization(zxx)
 /// ...
-// @localization(🇨🇦EN) @crossLink(doSomethingInCanadianEnglish())
+// @localization(🇨🇦EN) @crossReference(doSomethingInCanadianEnglish())
 /// Does something in Canadian English.
 public func doSomethingInCanadianEnglish() {}
 
-// @localization(🇬🇧EN) @crossLink(doSomethingInCanadianEnglish())
+// @localization(🇬🇧EN) @crossReference(doSomethingInCanadianEnglish())
 /// Does something in British English.
 public func doSomethingInBritishEnglish() {}
 
-// @localization(🇺🇸EN) @crossLink(doSomethingInCanadianEnglish())
+// @localization(🇺🇸EN) @crossReference(doSomethingInCanadianEnglish())
 /// Does something in American English.
 public func doSomethingInAmericanEnglish() {}

@@ -22,7 +22,7 @@ extension Array where Element == SymbolDocumentation {
 
     public func resolved(
         localizations: [LocalizationIdentifier]
-        ) -> (documentation: [LocalizationIdentifier: DocumentationSyntax], parentLocalization: StrictString?) {
+        ) -> (documentation: [LocalizationIdentifier: DocumentationSyntax], crossReference: StrictString?) {
             var result: [LocalizationIdentifier: DocumentationSyntax] = [:]
             var parent: StrictString?
 

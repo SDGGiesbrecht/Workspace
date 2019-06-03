@@ -37,7 +37,7 @@ extension PackageRepository {
 
         var fromDocumentation: StrictString = ""
         if let documentation = try? PackageAPI.documentation(
-            for: package().get()).resolved(localizations: allLocalizations)[localization] {
+            for: package().get()).resolved(localizations: allLocalizations).documentation[localization] {
 
             if let description = documentation.descriptionSection {
                 fromDocumentation.append(contentsOf: description.text.scalars)

@@ -21,35 +21,50 @@ import WSProject
 extension Array where Element == SymbolDocumentation {
 
     public func resolved(
-        localizations: [LocalizationIdentifier]) -> [LocalizationIdentifier: DocumentationSyntax] {
-        var result: [LocalizationIdentifier: DocumentationSyntax] = [:]
+        localizations: [LocalizationIdentifier]
+        ) -> (documentation: [LocalizationIdentifier: DocumentationSyntax], parentLocalization: StrictString?) {
+            var result: [LocalizationIdentifier: DocumentationSyntax] = [:]
+            var parent: StrictString?
 
-        for documentation in self {
-            for comment in documentation.developerComments {
-                let content = StrictString(comment.content.text)
-                for match in content.matches(
-                    for: AlternativePatterns(PackageRepository.localizationDeclarationPatterns)) {
+            for documentation in self {
+                for comment in documentation.developerComments {
+                    let content = StrictString(comment.content.text)
+                    for match in content.matches(
+                        for: AlternativePatterns(PackageRepository.localizationDeclarationPatterns)) {
 
-                        guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),
-                            let closingParenthesis = match.contents.lastMatch(for: ")".scalars) else {
-                                unreachable()
-                        }
+                            guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),
+                                let closingParenthesis = match.contents.lastMatch(for: ")".scalars) else {
+                                    unreachable()
+                            }
 
-                        var identifier = StrictString(content[openingParenthesis.range.upperBound ..< closingParenthesis.range.lowerBound])
-                        identifier.trimMarginalWhitespace()
+                            var identifier = StrictString(content[openingParenthesis.range.upperBound ..< closingParenthesis.range.lowerBound])
+                            identifier.trimMarginalWhitespace()
 
-                        let localization = LocalizationIdentifier(String(identifier))
-                        result[localization] = documentation.documentationComment
+                            let localization = LocalizationIdentifier(String(identifier))
+                            result[localization] = documentation.documentationComment
+                    }
+                    for match in content.matches(
+                        for: AlternativePatterns(PackageRepository.localizedDeclarationPatterns)) {
+
+                            guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),
+                                let closingParenthesis = match.contents.lastMatch(for: ")".scalars) else {
+                                    unreachable()
+                            }
+
+                            var identifier = StrictString(content[openingParenthesis.range.upperBound ..< closingParenthesis.range.lowerBound])
+                            identifier.trimMarginalWhitespace()
+
+                            parent = identifier
+                    }
                 }
             }
-        }
 
-        if localizations.count == 1,
-            let onlyLocalization = localizations.first,
-            result.isEmpty /* No localization tags. */ {
-            result[onlyLocalization] = last?.documentationComment
-        }
+            if localizations.count == 1,
+                let onlyLocalization = localizations.first,
+                result.isEmpty /* No localization tags. */ {
+                result[onlyLocalization] = last?.documentationComment
+            }
 
-        return result
+            return (result, parent)
     }
 }

@@ -241,6 +241,7 @@ extension APIElement {
 
     internal enum ExtendedPropertyKey {
         case localizedDocumentation
+        case parentLocalization
         case localizedEquivalentPaths
         case relativePagePath
         case types
@@ -268,6 +269,15 @@ extension APIElement {
         }
         nonmutating set {
             extendedProperties[.localizedDocumentation] = newValue
+        }
+    }
+
+    internal var parentLocalization: StrictString? {
+        get {
+            return extendedProperties[.parentLocalization] as? StrictString
+        }
+        nonmutating set {
+            extendedProperties[.parentLocalization] = newValue
         }
     }
 
@@ -313,10 +323,25 @@ extension APIElement {
     // MARK: - Localization
 
     internal func determine(localizations: [LocalizationIdentifier]) {
-        localizedDocumentation = documentation.resolved(localizations: localizations)
+        let parsed = documentation.resolved(localizations: localizations)
+        localizedDocumentation = parsed.documentation
+        parentLocalization = parsed.parentLocalization
         for child in children {
             child.determine(localizations: localizations)
         }
+        #warning("Needs to group children by root localization and then provide each other’s cross links.")
+    }
+
+    private func rootLocalization(siblings: [APIElement]) -> StrictString {
+        var root: APIElement = self
+        tree: while let parent = root.parentLocalization {
+            for sibling in siblings where StrictString(sibling.name.source()) == parent {
+                root = sibling
+                continue tree
+            }
+            #warning("Should warn of invalid cross‐reference.")
+        }
+        return StrictString(root.name.source())
     }
 
     // MARK: - Paths

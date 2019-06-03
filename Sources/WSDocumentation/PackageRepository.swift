@@ -121,7 +121,7 @@ extension PackageRepository {
 
                         if let packageDocumentation = try? PackageAPI.documentation(for: package.package().get()),
                             let documentation = packageDocumentation.resolved(
-                                localizations: localizations)[localization],
+                                localizations: localizations).documentation[localization],
                             let description = documentation.descriptionSection {
                             markdown += [ // @exempt(from: tests) Not testable (until after merge). #workaround(Remove exemption after merge.)
                                 "",
@@ -152,6 +152,28 @@ extension PackageRepository {
             return CompositePattern<Unicode.Scalar>([
                 LiteralPattern("@".scalars),
                 LiteralPattern(localizationAttribute.resolved(for: localization)),
+                LiteralPattern("(".scalars),
+                RepetitionPattern(
+                    ConditionalPattern({ $0 ≠ ")" ∧ $0 ∉ CharacterSet.newlines }),
+                    consumption: .greedy),
+                LiteralPattern(")".scalars)
+                ])
+        }
+    }
+
+    private static let localizedAttribute: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishCanada:
+            return "localized"
+        }
+    })
+
+    internal static var localizedDeclarationPatterns: [CompositePattern<Unicode.Scalar>] {
+        #warning("Merge all of these.")
+        return InterfaceLocalization.allCases.map { localization in
+            return CompositePattern<Unicode.Scalar>([
+                LiteralPattern("@".scalars),
+                LiteralPattern(localizedAttribute.resolved(for: localization)),
                 LiteralPattern("(".scalars),
                 RepetitionPattern(
                     ConditionalPattern({ $0 ≠ ")" ∧ $0 ∉ CharacterSet.newlines }),

@@ -344,11 +344,13 @@ extension APIElement {
     private func rootLocalization(siblings: [APIElement]) -> StrictString {
         var root: APIElement = self
         tree: while let parent = root.parentLocalization {
-            for sibling in siblings where StrictString(sibling.name.source()) == parent {
+            for sibling in siblings
+                where StrictString(sibling.name.source().scalars.filter({ $0 ≠ ")" })) == parent {
                 root = sibling
                 continue tree
             }
             #warning("Should warn of invalid cross‐reference.")
+            print("Invalid cross‐reference: \(parent)")
             break tree
         }
         return StrictString(root.name.source())

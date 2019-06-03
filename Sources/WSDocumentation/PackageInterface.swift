@@ -207,7 +207,7 @@ internal struct PackageInterface {
 
     private static func generateIndexSection(named name: StrictString, apiEntries: [APIElement], localization: LocalizationIdentifier) -> StrictString {
         var entries: [StrictString] = []
-        for entry in apiEntries {
+        for entry in apiEntries.lazy.filter({ $0.exists(in: localization) }) {
             entries.append(ElementSyntax(
                 "a",
                 attributes: [

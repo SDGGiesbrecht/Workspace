@@ -290,6 +290,10 @@ extension APIElement {
         }
     }
 
+    internal func exists(in localization: LocalizationIdentifier) -> Bool {
+        return localizedEquivalentPaths[localization] == nil
+    }
+
     internal var relativePagePath: [LocalizationIdentifier: StrictString] {
         get {
             return (extendedProperties[.relativePagePath] as? [LocalizationIdentifier: StrictString]) ?? [:]

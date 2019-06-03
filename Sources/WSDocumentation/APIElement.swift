@@ -241,6 +241,7 @@ extension APIElement {
 
     internal enum ExtendedPropertyKey {
         case localizedDocumentation
+        case localizedEquivalentPaths
         case relativePagePath
         case types
         case `extensions`
@@ -267,6 +268,15 @@ extension APIElement {
         }
         nonmutating set {
             extendedProperties[.localizedDocumentation] = newValue
+        }
+    }
+
+    internal var localizedEquivalentPaths: [LocalizationIdentifier: StrictString] {
+        get {
+            return (extendedProperties[.localizedEquivalentPaths] as? [LocalizationIdentifier: StrictString]) ?? [:] // @exempt(from: tests) Never nil.
+        }
+        nonmutating set {
+            extendedProperties[.localizedEquivalentPaths] = newValue
         }
     }
 

@@ -421,7 +421,8 @@ internal class SymbolPage : Page {
         packageIdentifiers: Set<String>,
         symbolLinks: [String: String],
         status: DocumentationStatus) -> StrictString {
-        if let documentation = symbol.documentation,
+
+        if let documentation = symbol.localizedDocumentation[localization],
             let description = documentation.descriptionSection {
             return generateDescriptionSection(contents: StrictString(description.renderedHTML(
                 localization: localization.code,
@@ -429,7 +430,10 @@ internal class SymbolPage : Page {
                 symbolLinks: symbolLinks)))
         }
         if case .extension = symbol {} else {
-            status.reportMissingDescription(symbol: symbol, navigationPath: navigationPath)
+            status.reportMissingDescription(
+                symbol: symbol,
+                navigationPath: navigationPath,
+                localization: localization)
         }
         return ""
     }
@@ -524,7 +528,7 @@ internal class SymbolPage : Page {
         symbolLinks: [String: String],
         status: DocumentationStatus) -> StrictString {
 
-        guard let discussion = symbol.documentation?.discussionEntries,
+        guard let discussion = symbol.localizedDocumentation[localization]?.discussionEntries,
             ¬discussion.isEmpty else {
                 return ""
         }
@@ -538,7 +542,10 @@ internal class SymbolPage : Page {
                 internalIdentifiers: packageIdentifiers,
                 symbolLinks: symbolLinks))
             if rendered.contains("<h1>".scalars) ∨ rendered.contains("<h2>".scalars) {
-                status.reportExcessiveHeading(symbol: symbol, navigationPath: navigationPath)
+                status.reportExcessiveHeading(
+                    symbol: symbol,
+                    navigationPath: navigationPath,
+                    localization: localization)
             }
             if empty, ¬rendered.isWhitespace {
                 empty = false
@@ -588,7 +595,7 @@ internal class SymbolPage : Page {
         status: DocumentationStatus) -> StrictString {
 
         let parameters = symbol.parameters()
-        let parameterDocumentation = symbol.documentation?.normalizedParameters ?? []
+        let parameterDocumentation = symbol.localizedDocumentation[localization]?.normalizedParameters ?? []
         let documentedParameters = parameterDocumentation.map { $0.name.text }
 
         if parameters ≠ documentedParameters {
@@ -596,7 +603,8 @@ internal class SymbolPage : Page {
                 documentedParameters,
                 expected: parameters,
                 symbol: symbol,
-                navigationPath: navigationPath)
+                navigationPath: navigationPath,
+                localization: localization)
         }
         let validatedParameters = parameterDocumentation.filter { parameters.contains($0.name.text) }
 
@@ -644,7 +652,7 @@ internal class SymbolPage : Page {
     }
 
     private static func generateThrowsSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
-        guard let callout = symbol.documentation?.throwsCallout else {
+        guard let callout = symbol.localizedDocumentation[localization]?.throwsCallout else {
             return ""
         }
         let throwsHeading: StrictString = Callout.throws.localizedText(localization.code)
@@ -656,7 +664,7 @@ internal class SymbolPage : Page {
     }
 
     private static func generateReturnsSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
-        guard let callout = symbol.documentation?.returnsCallout else {
+        guard let callout = symbol.localizedDocumentation[localization]?.returnsCallout else {
             return ""
         }
         let returnsHeading: StrictString = Callout.returns.localizedText(localization.code)
@@ -1172,7 +1180,7 @@ internal class SymbolPage : Page {
                 entry.append(ElementSyntax("a", attributes: [
                     "href": HTML.percentEncodeURLPath(target)
                     ], contents: name, inline: true).normalizedSource())
-                if let description = child.documentation?.descriptionSection {
+                if let description = child.localizedDocumentation[localization]?.descriptionSection {
                     entry.append(StrictString(description.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)))
                 }
             } else {

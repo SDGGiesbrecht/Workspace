@@ -57,12 +57,7 @@ extension PackageRepository {
     }
 
     private func loadCommandLineInterface(output: Command.Output) throws -> PackageCLI {
-        var productsURL = try releaseProductsDirectory().get()
-
-        // #workaround(SDGSwift 0.10.1, Should just get debug directly.)
-        productsURL.deleteLastPathComponent()
-        productsURL.appendPathComponent("debug", isDirectory: true)
-
+        let productsURL = try productsDirectory(releaseConfiguration: false).get()
         let toolNames = try configurationContext().manifest.products.lazy.filter({ product in
             switch product.type {
             case .library:
@@ -95,8 +90,9 @@ extension PackageRepository {
 
     private func relatedProjects(output: Command.Output) throws -> [LocalizationIdentifier: Markdown] {
         let relatedProjects = try configuration(output: output).documentation.relatedProjects
+        let localizations = try configuration(output: output).documentation.localizations
         var result: [LocalizationIdentifier: Markdown] = [:]
-        for localization in try configuration(output: output).documentation.localizations {
+        for localization in localizations {
             var markdown: [Markdown] = []
             for entry in relatedProjects {
                 try autoreleasepool {
@@ -123,9 +119,11 @@ extension PackageRepository {
                             "#### [\(name)](\(url.absoluteString))"
                         ]
 
-                        if let documentation = try? PackageAPI.documentation(for: package.package().get()),
+                        if let packageDocumentation = try? PackageAPI.documentation(for: package.package().get()),
+                            let documentation = packageDocumentation.resolved(
+                                localizations: localizations)[localization],
                             let description = documentation.descriptionSection {
-                            markdown += [
+                            markdown += [ // @exempt(from: tests) Not testable (until after merge). #workaround(Remove exemption after merge.)
                                 "",
                                 StrictString(description.text)
                             ]
@@ -141,6 +139,27 @@ extension PackageRepository {
     }
 
     // MARK: - Documentation
+
+    private static let localizationAttribute: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishCanada:
+            return "localization"
+        }
+    })
+
+    internal static var localizationDeclarationPatterns: [CompositePattern<Unicode.Scalar>] {
+        return InterfaceLocalization.allCases.map { localization in
+            return CompositePattern<Unicode.Scalar>([
+                LiteralPattern("@".scalars),
+                LiteralPattern(localizationAttribute.resolved(for: localization)),
+                LiteralPattern("(".scalars),
+                RepetitionPattern(
+                    ConditionalPattern({ $0 ≠ ")" ∧ $0 ∉ CharacterSet.newlines }),
+                    consumption: .greedy),
+                LiteralPattern(")".scalars)
+                ])
+        }
+    }
 
     public func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 

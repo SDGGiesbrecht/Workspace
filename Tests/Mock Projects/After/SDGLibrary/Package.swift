@@ -17,6 +17,7 @@
 
 import PackageDescription
 
+// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(🇫🇷FR) @localization(🇬🇷ΕΛ) @localization(🇮🇱עב) @localization(zxx)
 // @example(1, Read‐Me 🇨🇦EN)
 /// A package.
 ///
@@ -28,6 +29,7 @@ import PackageDescription
 let package = Package(
     name: "SDG",
     products: [
+        // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(🇫🇷FR) @localization(🇬🇷ΕΛ) @localization(🇮🇱עב) @localization(zxx)
         /// A library.
         .library(name: "Library", targets: ["Library"])
         ],
@@ -35,6 +37,7 @@ let package = Package(
         .package(url: "file:///tmp/Developer/Dependency", from: Version(1, 0, 0))
     ],
     targets: [
+        // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(🇫🇷FR) @localization(🇬🇷ΕΛ) @localization(🇮🇱עב) @localization(zxx)
         /// A module.
         .target(name: "Library", dependencies: [
             .product(name: "Dependency", package: "Dependency")

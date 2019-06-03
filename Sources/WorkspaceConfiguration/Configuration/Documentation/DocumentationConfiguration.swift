@@ -22,6 +22,16 @@ public struct DocumentationConfiguration : Codable {
     /// The localizations supported by the project.
     ///
     /// The default contains no localizations, but some tasks may throw errors if they require localizations to be specified.
+    ///
+    /// When documenting with more than one localization active, each documentation comment must be marked according to its localization.
+    ///
+    /// ```swift
+    /// // @localization(🇫🇷FR)
+    /// /// Vérifie l’inégalité.
+    /// // @localization(🇨🇦EN) @localization(🇬🇧EN)
+    /// /// Checks for inequality.
+    /// infix operator ≠
+    /// ```
     public var localizations: [LocalizationIdentifier] = []
 
     /// The semantic version of the current stable release of the project.

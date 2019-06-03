@@ -349,6 +349,7 @@ internal struct PackageInterface {
 
         self.packageIdentifiers = api.identifierList()
 
+        APIElement.package(api).determine(localizations: localizations)
         var paths: [LocalizationIdentifier: [String: String]] = [:]
         for localization in localizations {
             paths[localization] = APIElement.package(api).determinePaths(for: localization)
@@ -771,7 +772,7 @@ internal struct PackageInterface {
                 }
                 documentationMarkup.append(contentsOf: "\npublic func function() {}\n")
                 let parsed = try SyntaxTreeParser.parse(String(documentationMarkup))
-                let documentation = parsed.api().first!.documentation
+                let documentation = parsed.api().first!.documentation.last?.documentationComment
 
                 var content = ""
                 for paragraph in documentation?.discussionEntries ?? [] { // @exempt(from: tests)

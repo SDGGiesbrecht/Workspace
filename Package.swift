@@ -16,6 +16,7 @@
 
 import PackageDescription
 
+// @localization(🇨🇦EN)
 /// Workspace automates management of Swift projects.
 ///
 /// > [Πᾶν ὅ τι ἐὰν ποιῆτε, ἐκ ψυχῆς ἐργάζεσθε, ὡς τῷ Κυρίῳ καὶ οὐκ ἀνθρώποις.](https://www.biblegateway.com/passage/?search=Colossians+3&version=SBLGNT;NIV)
@@ -139,8 +140,8 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 18, 1))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 7, 3))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 10, 1))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 7, 4))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 11, 0))),
         .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", .exact(Version(0, 1, 1)))
     ],
     targets: [
@@ -196,6 +197,7 @@ let package = Package(
             "WSGeneralImports",
             "WSProject",
             "WSExamples",
+            "WSDocumentation",
             .product(name: "SDGSwiftSource", package: "SDGSwift")
             ]),
 

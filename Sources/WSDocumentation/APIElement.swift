@@ -240,6 +240,7 @@ extension APIElement {
     // MARK: - Properties
 
     internal enum ExtendedPropertyKey {
+        case localizedDocumentation
         case relativePagePath
         case types
         case `extensions`
@@ -257,6 +258,15 @@ extension APIElement {
         }
         nonmutating set {
             userInformation = newValue
+        }
+    }
+
+    internal var localizedDocumentation: [LocalizationIdentifier: DocumentationSyntax] {
+        get {
+            return (extendedProperties[.localizedDocumentation] as? [LocalizationIdentifier: DocumentationSyntax]) ?? [:] // @exempt(from: tests) Never nil.
+        }
+        nonmutating set {
+            extendedProperties[.localizedDocumentation] = newValue
         }
     }
 
@@ -287,6 +297,15 @@ extension APIElement {
         }
         nonmutating set {
             extendedProperties[.homeProduct] = newValue
+        }
+    }
+
+    // MARK: - Localization
+
+    internal func determine(localizations: [LocalizationIdentifier]) {
+        localizedDocumentation = documentation.resolved(localizations: localizations)
+        for child in children {
+            child.determine(localizations: localizations)
         }
     }
 

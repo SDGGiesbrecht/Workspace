@@ -282,6 +282,7 @@ let package = Package(
         .target(name: "WSDocumentation", dependencies: [
             "WSGeneralImports",
             "WSProject",
+            "WSParsing",
             "WSValidation",
             "WSXcode",
             "WSSwift",

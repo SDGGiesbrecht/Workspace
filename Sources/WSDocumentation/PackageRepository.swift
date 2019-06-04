@@ -161,28 +161,6 @@ extension PackageRepository {
         }
     }
 
-    private static let crossReferenceAttribute: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishCanada:
-            return "crossReference"
-        }
-    })
-
-    internal static var crossReferenceDeclarationPatterns: [CompositePattern<Unicode.Scalar>] {
-        #warning("Merge all of these.")
-        return InterfaceLocalization.allCases.map { localization in
-            return CompositePattern<Unicode.Scalar>([
-                LiteralPattern("@".scalars),
-                LiteralPattern(crossReferenceAttribute.resolved(for: localization)),
-                LiteralPattern("(".scalars),
-                RepetitionPattern(
-                    ConditionalPattern({ $0 ≠ ")" ∧ $0 ∉ CharacterSet.newlines }),
-                    consumption: .greedy),
-                LiteralPattern(")".scalars)
-                ])
-        }
-    }
-
     public func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
         if try ¬hasTargetsToDocument() {

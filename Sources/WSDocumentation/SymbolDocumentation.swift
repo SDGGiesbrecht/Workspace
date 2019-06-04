@@ -17,6 +17,7 @@ import WSGeneralImports
 import SDGSwiftSource
 
 import WSProject
+import WSParsing
 
 extension Array where Element == SymbolDocumentation {
 
@@ -44,7 +45,7 @@ extension Array where Element == SymbolDocumentation {
                             result[localization] = documentation.documentationComment
                     }
                     for match in content.matches(
-                        for: AlternativePatterns(PackageRepository.crossReferenceDeclarationPatterns)) {
+                        for: AlternativePatterns(InterfaceLocalization.declarationPatterns(InterfaceLocalization.crossReferenceDeclarationName))) {
                             #warning("Reuse these?")
 
                             guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),

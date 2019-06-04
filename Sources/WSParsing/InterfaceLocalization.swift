@@ -32,4 +32,13 @@ extension InterfaceLocalization {
                 ])
         }
     }
+
+    public static let crossReferenceDeclarationName: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishCanada:
+            return "crossReference"
+        }
+    })
+    public static let crossReferenceDeclaration: [CompositePattern<Unicode.Scalar>]
+        = declarationPatterns(crossReferenceDeclarationName)
 }

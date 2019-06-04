@@ -33,6 +33,19 @@ extension InterfaceLocalization {
         }
     }
 
+    // MARK: - Documentation Inheritance
+
+    private static let documentationDeclarationName: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishCanada:
+            return "documentation"
+        }
+    })
+    public static let documentationDeclaration: [CompositePattern<Unicode.Scalar>]
+        = declarationPatterns(documentationDeclarationName)
+
+    // MARK: - Documentation Generation
+
     private static let localizationDeclarationName: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
         case .englishCanada:

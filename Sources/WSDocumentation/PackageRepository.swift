@@ -345,31 +345,12 @@ extension PackageRepository {
 
     // MARK: - Inheritance
 
-    private static let documentationAttribute: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishCanada:
-            return "documentation"
-        }
-    })
-
     private static let documentationDirective: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
         case .englishCanada:
             return "documentation"
         }
     })
-
-    private static var documentationDeclarationPatterns: [CompositePattern<Unicode.Scalar>] {
-        return InterfaceLocalization.allCases.map { localization in
-            return CompositePattern<Unicode.Scalar>([
-                LiteralPattern("@".scalars),
-                LiteralPattern(documentationAttribute.resolved(for: localization)),
-                LiteralPattern("(".scalars),
-                RepetitionPattern(ConditionalPattern({ $0 ∉ CharacterSet.newlines }), consumption: .greedy),
-                LiteralPattern(")".scalars)
-                ])
-        }
-    }
 
     private static var documentationDirectivePatterns: [CompositePattern<Unicode.Scalar>] {
         return InterfaceLocalization.allCases.map { localization in
@@ -395,7 +376,8 @@ extension PackageRepository {
                         type ∈ Set([.swift, .swiftPackageManifest]) {
                         let file = try TextFile(alreadyAt: url)
 
-                        for match in file.contents.scalars.matches(for: AlternativePatterns(PackageRepository.documentationDeclarationPatterns)) {
+                        for match in file.contents.scalars.matches(for: AlternativePatterns(InterfaceLocalization.documentationDeclaration)) {
+                            #warning("Reuse this?")
                             guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),
                                 let closingParenthesis = match.contents.lastMatch(for: ")".scalars) else {
                                     unreachable()

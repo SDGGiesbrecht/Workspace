@@ -110,6 +110,20 @@ internal class SymbolPage : Page {
         adjustedSymbolLinks: [String: String],
         partiallyConstructedContent: [StrictString]) {
 
+        let navigationPath = SymbolPage.generateNavigationPath(
+            localization: localization,
+            pathToSiteRoot: pathToSiteRoot,
+            allLocalizations: allLocalizations.map({ localization in
+                let path: StrictString
+                if symbol.exists(in: localization) {
+                    path = symbol.relativePagePath[localization]!
+                } else {
+                    path = symbol.localizedEquivalentPaths[localization]!
+                }
+                return (localization: localization, path: path)
+            }),
+            navigationPath: navigationPath)
+
         var content = partiallyConstructedContent
 
         content.append(SymbolPage.generateToolsSection(
@@ -144,19 +158,7 @@ internal class SymbolPage : Page {
         super.init(
             localization: localization,
             pathToSiteRoot: pathToSiteRoot,
-            navigationPath: SymbolPage.generateNavigationPath(
-                localization: localization,
-                pathToSiteRoot: pathToSiteRoot,
-                allLocalizations: allLocalizations.map({ localization in
-                    let path: StrictString
-                    if symbol.exists(in: localization) {
-                        path = symbol.relativePagePath[localization]!
-                    } else {
-                        path = symbol.localizedEquivalentPaths[localization]!
-                    }
-                    return (localization: localization, path: path)
-                }),
-                navigationPath: navigationPath),
+            navigationPath: navigationPath,
             packageImport: packageImport,
             index: index,
             platforms: platforms,

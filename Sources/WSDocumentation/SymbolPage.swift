@@ -148,7 +148,13 @@ internal class SymbolPage : Page {
                 localization: localization,
                 pathToSiteRoot: pathToSiteRoot,
                 allLocalizations: allLocalizations.map({ localization in
-                    return (localization: localization, path: symbol.relativePagePath[localization]!)
+                    let path: StrictString
+                    if symbol.exists(in: localization) {
+                        path = symbol.relativePagePath[localization]!
+                    } else {
+                        path = symbol.localizedEquivalentPaths[localization]!
+                    }
+                    return (localization: localization, path: path)
                 }),
                 navigationPath: navigationPath),
             packageImport: packageImport,

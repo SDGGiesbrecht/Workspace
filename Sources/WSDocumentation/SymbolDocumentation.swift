@@ -44,7 +44,8 @@ extension Array where Element == SymbolDocumentation {
                             result[localization] = documentation.documentationComment
                     }
                     for match in content.matches(
-                        for: AlternativePatterns(PackageRepository.localizedDeclarationPatterns)) {
+                        for: AlternativePatterns(PackageRepository.crossReferenceDeclarationPatterns)) {
+                            #warning("Reuse these?")
 
                             guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),
                                 let closingParenthesis = match.contents.lastMatch(for: ")".scalars) else {

@@ -161,19 +161,19 @@ extension PackageRepository {
         }
     }
 
-    private static let localizedAttribute: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
+    private static let crossReferenceAttribute: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
         case .englishCanada:
-            return "localized"
+            return "crossReference"
         }
     })
 
-    internal static var localizedDeclarationPatterns: [CompositePattern<Unicode.Scalar>] {
+    internal static var crossReferenceDeclarationPatterns: [CompositePattern<Unicode.Scalar>] {
         #warning("Merge all of these.")
         return InterfaceLocalization.allCases.map { localization in
             return CompositePattern<Unicode.Scalar>([
                 LiteralPattern("@".scalars),
-                LiteralPattern(localizedAttribute.resolved(for: localization)),
+                LiteralPattern(crossReferenceAttribute.resolved(for: localization)),
                 LiteralPattern("(".scalars),
                 RepetitionPattern(
                     ConditionalPattern({ $0 ≠ ")" ∧ $0 ∉ CharacterSet.newlines }),

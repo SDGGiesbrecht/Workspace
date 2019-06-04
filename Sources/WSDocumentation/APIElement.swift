@@ -338,10 +338,9 @@ extension APIElement {
             }
         }
         for (_, group) in groups {
-            for elementA in group {
-                for elementB in group {
-                    elementA.addLocalizedPaths(from: elementB)
-                    elementB.addLocalizedPaths(from: elementA)
+            for indexA in group.indices {
+                for indexB in group.indices where indexA ≠ indexB {
+                    group[indexA].addLocalizedPaths(from: group[indexB])
                 }
             }
         }

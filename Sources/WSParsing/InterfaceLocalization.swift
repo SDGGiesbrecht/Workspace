@@ -19,7 +19,7 @@ import WSLocalizations
 
 extension InterfaceLocalization {
 
-    public static func declarationPatterns(_ name: UserFacing<StrictString, InterfaceLocalization>) -> [CompositePattern<Unicode.Scalar>] {
+    private static func declarationPatterns(_ name: UserFacing<StrictString, InterfaceLocalization>) -> [CompositePattern<Unicode.Scalar>] {
         return InterfaceLocalization.allCases.map { localization in
             return CompositePattern([
                 LiteralPattern("@".scalars),
@@ -33,7 +33,16 @@ extension InterfaceLocalization {
         }
     }
 
-    public static let crossReferenceDeclarationName: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
+    private static let localizationDeclarationName: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishCanada:
+            return "localization"
+        }
+    })
+    public static let localizationDeclaration: [CompositePattern<Unicode.Scalar>]
+        = declarationPatterns(localizationDeclarationName)
+
+    private static let crossReferenceDeclarationName: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
         case .englishCanada:
             return "crossReference"

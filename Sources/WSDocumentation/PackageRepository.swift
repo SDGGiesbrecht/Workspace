@@ -345,25 +345,6 @@ extension PackageRepository {
 
     // MARK: - Inheritance
 
-    private static let documentationDirective: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishCanada:
-            return "documentation"
-        }
-    })
-
-    private static var documentationDirectivePatterns: [CompositePattern<Unicode.Scalar>] {
-        return InterfaceLocalization.allCases.map { localization in
-            return CompositePattern<Unicode.Scalar>([
-                LiteralPattern("#".scalars),
-                LiteralPattern(documentationDirective.resolved(for: localization)),
-                LiteralPattern("(".scalars),
-                RepetitionPattern(ConditionalPattern({ $0 ∉ CharacterSet.newlines }), consumption: .greedy),
-                LiteralPattern(")".scalars)
-                ])
-        }
-    }
-
     private func documentationDefinitions(output: Command.Output) throws -> [StrictString: StrictString] {
         return try _withDocumentationCache {
 
@@ -413,7 +394,8 @@ extension PackageRepository {
                     var file = try TextFile(alreadyAt: url)
 
                     var searchIndex = file.contents.scalars.startIndex
-                    while let match = file.contents.scalars[min(searchIndex, file.contents.scalars.endIndex) ..< file.contents.scalars.endIndex].firstMatch(for: AlternativePatterns(PackageRepository.documentationDirectivePatterns)) {
+                    while let match = file.contents.scalars[min(searchIndex, file.contents.scalars.endIndex) ..< file.contents.scalars.endIndex].firstMatch(for: AlternativePatterns(InterfaceLocalization.documentationDirective)) {
+                        #warning("Reuse?")
                         searchIndex = match.range.upperBound
 
                         guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),

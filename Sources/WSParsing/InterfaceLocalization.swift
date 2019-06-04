@@ -19,10 +19,10 @@ import WSLocalizations
 
 extension InterfaceLocalization {
 
-    private static func declarationPatterns(_ name: UserFacing<StrictString, InterfaceLocalization>) -> [CompositePattern<Unicode.Scalar>] {
+    private static func patterns(startingWith scalar: Unicode.Scalar, named name: UserFacing<StrictString, InterfaceLocalization>) -> [CompositePattern<Unicode.Scalar>] {
         return InterfaceLocalization.allCases.map { localization in
             return CompositePattern([
-                LiteralPattern("@".scalars),
+                LiteralPattern([scalar]),
                 LiteralPattern(name.resolved(for: localization)),
                 LiteralPattern("(".scalars),
                 RepetitionPattern(
@@ -31,6 +31,14 @@ extension InterfaceLocalization {
                 LiteralPattern(")".scalars)
                 ])
         }
+    }
+
+    private static func declarationPatterns(_ name: UserFacing<StrictString, InterfaceLocalization>) -> [CompositePattern<Unicode.Scalar>] {
+        return patterns(startingWith: "@", named: name)
+    }
+
+    private static func directivePatterns(_ name: UserFacing<StrictString, InterfaceLocalization>) -> [CompositePattern<Unicode.Scalar>] {
+        return patterns(startingWith: "#", named: name)
     }
 
     // MARK: - Documentation Inheritance
@@ -43,6 +51,15 @@ extension InterfaceLocalization {
     })
     public static let documentationDeclaration: [CompositePattern<Unicode.Scalar>]
         = declarationPatterns(documentationDeclarationName)
+
+    private static let documentationDirectiveName: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishCanada:
+            return "documentation"
+        }
+    })
+    public static let documentationDirective: [CompositePattern<Unicode.Scalar>]
+        = directivePatterns(documentationDirectiveName)
 
     // MARK: - Documentation Generation
 

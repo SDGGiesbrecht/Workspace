@@ -319,7 +319,8 @@ let package = Package(
         // Utilities related to parsing in‐source declarations and directives.
         .target(name: "WSParsing", dependencies: [
             "WSGeneralImports",
-            "WSLocalizations"
+            "WSLocalizations",
+            "WSProject"
             ]),
 
         // Defines general project structure queries and cache.

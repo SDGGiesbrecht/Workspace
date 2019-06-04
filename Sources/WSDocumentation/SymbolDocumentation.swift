@@ -32,32 +32,13 @@ extension Array where Element == SymbolDocumentation {
                     let content = StrictString(comment.content.text)
                     for match in content.matches(
                         for: InterfaceLocalization.localizationDeclaration) {
-                            #warning("Reuse?")
-
-                            guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),
-                                let closingParenthesis = match.contents.lastMatch(for: ")".scalars) else {
-                                    unreachable()
-                            }
-
-                            var identifier = StrictString(content[openingParenthesis.range.upperBound ..< closingParenthesis.range.lowerBound])
-                            identifier.trimMarginalWhitespace()
-
+                            let identifier = match.declarationArgument()
                             let localization = LocalizationIdentifier(String(identifier))
                             result[localization] = documentation.documentationComment
                     }
                     for match in content.matches(
                         for: InterfaceLocalization.crossReferenceDeclaration) {
-                            #warning("Reuse these?")
-
-                            guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),
-                                let closingParenthesis = match.contents.lastMatch(for: ")".scalars) else {
-                                    unreachable()
-                            }
-
-                            var identifier = StrictString(content[openingParenthesis.range.upperBound ..< closingParenthesis.range.lowerBound])
-                            identifier.trimMarginalWhitespace()
-
-                            parent = identifier
+                            parent = match.declarationArgument()
                     }
                 }
             }

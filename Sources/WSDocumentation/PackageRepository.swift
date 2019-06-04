@@ -359,15 +359,7 @@ extension PackageRepository {
 
                         for match in file.contents.scalars.matches(
                             for: InterfaceLocalization.documentationDeclaration) {
-
-                                #warning("Reuse this?")
-                                guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),
-                                    let closingParenthesis = match.contents.lastMatch(for: ")".scalars) else {
-                                        unreachable()
-                                }
-
-                                var identifier = StrictString(file.contents.scalars[openingParenthesis.range.upperBound ..< closingParenthesis.range.lowerBound])
-                                identifier.trimMarginalWhitespace()
+                                let identifier = match.declarationArgument()
 
                                 let nextLineStart = match.range.lines(in: file.contents.lines).upperBound.samePosition(in: file.contents.scalars)
                                 if let comment = FileType.swiftDocumentationSyntax.contentsOfFirstComment(in: nextLineStart ..< file.contents.scalars.endIndex, of: file) {
@@ -399,17 +391,9 @@ extension PackageRepository {
                     while let match = file.contents.scalars[
                         min(searchIndex, file.contents.scalars.endIndex) ..< file.contents.scalars.endIndex]
                         .firstMatch(for: InterfaceLocalization.documentationDirective) {
-
-                            #warning("Reuse?")
                             searchIndex = match.range.upperBound
 
-                            guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),
-                                let closingParenthesis = match.contents.lastMatch(for: ")".scalars) else {
-                                    unreachable()
-                            }
-
-                            var identifier = StrictString(file.contents.scalars[openingParenthesis.range.upperBound ..< closingParenthesis.range.lowerBound])
-                            identifier.trimMarginalWhitespace()
+                            let identifier = match.directiveArgument()
                             guard let replacement = try documentationDefinitions(output: output)[identifier] else {
                                 throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                                     switch localization {

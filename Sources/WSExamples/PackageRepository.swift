@@ -89,19 +89,23 @@ extension PackageRepository {
                     while let match = file.contents.scalars[
                         min(searchIndex, file.contents.scalars.endIndex) ..< file.contents.scalars.endIndex]
                         .firstMatch(for: InterfaceLocalization.exampleDirective) {
-                            #warning("Reuse?")
                             searchIndex = match.range.upperBound
 
-                            guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),
-                                let comma = match.contents.firstMatch(for: ",".scalars),
-                                let closingParenthesis = match.contents.firstMatch(for: ")".scalars) else {
-                                    unreachable()
+                            let arguments = match.directiveArgument()
+                            guard let comma = arguments.firstMatch(for: ",".scalars) else {
+                                throw Command.Error(
+                                    description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                                        switch localization {
+                                        case .englishCanada:
+                                            return "An example directive has too few arguments:\n\(match.contents)"
+                                        }
+                                    }))
                             }
 
-                            var indexString = StrictString(file.contents.scalars[openingParenthesis.range.upperBound ..< comma.range.lowerBound])
+                            var indexString = StrictString(arguments[...comma.range.lowerBound])
                             indexString.trimMarginalWhitespace()
 
-                            var identifier = StrictString(file.contents.scalars[comma.range.upperBound ..< closingParenthesis.range.lowerBound])
+                            var identifier = StrictString(arguments[comma.range.upperBound...])
                             identifier.trimMarginalWhitespace()
 
                             let index = try Int.parse(possibleDecimal: indexString).get()

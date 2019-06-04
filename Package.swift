@@ -239,7 +239,8 @@ let package = Package(
         // Example management.
         .target(name: "WSExamples", dependencies: [
             "WSGeneralImports",
-            "WSProject"
+            "WSProject",
+            "WSParsing"
             ]),
 
         // Normalization.

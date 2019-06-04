@@ -17,57 +17,16 @@ import SDGCollections
 import WSGeneralImports
 
 import WSProject
+import WSParsing
 
 extension PackageRepository {
-
-    private static let exampleAttribute: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishCanada:
-            return "example"
-        }
-    })
-
-    private static let endAttribute: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishCanada:
-            return "endExample"
-        }
-    })
-
-    private static let exampleDirective: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishCanada:
-            return "example"
-        }
-    })
 
     private static var exampleDeclarationPatterns: [CompositePattern<Unicode.Scalar>] {
         return InterfaceLocalization.allCases.map { localization in
             return CompositePattern<Unicode.Scalar>([
-                LiteralPattern("@".scalars),
-                LiteralPattern(exampleAttribute.resolved(for: localization)),
-                LiteralPattern("(".scalars),
-                RepetitionPattern(ConditionalPattern({ $0 ≠ ")" })),
-                LiteralPattern(")".scalars),
-
+                AlternativePatterns(InterfaceLocalization.exampleDeclaration),
                 RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy),
-
-                LiteralPattern("@".scalars),
-                LiteralPattern(endAttribute.resolved(for: localization))
-                ])
-        }
-    }
-
-    private static var exampleDirectivePatterns: [CompositePattern<Unicode.Scalar>] {
-        return InterfaceLocalization.allCases.map { localization in
-            return CompositePattern<Unicode.Scalar>([
-                LiteralPattern("#".scalars),
-                LiteralPattern(exampleDirective.resolved(for: localization)),
-                LiteralPattern("(".scalars),
-                RepetitionPattern(ConditionalPattern({ $0 ≠ "," ∧ $0 ≠ ")" })),
-                LiteralPattern(",".scalars),
-                RepetitionPattern(ConditionalPattern({ $0 ≠ ")" })),
-                LiteralPattern(")".scalars)
+                AlternativePatterns(InterfaceLocalization.endExampleDeclaration)
                 ])
         }
     }
@@ -127,7 +86,8 @@ extension PackageRepository {
                     var file = try TextFile(alreadyAt: url)
 
                     var searchIndex = file.contents.scalars.startIndex
-                    while let match = file.contents.scalars[min(searchIndex, file.contents.scalars.endIndex) ..< file.contents.scalars.endIndex].firstMatch(for: AlternativePatterns(PackageRepository.exampleDirectivePatterns)) {
+                    while let match = file.contents.scalars[min(searchIndex, file.contents.scalars.endIndex) ..< file.contents.scalars.endIndex].firstMatch(for: AlternativePatterns(InterfaceLocalization.exampleDirective)) {
+                        #warning("Reuse?")
                         searchIndex = match.range.upperBound
 
                         guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),

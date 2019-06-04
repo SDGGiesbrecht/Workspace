@@ -1068,7 +1068,7 @@ internal class SymbolPage : Page {
 
     private static func generateConformanceSections(localization: LocalizationIdentifier, symbol: APIElement, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> [StrictString] {
         var result: [StrictString] = []
-        for conformance in symbol.conformances {
+        conformanceProcessing: for conformance in symbol.conformances {
             let name = conformance.type.syntaxHighlightedHTML(inline: true, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
 
             var children: [APIElement] = []
@@ -1084,8 +1084,11 @@ internal class SymbolPage : Page {
                         apiElement = .type(pointee)
                     }
                 }
-                if let found = apiElement?.children {
-                    children = found
+                if let element = apiElement {
+                    if ¬element.exists(in: localization) {
+                        continue conformanceProcessing
+                    }
+                    children = element.children
                 }
             }
 
@@ -1204,7 +1207,7 @@ internal class SymbolPage : Page {
         return generateChildrenSection(
             heading: heading,
             escapeHeading: escapeHeading,
-            children: children,
+            children: children.filter({ $0.exists(in: localization) }),
             childContents: getEntryContents,
             childAttributes: getAttributes)
     }

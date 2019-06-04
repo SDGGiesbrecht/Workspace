@@ -24,9 +24,9 @@ extension PackageRepository {
     private static var exampleDeclarationPatterns: [CompositePattern<Unicode.Scalar>] {
         return InterfaceLocalization.allCases.map { localization in
             return CompositePattern<Unicode.Scalar>([
-                AlternativePatterns(InterfaceLocalization.exampleDeclaration),
+                InterfaceLocalization.exampleDeclaration,
                 RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy),
-                AlternativePatterns(InterfaceLocalization.endExampleDeclaration)
+                InterfaceLocalization.endExampleDeclaration
                 ])
         }
     }
@@ -86,75 +86,77 @@ extension PackageRepository {
                     var file = try TextFile(alreadyAt: url)
 
                     var searchIndex = file.contents.scalars.startIndex
-                    while let match = file.contents.scalars[min(searchIndex, file.contents.scalars.endIndex) ..< file.contents.scalars.endIndex].firstMatch(for: AlternativePatterns(InterfaceLocalization.exampleDirective)) {
-                        #warning("Reuse?")
-                        searchIndex = match.range.upperBound
+                    while let match = file.contents.scalars[
+                        min(searchIndex, file.contents.scalars.endIndex) ..< file.contents.scalars.endIndex]
+                        .firstMatch(for: InterfaceLocalization.exampleDirective) {
+                            #warning("Reuse?")
+                            searchIndex = match.range.upperBound
 
-                        guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),
-                            let comma = match.contents.firstMatch(for: ",".scalars),
-                            let closingParenthesis = match.contents.firstMatch(for: ")".scalars) else {
-                                unreachable()
-                        }
+                            guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),
+                                let comma = match.contents.firstMatch(for: ",".scalars),
+                                let closingParenthesis = match.contents.firstMatch(for: ")".scalars) else {
+                                    unreachable()
+                            }
 
-                        var indexString = StrictString(file.contents.scalars[openingParenthesis.range.upperBound ..< comma.range.lowerBound])
-                        indexString.trimMarginalWhitespace()
+                            var indexString = StrictString(file.contents.scalars[openingParenthesis.range.upperBound ..< comma.range.lowerBound])
+                            indexString.trimMarginalWhitespace()
 
-                        var identifier = StrictString(file.contents.scalars[comma.range.upperBound ..< closingParenthesis.range.lowerBound])
-                        identifier.trimMarginalWhitespace()
+                            var identifier = StrictString(file.contents.scalars[comma.range.upperBound ..< closingParenthesis.range.lowerBound])
+                            identifier.trimMarginalWhitespace()
 
-                        let index = try Int.parse(possibleDecimal: indexString).get()
-                        guard let example = try examples(output: output)[identifier] else {
-                            throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                                switch localization {
-                                case .englishCanada:
-                                    return "There is no example named “" + identifier + "”."
-                                }
-                            }))
-                        }
+                            let index = try Int.parse(possibleDecimal: indexString).get()
+                            guard let example = try examples(output: output)[identifier] else {
+                                throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                                    switch localization {
+                                    case .englishCanada:
+                                        return "There is no example named “" + identifier + "”."
+                                    }
+                                }))
+                            }
 
-                        let nextLineStart = match.range.lines(in: file.contents.lines).upperBound.samePosition(in: file.contents.scalars)
-                        if let commentRange = documentationSyntax.rangeOfFirstComment(in: nextLineStart ..< file.contents.scalars.endIndex, of: file) {
-                            let commentIndent = String(file.contents.scalars[nextLineStart ..< commentRange.lowerBound])
+                            let nextLineStart = match.range.lines(in: file.contents.lines).upperBound.samePosition(in: file.contents.scalars)
+                            if let commentRange = documentationSyntax.rangeOfFirstComment(in: nextLineStart ..< file.contents.scalars.endIndex, of: file) {
+                                let commentIndent = String(file.contents.scalars[nextLineStart ..< commentRange.lowerBound])
 
-                            if var commentValue = documentationSyntax.contentsOfFirstComment(in: commentRange, of: file) {
+                                if var commentValue = documentationSyntax.contentsOfFirstComment(in: commentRange, of: file) {
 
-                                var countingExampleIndex = 0
-                                var searchIndex = commentValue.scalars.startIndex
-                                exampleSearch: while let startRange = commentValue.scalars[searchIndex ..< commentValue.scalars.endIndex].firstMatch(for: "```".scalars)?.range,
-                                    let endRange = commentValue.scalars[startRange.upperBound ..< commentValue.scalars.endIndex].firstMatch(for: "```".scalars)?.range {
+                                    var countingExampleIndex = 0
+                                    var searchIndex = commentValue.scalars.startIndex
+                                    exampleSearch: while let startRange = commentValue.scalars[searchIndex ..< commentValue.scalars.endIndex].firstMatch(for: "```".scalars)?.range,
+                                        let endRange = commentValue.scalars[startRange.upperBound ..< commentValue.scalars.endIndex].firstMatch(for: "```".scalars)?.range {
 
-                                        let exampleRange = startRange.lowerBound ..< endRange.upperBound
+                                            let exampleRange = startRange.lowerBound ..< endRange.upperBound
 
-                                        searchIndex = exampleRange.upperBound
-                                        countingExampleIndex.increment()
-                                        if countingExampleIndex < index {
-                                            continue exampleSearch
-                                        } else if countingExampleIndex == index {
+                                            searchIndex = exampleRange.upperBound
+                                            countingExampleIndex.increment()
+                                            if countingExampleIndex < index {
+                                                continue exampleSearch
+                                            } else if countingExampleIndex == index {
 
-                                            let lineStart = exampleRange.lowerBound.line(in: commentValue.lines).samePosition(in: commentValue.scalars)
-                                            let indentCount = commentValue.scalars.distance(from: lineStart, to: exampleRange.lowerBound)
-                                            let exampleIndent = StrictString(Array(repeating: " ", count: indentCount))
+                                                let lineStart = exampleRange.lowerBound.line(in: commentValue.lines).samePosition(in: commentValue.scalars)
+                                                let indentCount = commentValue.scalars.distance(from: lineStart, to: exampleRange.lowerBound)
+                                                let exampleIndent = StrictString(Array(repeating: " ", count: indentCount))
 
-                                            var exampleLines = [
-                                                "```swift",
-                                                example,
-                                                "```"
-                                                ].joinedAsLines().lines.map({ StrictString($0.line) })
+                                                var exampleLines = [
+                                                    "```swift",
+                                                    example,
+                                                    "```"
+                                                    ].joinedAsLines().lines.map({ StrictString($0.line) })
 
-                                            for index in exampleLines.startIndex ..< exampleLines.endIndex where index ≠ exampleLines.startIndex {
-                                                exampleLines[index] = exampleIndent + exampleLines[index]
+                                                for index in exampleLines.startIndex ..< exampleLines.endIndex where index ≠ exampleLines.startIndex {
+                                                    exampleLines[index] = exampleIndent + exampleLines[index]
+                                                }
+
+                                                commentValue.scalars.replaceSubrange(exampleRange, with: exampleLines.joinedAsLines())
+
+                                                let replacementComment = lineDocumentationSyntax.comment(contents: commentValue, indent: commentIndent)
+                                                file.contents.scalars.replaceSubrange(commentRange, with: replacementComment.scalars)
+
+                                                break exampleSearch
                                             }
-
-                                            commentValue.scalars.replaceSubrange(exampleRange, with: exampleLines.joinedAsLines())
-
-                                            let replacementComment = lineDocumentationSyntax.comment(contents: commentValue, indent: commentIndent)
-                                            file.contents.scalars.replaceSubrange(commentRange, with: replacementComment.scalars)
-
-                                            break exampleSearch
-                                        }
+                                    }
                                 }
                             }
-                        }
                     }
 
                     try file.writeChanges(for: self, output: output)

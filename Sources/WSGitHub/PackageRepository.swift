@@ -64,7 +64,7 @@ extension PackageRepository {
 
     private func constructedContributingInstructions(output: Command.Output) throws -> StrictString {
         let configuration = try self.configuration(output: output)
-        let entries = configuration.gitHub.contributingInstructions.resolve(configuration)
+        let entries = try contributingInstructions(output: output)
         if entries.count == 1 { // No separation of localizations needed.
             for (_, entry) in entries {
                 return entry

@@ -77,13 +77,22 @@ public struct GitHubConfiguration : Codable {
                 let administrators = configuration.gitHub.administrators
                 var administratorList: StrictString
                 if administrators.isEmpty {
-                    #warning("Are administrators needed?")
-                    administratorList = "an administrator"
+                    switch localization._bestMatch {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        administratorList = "an administrator"
+                    }
                 } else if administrators.count == 1 {
                     administratorList = administrators.first!
                 } else {
-                    let commas = StrictString(administrators.dropLast().joined(separator: ", ".scalars))
-                    let or = " or " + administrators.last!
+                    let separator: StrictString
+                    let finalSeparator: StrictString
+                    switch localization._bestMatch {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        separator = ", "
+                        finalSeparator = " or "
+                    }
+                    let commas = StrictString(administrators.dropLast().joined(separator: separator))
+                    let or = finalSeparator + administrators.last!
                     administratorList = commas + or
                 }
                 template.replaceMatches(for: "#administrators".scalars, with: administratorList)

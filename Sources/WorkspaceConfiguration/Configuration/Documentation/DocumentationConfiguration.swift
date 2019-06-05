@@ -23,6 +23,8 @@ public struct DocumentationConfiguration : Codable {
     ///
     /// The default contains no localizations, but some tasks may throw errors if they require localizations to be specified.
     ///
+    /// ### Localizing Documentation
+    ///
     /// When documenting with more than one localization active, each documentation comment must be marked according to its localization.
     ///
     /// ```swift
@@ -31,6 +33,17 @@ public struct DocumentationConfiguration : Codable {
     /// // @localization(🇨🇦EN) @localization(🇬🇧EN)
     /// /// Checks for inequality.
     /// infix operator ≠
+    /// ```
+    ///
+    /// Localized versions of a symbol can be cross‐referenced with each other so that they will be treated as the same symbol. In the following example, `doSomething()` will only appear in the English documentation and `faireQuelqueChose()` will only appear in the French documentation. Switching the language while looking at one of them will display the opposite function.
+    ///
+    /// ```swift
+    /// // @localization(🇨🇦EN) @localization(🇬🇧EN) @crossReference(doSomething)
+    /// /// Does something.
+    /// public func doSomething() {}
+    /// // @localization(🇫🇷FR) @crossReference(doSomething)
+    /// /// Fait quelque chose.
+    /// public func faireQuelqueChose() {}
     /// ```
     public var localizations: [LocalizationIdentifier] = []
 

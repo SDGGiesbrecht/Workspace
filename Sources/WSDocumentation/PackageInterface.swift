@@ -207,7 +207,7 @@ internal struct PackageInterface {
 
     private static func generateIndexSection(named name: StrictString, apiEntries: [APIElement], localization: LocalizationIdentifier) -> StrictString {
         var entries: [StrictString] = []
-        for entry in apiEntries {
+        for entry in apiEntries.lazy.filter({ $0.exists(in: localization) }) {
             entries.append(ElementSyntax(
                 "a",
                 attributes: [
@@ -349,11 +349,11 @@ internal struct PackageInterface {
 
         self.packageIdentifiers = api.identifierList()
 
-        APIElement.package(api).determine(localizations: localizations)
         var paths: [LocalizationIdentifier: [String: String]] = [:]
         for localization in localizations {
             paths[localization] = APIElement.package(api).determinePaths(for: localization)
         }
+        APIElement.package(api).determine(localizations: localizations)
         self.symbolLinks = paths.mapValues { localization in
             localization.mapValues { link in
                 return HTML.percentEncodeURLPath(link)
@@ -535,7 +535,8 @@ internal struct PackageInterface {
 
     private func outputLibraryPages(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output, coverageCheckOnly: Bool) throws {
         for localization in localizations {
-            for library in api.libraries.lazy.map({ APIElement.library($0) }) {
+            for library in api.libraries.lazy.map({ APIElement.library($0) })
+                where library.exists(in: localization) {
                 try autoreleasepool {
                     let location = library.pageURL(in: outputDirectory, for: localization)
                     try SymbolPage(
@@ -562,7 +563,8 @@ internal struct PackageInterface {
 
     private func outputModulePages(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output, coverageCheckOnly: Bool) throws {
         for localization in localizations {
-            for module in api.modules.lazy.map({ APIElement.module($0) }) {
+            for module in api.modules.lazy.map({ APIElement.module($0) })
+                where module.exists(in: localization) {
                 try autoreleasepool {
                     let location = module.pageURL(in: outputDirectory, for: localization)
                     try SymbolPage(
@@ -597,7 +599,8 @@ internal struct PackageInterface {
                 packageAPI.globalVariables.map({ APIElement.variable($0) }),
                 packageAPI.operators.map({ APIElement.operator($0) }),
                 packageAPI.precedenceGroups.map({ APIElement.precedence($0) })
-                ].joined() {
+                ].joined()
+                where symbol.exists(in: localization) {
                     try autoreleasepool {
                         let location = symbol.pageURL(in: outputDirectory, for: localization)
                         try SymbolPage(
@@ -643,7 +646,7 @@ internal struct PackageInterface {
         output: Command.Output,
         coverageCheckOnly: Bool) throws {
 
-        for symbol in parent.children where symbol.receivesPage {
+        for symbol in parent.children where symbol.receivesPage ∧ symbol.exists(in: localization) {
             try autoreleasepool {
                 let location = symbol.pageURL(in: outputDirectory, for: localization)
 

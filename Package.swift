@@ -239,7 +239,8 @@ let package = Package(
         // Example management.
         .target(name: "WSExamples", dependencies: [
             "WSGeneralImports",
-            "WSProject"
+            "WSProject",
+            "WSParsing"
             ]),
 
         // Normalization.
@@ -282,6 +283,7 @@ let package = Package(
         .target(name: "WSDocumentation", dependencies: [
             "WSGeneralImports",
             "WSProject",
+            "WSParsing",
             "WSValidation",
             "WSXcode",
             "WSSwift",
@@ -312,6 +314,13 @@ let package = Package(
         // Utilities related to Swift syntax.
         .target(name: "WSSwift", dependencies: [
             "WSGeneralImports"
+            ]),
+
+        // Utilities related to parsing in‐source declarations and directives.
+        .target(name: "WSParsing", dependencies: [
+            "WSGeneralImports",
+            "WSLocalizations",
+            "WSProject"
             ]),
 
         // Defines general project structure queries and cache.

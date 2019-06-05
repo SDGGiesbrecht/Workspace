@@ -73,6 +73,12 @@ class APITests : TestCase {
             ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
+    func testBrokenExample() {
+        PackageRepository(mock: "BrokenExample").test(commands: [
+            ["refresh", "examples"]
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
     func testBrokenTests() {
         PackageRepository(mock: "BrokenTests").test(commands: [
             ["test"]

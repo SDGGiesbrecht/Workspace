@@ -46,7 +46,7 @@ struct CheckedInDocumentation {
 /// - Warning: A warning.
 ///
 /// - Keyword: keyword
-public class Class {}
+public class Class : AmericanEnglishProtocol, BritishEnglishProtocol, CanadianEnglishProtocol {}
 
 // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
 /// A structure.
@@ -298,3 +298,29 @@ public class BaseClass {
 public class Subclass : BaseClass {
     public override func baseClassMethod() {}
 }
+
+// @localization(zxx)
+/// ...
+// @localization(🇨🇦EN) @crossReference(doSomethingInCanadianEnglish())
+/// Does something in Canadian English.
+public func doSomethingInCanadianEnglish() {}
+
+// @localization(🇬🇧EN) @crossReference(doSomethingInCanadianEnglish())
+/// Does something in British English.
+public func doSomethingInBritishEnglish() {}
+
+// @localization(🇺🇸EN) @crossReference(doSomethingInCanadianEnglish())
+/// Does something in American English.
+public func doSomethingInAmericanEnglish() {}
+
+// @localization(zxx)
+/// ...
+// @localization(🇨🇦EN) @crossReference(Protocol)
+/// A Canadian English protocol.
+public protocol CanadianEnglishProtocol {}
+// @localization(🇬🇧EN) @crossReference(Protocol)
+/// A British English protocol.
+public protocol BritishEnglishProtocol {}
+// @localization(🇺🇸EN) @crossReference(Protocol)
+/// An American English protocol.
+public protocol AmericanEnglishProtocol {}

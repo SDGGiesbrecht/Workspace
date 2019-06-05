@@ -241,6 +241,8 @@ extension APIElement {
 
     internal enum ExtendedPropertyKey {
         case localizedDocumentation
+        case crossReference
+        case localizedEquivalentPaths
         case relativePagePath
         case types
         case `extensions`
@@ -268,6 +270,28 @@ extension APIElement {
         nonmutating set {
             extendedProperties[.localizedDocumentation] = newValue
         }
+    }
+
+    internal var crossReference: StrictString? {
+        get {
+            return extendedProperties[.crossReference] as? StrictString
+        }
+        nonmutating set {
+            extendedProperties[.crossReference] = newValue
+        }
+    }
+
+    internal var localizedEquivalentPaths: [LocalizationIdentifier: StrictString] {
+        get {
+            return (extendedProperties[.localizedEquivalentPaths] as? [LocalizationIdentifier: StrictString]) ?? [:] // @exempt(from: tests) Never nil.
+        }
+        nonmutating set {
+            extendedProperties[.localizedEquivalentPaths] = newValue
+        }
+    }
+
+    internal func exists(in localization: LocalizationIdentifier) -> Bool {
+        return localizedEquivalentPaths[localization] == nil
     }
 
     internal var relativePagePath: [LocalizationIdentifier: StrictString] {
@@ -303,9 +327,28 @@ extension APIElement {
     // MARK: - Localization
 
     internal func determine(localizations: [LocalizationIdentifier]) {
-        localizedDocumentation = documentation.resolved(localizations: localizations)
+        let parsed = documentation.resolved(localizations: localizations)
+        localizedDocumentation = parsed.documentation
+        crossReference = parsed.crossReference
+        var groups: [StrictString: [APIElement]] = [:]
         for child in children {
             child.determine(localizations: localizations)
+            if let crossReference = child.crossReference {
+                groups[crossReference, default: []].append(child)
+            }
+        }
+        for (_, group) in groups {
+            for indexA in group.indices {
+                for indexB in group.indices where indexA ≠ indexB {
+                    group[indexA].addLocalizedPaths(from: group[indexB])
+                }
+            }
+        }
+    }
+
+    private func addLocalizedPaths(from other: APIElement) {
+        for (localization, _) in other.localizedDocumentation {
+            localizedEquivalentPaths[localization] = other.relativePagePath[localization]
         }
     }
 

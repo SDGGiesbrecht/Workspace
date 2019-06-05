@@ -41,10 +41,7 @@ extension PackageRepository {
     // MARK: - Refreshment
 
     public func refreshGitHubConfiguration(output: Command.Output) throws {
-
-        var contributingInstructionsFile = try TextFile(possiblyAt: contributingInstructionsLocation)
-        contributingInstructionsFile.body = String(try contributingInstructions(output: output))
-        try contributingInstructionsFile.writeChanges(for: self, output: output)
+        try refreshContributingInstructions(output: output)
 
         var issueTemplateFile = try TextFile(possiblyAt: issueTemplateLocation)
         issueTemplateFile.contents = String(try issueTemplate(output: output))
@@ -53,8 +50,37 @@ extension PackageRepository {
         var pullRequestTemplateFile = try TextFile(possiblyAt: pullRequestTemplateLocation)
         pullRequestTemplateFile.contents = String(try configuration(output: output).gitHub.pullRequestTemplate)
         try pullRequestTemplateFile.writeChanges(for: self, output: output)
+    }
+
+    private func refreshContributingInstructions(output: Command.Output) throws {
+
+        var contributingInstructionsFile = try TextFile(possiblyAt: contributingInstructionsLocation)
+        contributingInstructionsFile.body = String(try constructedContributingInstructions(output: output))
+        try contributingInstructionsFile.writeChanges(for: self, output: output)
 
         // Remove deprecated.
         delete(depricatedContributingInstructions, output: output)
+    }
+
+    private func constructedContributingInstructions(output: Command.Output) throws -> StrictString {
+        let configuration = try self.configuration(output: output)
+        let entries = configuration.gitHub.contributingInstructions.resolve(configuration)
+        if entries.count == 1 { // No separation of localizations needed.
+            for (_, entry) in entries {
+                return entry
+            }
+        }
+
+        var file: [StrictString] = []
+        for localization in configuration.documentation.localizations {
+            if let entry = entries[localization] {
+                file.append("<details>")
+                file.append("<summary>\(localization._iconOrCode)</summary>")
+                file.append(entry)
+                file.append("</details>")
+            }
+        }
+
+        return file.joinedAsLines()
     }
 }

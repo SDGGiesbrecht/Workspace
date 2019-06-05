@@ -102,7 +102,7 @@ extension PackageRepository {
                                     }))
                             }
 
-                            var indexString = StrictString(arguments[...comma.range.lowerBound])
+                            var indexString = StrictString(arguments[..<comma.range.lowerBound])
                             indexString.trimMarginalWhitespace()
 
                             var identifier = StrictString(arguments[comma.range.upperBound...])

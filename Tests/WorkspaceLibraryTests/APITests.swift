@@ -410,6 +410,14 @@ class APITests : TestCase {
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
+    func testOneLocalization() {
+        let configuration = WorkspaceConfiguration()
+        configuration.documentation.localizations = ["en"]
+        PackageRepository(mock: "OneLocalization").test(commands: [
+            ["refresh", "github"]
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
     func testOneProductMultipleModules() {
         let configuration = WorkspaceConfiguration()
         configuration.documentation.localizations = ["en"]

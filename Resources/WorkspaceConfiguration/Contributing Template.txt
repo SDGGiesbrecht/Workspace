@@ -41,6 +41,6 @@ Once you have your idea working properly, follow these steps to submit your chan
 3. **Push your changes**. `git push`
 4. **Submit a pull request** by clicking “New Pull Request” in the branch list on GitHub. In your description, please:
     - Link to the original issue with `#000`.
-    - State your agreement to licensing your contributions under the [project licence](LICENSE.md).
+    - State your agreement to licensing your contributions under the [project #licence](LICENSE.md).
 5. **Wait for continuous integration** to complete its validation.
 6. **Request a review** from #administrators by clicking the gear in the top right of the pull request page.

@@ -1,6 +1,8 @@
-# Contributing to #packageName
 
-Everyone is welcome to contribute to #packageName!
+
+# Contributing to OneLocalization
+
+Everyone is welcome to contribute to OneLocalization!
 
 ## Step 1: Report
 
@@ -26,7 +28,7 @@ Even if you think you have the solution, please **do not start working on it** u
 If you have [reported](#step-1-report) your idea and an administrator has given you the green light, follow these steps to get a local copy you can work on.
 
 1. **Fork the repository** by clicking “Fork” in the top‐right of the repository page. (Skip this step if you have been given write access.)
-2. **Create a local clone**.#cloneScript
+2. **Create a local clone**.
 3. **Create a development branch**. `git checkout -b some‐new‐branch‐name`
 4. **Set up the workspace** by double‐clicking `Refresh` in the root folder.
 
@@ -41,6 +43,6 @@ Once you have your idea working properly, follow these steps to submit your chan
 3. **Push your changes**. `git push`
 4. **Submit a pull request** by clicking “New Pull Request” in the branch list on GitHub. In your description, please:
     - Link to the original issue with `#000`.
-    - State your agreement to licensing your contributions under the [project #licence](LICENSE.md).
+    - State your agreement to licensing your contributions under the [project licence](LICENSE.md).
 5. **Wait for continuous integration** to complete its validation.
-6. **Request a review** from #administrators by clicking the gear in the top right of the pull request page.
+6. **Request a review** from an administrator by clicking the gear in the top right of the pull request page.

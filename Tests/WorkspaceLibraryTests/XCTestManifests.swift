@@ -35,6 +35,7 @@ extension APITests {
         ("testMultipleProducts", testMultipleProducts),
         ("testNoLibraries", testNoLibraries),
         ("testNoLocalizations", testNoLocalizations),
+        ("testOneLocalization", testOneLocalization),
         ("testOneProductMultipleModules", testOneProductMultipleModules),
         ("testPartialReadMe", testPartialReadMe),
         ("testSDGLibrary", testSDGLibrary),

@@ -410,6 +410,14 @@ class APITests : TestCase {
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
+    func testOneLocalization() {
+        let configuration = WorkspaceConfiguration()
+        configuration.documentation.localizations = ["en"]
+        PackageRepository(mock: "OneLocalization").test(commands: [
+            ["refresh", "github"]
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
     func testOneProductMultipleModules() {
         let configuration = WorkspaceConfiguration()
         configuration.documentation.localizations = ["en"]
@@ -458,7 +466,7 @@ class APITests : TestCase {
         configuration.documentation.primaryAuthor = "John Doe"
         configuration.documentation.api.yearFirstPublished = 2017
         configuration.documentation.api.encryptedTravisCIDeploymentKey = "0123456789abcdef"
-        configuration.gitHub.administrators = ["John Doe"]
+        configuration.gitHub.administrators = ["John Doe", "Jane Doe"]
         configuration.documentation.localizations = ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"]
         for localization in configuration.documentation.localizations {
             configuration.documentation.about[localization] = "..."

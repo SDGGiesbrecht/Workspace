@@ -123,7 +123,7 @@ extension PackageRepository {
                             let documentation = packageDocumentation.resolved(
                                 localizations: localizations).documentation[localization],
                             let description = documentation.descriptionSection {
-                            markdown += [ // @exempt(from: tests) Not testable (until after merge). #workaround(Remove exemption after merge.)
+                            markdown += [
                                 "",
                                 StrictString(description.text)
                             ]

@@ -34,46 +34,83 @@ public struct GitHubConfiguration : Codable {
     /// There are no default development notes.
     public var developmentNotes: Markdown?
 
+    private static func contributingTemplate(for localization: LocalizationIdentifier) -> StrictString? {
+        guard let match = localization._reasonableMatch else {
+            return nil
+        }
+        switch match {
+        case .englishUnitedKingdom, .englishCanada:
+            return StrictString(Resources.contributingTemplate)
+                .replacingMatches(for: "#licence".scalars, with: "licence".scalars)
+        case .englishUnitedStates:
+            return StrictString(Resources.contributingTemplate)
+                .replacingMatches(for: "#licence".scalars, with: "license".scalars)
+        }
+    }
+
+    private static func developmentNotesHeading(for localization: LocalizationIdentifier) -> StrictString {
+        switch localization._bestMatch {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Development Notes"
+        }
+    }
+
     /// The contributing instructions.
     ///
     /// By default, this is assembled from the other GitHub options.
     ///
     /// Contributing instructions are instructions in a `CONTRIBUTING.md` file which GitHub directs contributors to read.
-    public var contributingInstructions: Lazy<Markdown> = Lazy<Markdown>(resolve: { configuration in
+    public var contributingInstructions: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>(resolve: { configuration in
+        var result: [LocalizationIdentifier: Markdown] = [:]
 
-        var template = StrictString(Resources.contributingTemplate)
+        for localization in configuration.documentation.localizations {
+            if var template = GitHubConfiguration.contributingTemplate(for: localization) {
 
-        template.replaceMatches(for: "#packageName".scalars, with: WorkspaceContext.current.manifest.packageName.scalars)
+                template.replaceMatches(for: "#packageName".scalars, with: WorkspaceContext.current.manifest.packageName.scalars)
 
-        if let url = configuration.documentation.repositoryURL {
-            template.replaceMatches(for: "#cloneScript".scalars, with: " `git clone https://github.com/user/\(url.lastPathComponent)`".scalars)
-        } else {
-            template.replaceMatches(for: "#cloneScript".scalars, with: "".scalars)
+                if let url = configuration.documentation.repositoryURL {
+                    template.replaceMatches(for: "#cloneScript".scalars, with: " `git clone https://github.com/user/\(url.lastPathComponent)`".scalars)
+                } else {
+                    template.replaceMatches(for: "#cloneScript".scalars, with: "".scalars)
+                }
+
+                let administrators = configuration.gitHub.administrators
+                var administratorList: StrictString
+                if administrators.isEmpty {
+                    switch localization._bestMatch {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        administratorList = "an administrator"
+                    }
+                } else if administrators.count == 1 {
+                    administratorList = administrators.first!
+                } else {
+                    let separator: StrictString
+                    let finalSeparator: StrictString
+                    switch localization._bestMatch {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        separator = ", "
+                        finalSeparator = " or "
+                    }
+                    let commas = StrictString(administrators.dropLast().joined(separator: separator))
+                    let or = finalSeparator + administrators.last!
+                    administratorList = commas + or
+                }
+                template.replaceMatches(for: "#administrators".scalars, with: administratorList)
+
+                if let notes = configuration.gitHub.developmentNotes {
+                    template.append(contentsOf: [
+                        "",
+                        "## \(GitHubConfiguration.developmentNotesHeading(for: localization))",
+                        "",
+                        notes
+                        ].joinedAsLines())
+                }
+
+                result[localization] = template
+            }
         }
 
-        let administrators = configuration.gitHub.administrators
-        var administratorList: StrictString
-        if administrators.isEmpty {
-            administratorList = "an administrator"
-        } else if administrators.count == 1 {
-            administratorList = administrators.first!
-        } else {
-            let commas = StrictString(administrators.dropLast().joined(separator: ", ".scalars))
-            let or = " or " + administrators.last!
-            administratorList = commas + or
-        }
-        template.replaceMatches(for: "#administrators".scalars, with: administratorList)
-
-        if let notes = configuration.gitHub.developmentNotes {
-            template.append(contentsOf: [
-                "",
-                "## Development Notes",
-                "",
-                notes
-                ].joinedAsLines())
-        }
-
-        return template
+        return result
     })
 
     /// The issue template.

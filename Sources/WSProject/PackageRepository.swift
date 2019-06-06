@@ -85,7 +85,7 @@ extension PackageRepository {
         fileprivate var fileHeader: StrictString?
         fileprivate var documentationCopyright: [LocalizationIdentifier: StrictString]?
         fileprivate var readMe: [LocalizationIdentifier: StrictString]?
-        fileprivate var contributingInstructions: StrictString?
+        fileprivate var contributingInstructions: [LocalizationIdentifier: Markdown]?
         fileprivate var issueTemplate: StrictString?
     }
     private static var configurationCaches: [URL: ConfigurationCache] = [:]
@@ -261,7 +261,7 @@ extension PackageRepository {
         }
     }
 
-    public func contributingInstructions(output: Command.Output) throws -> StrictString {
+    public func contributingInstructions(output: Command.Output) throws -> [LocalizationIdentifier: Markdown] {
         return try cached(in: &configurationCache.contributingInstructions) {
             return try configuration(output: output).gitHub.contributingInstructions.resolve(configuration(output: output))
         }

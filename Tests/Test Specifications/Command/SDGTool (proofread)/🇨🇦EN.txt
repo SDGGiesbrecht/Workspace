@@ -7,7 +7,18 @@ Proofreading source code... (§1)
 
 .gitattributes
 .github/CONTRIBUTING.md
-.github/ISSUE_TEMPLATE.md
+.github/ISSUE_TEMPLATE/🇨🇦EN Bug Report.md
+.github/ISSUE_TEMPLATE/🇨🇦EN Documentation Correction.md
+.github/ISSUE_TEMPLATE/🇨🇦EN Feature Request.md
+.github/ISSUE_TEMPLATE/🇨🇦EN Question.md
+.github/ISSUE_TEMPLATE/🇬🇧EN Bug Report.md
+.github/ISSUE_TEMPLATE/🇬🇧EN Documentation Correction.md
+.github/ISSUE_TEMPLATE/🇬🇧EN Feature Request.md
+.github/ISSUE_TEMPLATE/🇬🇧EN Question.md
+.github/ISSUE_TEMPLATE/🇺🇸EN Bug Report.md
+.github/ISSUE_TEMPLATE/🇺🇸EN Documentation Correction.md
+.github/ISSUE_TEMPLATE/🇺🇸EN Feature Request.md
+.github/ISSUE_TEMPLATE/🇺🇸EN Question.md
 .github/PULL_REQUEST_TEMPLATE.md
 .gitignore
 .travis.yml

@@ -2,7 +2,7 @@
 name: '🇨🇦EN Bug Report'
 about: 'Report a bug that needs fixing'
 title: ''
-labels: ''
+labels: '🇬🇧🇺🇸🇨🇦EN, Bug, Needs Investigation'
 assignees: ''
 
 ---

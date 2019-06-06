@@ -2,7 +2,7 @@
 name: '🇨🇦EN Feature Request'
 about: 'Request a new feature you wish the project had'
 title: ''
-labels: ''
+labels: '🇬🇧🇺🇸🇨🇦EN, Enhancement, Needs Investigation'
 assignees: ''
 
 ---

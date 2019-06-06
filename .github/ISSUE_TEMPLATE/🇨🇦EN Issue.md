@@ -1,3 +1,12 @@
+---
+name: '🇨🇦EN Issue'
+about: 'Report an issue.'
+title: ''
+labels: ''
+labels: ''
+
+---
+
 <!--
  Reminder:
  Have you searched to see if a related issue exists already?

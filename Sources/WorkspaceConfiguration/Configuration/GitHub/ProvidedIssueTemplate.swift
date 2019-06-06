@@ -93,10 +93,13 @@ internal enum ProvidedIssueTemplate: CaseIterable {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 contents.append("### Description")
             }
-            contents.append("")
         case .question:
-            break
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                contents.append("### Question")
+            }
         }
+        contents.append("")
 
         switch self {
         case .bugReport:
@@ -115,7 +118,10 @@ internal enum ProvidedIssueTemplate: CaseIterable {
                 contents.append("There appears to be a mistake in the documentation about such‐and‐such.")
             }
         case .question:
-            break
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                contents.append("How can I do such‐and‐such?")
+            }
         }
 
         if self == .bugReport {
@@ -175,13 +181,13 @@ internal enum ProvidedIssueTemplate: CaseIterable {
                     "I **would like to help** \(task) it, and I think **I know my way around**.",
                     "I **would like to help** \(task) it, but **I would need some guidance**.",
                     "I **do not want to help** \(task) it.",
-                    "",
                     ])
             }
         case .question:
             break
         }
 
+        contents.append("")
         switch self {
         case .bugReport:
             switch localization {
@@ -199,7 +205,10 @@ internal enum ProvidedIssueTemplate: CaseIterable {
                 contents.append("### Recommended Correction")
             }
         case .question:
-            break
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                contents.append("### Documentation Suggestion")
+            }
         }
         switch self {
         case .bugReport, .featureRequest:
@@ -219,7 +228,14 @@ internal enum ProvidedIssueTemplate: CaseIterable {
                     ])
             }
         case .question:
-            break
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                contents.append(contentsOf: [
+                    "",
+                    "I expected to find the answer under...",
+                    "<!-- Answering this may help us organize the documentation more intuitively for others with the same question. -->",
+                    ])
+            }
         }
 
 

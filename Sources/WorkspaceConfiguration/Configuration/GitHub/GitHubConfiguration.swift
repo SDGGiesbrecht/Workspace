@@ -113,12 +113,12 @@ public struct GitHubConfiguration : Codable {
         return result
     })
 
-    /// The issue template.
+    /// The issue templates.
     ///
     /// By default, this is assembled from the other GitHub options.
     ///
     /// An issue template is a markdown file in a `.github` folder which GitHub uses when someone creates a new issue.
-    public var issueTemplate: Lazy<Markdown> = Lazy<Markdown>(resolve: { _ in
+    public var issueTemplates: Lazy<Markdown> = Lazy<Markdown>(resolve: { _ in
 
         var template = StrictString(Resources.issueTemplate)
 

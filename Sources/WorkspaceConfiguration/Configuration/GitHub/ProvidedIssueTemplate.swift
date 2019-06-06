@@ -20,6 +20,8 @@ internal enum ProvidedIssueTemplate: CaseIterable {
 
     case bugReport
     case featureRequest
+    case documentationCorrection
+    case question
 
     // MARK: - Construction
 
@@ -36,6 +38,16 @@ internal enum ProvidedIssueTemplate: CaseIterable {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 name = "Feature Request"
             }
+        case .documentationCorrection:
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                name = "Documentation Correction"
+            }
+        case .question:
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                name = "Question"
+            }
         }
 
         let description: StrictString
@@ -48,7 +60,17 @@ internal enum ProvidedIssueTemplate: CaseIterable {
         case .featureRequest:
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                description = "Request a new feature you wish the project had"
+                description = "Request a new feature you would find helpful"
+            }
+        case .documentationCorrection:
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                description = "Report something incorrect or unclear in the documentation"
+            }
+        case .question:
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                description = "Ask a question"
             }
         }
 
@@ -65,11 +87,16 @@ internal enum ProvidedIssueTemplate: CaseIterable {
         }
         contents.append("")
 
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            contents.append("### Description")
+        switch self {
+        case .bugReport, .featureRequest, .documentationCorrection:
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                contents.append("### Description")
+            }
+            contents.append("")
+        case .question:
+            break
         }
-        contents.append("")
 
         switch self {
         case .bugReport:
@@ -82,6 +109,13 @@ internal enum ProvidedIssueTemplate: CaseIterable {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 contents.append("Such‐and‐such would be a nice feature.")
             }
+        case .documentationCorrection:
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                contents.append("There appears to be a mistake in the documentation about such‐and‐such.")
+            }
+        case .question:
+            break
         }
 
         if self == .bugReport {
@@ -122,25 +156,30 @@ internal enum ProvidedIssueTemplate: CaseIterable {
             }
         }
 
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            let task: StrictString
-            switch self {
-            case .bugReport:
-                task = "fix"
-            case .featureRequest:
-                task = "implement"
+        switch self {
+        case .bugReport, .featureRequest, .documentationCorrection:
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                let task: StrictString
+                switch self {
+                case .bugReport, .documentationCorrection, .question:
+                    task = "fix"
+                case .featureRequest:
+                    task = "implement"
+                }
+                contents.append(contentsOf: [
+                    "",
+                    "### Availability to Help",
+                    "",
+                    "<!-- Keep only one of the following lines. -->",
+                    "I **would like to help** \(task) it, and I think **I know my way around**.",
+                    "I **would like to help** \(task) it, but **I would need some guidance**.",
+                    "I **do not want to help** \(task) it.",
+                    "",
+                    ])
             }
-            contents.append(contentsOf: [
-                "",
-                "### Availability to Help",
-                "",
-                "<!-- Keep only one of the following lines. -->",
-                "I **would like to help** \(task) it, and I think **I know my way around**.",
-                "I **would like to help** \(task) it, but **I would need some guidance**.",
-                "I **do not want to help** \(task) it.",
-                "",
-                ])
+        case .question:
+            break
         }
 
         switch self {
@@ -154,14 +193,35 @@ internal enum ProvidedIssueTemplate: CaseIterable {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 contents.append("### Design Thoughts")
             }
+        case .documentationCorrection:
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                contents.append("### Recommended Correction")
+            }
+        case .question:
+            break
         }
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            contents.append(contentsOf: [
-                "",
-                "It might work to do something like..."
-                ])
+        switch self {
+        case .bugReport, .featureRequest:
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                contents.append(contentsOf: [
+                    "",
+                    "It might work to do something like..."
+                    ])
+            }
+        case .documentationCorrection:
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                contents.append(contentsOf: [
+                    "",
+                    "“It makes more sense written like this.”"
+                    ])
+            }
+        case .question:
+            break
         }
+
 
         var labels: [StrictString] = []
         switch localization {
@@ -179,10 +239,25 @@ internal enum ProvidedIssueTemplate: CaseIterable {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 labels.append("Enhancement")
             }
+        case .documentationCorrection:
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                labels.append("Documentation")
+            }
+        case .question:
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                labels.append("Question")
+            }
         }
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            labels.append("Needs Investigation")
+        switch self {
+        case .bugReport, .featureRequest, .documentationCorrection:
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                labels.append("Needs Investigation")
+            }
+        case .question:
+            break
         }
 
         return IssueTemplate(

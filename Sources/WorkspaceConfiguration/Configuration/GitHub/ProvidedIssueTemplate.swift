@@ -232,8 +232,12 @@ internal enum ProvidedIssueTemplate: CaseIterable {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 contents.append(contentsOf: [
                     "",
-                    "I expected to find the answer under...",
-                    "<!-- Answering this may help us organize the documentation more intuitively for others with the same question. -->",
+                    "<!--",
+                    " Where did you look for the answer?",
+                    " (Answering this may help us organize the documentation more intuitively.)",
+                    " -->",
+                    "",
+                    "I expected to find the answer under such‐and‐such.",
                     ])
             }
         }

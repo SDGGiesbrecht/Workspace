@@ -267,7 +267,7 @@ extension PackageRepository {
         }
     }
 
-    public func issueTemplate(output: Command.Output) throws -> [LocalizationIdentifier: [IssueTemplate]] {
+    public func issueTemplates(output: Command.Output) throws -> [LocalizationIdentifier: [IssueTemplate]] {
         return try cached(in: &configurationCache.issueTemplates) {
             return try configuration(output: output).gitHub.issueTemplates.resolve(configuration(output: output))
         }

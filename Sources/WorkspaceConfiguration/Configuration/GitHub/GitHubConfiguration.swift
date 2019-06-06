@@ -168,6 +168,7 @@ public struct GitHubConfiguration : Codable {
             return result
         })
 
+    #warning("Localize?")
     /// The pull request template.
     ///
     /// This defaults to a generic template.

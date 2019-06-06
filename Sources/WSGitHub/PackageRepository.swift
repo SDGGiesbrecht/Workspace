@@ -12,6 +12,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGCollections
 import WSGeneralImports
 import WSProject
 
@@ -30,8 +31,14 @@ extension PackageRepository {
         return gitHubDirectory.appendingPathComponent("CONTRIBUTING.md")
     }
 
-    private var issueTemplateLocation: URL {
+    private var depricatedIssueTemplateLocation: URL {
         return gitHubDirectory.appendingPathComponent("ISSUE_TEMPLATE.md")
+    }
+    private var issueTemplatesDirectory: URL {
+        return gitHubDirectory.appendingPathComponent("ISSUE_TEMPLATE")
+    }
+    private func issueTemplateLocation(for title: StrictString) -> URL {
+        return issueTemplatesDirectory.appendingPathComponent(String(title + ".md"))
     }
 
     private var pullRequestTemplateLocation: URL {
@@ -42,10 +49,7 @@ extension PackageRepository {
 
     public func refreshGitHubConfiguration(output: Command.Output) throws {
         try refreshContributingInstructions(output: output)
-
-        var issueTemplateFile = try TextFile(possiblyAt: issueTemplateLocation)
-        issueTemplateFile.contents = String(try issueTemplate(output: output))
-        try issueTemplateFile.writeChanges(for: self, output: output)
+        try refreshIssueTemplates(output: output)
 
         var pullRequestTemplateFile = try TextFile(possiblyAt: pullRequestTemplateLocation)
         pullRequestTemplateFile.contents = String(try configuration(output: output).gitHub.pullRequestTemplate)
@@ -82,5 +86,40 @@ extension PackageRepository {
         }
 
         return file.joinedAsLines()
+    }
+
+    private func refreshIssueTemplates(output: Command.Output) throws {
+        var validFiles: Set<URL> = []
+        for (localization, templates) in try issueTemplates(output: output) {
+            for template in templates {
+                let modifiedName = localization._iconOrCode + " " + template.name
+                let fileLocation = issueTemplateLocation(for: modifiedName)
+                validFiles.insert(fileLocation)
+
+                var fileContents: [StrictString] = [
+                    "\u{2D}\u{2D}\u{2D}",
+                    "name: \u{27}\(modifiedName)\u{27}",
+                    "about: \u{27}\(template.description)\u{27}",
+                    "title: \u{27}\(template.title ?? "")\u{27}",
+                    "labels: \u{27}\(template.labels.joined(separator: ", "))\u{27}",
+                    "labels: \u{27}\(template.assignees.joined(separator: ", "))\u{27}",
+                    "",
+                    "\u{2D}\u{2D}\u{2D}",
+                    ""
+                ]
+                fileContents.append(template.content)
+
+                var issueTemplateFile = try TextFile(possiblyAt: fileLocation)
+                issueTemplateFile.contents = String(fileContents.joinedAsLines())
+                try issueTemplateFile.writeChanges(for: self, output: output)
+            }
+        }
+
+        delete(depricatedIssueTemplateLocation, output: output)
+        if let files = try? FileManager.default.deepFileEnumeration(in: issueTemplatesDirectory) {
+            for file in files where file ∉ validFiles {
+                delete(file, output: output)
+            }
+        }
     }
 }

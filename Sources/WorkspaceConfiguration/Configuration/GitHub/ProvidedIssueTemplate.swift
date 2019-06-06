@@ -163,10 +163,32 @@ internal enum ProvidedIssueTemplate: CaseIterable {
                 ])
         }
 
+        var labels: [StrictString] = []
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            labels.append("🇬🇧🇺🇸🇨🇦EN")
+        }
+        switch self {
+        case .bugReport:
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                labels.append("Bug")
+            }
+        case .featureRequest:
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                labels.append("Enhancement")
+            }
+        }
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            labels.append("Needs Investigation")
+        }
+
         return IssueTemplate(
             name: name,
             description: description,
             content: contents.joinedAsLines(),
-            labels: [])
+            labels: labels)
     }
 }

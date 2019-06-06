@@ -86,7 +86,7 @@ extension PackageRepository {
         fileprivate var documentationCopyright: [LocalizationIdentifier: StrictString]?
         fileprivate var readMe: [LocalizationIdentifier: StrictString]?
         fileprivate var contributingInstructions: [LocalizationIdentifier: Markdown]?
-        fileprivate var issueTemplate: StrictString?
+        fileprivate var issueTemplates: [LocalizationIdentifier: [IssueTemplate]]?
     }
     private static var configurationCaches: [URL: ConfigurationCache] = [:]
     private var configurationCache: ConfigurationCache {
@@ -267,9 +267,9 @@ extension PackageRepository {
         }
     }
 
-    public func issueTemplate(output: Command.Output) throws -> StrictString {
-        return try cached(in: &configurationCache.issueTemplate) {
-            return try configuration(output: output).gitHub.issueTemplate.resolve(configuration(output: output))
+    public func issueTemplate(output: Command.Output) throws -> [LocalizationIdentifier: [IssueTemplate]] {
+        return try cached(in: &configurationCache.issueTemplates) {
+            return try configuration(output: output).gitHub.issueTemplates.resolve(configuration(output: output))
         }
     }
 

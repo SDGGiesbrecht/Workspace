@@ -12,6 +12,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import WSLocalizations
+
 /// Options related to GitHub.
 ///
 /// ```shell
@@ -61,9 +63,13 @@ public struct GitHubConfiguration : Codable {
     ///
     /// Contributing instructions are instructions in a `CONTRIBUTING.md` file which GitHub directs contributors to read.
     public var contributingInstructions: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>(resolve: { configuration in
-        var result: [LocalizationIdentifier: Markdown] = [:]
+        var localizations = configuration.documentation.localizations
+        if localizations.isEmpty {
+            localizations.append(LocalizationIdentifier(ContentLocalization.fallbackLocalization))
+        }
 
-        for localization in configuration.documentation.localizations {
+        var result: [LocalizationIdentifier: Markdown] = [:]
+        for localization in localizations {
             if var template = GitHubConfiguration.contributingTemplate(for: localization) {
 
                 template.replaceMatches(for: "#packageName".scalars, with: WorkspaceContext.current.manifest.packageName.scalars)
@@ -115,37 +121,52 @@ public struct GitHubConfiguration : Codable {
 
     /// The issue templates.
     ///
-    /// By default, this is assembled from the other GitHub options.
+    /// By default, these are assembled from the other GitHub options.
     ///
     /// An issue template is a markdown file in a `.github` folder which GitHub uses when someone creates a new issue.
-    public var issueTemplates: Lazy<Markdown> = Lazy<Markdown>(resolve: { _ in
+    public var issueTemplates: Lazy<[LocalizationIdentifier: [IssueTemplate]]>
+        = Lazy<[LocalizationIdentifier: [IssueTemplate]]>(resolve: { configuration in
 
-        var template = StrictString(Resources.issueTemplate)
+            var localizations = configuration.documentation.localizations
+            if localizations.isEmpty {
+                localizations.append(LocalizationIdentifier(ContentLocalization.fallbackLocalization))
+            }
 
-        let products = WorkspaceContext.current.manifest.products
-        var trigger: [StrictString] = []
-        if products.contains(where: { $0.type == .library }) {
-            trigger += [
-                "```swift",
-                "let thisCode = trigger(theBug)",
-                "",
-                "// Or provide a link to code elsewhere.",
-                "```"
-            ]
-        }
-        if products.contains(where: { $0.type == .executable }) {
-            trigger += [
-                "```shell",
-                "this script \u{2D}\u{2D}triggers \u{22}the bug\u{22}",
-                "",
-                "# Or provide a link to a script elsewhere.",
-                "```"
-            ]
-        }
-        template.replaceMatches(for: "#trigger".scalars, with: trigger.joinedAsLines())
+            var result: [LocalizationIdentifier: [IssueTemplate]] = [:]
+            for localization in localizations {
+                #warning("Update this.")
+                var template = StrictString(Resources.issueTemplate)
 
-        return template
-    })
+                let products = WorkspaceContext.current.manifest.products
+                var trigger: [StrictString] = []
+                if products.contains(where: { $0.type == .library }) {
+                    trigger += [
+                        "```swift",
+                        "let thisCode = trigger(theBug)",
+                        "",
+                        "// Or provide a link to code elsewhere.",
+                        "```"
+                    ]
+                }
+                if products.contains(where: { $0.type == .executable }) {
+                    trigger += [
+                        "```shell",
+                        "this script \u{2D}\u{2D}triggers \u{22}the bug\u{22}",
+                        "",
+                        "# Or provide a link to a script elsewhere.",
+                        "```"
+                    ]
+                }
+                template.replaceMatches(for: "#trigger".scalars, with: trigger.joinedAsLines())
+
+                result[localization, default: []].append(IssueTemplate(
+                    name: "Issue",
+                    description: "Report an issue.",
+                    content: template,
+                    labels: []))
+            }
+            return result
+        })
 
     /// The pull request template.
     ///

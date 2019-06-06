@@ -15,6 +15,15 @@
 /// A GitHub issue template.
 public struct IssueTemplate : Decodable, Encodable {
 
+    /// Creates an issue template.
+    ///
+    /// - Parameters:
+    ///     - name: The name.
+    /// 	- description: A description.
+    ///     - title: A default title.
+    ///     - content: Content.
+    ///     - labels: Default labels.
+    ///     - assignees: Default assignees.
     public init(
         name: StrictString,
         description: StrictString,

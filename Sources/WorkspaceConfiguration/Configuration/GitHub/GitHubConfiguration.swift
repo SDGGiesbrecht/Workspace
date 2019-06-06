@@ -134,36 +134,11 @@ public struct GitHubConfiguration : Codable {
 
             var result: [LocalizationIdentifier: [IssueTemplate]] = [:]
             for localization in localizations {
-                #warning("Update this.")
-                var template = StrictString(Resources.issueTemplate)
-
-                let products = WorkspaceContext.current.manifest.products
-                var trigger: [StrictString] = []
-                if products.contains(where: { $0.type == .library }) {
-                    trigger += [
-                        "```swift",
-                        "let thisCode = trigger(theBug)",
-                        "",
-                        "// Or provide a link to code elsewhere.",
-                        "```"
-                    ]
+                for providedTemplate in ProvidedIssueTemplate.allCases {
+                    if let language = localization._reasonableMatch {
+                        result[localization, default: []].append(providedTemplate.constructed(for: language))
+                    }
                 }
-                if products.contains(where: { $0.type == .executable }) {
-                    trigger += [
-                        "```shell",
-                        "this script \u{2D}\u{2D}triggers \u{22}the bug\u{22}",
-                        "",
-                        "# Or provide a link to a script elsewhere.",
-                        "```"
-                    ]
-                }
-                template.replaceMatches(for: "#trigger".scalars, with: trigger.joinedAsLines())
-
-                result[localization, default: []].append(IssueTemplate(
-                    name: "Issue",
-                    description: "Report an issue.",
-                    content: template,
-                    labels: []))
             }
             return result
         })

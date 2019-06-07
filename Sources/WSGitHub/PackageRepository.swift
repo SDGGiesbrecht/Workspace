@@ -90,7 +90,9 @@ extension PackageRepository {
 
     private func refreshIssueTemplates(output: Command.Output) throws {
         var validFiles: Set<URL> = []
-        for (localization, templates) in try issueTemplates(output: output) {
+        let templateSet = try issueTemplates(output: output)
+        for localization in templateSet.keys.sorted(by: { $0._iconOrCode < $1._iconOrCode }) {
+            let templates = templateSet[localization]!
             for template in templates {
                 let modifiedName = localization._iconOrCode + " " + template.name
                 let fileLocation = issueTemplateLocation(for: modifiedName)

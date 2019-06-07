@@ -14,7 +14,7 @@
 
 import WSLocalizations
 
-internal enum ProvidedIssueTemplate: CaseIterable {
+internal enum ProvidedIssueTemplate : CaseIterable {
 
     // MARK: - Cases
 
@@ -78,11 +78,11 @@ internal enum ProvidedIssueTemplate: CaseIterable {
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             contents.append(contentsOf: [
-                "<!--",
+                "<!\u{2D}\u{2D}",
                 " Reminder:",
                 " Have you searched to see if a related issue exists already?",
                 " If one exists, please add your information there instead.",
-                " -->"
+                " \u{2D}\u{2D}>"
                 ])
         }
         contents.append("")
@@ -158,7 +158,7 @@ internal enum ProvidedIssueTemplate: CaseIterable {
             }
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                contents.append("<!-- Or provide a link to a demonstration elsewhere. -->")
+                contents.append("<!\u{2D}\u{2D} Or provide a link to a demonstration elsewhere. \u{2D}\u{2D}>")
             }
         }
 
@@ -177,7 +177,7 @@ internal enum ProvidedIssueTemplate: CaseIterable {
                     "",
                     "### Availability to Help",
                     "",
-                    "<!-- Keep only one of the following lines. -->",
+                    "<!\u{2D}\u{2D} Keep only one of the following lines. \u{2D}\u{2D}>",
                     "I **would like to help** \(task) it, and I think **I know my way around**.",
                     "I **would like to help** \(task) it, but **I would need some guidance**.",
                     "I **do not want to help** \(task) it.",
@@ -232,10 +232,10 @@ internal enum ProvidedIssueTemplate: CaseIterable {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 contents.append(contentsOf: [
                     "",
-                    "<!--",
+                    "<!\u{2D}\u{2D}",
                     " Where did you look for the answer?",
                     " (Answering this may help us organize the documentation more intuitively.)",
-                    " -->",
+                    " \u{2D}\u{2D}>",
                     "",
                     "I expected to find the answer under such‐and‐such.",
                     ])

@@ -19,7 +19,7 @@ public struct IssueTemplate : Decodable, Encodable {
     ///
     /// - Parameters:
     ///     - name: The name.
-    /// 	- description: A description.
+    ///     - description: A description.
     ///     - title: A default title.
     ///     - content: Content.
     ///     - labels: Default labels.

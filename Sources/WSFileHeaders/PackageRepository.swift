@@ -22,7 +22,7 @@ extension PackageRepository {
 
     private static let skippedRelativePaths: [String] = [
         "LICENSE.md",
-        ".github/ISSUE_TEMPLATE.md",
+        ".github/ISSUE_TEMPLATE",
         ".github/PULL_REQUEST_TEMPLATE.md"
     ]
 
@@ -35,7 +35,7 @@ extension PackageRepository {
         let template = try fileHeader(output: output)
 
         let skippedFiles = self.skippedFiles
-        for url in try sourceFiles(output: output) where url ∉ skippedFiles {
+        for url in try sourceFiles(output: output) where ¬skippedFiles.contains(where: { url.is(in: $0) }) {
             try autoreleasepool {
                 if let type = FileType(url: url),
                     type.syntax.hasComments {

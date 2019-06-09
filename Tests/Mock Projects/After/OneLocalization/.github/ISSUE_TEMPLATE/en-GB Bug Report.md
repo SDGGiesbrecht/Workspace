@@ -1,5 +1,5 @@
 ---
-name: '🇬🇧EN Bug Report'
+name: 'en-GB Bug Report'
 about: 'Report a bug that needs fixing'
 title: ''
 labels: '🇬🇧🇺🇸🇨🇦EN, Bug, Needs Investigation'

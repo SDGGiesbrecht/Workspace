@@ -1,5 +1,5 @@
 ---
-name: '🇬🇧EN Documentation Correction'
+name: 'en-GB Documentation Correction'
 about: 'Report something incorrect or unclear in the documentation'
 title: ''
 labels: '🇬🇧🇺🇸🇨🇦EN, Documentation, Needs Investigation'

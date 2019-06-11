@@ -40,11 +40,14 @@ public struct TestingConfiguration : Codable {
     ///
     /// ```swift
     /// TestCoverageExemptionToken("@exempt(from: tests)", scope: .sameLine),
+    ///
     /// TestCoverageExemptionToken("assert", scope: .sameLine),
     /// TestCoverageExemptionToken("assertionFailure", scope: .previousLine),
     /// TestCoverageExemptionToken("precondition", scope: .sameLine),
     /// TestCoverageExemptionToken("preconditionFailure", scope: .previousLine),
-    /// TestCoverageExemptionToken("fatalError", scope: .sameLine),
+    /// TestCoverageExemptionToken("fatalError", scope: .previousLine),
+    /// TestCoverageExemptionToken("@unknown", scope: .sameLine),
+    ///
     /// TestCoverageExemptionToken("primitiveMethod", scope: .previousLine),
     /// TestCoverageExemptionToken("unreachable", scope: .previousLine),
     /// TestCoverageExemptionToken("test", scope: .sameLine),

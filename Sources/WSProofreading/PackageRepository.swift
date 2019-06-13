@@ -16,6 +16,7 @@ import SDGLogic
 import SDGCollections
 import WSGeneralImports
 
+import SwiftSyntax
 import SDGSwiftSource
 
 import WSProject

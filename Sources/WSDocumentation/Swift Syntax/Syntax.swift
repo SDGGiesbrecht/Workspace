@@ -14,6 +14,7 @@
 
 import WSGeneralImports
 
+import SwiftSyntax
 import SDGSwiftSource
 
 extension Syntax {

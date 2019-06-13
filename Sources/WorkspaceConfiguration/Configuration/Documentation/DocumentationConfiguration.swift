@@ -202,7 +202,7 @@ public struct DocumentationConfiguration : Codable {
         }
 
         var result = [
-            (UserFacing<StrictString, ContentLocalization>({ (localization: ContentLocalization) -> StrictString in
+            UserFacing<StrictString, ContentLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     var result: StrictString = "\(projectName) provides "
@@ -214,7 +214,7 @@ public struct DocumentationConfiguration : Codable {
                     result += " for use with the [Swift Package Manager](https://swift.org/package\u{2D}manager/)."
                     return result
                 }
-            }).resolved(for: localization)) as StrictString,
+            }).resolved(for: localization),
             "",
             UserFacing<StrictString, ContentLocalization>({ localization in
                 switch localization {

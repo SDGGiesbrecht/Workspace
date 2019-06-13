@@ -139,10 +139,10 @@ let package = Package(
         .executable(name: "arbeitsbereich", targets: ["WorkspaceTool"])
     ],
     dependencies: [
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(0, 18, 1))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(0, 7, 4))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 11, 0))),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", .exact(Version(0, 1, 1)))
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", .exact(Version(1, 0, 0))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", .exact(Version(1, 0, 0))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .exact(Version(0, 12, 0))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", .exact(Version(1, 0, 0)))
     ],
     targets: [
         // The executable. (Multiple products duplicate this with localized names.)

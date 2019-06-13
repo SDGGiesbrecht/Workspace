@@ -14,6 +14,7 @@
 
 @_exported import struct Foundation.URL
 
+@_exported import SDGMathematics // +=
 @_exported import SDGCollections // SearchableCollection
 @_exported import SDGText // StrictString
 @_exported import SDGLocalization

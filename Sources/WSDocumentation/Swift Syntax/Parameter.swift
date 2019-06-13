@@ -15,6 +15,7 @@
 import SDGLogic
 import WSGeneralImports
 
+import SwiftSyntax
 import SDGSwiftSource
 
 internal protocol Parameter {

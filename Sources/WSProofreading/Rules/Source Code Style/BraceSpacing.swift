@@ -15,6 +15,7 @@
 import SDGMathematics
 import WSGeneralImports
 
+import SwiftSyntax
 import SDGSwiftSource
 
 import WSProject

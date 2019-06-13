@@ -15,6 +15,7 @@
 import SDGSwiftSource
 import WSGeneralImports
 
+import SwiftSyntax
 import SDGSwiftSource
 
 extension TupleTypeElementSyntax : Parameter {

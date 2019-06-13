@@ -18,6 +18,7 @@ import WSGeneralImports
 
 import SDGExternalProcess
 
+import SDGSwiftPackageManager
 import SDGXcode
 
 import WSValidation

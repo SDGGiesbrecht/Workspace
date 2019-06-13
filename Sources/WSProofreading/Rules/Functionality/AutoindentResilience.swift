@@ -18,6 +18,7 @@ import WSGeneralImports
 
 import WSProject
 
+import SwiftSyntax
 import SDGSwiftSource
 
 internal struct AutoindentResilience : SyntaxRule {

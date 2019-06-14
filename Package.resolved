@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
         "state": {
           "branch": null,
-          "revision": "9b22a986279e38436ee7b2889cc8e629488be7ac",
-          "version": "0.12.0"
+          "revision": "d62fb9f860525e4a607a184dc39686e72f936cc7",
+          "version": "0.12.1"
         }
       },
       {
@@ -48,20 +48,20 @@
       },
       {
         "package": "llbuild",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-llbuild.git",
+        "repositoryURL": "https://github.com/apple/swift-llbuild.git",
         "state": {
           "branch": null,
-          "revision": "ed2b4e08e46be355edff390c8aa245e929af1331",
-          "version": "0.0.50000"
+          "revision": "4f77fc47e2f5fcddc057abc8391f7c23d1e8d275",
+          "version": "0.1.0"
         }
       },
       {
         "package": "SwiftPM",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-package-manager",
+        "repositoryURL": "https://github.com/apple/swift-package-manager",
         "state": {
           "branch": null,
-          "revision": "964c312fc4112dcb24ee71a53ad297db69c1a720",
-          "version": "0.0.50000"
+          "revision": "8656a25cb906c1896339f950ac960ee1b4fe8034",
+          "version": "0.4.0"
         }
       },
       {

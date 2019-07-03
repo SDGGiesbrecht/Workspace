@@ -1,8 +1,8 @@
 ---
-name: 'en-CA Bug Report'
-about: 'Report a bug that needs fixing'
+name: '🇨🇦EN Documentation Correction'
+about: 'Report something incorrect or unclear in the documentation'
 title: ''
-labels: '🇬🇧🇺🇸🇨🇦EN, Bug, Needs Investigation'
+labels: '🇬🇧🇺🇸🇨🇦EN, Documentation, Needs Investigation'
 assignees: ''
 
 ---
@@ -15,19 +15,7 @@ assignees: ''
 
 ### Description
 
-Such‐and‐such appears broken.
-
-### Demonstration
-
-```shell
-$ this command •triggers "the bug"
-```
-
-```swift
-let thisCode = trigger(theBug)
-```
-
-<!-- Or provide a link to a demonstration elsewhere. -->
+There appears to be a mistake in the documentation about such‐and‐such.
 
 ### Availability to Help
 
@@ -36,6 +24,6 @@ I **would like to help** fix it, and I think **I know my way around**.
 I **would like to help** fix it, but **I would need some guidance**.
 I **do not want to help** fix it.
 
-### Possible Solution
+### Recommended Correction
 
-It might work to do something like...
+“It makes more sense written like this.”

@@ -1,5 +1,5 @@
 ---
-name: 'en-CA Question'
+name: '🇨🇦EN Question'
 about: 'Ask a question'
 title: ''
 labels: '🇬🇧🇺🇸🇨🇦EN, Question'

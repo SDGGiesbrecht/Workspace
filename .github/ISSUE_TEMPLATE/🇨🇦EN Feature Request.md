@@ -1,5 +1,5 @@
 ---
-name: 'en-CA Feature Request'
+name: '🇨🇦EN Feature Request'
 about: 'Request a new feature you would find helpful'
 title: ''
 labels: '🇬🇧🇺🇸🇨🇦EN, Enhancement, Needs Investigation'

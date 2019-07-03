@@ -7,18 +7,18 @@ Proofreading source code... (§1)
 
 .gitattributes
 .github/CONTRIBUTING.md
-.github/ISSUE_TEMPLATE/en-CA Bug Report.md
-.github/ISSUE_TEMPLATE/en-CA Documentation Correction.md
-.github/ISSUE_TEMPLATE/en-CA Feature Request.md
-.github/ISSUE_TEMPLATE/en-CA Question.md
-.github/ISSUE_TEMPLATE/en-GB Bug Report.md
-.github/ISSUE_TEMPLATE/en-GB Documentation Correction.md
-.github/ISSUE_TEMPLATE/en-GB Feature Request.md
-.github/ISSUE_TEMPLATE/en-GB Question.md
-.github/ISSUE_TEMPLATE/en-US Bug Report.md
-.github/ISSUE_TEMPLATE/en-US Documentation Correction.md
-.github/ISSUE_TEMPLATE/en-US Feature Request.md
-.github/ISSUE_TEMPLATE/en-US Question.md
+.github/ISSUE_TEMPLATE/🇨🇦EN Bug Report.md
+.github/ISSUE_TEMPLATE/🇨🇦EN Documentation Correction.md
+.github/ISSUE_TEMPLATE/🇨🇦EN Feature Request.md
+.github/ISSUE_TEMPLATE/🇨🇦EN Question.md
+.github/ISSUE_TEMPLATE/🇬🇧EN Bug Report.md
+.github/ISSUE_TEMPLATE/🇬🇧EN Documentation Correction.md
+.github/ISSUE_TEMPLATE/🇬🇧EN Feature Request.md
+.github/ISSUE_TEMPLATE/🇬🇧EN Question.md
+.github/ISSUE_TEMPLATE/🇺🇸EN Bug Report.md
+.github/ISSUE_TEMPLATE/🇺🇸EN Documentation Correction.md
+.github/ISSUE_TEMPLATE/🇺🇸EN Feature Request.md
+.github/ISSUE_TEMPLATE/🇺🇸EN Question.md
 .github/PULL_REQUEST_TEMPLATE.md
 .gitignore
 .travis.yml

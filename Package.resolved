@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCommandLine",
         "state": {
           "branch": null,
-          "revision": "17efd3a969fe70ac84e69d267a5a07786911e264",
-          "version": "1.0.0"
+          "revision": "3399e3ae0e00edfadc47bc02999fd807ce83a6b6",
+          "version": "1.0.1"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCornerstone",
         "state": {
           "branch": null,
-          "revision": "3581c6488104d73410314577cdde80acbcb84e31",
-          "version": "1.0.0"
+          "revision": "d04807b337693489f1781636a9e8059b9fa35ae3",
+          "version": "1.1.0"
         }
       },
       {

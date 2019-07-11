@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCommandLine",
         "state": {
           "branch": null,
-          "revision": "3399e3ae0e00edfadc47bc02999fd807ce83a6b6",
-          "version": "1.0.1"
+          "revision": "749c72aeec64c54ffc52e8fb3b4dad4a0c033884",
+          "version": "1.0.2"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCornerstone",
         "state": {
           "branch": null,
-          "revision": "d04807b337693489f1781636a9e8059b9fa35ae3",
-          "version": "1.1.0"
+          "revision": "8e48226aa090039bd9bdd37e3624009bf5f7a7f0",
+          "version": "2.0.0"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
         "state": {
           "branch": null,
-          "revision": "3cf7578316413904ed8728d9065ced3787723a9d",
-          "version": "0.12.2"
+          "revision": "8474acad5143e5dbd7bf71a03c7bdb8ff1943609",
+          "version": "0.12.3"
         }
       },
       {
@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGWeb",
         "state": {
           "branch": null,
-          "revision": "bc80add3686205fda1b68918638a2a7889e3301f",
-          "version": "1.0.0"
+          "revision": "ec7643aeba51d15110b423263e58b3b33d546906",
+          "version": "1.0.1"
         }
       },
       {

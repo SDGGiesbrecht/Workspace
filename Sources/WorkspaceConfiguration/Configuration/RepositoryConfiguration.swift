@@ -30,6 +30,7 @@ public struct RepositoryConfiguration : Codable {
         "entitlements",
         "gyb",
         "gz",
+        "icns",
         "in",
         "inc",
         "LinuxMain.swift",

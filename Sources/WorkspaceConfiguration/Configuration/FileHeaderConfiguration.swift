@@ -89,11 +89,15 @@ public struct FileHeaderConfiguration : Codable {
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Copyright #dates \(author) and the \(project) project contributors."
+                case .deutschDeutschland:
+                    return "Urheberrecht #dates \(author) und die Mitwirkende des \(project)‐Projekts."
                 }
             } else {
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Copyright #dates the \(project) project contributors."
+                case .deutschDeutschland:
+                    return "Urheberrecht #dates die Mitwirkende des \(project)‐Projekts."
                 }
             }
         }
@@ -117,7 +121,9 @@ public struct FileHeaderConfiguration : Codable {
         header.append(contentsOf: configuration.sequentialLocalizations({ localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "This source file is part of the " + packageName + " open source project."
+                return "This source file is part of the \(packageName) open source project."
+            case .deutschDeutschland:
+                return "Dieser offene Quelltext ist Teil des qeulloffenen \(packageName)‐Projekt."
             }
         }))
         if let site = configuration.documentation.projectWebsite {
@@ -137,7 +143,8 @@ public struct FileHeaderConfiguration : Codable {
             header.append("")
             header.append(contentsOf: configuration.sequentialLocalizations({ localization in
                 switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+                     .deutschDeutschland:
                     return "Soli Deo gloria."
                 }
             }))

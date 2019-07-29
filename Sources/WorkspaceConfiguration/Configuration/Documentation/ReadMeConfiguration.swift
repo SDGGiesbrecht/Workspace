@@ -68,7 +68,8 @@ public struct ReadMeConfiguration : Codable {
             if let installation = configuration.documentation.installationInstructions.resolve(configuration)[localization] {
                 let header: StrictString
                 switch localization._bestMatch {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+                     .deutschDeutschland:
                     header = "Installation"
                 }
                 readMe += [
@@ -83,6 +84,8 @@ public struct ReadMeConfiguration : Codable {
                 switch localization._bestMatch {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     header = "Importing"
+                case .deutschDeutschland:
+                    header = "Einführung"
                 }
                 readMe += [
                     "",
@@ -97,6 +100,8 @@ public struct ReadMeConfiguration : Codable {
                 switch localization._bestMatch {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     header = "About"
+                case .deutschDeutschland:
+                    header = "Über"
                 }
                 readMe += [
                     "",
@@ -129,6 +134,8 @@ public struct ReadMeConfiguration : Codable {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             name = "Read Me"
+        case .deutschDeutschland:
+            name = "Lies mich"
         }
         return _locationOfDocumentationFile(named: name, for: localization, in: project)
     }
@@ -151,6 +158,8 @@ public struct ReadMeConfiguration : Codable {
         switch provided {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             label = "Documentation"
+        case .deutschDeutschland:
+            label = "Dokumentation"
         }
 
         var link: StrictString = "[" + label + "]("
@@ -165,6 +174,8 @@ public struct ReadMeConfiguration : Codable {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             name = "Related Projects"
+        case .deutschDeutschland:
+            name = "Verwandte Projekte"
         }
         return _locationOfDocumentationFile(named: name, for: localization, in: project)
     }

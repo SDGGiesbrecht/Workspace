@@ -155,6 +155,15 @@ public struct DocumentationConfiguration : Codable {
                     }
                     result += "."
                     return result
+                case .deutschDeutschland:
+                    var result: StrictString = "\(projectName) stellt "
+                    if tools.count == 1 {
+                        result += "ein Befehlszeilenprogramm"
+                    } else {
+                        result += "Befehlszeilenprogramme"
+                    }
+                    result += " bereit."
+                    return result
                 }
             }).resolved(for: localization),
             "",
@@ -174,6 +183,21 @@ public struct DocumentationConfiguration : Codable {
                         result += "them"
                     }
                     result += ":"
+                    return result
+                case .deutschDeutschland:
+                    var result: StrictString = ""
+                    if tools.count == 1 {
+                        result += "Es kann"
+                    } else {
+                        result += "Sie können"
+                    }
+                    result += " installiert werden nach allen Methoden, die Swift‐Pakete unterstützen. Die direkteste ist, folgendes im Terminal einzugeben. Somit "
+                    if tools.count == 1 {
+                        result += "wird es"
+                    } else {
+                        result += "werden sie"
+                    }
+                    result += " entweder installiert oder aktualisiert:"
                     return result
                 }
             }).resolved(for: localization),
@@ -213,6 +237,15 @@ public struct DocumentationConfiguration : Codable {
                     }
                     result += " for use with the [Swift Package Manager](https://swift.org/package\u{2D}manager/)."
                     return result
+                case .deutschDeutschland:
+                    var result: StrictString = "\(projectName) stellt "
+                    if libraries.count == 1 {
+                        result += "eine Bibliotek"
+                    } else {
+                        result += "Biblioteken"
+                    }
+                    result += " für zur Verwendung mit dem [Swift‐Paketenverwalter (*Swift Package Manager*)](https://swift.org/package\u{2D}manager/) bereit."
+                    return result
                 }
             }).resolved(for: localization),
             "",
@@ -226,6 +259,14 @@ public struct DocumentationConfiguration : Codable {
                         result += " and specify which of the libraries to use:"
                     }
                     return result
+                case .deutschDeutschland:
+                    var result: StrictString = "\(projectName) einfach als Abhängigkeit (*dependency*) in `Package.swift` hinzufügen"
+                    if libraries.count == 1 {
+                        result += ":"
+                    } else {
+                        result += " und die gewünschte Biblioteken angeben:"
+                    }
+                    return result
                 }
             }).resolved(for: localization),
             "",
@@ -234,12 +275,16 @@ public struct DocumentationConfiguration : Codable {
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "package"
+                case .deutschDeutschland:
+                    return "paket"
                 }
             }).resolved(for: localization) + " = Package(",
             ("    name: \u{22}" + UserFacing<StrictString, ContentLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "MyPackage"
+                case .deutschDeutschland:
+                    return "MeinePaket"
                 }
             }).resolved(for: localization) + "\u{22},") as StrictString,
             "    dependencies: [",
@@ -250,6 +295,8 @@ public struct DocumentationConfiguration : Codable {
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "MyTarget"
+                case .deutschDeutschland:
+                    return "MeinZiel"
                 }
             }).resolved(for: localization) + "\u{22}, dependencies: [") as StrictString
         ]
@@ -268,17 +315,21 @@ public struct DocumentationConfiguration : Codable {
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     var result: StrictString = "The "
-                    if libraries.count == 1 {
-                        result += "library’s "
-                        if libraries.first!.modules.count == 1 {
-                            result += "module"
-                        } else {
-                            result += "modules"
-                        }
+                    if libraries.count == 1 ∧ libraries.first!.modules.count == 1 {
+                        result += "module"
                     } else {
-                        result += "libraries’ modules"
+                        result += "modules"
                     }
                     result += " can then be imported in source files:"
+                    return result
+                case .deutschDeutschland:
+                    var result: StrictString = ""
+                    if libraries.count == 1 ∧ libraries.first!.modules.count == 1 {
+                        result += "Das Modul"
+                    } else {
+                        result += "Die Module"
+                    }
+                    result += " können dann in Quelldateien eingeführt (*imported*) werden:"
                     return result
                 }
             }).resolved(for: localization),

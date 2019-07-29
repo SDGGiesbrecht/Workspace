@@ -1,0 +1,36 @@
+# Bei #packageName mitwirken
+
+Jeder ist willkommen, bei #packageName mitzuwirken!
+
+## Schritt 1: Melden
+
+Vom keinsten Tippfehler bis zum schlimmster Absturz, ob zum melden eines Fehlers oder zum anfordern eines neues Merkmals, ob Sie schon von einer Lösung weiß oder nicht, bitte **melden Sie es immer zuerst an**.
+
+Bitte suchen Sie die [bereits bestehende Themen](../../issues), falls ähnliches schon gemeldet ist.
+
+- Wenn eine ähnliche Thema schon bestehet, bitte nehmen Sie teil in dem Gespräch und melden Sie irgenwelche Neuigkeiten dort.
+- Sonst öffnen Sie eine [neue Thema](../../issues/new).
+
+Selbst wenn Sie die Lösung zu haben glauben, bitte **fangen Sie nicht an** bis Sie von einem der Verwalter gehört haben. So können Sie sich Arbeit sparen, wenn sonst jemand das selbe schon angefangen hat, oder wenn entschieden wird, dass Ihre Idee sich doch außerhalb der Projektziele befindet.
+
+## Schritt 2: Abzweigen
+
+Nachdem Sie Ihre Idee [gemeldet](#schritt-1-melden) haben und ein Verwalter Ihnen ein grünes Licht gegeben hat, folgen Sie diese Schritte um eine lokale Kopie zu herzustellen, die Sie verarbeiten können.
+
+1. **Das Lager (*repository*) aufspalten (*fork*)**. Auf „Fork“ oben rechts auf der Lagerseite klicken. (Diesen Schritt überspringen, wenn sie schon Schreibzugriff haben.)
+2. **Einen lokalen Nachbau (*clone*) erstellen**.#cloneScript
+3. **Einen Entwicklungszweig (*branch*) erstellen**. `git checkout -b igrendwelcher‐neuer‐zweigname`
+4. **Den Arbeitsbereich aufstellen**. Auf `Refresh` (*auffrischen*) in der Lagerwurzel doppelklicken.
+
+Jetzt sind Sie bereit, Ihre Idee zu probieren.
+
+## Schritt 3: Einreichen
+
+Nachdem Ihre Idee gut funktioniert, folgen Sie diese Schritte um Ihre Änderungen einzureichen.
+
+1. **Ihre Änderungen überprüfen**. Auf `Validate` in der Lagerwurzel doppelklicken.
+2. **Ihre Änderungen übergeben (*commit*)**. `git commit -m "Irgendwelche Beschreibung der Änderungen."`
+3. **Ihre Änderungen stoßen (*push*)**. `git push`
+4. **Eine Abziehungsanforderung (*pull request*)**. „New Pull Request“ in der Zweigliste bei GitHub.
+5. **Auf die überprüfung der fortlaufenden Einbindung (*continuous integration*) warten**.
+6. **Eine Bewertung (*review*) von #administrators anfordern**. Auf den Zahnrad oben rechts auf der Seite der Abziehungsanforderung klicken.

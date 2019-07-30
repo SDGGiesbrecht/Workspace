@@ -52,6 +52,8 @@ internal class CommandPage : Page {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     symbolType = "Command Line Tool"
+                case .deutschDeutschland:
+                    symbolType = "Befehlszeilenprogramm"
                 }
             } else {
                 symbolType = "executable" // From “products: [.executable(...)]”
@@ -60,6 +62,8 @@ internal class CommandPage : Page {
             switch localization._bestMatch {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 symbolType = "Subcommand"
+            case .deutschDeutschland:
+                symbolType = "Unterbefehl"
             }
         }
 
@@ -162,6 +166,8 @@ internal class CommandPage : Page {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Subcommands"
+        case .deutschDeutschland:
+            return "Unterbefehle"
         }
     }
 
@@ -173,6 +179,8 @@ internal class CommandPage : Page {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             heading = "Subcommands"
+        case .deutschDeutschland:
+            heading = "Unterbefehle"
         }
 
         return SymbolPage.generateParameterLikeSection(
@@ -226,6 +234,8 @@ internal class CommandPage : Page {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             heading = "Options"
+        case .deutschDeutschland:
+            heading = "Optionen"
         }
 
         return SymbolPage.generateParameterLikeSection(
@@ -268,6 +278,8 @@ internal class CommandPage : Page {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             heading = "Argument Types"
+        case .deutschDeutschland:
+            heading = "Argumentarte"
         }
 
         var arguments: [StrictString: ArgumentInterface] = [:]

@@ -32,6 +32,8 @@ extension APIElement {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Package"
+                case .deutschDeutschland:
+                    return "Paket"
                 }
             } else {
                 return "Package" // From “let ... = Package(...)”
@@ -41,6 +43,8 @@ extension APIElement {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Library Product"
+                case .deutschDeutschland:
+                    return "Biblioteksprodukt"
                 }
             } else {
                 return "library" // From “products: [.library(...)]”
@@ -50,6 +54,8 @@ extension APIElement {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Module"
+                case .deutschDeutschland:
+                    return "Modul"
                 }
             } else {
                 return "target" // From “targets: [.target(...)]”
@@ -61,6 +67,8 @@ extension APIElement {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Class"
+                    case .deutschDeutschland:
+                        return "Klasse"
                     }
                 } else {
                     return "class"
@@ -70,6 +78,8 @@ extension APIElement {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Structure"
+                    case .deutschDeutschland:
+                        return "Struktur"
                     }
                 } else {
                     return "struct"
@@ -79,6 +89,8 @@ extension APIElement {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Enumeration"
+                    case .deutschDeutschland:
+                        return "Aufzählung"
                     }
                 } else {
                     return "enum"
@@ -88,6 +100,8 @@ extension APIElement {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Type Alias"
+                    case .deutschDeutschland:
+                        return "Typ‐Alias"
                     }
                 } else {
                     return "typealias"
@@ -97,6 +111,8 @@ extension APIElement {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Associated Type"
+                    case .deutschDeutschland:
+                        return "Zugehöriger Typ"
                     }
                 } else {
                     return "associatedtype"
@@ -111,6 +127,8 @@ extension APIElement {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Extension"
+                case .deutschDeutschland:
+                    return "Erweiterung"
                 }
             } else {
                 return "extension"
@@ -120,6 +138,8 @@ extension APIElement {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Protocol"
+                case .deutschDeutschland:
+                    return "Protokoll"
                 }
             } else {
                 return "protocol"
@@ -129,6 +149,8 @@ extension APIElement {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Case"
+                case .deutschDeutschland:
+                    return "Fall"
                 }
             } else {
                 return "case"
@@ -140,6 +162,8 @@ extension APIElement {
                     return "Initialiser"
                 case .englishUnitedStates, .englishCanada:
                     return "Initializer"
+                case .deutschDeutschland:
+                    return "Voreinsteller"
                 }
             } else {
                 return "init"
@@ -150,6 +174,8 @@ extension APIElement {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Global Variable"
+                    case .deutschDeutschland:
+                        return "Globale Variable"
                     }
                 } else {
                     return "var"
@@ -160,6 +186,8 @@ extension APIElement {
                         switch match {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return "Type Property"
+                        case .deutschDeutschland:
+                            return "Typ‐Eigenschaft"
                         }
                     } else {
                         return "var"
@@ -169,6 +197,8 @@ extension APIElement {
                         switch match {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return "Instance Property"
+                        case .deutschDeutschland:
+                            return "Instanz‐Eigenschaft"
                         }
                     } else {
                         return "var"
@@ -180,6 +210,8 @@ extension APIElement {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Subscript"
+                case .deutschDeutschland:
+                    return "Index"
                 }
             } else {
                 return "subscript"
@@ -190,6 +222,8 @@ extension APIElement {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Function"
+                    case .deutschDeutschland:
+                        return "Funktion"
                     }
                 } else {
                     return "func"
@@ -200,6 +234,8 @@ extension APIElement {
                         switch match {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return "Type Method"
+                        case .deutschDeutschland:
+                            return "Typ‐Methode"
                         }
                     } else {
                         return "func"
@@ -209,6 +245,8 @@ extension APIElement {
                         switch match {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return "Instance Method"
+                        case .deutschDeutschland:
+                            return "Instanz‐Methode"
                         }
                     } else {
                         return "func"
@@ -220,6 +258,8 @@ extension APIElement {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Operator"
+                case .deutschDeutschland:
+                    return "Operator"
                 }
             } else {
                 return "operator"
@@ -229,6 +269,8 @@ extension APIElement {
                 switch match {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Precedence Group"
+                case .deutschDeutschland:
+                    return "Rangfolgenklasse"
                 }
             } else {
                 return "precedencegroup"
@@ -387,6 +429,8 @@ extension APIElement {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         librariesDirectoryName = "Libraries"
+                    case .deutschDeutschland:
+                        librariesDirectoryName = "Biblioteken"
                     }
                 } else {
                     librariesDirectoryName = "library" // From “products: [.library(...)]”
@@ -402,6 +446,8 @@ extension APIElement {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         modulesDirectoryName = "Modules"
+                    case .deutschDeutschland:
+                        modulesDirectoryName = "Module"
                     }
                 } else {
                     modulesDirectoryName = "target" // From “targets: [.target(...)]”
@@ -417,6 +463,8 @@ extension APIElement {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         typesDirectoryName = "Types"
+                    case .deutschDeutschland:
+                        typesDirectoryName = "Typen"
                     }
                 } else {
                     typesDirectoryName = "struct"
@@ -435,6 +483,8 @@ extension APIElement {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         extensionsDirectoryName = "Extensions"
+                    case .deutschDeutschland:
+                        extensionsDirectoryName = "Erweiterungen"
                     }
                 } else {
                     extensionsDirectoryName = "extension"
@@ -453,6 +503,8 @@ extension APIElement {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         protocolsDirectoryName = "Protocols"
+                    case .deutschDeutschland:
+                        protocolsDirectoryName = "Protokolle"
                     }
                 } else {
                     protocolsDirectoryName = "protocol"
@@ -471,6 +523,8 @@ extension APIElement {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         casesDirectoryName = "Cases"
+                    case .deutschDeutschland:
+                        casesDirectoryName = "Fälle"
                     }
                 } else {
                     casesDirectoryName = "case"
@@ -484,6 +538,8 @@ extension APIElement {
                         initializersDirectoryName = "Initialisers"
                     case .englishUnitedStates, .englishCanada:
                         initializersDirectoryName = "Initializers"
+                    case .deutschDeutschland:
+                        initializersDirectoryName = "Voreinsteller"
                     }
                 } else {
                     initializersDirectoryName = "init"
@@ -497,6 +553,8 @@ extension APIElement {
                         switch match {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             variablesDirectoryName = "Global Variables"
+                        case .deutschDeutschland:
+                            variablesDirectoryName = "globale Variablen"
                         }
                     } else {
                         variablesDirectoryName = "var"
@@ -507,6 +565,8 @@ extension APIElement {
                             switch match {
                             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                                 variablesDirectoryName = "Type Properties"
+                            case .deutschDeutschland:
+                                variablesDirectoryName = "Typ‐Eigenschaften"
                             }
                         } else {
                             variablesDirectoryName = "static var"
@@ -516,6 +576,8 @@ extension APIElement {
                             switch match {
                             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                                 variablesDirectoryName = "Properties"
+                            case .deutschDeutschland:
+                                variablesDirectoryName = "Eigenschaften"
                             }
                         } else {
                             variablesDirectoryName = "var"
@@ -529,6 +591,8 @@ extension APIElement {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         subscriptsDirectoryName = "Subscripts"
+                    case .deutschDeutschland:
+                        subscriptsDirectoryName = "Indexe"
                     }
                 } else {
                     subscriptsDirectoryName = "subscript"
@@ -542,6 +606,8 @@ extension APIElement {
                         switch match {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             functionsDirectoryName = "Functions"
+                        case .deutschDeutschland:
+                            functionsDirectoryName = "Funktionen"
                         }
                     } else {
                         functionsDirectoryName = "func"
@@ -552,6 +618,8 @@ extension APIElement {
                             switch match {
                             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                                 functionsDirectoryName = "Type Methods"
+                            case .deutschDeutschland:
+                                functionsDirectoryName = "Typ‐Methoden"
                             }
                         } else {
                             functionsDirectoryName = "static func"
@@ -561,6 +629,8 @@ extension APIElement {
                             switch match {
                             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                                 functionsDirectoryName = "Methods"
+                            case .deutschDeutschland:
+                                functionsDirectoryName = "Methoden"
                             }
                         } else {
                             functionsDirectoryName = "func"
@@ -574,6 +644,8 @@ extension APIElement {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         operatorsDirectoryName = "Operators"
+                    case .deutschDeutschland:
+                        operatorsDirectoryName = "Operatoren"
                     }
                 } else {
                     operatorsDirectoryName = "operator"
@@ -585,6 +657,8 @@ extension APIElement {
                     switch match {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         precedenceGroupsDirectoryName = "Precedence Groups"
+                    case .deutschDeutschland:
+                        precedenceGroupsDirectoryName = "Rangfolgenklassen"
                     }
                 } else {
                     precedenceGroupsDirectoryName = "precedencegroup"

@@ -39,12 +39,15 @@ internal class Page {
     private static func watermark(localization: LocalizationIdentifier) -> StrictString {
         let resolved = localization._bestMatch
 
+        // #workaround(Only English page exists right now.)
         let targetURL: StrictString = "https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Workspace.html"
 
         let name: StrictString
         switch resolved {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             name = "Workspace"
+        case .deutschDeutschland:
+            name = "Arbeitsbereich"
         }
 
         let link = ElementSyntax("a", attributes: ["href": targetURL], contents: name, inline: true).normalizedSource()
@@ -53,11 +56,14 @@ internal class Page {
         switch resolved {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             generatedUsing = "Generated with " + link + "."
+        case .deutschDeutschland:
+            generatedUsing = "Erstellt mit " + link + "."
         }
 
         let sdg: StrictString
         switch resolved {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+             .deutschDeutschland:
             sdg = ElementSyntax("span", attributes: ["lang": "la\u{2D}IT"], contents: "Soli Deo gloria.", inline: true).normalizedSource()
         }
 

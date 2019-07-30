@@ -26,7 +26,7 @@ let package = Package(
 )
 ```
 
-The library’s modules can then be imported in source files:
+The modules can then be imported in source files:
 
 ```swift
 import ModuleA

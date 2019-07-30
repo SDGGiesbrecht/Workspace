@@ -119,8 +119,7 @@ public struct GitHubConfiguration : Codable {
 
                 result[localization] = template
             }
-        }
-
+        } // @exempt(from: tests) False positive with Swift 5.0.1.
         return result
     })
 

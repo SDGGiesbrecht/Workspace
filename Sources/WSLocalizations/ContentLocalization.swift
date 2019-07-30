@@ -22,6 +22,8 @@ public enum ContentLocalization : String, Codable, InputLocalization {
     case englishUnitedStates = "en\u{2D}US"
     case englishCanada = "en\u{2D}CA"
 
+    case deutschDeutschland = "de\u{2D}DE"
+
     // MARK: - Localization
 
     public static let fallbackLocalization = ContentLocalization.englishUnitedKingdom

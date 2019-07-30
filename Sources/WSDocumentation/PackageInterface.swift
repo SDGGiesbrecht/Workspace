@@ -121,6 +121,8 @@ internal struct PackageInterface {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Package"
+            case .deutschDeutschland:
+                return "Paket"
             }
         } else {
             return "Package" // From “let ... = Package(...)”
@@ -264,6 +266,8 @@ internal struct PackageInterface {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Installation"
+        case .deutschDeutschland:
+            return "Installierung"
         }
     }
     private static func installationLocation(localization: LocalizationIdentifier) -> StrictString {
@@ -274,6 +278,8 @@ internal struct PackageInterface {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Importing"
+        case .deutschDeutschland:
+            return "Einführung"
         }
     }
     private static func importingLocation(localization: LocalizationIdentifier) -> StrictString {
@@ -284,6 +290,8 @@ internal struct PackageInterface {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Related Projects"
+        case .deutschDeutschland:
+            return "Verwandte Projekte"
         }
     }
     private static func relatedProjectsLocation(localization: LocalizationIdentifier) -> StrictString {
@@ -294,6 +302,8 @@ internal struct PackageInterface {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "About"
+        case .deutschDeutschland:
+            return "Über"
         }
     }
     private static func aboutLocation(localization: LocalizationIdentifier) -> StrictString {

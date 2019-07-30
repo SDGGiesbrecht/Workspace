@@ -11,6 +11,10 @@ Proofreading source code... (§1)
 .github/ISSUE_TEMPLATE/🇨🇦EN Documentation Correction.md
 .github/ISSUE_TEMPLATE/🇨🇦EN Feature Request.md
 .github/ISSUE_TEMPLATE/🇨🇦EN Question.md
+.github/ISSUE_TEMPLATE/🇩🇪DE Dokumentationsberichtigung.md
+.github/ISSUE_TEMPLATE/🇩🇪DE Erweiterungswünsch.md
+.github/ISSUE_TEMPLATE/🇩🇪DE Fehlermeldung.md
+.github/ISSUE_TEMPLATE/🇩🇪DE Frage.md
 .github/ISSUE_TEMPLATE/🇬🇧EN Bug Report.md
 .github/ISSUE_TEMPLATE/🇬🇧EN Documentation Correction.md
 .github/ISSUE_TEMPLATE/🇬🇧EN Feature Request.md

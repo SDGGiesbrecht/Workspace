@@ -41,12 +41,10 @@ public struct GitHubConfiguration : Codable {
             return nil
         }
         switch match {
-        case .englishUnitedKingdom, .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return StrictString(Resources.contributingTemplate)
-                .replacingMatches(for: "#licence".scalars, with: "licence".scalars)
-        case .englishUnitedStates:
-            return StrictString(Resources.contributingTemplate)
-                .replacingMatches(for: "#licence".scalars, with: "license".scalars)
+        case .deutschDeutschland:
+            return StrictString(Resources.mitwirkenVorlage)
         }
     }
 
@@ -54,6 +52,8 @@ public struct GitHubConfiguration : Codable {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Development Notes"
+        case .deutschDeutschland:
+            return "Enwicklungshinweise"
         }
     }
 
@@ -86,6 +86,8 @@ public struct GitHubConfiguration : Codable {
                     switch localization._bestMatch {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         administratorList = "an administrator"
+                    case .deutschDeutschland:
+                        administratorList = "einem Verwalter"
                     }
                 } else if administrators.count == 1 {
                     administratorList = administrators.first!
@@ -96,6 +98,9 @@ public struct GitHubConfiguration : Codable {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         separator = ", "
                         finalSeparator = " or "
+                    case .deutschDeutschland:
+                        separator = ", "
+                        finalSeparator = " oder "
                     }
                     let commas = StrictString(administrators.dropLast().joined(separator: separator))
                     let or = finalSeparator + administrators.last!
@@ -114,8 +119,7 @@ public struct GitHubConfiguration : Codable {
 
                 result[localization] = template
             }
-        }
-
+        } // @exempt(from: tests) False positive with Swift 5.0.1.
         return result
     })
 

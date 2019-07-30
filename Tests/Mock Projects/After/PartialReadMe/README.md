@@ -26,7 +26,7 @@ let package = Package(
 )
 ```
 
-The library’s module can then be imported in source files:
+The module can then be imported in source files:
 
 ```swift
 import PartialReadMe

@@ -102,7 +102,7 @@ class APITests : TestCase {
         configuration.documentation.repositoryURL = URL(string: "does://not.exist.git")!
         configuration.documentation.currentVersion = Version(1, 0, 0)
         configuration.documentation.api.enforceCoverage = false
-        configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "zxx"]
+        configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "🇩🇪DE", "zxx"]
         configuration.documentation.api.generate = true
         configuration.documentation.about["🇨🇦EN"] = "Stuff about the creators...\n\n...and more stuff..."
         configuration.documentation.about["🇺🇸EN"] = ""
@@ -415,7 +415,7 @@ class APITests : TestCase {
         configuration.documentation.localizations = ["en"]
         PackageRepository(mock: "OneLocalization").test(commands: [
             ["refresh", "github"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: true)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testOneProductMultipleModules() {
@@ -451,7 +451,7 @@ class APITests : TestCase {
             ["refresh", "read‐me"],
             ["refresh", "github"],
             ["document"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: true)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testSDGLibrary() {
@@ -515,7 +515,7 @@ class APITests : TestCase {
             ["proofread", "•xcode"],
             ["validate"]
             ])
-        PackageRepository(mock: "SDGLibrary").test(commands: commands, configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: true)
+        PackageRepository(mock: "SDGLibrary").test(commands: commands, configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testSDGTool() {
@@ -580,7 +580,7 @@ class APITests : TestCase {
 
             ["proofread", "•xcode"]
             ])
-        PackageRepository(mock: "SDGTool").test(commands: commands, configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: true)
+        PackageRepository(mock: "SDGTool").test(commands: commands, configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testSelfSpecificScripts() throws {

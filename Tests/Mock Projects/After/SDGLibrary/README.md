@@ -2,6 +2,7 @@
  README.md
 
  This source file is part of the SDG open source project.
+ Diese Quelldatei ist Teil des qeulloffenen SDG‐Projekt.
  https://example.github.io/SDG/SDG
 
  Copyright ©2019 John Doe and the SDG project contributors.
@@ -47,7 +48,7 @@ let package = Package(
 )
 ```
 
-The library’s module can then be imported in source files:
+The module can then be imported in source files:
 
 ```swift
 import Library

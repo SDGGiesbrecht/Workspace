@@ -29,6 +29,8 @@ internal struct PackageCLI {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 result += "Tools"
+            case .deutschDeutschland:
+                result += "Programme"
             }
         } else {
             result += "executable"

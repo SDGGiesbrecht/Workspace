@@ -42,27 +42,32 @@ public enum Platform : String, Codable, CaseIterable {
         switch self {
         case .macOS:
             switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+                 .deutschDeutschland:
                 return "macOS"
             }
         case .linux:
             switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+                 .deutschDeutschland:
                 return "Linux"
             }
         case .iOS:
             switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+                 .deutschDeutschland:
                 return "iOS"
             }
         case .watchOS:
             switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+                 .deutschDeutschland:
                 return "watchOS"
             }
         case .tvOS:
             switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+                 .deutschDeutschland:
                 return "tvOS"
             }
         }

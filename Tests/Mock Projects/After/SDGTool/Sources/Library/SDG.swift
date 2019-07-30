@@ -2,6 +2,7 @@
  SDG.swift
 
  This source file is part of the SDG open source project.
+ Diese Quelldatei ist Teil des qeulloffenen SDG‐Projekt.
  https://example.github.io/SDG/SDG
 
  Copyright ©2019 John Doe and the SDG project contributors.

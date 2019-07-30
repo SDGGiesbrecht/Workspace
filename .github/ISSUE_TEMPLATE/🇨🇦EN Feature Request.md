@@ -1,6 +1,6 @@
 ---
 name: '🇨🇦EN Feature Request'
-about: 'Request a new feature you would find helpful'
+about: 'Request a new feature that would be helpful'
 title: ''
 labels: '🇬🇧🇺🇸🇨🇦EN, Enhancement, Needs Investigation'
 assignees: ''
@@ -22,7 +22,7 @@ Such‐and‐such would be a nice feature.
 <!-- Keep only one of the following lines. -->
 I **would like to help** implement it, and I think **I know my way around**.
 I **would like to help** implement it, but **I would need some guidance**.
-I **do not want to help** implement it.
+I **would not like to help** implement it.
 
 ### Design Thoughts
 

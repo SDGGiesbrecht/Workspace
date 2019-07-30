@@ -4,6 +4,7 @@
  Package.swift
 
  This source file is part of the SDG open source project.
+ Diese Quelldatei ist Teil des qeulloffenen SDG‐Projekt.
  https://example.github.io/SDG/SDG
 
  Copyright ©2019 John Doe and the SDG project contributors.
@@ -32,7 +33,8 @@ let package = Package(
         // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(🇫🇷FR) @localization(🇬🇷ΕΛ) @localization(🇮🇱עב) @localization(zxx)
         /// A library.
         .library(name: "Library", targets: ["Library"]),
-        .executable(name: "tool", targets: ["tool"])
+        .executable(name: "tool", targets: ["tool"]),
+        .executable(name: "werkzeug", targets: ["tool"])
         ],
     dependencies: [
         .package(url: "file:///tmp/Developer/Dependency", from: Version(1, 0, 0))

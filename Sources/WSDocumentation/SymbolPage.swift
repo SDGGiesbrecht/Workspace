@@ -177,7 +177,8 @@ internal class SymbolPage : Page {
 
     internal static func conformanceFilterLabel(localization: LocalizationIdentifier) -> StrictString {
         switch localization._bestMatch {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+             .deutschDeutschland:
             return "Filter"
         }
     }
@@ -186,6 +187,8 @@ internal class SymbolPage : Page {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "All"
+        case .deutschDeutschland:
+            return "Alle"
         }
     }
 
@@ -193,6 +196,8 @@ internal class SymbolPage : Page {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Conformance Requirements"
+        case .deutschDeutschland:
+            return "Übereinstimmungsvoraussetzungen"
         }
     }
 
@@ -202,6 +207,8 @@ internal class SymbolPage : Page {
             return "Customisation Points"
         case .englishUnitedStates, .englishCanada:
             return "Customization Points"
+        case .deutschDeutschland:
+            return "Anpassungsmöglichkeiten"
         }
     }
 
@@ -455,6 +462,8 @@ internal class SymbolPage : Page {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             declarationHeading = "Declaration"
+        case .deutschDeutschland:
+            declarationHeading = "Festlegung"
         }
 
         let sectionContents: [StrictString] = [
@@ -507,6 +516,8 @@ internal class SymbolPage : Page {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             discussionHeading = "Discussion"
+        case .deutschDeutschland:
+            discussionHeading = "Einzelheiten"
         }
         if let swiftSymbol = symbol {
             switch swiftSymbol {
@@ -514,6 +525,8 @@ internal class SymbolPage : Page {
                 switch localization._bestMatch {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     discussionHeading = "Overview"
+                case .deutschDeutschland:
+                    discussionHeading = "Übersicht"
                 }
             case .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
                 break
@@ -722,6 +735,8 @@ internal class SymbolPage : Page {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 heading = "Command Line Tools"
+            case .deutschDeutschland:
+                heading = "Befehlszeilenprogramme"
             }
         } else {
             heading = "executable" // From “products: [.executable(...)]”
@@ -753,6 +768,8 @@ internal class SymbolPage : Page {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 heading = "Library Products"
+            case .deutschDeutschland:
+                heading = "Biblioteksprodukte"
             }
         } else {
             heading = "library" // From “products: [.library(...)]”
@@ -774,6 +791,8 @@ internal class SymbolPage : Page {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 heading = "Modules"
+            case .deutschDeutschland:
+                heading = "Module"
             }
         } else {
             heading = "target" // From “targets: [.target(...)]”
@@ -795,6 +814,8 @@ internal class SymbolPage : Page {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 heading = "Types"
+            case .deutschDeutschland:
+                heading = "Typen"
             }
         } else {
             heading = "struct/class/enum"
@@ -815,6 +836,8 @@ internal class SymbolPage : Page {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 heading = "Extensions"
+            case .deutschDeutschland:
+                heading = "Erweiterungen"
             }
         } else {
             heading = "extension"
@@ -835,6 +858,8 @@ internal class SymbolPage : Page {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 heading = "Protocols"
+            case .deutschDeutschland:
+                heading = "Protokolle"
             }
         } else {
             heading = "protocol"
@@ -855,6 +880,8 @@ internal class SymbolPage : Page {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 heading = "Functions"
+            case .deutschDeutschland:
+                heading = "Funktionen"
             }
         } else {
             heading = "func"
@@ -875,6 +902,8 @@ internal class SymbolPage : Page {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 heading = "Global Variables"
+            case .deutschDeutschland:
+                heading = "Globale Variablen"
             }
         } else {
             heading = "var"
@@ -895,6 +924,8 @@ internal class SymbolPage : Page {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 heading = "Operators"
+            case .deutschDeutschland:
+                heading = "Operatoren"
             }
         } else {
             heading = "operator"
@@ -915,6 +946,8 @@ internal class SymbolPage : Page {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 heading = "Precedence Groups"
+            case .deutschDeutschland:
+                heading = "Rangfolgenklassen"
             }
         } else {
             heading = "precedencegroup"
@@ -939,6 +972,8 @@ internal class SymbolPage : Page {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 heading = "Cases"
+            case .deutschDeutschland:
+                heading = "Fälle"
             }
         } else {
             heading = "case"
@@ -957,6 +992,8 @@ internal class SymbolPage : Page {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 heading = "Nested Types"
+            case .deutschDeutschland:
+                heading = "Geschachtelte Typen"
             }
         } else {
             heading = "struct/class/enum"
@@ -975,6 +1012,8 @@ internal class SymbolPage : Page {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 heading = "Type Properties"
+            case .deutschDeutschland:
+                heading = "Typ‐Eigenschaften"
             }
         } else {
             heading = "static var"
@@ -993,6 +1032,8 @@ internal class SymbolPage : Page {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 heading = "Type Methods"
+            case .deutschDeutschland:
+                heading = "Typ‐Methoden"
             }
         } else {
             heading = "static func"
@@ -1013,6 +1054,8 @@ internal class SymbolPage : Page {
                 heading = "Initialisers"
             case .englishUnitedStates, .englishCanada:
                 heading = "Initializers"
+            case .deutschDeutschland:
+                heading = "Voreinsteller"
             }
         } else {
             heading = "init"
@@ -1031,6 +1074,8 @@ internal class SymbolPage : Page {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 heading = "Properties"
+            case .deutschDeutschland:
+                heading = "Eigenschaften"
             }
         } else {
             heading = "var"
@@ -1049,6 +1094,8 @@ internal class SymbolPage : Page {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 heading = "Subscripts"
+            case .deutschDeutschland:
+                heading = "Indexe"
             }
         } else {
             heading = "subscript"
@@ -1067,6 +1114,8 @@ internal class SymbolPage : Page {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 heading = "Methods"
+            case .deutschDeutschland:
+                heading = "Methoden"
             }
         } else {
             heading = "func"

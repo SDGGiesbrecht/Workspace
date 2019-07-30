@@ -51,6 +51,8 @@ public struct APIDocumentationConfiguration : Codable {
                 switch provided {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return (localization, notice + " All rights reserved.")
+                case .deutschDeutschland:
+                    return (localization, notice + " Alle rechte vorbehalten.")
                 }
             } else {
                 return (localization, notice)

@@ -140,8 +140,8 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/SDGGiesbrecht/SDGCornerstone", from: Version(2, 1, 0)),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", from: Version(1, 0, 2)),
-        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .upToNextMinor(from: Version(0, 12, 4))),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGCommandLine", from: Version(1, 1, 0)),
+        .package(url: "https://github.com/SDGGiesbrecht/SDGSwift", .upToNextMinor(from: Version(0, 12, 5))),
         .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(1, 0, 2))
     ],
     targets: [

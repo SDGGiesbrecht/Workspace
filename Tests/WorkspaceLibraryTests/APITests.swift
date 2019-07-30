@@ -102,7 +102,7 @@ class APITests : TestCase {
         configuration.documentation.repositoryURL = URL(string: "does://not.exist.git")!
         configuration.documentation.currentVersion = Version(1, 0, 0)
         configuration.documentation.api.enforceCoverage = false
-        configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "zxx"]
+        configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "🇩🇪DE", "zxx"]
         configuration.documentation.api.generate = true
         configuration.documentation.about["🇨🇦EN"] = "Stuff about the creators...\n\n...and more stuff..."
         configuration.documentation.about["🇺🇸EN"] = ""

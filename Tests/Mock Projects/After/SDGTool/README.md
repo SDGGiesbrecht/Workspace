@@ -30,12 +30,12 @@ A package.
 
 ## Installation
 
-SDG provides a command line tool.
+SDG provides command line tools.
 
-It can be installed any way Swift packages can be installed. The most direct method is pasting the following into a terminal, which will either install or update it:
+They can be installed any way Swift packages can be installed. The most direct method is pasting the following into a terminal, which will either install or update them:
 
 ```shell
-curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s SDG "https://github.com/JohnDoe/SDG" 1.0.0 "tool help" tool
+curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s SDG "https://github.com/JohnDoe/SDG" 1.0.0 "tool help" tool werkzeug
 ```
 
 ## Importing

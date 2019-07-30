@@ -33,7 +33,8 @@ let package = Package(
         // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(🇫🇷FR) @localization(🇬🇷ΕΛ) @localization(🇮🇱עב) @localization(zxx)
         /// A library.
         .library(name: "Library", targets: ["Library"]),
-        .executable(name: "tool", targets: ["tool"])
+        .executable(name: "tool", targets: ["tool"]),
+        .executable(name: "werkzeug", targets: ["tool"])
         ],
     dependencies: [
         .package(url: "file:///tmp/Developer/Dependency", from: Version(1, 0, 0))

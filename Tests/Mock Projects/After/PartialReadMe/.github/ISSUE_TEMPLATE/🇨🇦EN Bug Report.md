@@ -30,7 +30,7 @@ let thisCode = trigger(theBug)
 <!-- Keep only one of the following lines. -->
 I **would like to help** fix it, and I think **I know my way around**.
 I **would like to help** fix it, but **I would need some guidance**.
-I **do not want to help** fix it.
+I **would not like to help** fix it.
 
 ### Possible Solution
 

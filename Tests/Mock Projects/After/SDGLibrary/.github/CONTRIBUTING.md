@@ -2,6 +2,7 @@
  CONTRIBUTING.md
 
  This source file is part of the SDG open source project.
+ Dieser offene Quelltext ist Teil des qeulloffenen SDG‐Projekt.
  https://example.github.io/SDG/SDG
 
  Copyright ©2019 John Doe and the SDG project contributors.
@@ -23,18 +24,10 @@ Everyone is welcome to contribute to SDG!
 
 From the smallest typo to the severest crash, whether you are reporting a bug or requesting a new feature, whether you already have a solution in mind or not, please **always start by reporting it**.
 
-Please start by searching the [existing issues](../../issues) to see if something related has already been reported.
+Please search the [existing issues](../../issues) to see if something related has already been reported.
 
 - If there is already a related issue, please join that conversation and share any additional information you have.
-- Otherwise, open a [new issue](../../issues/new). Please provide as much of the following as you can:
-
-    1. A concise and specific description of the bug or feature.
-    2. If it is a bug, try to provide a demonstration of the problem:
-        - Optimally, provide a minimal example—a few short lines of source that trigger the problem when they are copied, pasted and run.
-        - As a fallback option, if your own code is public, you could provide a link to your source code at the point where the problem occurs.
-        - If neither of the above options is possible, please at least try to describe in words how to reproduce the problem.
-    3. Say whether or not you would like the honour of helping implement the fix or feature yourself.
-    4. Share any ideas you may have of possible solutions or designs.
+- Otherwise, open a [new issue](../../issues/new).
 
 Even if you think you have the solution, please **do not start working on it** until you hear from one of the project administrators. This may save you some work in the event that someone else is already working on it, or if your idea ends up deemed beyond the scope of the project goals.
 
@@ -56,9 +49,7 @@ Once you have your idea working properly, follow these steps to submit your chan
 1. **Validate your changes** by double‐clicking `Validate` in the root folder.
 2. **Commit your changes**. `git commit -m "Some description of the changes."`
 3. **Push your changes**. `git push`
-4. **Submit a pull request** by clicking “New Pull Request” in the branch list on GitHub. In your description, please:
-    - Link to the original issue with `#000`.
-    - State your agreement to licensing your contributions under the [project licence](LICENSE.md).
+4. **Submit a pull request** by clicking “New Pull Request” in the branch list on GitHub.
 5. **Wait for continuous integration** to complete its validation.
 6. **Request a review** from John Doe or Jane Doe by clicking the gear in the top right of the pull request page.
 
@@ -73,18 +64,10 @@ Everyone is welcome to contribute to SDG!
 
 From the smallest typo to the severest crash, whether you are reporting a bug or requesting a new feature, whether you already have a solution in mind or not, please **always start by reporting it**.
 
-Please start by searching the [existing issues](../../issues) to see if something related has already been reported.
+Please search the [existing issues](../../issues) to see if something related has already been reported.
 
 - If there is already a related issue, please join that conversation and share any additional information you have.
-- Otherwise, open a [new issue](../../issues/new). Please provide as much of the following as you can:
-
-    1. A concise and specific description of the bug or feature.
-    2. If it is a bug, try to provide a demonstration of the problem:
-        - Optimally, provide a minimal example—a few short lines of source that trigger the problem when they are copied, pasted and run.
-        - As a fallback option, if your own code is public, you could provide a link to your source code at the point where the problem occurs.
-        - If neither of the above options is possible, please at least try to describe in words how to reproduce the problem.
-    3. Say whether or not you would like the honour of helping implement the fix or feature yourself.
-    4. Share any ideas you may have of possible solutions or designs.
+- Otherwise, open a [new issue](../../issues/new).
 
 Even if you think you have the solution, please **do not start working on it** until you hear from one of the project administrators. This may save you some work in the event that someone else is already working on it, or if your idea ends up deemed beyond the scope of the project goals.
 
@@ -106,9 +89,7 @@ Once you have your idea working properly, follow these steps to submit your chan
 1. **Validate your changes** by double‐clicking `Validate` in the root folder.
 2. **Commit your changes**. `git commit -m "Some description of the changes."`
 3. **Push your changes**. `git push`
-4. **Submit a pull request** by clicking “New Pull Request” in the branch list on GitHub. In your description, please:
-    - Link to the original issue with `#000`.
-    - State your agreement to licensing your contributions under the [project licence](LICENSE.md).
+4. **Submit a pull request** by clicking “New Pull Request” in the branch list on GitHub.
 5. **Wait for continuous integration** to complete its validation.
 6. **Request a review** from John Doe or Jane Doe by clicking the gear in the top right of the pull request page.
 
@@ -123,18 +104,10 @@ Everyone is welcome to contribute to SDG!
 
 From the smallest typo to the severest crash, whether you are reporting a bug or requesting a new feature, whether you already have a solution in mind or not, please **always start by reporting it**.
 
-Please start by searching the [existing issues](../../issues) to see if something related has already been reported.
+Please search the [existing issues](../../issues) to see if something related has already been reported.
 
 - If there is already a related issue, please join that conversation and share any additional information you have.
-- Otherwise, open a [new issue](../../issues/new). Please provide as much of the following as you can:
-
-    1. A concise and specific description of the bug or feature.
-    2. If it is a bug, try to provide a demonstration of the problem:
-        - Optimally, provide a minimal example—a few short lines of source that trigger the problem when they are copied, pasted and run.
-        - As a fallback option, if your own code is public, you could provide a link to your source code at the point where the problem occurs.
-        - If neither of the above options is possible, please at least try to describe in words how to reproduce the problem.
-    3. Say whether or not you would like the honour of helping implement the fix or feature yourself.
-    4. Share any ideas you may have of possible solutions or designs.
+- Otherwise, open a [new issue](../../issues/new).
 
 Even if you think you have the solution, please **do not start working on it** until you hear from one of the project administrators. This may save you some work in the event that someone else is already working on it, or if your idea ends up deemed beyond the scope of the project goals.
 
@@ -156,10 +129,48 @@ Once you have your idea working properly, follow these steps to submit your chan
 1. **Validate your changes** by double‐clicking `Validate` in the root folder.
 2. **Commit your changes**. `git commit -m "Some description of the changes."`
 3. **Push your changes**. `git push`
-4. **Submit a pull request** by clicking “New Pull Request” in the branch list on GitHub. In your description, please:
-    - Link to the original issue with `#000`.
-    - State your agreement to licensing your contributions under the [project license](LICENSE.md).
+4. **Submit a pull request** by clicking “New Pull Request” in the branch list on GitHub.
 5. **Wait for continuous integration** to complete its validation.
 6. **Request a review** from John Doe or Jane Doe by clicking the gear in the top right of the pull request page.
+
+</details>
+<details>
+<summary>🇩🇪DE</summary>
+# Bei SDG mitwirken
+
+Jeder ist willkommen, bei SDG mitzuwirken!
+
+## Schritt 1: Melden
+
+Vom keinsten Tippfehler bis zum schlimmster Absturz, ob zum melden eines Fehlers oder zum anfordern eines neues Merkmals, ob Sie schon von einer Lösung weiß oder nicht, bitte **melden Sie es immer zuerst an**.
+
+Bitte suchen Sie die [bereits bestehende Themen](../../issues), falls ähnliches schon gemeldet ist.
+
+- Wenn eine ähnliche Thema schon bestehet, bitte nehmen Sie teil in dem Gespräch und melden Sie irgenwelche Neuigkeiten dort.
+- Sonst öffnen Sie eine [neue Thema](../../issues/new).
+
+Selbst wenn Sie die Lösung zu haben glauben, bitte **fangen Sie nicht an** bis Sie von einem der Verwalter gehört haben. So können Sie sich Arbeit sparen, wenn sonst jemand das selbe schon angefangen hat, oder wenn entschieden wird, dass Ihre Idee sich doch außerhalb der Projektziele befindet.
+
+## Schritt 2: Abzweigen
+
+Nachdem Sie Ihre Idee [gemeldet](#schritt-1-melden) haben und ein Verwalter Ihnen ein grünes Licht gegeben hat, folgen Sie diese Schritte um eine lokale Kopie zu herzustellen, die Sie verarbeiten können.
+
+1. **Das Lager (*repository*) aufspalten (*fork*)**. Auf „Fork“ oben rechts auf der Lagerseite klicken. (Diesen Schritt überspringen, wenn sie schon Schreibzugriff haben.)
+2. **Einen lokalen Nachbau (*clone*) erstellen**. `git clone https://github.com/user/SDG`
+3. **Einen Entwicklungszweig (*branch*) erstellen**. `git checkout -b igrendwelcher‐neuer‐zweigname`
+4. **Den Arbeitsbereich aufstellen**. Auf `Refresh` (*auffrischen*) in der Lagerwurzel doppelklicken.
+
+Jetzt sind Sie bereit, Ihre Idee zu probieren.
+
+## Schritt 3: Einreichen
+
+Nachdem Ihre Idee gut funktioniert, folgen Sie diese Schritte um Ihre Änderungen einzureichen.
+
+1. **Ihre Änderungen überprüfen**. Auf `Validate` in der Lagerwurzel doppelklicken.
+2. **Ihre Änderungen übergeben (*commit*)**. `git commit -m "Irgendwelche Beschreibung der Änderungen."`
+3. **Ihre Änderungen stoßen (*push*)**. `git push`
+4. **Eine Abziehungsanforderung (*pull request*)**. „New Pull Request“ in der Zweigliste bei GitHub.
+5. **Auf die überprüfung der fortlaufenden Einbindung (*continuous integration*) warten**.
+6. **Eine Bewertung (*review*) von John Doe oder Jane Doe anfordern**. Auf den Zahnrad oben rechts auf der Seite der Abziehungsanforderung klicken.
 
 </details>

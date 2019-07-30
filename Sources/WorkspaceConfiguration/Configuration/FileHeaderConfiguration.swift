@@ -123,7 +123,7 @@ public struct FileHeaderConfiguration : Codable {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "This source file is part of the \(packageName) open source project."
             case .deutschDeutschland:
-                return "Dieser offene Quelltext ist Teil des qeulloffenen \(packageName)‐Projekt."
+                return "Diese Quelldatei ist Teil des qeulloffenen \(packageName)‐Projekt."
             }
         }))
         if let site = configuration.documentation.projectWebsite {

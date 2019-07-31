@@ -137,7 +137,9 @@ public final class WorkspaceConfiguration : Configuration {
         documentation.primaryAuthor = "Jeremy David Giesbrecht"
         gitHub.administrators = ["SDGGiesbrecht"]
 
-        licence.licence = .apache2_0
+        if openSource {
+            licence.licence = .apache2_0
+        }
 
         documentation.relatedProjects.append(.project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!))
         documentation.relatedProjects.append(.project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!))

@@ -162,7 +162,9 @@ public struct TextFile {
     public static func reportWriteOperation(to location: URL, in repository: PackageRepository, output: Command.Output) {
         output.print(UserFacingDynamic<StrictString, InterfaceLocalization, String>({ localization, path in
             switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            case .englishUnitedKingdom:
+                return "Writing to ‘\(path)’..."
+            case .englishUnitedStates, .englishCanada:
                 return "Writing to “\(path)”..."
             case .deutschDeutschland:
                 return "Zu „\(path)“ wird geschrieben ..."

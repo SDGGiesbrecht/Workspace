@@ -349,8 +349,12 @@ extension PackageRepository {
 
             output.print(UserFacingDynamic<StrictString, InterfaceLocalization, String>({ localization, path in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom:
+                    return "Deleting ‘\(path)’..."
+                case .englishUnitedStates, .englishCanada:
                     return "Deleting “\(path)”..."
+                case .deutschDeutschland:
+                    return "„\()“ wird gelöscht ..."
                 }
             }).resolved(using: location.path(relativeTo: self.location)))
 
@@ -384,8 +388,12 @@ extension PackageRepository {
 
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
-                    case .englishCanada:
+                    case .englishUnitedKingdom:
+                        return "Fetching ‘\(package.url.lastPathComponent)’..."
+                    case .englishUnitedStates, .englishCanada:
                         return "Fetching “\(package.url.lastPathComponent)”..."
+                    case .deutschDeutschland:
+                        return "„\(package.url.lastPathComponent)“ wird abgerufen ..."
                     }
                 }).resolved())
 

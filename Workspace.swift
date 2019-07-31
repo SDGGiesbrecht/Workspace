@@ -38,7 +38,7 @@ public let configuration: WorkspaceConfiguration = {
 
     configuration.documentation.api.yearFirstPublished = 2017
 
-    configuration.documentation.localizations = ["🇨🇦EN"]
+    configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "🇩🇪EN"]
 
     configuration.repository.ignoredPaths.insert("Tests/Mock Projects")
 

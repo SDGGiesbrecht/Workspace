@@ -85,12 +85,14 @@ public final class WorkspaceConfiguration : Configuration {
     /// Options related to building and testing.
     public var testing: TestingConfiguration = TestingConfiguration()
 
+    #warning("dokumentation")
     /// Options related to documentation.
     public var documentation: DocumentationConfiguration = DocumentationConfiguration()
 
     /// Options related to continuous integration.
     public var continuousIntegration: ContinuousIntegrationConfiguration = ContinuousIntegrationConfiguration()
 
+    #warning("lager")
     /// Options related to the project repository.
     public var repository: RepositoryConfiguration = RepositoryConfiguration()
 

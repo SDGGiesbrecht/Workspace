@@ -21,6 +21,8 @@ public struct DocumentationConfiguration : Codable {
 
     // MARK: - Properties
 
+    #warning("localisations")
+    #warning("lokalisationen")
     /// The localizations supported by the project.
     ///
     /// The default contains no localizations, but some tasks may throw errors if they require localizations to be specified.

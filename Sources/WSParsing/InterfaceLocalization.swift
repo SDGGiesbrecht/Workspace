@@ -48,8 +48,10 @@ extension InterfaceLocalization {
 
     private static let exampleDeclarationName: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "example"
+        case .deutschDeutschland:
+            return "beispiel"
         }
     })
     public static let exampleDeclaration: CompositePattern<Unicode.Scalar>
@@ -57,8 +59,10 @@ extension InterfaceLocalization {
 
     private static let endExampleDecarationName: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "endExample"
+        case .deutschDeutschland:
+            return "beispielEnden"
         }
     })
     public static let endExampleDeclaration: CompositePattern<Unicode.Scalar>
@@ -66,8 +70,10 @@ extension InterfaceLocalization {
 
     private static let exampleDirectiveName: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "example"
+        case .deutschDeutschland:
+            return "beispiel"
         }
     })
     public static let exampleDirective: CompositePattern<Unicode.Scalar>
@@ -77,8 +83,10 @@ extension InterfaceLocalization {
 
     private static let documentationDeclarationName: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "documentation"
+        case .deutschland:
+            return "dokumentation"
         }
     })
     public static let documentationDeclaration: CompositePattern<Unicode.Scalar>
@@ -86,8 +94,10 @@ extension InterfaceLocalization {
 
     private static let documentationDirectiveName: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "documentation"
+        case .deutschDeutschland:
+            return "dokumentation"
         }
     })
     public static let documentationDirective: CompositePattern<Unicode.Scalar>
@@ -97,8 +107,12 @@ extension InterfaceLocalization {
 
     private static let localizationDeclarationName: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom:
+            return "localisation"
+        case .englishUnitedStates, .englishCanada:
             return "localization"
+        case .deutschDeutschland:
+            return "lokalisation"
         }
     })
     public static let localizationDeclaration: CompositePattern<Unicode.Scalar>
@@ -106,8 +120,10 @@ extension InterfaceLocalization {
 
     private static let crossReferenceDeclarationName: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "crossReference"
+        case .deutschDeutschland:
+            return "querverweis"
         }
     })
     public static let crossReferenceDeclaration: CompositePattern<Unicode.Scalar>

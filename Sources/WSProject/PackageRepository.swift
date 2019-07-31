@@ -212,8 +212,10 @@ extension PackageRepository {
                     configuration: WorkspaceConfiguration.self,
                     named: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
-                        case .englishCanada:
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return "Workspace"
+                        case .deutschDeutschland:
+                            return "Arbeitsbereich"
                         }
                     }),
                     from: location,
@@ -235,8 +237,12 @@ extension PackageRepository {
         guard let result = try configuration(output: output).documentation.localizations.first else {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom:
+                    return "There are no localisations specified. (documentation.localisations)"
+                case .englishUnitedStates, .englishCanada:
                     return "There are no localizations specified. (documentation.localizations)"
+                case .deutschDeutschland:
+                    return "Keine Lokalisationen sind angegeben. (dokumentation.localisationen)"
                 }
             }))
         }

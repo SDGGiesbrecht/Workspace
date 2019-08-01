@@ -354,7 +354,7 @@ extension PackageRepository {
                 case .englishUnitedStates, .englishCanada:
                     return "Deleting “\(path)”..."
                 case .deutschDeutschland:
-                    return "„\()“ wird gelöscht ..."
+                    return "„\(path)“ wird gelöscht ..."
                 }
             }).resolved(using: location.path(relativeTo: self.location)))
 

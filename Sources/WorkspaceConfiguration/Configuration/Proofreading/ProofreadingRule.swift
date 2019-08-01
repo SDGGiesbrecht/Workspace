@@ -17,6 +17,7 @@ import SDGControlFlow
 /// A proofreading rule.
 public enum ProofreadingRule : String, CaseIterable, Codable {
 
+    #warning("Must match output.")
     // MARK: - Cases
 
     // ••••••• Deprecation •••••••

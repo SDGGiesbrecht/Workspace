@@ -18,15 +18,19 @@ internal struct ManualWarnings : Warning {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "manualWarnings"
+        case .deutschDeutschland:
+            return "warnungenVonHand"
         }
     })
 
     internal static let trigger = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "warning"
+        case .deutschDeutschland:
+            return "warnung"
         }
     })
 

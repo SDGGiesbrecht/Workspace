@@ -23,15 +23,19 @@ internal struct ClosureSignaturePosition : SyntaxRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "closureSignaturePosition"
+        case .deutschDeutschland:
+            return "abschlusssignaturplatzierung"
         }
     })
 
     private static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "A closure’s signature should be on the same line as its opening brace."
+        case .deutschDeutschland:
+            return "Die Signatur eines Abschluss soll an der selbe Zeile stehen als seine öffnende geschweifte Klammer."
         }
     })
 

@@ -26,39 +26,49 @@ internal struct ColonSpacing : SyntaxRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "colonSpacing"
+        case .deutschDeutschland:
+            return "doppelpunktabstand"
         }
     })
 
     private static let prohibitedPrecedingSpaceMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Colons should not be preceded by spaces."
+        case .deutschDeutschland:
+            return "Doppelpunkte sollen keine vorstehende Leerzeichen haben."
         }
     })
     private static let prohibitedPrecedingSpaceSuggestion: StrictString = ":"
 
     private static let requiredPrecedingSpaceMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition."
+        case .deutschDeutschland:
+            return "Doppelpunkte sollen vorstehende Leerzeichen haben wenn sie Erfüllung, Erbe oder ein ternären Auswahl bedeuten."
         }
     })
     private static let requiredPrecedingSpaceSuggestion: StrictString = " :"
 
     private static let requiredFollowingSpaceMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Colons should be followed by spaces."
+        case .deutschDeutschland:
+            return "Doppelpunkte sollen nachstehende Leerzeichen haben."
         }
     })
     private static let requiredFollowingSpaceSuggestion: StrictString = ": "
 
     private static let prohibitedFollowingSpaceMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Colons should not be followed by spaces when denoting an empty dictionary literal or a function name."
+        case .deutschDeutschland:
+            return "Doppelpunkte sollen keine nachstehende Leerzeichen haben, wenn sie Teil eines leeres selbstdeutendes Wörterbuch oder einen Functionsname sind."
         }
     })
     private static let prohibitedFollowingSpaceSuggestion: StrictString = ":"

@@ -22,15 +22,19 @@ internal struct ParameterGrouping : SyntaxRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "parameterGrouping"
+        case .deutschDeutschland:
+            return "übergabewertenzusammenstellung"
         }
     })
 
     private static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Parameters should be grouped under a single callout."
+        case .deutschDeutschland:
+            return "Übergabewerte sollen unter einer einzigen Hervorhebung gestellt sein."
         }
     })
 

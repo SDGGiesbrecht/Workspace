@@ -24,15 +24,19 @@ internal struct BraceSpacing : SyntaxRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "braceSpacing"
+        case .deutschDeutschland:
+            return "abstandGeschweiftenKlammern"
         }
     })
 
     private static let requiredInternalSpaceMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Braces should be separated from their contents by a space."
+        case .deutschDeutschland:
+            return "Geschweiften Klammern sollen von ihrem Inhalt mit einem Leerzeichen getrennt sein."
         }
     })
     private static let requiredOpeningInternalSpaceSuggestion: StrictString = "{ "
@@ -40,8 +44,10 @@ internal struct BraceSpacing : SyntaxRule {
 
     private static let prohibitedInternalSpaceMessage = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Empty braces should not contain spaces."
+        case .deutschDeutschland:
+            return "Leere geschweifte Klammern sollen keinen Leerzeichen beinhalten."
         }
     })
     private static let prohibitedOpeningSpaceSuggestion: StrictString = "{"

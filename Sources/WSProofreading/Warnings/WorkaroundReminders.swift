@@ -80,8 +80,10 @@ internal struct WorkaroundReminders : Warning {
         return UserFacing({ localization in
             let label: StrictString
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 label = "Workaround: "
+            case .deutschDeutschland:
+                label = "Notlösung: "
             }
             return label + description
         })

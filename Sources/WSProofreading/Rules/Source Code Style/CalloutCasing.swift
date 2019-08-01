@@ -24,15 +24,21 @@ internal struct CalloutCasing : SyntaxRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "calloutCasing"
+        case .deutschDeutschland:
+            return "hervorhebungsGroßschreibung"
         }
     })
 
     private static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom:
+            return "Callouts should be capitalised."
+        case .englishUnitedStates, .englishCanada:
             return "Callouts should be capitalized."
+        case .deutschDeutschland:
+            return "Hervorhebungen sollen großgeschrieben sein."
         }
     })
 

@@ -24,8 +24,10 @@ extension PackageRepository {
         if try configuration(output: output).provideWorkflowScripts == false {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Continuous integration requires workflow scripts to be present. (provideWorkflowScripts)"
+                case .deutschDeutschland:
+                    return "Fortlaufende Einbindung benötigt, dass Arbeitsablaufsskripte vorhanden sind. (arbeitsablaufsskripteBereitstellen)"
                 }
             }))
         }

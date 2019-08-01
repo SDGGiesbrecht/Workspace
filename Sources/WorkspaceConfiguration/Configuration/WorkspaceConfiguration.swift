@@ -48,6 +48,7 @@ public final class WorkspaceConfiguration : Configuration {
 
     // MARK: - Properties
 
+    #warning("arbeitsablaufsskripteBereitstellen")
     /// Whether or not to provide workflow scripts.
     ///
     /// This is on by default.

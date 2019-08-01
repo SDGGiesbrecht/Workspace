@@ -126,6 +126,7 @@ public struct DocumentationConfiguration : Codable {
     /// There are no default related projects.
     public var relatedProjects: [RelatedProjectEntry] = []
 
+    #warning("liesMich")
     /// Options related to the project read‐me.
     public var readMe: ReadMeConfiguration = ReadMeConfiguration()
 

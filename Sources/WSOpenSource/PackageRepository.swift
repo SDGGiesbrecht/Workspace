@@ -29,8 +29,12 @@ extension PackageRepository {
         guard var readMe = try readMe(output: output)[localization] else {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ errorLocalization in
                 switch errorLocalization {
-                case .englishCanada:
+                case .englishUnitedKingdom:
+                    return "There is no read‐me for ‘\(arbitraryDescriptionOf: localization)’. (documentation.readMe.contents)"
+                case .englishUnitedStates, .englishCanada:
                     return "There is no read‐me for “\(arbitraryDescriptionOf: localization)”. (documentation.readMe.contents)"
+                case .deutschDeutschland:
+                    return "Das Lies‐mich für „\(arbitraryDescriptionOf: localization)“ fehlt. (dokumentation.liesMich.inhalt"
                 }
             }))
         }

@@ -32,6 +32,7 @@ public struct ReadMeConfiguration : Codable {
     /// This is off by default.
     public var manage: Bool = false
 
+    #warning("inhalt")
     /// The entire contents of the read‐me.
     ///
     /// By default, this is assembled from the other documentation and read‐me options.

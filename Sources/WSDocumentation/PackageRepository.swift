@@ -417,7 +417,7 @@ extension PackageRepository {
                                     switch localization {
                                     case .englishUnitedKingdom:
                                         return "There is no documentation named ‘" + identifier + "’."
-                                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                                    case .englishUnitedStates, .englishCanada:
                                         return "There is no documentation named “" + identifier + "”."
                                     case .deutschDeutschland:
                                         return "Es gibt keine Dokumentation Namens „" + identifier + "“."

@@ -339,8 +339,10 @@ internal struct PackageInterface {
 
         output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Processing API..."
+            case .deutschDeutschland:
+                return "Die Programmierschnitstelle wird verarbeitet ..."
             }
         }).resolved())
 
@@ -414,8 +416,10 @@ internal struct PackageInterface {
     internal func outputHTML(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output, coverageCheckOnly: Bool) throws {
         output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Generating HTML..."
+            case .deutschDeutschland:
+                return "Auszeichnung wird erstellt ..."
             }
         }).resolved())
 

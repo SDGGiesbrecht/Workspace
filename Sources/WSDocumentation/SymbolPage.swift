@@ -52,8 +52,10 @@ internal class SymbolPage : Page {
             case .package, .module, .type, .extension, .protocol:
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
-                    case .englishCanada:
-                        return "..." + StrictString(symbol.name.source()) + "..."
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "...\(StrictString(symbol.name.source()))..."
+                    case .deutschDeutschland:
+                        return "... \(StrictString(symbol.name.source())) ..."
                     }
                 }).resolved())
             default:

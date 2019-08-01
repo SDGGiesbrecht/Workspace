@@ -21,16 +21,20 @@ internal struct DeprecatedExampleDirectives : TextRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "deprecatedExampleDirectives"
+        case .deutschDeutschland:
+            return "überlolteBeispielsanweisungen"
         }
     })
 
     private static func message(replacement: StrictString) -> UserFacing<StrictString, InterfaceLocalization> {
         return UserFacing<StrictString, InterfaceLocalization>({ (localization) in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "This syntax is no longer recognized. Use “" + replacement + "” instead."
+            case .deutschDeutschland:
+                return "Diese Syntax wird nicht mehr erkannt. Stattdessen „" + replacement + "“ verwenden."
             }
         })
     }
@@ -45,8 +49,10 @@ internal struct DeprecatedExampleDirectives : TextRule {
 
             let definitionReplacement = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "\u{40}example(" + identifier + ")"
+                case .deutschDeutschland:
+                    return "\u{40}beispiel(" + identifier + ")"
                 }
             }).resolved()
             reportViolation(in: file, at: definition.container.range, replacementSuggestion: definitionReplacement, message: message(replacement: definitionReplacement), status: status, output: output)
@@ -54,8 +60,8 @@ internal struct DeprecatedExampleDirectives : TextRule {
 
         let endReplacement = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
             switch localization {
-            case .englishCanada:
-                return "\u{40}endExample"
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "\u{40}beispielEnden"
             }
         }).resolved()
         for match in file.contents.scalars.matches(for: "[\u{5F}End_]".scalars) {
@@ -70,8 +76,10 @@ internal struct DeprecatedExampleDirectives : TextRule {
 
             let directiveReplacement = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "\u{23}example(" + arguments + ")"
+                case .deutschDeutschland:
+                    reutrn "\u{23}beispiel(" + arguments + ")"
                 }
             }).resolved()
             reportViolation(in: file, at: directive.container.range, replacementSuggestion: directiveReplacement, message: message(replacement: directiveReplacement), status: status, output: output)

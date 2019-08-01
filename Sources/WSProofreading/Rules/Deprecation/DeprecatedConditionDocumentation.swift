@@ -21,15 +21,19 @@ internal struct DeprecatedConditionDocumentation : TextRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "deprecatedConditionDocumentation"
+        case .deutschDeutschland:
+            return "überholteBedingungsdokumentation"
         }
     })
 
     private static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Such headings are no longer necessary for the generated documentation."
+        case .deutschDeutschland:
+            return "Solche Überschriften sind nicht mehr nötig für die erstellte Dokumentation."
         }
     })
 

@@ -94,8 +94,12 @@ internal class DocumentationStatus {
 
             hint = UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom:
+                    return "(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.\nWorkspace will look for documentation on the line above ‘" + search + "’.)"
+                case .englishUnitedStates, .englishCanada:
                     return "(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.\nWorkspace will look for documentation on the line above “" + search + "”.)"
+                case .deutschDeutschland:
+                    return "(Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.\nArbeitsbereich sucht für die Dokumentation in der Zeile über „" + search + "“.)"
                 }
             })
         }

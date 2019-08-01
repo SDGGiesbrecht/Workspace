@@ -41,8 +41,10 @@ internal class CommandPage : Page {
 
         output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
-                return "..." + StrictString(interface.name) + "..."
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "...\(StrictString(interface.name))..."
+            case .deutschDeutschland:
+                return "... \(StrictString(interface.name)) ..."
             }
         }).resolved())
 

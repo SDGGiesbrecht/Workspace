@@ -25,6 +25,8 @@ public struct LicenceConfiguration : Codable {
 
     public var manage: Bool = false
 
+    #warning("lisense")
+    #warning("lizenz")
     /// The project licence.
     ///
     /// There is no default licence.

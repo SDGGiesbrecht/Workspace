@@ -23,8 +23,12 @@ extension PackageRepository {
 
     public static let xcodeProjectInstructions = UserFacing<StrictString, InterfaceLocalization>({ localization in // @exempt(from: tests) Unreachable from Linux.
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom:
+            return "Configure ‘xcode.manage’ or create an Xcode project manually."
+        case .englishUnitedStates, .englishCanada:
             return "Configure “xcode.manage” or create an Xcode project manually."
+        case .deutschDeutschland:
+            return "„xcode.manage“ konfigurieren oder von Hand ein Xcode‐Projekt erstellen."
         }
     })
 
@@ -32,18 +36,25 @@ extension PackageRepository {
 
     private static let proofreadTargetName = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Proofread"
+        case .deutschDeutschland:
+            return "Korrektur lesen"
         }
     })
 
     private static let instructions = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return [
-            "Install Workspace if you wish to receive in‐code reports of style errors for this project.",
-            "See " + StrictString(Metadata.packageURL.absoluteString)
-            ].joinedAsLines()
+                "Install Workspace if you wish to receive in‐code reports of style errors for this project.",
+                "See " + StrictString(Metadata.packageURL.absoluteString)
+                ].joinedAsLines()
+        case .deutschDeutschland:
+            return [
+                "Installieren Sie Arbeitsbereich, wenn Sie Gestalltungsfehlermeldungen im Quelltext dieses Projekts sehen wollen.",
+                "Siehe " + StrictString(Metadata.packageURL.absoluteString)
+                ].joinedAsLines()
         }
     })
 

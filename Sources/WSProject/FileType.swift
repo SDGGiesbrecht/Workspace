@@ -68,7 +68,7 @@ public enum FileType {
                     return ["Solche Dateien wurden übersprungen.",
                             "Falls sie Standarddateiformate sind, bitte melden Sie sie hier:",
                             StrictString(Metadata.issuesURL.absoluteString.in(Underline.underlined)),
-                            "Um diese Warnung für ungenormten Dateiformate, To silence this warning for non‐standard file types, „lager.ausgelasseneDateiformate“ konfigurieren."
+                            "Um diese Warnung für ungenormten Dateiformate abzudämpfen, „lager.ausgelasseneDateiformate“ konfigurieren."
                         ].joinedAsLines()
                 }
             }).resolved())

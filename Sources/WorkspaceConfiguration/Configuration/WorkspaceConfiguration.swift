@@ -67,6 +67,8 @@ public final class WorkspaceConfiguration : Configuration {
     /// Options related to Git.
     public var git: GitConfiguration = GitConfiguration()
 
+    #warning("lisense")
+    #warning("lizenz")
     /// Options related to licencing.
     public var licence: LicenceConfiguration = LicenceConfiguration()
 

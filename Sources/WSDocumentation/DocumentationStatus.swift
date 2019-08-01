@@ -106,8 +106,10 @@ internal class DocumentationStatus {
 
         report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "A symbol has no description:"
+            case .deutschDeutschland:
+                return "Einem Symbol fehlt die Beschreibung."
             }
         }), with: symbol, navigationPath: navigationPath, localization: localization, hint: hint)
     }
@@ -121,8 +123,10 @@ internal class DocumentationStatus {
         report(
             problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "A symbol has mismatched parameter descriptions:"
+                case .deutschDeutschland:
+                    return "Ein Symbol hat fehlangepasste Übergabewertenbeschreibungen."
                 }
             }),
             with: symbol,
@@ -130,8 +134,10 @@ internal class DocumentationStatus {
             localization: localization,
             hint: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "(Expected: \(expected.joined(separator: ", ")))"
+                case .deutschDeutschland:
+                    return "(Erwartete: \(expected.joined(separator: ", ")))"
                 }
             }))
     }
@@ -142,8 +148,10 @@ internal class DocumentationStatus {
         navigationPath: [APIElement]) {
         report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "A closure parameter has no label:"
+            case .deutschDeutschland:
+                return "Einem Abschluss fehlt die Beschriftung."
             }
         }), with: symbol, navigationPath: navigationPath, parameter: closureType)
     }
@@ -151,8 +159,10 @@ internal class DocumentationStatus {
     internal func reportMissingVariableType(_ variable: VariableAPI, navigationPath: [APIElement]) {
         report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "A public variable has no explicit type:"
+            case .deutschDeutschland:
+                return "Einem öffentlichen Variable fehlt der ausdrückliche Typ."
             }
         }), with: APIElement.variable(variable), navigationPath: navigationPath)
     }
@@ -160,10 +170,15 @@ internal class DocumentationStatus {
     internal func reportMissingYearFirstPublished() {
         report(problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return ([
                     "No original copyright date is specified.",
                     "(Configure it under “documentation.api.yearFirstPublished”.)"
+                    ] as [StrictString]).joinedAsLines()
+            case .deutschDeutschland:
+                return ([
+                    "Kein ursprüngliche Urheberrechtsdatum wurde angegeben.",
+                    "(Es ist unter „dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung“ zu konfigurieren.)"
                     ] as [StrictString]).joinedAsLines()
             }
         }))
@@ -174,10 +189,20 @@ internal class DocumentationStatus {
             missingCopyrightLocalizations.insert(localization)
             report(problem: UserFacing<StrictString, InterfaceLocalization>({ warningLocalization in
                 switch warningLocalization {
-                case .englishCanada:
+                case .englishUnitedKingdom:
+                    return ([
+                        "A localisation has no copyright specified: \(arbitraryDescriptionOf: localization)",
+                        "(Configure it under “documentation.api.copyrightNotice”.)"
+                        ] as [StrictString]).joinedAsLines()
+                case .englishUnitedStates, .englishCanada:
                     return ([
                         "A localization has no copyright specified: \(arbitraryDescriptionOf: localization)",
                         "(Configure it under “documentation.api.copyrightNotice”.)"
+                        ] as [StrictString]).joinedAsLines()
+                case .deutschDeutschland:
+                    return ([
+                        "Einer Lokalization fehlt die Urheberrechtschutzvermerk: \(arbitraryDescriptionOf: localization)",
+                        "(Es ist unter „dokumentation.programmierschnittstelle.urheberrechtschutzvermerk“ zu konfigurieren.)"
                         ] as [StrictString]).joinedAsLines()
                 }
             }))
@@ -191,8 +216,10 @@ internal class DocumentationStatus {
         report(
             problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "A symbol’s documentation contains excessively strong headings:"
+                case .deutschDeutschland:
+                    return "Die Dokumentation eines Symbols enthaltet überstarke Überschrifte:"
                 }
             }),
             with: symbol,
@@ -200,8 +227,10 @@ internal class DocumentationStatus {
             localization: localization,
             hint: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "(Use heading levels three to six. Levels one and two are reserved for the surrounding context.)"
+                case .deutschDeutschland:
+                    return "(Überschriftsebenen drei bis sechs stehen offen. Ebene eins und zwei sind für den umliegenden Rahmen vorbehalten.)"
                 }
             }))
     }

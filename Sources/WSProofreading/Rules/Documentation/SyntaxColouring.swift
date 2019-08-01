@@ -23,15 +23,21 @@ internal struct SyntaxColouring : SyntaxRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishCanada:
             return "syntaxColouring"
+        case .englishUnitedStates:
+            return "syntaxColoring"
+        case .deutschDeutschland:
+            return "syntaxhervorhebung"
         }
     })
 
     private static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Language specifier missing. Specify a language for syntax colouring."
+        case .deutschDeutschland:
+            return "Das Sprachkennzeichen fehlt. Eine Sprache für Syntaxhervorhebung angeben."
         }
     })
 

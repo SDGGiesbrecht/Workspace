@@ -21,8 +21,10 @@ internal struct CompatibilityCharacters : TextRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "compatibilityCharacters"
+        case .deutschDeutschland:
+            return "verträglichkeitsSchriftzeichen"
         }
     })
 
@@ -34,8 +36,12 @@ internal struct CompatibilityCharacters : TextRule {
             if character ≠ normalized {
                 reportViolation(in: file, at: index ..< file.contents.scalars.index(after: index), replacementSuggestion: StrictString(normalized), message: UserFacing<StrictString, InterfaceLocalization>({ (localization) in
                     switch localization {
-                    case .englishCanada:
+                    case .englishUnitedKingdom:
+                        return "U+\(scalar.hexadecimalCode) may be lost in normalisation; use ‘\(normalized)’ instead."
+                    case .englishUnitedStates, .englishCanada:
                         return "U+\(scalar.hexadecimalCode) may be lost in normalization; use “\(normalized)” instead."
+                    case .deutschDeutschland:
+                        return "U+\(scalar.hexadecimalCode) geht bei Normalisierung vielleicht verloren; stattdessen „\(normalized)“ verwenden."
                     }
                 }), status: status, output: output)
             }

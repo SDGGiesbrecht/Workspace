@@ -25,15 +25,21 @@ internal struct AutoindentResilience : SyntaxRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "autoindentResilience"
+        case .deutschDeutschland:
+            return "widerstandZuAutomatischemEinzug"
         }
     })
 
     private static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom:
+            return "‘/*\u{2A}’ may not survive autoindent (⌃I). Use ‘///’ instead."
+        case .englishUnitedStates, .englishCanada:
             return "“/*\u{2A}” may not survive autoindent (⌃I). Use “///” instead."
+        case .deutschDeutschland:
+            return "„/*\u{2A}“ widersteht automatische Einzüge (⌃I) nicht. Stattdessen „///“ verwenden."
         }
     })
 

@@ -22,8 +22,10 @@ internal struct Marks : TextRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "marks"
+        case .deutschDeutschland:
+            return "überschrifte"
         }
     })
 
@@ -31,8 +33,12 @@ internal struct Marks : TextRule {
 
     private static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom:
+            return "Incomplete heading syntax. Use ‘\(expectedSyntax)’."
+        case .englishUnitedStates, .englishCanada:
             return "Incomplete heading syntax. Use “\(expectedSyntax)”."
+        case .deutschDeutschland:
+            return "Unvollständige Überschriftssyntax. „\(expectedSyntax)“ verwenden."
         }
     })
 

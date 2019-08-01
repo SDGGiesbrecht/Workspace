@@ -25,24 +25,6 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
     /// Catches deprecated condition documentation.
     case deprecatedConditionDocumentation
 
-    /// Catches deprecated warnings.
-    case deprecatedWarnings
-
-    /// Catches deprecated test exemptions.
-    case deprecatedTestExemptions
-
-    /// Catches deprecated documentation directives.
-    case deprecatedInheritanceDirectives
-
-    /// Catches deprecated example directives.
-    case deprecatedExampleDirectives
-
-    /// Catches deprecated Git management notices.
-    case deprecatedGitManagement
-
-    /// Catches deprecated configurations.
-    case deprecatedConfiguration
-
     // ••••••• Intentional •••••••
 
     /// Catches generic manual warnings.
@@ -177,7 +159,7 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
     /// The category the rule belongs to.
     public var category: Category {
         switch self {
-        case .deprecatedConditionDocumentation, .deprecatedWarnings, .deprecatedTestExemptions, .deprecatedInheritanceDirectives, .deprecatedExampleDirectives, .deprecatedGitManagement, .deprecatedConfiguration:
+        case .deprecatedConditionDocumentation:
             return .deprecation
 
         case .manualWarnings,

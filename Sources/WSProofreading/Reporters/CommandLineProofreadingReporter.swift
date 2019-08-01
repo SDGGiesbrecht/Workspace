@@ -36,8 +36,10 @@ public class CommandLineProofreadingReporter : ProofreadingReporter {
         let lineNumber = lines.distance(from: lines.startIndex, to: lineRange.lowerBound) + 1
         return UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Line " + lineNumber.inDigits()
+            case .deutschDeutschland:
+                return "Zeile " + lineNumber.inDigits()
             }
         }).resolved()
     }

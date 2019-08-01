@@ -40,11 +40,23 @@ public struct ReportSection {
         let identifier = self.identifier
         return UserFacing({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom:
+                #if os(macOS)
+                return " (See ⌘F ‘" + identifier + "’)"
+                #elseif os(Linux)
+                return " (See Ctrl + F ‘" + identifier + "’)"
+                #endif
+            case .englishUnitedStates, .englishCanada:
                 #if os(macOS)
                     return " (See ⌘F “" + identifier + "”)"
                 #elseif os(Linux)
                     return " (See Ctrl + F “" + identifier + "”)"
+                #endif
+            case .deutschDeutschland:
+                #if os(macOS)
+                return " (Siehe ⌘F „" + identifier + "“)"
+                #elseif os(Linux)
+                return " (Siehe Strg + F „" + identifier + "“)"
                 #endif
             }
         })

@@ -85,7 +85,7 @@ extension InterfaceLocalization {
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "documentation"
-        case .deutschland:
+        case .deutschDeutschland:
             return "dokumentation"
         }
     })

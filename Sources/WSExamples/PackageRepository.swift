@@ -96,8 +96,10 @@ extension PackageRepository {
                                 throw Command.Error(
                                     description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                                         switch localization {
-                                        case .englishCanada:
+                                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                                             return "An example directive has too few arguments:\n\(match.contents)"
+                                        case .deutschDeutschland:
+                                            return "Eine Beispielsanweisung hat zu wenig Argumente:\n\(match.contents)"
                                         }
                                     }))
                             }
@@ -112,8 +114,12 @@ extension PackageRepository {
                             guard let example = try examples(output: output)[identifier] else {
                                 throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                                     switch localization {
-                                    case .englishCanada:
+                                    case .englishUnitedKingdom:
+                                        return "There is no example named ‘" + identifier + "’."
+                                    case .englishUnitedStates, .englishCanada:
                                         return "There is no example named “" + identifier + "”."
+                                    case .deutschDeutschland:
+                                        return "Es gibt kein Beispiel Namens „" + identifier + "“."
                                     }
                                 }))
                             }

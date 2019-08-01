@@ -93,8 +93,10 @@ extension PackageRepository {
 
         private static let resourceNamespace = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Resources"
+            case .deutschDeutschland:
+                return "Ressourcen"
             }
         })
 

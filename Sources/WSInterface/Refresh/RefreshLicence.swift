@@ -22,15 +22,23 @@ extension Workspace.Refresh {
 
         private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishCanada:
                 return "licence"
+            case .englishUnitedStates:
+                return "license"
+            case .deutschDeutschland:
+                return "lizenz"
             }
         })
 
         private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishCanada:
                 return "regenerates the project’s licence file."
+            case .englishUnitedStates:
+                return "regenerates the project’s license file."
+            case .deutschDeutschland:
+                return "erstellt die Lizenzdatei der Projekt neu."
             }
         })
 
@@ -38,8 +46,12 @@ extension Workspace.Refresh {
 
             output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishCanada:
                     return "Refreshing licence..."
+                case .englishUnitedStates:
+                    return "Refreshing license..."
+                case .deutschDeutschland:
+                    return "Lizenz wird aufgefrischt ..."
                 }
             }).resolved().formattedAsSectionHeader())
 

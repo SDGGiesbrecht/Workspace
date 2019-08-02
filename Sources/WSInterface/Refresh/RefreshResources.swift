@@ -33,7 +33,7 @@ extension Workspace.Refresh {
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "regenerates code providing access to the project’s resources."
-            case .deutschDeutchland:
+            case .deutschDeutschland:
                 return "erstellt den Quelltext neu, der zugriff auf die Ressourcen des Projekts bereitstellt."
             }
         })
@@ -80,10 +80,10 @@ extension Workspace.Refresh {
                     "",
                     "... kann die Datei in das „MeineBibliotek“‐Ziel so verwenden ...",
                     "",
-                    "let vorlage: Zeichenkette = Ressouren.Vorlagen.einfacheVorlage",
+                    "let vorlage: String = Ressouren.Vorlagen.einfacheVorlage",
                     "print(vorlage)",
                     "",
-                    "Die meisten Dateien werden als „Daten“ eingebaut, aber manche Dateinamenserweiterungen sind erkannt und werden als genaueren Typen eingebaut (z. B. „.txt“ als „Zeichenkette“).",
+                    "Die meisten Dateien werden als „Data“ eingebaut, aber manche Dateinamenserweiterungen sind erkannt und werden als genaueren Typen eingebaut (z. B. „.txt“ als „String“).",
                     ].joinedAsLines()
             }
         })

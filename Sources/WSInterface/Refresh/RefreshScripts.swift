@@ -22,20 +22,58 @@ extension Workspace.Refresh {
 
         private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "scripts"
+            case .deutschDeutschland:
+                return "skripte"
             }
         })
 
         private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "regenerates the project’s refresh and validation scripts."
+            case .deutschDeutschland:
+                return "erstellt die Auffrisch‐ und Überprüfskripte neu."
             }
         })
 
         private static let discussion = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
+            case .englishUnitedKingdom:
+                return [
+                    "Linux may require some additional set‐up before the generated scripts work with a double‐click. This applies to both ‘Refresh (Linux).sh’ and ‘Validate (Linux).sh’.",
+                    "",
+                    "Solutions to common errors are found below.",
+                    "",
+                    "If the necessary fix is undesirable, it is possible to run these scripts from a terminal instead. (See the bottom of this page.)",
+                    "",
+                    "• Error: The Script Opens in a Text Editor",
+                    "",
+                    "Linux needs to be set to run executable scripts when they are double‐clicked instead of opening them to edit.",
+                    "",
+                    "On Ubuntu, the setting is found at:",
+                    "",
+                    "‘Files’ → ‘Edit’ → ‘Preferences’ → ‘Behavior’ → ‘Run execuatable text files when they are opened’",
+                    "",
+                    "• Error: Swift Is Unavailable",
+                    "",
+                    "Because the script opens a new terminal to display its output, brand‐new terminal sessions need to be able to find the ‘swift’ command without additional set‐up.",
+                    "",
+                    "To register the location of ‘swift’ even for new terminal sessions, run the following command, substituting the real location of the Swift install.",
+                    "",
+                    "$ echo \u{27}export PATH=/path/to/swift\u{2D}0.0.0\u{2D}RELEASE\u{2D}ubuntu00.00/usr/bin:\u{22}${PATH}\u{22}\u{27} >>~/.profile",
+                    "",
+                    "If Swift is not even istalled yet, see the Swift website for instructions: https://swift.org/download/",
+                    "",
+                    "• Running from a Terminal",
+                    "",
+                    "While double‐clicking is usually the most convenient, it can be bypassed by manually running the macOS equivalent from a terminal:",
+                    "",
+                    "$ \u{22}./Refresh (macOS).command\u{22}",
+                    "",
+                    "This is exactly what the Linux script does internally. It just opens a new terminal window first to display the output.",
+                    ].joinedAsLines()
             case .englishCanada:
                 return [
                     "Linux may require some additional set‐up before the generated scripts work with a double‐click. This applies to both “Refresh (Linux).sh” and “Validate (Linux).sh”.",
@@ -54,9 +92,9 @@ extension Workspace.Refresh {
                     "",
                     "• Error: Swift Is Unavailable",
                     "",
-                    "Because the script opens a new terminal to display its output, brand‐new terminal sessions need to be able to find the `swift` command without additional set‐up.",
+                    "Because the script opens a new terminal to display its output, brand‐new terminal sessions need to be able to find the “swift” command without additional set‐up.",
                     "",
-                    "To register the location of `swift` even for new terminal sessions, run the following command, substituting the real location of the Swift install.",
+                    "To register the location of “swift” even for new terminal sessions, run the following command, substituting the real location of the Swift install.",
                     "",
                     "$ echo \u{27}export PATH=/path/to/swift\u{2D}0.0.0\u{2D}RELEASE\u{2D}ubuntu00.00/usr/bin:\u{22}${PATH}\u{22}\u{27} >>~/.profile",
                     "",

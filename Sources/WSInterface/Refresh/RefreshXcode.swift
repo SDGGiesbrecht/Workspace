@@ -24,15 +24,18 @@ extension Workspace.Refresh {
 
         private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+                 .deutschDeutschland:
                 return "xcode"
             }
         })
 
         private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "regenerates the project’s Xcode set‐up."
+            case .deutschDeutschland:
+                return "erstellt die Xcode‐Einrichtung des Projekts neu."
             }
         })
 
@@ -44,8 +47,10 @@ extension Workspace.Refresh {
 
             output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Refreshing Xcode project..."
+                case .deutschDeutschland:
+                    return "Xcode‐Projekt wird aufgefrischt ..."
                 }
             }).resolved().formattedAsSectionHeader())
 

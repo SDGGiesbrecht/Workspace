@@ -62,7 +62,7 @@ extension InterfaceLocalization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "endExample"
         case .deutschDeutschland:
-            return "beispielEnden"
+            return "beispielBeenden"
         }
     })
     public static let endExampleDeclaration: CompositePattern<Unicode.Scalar>

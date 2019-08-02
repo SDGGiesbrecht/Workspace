@@ -20,15 +20,19 @@ extension Workspace.Refresh {
 
         private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "all"
+            case .deutschDeutschland:
+                return "alles"
             }
         })
 
         private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "performs all configured refreshment tasks."
+            case .deutschDeutschland:
+                return "führt alle konfigurierte Auffrischungsaufgaben aus."
             }
         })
 
@@ -45,16 +49,24 @@ extension Workspace.Refresh {
             let projectName = StrictString(try options.project.projectName())
             var success = UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
-                    return "“" + projectName + "” is refreshed and ready."
+                case .englishUnitedKingdom:
+                    return "‘\(projectName)’ is refreshed and ready."
+                case .englishUnitedStates, .englishCanada:
+                    return "“\(projectName)” is refreshed and ready."
+                case .deutschDeutschland:
+                    return "„\(projectName)“ ist aufgefrischt und bereit."
                 }
             }).resolved()
 
             if let xcodeProject = (try? options.project.xcodeProject())??.lastPathComponent { // @exempt(from: tests) Unreachable on Linux.
                 let xcodeInstructions = UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
-                    case .englishCanada:
-                        return "Open “" + StrictString(xcodeProject) + "” to work on the project."
+                    case .englishUnitedKingdom:
+                        return "Open ‘\(StrictString(xcodeProject))’ to work on the project."
+                    case .englishUnitedStates, .englishCanada:
+                        return "Open “\(StrictString(xcodeProject))” to work on the project."
+                    case .deutschDeutschland:
+                        return "Um auf das Projekt zu arbeiten, „\(StrictString(xcodeProject))“ öffnen."
                     }
                 }).resolved()
 
@@ -72,8 +84,12 @@ extension Workspace.Refresh {
             let projectName = StrictString(try options.project.projectName())
             output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
-                    return "Refreshing “" + projectName + "”..."
+                case .englishUnitedKingdom:
+                    return "Refreshing ‘\(projectName)’..."
+                case .englishUnitedStates, .englishCanada:
+                    return "Refreshing “\(projectName)”..."
+                case .deutschDeutschland:
+                    return "„\(projectName)“ wird aufgefrischt ..."
                 }
             }).resolved().formattedAsSectionHeader())
 
@@ -135,8 +151,12 @@ extension Workspace.Refresh {
             for task in try options.project.configuration(output: output).customRefreshmentTasks {
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
-                    case .englishCanada:
-                        return "Executing custom task: “" + task.executable + "”..."
+                    case .englishUnitedKingdom:
+                        return "Executing custom task: ‘\(task.executable)’..."
+                    case .englishUnitedStates, .englishCanada:
+                        return "Executing custom task: “\(task.executable)”..."
+                    case .deutschDeutschland:
+                        return "Sonderaufgabe wird ausgeführt: „\(task.executable)“ ..."
                     }
                 }).resolved().formattedAsSectionHeader())
                 try task.execute(output: output)

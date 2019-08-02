@@ -49,6 +49,8 @@ extension Workspace.Refresh {
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Refreshing scripts..."
+                case .deutschDeutschland:
+                    return "Skripte werden aufgefrischt ..."
                 }
             }).resolved().formattedAsSectionHeader())
 

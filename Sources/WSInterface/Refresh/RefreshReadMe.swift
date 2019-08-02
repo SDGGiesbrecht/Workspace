@@ -22,15 +22,19 @@ extension Workspace.Refresh {
 
         private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "read‐me"
+            case .deutschDeutschland:
+                return "lies‐mich"
             }
         })
 
         private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "regenerates the project’s read‐me file."
+            case .deutschDeutschland:
+                return "erstellt die Lies‐mich‐Datei des Projekts neu."
             }
         })
 
@@ -38,8 +42,10 @@ extension Workspace.Refresh {
 
             output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Refreshing read‐me..."
+                case .deutschDeutschland:
+                    return "Lies‐mich wird aufgefrischt ..."
                 }
             }).resolved().formattedAsSectionHeader())
 

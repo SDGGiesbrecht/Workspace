@@ -319,7 +319,7 @@ extension PackageRepository {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Checking documentation coverage..." + section.anchor
             case .deutschDeutschland:
-                return "Die Dokumentationsbedeckung wird überprüft ..."  + section.anchor
+                return "Die Dokumentationsabdeckung wird überprüft ..."  + section.anchor
             }
         }).resolved().formattedAsSectionHeader())
         do {
@@ -334,7 +334,7 @@ extension PackageRepository {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return "Documentation coverage is complete."
                         case .deutschDeutschland:
-                            return "Die Dokumentationsbedeckung ist vollständig."
+                            return "Die Dokumentationsabdeckung ist vollständig."
                         }
                     }))
                 } else {
@@ -343,7 +343,7 @@ extension PackageRepository {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return "Documentation coverage is incomplete." + section.crossReference.resolved(for: localization)
                         case .deutschDeutschland:
-                            return "Die Dokumentationsbedeckung ist unvollständig." + section.crossReference.resolved(for: localization)
+                            return "Die Dokumentationsabdeckung ist unvollständig." + section.crossReference.resolved(for: localization)
                         }
                     }))
                 }

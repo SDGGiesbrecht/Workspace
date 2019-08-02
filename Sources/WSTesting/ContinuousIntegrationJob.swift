@@ -38,8 +38,27 @@ extension ContinuousIntegrationJob {
     internal var englishName: StrictString {
         return englishTargetOperatingSystemName
     }
+    internal var deutscherName: StrictString {
+        return deutscherZielsystemname
+    }
 
     private var englishTargetOperatingSystemName: StrictString {
+        switch self {
+        case .macOS: // @exempt(from: tests) Unreachable from Linux.
+            return "macOS"
+        case .linux:  // @exempt(from: tests)
+            return "Linux" // @exempt(from: tests) Unreachable from macOS.
+        case .iOS: // @exempt(from: tests) Unreachable from Linux.
+            return "iOS"
+        case .watchOS: // @exempt(from: tests) Unreachable from Linux.
+            return "watchOS"
+        case .tvOS: // @exempt(from: tests) Unreachable from Linux.
+            return "tvOS"
+        case .miscellaneous, .deployment:
+            unreachable()
+        }
+    }
+    private var deutscherZielsystemname: StrictString {
         switch self {
         case .macOS: // @exempt(from: tests) Unreachable from Linux.
             return "macOS"

@@ -35,8 +35,10 @@ extension PackageRepository {
 
         output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
-                return "Checking build for " + job.englishName + "..." + section.anchor
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Checking build for \(job.englishName)..." + section.anchor
+            case .deutschDeutschland:
+                return "Erstellung für \(job.deutscherName) wird geprüft ..." + section.anchor
             }
         }).resolved().formattedAsSectionHeader())
 
@@ -64,15 +66,19 @@ extension PackageRepository {
             if try buildCommand(output) {
                 validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
-                    case .englishCanada:
-                        return "There are no compiler warnings for " + job.englishName + "."
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "There are no compiler warnings for \(job.englishName)."
+                    case .deutschDeutschland:
+                        return "Es gibt keine Übersetzerwarnungen zu \(job.deutscherName)."
                     }
                 }))
             } else {
                 validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
-                    case .englishCanada:
-                        return "There are compiler warnings for " + job.englishName + "." + section.crossReference.resolved(for: localization)
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "There are compiler warnings for \(job.englishName)." + section.crossReference.resolved(for: localization)
+                    case .deutschDeutschland:
+                        return "Es gibt Übersetzerwarnungen zu \(job.englishName)." + section.crossReference.resolved(for: localization)
                     }
                 }))
             }
@@ -91,8 +97,10 @@ extension PackageRepository {
 
             validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in // @exempt(from: tests)
                 switch localization {
-                case .englishCanada: // @exempt(from: tests)
-                    return "Build failed for " + job.englishName + "." + section.crossReference.resolved(for: localization)
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada: // @exempt(from: tests)
+                    return "Build failed for \(job.englishName)." + section.crossReference.resolved(for: localization)
+                case .deutschDeutschland:
+                    return "Erstellung für \(job.deutscherName) ist fehlgeschlagen." + section.crossReference.resolved(for: localization)
                 }
             }))
         }
@@ -106,8 +114,10 @@ extension PackageRepository {
 
         output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
-                return "Testing on " + job.englishName + "..." + section.anchor
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Testing on \(job.englishName)..." + section.anchor
+            case .deutschDeutschland:
+                return "Auf \(job.deutscherName) wird getestet ..." + section.anchor
             }
         }).resolved().formattedAsSectionHeader())
 
@@ -151,15 +161,19 @@ extension PackageRepository {
         if testCommand(output) {
             validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
-                    return "Tests pass on " + job.englishName + "."
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Tests pass on \(job.englishName)."
+                case .deutschDeutschland:
+                    return "Teste werden auf \(job.deutscherName) bestanden."
                 }
             }))
         } else {
             validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
-                    return "Tests fail on " + job.englishName + "." + section.crossReference.resolved(for: localization)
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Tests fail on \(job.englishName)." + section.crossReference.resolved(for: localization)
+                case .deutschDeutschland:
+                    return "Teste werden auf \(job.deutscherName) nicht bestanden." + section.crossReference.resolved(for: localization)
                 }
             }))
         }
@@ -178,8 +192,10 @@ extension PackageRepository {
 
             output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Updating test manifests..." + section.anchor
+                case .deutschDeutschland:
+                    return "Testliste wird aktuelisiert ..." + section.anchor
                 }
             }).resolved().formattedAsSectionHeader())
 
@@ -207,15 +223,19 @@ extension PackageRepository {
                 }
                 validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
-                    case .englishCanada:
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Updated test manifests."
+                    case .deutschDeutschland:
+                        return "Testliste wurde aktualisiert."
                     }
                 }))
             } catch {
                 validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
-                    case .englishCanada:
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Failed to update test manifests." + section.crossReference.resolved(for: localization)
+                    case .deutschDeutschland:
+                        return "Die Aktualisierung der Testliste ist fehlgeschlagen." + section.crossReference.resolved(for: localization)
                     }
                 }))
             }
@@ -227,8 +247,10 @@ extension PackageRepository {
         let section = validationStatus.newSection()
         output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Checking test coverage on \(job.englishName)..." + section.anchor
+            case .deutschDeutschland:
+                return "Testabdeckung auf \(job.deutscherName) wird geprüft ..."
             }
         }).resolved().formattedAsSectionHeader())
 
@@ -239,8 +261,10 @@ extension PackageRepository {
 
             validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in // @exempt(from: tests)
                 switch localization {
-                case .englishCanada: // @exempt(from: tests)
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada: // @exempt(from: tests)
                     return "Test coverage could not be determined on \(job.englishName)." + section.crossReference.resolved(for: localization)
+                case .deutschDeutschland:
+                    return "Testabdeckung auf \(job.englishName) konnte nicht verarbeitet werden." + section.crossReference.resolved(for: localization)
                 }
             }))
         }
@@ -252,8 +276,10 @@ extension PackageRepository {
                 guard let fromPackageManager = try codeCoverageReport(ignoreCoveredRegions: true, reportProgress: { output.print($0) }).get() else { // @exempt(from: tests) Untestable in Xcode due to interference.
                     failStepWithError(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
-                        case .englishCanada:
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return "The package manager has not produced a test coverage report."
+                        case .deutschDeutschland:
+                            return "Der Paketverwalter hat keinen Testabdeckungsbericht erstellt."
                         }
                     }).resolved())
                     return
@@ -263,8 +289,10 @@ extension PackageRepository {
                 guard let fromXcode = try codeCoverageReport(on: job.testSDK, ignoreCoveredRegions: true, reportProgress: { output.print($0) }).get() else {
                     failStepWithError(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
-                        case .englishCanada:
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return "Xcode has not produced a test coverage report."
+                        case .deutschDeutschland:
+                            return "Xcode erstellte keinen Testabdeckungsbericht erstellt."
                         }
                     }).resolved())
                     return
@@ -333,15 +361,19 @@ extension PackageRepository {
             if passing {
                 validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
-                    case .englishCanada:
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Test coverage is complete on \(job.englishName)."
+                    case .deutschDeutschland:
+                        return "Testabdeckung auf \(job.deutscherName) ist vollständig."
                     }
                 }))
             } else {
                 validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in // @exempt(from: tests)
                     switch localization {
-                    case .englishCanada: // @exempt(from: tests)
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada: // @exempt(from: tests)
                         return "Test coverage is incomplete on \(job.englishName)." + section.crossReference.resolved(for: localization)
+                    case .deutschDeutschland:
+                        return "Testabdeckung auf \(job.deutscherName) ist unvollständig." + section.crossReference.resolved(for: localization)
                     }
                 }))
             }

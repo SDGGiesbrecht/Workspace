@@ -20,7 +20,7 @@ Nachdem Sie Ihre Idee [gemeldet](#schritt-1-melden) haben und ein Verwalter Ihne
 1. **Das Lager (*repository*) aufspalten (*fork*)**. Auf „Fork“ oben rechts auf der Lagerseite klicken. (Diesen Schritt überspringen, wenn sie schon Schreibzugriff haben.)
 2. **Einen lokalen Nachbau (*clone*) erstellen**.#cloneScript
 3. **Einen Entwicklungszweig (*branch*) erstellen**. `git checkout -b igrendwelcher‐neuer‐zweigname`
-4. **Den Arbeitsbereich aufstellen**. Auf `Refresh` (*auffrischen*) in der Lagerwurzel doppelklicken.
+4. **Den Arbeitsbereich aufstellen**. Auf `Refresh` (*auffrischen*) in der Lagerwurzel doppelklicken. (Wenn Ihr System so eingestellt ist, dass es das *Verarbeiten* von Skripts bevorzugt, anstatt das *Ausführen*, dann müssen Sie vielleicht stattdessen das Skript in einem Terminal ausführen.)
 
 Jetzt sind Sie bereit, Ihre Idee zu probieren.
 

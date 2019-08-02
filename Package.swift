@@ -67,7 +67,7 @@ import PackageDescription
 ///
 /// #### Refresh the Project
 ///
-/// To refresh the project, double‐click the `Refresh` script for the corresponding operating system. (If you are on Linux and double‐clicking fails or opens a text file, see [here](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/Linux.html).)
+/// To refresh the project, double‐click the `Refresh` script for the corresponding operating system. (If your system is set to *edit* scripts instead of *execute* them, you may have to execute the file from a terminal instead.)
 ///
 /// `Refresh` opens a terminal window, and in it Workspace reports its actions while it sets the project folder up for development. (This may take a while the first time, but subsequent runs are faster.)
 ///

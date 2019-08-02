@@ -80,10 +80,10 @@ extension Workspace.Refresh {
                     "",
                     "... kann die Datei in das „MeineBibliotek“‐Ziel so verwenden ...",
                     "",
-                    "let vorlage: String = Ressouren.Vorlagen.einfacheVorlage",
+                    "let vorlage: Zeichenkette = Ressouren.Vorlagen.einfacheVorlage",
                     "print(vorlage)",
                     "",
-                    "Die meisten Dateien werden als „Data“ eingebaut, aber manche Dateinamenserweiterungen sind erkannt und werden als genaueren Typen eingebaut (z. B. „.txt“ als „String“).",
+                    "Die meisten Dateien werden als „Daten“ eingebaut, aber manche Dateinamenserweiterungen sind erkannt und werden als genaueren Typen eingebaut (z. B. „.txt“ als „Zeichenkette“).",
                     ].joinedAsLines()
             }
         })

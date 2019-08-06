@@ -90,14 +90,14 @@ public struct FileHeaderConfiguration : Codable {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Copyright #dates \(author) and the \(project) project contributors."
                 case .deutschDeutschland:
-                    return "Urheberrecht #dates \(author) und die Mitwirkende des \(project)‐Projekts."
+                    return "Urheberrecht #dates \(author) und die Mitwirkenden des \(project)‐Projekts."
                 }
             } else {
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Copyright #dates the \(project) project contributors."
                 case .deutschDeutschland:
-                    return "Urheberrecht #dates die Mitwirkende des \(project)‐Projekts."
+                    return "Urheberrecht #dates die Mitwirkenden des \(project)‐Projekts."
                 }
             }
         }

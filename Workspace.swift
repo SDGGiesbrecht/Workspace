@@ -21,6 +21,7 @@ public enum Metadata {
 
     public static let packageURL = URL(string: "https://github.com/SDGGiesbrecht/Workspace")!
     public static let issuesURL = packageURL.appendingPathComponent("issues")
+    public static let documentationURL = URL(string: "https://sdggiesbrecht.github.io/Workspace")!
 }
 
 public let configuration: WorkspaceConfiguration = {
@@ -33,7 +34,7 @@ public let configuration: WorkspaceConfiguration = {
 
     configuration.documentation.currentVersion = Metadata.latestStableVersion
     configuration.documentation.projectWebsite = URL(string: "https://github.com/SDGGiesbrecht/Workspace#workspace")!
-    configuration.documentation.documentationURL = URL(string: "https://sdggiesbrecht.github.io/Workspace")!
+    configuration.documentation.documentationURL = Metadata.documentationURL
     configuration.documentation.repositoryURL = Metadata.packageURL
 
     configuration.documentation.api.yearFirstPublished = 2017

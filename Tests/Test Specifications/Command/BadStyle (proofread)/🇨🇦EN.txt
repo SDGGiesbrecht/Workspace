@@ -29,15 +29,11 @@ Sources/BadStyle/Normalization/Decomposition.swift
 Sources/BadStyle/Normalization/EmptyIndents.swift
 Sources/BadStyle/Normalization/MarkdownLineBreaks.md
 Sources/BadStyle/Normalization/ShellExecutability.sh
-Sources/BadStyle/Rules/Deprecation/ExampleDirectives.swift
-Sources/BadStyle/Rules/Deprecation/InheritanceDirectives.swift
 Sources/BadStyle/Rules/Deprecation/LinuxDocumentation.swift
 Line 4
 Such headings are no longer necessary for the generated documentation. (deprecatedConditionDocumentation)
     // MARK: - #if os(macOS)
 
-Sources/BadStyle/Rules/Deprecation/TestExemption.swift
-Sources/BadStyle/Rules/Deprecation/Warnings.swift
 Sources/BadStyle/Rules/Documentation/CompilationConditions.swift
 Line 10
 Such headings are no longer necessary for the generated documentation. (deprecatedConditionDocumentation)

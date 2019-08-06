@@ -18,14 +18,18 @@ public enum Workspace {
 
     private static let projectName = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "project"
+        case .deutschDeutschland:
+            return "projekt"
         }
     })
     private static let projectDescription = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "The location of the target project if it is not at the current working directory."
+        case .deutschDeutschland:
+            return "Die Standort von dem Zielprojekt, wenn es nicht in dem aktuellen Arbeitsverzeichnis ist."
         }
     })
     internal static let projectOption = Option(name: projectName, description: projectDescription, type: ArgumentType.path)
@@ -34,15 +38,19 @@ public enum Workspace {
 
     private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "workspace"
+        case .deutschDeutschland:
+            return "arbeitsbereich"
         }
     })
 
     private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "automates management of Swift projects."
+        case .deutschDeutschland:
+            return "automatisiert die Verwaltung Swift‐Projekte."
         }
     })
 

@@ -68,7 +68,7 @@ extension Workspace.Validate {
                 switch localization {
                 case .englishUnitedKingdom:
                     return "Validating ‘\(projectName)’..."
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                case .englishUnitedStates, .englishCanada:
                     return "Validating “\(projectName)”..."
                 case .deutschDeutschland:
                     return "„\(projectName)“ wird geprüft ..."

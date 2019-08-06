@@ -48,7 +48,7 @@ extension Workspace {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "behaves as an Xcode build phase."
             case .deutschDeutschland:
-                return "verhält sich wie ein Xcode‐Bauschritt."
+                return "verhält sich wie ein Xcode‐Erstellungsschritt."
             }
         }), type: ArgumentType.boolean)
 

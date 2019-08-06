@@ -32,8 +32,10 @@ public func run() { // @exempt(from: tests)
         #else
         let reason = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Workspace"
+            case .deutschDeutschland:
+                return "Arbeitsbereich"
             }
         })
         ProcessInfo.processInfo.performActivity(options: [.userInitiated, .idleSystemSleepDisabled], reason: String(reason.resolved())) {

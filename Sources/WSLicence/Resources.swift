@@ -15,6 +15,7 @@
 import Foundation
 
 internal enum Resources {}
+internal typealias Ressourcen = Resources
 
 extension Resources {
     enum Licences {

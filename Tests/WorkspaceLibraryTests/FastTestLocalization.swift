@@ -1,5 +1,5 @@
 /*
- SDGCornerstone.swift
+ FastTestLocalization.swift
 
  This source file is part of the Workspace open source project.
  https://github.com/SDGGiesbrecht/Workspace#workspace
@@ -12,8 +12,15 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Belong in SDGCornerstone.)
+import WSGeneralTestImports
 
-public typealias Menge = Set
+public enum InterfaceLocalization : String, InputLocalization, Localization {
 
-public typealias Zeichenkette = String
+    // MARK: - Cases
+
+    case englishUnitedKingdom = "en\u{2D}GB"
+
+    // MARK: - Localization
+
+    public static let fallbackLocalization = InterfaceLocalization.englishUnitedKingdom
+}

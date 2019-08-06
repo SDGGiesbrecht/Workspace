@@ -26,15 +26,19 @@ extension Workspace.Validate {
 
         private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "all"
+            case .deutschDeutschland:
+                return "alles"
             }
         })
 
         private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "performs all configured validation checks."
+            case .deutschDeutschland:
+                return "führt alle eingestellte Prüfungen aus."
             }
         })
 
@@ -62,8 +66,12 @@ extension Workspace.Validate {
             let projectName = StrictString(try options.project.projectName())
             output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
-                    return "Validating “" + projectName + "”..."
+                case .englishUnitedKingdom:
+                    return "Validating ‘\(projectName)’..."
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Validating “\(projectName)”..."
+                case .deutschDeutschland:
+                    return "„\(projectName)“ wird geprüft ..."
                 }
             }).resolved().formattedAsSectionHeader())
 
@@ -113,23 +121,35 @@ extension Workspace.Validate {
                 let state = validationStatus.newSection()
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
-                    case .englishCanada:
-                        return "Executing custom validation: “" + task.executable + "”..." + state.anchor
+                    case .englishUnitedKingdom:
+                        return "Executing custom validation: ‘\(task.executable)’..." + state.anchor
+                    case .englishUnitedStates, .englishCanada:
+                        return "Executing custom validation: “\(task.executable)”..." + state.anchor
+                    case .deutschDeutschland:
+                        return "Sonderprüfung wird ausgeführt: „\(task.executable)“ ..." + state.anchor
                     }
                 }).resolved().formattedAsSectionHeader())
                 do {
                     try task.execute(output: output)
                     validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
-                        case .englishCanada:
-                            return "Custom validation passes: “" + task.executable + "”"
+                        case .englishUnitedKingdom:
+                            return "Custom validation passes: ‘\(task.executable)’"
+                        case .englishUnitedStates, .englishCanada:
+                            return "Custom validation passes: “\(task.executable)”"
+                        case .deutschDeutschland:
+                            return "Sonderprüfung wurde bestanden: “\(task.executable)”"
                         }
                     }))
                 } catch {
                     validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
-                        case .englishCanada:
-                            return "Custom validation fails: “" + task.executable + "”" + state.crossReference.resolved(for: localization)
+                        case .englishUnitedKingdom:
+                            return "Custom validation fails: ‘\(task.executable)’" + state.crossReference.resolved(for: localization)
+                        case .englishUnitedStates, .englishCanada:
+                            return "Custom validation fails: “\(task.executable)”" + state.crossReference.resolved(for: localization)
+                        case .deutschDeutschland:
+                            return "Sonderprüfung wurde nicht bestanden: “\(task.executable)”" + state.crossReference.resolved(for: localization)
                         }
                     }))
                 }
@@ -143,8 +163,10 @@ extension Workspace.Validate {
 
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in // @exempt(from: tests)
                     switch localization {
-                    case .englishCanada:
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Validating project state..." + state.anchor
+                    case .deutschDeutschland:
+                        return "Projektstand wird geprüft ..." + state.anchor
                     }
                 }).resolved().formattedAsSectionHeader())
 
@@ -154,15 +176,19 @@ extension Workspace.Validate {
 
                     validationStatus.failStep(message: UserFacing({ localization in
                         switch localization {
-                        case .englishCanada:
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return "The project is out of date. Please validate before committing." + state.crossReference.resolved(for: localization)
+                        case .deutschDeutschland:
+                            return "Das Projektstand ist veraltet. Bitte prüfen vor übergeben." + state.crossReference.resolved(for: localization)
                         }
                     }))
                 } else {
                     validationStatus.passStep(message: UserFacing({ localization in // @exempt(from: tests)
                         switch localization {
-                        case .englishCanada:
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return "The project is up to date."
+                        case .deutschDeutschland:
+                            return "Das Projekt ist auf dem neuesten Stand."
                         }
                     }))
                 }
@@ -175,14 +201,15 @@ extension Workspace.Validate {
                 let update = try Workspace.CheckForUpdates.checkForUpdates(output: output) { // @exempt(from: tests) Determined externally.
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in // @exempt(from: tests)
                     switch localization {
-                    case .englishCanada:
-                        let url = URL(string: "#installation", relativeTo: Metadata.packageURL)!
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return [
                             "This validation used Workspace \(Metadata.latestStableVersion.string()), which is no longer up to date.",
-                            "To update the version used by this project, run:",
-                            "$ workspace refresh scripts •use‐version \(update.string())",
-                            "(This requires a full installation. See the following link.)",
-                            "\(url.absoluteString.in(Underline.underlined))"
+                            "\(update.string()) is available."
+                            ].joinedAsLines()
+                    case .deutschDeutschland:
+                        return [
+                            "Diese Prüfung hat Abreitsbereich \(Metadata.latestStableVersion.string()) verwendet, das nicht auf dem neuesten Stand ist.",
+                            "\(update.string()) ist erhältlich."
                             ].joinedAsLines()
                     }
                 }).resolved().formattedAsWarning().separated())

@@ -19,7 +19,7 @@ extension Workspace {
 
         private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .engilshUnitedKingdom, .englishUnitedStates, .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "validate"
             case .deutschDeutschland:
                 return "prüfen"

@@ -19,15 +19,19 @@ extension Workspace {
 
         private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "refresh"
+            case .deutschDeutschland:
+                return "auffrischen"
             }
         })
 
         private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "refreshes the project by updating its components and readying it for development."
+            case .deutschDeutschland:
+                return "frischt das Projekt auf, durch Aktualisierungen der Bestandteile und Vorbereitungen für Entwicklung."
             }
         })
 

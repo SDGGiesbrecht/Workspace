@@ -41,7 +41,7 @@ class APITests : TestCase {
         PackageRepository(mock: "AllDisabled").test(commands: [
             ["refresh"],
             ["validate"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testAllTasks() {
@@ -60,7 +60,7 @@ class APITests : TestCase {
         PackageRepository(mock: "AllTasks").test(commands: [
             ["refresh"],
             ["validate"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testBadStyle() {
@@ -70,19 +70,19 @@ class APITests : TestCase {
         PackageRepository(mock: "BadStyle").test(commands: [
             ["proofread"],
             ["proofread", "•xcode"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testBrokenExample() {
         PackageRepository(mock: "BrokenExample").test(commands: [
             ["refresh", "examples"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testBrokenTests() {
         PackageRepository(mock: "BrokenTests").test(commands: [
             ["test"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCheckedInDocumentation() throws {
@@ -119,7 +119,7 @@ class APITests : TestCase {
             ["refresh"],
             ["validate", "•job", "miscellaneous"],
             ["validate", "•job", "deployment"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCheckForUpdates() throws {
@@ -143,7 +143,7 @@ class APITests : TestCase {
             ["refresh", "continuous‐integration"],
             ["refresh", "licence"],
             ["refresh", "file‐headers"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCustomProofread() {
@@ -163,7 +163,7 @@ class APITests : TestCase {
             ["proofread", "•xcode"],
             ["refresh", "licence"],
             ["refresh", "file‐headers"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCustomReadMe() {
@@ -187,7 +187,7 @@ class APITests : TestCase {
             ["refresh", "read‐me"],
             ["refresh", "licence"],
             ["refresh", "file‐headers"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCustomTasks() {
@@ -205,7 +205,7 @@ class APITests : TestCase {
         PackageRepository(mock: "CustomTasks").test(commands: [
             ["refresh"],
             ["validate"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testDefaults() {
@@ -229,7 +229,7 @@ class APITests : TestCase {
             ["validate"],
             ["validate", "•job", "macos"]
         ]
-        PackageRepository(mock: "Default").test(commands: commands, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "Default").test(commands: commands, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testExecutable() {
@@ -244,7 +244,7 @@ class APITests : TestCase {
             ["refresh", "read‐me"],
             ["document"],
             ["validate", "documentation‐coverage"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testFailingCustomTasks() {
@@ -258,7 +258,7 @@ class APITests : TestCase {
         configuration.documentation.api.enforceCoverage = false
         PackageRepository(mock: "FailingCustomTasks").test(commands: [
             ["refresh"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testFailingCustomValidation() {
@@ -273,7 +273,7 @@ class APITests : TestCase {
         configuration.documentation.api.enforceCoverage = false
         PackageRepository(mock: "FailingCustomValidation").test(commands: [
             ["validate"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testFailingDocumentationCoverage() {
@@ -284,7 +284,7 @@ class APITests : TestCase {
         configuration.documentation.repositoryURL = URL(string: "domain.tld")!
         PackageRepository(mock: "FailingDocumentationCoverage").test(commands: [
             ["validate", "documentation‐coverage"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testFailingTests() {
@@ -305,7 +305,7 @@ class APITests : TestCase {
             ["validate", "build"],
             ["validate", "test‐coverage"],
             ["validate", "build", "•job", "miscellaneous"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testHeaders() {
@@ -315,12 +315,12 @@ class APITests : TestCase {
             ["refresh", "file‐headers"],
             ["refresh", "examples"],
             ["refresh", "inherited‐documentation"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testHelp() throws {
-        testCommand(Workspace.command, with: ["help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace)", overwriteSpecificationInsteadOfFailing: false)
-        testCommand(Workspace.command, with: ["proofread", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace proofread)", overwriteSpecificationInsteadOfFailing: false)
+        testCommand(Workspace.command, with: ["help"], localizations: FastTestLocalization.self, uniqueTestName: "Help (workspace)", overwriteSpecificationInsteadOfFailing: false)
+        testCommand(Workspace.command, with: ["proofread", "help"], localizations: FastTestLocalization.self, uniqueTestName: "Help (workspace proofread)", overwriteSpecificationInsteadOfFailing: false)
         #if os(Linux) // Linux has no “xcode” subcommand, causing spec mis‐match.
         for localization in InterfaceLocalization.allCases {
             try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
@@ -328,27 +328,27 @@ class APITests : TestCase {
             }
         }
         #else
-        testCommand(Workspace.command, with: ["refresh", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace refresh)", overwriteSpecificationInsteadOfFailing: false)
+        testCommand(Workspace.command, with: ["refresh", "help"], localizations: FastTestLocalization.self, uniqueTestName: "Help (workspace refresh)", overwriteSpecificationInsteadOfFailing: false)
         #endif
-        testCommand(Workspace.command, with: ["validate", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace validate)", overwriteSpecificationInsteadOfFailing: false)
-        testCommand(Workspace.command, with: ["document", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace document)", overwriteSpecificationInsteadOfFailing: false)
-        testCommand(Workspace.command, with: ["refresh", "continuous‐integration", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace refresh continuous‐integration)", overwriteSpecificationInsteadOfFailing: false)
-        testCommand(Workspace.command, with: ["refresh", "examples", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace refresh examples)", overwriteSpecificationInsteadOfFailing: false)
-        testCommand(Workspace.command, with: ["refresh", "inherited‐documentation", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace refresh inherited‐documentation)", overwriteSpecificationInsteadOfFailing: false)
-        testCommand(Workspace.command, with: ["refresh", "resources", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace refresh resources)", overwriteSpecificationInsteadOfFailing: false)
-        testCommand(Workspace.command, with: ["refresh", "scripts", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace refresh scripts)", overwriteSpecificationInsteadOfFailing: false)
+        testCommand(Workspace.command, with: ["validate", "help"], localizations: FastTestLocalization.self, uniqueTestName: "Help (workspace validate)", overwriteSpecificationInsteadOfFailing: false)
+        testCommand(Workspace.command, with: ["document", "help"], localizations: FastTestLocalization.self, uniqueTestName: "Help (workspace document)", overwriteSpecificationInsteadOfFailing: false)
+        testCommand(Workspace.command, with: ["refresh", "continuous‐integration", "help"], localizations: FastTestLocalization.self, uniqueTestName: "Help (workspace refresh continuous‐integration)", overwriteSpecificationInsteadOfFailing: false)
+        testCommand(Workspace.command, with: ["refresh", "examples", "help"], localizations: FastTestLocalization.self, uniqueTestName: "Help (workspace refresh examples)", overwriteSpecificationInsteadOfFailing: false)
+        testCommand(Workspace.command, with: ["refresh", "inherited‐documentation", "help"], localizations: FastTestLocalization.self, uniqueTestName: "Help (workspace refresh inherited‐documentation)", overwriteSpecificationInsteadOfFailing: false)
+        testCommand(Workspace.command, with: ["refresh", "resources", "help"], localizations: FastTestLocalization.self, uniqueTestName: "Help (workspace refresh resources)", overwriteSpecificationInsteadOfFailing: false)
+        testCommand(Workspace.command, with: ["refresh", "scripts", "help"], localizations: FastTestLocalization.self, uniqueTestName: "Help (workspace refresh scripts)", overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testInvalidResourceDirectory() {
         PackageRepository(mock: "InvalidResourceDirectory").test(commands: [
             ["refresh", "resources"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testInvalidTarget() {
         PackageRepository(mock: "InvalidTarget").test(commands: [
             ["refresh", "resources"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testLocalizationIdentifier() {
@@ -358,21 +358,21 @@ class APITests : TestCase {
         dictionary["🇬🇧EN"] = false
         XCTAssertEqual(dictionary[ContentLocalization.englishUnitedKingdom], false)
 
-        testCustomStringConvertibleConformance(of: LocalizationIdentifier("en"), localizations: InterfaceLocalization.self, uniqueTestName: "English", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: LocalizationIdentifier("cmn"), localizations: InterfaceLocalization.self, uniqueTestName: "Mandarin", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: LocalizationIdentifier("zxx"), localizations: InterfaceLocalization.self, uniqueTestName: "Unknown", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: LocalizationIdentifier("en"), localizations: FastTestLocalization.self, uniqueTestName: "English", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: LocalizationIdentifier("cmn"), localizations: FastTestLocalization.self, uniqueTestName: "Mandarin", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: LocalizationIdentifier("zxx"), localizations: FastTestLocalization.self, uniqueTestName: "Unknown", overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testMissingDocumentation() {
         PackageRepository(mock: "MissingDocumentation").test(commands: [
             ["refresh", "inherited‐documentation"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testMissingExample() {
         PackageRepository(mock: "MissingExample").test(commands: [
             ["refresh", "examples"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testMissingReadMeLocalization() {
@@ -381,7 +381,7 @@ class APITests : TestCase {
         configuration.documentation.readMe.contents.resolve = { _ in [:] }
         PackageRepository(mock: "MissingReadMeLocalization").test(commands: [
             ["refresh", "read‐me"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testMultipleProducts() {
@@ -391,7 +391,7 @@ class APITests : TestCase {
         configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
         PackageRepository(mock: "MultipleProducts").test(commands: [
             ["refresh", "read‐me"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testNoLibraries() {
@@ -401,13 +401,13 @@ class APITests : TestCase {
         configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
         PackageRepository(mock: "NoLibraries").test(commands: [
             ["refresh", "read‐me"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testNoLocalizations() {
         PackageRepository(mock: "NoLocalizations").test(commands: [
             ["refresh", "read‐me"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testOneLocalization() {
@@ -415,7 +415,7 @@ class APITests : TestCase {
         configuration.documentation.localizations = ["en"]
         PackageRepository(mock: "OneLocalization").test(commands: [
             ["refresh", "github"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testOneProductMultipleModules() {
@@ -425,7 +425,7 @@ class APITests : TestCase {
         configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
         PackageRepository(mock: "OneProductMultipleModules").test(commands: [
             ["refresh", "read‐me"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testPartialReadMe() {
@@ -451,7 +451,7 @@ class APITests : TestCase {
             ["refresh", "read‐me"],
             ["refresh", "github"],
             ["document"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testSDGLibrary() {
@@ -515,7 +515,7 @@ class APITests : TestCase {
             ["proofread", "•xcode"],
             ["validate"]
             ])
-        PackageRepository(mock: "SDGLibrary").test(commands: commands, configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "SDGLibrary").test(commands: commands, configuration: configuration, sdg: true, localizations: FastTestLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testSDGTool() {
@@ -580,7 +580,7 @@ class APITests : TestCase {
 
             ["proofread", "•xcode"]
             ])
-        PackageRepository(mock: "SDGTool").test(commands: commands, configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "SDGTool").test(commands: commands, configuration: configuration, sdg: true, localizations: FastTestLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testSelfSpecificScripts() throws {

@@ -61,6 +61,7 @@ public struct APIDocumentationConfiguration : Codable {
         }
     })
 
+    #warning("verschlüsselterTravisCIVerteilungsSchlüssel")
     /// An encrypted Travis CI deployment key.
     ///
     /// By specifying this, projects with continuous integration management active can avoid checking generated files into the main branch.

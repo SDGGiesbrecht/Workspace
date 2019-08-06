@@ -33,7 +33,7 @@ extension Workspace.Refresh {
             switch localization {
             case .englishUnitedKingdom:
                 return "synchronises the project’s compiled examples."
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            case .englishUnitedStates, .englishCanada:
                 return "synchronizes the project’s compiled examples."
             case .deutschDeutschland:
                 return "stimmt die übersetzte Beispiele des Projekts miteinander ab."

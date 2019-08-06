@@ -11,7 +11,7 @@ Options
 •language [language preference] A language to use instead of the one specified in preferences.
 •no‐colour Removes colour from the output.
 •project [path] The location of the target project if it is not at the current working directory.
-•xcode behaves as an xcode build phase.
+•xcode behaves as an Xcode build phase.
 
 Argument Types
 

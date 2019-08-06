@@ -262,6 +262,7 @@ let package = Package(
             "WSGeneralImports",
             "WSProject",
             "WSCustomTask",
+            .product(name: "SDGCollections", package: "SDGCornerstone")
             .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .product(name: "SDGSwiftSource", package: "SDGSwift")
             ]),

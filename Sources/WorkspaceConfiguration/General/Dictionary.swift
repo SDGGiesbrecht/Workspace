@@ -16,6 +16,17 @@
 
 extension Dictionary where Key == LocalizationIdentifier {
 
+    // @localization(🇩🇪DE)
+    /// Greift auf den entsprechenden lokalisierten Wert zu.
+    ///
+    /// - Parameters:
+    ///     - key: Die Lokalisation.
+    // @localization(🇬🇧EN)
+    /// Accesses the respective localised value.
+    ///
+    /// - Parameters:
+    ///     - key: The localisation.
+    // @localization(🇺🇸EN) @localization(🇨🇦EN)
     /// Accesses the respective localized value.
     ///
     /// - Parameters:

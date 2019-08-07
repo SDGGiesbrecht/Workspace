@@ -20,6 +20,7 @@ import SDGSwiftConfiguration
 
 import WSLocalizations
 
+public typealias ArbeitsbereichKonfiguration = WorkspaceConfiguration
 // @documentation(WorkspaceConfiguration)
 // #example(1, sampleConfiguration)
 /// The root API used in configuration files.

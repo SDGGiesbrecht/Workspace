@@ -80,20 +80,20 @@ public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hash
     /// The IETF language tag.
     public var code: String
     // @localization(🇩🇪DE) @crossReference(LocalizationIdentifier.code)
-    @inlinable public var kennzeichen: Zeichenkette {
+    public var kennzeichen: Zeichenkette {
         get { return code }
         set { code = newValue }
     }
 
+    // @localization(🇩🇪DE) @crossReference(LocalizationIdentifier.icon)
+    /// Das Sprachsymbol.
+    public var symbol: StrengerZeichenkette? {
+        return icon
+    }
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(LocalizationIdentifier.icon)
     /// The language icon.
     public var icon: StrictString? {
         return ContentLocalization.icon(for: code)
-    }
-    // @localization(🇩🇪DE) @crossReference(LocalizationIdentifier.icon)
-    /// Das Sprachsymbol.
-    @inlinable public var symbol: StrengerZeichenkette? {
-        return icon
     }
 
     public var _iconOrCode: StrictString {

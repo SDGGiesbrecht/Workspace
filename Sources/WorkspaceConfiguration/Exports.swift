@@ -24,5 +24,3 @@
 
 @_exported import struct SDGSwift.Version
 @_exported import SDGSwiftConfiguration
-
-#warning("Localize this.")

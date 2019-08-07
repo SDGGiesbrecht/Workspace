@@ -52,7 +52,7 @@ public enum Workspace {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "automates management of Swift projects."
         case .deutschDeutschland:
-            return "automatisiert die Verwaltung Swift‐Projekte."
+            return "automatisiert die Verwaltung von Swift‐Projekten."
         }
     })
 

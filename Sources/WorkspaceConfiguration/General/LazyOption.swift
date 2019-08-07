@@ -14,6 +14,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// @localization(🇩🇪DE) @crossReference(Lazy<Option>)
+/// Eine Option, die bequem ausgewertet werden kann. Es kann sich von anderen Optionen herleiten, die geändert werden können bevor diese Option ausgewertet wird.
+public typealias Bequem = Lazy
+
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Lazy<Option>)
 /// An option which can be resolved lazily. It can be derived from the state of other options, which can be modified before this option’s value is resolved.
 public struct Lazy<Option> : Decodable, Encodable where Option : Codable {
 

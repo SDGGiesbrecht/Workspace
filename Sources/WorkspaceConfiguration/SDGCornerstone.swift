@@ -22,6 +22,3 @@ public typealias Zeichenkette = String
 public typealias StrengerZeichenkette = StrictString
 
 public typealias EinheitlicherRessourcenzeiger = URL
-
-// #workaround(Belong in SDGSwift.)
-public typealias Paketenladeliste = PackageManifest

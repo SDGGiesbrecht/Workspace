@@ -15,7 +15,7 @@
  */
 
 // @localization(🇩🇪DE) @crossReference(Lazy<Option>)
-/// Eine Option, die bequem ausgewertet werden kann. Es kann sich von anderen Optionen herleiten, die geändert werden können bevor diese Option ausgewertet wird.
+/// Eine Einstellung, die bequem ausgewertet werden kann. Es kann sich von anderen Optionen herleiten, die geändert werden können bevor diese Einstellung ausgewertet wird.
 public typealias Bequem = Lazy
 // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Lazy<Option>)
 /// An option which can be resolved lazily. It can be derived from the state of other options, which can be modified before this option’s value is resolved.
@@ -24,10 +24,10 @@ public struct Lazy<Option> : Decodable, Encodable where Option : Codable {
     // MARK: - Initialization
 
     // @localization(🇩🇪DE) @crossReference(Lazy<Option>.init(resolve:))
-    /// Erstellt eine bequeme Option mit einem Auswertungsalgorithmus.
+    /// Erstellt eine bequeme Einstellung mit einem Auswertungsalgorithmus.
     ///
     /// - Parameters:
-    ///     - auswerten: Ein Abschluss, der die Option auswertet.
+    ///     - auswerten: Ein Abschluss, der die Einstellung auswertet.
     ///     - konfiguration: Die Konfiguration, aus der die Ergebnis hergeleitet werden soll.
     public init(auswerten: @escaping (_ konfiguration: ArbeitsbereichKonfiguration) -> Option) {
         self.init(resolve: auswerten)

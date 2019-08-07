@@ -19,3 +19,4 @@
 public typealias Menge = Set
 
 public typealias Zeichenkette = String
+public typealias StrengerZeichenkette = StrictString

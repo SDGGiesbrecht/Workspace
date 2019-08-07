@@ -17,11 +17,29 @@
 import SDGControlFlow
 import WSLocalizations
 
-/// A localization identifier; either an IETF language tag or a language icon.
+// @localization(🇩🇪DE) @crossReference(LocalizationIdentifier)
+/// Eine lokalisationskennzeichen; entweder ein IETF‐Sprachkennzeichen oder ein Sprachsymbol.
+public typealias Lokalisationskennzeichen = LocalizationIdentifier
+// @localization(🇬🇧EN) @crossReference(LocalizationIdentifier)
+/// A localisation identifier; either an IETF language tag or a language icon.
+public typealias LocalisationIdentifier = LocalizationIdentifier
+// @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(LocalizationIdentifier)
+/// A localisation identifier; either an IETF language tag or a language icon.
 public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hashable, TransparentWrapper {
 
     // MARK: - Initialization
 
+    // @localization(🇩🇪DE)
+    /// Erstellt ein Kennzeichen aus einer Lokalisation.
+    ///
+    /// - Parameters:
+    ///     - localization: Die Lokalisation.
+    // @localization(🇬🇧EN)
+    /// Creates an identifier from a localisation.
+    ///
+    /// - Parameters:
+    ///     - localization: The localisation.
+    // @localization(🇺🇸EN) @localization(🇨🇦EN)
     /// Creates an identifier from a localization.
     ///
     /// - Parameters:
@@ -30,6 +48,17 @@ public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hash
         code = localization.code
     }
 
+    // @localization(🇩🇪DE)
+    /// Erstellt ein Kennzeichen aus einem IETF‐Sprachkennzeichen oder einem Sprachsymbol.
+    ///
+    /// - Parameters:
+    ///     - localization: Die Lokalisation.
+    // @localization(🇬🇧EN)
+    /// Creates a localisation identifier from an IETF language tag or a language icon.
+    ///
+    /// - Parameters:
+    ///     - identifier: The IETF language tag or language icon.
+    // @localization(🇺🇸EN) @localization(🇨🇦EN)
     /// Creates a localization identifier from an IETF language tag or a language icon.
     ///
     /// - Parameters:
@@ -47,12 +76,24 @@ public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hash
 
     // MARK: - Properties
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(LocalizationIdentifier.code)
     /// The IETF language tag.
     public var code: String
+    // @localization(🇩🇪DE) @crossReference(LocalizationIdentifier.code)
+    @inlinable public var kennzeichen: Zeichenkette {
+        get { return code }
+        set { code = newValue }
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(LocalizationIdentifier.icon)
     /// The language icon.
     public var icon: StrictString? {
         return ContentLocalization.icon(for: code)
+    }
+    // @localization(🇩🇪DE) @crossReference(LocalizationIdentifier.code)
+    /// Das Sprachsymbol.
+    @inlinable public var symbol: StrengerZeichenkette? {
+        return icon
     }
 
     public var _iconOrCode: StrictString {

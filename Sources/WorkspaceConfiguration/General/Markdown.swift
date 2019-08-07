@@ -14,5 +14,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// @localization(🇩🇪DE)
+/// Markdown‐Quelltext.
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
 /// Markdown source.
 public typealias Markdown = StrictString

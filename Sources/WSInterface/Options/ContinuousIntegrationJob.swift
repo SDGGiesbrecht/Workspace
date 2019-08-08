@@ -33,7 +33,7 @@ extension ContinuousIntegrationJob {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "A particular continuous integration job."
         case .deutschDeutschland:
-            return "Eine bestimmte aufgabe der fortlaufenden Einbildung."
+            return "Eine bestimmte aufgabe der fortlaufenden Einbindung."
         }
     })
 

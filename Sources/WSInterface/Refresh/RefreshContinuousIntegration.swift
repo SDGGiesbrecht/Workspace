@@ -25,7 +25,7 @@ extension Workspace.Refresh {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "continuous‐integration"
             case .deutschDeutschland:
-                return "fortlaufende‐einbildung"
+                return "fortlaufende‐einbindung"
             }
         })
 
@@ -34,7 +34,7 @@ extension Workspace.Refresh {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "regenerates the project’s continuous integration configuration files."
             case .deutschDeutschland:
-                return "erstellt die Konfigurationsdateien des Projekts, die fortlaufende Einbildung einrichten."
+                return "erstellt die Konfigurationsdateien des Projekts, die fortlaufende Einbindung einrichten."
             }
         })
 
@@ -74,7 +74,7 @@ extension Workspace.Refresh {
                     "",
                     "• Travis CI (https://travis\u{2D}ci.org)",
                     "",
-                    "• Kyle Fuller und das Swift Version Manager (https://github.com/kylef/swiftenv), fortlaufende Einbildung auf Linux ermöglicht.",
+                    "• Kyle Fuller und das Swift Version Manager (https://github.com/kylef/swiftenv), fortlaufende Einbindung auf Linux ermöglicht.",
                     ].joinedAsLines()
             }
         })
@@ -92,7 +92,7 @@ extension Workspace.Refresh {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Refreshing continuous integration configuration..."
                 case .deutschDeutschland:
-                    return "Konfiguration für Fortlaufende Einbildung wird aufgefrischt ..."
+                    return "Konfiguration für fortlaufende Einbindung wird aufgefrischt ..."
                 }
             }).resolved().formattedAsSectionHeader())
 

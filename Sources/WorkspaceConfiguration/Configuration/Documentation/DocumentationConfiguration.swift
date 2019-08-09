@@ -23,8 +23,34 @@ public struct DocumentationConfiguration : Codable {
 
     // MARK: - Properties
 
-    #warning("localisations")
-    #warning("lokalisationen")
+    // @localization(🇺🇸EN)
+    /// The localizations supported by the project.
+    ///
+    /// The default contains no localizations, but some tasks may throw errors if they require localizations to be specified.
+    ///
+    /// ### Localizing Documentation
+    ///
+    /// When documenting with more than one localization active, each documentation comment must be marked according to its localization.
+    ///
+    /// ```swift
+    /// // @localization(🇪🇸ES)
+    /// /// Verifica la desigualdad.
+    /// // @localization(🇺🇸EN) @localization(🇬🇧EN)
+    /// /// Checks for inequality.
+    /// infix operator ≠
+    /// ```
+    ///
+    /// Localized versions of a symbol can be cross‐referenced with each other so that they will be treated as the same symbol. In the following example, `doSomething()` will only appear in the English documentation and `hacerAlgo()` will only appear in the Spanish documentation. Switching the language while looking at one of them will display the opposite function.
+    ///
+    /// ```swift
+    /// // @localization(🇺🇸EN) @localization(🇬🇧EN) @crossReference(doSomething)
+    /// /// Does something.
+    /// public func doSomething() {}
+    /// // @localization(🇪🇸ES) @crossReference(doSomething)
+    /// /// Hace algo.
+    /// public func hacerAlgo() {}
+    /// ```
+    // @localization(🇨🇦EN) @crossReference(DocumentationConfiguration.localizations)
     /// The localizations supported by the project.
     ///
     /// The default contains no localizations, but some tasks may throw errors if they require localizations to be specified.
@@ -52,6 +78,68 @@ public struct DocumentationConfiguration : Codable {
     /// public func faireQuelqueChose() {}
     /// ```
     public var localizations: [LocalizationIdentifier] = []
+    // @localization(🇬🇧EN) @crossReference(DocumentationConfiguration.localizations)
+    /// The localisations supported by the project.
+    ///
+    /// The default contains no localisations, but some tasks may throw errors if they require localisations to be specified.
+    ///
+    /// ### Localising Documentation
+    ///
+    /// When documenting with more than one localisation active, each documentation comment must be marked according to its localisation.
+    ///
+    /// ```swift
+    /// // @localization(🇫🇷FR)
+    /// /// Vérifie l’inégalité.
+    /// // @localization(🇬🇧EN) @localization(🇺🇸EN)
+    /// /// Checks for inequality.
+    /// infix operator ≠
+    /// ```
+    ///
+    /// Localised versions of a symbol can be cross‐referenced with each other so that they will be treated as the same symbol. In the following example, `doSomething()` will only appear in the English documentation and `faireQuelqueChose()` will only appear in the French documentation. Switching the language while looking at one of them will display the opposite function.
+    ///
+    /// ```swift
+    /// // @localization(🇬🇧EN) @localization(🇺🇸EN) @crossReference(doSomething)
+    /// /// Does something.
+    /// public func doSomething() {}
+    /// // @localization(🇫🇷FR) @crossReference(doSomething)
+    /// /// Fait quelque chose.
+    /// public func faireQuelqueChose() {}
+    /// ```
+    public var localisations: [LocalisationIdentifier] {
+        get { return localizations }
+        set { localizations = newValue }
+    }
+    // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.localizations)
+    /// Die Lokalisationen des Projekts.
+    ///
+    /// Keine Lokalisationen sind voreingestellt, aber manche Aufgaben können Fehler werfen wenn keine Lokalisationen angegeben sind.
+    ///
+    /// ### Dokumentation lokalisieren
+    ///
+    /// Wenn mehrere Lokalisationen eingeschaltet sind, jeder Dokumentationskommentar muss mit einem Lokalisation markiert werden.
+    ///
+    /// ```swift
+    /// // @lokalisation(🇫🇷FR)
+    /// /// Vérifie l’inégalité.
+    /// // @lokalisation(🇩🇪DE) @lokalisation(🇦🇹DE)
+    /// /// Prüft die Ungleichheit.
+    /// infix operator ≠
+    /// ```
+    ///
+    /// Lokalisierte versionen eines Symbols können miteinander verknüpft werden, damit sie als ein einziges Symbol gehandelt werden. Im folgendes Beispiel, `etwasTun()` wird nur in der deutschen Dokumentation erscheinen. und `faireQuelqueChose()` wird nur in der französischen erscheinen. Das Umschalten von Sprachen auf der Seite von einem führt zum anderen.
+    ///
+    /// ```swift
+    /// // @lokalisation(🇩🇪DE) @lokalisation(🇦🇹DE) @querverweis(etwasTun)
+    /// /// Tut etwas.
+    /// public func etwasTun() {}
+    /// // @lokalisation(🇫🇷FR) @querverweis(etwasTun)
+    /// /// Fait quelque chose.
+    /// public func faireQuelqueChose() {}
+    /// ```
+    public var lokalisationen: [Lokalisationskennzeichen] {
+        get { return localizations }
+        set { localizations = newValue }
+    }
 
     /// The semantic version of the current stable release of the project.
     ///

@@ -14,11 +14,15 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// #workaround(Not properly localized yet.)
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
 /// A test coverage exemption token.
 public struct TestCoverageExemptionToken : Codable, Hashable {
 
     // MARK: - Initialization
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Creates a test coverage exemption token.
     ///
     /// - Parameters:
@@ -31,9 +35,13 @@ public struct TestCoverageExemptionToken : Codable, Hashable {
 
     // MARK: - Properties
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// The text of the token.
     public var token: StrictString
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// The scope.
     public var scope: Scope
 }

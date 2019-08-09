@@ -20,7 +20,11 @@ import SDGSwiftConfiguration
 
 import WSLocalizations
 
+// #workaround(Not properly localized yet.)
+// @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration)
+/// ...
 public typealias ArbeitsbereichKonfiguration = WorkspaceConfiguration
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(WorkspaceConfiguration)
 // @documentation(WorkspaceConfiguration)
 // #example(1, sampleConfiguration)
 /// The root API used in configuration files.
@@ -52,6 +56,8 @@ public final class WorkspaceConfiguration : Configuration {
     // MARK: - Properties
 
     #warning("arbeitsablaufsskripteBereitstellen")
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Whether or not to provide workflow scripts.
     ///
     /// This is on by default.
@@ -63,51 +69,79 @@ public final class WorkspaceConfiguration : Configuration {
     /// These scripts are provided to reduce refreshment and validation to a simple double‐click. They will also ensure that the same version of Workspace gets used for the project on every machine it is cloned to.
     public var provideWorkflowScripts: Bool = true
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// The platforms the project supports.
     ///
     /// The default assumes support for all platforms.
     public var supportedPlatforms: Set<Platform> = Set(Platform.allCases)
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Options related to Git.
     public var git: GitConfiguration = GitConfiguration()
 
     #warning("lisense")
     #warning("lizenz")
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Options related to licencing.
     public var licence: LicenceConfiguration = LicenceConfiguration()
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Options related to file headers.
     public var fileHeaders: FileHeaderConfiguration = FileHeaderConfiguration()
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Options related to GitHub.
     public var gitHub: GitHubConfiguration = GitHubConfiguration()
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Options related to Xcode.
     public var xcode: XcodeConfiguration = XcodeConfiguration()
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Options related to proofreading.
     public var proofreading: ProofreadingConfiguration = ProofreadingConfiguration()
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Options related to building and testing.
     public var testing: TestingConfiguration = TestingConfiguration()
 
     #warning("dokumentation")
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Options related to documentation.
     public var documentation: DocumentationConfiguration = DocumentationConfiguration()
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Options related to continuous integration.
     public var continuousIntegration: ContinuousIntegrationConfiguration = ContinuousIntegrationConfiguration()
 
     #warning("lager")
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Options related to the project repository.
     public var repository: RepositoryConfiguration = RepositoryConfiguration()
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Custom tasks to perform when refreshing the project.
     public var customRefreshmentTasks: [CustomTask] = []
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Custom tasks to perform when proofreading.
     public var customProofreadingTasks: [CustomTask] = []
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Custom tasks to perform when validating the project.
     public var customValidationTasks: [CustomTask] = []
 
@@ -115,6 +149,8 @@ public final class WorkspaceConfiguration : Configuration {
 
     // MARK: - Opting In & Out
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Opts into all tasks which are off by default.
     ///
     /// - Warning: Many opt‐in tasks involve writing into project files.
@@ -310,6 +346,8 @@ public final class WorkspaceConfiguration : Configuration {
 
     // MARK: - Configuration
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Creates a Workspace configuration according to the defaults.
     ///
     /// Defaults are generally non‐invasive. Most tasks which would write into project files are off by default.

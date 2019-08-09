@@ -16,19 +16,24 @@
 
 import SDGControlFlow
 
+// #workaround(Not properly localized yet.)
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
 /// A proofreading rule.
 public enum ProofreadingRule : String, CaseIterable, Codable {
 
-    #warning("Must match output.")
     // MARK: - Cases
 
     // ••••••• Deprecation •••••••
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Catches deprecated condition documentation.
     case deprecatedConditionDocumentation
 
     // ••••••• Intentional •••••••
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Catches generic manual warnings.
     ///
     /// Generic warnings are for times when you want to prevent the project from passing validation until you come back to fix something, but you still need the project to build while you are working on it.
@@ -36,9 +41,13 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
     /// The text, `#warning(Some description here.)`, will always trigger a warning during proofreading and cause validation to fail. It will not interrupt Swift or Xcode builds.
     case manualWarnings
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Catches unimplemented code paths marked with SDGCornerstone functions.
     case missingImplementation
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Catches outdated workaround reminders.
     ///
     /// Workaround reminders are for times when you need to implement a temporary workaround because of a problem in a dependency, and you would like to remind yourself to go back and remove the workaround once the dependency is fixed.
@@ -74,6 +83,8 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
 
     // ••••••• Functionality •••••••
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Prohibits compatiblity characters.
     ///
     /// Compatibility characters were only encoded in Unicode for backwards compatibility, so that legacy encodings could map to it one‐to‐one. These characters were never intended for use when authoring native Unicode text.
@@ -81,19 +92,27 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
     /// Such characters may be considered equal to their modern counterparts (by compatibility decomposition), or they may be considered distinct (using only canonical decomposition). Since the folding operation is irreversable, compatibility characters are unreliable—especially in machine contexts.
     case compatibilityCharacters
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Prohibits documentation comments vulnerable to auto‐indent.
     case autoindentResilience
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Catches broken syntax in source code headings.
     case marks
 
     // ••••••• Documentation •••••••
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Requires Markdown code blocks to specify a language.
     case syntaxColouring
 
     // ••••••• Text Style •••••••
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Prohibits typewriter workarounds when proper Unicode characters are available.
     ///
     /// This rule still permits most uses where the proper characters would not work:
@@ -137,27 +156,39 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
 
     // Punctuation
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Enforces consistent spacing around braces.
     case braceSpacing
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Enforces consistent spacing around colons.
     case colonSpacing
 
     // Tokens
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Requires documentation callouts to be capitalized.
     case calloutCasing
 
     // Complex nodes
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Requires closure signatures to be on the same line as the closure’s opening brace.
     case closureSignaturePosition
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Requires documented parameters to be grouped.
     case parameterGrouping
 
     // MARK: - Properties
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// The category the rule belongs to.
     public var category: Category {
         switch self {

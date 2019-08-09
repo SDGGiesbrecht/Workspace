@@ -16,11 +16,15 @@
 
 extension TestCoverageExemptionToken {
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// The scope of a test coverage exemption.
     public enum Scope : String, Codable {
 
         // MARK: - Cases
 
+        // #workaround(Not properly localized yet.)
+        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
         /// This scope affects coverage ranges beginning on the same line as the token.
         ///
         /// This scope is useful for functions like `assert`, which have untestable diagnostic messages:
@@ -41,6 +45,8 @@ extension TestCoverageExemptionToken {
         /// ```
         case sameLine
 
+        // #workaround(Not properly localized yet.)
+        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
         /// This scope affects coverage ranges beginning on the line before the token (or on the same line).
         ///
         /// This scope is useful for functions like `preconditionFailure`, which reside in untestable code branches.

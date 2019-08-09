@@ -16,6 +16,8 @@
 
 import WSLocalizations
 
+// #workaround(Not properly localized yet.)
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
 /// Options related to GitHub.
 ///
 /// ```shell
@@ -23,16 +25,22 @@ import WSLocalizations
 /// ```
 public struct GitHubConfiguration : Codable {
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Whether or not to manage the project’s GitHub configuration files.
     ///
     /// This is off by default.
     public var manage: Bool = false
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// A list of the administrator’s GitHub usernames.
     ///
     /// There are no default administrators.
     public var administrators: [StrictString] = []
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Project specific development notes.
     ///
     /// There are no default development notes.
@@ -59,6 +67,8 @@ public struct GitHubConfiguration : Codable {
         }
     }
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// The contributing instructions.
     ///
     /// By default, this is assembled from the other GitHub options.
@@ -125,6 +135,8 @@ public struct GitHubConfiguration : Codable {
         return result
     })
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// The issue templates.
     ///
     /// By default, these are assembled from the other GitHub options.
@@ -149,6 +161,8 @@ public struct GitHubConfiguration : Codable {
             return result
         })
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// The pull request template.
     ///
     /// This defaults to a generic template.

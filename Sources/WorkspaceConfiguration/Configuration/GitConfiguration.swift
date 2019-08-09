@@ -14,14 +14,20 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// #workaround(Not properly localized yet.)
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
 /// Options related to Git.
 public struct GitConfiguration : Codable {
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Whether or not to manage the project’s Git configuration files.
     ///
     /// This is off by default.
     public var manage: Bool = false
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Additional entries to append to the standard gitignore file.
     public var additionalGitIgnoreEntries: [String] = []
 }

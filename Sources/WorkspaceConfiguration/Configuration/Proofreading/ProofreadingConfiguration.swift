@@ -14,6 +14,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// #workaround(Not properly localized yet.)
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
 /// Options related to proofreading.
 ///
 /// ```shell
@@ -21,6 +23,8 @@
 /// ```
 public struct ProofreadingConfiguration : Codable {
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// The set of active proofreading rules.
     ///
     /// All rules are active by default.
@@ -28,6 +32,8 @@ public struct ProofreadingConfiguration : Codable {
     /// Individual proofreading violations can be suppressed by placing `@exempt(from: ruleIdentifier)` on the same line.
     public var rules: Set<ProofreadingRule> = Set(ProofreadingRule.allCases)
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// The scope in which to apply the `unicode` rule.
     public var unicodeRuleScope: Set<UnicodeRuleScope> = Set(UnicodeRuleScope.allCases)
 }

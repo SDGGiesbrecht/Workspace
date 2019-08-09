@@ -14,9 +14,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// #workaround(Not properly localized yet.)
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
 /// Options related to the project repository.
 public struct RepositoryConfiguration : Codable {
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// A set of file extensions which source operations should ignore.
     ///
     /// These will not receive headers or be proofread.
@@ -62,6 +66,8 @@ public struct RepositoryConfiguration : Codable {
     public static let _refreshScriptMacOSFileName: StrictString = "Refresh (macOS).command"
     public static let _refreshScriptLinuxFileName: StrictString = "Refresh (Linux).sh"
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Paths which source operations should ignore.
     ///
     /// Files in these paths will not receive headers or be proofread.

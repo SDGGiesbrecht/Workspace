@@ -14,6 +14,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// #workaround(Not properly localized yet.)
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
 /// Options related to file headers.
 ///
 /// ```shell
@@ -68,11 +70,15 @@
 /// ```
 public struct FileHeaderConfiguration : Codable {
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Whether or not to manage the project file headers.
     ///
     /// This is off by default.
     public var manage: Bool = false
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// The copyright notice.
     ///
     /// By default, this is assembled from the other documentation and licence options.
@@ -105,6 +111,8 @@ public struct FileHeaderConfiguration : Codable {
         }
     })
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// The entire contents of the file header.
     ///
     /// By default, this is assembled from the other documentation and licence options.

@@ -14,9 +14,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// #workaround(Not properly localized yet.)
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
 /// Options related to building and testing.
 public struct TestingConfiguration : Codable {
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Whether or not to prohibit compiler warnings.
     ///
     /// This is on by default.
@@ -26,6 +30,8 @@ public struct TestingConfiguration : Codable {
     /// ```
     public var prohibitCompilerWarnings: Bool = true
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Whether or not to enforce test coverage.
     ///
     /// This is on by default.
@@ -35,6 +41,8 @@ public struct TestingConfiguration : Codable {
     /// ```
     public var enforceCoverage: Bool = true
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     // #example(1, testCoverageExemptionTokens)
     /// The set of active test coverage exemption tokens.
     ///
@@ -73,6 +81,8 @@ public struct TestingConfiguration : Codable {
         // @endExample
     ]
 
+    // #workaround(Not properly localized yet.)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Paths exempt from test coverage.
     ///
     /// The paths must be specified relative to the package root.

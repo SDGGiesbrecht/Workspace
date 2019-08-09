@@ -287,19 +287,26 @@ public struct DocumentationConfiguration : Codable {
     }
 
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-    // @crossReference(DocumentationConfiguration.relatedProjects)
+    // @crossReference(DocumentationConfiguration.readMe)
     /// Options related to the project read‐me.
     public var readMe: ReadMeConfiguration = ReadMeConfiguration()
-    // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.relatedProjects)
+    // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.readMe)
     /// Einstellungen zur Lies‐mich Datei des Projekts.
     public var liesMich: LiesMichEinstellungen {
         get { return readMe }
         set { readMe = newValue }
     }
 
-    #warning("programmierschnittstelle")
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(DocumentationConfiguration.api)
     /// Options related to API documentation.
     public var api: APIDocumentationConfiguration = APIDocumentationConfiguration()
+    // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.api)
+    /// Einstellungen zur Lies‐mich Datei des Projekts.
+    public var programmierschnittstelle: Programmierschnittstellendokumentationseinstellungen {
+        get { return api }
+        set { api = newValue }
+    }
 
     // MARK: - Installation Instructions
 

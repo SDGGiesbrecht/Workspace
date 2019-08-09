@@ -35,7 +35,7 @@ public struct XcodeConfiguration : Codable {
     // @localization(🇩🇪DE) @crossReference(XcodeConfiguration.manage)
     /// Ob Arbeitsbereich das Xcode‐Projekt verwalten soll.
     ///
-    /// Wenn nicht angeben, ist diese Einstellung aus, aber manche Aufgaben können Fehler werfen wenn es kein passendes Xcode‐Projekt gibt.
+    /// Wenn nicht angegeben, ist diese Einstellung aus, aber manche Aufgaben können Fehler werfen wenn es kein passendes Xcode‐Projekt gibt.
     ///
     /// ```shell
     /// $ arbeitsbereich auffrischen xcode

@@ -34,7 +34,7 @@ public struct ContinuousIntegrationConfiguration : Codable {
     // @localization(🇩🇪DE) @crossReference(ContinuousIntegrationConfiguration.manage)
     /// Ob Arbeitsbereich fortlaufende Einbindung verwalten soll.
     ///
-    /// Wenn nicht angeben, ist diese Einstellung aus.
+    /// Wenn nicht angegeben, ist diese Einstellung aus.
     ///
     /// ```shell
     /// $ arbeitsbereich auffrischen fortlaufende‐einbindung
@@ -58,7 +58,7 @@ public struct ContinuousIntegrationConfiguration : Codable {
     // @crossReference(ContinuousIntegrationConfiguration.skipSimulatorOutsideContinuousIntegration)
     /// Ob Simulatoraufgaben übersprungen werden soll, wenn Arbeitsbereich auf einem lokalen Gerät läuft.
     ///
-    /// Wenn nicht angeben, ist diese Einstellung aus.
+    /// Wenn nicht angegeben, ist diese Einstellung aus.
     ///
     /// Weil das Hochfahren oder Umschalten des Simulators oft länger dauert als alle andere Aufgaben zusammen, diese Einstellung ist vorhanden um Simulatoraufgaben zu überspringen. Für Projekte mit wenige unterschiede zwischen macOS und den anderen Schichten von Apple kann es viel Zeit sparen.
     ///

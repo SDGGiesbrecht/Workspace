@@ -36,7 +36,7 @@ public struct APIDocumentationConfiguration : Codable {
     // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration.generate)
     /// Ob Arbeitsbereich Programmierschnittstellendokumentation erstellen soll.
     ///
-    /// Wenn nicht angeben, ist diese Einstellung aus.
+    /// Wenn nicht angegeben, ist diese Einstellung aus.
     ///
     /// ```shell
     /// $ arbeitsbereich dokumentieren
@@ -59,7 +59,7 @@ public struct APIDocumentationConfiguration : Codable {
     // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration.enforceCoverage)
     /// Ob Arbeitsbereich Dokementationsabdeckung erzwingen soll.
     ///
-    /// Wenn nicht angeben, ist diese Einstellung ein.
+    /// Wenn nicht angegeben, ist diese Einstellung ein.
     ///
     /// ```shell
     /// $ arbeitsbereich prüfen dokumentationsabdeckung
@@ -87,7 +87,7 @@ public struct APIDocumentationConfiguration : Codable {
     // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration.copyrightNotice)
     /// Der Urheberrechtsschutzvermerk.
     ///
-    /// Wenn nicht angeben, wird diese Einstellung von dem des Dateivorspanns hergeleitet.
+    /// Wenn nicht angegeben, wird diese Einstellung von dem des Dateivorspanns hergeleitet.
     ///
     /// Arbeitsbereich wird das dynamische Element `#daten` mit die berechnete Urheberrechtsdaten ersetzen. (z. B. „©2016–2017“).
     public var urheberrechtsschutzvermerk: BequemeEinstellung<[Lokalisationskennzeichen: StrengerZeichenkette]> {

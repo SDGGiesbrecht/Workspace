@@ -121,12 +121,13 @@ public struct APIDocumentationConfiguration : Codable {
         }
     })
 
-    #warning("verschlüsselterTravisCIVerteilungsSchlüssel")
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(APIDocumentationConfiguration.encryptedTravisCIDeploymentKey)
     /// An encrypted Travis CI deployment key.
     ///
     /// By specifying this, projects with continuous integration management active can avoid checking generated files into the main branch.
     ///
-    /// With the following set‐up, Workspace will only generate documentation in continuous integration and stop generating it locally. (If needed for coverage checks, Workspace may still do so in a temporary directory.) The generated documentation will be automatically published to GitHub Pages via the “gh&#x2D;pages” branch, making the `docs` directory unnecessary.
+    /// With the following set‐up, Workspace will only generate documentation in continuous integration and stop generating it locally. (If needed for coverage checks, Workspace may still do so in a temporary directory.) The generated documentation will be automatically published to GitHub Pages via the `gh-pages` branch, making the `docs` directory unnecessary.
     ///
     /// Requirements:
     ///
@@ -144,13 +145,53 @@ public struct APIDocumentationConfiguration : Codable {
     ///     $ travis encrypt "GITHUB_TOKEN=some‐token"
     ///     ```
     /// 3. Specify the encrypted access token for this option.
-    /// 5. Set GitHub Pages to [serve from the “gh&#x2D;pages” branch](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#enabling-github-pages-to-publish-your-site-from-master-or-gh-pages).
+    /// 5. Set GitHub Pages to [serve from the `gh-pages` branch](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#enabling-github-pages-to-publish-your-site-from-master-or-gh-pages).
     ///
-    /// - Workspace does not understand Travis’ encryption, and does not attempt to read or use the key. All this option does is tell Workspace to (a) include the encrypted key when configuring Travis CI, and (b) keep generated documentation out of the repository.
+    /// - Note: Workspace does not understand Travis’ encryption, and does not attempt to read or use the key. All this option does is tell Workspace to (a) include the encrypted key when configuring Travis CI, and (b) keep generated documentation out of the repository.
     public var encryptedTravisCIDeploymentKey: String?
+    // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration.encryptedTravisCIDeploymentKey)
+    /// Eine verschlüsselte Travis‐CI‐Verteilungsschlüssel.
+    ///
+    /// Mit dieser Einstellung, Projekte mit aktivierten Verwaltung von fortlaufenden Einbindung können das Eintragen der erstellten Dateien zur Hauptzweig vermeiden.
+    ///
+    /// Mit dem folgeneden Einrichtung, wird Arbeitsbereich die Dokumentation nur während fortlaufenden Einbindung erstellen, und aufhören, es auf lokalen Geräte zu erstellen. (Falls es für Abdeckungsprüfungen benötigt wird, erstellt es Arbeitsbereich nur in eine vorübergehende Verzeichnis.) Die erstellte Dokumentation wird automatisch zu GitHub Pages durch den `gh-pages` Zweig, damit das `docs` Verzeichnis unnötig wird.
+    ///
+    /// Voraussetzungen:
+    ///
+    /// 1. Ein GitHub‐[Zugriffszeichen](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/).
+    /// 2. Der Travis Edelstein. `$ gem install travis`
+    ///
+    /// Einrichtung:
+    ///
+    /// 1. Zur lokalen Nachbau des Lagers gehen:
+    ///     ```shell
+    ///     $ cd den/Pfad
+    ///     ```
+    /// 2. Das Zugriffszeichen verschlüsseln:
+    ///     ```shell
+    ///     $ travis encrypt "GITHUB_TOKEN=das‐zeichen"
+    ///     ```
+    /// 3. Gebe die verschlüsselte Zugriffszeichen bei dieser Einstellung an.
+    /// 5. Stelle GitHub‐Pages ein, das es [vom `gh-pages`‐Zweig dient](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#enabling-github-pages-to-publish-your-site-from-master-or-gh-pages).
+    ///
+    /// - Note: Arbeitsbereich versteht Travis’ Verschlüsselung nicht, und versucht nicht das Schlüssel zu lesen. Diese Einstellung erlaubt es Arbeitsbereich nur (a) das Schüssel in die Travis‐CI‐Konfiguration einzuschließen und (b) das es die erstellte Dokumentation aus dem Lager halten soll.
+    public var verschlüsselterTravisCIVerteilungsschlüssel: Zeichenkette? {
+        get { return encryptedTravisCIDeploymentKey }
+        set { encryptedTravisCIDeploymentKey = newValue }
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(APIDocumentationConfiguration.ignoredDependencies)
     /// Dependency module names known to be irrelevant to documentation.
     ///
     /// Parsing can be sped up by specifing dependencies to skip, but if a dependency is skipped, its API will not be available to participate in inheritance resolution.
     public var ignoredDependencies: Set<String> = []
+    // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration.ignoredDependencies)
+    /// Modulnamen von Abhängkeiten die für die Dokumentation unerheblich sind.
+    ///
+    /// Die Zerteilung kann beschleunigt werden, in dem Abhängigkeiten übersprungen werden, aber die übersprungene Programierschnittstellen kann dann nicht geerbt werden.
+    public var übergegangeneAbhängigkeiten: Menge<Zeichenkette> {
+        get { return ignoredDependencies }
+        set { ignoredDependencies = newValue }
+    }
 }

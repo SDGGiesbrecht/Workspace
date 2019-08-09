@@ -14,8 +14,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// @localization(🇩🇪DE) @crossReference(RepositoryConfiguration)
+/// Einstellungen zum Lager.
+public typealias Lagerseinstellungen = RepositoryConfiguration
 // #workaround(Not properly localized yet.)
-// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(RepositoryConfiguration)
 /// Options related to the project repository.
 public struct RepositoryConfiguration : Codable {
 

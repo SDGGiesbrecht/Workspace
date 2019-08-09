@@ -130,22 +130,32 @@ public final class WorkspaceConfiguration : Configuration {
     /// Options related to building and testing.
     public var testing: TestingConfiguration = TestingConfiguration()
 
-    #warning("dokumentation")
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(WorkspaceConfiguration.documentation)
     /// Options related to documentation.
     public var documentation: DocumentationConfiguration = DocumentationConfiguration()
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration)
+    /// Einstellungen zur Dokumentation.
+    public var dokumentation: Dokumentationseinstellungen {
+        get { return documentation }
+        set { documentation = newValue }
+    }
 
     // #workaround(Not properly localized yet.)
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Options related to continuous integration.
     public var continuousIntegration: ContinuousIntegrationConfiguration = ContinuousIntegrationConfiguration()
 
-    #warning("lager")
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(WorkspaceConfiguration.documentation)
     /// Options related to the project repository.
     public var repository: RepositoryConfiguration = RepositoryConfiguration()
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration)
+    /// Einstellungen zur Dokumentation.
+    public var lager: Lagerseinstellungen {
+        get { return repository }
+        set { repository = newValue }
+    }
 
     // #workaround(Not properly localized yet.)
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)

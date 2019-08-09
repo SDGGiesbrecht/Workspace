@@ -20,7 +20,7 @@ import WSLocalizations
 
 // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration)
 /// Einstellungen zur Dokumentation.
-public typealias Dokumentationseinstellungen = APIDocumentationConfiguration
+public typealias Dokumentationseinstellungen = DocumentationConfiguration
 // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(DocumentationConfiguration)
 /// Options related to documentation.
 public struct DocumentationConfiguration : Codable {

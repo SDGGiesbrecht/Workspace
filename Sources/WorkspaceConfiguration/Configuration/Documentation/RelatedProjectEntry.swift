@@ -23,11 +23,26 @@ public enum RelatedProjectEntry : Decodable, Encodable {
 
     // MARK: - Cases
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(RelatedProjectEntry.project(url:))
     /// A related project with its repository URL.
     case project(url: URL)
+    // @localization(🇩🇪DE) @crossReference(RelatedProjectEntry.project(url:))
+    /// Ein verwandtes Projekt mit sein Lagerressourcenzeiger.
+    public static func projekt(ressourcenzeiger: EinheitlicherRessourcenzeiger) -> EintragZuVerwantdenProjekten {
+        return .project(url: ressourcenzeiger)
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(RelatedProjectEntry.heading(text:))
     /// A heading.
     case heading(text: [LocalizationIdentifier: StrictString])
+    // @localization(🇩🇪DE) @crossReference(RelatedProjectEntry.heading(text:))
+    /// Eine Überschrift.
+    public static func überschrift(
+        text: [Lokalisationskennzeichen: StrengerZeichenkette]) -> EintragZuVerwantdenProjekten {
+        return .heading(text: text)
+    }
 
     private enum RelatedProjectEntryType : String, Codable {
         case project

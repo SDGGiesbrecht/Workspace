@@ -18,7 +18,7 @@ import SDGCollections
 
 // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration)
 /// Einstellungen zur Programmierschnittstellendokumentation.
-public typealias EinstellungenProgrammierschnittstellendokumentation = APIDocumentationConfiguration
+public typealias Programmierschnittstellendokumentationseinstellungen = APIDocumentationConfiguration
 // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(APIDocumentationConfiguration)
 /// Options related to API documentation.
 public struct APIDocumentationConfiguration : Codable {

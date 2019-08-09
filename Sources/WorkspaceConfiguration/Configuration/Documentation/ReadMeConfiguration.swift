@@ -18,13 +18,23 @@ import SDGLogic
 
 import WSLocalizations
 
+// @localization(🇩🇪DE) @crossReference(LiesMichEinstellungen)
+/// Einstellungen zur Lies‐mich Datei.
+///
+/// ```shell
+/// $ arbeitsbereich auffrischen lies‐mich
+/// ```
+///
+/// Eine Lies‐mich Datei ist eine `README.md` Datei, die GitHub als die Hauptseite des Projekts verwendet.
+public typealias LiesMichEinstellungen = ReadMeConfiguration
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(RelatedProjectEntry)
 /// Options related to the project read‐me.
 ///
 /// ```shell
 /// $ workspace refresh read‐me
 /// ```
 ///
-/// A read‐me is a `README.md` file that GitHub and documentation generation use as the project’s main page.
+/// A read‐me is a `README.md` file that GitHub uses as the project’s main page.
 public struct ReadMeConfiguration : Codable {
 
     // MARK: - Options

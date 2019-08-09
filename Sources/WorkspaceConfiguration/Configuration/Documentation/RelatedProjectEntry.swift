@@ -14,6 +14,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// @localization(🇩🇪DE) @crossReference(RelatedProjectEntry)
+/// Ein Eintrag zur Liste der verwanten Projekten.
+public typealias EintragZuVerwantdenProjekten = RelatedProjectEntry
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(RelatedProjectEntry)
 /// An entry for the related projects list.
 public enum RelatedProjectEntry : Decodable, Encodable {
 

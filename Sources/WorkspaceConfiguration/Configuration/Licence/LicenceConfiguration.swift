@@ -15,7 +15,13 @@
  */
 
 // #workaround(Not properly localized yet.)
-// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+// @localization(🇩🇪DE) @crossReference(LicenceConfiguration)
+/// ...
+public typealias Lizenzeinstellungen = LicenceConfiguration
+// @localization(🇺🇸EN) @crossReference(LicenceConfiguration)
+/// ...
+public typealias LicenseConfiguration = LicenceConfiguration
+// @localization(🇬🇧EN) @localization(🇨🇦EN) @crossReference(LicenceConfiguration)
 /// Options related to licencing.
 ///
 /// ```shell

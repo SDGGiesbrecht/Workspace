@@ -55,9 +55,9 @@ public final class WorkspaceConfiguration : Configuration {
 
     // MARK: - Properties
 
-    #warning("arbeitsablaufsskripteBereitstellen")
     // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(WorkspaceConfiguration.provideWorkflowScripts)
     /// Whether or not to provide workflow scripts.
     ///
     /// This is on by default.
@@ -68,6 +68,12 @@ public final class WorkspaceConfiguration : Configuration {
     ///
     /// These scripts are provided to reduce refreshment and validation to a simple double‐click. They will also ensure that the same version of Workspace gets used for the project on every machine it is cloned to.
     public var provideWorkflowScripts: Bool = true
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.provideWorkflowScripts)
+    /// ...
+    public var arbeitsablaufsskripteBereitstellen: Bool {
+        get { return provideWorkflowScripts }
+        set { provideWorkflowScripts = newValue }
+    }
 
     // #workaround(Not properly localized yet.)
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
@@ -81,12 +87,23 @@ public final class WorkspaceConfiguration : Configuration {
     /// Options related to Git.
     public var git: GitConfiguration = GitConfiguration()
 
-    #warning("lisense")
-    #warning("lizenz")
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇬🇧EN)
     /// Options related to licencing.
+    // @localization(🇨🇦EN) @crossReference(WorkspaceConfiguration.licence)
+    /// Options related to licensing.
     public var licence: LicenceConfiguration = LicenceConfiguration()
+    // @localization(🇺🇸EN) @crossReference(WorkspaceConfiguration.licence)
+    /// Options related to licensing.
+    public var license: LicenseConfiguration {
+        get { return licence }
+        set { licence = newValue }
+    }
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.licence)
+    /// ...
+    public var lizenz: Lizenzeinstellungen {
+        get { return licence }
+        set { licence = newValue }
+    }
 
     // #workaround(Not properly localized yet.)
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)

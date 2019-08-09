@@ -22,3 +22,5 @@ public typealias Zeichenkette = String
 public typealias StrengerZeichenkette = StrictString
 
 public typealias EinheitlicherRessourcenzeiger = URL
+
+public typealias GregorianischesJahr = GregorianYear

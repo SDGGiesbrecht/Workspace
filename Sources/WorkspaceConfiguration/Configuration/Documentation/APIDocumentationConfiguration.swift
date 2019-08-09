@@ -16,9 +16,15 @@
 
 import SDGCollections
 
+// @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration)
+/// Einstellungen zur Programmierschnittstellendokumentation.
+public typealias EinstellungenProgrammierschnittstellendokumentation = APIDocumentationConfiguration
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(APIDocumentationConfiguration)
 /// Options related to API documentation.
 public struct APIDocumentationConfiguration : Codable {
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(APIDocumentationConfiguration.generate)
     /// Whether or not to generate API documentation.
     ///
     /// This is off by default.
@@ -27,7 +33,21 @@ public struct APIDocumentationConfiguration : Codable {
     /// $ workspace document
     /// ```
     public var generate: Bool = false
+    // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration.generate)
+    /// Ob Arbeitsbereich Programmierschnittstellendokumentation erstellen soll.
+    ///
+    /// Wenn nicht angeben, ist diese Einstellung aus.
+    ///
+    /// ```shell
+    /// $ arbeitsbereich dokumentieren
+    /// ```
+    public var erstellen: Bool {
+        get { return generate }
+        set { generate = newValue }
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(APIDocumentationConfiguration.enforceCoverage)
     /// Whether or not to enforce documentation coverage.
     ///
     /// This is on by default.
@@ -36,13 +56,51 @@ public struct APIDocumentationConfiguration : Codable {
     /// $ workspace validate documentation‐coverage
     /// ```
     public var enforceCoverage: Bool = true
+    // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration.enforceCoverage)
+    /// Ob Arbeitsbereich Dokementationsabdeckung erzwingen soll.
+    ///
+    /// Wenn nicht angeben, ist diese Einstellung ein.
+    ///
+    /// ```shell
+    /// $ arbeitsbereich prüfen dokumentationsabdeckung
+    /// ```
+    public var abdeckungErzwingen: Bool {
+        get { return enforceCoverage }
+        set { enforceCoverage = newValue }
+    }
 
-    #warning("jahrErsterVeröffentlichung")
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(APIDocumentationConfiguration.yearFirstPublished)
     /// The year the documentation was first published.
     ///
     /// This will be used as the lower bound when generating copyright dates. (The upper bound will always be the present.)
     public var yearFirstPublished: GregorianYear?
+    // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration.yearFirstPublished)
+    /// Das Jahr, in dem die Dokumentation zum ersten mal veröffentlicht wurde.
+    ///
+    /// Dies wird als untere Grenze verwendet, wenn die Urheberrechtsdaten erstellt werden. (Die obere Grenze ist immer die Gegenwart.)
+    public var jahrErsterVeröffentlichung: GregorianischesJahr? {
+        get { return yearFirstPublished }
+        set { yearFirstPublished = newValue }
+    }
 
+    // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration.copyrightNotice)
+    /// Der Urheberrechtsschutzvermerk.
+    ///
+    /// Wenn nicht angeben, wird diese Einstellung von dem des Dateivorspanns hergeleitet.
+    ///
+    /// Arbeitsbereich wird das dynamische Element `#daten` mit die berechnete Urheberrechtsdaten ersetzen. (z. B. „©2016–2017“).
+    public var urheberrechtsschutzvermerk: BequemeEinstellung<[Lokalisationskennzeichen: StrengerZeichenkette]> {
+        get { return copyrightNotice }
+        set { copyrightNotice = newValue }
+    }
+    // @localization(🇬🇧EN) @crossReference(APIDocumentationConfiguration.copyrightNotice)
+    /// The copyright notice.
+    ///
+    /// By default, this is assembled from the file header copyright notice.
+    ///
+    /// Workspace will replace the dynamic element `#dates` with the computed copyright dates. (e.g. ‘©2016–2017’).
+    // @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(APIDocumentationConfiguration.copyrightNotice)
     /// The copyright notice.
     ///
     /// By default, this is assembled from the file header copyright notice.

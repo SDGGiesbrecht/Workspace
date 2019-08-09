@@ -203,8 +203,8 @@ internal class DocumentationStatus {
                         ] as [StrictString]).joinedAsLines()
                 case .deutschDeutschland:
                     return ([
-                        "Einer Lokalization fehlt die Urheberrechtschutzvermerk: \(arbitraryDescriptionOf: localization)",
-                        "(Es ist unter „dokumentation.programmierschnittstelle.urheberrechtschutzvermerk“ zu konfigurieren.)"
+                        "Einer Lokalization fehlt die Urheberrechtsschutzvermerk: \(arbitraryDescriptionOf: localization)",
+                        "(Es ist unter „dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk“ zu konfigurieren.)"
                         ] as [StrictString]).joinedAsLines()
                 }
             }))

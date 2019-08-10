@@ -27,7 +27,7 @@ public struct CustomTask : Decodable, Encodable {
 
     // MARK: - Initialization
 
-    // @localization(🇩🇪DE) crossReference(CustomTask.init(url:version:executable:arguments:))
+    // @localization(🇩🇪DE) @crossReference(CustomTask.init(url:version:executable:arguments:))
     /// Erstellt eine Sonderaufgabe.
     ///
     /// - Parameters:

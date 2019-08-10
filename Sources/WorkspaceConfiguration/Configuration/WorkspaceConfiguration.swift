@@ -147,10 +147,10 @@ public final class WorkspaceConfiguration : Configuration {
     public var continuousIntegration: ContinuousIntegrationConfiguration = ContinuousIntegrationConfiguration()
 
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-    // @crossReference(WorkspaceConfiguration.documentation)
+    // @crossReference(WorkspaceConfiguration.repository)
     /// Options related to the project repository.
     public var repository: RepositoryConfiguration = RepositoryConfiguration()
-    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration)
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.repository)
     /// Einstellungen zur Dokumentation.
     public var lager: Lagerseinstellungen {
         get { return repository }

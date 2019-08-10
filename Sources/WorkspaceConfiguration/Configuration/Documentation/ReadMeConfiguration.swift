@@ -44,7 +44,7 @@ public struct ReadMeConfiguration : Codable {
     ///
     /// This is off by default.
     public var manage: Bool = false
-    // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration.generate)
+    // @localization(🇩🇪DE) @crossReference(ReadMeConfiguration.manage)
     /// Ob Arbeitsbereich die Lies‐mich Datei verwalten soll.
     ///
     /// Wenn nicht angegeben, ist diese Einstellung aus.

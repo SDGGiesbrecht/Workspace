@@ -52,7 +52,7 @@ public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hash
     /// Erstellt ein Kennzeichen aus einem IETF‐Sprachkennzeichen oder einem Sprachsymbol.
     ///
     /// - Parameters:
-    ///     - localization: Die Lokalisation.
+    ///     - identifier: Das IETF‐Sprachkennzeichen oder Sprachsymbol.
     // @localization(🇬🇧EN)
     /// Creates a localisation identifier from an IETF language tag or a language icon.
     ///
@@ -80,6 +80,7 @@ public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hash
     /// The IETF language tag.
     public var code: String
     // @localization(🇩🇪DE) @crossReference(LocalizationIdentifier.code)
+    /// Das IETF‐Sprachkennzeichen.
     public var kennzeichen: Zeichenkette {
         get { return code }
         set { code = newValue }

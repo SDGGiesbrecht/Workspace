@@ -134,7 +134,7 @@ public final class WorkspaceConfiguration : Configuration {
     // @crossReference(WorkspaceConfiguration.documentation)
     /// Options related to documentation.
     public var documentation: DocumentationConfiguration = DocumentationConfiguration()
-    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration)
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.documentation)
     /// Einstellungen zur Dokumentation.
     public var dokumentation: Dokumentationseinstellungen {
         get { return documentation }

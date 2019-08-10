@@ -234,6 +234,15 @@ class APITests : TestCase {
         PackageRepository(mock: "Default").test(commands: commands, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
+    func testDeutsch() {
+        let konfiguration = ArbeitsbereichKonfiguration()
+        konfiguration.optimizeForTests()
+        konfiguration.dokumentation.lokalisationen = ["de"]
+        PackageRepository(mock: "Deutsch").test(commands: [
+            ["auffrischen", "fortlaufende‐einbindung"],
+            ], configuration: konfiguration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
     func testExecutable() {
         let configuration = WorkspaceConfiguration()
         configuration.optimizeForTests()

@@ -15,6 +15,10 @@
  */
 
 // #workaround(Belong in SDGCornerstone.)
+import Foundation
+
+import SDGText
+import SDGCalendar
 
 public typealias Menge = Set
 

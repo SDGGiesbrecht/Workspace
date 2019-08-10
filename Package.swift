@@ -18,7 +18,7 @@
 
 import PackageDescription
 
-#warning("Continue in this file.")
+// #workaround(Fix feature links.)
 // @localization(🇩🇪DE)
 /// Arbeitsbereich automatisiert die Verwaltung von Swift‐Projekten.
 ///
@@ -31,7 +31,6 @@ import PackageDescription
 /// ### Merkmale
 ///
 /// - Stellt gründliche Prüfungen bereit:
-#warning("Fix links.")
 ///     - [Testabdeckung](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Types/TestConfiguration/Properties/enforceCoverage.html)
 ///     - [Übersetzerwarnungen](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Types/TestingConfiguration/Properties/prohibitCompilerWarnings.html)
 ///     - [Dokumentationsabdeckung](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Types/APIDocumentationConfiguration/Properties/enforceCoverage.html)

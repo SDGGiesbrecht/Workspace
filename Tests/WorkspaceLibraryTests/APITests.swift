@@ -145,7 +145,7 @@ class APITests : TestCase {
             ["refresh", "continuous‐integration"],
             ["refresh", "licence"],
             ["refresh", "file‐headers"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCustomProofread() {
@@ -238,6 +238,7 @@ class APITests : TestCase {
         let konfiguration = ArbeitsbereichKonfiguration()
         konfiguration.optimizeForTests()
         konfiguration.dokumentation.lokalisationen = ["de"]
+        konfiguration.dokumentation.programmierschnittstelle.encryptedTravisCIDeploymentKey = "..."
         PackageRepository(mock: "Deutsch").test(commands: [
             ["auffrischen", "fortlaufende‐einbindung"],
             ], configuration: konfiguration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)

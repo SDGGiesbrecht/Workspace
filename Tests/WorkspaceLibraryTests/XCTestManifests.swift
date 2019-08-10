@@ -19,6 +19,7 @@ extension APITests {
         ("testCustomReadMe", testCustomReadMe),
         ("testCustomTasks", testCustomTasks),
         ("testDefaults", testDefaults),
+        ("testDeutsch", testDeutsch),
         ("testExecutable", testExecutable),
         ("testFailingCustomTasks", testFailingCustomTasks),
         ("testFailingCustomValidation", testFailingCustomValidation),

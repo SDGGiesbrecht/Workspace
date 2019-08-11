@@ -361,6 +361,7 @@ class APITests : TestCase {
         PackageRepository(mock: "Deutsch").test(commands: [
             ["auffrischen", "fortlaufende‐einbindung"],
             ["auffrischen", "ressourcen"],
+            ["auffrischen", "xcode"],
             ["dokumentieren"]
             ], configuration: konfiguration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }

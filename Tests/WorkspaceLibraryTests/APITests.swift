@@ -408,7 +408,7 @@ class APITests : TestCase {
         configuration.documentation.readMe.contents.resolve = { _ in [:] }
         PackageRepository(mock: "MissingReadMeLocalization").test(commands: [
             ["refresh", "read‐me"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testMultipleProducts() {

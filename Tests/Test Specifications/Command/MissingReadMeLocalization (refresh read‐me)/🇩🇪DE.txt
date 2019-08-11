@@ -1,0 +1,6 @@
+$ arbeitsbereich refresh read‐me •no‐colour
+
+Lies‐mich wird aufgefrischt ...
+
+Das Lies‐mich für „zxx“ fehlt. (dokumentation.liesMich.inhalt
+9223372036854775807

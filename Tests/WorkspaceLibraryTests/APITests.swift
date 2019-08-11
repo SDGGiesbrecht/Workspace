@@ -219,6 +219,8 @@ class APITests : TestCase {
         XCTAssertEqual(context.ladeliste.produkte.first?.type, .bibliotek)
         XCTAssertNotEqual(context.ladeliste.produkte.first?.type, .ausführbareDatei)
         XCTAssertEqual(context.ladeliste.produkte.first?.module.first, "Module")
+        WorkspaceContext.current = context
+        _ = WorkspaceContext.aktueller
     }
 
     func testContinuousIntegrationWithoutScripts() {

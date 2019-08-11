@@ -1,0 +1,6 @@
+$ arbeitsbereich refresh inherited‐documentation •no‐colour
+
+Geerbte Dokumentation wird aufgefrischt ...
+
+Es gibt keine Dokumentation Namens „doesNotExist“.
+9223372036854775807

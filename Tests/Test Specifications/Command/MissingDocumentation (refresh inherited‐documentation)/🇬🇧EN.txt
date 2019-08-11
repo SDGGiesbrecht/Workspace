@@ -1,0 +1,6 @@
+$ workspace refresh inherited‐documentation •no‐colour
+
+Refreshing inherited documentation...
+
+There is no documentation named ‘doesNotExist’.
+9223372036854775807

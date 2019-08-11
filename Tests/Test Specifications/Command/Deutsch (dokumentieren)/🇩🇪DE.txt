@@ -2,19 +2,9 @@ $ arbeitsbereich dokumentieren •no‐colour
 
 Dokumentation wird erstellt ...
 
-
-Kein ursprüngliche Urheberrechtsdatum wurde angegeben.
-(Es ist unter „dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung“ zu konfigurieren.)
-
 „Deutsch“ wird zerteilt ...
 Die Programmierschnitstelle wird verarbeitet ...
 Auszeichnung wird erstellt ...
-
-Einem Symbol fehlt die Beschreibung.
-Deutsch.🇩🇪DE
-(Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.
-Arbeitsbereich sucht für die Dokumentation in der Zeile über „Package(name: "Deutsch"“.)
-
 ... etwas‐tun ...
 ... hilfe ...
 ... version ...
@@ -23,21 +13,11 @@ Arbeitsbereich sucht für die Dokumentation in der Zeile über „Package(name
 ... hilfe ...
 ... zwischenspeicher‐leeren ...
 ... hilfe ...
-
-Einem Symbol fehlt die Beschreibung.
-Deutsch.🇩🇪DE
-(Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.
-Arbeitsbereich sucht für die Dokumentation in der Zeile über „.library(name: "Deutsch"“.)
-
 ... Deutsch ...
 
-Einem Symbol fehlt die Beschreibung.
-Deutsch.🇩🇪DE
-(Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.
-Arbeitsbereich sucht für die Dokumentation in der Zeile über „.target(name: "Deutsch"“.)
+✓ Dokumentation erstellt.
 
 
-✗ Dokumentation wurde erstellt, aber Warnungen wurden dabei ausgelöst.
+„Deutsch“ besteht die Überprüfung.
 
-„Deutsch“ besteht die Überprüfung nicht.
-2
+0

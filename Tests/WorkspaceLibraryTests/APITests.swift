@@ -251,6 +251,7 @@ class APITests : TestCase {
         konfiguration.dokumentation.lokalisationen = ["de"]
         konfiguration.dokumentation.programmierschnittstelle.erstellen = true
         konfiguration.dokumentation.programmierschnittstelle.verschlüsselterTravisCIVerteilungsschlüssel = "..."
+        konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2000
         PackageRepository(mock: "Deutsch").test(commands: [
             ["auffrischen", "fortlaufende‐einbindung"],
             ["auffrischen", "ressourcen"],
@@ -392,7 +393,7 @@ class APITests : TestCase {
     func testMissingDocumentation() {
         PackageRepository(mock: "MissingDocumentation").test(commands: [
             ["refresh", "inherited‐documentation"]
-            ], localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testMissingExample() {

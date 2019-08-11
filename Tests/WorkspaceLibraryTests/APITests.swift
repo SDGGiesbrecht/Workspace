@@ -78,7 +78,7 @@ class APITests : TestCase {
     func testBrokenExample() {
         PackageRepository(mock: "BrokenExample").test(commands: [
             ["refresh", "examples"]
-            ], localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testBrokenTests() {

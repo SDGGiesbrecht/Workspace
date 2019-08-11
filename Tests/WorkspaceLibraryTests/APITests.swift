@@ -43,7 +43,7 @@ class APITests : TestCase {
         PackageRepository(mock: "AllDisabled").test(commands: [
             ["refresh"],
             ["validate"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testAllTasks() {

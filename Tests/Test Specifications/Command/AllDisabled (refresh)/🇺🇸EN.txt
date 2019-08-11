@@ -1,0 +1,20 @@
+$ workspace refresh •no‐colour
+
+Refreshing “AllDisabled”...
+
+
+Refreshing resources...
+
+
+Refreshing examples...
+
+
+Refreshing inherited documentation...
+
+
+Normalizing files...
+
+
+“AllDisabled” is refreshed and ready.
+
+0

@@ -1,0 +1,35 @@
+$ workspace dokumentieren •no‐colour
+
+Generating documentation... (§1)
+
+
+No original copyright date is specified.
+(Configure it under “documentation.api.yearFirstPublished”.)
+
+Parsing “Deutsch”...
+Processing API...
+Generating HTML...
+
+A symbol has no description:
+Deutsch.🇩🇪DE
+(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
+Workspace will look for documentation on the line above “Package(name: "Deutsch"”.)
+
+
+A symbol has no description:
+Deutsch.🇩🇪DE
+(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
+Workspace will look for documentation on the line above “.library(name: "Deutsch"”.)
+
+...Deutsch...
+
+A symbol has no description:
+Deutsch.🇩🇪DE
+(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
+Workspace will look for documentation on the line above “.target(name: "Deutsch"”.)
+
+
+✗ Generated documentation, but encountered warnings. (See [⌘F] “§1”)
+
+“Deutsch” fails validation.
+2

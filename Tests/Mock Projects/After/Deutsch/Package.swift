@@ -5,7 +5,8 @@ import PackageDescription
 let package = Package(
     name: "Deutsch",
     products: [
-        .library(name: "Deutsch", targets: ["Deutsch"])
+        .library(name: "Deutsch", targets: ["Deutsch"]),
+        .executable(name: "werkzeug", targets: ["werkzeug"])
     ],
     targets: [
         .target(name: "Deutsch"),

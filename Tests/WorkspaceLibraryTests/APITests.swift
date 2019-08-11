@@ -234,7 +234,18 @@ class APITests : TestCase {
         PackageRepository(mock: "Default").test(commands: commands, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
-    func testDeutsch() {
+    func testDeutsch() throws {
+        var output = try mockCommand.withRootBehaviour().execute(with: ["export‐interface", "•language", "de"]).get()
+        // macOS & Linux have different JSON whitespace.
+        output.scalars.replaceMatches(for: CompositePattern([
+            LiteralPattern("\n".scalars),
+            RepetitionPattern(" ".scalars),
+            LiteralPattern("\n".scalars)
+            ]), with: "\n\n".scalars)
+        try output.save(
+            to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
+                .appendingPathComponent("Resources/werkzeug/Deutsch.txt"))
+
         let konfiguration = ArbeitsbereichKonfiguration()
         konfiguration.optimizeForTests()
         konfiguration.dokumentation.lokalisationen = ["de"]
@@ -242,6 +253,8 @@ class APITests : TestCase {
         konfiguration.dokumentation.programmierschnittstelle.verschlüsselterTravisCIVerteilungsschlüssel = "..."
         PackageRepository(mock: "Deutsch").test(commands: [
             ["auffrischen", "fortlaufende‐einbindung"],
+            ["auffrischen", "ressourcen"],
+            ["dokumentieren"]
             ], configuration: konfiguration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 

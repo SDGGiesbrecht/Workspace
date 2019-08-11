@@ -1,1 +1,1 @@
-print("Guten Tag, Welt!")
+print(Ressourcen.deutsch)

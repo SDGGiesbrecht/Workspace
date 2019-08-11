@@ -243,7 +243,7 @@ class APITests : TestCase {
             LiteralPattern("\n".scalars)
             ]), with: "\n\n".scalars)
         try output.save(
-            to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
+            to: PackageRepository.beforeDirectory(for: "Deutsch")
                 .appendingPathComponent("Resources/werkzeug/Deutsch.txt"))
 
         let konfiguration = ArbeitsbereichKonfiguration()
@@ -255,7 +255,7 @@ class APITests : TestCase {
             ["auffrischen", "fortlaufende‐einbindung"],
             ["auffrischen", "ressourcen"],
             ["dokumentieren"]
-            ], configuration: konfiguration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: konfiguration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testExecutable() {

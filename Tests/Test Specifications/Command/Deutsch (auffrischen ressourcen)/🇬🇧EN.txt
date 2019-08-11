@@ -1,0 +1,6 @@
+$ workspace auffrischen ressourcen •no‐colour
+
+Refreshing resources...
+
+Writing to ‘Sources/werkzeug/Resources.swift’...
+0

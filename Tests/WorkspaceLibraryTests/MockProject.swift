@@ -213,6 +213,16 @@ extension PackageRepository {
                                     any,
                                     LiteralPattern("\nValidating “".scalars)
                                     ]), with: "\n[Refreshing ...]\n\nValidating “".scalars)
+                                output.scalars.replaceMatches(for: CompositePattern([
+                                    LiteralPattern("\n".scalars),
+                                    any,
+                                    LiteralPattern("\nValidating ‘".scalars)
+                                    ]), with: "\n[Refreshing ...]\n\nValidating ‘".scalars)
+                                output.scalars.replaceMatches(for: CompositePattern([
+                                    LiteralPattern("\n".scalars),
+                                    any,
+                                    LiteralPattern("\n„AllDisabled“ wird geprüft".scalars)
+                                    ]), with: "\n[... wird aufgefrisct ...]\n\n„AllDisabled“ wird geprüft".scalars)
                             }
                         }
 

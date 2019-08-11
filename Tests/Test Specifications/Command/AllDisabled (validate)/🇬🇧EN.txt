@@ -1,19 +1,5 @@
 $ workspace validate •no‐colour
-
-Refreshing ‘AllDisabled’...
-
-
-Refreshing resources...
-
-
-Refreshing examples...
-
-
-Refreshing inherited documentation...
-
-
-Normalising files...
-
+[Refreshing ...]
 
 Validating ‘AllDisabled’...
 

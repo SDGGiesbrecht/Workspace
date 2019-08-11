@@ -488,6 +488,11 @@ class APITests : TestCase {
         testCustomStringConvertibleConformance(of: LocalizationIdentifier("en"), localizations: FastTestLocalization.self, uniqueTestName: "English", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: LocalizationIdentifier("cmn"), localizations: FastTestLocalization.self, uniqueTestName: "Mandarin", overwriteSpecificationInsteadOfFailing: false)
         testCustomStringConvertibleConformance(of: LocalizationIdentifier("zxx"), localizations: FastTestLocalization.self, uniqueTestName: "Unknown", overwriteSpecificationInsteadOfFailing: false)
+
+        var identifier = LocalizationIdentifier("zxx")
+        identifier.kennzeichen = "de"
+        XCTAssertEqual(identifier.kennzeichen, "de")
+        _ = identifier.symbol
     }
 
     func testMissingDocumentation() {

@@ -162,8 +162,8 @@ class APITests : TestCase {
         XCTAssertEqual(
             configuration.dokumentation.programmierschnittstelle.verschlüsselterTravisCIVerteilungsschlüssel,
             "")
-        configuration.dokumentation.programmierschnittstelle.ignoredDependencies.insert("...")
-        XCTAssert(configuration.dokumentation.programmierschnittstelle.ignoredDependencies.contains("..."))
+        configuration.dokumentation.programmierschnittstelle.übergegangeneAbhängigkeiten.insert("...")
+        XCTAssert(configuration.dokumentation.programmierschnittstelle.übergegangeneAbhängigkeiten.contains("..."))
         configuration.dokumentation.localisations = ["und"]
         XCTAssertEqual(configuration.dokumentation.localisations, ["und"])
         configuration.dokumentation.lokalisationen = ["zxx"]
@@ -181,8 +181,8 @@ class APITests : TestCase {
         XCTAssertEqual(
             configuration.dokumentation.lagerRessourcenzeiger,
             EinheitlicherRessourcenzeiger(string: "lager.de"))
-        configuration.dokumentation.primaryAuthor = "Autor"
-        XCTAssertEqual(configuration.dokumentation.primaryAuthor, "Autor")
+        configuration.dokumentation.hauptautor = "Autor"
+        XCTAssertEqual(configuration.dokumentation.hauptautor, "Autor")
         configuration.dokumentation.installationsanleitungen = BequemeEinstellung(auswerten: { _ in [:] })
         XCTAssertEqual(configuration.dokumentation.installationsanleitungen.auswerten(configuration), [:])
         configuration.dokumentation.einführungsanleitungen = BequemeEinstellung(auswerten: { _ in [:] })
@@ -195,7 +195,7 @@ class APITests : TestCase {
         XCTAssertFalse(configuration.dokumentation.liesMich.verwalten)
         configuration.dokumentation.liesMich.inhalt = BequemeEinstellung(auswerten: { _ in [:] })
         XCTAssertEqual(configuration.dokumentation.liesMich.inhalt.auswerten(configuration), [:])
-        _ = LiesMichEinstellungen.apiLink(for: configuration, in: "zxx")
+        _ = LiesMichEinstellungen.programmierschnittstellenverweis(für: configuration, auf: "zxx")
         configuration.license.manage = false
         XCTAssertFalse(configuration.license.manage)
         configuration.lizenz.manage = true
@@ -205,6 +205,10 @@ class APITests : TestCase {
         configuration.lager.ignoredPaths.insert("...")
         configuration.xcode.verwalten = false
         XCTAssertFalse(configuration.xcode.verwalten)
+        configuration.license.license = nil
+        XCTAssertNil(configuration.license)
+        configuration.lizenz.lizenz = .mit
+        XCTAssertEqual(configuration.lizenz.lizenz, .mit)
     }
 
     func testConfiguartionContext() {
@@ -216,8 +220,8 @@ class APITests : TestCase {
         XCTAssertEqual(context.standort, URL(string: "site.tld")!)
         XCTAssertEqual(context.ladeliste.paketenName, "Package")
         XCTAssertEqual(context.ladeliste.produktmodule.first, "Module")
-        XCTAssertEqual(context.ladeliste.produkte.first?.type, .bibliotek)
-        XCTAssertNotEqual(context.ladeliste.produkte.first?.type, .ausführbareDatei)
+        XCTAssertEqual(context.ladeliste.produkte.first?.art, .bibliotek)
+        XCTAssertNotEqual(context.ladeliste.produkte.first?.art, .ausführbareDatei)
         XCTAssertEqual(context.ladeliste.produkte.first?.module.first, "Module")
         WorkspaceContext.current = context
         _ = WorkspaceContext.aktueller

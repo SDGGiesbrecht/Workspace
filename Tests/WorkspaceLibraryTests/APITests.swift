@@ -206,7 +206,7 @@ class APITests : TestCase {
         configuration.xcode.verwalten = false
         XCTAssertFalse(configuration.xcode.verwalten)
         configuration.license.license = nil
-        XCTAssertNil(configuration.license)
+        XCTAssertNil(configuration.license.license)
         configuration.lizenz.lizenz = .mit
         XCTAssertEqual(configuration.lizenz.lizenz, .mit)
     }

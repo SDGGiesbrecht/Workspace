@@ -65,6 +65,10 @@ class APITests : TestCase {
             ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
+    func testArray() {
+        XCTAssertEqual(["a", "b"].verbundenAlsZeile(), "a\nb")
+    }
+
     func testBadStyle() {
         let configuration = WorkspaceConfiguration()
         let failing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: ["fail"])
@@ -132,6 +136,89 @@ class APITests : TestCase {
         let configuration = WorkspaceConfiguration()
         configuration._applySDGDefaults(openSource: false)
         XCTAssertFalse(configuration.documentation.readMe.manage)
+
+        configuration.continuousIntegration.verwalten = false
+        XCTAssertFalse(configuration.continuousIntegration.verwalten)
+        configuration.continuousIntegration.auserhalbFortlaufenderEinbindungSimulatorÜberspringen = true
+        XCTAssert(configuration.continuousIntegration.auserhalbFortlaufenderEinbindungSimulatorÜberspringen)
+        configuration.customRefreshmentTasks.append(Sonderaufgabe(
+            ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "domain.tld")!,
+            version: Version(1, 0),
+            ausführbareDatei: "werkzeug",
+            argumente: ["argument"]))
+        XCTAssertEqual(configuration.customRefreshmentTasks.last?.version.major, 1)
+        configuration.dokumentation.programmierschnittstelle.erstellen = false
+        XCTAssertFalse(configuration.dokumentation.programmierschnittstelle.erstellen)
+        configuration.dokumentation.programmierschnittstelle.abdeckungErzwingen = false
+        XCTAssertFalse(configuration.dokumentation.programmierschnittstelle.abdeckungErzwingen)
+        configuration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 1
+        XCTAssertEqual(configuration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung, 1)
+        configuration.dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk = BequemeEinstellung(auswerten: { _ in [:] })
+        XCTAssertEqual(
+            configuration.dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk
+                .auswerten(configuration),
+            [:])
+        configuration.dokumentation.programmierschnittstelle.verschlüsselterTravisCIVerteilungsschlüssel = ""
+        XCTAssertEqual(
+            configuration.dokumentation.programmierschnittstelle.verschlüsselterTravisCIVerteilungsschlüssel,
+            "")
+        configuration.dokumentation.programmierschnittstelle.ignoredDependencies.insert("...")
+        XCTAssert(configuration.dokumentation.programmierschnittstelle.ignoredDependencies.contains("..."))
+        configuration.dokumentation.localisations = ["und"]
+        XCTAssertEqual(configuration.dokumentation.localisations, ["und"])
+        configuration.dokumentation.lokalisationen = ["zxx"]
+        XCTAssertEqual(configuration.dokumentation.lokalisationen, ["zxx"])
+        configuration.dokumentation.aktuelleVersion = Version(1, 0)
+        XCTAssertEqual(configuration.dokumentation.aktuelleVersion, Version(1, 0))
+        configuration.dokumentation.projektSeite = EinheitlicherRessourcenzeiger(string: "seite.de")
+        XCTAssertEqual(configuration.dokumentation.projektSeite, EinheitlicherRessourcenzeiger(string: "seite.de"))
+        configuration.dokumentation.dokumentationsRessourcenzeiger = EinheitlicherRessourcenzeiger(
+            string: "dokumentation.de")
+        XCTAssertEqual(
+            configuration.dokumentation.dokumentationsRessourcenzeiger,
+            EinheitlicherRessourcenzeiger(string: "dokumentation.de"))
+        configuration.dokumentation.lagerRessourcenzeiger = EinheitlicherRessourcenzeiger(string: "lager.de")
+        XCTAssertEqual(
+            configuration.dokumentation.lagerRessourcenzeiger,
+            EinheitlicherRessourcenzeiger(string: "lager.de"))
+        configuration.dokumentation.primaryAuthor = "Autor"
+        XCTAssertEqual(configuration.dokumentation.primaryAuthor, "Autor")
+        configuration.dokumentation.installationsanleitungen = BequemeEinstellung(auswerten: { _ in [:] })
+        XCTAssertEqual(configuration.dokumentation.installationsanleitungen.auswerten(configuration), [:])
+        configuration.dokumentation.einführungsanleitungen = BequemeEinstellung(auswerten: { _ in [:] })
+        XCTAssertEqual(configuration.dokumentation.einführungsanleitungen.auswerten(configuration), [:])
+        configuration.dokumentation.über = ["zxx": "..."]
+        XCTAssertEqual(configuration.dokumentation.über, ["zxx": "..."])
+        configuration.dokumentation.verwandteProjekte = []
+        XCTAssert(configuration.dokumentation.verwandteProjekte.isEmpty)
+        configuration.dokumentation.liesMich.verwalten = false
+        XCTAssertFalse(configuration.dokumentation.liesMich.verwalten)
+        configuration.dokumentation.liesMich.inhalt = BequemeEinstellung(auswerten: { _ in [:] })
+        XCTAssertEqual(configuration.dokumentation.liesMich.inhalt.auswerten(configuration), [:])
+        _ = LiesMichEinstellungen.apiLink(for: configuration, in: "zxx")
+        configuration.license.manage = false
+        XCTAssertFalse(configuration.license.manage)
+        configuration.lizenz.manage = true
+        XCTAssert(configuration.lizenz.manage)
+        configuration.arbeitsablaufsskripteBereitstellen = false
+        XCTAssertFalse(configuration.arbeitsablaufsskripteBereitstellen)
+        configuration.lager.ignoredPaths.insert("...")
+        configuration.xcode.verwalten = false
+        XCTAssertFalse(configuration.xcode.verwalten)
+    }
+
+    func testConfiguartionContext() {
+        let context = WorkspaceContext(
+            _location: URL(string: "site.tld")!,
+            manifest: PackageManifest(_packageName: "Package", products: [
+                PackageManifest.Product(_name: "Product", type: .library, modules: ["Module"])
+                ]))
+        XCTAssertEqual(context.standort, URL(string: "site.tld")!)
+        XCTAssertEqual(context.ladeliste.paketenName, "Package")
+        XCTAssertEqual(context.ladeliste.produktmodule.first, "Module")
+        XCTAssertEqual(context.ladeliste.produkte.first?.type, .bibliotek)
+        XCTAssertNotEqual(context.ladeliste.produkte.first?.type, .ausführbareDatei)
+        XCTAssertEqual(context.ladeliste.produkte.first?.module.first, "Module")
     }
 
     func testContinuousIntegrationWithoutScripts() {
@@ -208,6 +295,19 @@ class APITests : TestCase {
             ["refresh"],
             ["validate"]
             ], configuration: configuration, localizations: FastTestLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
+
+        var aufgabe = Sonderaufgabe(
+            ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "domain.tld")!,
+            version: Version(1, 0),
+            ausführbareDatei: "werkzeug")
+        aufgabe.ressourcenzeiger = EinheitlicherRessourcenzeiger(string: "other.tld")!
+        XCTAssertEqual(aufgabe.ressourcenzeiger, EinheitlicherRessourcenzeiger(string: "other.tld")!)
+        aufgabe.version = Version(2, 0)
+        XCTAssertEqual(aufgabe.version, Version(2, 0))
+        aufgabe.ausführbareDatei = "andere"
+        XCTAssertEqual(aufgabe.ausführbareDatei, "andere")
+        aufgabe.argumente = ["eins", "zwei"]
+        XCTAssertEqual(aufgabe.argumente, ["eins", "zwei"])
     }
 
     func testDefaults() {
@@ -479,6 +579,12 @@ class APITests : TestCase {
             ["refresh", "github"],
             ["document"]
             ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testRelatedProject() {
+        var project = RelatedProjectEntry.projekt(ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "seite.de")!)
+        project = RelatedProjectEntry.überschrift(text: [:])
+        _ = project
     }
 
     func testSDGLibrary() {

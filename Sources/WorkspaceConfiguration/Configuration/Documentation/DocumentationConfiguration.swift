@@ -236,7 +236,7 @@ public struct DocumentationConfiguration : Codable {
     /// Einführungsanweisungen.
     ///
     /// Einführungssanweisungen werden automatisch davon hergeleitet, wenn `lagerRessourcenzeiger` und `aktuelleVersion` angegeben sind.
-    public var einfühurngsanleitungen: BequemeEinstellung<[Lokalisationskennzeichen: Markdown]> {
+    public var einführungsanleitungen: BequemeEinstellung<[Lokalisationskennzeichen: Markdown]> {
         get { return importingInstructions }
         set { importingInstructions = newValue }
     }

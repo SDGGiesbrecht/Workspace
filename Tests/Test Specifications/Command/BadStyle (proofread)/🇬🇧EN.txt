@@ -1,7 +1,11 @@
 $ workspace proofread •no‐colour
 
-Normalizing files...
+Normalising files...
 
+Writing to ‘Sources/BadStyle/Normalization/Decomposition.swift’...
+Writing to ‘Sources/BadStyle/Normalization/EmptyIndents.swift’...
+Writing to ‘Sources/BadStyle/Rules/Functionality/AutoindentResilience.swift’...
+Writing to ‘Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift’...
 
 Proofreading source code... (§1)
 
@@ -47,18 +51,18 @@ Language specifier missing. Specify a language for syntax colouring. (syntaxColo
 
 Sources/BadStyle/Rules/Functionality/AutoindentResilience.swift
 Line 3
-“/**” may not survive autoindent (⌃I). Use “///” instead. (autoindentResilience)
+‘/**’ may not survive autoindent (⌃I). Use ‘///’ instead. (autoindentResilience)
 /**
 
 Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift
 Line 3
-U+00B2 may be lost in normalization; use “2” instead. (compatibilityCharacters)
+U+00B2 may be lost in normalisation; use ‘2’ instead. (compatibilityCharacters)
 let compatibility = "2"
 let compatibility = "2"
 
 Sources/BadStyle/Rules/Functionality/Mark.swift
 Line 3
-Incomplete heading syntax. Use “// MARK: - ”. (marks)
+Incomplete heading syntax. Use ‘// MARK: - ’. (marks)
 /// MARK: This heading is malformed and should trigger.
 // MARK: - This heading is malformed and should trigger.
 
@@ -90,7 +94,7 @@ func z() {/* These braces should trigger; they should be spaced. */ }
 
 Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift
 Line 5
-Callouts should be capitalized. (calloutCasing)
+Callouts should be capitalised. (calloutCasing)
 /// - warning: This should trigger. It should have been capitalized.
 /// - Warning: This should trigger. It should have been capitalized.
 
@@ -116,7 +120,7 @@ Colons should be followed by spaces. (colonSpacing)
     static func == (lhs : Conformance, rhs: Conformance) -> Bool { // These colons should trigger. They need respacing.
 
 Line 21
-“/**” may not survive autoindent (⌃I). Use “///” instead. (autoindentResilience)
+‘/**’ may not survive autoindent (⌃I). Use ‘///’ instead. (autoindentResilience)
     /**
 
 Line 34
@@ -269,10 +273,14 @@ class BadStyleTests: XCTestCase {
 class BadStyleTests : XCTestCase {
 
 
+[$ git...]
+
+[$ swift...]
+
 $ Dependency fail
 Hello, world!
 
-✗ Source code fails proofreading. (See [⌘F] “§1”)
+✗ Source code fails proofreading. (See [⌘F] ‘§1’)
 
-“BadStyle” fails validation.
+‘BadStyle’ fails validation.
 2

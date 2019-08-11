@@ -42,7 +42,7 @@ Such headings are no longer necessary for the generated documentation. (deprecat
 
 Sources/BadStyle/Rules/Documentation/SyntaxColouring.swift
 Line 7
-Language specifier missing. Specify a language for syntax colouring. (syntaxColouring)
+Language specifier missing. Specify a language for syntax colouring. (syntaxColoring)
 /// ```
 
 Sources/BadStyle/Rules/Functionality/AutoindentResilience.swift

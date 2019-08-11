@@ -72,7 +72,7 @@ class APITests : TestCase {
         PackageRepository(mock: "BadStyle").test(commands: [
             ["proofread"],
             ["proofread", "•xcode"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testBrokenExample() {

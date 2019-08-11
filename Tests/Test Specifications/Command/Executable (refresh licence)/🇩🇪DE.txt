@@ -1,0 +1,6 @@
+$ arbeitsbereich refresh licence •no‐colour
+
+Lizenz wird aufgefrischt ...
+
+Keine Lizenz wurde ausgewählt. (lizenz.lizenz)
+9223372036854775807

@@ -1,0 +1,6 @@
+$ workspace refresh read‐me •no‐colour
+
+Refreshing read‐me...
+
+Writing to ‘README.md’...
+0

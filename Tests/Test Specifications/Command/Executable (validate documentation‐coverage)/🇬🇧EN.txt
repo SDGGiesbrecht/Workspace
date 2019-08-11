@@ -1,0 +1,8 @@
+$ workspace validate documentation‐coverage •no‐colour
+
+✓ No library products to document.
+
+
+‘Executable’ passes validation.
+
+0

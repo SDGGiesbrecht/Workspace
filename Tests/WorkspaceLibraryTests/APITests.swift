@@ -271,7 +271,7 @@ class APITests : TestCase {
             ["refresh", "read‐me"],
             ["document"],
             ["validate", "documentation‐coverage"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testFailingCustomTasks() {

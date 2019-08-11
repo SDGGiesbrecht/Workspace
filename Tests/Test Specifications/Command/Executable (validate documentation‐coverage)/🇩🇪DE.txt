@@ -1,0 +1,8 @@
+$ arbeitsbereich validate documentation‐coverage •no‐colour
+
+✓ Keine Biblioteksprodukte zum Dokumentieren.
+
+
+„Executable“ besteht die Überprüfung.
+
+0

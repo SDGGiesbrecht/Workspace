@@ -238,7 +238,8 @@ class APITests : TestCase {
         let konfiguration = ArbeitsbereichKonfiguration()
         konfiguration.optimizeForTests()
         konfiguration.dokumentation.lokalisationen = ["de"]
-        konfiguration.dokumentation.programmierschnittstelle.encryptedTravisCIDeploymentKey = "..."
+        konfiguration.dokumentation.programmierschnittstelle.erstellen = true
+        konfiguration.dokumentation.programmierschnittstelle.verschlüsselterTravisCIVerteilungsschlüssel = "..."
         PackageRepository(mock: "Deutsch").test(commands: [
             ["auffrischen", "fortlaufende‐einbindung"],
             ], configuration: konfiguration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)

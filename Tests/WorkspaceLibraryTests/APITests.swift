@@ -399,7 +399,7 @@ class APITests : TestCase {
     func testMissingExample() {
         PackageRepository(mock: "MissingExample").test(commands: [
             ["refresh", "examples"]
-            ], localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testMissingReadMeLocalization() {

@@ -1,0 +1,26 @@
+$ arbeitsbereich validate help •no‐colour
+
+arbeitsbereich prüfen prüft das Projekt gegen eine gründliche Reihe von Teste.
+
+Unterbefehle
+
+alles führt alle eingestellte Prüfungen aus.
+dokumentationsabdeckung prüft die Dokumentationsabdeckung, dass jedes öffentliche Symbol von jede Biblioteksprodukt dokumentiert ist.
+erstellung prüft die Erstellung, dass keine Übersetzungswarnungen auftreten.
+hilfe zeigt Gebrauchsinformationen an.
+testabdeckung prüft die Testabdeckung, dass jede Quellweg durch Teste erreicht wird.
+
+Optionen
+
+•aufgabe [Aufgabe] Eine bestimmte aufgabe der fortlaufenden Einbindung.
+•ohne‐farben Blendet Farben aus der Ausgabe aus.
+•projekt [Pfad] Die Standort von dem Zielprojekt, wenn es nicht in dem aktuellen Arbeitsverzeichnis ist.
+•sprache [Spracheinstellung] Eine Sprache anstelle deren zu verwenden, die in den Einstellungen angegeben ist.
+
+Argumentarte
+
+[Aufgabe] „ios“, „linux“, „macos“, „sonstiges“, „tvos“, „verteilung“ oder „watchos“.
+[Pfad] Ein Pfadname. Die Form „/...“ gibt einen vollständigen Pfad an. Die Form „~/...“ gibt einen relativen Pfad an, ausgehend von dem Benutzerverzeichnis. Alles andere gilt als relativer Pfad, ausgehened vom aktuellen Arbeitsverzeichnis.
+[Spracheinstellung] Eine Liste IETF Sprachbezeichnungen oder SDGCornerstone‐Sprachsymbole. Doppelpunkte geben die Ersatzreihenfolge an. Kommata geben an, dass mehrere Sprachen verwendet werden sollen. Beispiele: „de-DE“ oder „🇩🇪DE“ → Deutsch aus Deutschland, “bar,de;fr” → beide Bairisch und Deutsch, sonst Französisch
+
+0

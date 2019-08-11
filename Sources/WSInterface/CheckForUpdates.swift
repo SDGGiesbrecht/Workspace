@@ -58,7 +58,7 @@ extension Workspace {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Workspace \(update.string()) is available.\nFor update instructions, see \(url.absoluteString.in(Underline.underlined))"
-                    case .deutschDeutschland:
+                    case .deutschDeutschland: // @exempt(from: tests)
                         return "Arbeitsbereich \(update.string()) ist erhältlich.\nFür Aktualisierungsanweisungen, siehe \(url.absoluteString.in(Underline.underlined))"
                     }
                 }).resolved())
@@ -68,7 +68,7 @@ extension Workspace {
                     switch localization {
                     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Workspace is up to date."
-                    case .deutschDeutschland:
+                    case .deutschDeutschland: // @exempt(from: tests)
                         return "Arbeitsbereich ist auf dem neuesten Stand."
                     }
                 }).resolved())

@@ -1,0 +1,32 @@
+$ arbeitsbereich refresh help •no‐colour
+
+arbeitsbereich auffrischen frischt das Projekt auf, durch Aktualisierungen der Bestandteile und Vorbereitungen für Entwicklung.
+
+Unterbefehle
+
+alles führt alle konfigurierte Auffrischungsaufgaben aus.
+beispiele stimmt die übersetzte Beispiele des Projekts miteinander ab.
+dateivorspänne wendet die Dateivorspann des Projekts zu jeder Datei neu an.
+fortlaufende‐einbindung erstellt die Konfigurationsdateien des Projekts, die fortlaufende Einbindung einrichten.
+geerbte‐dokumentation stimmt die geerbte Dokumentation des Projekts ab.
+git erstellt die Git‐Konfiguration des Projekts neu.
+github erstellt die GitHub‐Konfigurationen des Projekts neu.
+hilfe zeigt Gebrauchsinformationen an.
+lies‐mich erstellt die Lies‐mich‐Datei des Projekts neu.
+lizenz erstellt die Lizenzdatei der Projekt neu.
+ressourcen erstellt den Quelltext neu, der zugriff auf die Ressourcen des Projekts bereitstellt.
+skripte erstellt die Auffrisch‐ und Überprüfungskripte neu.
+xcode erstellt die Xcode‐Einrichtung des Projekts neu.
+
+Optionen
+
+•ohne‐farben Blendet Farben aus der Ausgabe aus.
+•projekt [Pfad] Die Standort von dem Zielprojekt, wenn es nicht in dem aktuellen Arbeitsverzeichnis ist.
+•sprache [Spracheinstellung] Eine Sprache anstelle deren zu verwenden, die in den Einstellungen angegeben ist.
+
+Argumentarte
+
+[Pfad] Ein Pfadname. Die Form „/...“ gibt einen vollständigen Pfad an. Die Form „~/...“ gibt einen relativen Pfad an, ausgehend von dem Benutzerverzeichnis. Alles andere gilt als relativer Pfad, ausgehened vom aktuellen Arbeitsverzeichnis.
+[Spracheinstellung] Eine Liste IETF Sprachbezeichnungen oder SDGCornerstone‐Sprachsymbole. Doppelpunkte geben die Ersatzreihenfolge an. Kommata geben an, dass mehrere Sprachen verwendet werden sollen. Beispiele: „de-DE“ oder „🇩🇪DE“ → Deutsch aus Deutschland, “bar,de;fr” → beide Bairisch und Deutsch, sonst Französisch
+
+0

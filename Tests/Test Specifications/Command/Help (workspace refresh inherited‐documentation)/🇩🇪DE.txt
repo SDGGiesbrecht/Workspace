@@ -1,0 +1,47 @@
+$ arbeitsbereich refresh inherited‐documentation help •no‐colour
+
+arbeitsbereich auffrischen geerbte‐dokumentation stimmt die geerbte Dokumentation des Projekts ab.
+
+Dokementationskommentare immer wieder neu zu schreiben kann mühsam werden. Arbeitsbereich kann Dokumentationskommentare wiederverwendbar machen.
+
+Hinweis: Beide Xcode und Arbeitsbereich verstehen automatisch die Erbe von Dokumentation wenn das Kindsymbol keine Dokumentation hat, so wie Protokollübereinstimmungen, Standardimplementierungen und Unterklassenüberschreibungen. Die ausdrückliche Anweisungen, die hier beschrieben sind, sollen nur in Fällen verwendet werden, wo die Werkzeuge den Elternsymbol nicht automatisch rückschließen können.
+
+Um einen Dokumentationskommentar als Bestimmung zu bezeichnen, wird „@dokumentation(kennzeichen)“ auf der vorstehenden Zeile gestellt. Alles anderes auf der Zeile wird nicht beachtet (z. B. „//“).
+
+protocol Schwafler {
+    // @dokumentation(Schwafler.schwafeln)
+    /// Schwafelt weiter und weiter und weiter und weiter ...
+    func schwafeln() -> Nie
+}
+
+Arbeitsbereich kann Bestimmungen in alle Swift‐Dateien des Projekts finden.
+
+Um die Dokemuntation sonstwo zu erben, wird „#dokumentation(kennzeichen)“ dort gestellt, wo die Dokumentation gehört (oder darüber, falls es schon existiert). Alles anderes auf der Zeile wird nicht beachtet (z. B. „//“).
+
+struct Lehrer : Schwafler {
+    // #dokumentation(Schwafler.schwafeln)
+    /// (Arbeitsbereich füllt es hier ein, wenn das Projekt aufgefrischt wird.)
+    func schwafeln() -> Nie {
+        drucken("Bla")
+        while true {
+            drucken("bla")
+        }
+    }
+}
+
+Unterbefehle
+
+hilfe zeigt Gebrauchsinformationen an.
+
+Optionen
+
+•ohne‐farben Blendet Farben aus der Ausgabe aus.
+•projekt [Pfad] Die Standort von dem Zielprojekt, wenn es nicht in dem aktuellen Arbeitsverzeichnis ist.
+•sprache [Spracheinstellung] Eine Sprache anstelle deren zu verwenden, die in den Einstellungen angegeben ist.
+
+Argumentarte
+
+[Pfad] Ein Pfadname. Die Form „/...“ gibt einen vollständigen Pfad an. Die Form „~/...“ gibt einen relativen Pfad an, ausgehend von dem Benutzerverzeichnis. Alles andere gilt als relativer Pfad, ausgehened vom aktuellen Arbeitsverzeichnis.
+[Spracheinstellung] Eine Liste IETF Sprachbezeichnungen oder SDGCornerstone‐Sprachsymbole. Doppelpunkte geben die Ersatzreihenfolge an. Kommata geben an, dass mehrere Sprachen verwendet werden sollen. Beispiele: „de-DE“ oder „🇩🇪DE“ → Deutsch aus Deutschland, “bar,de;fr” → beide Bairisch und Deutsch, sonst Französisch
+
+0

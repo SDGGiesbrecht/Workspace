@@ -1,0 +1,26 @@
+$ workspace validate help •no‐colour
+
+workspace validate validates the project against a thorough battery of tests.
+
+Subcommands
+
+all performs all configured validation checks.
+build validates the build, checking that it triggers no compiler warnings.
+documentation‐coverage validates documentation coverage, checking that every public symbol in every library product is documented.
+help displays usage information.
+test‐coverage validates test coverage, checking that every code path is reached by the project’s tests.
+
+Options
+
+•job [job] A particular continuous integration job.
+•language [language preference] A language to use instead of the one specified in preferences.
+•no‐colour Removes colour from the output.
+•project [path] The location of the target project if it is not at the current working directory.
+
+Argument Types
+
+[job] ‘deployment’, ‘ios’, ‘linux’, ‘macos’, ‘miscellaneous’, ‘tvos’ or ‘watchos’.
+[language preference] A list of IETF language tags or language icons. Semicolons indicate fallback order. Commas indicate that multiple languages should be used. Examples: ‘en-GB’ or ‘🇬🇧EN’ → British English, ‘cy,en;fr’ → both Welsh and English, otherwise French
+[path] A file system path. The form ‘/...’ indicates an absolute path. The form ‘~/...’ indicates a path relative to the home directory. Anything else is interpreted relative to the current working directory.
+
+0

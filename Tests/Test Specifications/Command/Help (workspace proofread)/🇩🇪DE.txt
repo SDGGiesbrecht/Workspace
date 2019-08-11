@@ -1,0 +1,21 @@
+$ arbeitsbereich proofread help •no‐colour
+
+arbeitsbereich korrekturlesen liest die Projektquellenstyl Korrektur.
+
+Unterbefehle
+
+hilfe zeigt Gebrauchsinformationen an.
+
+Optionen
+
+•ohne‐farben Blendet Farben aus der Ausgabe aus.
+•projekt [Pfad] Die Standort von dem Zielprojekt, wenn es nicht in dem aktuellen Arbeitsverzeichnis ist.
+•sprache [Spracheinstellung] Eine Sprache anstelle deren zu verwenden, die in den Einstellungen angegeben ist.
+•xcode verhält sich wie ein Xcode‐Erstellungsschritt.
+
+Argumentarte
+
+[Pfad] Ein Pfadname. Die Form „/...“ gibt einen vollständigen Pfad an. Die Form „~/...“ gibt einen relativen Pfad an, ausgehend von dem Benutzerverzeichnis. Alles andere gilt als relativer Pfad, ausgehened vom aktuellen Arbeitsverzeichnis.
+[Spracheinstellung] Eine Liste IETF Sprachbezeichnungen oder SDGCornerstone‐Sprachsymbole. Doppelpunkte geben die Ersatzreihenfolge an. Kommata geben an, dass mehrere Sprachen verwendet werden sollen. Beispiele: „de-DE“ oder „🇩🇪DE“ → Deutsch aus Deutschland, “bar,de;fr” → beide Bairisch und Deutsch, sonst Französisch
+
+0

@@ -1,0 +1,25 @@
+$ workspace help •no‐colour
+
+workspace automates management of Swift projects.
+
+Subcommands
+
+check‐for‐updates checks for available Workspace updates.
+document generates API documentation.
+help displays usage information.
+normalise normalises the project’s files by removing trailing whitespace, applying Unix newlines and performing canonical decomposition.
+proofread proofreads the project’s source for style violations.
+refresh refreshes the project by updating its components and readying it for development.
+test runs the project’s test targets.
+validate validates the project against a thorough battery of tests.
+
+Options
+
+•language [language preference] A language to use instead of the one specified in preferences.
+•no‐colour Removes colour from the output.
+
+Argument Types
+
+[language preference] A list of IETF language tags or language icons. Semicolons indicate fallback order. Commas indicate that multiple languages should be used. Examples: ‘en-GB’ or ‘🇬🇧EN’ → British English, ‘cy,en;fr’ → both Welsh and English, otherwise French
+
+0

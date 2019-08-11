@@ -1,0 +1,64 @@
+$ arbeitsbereich refresh examples help •no‐colour
+
+arbeitsbereich auffrischen beispiele stimmt die übersetzte Beispiele des Projekts miteinander ab.
+
+Bei Änderungen zu der Programmierschnittstelle, werden oft Beispiele in der Dokumentation vergessen. Arbeitsbereich ermöglicht das Abstimmen zwischen Beispiele und echten, Übersetzten Quelltext in einem Testmodul. So werden überholte Beispiele von dem Übersetzer erwischt.
+
+Beispiele können überall im Projekt festgelegt werden, aber in Testmodule geht es meistens am Besten.
+
+Beispiele können festgelegt sein, in dem man das Beispiel zwischen „@beispiel(kennzeichen)“ und „@beispielBeenden“ plaziert. Weiteres auf der selben Zeile wird nicht berücksichtigt (z. B. „//“).
+
+func umDenGlobalenAblaufZuVerlassen() {
+    let a = 0
+    let b = 0
+    let c = 0
+
+    // @beispiel(symmetrie)
+    if a == b {
+        assert(b == a)
+    }
+    // @beispielBeenden
+
+    // @beispiel(transitivität)
+    if a == b ∧ b == c {
+        assert(a == c)
+    }
+    // @beispielBeenden
+}
+
+Beispiele können in Dokumentation verwendet werden, in dem man ein oder mehrere Fälle von „#beispiel(0, kennzeichen)“ auf der vorstehende Zeile hinzufügt.
+
+// #beispiel(1, symmetrie) #beispiel(2, transitivität)
+/// Gibt `wahr` zurück, wenn `links` gleich `rechts` ist.
+///
+/// Gleichheit ist symmetrisch:
+///
+/// ```swift
+/// (Arbeistbereich füllt diese automatisch ein, wenn das Projekt aufgefrischt wird.)
+/// ```
+///
+/// Gleichheit ist transitiv:
+///
+/// ```swift
+///
+/// ```
+func == (links: Thing, rechts: Thing) -> Bool {
+    return links.rawValue == rechts.rawValue
+}
+
+Unterbefehle
+
+hilfe zeigt Gebrauchsinformationen an.
+
+Optionen
+
+•ohne‐farben Blendet Farben aus der Ausgabe aus.
+•projekt [Pfad] Die Standort von dem Zielprojekt, wenn es nicht in dem aktuellen Arbeitsverzeichnis ist.
+•sprache [Spracheinstellung] Eine Sprache anstelle deren zu verwenden, die in den Einstellungen angegeben ist.
+
+Argumentarte
+
+[Pfad] Ein Pfadname. Die Form „/...“ gibt einen vollständigen Pfad an. Die Form „~/...“ gibt einen relativen Pfad an, ausgehend von dem Benutzerverzeichnis. Alles andere gilt als relativer Pfad, ausgehened vom aktuellen Arbeitsverzeichnis.
+[Spracheinstellung] Eine Liste IETF Sprachbezeichnungen oder SDGCornerstone‐Sprachsymbole. Doppelpunkte geben die Ersatzreihenfolge an. Kommata geben an, dass mehrere Sprachen verwendet werden sollen. Beispiele: „de-DE“ oder „🇩🇪DE“ → Deutsch aus Deutschland, “bar,de;fr” → beide Bairisch und Deutsch, sonst Französisch
+
+0

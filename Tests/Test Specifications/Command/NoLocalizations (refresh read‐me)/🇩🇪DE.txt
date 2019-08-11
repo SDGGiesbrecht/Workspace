@@ -1,0 +1,6 @@
+$ arbeitsbereich refresh read‐me •no‐colour
+
+Lies‐mich wird aufgefrischt ...
+
+Keine Lokalisationen sind angegeben. (dokumentation.localisationen)
+9223372036854775807

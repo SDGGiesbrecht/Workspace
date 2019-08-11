@@ -434,7 +434,7 @@ class APITests : TestCase {
     func testNoLocalizations() {
         PackageRepository(mock: "NoLocalizations").test(commands: [
             ["refresh", "read‐me"]
-            ], localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testOneLocalization() {

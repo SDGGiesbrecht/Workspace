@@ -478,6 +478,12 @@ class APITests : TestCase {
             ], localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
+    func testLazyOption() {
+        var lazy = Lazy(resolve: { _ in false })
+        lazy.auswerten = { _ in true }
+        XCTAssert(lazy.auswerten(WorkspaceConfiguration()))
+    }
+
     func testLocalizationIdentifier() {
         var dictionary: [LocalizationIdentifier: Bool] = [:]
         dictionary[ContentLocalization.englishCanada] = true

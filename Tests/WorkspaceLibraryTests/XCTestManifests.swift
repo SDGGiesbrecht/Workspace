@@ -31,6 +31,7 @@ extension APITests {
         ("testHelp", testHelp),
         ("testInvalidResourceDirectory", testInvalidResourceDirectory),
         ("testInvalidTarget", testInvalidTarget),
+        ("testLazyOption", testLazyOption),
         ("testLocalizationIdentifier", testLocalizationIdentifier),
         ("testMissingDocumentation", testMissingDocumentation),
         ("testMissingExample", testMissingExample),

@@ -361,6 +361,7 @@ class APITests : TestCase {
         var commands: [[StrictString]] = [
             ["auffrischen", "fortlaufende‐einbindung"],
             ["auffrischen", "ressourcen"],
+            ["normalisieren"],
             ["prüfen", "erstellung"],
             ["prüfen", "testabdeckung"],
             ["dokumentieren"]

@@ -361,6 +361,7 @@ class APITests : TestCase {
         var commands: [[StrictString]] = [
             ["auffrischen", "fortlaufende‐einbindung"],
             ["auffrischen", "ressourcen"],
+            ["prüfen", "erstellung"],
             ["prüfen", "testabdeckung"],
             ["dokumentieren"]
         ]
@@ -443,7 +444,7 @@ class APITests : TestCase {
             ["validate", "build"],
             ["validate", "test‐coverage"],
             ["validate", "build", "•job", "miscellaneous"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testHeaders() {

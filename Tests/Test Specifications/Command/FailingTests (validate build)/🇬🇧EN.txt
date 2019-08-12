@@ -1,0 +1,32 @@
+$ workspace validate build •no‐colour
+
+Refreshing Xcode project...
+
+[$ swift...]
+
+Writing to ‘FailingTests.xcodeproj/project.pbxproj’...
+Writing to ‘FailingTests.xcodeproj//xcshareddata/xcschemes/Proofread.xcscheme’...
+
+Checking build for macOS... (§1)
+
+[$ swift...]
+
+Checking build for iOS... (§2)
+
+[$ xcodebuild...]
+
+Checking build for watchOS... (§3)
+
+[$ xcodebuild...]
+
+Checking build for tvOS... (§4)
+
+[$ xcodebuild...]
+
+✗ There are compiler warnings for macOS. (See [⌘F] ‘§1’)
+✗ There are compiler warnings for iOS. (See [⌘F] ‘§2’)
+✗ There are compiler warnings for watchOS. (See [⌘F] ‘§3’)
+✗ There are compiler warnings for tvOS. (See [⌘F] ‘§4’)
+
+‘FailingTests’ fails validation.
+2

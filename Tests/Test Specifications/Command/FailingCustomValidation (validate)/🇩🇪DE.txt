@@ -1,19 +1,5 @@
 $ arbeitsbereich validate •no‐colour
-
-„FailingCustomValidation“ wird aufgefrischt ...
-
-
-Ressourcen werden aufgefrischt ...
-
-
-Beispiele werden aufgefrischt ...
-
-
-Geerbte Dokumentation wird aufgefrischt ...
-
-
-Deteien werden normalisiert ...
-
+[... wird aufgefrisct ...]
 
 „FailingCustomValidation“ wird geprüft ...
 

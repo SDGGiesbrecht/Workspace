@@ -300,7 +300,7 @@ class APITests : TestCase {
         PackageRepository(mock: "CustomTasks").test(commands: [
             ["refresh"],
             ["validate"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
 
         var aufgabe = Sonderaufgabe(
             ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "domain.tld")!,

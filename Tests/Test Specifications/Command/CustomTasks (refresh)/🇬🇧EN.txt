@@ -1,0 +1,38 @@
+$ workspace refresh •no‐colour
+
+Refreshing ‘CustomTasks’...
+
+
+Refreshing resources...
+
+
+Refreshing examples...
+
+
+Refreshing inherited documentation...
+
+
+Normalising files...
+
+
+Refreshing Xcode project...
+
+[$ swift...]
+
+Writing to ‘CustomTasks.xcodeproj/project.pbxproj’...
+Writing to ‘CustomTasks.xcodeproj//xcshareddata/xcschemes/Proofread.xcscheme’...
+
+Executing custom task: ‘Dependency’...
+
+
+[$ git...]
+
+[$ swift...]
+
+$ Dependency 
+Hello, world!
+
+‘CustomTasks’ is refreshed and ready.
+Open ‘CustomTasks.xcodeproj’ to work on the project.
+
+0

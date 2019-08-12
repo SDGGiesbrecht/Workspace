@@ -1,0 +1,33 @@
+$ arbeitsbereich refresh •no‐colour
+
+„CustomTasks“ wird aufgefrischt ...
+
+
+Ressourcen werden aufgefrischt ...
+
+
+Beispiele werden aufgefrischt ...
+
+
+Geerbte Dokumentation wird aufgefrischt ...
+
+
+Deteien werden normalisiert ...
+
+
+Xcode‐Projekt wird aufgefrischt ...
+
+[$ swift...]
+
+Zu „CustomTasks.xcodeproj/project.pbxproj“ wird geschrieben ...
+
+Sonderaufgabe wird ausgeführt: „Dependency“ ...
+
+
+$ Dependency 
+Hello, world!
+
+„CustomTasks“ ist aufgefrischt und bereit.
+Um auf das Projekt zu arbeiten, „CustomTasks.xcodeproj“ öffnen.
+
+0

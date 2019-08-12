@@ -1,0 +1,5 @@
+$ arbeitsbereich auffrischen git •no‐colour
+
+Git‐Konfiguration wird aufgefrischt ...
+
+0

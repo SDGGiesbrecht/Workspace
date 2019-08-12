@@ -359,6 +359,8 @@ class APITests : TestCase {
         konfiguration.dokumentation.programmierschnittstelle.verschlüsselterTravisCIVerteilungsschlüssel = "..."
         konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2000
         var commands: [[StrictString]] = [
+            ["auffrischen", "skripte"],
+            ["auffrischen", "git"],
             ["auffrischen", "fortlaufende‐einbindung"],
             ["auffrischen", "ressourcen"],
             ["normalisieren"],

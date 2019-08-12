@@ -227,6 +227,16 @@ extension PackageRepository {
                                     any,
                                     LiteralPattern("\n„AllDisabled“ wird geprüft".scalars)
                                     ]), with: "\n[... wird aufgefrisct ...]\n\n„AllDisabled“ wird geprüft".scalars)
+                                output.scalars.replaceMatches(for: CompositePattern([
+                                    LiteralPattern("\n".scalars),
+                                    any,
+                                    LiteralPattern("\n„CustomTasks“ wird geprüft".scalars)
+                                    ]), with: "\n[... wird aufgefrisct ...]\n\n„CustomTasks“ wird geprüft".scalars)
+                                output.scalars.replaceMatches(for: CompositePattern([
+                                    LiteralPattern("\n".scalars),
+                                    any,
+                                    LiteralPattern("\n„FailingCustomValidation“ wird geprüft".scalars)
+                                    ]), with: "\n[... wird aufgefrisct ...]\n\n„FailingCustomValidation“ wird geprüft".scalars)
                             }
                         }
 

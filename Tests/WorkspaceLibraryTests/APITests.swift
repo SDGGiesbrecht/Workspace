@@ -481,13 +481,13 @@ class APITests : TestCase {
     func testInvalidResourceDirectory() {
         PackageRepository(mock: "InvalidResourceDirectory").test(commands: [
             ["refresh", "resources"]
-            ], localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testInvalidTarget() {
         PackageRepository(mock: "InvalidTarget").test(commands: [
             ["refresh", "resources"]
-            ], localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testLazyOption() {

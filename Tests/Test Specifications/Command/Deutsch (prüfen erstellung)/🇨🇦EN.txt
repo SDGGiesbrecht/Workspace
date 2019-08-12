@@ -1,0 +1,28 @@
+$ workspace prüfen erstellung •no‐colour
+
+Checking build for macOS... (§1)
+
+[$ swift...]
+
+Checking build for iOS... (§2)
+
+The package has no Xcode project.
+Configure “xcode.manage” or create an Xcode project manually.
+
+Checking build for watchOS... (§3)
+
+The package has no Xcode project.
+Configure “xcode.manage” or create an Xcode project manually.
+
+Checking build for tvOS... (§4)
+
+The package has no Xcode project.
+Configure “xcode.manage” or create an Xcode project manually.
+
+✓ There are no compiler warnings for macOS.
+✗ Build failed for iOS. (See [⌘F] “§2”)
+✗ Build failed for watchOS. (See [⌘F] “§3”)
+✗ Build failed for tvOS. (See [⌘F] “§4”)
+
+“Deutsch” fails validation.
+2

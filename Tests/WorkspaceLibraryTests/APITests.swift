@@ -362,6 +362,7 @@ class APITests : TestCase {
             ["auffrischen", "fortlaufende‐einbindung"],
             ["auffrischen", "ressourcen"],
             ["auffrischen", "xcode"],
+            ["prüfen", "testabdeckung"],
             ["dokumentieren"]
             ], configuration: konfiguration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }

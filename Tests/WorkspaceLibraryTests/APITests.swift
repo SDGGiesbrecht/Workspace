@@ -560,6 +560,15 @@ class APITests : TestCase {
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
+    func testNurDeutsch() {
+        let configuration = WorkspaceConfiguration()
+        configuration.gitHub.manage = true
+        PackageRepository(mock: "NurDeutsch").test(commands: [
+            ["auffrischen", "github"],
+            ["normalisieren"]
+            ], configuration: configuration, localizations: NurDeutsch.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
     func testOneLocalization() {
         let configuration = WorkspaceConfiguration()
         configuration.documentation.localizations = ["en"]
@@ -576,6 +585,15 @@ class APITests : TestCase {
         PackageRepository(mock: "OneProductMultipleModules").test(commands: [
             ["refresh", "read‐me"]
             ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testOnlyBritish() {
+        let configuration = WorkspaceConfiguration()
+        configuration.gitHub.manage = true
+        PackageRepository(mock: "OnlyBritish").test(commands: [
+            ["refresh", "github"],
+            ["normalize"]
+            ], configuration: configuration, localizations: OnlyBritish.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testPartialReadMe() {

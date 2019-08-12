@@ -136,7 +136,9 @@ extension PackageRepository {
 
                         #if os(Linux)
                         if command == ["refresh", "scripts"]
+                            ∨ command == ["auffrischen", "skripte"]
                             ∨ command == ["validate", "build"]
+                            ∨ command == ["prüfen", "erstellung"]
                             ∨ command == ["test"] {
                             // Differing task set on Linux.
                             if location.lastPathComponent ∈ Set(["BrokenTests", "FailingTests"]) {

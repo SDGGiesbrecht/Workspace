@@ -120,17 +120,25 @@ extension PackageRepository {
 
                         // Special handling of commands with platform differences
                         func requireSuccess() {
-                            do {
-                                _ = try Workspace.command.execute(with: command).get()
-                            } catch {
-                                XCTFail("\(error)", file: file, line: line)
+                            for localization in L.allCases {
+                                LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+                                    do {
+                                        _ = try Workspace.command.execute(with: command).get()
+                                    } catch {
+                                        XCTFail("\(error)", file: file, line: line)
+                                    }
+                                }
                             }
                         }
                         func expectFailure() {
-                            do {
-                                XCTFail(String(try Workspace.command.execute(with: command).get()), file: file, line: line)
-                            } catch {
-                                // Expected.
+                            for localization in L.allCases {
+                                LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+                                    do {
+                                        XCTFail(String(try Workspace.command.execute(with: command).get()), file: file, line: line)
+                                    } catch {
+                                        // Expected.
+                                    }
+                                }
                             }
                         }
 

@@ -14,8 +14,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Not properly localized yet.)
-// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+// @localization(🇩🇪DE) @crossReference(IssueTemplate)
+/// Eine Themavorlage für GitHub.
+public typealias Themavorlage = IssueTemplate
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(IssueTemplate)
 /// A GitHub issue template.
 public struct IssueTemplate : Decodable, Encodable {
 

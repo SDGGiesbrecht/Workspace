@@ -155,6 +155,7 @@ extension PackageRepository {
                         if (command == ["refresh"] ∧ location.lastPathComponent ∈ Set(["AllTasks", "CustomTasks"]))
                             ∨ (command == ["validate"] ∧ location.lastPathComponent ∈ Set(["AllDisabled", "CustomTasks", "SDGLibrary"]))
                             ∨ (command == ["validate", "test‐coverage"] ∧ location.lastPathComponent ∈ Set(["Default", "SDGLibrary", "SDGTool"]))
+                            ∨ (command == ["prüfen", "testabdeckung"] ∧ location.lastPathComponent ∈ Set(["Deutsch"]))
                             ∨ (command == ["validate", "•job", "macos"] ∧ location.lastPathComponent ∈ Set(["Default"])){
                             requireSuccess()
                             continue

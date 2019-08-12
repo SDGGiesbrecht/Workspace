@@ -179,6 +179,7 @@ extension PackageRepository {
                             // Find hotkey varies.
                             output.scalars.replaceMatches(for: "⌘F".scalars, with: "[⌘F]".scalars)
                             output.scalars.replaceMatches(for: "Ctrl + F".scalars, with: "[⌘F]".scalars)
+                            output.scalars.replaceMatches(for: "Strg + F".scalars, with: "[⌘F]".scalars)
 
                             // Git paths vary.
                             output.scalars.replaceMatches(for: CompositePattern([

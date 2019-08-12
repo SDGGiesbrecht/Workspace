@@ -358,13 +358,16 @@ class APITests : TestCase {
         konfiguration.dokumentation.programmierschnittstelle.erstellen = true
         konfiguration.dokumentation.programmierschnittstelle.verschlüsselterTravisCIVerteilungsschlüssel = "..."
         konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2000
-        PackageRepository(mock: "Deutsch").test(commands: [
+        var commands: [[StrictString]] = [
             ["auffrischen", "fortlaufende‐einbindung"],
             ["auffrischen", "ressourcen"],
-            ["auffrischen", "xcode"],
             ["prüfen", "testabdeckung"],
             ["dokumentieren"]
-            ], configuration: konfiguration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        ]
+        #if !os(Linux)
+        commands.append(["auffrischen", "xcode"])
+        #endif
+        PackageRepository(mock: "Deutsch").test(commands: commands, configuration: konfiguration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testExecutable() {

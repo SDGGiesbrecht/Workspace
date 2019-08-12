@@ -223,7 +223,7 @@ class APITests : TestCase {
         XCTAssertEqual(context.ladeliste.produkte.first?.art, .bibliotek)
         XCTAssertNotEqual(context.ladeliste.produkte.first?.art, .ausführbareDatei)
         XCTAssertEqual(context.ladeliste.produkte.first?.module.first, "Module")
-        WorkspaceContext.current = context
+        WorkspaceContext.aktueller = context
         _ = WorkspaceContext.aktueller
     }
 

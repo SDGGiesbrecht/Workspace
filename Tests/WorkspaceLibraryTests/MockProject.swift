@@ -139,7 +139,8 @@ extension PackageRepository {
                             ∨ command == ["auffrischen", "skripte"]
                             ∨ command == ["validate", "build"]
                             ∨ command == ["prüfen", "erstellung"]
-                            ∨ command == ["test"] {
+                            ∨ command == ["test"]
+                            ∨ command == ["testen"] {
                             // Differing task set on Linux.
                             if location.lastPathComponent ∈ Set(["BrokenTests", "FailingTests"]) {
                                 expectFailure()

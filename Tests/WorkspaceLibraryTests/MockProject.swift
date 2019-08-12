@@ -142,7 +142,7 @@ extension PackageRepository {
                             ∨ command == ["test"]
                             ∨ command == ["testen"] {
                             // Differing task set on Linux.
-                            if location.lastPathComponent ∈ Set(["BrokenTests", "FailingTests"]) {
+                            if location.lastPathComponent ∈ Set(["BrokenTests", "FailingTests", "NurDeutsch"]) {
                                 expectFailure()
                             } else {
                                 requireSuccess()

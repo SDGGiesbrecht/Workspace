@@ -1,10 +1,10 @@
 $ workspace validate •no‐colour
 [Refreshing ...]
 
-Validating “FailingCustomValidation”...
+Validating ‘FailingCustomValidation’...
 
 
-Normalizing files...
+Normalising files...
 
 
 Proofreading source code... (§1)
@@ -18,8 +18,12 @@ Testing on macOS... (§3)
 
 [$ swift...]
 
-Executing custom validation: “Dependency”... (§4)
+Executing custom validation: ‘Dependency’... (§4)
 
+
+[$ git...]
+
+[$ swift...]
 
 $ Dependency fail
 Hello, world!
@@ -30,7 +34,7 @@ Summary
 ✓ Source code passes proofreading.
 ✓ Updated test manifests.
 ✓ Tests pass on macOS.
-✗ Custom validation fails: “Dependency” (See [⌘F] “§4”)
+✗ Custom validation fails: ‘Dependency’ (See [⌘F] ‘§4’)
 
-“FailingCustomValidation” fails validation.
+‘FailingCustomValidation’ fails validation.
 2

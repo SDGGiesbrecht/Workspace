@@ -567,6 +567,7 @@ class APITests : TestCase {
         var commands: [[StrictString]] = [
             ["auffrischen", "github"],
             ["normalisieren"],
+            ["korrekturlesen"],
             ["prüfen", "erstellung"],
         ]
         #if os(macOS)

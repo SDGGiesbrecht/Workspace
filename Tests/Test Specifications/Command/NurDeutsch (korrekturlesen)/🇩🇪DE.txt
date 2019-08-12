@@ -1,0 +1,57 @@
+$ arbeitsbereich korrekturlesen •no‐colour
+
+Deteien werden normalisiert ...
+
+
+Quelltext Korrektur wird gelesen ...
+
+.github/CONTRIBUTING.md
+.github/ISSUE_TEMPLATE/🇬🇧EN Bug Report.md
+.github/ISSUE_TEMPLATE/🇬🇧EN Documentation Correction.md
+.github/ISSUE_TEMPLATE/🇬🇧EN Feature Request.md
+.github/ISSUE_TEMPLATE/🇬🇧EN Question.md
+.github/PULL_REQUEST_TEMPLATE.md
+.gitignore
+Package.swift
+Zeile 2
+Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
+// The swift-tools-version declares the minimum version of Swift required to build this package.
+
+Zeile 2
+Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
+// The swift-tools-version declares the minimum version of Swift required to build this package.
+
+Zeile 16
+Das Schriftzeichen U+0022 ist überholt. Anführungszeichen („, “) oder Doppelprime (′′) verwenden. (unicode)
+        // .package(url: /* package url */, from: "1.0.0"),
+
+Zeile 16
+Das Schriftzeichen U+0022 ist überholt. Anführungszeichen („, “) oder Doppelprime (′′) verwenden. (unicode)
+        // .package(url: /* package url */, from: "1.0.0"),
+
+Sources/NurDeutsch/NurDeutsch.swift
+Zeile 4
+"Warn." (warnungenVonHand)
+#warning("Warn.")
+
+Tests/NurDeutschTests/NurDeutschTests.swift
+Zeile 4
+Doppelpunkte sollen vorstehende Leerzeichen haben wenn sie Erfüllung, Erbe oder ein ternären Auswahl bedeuten. (doppelpunktabstand)
+final class NurDeutschTests: XCTestCase {
+final class NurDeutschTests : XCTestCase {
+
+
+✗ Der Quelltext besteht das Korrekturlesen nicht. (Siehe [⌘F] „§1“)
+
+
+Arbeitsbereich traf auf unbekannten Dateiformate:
+
+etwas (Etwas.etwas)
+
+Solche Dateien wurden übersprungen.
+Falls sie Standarddateiformate sind, bitte melden Sie sie hier:
+https://github.com/SDGGiesbrecht/Workspace/issues
+Um diese Warnung für ungenormten Dateiformate abzudämpfen, „lager.ausgelasseneDateiformate“ konfigurieren.
+
+„NurDeutsch“ besteht die Überprüfung nicht.
+2

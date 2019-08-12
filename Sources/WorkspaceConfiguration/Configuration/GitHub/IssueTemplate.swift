@@ -21,8 +21,32 @@ public typealias Themavorlage = IssueTemplate
 /// A GitHub issue template.
 public struct IssueTemplate : Decodable, Encodable {
 
-    // #workaround(Not properly localized yet.)
+    // @localization(🇩🇪DE) @crossReference(IssueTemplate.init(name:description:title:content:labels:assignees))
+    /// Erstellt eine Themavorlage.
+    ///
+    /// - Parameters:
+    ///     - name: Der name.
+    ///     - beschreibung: Eine Beschreibung.
+    ///     - titel: Ein vorgeschlagener Titel.
+    ///     - inhalt: Inhalt.
+    ///     - etiketten: Vorgeschlagene Etiketten.
+    ///     - beauftragte: Vorgeschlagene Beauftragte.
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    public init(
+        name: StrengerZeichenkette,
+        beschreibung: StrengerZeichenkette,
+        titel: StrengerZeichenkette? = nil,
+        inhalt: Markdown,
+        etiketten: [StrengerZeichenkette],
+        beauftragte: [StrengerZeichenkette] = []) {
+        self.init(
+            name: name,
+            description: beschreibung,
+            title: titel,
+            content: inhalt,
+            labels: etiketten,
+            assignees: beauftragte)
+    }
     /// Creates an issue template.
     ///
     /// - Parameters:
@@ -49,33 +73,59 @@ public struct IssueTemplate : Decodable, Encodable {
 
     // MARK: - Properties
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇩🇪DE)
+    /// Der Name.
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     /// The name.
     public var name: StrictString
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(IssueTemplate.description)
     /// A description.
     public var description: StrictString
+    // @localization(🇩🇪DE) @crossReference(IssueTemplate.description)
+    /// Eine Beschreibung.
+    public var beschreibung: StrengerZeichenkette {
+        get { return description }
+        set { description = newValue }
+    }
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(IssueTemplate.title)
     /// A default title.
     public var title: StrictString?
+    // @localization(🇩🇪DE) @crossReference(IssueTemplate.title)
+    /// Ein vorgeschlagener Titel.
+    public var titel: StrengerZeichenkette? {
+        get { return title }
+        set { title = newValue }
+    }
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(IssueTemplate.content)
     /// Content.
     public var content: Markdown
+    // @localization(🇩🇪DE) @crossReference(IssueTemplate.content)
+    /// Inhalt.
+    public var inhalt: Markdown {
+        get { return content }
+        set { content = newValue }
+    }
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(IssueTemplate.labels)
     /// Default labels.
     public var labels: [StrictString]
+    // @localization(🇩🇪DE) @crossReference(IssueTemplate.labels)
+    /// Vorgeschlagene Etiketten.
+    public var etiketten: [StrengerZeichenkette] {
+        get { return labels }
+        set { labels = newValue }
+    }
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(IssueTemplate.assignees)
     /// Default assignees.
     public var assignees: [StrictString]
+    // @localization(🇩🇪DE) @crossReference(IssueTemplate.assignees)
+    /// Vorgeschlagene Beauftragte.
+    public var beauftragte: [StrengerZeichenkette] {
+        get { return assignees }
+        set { assignees = newValue }
+    }
 }

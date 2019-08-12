@@ -425,7 +425,8 @@ class APITests : TestCase {
         configuration.xcode.manage = true
         configuration.documentation.repositoryURL = URL(string: "domain.tld")!
         PackageRepository(mock: "FailingDocumentationCoverage").test(commands: [
-            ["validate", "documentation‐coverage"]
+            ["validate", "documentation‐coverage"],
+            ["document"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 

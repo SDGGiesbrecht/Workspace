@@ -13,3 +13,5 @@ final class NurDeutschTests: XCTestCase {
         ("testExample", testExample),
     ]
 }
+
+refuse to build

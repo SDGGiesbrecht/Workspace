@@ -564,10 +564,15 @@ class APITests : TestCase {
     func testNurDeutsch() {
         let configuration = WorkspaceConfiguration()
         configuration.gitHub.manage = true
-        PackageRepository(mock: "NurDeutsch").test(commands: [
+        var commands: [[StrictString]] = [
             ["auffrischen", "github"],
-            ["normalisieren"]
-            ], configuration: configuration, localizations: NurDeutsch.self, overwriteSpecificationInsteadOfFailing: false)
+            ["normalisieren"],
+            ["prüfen", "erstellung"],
+        ]
+        #if os(macOS)
+        commands.append(["testen"])
+        #endif
+        PackageRepository(mock: "NurDeutsch").test(commands: commands, configuration: configuration, localizations: NurDeutsch.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testOneLocalization() {

@@ -134,7 +134,12 @@ extension PackageRepository {
                             for localization in L.allCases {
                                 LocalizationSetting(orderOfPrecedence: [localization.code]).do {
                                     do {
-                                        XCTFail(String(try Workspace.command.execute(with: command).get()), file: file, line: line)
+                                        var output = try Workspace.command.execute(with: command).get()
+                                        // Reset cache to resurface compiler warnings.
+                                        try? FileManager.default.removeItem(
+                                            at: location.appendingPathComponent(".build"))
+                                        output = try Workspace.command.execute(with: command).get()
+                                        XCTFail(String(output), file: file, line: line)
                                     } catch {
                                         // Expected.
                                     }

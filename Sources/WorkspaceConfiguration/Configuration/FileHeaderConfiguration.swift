@@ -14,8 +14,61 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Not properly localized yet.)
-// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+// @localization(🇩🇪DE) @crossReference(FileHeaderConfiguration)
+/// Einstellungen zu Dateivorspänne.
+///
+/// ```shell
+/// $ arbeitsbereich auffrischen dateivorspänne
+/// ```
+///
+/// Ein Dateivorspann ist eine Kommentarauschnitt am Anfang jeder Datei im Projekt. Typische Vorspänne...
+///
+/// - identifizieren das Projekt zu dem die Datei gehört.
+/// - weisen auf dem Urheberrecht hin.
+/// - weisen auf der Lizenz hin.
+///
+/// ### Präzise Festlegung eines Vorspanns
+///
+/// Weil Arbeitsbereich existierende Vorspänne überschreibt, ist es wichtig zu wissen, wie Arbeitsbereich Vorspänne erkennt.
+///
+/// Arbeitsbereich betrachtet jeden Kommentar am Dateianfang als Vorspann, mit folgender Begrenzungen:
+///
+/// Ein Dateivorspann kann ein einziger Blockkommentar sein:
+///
+/// ```swift
+/// /*
+///  Hier ist ein Vorspann.
+///  Hier zählt auch zum Vorspann.
+///  */
+/// /* Hier zählt nicht zum Vorspann. */
+/// ```
+///
+/// Andernfalls kann ein Vorspann eine lückenlose zusammenhängende Folge von Zeilenkommentare sein:
+///
+/// ```swift
+/// // Hier ist ein Vorspann.
+/// // Hier zählt auch zum Vorspann.
+///
+/// // Hier zählt nicht zum Vorspann.
+/// ```
+///
+/// Dokumentationskommentare sind nie Vorspänne.
+///
+/// ```swift
+/// /**
+///  Hier ist kein Vorspann.
+///  */
+/// ```
+///
+/// In Schalenskripte, das Shebang kommt vor dem Vorspann und zählt nich dazu.
+///
+/// ```shell
+/// #!/bin/bash ← Das zählt nicht zum Vorspann.
+///
+/// # Hier ist ein Vorspann.
+/// ```
+public typealias Dateivorspannseinstellungen = FileHeaderConfiguration
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(FileHeaderConfiguration)
 /// Options related to file headers.
 ///
 /// ```shell

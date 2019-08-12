@@ -390,11 +390,11 @@ extension PackageRepository {
 
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
-                    case .englishUnitedKingdom:
+                    case .englishUnitedKingdom: // @exempt(from: tests) To time consuming to rebuild cache for each localization.
                         return "Fetching ‘\(package.url.lastPathComponent)’..."
                     case .englishUnitedStates, .englishCanada:
                         return "Fetching “\(package.url.lastPathComponent)”..."
-                    case .deutschDeutschland:
+                    case .deutschDeutschland: // @exempt(from: tests)
                         return "„\(package.url.lastPathComponent)“ wird abgerufen ..."
                     }
                 }).resolved())

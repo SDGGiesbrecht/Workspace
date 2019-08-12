@@ -16,8 +16,10 @@
 
 import SDGControlFlow
 
-// #workaround(Not properly localized yet.)
-// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+// @localization(🇩🇪DE) @crossReference(ProofreadingRule)
+/// Eine Korrekturregel.
+public typealias Korrekturregel = ProofreadingRule
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProofreadingRule)
 /// A proofreading rule.
 public enum ProofreadingRule : String, CaseIterable, Codable {
 

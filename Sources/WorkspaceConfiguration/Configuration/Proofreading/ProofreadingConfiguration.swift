@@ -14,8 +14,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Not properly localized yet.)
-// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+// @localization(🇩🇪DE) @crossReference(ProofreadingConfiguration)
+/// Einstellungen zur Korrektur.
+///
+/// ```shell
+/// $ arbeitsbereich korrektur‐lesen
+/// ```
+public typealias Korrektureinstellungen = ProofreadingConfiguration
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProofreadingConfiguration)
 /// Options related to proofreading.
 ///
 /// ```shell
@@ -23,14 +29,23 @@
 /// ```
 public struct ProofreadingConfiguration : Codable {
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     /// The set of active proofreading rules.
     ///
     /// All rules are active by default.
     ///
     /// Individual proofreading violations can be suppressed by placing `@exempt(from: ruleIdentifier)` on the same line.
     public var rules: Set<ProofreadingRule> = Set(ProofreadingRule.allCases)
+    // @localization(🇩🇪DE)
+    /// Die Menge gültiger Korrekturreglen.
+    ///
+    /// Wenn nicht angegeben, sind alle Regeln gültig.
+    ///
+    /// Einzelne Verstöße können unterdrückt werden, in dem `@ausnahme(zu: regelkennzeichen)` auf der selben Zeile plaziert wird.
+    public var regeln: Menge<Korrekturregel> {
+        get { return rules }
+        set { rules = newValue }
+    }
 
     // #workaround(Not properly localized yet.)
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)

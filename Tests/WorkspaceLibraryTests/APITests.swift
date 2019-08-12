@@ -366,6 +366,7 @@ class APITests : TestCase {
             ["normalisieren"],
             ["prüfen", "erstellung"],
             ["prüfen", "testabdeckung"],
+            ["prüfen", "dokumentationsabdeckung"],
             ["dokumentieren"]
         ]
         #if !os(Linux)

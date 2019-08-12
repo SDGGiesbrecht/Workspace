@@ -1,0 +1,15 @@
+$ arbeitsbereich prüfen dokumentationsabdeckung •no‐colour
+
+Die Dokumentationsabdeckung wird überprüft ... (§1)
+
+„Deutsch“ wird zerteilt ...
+Die Programmierschnitstelle wird verarbeitet ...
+Auszeichnung wird erstellt ...
+... Deutsch ...
+
+✓ Die Dokumentationsabdeckung ist vollständig.
+
+
+„Deutsch“ besteht die Überprüfung.
+
+0

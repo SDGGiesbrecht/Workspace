@@ -1,0 +1,15 @@
+$ workspace prüfen dokumentationsabdeckung •no‐colour
+
+Checking documentation coverage... (§1)
+
+Parsing ‘Deutsch’...
+Processing API...
+Generating HTML...
+...Deutsch...
+
+✓ Documentation coverage is complete.
+
+
+‘Deutsch’ passes validation.
+
+0

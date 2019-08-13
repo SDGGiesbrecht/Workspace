@@ -82,7 +82,6 @@ public final class WorkspaceConfiguration : Configuration {
         set { provideWorkflowScripts = newValue }
     }
 
-    // #workaround(Not properly localized yet.)
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     // @crossReference(WorkspaceConfiguration.supportedPlatforms)
     /// The platforms the project supports.
@@ -121,10 +120,16 @@ public final class WorkspaceConfiguration : Configuration {
         set { licence = newValue }
     }
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(WorkspaceConfiguration.fileHeaders)
     /// Options related to file headers.
     public var fileHeaders: FileHeaderConfiguration = FileHeaderConfiguration()
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.fileHeaders)
+    /// Einstellungen zu den Dateivorspännen.
+    public var dateiVorspänne: Dateivorspannseinstellungen {
+        get { return fileHeaders }
+        set { fileHeaders = newValue }
+    }
 
     // @localization(🇩🇪DE)
     /// Einstellungen zu GitHub.
@@ -138,15 +143,26 @@ public final class WorkspaceConfiguration : Configuration {
     /// Options related to Xcode.
     public var xcode: XcodeConfiguration = XcodeConfiguration()
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(WorkspaceConfiguration.proofreading)
     /// Options related to proofreading.
     public var proofreading: ProofreadingConfiguration = ProofreadingConfiguration()
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.proofreading)
+    /// Einstellungen zur Korrektur.
+    public var korrektur: Korrektureinstellungen {
+        get { return proofreading }
+        set { proofreading = newValue }
+    }
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(WorkspaceConfiguration.testing)
     /// Options related to building and testing.
     public var testing: TestingConfiguration = TestingConfiguration()
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.testing)
+    /// Einstellungen zum Testen.
+    public var testen: Testeinstellungen {
+        get { return testing }
+        set { testing = newValue }
+    }
 
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     // @crossReference(WorkspaceConfiguration.documentation)
@@ -159,10 +175,16 @@ public final class WorkspaceConfiguration : Configuration {
         set { documentation = newValue }
     }
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(WorkspaceConfiguration.continuousIntegration)
     /// Options related to continuous integration.
     public var continuousIntegration: ContinuousIntegrationConfiguration = ContinuousIntegrationConfiguration()
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.continuousIntegration)
+    /// Einstellungen zur fortlaufenden Einbindung.
+    public var fortlaufenderEinbindung: EinstellungenFortlaufenderEinbindung {
+        get { return continuousIntegration }
+        set { continuousIntegration = newValue }
+    }
 
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     // @crossReference(WorkspaceConfiguration.repository)
@@ -175,20 +197,38 @@ public final class WorkspaceConfiguration : Configuration {
         set { repository = newValue }
     }
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(WorkspaceConfiguration.customRefreshmentTasks)
     /// Custom tasks to perform when refreshing the project.
     public var customRefreshmentTasks: [CustomTask] = []
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.customRefreshmentTasks)
+    /// Sonderaufgaben, diem Auffrischen ausgeführt werden sollen.
+    public var auffrischungssonderaufgaben: [Sonderaufgabe] {
+        get { return customRefreshmentTasks }
+        set { customRefreshmentTasks = newValue }
+    }
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(WorkspaceConfiguration.customProofreadingTasks)
     /// Custom tasks to perform when proofreading.
     public var customProofreadingTasks: [CustomTask] = []
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.customProofreadingTasks)
+    /// Sonderaufgaben, die bei der Korrektur ausgeführt werden sollen.
+    public var korrektursonderaufgaben: [Sonderaufgabe] {
+        get { return customProofreadingTasks }
+        set { customProofreadingTasks = newValue }
+    }
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(WorkspaceConfiguration.customValidationTasks)
     /// Custom tasks to perform when validating the project.
     public var customValidationTasks: [CustomTask] = []
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.customValidationTasks)
+    /// Sonderaufgaben, die beim Prüfen ausgeführt werden sollen.
+    public var prüfungssonderaufgaben: [Sonderaufgabe] {
+        get { return customValidationTasks }
+        set { customValidationTasks = newValue }
+    }
 
     internal var _isSDG: Bool = false
 

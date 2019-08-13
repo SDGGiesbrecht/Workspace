@@ -234,8 +234,15 @@ public final class WorkspaceConfiguration : Configuration {
 
     // MARK: - Opting In & Out
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.optIntoAllTasks())
+    /// Schaltet alle Aungaben ein, die nicht automatisch eingeschaltet sind.
+    ///
+    /// - Warning: Viele solche Aufgaben schreiben zu Projekt‐Dateien.
+    public func alleAungabenEinschalten() {
+        optIntoAllTasks()
+    }
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(WorkspaceConfiguration.optIntoAllTasks())
     /// Opts into all tasks which are off by default.
     ///
     /// - Warning: Many opt‐in tasks involve writing into project files.
@@ -431,8 +438,13 @@ public final class WorkspaceConfiguration : Configuration {
 
     // MARK: - Configuration
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇩🇪DE)
+    /// Erstellt eine Arbeitsberich‐Konfiguration mit den Anfangseinstellungen.
+    ///
+    /// Anfangseinstellungen sind allgemein nicht invasiv. Die meisten Aufgaben, die zu Projekt‐Dateien schreiben sind nicht automatisch eingeschaltet.
+    ///
+    /// Um alle Aufgaben einzuschalten, gibt es `alleAufgabenEinschalten()`.
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     /// Creates a Workspace configuration according to the defaults.
     ///
     /// Defaults are generally non‐invasive. Most tasks which would write into project files are off by default.

@@ -30,7 +30,7 @@ public struct TestCoverageExemptionToken : Codable, Hashable {
     ///     - zeichen: Die Zeichenkette des Zeichens.
     ///     - geltungsbereich: Der Geltungsbereich.
     public init(_ zeichen: StrengerZeichenkette, geltungsbereich: Geltungsbereich) {
-        self.init(zeichen, scope: bereich)
+        self.init(zeichen, scope: geltungsbereich)
     }
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     // @crossReference(TestCoverageExemptionToken.init(_:scope:))

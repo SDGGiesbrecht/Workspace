@@ -14,13 +14,15 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Not properly localized yet.)
-// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+// @localization(🇩🇪DE) @crossReference(TestingConfiguration)
+/// Einstellungen zur Erstellung und zum Testen.
+public typealias Testeinstellungen = TestingConfiguration
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(TestingConfiguration)
 /// Options related to building and testing.
 public struct TestingConfiguration : Codable {
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(TestingConfiguration.prohibitCompilerWarnings)
     /// Whether or not to prohibit compiler warnings.
     ///
     /// This is on by default.
@@ -29,9 +31,21 @@ public struct TestingConfiguration : Codable {
     /// $ workspace validate build
     /// ```
     public var prohibitCompilerWarnings: Bool = true
+    // @localization(🇩🇪DE) @crossReference(TestingConfiguration.prohibitCompilerWarnings)
+    /// Ob Arbeitsbereich Übersetzerwarnungen verbieten soll.
+    ///
+    /// Wenn nicht angegeben, ist diese Einstellung aus.
+    ///
+    /// ```shell
+    /// $ arbeitsbereich prüfen erstellung
+    /// ```
+    public var übersetzerwarnungenVerbieten: Bool {
+        get { return prohibitCompilerWarnings }
+        set { prohibitCompilerWarnings = newValue }
+    }
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(TestingConfiguration.enforceCoverage)
     /// Whether or not to enforce test coverage.
     ///
     /// This is on by default.
@@ -40,9 +54,38 @@ public struct TestingConfiguration : Codable {
     /// $ workspace validate test‐coverage
     /// ```
     public var enforceCoverage: Bool = true
+    // @localization(🇩🇪DE) @crossReference(TestingConfiguration.enforceCoverage)
+    /// Ob Arbeitsbereich Testabdeckung erzwingen soll.
+    ///
+    /// Wenn nicht angegeben, ist diese Einstellung ein.
+    ///
+    /// ```shell
+    /// $ arbeitsbereich prüfen testabdeckung
+    /// ```
+    public var abdeckungErzwingen: Bool {
+        get { return enforceCoverage }
+        set { enforceCoverage = newValue }
+    }
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇩🇪DE) @crossReference(TestingConfiguration.exemptionTokens)
+    // #example(1, testCoverageExemptionTokens), #example(2, testCoverageExemptionTokens)
+    /// Die aktive Testabdeckungsausnahmszeichen.
+    ///
+    /// Wenn nicht angegeben, sind die folgenden Zeichen aktiv (direkt aus dem Quelltext):
+    ///
+    /// ```swift
+    /// ```
+    ///
+    /// Und auch die englische Formen:
+    ///
+    /// ```swift
+    /// ```
+    public var ausnahmensZeichen: Menge<Testabdeckungsausnahmszeichen> {
+        get { return exemptionTokens }
+        set { exemptionTokens = newValue }
+    }
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(TestingConfiguration.exemptionTokens)
     // #example(1, testCoverageExemptionTokens)
     /// The set of active test coverage exemption tokens.
     ///
@@ -77,14 +120,36 @@ public struct TestingConfiguration : Codable {
         TestCoverageExemptionToken("primitiveMethod", scope: .previousLine),
         TestCoverageExemptionToken("unreachable", scope: .previousLine),
         TestCoverageExemptionToken("test", scope: .sameLine),
-        TestCoverageExemptionToken("fail", scope: .sameLine)
+        TestCoverageExemptionToken("fail", scope: .sameLine),
         // @endExample
+        // @beispiel(testabdeckungsausnahmen)
+        Testabdeckungsausnahmszeichen("@ausnahme(zu: teste)", geltungsbereich: .selbeZeile),
+
+        Testabdeckungsausnahmszeichen("behaupten", geltungsbereich: .selbeZeile),
+        Testabdeckungsausnahmszeichen("behauptungsfehlschlag", geltungsbereich: .vorstehendeZeile),
+        Testabdeckungsausnahmszeichen("voraussetzung", geltungsbereich: .selbeZeile),
+        Testabdeckungsausnahmszeichen("voraussetzungsfehlschlag", geltungsbereich: .vorstehendeZeile),
+        Testabdeckungsausnahmszeichen("unbehebbarerFehler", geltungsbereich: .vorstehendeZeile),
+
+        Testabdeckungsausnahmszeichen("stammmethode", geltungsbereich: .vorstehendeZeile),
+        Testabdeckungsausnahmszeichen("unerreichbar", geltungsbereich: .vorstehendeZeile),
+        Testabdeckungsausnahmszeichen("prüfen", geltungsbereich: .selbeZeile),
+        Testabdeckungsausnahmszeichen("fehlschlagen", geltungsbereich: .selbeZeile)
+        // @beispielEnden
     ]
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(TestingConfiguration.exemptPaths)
     /// Paths exempt from test coverage.
     ///
     /// The paths must be specified relative to the package root.
     public var exemptPaths: Set<String> = []
+    // @localization(🇩🇪DE) @crossReference(TestingConfiguration.exemptPaths)
+    /// Pfade, die Ausnahmen zur Testabdeckung sind.
+    ///
+    /// Die Pfade sind relativ zur Paketenwurzel.
+    public var ausnahmspfade: Menge<Zeichenkette> {
+        get { return exemptPaths }
+        set { exemptPaths = newValue }
+    }
 }

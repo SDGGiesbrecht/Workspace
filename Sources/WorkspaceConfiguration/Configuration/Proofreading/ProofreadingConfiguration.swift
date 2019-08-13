@@ -47,8 +47,13 @@ public struct ProofreadingConfiguration : Codable {
         set { rules = newValue }
     }
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(unicodeRuleScope)
     /// The scope in which to apply the `unicode` rule.
     public var unicodeRuleScope: Set<UnicodeRuleScope> = Set(UnicodeRuleScope.allCases)
+    // @localization(🇩🇪DE) @crossReference(unicodeRuleScope)
+    /// Das Geltungsbereich der Unicode‐Regel.
+    public var geltungsbereichUnicodeRegel: Menge<GeltungsbereichUnicodeRegel> {
+        get { return unicodeRuleScope }
+        set { unicodeRuleScope = newValue }
+    }
 }

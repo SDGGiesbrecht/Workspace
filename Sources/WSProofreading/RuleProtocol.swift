@@ -15,6 +15,7 @@
  */
 
 import SDGLogic
+import SDGCollections
 import WSGeneralImports
 
 import SDGSwiftSource
@@ -40,11 +41,13 @@ extension RuleProtocol {
 
         let fileLines = file.contents.lines
         let lineIndex = location.lowerBound.line(in: fileLines)
-        let line = String(fileLines[lineIndex].line)
-        if line.contains("@exempt") {
-            for localization in InterfaceLocalization.allCases {
-                if line.contains("@exempt(from: \(name.resolved(for: localization)))") {
-                    return
+        let line = fileLines[lineIndex].line
+        for exemptionMarker in exemptionMarkers {
+            if line.contains(exemptionMarker) {
+                for localization in InterfaceLocalization.allCases {
+                    if line.contains(StrictString("\(exemptionMarker)\(name.resolved(for: localization)))")) {
+                        return
+                    }
                 }
             }
         }
@@ -52,3 +55,15 @@ extension RuleProtocol {
         status.report(violation: StyleViolation(in: file, at: location, replacementSuggestion: replacementSuggestion, noticeOnly: noticeOnly, ruleIdentifier: Self.name, message: message), to: output)
     }
 }
+
+private let exemptionMarkers: [StrictString] = {
+    var result: Set<StrictString> = Set(InterfaceLocalization.allCases.map({ localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "@exempt(from: _)"
+        case .deutschDeutschland:
+            return "@ausnahme(zu: _)"
+        }
+    }))
+    return result.map { $0.truncated(before: "_") }
+}()

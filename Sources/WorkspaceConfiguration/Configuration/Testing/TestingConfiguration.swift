@@ -74,19 +74,18 @@ public struct TestingConfiguration : Codable {
     /// Wenn nicht angegeben, sind die folgenden Zeichen aktiv (direkt aus dem Quelltext):
     ///
     /// ```swift
-    /// TestCoverageExemptionToken("@exempt(from: tests)", scope: .sameLine),
+    /// Testabdeckungsausnahmszeichen("@ausnahme(zu: teste)", geltungsbereich: .selbeZeile),
     ///
-    /// TestCoverageExemptionToken("assert", scope: .sameLine),
-    /// TestCoverageExemptionToken("assertionFailure", scope: .previousLine),
-    /// TestCoverageExemptionToken("precondition", scope: .sameLine),
-    /// TestCoverageExemptionToken("preconditionFailure", scope: .previousLine),
-    /// TestCoverageExemptionToken("fatalError", scope: .previousLine),
-    /// TestCoverageExemptionToken("@unknown", scope: .sameLine),
+    /// Testabdeckungsausnahmszeichen("behaupten", geltungsbereich: .selbeZeile),
+    /// Testabdeckungsausnahmszeichen("behauptungsfehlschlag", geltungsbereich: .vorstehendeZeile),
+    /// Testabdeckungsausnahmszeichen("voraussetzung", geltungsbereich: .selbeZeile),
+    /// Testabdeckungsausnahmszeichen("voraussetzungsfehlschlag", geltungsbereich: .vorstehendeZeile),
+    /// Testabdeckungsausnahmszeichen("unbehebbarerFehler", geltungsbereich: .vorstehendeZeile),
     ///
-    /// TestCoverageExemptionToken("primitiveMethod", scope: .previousLine),
-    /// TestCoverageExemptionToken("unreachable", scope: .previousLine),
-    /// TestCoverageExemptionToken("test", scope: .sameLine),
-    /// TestCoverageExemptionToken("fail", scope: .sameLine),
+    /// Testabdeckungsausnahmszeichen("stammmethode", geltungsbereich: .vorstehendeZeile),
+    /// Testabdeckungsausnahmszeichen("unerreichbar", geltungsbereich: .vorstehendeZeile),
+    /// Testabdeckungsausnahmszeichen("prüfen", geltungsbereich: .selbeZeile),
+    /// Testabdeckungsausnahmszeichen("fehlschlagen", geltungsbereich: .selbeZeile)
     /// ```
     ///
     /// Und auch die englische Formen:
@@ -161,7 +160,7 @@ public struct TestingConfiguration : Codable {
         Testabdeckungsausnahmszeichen("unerreichbar", geltungsbereich: .vorstehendeZeile),
         Testabdeckungsausnahmszeichen("prüfen", geltungsbereich: .selbeZeile),
         Testabdeckungsausnahmszeichen("fehlschlagen", geltungsbereich: .selbeZeile)
-        // @beispielEnden
+        // @beispielBeenden
     ]
 
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)

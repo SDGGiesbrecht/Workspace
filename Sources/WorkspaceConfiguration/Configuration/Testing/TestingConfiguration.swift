@@ -68,17 +68,43 @@ public struct TestingConfiguration : Codable {
     }
 
     // @localization(🇩🇪DE) @crossReference(TestingConfiguration.exemptionTokens)
-    // #example(1, testCoverageExemptionTokens), #example(2, testCoverageExemptionTokens)
+    // #example(1, testabdeckungsausnahmen), #example(2, testCoverageExemptionTokens)
     /// Die aktive Testabdeckungsausnahmszeichen.
     ///
     /// Wenn nicht angegeben, sind die folgenden Zeichen aktiv (direkt aus dem Quelltext):
     ///
     /// ```swift
+    /// TestCoverageExemptionToken("@exempt(from: tests)", scope: .sameLine),
+    ///
+    /// TestCoverageExemptionToken("assert", scope: .sameLine),
+    /// TestCoverageExemptionToken("assertionFailure", scope: .previousLine),
+    /// TestCoverageExemptionToken("precondition", scope: .sameLine),
+    /// TestCoverageExemptionToken("preconditionFailure", scope: .previousLine),
+    /// TestCoverageExemptionToken("fatalError", scope: .previousLine),
+    /// TestCoverageExemptionToken("@unknown", scope: .sameLine),
+    ///
+    /// TestCoverageExemptionToken("primitiveMethod", scope: .previousLine),
+    /// TestCoverageExemptionToken("unreachable", scope: .previousLine),
+    /// TestCoverageExemptionToken("test", scope: .sameLine),
+    /// TestCoverageExemptionToken("fail", scope: .sameLine),
     /// ```
     ///
     /// Und auch die englische Formen:
     ///
     /// ```swift
+    /// TestCoverageExemptionToken("@exempt(from: tests)", scope: .sameLine),
+    ///
+    /// TestCoverageExemptionToken("assert", scope: .sameLine),
+    /// TestCoverageExemptionToken("assertionFailure", scope: .previousLine),
+    /// TestCoverageExemptionToken("precondition", scope: .sameLine),
+    /// TestCoverageExemptionToken("preconditionFailure", scope: .previousLine),
+    /// TestCoverageExemptionToken("fatalError", scope: .previousLine),
+    /// TestCoverageExemptionToken("@unknown", scope: .sameLine),
+    ///
+    /// TestCoverageExemptionToken("primitiveMethod", scope: .previousLine),
+    /// TestCoverageExemptionToken("unreachable", scope: .previousLine),
+    /// TestCoverageExemptionToken("test", scope: .sameLine),
+    /// TestCoverageExemptionToken("fail", scope: .sameLine),
     /// ```
     public var ausnahmensZeichen: Menge<Testabdeckungsausnahmszeichen> {
         get { return exemptionTokens }
@@ -104,7 +130,7 @@ public struct TestingConfiguration : Codable {
     /// TestCoverageExemptionToken("primitiveMethod", scope: .previousLine),
     /// TestCoverageExemptionToken("unreachable", scope: .previousLine),
     /// TestCoverageExemptionToken("test", scope: .sameLine),
-    /// TestCoverageExemptionToken("fail", scope: .sameLine)
+    /// TestCoverageExemptionToken("fail", scope: .sameLine),
     /// ```
     public var exemptionTokens: Set<TestCoverageExemptionToken> = [
         // @example(testCoverageExemptionTokens)

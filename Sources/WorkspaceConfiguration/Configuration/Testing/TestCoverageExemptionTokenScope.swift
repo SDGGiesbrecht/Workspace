@@ -48,19 +48,19 @@ extension TestCoverageExemptionToken {
         // @localization(🇩🇪DE) @crossReference(Scope.sameLine)
         /// Dieser Geltungsbereich gilt für Abdeckungsbereiche, die auf der selbe Zeile beginnen als das Zeichen.
         ///
-        /// Dieser Geltungsbereich ist nützlich für Funktionen wie `assert`, die untestbare Diagnosemeldungen haben:
+        /// Dieser Geltungsbereich ist nützlich für Funktionen wie `behaupten`, die untestbare Diagnosemeldungen haben:
         ///
         /// ```swift
-        /// assert(x == y, "Es gibt ein Problem: \(problem)")
-        /// // ↑↑↑
+        /// behaupten(x == y, "Es gibt ein Problem: \(problem)")
+        /// // ↑↑↑↑↑↑
         /// // Die Zeichenketteninterpolation kann nicht mit Testen abgedeckt werden...
-        /// // ...aber das „assert“‐Zeichen erlaubt es als Ausnahme.
+        /// // ...aber das „behaupten“‐Zeichen erlaubt es als Ausnahme.
         /// ```
         ///
         /// Dieser Geltungbereich ist auch von dem allgemeinen Ausnahme verwendet, `@ausnahme(zu: tests)`.
         ///
         /// ```swift
-        /// func untestableFunction() { // @ausnahme(zu: tests)
+        /// func untestbareFunktion() { // @ausnahme(zu: teste)
         ///     // Die Ausnahme gilt hier.
         /// }
         /// ```
@@ -91,13 +91,13 @@ extension TestCoverageExemptionToken {
         ///
         /// ```swift
         /// guard let x = y else { // ← Der ungetesteter Bereich fängt beim Klammer an...
-        ///     preconditionFailure("Das soll nie geschehen.")
-        ///  // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
-        ///  // ...aber das „preconditionFailure“‐Zeichen erlaubt es als Ausnahme.
+        ///     voraussetzungsfehlschlag("Das soll nie geschehen.")
+        ///  // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+        ///  // ...aber das „voraussetzungsfehlschlag“‐Zeichen erlaubt es als Ausnahme.
         /// }
         ///
         /// // Solche Zeichen gelten auch am der selben Zeile, damit folgende Abschlüsse erlaubt werden:
-        /// guard let x = y else { preconditionFailure("Das soll nie geschehen.") }
+        /// guard let x = y else { voraussetzungsfehlschlag("Das soll nie geschehen.") }
         /// ```
         public static var vorstehendeZeile: Geltungsbereich {
             return .previousLine

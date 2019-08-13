@@ -73,8 +73,8 @@ extension ProofreadingRule {
         // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Category.sourceCodeStyle)
         /// Rules which enforce consistent source code style.
         case sourceCodeStyle
-        /// Regeln, die einheitlicher Quellstil erzwingen.
         // @localization(🇩🇪DE) @crossReference(Category.sourceCodeStyle)
+        /// Regeln, die einheitlicher Quellstil erzwingen.
         public static var quellstil: Klasse {
             return sourceCodeStyle
         }

@@ -124,7 +124,7 @@ public final class WorkspaceConfiguration : Configuration {
     public var git: GitConfiguration = GitConfiguration()
 
     /// Options related to licencing.
-    // @localization(🇨🇦EN) @crossReference(WorkspaceConfiguration.licence)
+    // @localization(🇬🇧EN) @localization(🇨🇦EN) @crossReference(WorkspaceConfiguration.licence)
     /// Options related to licensing.
     public var licence: LicenceConfiguration = LicenceConfiguration()
     // @localization(🇺🇸EN) @crossReference(WorkspaceConfiguration.licence)

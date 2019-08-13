@@ -31,7 +31,6 @@ public struct IssueTemplate : Decodable, Encodable {
     ///     - inhalt: Inhalt.
     ///     - etiketten: Vorgeschlagene Etiketten.
     ///     - beauftragte: Vorgeschlagene Beauftragte.
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     public init(
         name: StrengerZeichenkette,
         beschreibung: StrengerZeichenkette,
@@ -47,6 +46,8 @@ public struct IssueTemplate : Decodable, Encodable {
             labels: etiketten,
             assignees: beauftragte)
     }
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(IssueTemplate.init(name:description:title:content:labels:assignees))
     /// Creates an issue template.
     ///
     /// - Parameters:

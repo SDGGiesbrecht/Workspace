@@ -30,13 +30,14 @@ public typealias Korrektureinstellungen = ProofreadingConfiguration
 public struct ProofreadingConfiguration : Codable {
 
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(ProofreadingConfiguration.rules)
     /// The set of active proofreading rules.
     ///
     /// All rules are active by default.
     ///
     /// Individual proofreading violations can be suppressed by placing `@exempt(from: ruleIdentifier)` on the same line.
     public var rules: Set<ProofreadingRule> = Set(ProofreadingRule.allCases)
-    // @localization(🇩🇪DE)
+    // @localization(🇩🇪DE) @crossReference(ProofreadingConfiguration.rules)
     /// Die Menge gültiger Korrekturreglen.
     ///
     /// Wenn nicht angegeben, sind alle Regeln gültig.

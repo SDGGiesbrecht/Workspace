@@ -241,6 +241,21 @@ class APITests : TestCase {
         XCTAssertEqual(configuration.lager.übergegangeneDateiarten, [])
         configuration.lager.übergegangenePfade = []
         XCTAssertEqual(configuration.lager.übergegangenePfade, [])
+        configuration.testen.übersetzerwarnungenVerbieten = false
+        XCTAssert(configuration.testen.übersetzerwarnungenVerbieten)
+        configuration.testen.abdeckungErzwingen = false
+        XCTAssert(configuration.testen.abdeckungErzwingen)
+        configuration.testen.ausnahmensZeichen = []
+        XCTAssertEqual(configuration.testen.ausnahmensZeichen, [])
+        configuration.testen.ausnahmspfade = []
+        XCTAssertEqual(configuration.testen.ausnahmspfade, [])
+        configuration.unterstützteSchichte = []
+        XCTAssertEqual(configuration.unterstützteSchichte, [])
+        configuration.prüfungssonderaufgaben = []
+        XCTAssertEqual(configuration.prüfungssonderaufgaben, [])
+        configuration.korrektursonderaufgaben = []
+        XCTAssertEqual(configuration.korrektursonderaufgaben, [])
+        configuration.alleAufgabenEinschalten()
     }
 
     func testConfiguartionContext() {

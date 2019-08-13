@@ -98,8 +98,9 @@ public final class WorkspaceConfiguration : Configuration {
         set { supportedPlatforms = newValue }
     }
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇩🇪DE)
+    /// Einstellungen zu Git.
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     /// Options related to Git.
     public var git: GitConfiguration = GitConfiguration()
 
@@ -125,13 +126,15 @@ public final class WorkspaceConfiguration : Configuration {
     /// Options related to file headers.
     public var fileHeaders: FileHeaderConfiguration = FileHeaderConfiguration()
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇩🇪DE)
+    /// Einstellungen zu GitHub.
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     /// Options related to GitHub.
     public var gitHub: GitHubConfiguration = GitHubConfiguration()
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇩🇪DE)
+    /// Einstellungen zu Xcode.
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     /// Options related to Xcode.
     public var xcode: XcodeConfiguration = XcodeConfiguration()
 

@@ -47,12 +47,12 @@ Das Sprachkennzeichen fehlt. Eine Sprache für Syntaxhervorhebung angeben. (syn
 
 Sources/BadStyle/Rules/Functionality/AutoindentResilience.swift
 Zeile 3
-„/**“ widersteht automatische Einzüge (⌃I) nicht. Stattdessen „///“ verwenden. (widerstandZuAutomatischemEinzug)
+„/**“ widersteht automatische Einzüge (⌃I) nicht. Stattdessen „///“ verwenden. (widerstandGegenAutomatischenEinzug)
 /**
 
 Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift
 Zeile 3
-U+00B2 geht bei Normalisierung vielleicht verloren; stattdessen „2“ verwenden. (verträglichkeitsSchriftzeichen)
+U+00B2 geht bei Normalisierung vielleicht verloren; stattdessen „2“ verwenden. (verträglichkeitsschriftzeichen)
 let compatibility = "2"
 let compatibility = "2"
 
@@ -69,22 +69,22 @@ Fehlende Implementierung. (fehlendeImplementierung)
 
 Sources/BadStyle/Rules/Source Code Style/BraceSpacing.swift
 Zeile 3
-Geschweiften Klammern sollen von ihrem Inhalt mit einem Leerzeichen getrennt sein. (abstandGeschweiftenKlammern)
+Geschweifte Klammern sollen von ihrem Inhalt mit einem Leerzeichen getrennt sein. (abstandGeschweifterKlammern)
 let x = [].map {$0} // These braces should trigger; they should be spaced.
 let x = [].map { $0} // These braces should trigger; they should be spaced.
 
 Zeile 3
-Geschweiften Klammern sollen von ihrem Inhalt mit einem Leerzeichen getrennt sein. (abstandGeschweiftenKlammern)
+Geschweifte Klammern sollen von ihrem Inhalt mit einem Leerzeichen getrennt sein. (abstandGeschweifterKlammern)
 let x = [].map {$0} // These braces should trigger; they should be spaced.
 let x = [].map {$0 } // These braces should trigger; they should be spaced.
 
 Zeile 5
-Geschweiften Klammern sollen von ihrem Inhalt mit einem Leerzeichen getrennt sein. (abstandGeschweiftenKlammern)
+Geschweifte Klammern sollen von ihrem Inhalt mit einem Leerzeichen getrennt sein. (abstandGeschweifterKlammern)
 func z() {/* These braces should trigger; they should be spaced. */}
 func z() { /* These braces should trigger; they should be spaced. */}
 
 Zeile 5
-Geschweiften Klammern sollen von ihrem Inhalt mit einem Leerzeichen getrennt sein. (abstandGeschweiftenKlammern)
+Geschweifte Klammern sollen von ihrem Inhalt mit einem Leerzeichen getrennt sein. (abstandGeschweifterKlammern)
 func z() {/* These braces should trigger; they should be spaced. */}
 func z() {/* These braces should trigger; they should be spaced. */ }
 
@@ -116,7 +116,7 @@ Doppelpunkte sollen nachstehende Leerzeichen haben. (doppelpunktabstand)
     static func == (lhs : Conformance, rhs: Conformance) -> Bool { // These colons should trigger. They need respacing.
 
 Zeile 21
-„/**“ widersteht automatische Einzüge (⌃I) nicht. Stattdessen „///“ verwenden. (widerstandZuAutomatischemEinzug)
+„/**“ widersteht automatische Einzüge (⌃I) nicht. Stattdessen „///“ verwenden. (widerstandGegenAutomatischenEinzug)
     /**
 
 Zeile 34
@@ -162,12 +162,12 @@ Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen 
 /// - RecommendedOver: -
 
 Zeile 35
-Leere geschweifte Klammern sollen keinen Leerzeichen beinhalten. (abstandGeschweiftenKlammern)
+Leere geschweifte Klammern sollen keinen Leerzeichen beinhalten. (abstandGeschweifterKlammern)
 func shellSource() {
 
 func shellSource() {
 Zeile 35
-Leere geschweifte Klammern sollen keinen Leerzeichen beinhalten. (abstandGeschweiftenKlammern)
+Leere geschweifte Klammern sollen keinen Leerzeichen beinhalten. (abstandGeschweifterKlammern)
 func shellSource() {
 
 }

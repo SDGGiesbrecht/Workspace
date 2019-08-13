@@ -237,6 +237,10 @@ class APITests : TestCase {
         XCTAssertEqual(configuration.korrektur.regeln, [])
         configuration.korrektur.geltungsbereichUnicodeRegel = []
         XCTAssertEqual(configuration.korrektur.geltungsbereichUnicodeRegel, [])
+        configuration.lager.übergegangeneDateiarten = []
+        XCTAssertEqual(configuration.lager.übergegangeneDateiarten, [])
+        configuration.lager.übergegangenePfade = []
+        XCTAssertEqual(configuration.lager.übergegangenePfade, [])
     }
 
     func testConfiguartionContext() {
@@ -528,15 +532,15 @@ class APITests : TestCase {
             name: "",
             beschreibung: "",
             inhalt: "",
-            etikette: [])
+            etiketten: [])
         vorlage.beschreibung = "..."
         XCTAssertEqual(vorlage.beschreibung, "...")
         vorlage.titel = "..."
         XCTAssertEqual(vorlage.titel, "...")
         vorlage.inhalt = "..."
         XCTAssertEqual(vorlage.inhalt, "...")
-        vorlage.etikette = ["..."]
-        XCTAssertEqual(vorlage.etikette, ["..."])
+        vorlage.etiketten = ["..."]
+        XCTAssertEqual(vorlage.etiketten, ["..."])
         vorlage.beauftragte = ["..."]
         XCTAssertEqual(vorlage.beauftragte, ["..."])
     }
@@ -843,5 +847,19 @@ class APITests : TestCase {
             _ = try Workspace.command.execute(with: ["refresh", "scripts"]).get()
             _ = try Workspace.command.execute(with: ["refresh", "continuous‐integration"]).get()
         }
+    }
+
+    func testTestCoverageExemptionToken() {
+        var zeichen = Testabdeckungsausnahmszeichen("...", geltungsbereich: .selbeZeile)
+        zeichen.zeichen = ""
+        XCTAssertEqual(zeichen.zeichen, "")
+        zeichen.geltungsbereich = .vorstehendeZeile
+        XCTAssertEqual(zeichen.geltungsbereich, .vorstehendeZeile)
+    }
+
+    func testUnicodeRuleScope() {
+        XCTAssertEqual(GeltungsbereichUnicodeRegel.maschinenkennzeichungen, .machineIdentifiers)
+        XCTAssertEqual(GeltungsbereichUnicodeRegel.menschlicheSprache, .humanLanguage)
+        XCTAssertEqual(GeltungsbereichUnicodeRegel.uneindeutig, .ambiguous)
     }
 }

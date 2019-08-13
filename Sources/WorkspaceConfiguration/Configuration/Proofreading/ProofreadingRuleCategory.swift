@@ -26,33 +26,63 @@ extension ProofreadingRule {
         // MARK: - Cases
 
         // #workaround(Not properly localized yet.)
-        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Category.deprecation)
         /// Temporary rules which help with updating Workspace by catching deprecated usage.
         case deprecation
+        // @localization(🇩🇪DE) @crossReference(Category.deprecation)
+        /// Vorübergehende Regel, die das Aktualisiern von Arbeitsbereich helfen, in dem sie Überholtes erwischen.
+        public static var überholung: Klasse {
+            return .deprecation
+        }
 
         // #workaround(Not properly localized yet.)
-        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Category.intentional)
         /// Warnings which are requested manually.
         case intentional
+        // @localization(🇩🇪DE) @crossReference(Category.intentional)
+        /// Warnungen die absichtlich von Hand verursacht werden.
+        public static var absichtlich: Klasse {
+            return .intentional
+        }
 
         // #workaround(Not properly localized yet.)
-        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Category.functionality)
         /// Rules which ensure development tools (Workspace, Xcode, etc) work as intended.
         case functionality
+        // @localization(🇩🇪DE) @crossReference(Category.functionality)
+        /// Regeln, die versichern, dass Entwicklungswerkzeuge (Arbeitsbereich, Xcode, usw.) wie vorhergesehen funktionieren.
+        public static var funktionalität: Klasse {
+            return functionality
+        }
 
         // #workaround(Not properly localized yet.)
-        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Category.documentation)
         /// Rules which improve documentation quality.
         case documentation
+        // @localization(🇩🇪DE) @crossReference(Category.documentation)
+        /// Regeln, die die Dokumentationsqualität erhöhen.
+        public static var dokumentation: Klasse {
+            return documentation
+        }
 
         // #workaround(Not properly localized yet.)
-        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Category.textStyle)
         /// Rules which enforce consistent text style.
         case textStyle
+        // @localization(🇩🇪DE) @crossReference(Category.textStyle)
+        /// Regeln, die einheitlicher Textstil erzwingen.
+        public static var textstil: Klasse {
+            return textStyle
+        }
 
         // #workaround(Not properly localized yet.)
-        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Category.sourceCodeStyle)
         /// Rules which enforce consistent source code style.
         case sourceCodeStyle
+        /// Regeln, die einheitlicher Quellstil erzwingen.
+        // @localization(🇩🇪DE) @crossReference(Category.sourceCodeStyle)
+        public static var quellstil: Klasse {
+            return sourceCodeStyle
+        }
     }
 }

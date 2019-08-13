@@ -209,6 +209,28 @@ class APITests : TestCase {
         XCTAssertNil(configuration.license.license)
         configuration.lizenz.lizenz = .mit
         XCTAssertEqual(configuration.lizenz.lizenz, .mit)
+        XCTAssert(wahr)
+        XCTAssertFalse(falsch)
+        configuration.dateiVorspänne.verwalten = true
+        XCTAssert(configuration.dateiVorspänne.verwalten)
+        configuration.dateiVorspänne.urheberrechtshinweis = BequemeEinstellung(auswerten: { _ in [:] })
+        XCTAssertNil(configuration.dateiVorspänne.urheberrechtshinweis.auswerten(configuration)["de"])
+        configuration.dateiVorspänne.inhalt = BequemeEinstellung(auswerten: { _ in "" })
+        XCTAssertEqual(configuration.dateiVorspänne.inhalt.auswerten(configuration), "")
+        configuration.git.verwalten = true
+        XCTAssert(configuration.git.verwalten)
+        configuration.git.weitereEinträgeZuGitÜbergehen = []
+        XCTAssertEqual(configuration.git.weitereEinträgeZuGitÜbergehen, [])
+        configuration.gitHub.verwalten = true
+        XCTAssert(configuration.gitHub.verwalten)
+        configuration.gitHub.verwalter = []
+        XCTAssertEqual(configuration.gitHub.verwalter, [])
+        configuration.gitHub.entwicklungshinweise = ""
+        XCTAssertEqual(configuration.gitHub.entwicklungshinweise, "")
+        configuration.gitHub.themavorlagen = BequemeEinstellung(auswerten: { _ in [:] })
+        XCTAssert(configuration.gitHub.themavorlagen.auswerten(configuration).isEmpty)
+        configuration.gitHub.abziehungsanforderungsvorlage = ""
+        XCTAssertEqual(configuration.gitHub.abziehungsanforderungsvorlage, "")
     }
 
     func testConfiguartionContext() {
@@ -493,6 +515,24 @@ class APITests : TestCase {
         PackageRepository(mock: "InvalidTarget").test(commands: [
             ["refresh", "resources"]
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testIssueTemplate() {
+        var vorlage = Themavorlage(
+            name: "",
+            beschreibung: "",
+            inhalt: "",
+            etikette: [])
+        vorlage.beschreibung = "..."
+        XCTAssertEqual(vorlage.beschreibung, "...")
+        vorlage.titel = "..."
+        XCTAssertEqual(vorlage.titel, "...")
+        vorlage.inhalt = "..."
+        XCTAssertEqual(vorlage.inhalt, "...")
+        vorlage.etikette = ["..."]
+        XCTAssertEqual(vorlage.etikette, ["..."])
+        vorlage.beauftragte = ["..."]
+        XCTAssertEqual(vorlage.beauftragte, ["..."])
     }
 
     func testLazyOption() {

@@ -231,6 +231,12 @@ class APITests : TestCase {
         XCTAssert(configuration.gitHub.themavorlagen.auswerten(configuration).isEmpty)
         configuration.gitHub.abziehungsanforderungsvorlage = ""
         XCTAssertEqual(configuration.gitHub.abziehungsanforderungsvorlage, "")
+        configuration.lizenz.verwalten = true
+        XCTAssert(configuration.lizenz.verwalten)
+        configuration.korrektur.regeln = []
+        XCTAssertEqual(configuration.korrektur.regeln, [])
+        configuration.korrektur.geltungsbereichUnicodeRegel = []
+        XCTAssertEqual(configuration.korrektur.geltungsbereichUnicodeRegel, [])
     }
 
     func testConfiguartionContext() {
@@ -541,6 +547,10 @@ class APITests : TestCase {
         XCTAssert(lazy.auswerten(WorkspaceConfiguration()))
     }
 
+    func testLicence() {
+        XCTAssertEqual(Lizenz.urheberrecht, Licence.copyright)
+    }
+
     func testLocalizationIdentifier() {
         var dictionary: [LocalizationIdentifier: Bool] = [:]
         dictionary[ContentLocalization.englishCanada] = true
@@ -669,6 +679,28 @@ class APITests : TestCase {
             ["refresh", "github"],
             ["document"]
             ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testProofreadingRule() {
+        XCTAssertEqual(Korrekturregel.überholteBedingungsdokumentation, .deprecatedConditionDocumentation)
+        XCTAssertEqual(Korrekturregel.warnungenVonHand, .manualWarnings)
+        XCTAssertEqual(Korrekturregel.fehlendeImplementierung, .missingImplementation)
+        XCTAssertEqual(Korrekturregel.notlösungsErinnerungen, .workaroundReminders)
+        XCTAssertEqual(Korrekturregel.verträglichkeitsschriftzeichen, .compatibilityCharacters)
+        XCTAssertEqual(Korrekturregel.widerstandGegenAutomatischenEinzug, .autoindentResilience)
+        XCTAssertEqual(Korrekturregel.überschrifte, .marks)
+        XCTAssertEqual(Korrekturregel.syntaxhervorhebung, .syntaxColoring)
+        XCTAssertEqual(Korrekturregel.abstandGeschweifterKlammern, .braceSpacing)
+        XCTAssertEqual(Korrekturregel.doppelpunktabstand, .colonSpacing)
+        XCTAssertEqual(Korrekturregel.hervorhebungsGroßschreibung, .calloutCasing)
+        XCTAssertEqual(Korrekturregel.abschlusssignaturplatzierung, .closureSignaturePosition)
+        XCTAssertEqual(Korrekturregel.übergabewertenzusammenstellung, .parameterGrouping)
+        XCTAssertEqual(Korrekturregel.übergabewertenzusammenstellung.klasse, .überholung)
+        XCTAssertEqual(Korrekturregel.warnungenVonHand.klasse, .absichtlich)
+        XCTAssertEqual(Korrekturregel.verträglichkeitsschriftzeichen.klasse, .funktionalität)
+        XCTAssertEqual(Korrekturregel.syntaxhervorhebung.klasse, .dokumentation)
+        XCTAssertEqual(Korrekturregel.doppelpunktabstand.klasse, .textstil)
+        XCTAssertEqual(Korrekturregel.übergabewertenzusammenstellung.klasse, .quellstil)
     }
 
     func testRelatedProject() {

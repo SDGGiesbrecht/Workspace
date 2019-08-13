@@ -29,7 +29,7 @@ internal struct BraceSpacing : SyntaxRule {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "braceSpacing"
         case .deutschDeutschland:
-            return "abstandGeschweiftenKlammern"
+            return "abstandGeschweifterKlammern"
         }
     })
 
@@ -38,7 +38,7 @@ internal struct BraceSpacing : SyntaxRule {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Braces should be separated from their contents by a space."
         case .deutschDeutschland:
-            return "Geschweiften Klammern sollen von ihrem Inhalt mit einem Leerzeichen getrennt sein."
+            return "Geschweifte Klammern sollen von ihrem Inhalt mit einem Leerzeichen getrennt sein."
         }
     })
     private static let requiredOpeningInternalSpaceSuggestion: StrictString = "{ "

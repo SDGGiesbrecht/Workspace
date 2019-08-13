@@ -30,7 +30,7 @@ internal struct AutoindentResilience : SyntaxRule {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "autoindentResilience"
         case .deutschDeutschland:
-            return "widerstandZuAutomatischemEinzug"
+            return "widerstandGegenAutomatischenEinzug"
         }
     })
 

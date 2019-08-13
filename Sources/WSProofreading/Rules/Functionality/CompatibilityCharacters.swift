@@ -26,7 +26,7 @@ internal struct CompatibilityCharacters : TextRule {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "compatibilityCharacters"
         case .deutschDeutschland:
-            return "verträglichkeitsSchriftzeichen"
+            return "verträglichkeitsschriftzeichen"
         }
     })
 

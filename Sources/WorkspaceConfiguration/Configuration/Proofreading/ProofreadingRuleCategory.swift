@@ -16,8 +16,10 @@
 
 extension ProofreadingRule {
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇩🇪DE) @crossReference(Category)
+    /// Eine Klasse von Kurrekturregeln.
+    public typealias Klasse = Category
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Category)
     /// A category of proofreading rule.
     public enum Category {
 

@@ -31,7 +31,9 @@ extension APITests {
         ("testHelp", testHelp),
         ("testInvalidResourceDirectory", testInvalidResourceDirectory),
         ("testInvalidTarget", testInvalidTarget),
+        ("testIssueTemplate", testIssueTemplate),
         ("testLazyOption", testLazyOption),
+        ("testLicence", testLicence),
         ("testLocalizationIdentifier", testLocalizationIdentifier),
         ("testMissingDocumentation", testMissingDocumentation),
         ("testMissingExample", testMissingExample),
@@ -44,10 +46,13 @@ extension APITests {
         ("testOneProductMultipleModules", testOneProductMultipleModules),
         ("testOnlyBritish", testOnlyBritish),
         ("testPartialReadMe", testPartialReadMe),
+        ("testProofreadingRule", testProofreadingRule),
         ("testRelatedProject", testRelatedProject),
         ("testSDGLibrary", testSDGLibrary),
         ("testSDGTool", testSDGTool),
         ("testSelfSpecificScripts", testSelfSpecificScripts),
+        ("testTestCoverageExemptionToken", testTestCoverageExemptionToken),
+        ("testUnicodeRuleScope", testUnicodeRuleScope),
     ]
 }
 

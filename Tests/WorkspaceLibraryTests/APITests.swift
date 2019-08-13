@@ -252,9 +252,9 @@ class APITests : TestCase {
         configuration.unterstützteSchichte = []
         XCTAssertEqual(configuration.unterstützteSchichte, [])
         configuration.prüfungssonderaufgaben = []
-        XCTAssertEqual(configuration.prüfungssonderaufgaben, [])
+        XCTAssert(configuration.prüfungssonderaufgaben.isEmpty)
         configuration.korrektursonderaufgaben = []
-        XCTAssertEqual(configuration.korrektursonderaufgaben, [])
+        XCTAssert(configuration.korrektursonderaufgaben.isEmpty)
         configuration.alleAufgabenEinschalten()
     }
 

@@ -28,3 +28,18 @@ configuration.optIntoAllTasks()
 configuration.documentation.api.generate = true
 configuration.documentation.api.yearFirstPublished = 2017
 // @endExample
+
+// @beispiel(beispielskonfiguration)
+import WorkspaceConfiguration
+
+/*
+ Externe Pakete sind mit dieser Syntax einführbar:
+ import [Modul] // [Ressourcenzeiger], [Version], [Produkt]
+ */
+import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
+
+let konfiguration = ArbeitsbereichKonfiguration()
+konfiguration.alleAufgabenEinschalten()
+konfiguration.dokumentation.programmierschnittstelle.erstellen = wahr
+konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2017
+// @beispielBeenden

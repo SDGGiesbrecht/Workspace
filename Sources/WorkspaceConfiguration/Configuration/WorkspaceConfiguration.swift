@@ -20,9 +20,29 @@ import SDGSwiftConfiguration
 
 import WSLocalizations
 
-// #workaround(Not properly localized yet.)
 // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration)
-/// ...
+// @documentation(ArbeitsbereichKonfiguration)
+// #example(1, beispielskonfiguration)
+/// Die Wurzel der Programmierschnittstelle für Konfigurationsdateien.
+///
+/// Arbeitsbereich kann durch eine Swift‐Datei Namens `Arbeitsbereich.swift` im Projektwurzel konfiguriert werden.
+///
+/// Der Inhalt einer Konfigurationsdatei könnte etwa so aussehen:
+///
+/// ```swift
+/// import WorkspaceConfiguration
+///
+/// /*
+///  Externe Pakete sind mit dieser Syntax einführbar:
+///  import [Modul] // [Ressourcenzeiger], [Version], [Produkt]
+///  */
+/// import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
+///
+/// let konfiguration = ArbeitsbereichKonfiguration()
+/// konfiguration.alleAufgabenEinschalten()
+/// konfiguration.dokumentation.programmierschnittstelle.erstellen = wahr
+/// konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2017
+/// ```
 public typealias ArbeitsbereichKonfiguration = WorkspaceConfiguration
 // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(WorkspaceConfiguration)
 // @documentation(WorkspaceConfiguration)
@@ -238,7 +258,7 @@ public final class WorkspaceConfiguration : Configuration {
     /// Schaltet alle Aungaben ein, die nicht automatisch eingeschaltet sind.
     ///
     /// - Warning: Viele solche Aufgaben schreiben zu Projekt‐Dateien.
-    public func alleAungabenEinschalten() {
+    public func alleAufgabenEinschalten() {
         optIntoAllTasks()
     }
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)

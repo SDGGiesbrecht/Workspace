@@ -20,6 +20,13 @@ import Foundation
 import SDGText
 import SDGCalendar
 
+@inlinable public var wahr: Bool {
+    return true
+}
+@inlinable public var falsch: Bool {
+    return false
+}
+
 public typealias Menge = Set
 
 public typealias Zeichenkette = String

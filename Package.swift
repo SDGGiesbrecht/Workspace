@@ -154,8 +154,10 @@ let package = Package(
         .macOS(.v10_13)
     ],
     products: [
-        // #workaround(Not properly localized yet.)
-        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+        // @localization(🇩🇪DE)
+        // #documentation(ArbeitsbereichKonfiguration)
+        ///
+        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
         // #documentation(WorkspaceConfiguration)
         /// The root API used in configuration files.
         ///
@@ -383,8 +385,10 @@ let package = Package(
                 .define("CACHE_LOG", .when(configuration: .debug))
             ]),
 
-        // #workaround(Not properly localized yet.)
-        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+        // @localization(🇩🇪DE)
+        // #documentation(ArbeitsbereichKonfiguration)
+        ///
+        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
         // #documentation(WorkspaceConfiguration)
         /// The root API used in configuration files.
         ///

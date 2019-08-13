@@ -25,7 +25,6 @@ extension ProofreadingRule {
 
         // MARK: - Cases
 
-        // #workaround(Not properly localized yet.)
         // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Category.deprecation)
         /// Temporary rules which help with updating Workspace by catching deprecated usage.
         case deprecation
@@ -35,7 +34,6 @@ extension ProofreadingRule {
             return .deprecation
         }
 
-        // #workaround(Not properly localized yet.)
         // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Category.intentional)
         /// Warnings which are requested manually.
         case intentional
@@ -45,7 +43,6 @@ extension ProofreadingRule {
             return .intentional
         }
 
-        // #workaround(Not properly localized yet.)
         // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Category.functionality)
         /// Rules which ensure development tools (Workspace, Xcode, etc) work as intended.
         case functionality
@@ -55,7 +52,6 @@ extension ProofreadingRule {
             return functionality
         }
 
-        // #workaround(Not properly localized yet.)
         // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Category.documentation)
         /// Rules which improve documentation quality.
         case documentation
@@ -65,7 +61,6 @@ extension ProofreadingRule {
             return documentation
         }
 
-        // #workaround(Not properly localized yet.)
         // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Category.textStyle)
         /// Rules which enforce consistent text style.
         case textStyle
@@ -75,7 +70,6 @@ extension ProofreadingRule {
             return textStyle
         }
 
-        // #workaround(Not properly localized yet.)
         // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Category.sourceCodeStyle)
         /// Rules which enforce consistent source code style.
         case sourceCodeStyle

@@ -55,7 +55,6 @@ public final class WorkspaceConfiguration : Configuration {
 
     // MARK: - Properties
 
-    // #workaround(Not properly localized yet.)
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     // @crossReference(WorkspaceConfiguration.provideWorkflowScripts)
     /// Whether or not to provide workflow scripts.
@@ -69,25 +68,41 @@ public final class WorkspaceConfiguration : Configuration {
     /// These scripts are provided to reduce refreshment and validation to a simple double‐click. They will also ensure that the same version of Workspace gets used for the project on every machine it is cloned to.
     public var provideWorkflowScripts: Bool = true
     // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.provideWorkflowScripts)
-    /// ...
+    /// Ob Arbeitsbereich Arbeitsablaufskripte bereitstellen soll.
+    ///
+    /// Wenn nicht angegeben, ist diese Einstellung ein.
+    ///
+    /// ```shell
+    /// $ arbeitsbereich prüfen skripte
+    /// ```
+    ///
+    /// Diese Skripte sind bereitgestellt, um das Auffrischen und Prüfen zu einem Doppelklick zu vereinfachen. Sie versichern auch, dass die gleiche Version von Arbeitsbereich auf alle Geräte verwendet wird, wo das Projekt nachgebildet wird.
     public var arbeitsablaufsskripteBereitstellen: Bool {
         get { return provideWorkflowScripts }
         set { provideWorkflowScripts = newValue }
     }
 
     // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(WorkspaceConfiguration.supportedPlatforms)
     /// The platforms the project supports.
     ///
     /// The default assumes support for all platforms.
     public var supportedPlatforms: Set<Platform> = Set(Platform.allCases)
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.supportedPlatforms)
+    /// Die Schichte, die das Projekt unterstützt.
+    ///
+    /// Wenn nicht angegeben, werden alle Schichte unterstützt.
+    public var unterstützteSchichte: Menge<Schicht> {
+        get { return supportedPlatforms }
+        set { supportedPlatforms = newValue }
+    }
 
     // #workaround(Not properly localized yet.)
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
     /// Options related to Git.
     public var git: GitConfiguration = GitConfiguration()
 
-    // @localization(🇬🇧EN)
     /// Options related to licencing.
     // @localization(🇨🇦EN) @crossReference(WorkspaceConfiguration.licence)
     /// Options related to licensing.
@@ -99,7 +114,7 @@ public final class WorkspaceConfiguration : Configuration {
         set { licence = newValue }
     }
     // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.licence)
-    /// ...
+    /// Einstellungen zur Lizenz.
     public var lizenz: Lizenzeinstellungen {
         get { return licence }
         set { licence = newValue }

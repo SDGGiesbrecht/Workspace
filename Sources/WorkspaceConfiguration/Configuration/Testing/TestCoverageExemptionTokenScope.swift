@@ -16,15 +16,16 @@
 
 extension TestCoverageExemptionToken {
 
-    // #workaround(Not properly localized yet.)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+    // @localization(🇩🇪DE) @crossReference(Scope)
+    /// Der Geltungsbereich einer Testabdeckungsausnahme.
+    public typealias Geltungsbereich = Scope
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Scope)
     /// The scope of a test coverage exemption.
     public enum Scope : String, Codable {
 
         // MARK: - Cases
 
-        // #workaround(Not properly localized yet.)
-        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Scope.sameLine)
         /// This scope affects coverage ranges beginning on the same line as the token.
         ///
         /// This scope is useful for functions like `assert`, which have untestable diagnostic messages:
@@ -44,9 +45,30 @@ extension TestCoverageExemptionToken {
         /// }
         /// ```
         case sameLine
+        // @localization(🇩🇪DE) @crossReference(Scope.sameLine)
+        /// Dieser Geltungsbereich gilt für Abdeckungsbereiche, die auf der selbe Zeile beginnen als das Zeichen.
+        ///
+        /// Dieser Geltungsbereich ist nützlich für Funktionen wie `assert`, die untestbare Diagnosemeldungen haben:
+        ///
+        /// ```swift
+        /// assert(x == y, "Es gibt ein Problem: \(problem)")
+        /// // ↑↑↑
+        /// // Die Zeichenketteninterpolation kann nicht mit Testen abgedeckt werden...
+        /// // ...aber das „assert“‐Zeichen erlaubt es als Ausnahme.
+        /// ```
+        ///
+        /// Dieser Geltungbereich ist auch von dem allgemeinen Ausnahme verwendet, `@ausnahme(zu: tests)`.
+        ///
+        /// ```swift
+        /// func untestableFunction() { // @ausnahme(zu: tests)
+        ///     // Die Ausnahme gilt hier.
+        /// }
+        /// ```
+        public static var selbeZeile: Geltungsbereich {
+            return .sameLine
+        }
 
-        // #workaround(Not properly localized yet.)
-        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Scope.previousLine)
         /// This scope affects coverage ranges beginning on the line before the token (or on the same line).
         ///
         /// This scope is useful for functions like `preconditionFailure`, which reside in untestable code branches.
@@ -62,5 +84,23 @@ extension TestCoverageExemptionToken {
         /// guard let x = y else { preconditionFailure("This should never happen.") }
         /// ```
         case previousLine
+        // @localization(🇩🇪DE) @crossReference(Scope.previousLine)
+        /// Dieser Geltungsbereich gilt für Abdeckungsbereiche, die auf der Zeile vor dem Zeichen beginnen.
+        ///
+        /// Dieser Geltungsbereich ist nützlich für Funktionen wie `preconditionFailure`, die sich in untestbare Quellzweigen befinden:
+        ///
+        /// ```swift
+        /// guard let x = y else { // ← Der ungetesteter Bereich fängt beim Klammer an...
+        ///     preconditionFailure("Das soll nie geschehen.")
+        ///  // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+        ///  // ...aber das „preconditionFailure“‐Zeichen erlaubt es als Ausnahme.
+        /// }
+        ///
+        /// // Solche Zeichen gelten auch am der selben Zeile, damit folgende Abschlüsse erlaubt werden:
+        /// guard let x = y else { preconditionFailure("Das soll nie geschehen.") }
+        /// ```
+        public static var vorstehendeZeile: Geltungsbereich {
+            return .previousLine
+        }
     }
 }

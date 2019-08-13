@@ -156,7 +156,26 @@ let package = Package(
     products: [
         // @localization(🇩🇪DE)
         // #documentation(ArbeitsbereichKonfiguration)
+        /// Die Wurzel der Programmierschnittstelle für Konfigurationsdateien.
         ///
+        /// Arbeitsbereich kann durch eine Swift‐Datei Namens `Arbeitsbereich.swift` im Projektwurzel konfiguriert werden.
+        ///
+        /// Der Inhalt einer Konfigurationsdatei könnte etwa so aussehen:
+        ///
+        /// ```swift
+        /// import WorkspaceConfiguration
+        ///
+        /// /*
+        ///  Externe Pakete sind mit dieser Syntax einführbar:
+        ///  import [Modul] // [Ressourcenzeiger], [Version], [Produkt]
+        ///  */
+        /// import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
+        ///
+        /// let konfiguration = ArbeitsbereichKonfiguration()
+        /// konfiguration.alleAufgabenEinschalten()
+        /// konfiguration.dokumentation.programmierschnittstelle.erstellen = wahr
+        /// konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2017
+        /// ```
         // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
         // #documentation(WorkspaceConfiguration)
         /// The root API used in configuration files.
@@ -387,7 +406,26 @@ let package = Package(
 
         // @localization(🇩🇪DE)
         // #documentation(ArbeitsbereichKonfiguration)
+        /// Die Wurzel der Programmierschnittstelle für Konfigurationsdateien.
         ///
+        /// Arbeitsbereich kann durch eine Swift‐Datei Namens `Arbeitsbereich.swift` im Projektwurzel konfiguriert werden.
+        ///
+        /// Der Inhalt einer Konfigurationsdatei könnte etwa so aussehen:
+        ///
+        /// ```swift
+        /// import WorkspaceConfiguration
+        ///
+        /// /*
+        ///  Externe Pakete sind mit dieser Syntax einführbar:
+        ///  import [Modul] // [Ressourcenzeiger], [Version], [Produkt]
+        ///  */
+        /// import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
+        ///
+        /// let konfiguration = ArbeitsbereichKonfiguration()
+        /// konfiguration.alleAufgabenEinschalten()
+        /// konfiguration.dokumentation.programmierschnittstelle.erstellen = wahr
+        /// konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2017
+        /// ```
         // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
         // #documentation(WorkspaceConfiguration)
         /// The root API used in configuration files.

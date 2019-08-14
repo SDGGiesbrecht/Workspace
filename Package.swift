@@ -31,7 +31,7 @@ import PackageDescription
 ///
 /// - Stellt gründliche Prüfungen bereit:
 ///     - [Testabdeckung](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/TestingConfiguration/Eigenschaften/abdeckungErzwingen.html)
-///     - [Übersetzerwarnungen](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/TestingConfiguration/Eigenschaften/übersetzerwarnungenVerbieten.html)
+///     - [Übersetzerwarnungen](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/TestingConfiguration/Eigenschaften/übersetzerwarnungenVerbieten.html)
 ///     - [Dokumentationsabdeckung](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/APIDocumentationConfiguration/Eigenschaften/abdeckungErzwingen.html)
 ///     - [Beispielprüfung](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Programme/arbeitsbereich/Unterbefehle/refresh/Unterbefehle/examples.html)
 ///     - [Stilkorrekturlesen](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/Korrektureinstellungen.html)

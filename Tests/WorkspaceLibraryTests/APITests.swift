@@ -137,10 +137,10 @@ class APITests : TestCase {
         configuration._applySDGDefaults(openSource: false)
         XCTAssertFalse(configuration.documentation.readMe.manage)
 
-        configuration.continuousIntegration.verwalten = false
-        XCTAssertFalse(configuration.continuousIntegration.verwalten)
-        configuration.continuousIntegration.auserhalbFortlaufenderEinbindungSimulatorÜberspringen = true
-        XCTAssert(configuration.continuousIntegration.auserhalbFortlaufenderEinbindungSimulatorÜberspringen)
+        configuration.fortlaufenderEinbindung.verwalten = false
+        XCTAssertFalse(configuration.fortlaufenderEinbindung.verwalten)
+        configuration.fortlaufenderEinbindung.auserhalbFortlaufenderEinbindungSimulatorÜberspringen = true
+        XCTAssert(configuration.fortlaufenderEinbindung.auserhalbFortlaufenderEinbindungSimulatorÜberspringen)
         configuration.customRefreshmentTasks.append(Sonderaufgabe(
             ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "domain.tld")!,
             version: Version(1, 0),
@@ -255,7 +255,11 @@ class APITests : TestCase {
         XCTAssert(configuration.prüfungssonderaufgaben.isEmpty)
         configuration.korrektursonderaufgaben = []
         XCTAssert(configuration.korrektursonderaufgaben.isEmpty)
+        configuration.auffrischungssonderaufgaben = []
+        XCTAssert(configuration.auffrischungssonderaufgaben.isEmpty)
         configuration.alleAufgabenEinschalten()
+        configuration.gitHub.mitwirkungsanweisungen = BequemeEinstellung(auswerten: { _ in [:] })
+        XCTAssert(configuration.gitHub.mitwirkungsanweisungen.auswerten(configuration).isEmpty)
     }
 
     func testConfiguartionContext() {

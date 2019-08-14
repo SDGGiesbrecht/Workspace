@@ -242,9 +242,9 @@ class APITests : TestCase {
         configuration.lager.übergegangenePfade = []
         XCTAssertEqual(configuration.lager.übergegangenePfade, [])
         configuration.testen.übersetzerwarnungenVerbieten = false
-        XCTAssert(configuration.testen.übersetzerwarnungenVerbieten)
+        XCTAssertFalse(configuration.testen.übersetzerwarnungenVerbieten)
         configuration.testen.abdeckungErzwingen = false
-        XCTAssert(configuration.testen.abdeckungErzwingen)
+        XCTAssertFalse(configuration.testen.abdeckungErzwingen)
         configuration.testen.ausnahmensZeichen = []
         XCTAssertEqual(configuration.testen.ausnahmensZeichen, [])
         configuration.testen.ausnahmspfade = []
@@ -714,11 +714,11 @@ class APITests : TestCase {
         XCTAssertEqual(Korrekturregel.hervorhebungsGroßschreibung, .calloutCasing)
         XCTAssertEqual(Korrekturregel.abschlusssignaturplatzierung, .closureSignaturePosition)
         XCTAssertEqual(Korrekturregel.übergabewertenzusammenstellung, .parameterGrouping)
-        XCTAssertEqual(Korrekturregel.übergabewertenzusammenstellung.klasse, .überholung)
+        XCTAssertEqual(Korrekturregel.überholteBedingungsdokumentation.klasse, .überholung)
         XCTAssertEqual(Korrekturregel.warnungenVonHand.klasse, .absichtlich)
         XCTAssertEqual(Korrekturregel.verträglichkeitsschriftzeichen.klasse, .funktionalität)
         XCTAssertEqual(Korrekturregel.syntaxhervorhebung.klasse, .dokumentation)
-        XCTAssertEqual(Korrekturregel.doppelpunktabstand.klasse, .textstil)
+        XCTAssertEqual(Korrekturregel.unicode.klasse, .textstil)
         XCTAssertEqual(Korrekturregel.übergabewertenzusammenstellung.klasse, .quellstil)
     }
 

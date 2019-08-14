@@ -2,9 +2,11 @@
  CommandPage.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -41,8 +43,10 @@ internal class CommandPage : Page {
 
         output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
-                return "..." + StrictString(interface.name) + "..."
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "...\(StrictString(interface.name))..."
+            case .deutschDeutschland:
+                return "... \(StrictString(interface.name)) ..."
             }
         }).resolved())
 

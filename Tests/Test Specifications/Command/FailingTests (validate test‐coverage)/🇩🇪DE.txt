@@ -1,0 +1,32 @@
+$ arbeitsbereich validate test‐coverage •no‐colour
+
+Xcode‐Projekt wird aufgefrischt ...
+
+[$ swift...]
+
+Zu „FailingTests.xcodeproj/project.pbxproj“ wird geschrieben ...
+
+Testliste wird aktuelisiert ... (§1)
+
+[$ swift...]
+
+Auf macOS wird getestet ... (§2)
+
+[$ swift...]
+
+Testabdeckung auf macOS wird geprüft ...
+
+Ergebnisse zu „Sources/FailingTests/Exempt/Exempt.swift“ werden zerteilt ...
+Ergebnisse zu „Sources/FailingTests/FailingTests.swift“ werden zerteilt ...
+Ergebnisse zu „Tests/FailingTestsTests/FailingTestsTests.swift“ werden zerteilt ...
+Sources/FailingTests/FailingTests.swift
+Zeile 7
+        return "???"
+
+
+✓ Testliste wurde aktualisiert.
+✗ Teste werden auf macOS nicht bestanden. (Siehe [⌘F] „§2“)
+✗ Testabdeckung auf macOS ist unvollständig. (Siehe [⌘F] „§3“)
+
+„FailingTests“ besteht die Überprüfung nicht.
+2

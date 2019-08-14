@@ -2,9 +2,11 @@
  WorkaroundReminders.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2017–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2017–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -25,15 +27,19 @@ internal struct WorkaroundReminders : Warning {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "workaroundReminders"
+        case .deutschDeutschland:
+            return "notlösungsErinnerungen"
         }
     })
 
     internal static let trigger = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "workaround"
+        case .deutschDeutschland:
+            return "notlösung"
         }
     })
 
@@ -76,8 +82,10 @@ internal struct WorkaroundReminders : Warning {
         return UserFacing({ localization in
             let label: StrictString
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 label = "Workaround: "
+            case .deutschDeutschland:
+                label = "Notlösung: "
             }
             return label + description
         })

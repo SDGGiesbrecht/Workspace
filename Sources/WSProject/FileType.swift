@@ -2,9 +2,11 @@
  FileType.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2018–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2018–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -39,8 +41,10 @@ public enum FileType {
             var warning: [StrictString] = [
                 UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
-                    case .englishCanada:
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Workspace encountered unsupported file types:"
+                    case .deutschDeutschland:
+                        return "Arbeitsbereich traf auf unbekannten Dateiformate:"
                     }
                 }).resolved()
             ]
@@ -56,12 +60,18 @@ public enum FileType {
 
             warning.append(UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return ["All such files were skipped.",
                             "If these are standard file types, please report them at",
                             StrictString(Metadata.issuesURL.absoluteString.in(Underline.underlined)),
                             "To silence this warning for non‐standard file types, configure “repository.ignoredFileTypes”."
                     ].joinedAsLines()
+                case .deutschDeutschland:
+                    return ["Solche Dateien wurden übersprungen.",
+                            "Falls sie Standarddateiformate sind, bitte melden Sie sie hier:",
+                            StrictString(Metadata.issuesURL.absoluteString.in(Underline.underlined)),
+                            "Um diese Warnung für ungenormten Dateiformate abzudämpfen, „lager.ausgelasseneDateiformate“ konfigurieren."
+                        ].joinedAsLines()
                 }
             }).resolved())
 

@@ -1,0 +1,278 @@
+$ arbeitsbereich proofread •no‐colour
+
+Deteien werden normalisiert ...
+
+
+Quelltext Korrektur wird gelesen ...
+
+.Workspace Configuration.txt
+.gitignore
+Other/CSS.css
+Other/HTML.html
+Other/JavaScript.js
+Package.swift
+Zeile 2
+Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
+// The swift-tools-version declares the minimum version of Swift required to build this package.
+
+Zeile 2
+Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
+// The swift-tools-version declares the minimum version of Swift required to build this package.
+
+README.md
+Sources/BadStyle/BadStyle.swift
+Sources/BadStyle/Normalization/Decomposition.swift
+Sources/BadStyle/Normalization/EmptyIndents.swift
+Sources/BadStyle/Normalization/MarkdownLineBreaks.md
+Sources/BadStyle/Normalization/ShellExecutability.sh
+Sources/BadStyle/Rules/Deprecation/LinuxDocumentation.swift
+Zeile 4
+Solche Überschriften sind nicht mehr nötig für die erstellte Dokumentation. (überholteBedingungsdokumentation)
+    // MARK: - #if os(macOS)
+
+Sources/BadStyle/Rules/Documentation/CompilationConditions.swift
+Zeile 10
+Solche Überschriften sind nicht mehr nötig für die erstellte Dokumentation. (überholteBedingungsdokumentation)
+// MARK: - #if os(Linux) (Warn: This header is no longer needed.)
+
+Sources/BadStyle/Rules/Documentation/ExtensionConstraints.swift
+Zeile 10
+Solche Überschriften sind nicht mehr nötig für die erstellte Dokumentation. (überholteBedingungsdokumentation)
+    // MARK: - where Self : Comparable (Warn. The heading is no longer necessary.)
+
+Sources/BadStyle/Rules/Documentation/SyntaxColouring.swift
+Zeile 7
+Das Sprachkennzeichen fehlt. Eine Sprache für Syntaxhervorhebung angeben. (syntaxhervorhebung)
+/// ```
+
+Sources/BadStyle/Rules/Functionality/AutoindentResilience.swift
+Zeile 3
+„/**“ widersteht automatische Einzüge (⌃I) nicht. Stattdessen „///“ verwenden. (widerstandGegenAutomatischenEinzug)
+/**
+
+Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift
+Zeile 3
+U+00B2 geht bei Normalisierung vielleicht verloren; stattdessen „2“ verwenden. (verträglichkeitsschriftzeichen)
+let compatibility = "2"
+let compatibility = "2"
+
+Sources/BadStyle/Rules/Functionality/Mark.swift
+Zeile 3
+Unvollständige Überschriftssyntax. „// MARK: - “ verwenden. (überschrifte)
+/// MARK: This heading is malformed and should trigger.
+// MARK: - This heading is malformed and should trigger.
+
+Sources/BadStyle/Rules/Intentional/MissingImplementation.swift
+Zeile 4
+Fehlende Implementierung. (fehlendeImplementierung)
+    notImplementedYet() // This should trigger a warning.
+
+Sources/BadStyle/Rules/Source Code Style/BraceSpacing.swift
+Zeile 3
+Geschweifte Klammern sollen von ihrem Inhalt mit einem Leerzeichen getrennt sein. (abstandGeschweifterKlammern)
+let x = [].map {$0} // These braces should trigger; they should be spaced.
+let x = [].map { $0} // These braces should trigger; they should be spaced.
+
+Zeile 3
+Geschweifte Klammern sollen von ihrem Inhalt mit einem Leerzeichen getrennt sein. (abstandGeschweifterKlammern)
+let x = [].map {$0} // These braces should trigger; they should be spaced.
+let x = [].map {$0 } // These braces should trigger; they should be spaced.
+
+Zeile 5
+Geschweifte Klammern sollen von ihrem Inhalt mit einem Leerzeichen getrennt sein. (abstandGeschweifterKlammern)
+func z() {/* These braces should trigger; they should be spaced. */}
+func z() { /* These braces should trigger; they should be spaced. */}
+
+Zeile 5
+Geschweifte Klammern sollen von ihrem Inhalt mit einem Leerzeichen getrennt sein. (abstandGeschweifterKlammern)
+func z() {/* These braces should trigger; they should be spaced. */}
+func z() {/* These braces should trigger; they should be spaced. */ }
+
+Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift
+Zeile 5
+Hervorhebungen sollen großgeschrieben sein. (hervorhebungsGroßschreibung)
+/// - warning: This should trigger. It should have been capitalized.
+/// - Warning: This should trigger. It should have been capitalized.
+
+Sources/BadStyle/Rules/Source Code Style/ClosureSignaturePosition.swift
+Zeile 6
+Die Signatur eines Abschluss soll an der selbe Zeile stehen als seine öffnende geschweifte Klammer. (abschlusssignaturplatzierung)
+    parameter in // Wrong position; should trigger.
+
+Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift
+Zeile 3
+Doppelpunkte sollen vorstehende Leerzeichen haben wenn sie Erfüllung, Erbe oder ein ternären Auswahl bedeuten. (doppelpunktabstand)
+struct Conformance: Equatable { // This colon should trigger. It should be spaced.
+struct Conformance : Equatable { // This colon should trigger. It should be spaced.
+
+Zeile 4
+Doppelpunkte sollen keine vorstehende Leerzeichen haben. (doppelpunktabstand)
+    static func == (lhs : Conformance, rhs:Conformance) -> Bool { // These colons should trigger. They need respacing.
+    static func == (lhs: Conformance, rhs:Conformance) -> Bool { // These colons should trigger. They need respacing.
+
+Zeile 4
+Doppelpunkte sollen nachstehende Leerzeichen haben. (doppelpunktabstand)
+    static func == (lhs : Conformance, rhs:Conformance) -> Bool { // These colons should trigger. They need respacing.
+    static func == (lhs : Conformance, rhs: Conformance) -> Bool { // These colons should trigger. They need respacing.
+
+Zeile 21
+„/**“ widersteht automatische Einzüge (⌃I) nicht. Stattdessen „///“ verwenden. (widerstandGegenAutomatischenEinzug)
+    /**
+
+Zeile 34
+Doppelpunkte sollen vorstehende Leerzeichen haben wenn sie Erfüllung, Erbe oder ein ternären Auswahl bedeuten. (doppelpunktabstand)
+    func function<T>(_ p: T) where `T`: Equatable // This colon should trigger. It should be spaced.
+    func function<T>(_ p: T) where `T` : Equatable // This colon should trigger. It should be spaced.
+
+Zeile 35
+Doppelpunkte sollen nachstehende Leerzeichen haben. (doppelpunktabstand)
+    func withComment(parameter:/* */Bool) // This colon should trigger, it needs respacing.
+    func withComment(parameter: /* */Bool) // This colon should trigger, it needs respacing.
+
+Zeile 38
+Doppelpunkte sollen keine nachstehende Leerzeichen haben, wenn sie Teil eines leeres selbstdeutendes Wörterbuch oder einen Functionsname sind. (doppelpunktabstand)
+    let x = String.insert(_: at: ) // These colons should trigger. They should not be spaced.
+    let x = String.insert(_:at: ) // These colons should trigger. They should not be spaced.
+
+Zeile 38
+Doppelpunkte sollen keine nachstehende Leerzeichen haben, wenn sie Teil eines leeres selbstdeutendes Wörterbuch oder einen Functionsname sind. (doppelpunktabstand)
+    let x = String.insert(_: at: ) // These colons should trigger. They should not be spaced.
+    let x = String.insert(_: at:) // These colons should trigger. They should not be spaced.
+
+Sources/BadStyle/Rules/Source Code Style/ParameterStyle.swift
+Zeile 5
+Übergabewerte sollen unter einer einzigen Hervorhebung gestellt sein. (übergabewertenzusammenstellung)
+/// - Parameter one: A parameter documented the wrong way, so trigger.
+
+Sources/BadStyle/Rules/Text Style/Unicode.swift
+Zeile 5
+Das Schriftzeichen U+0022 ist überholt. Anführungszeichen („, “) oder Doppelprime (′′) verwenden. (unicode)
+// "These quotation marks are generic and should trigger."
+
+Zeile 5
+Das Schriftzeichen U+0022 ist überholt. Anführungszeichen („, “) oder Doppelprime (′′) verwenden. (unicode)
+// "These quotation marks are generic and should trigger."
+
+Zeile 9
+Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
+// Trigger, because this is not a minus sign: a - b
+
+Zeile 19
+Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
+/// - RecommendedOver: -
+
+Zeile 35
+Leere geschweifte Klammern sollen keinen Leerzeichen beinhalten. (abstandGeschweifterKlammern)
+func shellSource() {
+
+func shellSource() {
+Zeile 35
+Leere geschweifte Klammern sollen keinen Leerzeichen beinhalten. (abstandGeschweifterKlammern)
+func shellSource() {
+
+}
+func shellSource() {}
+
+Zeile 41
+Das Schriftzeichen U+0027 ist überholt. Einen Apostrophe (’), Anführungs‐ (‚, ‘), Grad‐ (°) oder Prime‐Zeichen (′) verwenden. (unicode)
+// 'These quotation marks are generic and should trigger.'
+
+Zeile 41
+Das Schriftzeichen U+0027 ist überholt. Einen Apostrophe (’), Anführungs‐ (‚, ‘), Grad‐ (°) oder Prime‐Zeichen (′) verwenden. (unicode)
+// 'These quotation marks are generic and should trigger.'
+
+Zeile 46
+Die Schriftzeichenfolge “&&” ist überholt. Ein Konjunktionszeichen (∧) verwenden. (unicode)
+// Trigger, because this is not a conjunction sign: a && b
+// Trigger, because this is not a conjunction sign: a ∧ b
+
+Zeile 47
+Die Schriftzeichenfolge “||” ist überholt. Ein Disjunktionszeichen (∨) verwenden. (unicode)
+// Trigger, because this is not a disjunction sign: a || b
+// Trigger, because this is not a disjunction sign: a ∨ b
+
+Zeile 51
+Die Schriftzeichenfolge “!=” ist überholt. Ein Ungleichheitszeichen (≠) verwenden. (unicode)
+// Trigger, because this is not a not‐equal sign: a != b
+// Trigger, because this is not a not‐equal sign: a ≠ b
+
+Zeile 52
+Die Schriftzeichenfolge “<=” ist überholt. Ein kleiner‐als‐oder‐gleich‐Zeichen (≤) verwenden. (unicode)
+// Trigger, because this is not a less‐than‐or‐equal‐to sign: a <= b
+// Trigger, because this is not a less‐than‐or‐equal‐to sign: a ≤ b
+
+Zeile 53
+Die Schriftzeichenfolge “>=” ist überholt. Ein größer‐als‐oder‐gleich‐Zeichen (≥) verwenden. (unicode)
+// Trigger, because this is not a greater‐than‐or‐equal‐to sign: a >= b
+// Trigger, because this is not a greater‐than‐or‐equal‐to sign: a ≥ b
+
+Zeile 57
+Das Schriftzeichen “*” ist überholt. Ein Malzeichen (⋅) verwenden. (Wenn nötig, ein Alias erstellen.) (unicode)
+let x = a * b // Trigger, because this is not a multiplication sign.
+let x = a × b // Trigger, because this is not a multiplication sign.
+
+Zeile 58
+Die Schriftzeichenfolge “*=” ist überholt. Ein Malzeichen (⋅) verwenden. (unicode)
+// Trigger, because this is not a multiplication sign: a *= b
+// Trigger, because this is not a multiplication sign: a ×= b
+
+Zeile 59
+Das Schriftzeichen “/” ist überholt. Ein Geteiltzeichen (∶) verwenden. (Wenn nötig, ein Alias erstellen.) (unicode)
+let x = a / b // Trigger, because this is not a division sign.
+let x = a ÷ b // Trigger, because this is not a division sign.
+
+Zeile 60
+Die Schriftzeichenfolge “/=” ist überholt. Ein Geteiltzeichen (∶) verwenden. (unicode)
+// Trigger, because this is not a division sign: a /= b
+// Trigger, because this is not a division sign: a ÷= b
+
+Zeile 64
+Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (Wenn nötig, ein Alias erstellen.) (unicode)
+let x = y - z // This should trigger and mention aliasing.
+
+Zeile 66
+Das Schriftzeichen “!” ist überholt. Ein Negationszeichen (¬) verwenden. (Wenn nötig, ein Alias erstellen.) (unicode)
+let x = !y // This should trigger; it is a prefix operator.
+let x = ¬y // This should trigger; it is a prefix operator.
+
+Sources/BadStyle/SwiftLint.swift
+Sources/BadStyle/Warnings/Warning.swift
+Zeile 3
+This should trigger a warning. (warnungenVonHand)
+// #warning(This should trigger a warning.)
+
+Sources/BadStyle/Warnings/Workaround.swift
+Zeile 3
+Notlösung: This should trigger. The workaround may no longer be necessary. (notlösungsErinnerungen)
+// #workaround(Dependency 0.9.9, This should trigger. The workaround may no longer be necessary.)
+
+Zeile 6
+Notlösung: This should trigger. The workaround may no longer be necessary. (notlösungsErinnerungen)
+// #workaround(Swift 3, This should trigger. The workaround may no longer be necessary.)
+
+Zeile 9
+Notlösung: This should trigger. The workaround may no longer be necessary. (notlösungsErinnerungen)
+// #workaround(echo 1.0.0 0.9.9, This should trigger. The workaround may no longer be necessary.)
+
+Zeile 12
+Notlösung: This should trigger no matter what. (notlösungsErinnerungen)
+// #workaround(This should trigger no matter what.)
+
+Zeile 13
+Notlösung: This malformed version check should trigger. (notlösungsErinnerungen)
+// #workaround(echo oops 1.0.0, This malformed version check should trigger.)
+
+Tests/BadStyleTests/BadStyleTests.swift
+Zeile 4
+Doppelpunkte sollen vorstehende Leerzeichen haben wenn sie Erfüllung, Erbe oder ein ternären Auswahl bedeuten. (doppelpunktabstand)
+class BadStyleTests: XCTestCase {
+class BadStyleTests : XCTestCase {
+
+
+$ Dependency fail
+Hello, world!
+
+✗ Der Quelltext besteht das Korrekturlesen nicht. (Siehe [⌘F] „§1“)
+
+„BadStyle“ besteht die Überprüfung nicht.
+2

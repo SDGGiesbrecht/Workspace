@@ -1,0 +1,20 @@
+$ arbeitsbereich refresh •no‐colour
+
+„AllDisabled“ wird aufgefrischt ...
+
+
+Ressourcen werden aufgefrischt ...
+
+
+Beispiele werden aufgefrischt ...
+
+
+Geerbte Dokumentation wird aufgefrischt ...
+
+
+Deteien werden normalisiert ...
+
+
+„AllDisabled“ ist aufgefrischt und bereit.
+
+0

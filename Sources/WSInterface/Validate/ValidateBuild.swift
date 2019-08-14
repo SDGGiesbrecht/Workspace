@@ -2,9 +2,11 @@
  ValidateBuild.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2017–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2017–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -27,15 +29,19 @@ extension Workspace.Validate {
 
         private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "build"
+            case .deutschDeutschland:
+                return "erstellung"
             }
         })
 
         private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "validates the build, checking that it triggers no compiler warnings."
+            case .deutschDeutschland:
+                return "prüft die Erstellung, dass keine Übersetzungswarnungen auftreten."
             }
         })
 
@@ -67,8 +73,10 @@ extension Workspace.Validate {
                 ¬(try Build.job(specified, isRelevantTo: project, andAvailableJobs: validJobs, output: output)) {
                 throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
-                    case .englishCanada:
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Invalid job."
+                    case .deutschDeutschland:
+                        return "Ungültige Aufgabe."
                     }
                 }))
             }

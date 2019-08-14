@@ -1,0 +1,32 @@
+$ workspace validate test‐coverage •no‐colour
+
+Refreshing Xcode project...
+
+[$ swift...]
+
+Writing to “FailingTests.xcodeproj/project.pbxproj”...
+
+Updating test manifests... (§1)
+
+[$ swift...]
+
+Testing on macOS... (§2)
+
+[$ swift...]
+
+Checking test coverage on macOS... (§3)
+
+Parsing report for “Sources/FailingTests/Exempt/Exempt.swift”...
+Parsing report for “Sources/FailingTests/FailingTests.swift”...
+Parsing report for “Tests/FailingTestsTests/FailingTestsTests.swift”...
+Sources/FailingTests/FailingTests.swift
+Line 7
+        return "???"
+
+
+✓ Updated test manifests.
+✗ Tests fail on macOS. (See [⌘F] “§2”)
+✗ Test coverage is incomplete on macOS. (See [⌘F] “§3”)
+
+“FailingTests” fails validation.
+2

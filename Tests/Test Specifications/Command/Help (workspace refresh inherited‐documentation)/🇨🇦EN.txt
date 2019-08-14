@@ -19,7 +19,7 @@ Workspace can find definitions in any Swift file in the project.
 To inherit the documentation elsewhere, place “#documentation(identifier)” where the documentation would go (or above it if it already exists). Anything on the same line will be ignored (such as “//”).
 
 struct Teacher : Rambler {
-    // #documentation(MyLibrary.Rambler.ramble)
+    // #documentation(Rambler.ramble)
     /// (Workspace will automatically fill this in whenever the project is refreshed.)
     func ramble() -> Never {
         print("Blah")

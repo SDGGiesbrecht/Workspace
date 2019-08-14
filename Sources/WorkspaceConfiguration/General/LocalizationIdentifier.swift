@@ -2,9 +2,11 @@
  LocalizationIdentifier.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2018–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2018–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -15,11 +17,29 @@
 import SDGControlFlow
 import WSLocalizations
 
-/// A localization identifier; either an IETF language tag or a language icon.
+// @localization(🇩🇪DE) @crossReference(LocalizationIdentifier)
+/// Eine lokalisationskennzeichen; entweder ein IETF‐Sprachkennzeichen oder ein Sprachsymbol.
+public typealias Lokalisationskennzeichen = LocalizationIdentifier
+// @localization(🇬🇧EN) @crossReference(LocalizationIdentifier)
+/// A localisation identifier; either an IETF language tag or a language icon.
+public typealias LocalisationIdentifier = LocalizationIdentifier
+// @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(LocalizationIdentifier)
+/// A localisation identifier; either an IETF language tag or a language icon.
 public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hashable, TransparentWrapper {
 
     // MARK: - Initialization
 
+    // @localization(🇩🇪DE)
+    /// Erstellt ein Kennzeichen aus einer Lokalisation.
+    ///
+    /// - Parameters:
+    ///     - localization: Die Lokalisation.
+    // @localization(🇬🇧EN)
+    /// Creates an identifier from a localisation.
+    ///
+    /// - Parameters:
+    ///     - localization: The localisation.
+    // @localization(🇺🇸EN) @localization(🇨🇦EN)
     /// Creates an identifier from a localization.
     ///
     /// - Parameters:
@@ -28,6 +48,17 @@ public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hash
         code = localization.code
     }
 
+    // @localization(🇩🇪DE)
+    /// Erstellt ein Kennzeichen aus einem IETF‐Sprachkennzeichen oder einem Sprachsymbol.
+    ///
+    /// - Parameters:
+    ///     - identifier: Das IETF‐Sprachkennzeichen oder Sprachsymbol.
+    // @localization(🇬🇧EN)
+    /// Creates a localisation identifier from an IETF language tag or a language icon.
+    ///
+    /// - Parameters:
+    ///     - identifier: The IETF language tag or language icon.
+    // @localization(🇺🇸EN) @localization(🇨🇦EN)
     /// Creates a localization identifier from an IETF language tag or a language icon.
     ///
     /// - Parameters:
@@ -45,9 +76,22 @@ public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hash
 
     // MARK: - Properties
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(LocalizationIdentifier.code)
     /// The IETF language tag.
     public var code: String
+    // @localization(🇩🇪DE) @crossReference(LocalizationIdentifier.code)
+    /// Das IETF‐Sprachkennzeichen.
+    public var kennzeichen: Zeichenkette {
+        get { return code }
+        set { code = newValue }
+    }
 
+    // @localization(🇩🇪DE) @crossReference(LocalizationIdentifier.icon)
+    /// Das Sprachsymbol.
+    public var symbol: StrengerZeichenkette? {
+        return icon
+    }
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(LocalizationIdentifier.icon)
     /// The language icon.
     public var icon: StrictString? {
         return ContentLocalization.icon(for: code)

@@ -2,9 +2,11 @@
  WorkspaceConfiguration.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2018–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2018–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -18,6 +20,31 @@ import SDGSwiftConfiguration
 
 import WSLocalizations
 
+// @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration)
+// @documentation(ArbeitsbereichKonfiguration)
+// #example(1, beispielskonfiguration)
+/// Die Wurzel der Programmierschnittstelle für Konfigurationsdateien.
+///
+/// Arbeitsbereich kann durch eine Swift‐Datei Namens `Arbeitsbereich.swift` im Projektwurzel konfiguriert werden.
+///
+/// Der Inhalt einer Konfigurationsdatei könnte etwa so aussehen:
+///
+/// ```swift
+/// import WorkspaceConfiguration
+///
+/// /*
+///  Externe Pakete sind mit dieser Syntax einführbar:
+///  import [Modul] // [Ressourcenzeiger], [Version], [Produkt]
+///  */
+/// import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
+///
+/// let konfiguration = ArbeitsbereichKonfiguration()
+/// konfiguration.alleAufgabenEinschalten()
+/// konfiguration.dokumentation.programmierschnittstelle.erstellen = wahr
+/// konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2017
+/// ```
+public typealias ArbeitsbereichKonfiguration = WorkspaceConfiguration
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(WorkspaceConfiguration)
 // @documentation(WorkspaceConfiguration)
 // #example(1, sampleConfiguration)
 /// The root API used in configuration files.
@@ -48,6 +75,8 @@ public final class WorkspaceConfiguration : Configuration {
 
     // MARK: - Properties
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(WorkspaceConfiguration.provideWorkflowScripts)
     /// Whether or not to provide workflow scripts.
     ///
     /// This is on by default.
@@ -58,55 +87,182 @@ public final class WorkspaceConfiguration : Configuration {
     ///
     /// These scripts are provided to reduce refreshment and validation to a simple double‐click. They will also ensure that the same version of Workspace gets used for the project on every machine it is cloned to.
     public var provideWorkflowScripts: Bool = true
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.provideWorkflowScripts)
+    /// Ob Arbeitsbereich Arbeitsablaufskripte bereitstellen soll.
+    ///
+    /// Wenn nicht angegeben, ist diese Einstellung ein.
+    ///
+    /// ```shell
+    /// $ arbeitsbereich prüfen skripte
+    /// ```
+    ///
+    /// Diese Skripte sind bereitgestellt, um das Auffrischen und Prüfen zu einem Doppelklick zu vereinfachen. Sie versichern auch, dass die gleiche Version von Arbeitsbereich auf alle Geräte verwendet wird, wo das Projekt nachgebildet wird.
+    public var arbeitsablaufsskripteBereitstellen: Bool {
+        get { return provideWorkflowScripts }
+        set { provideWorkflowScripts = newValue }
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(WorkspaceConfiguration.supportedPlatforms)
     /// The platforms the project supports.
     ///
     /// The default assumes support for all platforms.
     public var supportedPlatforms: Set<Platform> = Set(Platform.allCases)
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.supportedPlatforms)
+    /// Die Schichte, die das Projekt unterstützt.
+    ///
+    /// Wenn nicht angegeben, werden alle Schichte unterstützt.
+    public var unterstützteSchichte: Menge<Schicht> {
+        get { return supportedPlatforms }
+        set { supportedPlatforms = newValue }
+    }
 
+    // @localization(🇩🇪DE)
+    /// Einstellungen zu Git.
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     /// Options related to Git.
     public var git: GitConfiguration = GitConfiguration()
 
     /// Options related to licencing.
+    // @localization(🇬🇧EN) @localization(🇨🇦EN) @crossReference(WorkspaceConfiguration.licence)
+    /// Options related to licensing.
     public var licence: LicenceConfiguration = LicenceConfiguration()
+    // @localization(🇺🇸EN) @crossReference(WorkspaceConfiguration.licence)
+    /// Options related to licensing.
+    public var license: LicenseConfiguration {
+        get { return licence }
+        set { licence = newValue }
+    }
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.licence)
+    /// Einstellungen zur Lizenz.
+    public var lizenz: Lizenzeinstellungen {
+        get { return licence }
+        set { licence = newValue }
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(WorkspaceConfiguration.fileHeaders)
     /// Options related to file headers.
     public var fileHeaders: FileHeaderConfiguration = FileHeaderConfiguration()
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.fileHeaders)
+    /// Einstellungen zu den Dateivorspännen.
+    public var dateiVorspänne: Dateivorspannseinstellungen {
+        get { return fileHeaders }
+        set { fileHeaders = newValue }
+    }
 
+    // @localization(🇩🇪DE)
+    /// Einstellungen zu GitHub.
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     /// Options related to GitHub.
     public var gitHub: GitHubConfiguration = GitHubConfiguration()
 
+    // @localization(🇩🇪DE)
+    /// Einstellungen zu Xcode.
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     /// Options related to Xcode.
     public var xcode: XcodeConfiguration = XcodeConfiguration()
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(WorkspaceConfiguration.proofreading)
     /// Options related to proofreading.
     public var proofreading: ProofreadingConfiguration = ProofreadingConfiguration()
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.proofreading)
+    /// Einstellungen zur Korrektur.
+    public var korrektur: Korrektureinstellungen {
+        get { return proofreading }
+        set { proofreading = newValue }
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(WorkspaceConfiguration.testing)
     /// Options related to building and testing.
     public var testing: TestingConfiguration = TestingConfiguration()
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.testing)
+    /// Einstellungen zum Testen.
+    public var testen: Testeinstellungen {
+        get { return testing }
+        set { testing = newValue }
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(WorkspaceConfiguration.documentation)
     /// Options related to documentation.
     public var documentation: DocumentationConfiguration = DocumentationConfiguration()
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.documentation)
+    /// Einstellungen zur Dokumentation.
+    public var dokumentation: Dokumentationseinstellungen {
+        get { return documentation }
+        set { documentation = newValue }
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(WorkspaceConfiguration.continuousIntegration)
     /// Options related to continuous integration.
     public var continuousIntegration: ContinuousIntegrationConfiguration = ContinuousIntegrationConfiguration()
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.continuousIntegration)
+    /// Einstellungen zur fortlaufenden Einbindung.
+    public var fortlaufenderEinbindung: EinstellungenFortlaufenderEinbindung {
+        get { return continuousIntegration }
+        set { continuousIntegration = newValue }
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(WorkspaceConfiguration.repository)
     /// Options related to the project repository.
     public var repository: RepositoryConfiguration = RepositoryConfiguration()
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.repository)
+    /// Einstellungen zur Dokumentation.
+    public var lager: Lagerseinstellungen {
+        get { return repository }
+        set { repository = newValue }
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(WorkspaceConfiguration.customRefreshmentTasks)
     /// Custom tasks to perform when refreshing the project.
     public var customRefreshmentTasks: [CustomTask] = []
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.customRefreshmentTasks)
+    /// Sonderaufgaben, diem Auffrischen ausgeführt werden sollen.
+    public var auffrischungssonderaufgaben: [Sonderaufgabe] {
+        get { return customRefreshmentTasks }
+        set { customRefreshmentTasks = newValue }
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(WorkspaceConfiguration.customProofreadingTasks)
     /// Custom tasks to perform when proofreading.
     public var customProofreadingTasks: [CustomTask] = []
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.customProofreadingTasks)
+    /// Sonderaufgaben, die bei der Korrektur ausgeführt werden sollen.
+    public var korrektursonderaufgaben: [Sonderaufgabe] {
+        get { return customProofreadingTasks }
+        set { customProofreadingTasks = newValue }
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(WorkspaceConfiguration.customValidationTasks)
     /// Custom tasks to perform when validating the project.
     public var customValidationTasks: [CustomTask] = []
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.customValidationTasks)
+    /// Sonderaufgaben, die beim Prüfen ausgeführt werden sollen.
+    public var prüfungssonderaufgaben: [Sonderaufgabe] {
+        get { return customValidationTasks }
+        set { customValidationTasks = newValue }
+    }
 
     internal var _isSDG: Bool = false
 
     // MARK: - Opting In & Out
 
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.optIntoAllTasks())
+    /// Schaltet alle Aungaben ein, die nicht automatisch eingeschaltet sind.
+    ///
+    /// - Warning: Viele solche Aufgaben schreiben zu Projekt‐Dateien.
+    public func alleAufgabenEinschalten() {
+        optIntoAllTasks()
+    }
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(WorkspaceConfiguration.optIntoAllTasks())
     /// Opts into all tasks which are off by default.
     ///
     /// - Warning: Many opt‐in tasks involve writing into project files.
@@ -302,6 +458,13 @@ public final class WorkspaceConfiguration : Configuration {
 
     // MARK: - Configuration
 
+    // @localization(🇩🇪DE)
+    /// Erstellt eine Arbeitsberich‐Konfiguration mit den Anfangseinstellungen.
+    ///
+    /// Anfangseinstellungen sind allgemein nicht invasiv. Die meisten Aufgaben, die zu Projekt‐Dateien schreiben sind nicht automatisch eingeschaltet.
+    ///
+    /// Um alle Aufgaben einzuschalten, gibt es `alleAufgabenEinschalten()`.
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     /// Creates a Workspace configuration according to the defaults.
     ///
     /// Defaults are generally non‐invasive. Most tasks which would write into project files are off by default.

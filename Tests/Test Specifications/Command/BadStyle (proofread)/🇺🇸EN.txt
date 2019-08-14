@@ -1,0 +1,278 @@
+$ workspace proofread •no‐colour
+
+Normalizing files...
+
+
+Proofreading source code... (§1)
+
+.Workspace Configuration.txt
+.gitignore
+Other/CSS.css
+Other/HTML.html
+Other/JavaScript.js
+Package.swift
+Line 2
+The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
+// The swift-tools-version declares the minimum version of Swift required to build this package.
+
+Line 2
+The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
+// The swift-tools-version declares the minimum version of Swift required to build this package.
+
+README.md
+Sources/BadStyle/BadStyle.swift
+Sources/BadStyle/Normalization/Decomposition.swift
+Sources/BadStyle/Normalization/EmptyIndents.swift
+Sources/BadStyle/Normalization/MarkdownLineBreaks.md
+Sources/BadStyle/Normalization/ShellExecutability.sh
+Sources/BadStyle/Rules/Deprecation/LinuxDocumentation.swift
+Line 4
+Such headings are no longer necessary for the generated documentation. (deprecatedConditionDocumentation)
+    // MARK: - #if os(macOS)
+
+Sources/BadStyle/Rules/Documentation/CompilationConditions.swift
+Line 10
+Such headings are no longer necessary for the generated documentation. (deprecatedConditionDocumentation)
+// MARK: - #if os(Linux) (Warn: This header is no longer needed.)
+
+Sources/BadStyle/Rules/Documentation/ExtensionConstraints.swift
+Line 10
+Such headings are no longer necessary for the generated documentation. (deprecatedConditionDocumentation)
+    // MARK: - where Self : Comparable (Warn. The heading is no longer necessary.)
+
+Sources/BadStyle/Rules/Documentation/SyntaxColouring.swift
+Line 7
+Language specifier missing. Specify a language for syntax colouring. (syntaxColoring)
+/// ```
+
+Sources/BadStyle/Rules/Functionality/AutoindentResilience.swift
+Line 3
+“/**” may not survive autoindent (⌃I). Use “///” instead. (autoindentResilience)
+/**
+
+Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift
+Line 3
+U+00B2 may be lost in normalization; use “2” instead. (compatibilityCharacters)
+let compatibility = "2"
+let compatibility = "2"
+
+Sources/BadStyle/Rules/Functionality/Mark.swift
+Line 3
+Incomplete heading syntax. Use “// MARK: - ”. (marks)
+/// MARK: This heading is malformed and should trigger.
+// MARK: - This heading is malformed and should trigger.
+
+Sources/BadStyle/Rules/Intentional/MissingImplementation.swift
+Line 4
+Missing implementation. (missingImplementation)
+    notImplementedYet() // This should trigger a warning.
+
+Sources/BadStyle/Rules/Source Code Style/BraceSpacing.swift
+Line 3
+Braces should be separated from their contents by a space. (braceSpacing)
+let x = [].map {$0} // These braces should trigger; they should be spaced.
+let x = [].map { $0} // These braces should trigger; they should be spaced.
+
+Line 3
+Braces should be separated from their contents by a space. (braceSpacing)
+let x = [].map {$0} // These braces should trigger; they should be spaced.
+let x = [].map {$0 } // These braces should trigger; they should be spaced.
+
+Line 5
+Braces should be separated from their contents by a space. (braceSpacing)
+func z() {/* These braces should trigger; they should be spaced. */}
+func z() { /* These braces should trigger; they should be spaced. */}
+
+Line 5
+Braces should be separated from their contents by a space. (braceSpacing)
+func z() {/* These braces should trigger; they should be spaced. */}
+func z() {/* These braces should trigger; they should be spaced. */ }
+
+Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift
+Line 5
+Callouts should be capitalized. (calloutCasing)
+/// - warning: This should trigger. It should have been capitalized.
+/// - Warning: This should trigger. It should have been capitalized.
+
+Sources/BadStyle/Rules/Source Code Style/ClosureSignaturePosition.swift
+Line 6
+A closure’s signature should be on the same line as its opening brace. (closureSignaturePosition)
+    parameter in // Wrong position; should trigger.
+
+Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift
+Line 3
+Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition. (colonSpacing)
+struct Conformance: Equatable { // This colon should trigger. It should be spaced.
+struct Conformance : Equatable { // This colon should trigger. It should be spaced.
+
+Line 4
+Colons should not be preceded by spaces. (colonSpacing)
+    static func == (lhs : Conformance, rhs:Conformance) -> Bool { // These colons should trigger. They need respacing.
+    static func == (lhs: Conformance, rhs:Conformance) -> Bool { // These colons should trigger. They need respacing.
+
+Line 4
+Colons should be followed by spaces. (colonSpacing)
+    static func == (lhs : Conformance, rhs:Conformance) -> Bool { // These colons should trigger. They need respacing.
+    static func == (lhs : Conformance, rhs: Conformance) -> Bool { // These colons should trigger. They need respacing.
+
+Line 21
+“/**” may not survive autoindent (⌃I). Use “///” instead. (autoindentResilience)
+    /**
+
+Line 34
+Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition. (colonSpacing)
+    func function<T>(_ p: T) where `T`: Equatable // This colon should trigger. It should be spaced.
+    func function<T>(_ p: T) where `T` : Equatable // This colon should trigger. It should be spaced.
+
+Line 35
+Colons should be followed by spaces. (colonSpacing)
+    func withComment(parameter:/* */Bool) // This colon should trigger, it needs respacing.
+    func withComment(parameter: /* */Bool) // This colon should trigger, it needs respacing.
+
+Line 38
+Colons should not be followed by spaces when denoting an empty dictionary literal or a function name. (colonSpacing)
+    let x = String.insert(_: at: ) // These colons should trigger. They should not be spaced.
+    let x = String.insert(_:at: ) // These colons should trigger. They should not be spaced.
+
+Line 38
+Colons should not be followed by spaces when denoting an empty dictionary literal or a function name. (colonSpacing)
+    let x = String.insert(_: at: ) // These colons should trigger. They should not be spaced.
+    let x = String.insert(_: at:) // These colons should trigger. They should not be spaced.
+
+Sources/BadStyle/Rules/Source Code Style/ParameterStyle.swift
+Line 5
+Parameters should be grouped under a single callout. (parameterGrouping)
+/// - Parameter one: A parameter documented the wrong way, so trigger.
+
+Sources/BadStyle/Rules/Text Style/Unicode.swift
+Line 5
+The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
+// "These quotation marks are generic and should trigger."
+
+Line 5
+The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
+// "These quotation marks are generic and should trigger."
+
+Line 9
+The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
+// Trigger, because this is not a minus sign: a - b
+
+Line 19
+The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
+/// - RecommendedOver: -
+
+Line 35
+Empty braces should not contain spaces. (braceSpacing)
+func shellSource() {
+
+func shellSource() {
+Line 35
+Empty braces should not contain spaces. (braceSpacing)
+func shellSource() {
+
+}
+func shellSource() {}
+
+Line 41
+The character U+0027 is obsolete. Use an apostrophe (’), quotation marks (‘, ’), degrees (°) or prime (′). (unicode)
+// 'These quotation marks are generic and should trigger.'
+
+Line 41
+The character U+0027 is obsolete. Use an apostrophe (’), quotation marks (‘, ’), degrees (°) or prime (′). (unicode)
+// 'These quotation marks are generic and should trigger.'
+
+Line 46
+The character sequence “&&” is obsolete. Use the conjunction sign (∧). (unicode)
+// Trigger, because this is not a conjunction sign: a && b
+// Trigger, because this is not a conjunction sign: a ∧ b
+
+Line 47
+The character sequence “||” is obsolete. Use the disjunction sign (∨). (unicode)
+// Trigger, because this is not a disjunction sign: a || b
+// Trigger, because this is not a disjunction sign: a ∨ b
+
+Line 51
+The character sequence “!=” is obsolete. Use the not equal sign (≠). (unicode)
+// Trigger, because this is not a not‐equal sign: a != b
+// Trigger, because this is not a not‐equal sign: a ≠ b
+
+Line 52
+The character sequence “<=” is obsolete. Use the less‐than‐or‐equal sign (≤). (unicode)
+// Trigger, because this is not a less‐than‐or‐equal‐to sign: a <= b
+// Trigger, because this is not a less‐than‐or‐equal‐to sign: a ≤ b
+
+Line 53
+The character sequence “>=” is obsolete. Use the greater‐than‐or‐equal sign (≥). (unicode)
+// Trigger, because this is not a greater‐than‐or‐equal‐to sign: a >= b
+// Trigger, because this is not a greater‐than‐or‐equal‐to sign: a ≥ b
+
+Line 57
+The character “*” is obsolete. Use the multiplication sign (×). (Create an alias if necessary.) (unicode)
+let x = a * b // Trigger, because this is not a multiplication sign.
+let x = a × b // Trigger, because this is not a multiplication sign.
+
+Line 58
+The character sequence “*=” is obsolete. Use the multiplication sign (×). (unicode)
+// Trigger, because this is not a multiplication sign: a *= b
+// Trigger, because this is not a multiplication sign: a ×= b
+
+Line 59
+The character “/” is obsolete. Use the division sign (÷). (Create an alias if necessary.) (unicode)
+let x = a / b // Trigger, because this is not a division sign.
+let x = a ÷ b // Trigger, because this is not a division sign.
+
+Line 60
+The character sequence “/=” is obsolete. Use the division sign (÷). (unicode)
+// Trigger, because this is not a division sign: a /= b
+// Trigger, because this is not a division sign: a ÷= b
+
+Line 64
+The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (Create an alias if necessary.) (unicode)
+let x = y - z // This should trigger and mention aliasing.
+
+Line 66
+The character “!” is obsolete. Use the not sign (¬). (Create an alias if necessary.) (unicode)
+let x = !y // This should trigger; it is a prefix operator.
+let x = ¬y // This should trigger; it is a prefix operator.
+
+Sources/BadStyle/SwiftLint.swift
+Sources/BadStyle/Warnings/Warning.swift
+Line 3
+This should trigger a warning. (manualWarnings)
+// #warning(This should trigger a warning.)
+
+Sources/BadStyle/Warnings/Workaround.swift
+Line 3
+Workaround: This should trigger. The workaround may no longer be necessary. (workaroundReminders)
+// #workaround(Dependency 0.9.9, This should trigger. The workaround may no longer be necessary.)
+
+Line 6
+Workaround: This should trigger. The workaround may no longer be necessary. (workaroundReminders)
+// #workaround(Swift 3, This should trigger. The workaround may no longer be necessary.)
+
+Line 9
+Workaround: This should trigger. The workaround may no longer be necessary. (workaroundReminders)
+// #workaround(echo 1.0.0 0.9.9, This should trigger. The workaround may no longer be necessary.)
+
+Line 12
+Workaround: This should trigger no matter what. (workaroundReminders)
+// #workaround(This should trigger no matter what.)
+
+Line 13
+Workaround: This malformed version check should trigger. (workaroundReminders)
+// #workaround(echo oops 1.0.0, This malformed version check should trigger.)
+
+Tests/BadStyleTests/BadStyleTests.swift
+Line 4
+Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition. (colonSpacing)
+class BadStyleTests: XCTestCase {
+class BadStyleTests : XCTestCase {
+
+
+$ Dependency fail
+Hello, world!
+
+✗ Source code fails proofreading. (See [⌘F] “§1”)
+
+“BadStyle” fails validation.
+2

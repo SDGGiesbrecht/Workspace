@@ -1,0 +1,32 @@
+$ workspace refresh help •no‐colour
+
+workspace refresh refreshes the project by updating its components and readying it for development.
+
+Subcommands
+
+all performs all configured refreshment tasks.
+continuous‐integration regenerates the project’s continuous integration configuration files.
+examples synchronizes the project’s compiled examples.
+file‐headers re‐applies the project file header to each of the project’s files.
+git regenerates the project’s Git configuration files.
+github regenerates the project’s GitHub configuration files.
+help displays usage information.
+inherited‐documentation synchronizes the project’s inherited documentation.
+license regenerates the project’s license file.
+read‐me regenerates the project’s read‐me file.
+resources regenerates code providing access to the project’s resources.
+scripts regenerates the project’s refresh and validation scripts.
+xcode regenerates the project’s Xcode set‐up.
+
+Options
+
+•language [language preference] A language to use instead of the one specified in preferences.
+•no‐color Removes color from the output.
+•project [path] The location of the target project if it is not at the current working directory.
+
+Argument Types
+
+[language preference] A list of IETF language tags or SDGCornerstone language icons. Semicolons indicate fallback order. Commas indicate that multiple languages should be used. Examples: “en-US” or “🇺🇸EN” → American English, “nv,en;es” → both Navajo and English, otherwise Spanish
+[path] A file system path. The form “/...” indicates an absolute path. The form “~/...” indicates a path relative to the home directory. Anything else is interpreted relative to the current working directory.
+
+0

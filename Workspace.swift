@@ -2,9 +2,11 @@
  Workspace.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2018–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2018–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -21,6 +23,7 @@ public enum Metadata {
 
     public static let packageURL = URL(string: "https://github.com/SDGGiesbrecht/Workspace")!
     public static let issuesURL = packageURL.appendingPathComponent("issues")
+    public static let documentationURL = URL(string: "https://sdggiesbrecht.github.io/Workspace")!
 }
 
 public let configuration: WorkspaceConfiguration = {
@@ -33,12 +36,12 @@ public let configuration: WorkspaceConfiguration = {
 
     configuration.documentation.currentVersion = Metadata.latestStableVersion
     configuration.documentation.projectWebsite = URL(string: "https://github.com/SDGGiesbrecht/Workspace#workspace")!
-    configuration.documentation.documentationURL = URL(string: "https://sdggiesbrecht.github.io/Workspace")!
+    configuration.documentation.documentationURL = Metadata.documentationURL
     configuration.documentation.repositoryURL = Metadata.packageURL
 
     configuration.documentation.api.yearFirstPublished = 2017
 
-    configuration.documentation.localizations = ["🇨🇦EN"]
+    configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "🇩🇪DE"]
 
     configuration.repository.ignoredPaths.insert("Tests/Mock Projects")
 

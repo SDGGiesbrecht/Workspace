@@ -2,9 +2,11 @@
  MissingImplementation.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2017–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2017–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -20,15 +22,19 @@ internal struct MissingImplementation : TextRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "missingImplementation"
+        case .deutschDeutschland:
+            return "fehlendeImplementierung"
         }
     })
 
     private static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Missing implementation."
+        case .deutschDeutschland:
+            return "Fehlende Implementierung."
         }
     })
 

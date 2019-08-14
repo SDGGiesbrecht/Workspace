@@ -1,0 +1,5 @@
+$ arbeitsbereich refresh licence •no‐colour
+
+Lizenz wird aufgefrischt ...
+
+0

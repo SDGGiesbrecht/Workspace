@@ -1,0 +1,4 @@
+$ workspace document •no‐colour
+Nothing to document.
+The package manifest does not define any products.
+9223372036854775807

@@ -1,0 +1,75 @@
+$ arbeitsbereich document •no‐colour
+
+Dokumentation wird erstellt ...
+
+Verstorbene Ressourcenzeiger werden weiterleitet ...
+
+Kein ursprüngliche Urheberrechtsdatum wurde angegeben.
+(Es ist unter „dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung“ zu konfigurieren.)
+
+„FailingDocumentationCoverage“ wird zerteilt ...
+Die Programmierschnitstelle wird verarbeitet ...
+Auszeichnung wird erstellt ...
+
+Einer Lokalization fehlt die Urheberrechtsschutzvermerk: zxx
+(Es ist unter „dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk“ zu konfigurieren.)
+
+
+Einem Symbol fehlt die Beschreibung.
+FailingDocumentationCoverage.zxx
+(Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.
+Arbeitsbereich sucht für die Dokumentation in der Zeile über „Package(name: "FailingDocumentationCoverage"“.)
+
+
+Einem Symbol fehlt die Beschreibung.
+FailingDocumentationCoverage.zxx
+(Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.
+Arbeitsbereich sucht für die Dokumentation in der Zeile über „.library(name: "FailingDocumentationCoverage"“.)
+
+... FailingDocumentationCoverage ...
+
+Einem Symbol fehlt die Beschreibung.
+FailingDocumentationCoverage.zxx
+(Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.
+Arbeitsbereich sucht für die Dokumentation in der Zeile über „.target(name: "FailingDocumentationCoverage"“.)
+
+
+Ein Symbol hat fehlangepasste Übergabewertenbeschreibungen.
+anotherUnlabelled(closure:).zxx
+(Erwartete: closure, _)
+
+
+Einem Abschluss fehlt die Beschriftung.
+anotherUnlabelled(closure:).(_ _: Int) -> Int
+
+
+Die Dokumentation eines Symbols enthaltet überstarke Überschrifte:
+excessiveHeading().zxx
+(Überschriftsebenen drei bis sechs stehen offen. Ebene eins und zwei sind für den umliegenden Rahmen vorbehalten.)
+
+
+Ein Symbol hat fehlangepasste Übergabewertenbeschreibungen.
+mismatchedParameters(parameterOne:).zxx
+(Erwartete: parameterOne)
+
+
+Einem Symbol fehlt die Beschreibung.
+undocumented().zxx
+
+
+Einem Abschluss fehlt die Beschriftung.
+unlabelled(closure:).(Int) -> Int
+
+
+Einem Symbol fehlt die Beschreibung.
+inferredType.zxx
+
+
+Einem öffentlichen Variable fehlt der ausdrückliche Typ.
+inferredType
+
+
+✗ Dokumentation wurde erstellt, aber Warnungen wurden dabei ausgelöst.
+
+„FailingDocumentationCoverage“ besteht die Überprüfung nicht.
+2

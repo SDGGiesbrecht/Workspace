@@ -2,9 +2,11 @@
  Normalize.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2018–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2018–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -21,15 +23,23 @@ extension Workspace {
 
         private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom:
+                return "normalise"
+            case .englishUnitedStates, .englishCanada:
                 return "normalize"
+            case .deutschDeutschland:
+                return "normalisieren"
             }
         })
 
         private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom:
+                return "normalises the project’s files by removing trailing whitespace, applying Unix newlines and performing canonical decomposition."
+            case .englishUnitedStates, .englishCanada:
                 return "normalizes the project’s files by removing trailing whitespace, applying Unix newlines and performing canonical decomposition."
+            case .deutschDeutschland:
+                return "normalisiert die Dateien des Projekt, in dem Leerzeichen vom Zeilenende entfernt werden, Unix‐Zeilenumbrüche eingetauscht werden und kanonische Zersetzung ausgeführt wird."
             }
         })
 
@@ -42,8 +52,12 @@ extension Workspace {
             if ¬options.runAsXcodeBuildPhase {
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
-                    case .englishCanada:
+                    case .englishUnitedKingdom:
+                        return "Normalising files..."
+                    case .englishUnitedStates, .englishCanada:
                         return "Normalizing files..."
+                    case .deutschDeutschland:
+                        return "Deteien werden normalisiert ..."
                     }
                 }).resolved().formattedAsSectionHeader())
             }

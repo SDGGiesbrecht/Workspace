@@ -2,23 +2,11 @@ $ workspace proofread •no‐colour
 
 Normalizing files...
 
-Writing to “Sources/BadStyle/Normalization/Decomposition.swift”...
-Writing to “Sources/BadStyle/Normalization/EmptyIndents.swift”...
-Writing to “Sources/BadStyle/Rules/Functionality/AutoindentResilience.swift”...
-Writing to “Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift”...
 
 Proofreading source code... (§1)
 
 .Workspace Configuration.txt
-Line 1
-“.Workspace Configuration.txt” is no longer used. It has been replaced by “Workspace.swift”. (deprecatedConfiguration)
-(This file should trigger a proofreading warning.)
-
 .gitignore
-Line 3
-Management sections are no longer used. Enable “git.manage” or remove the section markers. (deprecatedGitManagement)
-# [_Begin Workspace Section_]
-
 Other/CSS.css
 Other/HTML.html
 Other/JavaScript.js
@@ -37,52 +25,10 @@ Sources/BadStyle/Normalization/Decomposition.swift
 Sources/BadStyle/Normalization/EmptyIndents.swift
 Sources/BadStyle/Normalization/MarkdownLineBreaks.md
 Sources/BadStyle/Normalization/ShellExecutability.sh
-Sources/BadStyle/Rules/Deprecation/ExampleDirectives.swift
-Line 3
-This syntax is no longer recognized. Use “@example(anExample)” instead. (deprecatedExampleDirectives)
-// [_Define Example: anExample_]
-// @example(anExample)
-
-Line 5
-This syntax is no longer recognized. Use “@endExample” instead. (deprecatedExampleDirectives)
-// [_End_]
-// @endExample
-
-Line 7
-This syntax is no longer recognized. Use “#example(1, anExample)” instead. (deprecatedExampleDirectives)
-// [_Example 1: anExample_]
-// #example(1, anExample)
-
-Sources/BadStyle/Rules/Deprecation/InheritanceDirectives.swift
-Line 3
-This syntax is no longer recognized. Use “@documentation(This inheritance style is deprecated.)” instead. (deprecatedInheritanceDirectives)
-// [_Define Documentation: This inheritance style is deprecated._]
-// @documentation(This inheritance style is deprecated.)
-
-Line 7
-This syntax is no longer recognized. Use “#documentation(This inheritance style is deprecated.)” instead. (deprecatedInheritanceDirectives)
-// [_Inherit Documentation: This inheritance style is deprecated._]
-// #documentation(This inheritance style is deprecated.)
-
 Sources/BadStyle/Rules/Deprecation/LinuxDocumentation.swift
 Line 4
 Such headings are no longer necessary for the generated documentation. (deprecatedConditionDocumentation)
     // MARK: - #if os(macOS)
-
-Sources/BadStyle/Rules/Deprecation/TestExemption.swift
-Line 3
-This syntax is no longer recognized. Use “@exempt(from: tests)” instead. (deprecatedTestExemptions)
-// [_Exempt from Test Coverage_]
-// @exempt(from: tests)
-
-Sources/BadStyle/Rules/Deprecation/Warnings.swift
-Line 3
-This syntax is no longer recognized. Use “#warning” instead. (deprecatedWarnings)
-// [_Warning: This warning style is deprecated._]
-
-Line 4
-This syntax is no longer recognized. Use “#workaround” instead. (deprecatedWarnings)
-// [_Workaround: This workaround style is deprecated._]
 
 Sources/BadStyle/Rules/Documentation/CompilationConditions.swift
 Line 10
@@ -322,10 +268,6 @@ Colons should be preceded by spaces when denoting conformance, inheritance or a 
 class BadStyleTests: XCTestCase {
 class BadStyleTests : XCTestCase {
 
-
-[$ git...]
-
-[$ swift...]
 
 $ Dependency fail
 Hello, world!

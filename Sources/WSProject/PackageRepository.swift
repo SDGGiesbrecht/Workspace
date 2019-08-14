@@ -2,9 +2,11 @@
  PackageRepository.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2017–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2017–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -212,8 +214,10 @@ extension PackageRepository {
                     configuration: WorkspaceConfiguration.self,
                     named: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
-                        case .englishCanada:
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return "Workspace"
+                        case .deutschDeutschland:
+                            return "Arbeitsbereich"
                         }
                     }),
                     from: location,
@@ -235,8 +239,12 @@ extension PackageRepository {
         guard let result = try configuration(output: output).documentation.localizations.first else {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom:
+                    return "There are no localisations specified. (documentation.localisations)"
+                case .englishUnitedStates, .englishCanada:
                     return "There are no localizations specified. (documentation.localizations)"
+                case .deutschDeutschland:
+                    return "Keine Lokalisationen sind angegeben. (dokumentation.localisationen)"
                 }
             }))
         }
@@ -343,8 +351,12 @@ extension PackageRepository {
 
             output.print(UserFacingDynamic<StrictString, InterfaceLocalization, String>({ localization, path in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom:
+                    return "Deleting ‘\(path)’..."
+                case .englishUnitedStates, .englishCanada:
                     return "Deleting “\(path)”..."
+                case .deutschDeutschland:
+                    return "„\(path)“ wird gelöscht ..."
                 }
             }).resolved(using: location.path(relativeTo: self.location)))
 
@@ -378,8 +390,12 @@ extension PackageRepository {
 
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
-                    case .englishCanada:
+                    case .englishUnitedKingdom: // @exempt(from: tests) To time consuming to rebuild cache for each localization.
+                        return "Fetching ‘\(package.url.lastPathComponent)’..."
+                    case .englishUnitedStates, .englishCanada:
                         return "Fetching “\(package.url.lastPathComponent)”..."
+                    case .deutschDeutschland: // @exempt(from: tests)
+                        return "„\(package.url.lastPathComponent)“ wird abgerufen ..."
                     }
                 }).resolved())
 

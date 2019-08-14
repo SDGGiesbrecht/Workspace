@@ -2,9 +2,11 @@
  Proofread.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2017–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2017–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -21,27 +23,34 @@ extension Workspace {
 
         private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "proofread"
+            case .deutschDeutschland:
+                return "korrekturlesen"
             }
         })
 
         private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "proofreads the project’s source for style violations."
+            case .deutschDeutschland:
+                return "liest die Projektquellenstyl Korrektur."
             }
         })
 
         static let runAsXcodeBuildPhase = SDGCommandLine.Option(name: UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+                 .deutschDeutschland:
                 return "xcode"
             }
         }), description: UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
-                return "behaves as an xcode build phase."
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "behaves as an Xcode build phase."
+            case .deutschDeutschland:
+                return "verhält sich wie ein Xcode‐Erstellungsschritt."
             }
         }), type: ArgumentType.boolean)
 
@@ -63,8 +72,10 @@ extension Workspace {
             if ¬options.runAsXcodeBuildPhase {
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
-                    case .englishCanada:
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Proofreading source code..." + section.anchor
+                    case .deutschDeutschland:
+                        return "Quelltext Korrektur wird gelesen ..."
                     }
                 }).resolved().formattedAsSectionHeader())
             }
@@ -79,15 +90,19 @@ extension Workspace {
             if try options.project.proofread(reporter: reporter, output: output) {
                 validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
-                    case .englishCanada:
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Source code passes proofreading."
+                    case .deutschDeutschland:
+                        return "Quelltext besteht das Korrekturlesen."
                     }
                 }))
             } else {
                 validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
-                    case .englishCanada:
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Source code fails proofreading." + section.crossReference.resolved(for: localization)
+                    case .deutschDeutschland:
+                        return "Der Quelltext besteht das Korrekturlesen nicht." + section.crossReference.resolved(for: localization)
                     }
                 }))
             }

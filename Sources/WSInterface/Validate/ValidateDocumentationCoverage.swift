@@ -2,9 +2,11 @@
  ValidateDocumentationCoverage.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2017–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2017–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -24,15 +26,19 @@ extension Workspace.Validate {
 
         private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "documentation‐coverage"
+            case .deutschDeutschland:
+                return "dokumentationsabdeckung"
             }
         })
 
         private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "validates documentation coverage, checking that every public symbol in every library product is documented."
+            case .deutschDeutschland:
+                return "prüft die Dokumentationsabdeckung, dass jedes öffentliche Symbol von jede Biblioteksprodukt dokumentiert ist."
             }
         })
 
@@ -44,8 +50,10 @@ extension Workspace.Validate {
             if ¬validationStatus.validatedSomething {
                 validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
-                    case .englishCanada:
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "No library products to document."
+                    case .deutschDeutschland:
+                        return "Keine Biblioteksprodukte zum Dokumentieren."
                     }
                 }))
             }

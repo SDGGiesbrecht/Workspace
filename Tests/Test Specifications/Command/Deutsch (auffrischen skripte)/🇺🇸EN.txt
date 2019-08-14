@@ -1,0 +1,5 @@
+$ workspace auffrischen skripte •no‐colour
+
+Refreshing scripts...
+
+0

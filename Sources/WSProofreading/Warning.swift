@@ -2,9 +2,11 @@
  Warning.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2017–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2017–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -12,6 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGCollections
 import WSGeneralImports
 
 import WSProject
@@ -29,6 +32,7 @@ extension Warning {
             return
         }
 
+        var handledViolations: Set<Range<String.ScalarView.Index>> = []
         for localizedTrigger in InterfaceLocalization.allCases.map({ trigger.resolved(for: $0) }) {
 
             let marker = ("#\(localizedTrigger)(", ")")
@@ -36,12 +40,15 @@ extension Warning {
             var index = file.contents.scalars.startIndex
             while let match = file.contents.scalars[index ..< file.contents.scalars.endIndex].firstNestingLevel(startingWith: marker.0.scalars, endingWith: marker.1.scalars) {
                 index = match.container.range.upperBound
+                if match.container.range ∉ handledViolations {
+                    handledViolations.insert(match.container.range)
 
-                var details = StrictString(match.contents.contents)
-                details.trimMarginalWhitespace()
+                    var details = StrictString(match.contents.contents)
+                    details.trimMarginalWhitespace()
 
-                if let description = try message(for: details, in: project, output: output) {
-                    reportViolation(in: file, at: match.container.range, message: description, status: status, output: output)
+                    if let description = try message(for: details, in: project, output: output) {
+                        reportViolation(in: file, at: match.container.range, message: description, status: status, output: output)
+                    }
                 }
             }
         }

@@ -2,9 +2,11 @@
  MockProject.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2018–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2018–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -118,26 +120,42 @@ extension PackageRepository {
 
                         // Special handling of commands with platform differences
                         func requireSuccess() {
-                            do {
-                                _ = try Workspace.command.execute(with: command).get()
-                            } catch {
-                                XCTFail("\(error)", file: file, line: line)
+                            for localization in L.allCases {
+                                LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+                                    do {
+                                        _ = try Workspace.command.execute(with: command).get()
+                                    } catch {
+                                        XCTFail("\(error)", file: file, line: line)
+                                    }
+                                }
                             }
                         }
                         func expectFailure() {
-                            do {
-                                XCTFail(String(try Workspace.command.execute(with: command).get()), file: file, line: line)
-                            } catch {
-                                // Expected.
+                            for localization in L.allCases {
+                                LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+                                    do {
+                                        var output = try Workspace.command.execute(with: command).get()
+                                        // Reset cache to resurface compiler warnings.
+                                        try? FileManager.default.removeItem(
+                                            at: location.appendingPathComponent(".build"))
+                                        output = try Workspace.command.execute(with: command).get()
+                                        XCTFail(String(output), file: file, line: line)
+                                    } catch {
+                                        // Expected.
+                                    }
+                                }
                             }
                         }
 
                         #if os(Linux)
                         if command == ["refresh", "scripts"]
+                            ∨ command == ["auffrischen", "skripte"]
                             ∨ command == ["validate", "build"]
-                            ∨ command == ["test"] {
+                            ∨ command == ["prüfen", "erstellung"]
+                            ∨ command == ["test"]
+                            ∨ command == ["testen"] {
                             // Differing task set on Linux.
-                            if location.lastPathComponent ∈ Set(["BrokenTests", "FailingTests"]) {
+                            if location.lastPathComponent ∈ Set(["BrokenTests", "FailingTests", "NurDeutsch"]) {
                                 expectFailure()
                             } else {
                                 requireSuccess()
@@ -153,6 +171,7 @@ extension PackageRepository {
                         if (command == ["refresh"] ∧ location.lastPathComponent ∈ Set(["AllTasks", "CustomTasks"]))
                             ∨ (command == ["validate"] ∧ location.lastPathComponent ∈ Set(["AllDisabled", "CustomTasks", "SDGLibrary"]))
                             ∨ (command == ["validate", "test‐coverage"] ∧ location.lastPathComponent ∈ Set(["Default", "SDGLibrary", "SDGTool"]))
+                            ∨ (command == ["prüfen", "testabdeckung"] ∧ location.lastPathComponent ∈ Set(["Deutsch"]))
                             ∨ (command == ["validate", "•job", "macos"] ∧ location.lastPathComponent ∈ Set(["Default"])){
                             requireSuccess()
                             continue
@@ -177,6 +196,7 @@ extension PackageRepository {
                             // Find hotkey varies.
                             output.scalars.replaceMatches(for: "⌘F".scalars, with: "[⌘F]".scalars)
                             output.scalars.replaceMatches(for: "Ctrl + F".scalars, with: "[⌘F]".scalars)
+                            output.scalars.replaceMatches(for: "Strg + F".scalars, with: "[⌘F]".scalars)
 
                             // Git paths vary.
                             output.scalars.replaceMatches(for: CompositePattern([
@@ -211,6 +231,26 @@ extension PackageRepository {
                                     any,
                                     LiteralPattern("\nValidating “".scalars)
                                     ]), with: "\n[Refreshing ...]\n\nValidating “".scalars)
+                                output.scalars.replaceMatches(for: CompositePattern([
+                                    LiteralPattern("\n".scalars),
+                                    any,
+                                    LiteralPattern("\nValidating ‘".scalars)
+                                    ]), with: "\n[Refreshing ...]\n\nValidating ‘".scalars)
+                                output.scalars.replaceMatches(for: CompositePattern([
+                                    LiteralPattern("\n".scalars),
+                                    any,
+                                    LiteralPattern("\n„AllDisabled“ wird geprüft".scalars)
+                                    ]), with: "\n[... wird aufgefrisct ...]\n\n„AllDisabled“ wird geprüft".scalars)
+                                output.scalars.replaceMatches(for: CompositePattern([
+                                    LiteralPattern("\n".scalars),
+                                    any,
+                                    LiteralPattern("\n„CustomTasks“ wird geprüft".scalars)
+                                    ]), with: "\n[... wird aufgefrisct ...]\n\n„CustomTasks“ wird geprüft".scalars)
+                                output.scalars.replaceMatches(for: CompositePattern([
+                                    LiteralPattern("\n".scalars),
+                                    any,
+                                    LiteralPattern("\n„FailingCustomValidation“ wird geprüft".scalars)
+                                    ]), with: "\n[... wird aufgefrisct ...]\n\n„FailingCustomValidation“ wird geprüft".scalars)
                             }
                         }
 

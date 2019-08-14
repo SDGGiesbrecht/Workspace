@@ -1,0 +1,5 @@
+$ workspace auffrischen git •no‐colour
+
+Refreshing Git configuration...
+
+0

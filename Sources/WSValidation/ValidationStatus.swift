@@ -2,9 +2,11 @@
  ValidationStatus.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2017–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2017–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -20,7 +22,8 @@ public struct ValidationStatus {
 
     private static let passOrFailSymbol = UserFacingDynamic<StrictString, InterfaceLocalization, Bool>({ localization, passing in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+             .deutschDeutschland:
             return passing ? "✓" : "✗"
         }
     })
@@ -65,15 +68,23 @@ public struct ValidationStatus {
         if passing {
             output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom:
+                    return "‘" + projectName + "’ passes validation."
+                case .englishUnitedStates, .englishCanada:
                     return "“" + projectName + "” passes validation."
+                case .deutschDeutschland:
+                    return "„" + projectName + "“ besteht die Überprüfung."
                 }
             }).resolved().formattedAsSuccess().separated())
         } else {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom:
+                    return "‘" + projectName + "’ fails validation."
+                case .englishUnitedStates, .englishCanada:
                     return "“" + projectName + "” fails validation."
+                case .deutschDeutschland:
+                    return "„" + projectName + "“ besteht die Überprüfung nicht."
                 }
             }), exitCode: 2)
         }

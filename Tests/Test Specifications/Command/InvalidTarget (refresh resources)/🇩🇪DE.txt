@@ -1,0 +1,7 @@
+$ arbeitsbereich refresh resources •no‐colour
+
+Ressourcen werden aufgefrischt ...
+
+Kein Ziel Namens „InvalidModule“.
+Ressourcen müssen in Unterverzeichnissen sein, dessen Namen mit dem gemeinten Ziel übereinstimmen.
+9223372036854775807

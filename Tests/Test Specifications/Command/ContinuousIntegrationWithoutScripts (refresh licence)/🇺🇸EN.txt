@@ -1,0 +1,5 @@
+$ workspace refresh licence •no‐colour
+
+Refreshing license...
+
+0

@@ -1,0 +1,22 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+html {
+    font-family: serif;
+}
+@media only screen {
+    html {
+        font-family: sans-serif;
+    }
+}
+
+span[lang] { /* Foreign language. */
+    font-style: italic;
+}

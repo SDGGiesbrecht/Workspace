@@ -2,9 +2,11 @@
  APITests.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2017–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2017–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -60,7 +62,11 @@ class APITests : TestCase {
         PackageRepository(mock: "AllTasks").test(commands: [
             ["refresh"],
             ["validate"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testArray() {
+        XCTAssertEqual(["a", "b"].verbundenAlsZeile(), "a\nb")
     }
 
     func testBadStyle() {
@@ -82,7 +88,7 @@ class APITests : TestCase {
     func testBrokenTests() {
         PackageRepository(mock: "BrokenTests").test(commands: [
             ["test"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCheckedInDocumentation() throws {
@@ -119,7 +125,7 @@ class APITests : TestCase {
             ["refresh"],
             ["validate", "•job", "miscellaneous"],
             ["validate", "•job", "deployment"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCheckForUpdates() throws {
@@ -130,6 +136,146 @@ class APITests : TestCase {
         let configuration = WorkspaceConfiguration()
         configuration._applySDGDefaults(openSource: false)
         XCTAssertFalse(configuration.documentation.readMe.manage)
+
+        configuration.fortlaufenderEinbindung.verwalten = false
+        XCTAssertFalse(configuration.fortlaufenderEinbindung.verwalten)
+        configuration.fortlaufenderEinbindung.auserhalbFortlaufenderEinbindungSimulatorÜberspringen = true
+        XCTAssert(configuration.fortlaufenderEinbindung.auserhalbFortlaufenderEinbindungSimulatorÜberspringen)
+        configuration.customRefreshmentTasks.append(Sonderaufgabe(
+            ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "domain.tld")!,
+            version: Version(1, 0),
+            ausführbareDatei: "werkzeug",
+            argumente: ["argument"]))
+        XCTAssertEqual(configuration.customRefreshmentTasks.last?.version.major, 1)
+        configuration.dokumentation.programmierschnittstelle.erstellen = false
+        XCTAssertFalse(configuration.dokumentation.programmierschnittstelle.erstellen)
+        configuration.dokumentation.programmierschnittstelle.abdeckungErzwingen = false
+        XCTAssertFalse(configuration.dokumentation.programmierschnittstelle.abdeckungErzwingen)
+        configuration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 1
+        XCTAssertEqual(configuration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung, 1)
+        configuration.dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk = BequemeEinstellung(auswerten: { _ in [:] })
+        XCTAssertEqual(
+            configuration.dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk
+                .auswerten(configuration),
+            [:])
+        configuration.dokumentation.programmierschnittstelle.verschlüsselterTravisCIVerteilungsschlüssel = ""
+        XCTAssertEqual(
+            configuration.dokumentation.programmierschnittstelle.verschlüsselterTravisCIVerteilungsschlüssel,
+            "")
+        configuration.dokumentation.programmierschnittstelle.übergegangeneAbhängigkeiten.insert("...")
+        XCTAssert(configuration.dokumentation.programmierschnittstelle.übergegangeneAbhängigkeiten.contains("..."))
+        configuration.dokumentation.localisations = ["und"]
+        XCTAssertEqual(configuration.dokumentation.localisations, ["und"])
+        configuration.dokumentation.lokalisationen = ["zxx"]
+        XCTAssertEqual(configuration.dokumentation.lokalisationen, ["zxx"])
+        configuration.dokumentation.aktuelleVersion = Version(1, 0)
+        XCTAssertEqual(configuration.dokumentation.aktuelleVersion, Version(1, 0))
+        configuration.dokumentation.projektSeite = EinheitlicherRessourcenzeiger(string: "seite.de")
+        XCTAssertEqual(configuration.dokumentation.projektSeite, EinheitlicherRessourcenzeiger(string: "seite.de"))
+        configuration.dokumentation.dokumentationsRessourcenzeiger = EinheitlicherRessourcenzeiger(
+            string: "dokumentation.de")
+        XCTAssertEqual(
+            configuration.dokumentation.dokumentationsRessourcenzeiger,
+            EinheitlicherRessourcenzeiger(string: "dokumentation.de"))
+        configuration.dokumentation.lagerRessourcenzeiger = EinheitlicherRessourcenzeiger(string: "lager.de")
+        XCTAssertEqual(
+            configuration.dokumentation.lagerRessourcenzeiger,
+            EinheitlicherRessourcenzeiger(string: "lager.de"))
+        configuration.dokumentation.hauptautor = "Autor"
+        XCTAssertEqual(configuration.dokumentation.hauptautor, "Autor")
+        configuration.dokumentation.installationsanleitungen = BequemeEinstellung(auswerten: { _ in [:] })
+        XCTAssertEqual(configuration.dokumentation.installationsanleitungen.auswerten(configuration), [:])
+        configuration.dokumentation.einführungsanleitungen = BequemeEinstellung(auswerten: { _ in [:] })
+        XCTAssertEqual(configuration.dokumentation.einführungsanleitungen.auswerten(configuration), [:])
+        configuration.dokumentation.über = ["zxx": "..."]
+        XCTAssertEqual(configuration.dokumentation.über, ["zxx": "..."])
+        configuration.dokumentation.verwandteProjekte = []
+        XCTAssert(configuration.dokumentation.verwandteProjekte.isEmpty)
+        configuration.dokumentation.liesMich.verwalten = false
+        XCTAssertFalse(configuration.dokumentation.liesMich.verwalten)
+        configuration.dokumentation.liesMich.inhalt = BequemeEinstellung(auswerten: { _ in [:] })
+        XCTAssertEqual(configuration.dokumentation.liesMich.inhalt.auswerten(configuration), [:])
+        _ = LiesMichEinstellungen.programmierschnittstellenverweis(für: configuration, auf: "zxx")
+        configuration.license.manage = false
+        XCTAssertFalse(configuration.license.manage)
+        configuration.lizenz.manage = true
+        XCTAssert(configuration.lizenz.manage)
+        configuration.arbeitsablaufsskripteBereitstellen = false
+        XCTAssertFalse(configuration.arbeitsablaufsskripteBereitstellen)
+        configuration.lager.ignoredPaths.insert("...")
+        configuration.xcode.verwalten = false
+        XCTAssertFalse(configuration.xcode.verwalten)
+        configuration.license.license = nil
+        XCTAssertNil(configuration.license.license)
+        configuration.lizenz.lizenz = .mit
+        XCTAssertEqual(configuration.lizenz.lizenz, .mit)
+        XCTAssert(wahr)
+        XCTAssertFalse(falsch)
+        configuration.dateiVorspänne.verwalten = true
+        XCTAssert(configuration.dateiVorspänne.verwalten)
+        configuration.dateiVorspänne.urheberrechtshinweis = BequemeEinstellung(auswerten: { _ in [:] })
+        XCTAssertNil(configuration.dateiVorspänne.urheberrechtshinweis.auswerten(configuration)["de"])
+        configuration.dateiVorspänne.inhalt = BequemeEinstellung(auswerten: { _ in "" })
+        XCTAssertEqual(configuration.dateiVorspänne.inhalt.auswerten(configuration), "")
+        configuration.git.verwalten = true
+        XCTAssert(configuration.git.verwalten)
+        configuration.git.weitereEinträgeZuGitÜbergehen = []
+        XCTAssertEqual(configuration.git.weitereEinträgeZuGitÜbergehen, [])
+        configuration.gitHub.verwalten = true
+        XCTAssert(configuration.gitHub.verwalten)
+        configuration.gitHub.verwalter = []
+        XCTAssertEqual(configuration.gitHub.verwalter, [])
+        configuration.gitHub.entwicklungshinweise = ""
+        XCTAssertEqual(configuration.gitHub.entwicklungshinweise, "")
+        configuration.gitHub.themavorlagen = BequemeEinstellung(auswerten: { _ in [:] })
+        XCTAssert(configuration.gitHub.themavorlagen.auswerten(configuration).isEmpty)
+        configuration.gitHub.abziehungsanforderungsvorlage = ""
+        XCTAssertEqual(configuration.gitHub.abziehungsanforderungsvorlage, "")
+        configuration.lizenz.verwalten = true
+        XCTAssert(configuration.lizenz.verwalten)
+        configuration.korrektur.regeln = []
+        XCTAssertEqual(configuration.korrektur.regeln, [])
+        configuration.korrektur.geltungsbereichUnicodeRegel = []
+        XCTAssertEqual(configuration.korrektur.geltungsbereichUnicodeRegel, [])
+        configuration.lager.übergegangeneDateiarten = []
+        XCTAssertEqual(configuration.lager.übergegangeneDateiarten, [])
+        configuration.lager.übergegangenePfade = []
+        XCTAssertEqual(configuration.lager.übergegangenePfade, [])
+        configuration.testen.übersetzerwarnungenVerbieten = false
+        XCTAssertFalse(configuration.testen.übersetzerwarnungenVerbieten)
+        configuration.testen.abdeckungErzwingen = false
+        XCTAssertFalse(configuration.testen.abdeckungErzwingen)
+        configuration.testen.ausnahmensZeichen = []
+        XCTAssertEqual(configuration.testen.ausnahmensZeichen, [])
+        configuration.testen.ausnahmspfade = []
+        XCTAssertEqual(configuration.testen.ausnahmspfade, [])
+        configuration.unterstützteSchichte = []
+        XCTAssertEqual(configuration.unterstützteSchichte, [])
+        configuration.prüfungssonderaufgaben = []
+        XCTAssert(configuration.prüfungssonderaufgaben.isEmpty)
+        configuration.korrektursonderaufgaben = []
+        XCTAssert(configuration.korrektursonderaufgaben.isEmpty)
+        configuration.auffrischungssonderaufgaben = []
+        XCTAssert(configuration.auffrischungssonderaufgaben.isEmpty)
+        configuration.alleAufgabenEinschalten()
+        configuration.gitHub.mitwirkungsanweisungen = BequemeEinstellung(auswerten: { _ in [:] })
+        XCTAssert(configuration.gitHub.mitwirkungsanweisungen.auswerten(configuration).isEmpty)
+    }
+
+    func testConfiguartionContext() {
+        let context = WorkspaceContext(
+            _location: URL(string: "site.tld")!,
+            manifest: PackageManifest(_packageName: "Package", products: [
+                PackageManifest.Product(_name: "Product", type: .library, modules: ["Module"])
+                ]))
+        XCTAssertEqual(context.standort, URL(string: "site.tld")!)
+        XCTAssertEqual(context.ladeliste.paketenName, "Package")
+        XCTAssertEqual(context.ladeliste.produktmodule.first, "Module")
+        XCTAssertEqual(context.ladeliste.produkte.first?.art, .bibliotek)
+        XCTAssertNotEqual(context.ladeliste.produkte.first?.art, .ausführbareDatei)
+        XCTAssertEqual(context.ladeliste.produkte.first?.module.first, "Module")
+        WorkspaceContext.aktueller = context
+        _ = WorkspaceContext.aktueller
     }
 
     func testContinuousIntegrationWithoutScripts() {
@@ -163,7 +309,7 @@ class APITests : TestCase {
             ["proofread", "•xcode"],
             ["refresh", "licence"],
             ["refresh", "file‐headers"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCustomReadMe() {
@@ -187,7 +333,7 @@ class APITests : TestCase {
             ["refresh", "read‐me"],
             ["refresh", "licence"],
             ["refresh", "file‐headers"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCustomTasks() {
@@ -206,6 +352,19 @@ class APITests : TestCase {
             ["refresh"],
             ["validate"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
+
+        var aufgabe = Sonderaufgabe(
+            ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "domain.tld")!,
+            version: Version(1, 0),
+            ausführbareDatei: "werkzeug")
+        aufgabe.ressourcenzeiger = EinheitlicherRessourcenzeiger(string: "other.tld")!
+        XCTAssertEqual(aufgabe.ressourcenzeiger, EinheitlicherRessourcenzeiger(string: "other.tld")!)
+        aufgabe.version = Version(2, 0)
+        XCTAssertEqual(aufgabe.version, Version(2, 0))
+        aufgabe.ausführbareDatei = "andere"
+        XCTAssertEqual(aufgabe.ausführbareDatei, "andere")
+        aufgabe.argumente = ["eins", "zwei"]
+        XCTAssertEqual(aufgabe.argumente, ["eins", "zwei"])
     }
 
     func testDefaults() {
@@ -229,7 +388,42 @@ class APITests : TestCase {
             ["validate"],
             ["validate", "•job", "macos"]
         ]
-        PackageRepository(mock: "Default").test(commands: commands, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "Default").test(commands: commands, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testDeutsch() throws {
+        var output = try mockCommand.withRootBehaviour().execute(with: ["export‐interface", "•language", "de"]).get()
+        // macOS & Linux have different JSON whitespace.
+        output.scalars.replaceMatches(for: CompositePattern([
+            LiteralPattern("\n".scalars),
+            RepetitionPattern(" ".scalars),
+            LiteralPattern("\n".scalars)
+            ]), with: "\n\n".scalars)
+        try output.save(
+            to: PackageRepository.beforeDirectory(for: "Deutsch")
+                .appendingPathComponent("Resources/werkzeug/Deutsch.txt"))
+
+        let konfiguration = ArbeitsbereichKonfiguration()
+        konfiguration.optimizeForTests()
+        konfiguration.dokumentation.lokalisationen = ["de"]
+        konfiguration.dokumentation.programmierschnittstelle.erstellen = true
+        konfiguration.dokumentation.programmierschnittstelle.verschlüsselterTravisCIVerteilungsschlüssel = "..."
+        konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2000
+        var commands: [[StrictString]] = [
+            ["auffrischen", "skripte"],
+            ["auffrischen", "git"],
+            ["auffrischen", "fortlaufende‐einbindung"],
+            ["auffrischen", "ressourcen"],
+            ["normalisieren"],
+            ["prüfen", "erstellung"],
+            ["prüfen", "testabdeckung"],
+            ["prüfen", "dokumentationsabdeckung"],
+            ["dokumentieren"]
+        ]
+        #if !os(Linux)
+        commands.append(["auffrischen", "xcode"])
+        #endif
+        PackageRepository(mock: "Deutsch").test(commands: commands, configuration: konfiguration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testExecutable() {
@@ -258,7 +452,7 @@ class APITests : TestCase {
         configuration.documentation.api.enforceCoverage = false
         PackageRepository(mock: "FailingCustomTasks").test(commands: [
             ["refresh"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testFailingCustomValidation() {
@@ -283,7 +477,8 @@ class APITests : TestCase {
         configuration.xcode.manage = true
         configuration.documentation.repositoryURL = URL(string: "domain.tld")!
         PackageRepository(mock: "FailingDocumentationCoverage").test(commands: [
-            ["validate", "documentation‐coverage"]
+            ["validate", "documentation‐coverage"],
+            ["document"]
             ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
@@ -315,7 +510,7 @@ class APITests : TestCase {
             ["refresh", "file‐headers"],
             ["refresh", "examples"],
             ["refresh", "inherited‐documentation"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testHelp() throws {
@@ -351,6 +546,34 @@ class APITests : TestCase {
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
+    func testIssueTemplate() {
+        var vorlage = Themavorlage(
+            name: "",
+            beschreibung: "",
+            inhalt: "",
+            etiketten: [])
+        vorlage.beschreibung = "..."
+        XCTAssertEqual(vorlage.beschreibung, "...")
+        vorlage.titel = "..."
+        XCTAssertEqual(vorlage.titel, "...")
+        vorlage.inhalt = "..."
+        XCTAssertEqual(vorlage.inhalt, "...")
+        vorlage.etiketten = ["..."]
+        XCTAssertEqual(vorlage.etiketten, ["..."])
+        vorlage.beauftragte = ["..."]
+        XCTAssertEqual(vorlage.beauftragte, ["..."])
+    }
+
+    func testLazyOption() {
+        var lazy = Lazy(resolve: { _ in false })
+        lazy.auswerten = { _ in true }
+        XCTAssert(lazy.auswerten(WorkspaceConfiguration()))
+    }
+
+    func testLicence() {
+        XCTAssertEqual(Lizenz.urheberrecht, Licence.copyright)
+    }
+
     func testLocalizationIdentifier() {
         var dictionary: [LocalizationIdentifier: Bool] = [:]
         dictionary[ContentLocalization.englishCanada] = true
@@ -358,9 +581,14 @@ class APITests : TestCase {
         dictionary["🇬🇧EN"] = false
         XCTAssertEqual(dictionary[ContentLocalization.englishUnitedKingdom], false)
 
-        testCustomStringConvertibleConformance(of: LocalizationIdentifier("en"), localizations: InterfaceLocalization.self, uniqueTestName: "English", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: LocalizationIdentifier("cmn"), localizations: InterfaceLocalization.self, uniqueTestName: "Mandarin", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: LocalizationIdentifier("zxx"), localizations: InterfaceLocalization.self, uniqueTestName: "Unknown", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: LocalizationIdentifier("en"), localizations: FastTestLocalization.self, uniqueTestName: "English", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: LocalizationIdentifier("cmn"), localizations: FastTestLocalization.self, uniqueTestName: "Mandarin", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(of: LocalizationIdentifier("zxx"), localizations: FastTestLocalization.self, uniqueTestName: "Unknown", overwriteSpecificationInsteadOfFailing: false)
+
+        var identifier = LocalizationIdentifier("zxx")
+        identifier.kennzeichen = "de"
+        XCTAssertEqual(identifier.kennzeichen, "de")
+        _ = identifier.symbol
     }
 
     func testMissingDocumentation() {
@@ -391,7 +619,7 @@ class APITests : TestCase {
         configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
         PackageRepository(mock: "MultipleProducts").test(commands: [
             ["refresh", "read‐me"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testNoLibraries() {
@@ -401,13 +629,26 @@ class APITests : TestCase {
         configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
         PackageRepository(mock: "NoLibraries").test(commands: [
             ["refresh", "read‐me"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testNoLocalizations() {
         PackageRepository(mock: "NoLocalizations").test(commands: [
-            ["refresh", "read‐me"]
+            ["refresh", "read‐me"],
+            ["validate", "documentation‐coverage"]
             ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testNurDeutsch() {
+        let configuration = WorkspaceConfiguration()
+        configuration.gitHub.manage = true
+        PackageRepository(mock: "NurDeutsch").test(commands: [
+            ["auffrischen", "github"],
+            ["normalisieren"],
+            ["korrekturlesen"],
+            ["prüfen", "erstellung"],
+            ["testen"]
+            ], configuration: configuration, localizations: NurDeutsch.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testOneLocalization() {
@@ -415,7 +656,7 @@ class APITests : TestCase {
         configuration.documentation.localizations = ["en"]
         PackageRepository(mock: "OneLocalization").test(commands: [
             ["refresh", "github"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testOneProductMultipleModules() {
@@ -425,7 +666,16 @@ class APITests : TestCase {
         configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
         PackageRepository(mock: "OneProductMultipleModules").test(commands: [
             ["refresh", "read‐me"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testOnlyBritish() {
+        let configuration = WorkspaceConfiguration()
+        configuration.gitHub.manage = true
+        PackageRepository(mock: "OnlyBritish").test(commands: [
+            ["refresh", "github"],
+            ["normalize"]
+            ], configuration: configuration, localizations: OnlyBritish.self, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testPartialReadMe() {
@@ -451,7 +701,35 @@ class APITests : TestCase {
             ["refresh", "read‐me"],
             ["refresh", "github"],
             ["document"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+    }
+
+    func testProofreadingRule() {
+        XCTAssertEqual(Korrekturregel.überholteBedingungsdokumentation, .deprecatedConditionDocumentation)
+        XCTAssertEqual(Korrekturregel.warnungenVonHand, .manualWarnings)
+        XCTAssertEqual(Korrekturregel.fehlendeImplementierung, .missingImplementation)
+        XCTAssertEqual(Korrekturregel.notlösungsErinnerungen, .workaroundReminders)
+        XCTAssertEqual(Korrekturregel.verträglichkeitsschriftzeichen, .compatibilityCharacters)
+        XCTAssertEqual(Korrekturregel.widerstandGegenAutomatischenEinzug, .autoindentResilience)
+        XCTAssertEqual(Korrekturregel.überschrifte, .marks)
+        XCTAssertEqual(Korrekturregel.syntaxhervorhebung, .syntaxColoring)
+        XCTAssertEqual(Korrekturregel.abstandGeschweifterKlammern, .braceSpacing)
+        XCTAssertEqual(Korrekturregel.doppelpunktabstand, .colonSpacing)
+        XCTAssertEqual(Korrekturregel.hervorhebungsGroßschreibung, .calloutCasing)
+        XCTAssertEqual(Korrekturregel.abschlusssignaturplatzierung, .closureSignaturePosition)
+        XCTAssertEqual(Korrekturregel.übergabewertenzusammenstellung, .parameterGrouping)
+        XCTAssertEqual(Korrekturregel.überholteBedingungsdokumentation.klasse, .überholung)
+        XCTAssertEqual(Korrekturregel.warnungenVonHand.klasse, .absichtlich)
+        XCTAssertEqual(Korrekturregel.verträglichkeitsschriftzeichen.klasse, .funktionalität)
+        XCTAssertEqual(Korrekturregel.syntaxhervorhebung.klasse, .dokumentation)
+        XCTAssertEqual(Korrekturregel.unicode.klasse, .textstil)
+        XCTAssertEqual(Korrekturregel.übergabewertenzusammenstellung.klasse, .quellstil)
+    }
+
+    func testRelatedProject() {
+        var project = RelatedProjectEntry.projekt(ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "seite.de")!)
+        project = RelatedProjectEntry.überschrift(text: [:])
+        _ = project
     }
 
     func testSDGLibrary() {
@@ -515,7 +793,7 @@ class APITests : TestCase {
             ["proofread", "•xcode"],
             ["validate"]
             ])
-        PackageRepository(mock: "SDGLibrary").test(commands: commands, configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "SDGLibrary").test(commands: commands, configuration: configuration, sdg: true, localizations: FastTestLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testSDGTool() {
@@ -580,7 +858,7 @@ class APITests : TestCase {
 
             ["proofread", "•xcode"]
             ])
-        PackageRepository(mock: "SDGTool").test(commands: commands, configuration: configuration, sdg: true, localizations: InterfaceLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "SDGTool").test(commands: commands, configuration: configuration, sdg: true, localizations: FastTestLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testSelfSpecificScripts() throws {
@@ -588,5 +866,19 @@ class APITests : TestCase {
             _ = try Workspace.command.execute(with: ["refresh", "scripts"]).get()
             _ = try Workspace.command.execute(with: ["refresh", "continuous‐integration"]).get()
         }
+    }
+
+    func testTestCoverageExemptionToken() {
+        var zeichen = Testabdeckungsausnahmszeichen("...", geltungsbereich: .selbeZeile)
+        zeichen.zeichen = ""
+        XCTAssertEqual(zeichen.zeichen, "")
+        zeichen.geltungsbereich = .vorstehendeZeile
+        XCTAssertEqual(zeichen.geltungsbereich, .vorstehendeZeile)
+    }
+
+    func testUnicodeRuleScope() {
+        XCTAssertEqual(GeltungsbereichUnicodeRegel.maschinenkennzeichungen, .machineIdentifiers)
+        XCTAssertEqual(GeltungsbereichUnicodeRegel.menschlicheSprache, .humanLanguage)
+        XCTAssertEqual(GeltungsbereichUnicodeRegel.uneindeutig, .ambiguous)
     }
 }

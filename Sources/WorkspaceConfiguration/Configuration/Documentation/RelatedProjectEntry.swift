@@ -2,9 +2,11 @@
  RelatedProjectEntry.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2018–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2018–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -12,16 +14,35 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// @localization(🇩🇪DE) @crossReference(RelatedProjectEntry)
+/// Ein Eintrag zur Liste der verwanten Projekten.
+public typealias EintragZuVerwantdenProjekten = RelatedProjectEntry
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(RelatedProjectEntry)
 /// An entry for the related projects list.
 public enum RelatedProjectEntry : Decodable, Encodable {
 
     // MARK: - Cases
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(RelatedProjectEntry.project(url:))
     /// A related project with its repository URL.
     case project(url: URL)
+    // @localization(🇩🇪DE) @crossReference(RelatedProjectEntry.project(url:))
+    /// Ein verwandtes Projekt mit sein Lagerressourcenzeiger.
+    public static func projekt(ressourcenzeiger: EinheitlicherRessourcenzeiger) -> EintragZuVerwantdenProjekten {
+        return .project(url: ressourcenzeiger)
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(RelatedProjectEntry.heading(text:))
     /// A heading.
     case heading(text: [LocalizationIdentifier: StrictString])
+    // @localization(🇩🇪DE) @crossReference(RelatedProjectEntry.heading(text:))
+    /// Eine Überschrift.
+    public static func überschrift(
+        text: [Lokalisationskennzeichen: StrengerZeichenkette]) -> EintragZuVerwantdenProjekten {
+        return .heading(text: text)
+    }
 
     private enum RelatedProjectEntryType : String, Codable {
         case project

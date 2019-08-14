@@ -2,9 +2,11 @@
  TextFile.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2017–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2017–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -162,8 +164,12 @@ public struct TextFile {
     public static func reportWriteOperation(to location: URL, in repository: PackageRepository, output: Command.Output) {
         output.print(UserFacingDynamic<StrictString, InterfaceLocalization, String>({ localization, path in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom:
+                return "Writing to ‘\(path)’..."
+            case .englishUnitedStates, .englishCanada:
                 return "Writing to “\(path)”..."
+            case .deutschDeutschland:
+                return "Zu „\(path)“ wird geschrieben ..."
             }
         }).resolved(using: location.path(relativeTo: repository.location)))
     }

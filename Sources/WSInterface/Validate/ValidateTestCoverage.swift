@@ -2,9 +2,11 @@
  ValidateTestCoverage.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2017–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2017–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -26,15 +28,19 @@ extension Workspace.Validate {
 
         private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "test‐coverage"
+            case .deutschDeutschland:
+                return "testabdeckung"
             }
         })
 
         private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "validates test coverage, checking that every code path is reached by the project’s tests."
+            case .deutschDeutschland:
+                return "prüft die Testabdeckung, dass jede Quellweg durch Teste erreicht wird."
             }
         })
 

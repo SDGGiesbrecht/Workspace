@@ -2,9 +2,11 @@
  CheckForUpdates.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2017–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2017–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -22,15 +24,19 @@ extension Workspace {
 
         private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "check‐for‐updates"
+            case .deutschDeutschland:
+                return "nach‐aktualisierungen‐suchen"
             }
         })
 
         private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "checks for available Workspace updates."
+            case .deutschDeutschland:
+                return "sucht nach erhältliche Aktualisierungen zu Arbeitsbereich."
             }
         })
 
@@ -38,18 +44,32 @@ extension Workspace {
             if let update = try checkForUpdates(output: output) {
                 // @exempt(from: tests) Execution path is determined externally.
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    var url: URL = Metadata.documentationURL
                     switch localization {
+                    case .englishUnitedKingdom:
+                        url.appendPathComponent("🇬🇧EN/Installation.html")
+                    case .englishUnitedStates:
+                        url.appendPathComponent("🇺🇸EN/Installation.html")
                     case .englishCanada:
-                        let url = URL(string: "#installation", relativeTo: Metadata.packageURL)!
+                        url.appendPathComponent("🇨🇦EN/Installation.html")
+                    case .deutschDeutschland:
+                        url.appendPathComponent("🇩🇪DE/Installation.html")
+                    }
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Workspace \(update.string()) is available.\nFor update instructions, see \(url.absoluteString.in(Underline.underlined))"
+                    case .deutschDeutschland: // @exempt(from: tests)
+                        return "Arbeitsbereich \(update.string()) ist erhältlich.\nFür Aktualisierungsanweisungen, siehe \(url.absoluteString.in(Underline.underlined))"
                     }
                 }).resolved())
             } else {
                 // @exempt(from: tests) Execution path is determined externally.
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     switch localization {
-                    case .englishCanada:
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Workspace is up to date."
+                    case .deutschDeutschland: // @exempt(from: tests)
+                        return "Arbeitsbereich ist auf dem neuesten Stand."
                     }
                 }).resolved())
             }

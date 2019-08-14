@@ -1,0 +1,6 @@
+$ workspace refresh examples •no‐colour
+
+Refreshing examples...
+
+There is no example named “doesNotExist”.
+9223372036854775807

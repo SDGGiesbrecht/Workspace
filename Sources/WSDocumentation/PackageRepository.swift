@@ -2,9 +2,11 @@
  PackageRepository.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2017–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2017–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -149,8 +151,10 @@ extension PackageRepository {
         let section = validationStatus.newSection()
         output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Generating documentation..." + section.anchor
+            case .deutschDeutschland:
+                return "Dokumentation wird erstellt ..."
             }
         }).resolved().formattedAsSectionHeader())
         do {
@@ -164,15 +168,19 @@ extension PackageRepository {
             if status.passing {
                 validationStatus.passStep(message: UserFacing({ localization in
                     switch localization {
-                    case .englishCanada:
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Generated documentation."
+                    case .deutschDeutschland:
+                        return "Dokumentation erstellt."
                     }
                 }))
             } else {
                 validationStatus.failStep(message: UserFacing({ localization in
                     switch localization {
-                    case .englishCanada:
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                         return "Generated documentation, but encountered warnings." + section.crossReference.resolved(for: localization)
+                    case .deutschDeutschland:
+                        return "Dokumentation wurde erstellt, aber Warnungen wurden dabei ausgelöst."
                     }
                 }))
             }
@@ -180,8 +188,10 @@ extension PackageRepository {
             output.print(error.localizedDescription.formattedAsError()) // @exempt(from: tests) Unreachable without SwiftSyntax or file system failure.
             validationStatus.failStep(message: UserFacing({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Failed to generate documentation." + section.crossReference.resolved(for: localization)
+                case .deutschDeutschland:
+                    return "Dokumentationserstellung ist fehlgeschlagen." + section.crossReference.resolved(for: localization)
                 }
             }))
         }
@@ -254,8 +264,10 @@ extension PackageRepository {
 
             output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Checking for defunct URLs to redirect..."
+                case .deutschDeutschland:
+                    return "Verstorbene Ressourcenzeiger werden weiterleitet ..."
                 }
             }).resolved())
 
@@ -306,8 +318,10 @@ extension PackageRepository {
         let section = validationStatus.newSection()
         output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Checking documentation coverage..." + section.anchor
+            case .deutschDeutschland:
+                return "Die Dokumentationsabdeckung wird überprüft ..."  + section.anchor
             }
         }).resolved().formattedAsSectionHeader())
         do {
@@ -319,15 +333,19 @@ extension PackageRepository {
                 if status.passing {
                     validationStatus.passStep(message: UserFacing({ localization in
                         switch localization {
-                        case .englishCanada:
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return "Documentation coverage is complete."
+                        case .deutschDeutschland:
+                            return "Die Dokumentationsabdeckung ist vollständig."
                         }
                     }))
                 } else {
                     validationStatus.failStep(message: UserFacing({ localization in
                         switch localization {
-                        case .englishCanada:
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                             return "Documentation coverage is incomplete." + section.crossReference.resolved(for: localization)
+                        case .deutschDeutschland:
+                            return "Die Dokumentationsabdeckung ist unvollständig." + section.crossReference.resolved(for: localization)
                         }
                     }))
                 }
@@ -336,8 +354,10 @@ extension PackageRepository {
             output.print(error.localizedDescription.formattedAsError())
             validationStatus.failStep(message: UserFacing({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Failed to process documentation." + section.crossReference.resolved(for: localization)
+                case .deutschDeutschland:
+                    return "Die Dokumentationsverarbeitung ist fehlgeschlagen." + section.crossReference.resolved(for: localization)
                 }
             }))
         }
@@ -397,8 +417,12 @@ extension PackageRepository {
                             guard let replacement = try documentationDefinitions(output: output)[identifier] else {
                                 throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
                                     switch localization {
-                                    case .englishCanada:
+                                    case .englishUnitedKingdom:
+                                        return "There is no documentation named ‘" + identifier + "’."
+                                    case .englishUnitedStates, .englishCanada:
                                         return "There is no documentation named “" + identifier + "”."
+                                    case .deutschDeutschland:
+                                        return "Es gibt keine Dokumentation Namens „" + identifier + "“."
                                     }
                                 }))
                             }

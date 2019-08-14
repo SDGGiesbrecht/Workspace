@@ -1,0 +1,33 @@
+$ workspace refresh resources help •no‐colour
+
+workspace refresh resources regenerates code providing access to the project’s resources.
+
+Workspace can embed resources in Swift package targets.
+
+Workspace will find and embed any file located within a project’s ‘Resources’ directory. The structure of the ‘Resources’ directory reflects the targets and namespaces under which the resources will be available in Swift code. Immediate subdirectories must correspond to targets; optional deeper nested directories produce namespaces. For example, a project with the following file...
+
+Resources/MyLibrary/Templates/Basic Template.txt
+
+...can use the file from within the ‘MyLibrary’ target like this...
+
+let template: String = Resoures.Templates.basicTemplate
+print(template)
+
+By default, files are embedded as ‘Data’, but some file extensions will be recognized and given a more specific Swift type (such as ‘.txt’ embedded as ‘String’).
+
+Subcommands
+
+help displays usage information.
+
+Options
+
+•language [language preference] A language to use instead of the one specified in preferences.
+•no‐colour Removes colour from the output.
+•project [path] The location of the target project if it is not at the current working directory.
+
+Argument Types
+
+[language preference] A list of IETF language tags or language icons. Semicolons indicate fallback order. Commas indicate that multiple languages should be used. Examples: ‘en-GB’ or ‘🇬🇧EN’ → British English, ‘cy,en;fr’ → both Welsh and English, otherwise French
+[path] A file system path. The form ‘/...’ indicates an absolute path. The form ‘~/...’ indicates a path relative to the home directory. Anything else is interpreted relative to the current working directory.
+
+0

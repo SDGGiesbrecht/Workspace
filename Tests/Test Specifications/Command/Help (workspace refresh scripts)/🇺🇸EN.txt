@@ -1,0 +1,20 @@
+$ workspace refresh scripts help •no‐colour
+
+workspace refresh scripts regenerates the project’s refresh and validation scripts.
+
+Subcommands
+
+help displays usage information.
+
+Options
+
+•language [language preference] A language to use instead of the one specified in preferences.
+•no‐color Removes color from the output.
+•project [path] The location of the target project if it is not at the current working directory.
+
+Argument Types
+
+[language preference] A list of IETF language tags or SDGCornerstone language icons. Semicolons indicate fallback order. Commas indicate that multiple languages should be used. Examples: “en-US” or “🇺🇸EN” → American English, “nv,en;es” → both Navajo and English, otherwise Spanish
+[path] A file system path. The form “/...” indicates an absolute path. The form “~/...” indicates a path relative to the home directory. Anything else is interpreted relative to the current working directory.
+
+0

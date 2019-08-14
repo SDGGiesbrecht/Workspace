@@ -2,9 +2,11 @@
  Dictionary.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2018–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2018–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -14,6 +16,17 @@
 
 extension Dictionary where Key == LocalizationIdentifier {
 
+    // @localization(🇩🇪DE)
+    /// Greift auf den entsprechenden lokalisierten Wert zu.
+    ///
+    /// - Parameters:
+    ///     - key: Die Lokalisation.
+    // @localization(🇬🇧EN)
+    /// Accesses the respective localised value.
+    ///
+    /// - Parameters:
+    ///     - key: The localisation.
+    // @localization(🇺🇸EN) @localization(🇨🇦EN)
     /// Accesses the respective localized value.
     ///
     /// - Parameters:

@@ -2,9 +2,11 @@
  ReadMeConfiguration.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2018–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2018–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -16,22 +18,52 @@ import SDGLogic
 
 import WSLocalizations
 
+// @localization(🇩🇪DE) @crossReference(ReadMeConfiguration)
+/// Einstellungen zur Lies‐mich Datei.
+///
+/// ```shell
+/// $ arbeitsbereich auffrischen lies‐mich
+/// ```
+///
+/// Eine Lies‐mich Datei ist eine `README.md` Datei, die GitHub als die Hauptseite des Projekts verwendet.
+public typealias LiesMichEinstellungen = ReadMeConfiguration
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ReadMeConfiguration)
 /// Options related to the project read‐me.
 ///
 /// ```shell
 /// $ workspace refresh read‐me
 /// ```
 ///
-/// A read‐me is a `README.md` file that GitHub and documentation generation use as the project’s main page.
+/// A read‐me is a `README.md` file that GitHub uses as the project’s main page.
 public struct ReadMeConfiguration : Codable {
 
     // MARK: - Options
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ReadMeConfiguration.manage)
     /// Whether or not to manage the project read‐me.
     ///
     /// This is off by default.
     public var manage: Bool = false
+    // @localization(🇩🇪DE) @crossReference(ReadMeConfiguration.manage)
+    /// Ob Arbeitsbereich die Lies‐mich Datei verwalten soll.
+    ///
+    /// Wenn nicht angegeben, ist diese Einstellung aus.
+    public var verwalten: Bool {
+        get { return manage }
+        set { manage = newValue }
+    }
 
+    // @localization(🇩🇪DE) @crossReference(ReadMeConfiguration.contents)
+    /// Der Inhalt der Lies‐mich Datei.
+    ///
+    /// Wenn nicht angegeben, ist der Inhalt aus den anderen Dokumentations‐ und Lies‐mich‐Einstellungen hergeleitet.
+    ///
+    /// Arbeitsbereich wird `#paketenDokumentation` mit der Dokumentation aus der Ladeliste ersetzen.
+    public var inhalt: BequemeEinstellung<[Lokalisationskennzeichen: Markdown]> {
+        get { return contents }
+        set { contents = newValue }
+    }
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ReadMeConfiguration.contents)
     /// The entire contents of the read‐me.
     ///
     /// By default, this is assembled from the other documentation and read‐me options.
@@ -140,6 +172,21 @@ public struct ReadMeConfiguration : Codable {
         return _locationOfDocumentationFile(named: name, for: localization, in: project)
     }
 
+    // @localization(🇩🇪DE) @crossReference(ReadMeConfiguration.apiLink(for:in:))
+    /// Baut Verweise zur Programmierschnittstellendokumentation auf, die von der Konfiguration hergeleitet sind.
+    ///
+    /// Das Ergebnis wird `nil` wenn `dokumentationsRessourcenzeiger` nicht angegeben ist, oder die angeforderte Lokalisation nicht unterstützt ist.
+    ///
+    /// - Parameters:
+    ///     - configuration: The configuration based on which the links should be constructed.
+    ///     - localization: The localization to use.
+    public static func programmierschnittstellenverweis(
+        für konfiguration: ArbeitsbereichKonfiguration,
+        auf lokalisation: Lokalisationskennzeichen) -> StrengerZeichenkette? {
+        return apiLink(for: konfiguration, in: lokalisation)
+    }
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(ReadMeConfiguration.apiLink(for:in:))
     /// Attempts to construct API links based on the specified configuration.
     ///
     /// The result will be `nil` if `documentationURL` is not specified or if the requested localization is not supported.
@@ -147,7 +194,9 @@ public struct ReadMeConfiguration : Codable {
     /// - Parameters:
     ///     - configuration: The configuration based on which the links should be constructed.
     ///     - localization: The localization to use.
-    public static func apiLink(for configuration: WorkspaceConfiguration, in localization: LocalizationIdentifier) -> StrictString? {
+    public static func apiLink(
+        for configuration: WorkspaceConfiguration,
+        in localization: LocalizationIdentifier) -> StrictString? {
 
         guard let baseURL = configuration.documentation.documentationURL,
             let provided = localization._reasonableMatch else {

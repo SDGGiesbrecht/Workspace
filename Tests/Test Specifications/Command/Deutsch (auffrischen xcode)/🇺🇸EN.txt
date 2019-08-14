@@ -1,0 +1,8 @@
+$ workspace auffrischen xcode •no‐colour
+
+Refreshing Xcode project...
+
+[$ swift...]
+
+Writing to “Deutsch.xcodeproj/project.pbxproj”...
+0

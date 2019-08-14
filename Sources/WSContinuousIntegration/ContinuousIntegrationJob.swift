@@ -2,9 +2,11 @@
  ContinuousIntegrationJob.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2017–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2017–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -43,50 +45,59 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
         case .macOS:
             return UserFacing({ (localization) in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+                     .deutschDeutschland:
                     return "macOS"
                 }
             })
         case .linux:
             return UserFacing({ (localization) in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+                     .deutschDeutschland:
                     return "Linux"
                 }
             })
         case .iOS:
             return UserFacing({ (localization) in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+                     .deutschDeutschland:
                     return "iOS"
                 }
             })
         case .watchOS:
             return UserFacing({ (localization) in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+                     .deutschDeutschland:
                     return "watchOS"
                 }
             })
         case .tvOS:
             return UserFacing({ (localization) in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+                     .deutschDeutschland:
                     return "tvOS"
                 }
             })
         case .miscellaneous:
             return UserFacing({ (localization) in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Miscellaneous"
+                case .deutschDeutschland:
+                    return "Sonstiges"
                 }
             })
         case .deployment:
             return UserFacing({ (localization) in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Deployment"
+                case .deutschDeutschland:
+                    return "Verteilung"
                 }
             })
         }
@@ -97,50 +108,59 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
         case .macOS:
             return UserFacing({ (localization) in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+                     .deutschDeutschland:
                     return "macos"
                 }
             })
         case .linux:
             return UserFacing({ (localization) in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+                     .deutschDeutschland:
                     return "linux"
                 }
             })
         case .iOS:
             return UserFacing({ (localization) in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+                     .deutschDeutschland:
                     return "ios"
                 }
             })
         case .watchOS:
             return UserFacing({ (localization) in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+                     .deutschDeutschland:
                     return "watchos"
                 }
             })
         case .tvOS:
             return UserFacing({ (localization) in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+                     .deutschDeutschland:
                     return "tvos"
                 }
             })
         case .miscellaneous:
             return UserFacing({ (localization) in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "miscellaneous"
+                case .deutschDeutschland:
+                    return "sonstiges"
                 }
             })
         case .deployment:
             return UserFacing({ (localization) in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "deployment"
+                case .deutschDeutschland:
+                    return "verteilung"
                 }
             })
         }

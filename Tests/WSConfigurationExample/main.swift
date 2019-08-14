@@ -2,9 +2,11 @@
  main.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2017–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2017–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -26,3 +28,18 @@ configuration.optIntoAllTasks()
 configuration.documentation.api.generate = true
 configuration.documentation.api.yearFirstPublished = 2017
 // @endExample
+
+// @beispiel(beispielskonfiguration)
+import WorkspaceConfiguration
+
+/*
+ Externe Pakete sind mit dieser Syntax einführbar:
+ import [Modul] // [Ressourcenzeiger], [Version], [Produkt]
+ */
+import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
+
+let konfiguration = ArbeitsbereichKonfiguration()
+konfiguration.alleAufgabenEinschalten()
+konfiguration.dokumentation.programmierschnittstelle.erstellen = wahr
+konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2017
+// @beispielBeenden

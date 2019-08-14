@@ -2,9 +2,11 @@
  ProofreadingRule.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2018–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2018–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -22,18 +24,6 @@ extension ProofreadingRule : Comparable {
         switch self {
         case .deprecatedConditionDocumentation:
             return .text(DeprecatedConditionDocumentation.self)
-        case .deprecatedWarnings:
-            return .text(DeprecatedWarnings.self)
-        case .deprecatedTestExemptions:
-            return .text(DeprecatedTestExemptions.self)
-        case .deprecatedInheritanceDirectives:
-            return .text(DeprecatedInheritanceDirectives.self)
-        case .deprecatedExampleDirectives:
-            return .text(DeprecatedExampleDirectives.self)
-        case .deprecatedGitManagement:
-            return .text(DeprecatedGitManagement.self)
-        case .deprecatedConfiguration:
-            return .text(DeprecatedConfiguration.self)
         case .manualWarnings:
             return .text(ManualWarnings.self)
         case .missingImplementation:

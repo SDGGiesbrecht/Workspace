@@ -1,0 +1,11 @@
+$ arbeitsbereich validate build •job ios •no‐colour
+
+Erstellung für iOS wird geprüft ... (§1)
+
+Das Paket hat keine Xcode‐Projekt.
+„xcode.manage“ konfigurieren oder von Hand ein Xcode‐Projekt erstellen.
+
+✗ Erstellung für iOS ist fehlgeschlagen. (Siehe [⌘F] „§1“)
+
+„NoXcodeProject“ besteht die Überprüfung nicht.
+2

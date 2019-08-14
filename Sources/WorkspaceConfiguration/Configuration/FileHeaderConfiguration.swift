@@ -2,9 +2,11 @@
  FileHeaderConfiguration.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2018–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2018–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -12,6 +14,61 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// @localization(🇩🇪DE) @crossReference(FileHeaderConfiguration)
+/// Einstellungen zu Dateivorspänne.
+///
+/// ```shell
+/// $ arbeitsbereich auffrischen dateivorspänne
+/// ```
+///
+/// Ein Dateivorspann ist eine Kommentarauschnitt am Anfang jeder Datei im Projekt. Typische Vorspänne...
+///
+/// - identifizieren das Projekt zu dem die Datei gehört.
+/// - weisen auf dem Urheberrecht hin.
+/// - weisen auf der Lizenz hin.
+///
+/// ### Präzise Festlegung eines Vorspanns
+///
+/// Weil Arbeitsbereich existierende Vorspänne überschreibt, ist es wichtig zu wissen, wie Arbeitsbereich Vorspänne erkennt.
+///
+/// Arbeitsbereich betrachtet jeden Kommentar am Dateianfang als Vorspann, mit folgender Begrenzungen:
+///
+/// Ein Dateivorspann kann ein einziger Blockkommentar sein:
+///
+/// ```swift
+/// /*
+///  Hier ist ein Vorspann.
+///  Hier zählt auch zum Vorspann.
+///  */
+/// /* Hier zählt nicht zum Vorspann. */
+/// ```
+///
+/// Andernfalls kann ein Vorspann eine lückenlose zusammenhängende Folge von Zeilenkommentare sein:
+///
+/// ```swift
+/// // Hier ist ein Vorspann.
+/// // Hier zählt auch zum Vorspann.
+///
+/// // Hier zählt nicht zum Vorspann.
+/// ```
+///
+/// Dokumentationskommentare sind nie Vorspänne.
+///
+/// ```swift
+/// /**
+///  Hier ist kein Vorspann.
+///  */
+/// ```
+///
+/// In Schalenskripte, das Shebang kommt vor dem Vorspann und zählt nich dazu.
+///
+/// ```shell
+/// #!/bin/bash ← Das zählt nicht zum Vorspann.
+///
+/// # Hier ist ein Vorspann.
+/// ```
+public typealias Dateivorspannseinstellungen = FileHeaderConfiguration
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(FileHeaderConfiguration)
 /// Options related to file headers.
 ///
 /// ```shell
@@ -66,11 +123,49 @@
 /// ```
 public struct FileHeaderConfiguration : Codable {
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(FileHeaderConfiguration.manage)
     /// Whether or not to manage the project file headers.
     ///
     /// This is off by default.
     public var manage: Bool = false
+    // @localization(🇩🇪DE) @crossReference(FileHeaderConfiguration.manage)
+    /// Ob Arbeitsbereich Dateivorspänne verwalten soll.
+    ///
+    /// Wenn nicht angegeben, ist diese Einstellung aus.
+    public var verwalten: Bool {
+        get { return manage }
+        set { manage = newValue }
+    }
 
+    // @localization(🇩🇪DE) @crossReference(FileHeaderConfiguration.copyrightNotice)
+    /// Der Urheberrechtshinweis.
+    ///
+    /// Wenn nicht angegeben, wird diese Einstellung aus andere Dokumentations‐ und Lizenzeneinstellungen hergeleitet.
+    ///
+    /// Arbeitsbereich wird `#daten` mit die Urheberrechtsdaten der Datei ersetzen. (z. B. „©2016–2017“).
+    ///
+    /// ### Datenrechnung
+    ///
+    /// Arbeitsbereich verwendet das vorbestehende Anfangsdatum wenn der Vorspann schon Daten enthält. Arbeitsbereich sucht die Zeichenketten `©`, `(C)`, oder `(c)` aus, die von vier Ziffern gefolgt werden, und erkennt sie mit oder ohne ein Lehrzeichen inzwischen. Falls keine gefunden wird, verwendet Arbeitsbereich das aktuelle Datum als Anfangsdatum.
+    ///
+    /// Arbeitsbereich verwendet immer das aktuelle Datum als Enddatum.
+    public var urheberrechtshinweis: BequemeEinstellung<[Lokalisationskennzeichen: StrengerZeichenkette]> {
+        get { return copyrightNotice }
+        set { copyrightNotice = newValue }
+    }
+    // @localization(🇬🇧EN) @crossReference(FileHeaderConfiguration.copyrightNotice)
+    /// The copyright notice.
+    ///
+    /// By default, this is assembled from the other documentation and licence options.
+    ///
+    /// Workspace will replace the dynamic element `#dates` with the file’s copyright dates. (e.g. ‘©2016–2017’).
+    ///
+    /// ### Determination of the Dates
+    ///
+    /// Workspace uses any pre‐existing start date if it can detect one already in the file header. Workspace searches for `©`, `(C)`, or `(c)` followed by an optional space and four digits. If none is found, Workspace will use the current date as the start date.
+    ///
+    /// Workspace always uses the current date as the end date.
+    // @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(FileHeaderConfiguration.copyrightNotice)
     /// The copyright notice.
     ///
     /// By default, this is assembled from the other documentation and licence options.
@@ -90,19 +185,30 @@ public struct FileHeaderConfiguration : Codable {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Copyright #dates \(author) and the \(project) project contributors."
                 case .deutschDeutschland:
-                    return "Urheberrecht #dates \(author) und die Mitwirkende des \(project)‐Projekts."
+                    return "Urheberrecht #dates \(author) und die Mitwirkenden des \(project)‐Projekts."
                 }
             } else {
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Copyright #dates the \(project) project contributors."
                 case .deutschDeutschland:
-                    return "Urheberrecht #dates die Mitwirkende des \(project)‐Projekts."
+                    return "Urheberrecht #dates die Mitwirkenden des \(project)‐Projekts."
                 }
             }
         }
     })
 
+    // @localization(🇩🇪DE) @crossReference(FileHeaderConfiguration)
+    /// Der ganze inhalt des Dateivorspanns.
+    ///
+    /// Wenn nicht angegeben, wird diese Einstellung aus andere Dokumentations‐ und Lizenzeneinstellungen hergeleitet.
+    ///
+    /// Arbeitsbereich ersetzt `#dateiname` mit dem Name der bestimmten Datei.
+    public var inhalt: BequemeEinstellung<StrengerZeichenkette> {
+        get { return contents }
+        set { contents = newValue }
+    }
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(FileHeaderConfiguration)
     /// The entire contents of the file header.
     ///
     /// By default, this is assembled from the other documentation and licence options.

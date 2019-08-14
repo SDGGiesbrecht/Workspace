@@ -2,9 +2,11 @@
  DocumentationConfiguration.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2018–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2018–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -16,11 +18,43 @@ import SDGLogic
 
 import WSLocalizations
 
+// @localization(🇩🇪DE) @crossReference(DocumentationConfiguration)
+/// Einstellungen zur Dokumentation.
+public typealias Dokumentationseinstellungen = DocumentationConfiguration
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(DocumentationConfiguration)
 /// Options related to documentation.
 public struct DocumentationConfiguration : Codable {
 
     // MARK: - Properties
 
+    // @localization(🇺🇸EN)
+    /// The localizations supported by the project.
+    ///
+    /// The default contains no localizations, but some tasks may throw errors if they require localizations to be specified.
+    ///
+    /// ### Localizing Documentation
+    ///
+    /// When documenting with more than one localization active, each documentation comment must be marked according to its localization.
+    ///
+    /// ```swift
+    /// // @localization(🇪🇸ES)
+    /// /// Verifica la desigualdad.
+    /// // @localization(🇺🇸EN) @localization(🇬🇧EN)
+    /// /// Checks for inequality.
+    /// infix operator ≠
+    /// ```
+    ///
+    /// Localized versions of a symbol can be cross‐referenced with each other so that they will be treated as the same symbol. In the following example, `doSomething()` will only appear in the English documentation and `hacerAlgo()` will only appear in the Spanish documentation. Switching the language while looking at one of them will display the opposite function.
+    ///
+    /// ```swift
+    /// // @localization(🇺🇸EN) @localization(🇬🇧EN) @crossReference(doSomething)
+    /// /// Does something.
+    /// public func doSomething() {}
+    /// // @localization(🇪🇸ES) @crossReference(doSomething)
+    /// /// Hace algo.
+    /// public func hacerAlgo() {}
+    /// ```
+    // @localization(🇨🇦EN) @crossReference(DocumentationConfiguration.localizations)
     /// The localizations supported by the project.
     ///
     /// The default contains no localizations, but some tasks may throw errors if they require localizations to be specified.
@@ -48,30 +82,134 @@ public struct DocumentationConfiguration : Codable {
     /// public func faireQuelqueChose() {}
     /// ```
     public var localizations: [LocalizationIdentifier] = []
+    // @localization(🇬🇧EN) @crossReference(DocumentationConfiguration.localizations)
+    /// The localisations supported by the project.
+    ///
+    /// The default contains no localisations, but some tasks may throw errors if they require localisations to be specified.
+    ///
+    /// ### Localising Documentation
+    ///
+    /// When documenting with more than one localisation active, each documentation comment must be marked according to its localisation.
+    ///
+    /// ```swift
+    /// // @localization(🇫🇷FR)
+    /// /// Vérifie l’inégalité.
+    /// // @localization(🇬🇧EN) @localization(🇺🇸EN)
+    /// /// Checks for inequality.
+    /// infix operator ≠
+    /// ```
+    ///
+    /// Localised versions of a symbol can be cross‐referenced with each other so that they will be treated as the same symbol. In the following example, `doSomething()` will only appear in the English documentation and `faireQuelqueChose()` will only appear in the French documentation. Switching the language while looking at one of them will display the opposite function.
+    ///
+    /// ```swift
+    /// // @localization(🇬🇧EN) @localization(🇺🇸EN) @crossReference(doSomething)
+    /// /// Does something.
+    /// public func doSomething() {}
+    /// // @localization(🇫🇷FR) @crossReference(doSomething)
+    /// /// Fait quelque chose.
+    /// public func faireQuelqueChose() {}
+    /// ```
+    public var localisations: [LocalisationIdentifier] {
+        get { return localizations }
+        set { localizations = newValue }
+    }
+    // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.localizations)
+    /// Die Lokalisationen des Projekts.
+    ///
+    /// Keine Lokalisationen sind voreingestellt, aber manche Aufgaben können Fehler werfen wenn keine Lokalisationen angegeben sind.
+    ///
+    /// ### Dokumentation lokalisieren
+    ///
+    /// Wenn mehrere Lokalisationen eingeschaltet sind, jeder Dokumentationskommentar muss mit einem Lokalisation markiert werden.
+    ///
+    /// ```swift
+    /// // @lokalisation(🇫🇷FR)
+    /// /// Vérifie l’inégalité.
+    /// // @lokalisation(🇩🇪DE) @lokalisation(🇦🇹DE)
+    /// /// Prüft die Ungleichheit.
+    /// infix operator ≠
+    /// ```
+    ///
+    /// Lokalisierte versionen eines Symbols können miteinander verknüpft werden, damit sie als ein einziges Symbol gehandelt werden. Im folgendes Beispiel, `etwasTun()` wird nur in der deutschen Dokumentation erscheinen. und `faireQuelqueChose()` wird nur in der französischen erscheinen. Das Umschalten von Sprachen auf der Seite von einem führt zum anderen.
+    ///
+    /// ```swift
+    /// // @lokalisation(🇩🇪DE) @lokalisation(🇦🇹DE) @querverweis(etwasTun)
+    /// /// Tut etwas.
+    /// public func etwasTun() {}
+    /// // @lokalisation(🇫🇷FR) @querverweis(etwasTun)
+    /// /// Fait quelque chose.
+    /// public func faireQuelqueChose() {}
+    /// ```
+    public var lokalisationen: [Lokalisationskennzeichen] {
+        get { return localizations }
+        set { localizations = newValue }
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(DocumentationConfiguration.currentVersion)
     /// The semantic version of the current stable release of the project.
-    ///
-    /// There is no default version.
     public var currentVersion: Version?
+    // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.currentVersion)
+    /// Die bedeutende Version der aktuelle stabile Ausgabe des Projekts.
+    public var aktuelleVersion: Version? {
+        get { return currentVersion }
+        set { currentVersion = newValue }
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(DocumentationConfiguration.projectWebsite)
     /// The URL of the project website.
-    ///
-    /// There is no default website.
     public var projectWebsite: URL?
+    // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.projectWebsite)
+    /// Der einheitliche Ressourcenzeiger der Internetseite des Projekts.
+    public var projektSeite: EinheitlicherRessourcenzeiger? {
+        get { return projectWebsite }
+        set { projectWebsite = newValue }
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(DocumentationConfiguration.documentationURL)
     /// The root URL where Workspace‐generated API documentation is hosted.
     public var documentationURL: URL?
+    // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.documentationURL)
+    /// Der einheitliche Ressourcenzeiger der Wurzel der Seite wo die erstellte Dokumentation veröffentlicht wird.
+    public var dokumentationsRessourcenzeiger: EinheitlicherRessourcenzeiger? {
+        get { return documentationURL }
+        set { documentationURL = newValue }
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(DocumentationConfiguration.repositoryURL)
     /// The URL of the project repository.
-    ///
-    /// There is no default URL.
     public var repositoryURL: URL?
+    // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.repositoryURL)
+    /// Der einheitliche Ressourcenzeiger des Projektlagers.
+    public var lagerRessourcenzeiger: EinheitlicherRessourcenzeiger? {
+        get { return repositoryURL }
+        set { repositoryURL = newValue }
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(DocumentationConfiguration.primaryAuthor)
     /// The primary project author.
-    ///
-    /// There is no default author.
     public var primaryAuthor: StrictString?
+    // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.primaryAuthor)
+    /// Der Hauptautor des Projekts.
+    public var hauptautor: StrengerZeichenkette? {
+        get { return primaryAuthor }
+        set { primaryAuthor = newValue }
+    }
 
+    // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.installationInstructions)
+    /// Installationsanweisungen.
+    ///
+    /// Installationsanweisungen werden automatisch hergeleitet, wenn `lagerRessourcenzeiger` und `aktuelleVersion` angegeben sind.
+    public var installationsanleitungen: BequemeEinstellung<[Lokalisationskennzeichen: Markdown]> {
+        get { return installationInstructions }
+        set { installationInstructions = newValue }
+    }
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(DocumentationConfiguration.installationInstructions)
     /// Installation instructions.
     ///
     /// Default instructions exist for executable products if `repositoryURL` and `currentVersion` are defined.
@@ -94,6 +232,16 @@ public struct DocumentationConfiguration : Codable {
         return result
     })
 
+    // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.importingInstructions)
+    /// Einführungsanweisungen.
+    ///
+    /// Einführungssanweisungen werden automatisch davon hergeleitet, wenn `lagerRessourcenzeiger` und `aktuelleVersion` angegeben sind.
+    public var einführungsanleitungen: BequemeEinstellung<[Lokalisationskennzeichen: Markdown]> {
+        get { return importingInstructions }
+        set { importingInstructions = newValue }
+    }
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(DocumentationConfiguration.importingInstructions)
     /// Importing instructions.
     ///
     /// Default instructions exist for library products if `repositoryURL` and `currentVersion` are defined.
@@ -116,19 +264,49 @@ public struct DocumentationConfiguration : Codable {
         return result
     })
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(DocumentationConfiguration.about)
     /// The about section.
     public var about: [LocalizationIdentifier: Markdown] = [:]
+    // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.about)
+    /// Die „Über“‐Abschnitt.
+    public var über: [Lokalisationskennzeichen: Markdown] {
+        get { return about }
+        set { about = newValue }
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(DocumentationConfiguration.relatedProjects)
     /// A list of related projects.
-    ///
-    /// There are no default related projects.
     public var relatedProjects: [RelatedProjectEntry] = []
+    // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.relatedProjects)
+    /// Eine Liste verwandter Projekte.
+    public var verwandteProjekte: [EintragZuVerwantdenProjekten] {
+        get { return relatedProjects }
+        set { relatedProjects = newValue }
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(DocumentationConfiguration.readMe)
     /// Options related to the project read‐me.
     public var readMe: ReadMeConfiguration = ReadMeConfiguration()
+    // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.readMe)
+    /// Einstellungen zur Lies‐mich Datei des Projekts.
+    public var liesMich: LiesMichEinstellungen {
+        get { return readMe }
+        set { readMe = newValue }
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(DocumentationConfiguration.api)
     /// Options related to API documentation.
     public var api: APIDocumentationConfiguration = APIDocumentationConfiguration()
+    // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.api)
+    /// Einstellungen zur Lies‐mich Datei des Projekts.
+    public var programmierschnittstelle: Programmierschnittstellendokumentationseinstellungen {
+        get { return api }
+        set { api = newValue }
+    }
 
     // MARK: - Installation Instructions
 

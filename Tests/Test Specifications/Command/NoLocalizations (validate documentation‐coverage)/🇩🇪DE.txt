@@ -1,0 +1,14 @@
+$ arbeitsbereich validate documentation‐coverage •no‐colour
+
+Die Dokumentationsabdeckung wird überprüft ... (§1)
+
+
+Kein ursprüngliche Urheberrechtsdatum wurde angegeben.
+(Es ist unter „dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung“ zu konfigurieren.)
+
+Keine Lokalisationen sind angegeben. (dokumentation.localisationen)
+
+✗ Die Dokumentationsverarbeitung ist fehlgeschlagen. (Siehe [⌘F] „§1“)
+
+„NoLocalizations“ besteht die Überprüfung nicht.
+2

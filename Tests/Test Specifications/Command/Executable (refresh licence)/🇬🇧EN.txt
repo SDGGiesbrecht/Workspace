@@ -1,0 +1,6 @@
+$ workspace refresh licence •no‐colour
+
+Refreshing licence...
+
+No licence has been selected. (licence.licence)
+9223372036854775807

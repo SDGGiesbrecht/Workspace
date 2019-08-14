@@ -1,0 +1,7 @@
+$ workspace refresh examples •no‐colour
+
+Refreshing examples...
+
+An example directive has too few arguments:
+#example(Missing index.)
+9223372036854775807

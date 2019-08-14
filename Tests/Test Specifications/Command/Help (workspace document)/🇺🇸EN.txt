@@ -1,0 +1,26 @@
+$ workspace document help •no‐colour
+
+workspace document generates API documentation.
+
+By default, the generated documentation will be placed in a “docs” folder at the project root. The GitHub settings described in the following link can be adjusted to automatically host the documentation directly from the repository.
+
+https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch
+
+(If you wish to avoid checking generated files into “master”, see the documentation of the “encryptedTravisCIDeploymentKey” configuration option for a more advanced method.)
+
+Subcommands
+
+help displays usage information.
+
+Options
+
+•language [language preference] A language to use instead of the one specified in preferences.
+•no‐color Removes color from the output.
+•project [path] The location of the target project if it is not at the current working directory.
+
+Argument Types
+
+[language preference] A list of IETF language tags or SDGCornerstone language icons. Semicolons indicate fallback order. Commas indicate that multiple languages should be used. Examples: “en-US” or “🇺🇸EN” → American English, “nv,en;es” → both Navajo and English, otherwise Spanish
+[path] A file system path. The form “/...” indicates an absolute path. The form “~/...” indicates a path relative to the home directory. Anything else is interpreted relative to the current working directory.
+
+0

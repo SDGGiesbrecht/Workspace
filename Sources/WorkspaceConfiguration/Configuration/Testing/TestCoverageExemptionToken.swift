@@ -2,9 +2,11 @@
  TestCoverageExemptionToken.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2018–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2018–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -12,11 +14,26 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// @localization(🇩🇪DE) @crossReference(TestCoverageExemptionToken)
+/// Ein Testabdeckungsausnahmszeichen.
+public typealias Testabdeckungsausnahmszeichen = TestCoverageExemptionToken
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(TestCoverageExemptionToken)
 /// A test coverage exemption token.
 public struct TestCoverageExemptionToken : Codable, Hashable {
 
     // MARK: - Initialization
 
+    // @localization(🇩🇪DE) @crossReference(TestCoverageExemptionToken.init(_:scope:))
+    /// Erstellt ein Testabdeckungsausnahmszeichen.
+    ///
+    /// - Parameters:
+    ///     - zeichen: Die Zeichenkette des Zeichens.
+    ///     - geltungsbereich: Der Geltungsbereich.
+    public init(_ zeichen: StrengerZeichenkette, geltungsbereich: Geltungsbereich) {
+        self.init(zeichen, scope: geltungsbereich)
+    }
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(TestCoverageExemptionToken.init(_:scope:))
     /// Creates a test coverage exemption token.
     ///
     /// - Parameters:
@@ -29,9 +46,25 @@ public struct TestCoverageExemptionToken : Codable, Hashable {
 
     // MARK: - Properties
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(TestCoverageExemptionToken.token)
     /// The text of the token.
     public var token: StrictString
+    // @localization(🇩🇪DE) @crossReference(TestCoverageExemptionToken.token)
+    /// Die Zeichenkette des Zeichens.
+    public var zeichen: StrengerZeichenkette {
+        get { return token }
+        set { token = newValue }
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(TestCoverageExemptionToken.token)
     /// The scope.
     public var scope: Scope
+    // @localization(🇩🇪DE) @crossReference(TestCoverageExemptionToken.token)
+    /// Der Geltungsbereich.
+    public var geltungsbereich: Geltungsbereich {
+        get { return scope }
+        set { scope = newValue }
+    }
 }

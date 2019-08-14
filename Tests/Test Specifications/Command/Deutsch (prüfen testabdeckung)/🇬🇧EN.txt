@@ -1,0 +1,22 @@
+$ workspace prüfen testabdeckung •no‐colour
+
+Updating test manifests... (§1)
+
+[$ swift...]
+
+Testing on macOS... (§2)
+
+[$ swift...]
+
+Checking test coverage on macOS... (§3)
+
+Parsing report for ‘Tests/DeutschTests/DeutschTests.swift’...
+
+✓ Updated test manifests.
+✓ Tests pass on macOS.
+✓ Test coverage is complete on macOS.
+
+
+‘Deutsch’ passes validation.
+
+0

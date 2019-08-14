@@ -2,9 +2,11 @@
  PackageRepository.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2017–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2017–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -37,8 +39,10 @@ extension PackageRepository {
 
     private static let resourceDirectoryName = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Resources"
+        case .deutschDeutschland:
+            return "Ressourcen"
         }
     })
 
@@ -69,16 +73,22 @@ extension PackageRepository {
         guard let targetName = path.prefix(upTo: "/")?.contents else {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ (localization) in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "No target specified for resource:\n\(path)\nFiles must be in subdirectories named corresponding to the intended target."
+                case .deutschDeutschland:
+                    return "Kein Ziel wurde für eine Ressource angegeben:\n\(path)\nDateien müssen in Unterverzeichnissen sein, dessen Namen mit dem gemeinten Ziel übereinstimmen."
                 }
             }))
         }
         guard let target = (try targetsByName())[String(targetName)] else {
             throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ (localization) in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom:
+                    return "No target named ‘\(targetName)’.\nResources must be in subdirectories named corresponding to the intended target."
+                case .englishUnitedStates, .englishCanada:
                     return "No target named “\(targetName)”.\nResources must be in subdirectories named corresponding to the intended target."
+                case .deutschDeutschland:
+                    return "Kein Ziel Namens „\(targetName)“.\nRessourcen müssen in Unterverzeichnissen sein, dessen Namen mit dem gemeinten Ziel übereinstimmen."
                 }
             }))
         }

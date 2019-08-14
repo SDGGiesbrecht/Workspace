@@ -4,9 +4,11 @@
  Package.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2017–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2017–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -16,6 +18,71 @@
 
 import PackageDescription
 
+// #workaround(Fix feature links.)
+// @localization(🇩🇪DE)
+/// Arbeitsbereich automatisiert die Verwaltung von Swift‐Projekten.
+///
+/// > [Πᾶν ὅ τι ἐὰν ποιῆτε, ἐκ ψυχῆς ἐργάζεσθε, ὡς τῷ Κυρίῳ καὶ οὐκ ἀνθρώποις.](https://www.biblegateway.com/passage/?search=Colossians+3&version=SBLGNT;SCH2000)
+/// >
+/// > [Was auch immer ihr macht, arbeitet vom Herzen, als für den Herrn und nicht für Menschen.](https://www.biblegateway.com/passage/?search=Colossians+3&version=SBLGNT;SCH2000)
+/// >
+/// > ―⁧שאול⁩/Shaʼul
+///
+/// ### Merkmale
+///
+/// - Stellt gründliche Prüfungen bereit:
+///     - [Testabdeckung](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Types/TestConfiguration/Properties/enforceCoverage.html)
+///     - [Übersetzerwarnungen](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Types/TestingConfiguration/Properties/prohibitCompilerWarnings.html)
+///     - [Dokumentationsabdeckung](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Types/APIDocumentationConfiguration/Properties/enforceCoverage.html)
+///     - [Beispielprüfung](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Types/Examples.html)
+///     - [Stilkorrekturlesen](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Types/ProofreadingConfiguration.html)
+///     - [Erinnerungen](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Types/ProofreadingRule/Cases/manualWarnings.html)
+///     - [Einrichtung von fortlaufeden Einbindung](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Types/ContinuousIntegrationConfiguration/Properties/manage.html) ([Travis CI](https://travis-ci.org) mithifle des [Swift Version Manager](https://github.com/kylef/swiftenv))
+/// - Erstellt  [Dokumentation](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Types/APIDocumentationConfiguration/Properties/generate.html) von Programierschnittstellen.
+/// - Automatisiert Quellinstandhaltung:
+///     - [Einbau von Ressourcen](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Types/PackageResources.html)
+///     - [Geerbte Dokumentation](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Types/DocumentationInheritance.html)
+///     - [Erstellung von Xcode‐Projekte](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Types/XcodeConfiguration/Properties/manage.html)
+/// - Automatisiert quelloffene Nebensachen:
+///     - [Dateivorspänne](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Types/FileHeaderConfiguration.html)
+///     - [Lies‐mich‐Dateien](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Types/ReadMeConfiguration.html)
+///     - [Lizenzhinweise](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Types/LicenceConfiguration.html)
+///     - [Mitwirkungsanweisungen](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Types/GitHubConfiguration.html)
+/// - Für Verwendung neben dem [Swift Package Manager](https://swift.org/package-manager/) vorgesehen.
+/// - Verwaltet Projekte für macOS, Linux, iOS, watchOS und tvOS.
+/// - [Konfigurierbar](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Libraries/WorkspaceConfiguration.html)
+// @localization(🇺🇸EN)
+/// Workspace automates management of Swift projects.
+///
+/// > [Πᾶν ὅ τι ἐὰν ποιῆτε, ἐκ ψυχῆς ἐργάζεσθε, ὡς τῷ Κυρίῳ καὶ οὐκ ἀνθρώποις.](https://www.biblegateway.com/passage/?search=Colossians+3&version=SBLGNT;NIV)
+/// >
+/// > [Whatever you do, work from the heart, as working for the Lord and not for men.](https://www.biblegateway.com/passage/?search=Colossians+3&version=SBLGNT;NIV)
+/// >
+/// > ―⁧שאול⁩/Shaʼul
+///
+/// ### Features
+///
+/// - Provides rigorous validation:
+///     - [Test coverage](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/TestingConfiguration/Properties/enforceCoverage.html)
+///     - [Compiler warnings](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/TestingConfiguration/Properties/prohibitCompilerWarnings.html)
+///     - [Documentation coverage](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/APIDocumentationConfiguration/Properties/enforceCoverage.html)
+///     - [Example validation](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/Examples.html)
+///     - [Style proofreading](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/ProofreadingConfiguration.html)
+///     - [Reminders](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/ProofreadingRule/Cases/manualWarnings.html)
+///     - [Continuous integration set‐up](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/ContinuousIntegrationConfiguration/Properties/manage.html) ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))
+/// - Generates API [documentation](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/APIDocumentationConfiguration/Properties/generate.html).
+/// - Automates code maintenance:
+///     - [Embedded resources](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/PackageResources.html)
+///     - [Inherited documentation](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/DocumentationInheritance.html)
+///     - [Xcode project generation](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/XcodeConfiguration/Properties/manage.html)
+/// - Automates open source details:
+///     - [File headers](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/FileHeaderConfiguration.html)
+///     - [Read‐me files](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/ReadMeConfiguration.html)
+///     - [Licence notices](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/LicenceConfiguration.html)
+///     - [Contributing instructions](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/GitHubConfiguration.html)
+/// - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
+/// - Manages projects for macOS, Linux, iOS, watchOS and tvOS.
+/// - [Configurable](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Libraries/WorkspaceConfiguration.html)
 // @localization(🇨🇦EN)
 /// Workspace automates management of Swift projects.
 ///
@@ -48,61 +115,38 @@ import PackageDescription
 /// - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
 /// - Manages projects for macOS, Linux, iOS, watchOS and tvOS.
 /// - [Configurable](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Libraries/WorkspaceConfiguration.html)
+// @localization(🇬🇧EN)
+/// Workspace automates management of Swift projects.
 ///
-/// ### The Workspace Workflow
+/// > [Πᾶν ὅ τι ἐὰν ποιῆτε, ἐκ ψυχῆς ἐργάζεσθε, ὡς τῷ Κυρίῳ καὶ οὐκ ἀνθρώποις.](https://www.biblegateway.com/passage/?search=Colossians+3&version=SBLGNT;NIVUK)
+/// >
+/// > [Whatever you do, work from the heart, as working for the Lord and not for men.](https://www.biblegateway.com/passage/?search=Colossians+3&version=SBLGNT;NIVUK)
+/// >
+/// > ―⁧שאול⁩/Shaʼul
 ///
-/// (The following sample package is a real repository. You can use it to follow along.)
+/// ### Features
 ///
-/// #### When the Repository Is Cloned
-///
-/// The need to hunt down workflow tools can deter contributors. On the other hand, including them in the repository causes a lot of clutter. To reduce both, when a project using Workspace is pulled, pushed, or cloned...
-///
-/// ```shell
-/// git clone https://github.com/SDGGiesbrecht/SamplePackage
-/// ```
-///
-/// ...only one small piece of Workspace comes with it: A short script called “Refresh” that comes in two variants, one for each operating system.
-///
-/// *Hmm... I wish I had more tools at my disposal... Hey! What if I...*
-///
-/// #### Refresh the Project
-///
-/// To refresh the project, double‐click the `Refresh` script for the corresponding operating system. (If you are on Linux and double‐clicking fails or opens a text file, see [here](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/Linux.html).)
-///
-/// `Refresh` opens a terminal window, and in it Workspace reports its actions while it sets the project folder up for development. (This may take a while the first time, but subsequent runs are faster.)
-///
-/// *This looks better. Let’s get coding!*
-///
-/// *[Add this... Remove that... Change something over here...]*
-///
-/// *...All done. I wonder if I broke anything while I was working? Hey! It looks like I can...*
-///
-/// #### Validate Changes
-///
-/// When the project seems ready for a push, merge, or pull request, validate the current state of the project by double‐clicking the `Validate` script.
-///
-/// `Validate` opens a terminal window and in it Workspace runs the project through a series of checks.
-///
-/// When it finishes, it prints a summary of which tests passed and which tests failed.
-///
-/// *Oops! I never realized that would happen...*
-///
-/// #### Summary
-///
-/// 1. `Refresh` before working.
-/// 2. `Validate` when it looks complete.
-///
-/// *Wow! That was so much easier than doing it all manually!*
-///
-/// ### Applying Workspace to a Project
-///
-/// To apply Workspace to a project, run the following command in the root of the project’s repository. (This requires a full install.)
-///
-/// ```shell
-/// $ workspace refresh
-/// ```
-///
-/// By default, Workspace refrains from tasks which would involve modifying project files. Such tasks must be activated with a [configuration](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Libraries/WorkspaceConfiguration.html) file.
+/// - Provides rigorous validation:
+///     - [Test coverage](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/TestingConfiguration/Properties/enforceCoverage.html)
+///     - [Compiler warnings](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/TestingConfiguration/Properties/prohibitCompilerWarnings.html)
+///     - [Documentation coverage](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/APIDocumentationConfiguration/Properties/enforceCoverage.html)
+///     - [Example validation](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/Examples.html)
+///     - [Style proofreading](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/ProofreadingConfiguration.html)
+///     - [Reminders](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/ProofreadingRule/Cases/manualWarnings.html)
+///     - [Continuous integration set‐up](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/ContinuousIntegrationConfiguration/Properties/manage.html) ([Travis CI](https://travis-ci.org) with help from [Swift Version Manager](https://github.com/kylef/swiftenv))
+/// - Generates API [documentation](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/APIDocumentationConfiguration/Properties/generate.html).
+/// - Automates code maintenance:
+///     - [Embedded resources](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/PackageResources.html)
+///     - [Inherited documentation](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/DocumentationInheritance.html)
+///     - [Xcode project generation](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/XcodeConfiguration/Properties/manage.html)
+/// - Automates open source details:
+///     - [File headers](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/FileHeaderConfiguration.html)
+///     - [Read‐me files](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/ReadMeConfiguration.html)
+///     - [Licence notices](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/LicenceConfiguration.html)
+///     - [Contributing instructions](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/GitHubConfiguration.html)
+/// - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
+/// - Manages projects for macOS, Linux, iOS, watchOS and tvOS.
+/// - [Configurable](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Libraries/WorkspaceConfiguration.html)
 let package = Package(
     name: "Workspace",
     platforms: [
@@ -110,6 +154,29 @@ let package = Package(
         .macOS(.v10_13)
     ],
     products: [
+        // @localization(🇩🇪DE)
+        // #documentation(ArbeitsbereichKonfiguration)
+        /// Die Wurzel der Programmierschnittstelle für Konfigurationsdateien.
+        ///
+        /// Arbeitsbereich kann durch eine Swift‐Datei Namens `Arbeitsbereich.swift` im Projektwurzel konfiguriert werden.
+        ///
+        /// Der Inhalt einer Konfigurationsdatei könnte etwa so aussehen:
+        ///
+        /// ```swift
+        /// import WorkspaceConfiguration
+        ///
+        /// /*
+        ///  Externe Pakete sind mit dieser Syntax einführbar:
+        ///  import [Modul] // [Ressourcenzeiger], [Version], [Produkt]
+        ///  */
+        /// import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
+        ///
+        /// let konfiguration = ArbeitsbereichKonfiguration()
+        /// konfiguration.alleAufgabenEinschalten()
+        /// konfiguration.dokumentation.programmierschnittstelle.erstellen = wahr
+        /// konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2017
+        /// ```
+        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
         // #documentation(WorkspaceConfiguration)
         /// The root API used in configuration files.
         ///
@@ -262,6 +329,7 @@ let package = Package(
             "WSGeneralImports",
             "WSProject",
             "WSCustomTask",
+            .product(name: "SDGCollections", package: "SDGCornerstone"),
             .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .product(name: "SDGSwiftSource", package: "SDGSwift")
             ]),
@@ -336,6 +404,29 @@ let package = Package(
                 .define("CACHE_LOG", .when(configuration: .debug))
             ]),
 
+        // @localization(🇩🇪DE)
+        // #documentation(ArbeitsbereichKonfiguration)
+        /// Die Wurzel der Programmierschnittstelle für Konfigurationsdateien.
+        ///
+        /// Arbeitsbereich kann durch eine Swift‐Datei Namens `Arbeitsbereich.swift` im Projektwurzel konfiguriert werden.
+        ///
+        /// Der Inhalt einer Konfigurationsdatei könnte etwa so aussehen:
+        ///
+        /// ```swift
+        /// import WorkspaceConfiguration
+        ///
+        /// /*
+        ///  Externe Pakete sind mit dieser Syntax einführbar:
+        ///  import [Modul] // [Ressourcenzeiger], [Version], [Produkt]
+        ///  */
+        /// import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
+        ///
+        /// let konfiguration = ArbeitsbereichKonfiguration()
+        /// konfiguration.alleAufgabenEinschalten()
+        /// konfiguration.dokumentation.programmierschnittstelle.erstellen = wahr
+        /// konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2017
+        /// ```
+        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
         // #documentation(WorkspaceConfiguration)
         /// The root API used in configuration files.
         ///
@@ -359,6 +450,7 @@ let package = Package(
         /// ```
         .target(name: "WorkspaceConfiguration", dependencies: [
             "WSLocalizations",
+            "WSDependencyLocalizations",
             .product(name: "SDGControlFlow", package: "SDGCornerstone"),
             .product(name: "SDGLogic", package: "SDGCornerstone"),
             .product(name: "SDGCollections", package: "SDGCornerstone"),
@@ -367,6 +459,10 @@ let package = Package(
             .product(name: "SDGCalendar", package: "SDGCornerstone"),
             .product(name: "SDGSwift", package: "SDGSwift"),
             .product(name: "SDGSwiftConfiguration", package: "SDGSwift")
+            ]),
+        .target(name: "WSDependencyLocalizations", dependencies: [
+            .product(name: "SDGText", package: "SDGCornerstone"),
+            .product(name: "SDGCalendar", package: "SDGCornerstone")
             ]),
 
         // Defines the lists of supported localizations.

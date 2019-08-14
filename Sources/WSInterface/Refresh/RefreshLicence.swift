@@ -2,9 +2,11 @@
  RefreshLicence.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2018–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2018–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -22,15 +24,23 @@ extension Workspace.Refresh {
 
         private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishCanada:
                 return "licence"
+            case .englishUnitedStates:
+                return "license"
+            case .deutschDeutschland:
+                return "lizenz"
             }
         })
 
         private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom, .englishCanada:
                 return "regenerates the project’s licence file."
+            case .englishUnitedStates:
+                return "regenerates the project’s license file."
+            case .deutschDeutschland:
+                return "erstellt die Lizenzdatei der Projekt neu."
             }
         })
 
@@ -38,8 +48,12 @@ extension Workspace.Refresh {
 
             output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishCanada:
                     return "Refreshing licence..."
+                case .englishUnitedStates:
+                    return "Refreshing license..."
+                case .deutschDeutschland:
+                    return "Lizenz wird aufgefrischt ..."
                 }
             }).resolved().formattedAsSectionHeader())
 

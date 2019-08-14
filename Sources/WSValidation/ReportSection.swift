@@ -2,9 +2,11 @@
  ReportSection.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2017–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2017–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -40,11 +42,23 @@ public struct ReportSection {
         let identifier = self.identifier
         return UserFacing({ localization in
             switch localization {
-            case .englishCanada:
+            case .englishUnitedKingdom:
+                #if os(macOS)
+                return " (See ⌘F ‘" + identifier + "’)"
+                #elseif os(Linux)
+                return " (See Ctrl + F ‘" + identifier + "’)"
+                #endif
+            case .englishUnitedStates, .englishCanada:
                 #if os(macOS)
                     return " (See ⌘F “" + identifier + "”)"
                 #elseif os(Linux)
                     return " (See Ctrl + F “" + identifier + "”)"
+                #endif
+            case .deutschDeutschland:
+                #if os(macOS)
+                return " (Siehe ⌘F „" + identifier + "“)"
+                #elseif os(Linux)
+                return " (Siehe Strg + F „" + identifier + "“)"
                 #endif
             }
         })

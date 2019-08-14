@@ -2,9 +2,11 @@
  Unicode.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2018–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2018–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -26,7 +28,8 @@ internal struct UnicodeRule : SyntaxRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
-        case .englishCanada:
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+             .deutschDeutschland:
             return "unicode"
         }
     })
@@ -187,31 +190,39 @@ internal struct UnicodeRule : SyntaxRule {
                 reportViolation(in: file, at: lowerBound ..< upperBound, replacementSuggestion: replacement, message:
                     UserFacing<StrictString, InterfaceLocalization>({ localization in
                         let obsoleteMessage = UserFacing<StrictString, InterfaceLocalization>({ localization in
+                            let error: StrictString
+                            switch String(match.contents) {
+                            case "\u{2D}":
+                                error = "U+002D"
+                            case "\u{22}":
+                                error = "U+0022"
+                            case "\u{27}":
+                                error = "U+0027"
+                            default:
+                                error = "“\(StrictString(match.contents))”"
+                            }
                             switch localization {
-                            case .englishCanada:
-                                let error: StrictString
-                                switch String(match.contents) {
-                                case "\u{2D}":
-                                    error = "U+002D"
-                                case "\u{22}":
-                                    error = "U+0022"
-                                case "\u{27}":
-                                    error = "U+0027"
-                                default:
-                                    error = "“\(StrictString(match.contents))”"
-                                }
+                            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                                 if match.contents.count == 1 {
                                     return "The character " + error + " is obsolete."
                                 } else {
                                     return "The character sequence " + error + " is obsolete."
+                                }
+                            case .deutschDeutschland:
+                                if match.contents.count == 1 {
+                                    return "Das Schriftzeichen " + error + " ist überholt."
+                                } else {
+                                    return "Die Schriftzeichenfolge " + error + " ist überholt."
                                 }
                             }
                         })
 
                         let aliasMessage = UserFacing<StrictString, InterfaceLocalization>({ localization in
                             switch localization {
-                            case .englishCanada:
+                            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                                 return "(Create an alias if necessary.)"
+                            case .deutschDeutschland:
+                                return "(Wenn nötig, ein Alias erstellen.)"
                             }
                         })
 
@@ -231,8 +242,10 @@ internal struct UnicodeRule : SyntaxRule {
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 // Note to localizers: Adapt the recommendations for the target localization.
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–)."
+                case .deutschDeutschland:
+                    return "Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden."
                 }
               }), status: status, output: output)
 
@@ -240,8 +253,10 @@ internal struct UnicodeRule : SyntaxRule {
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 // Note to localizers: Adapt the recommendations for the target localization.
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Use quotation marks (“, ”) or double prime (′′)."
+                case .deutschDeutschland:
+                    return "Anführungszeichen („, “) oder Doppelprime (′′) verwenden."
                 }
               }), status: status, output: output)
 
@@ -249,8 +264,10 @@ internal struct UnicodeRule : SyntaxRule {
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 // Note to localizers: Adapt the recommendations for the target localization.
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Use an apostrophe (’), quotation marks (‘, ’), degrees (°) or prime (′)."
+                case .deutschDeutschland:
+                    return "Einen Apostrophe (’), Anführungs‐ (‚, ‘), Grad‐ (°) oder Prime‐Zeichen (′) verwenden."
                 }
               }), status: status, output: output)
 
@@ -258,8 +275,10 @@ internal struct UnicodeRule : SyntaxRule {
               replacement: "≠",
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Use the not equal sign (≠)."
+                case .deutschDeutschland:
+                    return "Ein Ungleichheitszeichen (≠) verwenden."
                 }
               }), status: status, output: output)
 
@@ -269,8 +288,10 @@ internal struct UnicodeRule : SyntaxRule {
               allowAsConditionalCompilationOperator: true,
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Use the not sign (¬)."
+                case .deutschDeutschland:
+                    return "Ein Negationszeichen (¬) verwenden."
                 }
               }), status: status, output: output)
 
@@ -279,8 +300,10 @@ internal struct UnicodeRule : SyntaxRule {
               allowAsConditionalCompilationOperator: true,
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Use the conjunction sign (∧)."
+                case .deutschDeutschland:
+                    return "Ein Konjunktionszeichen (∧) verwenden."
                 }
               }), status: status, output: output)
 
@@ -289,8 +312,10 @@ internal struct UnicodeRule : SyntaxRule {
               allowAsConditionalCompilationOperator: true,
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Use the disjunction sign (∨)."
+                case .deutschDeutschland:
+                    return "Ein Disjunktionszeichen (∨) verwenden."
                 }
               }), status: status, output: output)
 
@@ -299,8 +324,10 @@ internal struct UnicodeRule : SyntaxRule {
               allowAsConditionalCompilationOperator: true,
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Use the less‐than‐or‐equal sign (≤)."
+                case .deutschDeutschland:
+                    return "Ein kleiner‐als‐oder‐gleich‐Zeichen (≤) verwenden."
                 }
               }), status: status, output: output)
 
@@ -309,8 +336,10 @@ internal struct UnicodeRule : SyntaxRule {
               allowAsConditionalCompilationOperator: true,
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Use the greater‐than‐or‐equal sign (≥)."
+                case .deutschDeutschland:
+                    return "Ein größer‐als‐oder‐gleich‐Zeichen (≥) verwenden."
                 }
               }), status: status, output: output)
 
@@ -319,8 +348,10 @@ internal struct UnicodeRule : SyntaxRule {
               onlyProhibitInfixUse: true,
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Use the multiplication sign (×)."
+                case .deutschDeutschland:
+                    return "Ein Malzeichen (⋅) verwenden."
                 }
               }), status: status, output: output)
 
@@ -328,8 +359,10 @@ internal struct UnicodeRule : SyntaxRule {
               replacement: "×=",
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Use the multiplication sign (×)."
+                case .deutschDeutschland:
+                    return "Ein Malzeichen (⋅) verwenden."
                 }
               }), status: status, output: output)
 
@@ -338,8 +371,10 @@ internal struct UnicodeRule : SyntaxRule {
               onlyProhibitInfixUse: true,
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Use the division sign (÷)."
+                case .deutschDeutschland:
+                    return "Ein Geteiltzeichen (∶) verwenden."
                 }
               }), status: status, output: output)
 
@@ -347,8 +382,10 @@ internal struct UnicodeRule : SyntaxRule {
               replacement: "÷=",
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
-                case .englishCanada:
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Use the division sign (÷)."
+                case .deutschDeutschland:
+                    return "Ein Geteiltzeichen (∶) verwenden."
                 }
               }), status: status, output: output)
     }

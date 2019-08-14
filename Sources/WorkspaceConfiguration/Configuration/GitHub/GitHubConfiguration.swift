@@ -2,9 +2,11 @@
  GitHubConfiguration.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2018–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2018–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -14,6 +16,13 @@
 
 import WSLocalizations
 
+// @localization(🇩🇪DE) @crossReference(GitHubConfiguration)
+/// Einstellungen zu GitHub.
+///
+/// ```shell
+/// $ arbeitsbereich auffrischen github
+/// ```
+// @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(GitHubConfiguration)
 /// Options related to GitHub.
 ///
 /// ```shell
@@ -21,20 +30,40 @@ import WSLocalizations
 /// ```
 public struct GitHubConfiguration : Codable {
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(GitHubConfiguration.manage)
     /// Whether or not to manage the project’s GitHub configuration files.
     ///
     /// This is off by default.
     public var manage: Bool = false
+    // @localization(🇩🇪DE) @crossReference(GitHubConfiguration.manage)
+    /// Ob Arbeitsbereich die GitHub‐Konfigurationsdateien verwalten soll.
+    ///
+    /// Wenn nicht angegeben, ist diese Einstellung aus.
+    public var verwalten: Bool {
+        get { return manage }
+        set { manage = newValue }
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(GitHubConfiguration.manage)
     /// A list of the administrator’s GitHub usernames.
-    ///
-    /// There are no default administrators.
     public var administrators: [StrictString] = []
+    // @localization(🇩🇪DE) @crossReference(GitHubConfiguration.manage)
+    /// Eine Liste der Benutzernamen für die GitHub‐Verwalter.
+    public var verwalter: [StrengerZeichenkette] {
+        get { return administrators }
+        set { administrators = newValue }
+    }
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(GitHubConfiguration.developmentNotes)
     /// Project specific development notes.
-    ///
-    /// There are no default development notes.
     public var developmentNotes: Markdown?
+    // @localization(🇩🇪DE) @crossReference(GitHubConfiguration.developmentNotes)
+    /// Besondere Entwicklungshinweise zum Projekt.
+    public var entwicklungshinweise: Markdown? {
+        get { return developmentNotes }
+        set { developmentNotes = newValue }
+    }
 
     private static func contributingTemplate(for localization: LocalizationIdentifier) -> StrictString? {
         guard let match = localization._reasonableMatch else {
@@ -57,6 +86,18 @@ public struct GitHubConfiguration : Codable {
         }
     }
 
+    // @localization(🇩🇪DE) @crossReference(GitHubConfiguration.contributingInstructions)
+    /// Die Mitwirkungsanweisungen.
+    ///
+    /// Wenn nicht angegeben, wird diese Einstellung aus den anderen GitHub‐Einstellungen hergeleitet.
+    ///
+    /// Mitwirkungsanweisungen sind Anweisungen in einer `CONTRIBUTING.md`‐Datei, zu der GitHub neue Mitwirkende hinweist.
+    public var mitwirkungsanweisungen: BequemeEinstellung<[Lokalisationskennzeichen: Markdown]> {
+        get { return contributingInstructions }
+        set { contributingInstructions = newValue }
+    }
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(GitHubConfiguration.contributingInstructions)
     /// The contributing instructions.
     ///
     /// By default, this is assembled from the other GitHub options.
@@ -123,6 +164,18 @@ public struct GitHubConfiguration : Codable {
         return result
     })
 
+    // @localization(🇩🇪DE) @crossReference(GitHubConfiguration.issueTemplates)
+    /// Die Themavorlagen.
+    ///
+    /// Wenn nicht angegeben, wird diese Einstellung aus den anderen GitHub‐Einstellungen hergeleitet.
+    ///
+    /// Eine Themavorlage ist eine Markdown‐Datei in einem `.github`‐Verzeichnis, die GitHub verwendet wenn jemand eine neue Thema erstellt.
+    public var themavorlagen: BequemeEinstellung<[Lokalisationskennzeichen: [Themavorlage]]> {
+        get { return issueTemplates }
+        set { issueTemplates = newValue }
+    }
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(GitHubConfiguration.issueTemplates)
     /// The issue templates.
     ///
     /// By default, these are assembled from the other GitHub options.
@@ -147,10 +200,22 @@ public struct GitHubConfiguration : Codable {
             return result
         })
 
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(GitHubConfiguration.pullRequestTemplate)
     /// The pull request template.
     ///
     /// This defaults to a generic template.
     ///
     /// A pull request template is a markdown file in a `.github` folder which GitHub uses when someone creates a new pull request.
     public var pullRequestTemplate: Markdown = StrictString(Resources.pullRequestTemplate)
+    // @localization(🇩🇪DE) @crossReference(GitHubConfiguration.pullRequestTemplate)
+    /// Eine Abziehungsanforderungsvorlage.
+    ///
+    /// Wenn nicht angegeben, wird eine allgemeine Vorlage verwendet.
+    ///
+    /// Eine Abziehungsanforderungsvorlage ist eine Markdown‐Datei in einem `.github`‐Verzeichnis, die GitHub verwendet wenn jemand eine neue Abziehungsanforderung erstellt.
+    public var abziehungsanforderungsvorlage: Markdown {
+        get { return pullRequestTemplate }
+        set { pullRequestTemplate = newValue }
+    }
 }

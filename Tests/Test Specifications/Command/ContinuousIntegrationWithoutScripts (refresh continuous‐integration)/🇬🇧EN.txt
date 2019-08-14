@@ -1,0 +1,6 @@
+$ workspace refresh continuous‐integration •no‐colour
+
+Refreshing continuous integration configuration...
+
+Continuous integration requires workflow scripts to be present. (provideWorkflowScripts)
+9223372036854775807

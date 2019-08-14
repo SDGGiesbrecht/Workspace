@@ -2,9 +2,11 @@
  InterfaceLocalization.swift
 
  This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des qeulloffenen Workspace‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
  Copyright ©2017–2019 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2017–2019 Jeremy David Giesbrecht und die Mitwirkenden des Workspace‐Projekts.
 
  Soli Deo gloria.
 
@@ -18,10 +20,14 @@ public enum InterfaceLocalization : String, InputLocalization, Localization {
 
     // MARK: - Cases
 
+    case englishUnitedKingdom = "en\u{2D}GB"
+    case englishUnitedStates = "en\u{2D}US"
     case englishCanada = "en\u{2D}CA"
+
+    case deutschDeutschland = "de\u{2D}DE"
     // Do not forget to register new localizations in “Workspace.swift”, and to localize the configuration API.
 
     // MARK: - Localization
 
-    public static let fallbackLocalization = InterfaceLocalization.englishCanada
+    public static let fallbackLocalization = InterfaceLocalization.englishUnitedKingdom
 }

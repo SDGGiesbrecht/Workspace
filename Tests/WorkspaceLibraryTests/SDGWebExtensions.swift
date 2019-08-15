@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Until available in SDGWeb.)
+// #workaround(SDGWeb 1.0.2, Until available in SDGWeb.)
 import WSGeneralTestImports
 
 import SDGWeb

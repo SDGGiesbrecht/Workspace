@@ -271,7 +271,7 @@ extension PackageRepository {
                             return warnings.filter { warning in
                                 if case .syntaxError(let syntax) = warning {
                                     let description = syntax.presentableDescription()
-                                    if description.contains("An attribute is unknown.\n--")
+                                    if description.contains("An attribute is unknown.\n\u{2D}\u{2D}")
                                         ∨ description.contains("An attribute is unknown.\nonmouseenter")
                                         ∨ description.contains("An attribute is unknown.\nonmouseleave") {
                                         return false

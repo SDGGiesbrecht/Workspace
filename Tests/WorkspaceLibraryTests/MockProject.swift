@@ -260,7 +260,26 @@ extension PackageRepository {
 
                     let documentationDirectory = location.appendingPathComponent("docs")
                     if (try? documentationDirectory.checkResourceIsReachable()) == true {
-                        let warnings = Site<InterfaceLocalization>.validate(site: documentationDirectory)
+                        var warnings = Site<InterfaceLocalization>.validate(site: documentationDirectory)
+
+                        // #workaround(Mishandled by SDGWeb.)
+                        warnings = warnings.mapValues { warnings in
+                            return warnings.filter { warning in
+                                if case .syntaxError(let syntax) = warning {
+                                    let description = syntax.presentableDescription()
+                                    if description.contains("An attribute is unknown.\n--")
+                                        ∨ description.contains("An attribute is unknown.\nonmouseenter")
+                                        ∨ description.contains("An attribute is unknown.\nonmouseleave") {
+                                        return false
+                                    }
+                                }
+                                return true
+                            }
+                        }
+                        warnings = warnings.filter({ (_, warnings) in
+                            return ¬warnings.isEmpty
+                        })
+
                         if ¬warnings.isEmpty {
                             let files = warnings.keys.sorted()
                             let warningList = files.map({ url in

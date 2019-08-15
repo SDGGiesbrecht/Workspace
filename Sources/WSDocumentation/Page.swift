@@ -41,8 +41,17 @@ internal class Page {
     private static func watermark(localization: LocalizationIdentifier) -> StrictString {
         let resolved = localization._bestMatch
 
-        // #workaround(Only English page exists right now.)
-        let targetURL: StrictString = "https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Workspace.html"
+        let targetURL: StrictString
+        switch resolved {
+        case .englishUnitedKingdom:
+            targetURL = "https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Workspace.html"
+        case .englishUnitedStates:
+            targetURL = "https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Workspace.html"
+        case .englishCanada:
+            targetURL = "https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Workspace.html"
+        case .deutschDeutschland:
+            targetURL = "https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Workspace.html"
+        }
 
         let name: StrictString
         switch resolved {

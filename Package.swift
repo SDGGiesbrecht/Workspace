@@ -502,7 +502,8 @@ let package = Package(
             "WSGeneralTestImports",
             "WSCustomTask",
             .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-            .product(name: "SDGCommandLine", package: "SDGCommandLine")
+            .product(name: "SDGCommandLine", package: "SDGCommandLine"),
+            .product(name: "SDGWeb", package: "SDGWeb")
             ]),
         .target(name: "test‐ios‐simulator", dependencies: [
             "WSGeneralImports",

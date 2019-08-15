@@ -690,7 +690,6 @@ class APITests : TestCase {
         let builtIn = configuration.fileHeaders.copyrightNotice
         configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
             var result = builtIn.resolve(configuration)
-            result["🇩🇪DE"] = "#dates"
             result["🇫🇷FR"] = "#dates"
             result["🇬🇷ΕΛ"] = "#dates"
             result["🇮🇱עב"] = "#dates"
@@ -760,7 +759,6 @@ class APITests : TestCase {
         let builtIn = configuration.fileHeaders.copyrightNotice
         configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
             var result = builtIn.resolve(configuration)
-            result["🇩🇪DE"] = "#dates"
             result["🇫🇷FR"] = "#dates"
             result["🇬🇷ΕΛ"] = "#dates"
             result["🇮🇱עב"] = "#dates"
@@ -826,7 +824,6 @@ class APITests : TestCase {
         let builtIn = configuration.fileHeaders.copyrightNotice
         configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
             var result = builtIn.resolve(configuration)
-            result["🇩🇪DE"] = "#dates"
             result["🇫🇷FR"] = "#dates"
             result["🇬🇷ΕΛ"] = "#dates"
             result["🇮🇱עב"] = "#dates"

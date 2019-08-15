@@ -265,10 +265,6 @@ extension PackageRepository {
                         where manifest.lastPathComponent == "XCTestManifests.swift" {
                             try? FileManager.default.removeItem(at: manifest)
                     }
-                    /// Documentation not generated on Linux.
-                    if location.lastPathComponent == "PartialReadMe" {
-                        try? FileManager.default.removeItem(at: location.appendingPathComponent("docs"))
-                    }
 
                     let afterLocation = PackageRepository.afterDirectory(for: location.lastPathComponent)
                     if overwriteSpecificationInsteadOfFailing ∨ (try? afterLocation.checkResourceIsReachable()) ≠ true {

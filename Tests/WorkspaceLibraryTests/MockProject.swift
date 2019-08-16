@@ -275,7 +275,8 @@ extension PackageRepository {
                                         ∨ description.contains("An attribute is unknown.\nonmouseenter")
                                         ∨ description.contains("An attribute is unknown.\nonmouseleave")
                                         ∨ description.contains("A tag is empty.\n<>")
-                                        ∨ description.contains("A greater‐than sign has no corresponding less‐than sign.") {
+                                        ∨ description.contains("A greater‐than sign has no corresponding less‐than sign.")
+                                        ∨ description.contains("An attribute is unknown.\nclass=\u{22}punctuation\u{22}>\u{2D}") {
                                         return false
                                     }
                                 }

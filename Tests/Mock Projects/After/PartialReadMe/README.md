@@ -16,7 +16,7 @@ Simply add PartialReadMe as a dependency in `Package.swift`:
 let package = Package(
     name: "MyPackage",
     dependencies: [
-        .package(url: "https://somewhere.com", .upToNextMinor(from: Version(0, 1, 0))),
+        .package(url: "http://example.com", .upToNextMinor(from: Version(0, 1, 0))),
     ],
     targets: [
         .target(name: "MyTarget", dependencies: [

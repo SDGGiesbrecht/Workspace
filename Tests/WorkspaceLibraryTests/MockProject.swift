@@ -273,7 +273,8 @@ extension PackageRepository {
                                     let description = syntax.presentableDescription()
                                     if description.contains("An attribute is unknown.\n\u{2D}\u{2D}")
                                         ∨ description.contains("An attribute is unknown.\nonmouseenter")
-                                        ∨ description.contains("An attribute is unknown.\nonmouseleave") {
+                                        ∨ description.contains("An attribute is unknown.\nonmouseleave")
+                                        ∨ description.contains("A tag is empty.\n<>") {
                                         return false
                                     }
                                 }

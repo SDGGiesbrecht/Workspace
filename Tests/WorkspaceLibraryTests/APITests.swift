@@ -475,7 +475,7 @@ class APITests : TestCase {
         configuration.optimizeForTests()
         configuration.documentation.localizations = ["zxx"]
         configuration.xcode.manage = true
-        configuration.documentation.repositoryURL = URL(string: "domain.tld")!
+        configuration.documentation.repositoryURL = URL(string: "http://example.com")!
         PackageRepository(mock: "FailingDocumentationCoverage").test(commands: [
             ["validate", "documentation‐coverage"],
             ["document"]

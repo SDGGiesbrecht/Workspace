@@ -258,8 +258,8 @@ extension PackageRepository {
                         testCommand(Workspace.command, with: command, localizations: localizations, uniqueTestName: specificationName, postprocess: postprocess, overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing, file: file, line: line)
                     }
 
-                    // #workaround(Not passing yet.)
-                    let runExtraTests = { return false }()
+                    // #workaround(SDGWeb 1.0.2, Maintain toggle until SDGWeb is upgraded and everything passes.)
+                    let runExtraTests = { return true }()
 
                     let documentationDirectory = location.appendingPathComponent("docs")
                     if (try? documentationDirectory.checkResourceIsReachable()) == true,
@@ -273,7 +273,10 @@ extension PackageRepository {
                                     let description = syntax.presentableDescription()
                                     if description.contains("An attribute is unknown.\n\u{2D}\u{2D}")
                                         ∨ description.contains("An attribute is unknown.\nonmouseenter")
-                                        ∨ description.contains("An attribute is unknown.\nonmouseleave") {
+                                        ∨ description.contains("An attribute is unknown.\nonmouseleave")
+                                        ∨ description.contains("A tag is empty.\n<>")
+                                        ∨ description.contains("A greater‐than sign has no corresponding less‐than sign.")
+                                        ∨ description.contains("An attribute is unknown.\nclass=\u{22}punctuation\u{22}>\u{2D}") {
                                         return false
                                     }
                                 }

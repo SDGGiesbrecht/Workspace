@@ -794,10 +794,10 @@ internal struct PackageInterface {
                 let parsed = try SyntaxTreeParser.parse(String(documentationMarkup))
                 let documentation = parsed.api().first!.documentation.last?.documentationComment
 
-                var content = ""
+                var pageContent = ""
                 for paragraph in documentation?.discussionEntries ?? [] { // @exempt(from: tests)
-                    content.append("\n")
-                    content.append(contentsOf: paragraph.renderedHTML(
+                    pageContent.append("\n")
+                    pageContent.append(contentsOf: paragraph.renderedHTML(
                         localization: localization.code,
                         symbolLinks: symbolLinks[localization]!))
                 }
@@ -808,7 +808,7 @@ internal struct PackageInterface {
                     navigationPath: SymbolPage.generateNavigationPath(
                         localization: localization,
                         pathToSiteRoot: pathToSiteRoot,
-                        allLocalizations: localizations.map({ localization in
+                        allLocalizations: localizations.lazy.filter({ content[$0] ≠ nil }).map({ localization in
                             return (localization: localization, path: location(localization))
                         }),
                         navigationPath: [
@@ -823,7 +823,7 @@ internal struct PackageInterface {
                     compilationConditions: nil,
                     constraints: nil,
                     title: HTML.escapeTextForCharacterData(pageTitle),
-                    content: StrictString(content),
+                    content: StrictString(pageContent),
                     extensions: "",
                     copyright: copyright(for: localization, status: status))
                 let url = outputDirectory.appendingPathComponent(String(location(localization)))

@@ -683,7 +683,7 @@ class APITests : TestCase {
         configuration.optimizeForTests()
         configuration.xcode.manage = true
         configuration.documentation.currentVersion = Version(0, 1, 0)
-        configuration.documentation.repositoryURL = URL(string: "https://somewhere.com")!
+        configuration.documentation.repositoryURL = URL(string: "http://example.com")!
         configuration.documentation.localizations = ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"]
         configuration.documentation.api.yearFirstPublished = 2018
         configuration.gitHub.developmentNotes = "..."

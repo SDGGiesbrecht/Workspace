@@ -799,7 +799,7 @@ internal struct PackageInterface {
                     pageContent.append("\n")
                     pageContent.append(contentsOf: paragraph.renderedHTML(
                         localization: localization.code,
-                        symbolLinks: symbolLinks[localization]!))
+                        symbolLinks: symbolLinks[localization]!.mapValues { String(pathToSiteRoot) + $0 }))
                 }
 
                 let page = Page(

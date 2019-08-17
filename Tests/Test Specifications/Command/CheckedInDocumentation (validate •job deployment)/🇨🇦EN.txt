@@ -224,15 +224,7 @@ A symbol has no description:
 TypeAlias.🇩🇪DE
 
 ...Array...
-
-A symbol has no description:
-Array.constrained().🇩🇪DE
-
 ...Bool...
-
-A symbol has no description:
-Bool.extensionMethod().🇩🇪DE
-
 ...AmericanEnglishProtocol...
 
 A symbol has no description:
@@ -345,6 +337,18 @@ A symbol has no description:
 
 A symbol has no description:
 Precedence.🇩🇪DE
+
+
+A symbol has no description:
+Array.constrained().🇩🇪DE
+
+
+A symbol has no description:
+Bool.extensionMethod().🇩🇪DE
+
+
+A symbol has no description:
+Bool.extensionMethodInAnotherModule().🇩🇪DE
 
 
 A symbol has no description:

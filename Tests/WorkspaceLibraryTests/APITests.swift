@@ -105,7 +105,7 @@ class APITests : TestCase {
 
         let configuration = WorkspaceConfiguration()
         configuration.optimizeForTests()
-        configuration.documentation.repositoryURL = URL(string: "does://not.exist.git")!
+        configuration.documentation.repositoryURL = URL(string: "http://example.com")!
         configuration.documentation.currentVersion = Version(1, 0, 0)
         configuration.documentation.api.enforceCoverage = false
         configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "🇩🇪DE", "zxx"]

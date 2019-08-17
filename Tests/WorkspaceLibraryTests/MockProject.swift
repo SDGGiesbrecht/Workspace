@@ -258,7 +258,7 @@ extension PackageRepository {
                         testCommand(Workspace.command, with: command, localizations: localizations, uniqueTestName: specificationName, postprocess: postprocess, overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing, file: file, line: line)
                     }
 
-                    // #workaround(SDGWeb 1.0.2, Maintain toggle until SDGWeb is upgraded and everything passes.)
+                    // #workaround(SDGWeb 2.0.0, Maintain toggle until SDGWeb is upgraded and everything passes.)
                     let runExtraTests = { return true }()
 
                     let documentationDirectory = location.appendingPathComponent("docs")
@@ -266,17 +266,12 @@ extension PackageRepository {
                         runExtraTests {
                         var warnings = Site<InterfaceLocalization>.validate(site: documentationDirectory)
 
-                        // #workaround(SDGWeb 1.0.2, Mishandled by SDGWeb.)
+                        // #workaround(SDGWeb 2.0.0, Mishandled by SDGWeb.)
                         warnings = warnings.mapValues { warnings in
                             return warnings.filter { warning in
                                 if case .syntaxError(let syntax) = warning {
                                     let description = syntax.presentableDescription()
-                                    if description.contains("An attribute is unknown.\n\u{2D}\u{2D}")
-                                        ∨ description.contains("An attribute is unknown.\nonmouseenter")
-                                        ∨ description.contains("An attribute is unknown.\nonmouseleave")
-                                        ∨ description.contains("A tag is empty.\n<>")
-                                        ∨ description.contains("A greater‐than sign has no corresponding less‐than sign.")
-                                        ∨ description.contains("An attribute is unknown.\nclass=\u{22}punctuation\u{22}>\u{2D}") {
+                                    if description.contains("An attribute is unknown.\ndata\u{2D}") {
                                         return false
                                     }
                                 }

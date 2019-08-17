@@ -641,15 +641,30 @@ internal struct PackageInterface {
                         switch symbol {
                         case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
                             break
-                        case .type, .protocol, .extension:
+                        case .extension:
+                            break // Iterated separately below.
+                        case .type, .protocol:
                             try outputNestedSymbols(of: symbol, namespace: [symbol], to: outputDirectory, localization: localization, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
                         }
                     }
             }
 
-            for `extension` in packageAPI.allExtensions.filter({ ¬packageAPI.uniqueExtensions.contains($0) }) {
+            for `extension` in packageAPI.allExtensions {
                 let apiElement = APIElement.extension(`extension`)
-                try outputNestedSymbols(of: apiElement, namespace: [apiElement], to: outputDirectory, localization: localization, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
+
+                var namespace = apiElement
+                for type in packageAPI.types where `extension`.isExtension(of: type) {
+                    namespace = APIElement.type(type)
+                    break
+                }
+                if namespace == apiElement /* Still not resolved. */ {
+                    for `protocol` in packageAPI.protocols where `extension`.isExtension(of: `protocol`) {
+                        namespace = APIElement.protocol(`protocol`)
+                        break
+                    }
+                }
+
+                try outputNestedSymbols(of: apiElement, namespace: [namespace], to: outputDirectory, localization: localization, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
             }
         }
     }

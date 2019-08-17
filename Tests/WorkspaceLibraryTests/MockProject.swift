@@ -271,7 +271,7 @@ extension PackageRepository {
                             return warnings.filter { warning in
                                 if case .syntaxError(let syntax) = warning {
                                     let description = syntax.presentableDescription()
-                                    if false {
+                                    if description.contains("An attribute is unknown.\ndata\u{2D}") {
                                         return false
                                     }
                                 }

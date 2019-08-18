@@ -678,7 +678,8 @@ internal struct PackageInterface {
         output: Command.Output,
         coverageCheckOnly: Bool) throws {
 
-        for symbol in parent.children where symbol.receivesPage ∧ symbol.exists(in: localization) {
+        for symbol in [parent.children, parent.localizedChildren].joined()
+            where symbol.receivesPage ∧ symbol.exists(in: localization) {
             try autoreleasepool {
                 let location = symbol.pageURL(in: outputDirectory, for: localization)
 

@@ -288,6 +288,7 @@ extension APIElement {
         case localizedDocumentation
         case crossReference
         case localizedEquivalentPaths
+        case localizedChildren
         case relativePagePath
         case types
         case `extensions`
@@ -328,10 +329,19 @@ extension APIElement {
 
     internal var localizedEquivalentPaths: [LocalizationIdentifier: StrictString] {
         get {
-            return (extendedProperties[.localizedEquivalentPaths] as? [LocalizationIdentifier: StrictString]) ?? [:] // @exempt(from: tests) Never nil.
+            return (extendedProperties[.localizedEquivalentPaths] as? [LocalizationIdentifier: StrictString]) ?? [:]
         }
         nonmutating set {
             extendedProperties[.localizedEquivalentPaths] = newValue
+        }
+    }
+
+    internal var localizedChildren: [APIElement] {
+        get {
+            return (extendedProperties[.localizedChildren] as? [APIElement]) ?? []
+        }
+        nonmutating set {
+            extendedProperties[.localizedChildren] = newValue
         }
     }
 
@@ -394,6 +404,7 @@ extension APIElement {
     private func addLocalizedPaths(from other: APIElement) {
         for (localization, _) in other.localizedDocumentation {
             localizedEquivalentPaths[localization] = other.relativePagePath[localization]
+            localizedChildren.append(contentsOf: other.children)
         }
     }
 

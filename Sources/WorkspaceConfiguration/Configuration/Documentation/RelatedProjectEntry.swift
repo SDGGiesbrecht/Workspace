@@ -26,9 +26,15 @@ public enum RelatedProjectEntry : Decodable, Encodable {
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     // @crossReference(RelatedProjectEntry.project(url:))
     /// A related project with its repository URL.
+    ///
+    /// - Parameters:
+    ///     - url: The URL.
     case project(url: URL)
     // @localization(🇩🇪DE) @crossReference(RelatedProjectEntry.project(url:))
     /// Ein verwandtes Projekt mit sein Lagerressourcenzeiger.
+    ///
+    /// - Parameters:
+    ///     - ressourcenzeiger: Der Ressourcenzeiger.
     public static func projekt(ressourcenzeiger: EinheitlicherRessourcenzeiger) -> EintragZuVerwantdenProjekten {
         return .project(url: ressourcenzeiger)
     }
@@ -36,9 +42,15 @@ public enum RelatedProjectEntry : Decodable, Encodable {
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     // @crossReference(RelatedProjectEntry.heading(text:))
     /// A heading.
+    ///
+    /// - Parameters:
+    ///     - text: The text.
     case heading(text: [LocalizationIdentifier: StrictString])
     // @localization(🇩🇪DE) @crossReference(RelatedProjectEntry.heading(text:))
     /// Eine Überschrift.
+    ///
+    /// - Parameters:
+    ///     - text: Der Text.
     public static func überschrift(
         text: [Lokalisationskennzeichen: StrengerZeichenkette]) -> EintragZuVerwantdenProjekten {
         return .heading(text: text)

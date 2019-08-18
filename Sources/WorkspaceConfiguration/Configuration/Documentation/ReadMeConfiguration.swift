@@ -178,8 +178,8 @@ public struct ReadMeConfiguration : Codable {
     /// Das Ergebnis wird `nil` wenn `dokumentationsRessourcenzeiger` nicht angegeben ist, oder die angeforderte Lokalisation nicht unterstützt ist.
     ///
     /// - Parameters:
-    ///     - configuration: The configuration based on which the links should be constructed.
-    ///     - localization: The localization to use.
+    ///     - konfiguration: The configuration based on which the links should be constructed.
+    ///     - lokalisation: The localization to use.
     public static func programmierschnittstellenverweis(
         für konfiguration: ArbeitsbereichKonfiguration,
         auf lokalisation: Lokalisationskennzeichen) -> StrengerZeichenkette? {

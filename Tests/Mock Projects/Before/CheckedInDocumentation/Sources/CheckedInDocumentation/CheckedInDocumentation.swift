@@ -324,3 +324,17 @@ public protocol BritishEnglishProtocol {}
 // @localization(🇺🇸EN) @crossReference(Protocol)
 /// An American English protocol.
 public protocol AmericanEnglishProtocol {}
+
+// @localization(🇬🇧EN) @crossReference(Aliased)
+public typealias Alias
+// @localization(🇨🇦EN) // @localization(🇺🇸EN) @localization(zxx) @crossReference(Aliased)
+/// ...
+public struct Aliased {
+    // @localization(🇨🇦EN) // @localization(🇺🇸EN) @localization(zxx) @crossReference(aliased)
+    public var aliased: String?
+    // @localization(🇬🇧EN) @crossReference(aliased)
+    public var alias: String? {
+        get { return aliased }
+        set { aliased = newValue }
+    }
+}

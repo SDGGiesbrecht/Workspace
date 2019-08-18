@@ -76,6 +76,12 @@ Extensions
 </div>
 <div>
 <a class="heading" onclick="toggleIndexSectionVisibility(this)">Typen</a>
+<a href="../../🇩🇪DE/Typen/Alias.html">
+Alias
+</a>
+<a href="../../🇩🇪DE/Typen/Aliased.html">
+Aliased
+</a>
 <a href="../../🇩🇪DE/Typen/BaseClass.html">
 BaseClass
 </a>
@@ -112,12 +118,6 @@ Bool
 </div>
 <div>
 <a class="heading" onclick="toggleIndexSectionVisibility(this)">Protokolle</a>
-<a href="../../🇩🇪DE/Protokolle/AmericanEnglishProtocol.html">
-AmericanEnglishProtocol
-</a>
-<a href="../../🇩🇪DE/Protokolle/BritishEnglishProtocol.html">
-BritishEnglishProtocol
-</a>
 <a href="../../🇩🇪DE/Protokolle/CanadianEnglishProtocol.html">
 CanadianEnglishProtocol
 </a>
@@ -138,12 +138,6 @@ demonstrateMoreParameters(composition:array:dictionary:function:attributed:)
 </a>
 <a href="../../🇩🇪DE/Funktionen/demonstrateParameters(simple:metatype:member:optional:unwrapped:tuple:).html">
 demonstrateParameters(simple:metatype:member:optional:unwrapped:tuple:)
-</a>
-<a href="../../🇩🇪DE/Funktionen/doSomethingInAmericanEnglish().html">
-doSomethingInAmericanEnglish()
-</a>
-<a href="../../🇩🇪DE/Funktionen/doSomethingInBritishEnglish().html">
-doSomethingInBritishEnglish()
 </a>
 <a href="../../🇩🇪DE/Funktionen/doSomethingInCanadianEnglish().html">
 doSomethingInCanadianEnglish()
@@ -194,13 +188,39 @@ Precedence
       
      </div>
 
-
+<div class="description">
+<p>...</p>
+</div>
 <section class="declaration">
 <h2>Festlegung</h2>
 <code class="swift blockquote"><span class="keyword">func</span> <span class="internal identifier">demonstrateMoreParameters</span><span class="punctuation">(</span><span class="internal identifier">composition</span><span class="punctuation">:</span> <span class="external identifier">Composition</span> <span class="punctuation">&#x0026;</span> <span class="external identifier">Simple</span><span class="punctuation">&#x003C;</span><span class="punctuation">(</span><span class="keyword">_</span> <span class="external identifier">nestedInComposition</span><span class="punctuation">:</span> <a href="../../🇩🇪DE/Erweiterungen/Bool.html"><span class="external identifier">Bool</span></a><span class="punctuation">)</span> <span class="punctuation">-&#x003E;</span> <span class="external identifier">Void</span><span class="punctuation">&#x003E;</span><span class="punctuation">,</span> <span class="internal identifier">array</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="external identifier">Simple</span><span class="punctuation">&#x003C;</span><span class="punctuation">(</span><span class="keyword">_</span> <span class="external identifier">nestedInArray</span><span class="punctuation">:</span> <a href="../../🇩🇪DE/Erweiterungen/Bool.html"><span class="external identifier">Bool</span></a><span class="punctuation">)</span> <span class="punctuation">-&#x003E;</span> <span class="external identifier">Void</span><span class="punctuation">&#x003E;</span><span class="punctuation">]</span><span class="punctuation">,</span> <span class="internal identifier">dictionary</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="external identifier">Simple</span><span class="punctuation">&#x003C;</span><span class="punctuation">(</span><span class="keyword">_</span> <span class="external identifier">nestedInDictionaryKey</span><span class="punctuation">:</span> <a href="../../🇩🇪DE/Erweiterungen/Bool.html"><span class="external identifier">Bool</span></a><span class="punctuation">)</span> <span class="punctuation">-&#x003E;</span> <span class="external identifier">Void</span><span class="punctuation">&#x003E;</span><span class="punctuation">:</span> <span class="external identifier">Simple</span><span class="punctuation">&#x003C;</span><span class="punctuation">(</span><span class="keyword">_</span> <span class="external identifier">nestedInDictionaryValue</span><span class="punctuation">:</span> <a href="../../🇩🇪DE/Erweiterungen/Bool.html"><span class="external identifier">Bool</span></a><span class="punctuation">)</span> <span class="punctuation">-&#x003E;</span> <span class="external identifier">Void</span><span class="punctuation">&#x003E;</span><span class="punctuation">]</span><span class="punctuation">,</span> <span class="internal identifier">function</span><span class="punctuation">:</span> <span class="punctuation">(</span><span class="keyword">_</span> <span class="external identifier">nestedInFunction</span><span class="punctuation">:</span> <a href="../../🇩🇪DE/Erweiterungen/Bool.html"><span class="external identifier">Bool</span></a><span class="punctuation">)</span> <span class="punctuation">-&#x003E;</span> <span class="external identifier">Void</span><span class="punctuation">,</span> <span class="internal identifier">attributed</span><span class="punctuation">:</span> <span class="keyword">inout</span> <span class="external identifier">Simple</span><span class="punctuation">&#x003C;</span><span class="punctuation">(</span><span class="keyword">_</span> <span class="external identifier">nestedInAttributed</span><span class="punctuation">:</span> <a href="../../🇩🇪DE/Erweiterungen/Bool.html"><span class="external identifier">Bool</span></a><span class="punctuation">)</span> <span class="punctuation">-&#x003E;</span> <span class="external identifier">Void</span><span class="punctuation">&#x003E;</span><span class="punctuation">)</span></code>
 </section>
 
-
+<section>
+<h2>Übergabewerte</h2>
+<dl><dt><code class="swift"><span class="internal identifier">composition</span></code></dt>
+<dd><p>A composition parameter.</p></dd>
+<dt><code class="swift"><span class="internal identifier">nestedInComposition</span></code></dt>
+<dd><p>A nested parameter.</p></dd>
+<dt><code class="swift"><span class="internal identifier">array</span></code></dt>
+<dd><p>An array parameter.</p></dd>
+<dt><code class="swift"><span class="internal identifier">nestedInArray</span></code></dt>
+<dd><p>A nested parameter.</p></dd>
+<dt><code class="swift"><span class="internal identifier">dictionary</span></code></dt>
+<dd><p>A dictionary parameter.</p></dd>
+<dt><code class="swift"><span class="internal identifier">nestedInDictionaryKey</span></code></dt>
+<dd><p>A nested parameter.</p></dd>
+<dt><code class="swift"><span class="internal identifier">nestedInDictionaryValue</span></code></dt>
+<dd><p>A nested parameter.</p></dd>
+<dt><code class="swift"><span class="internal identifier">function</span></code></dt>
+<dd><p>A function parameter.</p></dd>
+<dt><code class="swift"><span class="internal identifier">nestedInFunction</span></code></dt>
+<dd><p>A nested parameter.</p></dd>
+<dt><code class="swift"><span class="internal identifier">attributed</span></code></dt>
+<dd><p>An attributed parameter.</p></dd>
+<dt><code class="swift"><span class="internal identifier">nestedInAttributed</span></code></dt>
+<dd><p>A nested parameter.</p></dd></dl>
+</section>
 
 
 

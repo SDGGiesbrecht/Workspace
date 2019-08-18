@@ -326,6 +326,7 @@ public protocol BritishEnglishProtocol {}
 public protocol AmericanEnglishProtocol {}
 
 // @localization(🇬🇧EN) @crossReference(Aliased)
+/// ...
 public typealias Alias = Aliased
 // @localization(🇨🇦EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx) @crossReference(Aliased)
 /// ...

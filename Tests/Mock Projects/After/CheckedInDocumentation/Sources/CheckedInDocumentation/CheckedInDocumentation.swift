@@ -331,8 +331,10 @@ public typealias Alias = Aliased
 /// ...
 public struct Aliased {
     // @localization(🇨🇦EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx) @crossReference(aliased)
+    /// ...
     public var aliased: String?
     // @localization(🇬🇧EN) @crossReference(aliased)
+    /// ...
     public var alias: String? {
         get { return aliased }
         set { aliased = newValue }

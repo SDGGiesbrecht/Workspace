@@ -25,6 +25,7 @@ public enum RelatedProjectEntry : Decodable, Encodable {
 
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     // @crossReference(RelatedProjectEntry.project(url:))
+    /// A related project with its repository URL.
     case project(url: URL)
     // @localization(🇩🇪DE) @crossReference(RelatedProjectEntry.project(url:))
     /// Ein verwandtes Projekt mit sein Lagerressourcenzeiger.
@@ -37,6 +38,7 @@ public enum RelatedProjectEntry : Decodable, Encodable {
 
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     // @crossReference(RelatedProjectEntry.heading(text:))
+    /// A heading.
     case heading(text: [LocalizationIdentifier: StrictString])
     // @localization(🇩🇪DE) @crossReference(RelatedProjectEntry.heading(text:))
     /// Eine Überschrift.

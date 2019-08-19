@@ -742,6 +742,9 @@ internal struct PackageInterface {
 
                 for otherLocalization in localizations {
                     let localized = parent.interfaces[otherLocalization]!.subcommands.first(where: { $0.identifier == subcommand.identifier })!
+                    if otherLocalization ≠ localization {
+                        information.interfaces[otherLocalization] = localized
+                    }
 
                     var nestedPagePath = parent.relativePagePath[otherLocalization]!
                     nestedPagePath.removeLast(5) // .html

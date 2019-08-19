@@ -4,7 +4,7 @@ struct CheckedInDocumentation {
     var text = "Hello, World!"
 }
 
-// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// A class.
 ///
 /// Overview.
@@ -48,17 +48,17 @@ struct CheckedInDocumentation {
 /// - Keyword: keyword
 public class Class : AmericanEnglishProtocol, BritishEnglishProtocol, CanadianEnglishProtocol {}
 
-// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// A structure.
 public struct Structure : Equatable {
 
-    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
     /// A type property.
     ///
     /// Discussion.
     public static var typeProperty: Bool = false
 
-    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
     /// A type method.
     ///
     /// - Complexity: O(?)
@@ -85,7 +85,7 @@ public struct Structure : Equatable {
         return 0
     }
 
-    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
     /// An operator.
     ///
     /// - Parameters:
@@ -100,18 +100,18 @@ public struct Structure : Equatable {
         return true
     }
 
-    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
     /// An initializer.
     ///
     /// - Parameters:
     ///     - parameterName: A parameter.
     public init(label parameterName: Bool) {}
 
-    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
     /// A property.
     public var typeProperty: Bool = false
 
-    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
     /// A subscript.
     ///
     /// - Parameters:
@@ -121,22 +121,22 @@ public struct Structure : Equatable {
     }
 }
 
-// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// An enumeration.
 public enum Enumeration {
 
-    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
     /// A case.
     case enumerationCase
 }
 
-// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// A type alias.
 public typealias TypeAlias = Structure
 
 extension Bool {
 
-    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
     /// An extension method.
     ///
     /// - MutatingVariant: mutatingVariant()
@@ -145,19 +145,19 @@ extension Bool {
     public func extensionMethod() {}
 }
 
-// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// A protocol
 public protocol Protocol {
 
-    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
     /// An associated type.
     associatedtype AssociatedType
 
-    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
     /// A protocol requirement.
     func protocolRequirement()
 
-    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
     /// A customization point.
     func customizationPoint()
 }
@@ -165,45 +165,45 @@ extension Protocol {
 
     public func customizationPoint() {}
 
-    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
     /// A provided extension.
     public func providedExtension() {}
 }
 
-// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// A function.
 public func function() {}
 
-// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// A global variable.
 public var globalVariable: Bool = false
 
 #if canImport(AppKit)
-// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// Conditionally compiled.
 public func conditionallyCompiled() {}
 #endif
 
-// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// A generic structure.
 public struct GenericStructure<GenericParameter> {}
 
 extension Array where Element : Equatable {
-    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
     /// A constrained method.
     public func constrained() {}
 }
 
 // @localization(zxx)
 /// ...
-// @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇬🇧EN)
+// @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇩🇪DE)
 /// An operator.
 infix operator ≠
-// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// A precedence.
 precedencegroup Precedence {}
 
-// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// ...
 ///
 /// - Parameters:
@@ -229,7 +229,7 @@ public func demonstrateParameters(
     tuple: (nestedInTuple: Bool, alsoNestedInTuple: Bool)
     ) {}
 
-// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// ...
 ///
 /// - Parameters:
@@ -252,15 +252,15 @@ public func demonstrateMoreParameters(
     attributed: inout Simple<(_ nestedInAttributed: Bool) -> Void>
     ) {}
 
-// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// An intermediate protocol.
 public protocol IntermediateProtocol : Protocol {
-    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
     /// A method from the intermediate protocol.
     func intermediateProtocolMethod()
 }
 
-// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// A top‐level conformer.
 public struct TopConformer : IntermediateProtocol {
     public typealias AssociatedType = Bool
@@ -268,14 +268,14 @@ public struct TopConformer : IntermediateProtocol {
     public func protocolRequirement() {}
 }
 
-// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// A variable with a closure type.
 ///
 /// - Parameters:
 ///     - aParameter: A parameter.
 public var variable: (_ aParameter: Type) -> Void = { _ in }
 
-// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// A function with a closure in a tuple.
 ///
 /// - Parameters:
@@ -285,21 +285,21 @@ public var variable: (_ aParameter: Type) -> Void = { _ in }
 ///     - tupleHalfB: The second element of the tuple.
 public func function(parameter aParameter: (tupleHalfA: (_ closureParameter: Int) -> Void, tupleHalfB: Bool)) {}
 
-// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// A base class.
 public class BaseClass {
-    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
     /// A base class method.
     public func baseClassMethod() {}
 }
 
-// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(zxx)
+// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// A subclass.
 public class Subclass : BaseClass {
     public override func baseClassMethod() {}
 }
 
-// @localization(zxx)
+// @localization(🇩🇪DE) @localization(zxx)
 /// ...
 // @localization(🇨🇦EN) @crossReference(doSomethingInCanadianEnglish())
 /// Does something in Canadian English.
@@ -313,7 +313,7 @@ public func doSomethingInBritishEnglish() {}
 /// Does something in American English.
 public func doSomethingInAmericanEnglish() {}
 
-// @localization(zxx)
+// @localization(🇩🇪DE) @localization(zxx)
 /// ...
 // @localization(🇨🇦EN) @crossReference(Protocol)
 /// A Canadian English protocol.
@@ -324,3 +324,20 @@ public protocol BritishEnglishProtocol {}
 // @localization(🇺🇸EN) @crossReference(Protocol)
 /// An American English protocol.
 public protocol AmericanEnglishProtocol {}
+
+// @localization(🇬🇧EN) @crossReference(Aliased)
+/// ...
+public typealias Alias = Aliased
+// @localization(🇨🇦EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx) @crossReference(Aliased)
+/// ...
+public struct Aliased {
+    // @localization(🇨🇦EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx) @crossReference(aliased)
+    /// ...
+    public var aliased: String?
+    // @localization(🇬🇧EN) @crossReference(aliased)
+    /// ...
+    public var alias: String? {
+        get { return aliased }
+        set { aliased = newValue }
+    }
+}

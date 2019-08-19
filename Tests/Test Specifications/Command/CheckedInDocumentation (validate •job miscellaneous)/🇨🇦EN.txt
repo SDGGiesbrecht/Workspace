@@ -56,12 +56,6 @@ Parsing “Extensions”...
 Loading inheritance from “Swift”...
 Processing API...
 Generating HTML...
-
-A symbol has no description:
-CheckedInDocumentation.🇩🇪DE
-(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
-Workspace will look for documentation on the line above “Package(name: "CheckedInDocumentation"”.)
-
 ...do‐something...
 ...help...
 ...version...
@@ -102,18 +96,6 @@ Workspace will look for documentation on the line above “Package(name: "Checke
 ...help...
 ...empty‐cache...
 ...help...
-
-A symbol has no description:
-CheckedInDocumentation.🇩🇪DE
-(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
-Workspace will look for documentation on the line above “.library(name: "CheckedInDocumentation"”.)
-
-
-A symbol has no description:
-Extensions.🇩🇪DE
-(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
-Workspace will look for documentation on the line above “.library(name: "Extensions"”.)
-
 ...CheckedInDocumentation...
 ...Extensions...
 ...CheckedInDocumentation...
@@ -121,21 +103,10 @@ Workspace will look for documentation on the line above “.library(name: "Exten
 ...CheckedInDocumentation...
 ...Extensions...
 ...CheckedInDocumentation...
-
-A symbol has no description:
-CheckedInDocumentation.🇩🇪DE
-(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
-Workspace will look for documentation on the line above “.target(name: "CheckedInDocumentation"”.)
-
 ...Extensions...
-
-A symbol has no description:
-Extensions.🇩🇪DE
-(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
-Workspace will look for documentation on the line above “.target(name: "Extensions"”.)
-
 ...CheckedInDocumentation...
 ...Extensions...
+...Alias...
 ...BaseClass...
 ...Class...
 ...Enumeration...
@@ -149,6 +120,7 @@ Workspace will look for documentation on the line above “.target(name: "Extens
 ...BritishEnglishProtocol...
 ...IntermediateProtocol...
 ...Protocol...
+...Aliased...
 ...BaseClass...
 ...Class...
 ...Enumeration...
@@ -162,6 +134,7 @@ Workspace will look for documentation on the line above “.target(name: "Extens
 ...AmericanEnglishProtocol...
 ...IntermediateProtocol...
 ...Protocol...
+...Aliased...
 ...BaseClass...
 ...Class...
 ...Enumeration...
@@ -175,233 +148,21 @@ Workspace will look for documentation on the line above “.target(name: "Extens
 ...CanadianEnglishProtocol...
 ...IntermediateProtocol...
 ...Protocol...
+...Aliased...
 ...BaseClass...
-
-A symbol has no description:
-BaseClass.🇩🇪DE
-
-
-A symbol has no description:
-BaseClass.baseClassMethod().🇩🇪DE
-
 ...Class...
-
-A symbol has no description:
-Class.🇩🇪DE
-
 ...Enumeration...
-
-A symbol has no description:
-Enumeration.🇩🇪DE
-
-
-A symbol has no description:
-Enumeration.enumerationCase.🇩🇪DE
-
 ...GenericStructure<GenericParameter>...
-
-A symbol has no description:
-GenericStructure<GenericParameter>.🇩🇪DE
-
 ...Structure...
-
-A symbol has no description:
-Structure.🇩🇪DE
-
-
-A symbol has no description:
-Structure.typeProperty.🇩🇪DE
-
-
-A symbol has no description:
-Structure.typeMethod(parameterOne:parameterTwo:).🇩🇪DE
-
-
-A symbol has mismatched parameter descriptions:
-Structure.typeMethod(parameterOne:parameterTwo:).🇩🇪DE
-(Expected: parameterOne, parameterTwo)
-
-
-A symbol has no description:
-Structure.init(label:).🇩🇪DE
-
-
-A symbol has mismatched parameter descriptions:
-Structure.init(label:).🇩🇪DE
-(Expected: parameterName)
-
-
-A symbol has no description:
-Structure.typeProperty.🇩🇪DE
-
-
-A symbol has no description:
-Structure.[_:].🇩🇪DE
-
-
-A symbol has mismatched parameter descriptions:
-Structure.[_:].🇩🇪DE
-(Expected: subscript)
-
-
-A symbol has no description:
-Structure.<(_:_:).🇩🇪DE
-
-
-A symbol has mismatched parameter descriptions:
-Structure.<(_:_:).🇩🇪DE
-(Expected: lhs, rhs)
-
 ...Subclass...
-
-A symbol has no description:
-Subclass.🇩🇪DE
-
 ...TopConformer...
-
-A symbol has no description:
-TopConformer.🇩🇪DE
-
 ...TypeAlias...
-
-A symbol has no description:
-TypeAlias.🇩🇪DE
-
 ...Array...
 ...Bool...
-...AmericanEnglishProtocol...
-
-A symbol has no description:
-AmericanEnglishProtocol.🇩🇪DE
-
-...BritishEnglishProtocol...
-
-A symbol has no description:
-BritishEnglishProtocol.🇩🇪DE
-
 ...CanadianEnglishProtocol...
-
-A symbol has no description:
-CanadianEnglishProtocol.🇩🇪DE
-
 ...IntermediateProtocol...
-
-A symbol has no description:
-IntermediateProtocol.🇩🇪DE
-
-
-A symbol has no description:
-IntermediateProtocol.intermediateProtocolMethod().🇩🇪DE
-
 ...Protocol...
-
-A symbol has no description:
-Protocol.🇩🇪DE
-
-
-A symbol has no description:
-Protocol.AssociatedType.🇩🇪DE
-
-
-A symbol has no description:
-Protocol.customizationPoint().🇩🇪DE
-
-
-A symbol has no description:
-Protocol.protocolRequirement().🇩🇪DE
-
-
-A symbol has no description:
-Protocol.providedExtension().🇩🇪DE
-
-
-A symbol has no description:
-conditionallyCompiled().🇩🇪DE
-
-
-A symbol has no description:
-demonstrateMoreParameters(composition:array:dictionary:function:attributed:).🇩🇪DE
-
-
-A symbol has mismatched parameter descriptions:
-demonstrateMoreParameters(composition:array:dictionary:function:attributed:).🇩🇪DE
-(Expected: composition, nestedInComposition, array, nestedInArray, dictionary, nestedInDictionaryKey, nestedInDictionaryValue, function, nestedInFunction, attributed, nestedInAttributed)
-
-
-A symbol has no description:
-demonstrateParameters(simple:metatype:member:optional:unwrapped:tuple:).🇩🇪DE
-
-
-A symbol has mismatched parameter descriptions:
-demonstrateParameters(simple:metatype:member:optional:unwrapped:tuple:).🇩🇪DE
-(Expected: simple, nestedInSimple, metatype, nestedInMetatype, member, nestedInMember, optional, nestedInOptional, unwrapped, nestedInUnwrapped, tuple, nestedInTuple, alsoNestedInTuple)
-
-
-A symbol has no description:
-doSomethingInAmericanEnglish().🇩🇪DE
-
-
-A symbol has no description:
-doSomethingInBritishEnglish().🇩🇪DE
-
-
-A symbol has no description:
-doSomethingInCanadianEnglish().🇩🇪DE
-
-
-A symbol has no description:
-function().🇩🇪DE
-
-
-A symbol has no description:
-function(parameter:).🇩🇪DE
-
-
-A symbol has mismatched parameter descriptions:
-function(parameter:).🇩🇪DE
-(Expected: aParameter, tupleHalfA, closureParameter, tupleHalfB)
-
-
-A symbol has no description:
-globalVariable.🇩🇪DE
-
-
-A symbol has no description:
-variable.🇩🇪DE
-
-
-A symbol has mismatched parameter descriptions:
-variable.🇩🇪DE
-(Expected: aParameter)
-
-
-A symbol has no description:
-≠.🇩🇪DE
-
-
-A symbol has no description:
-Precedence.🇩🇪DE
-
-
-A symbol has no description:
-Array.constrained().🇩🇪DE
-
-
-A symbol has no description:
-Bool.extensionMethod().🇩🇪DE
-
-
-A symbol has no description:
-Bool.extensionMethodInAnotherModule().🇩🇪DE
-
-
-A symbol has no description:
-Protocol.extensionMethodInAnotherModule().🇩🇪DE
-
-
-A symbol has no description:
-Structure.extensionMethodInAnotherModule().🇩🇪DE
-
+...Aliased...
 ...BaseClass...
 ...Class...
 ...Enumeration...
@@ -420,7 +181,7 @@ Summary
 
 
 ✗ Source code fails proofreading. (See [⌘F] “§1”)
-✗ Generated documentation, but encountered warnings. (See [⌘F] “§2”)
+✓ Generated documentation.
 
 “CheckedInDocumentation” fails validation.
 2

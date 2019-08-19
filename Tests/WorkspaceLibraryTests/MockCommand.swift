@@ -43,9 +43,7 @@ let mockCommand = Command(
             return "Paragraf eins.\nZeile zwei.\n\nParagraf zwei."
         }
     }),
-    directArguments: [ArgumentType.string],
-    options: [mockOption],
-    execution: { _, _, _ in })
+    subcommands: [mockSubcommand])
 
 let mockOption = Option(
     name: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -64,3 +62,24 @@ let mockOption = Option(
         }
     }),
     type: ArgumentType.string)
+
+let mockSubcommand = Command(
+    name: UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "subcommand"
+        case .deutschDeutschland:
+            return "unterbefehl"
+        }
+    }),
+    description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "is an example subcommand."
+        case .deutschDeutschland:
+            return "ist ein Beispielsunterbefehl."
+        }
+    }),
+    directArguments: [ArgumentType.string],
+    options: [mockOption],
+    execution: { _, _, _ in })

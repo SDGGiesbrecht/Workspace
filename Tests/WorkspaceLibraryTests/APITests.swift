@@ -102,6 +102,16 @@ class APITests : TestCase {
         try output.save(
             to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
                 .appendingPathComponent("Resources/Tool/English.txt"))
+        output = try mockCommand.withRootBehaviour().execute(with: ["export‐interface", "•language", "de"]).get()
+        // macOS & Linux have different JSON whitespace.
+        output.scalars.replaceMatches(for: CompositePattern([
+            LiteralPattern("\n".scalars),
+            RepetitionPattern(" ".scalars),
+            LiteralPattern("\n".scalars)
+            ]), with: "\n\n".scalars)
+        try output.save(
+            to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
+                .appendingPathComponent("Resources/Tool/Deutsch.txt"))
 
         let configuration = WorkspaceConfiguration()
         configuration.optimizeForTests()

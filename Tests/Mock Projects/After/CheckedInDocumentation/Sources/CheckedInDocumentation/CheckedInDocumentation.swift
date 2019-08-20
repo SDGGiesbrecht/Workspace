@@ -341,3 +341,6 @@ public struct Aliased {
         set { aliased = newValue }
     }
 }
+
+// @localization(🇬🇧EN) @localization(🇨🇦EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
+public func use(aliased: Aliased) {}

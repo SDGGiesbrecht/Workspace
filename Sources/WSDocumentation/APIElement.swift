@@ -400,12 +400,12 @@ extension APIElement {
         let parsed = documentation.resolved(localizations: localizations)
         localizedDocumentation = parsed.documentation
         crossReference = parsed.crossReference
+        var unique = 0
         var groups: [StrictString: [APIElement]] = [:]
         for child in children {
             child.determine(localizations: localizations)
-            if let crossReference = child.crossReference {
-                groups[crossReference, default: []].append(child)
-            }
+            let crossReference = child.crossReference ?? { unique += 1; return "\u{7F}\(unique)" }()
+            groups[crossReference, default: []].append(child)
         }
         for (_, group) in groups {
             for indexA in group.indices {

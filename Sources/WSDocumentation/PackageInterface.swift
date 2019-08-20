@@ -364,11 +364,11 @@ internal struct PackageInterface {
 
         self.packageIdentifiers = api.identifierList()
 
+        APIElement.package(api).determineFileNames(for: localizations)
         var paths: [LocalizationIdentifier: [String: String]] = [:]
         for localization in localizations {
             paths[localization] = APIElement.package(api).determinePaths(for: localization)
         }
-        APIElement.package(api).determineFileNames(for: localizations)
         APIElement.package(api).determine(localizations: localizations)
         self.symbolLinks = paths.mapValues { localization in
             localization.mapValues { link in

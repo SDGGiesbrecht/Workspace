@@ -428,7 +428,7 @@ extension APIElement {
     internal func determineLocalizedPaths(localizations: [LocalizationIdentifier]) {
         var groups: [StrictString: [APIElement]] = [:]
         for child in children {
-            child.determine(localizations: localizations)
+            child.determineLocalizedPaths(localizations: localizations)
             if let crossReference = child.crossReference {
                 groups[crossReference, default: []].append(child)
             }

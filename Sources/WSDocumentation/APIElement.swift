@@ -519,7 +519,6 @@ extension APIElement {
 
                 var newNamespace = namespace
                 newNamespace.append(contentsOf: typesDirectoryName + "/")
-                print(localizedEquivalentFileNames)
                 newNamespace.append(contentsOf: localizedEquivalentFileNames[localization]! + "/")
                 for child in children where child.receivesPage {
                     links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)

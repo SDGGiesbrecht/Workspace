@@ -409,17 +409,19 @@ extension APIElement {
         }
         for (_, group) in groups {
             for indexA in group.indices {
-                for indexB in group.indices where indexA ≠ indexB {
-                    group[indexA].addLocalizations(from: group[indexB])
+                for indexB in group.indices {
+                    group[indexA].addLocalizations(from: group[indexB], isSame: indexA == indexB)
                 }
             }
         }
     }
 
-    private func addLocalizations(from other: APIElement) {
+    private func addLocalizations(from other: APIElement, isSame: Bool) {
         for (localization, _) in other.localizedDocumentation {
             localizedEquivalentFileNames[localization] = other.fileName
-            localizedChildren.append(contentsOf: other.children)
+            if ¬isSame {
+                localizedChildren.append(contentsOf: other.children)
+            }
         }
     }
 

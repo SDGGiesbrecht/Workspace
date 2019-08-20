@@ -391,6 +391,29 @@ extension APIElement {
 
     // MARK: - Localization
 
+    internal func determineFileNames(for localizations: [LocalizationIdentifier]) {
+        var groups: [StrictString: [APIElement]] = [:]
+        for child in children {
+            child.determineFileNames(for: localizations)
+            if let crossReference = child.crossReference {
+                groups[crossReference, default: []].append(child)
+            }
+        }
+        for (_, group) in groups {
+            for indexA in group.indices {
+                for indexB in group.indices where indexA ≠ indexB {
+                    group[indexA].addLocalizedFileNames(from: group[indexB])
+                }
+            }
+        }
+    }
+
+    private func addLocalizedFileNames(from other: APIElement) {
+        for (localization, _) in other.localizedDocumentation {
+            localizedEquavalentFileNames[localization] = other.fileName
+        }
+    }
+
     internal func determine(localizations: [LocalizationIdentifier]) {
         let parsed = documentation.resolved(localizations: localizations)
         localizedDocumentation = parsed.documentation
@@ -413,7 +436,6 @@ extension APIElement {
 
     private func addLocalizedPaths(from other: APIElement) {
         for (localization, _) in other.localizedDocumentation {
-            localizedEquavalentFileNames[localization] = other.fileName
             localizedEquivalentPaths[localization] = other.relativePagePath[localization]
             localizedChildren.append(contentsOf: other.children)
         }

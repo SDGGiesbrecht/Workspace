@@ -1,26 +1,12 @@
 {
   "arguments" : [
-    {
-      "description" : "Eine beliebige Zeichenkette.",
-      "identifier" : "string",
-      "name" : "Zeichenkette"
-    }
+
   ],
   "description" : "tut etwas.",
   "discussion" : "Paragraf eins.\nZeile zwei.\n\nParagraf zwei.",
   "identifier" : "do‐something",
   "name" : "etwas‐tun",
   "options" : [
-    {
-      "description" : "Eine Alternative.",
-      "identifier" : "alternative",
-      "name" : "alternative",
-      "type" : {
-        "description" : "Eine beliebige Zeichenkette.",
-        "identifier" : "string",
-        "name" : "Zeichenkette"
-      }
-    },
     {
       "description" : "Blendet Farben aus der Ausgabe aus.",
       "identifier" : "no‐colour",
@@ -43,6 +29,87 @@
     }
   ],
   "subcommands" : [
+    {
+      "arguments" : [
+        {
+          "description" : "Eine beliebige Zeichenkette.",
+          "identifier" : "string",
+          "name" : "Zeichenkette"
+        }
+      ],
+      "description" : "ist ein Beispielsunterbefehl.",
+      "discussion" : null,
+      "identifier" : "subcommand",
+      "name" : "unterbefehl",
+      "options" : [
+        {
+          "description" : "Eine Alternative.",
+          "identifier" : "alternative",
+          "name" : "alternative",
+          "type" : {
+            "description" : "Eine beliebige Zeichenkette.",
+            "identifier" : "string",
+            "name" : "Zeichenkette"
+          }
+        },
+        {
+          "description" : "Blendet Farben aus der Ausgabe aus.",
+          "identifier" : "no‐colour",
+          "name" : "ohne‐farben",
+          "type" : {
+            "description" : "",
+            "identifier" : "Boolean",
+            "name" : "Boolean"
+          }
+        },
+        {
+          "description" : "Eine Sprache anstelle deren zu verwenden, die in den Einstellungen angegeben ist.",
+          "identifier" : "language",
+          "name" : "sprache",
+          "type" : {
+            "description" : "Eine Liste IETF Sprachbezeichnungen oder SDGCornerstone‐Sprachsymbole. Doppelpunkte geben die Ersatzreihenfolge an. Kommata geben an, dass mehrere Sprachen verwendet werden sollen. Beispiele: „de-DE“ oder „🇩🇪DE“ → Deutsch aus Deutschland, “bar,de;fr” → beide Bairisch und Deutsch, sonst Französisch",
+            "identifier" : "language preference",
+            "name" : "Spracheinstellung"
+          }
+        }
+      ],
+      "subcommands" : [
+        {
+          "arguments" : [
+
+          ],
+          "description" : "zeigt Gebrauchsinformationen an.",
+          "discussion" : null,
+          "identifier" : "עזרה",
+          "name" : "hilfe",
+          "options" : [
+            {
+              "description" : "Blendet Farben aus der Ausgabe aus.",
+              "identifier" : "no‐colour",
+              "name" : "ohne‐farben",
+              "type" : {
+                "description" : "",
+                "identifier" : "Boolean",
+                "name" : "Boolean"
+              }
+            },
+            {
+              "description" : "Eine Sprache anstelle deren zu verwenden, die in den Einstellungen angegeben ist.",
+              "identifier" : "language",
+              "name" : "sprache",
+              "type" : {
+                "description" : "Eine Liste IETF Sprachbezeichnungen oder SDGCornerstone‐Sprachsymbole. Doppelpunkte geben die Ersatzreihenfolge an. Kommata geben an, dass mehrere Sprachen verwendet werden sollen. Beispiele: „de-DE“ oder „🇩🇪DE“ → Deutsch aus Deutschland, “bar,de;fr” → beide Bairisch und Deutsch, sonst Französisch",
+                "identifier" : "language preference",
+                "name" : "Spracheinstellung"
+              }
+            }
+          ],
+          "subcommands" : [
+
+          ]
+        }
+      ]
+    },
     {
       "arguments" : [
 

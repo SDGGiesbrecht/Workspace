@@ -740,15 +740,20 @@ internal struct PackageInterface {
                 var information = CommandInterfaceInformation()
                 information.interfaces[localization] = subcommand
 
-                for localization in localizations {
-                    var nestedPagePath = parent.relativePagePath[localization]!
+                for otherLocalization in localizations {
+                    let localized = parent.interfaces[otherLocalization]!.subcommands.first(where: { $0.identifier == subcommand.identifier })!
+                    if otherLocalization ≠ localization {
+                        information.interfaces[otherLocalization] = localized
+                    }
+
+                    var nestedPagePath = parent.relativePagePath[otherLocalization]!
                     nestedPagePath.removeLast(5) // .html
                     nestedPagePath += "/"
-                    nestedPagePath += CommandPage.subcommandsDirectoryName(for: localization)
+                    nestedPagePath += CommandPage.subcommandsDirectoryName(for: otherLocalization)
                     nestedPagePath += "/"
-                    nestedPagePath += Page.sanitize(fileName: subcommand.name)
+                    nestedPagePath += Page.sanitize(fileName: localized.name)
                     nestedPagePath += ".html"
-                    information.relativePagePath[localization] = nestedPagePath
+                    information.relativePagePath[otherLocalization] = nestedPagePath
                 }
 
                 let location = information.pageURL(in: outputDirectory, for: localization)

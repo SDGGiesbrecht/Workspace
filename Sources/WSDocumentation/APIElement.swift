@@ -435,7 +435,7 @@ extension APIElement {
         }
         for (_, group) in groups {
             for indexA in group.indices {
-                for indexB in group.indices where indexA ≠ indexB {
+                for indexB in group.indices {
                     group[indexA].addLocalizedPaths(from: group[indexB])
                 }
             }

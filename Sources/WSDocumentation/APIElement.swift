@@ -392,6 +392,12 @@ extension APIElement {
     // MARK: - Localization
 
     internal func determineFileNames(for localizations: [LocalizationIdentifier]) {
+        if case .package = self {
+            // Not handled by any parent.
+            for localization in localizations {
+                localizedEquivalentFileNames[localization] = fileName
+            }
+        }
         var groups: [StrictString: [APIElement]] = [:]
         for child in children {
             child.determineFileNames(for: localizations)

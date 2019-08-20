@@ -392,11 +392,18 @@ extension APIElement {
     // MARK: - Localization
 
     internal func determine(localizations: [LocalizationIdentifier]) {
-        if case .package = self { // Not handled by any parent.
+        func useUnlocalized() {
             for localization in localizations {
                 localizedEquivalentFileNames[localization] = fileName
             }
         }
+        if case .package = self { // Not handled by any parent.
+            useUnlocalized()
+        }
+        if case .extension = self { // No way to cross reference extensions.
+            useUnlocalized()
+        }
+
         let parsed = documentation.resolved(localizations: localizations)
         localizedDocumentation = parsed.documentation
         crossReference = parsed.crossReference

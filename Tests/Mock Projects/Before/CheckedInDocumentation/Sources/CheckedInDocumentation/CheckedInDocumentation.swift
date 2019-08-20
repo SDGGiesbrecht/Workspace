@@ -344,4 +344,7 @@ public struct Aliased {
 
 // @localization(🇬🇧EN) @localization(🇨🇦EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// ...
+///
+/// - Parameters:
+///     - aliased: ...
 public func use(aliased: Aliased) {}

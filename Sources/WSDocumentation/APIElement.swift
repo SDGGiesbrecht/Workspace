@@ -404,7 +404,10 @@ extension APIElement {
         var groups: [StrictString: [APIElement]] = [:]
         for child in children {
             child.determine(localizations: localizations)
-            let crossReference = child.crossReference ?? { unique += 1; return "\u{7F}\(unique)" }()
+            let crossReference = child.crossReference ?? {
+                unique += 1
+                return "\u{7F}\(String(describing: unique))"
+                }()
             groups[crossReference, default: []].append(child)
         }
         for (_, group) in groups {

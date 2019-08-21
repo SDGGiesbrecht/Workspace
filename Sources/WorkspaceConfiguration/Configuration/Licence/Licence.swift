@@ -33,38 +33,38 @@ public enum Licence : String, Codable {
     // MARK: - Cases
 
     // @localization(🇩🇪DE)
-    /// Die [Apache‐2.0](https://github.com/SDGGiesbrecht/Workspace/blob/master/Resources/Interface/Licences/Apache%202.0.md)‐Lizenz.
+    /// Die [Apache‐2.0](https://github.com/SDGGiesbrecht/Workspace/blob/master/Resources/WSLicence/Licences/Apache%202.0.md)‐Lizenz.
     ///
     /// (Swift ist unter dieser Lizenz.)
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-    /// The [Apache 2.0](https://github.com/SDGGiesbrecht/Workspace/blob/master/Resources/Interface/Licences/Apache%202.0.md) licence.
+    /// The [Apache 2.0](https://github.com/SDGGiesbrecht/Workspace/blob/master/Resources/WSLicence/Licences/Apache%202.0.md) licence.
     ///
     /// (Swift itself is under this licence.)
     case apache2_0
 
     // @localization(🇩🇪DE)
-    /// Die [MIT](https://github.com/SDGGiesbrecht/Workspace/blob/master/Resources/Interface/Licences/MIT.md)‐Lizenz.
+    /// Die [MIT](https://github.com/SDGGiesbrecht/Workspace/blob/master/Resources/WSLicence/Licences/MIT.md)‐Lizenz.
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-    /// The [MIT](https://github.com/SDGGiesbrecht/Workspace/blob/master/Resources/Interface/Licences/MIT.md) licence.
+    /// The [MIT](https://github.com/SDGGiesbrecht/Workspace/blob/master/Resources/WSLicence/Licences/MIT.md) licence.
     case mit
 
     // @localization(🇩🇪DE)
-    /// Die [GNU‐General‐Public‐3.0](https://github.com/SDGGiesbrecht/Workspace/blob/master/Resources/Interface/Licences/GNU%20General%20Public%203.0.md)‐Lizenz.
+    /// Die [GNU‐General‐Public‐3.0](https://github.com/SDGGiesbrecht/Workspace/blob/master/Resources/WSLicence/Licences/GNU%20General%20Public%203.0.md)‐Lizenz.
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-    /// The [GNU General Public 3.0](https://github.com/SDGGiesbrecht/Workspace/blob/master/Resources/Interface/Licences/GNU%20General%20Public%203.0.md) licence.
+    /// The [GNU General Public 3.0](https://github.com/SDGGiesbrecht/Workspace/blob/master/Resources/WSLicence/Licences/GNU%20General%20Public%203.0.md) licence.
     case gnuGeneralPublic3_0
 
     // @localization(🇩🇪DE)
-    /// Die „[Unlicence](https://github.com/SDGGiesbrecht/Workspace/blob/master/Resources/Interface/Licences/Unlicense.md)“, die das Projekt zum Gemeinfreiheit ausgibt.
+    /// Die „[Unlicence](https://github.com/SDGGiesbrecht/Workspace/blob/master/Resources/WSLicence/Licences/Unlicense.md)“, die das Projekt zum Gemeinfreiheit ausgibt.
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-    /// The “[Unlicence](https://github.com/SDGGiesbrecht/Workspace/blob/master/Resources/Interface/Licences/Unlicense.md)”, which dedicates the project to the public domain.
+    /// The “[Unlicence](https://github.com/SDGGiesbrecht/Workspace/blob/master/Resources/WSLicence/Licences/Unlicense.md)”, which dedicates the project to the public domain.
     case unlicense
 
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Licence.copyright)
-    /// An [explicit notice of copyright](https://github.com/SDGGiesbrecht/Workspace/blob/master/Resources/Interface/Licences/Copyright.md), which gives no permissions.
+    /// An [explicit notice of copyright](https://github.com/SDGGiesbrecht/Workspace/blob/master/Resources/WSLicence/Licences/Copyright.md), which gives no permissions.
     case copyright
     // @localization(🇩🇪DE) @crossReference(Licence.copyright)
-    /// Ein [deutlicher Hinweis zum Urheberrecht](https://github.com/SDGGiesbrecht/Workspace/blob/master/Resources/Interface/Licences/Copyright.md), der keine Erlaubnisse ausgibt.
+    /// Ein [deutlicher Hinweis zum Urheberrecht](https://github.com/SDGGiesbrecht/Workspace/blob/master/Resources/WSLicence/Licences/Copyright.md), der keine Erlaubnisse ausgibt.
     public static var urheberrecht: Lizenz {
         return .copyright
     }

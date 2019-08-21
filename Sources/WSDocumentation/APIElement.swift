@@ -287,6 +287,7 @@ extension APIElement {
     internal enum ExtendedPropertyKey {
         case localizedDocumentation
         case crossReference
+        case localizedEquivalentFileNames
         case localizedEquivalentPaths
         case localizedChildren
         case relativePagePath
@@ -324,6 +325,15 @@ extension APIElement {
         }
         nonmutating set {
             extendedProperties[.crossReference] = newValue
+        }
+    }
+
+    private var localizedEquivalentFileNames: [LocalizationIdentifier: StrictString] {
+        get {
+            return (extendedProperties[.localizedEquivalentFileNames] as? [LocalizationIdentifier: StrictString]) ?? [:]
+        }
+        nonmutating set {
+            extendedProperties[.localizedEquivalentFileNames] = newValue
         }
     }
 
@@ -385,9 +395,38 @@ extension APIElement {
         let parsed = documentation.resolved(localizations: localizations)
         localizedDocumentation = parsed.documentation
         crossReference = parsed.crossReference
+        var unique = 0
         var groups: [StrictString: [APIElement]] = [:]
         for child in children {
             child.determine(localizations: localizations)
+            let crossReference = child.crossReference ?? {
+                unique += 1
+                return "\u{7F}\(String(describing: unique))"
+                }()
+            groups[crossReference, default: []].append(child)
+        }
+        for (_, group) in groups {
+            for indexA in group.indices {
+                for indexB in group.indices {
+                    group[indexA].addLocalizations(from: group[indexB], isSame: indexA == indexB)
+                }
+            }
+        }
+    }
+
+    private func addLocalizations(from other: APIElement, isSame: Bool) {
+        for (localization, _) in other.localizedDocumentation {
+            localizedEquivalentFileNames[localization] = other.fileName
+            if ¬isSame {
+                localizedChildren.append(contentsOf: other.children)
+            }
+        }
+    }
+
+    internal func determineLocalizedPaths(localizations: [LocalizationIdentifier]) {
+        var groups: [StrictString: [APIElement]] = [:]
+        for child in children {
+            child.determineLocalizedPaths(localizations: localizations)
             if let crossReference = child.crossReference {
                 groups[crossReference, default: []].append(child)
             }
@@ -404,7 +443,6 @@ extension APIElement {
     private func addLocalizedPaths(from other: APIElement) {
         for (localization, _) in other.localizedDocumentation {
             localizedEquivalentPaths[localization] = other.relativePagePath[localization]
-            localizedChildren.append(contentsOf: other.children)
         }
     }
 
@@ -419,6 +457,10 @@ extension APIElement {
 
     private var fileName: StrictString {
         return Page.sanitize(fileName: StrictString(name.source()))
+    }
+
+    internal func localizedFileName(for localization: LocalizationIdentifier) -> StrictString {
+        return localizedEquivalentFileNames[localization] ?? fileName
     }
 
     internal func pageURL(in outputDirectory: URL, for localization: LocalizationIdentifier) -> URL {
@@ -486,7 +528,7 @@ extension APIElement {
 
                 var newNamespace = namespace
                 newNamespace.append(contentsOf: typesDirectoryName + "/")
-                newNamespace.append(contentsOf: fileName + "/")
+                newNamespace.append(contentsOf: localizedFileName(for: localization) + "/")
                 for child in children where child.receivesPage {
                     links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
                 }
@@ -506,7 +548,7 @@ extension APIElement {
 
                 var newNamespace = namespace
                 newNamespace.append(contentsOf: extensionsDirectoryName + "/")
-                newNamespace.append(contentsOf: fileName + "/")
+                newNamespace.append(contentsOf: localizedFileName(for: localization) + "/")
                 for child in children where child.receivesPage {
                     links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
                 }
@@ -526,7 +568,7 @@ extension APIElement {
 
                 var newNamespace = namespace
                 newNamespace.append(contentsOf: protocolsDirectoryName + "/")
-                newNamespace.append(contentsOf: fileName + "/")
+                newNamespace.append(contentsOf: localizedFileName(for: localization) + "/")
                 for child in children where child.receivesPage {
                     links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
                 }
@@ -681,7 +723,7 @@ extension APIElement {
                 unreachable()
             }
 
-            path += fileName + ".html"
+            path += localizedFileName(for: localization) + ".html"
             relativePagePath[localization] = path
             if case .type = self {
                 links[name.source().truncated(before: "<")] = String(path)

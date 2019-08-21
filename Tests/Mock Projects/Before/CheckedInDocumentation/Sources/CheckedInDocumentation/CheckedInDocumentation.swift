@@ -348,3 +348,15 @@ public struct Aliased {
 /// - Parameters:
 ///     - aliased: ...
 public func use(aliased: Aliased) {}
+
+extension Dictionary where Value == Aliased {
+
+    // @localization(🇬🇧EN) @localization(🇨🇦EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
+    /// ...
+    ///
+    /// - Parameters:
+    ///     - i: ...
+    public subscript(_ i: Aliased) -> Aliased {
+        return i
+    }
+}

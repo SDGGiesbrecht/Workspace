@@ -58,10 +58,10 @@ public struct TestCoverageExemptionToken : Codable, Hashable {
     }
 
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-    // @crossReference(TestCoverageExemptionToken.token)
+    // @crossReference(TestCoverageExemptionToken.scope)
     /// The scope.
     public var scope: Scope
-    // @localization(🇩🇪DE) @crossReference(TestCoverageExemptionToken.token)
+    // @localization(🇩🇪DE) @crossReference(TestCoverageExemptionToken.scope)
     /// Der Geltungsbereich.
     public var geltungsbereich: Geltungsbereich {
         get { return scope }

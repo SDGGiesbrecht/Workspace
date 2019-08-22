@@ -229,7 +229,7 @@ internal class SymbolPage : Page {
             symbolImports: SymbolPage.generateImportStatement(for: symbol, package: package, localization: localization, pathToSiteRoot: pathToSiteRoot),
             symbolType: symbol.symbolType(localization: localization),
             compilationConditions: SymbolPage.generateCompilationConditions(symbol: symbol),
-            constraints: SymbolPage.generateConstraints(symbol: symbol, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks),
+            constraints: SymbolPage.generateConstraints(symbol: symbol, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks),
             title: StrictString(symbol.name.source()),
             content: content.joinedAsLines(),
             extensions: extensions.joinedAsLines(),

@@ -162,7 +162,7 @@ public protocol Protocol {
     func customizationPoint()
 }
 extension Protocol {
-    
+
     public func customizationPoint() {}
 
     // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
@@ -373,7 +373,7 @@ public enum LocalizedEnumeration {
     case localizedEnumerationCase
     // @localization(🇩🇪DE) @crossReference(LocalizedEnumeration.localizedEnumerationCase)
     /// ...
-    public static var lokalisierterAufzählungsfall: LocalizierterAufzählung {
+    public static var lokalisierterAufzählungsfall: LokalisierterAufzählung {
         return .localizedEnumerationCase
     }
 }

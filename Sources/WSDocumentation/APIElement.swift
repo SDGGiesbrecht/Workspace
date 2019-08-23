@@ -500,16 +500,7 @@ extension APIElement {
 
         switch self {
         case .package:
-            if let match = localization._reasonableMatch {
-                switch match {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Packages"
-                case .deutschDeutschland:
-                    return "Pakete"
-                }
-            } else {
-                return "Package" // From “Package(...)”
-            }
+            unreachable()
         case .library:
             if let match = localization._reasonableMatch {
                 switch match {
@@ -711,7 +702,7 @@ extension APIElement {
         return localizedEquivalentDirectoryNames[localization] ?? directoryName(
             for: localization,
             globalScope: globalScope,
-            typeMember: { typeMember })
+            typeMember: { typeMember }) // @exempt(from: tests) Should never be called.
     }
 
     internal func pageURL(in outputDirectory: URL, for localization: LocalizationIdentifier) -> URL {

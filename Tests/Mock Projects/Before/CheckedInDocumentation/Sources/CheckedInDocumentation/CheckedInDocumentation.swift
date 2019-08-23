@@ -360,3 +360,27 @@ extension Dictionary where Value == Aliased {
         return i
     }
 }
+
+// @localization(🇩🇪DE) @crossReference(LocalizedEnumeration)
+/// ...
+public typealias LokalisierterAufzählung = LocalizedEnumeration
+// @localization(🇬🇧EN) @localization(🇨🇦EN) @localization(🇺🇸EN) @localization(zxx) @crossReference(LocalizedEnumeration)
+/// ...
+public enum LocalizedEnumeration {
+
+    // @localization(🇬🇧EN) @localization(🇨🇦EN) @localization(🇺🇸EN) @localization(zxx) @crossReference(LocalizedEnumeration.localizedEnumerationCase)
+    /// ...
+    case localizedEnumerationCase
+    // @localization(🇩🇪DE) @crossReference(LocalizedEnumeration.localizedEnumerationCase)
+    /// ...
+    public static var lokalisierterAufzählungsfall: LocalizierterAufzählung {
+        return .localizedEnumerationCase
+    }
+}
+
+/// ...
+///
+/// ```swift
+/// let x = LokalisierterAufzählung.lokalisierterAufzählungsfall
+/// ```
+public func demonstratingLocalizedEnumerationCase() {}

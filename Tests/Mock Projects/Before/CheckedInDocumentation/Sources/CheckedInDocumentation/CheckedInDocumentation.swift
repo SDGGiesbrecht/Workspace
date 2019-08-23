@@ -378,6 +378,7 @@ public enum LocalizedEnumeration {
     }
 }
 
+// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// ...
 ///
 /// ```swift

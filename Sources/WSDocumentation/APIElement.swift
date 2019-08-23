@@ -402,9 +402,18 @@ extension APIElement {
     // MARK: - Localization
 
     internal func determine(localizations: [LocalizationIdentifier]) {
+
         let parsed = documentation.resolved(localizations: localizations)
         localizedDocumentation = parsed.documentation
         crossReference = parsed.crossReference
+
+        let globalScope: Bool
+        if case .module = self {
+            globalScope = true
+        } else {
+            globalScope = false
+        }
+
         var unique = 0
         var groups: [StrictString: [APIElement]] = [:]
         for child in children {
@@ -418,19 +427,31 @@ extension APIElement {
         for (_, group) in groups {
             for indexA in group.indices {
                 for indexB in group.indices {
-                    group[indexA].addLocalizations(from: group[indexB], isSame: indexA == indexB)
+                    group[indexA].addLocalizations(
+                        from: group[indexB],
+                        isSame: indexA == indexB,
+                        globalScope: globalScope)
                 }
             }
         }
     }
 
-    private func addLocalizations(from other: APIElement, isSame: Bool) {
+    private func addLocalizations(from other: APIElement, isSame: Bool, globalScope: Bool) {
         for (localization, _) in other.localizedDocumentation {
             localizedEquivalentFileNames[localization] = other.fileName
-            /*localizedEquivalentDirectoryNames[localization] = other.directoryName(
+            localizedEquivalentDirectoryNames[localization] = other.directoryName(
                 for: localization,
-                globalScope: <#Bool#>,
-                typeMember: <#Bool#>)*/
+                globalScope: globalScope,
+                typeMember: {
+                    switch other {
+                    case .package, .library, .module, .type, .protocol, .extension, .case, .initializer, .subscript, .operator, .precedence, .conformance:
+                        unreachable()
+                    case .variable(let variable):
+                        return variable.declaration.isTypeMember()
+                    case .function(let function):
+                        return function.declaration.isTypeMember()
+                    }
+            })
             if ¬isSame {
                 localizedChildren.append(contentsOf: other.children)
             }
@@ -475,7 +496,7 @@ extension APIElement {
     private func directoryName(
         for localization: LocalizationIdentifier,
         globalScope: Bool,
-        typeMember: Bool) -> StrictString {
+        typeMember: () -> Bool) -> StrictString {
 
         switch self {
         case .package:
@@ -581,7 +602,7 @@ extension APIElement {
                     return "var"
                 }
             } else {
-                if typeMember {
+                if typeMember() {
                     if let match = localization._reasonableMatch {
                         switch match {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -629,7 +650,7 @@ extension APIElement {
                     return "func"
                 }
             } else {
-                if typeMember {
+                if typeMember() {
                     if let match = localization._reasonableMatch {
                         switch match {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -690,7 +711,7 @@ extension APIElement {
         return localizedEquivalentDirectoryNames[localization] ?? directoryName(
             for: localization,
             globalScope: globalScope,
-            typeMember: typeMember)
+            typeMember: { typeMember })
     }
 
     internal func pageURL(in outputDirectory: URL, for localization: LocalizationIdentifier) -> URL {

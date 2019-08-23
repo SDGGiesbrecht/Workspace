@@ -288,6 +288,7 @@ extension APIElement {
         case localizedDocumentation
         case crossReference
         case localizedEquivalentFileNames
+        case localizedEquivalentDirectoryNames
         case localizedEquivalentPaths
         case localizedChildren
         case relativePagePath
@@ -334,6 +335,15 @@ extension APIElement {
         }
         nonmutating set {
             extendedProperties[.localizedEquivalentFileNames] = newValue
+        }
+    }
+
+    private var localizedEquivalentDirectoryNames: [LocalizationIdentifier: StrictString] {
+        get {
+            return (extendedProperties[.localizedEquivalentDirectoryNames] as? [LocalizationIdentifier: StrictString]) ?? [:]
+        }
+        nonmutating set {
+            extendedProperties[.localizedEquivalentDirectoryNames] = newValue
         }
     }
 
@@ -417,6 +427,10 @@ extension APIElement {
     private func addLocalizations(from other: APIElement, isSame: Bool) {
         for (localization, _) in other.localizedDocumentation {
             localizedEquivalentFileNames[localization] = other.fileName
+            /*localizedEquivalentDirectoryNames[localization] = other.directoryName(
+                for: localization,
+                globalScope: <#Bool#>,
+                typeMember: <#Bool#>)*/
             if ¬isSame {
                 localizedChildren.append(contentsOf: other.children)
             }
@@ -458,9 +472,225 @@ extension APIElement {
     private var fileName: StrictString {
         return Page.sanitize(fileName: StrictString(name.source()))
     }
+    private func directoryName(
+        for localization: LocalizationIdentifier,
+        globalScope: Bool,
+        typeMember: Bool) -> StrictString {
+
+        switch self {
+        case .package:
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Packages"
+                case .deutschDeutschland:
+                    return "Pakete"
+                }
+            } else {
+                return "Package" // From “Package(...)”
+            }
+        case .library:
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Libraries"
+                case .deutschDeutschland:
+                    return "Biblioteken"
+                }
+            } else {
+                return "library" // From “products: [.library(...)]”
+            }
+        case .module:
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Modules"
+                case .deutschDeutschland:
+                    return "Module"
+                }
+            } else {
+                return "target" // From “targets: [.target(...)]”
+            }
+        case .type:
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Types"
+                case .deutschDeutschland:
+                    return "Typen"
+                }
+            } else {
+                return "struct"
+            }
+        case .protocol:
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Protocols"
+                case .deutschDeutschland:
+                    return "Protokolle"
+                }
+            } else {
+                return "protocol"
+            }
+        case .extension:
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Extensions"
+                case .deutschDeutschland:
+                    return "Erweiterungen"
+                }
+            } else {
+                return "extension"
+            }
+        case .case:
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Cases"
+                case .deutschDeutschland:
+                    return "Fälle"
+                }
+            } else {
+                return "case"
+            }
+        case .initializer:
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom:
+                    return "Initialisers"
+                case .englishUnitedStates, .englishCanada:
+                    return "Initializers"
+                case .deutschDeutschland:
+                    return "Voreinsteller"
+                }
+            } else {
+                return "init"
+            }
+        case .variable:
+            if globalScope {
+                if let match = localization._reasonableMatch {
+                    switch match {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "Global Variables"
+                    case .deutschDeutschland:
+                        return "globale Variablen"
+                    }
+                } else {
+                    return "var"
+                }
+            } else {
+                if typeMember {
+                    if let match = localization._reasonableMatch {
+                        switch match {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "Type Properties"
+                        case .deutschDeutschland:
+                            return "Typ‐Eigenschaften"
+                        }
+                    } else {
+                        return "static var"
+                    }
+                } else {
+                    if let match = localization._reasonableMatch {
+                        switch match {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "Properties"
+                        case .deutschDeutschland:
+                            return "Eigenschaften"
+                        }
+                    } else {
+                        return "var"
+                    }
+                }
+            }
+        case .subscript:
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Subscripts"
+                case .deutschDeutschland:
+                    return "Indexe"
+                }
+            } else {
+                return "subscript"
+            }
+        case .function:
+            if globalScope {
+                if let match = localization._reasonableMatch {
+                    switch match {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "Functions"
+                    case .deutschDeutschland:
+                        return "Funktionen"
+                    }
+                } else {
+                    return "func"
+                }
+            } else {
+                if typeMember {
+                    if let match = localization._reasonableMatch {
+                        switch match {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "Type Methods"
+                        case .deutschDeutschland:
+                            return "Typ‐Methoden"
+                        }
+                    } else {
+                        return "static func"
+                    }
+                } else {
+                    if let match = localization._reasonableMatch {
+                        switch match {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "Methods"
+                        case .deutschDeutschland:
+                            return "Methoden"
+                        }
+                    } else {
+                        return "func"
+                    }
+                }
+            }
+        case .operator:
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Operators"
+                case .deutschDeutschland:
+                    return "Operatoren"
+                }
+            } else {
+                return "operator"
+            }
+        case .precedence:
+            if let match = localization._reasonableMatch {
+                switch match {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Precedence Groups"
+                case .deutschDeutschland:
+                    return "Rangfolgenklassen"
+                }
+            } else {
+                return "precedencegroup"
+            }
+        case .conformance:
+            unreachable()
+        }
+    }
 
     internal func localizedFileName(for localization: LocalizationIdentifier) -> StrictString {
         return localizedEquivalentFileNames[localization] ?? fileName
+    }
+    internal func localizedDirectoryName(
+        for localization: LocalizationIdentifier,
+        globalScope: Bool = false,
+        typeMember: Bool = false) -> StrictString {
+        return localizedEquivalentDirectoryNames[localization] ?? directoryName(
+            for: localization,
+            globalScope: globalScope,
+            typeMember: typeMember)
     }
 
     internal func pageURL(in outputDirectory: URL, for localization: LocalizationIdentifier) -> URL {
@@ -479,246 +709,35 @@ extension APIElement {
                     links = APIElement.library(library).determinePaths(for: localization).mergedByOverwriting(from: links)
                 }
             case .library(let library):
-                let librariesDirectoryName: StrictString
-                if let match = localization._reasonableMatch {
-                    switch match {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        librariesDirectoryName = "Libraries"
-                    case .deutschDeutschland:
-                        librariesDirectoryName = "Biblioteken"
-                    }
-                } else {
-                    librariesDirectoryName = "library" // From “products: [.library(...)]”
-                }
-                path += librariesDirectoryName + "/"
-
+                path += localizedDirectoryName(for: localization) + "/"
                 for module in library.modules {
                     links = APIElement.module(module).determinePaths(for: localization).mergedByOverwriting(from: links)
                 }
             case .module(let module):
-                let modulesDirectoryName: StrictString
-                if let match = localization._reasonableMatch {
-                    switch match {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        modulesDirectoryName = "Modules"
-                    case .deutschDeutschland:
-                        modulesDirectoryName = "Module"
-                    }
-                } else {
-                    modulesDirectoryName = "target" // From “targets: [.target(...)]”
-                }
-                path += modulesDirectoryName + "/"
-
+                path += localizedDirectoryName(for: localization) + "/"
                 for child in module.children {
                     links = child.determinePaths(for: localization).mergedByOverwriting(from: links)
                 }
-            case .type:
-                let typesDirectoryName: StrictString
-                if let match = localization._reasonableMatch {
-                    switch match {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        typesDirectoryName = "Types"
-                    case .deutschDeutschland:
-                        typesDirectoryName = "Typen"
-                    }
-                } else {
-                    typesDirectoryName = "struct"
-                }
-                path += namespace + typesDirectoryName + "/"
-
+            case .type, .extension, .protocol:
+                path += namespace + localizedDirectoryName(for: localization) + "/"
                 var newNamespace = namespace
-                newNamespace.append(contentsOf: typesDirectoryName + "/")
+                newNamespace.append(contentsOf: localizedDirectoryName(for: localization) + "/")
                 newNamespace.append(contentsOf: localizedFileName(for: localization) + "/")
                 for child in children where child.receivesPage {
                     links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
                 }
-            case .extension:
-                let extensionsDirectoryName: StrictString
-                if let match = localization._reasonableMatch {
-                    switch match {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        extensionsDirectoryName = "Extensions"
-                    case .deutschDeutschland:
-                        extensionsDirectoryName = "Erweiterungen"
-                    }
-                } else {
-                    extensionsDirectoryName = "extension"
-                }
-                path += namespace + extensionsDirectoryName + "/"
-
-                var newNamespace = namespace
-                newNamespace.append(contentsOf: extensionsDirectoryName + "/")
-                newNamespace.append(contentsOf: localizedFileName(for: localization) + "/")
-                for child in children where child.receivesPage {
-                    links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
-                }
-            case .protocol:
-                let protocolsDirectoryName: StrictString
-                if let match = localization._reasonableMatch {
-                    switch match {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        protocolsDirectoryName = "Protocols"
-                    case .deutschDeutschland:
-                        protocolsDirectoryName = "Protokolle"
-                    }
-                } else {
-                    protocolsDirectoryName = "protocol"
-                }
-                path += namespace + protocolsDirectoryName + "/"
-
-                var newNamespace = namespace
-                newNamespace.append(contentsOf: protocolsDirectoryName + "/")
-                newNamespace.append(contentsOf: localizedFileName(for: localization) + "/")
-                for child in children where child.receivesPage {
-                    links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
-                }
-            case .case:
-                let casesDirectoryName: StrictString
-                if let match = localization._reasonableMatch {
-                    switch match {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        casesDirectoryName = "Cases"
-                    case .deutschDeutschland:
-                        casesDirectoryName = "Fälle"
-                    }
-                } else {
-                    casesDirectoryName = "case"
-                }
-                path += namespace + casesDirectoryName + "/"
-            case .initializer:
-                let initializersDirectoryName: StrictString
-                if let match = localization._reasonableMatch {
-                    switch match {
-                    case .englishUnitedKingdom:
-                        initializersDirectoryName = "Initialisers"
-                    case .englishUnitedStates, .englishCanada:
-                        initializersDirectoryName = "Initializers"
-                    case .deutschDeutschland:
-                        initializersDirectoryName = "Voreinsteller"
-                    }
-                } else {
-                    initializersDirectoryName = "init"
-                }
-                path += namespace + initializersDirectoryName + "/"
+            case .case, .initializer, .subscript, .operator, .precedence:
+                path += namespace + localizedDirectoryName(for: localization) + "/"
             case .variable(let variable):
-                let variablesDirectoryName: StrictString
-
-                if namespace.isEmpty {
-                    if let match = localization._reasonableMatch {
-                        switch match {
-                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                            variablesDirectoryName = "Global Variables"
-                        case .deutschDeutschland:
-                            variablesDirectoryName = "globale Variablen"
-                        }
-                    } else {
-                        variablesDirectoryName = "var"
-                    }
-                } else {
-                    if variable.declaration.isTypeMember() {
-                        if let match = localization._reasonableMatch {
-                            switch match {
-                            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                                variablesDirectoryName = "Type Properties"
-                            case .deutschDeutschland:
-                                variablesDirectoryName = "Typ‐Eigenschaften"
-                            }
-                        } else {
-                            variablesDirectoryName = "static var"
-                        }
-                    } else {
-                        if let match = localization._reasonableMatch {
-                            switch match {
-                            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                                variablesDirectoryName = "Properties"
-                            case .deutschDeutschland:
-                                variablesDirectoryName = "Eigenschaften"
-                            }
-                        } else {
-                            variablesDirectoryName = "var"
-                        }
-                    }
-                }
-                path += namespace + variablesDirectoryName + "/"
-            case .subscript:
-                let subscriptsDirectoryName: StrictString
-                if let match = localization._reasonableMatch {
-                    switch match {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        subscriptsDirectoryName = "Subscripts"
-                    case .deutschDeutschland:
-                        subscriptsDirectoryName = "Indexe"
-                    }
-                } else {
-                    subscriptsDirectoryName = "subscript"
-                }
-                path += namespace + subscriptsDirectoryName + "/"
+                path += namespace + localizedDirectoryName(
+                    for: localization,
+                    globalScope: namespace.isEmpty,
+                    typeMember: variable.declaration.isTypeMember()) + "/"
             case .function(let function):
-                let functionsDirectoryName: StrictString
-
-                if namespace.isEmpty {
-                    if let match = localization._reasonableMatch {
-                        switch match {
-                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                            functionsDirectoryName = "Functions"
-                        case .deutschDeutschland:
-                            functionsDirectoryName = "Funktionen"
-                        }
-                    } else {
-                        functionsDirectoryName = "func"
-                    }
-                } else {
-                    if function.declaration.isTypeMember() {
-                        if let match = localization._reasonableMatch {
-                            switch match {
-                            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                                functionsDirectoryName = "Type Methods"
-                            case .deutschDeutschland:
-                                functionsDirectoryName = "Typ‐Methoden"
-                            }
-                        } else {
-                            functionsDirectoryName = "static func"
-                        }
-                    } else {
-                        if let match = localization._reasonableMatch {
-                            switch match {
-                            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                                functionsDirectoryName = "Methods"
-                            case .deutschDeutschland:
-                                functionsDirectoryName = "Methoden"
-                            }
-                        } else {
-                            functionsDirectoryName = "func"
-                        }
-                    }
-                }
-                path += namespace + functionsDirectoryName + "/"
-            case .operator:
-                let operatorsDirectoryName: StrictString
-                if let match = localization._reasonableMatch {
-                    switch match {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        operatorsDirectoryName = "Operators"
-                    case .deutschDeutschland:
-                        operatorsDirectoryName = "Operatoren"
-                    }
-                } else {
-                    operatorsDirectoryName = "operator"
-                }
-                path += namespace + operatorsDirectoryName + "/"
-            case .precedence:
-                let precedenceGroupsDirectoryName: StrictString
-                if let match = localization._reasonableMatch {
-                    switch match {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        precedenceGroupsDirectoryName = "Precedence Groups"
-                    case .deutschDeutschland:
-                        precedenceGroupsDirectoryName = "Rangfolgenklassen"
-                    }
-                } else {
-                    precedenceGroupsDirectoryName = "precedencegroup"
-                }
-                path += namespace + precedenceGroupsDirectoryName + "/"
+                path += namespace + localizedDirectoryName(
+                    for: localization,
+                    globalScope: namespace.isEmpty,
+                    typeMember: function.declaration.isTypeMember()) + "/"
             case .conformance:
                 unreachable()
             }

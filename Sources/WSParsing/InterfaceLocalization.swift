@@ -130,4 +130,17 @@ extension InterfaceLocalization {
     })
     public static let crossReferenceDeclaration: CompositePattern<Unicode.Scalar>
         = declarationPatterns(crossReferenceDeclarationName, hasArgument: true)
+
+    private static let notLocalizedDeclarationName: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishUnitedKingdom:
+            return "notLocalised"
+        case .englishUnitedStates, .englishCanada:
+            return "notLocalized"
+        case .deutschDeutschland:
+            return "nichtLokalisiert"
+        }
+    })
+    public static let notLocalizedDeclaration: CompositePattern<Unicode.Scalar>
+        = declarationPatterns(notLocalizedDeclarationName, hasArgument: true)
 }

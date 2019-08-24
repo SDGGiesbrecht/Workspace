@@ -287,6 +287,7 @@ extension APIElement {
     internal enum ExtendedPropertyKey {
         case localizedDocumentation
         case crossReference
+        case skippedLocalizations
         case localizedEquivalentFileNames
         case localizedEquivalentDirectoryNames
         case localizedEquivalentPaths
@@ -326,6 +327,15 @@ extension APIElement {
         }
         nonmutating set {
             extendedProperties[.crossReference] = newValue
+        }
+    }
+
+    internal var skippedLocalizations: Set<LocalizationIdentifier> {
+        get {
+            return (extendedProperties[.skippedLocalizations] as? Set<LocalizationIdentifier>) ?? [] // @exempt(from: tests) Never nil.
+        }
+        nonmutating set {
+            extendedProperties[.skippedLocalizations] = newValue
         }
     }
 
@@ -406,6 +416,7 @@ extension APIElement {
         let parsed = documentation.resolved(localizations: localizations)
         localizedDocumentation = parsed.documentation
         crossReference = parsed.crossReference
+        skippedLocalizations = parsed.skipped
 
         let globalScope: Bool
         if case .module = self {

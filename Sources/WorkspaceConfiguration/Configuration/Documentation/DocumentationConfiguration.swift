@@ -54,6 +54,14 @@ public struct DocumentationConfiguration : Codable {
     /// /// Hace algo.
     /// public func hacerAlgo() {}
     /// ```
+    ///
+    /// A set of cross references can opt out of a particular localization. This can be useful when providing aliases for something that pre‐exists in only some of the localizations.
+    ///
+    /// ```swift
+    /// // @localization(🇪🇸ES) @notLocalized(🇺🇸EN)
+    /// /// Una cadena de caracteres.
+    /// public typealias CadenaDeCaracteres = String
+    /// ```
     // @localization(🇨🇦EN) @crossReference(DocumentationConfiguration.localizations)
     /// The localizations supported by the project.
     ///
@@ -80,6 +88,14 @@ public struct DocumentationConfiguration : Codable {
     /// // @localization(🇫🇷FR) @crossReference(doSomething)
     /// /// Fait quelque chose.
     /// public func faireQuelqueChose() {}
+    /// ```
+    ///
+    /// A set of cross references can opt out of a particular localization. This can be useful when providing aliases for something that pre‐exists in only some of the localizations.
+    ///
+    /// ```swift
+    /// // @localization(🇫🇷FR) @notLocalized(🇨🇦EN)
+    /// /// Une chaîne de caractères.
+    /// public typealias ChaîneDeCaractères = String
     /// ```
     public var localizations: [LocalizationIdentifier] = []
     // @localization(🇬🇧EN) @crossReference(DocumentationConfiguration.localizations)
@@ -108,6 +124,14 @@ public struct DocumentationConfiguration : Codable {
     /// // @localization(🇫🇷FR) @crossReference(doSomething)
     /// /// Fait quelque chose.
     /// public func faireQuelqueChose() {}
+    /// ```
+    ///
+    /// A set of cross references can opt out of a particular localisation. This can be useful when providing aliases for something that pre‐exists in only some of the localisations.
+    ///
+    /// ```swift
+    /// // @localization(🇫🇷FR) @notLocalised(🇬🇧EN)
+    /// /// Une chaîne de caractères.
+    /// public typealias ChaîneDeCaractères = String
     /// ```
     public var localisations: [LocalisationIdentifier] {
         get { return localizations }
@@ -139,6 +163,14 @@ public struct DocumentationConfiguration : Codable {
     /// // @lokalisation(🇫🇷FR) @querverweis(etwasTun)
     /// /// Fait quelque chose.
     /// public func faireQuelqueChose() {}
+    /// ```
+    ///
+    /// Eine Gruppe von Querverweisen können eine bestimmte Lokalisation ausschließen. Es kann nützlich sein, um etwas umzunennen, was in nur manche Lokalisationen schon existiert.
+    ///
+    /// ```swift
+    /// // @lokalisation(🇩🇪DE) @notLocalised(🇬🇧EN)
+    /// /// Eine Zeichenkette.
+    /// public typealias Zeichenkette = String
     /// ```
     public var lokalisationen: [Lokalisationskennzeichen] {
         get { return localizations }

@@ -25,9 +25,13 @@ extension Array where Element == SymbolDocumentation {
 
     public func resolved(
         localizations: [LocalizationIdentifier]
-        ) -> (documentation: [LocalizationIdentifier: DocumentationSyntax], crossReference: StrictString?) {
+        ) -> (
+        documentation: [LocalizationIdentifier: DocumentationSyntax],
+        crossReference: StrictString?,
+        skipped: Set<LocalizationIdentifier>) {
             var result: [LocalizationIdentifier: DocumentationSyntax] = [:]
             var parent: StrictString?
+            var skipped: Set<LocalizationIdentifier> = []
 
             for documentation in self {
                 for comment in documentation.developerComments {
@@ -42,6 +46,11 @@ extension Array where Element == SymbolDocumentation {
                         for: InterfaceLocalization.crossReferenceDeclaration) {
                             parent = match.declarationArgument()
                     }
+                    for match in content.matches(for: InterfaceLocalization.notLocalizedDeclaration) {
+                        let identifier = match.declarationArgument()
+                        let localization = LocalizationIdentifier(String(identifier))
+                        skipped.insert(localization)
+                    }
                 }
             }
 
@@ -51,6 +60,6 @@ extension Array where Element == SymbolDocumentation {
                 result[onlyLocalization] = last?.documentationComment
             }
 
-            return (result, parent)
+            return (result, parent, skipped)
     }
 }

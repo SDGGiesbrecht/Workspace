@@ -118,7 +118,8 @@ internal class SymbolPage : Page {
         let navigationPath = SymbolPage.generateNavigationPath(
             localization: localization,
             pathToSiteRoot: pathToSiteRoot,
-            allLocalizations: allLocalizations.map({ localization in
+            allLocalizations: allLocalizations
+                .lazy.filter({ $0 ∉ symbol.skippedLocalizations }).map({ localization in
                 let path: StrictString
                 if symbol.exists(in: localization) {
                     path = symbol.relativePagePath[localization]!

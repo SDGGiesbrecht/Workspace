@@ -385,3 +385,7 @@ public enum LocalizedEnumeration {
 /// let x = LokalisierterAufzählung.lokalisierterAufzählungsfall
 /// ```
 public func demonstratingLocalizedEnumerationCase() {}
+
+// @localization(🇩🇪DE) @notLocalized(🇨🇦EN) @notLocalized(🇬🇧EN) @notLocalized(🇺🇸EN) @notLocalized(zxx)
+/// ...
+public func nurAufDeutsch() {}

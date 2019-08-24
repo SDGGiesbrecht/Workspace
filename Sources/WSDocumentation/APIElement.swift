@@ -16,6 +16,7 @@
 
 import SDGLogic
 import SDGMathematics
+import SDGCollections
 import WSGeneralImports
 
 import SwiftSyntax
@@ -287,6 +288,7 @@ extension APIElement {
     internal enum ExtendedPropertyKey {
         case localizedDocumentation
         case crossReference
+        case skippedLocalizations
         case localizedEquivalentFileNames
         case localizedEquivalentDirectoryNames
         case localizedEquivalentPaths
@@ -329,6 +331,15 @@ extension APIElement {
         }
     }
 
+    internal var skippedLocalizations: Set<LocalizationIdentifier> {
+        get {
+            return (extendedProperties[.skippedLocalizations] as? Set<LocalizationIdentifier>) ?? [] // @exempt(from: tests) Never nil.
+        }
+        nonmutating set {
+            extendedProperties[.skippedLocalizations] = newValue
+        }
+    }
+
     private var localizedEquivalentFileNames: [LocalizationIdentifier: StrictString] {
         get {
             return (extendedProperties[.localizedEquivalentFileNames] as? [LocalizationIdentifier: StrictString]) ?? [:]
@@ -366,7 +377,7 @@ extension APIElement {
     }
 
     internal func exists(in localization: LocalizationIdentifier) -> Bool {
-        return localizedEquivalentPaths[localization] == nil
+        return localizedEquivalentPaths[localization] == nil ∧ localization ∉ skippedLocalizations
     }
 
     internal var relativePagePath: [LocalizationIdentifier: StrictString] {
@@ -406,6 +417,7 @@ extension APIElement {
         let parsed = documentation.resolved(localizations: localizations)
         localizedDocumentation = parsed.documentation
         crossReference = parsed.crossReference
+        skippedLocalizations = parsed.skipped
 
         let globalScope: Bool
         if case .module = self {

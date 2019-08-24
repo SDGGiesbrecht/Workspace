@@ -16,6 +16,7 @@
 
 import SDGLogic
 import SDGMathematics
+import SDGCollections
 import WSGeneralImports
 
 import SwiftSyntax
@@ -376,7 +377,7 @@ extension APIElement {
     }
 
     internal func exists(in localization: LocalizationIdentifier) -> Bool {
-        return localizedEquivalentPaths[localization] == nil
+        return localizedEquivalentPaths[localization] == nil ∧ localization ∉ skippedLocalizations
     }
 
     internal var relativePagePath: [LocalizationIdentifier: StrictString] {

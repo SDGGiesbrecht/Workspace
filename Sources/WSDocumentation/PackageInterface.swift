@@ -169,31 +169,35 @@ internal struct PackageInterface {
                 localization: localization))
         }
 
-        if ¬package.libraries.isEmpty {
+        if ¬package.libraries.lazy.filter({ localization ∉ APIElement.library($0).skippedLocalizations }).isEmpty {
             result.append(generateIndexSection(named: SymbolPage.librariesHeader(localization: localization), apiEntries: package.libraries.lazy.map({ APIElement.library($0) }), localization: localization))
         }
-        if ¬package.modules.isEmpty {
+        if ¬package.modules.lazy.filter({ localization ∉ APIElement.module($0).skippedLocalizations }).isEmpty {
             result.append(generateIndexSection(named: SymbolPage.modulesHeader(localization: localization), apiEntries: package.modules.lazy.map({ APIElement.module($0) }), localization: localization))
         }
-        if ¬package.types.isEmpty {
+        if ¬package.types.lazy.filter({ localization ∉ APIElement.type($0).skippedLocalizations }).isEmpty {
             result.append(generateIndexSection(named: SymbolPage.typesHeader(localization: localization), apiEntries: package.types.lazy.map({ APIElement.type($0) }), localization: localization))
         }
-        if ¬package.uniqueExtensions.isEmpty {
+        if ¬package.uniqueExtensions
+            .lazy.filter({ localization ∉ APIElement.extension($0).skippedLocalizations }).isEmpty {
             result.append(generateIndexSection(named: SymbolPage.extensionsHeader(localization: localization), apiEntries: package.uniqueExtensions.lazy.map({ APIElement.extension($0) }), localization: localization))
         }
-        if ¬package.protocols.isEmpty {
+        if ¬package.protocols.lazy.filter({ localization ∉ APIElement.protocol($0).skippedLocalizations }).isEmpty {
             result.append(generateIndexSection(named: SymbolPage.protocolsHeader(localization: localization), apiEntries: package.protocols.lazy.map({ APIElement.protocol($0) }), localization: localization))
         }
-        if ¬package.functions.isEmpty {
+        if ¬package.functions.lazy.filter({ localization ∉ APIElement.function($0).skippedLocalizations }).isEmpty {
             result.append(generateIndexSection(named: SymbolPage.functionsHeader(localization: localization), apiEntries: package.functions.lazy.map({ APIElement.function($0) }), localization: localization))
         }
-        if ¬package.globalVariables.isEmpty {
+        if ¬package.globalVariables
+            .lazy.filter({ localization ∉ APIElement.variable($0).skippedLocalizations }).isEmpty {
             result.append(generateIndexSection(named: SymbolPage.variablesHeader(localization: localization), apiEntries: package.globalVariables.lazy.map({ APIElement.variable($0) }), localization: localization))
         }
-        if ¬package.operators.isEmpty {
+        if ¬package.operators
+            .lazy.filter({ localization ∉ APIElement.operator($0).skippedLocalizations }).isEmpty {
             result.append(generateIndexSection(named: SymbolPage.operatorsHeader(localization: localization), apiEntries: package.operators.lazy.map({ APIElement.operator($0) }), localization: localization))
         }
-        if ¬package.functions.isEmpty {
+        if ¬package.functions
+            .lazy.filter({ localization ∉ APIElement.function($0).skippedLocalizations }).isEmpty {
             result.append(generateIndexSection(named: SymbolPage.precedenceGroupsHeader(localization: localization), apiEntries: package.precedenceGroups.lazy.map({ APIElement.precedence($0) }), localization: localization))
         }
         if hasRelatedProjects {

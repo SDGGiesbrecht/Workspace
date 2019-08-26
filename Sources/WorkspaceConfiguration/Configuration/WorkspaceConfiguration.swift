@@ -102,6 +102,18 @@ public final class WorkspaceConfiguration : Configuration {
         set { provideWorkflowScripts = newValue }
     }
 
+    // @localization(🇬🇧EN)
+    /// The localised forms of the project name, if they differ from the package name.
+    // @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(WorkspaceConfiguration.projectName)
+    /// The localized forms of the project name, if they differ from the package name.
+    public var projectName: [LocalizationIdentifier: StrictString] = [:]
+    // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.projectName)
+    /// Die lokalisierte Formen des Projektnamens, wo sie sich von dem Paketenname unterscheiden.
+    public var projektname: [LocalizationIdentifier: StrictString] {
+        get { return projectName }
+        set { projectName = newValue }
+    }
+
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     // @crossReference(WorkspaceConfiguration.supportedPlatforms)
     /// The platforms the project supports.
@@ -394,6 +406,7 @@ public final class WorkspaceConfiguration : Configuration {
 
     private enum CodingKeys : CodingKey {
         case provideWorkflowScripts
+        case projectName
         case supportedPlatforms
         case git
         case licence
@@ -414,6 +427,7 @@ public final class WorkspaceConfiguration : Configuration {
     public override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(provideWorkflowScripts, forKey: .provideWorkflowScripts)
+        try container.encode(projectName, forKey: .projectName)
         try container.encode(supportedPlatforms, forKey: .supportedPlatforms)
         try container.encode(git, forKey: .git)
         try container.encode(licence, forKey: .licence)
@@ -435,6 +449,7 @@ public final class WorkspaceConfiguration : Configuration {
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         provideWorkflowScripts = try container.decode(Bool.self, forKey: .provideWorkflowScripts)
+        projectName = try container.decode([LocalizationIdentifier: StrictString].self, forKey: .projectName)
         supportedPlatforms = try container.decode(Set<Platform>.self, forKey: .supportedPlatforms)
         git = try container.decode(GitConfiguration.self, forKey: .git)
         licence = try container.decode(LicenceConfiguration.self, forKey: .licence)

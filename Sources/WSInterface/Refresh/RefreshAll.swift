@@ -48,7 +48,7 @@ extension Workspace.Refresh {
                 try executeAsStep(withArguments: arguments, options: options, output: output)
             }
 
-            let projectName = StrictString(try options.project.projectName())
+            let projectName = try options.project.localizedIsolatedProjectName(output: output)
             var success = UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom:
@@ -83,7 +83,7 @@ extension Workspace.Refresh {
 
         static func executeAsStep(withArguments arguments: DirectArguments, options: Options, output: Command.Output) throws {
 
-            let projectName = StrictString(try options.project.projectName())
+            let projectName = try options.project.localizedIsolatedProjectName(output: output)
             output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom:

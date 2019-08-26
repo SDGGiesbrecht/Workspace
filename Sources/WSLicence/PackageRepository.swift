@@ -40,7 +40,10 @@ extension PackageRepository {
         let oldContents = file.contents
 
         let copyright = WSProject.copyright(fromText: oldContents)
-        var authors: StrictString = "the " + StrictString(try projectName()) + " project contributors."
+        let projectName = try self.projectName(
+            in: LocalizationIdentifier(InterfaceLocalization.englishUnitedStates.code),
+            output: output)
+        var authors: StrictString = "the \(projectName) project contributors."
         if let configuredAuthor = try configuration(output: output).documentation.primaryAuthor {
             authors = configuredAuthor + " and " + authors
         }

@@ -16,6 +16,8 @@
 
 import WSGeneralImports
 
+import WSProject
+
 public struct ValidationStatus {
 
     // MARK: - Static Properties
@@ -64,7 +66,7 @@ public struct ValidationStatus {
 
         try output.listWarnings(for: project)
 
-        let projectName = try project.projectName()
+        let projectName: StrictString = try project.localizedIsolatedProjectName(output: output)
         if passing {
             output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {

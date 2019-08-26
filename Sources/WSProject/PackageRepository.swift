@@ -139,6 +139,13 @@ extension PackageRepository {
         return try configuration(output: output).projectName[localization] ?? packageName()
     }
 
+    public func localizedIsolatedProjectName(output: Command.Output) throws -> StrictString {
+        let identifier = UserFacing<LocalizationIdentifier, InterfaceLocalization>({ localization in
+            return LocalizationIdentifier(localization.code)
+        }).resolved()
+        return try projectName(in: identifier, output: output)
+    }
+
     public func products() throws -> [PackageModel.Product] {
         return try cached(in: &manifestCache.products) {
             var products: [PackageModel.Product] = []

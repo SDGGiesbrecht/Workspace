@@ -258,30 +258,9 @@ extension PackageRepository {
                         testCommand(Workspace.command, with: command, localizations: localizations, uniqueTestName: specificationName, postprocess: postprocess, overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing, file: file, line: line)
                     }
 
-                    // #workaround(SDGWeb 2.0.0, Maintain toggle until SDGWeb is upgraded and everything passes.)
-                    let runExtraTests = { return true }()
-
                     let documentationDirectory = location.appendingPathComponent("docs")
-                    if (try? documentationDirectory.checkResourceIsReachable()) == true,
-                        runExtraTests {
-                        var warnings = Site<InterfaceLocalization>.validate(site: documentationDirectory)
-
-                        // #workaround(SDGWeb 2.0.0, Mishandled by SDGWeb.)
-                        warnings = warnings.mapValues { warnings in
-                            return warnings.filter { warning in
-                                if case .syntaxError(let syntax) = warning {
-                                    let description = syntax.presentableDescription()
-                                    if description.contains("An attribute is unknown.\ndata\u{2D}") {
-                                        return false
-                                    }
-                                }
-                                return true
-                            }
-                        }
-                        warnings = warnings.filter({ (_, warnings) in
-                            return ¬warnings.isEmpty
-                        })
-
+                    if (try? documentationDirectory.checkResourceIsReachable()) == true {
+                        let warnings = Site<InterfaceLocalization>.validate(site: documentationDirectory)
                         if ¬warnings.isEmpty {
                             let files = warnings.keys.sorted()
                             let warningList = files.map({ url in

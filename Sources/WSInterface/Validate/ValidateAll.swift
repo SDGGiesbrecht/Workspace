@@ -65,7 +65,7 @@ extension Workspace.Validate {
                 try Workspace.Refresh.All.executeAsStep(withArguments: arguments, options: options, output: output) // @exempt(from: tests)
             }
 
-            let projectName = StrictString(try options.project.projectName())
+            let projectName = try options.project.localizedIsolatedProjectName(output: output)
             output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom:

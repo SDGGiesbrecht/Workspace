@@ -270,6 +270,8 @@ class APITests : TestCase {
         configuration.alleAufgabenEinschalten()
         configuration.gitHub.mitwirkungsanweisungen = BequemeEinstellung(auswerten: { _ in [:] })
         XCTAssert(configuration.gitHub.mitwirkungsanweisungen.auswerten(configuration).isEmpty)
+        configuration.projektname["de"] = "Lokalisiert"
+        XCTAssertEqual(configuration.projektname["de"], "Lokalisiert")
     }
 
     func testConfiguartionContext() {

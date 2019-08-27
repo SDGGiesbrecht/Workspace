@@ -109,7 +109,7 @@ extension PackageRepository {
                     case .project(url: let url):
                         let package = try PackageRepository.relatedPackage(Package(url: url), output: output)
                         let name: StrictString
-                        if let packageName = try? package.projectName() {
+                        if let packageName = try? package.projectName(in: localization, output: output) {
                             name = packageName // @exempt(from: tests) False positive in Xcode 10.
                         } else {
                             // @exempt(from: tests) Only reachable with a non‐package repository.

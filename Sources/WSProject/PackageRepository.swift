@@ -108,7 +108,7 @@ extension PackageRepository {
     // MARK: - Miscellaneous Properties
 
     public func isWorkspaceProject() throws -> Bool {
-        return try projectName() == "Workspace"
+        return try packageName() == "Workspace"
     }
 
     // MARK: - Manifest
@@ -131,8 +131,19 @@ extension PackageRepository {
         }
     }
 
-    public func projectName() throws -> StrictString {
+    public func packageName() throws -> StrictString {
         return StrictString(try cachedManifest().name)
+    }
+
+    public func projectName(in localization: LocalizationIdentifier, output: Command.Output) throws -> StrictString {
+        return try configuration(output: output).projectName[localization] ?? packageName()
+    }
+
+    public func localizedIsolatedProjectName(output: Command.Output) throws -> StrictString {
+        let identifier = UserFacing<LocalizationIdentifier, InterfaceLocalization>({ localization in
+            return LocalizationIdentifier(localization.code)
+        }).resolved()
+        return try projectName(in: identifier, output: output)
     }
 
     public func products() throws -> [PackageModel.Product] {
@@ -195,7 +206,7 @@ extension PackageRepository {
                 return PackageManifest.Product(_name: product.name, type: type, modules: modules)
             }
 
-            let manifest = PackageManifest(_packageName: String(try projectName()), products: products)
+            let manifest = PackageManifest(_packageName: String(try packageName()), products: products)
             return WorkspaceContext(_location: location, manifest: manifest)
         }
     }

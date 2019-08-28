@@ -62,6 +62,7 @@ extension InternalTests {
     // to regenerate.
     static let __allTests__InternalTests = [
         ("testGitIgnoreCoverage", testGitIgnoreCoverage),
+        ("testXcodeProjectFormat", testXcodeProjectFormat),
     ]
 }
 

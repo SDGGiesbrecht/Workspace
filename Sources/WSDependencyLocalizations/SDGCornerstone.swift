@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 2.1.0, Belong in SDGCornerstone.)
+// #workaround(SDGCornerstone 2.2.0, Belong in SDGCornerstone.)
 import Foundation
 
 import SDGText

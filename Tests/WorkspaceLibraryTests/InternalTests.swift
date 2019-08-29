@@ -17,6 +17,8 @@
 @testable import WSScripts
 import WSGeneralTestImports
 
+import WSProject
+
 class InternalTests : TestCase {
 
     func testGitIgnoreCoverage() throws {
@@ -73,5 +75,10 @@ class InternalTests : TestCase {
                     ].joinedAsLines())
 
         }).execute(with: []).get()
+    }
+
+    func testXcodeProjectFormat() {
+        // .gitignore interferes with testing this reliably in a mock project.
+        _ = FileType.xcodeProject.syntax
     }
 }

@@ -178,21 +178,22 @@ public struct FileHeaderConfiguration : Codable {
     ///
     /// Workspace always uses the current date as the end date.
     public var copyrightNotice: Lazy<[LocalizationIdentifier: StrictString]> = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
-        let project = StrictString(WorkspaceContext.current.manifest.packageName)
+        let packageName = StrictString(WorkspaceContext.current.manifest.packageName)
         return configuration.localizationDictionary { localization in
+            let projectName = configuration.projectName[localization] ?? packageName
             if let author = configuration.documentation.primaryAuthor {
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Copyright #dates \(author) and the \(project) project contributors."
+                    return "Copyright #dates \(author) and the \(projectName) project contributors."
                 case .deutschDeutschland:
-                    return "Urheberrecht #dates \(author) und die Mitwirkenden des \(project)‐Projekts."
+                    return "Urheberrecht #dates \(author) und die Mitwirkenden des \(projectName)‐Projekts."
                 }
             } else {
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Copyright #dates the \(project) project contributors."
+                    return "Copyright #dates the \(projectName) project contributors."
                 case .deutschDeutschland:
-                    return "Urheberrecht #dates die Mitwirkenden des \(project)‐Projekts."
+                    return "Urheberrecht #dates die Mitwirkenden des \(projectName)‐Projekts."
                 }
             }
         }
@@ -225,11 +226,12 @@ public struct FileHeaderConfiguration : Codable {
         ]
 
         header.append(contentsOf: configuration.sequentialLocalizations({ localization in
+            let projectName = configuration.projectName[localization] ?? packageName
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "This source file is part of the \(packageName) open source project."
+                return "This source file is part of the \(projectName) open source project."
             case .deutschDeutschland:
-                return "Diese Quelldatei ist Teil des qeulloffenen \(packageName)‐Projekt."
+                return "Diese Quelldatei ist Teil des qeulloffenen \(projectName)‐Projekt."
             }
         }))
         if let site = configuration.documentation.projectWebsite {

@@ -46,13 +46,13 @@ extension Workspace {
                 output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
                     var url: URL = Metadata.documentationURL
                     switch localization {
-                    case .englishUnitedKingdom:
+                    case .englishUnitedKingdom: // @exempt(from: tests)
                         url.appendPathComponent("🇬🇧EN/Installation.html")
-                    case .englishUnitedStates:
+                    case .englishUnitedStates: // @exempt(from: tests)
                         url.appendPathComponent("🇺🇸EN/Installation.html")
-                    case .englishCanada:
+                    case .englishCanada: // @exempt(from: tests)
                         url.appendPathComponent("🇨🇦EN/Installation.html")
-                    case .deutschDeutschland:
+                    case .deutschDeutschland: // @exempt(from: tests)
                         url.appendPathComponent("🇩🇪DE/Installation.html")
                     }
                     switch localization {

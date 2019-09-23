@@ -777,7 +777,8 @@ internal class SymbolPage : Page {
                     return .visitChildren
                 }
             }
-            declaration.walk(Scanner(status: status, symbol: symbol, navigationPath: navigationPath))
+            var scanner = Scanner(status: status, symbol: symbol, navigationPath: navigationPath)
+            declaration.walk(&scanner)
         }
 
         let parametersHeading: StrictString = Callout.parameters.localizedText(localization.code)

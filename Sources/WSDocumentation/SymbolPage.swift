@@ -765,7 +765,7 @@ internal class SymbolPage : Page {
                 let status: DocumentationStatus
                 let symbol: APIElement
                 let navigationPath: [APIElement]
-                override func visit(_ node: FunctionTypeSyntax) -> SyntaxVisitorContinueKind {
+                func visit(_ node: FunctionTypeSyntax) -> SyntaxVisitorContinueKind {
                     for argument in node.arguments
                         where (argument.secondName?.text.isEmpty ≠ false ∨ argument.secondName?.text == "_") // @exempt(from: tests) #workaround(SwiftSyntax 0.50000.0, Wildcard is never detected by SwiftSyntax.)
                             ∧ (argument.firstName?.text.isEmpty ≠ false ∨ argument.firstName?.text == "_") {

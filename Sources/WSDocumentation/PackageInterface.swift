@@ -817,7 +817,7 @@ internal struct PackageInterface {
                     }).joined(separator: "\n")))
                 }
                 documentationMarkup.append(contentsOf: "\npublic func function() {}\n")
-                let parsed = try SyntaxTreeParser.parse(String(documentationMarkup))
+                let parsed = try SyntaxParser.parse(String(documentationMarkup))
                 let documentation = parsed.api().first!.documentation.last?.documentationComment
 
                 var pageContent = ""

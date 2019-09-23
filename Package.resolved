@@ -5,9 +5,9 @@
         "package": "SDGCommandLine",
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCommandLine",
         "state": {
-          "branch": null,
-          "revision": "698afc443a4f8a15e7f06d05bf96c60dcf06957d",
-          "version": "1.1.0"
+          "branch": "swift‐5.1",
+          "revision": "16d74bab7341fb4e42e6bfd2db41decbdab2e995",
+          "version": null
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCornerstone",
         "state": {
           "branch": null,
-          "revision": "869edc30a2249f2ae5a3e99c5a203d4edb2c5b4b",
-          "version": "2.3.0"
+          "revision": "fb6876334ddb7d0c18a61717bcdf8e6043efbb4b",
+          "version": "2.5.0"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
         "state": {
           "branch": null,
-          "revision": "4a7324f7d4414c93ab527d05237d974c9d16f528",
-          "version": "0.12.7"
+          "revision": "32cfa23556368c2a4fc73dc971c52a8d2c2c8b6d",
+          "version": "0.13.0"
         }
       },
       {
@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGWeb",
         "state": {
           "branch": null,
-          "revision": "1aa124376c8a5bf355aacd1b006c8d67999c2256",
-          "version": "2.0.1"
+          "revision": "f8f1ee85bdb8883235a867ea7a8f0e4ffe90ae94",
+          "version": "3.0.0"
         }
       },
       {
@@ -48,20 +48,20 @@
       },
       {
         "package": "llbuild",
-        "repositoryURL": "https://github.com/apple/swift-llbuild.git",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-llbuild",
         "state": {
           "branch": null,
-          "revision": "f1c9ad9a253cdf1aa89a7f5c99c30b4513b06ddb",
-          "version": "0.1.1"
+          "revision": "f73b84bc1525998e5e267f9d830c1411487ac65e",
+          "version": "0.50100.0"
         }
       },
       {
         "package": "SwiftPM",
-        "repositoryURL": "https://github.com/apple/swift-package-manager",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-package-manager",
         "state": {
           "branch": null,
-          "revision": "8656a25cb906c1896339f950ac960ee1b4fe8034",
-          "version": "0.4.0"
+          "revision": "52ad37e6cad1f7561c80a687473f70ccf435118d",
+          "version": "0.50100.0"
         }
       },
       {
@@ -69,8 +69,8 @@
         "repositoryURL": "https://github.com/apple/swift-syntax",
         "state": {
           "branch": null,
-          "revision": "43aa4a19b8105a803d8149ad2a86aa53a77efef3",
-          "version": "0.50000.0"
+          "revision": "3e3eb191fcdbecc6031522660c4ed6ce25282c25",
+          "version": "0.50100.0"
         }
       }
     ]

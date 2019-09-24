@@ -518,11 +518,15 @@ class APITests : TestCase {
     func testHeaders() {
         let configuration = WorkspaceConfiguration()
         configuration.documentation.localizations = ["🇨🇦EN"]
-        PackageRepository(mock: "Headers").test(commands: [
-            ["refresh", "file‐headers"],
-            ["refresh", "examples"],
-            ["refresh", "inherited‐documentation"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "Headers").test(
+            commands: [
+                ["refresh", "file‐headers"],
+                ["refresh", "examples"],
+                ["refresh", "inherited‐documentation"]
+            ],
+            configuration: configuration,
+            localizations: FastTestLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testHelp() throws {

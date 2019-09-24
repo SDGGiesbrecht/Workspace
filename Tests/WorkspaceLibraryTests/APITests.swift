@@ -547,9 +547,12 @@ class APITests : TestCase {
     }
 
     func testInvalidResourceDirectory() {
-        PackageRepository(mock: "InvalidResourceDirectory").test(commands: [
-            ["refresh", "resources"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "InvalidResourceDirectory").test(
+            commands: [
+                ["refresh", "resources"]
+            ],
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testInvalidTarget() {

@@ -5,9 +5,9 @@
         "package": "SDGCommandLine",
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCommandLine",
         "state": {
-          "branch": "swift‐5.1",
-          "revision": "16d74bab7341fb4e42e6bfd2db41decbdab2e995",
-          "version": null
+          "branch": null,
+          "revision": "62c1b9fb201fb62fbba928b667e5c940e916216a",
+          "version": "1.1.1"
         }
       },
       {

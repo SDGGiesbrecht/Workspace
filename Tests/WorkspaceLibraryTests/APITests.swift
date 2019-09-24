@@ -604,9 +604,12 @@ class APITests : TestCase {
     }
 
     func testMissingDocumentation() {
-        PackageRepository(mock: "MissingDocumentation").test(commands: [
-            ["refresh", "inherited‐documentation"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "MissingDocumentation").test(
+            commands: [
+                ["refresh", "inherited‐documentation"]
+            ],
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testMissingExample() {

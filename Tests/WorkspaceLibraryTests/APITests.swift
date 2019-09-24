@@ -803,7 +803,12 @@ class APITests : TestCase {
             ["proofread", "•xcode"],
             ["validate"]
             ])
-        PackageRepository(mock: "SDGLibrary").test(commands: commands, configuration: configuration, sdg: true, localizations: FastTestLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "SDGLibrary").test(
+            commands: commands,
+            configuration: configuration,
+            sdg: true,
+            localizations: FastTestLocalization.self,
+            withDependency: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testSDGTool() {

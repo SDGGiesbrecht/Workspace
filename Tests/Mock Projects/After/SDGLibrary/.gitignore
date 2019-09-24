@@ -17,6 +17,7 @@
 *~
 .build
 Packages
+.swiftpm
 Validate\ (macOS).command
 Validate\ (Linux).sh
 *.xcodeproj

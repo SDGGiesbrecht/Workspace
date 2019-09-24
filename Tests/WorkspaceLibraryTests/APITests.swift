@@ -341,11 +341,15 @@ class APITests : TestCase {
         configuration.licence.manage = true
         configuration.licence.licence = .unlicense
         configuration.fileHeaders.manage = true
-        PackageRepository(mock: "CustomReadMe").test(commands: [
-            ["refresh", "read‐me"],
-            ["refresh", "licence"],
-            ["refresh", "file‐headers"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "CustomReadMe").test(
+            commands: [
+                ["refresh", "read‐me"],
+                ["refresh", "licence"],
+                ["refresh", "file‐headers"]
+            ],
+            configuration: configuration,
+            localizations: FastTestLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCustomTasks() {

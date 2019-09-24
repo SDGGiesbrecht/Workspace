@@ -684,10 +684,14 @@ class APITests : TestCase {
     func testOnlyBritish() {
         let configuration = WorkspaceConfiguration()
         configuration.gitHub.manage = true
-        PackageRepository(mock: "OnlyBritish").test(commands: [
-            ["refresh", "github"],
-            ["normalize"]
-            ], configuration: configuration, localizations: OnlyBritish.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "OnlyBritish").test(
+            commands: [
+                ["refresh", "github"],
+                ["normalize"]
+            ],
+            configuration: configuration,
+            localizations: OnlyBritish.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testPartialReadMe() {
@@ -708,11 +712,15 @@ class APITests : TestCase {
             result["zxx"] = "#dates"
             return result
         })
-        PackageRepository(mock: "PartialReadMe").test(commands: [
-            ["refresh", "read‐me"],
-            ["refresh", "github"],
-            ["document"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "PartialReadMe").test(
+            commands: [
+                ["refresh", "read‐me"],
+                ["refresh", "github"],
+                ["document"]
+            ],
+            configuration: configuration,
+            localizations: FastTestLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testProofreadingRule() {

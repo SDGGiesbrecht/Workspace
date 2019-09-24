@@ -445,12 +445,16 @@ class APITests : TestCase {
         configuration.supportedPlatforms.remove(.watchOS)
         configuration.supportedPlatforms.remove(.tvOS)
         configuration.documentation.localizations = ["en"]
-        PackageRepository(mock: "Executable").test(commands: [
-            ["refresh", "licence"],
-            ["refresh", "read‐me"],
-            ["document"],
-            ["validate", "documentation‐coverage"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "Executable").test(
+            commands: [
+                ["refresh", "licence"],
+                ["refresh", "read‐me"],
+                ["document"],
+                ["validate", "documentation‐coverage"]
+            ],
+            configuration: configuration,
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testFailingCustomTasks() {

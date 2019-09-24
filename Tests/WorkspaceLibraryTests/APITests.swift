@@ -40,10 +40,14 @@ class APITests : TestCase {
         configuration.testing.prohibitCompilerWarnings = false
         configuration.testing.enforceCoverage = false
         configuration.documentation.api.enforceCoverage = false
-        PackageRepository(mock: "AllDisabled").test(commands: [
-            ["refresh"],
-            ["validate"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "AllDisabled").test(
+            commands: [
+                ["refresh"],
+                ["validate"]
+            ],
+            configuration: configuration,
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testAllTasks() {
@@ -59,10 +63,14 @@ class APITests : TestCase {
             result["🇮🇱עב"] = "#dates"
             return result
         })
-        PackageRepository(mock: "AllTasks").test(commands: [
-            ["refresh"],
-            ["validate"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "AllTasks").test(
+            commands: [
+                ["refresh"],
+                ["validate"]
+            ],
+            configuration: configuration,
+            localizations: FastTestLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testArray() {
@@ -80,15 +88,21 @@ class APITests : TestCase {
     }
 
     func testBrokenExample() {
-        PackageRepository(mock: "BrokenExample").test(commands: [
-            ["refresh", "examples"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "BrokenExample").test(
+            commands: [
+                ["refresh", "examples"]
+            ],
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testBrokenTests() {
-        PackageRepository(mock: "BrokenTests").test(commands: [
-            ["test"]
-            ], localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "BrokenTests").test(
+            commands: [
+                ["test"]
+            ],
+            localizations: FastTestLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCheckedInDocumentation() throws {
@@ -131,11 +145,15 @@ class APITests : TestCase {
             return result
         })
         configuration.provideWorkflowScripts = false
-        PackageRepository(mock: "CheckedInDocumentation").test(commands: [
-            ["refresh"],
-            ["validate", "•job", "miscellaneous"],
-            ["validate", "•job", "deployment"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "CheckedInDocumentation").test(
+            commands: [
+                ["refresh"],
+                ["validate", "•job", "miscellaneous"],
+                ["validate", "•job", "deployment"]
+            ],
+            configuration: configuration,
+            localizations: FastTestLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCheckForUpdates() throws {

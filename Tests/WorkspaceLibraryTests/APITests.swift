@@ -508,11 +508,15 @@ class APITests : TestCase {
             }
         } catch {}
         // This test may fail if derived data is not in the default location. See above.
-        PackageRepository(mock: "FailingTests").test(commands: [
-            ["validate", "build"],
-            ["validate", "test‐coverage"],
-            ["validate", "build", "•job", "miscellaneous"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "FailingTests").test(
+            commands: [
+                ["validate", "build"],
+                ["validate", "test‐coverage"],
+                ["validate", "build", "•job", "miscellaneous"]
+            ],
+            configuration: configuration,
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testHeaders() {

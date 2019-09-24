@@ -297,11 +297,15 @@ class APITests : TestCase {
         configuration.licence.manage = true
         configuration.licence.licence = .mit
         configuration.fileHeaders.manage = true
-        PackageRepository(mock: "ContinuousIntegrationWithoutScripts").test(commands: [
-            ["refresh", "continuous‐integration"],
-            ["refresh", "licence"],
-            ["refresh", "file‐headers"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "ContinuousIntegrationWithoutScripts").test(
+            commands: [
+                ["refresh", "continuous‐integration"],
+                ["refresh", "licence"],
+                ["refresh", "file‐headers"]
+            ],
+            configuration: configuration,
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCustomProofread() {

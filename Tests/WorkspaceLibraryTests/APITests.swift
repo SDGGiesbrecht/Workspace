@@ -435,7 +435,11 @@ class APITests : TestCase {
         #if !os(Linux)
         commands.append(["auffrischen", "xcode"])
         #endif
-        PackageRepository(mock: "Deutsch").test(commands: commands, configuration: konfiguration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "Deutsch").test(
+            commands: commands,
+            configuration: konfiguration,
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testExecutable() {

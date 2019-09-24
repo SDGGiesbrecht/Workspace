@@ -610,9 +610,12 @@ class APITests : TestCase {
     }
 
     func testMissingExample() {
-        PackageRepository(mock: "MissingExample").test(commands: [
-            ["refresh", "examples"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "MissingExample").test(
+            commands: [
+                ["refresh", "examples"]
+            ],
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testMissingReadMeLocalization() {

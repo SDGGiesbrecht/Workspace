@@ -676,9 +676,13 @@ class APITests : TestCase {
         configuration.documentation.localizations = ["en"]
         configuration.documentation.currentVersion = Version(1, 0, 0)
         configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
-        PackageRepository(mock: "OneProductMultipleModules").test(commands: [
-            ["refresh", "read‐me"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "OneProductMultipleModules").test(
+            commands: [
+                ["refresh", "read‐me"]
+            ],
+            configuration: configuration,
+            localizations: FastTestLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testOnlyBritish() {

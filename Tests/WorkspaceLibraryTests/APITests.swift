@@ -316,12 +316,17 @@ class APITests : TestCase {
         configuration.fileHeaders.manage = true
         let passing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: [])
         configuration.customProofreadingTasks.append(passing)
-        PackageRepository(mock: "CustomProofread").test(commands: [
-            ["proofread"],
-            ["proofread", "•xcode"],
-            ["refresh", "licence"],
-            ["refresh", "file‐headers"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "CustomProofread").test(
+            commands: [
+                ["proofread"],
+                ["proofread", "•xcode"],
+                ["refresh", "licence"],
+                ["refresh", "file‐headers"]
+            ],
+            configuration: configuration,
+            localizations: FastTestLocalization.self,
+            withCustomTask: true,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCustomReadMe() {

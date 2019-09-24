@@ -488,10 +488,14 @@ class APITests : TestCase {
         configuration.documentation.localizations = ["zxx"]
         configuration.xcode.manage = true
         configuration.documentation.repositoryURL = URL(string: "http://example.com")!
-        PackageRepository(mock: "FailingDocumentationCoverage").test(commands: [
-            ["validate", "documentation‐coverage"],
-            ["document"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "FailingDocumentationCoverage").test(
+            commands: [
+                ["validate", "documentation‐coverage"],
+                ["document"]
+            ],
+            configuration: configuration,
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testFailingTests() {

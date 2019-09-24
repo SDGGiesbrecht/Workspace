@@ -462,9 +462,14 @@ class APITests : TestCase {
         configuration.testing.prohibitCompilerWarnings = false
         configuration.testing.enforceCoverage = false
         configuration.documentation.api.enforceCoverage = false
-        PackageRepository(mock: "FailingCustomTasks").test(commands: [
-            ["refresh"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "FailingCustomTasks").test(
+            commands: [
+                ["refresh"]
+            ],
+            configuration: configuration,
+            localizations: FastTestLocalization.self,
+            withCustomTask: true,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testFailingCustomValidation() {

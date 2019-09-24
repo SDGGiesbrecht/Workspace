@@ -553,9 +553,12 @@ class APITests : TestCase {
     }
 
     func testInvalidTarget() {
-        PackageRepository(mock: "InvalidTarget").test(commands: [
-            ["refresh", "resources"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "InvalidTarget").test(
+            commands: [
+                ["refresh", "resources"]
+            ],
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testIssueTemplate() {

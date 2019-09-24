@@ -400,7 +400,10 @@ class APITests : TestCase {
             ["validate"],
             ["validate", "•job", "macos"]
         ]
-        PackageRepository(mock: "Default").test(commands: commands, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "Default").test(
+            commands: commands,
+            localizations: FastTestLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testDeutsch() throws {

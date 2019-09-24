@@ -477,9 +477,14 @@ class APITests : TestCase {
         configuration.testing.prohibitCompilerWarnings = false
         configuration.testing.enforceCoverage = false
         configuration.documentation.api.enforceCoverage = false
-        PackageRepository(mock: "FailingCustomValidation").test(commands: [
-            ["validate"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "FailingCustomValidation").test(
+            commands: [
+                ["validate"]
+            ],
+            configuration: configuration,
+            localizations: InterfaceLocalization.self,
+            withCustomTask: true,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testFailingDocumentationCoverage() {

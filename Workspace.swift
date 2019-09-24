@@ -16,8 +16,6 @@
 
 import WorkspaceConfiguration
 
-#warning("Remove branch dependencies.")
-
 public enum Metadata {
 
     public static let latestStableVersion = Version(0, 22, 1)

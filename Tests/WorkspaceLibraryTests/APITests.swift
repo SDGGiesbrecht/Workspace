@@ -619,9 +619,13 @@ class APITests : TestCase {
         let configuration = WorkspaceConfiguration()
         configuration.documentation.localizations = ["zxx"]
         configuration.documentation.readMe.contents.resolve = { _ in [:] }
-        PackageRepository(mock: "MissingReadMeLocalization").test(commands: [
-            ["refresh", "read‐me"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "MissingReadMeLocalization").test(
+            commands: [
+                ["refresh", "read‐me"]
+            ],
+            configuration: configuration,
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testMultipleProducts() {

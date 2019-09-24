@@ -867,7 +867,13 @@ class APITests : TestCase {
 
             ["proofread", "•xcode"]
             ])
-        PackageRepository(mock: "SDGTool").test(commands: commands, configuration: configuration, sdg: true, localizations: FastTestLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "SDGTool").test(
+            commands: commands,
+            configuration: configuration,
+            sdg: true,
+            localizations: FastTestLocalization.self,
+            withDependency: true,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testSelfSpecificScripts() throws {

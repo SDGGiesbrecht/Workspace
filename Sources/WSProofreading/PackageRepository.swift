@@ -57,7 +57,7 @@ extension PackageRepository {
 
                             if ¬syntaxRules.isEmpty,
                                 file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
-                                let syntax = try SyntaxTreeParser.parseAndRetry(url)
+                                let syntax = try SyntaxParser.parseAndRetry(url)
                                 try RuleSyntaxScanner(
                                     rules: syntaxRules,
                                     file: file,

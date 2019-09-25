@@ -40,10 +40,14 @@ class APITests : TestCase {
         configuration.testing.prohibitCompilerWarnings = false
         configuration.testing.enforceCoverage = false
         configuration.documentation.api.enforceCoverage = false
-        PackageRepository(mock: "AllDisabled").test(commands: [
-            ["refresh"],
-            ["validate"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "AllDisabled").test(
+            commands: [
+                ["refresh"],
+                ["validate"]
+            ],
+            configuration: configuration,
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testAllTasks() {
@@ -59,10 +63,14 @@ class APITests : TestCase {
             result["🇮🇱עב"] = "#dates"
             return result
         })
-        PackageRepository(mock: "AllTasks").test(commands: [
-            ["refresh"],
-            ["validate"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "AllTasks").test(
+            commands: [
+                ["refresh"],
+                ["validate"]
+            ],
+            configuration: configuration,
+            localizations: FastTestLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testArray() {
@@ -80,15 +88,21 @@ class APITests : TestCase {
     }
 
     func testBrokenExample() {
-        PackageRepository(mock: "BrokenExample").test(commands: [
-            ["refresh", "examples"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "BrokenExample").test(
+            commands: [
+                ["refresh", "examples"]
+            ],
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testBrokenTests() {
-        PackageRepository(mock: "BrokenTests").test(commands: [
-            ["test"]
-            ], localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "BrokenTests").test(
+            commands: [
+                ["test"]
+            ],
+            localizations: FastTestLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCheckedInDocumentation() throws {
@@ -131,11 +145,15 @@ class APITests : TestCase {
             return result
         })
         configuration.provideWorkflowScripts = false
-        PackageRepository(mock: "CheckedInDocumentation").test(commands: [
-            ["refresh"],
-            ["validate", "•job", "miscellaneous"],
-            ["validate", "•job", "deployment"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "CheckedInDocumentation").test(
+            commands: [
+                ["refresh"],
+                ["validate", "•job", "miscellaneous"],
+                ["validate", "•job", "deployment"]
+            ],
+            configuration: configuration,
+            localizations: FastTestLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCheckForUpdates() throws {
@@ -297,11 +315,15 @@ class APITests : TestCase {
         configuration.licence.manage = true
         configuration.licence.licence = .mit
         configuration.fileHeaders.manage = true
-        PackageRepository(mock: "ContinuousIntegrationWithoutScripts").test(commands: [
-            ["refresh", "continuous‐integration"],
-            ["refresh", "licence"],
-            ["refresh", "file‐headers"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "ContinuousIntegrationWithoutScripts").test(
+            commands: [
+                ["refresh", "continuous‐integration"],
+                ["refresh", "licence"],
+                ["refresh", "file‐headers"]
+            ],
+            configuration: configuration,
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCustomProofread() {
@@ -316,12 +338,17 @@ class APITests : TestCase {
         configuration.fileHeaders.manage = true
         let passing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: [])
         configuration.customProofreadingTasks.append(passing)
-        PackageRepository(mock: "CustomProofread").test(commands: [
-            ["proofread"],
-            ["proofread", "•xcode"],
-            ["refresh", "licence"],
-            ["refresh", "file‐headers"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "CustomProofread").test(
+            commands: [
+                ["proofread"],
+                ["proofread", "•xcode"],
+                ["refresh", "licence"],
+                ["refresh", "file‐headers"]
+            ],
+            configuration: configuration,
+            localizations: FastTestLocalization.self,
+            withCustomTask: true,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCustomReadMe() {
@@ -341,11 +368,15 @@ class APITests : TestCase {
         configuration.licence.manage = true
         configuration.licence.licence = .unlicense
         configuration.fileHeaders.manage = true
-        PackageRepository(mock: "CustomReadMe").test(commands: [
-            ["refresh", "read‐me"],
-            ["refresh", "licence"],
-            ["refresh", "file‐headers"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "CustomReadMe").test(
+            commands: [
+                ["refresh", "read‐me"],
+                ["refresh", "licence"],
+                ["refresh", "file‐headers"]
+            ],
+            configuration: configuration,
+            localizations: FastTestLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testCustomTasks() {
@@ -360,10 +391,15 @@ class APITests : TestCase {
         configuration.testing.enforceCoverage = false
         configuration.documentation.api.enforceCoverage = false
         configuration.xcode.manage = true
-        PackageRepository(mock: "CustomTasks").test(commands: [
-            ["refresh"],
-            ["validate"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "CustomTasks").test(
+            commands: [
+                ["refresh"],
+                ["validate"]
+            ],
+            configuration: configuration,
+            localizations: InterfaceLocalization.self,
+            withCustomTask: true,
+            overwriteSpecificationInsteadOfFailing: false)
 
         var aufgabe = Sonderaufgabe(
             ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "domain.tld")!,
@@ -400,7 +436,10 @@ class APITests : TestCase {
             ["validate"],
             ["validate", "•job", "macos"]
         ]
-        PackageRepository(mock: "Default").test(commands: commands, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "Default").test(
+            commands: commands,
+            localizations: FastTestLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testDeutsch() throws {
@@ -435,7 +474,11 @@ class APITests : TestCase {
         #if !os(Linux)
         commands.append(["auffrischen", "xcode"])
         #endif
-        PackageRepository(mock: "Deutsch").test(commands: commands, configuration: konfiguration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "Deutsch").test(
+            commands: commands,
+            configuration: konfiguration,
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testExecutable() {
@@ -445,12 +488,16 @@ class APITests : TestCase {
         configuration.supportedPlatforms.remove(.watchOS)
         configuration.supportedPlatforms.remove(.tvOS)
         configuration.documentation.localizations = ["en"]
-        PackageRepository(mock: "Executable").test(commands: [
-            ["refresh", "licence"],
-            ["refresh", "read‐me"],
-            ["document"],
-            ["validate", "documentation‐coverage"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "Executable").test(
+            commands: [
+                ["refresh", "licence"],
+                ["refresh", "read‐me"],
+                ["document"],
+                ["validate", "documentation‐coverage"]
+            ],
+            configuration: configuration,
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testFailingCustomTasks() {
@@ -462,9 +509,14 @@ class APITests : TestCase {
         configuration.testing.prohibitCompilerWarnings = false
         configuration.testing.enforceCoverage = false
         configuration.documentation.api.enforceCoverage = false
-        PackageRepository(mock: "FailingCustomTasks").test(commands: [
-            ["refresh"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "FailingCustomTasks").test(
+            commands: [
+                ["refresh"]
+            ],
+            configuration: configuration,
+            localizations: FastTestLocalization.self,
+            withCustomTask: true,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testFailingCustomValidation() {
@@ -477,9 +529,14 @@ class APITests : TestCase {
         configuration.testing.prohibitCompilerWarnings = false
         configuration.testing.enforceCoverage = false
         configuration.documentation.api.enforceCoverage = false
-        PackageRepository(mock: "FailingCustomValidation").test(commands: [
-            ["validate"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "FailingCustomValidation").test(
+            commands: [
+                ["validate"]
+            ],
+            configuration: configuration,
+            localizations: InterfaceLocalization.self,
+            withCustomTask: true,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testFailingDocumentationCoverage() {
@@ -488,10 +545,14 @@ class APITests : TestCase {
         configuration.documentation.localizations = ["zxx"]
         configuration.xcode.manage = true
         configuration.documentation.repositoryURL = URL(string: "http://example.com")!
-        PackageRepository(mock: "FailingDocumentationCoverage").test(commands: [
-            ["validate", "documentation‐coverage"],
-            ["document"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "FailingDocumentationCoverage").test(
+            commands: [
+                ["validate", "documentation‐coverage"],
+                ["document"]
+            ],
+            configuration: configuration,
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testFailingTests() {
@@ -508,21 +569,29 @@ class APITests : TestCase {
             }
         } catch {}
         // This test may fail if derived data is not in the default location. See above.
-        PackageRepository(mock: "FailingTests").test(commands: [
-            ["validate", "build"],
-            ["validate", "test‐coverage"],
-            ["validate", "build", "•job", "miscellaneous"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "FailingTests").test(
+            commands: [
+                ["validate", "build"],
+                ["validate", "test‐coverage"],
+                ["validate", "build", "•job", "miscellaneous"]
+            ],
+            configuration: configuration,
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testHeaders() {
         let configuration = WorkspaceConfiguration()
         configuration.documentation.localizations = ["🇨🇦EN"]
-        PackageRepository(mock: "Headers").test(commands: [
-            ["refresh", "file‐headers"],
-            ["refresh", "examples"],
-            ["refresh", "inherited‐documentation"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "Headers").test(
+            commands: [
+                ["refresh", "file‐headers"],
+                ["refresh", "examples"],
+                ["refresh", "inherited‐documentation"]
+            ],
+            configuration: configuration,
+            localizations: FastTestLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testHelp() throws {
@@ -547,15 +616,21 @@ class APITests : TestCase {
     }
 
     func testInvalidResourceDirectory() {
-        PackageRepository(mock: "InvalidResourceDirectory").test(commands: [
-            ["refresh", "resources"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "InvalidResourceDirectory").test(
+            commands: [
+                ["refresh", "resources"]
+            ],
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testInvalidTarget() {
-        PackageRepository(mock: "InvalidTarget").test(commands: [
-            ["refresh", "resources"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "InvalidTarget").test(
+            commands: [
+                ["refresh", "resources"]
+            ],
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testIssueTemplate() {
@@ -604,24 +679,34 @@ class APITests : TestCase {
     }
 
     func testMissingDocumentation() {
-        PackageRepository(mock: "MissingDocumentation").test(commands: [
-            ["refresh", "inherited‐documentation"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "MissingDocumentation").test(
+            commands: [
+                ["refresh", "inherited‐documentation"]
+            ],
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testMissingExample() {
-        PackageRepository(mock: "MissingExample").test(commands: [
-            ["refresh", "examples"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "MissingExample").test(
+            commands: [
+                ["refresh", "examples"]
+            ],
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testMissingReadMeLocalization() {
         let configuration = WorkspaceConfiguration()
         configuration.documentation.localizations = ["zxx"]
         configuration.documentation.readMe.contents.resolve = { _ in [:] }
-        PackageRepository(mock: "MissingReadMeLocalization").test(commands: [
-            ["refresh", "read‐me"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "MissingReadMeLocalization").test(
+            commands: [
+                ["refresh", "read‐me"]
+            ],
+            configuration: configuration,
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testMultipleProducts() {
@@ -629,9 +714,13 @@ class APITests : TestCase {
         configuration.documentation.localizations = ["en"]
         configuration.documentation.currentVersion = Version(1, 0, 0)
         configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
-        PackageRepository(mock: "MultipleProducts").test(commands: [
-            ["refresh", "read‐me"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "MultipleProducts").test(
+            commands: [
+                ["refresh", "read‐me"]
+            ],
+            configuration: configuration,
+            localizations: FastTestLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testNoLibraries() {
@@ -639,36 +728,51 @@ class APITests : TestCase {
         configuration.documentation.localizations = ["en"]
         configuration.documentation.currentVersion = Version(1, 0, 0)
         configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
-        PackageRepository(mock: "NoLibraries").test(commands: [
-            ["refresh", "read‐me"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "NoLibraries").test(
+            commands: [
+                ["refresh", "read‐me"]
+            ],
+            configuration: configuration,
+            localizations: FastTestLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testNoLocalizations() {
-        PackageRepository(mock: "NoLocalizations").test(commands: [
-            ["refresh", "read‐me"],
-            ["validate", "documentation‐coverage"]
-            ], localizations: InterfaceLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "NoLocalizations").test(
+            commands: [
+                ["refresh", "read‐me"],
+                ["validate", "documentation‐coverage"]
+            ],
+            localizations: InterfaceLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testNurDeutsch() {
         let configuration = WorkspaceConfiguration()
         configuration.gitHub.manage = true
-        PackageRepository(mock: "NurDeutsch").test(commands: [
-            ["auffrischen", "github"],
-            ["normalisieren"],
-            ["korrekturlesen"],
-            ["prüfen", "erstellung"],
-            ["testen"]
-            ], configuration: configuration, localizations: NurDeutsch.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "NurDeutsch").test(
+            commands: [
+                ["auffrischen", "github"],
+                ["normalisieren"],
+                ["korrekturlesen"],
+                ["prüfen", "erstellung"],
+                ["testen"]
+            ],
+            configuration: configuration,
+            localizations: NurDeutsch.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testOneLocalization() {
         let configuration = WorkspaceConfiguration()
         configuration.documentation.localizations = ["en"]
-        PackageRepository(mock: "OneLocalization").test(commands: [
-            ["refresh", "github"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "OneLocalization").test(
+            commands: [
+                ["refresh", "github"]
+            ],
+            configuration: configuration,
+            localizations: FastTestLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testOneProductMultipleModules() {
@@ -676,18 +780,26 @@ class APITests : TestCase {
         configuration.documentation.localizations = ["en"]
         configuration.documentation.currentVersion = Version(1, 0, 0)
         configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
-        PackageRepository(mock: "OneProductMultipleModules").test(commands: [
-            ["refresh", "read‐me"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "OneProductMultipleModules").test(
+            commands: [
+                ["refresh", "read‐me"]
+            ],
+            configuration: configuration,
+            localizations: FastTestLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testOnlyBritish() {
         let configuration = WorkspaceConfiguration()
         configuration.gitHub.manage = true
-        PackageRepository(mock: "OnlyBritish").test(commands: [
-            ["refresh", "github"],
-            ["normalize"]
-            ], configuration: configuration, localizations: OnlyBritish.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "OnlyBritish").test(
+            commands: [
+                ["refresh", "github"],
+                ["normalize"]
+            ],
+            configuration: configuration,
+            localizations: OnlyBritish.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testPartialReadMe() {
@@ -708,11 +820,15 @@ class APITests : TestCase {
             result["zxx"] = "#dates"
             return result
         })
-        PackageRepository(mock: "PartialReadMe").test(commands: [
-            ["refresh", "read‐me"],
-            ["refresh", "github"],
-            ["document"]
-            ], configuration: configuration, localizations: FastTestLocalization.self, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "PartialReadMe").test(
+            commands: [
+                ["refresh", "read‐me"],
+                ["refresh", "github"],
+                ["document"]
+            ],
+            configuration: configuration,
+            localizations: FastTestLocalization.self,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testProofreadingRule() {
@@ -803,7 +919,12 @@ class APITests : TestCase {
             ["proofread", "•xcode"],
             ["validate"]
             ])
-        PackageRepository(mock: "SDGLibrary").test(commands: commands, configuration: configuration, sdg: true, localizations: FastTestLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "SDGLibrary").test(
+            commands: commands,
+            configuration: configuration,
+            sdg: true,
+            localizations: FastTestLocalization.self,
+            withDependency: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testSDGTool() {
@@ -867,7 +988,13 @@ class APITests : TestCase {
 
             ["proofread", "•xcode"]
             ])
-        PackageRepository(mock: "SDGTool").test(commands: commands, configuration: configuration, sdg: true, localizations: FastTestLocalization.self, withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "SDGTool").test(
+            commands: commands,
+            configuration: configuration,
+            sdg: true,
+            localizations: FastTestLocalization.self,
+            withDependency: true,
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testSelfSpecificScripts() throws {

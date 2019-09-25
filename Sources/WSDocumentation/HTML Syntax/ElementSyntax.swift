@@ -45,10 +45,10 @@ extension ElementSyntax {
                 name: name,
                 attributes: AttributesSyntax(attributes: ListSyntax(entries: constructedAttributes))),
             continuation: ElementContinuationSyntax(
-                content: ContentSyntax(elements: ListSyntax(entries: [
-                    ContentElementSyntax(
+                content: ListSyntax(entries: [
+                    ContentSyntax(
                         kind: .text(TextSyntax(text: TokenSyntax(kind: .text(String(constructedContents))))))
-                    ])),
+                    ]),
                 closingTag: ClosingTagSyntax(name: name)))
     }
 

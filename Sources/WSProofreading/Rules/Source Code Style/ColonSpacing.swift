@@ -143,7 +143,7 @@ internal struct ColonSpacing : SyntaxRule {
                     } else if parameterList.count ≤ 1 {
                         // If it is the only element, but isn’t followed immediaetly by the parenthesis, it’s not a name.
                         requiresFollowingSpace = true
-                    } else if parameterList.contains(where: { $0.trailingComma?.isPresent == true ∨ $0.ellipsis?.text == "," }) {
+                    } else if parameterList.contains(where: { $0.trailingComma?.isPresent == true }) {
                         // If the list is separated by commata, its a function call or declaration.
                         requiresFollowingSpace = true
                     } else {

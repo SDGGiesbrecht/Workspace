@@ -38,7 +38,8 @@ extension PackageRepository {
     private static var ignoreEntriesForSwiftProjectManager: [String] {
         return [
             ".build",
-            "Packages"
+            "Packages",
+            ".swiftpm"
         ]
     }
 

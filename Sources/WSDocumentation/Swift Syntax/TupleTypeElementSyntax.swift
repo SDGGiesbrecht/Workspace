@@ -22,13 +22,7 @@ import SDGSwiftSource
 
 extension TupleTypeElementSyntax : Parameter {
     var firstName: TokenSyntax? {
-        if let name = self.name,
-            ¬name.source().isEmpty {
-            return name
-        } else {
-            // #workaround(SwiftSyntax 0.50000.0, Misidentified.)
-            return inOut
-        }
+        return name
     }
     var optionalType: TypeSyntax? {
         return type

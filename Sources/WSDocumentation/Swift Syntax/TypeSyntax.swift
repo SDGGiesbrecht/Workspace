@@ -26,9 +26,7 @@ extension TypeSyntax {
         switch self {
         case let simple as SimpleTypeIdentifierSyntax:
             var result: [String] = []
-            if let genericArgumentClause = simple.genericArgumentClause,
-                // #workaround(SwiftSyntax 0.50000.0, Prevents invalid index.)
-                genericArgumentClause.source() ≠ "" {
+            if let genericArgumentClause = simple.genericArgumentClause {
                 for argument in genericArgumentClause.arguments {
                     result.append(contentsOf: argument.argumentType.parameterNames())
                 }

@@ -767,12 +767,14 @@ internal class SymbolPage : Page {
                 let navigationPath: [APIElement]
                 func visit(_ node: FunctionTypeSyntax) -> SyntaxVisitorContinueKind {
                     for argument in node.arguments
-                        where (argument.secondName?.text.isEmpty ≠ false ∨ argument.secondName?.text == "_") // @exempt(from: tests) #workaround(SwiftSyntax 0.50000.0, Wildcard is never detected by SwiftSyntax.)
-                            ∧ (argument.firstName?.text.isEmpty ≠ false ∨ argument.firstName?.text == "_") {
-                                status.reportUnlabelledParameter(
-                                    node.source(),
-                                    symbol: symbol,
-                                    navigationPath: navigationPath)
+                        where (argument.secondName?.text.isEmpty ≠ false
+                            ∨ argument.secondName?.tokenKind == .wildcardKeyword) // @exempt(from: tests)
+                            ∧ (argument.firstName?.text.isEmpty ≠ false
+                                ∨ argument.firstName?.tokenKind == .wildcardKeyword) {
+                                    status.reportUnlabelledParameter(
+                                        node.source(),
+                                        symbol: symbol,
+                                        navigationPath: navigationPath)
                     }
                     return .visitChildren
                 }

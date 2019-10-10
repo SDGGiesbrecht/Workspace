@@ -83,10 +83,11 @@ internal struct UnicodeRule : SyntaxRule {
         if let token = node as? ExtendedTokenSyntax {
 
             func isMarkdownEntity() -> Bool {
-                if token.kind == .documentationText,
-                    token.nextToken()?.kind == .documentationText,
-                    token.previousToken()?.kind == .documentationText {
-                    return true
+                if token.kind == .documentationText {
+                    // #workaround(SDGSwift 0.14.1, This lets others fall through, but SDGSwiftSource needs to handle entities properly to allow them.)
+                    // If the entity was resolved, the source must have changed.
+                    let range = node.lowerBound(in: context) ..< node.upperBound(in: context)
+                    return ¬file.contents.scalars[range].elementsEqual(node.text.scalars)
                 } else {
                     return false
                 }

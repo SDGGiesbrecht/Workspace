@@ -137,6 +137,7 @@ public struct FileHeaderConfiguration : Codable {
         set { manage = newValue }
     }
 
+    // #workaround(SDGSwift 0.14.1, Copyright symbol should be in code voice, but for index issue.)
     // @localization(🇩🇪DE) @crossReference(FileHeaderConfiguration.copyrightNotice)
     /// Der Urheberrechtshinweis.
     ///
@@ -146,13 +147,14 @@ public struct FileHeaderConfiguration : Codable {
     ///
     /// ### Datenrechnung
     ///
-    /// Arbeitsbereich verwendet das vorbestehende Anfangsdatum wenn der Vorspann schon Daten enthält. Arbeitsbereich sucht die Zeichenketten `©`, `(C)`, oder `(c)` aus, die von vier Ziffern gefolgt werden, und erkennt sie mit oder ohne ein Lehrzeichen inzwischen. Falls keine gefunden wird, verwendet Arbeitsbereich das aktuelle Datum als Anfangsdatum.
+    /// Arbeitsbereich verwendet das vorbestehende Anfangsdatum wenn der Vorspann schon Daten enthält. Arbeitsbereich sucht die Zeichenketten „©“, `(C)`, oder `(c)` aus, die von vier Ziffern gefolgt werden, und erkennt sie mit oder ohne ein Lehrzeichen inzwischen. Falls keine gefunden wird, verwendet Arbeitsbereich das aktuelle Datum als Anfangsdatum.
     ///
     /// Arbeitsbereich verwendet immer das aktuelle Datum als Enddatum.
     public var urheberrechtshinweis: BequemeEinstellung<[Lokalisationskennzeichen: StrengerZeichenkette]> {
         get { return copyrightNotice }
         set { copyrightNotice = newValue }
     }
+    // #workaround(SDGSwift 0.14.1, Copyright symbol should be in code voice, but for index issue.)
     // @localization(🇬🇧EN) @crossReference(FileHeaderConfiguration.copyrightNotice)
     /// The copyright notice.
     ///
@@ -162,9 +164,10 @@ public struct FileHeaderConfiguration : Codable {
     ///
     /// ### Determination of the Dates
     ///
-    /// Workspace uses any pre‐existing start date if it can detect one already in the file header. Workspace searches for `©`, `(C)`, or `(c)` followed by an optional space and four digits. If none is found, Workspace will use the current date as the start date.
+    /// Workspace uses any pre‐existing start date if it can detect one already in the file header. Workspace searches for ‘©’, `(C)`, or `(c)` followed by an optional space and four digits. If none is found, Workspace will use the current date as the start date.
     ///
     /// Workspace always uses the current date as the end date.
+    // #workaround(SDGSwift 0.14.1, Copyright symbol should be in code voice, but for index issue.)
     // @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(FileHeaderConfiguration.copyrightNotice)
     /// The copyright notice.
     ///
@@ -174,7 +177,7 @@ public struct FileHeaderConfiguration : Codable {
     ///
     /// ### Determination of the Dates
     ///
-    /// Workspace uses any pre‐existing start date if it can detect one already in the file header. Workspace searches for `©`, `(C)`, or `(c)` followed by an optional space and four digits. If none is found, Workspace will use the current date as the start date.
+    /// Workspace uses any pre‐existing start date if it can detect one already in the file header. Workspace searches for “©”, `(C)`, or `(c)` followed by an optional space and four digits. If none is found, Workspace will use the current date as the start date.
     ///
     /// Workspace always uses the current date as the end date.
     public var copyrightNotice: Lazy<[LocalizationIdentifier: StrictString]> = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in

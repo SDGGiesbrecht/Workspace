@@ -126,5 +126,9 @@ public let configuration: WorkspaceConfiguration = {
         "SwiftSyntax"
     ]
 
+    // #workaround(SDGSwift 0.14.1, Avoids string index issue.)
+    configuration.repository.ignoredPaths
+        .insert("Sources/WorkspaceConfiguration/Configuration/FileHeaderConfiguration.swift")
+
     return configuration
 }()

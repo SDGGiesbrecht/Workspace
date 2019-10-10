@@ -65,6 +65,7 @@ public let configuration: WorkspaceConfiguration = {
         "llbuildBuildSystem",
         "llbuildCore",
         "llbuildSwift",
+        "llvmDemangle",
         "llvmSupport",
 
         // SDGCommandLine
@@ -100,6 +101,7 @@ public let configuration: WorkspaceConfiguration = {
         // SDGWeb
         "SDGCSS",
         "SDGHTML",
+        "SDGWeb",
         "SDGWebLocalizations",
 
         // Swift
@@ -123,12 +125,9 @@ public let configuration: WorkspaceConfiguration = {
         "Xcodeproj",
 
         // SwiftSyntax
+        "_CSwiftSyntax",
         "SwiftSyntax"
     ]
-
-    // #workaround(SDGSwift 0.14.1, Avoids string index issue.)
-    configuration.repository.ignoredPaths
-        .insert("Sources/WorkspaceConfiguration/Configuration/FileHeaderConfiguration.swift")
 
     return configuration
 }()

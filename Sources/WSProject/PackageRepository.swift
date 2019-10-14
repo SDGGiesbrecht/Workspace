@@ -25,7 +25,7 @@ import WorkspaceProjectConfiguration
 
 extension PackageRepository {
 
-    private static let macOSDeploymentVersion = Version(10, 13)
+    private static let macOSDeploymentVersion = Version(10, 10)
 
     // MARK: - Cache
 

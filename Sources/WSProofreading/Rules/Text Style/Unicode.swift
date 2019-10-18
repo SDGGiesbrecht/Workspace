@@ -155,7 +155,6 @@ internal struct UnicodeRule : SyntaxRule {
                    allowInFloatLiteral: Bool = false,
                    allowAsConditionalCompilationOperator: Bool = false,
                    allowInToolsVersion: Bool = false,
-                   allowInWorkarounds: Bool = false,
                    message: UserFacing<StrictString, InterfaceLocalization>, status: ProofreadingStatus, output: Command.Output) {
 
             if onlyProhibitPrefixUse ∧ ¬isPrefix() {
@@ -239,7 +238,6 @@ internal struct UnicodeRule : SyntaxRule {
         check(for: "\u{2D}",
               allowInFloatLiteral: true,
               allowInToolsVersion: true,
-              allowInWorkarounds: true,
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 // Note to localizers: Adapt the recommendations for the target localization.

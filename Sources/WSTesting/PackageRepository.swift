@@ -93,7 +93,7 @@ extension PackageRepository {
                     break
                 case .noXcodeProject:
                     description += "\n" + PackageRepository.xcodeProjectInstructions.resolved()
-                case .xcodeError:
+                case .xcodeError: // @exempt(from: tests)
                     description = "" // Already printed.
                 }
             }

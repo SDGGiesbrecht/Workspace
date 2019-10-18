@@ -89,10 +89,12 @@ extension PackageRepository {
             var description = StrictString(error.localizedDescription)
             if let schemeError = error as? Xcode.SchemeError {
                 switch schemeError {
-                case .foundationError, .noPackageScheme, .xcodeError: // @exempt(from: tests)
+                case .foundationError, .noPackageScheme: // @exempt(from: tests)
                     break
                 case .noXcodeProject:
                     description += "\n" + PackageRepository.xcodeProjectInstructions.resolved()
+                case .xcodeError: // @exempt(from: tests)
+                    description = "" // Already printed.
                 }
             }
             output.print(description.formattedAsError())
@@ -145,10 +147,12 @@ extension PackageRepository {
                 case .failure(let error):
                     var description = StrictString(error.localizedDescription)
                     switch error {
-                    case .foundationError, .noPackageScheme, .xcodeError:
+                    case .foundationError, .noPackageScheme:
                         break
                     case .noXcodeProject:
                         description += "\n" + PackageRepository.xcodeProjectInstructions.resolved()
+                    case .xcodeError:
+                        description = "" // Already printed.
                     }
                     output.print(description.formattedAsError())
                     return false

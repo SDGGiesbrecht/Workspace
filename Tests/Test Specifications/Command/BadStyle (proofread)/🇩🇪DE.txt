@@ -157,6 +157,14 @@ Zeile 9
 Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
 // Trigger, because this is not a minus sign: a - b
 
+Zeile 11
+Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
+// #workaround(bash --version 1000.0.0, The stroke should warn and an exemption should be required.)
+
+Zeile 11
+Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
+// #workaround(bash --version 1000.0.0, The stroke should warn and an exemption should be required.)
+
 Zeile 19
 Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
 /// - RecommendedOver: -

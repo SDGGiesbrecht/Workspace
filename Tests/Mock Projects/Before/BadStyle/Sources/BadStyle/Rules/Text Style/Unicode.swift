@@ -8,7 +8,7 @@
 
 // Trigger, because this is not a minus sign: a - b
 
-// #workaround(bash --version 1000.0.0, Generic strokes may be necessary in version checks.) @exempt(from: unicode)
+// #workaround(bash --version 1000.0.0, The stroke should warn and an exemption should be required.)
 
 /// ```shell
 /// Generic strokes may be necessary in shell source: “swift -version”

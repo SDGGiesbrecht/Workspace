@@ -27,6 +27,8 @@ $ workspace proofread •xcode •no‐colour
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:5:4: warning: The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:5:58: warning: The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:9:49: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
+[Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:11:21: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
+[Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:11:22: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:19:24: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:35:20: warning: Empty braces should not contain spaces. (braceSpacing)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:35:21: warning: Empty braces should not contain spaces. (braceSpacing)

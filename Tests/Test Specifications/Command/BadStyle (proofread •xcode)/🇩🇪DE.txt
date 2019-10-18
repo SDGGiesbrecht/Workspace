@@ -27,6 +27,8 @@ $ arbeitsbereich proofread •xcode •no‐colour
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:5:4: warning: Das Schriftzeichen U+0022 ist überholt. Anführungszeichen („, “) oder Doppelprime (′′) verwenden. (unicode)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:5:58: warning: Das Schriftzeichen U+0022 ist überholt. Anführungszeichen („, “) oder Doppelprime (′′) verwenden. (unicode)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:9:49: warning: Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
+[Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:11:21: warning: Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
+[Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:11:22: warning: Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:19:24: warning: Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:35:20: warning: Leere geschweifte Klammern sollen keinen Leerzeichen beinhalten. (abstandGeschweifterKlammern)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:35:21: warning: Leere geschweifte Klammern sollen keinen Leerzeichen beinhalten. (abstandGeschweifterKlammern)

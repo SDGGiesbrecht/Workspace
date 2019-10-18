@@ -157,6 +157,14 @@ Line 9
 The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 // Trigger, because this is not a minus sign: a - b
 
+Line 11
+The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
+// #workaround(bash --version 1000.0.0, The stroke should warn and an exemption should be required.)
+
+Line 11
+The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
+// #workaround(bash --version 1000.0.0, The stroke should warn and an exemption should be required.)
+
 Line 19
 The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 /// - RecommendedOver: -

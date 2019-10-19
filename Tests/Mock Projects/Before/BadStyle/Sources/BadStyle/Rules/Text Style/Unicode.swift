@@ -69,3 +69,9 @@ let x = !y // This should trigger; it is a prefix operator.
 #endif
 
 /// Entities (&#x2D;) should be allowed.
+
+func useAvailability() {
+    if #available(macOS 10.15, *) { // Asterisks need to be allowed here.
+        // ...
+    }
+}

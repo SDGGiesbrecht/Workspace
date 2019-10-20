@@ -105,7 +105,7 @@ internal struct UnicodeRule : SyntaxRule {
                 isPrefix: false,
                 isInfix: false,
                 isFloatLiteral: false,
-                isInAvailabilityDeclaration: false,
+                isInAvailabilityDeclaration: false, // @exempt(from: tests) All such cases handled by “isInfix”.
                 isMarkdownEntity: isMarkdownEntity(),
                 file: file, project: project, status: status, output: output)
         }

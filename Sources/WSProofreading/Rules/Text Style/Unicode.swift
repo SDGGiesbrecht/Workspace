@@ -67,6 +67,10 @@ internal struct UnicodeRule : SyntaxRule {
                 }
             }
 
+            func isInAvailabilityDeclaration() -> Bool {
+                return node.ancestors().contains(where: { $0 is AvailabilityArgumentSyntax })
+            }
+
             check(
                 token.text, range: token.syntaxRange(in: context),
                 textFreedom: token.textFreedom,
@@ -74,6 +78,7 @@ internal struct UnicodeRule : SyntaxRule {
                 isPrefix: isPrefix(),
                 isInfix: isInfix(),
                 isFloatLiteral: isFloatLiteral(),
+                isInAvailabilityDeclaration: isInAvailabilityDeclaration(),
                 isMarkdownEntity: false,
                 file: file, project: project, status: status, output: output)
         }
@@ -100,6 +105,7 @@ internal struct UnicodeRule : SyntaxRule {
                 isPrefix: false,
                 isInfix: false,
                 isFloatLiteral: false,
+                isInAvailabilityDeclaration: false, // @exempt(from: tests) All such cases handled by “isInfix”.
                 isMarkdownEntity: isMarkdownEntity(),
                 file: file, project: project, status: status, output: output)
         }
@@ -113,6 +119,7 @@ internal struct UnicodeRule : SyntaxRule {
         isPrefix: @escaping @autoclosure () -> Bool,
         isInfix: @escaping @autoclosure () -> Bool,
         isFloatLiteral: @escaping @autoclosure () -> Bool,
+        isInAvailabilityDeclaration: @escaping @autoclosure () -> Bool,
         isMarkdownEntity: @escaping @autoclosure() -> Bool,
         file: TextFile,
         project: PackageRepository,
@@ -154,6 +161,7 @@ internal struct UnicodeRule : SyntaxRule {
                    onlyProhibitInfixUse: Bool = false,
                    allowInFloatLiteral: Bool = false,
                    allowAsConditionalCompilationOperator: Bool = false,
+                   allowInAvailabilityDeclaration: Bool = false,
                    allowInToolsVersion: Bool = false,
                    message: UserFacing<StrictString, InterfaceLocalization>, status: ProofreadingStatus, output: Command.Output) {
 
@@ -170,6 +178,11 @@ internal struct UnicodeRule : SyntaxRule {
             }
 
             if isMarkdownEntity() {
+                return
+            }
+
+            if allowInAvailabilityDeclaration,
+                isInAvailabilityDeclaration() {
                 return
             }
 
@@ -345,6 +358,7 @@ internal struct UnicodeRule : SyntaxRule {
         check(for: "\u{2A}",
               replacement: "×",
               onlyProhibitInfixUse: true,
+              allowInAvailabilityDeclaration: true,
               message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:

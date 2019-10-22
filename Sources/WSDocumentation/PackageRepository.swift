@@ -225,6 +225,11 @@ extension PackageRepository {
             reportProgress: { output.print($0) })
         let cli = try loadCommandLineInterface(output: output)
 
+        var relatedProjects: [LocalizationIdentifier: Markdown] = [:]
+        if ¬coverageCheckOnly {
+            relatedProjects = try self.relatedProjects(output: output)
+        }
+
         let interface = PackageInterface(
             localizations: configuration.documentation.localizations,
             developmentLocalization: developmentLocalization,
@@ -235,7 +240,7 @@ extension PackageRepository {
             platforms: try platforms(output: output),
             installation: configuration.documentation.installationInstructions.resolve(configuration),
             importing: configuration.documentation.importingInstructions.resolve(configuration),
-            relatedProjects: try relatedProjects(output: output),
+            relatedProjects: relatedProjects,
             about: configuration.documentation.about,
             copyright: copyright,
             output: output)

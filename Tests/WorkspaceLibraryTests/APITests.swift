@@ -138,6 +138,10 @@ class APITests : TestCase {
         configuration.documentation.about["🇺🇸EN"] = ""
         configuration.documentation.api.yearFirstPublished = 2018
         configuration.documentation.api.ignoredDependencies.remove("Swift")
+        configuration.documentation.relatedProjects = [
+            .heading(text: ["🇨🇦EN": "Heading"]),
+            .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
+        ]
         let builtIn = configuration.fileHeaders.copyrightNotice
         configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
             var result = builtIn.resolve(configuration)

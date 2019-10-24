@@ -108,21 +108,17 @@ class APITests : TestCase {
     func testCheckedInDocumentation() throws {
         var output = try mockCommand.withRootBehaviour().execute(with: ["export‐interface", "•language", "en"]).get()
         // macOS & Linux have different JSON whitespace.
-        output.scalars.replaceMatches(for: CompositePattern([
-            LiteralPattern("\n".scalars),
-            RepetitionPattern(" ".scalars),
-            LiteralPattern("\n".scalars)
-            ]), with: "\n\n".scalars)
+        output.scalars.replaceMatches(
+            for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
+            with: "\n\n".scalars)
         try output.save(
             to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
                 .appendingPathComponent("Resources/Tool/English.txt"))
         output = try mockCommand.withRootBehaviour().execute(with: ["export‐interface", "•language", "de"]).get()
         // macOS & Linux have different JSON whitespace.
-        output.scalars.replaceMatches(for: CompositePattern([
-            LiteralPattern("\n".scalars),
-            RepetitionPattern(" ".scalars),
-            LiteralPattern("\n".scalars)
-            ]), with: "\n\n".scalars)
+        output.scalars.replaceMatches(
+            for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
+            with: "\n\n".scalars)
         try output.save(
             to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
                 .appendingPathComponent("Resources/Tool/Deutsch.txt"))
@@ -449,11 +445,9 @@ class APITests : TestCase {
     func testDeutsch() throws {
         var output = try mockCommand.withRootBehaviour().execute(with: ["export‐interface", "•language", "de"]).get()
         // macOS & Linux have different JSON whitespace.
-        output.scalars.replaceMatches(for: CompositePattern([
-            LiteralPattern("\n".scalars),
-            RepetitionPattern(" ".scalars),
-            LiteralPattern("\n".scalars)
-            ]), with: "\n\n".scalars)
+        output.scalars.replaceMatches(
+            for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
+            with: "\n\n".scalars)
         try output.save(
             to: PackageRepository.beforeDirectory(for: "Deutsch")
                 .appendingPathComponent("Resources/werkzeug/Deutsch.txt"))

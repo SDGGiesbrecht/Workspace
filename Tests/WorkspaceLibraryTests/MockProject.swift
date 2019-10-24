@@ -186,7 +186,9 @@ extension PackageRepository {
                         // General commands
                         func postprocess(_ output: inout String) {
 
-                            let any: RepetitionPattern<Unicode.Scalar> = RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy)
+                            let any = RepetitionPattern(
+                                ConditionalPattern<Unicode.Scalar>({ _ in true }),
+                                consumption: .lazy)
 
                             // Temporary directory varies.
                             output.scalars.replaceMatches(for: "`..".scalars, with: "`".scalars)
@@ -200,58 +202,40 @@ extension PackageRepository {
                             output.scalars.replaceMatches(for: "Strg + F".scalars, with: "[⌘F]".scalars)
 
                             // Git paths vary.
-                            output.scalars.replaceMatches(for: CompositePattern([
-                                LiteralPattern("$ git ".scalars),
-                                any,
-                                LiteralPattern("\n\n".scalars)
-                                ]), with: "[$ git...]\n\n".scalars)
+                            output.scalars.replaceMatches(
+                                for: "$ git ".scalars + any + "\n\n".scalars,
+                                with: "[$ git...]\n\n".scalars)
 
                             // Swift order varies.
-                            output.scalars.replaceMatches(for: CompositePattern([
-                                LiteralPattern("$ swift ".scalars),
-                                any,
-                                LiteralPattern("\n\n".scalars)
-                                ]), with: "[$ swift...]\n\n".scalars)
-                            output.scalars.replaceMatches(for: CompositePattern([
-                                LiteralPattern("$ swift ".scalars),
-                                any,
-                                LiteralPattern("\n0".scalars)
-                                ]), with: "[$ swift...]\n0".scalars)
+                            output.scalars.replaceMatches(
+                                for: "$ swift ".scalars + any + "\n\n".scalars,
+                                with: "[$ swift...]\n\n".scalars)
+                            output.scalars.replaceMatches(
+                                for: "$ swift ".scalars + any + "\n0".scalars,
+                                with: "[$ swift...]\n0".scalars)
 
                             // Xcode order varies.
-                            output.scalars.replaceMatches(for: CompositePattern([
-                                LiteralPattern("$ xcodebuild".scalars),
-                                any,
-                                LiteralPattern("\n\n".scalars)
-                                ]), with: "[$ xcodebuild...]\n\n".scalars)
+                            output.scalars.replaceMatches(
+                                for: "$ xcodebuild".scalars + any + "\n\n".scalars,
+                                with: "[$ xcodebuild...]\n\n".scalars)
 
                             if command == ["validate"] ∨ command.hasPrefix(["validate", "•job"]) {
                                 // Refreshment occurs elswhere in continuous integration.
-                                output.scalars.replaceMatches(for: CompositePattern([
-                                    LiteralPattern("\n".scalars),
-                                    any,
-                                    LiteralPattern("\nValidating “".scalars)
-                                    ]), with: "\n[Refreshing ...]\n\nValidating “".scalars)
-                                output.scalars.replaceMatches(for: CompositePattern([
-                                    LiteralPattern("\n".scalars),
-                                    any,
-                                    LiteralPattern("\nValidating ‘".scalars)
-                                    ]), with: "\n[Refreshing ...]\n\nValidating ‘".scalars)
-                                output.scalars.replaceMatches(for: CompositePattern([
-                                    LiteralPattern("\n".scalars),
-                                    any,
-                                    LiteralPattern("\n„AllDisabled“ wird geprüft".scalars)
-                                    ]), with: "\n[... wird aufgefrisct ...]\n\n„AllDisabled“ wird geprüft".scalars)
-                                output.scalars.replaceMatches(for: CompositePattern([
-                                    LiteralPattern("\n".scalars),
-                                    any,
-                                    LiteralPattern("\n„CustomTasks“ wird geprüft".scalars)
-                                    ]), with: "\n[... wird aufgefrisct ...]\n\n„CustomTasks“ wird geprüft".scalars)
-                                output.scalars.replaceMatches(for: CompositePattern([
-                                    LiteralPattern("\n".scalars),
-                                    any,
-                                    LiteralPattern("\n„FailingCustomValidation“ wird geprüft".scalars)
-                                    ]), with: "\n[... wird aufgefrisct ...]\n\n„FailingCustomValidation“ wird geprüft".scalars)
+                                output.scalars.replaceMatches(
+                                    for: "\n".scalars + any + "\nValidating “".scalars,
+                                    with: "\n[Refreshing ...]\n\nValidating “".scalars)
+                                output.scalars.replaceMatches(
+                                    for: "\n".scalars + any + "\nValidating ‘".scalars,
+                                    with: "\n[Refreshing ...]\n\nValidating ‘".scalars)
+                                output.scalars.replaceMatches(
+                                    for: "\n".scalars + any + "\n„AllDisabled“ wird geprüft".scalars,
+                                    with: "\n[... wird aufgefrisct ...]\n\n„AllDisabled“ wird geprüft".scalars)
+                                output.scalars.replaceMatches(
+                                    for: "\n".scalars + any + "\n„CustomTasks“ wird geprüft".scalars,
+                                    with: "\n[... wird aufgefrisct ...]\n\n„CustomTasks“ wird geprüft".scalars)
+                                output.scalars.replaceMatches(
+                                    for: "\n".scalars + any + "\n„FailingCustomValidation“ wird geprüft".scalars,
+                                    with: "\n[... wird aufgefrisct ...]\n\n„FailingCustomValidation“ wird geprüft".scalars)
                             }
                         }
 

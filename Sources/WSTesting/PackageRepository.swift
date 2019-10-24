@@ -400,7 +400,7 @@ extension PackageRepository {
                             description += "\n" + PackageRepository.xcodeProjectInstructions.resolved()
                         }
                     }
-                case .corruptTestCoverageReport, .foundationError, .hostDestinationError, .xcodeError:
+                case .packageManagerError, .corruptTestCoverageReport, .foundationError, .xcodeError:
                     break
                 }
             }

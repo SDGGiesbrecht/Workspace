@@ -455,19 +455,15 @@ let package = Package(
         /// ```
         .target(name: "WorkspaceConfiguration", dependencies: [
             "WSLocalizations",
-            "WSDependencyLocalizations",
             .product(name: "SDGControlFlow", package: "SDGCornerstone"),
             .product(name: "SDGLogic", package: "SDGCornerstone"),
             .product(name: "SDGCollections", package: "SDGCornerstone"),
             .product(name: "SDGText", package: "SDGCornerstone"),
+            .product(name: "SDGPersistence", package: "SDGCornerstone"),
             .product(name: "SDGLocalization", package: "SDGCornerstone"),
             .product(name: "SDGCalendar", package: "SDGCornerstone"),
             .product(name: "SDGSwift", package: "SDGSwift"),
             .product(name: "SDGSwiftConfiguration", package: "SDGSwift")
-            ]),
-        .target(name: "WSDependencyLocalizations", dependencies: [
-            .product(name: "SDGText", package: "SDGCornerstone"),
-            .product(name: "SDGCalendar", package: "SDGCornerstone")
             ]),
 
         // Defines the lists of supported localizations.

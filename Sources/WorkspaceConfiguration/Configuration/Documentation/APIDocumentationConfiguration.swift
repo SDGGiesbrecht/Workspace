@@ -90,7 +90,7 @@ public struct APIDocumentationConfiguration : Codable {
     /// Wenn nicht angegeben, wird diese Einstellung von dem des Dateivorspanns hergeleitet.
     ///
     /// Arbeitsbereich wird das dynamische Element `#daten` mit die berechnete Urheberrechtsdaten ersetzen. (z. B. „©2016–2017“).
-    public var urheberrechtsschutzvermerk: BequemeEinstellung<[Lokalisationskennzeichen: StrengerZeichenkette]> {
+    public var urheberrechtsschutzvermerk: BequemeEinstellung<[Lokalisationskennzeichen: StrengeZeichenkette]> {
         get { return copyrightNotice }
         set { copyrightNotice = newValue }
     }

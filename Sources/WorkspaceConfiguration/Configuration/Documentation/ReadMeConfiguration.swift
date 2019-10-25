@@ -182,7 +182,7 @@ public struct ReadMeConfiguration : Codable {
     ///     - lokalisation: The localization to use.
     public static func programmierschnittstellenverweis(
         für konfiguration: ArbeitsbereichKonfiguration,
-        auf lokalisation: Lokalisationskennzeichen) -> StrengerZeichenkette? {
+        auf lokalisation: Lokalisationskennzeichen) -> StrengeZeichenkette? {
         return apiLink(for: konfiguration, in: lokalisation)
     }
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)

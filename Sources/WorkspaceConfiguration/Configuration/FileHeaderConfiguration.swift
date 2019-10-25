@@ -150,7 +150,7 @@ public struct FileHeaderConfiguration : Codable {
     /// Arbeitsbereich verwendet das vorbestehende Anfangsdatum wenn der Vorspann schon Daten enthält. Arbeitsbereich sucht die Zeichenketten „©“, `(C)`, oder `(c)` aus, die von vier Ziffern gefolgt werden, und erkennt sie mit oder ohne ein Lehrzeichen inzwischen. Falls keine gefunden wird, verwendet Arbeitsbereich das aktuelle Datum als Anfangsdatum.
     ///
     /// Arbeitsbereich verwendet immer das aktuelle Datum als Enddatum.
-    public var urheberrechtshinweis: BequemeEinstellung<[Lokalisationskennzeichen: StrengerZeichenkette]> {
+    public var urheberrechtshinweis: BequemeEinstellung<[Lokalisationskennzeichen: StrengeZeichenkette]> {
         get { return copyrightNotice }
         set { copyrightNotice = newValue }
     }
@@ -208,7 +208,7 @@ public struct FileHeaderConfiguration : Codable {
     /// Wenn nicht angegeben, wird diese Einstellung aus andere Dokumentations‐ und Lizenzeneinstellungen hergeleitet.
     ///
     /// Arbeitsbereich ersetzt `#dateiname` mit dem Name der bestimmten Datei.
-    public var inhalt: BequemeEinstellung<StrengerZeichenkette> {
+    public var inhalt: BequemeEinstellung<StrengeZeichenkette> {
         get { return contents }
         set { contents = newValue }
     }

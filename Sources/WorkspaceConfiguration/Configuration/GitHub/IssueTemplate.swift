@@ -32,12 +32,12 @@ public struct IssueTemplate : Decodable, Encodable {
     ///     - etiketten: Vorgeschlagene Etiketten.
     ///     - beauftragte: Vorgeschlagene Beauftragte.
     public init(
-        name: StrengerZeichenkette,
-        beschreibung: StrengerZeichenkette,
-        titel: StrengerZeichenkette? = nil,
+        name: StrengeZeichenkette,
+        beschreibung: StrengeZeichenkette,
+        titel: StrengeZeichenkette? = nil,
         inhalt: Markdown,
-        etiketten: [StrengerZeichenkette],
-        beauftragte: [StrengerZeichenkette] = []) {
+        etiketten: [StrengeZeichenkette],
+        beauftragte: [StrengeZeichenkette] = []) {
         self.init(
             name: name,
             description: beschreibung,
@@ -85,7 +85,7 @@ public struct IssueTemplate : Decodable, Encodable {
     public var description: StrictString
     // @localization(🇩🇪DE) @crossReference(IssueTemplate.description)
     /// Eine Beschreibung.
-    public var beschreibung: StrengerZeichenkette {
+    public var beschreibung: StrengeZeichenkette {
         get { return description }
         set { description = newValue }
     }
@@ -95,7 +95,7 @@ public struct IssueTemplate : Decodable, Encodable {
     public var title: StrictString?
     // @localization(🇩🇪DE) @crossReference(IssueTemplate.title)
     /// Ein vorgeschlagener Titel.
-    public var titel: StrengerZeichenkette? {
+    public var titel: StrengeZeichenkette? {
         get { return title }
         set { title = newValue }
     }
@@ -115,7 +115,7 @@ public struct IssueTemplate : Decodable, Encodable {
     public var labels: [StrictString]
     // @localization(🇩🇪DE) @crossReference(IssueTemplate.labels)
     /// Vorgeschlagene Etiketten.
-    public var etiketten: [StrengerZeichenkette] {
+    public var etiketten: [StrengeZeichenkette] {
         get { return labels }
         set { labels = newValue }
     }
@@ -125,7 +125,7 @@ public struct IssueTemplate : Decodable, Encodable {
     public var assignees: [StrictString]
     // @localization(🇩🇪DE) @crossReference(IssueTemplate.assignees)
     /// Vorgeschlagene Beauftragte.
-    public var beauftragte: [StrengerZeichenkette] {
+    public var beauftragte: [StrengeZeichenkette] {
         get { return assignees }
         set { assignees = newValue }
     }

@@ -52,15 +52,11 @@ internal struct Marks : TextRule {
             var errorEnd = match.range.upperBound
 
             let line = file.contents.lineRange(for: match.range)
-            if file.contents.scalars[line].hasPrefix(CompositePattern([
-                RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })),
-                LiteralPattern("//".scalars)
-                ])) {
+            if file.contents.scalars[line].hasPrefix(
+                RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })) + "//".scalars) {
 
-                if ¬file.contents.scalars[..<match.range.lowerBound].hasSuffix(CompositePattern([
-                    NotPattern(LiteralPattern("/".scalars)),
-                    LiteralPattern("/\u{2F} ".scalars)
-                    ])) {
+                if ¬file.contents.scalars[..<match.range.lowerBound].hasSuffix(
+                    ¬"/".scalars + "/\u{2F} ".scalars) {
                     errorExists = true
 
                     var possibleStart = match.range.lowerBound
@@ -75,18 +71,16 @@ internal struct Marks : TextRule {
                     errorStart = possibleStart
                 }
 
-                if ¬file.contents.scalars[match.range.upperBound...].hasPrefix(CompositePattern([
-                    LiteralPattern(": \u{2D} ".scalars),
-                    NotPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }))
-                    ])) {
+                if ¬file.contents.scalars[match.range.upperBound...]
+                    .hasPrefix(": \u{2D} ".scalars + ¬ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })) {
                     errorExists = true
 
-                    file.contents.scalars.advance(&errorEnd, over: CompositePattern([
-                        RepetitionPattern(LiteralPattern(":".scalars), count: 0 ... 1),
-                        RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })),
-                        RepetitionPattern(LiteralPattern("\u{2D}".scalars), count: 0 ... 1),
-                        RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }))
-                        ]))
+                    file.contents.scalars.advance(
+                        &errorEnd,
+                        over: RepetitionPattern(":".scalars, count: 0 ... 1)
+                            + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }))
+                            + RepetitionPattern("\u{2D}".scalars, count: 0 ... 1)
+                            + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
                 }
 
                 if errorExists {

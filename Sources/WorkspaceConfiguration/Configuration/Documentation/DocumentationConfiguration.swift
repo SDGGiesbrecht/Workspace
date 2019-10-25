@@ -227,7 +227,7 @@ public struct DocumentationConfiguration : Codable {
     public var primaryAuthor: StrictString?
     // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.primaryAuthor)
     /// Der Hauptautor des Projekts.
-    public var hauptautor: StrengerZeichenkette? {
+    public var hauptautor: StrengeZeichenkette? {
         get { return primaryAuthor }
         set { primaryAuthor = newValue }
     }
@@ -481,14 +481,14 @@ public struct DocumentationConfiguration : Codable {
             }).resolved(for: localization),
             "",
             "```swift",
-            "let " + UserFacing<StrictString, ContentLocalization>({ localization in
+            ("let " + UserFacing<StrictString, ContentLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "package"
                 case .deutschDeutschland:
                     return "paket"
                 }
-            }).resolved(for: localization) + " = Package(",
+            }).resolved(for: localization) + " = Package(") as StrictString,
             ("    name: \u{22}" + UserFacing<StrictString, ContentLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:

@@ -49,7 +49,7 @@ public struct GitHubConfiguration : Codable {
     public var administrators: [StrictString] = []
     // @localization(🇩🇪DE) @crossReference(GitHubConfiguration.manage)
     /// Eine Liste der Benutzernamen für die GitHub‐Verwalter.
-    public var verwalter: [StrengerZeichenkette] {
+    public var verwalter: [StrengeZeichenkette] {
         get { return administrators }
         set { administrators = newValue }
     }

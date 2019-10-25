@@ -23,14 +23,15 @@ import WSParsing
 
 extension PackageRepository {
 
-    private static var exampleDeclarationPatterns: [CompositePattern<Unicode.Scalar>] {
-        return InterfaceLocalization.allCases.map { localization in
-            return CompositePattern<Unicode.Scalar>([
-                InterfaceLocalization.exampleDeclaration,
-                RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy),
-                InterfaceLocalization.endExampleDeclaration
-                ])
-        }
+    private static var exampleDeclarationPattern: ConcatenatedPatterns<
+        ConcatenatedPatterns<
+        InterfaceLocalization.DirectivePatternWithArguments,
+        RepetitionPattern<ConditionalPattern<Unicode.Scalar>>>,
+        InterfaceLocalization.DirectivePattern> {
+
+        return InterfaceLocalization.exampleDeclaration
+            + RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy)
+            + InterfaceLocalization.endExampleDeclaration
     }
 
     public func examples(output: Command.Output) throws -> [StrictString: StrictString] {
@@ -43,28 +44,29 @@ extension PackageRepository {
                     if FileType(url: url) ≠ nil,
                         let file = try? TextFile(alreadyAt: url) {
 
-                        for match in file.contents.scalars.matches(for: AlternativePatterns(PackageRepository.exampleDeclarationPatterns)) {
-                            guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),
-                                let closingParenthesis = match.contents.firstMatch(for: ")".scalars),
-                                let at = match.contents.lastMatch(for: "@".scalars) else {
-                                    unreachable()
-                            }
+                        for match in file.contents.scalars.matches(
+                            for: PackageRepository.exampleDeclarationPattern) {
+                                guard let openingParenthesis = match.contents.firstMatch(for: "(".scalars),
+                                    let closingParenthesis = match.contents.firstMatch(for: ")".scalars),
+                                    let at = match.contents.lastMatch(for: "@".scalars) else {
+                                        unreachable()
+                                }
 
-                            var identifier = StrictString(file.contents.scalars[openingParenthesis.range.upperBound ..< closingParenthesis.range.lowerBound])
-                            identifier.trimMarginalWhitespace()
+                                var identifier = StrictString(file.contents.scalars[openingParenthesis.range.upperBound ..< closingParenthesis.range.lowerBound])
+                                identifier.trimMarginalWhitespace()
 
-                            var example = StrictString(file.contents.scalars[closingParenthesis.range.upperBound ..< at.range.lowerBound])
-                            // Remove token lines.
-                            example.lines.removeFirst()
-                            example.lines.removeLast()
-                            // Remove final newline.
-                            if let lastLine = example.lines.dropLast().last {
-                                example.lines.removeLast(2)
-                                example.lines.append(Line(line: StrictString(lastLine.line), newline: ""))
-                            }
-                            example = example.strippingCommonIndentation()
+                                var example = StrictString(file.contents.scalars[closingParenthesis.range.upperBound ..< at.range.lowerBound])
+                                // Remove token lines.
+                                example.lines.removeFirst()
+                                example.lines.removeLast()
+                                // Remove final newline.
+                                if let lastLine = example.lines.dropLast().last {
+                                    example.lines.removeLast(2)
+                                    example.lines.append(Line(line: StrictString(lastLine.line), newline: ""))
+                                }
+                                example = example.strippingCommonIndentation()
 
-                            list[identifier] = example
+                                list[identifier] = example
                         }
                     }
                 }

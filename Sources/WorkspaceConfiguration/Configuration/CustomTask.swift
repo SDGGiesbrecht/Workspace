@@ -38,7 +38,7 @@ public struct CustomTask : Decodable, Encodable {
     public init(
         ressourcenzeiger: EinheitlicherRessourcenzeiger,
         version ausgabe: Version,
-        ausführbareDatei: StrengerZeichenkette,
+        ausführbareDatei: StrengeZeichenkette,
         argumente: [Zeichenkette] = []) {
         self.init(url: ressourcenzeiger, version: ausgabe, executable: ausführbareDatei, arguments: argumente)
     }
@@ -81,7 +81,7 @@ public struct CustomTask : Decodable, Encodable {
     public var executable: StrictString
     // @localization(🇩🇪DE) @crossReference(CustomTask.executable)
     /// Der Name der ausführbaren Datei.
-    public var ausführbareDatei: StrengerZeichenkette {
+    public var ausführbareDatei: StrengeZeichenkette {
         get { return executable }
         set { executable = newValue }
     }

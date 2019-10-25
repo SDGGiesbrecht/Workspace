@@ -75,7 +75,8 @@ public struct LineCommentSyntax {
 
     private func restOfLine(at index: String.ScalarView.Index, in range: Range<String.ScalarView.Index>, of string: String) -> Range<String.ScalarView.Index> {
 
-        if let newline = string.scalars[(index ..< range.upperBound).sameRange(in: string.scalars)].firstMatch(for: ConditionalPattern({ $0 ∈ CharacterSet.newlines }))?.range {
+        if let newline = string.scalars[(index ..< range.upperBound).scalars(in: string.scalars)]
+            .firstMatch(for: ConditionalPattern({ $0 ∈ CharacterSet.newlines }))?.range {
 
             return index ..< newline.lowerBound
         } else {

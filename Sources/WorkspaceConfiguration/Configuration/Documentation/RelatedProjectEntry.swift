@@ -46,7 +46,7 @@ public enum RelatedProjectEntry : Decodable, Encodable {
     /// - Parameters:
     ///     - text: Der Text.
     public static func überschrift(
-        text: [Lokalisationskennzeichen: StrengerZeichenkette]) -> EintragZuVerwantdenProjekten {
+        text: [Lokalisationskennzeichen: StrengeZeichenkette]) -> EintragZuVerwantdenProjekten {
         return .heading(text: text)
     }
 

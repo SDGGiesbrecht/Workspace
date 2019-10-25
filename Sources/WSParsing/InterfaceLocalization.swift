@@ -21,29 +21,42 @@ import WSLocalizations
 
 extension InterfaceLocalization {
 
-    private static func patterns(startingWith scalar: Unicode.Scalar, named name: UserFacing<StrictString, InterfaceLocalization>, hasArgument: Bool) -> CompositePattern<Unicode.Scalar> {
-        var components: [SDGCollections.Pattern<Unicode.Scalar>] = [
-            LiteralPattern([scalar]),
-            AlternativePatterns(allCases.map({ LiteralPattern(name.resolved(for: $0)) })),
-        ]
-        if hasArgument {
-            components.append(contentsOf: [
-                LiteralPattern("(".scalars),
-                RepetitionPattern(
-                    ConditionalPattern({ $0 ≠ ")" ∧ $0 ∉ CharacterSet.newlines }),
-                    consumption: .greedy),
-                LiteralPattern(")".scalars)
-                ])
-        }
-        return CompositePattern(components)
+    public typealias DirectivePattern = ConcatenatedPatterns<
+        [Unicode.Scalar],
+        NaryAlternativePatterns<StrictString>>
+    private static func pattern(
+        named name: UserFacing<StrictString, InterfaceLocalization>,
+        startingWith scalar: Unicode.Scalar) -> DirectivePattern {
+        return [scalar] + NaryAlternativePatterns(Array(Set(allCases.map({ name.resolved(for: $0) }))))
+    }
+    public typealias DirectivePatternWithArguments = ConcatenatedPatterns<
+        ConcatenatedPatterns<
+        ConcatenatedPatterns<DirectivePattern, String.ScalarView>,
+        RepetitionPattern<ConditionalPattern<Unicode.Scalar>>>,
+        String.ScalarView>
+    private static func patternWithArguments(
+        named name: UserFacing<StrictString, InterfaceLocalization>,
+        startingWith scalar: Unicode.Scalar) -> DirectivePatternWithArguments {
+        let simple = pattern(named: name, startingWith: scalar)
+        let parenthesis = simple + "(".scalars
+        let arguments = parenthesis + RepetitionPattern(
+            ConditionalPattern({ $0 ≠ ")" ∧ $0 ∉ CharacterSet.newlines }),
+            consumption: .greedy)
+        return arguments + ")".scalars
     }
 
-    private static func declarationPatterns(_ name: UserFacing<StrictString, InterfaceLocalization>, hasArgument: Bool) -> CompositePattern<Unicode.Scalar> {
-        return patterns(startingWith: "@", named: name, hasArgument: hasArgument)
+    private static func declarationPattern(
+        _ name: UserFacing<StrictString, InterfaceLocalization>) -> DirectivePattern {
+        return pattern(named: name, startingWith: "@")
+    }
+    private static func declarationPatternWithArguments(
+        _ name: UserFacing<StrictString, InterfaceLocalization>) -> DirectivePatternWithArguments {
+        return patternWithArguments(named: name, startingWith: "@")
     }
 
-    private static func directivePatterns(_ name: UserFacing<StrictString, InterfaceLocalization>) -> CompositePattern<Unicode.Scalar> {
-        return patterns(startingWith: "#", named: name, hasArgument: true)
+    private static func directivePatternWithArguments(
+        _ name: UserFacing<StrictString, InterfaceLocalization>) -> DirectivePatternWithArguments {
+        return patternWithArguments(named: name, startingWith: "#")
     }
 
     // MARK: - Examples
@@ -56,8 +69,8 @@ extension InterfaceLocalization {
             return "beispiel"
         }
     })
-    public static let exampleDeclaration: CompositePattern<Unicode.Scalar>
-        = declarationPatterns(exampleDeclarationName, hasArgument: true)
+    public static let exampleDeclaration: DirectivePatternWithArguments
+        = declarationPatternWithArguments(exampleDeclarationName)
 
     private static let endExampleDecarationName: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
@@ -67,8 +80,8 @@ extension InterfaceLocalization {
             return "beispielBeenden"
         }
     })
-    public static let endExampleDeclaration: CompositePattern<Unicode.Scalar>
-        = declarationPatterns(endExampleDecarationName, hasArgument: false)
+    public static let endExampleDeclaration: DirectivePattern
+        = declarationPattern(endExampleDecarationName)
 
     private static let exampleDirectiveName: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
@@ -78,8 +91,8 @@ extension InterfaceLocalization {
             return "beispiel"
         }
     })
-    public static let exampleDirective: CompositePattern<Unicode.Scalar>
-        = directivePatterns(exampleDirectiveName)
+    public static let exampleDirective: DirectivePatternWithArguments
+        = directivePatternWithArguments(exampleDirectiveName)
 
     // MARK: - Documentation Inheritance
 
@@ -91,8 +104,8 @@ extension InterfaceLocalization {
             return "dokumentation"
         }
     })
-    public static let documentationDeclaration: CompositePattern<Unicode.Scalar>
-        = declarationPatterns(documentationDeclarationName, hasArgument: true)
+    public static let documentationDeclaration: DirectivePatternWithArguments
+        = declarationPatternWithArguments(documentationDeclarationName)
 
     private static let documentationDirectiveName: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
@@ -102,8 +115,8 @@ extension InterfaceLocalization {
             return "dokumentation"
         }
     })
-    public static let documentationDirective: CompositePattern<Unicode.Scalar>
-        = directivePatterns(documentationDirectiveName)
+    public static let documentationDirective: DirectivePatternWithArguments
+        = directivePatternWithArguments(documentationDirectiveName)
 
     // MARK: - Documentation Generation
 
@@ -117,8 +130,8 @@ extension InterfaceLocalization {
             return "lokalisation"
         }
     })
-    public static let localizationDeclaration: CompositePattern<Unicode.Scalar>
-        = declarationPatterns(localizationDeclarationName, hasArgument: true)
+    public static let localizationDeclaration: DirectivePatternWithArguments
+        = declarationPatternWithArguments(localizationDeclarationName)
 
     private static let crossReferenceDeclarationName: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
@@ -128,8 +141,8 @@ extension InterfaceLocalization {
             return "querverweis"
         }
     })
-    public static let crossReferenceDeclaration: CompositePattern<Unicode.Scalar>
-        = declarationPatterns(crossReferenceDeclarationName, hasArgument: true)
+    public static let crossReferenceDeclaration: DirectivePatternWithArguments
+        = declarationPatternWithArguments(crossReferenceDeclarationName)
 
     private static let notLocalizedDeclarationName: UserFacing<StrictString, InterfaceLocalization> = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
@@ -141,6 +154,6 @@ extension InterfaceLocalization {
             return "nichtLokalisiert"
         }
     })
-    public static let notLocalizedDeclaration: CompositePattern<Unicode.Scalar>
-        = declarationPatterns(notLocalizedDeclarationName, hasArgument: true)
+    public static let notLocalizedDeclaration: DirectivePatternWithArguments
+        = declarationPatternWithArguments(notLocalizedDeclarationName)
 }

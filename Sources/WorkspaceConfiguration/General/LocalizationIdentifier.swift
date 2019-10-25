@@ -88,7 +88,7 @@ public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hash
 
     // @localization(🇩🇪DE) @crossReference(LocalizationIdentifier.icon)
     /// Das Sprachsymbol.
-    public var symbol: StrengerZeichenkette? {
+    public var symbol: StrengeZeichenkette? {
         return icon
     }
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(LocalizationIdentifier.icon)

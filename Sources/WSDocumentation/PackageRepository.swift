@@ -103,7 +103,7 @@ extension PackageRepository {
                         if let text = translations[localization] {
                             markdown += [
                                 "",
-                                "### \(text)"
+                                "## \(text)"
                             ]
                         }
                     case .project(url: let url):
@@ -118,7 +118,7 @@ extension PackageRepository {
 
                         markdown += [
                             "",
-                            "#### [\(name)](\(url.absoluteString))"
+                            "### [\(name)](\(url.absoluteString))"
                         ]
 
                         if let packageDocumentation = try? PackageAPI.documentation(for: package.package().get()),

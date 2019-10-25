@@ -135,7 +135,13 @@ class APITests : TestCase {
         configuration.documentation.api.yearFirstPublished = 2018
         configuration.documentation.api.ignoredDependencies.remove("Swift")
         configuration.documentation.relatedProjects = [
-            .heading(text: ["🇨🇦EN": "Heading"]),
+            .heading(text: [
+                "🇬🇧EN": "Heading",
+                "🇺🇸EN": "Heading",
+                "🇨🇦EN": "Heading",
+                "🇩🇪DE": "Überschrift",
+                "zxx": "..."
+            ]),
             .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
         ]
         let builtIn = configuration.fileHeaders.copyrightNotice

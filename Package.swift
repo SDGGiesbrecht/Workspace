@@ -210,10 +210,10 @@ let package = Package(
             from: Version(3, 1, 0)),
         .package(
             url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-            from: Version(1, 2, 1)),
+            from: Version(1, 2, 2)),
         .package(
             url: "https://github.com/SDGGiesbrecht/SDGSwift",
-            .upToNextMinor(from: Version(0, 15, 0))),
+            .upToNextMinor(from: Version(0, 16, 0))),
         .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(4, 0, 0))
     ],
     targets: [

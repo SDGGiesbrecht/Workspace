@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCommandLine",
         "state": {
           "branch": null,
-          "revision": "0639f3567dc4f66a2e24119e13a53d9965954c45",
-          "version": "1.2.1"
+          "revision": "d614664af4181d3e2d2e7143fb4710a0f9efef2c",
+          "version": "1.2.2"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
         "state": {
           "branch": null,
-          "revision": "177bd5c90161004c7bfdc4ffae16e1e7093d0f47",
-          "version": "0.15.0"
+          "revision": "0102b995decfe20c5e898e71ffbafc5e54f5e8c2",
+          "version": "0.16.0"
         }
       },
       {

@@ -42,18 +42,16 @@ Checking build for macOS... (§2)
 
 Checking build for iOS... (§3)
 
-The package has no Xcode project.
-Configure “xcode.manage” or create an Xcode project manually.
+[$ xcodebuild...]
 
 Checking build for watchOS... (§4)
 
-The package has no Xcode project.
-Configure “xcode.manage” or create an Xcode project manually.
+[$ xcodebuild...]
+
 
 Checking build for tvOS... (§5)
 
-The package has no Xcode project.
-Configure “xcode.manage” or create an Xcode project manually.
+[$ xcodebuild...]
 
 Updating test manifests... (§6)
 
@@ -80,9 +78,9 @@ Summary
 
 ✗ Source code fails proofreading. (See [⌘F] “§1”)
 ✓ There are no compiler warnings for macOS.
-✗ Build failed for iOS. (See [⌘F] “§3”)
+✓ There are no compiler warnings for iOS.
 ✗ Build failed for watchOS. (See [⌘F] “§4”)
-✗ Build failed for tvOS. (See [⌘F] “§5”)
+✓ There are no compiler warnings for tvOS.
 ✓ Updated test manifests.
 ✓ Tests pass on macOS.
 ✓ Test coverage is complete on macOS.

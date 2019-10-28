@@ -146,7 +146,7 @@ internal struct UnicodeRule : SyntaxRule {
                 scope = .machineIdentifiers // @exempt(from: tests) Probably unreachable.
             case .string, .whitespace, .newlines:
                 scope = .ambiguous
-            case .commentText, .documentationText:
+            case .commentText, .sourceHeadingText, .documentationText:
                 scope = .humanLanguage
             }
         }

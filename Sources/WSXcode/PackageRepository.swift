@@ -23,17 +23,6 @@ import WorkspaceProjectConfiguration
 
 extension PackageRepository {
 
-    public static let xcodeProjectInstructions = UserFacing<StrictString, InterfaceLocalization>({ localization in // @exempt(from: tests) Unreachable from Linux.
-        switch localization {
-        case .englishUnitedKingdom:
-            return "Configure ‘xcode.manage’ or create an Xcode project manually."
-        case .englishUnitedStates, .englishCanada:
-            return "Configure “xcode.manage” or create an Xcode project manually."
-        case .deutschDeutschland:
-            return "„xcode.manage“ konfigurieren oder von Hand ein Xcode‐Projekt erstellen."
-        }
-    })
-
     #if !os(Linux)
 
     private static let proofreadTargetName = UserFacing<StrictString, InterfaceLocalization>({ localization in

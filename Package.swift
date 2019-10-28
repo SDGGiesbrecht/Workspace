@@ -247,7 +247,8 @@ let package = Package(
             "WSXcode",
             "WSProofreading",
             "WSTesting",
-            "WSDocumentation"
+            "WSDocumentation",
+            .product(name: "SDGVersioning", package: "SDGCornerstone")
             ], swiftSettings: [
                 .define("TEST_SHIMS", .when(configuration: .debug))
             ]),
@@ -336,6 +337,7 @@ let package = Package(
             "WSCustomTask",
             .product(name: "SDGCollections", package: "SDGCornerstone"),
             .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
+            .product(name: "SDGVersioning", package: "SDGCornerstone"),
             .product(name: "SDGSwiftSource", package: "SDGSwift")
             ]),
 
@@ -403,6 +405,7 @@ let package = Package(
             "WorkspaceConfiguration",
             "WorkspaceProjectConfiguration",
             .product(name: "SDGCalendar", package: "SDGCornerstone"),
+            .product(name: "SDGVersioning", package: "SDGCornerstone"),
             .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
             .product(name: "SDGSwiftConfigurationLoading", package: "SDGSwift")
             ], swiftSettings: [
@@ -462,7 +465,7 @@ let package = Package(
             .product(name: "SDGPersistence", package: "SDGCornerstone"),
             .product(name: "SDGLocalization", package: "SDGCornerstone"),
             .product(name: "SDGCalendar", package: "SDGCornerstone"),
-            .product(name: "SDGSwift", package: "SDGSwift"),
+            .product(name: "SDGVersioning", package: "SDGCornerstone"),
             .product(name: "SDGSwiftConfiguration", package: "SDGSwift")
             ]),
 

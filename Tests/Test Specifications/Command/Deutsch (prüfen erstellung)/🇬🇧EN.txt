@@ -6,18 +6,18 @@ Checking build for macOS... (§1)
 
 Checking build for iOS... (§2)
 
-The package has no Xcode project.
-Configure ‘xcode.manage’ or create an Xcode project manually.
+[$ xcodebuild...]
+
 
 Checking build for watchOS... (§3)
 
-The package has no Xcode project.
-Configure ‘xcode.manage’ or create an Xcode project manually.
+[$ xcodebuild...]
+
 
 Checking build for tvOS... (§4)
 
-The package has no Xcode project.
-Configure ‘xcode.manage’ or create an Xcode project manually.
+[$ xcodebuild...]
+
 
 ✓ There are no compiler warnings for macOS.
 ✗ Build failed for iOS. (See [⌘F] ‘§2’)

@@ -89,10 +89,8 @@ extension PackageRepository {
             var description = StrictString(error.localizedDescription)
             if let schemeError = error as? Xcode.SchemeError {
                 switch schemeError {
-                case .foundationError, .noPackageScheme: // @exempt(from: tests)
+                case .noPackageScheme: // @exempt(from: tests)
                     break
-                case .noXcodeProject:
-                    description += "\n" + PackageRepository.xcodeProjectInstructions.resolved()
                 case .xcodeError: // @exempt(from: tests)
                     description = "" // Already printed.
                 }
@@ -139,7 +137,10 @@ extension PackageRepository {
             }
         case .iOS, .watchOS, .tvOS: // @exempt(from: tests) Unreachable from Linux.
             testCommand = { output in
-                switch self.test(on: job.testSDK, reportProgress: { report in
+                switch self.test(
+                    on: job.testSDK,
+                    derivedData: self.stableDerivedData,
+                    reportProgress: { report in
                     if let relevant = Xcode.abbreviate(output: report) {
                         output.print(relevant)
                     }
@@ -147,10 +148,8 @@ extension PackageRepository {
                 case .failure(let error):
                     var description = StrictString(error.localizedDescription)
                     switch error {
-                    case .foundationError, .noPackageScheme:
+                    case .noPackageScheme:
                         break
-                    case .noXcodeProject:
-                        description += "\n" + PackageRepository.xcodeProjectInstructions.resolved()
                     case .xcodeError:
                         description = "" // Already printed.
                     }
@@ -292,7 +291,11 @@ extension PackageRepository {
                 }
                 report = fromPackageManager // @exempt(from: tests)
             case .iOS, .watchOS, .tvOS: // @exempt(from: tests) Unreachable from Linux.
-                guard let fromXcode = try codeCoverageReport(on: job.testSDK, ignoreCoveredRegions: true, reportProgress: { output.print($0) }).get() else {
+                guard let fromXcode = try codeCoverageReport(
+                    on: job.testSDK,
+                    derivedData: stableDerivedData,
+                    ignoreCoveredRegions: true,
+                    reportProgress: { output.print($0) }).get() else {
                     failStepWithError(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
                         switch localization {
                         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -385,26 +388,7 @@ extension PackageRepository {
             }
         } catch {
             // @exempt(from: tests) Unreachable on Linux.
-            var description = StrictString(error.localizedDescription)
-            if let coverageError = error as? Xcode.CoverageReportingError {
-                switch coverageError {
-                case .buildDirectoryError(let directoryError):
-                    switch directoryError {
-                    case .noBuildDirectory:
-                        break
-                    case .schemeError(let schemeError):
-                        switch schemeError {
-                        case .foundationError, .noPackageScheme, .xcodeError:
-                            break
-                        case .noXcodeProject:
-                            description += "\n" + PackageRepository.xcodeProjectInstructions.resolved()
-                        }
-                    }
-                case .packageManagerError, .corruptTestCoverageReport, .foundationError, .xcodeError:
-                    break
-                }
-            }
-            failStepWithError(message: description)
+            failStepWithError(message: StrictString(error.localizedDescription))
         }
     }
 }

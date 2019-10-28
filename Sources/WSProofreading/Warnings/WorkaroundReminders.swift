@@ -16,6 +16,7 @@
 
 import SDGMathematics
 import WSGeneralImports
+import SDGVersioning
 
 import SDGExternalProcess
 
@@ -91,8 +92,8 @@ internal struct WorkaroundReminders : Warning {
         })
     }
 
-    private static var dependencyVersionCache: [StrictString: SDGSwift.Version?] = [:]
-    private static func currentVersion(of dependency: StrictString, for project: PackageRepository, output: Command.Output) throws -> SDGSwift.Version? {
+    private static var dependencyVersionCache: [StrictString: SDGVersioning.Version?] = [:]
+    private static func currentVersion(of dependency: StrictString, for project: PackageRepository, output: Command.Output) throws -> SDGVersioning.Version? {
         if let dependency = try project.dependenciesByName()[String(dependency)],
             let version = dependency.manifest.version {
             return Version(version)

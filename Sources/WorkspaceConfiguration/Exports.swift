@@ -23,6 +23,6 @@
 @_exported import SDGPersistence // URL (Localized)
 @_exported import SDGLocalization
 @_exported import SDGCalendar // GregorianYear
+@_exported import SDGVersioning
 
-@_exported import struct SDGSwift.Version
 @_exported import SDGSwiftConfiguration

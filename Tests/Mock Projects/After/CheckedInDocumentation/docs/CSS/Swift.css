@@ -38,7 +38,7 @@
 }
 
 .swift .number {
-    color: #0E0EFF;
+    color: #1C00CF;
 }
 
 .swift .string {
@@ -58,6 +58,9 @@
 .swift .comment‐punctuation {
     color: #003A00;
 }
+.swift .source‐heading {
+    color: #4A5560;
+}
 .swift .url {
     color: #0E0EFF;
 }
@@ -74,12 +77,15 @@
     line-height: 1.26667;
 }
 
-.swift .text {
+.swift .text, .swift .source‐heading {
     font-family: "SF Pro Text", "SF Pro Icons", "-apple-system", "BlinkMacSystemFont", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
     letter-spacing: 0;
 }
 
 .swift .comment‐keyword {
+    font-weight: bold;
+}
+.swift .source‐heading {
     font-weight: bold;
 }
 

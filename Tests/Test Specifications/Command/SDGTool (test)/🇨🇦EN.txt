@@ -6,15 +6,10 @@ Refreshing Xcode project...
 
 Writing to “SDG.xcodeproj/project.pbxproj”...
 
-Updating test manifests... (§1)
+Testing on macOS... (§1)
 
 [$ swift...]
 
-Testing on macOS... (§2)
-
-[$ swift...]
-
-✓ Updated test manifests.
 ✓ Tests pass on macOS.
 
 

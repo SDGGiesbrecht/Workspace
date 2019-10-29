@@ -10,11 +10,7 @@ Deteien werden normalisiert ...
 Quelltext Korrektur wird gelesen ...
 
 
-Testliste wird aktuelisiert ... (§2)
-
-[$ swift...]
-
-Auf macOS wird getestet ... (§3)
+Auf macOS wird getestet ... (§2)
 
 [$ swift...]
 
@@ -22,7 +18,6 @@ Summary
 
 
 ✓ Quelltext besteht das Korrekturlesen.
-✓ Testliste wurde aktualisiert.
 ✓ Teste werden auf macOS bestanden.
 
 

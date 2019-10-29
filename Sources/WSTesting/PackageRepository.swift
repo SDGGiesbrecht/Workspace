@@ -110,8 +110,6 @@ extension PackageRepository {
 
     public func test(on job: ContinuousIntegrationJob, validationStatus: inout ValidationStatus, output: Command.Output) throws {
 
-        try updateTestManifests(job: job, validationStatus: &validationStatus, output: output)
-
         let section = validationStatus.newSection()
 
         output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -181,69 +179,6 @@ extension PackageRepository {
                     return "Teste werden auf \(job.deutscherName) nicht bestanden." + section.crossReference.resolved(for: localization)
                 }
             }))
-        }
-    }
-
-    private func updateTestManifests(
-        job: ContinuousIntegrationJob,
-        validationStatus: inout ValidationStatus,
-        output: Command.Output) throws {
-
-        let configuration = try self.configuration(output: output)
-        if configuration.supportedPlatforms.contains(where: { ¬$0.supportsObjectiveC }),
-            job == .macOS { // @exempt(from: tests) Unreachable on Linux.
-
-            let section = validationStatus.newSection()
-
-            output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Updating test manifests..." + section.anchor
-                case .deutschDeutschland:
-                    return "Testliste wird aktuelisiert ..." + section.anchor
-                }
-            }).resolved().formattedAsSectionHeader())
-
-            do {
-                switch regenerateTestLists(reportProgress: { output.print($0) }) {
-                case .failure(let error):
-                    switch error {
-                    case .executionError(let processError):
-                        switch processError {
-                        case .foundationError: // @exempt(from: tests)
-                            throw error
-                        case .processError(code: _, output: let regenerationOutput):
-                            if regenerationOutput.contains("___llvm_profile_") {
-                                SwiftCompiler.runCustomSubcommand(["package", "clean"])
-                                _ = try regenerateTestLists(reportProgress: { output.print($0) }).get()
-                            } else {
-                                throw error
-                            }
-                        }
-                    case .locationError: // @exempt(from: tests)
-                        throw error
-                    }
-                case .success:
-                    break
-                }
-                validationStatus.passStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "Updated test manifests."
-                    case .deutschDeutschland:
-                        return "Testliste wurde aktualisiert."
-                    }
-                }))
-            } catch {
-                validationStatus.failStep(message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "Failed to update test manifests." + section.crossReference.resolved(for: localization)
-                    case .deutschDeutschland:
-                        return "Die Aktualisierung der Testliste ist fehlgeschlagen." + section.crossReference.resolved(for: localization)
-                    }
-                }))
-            }
         }
     }
 

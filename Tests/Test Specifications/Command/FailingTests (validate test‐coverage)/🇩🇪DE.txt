@@ -6,11 +6,7 @@ Xcode‐Projekt wird aufgefrischt ...
 
 Zu „FailingTests.xcodeproj/project.pbxproj“ wird geschrieben ...
 
-Testliste wird aktuelisiert ... (§1)
-
-[$ swift...]
-
-Auf macOS wird getestet ... (§2)
+Auf macOS wird getestet ... (§1)
 
 [$ swift...]
 
@@ -24,9 +20,8 @@ Zeile 7
         return "???"
 
 
-✓ Testliste wurde aktualisiert.
-✗ Teste werden auf macOS nicht bestanden. (Siehe [⌘F] „§2“)
-✗ Testabdeckung auf macOS ist unvollständig. (Siehe [⌘F] „§3“)
+✗ Teste werden auf macOS nicht bestanden. (Siehe [⌘F] „§1“)
+✗ Testabdeckung auf macOS ist unvollständig. (Siehe [⌘F] „§2“)
 
 „FailingTests“ besteht die Überprüfung nicht.
 2

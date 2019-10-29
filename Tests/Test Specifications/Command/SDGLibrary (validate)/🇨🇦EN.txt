@@ -54,21 +54,17 @@ Checking build for tvOS... (§5)
 
 [$ xcodebuild...]
 
-Updating test manifests... (§6)
+Testing on macOS... (§6)
 
 [$ swift...]
 
-Testing on macOS... (§7)
-
-[$ swift...]
-
-Checking test coverage on macOS... (§8)
+Checking test coverage on macOS... (§7)
 
 Parsing report for “Sources/Library/SDG.swift”...
 Parsing report for “Tests/SDGTests/SDGTests.swift”...
 Sources/Library/SDG.swift
 
-Checking documentation coverage... (§9)
+Checking documentation coverage... (§8)
 
 Parsing “Library”...
 Loading inheritance from “Dependency”...
@@ -91,7 +87,6 @@ Summary
 ✓ There are no compiler warnings for iOS.
 ✓ There are no compiler warnings for watchOS.
 ✓ There are no compiler warnings for tvOS.
-✓ Updated test manifests.
 ✓ Tests pass on macOS.
 ✓ Test coverage is complete on macOS.
 ✓ Documentation coverage is complete.

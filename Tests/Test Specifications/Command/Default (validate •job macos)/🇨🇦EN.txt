@@ -8,15 +8,11 @@ Checking build for macOS... (§1)
 
 [$ swift...]
 
-Updating test manifests... (§2)
+Testing on macOS... (§2)
 
 [$ swift...]
 
-Testing on macOS... (§3)
-
-[$ swift...]
-
-Checking test coverage on macOS... (§4)
+Checking test coverage on macOS... (§3)
 
 Parsing report for “Tests/DefaultTests/DefaultTests.swift”...
 
@@ -24,7 +20,6 @@ Summary
 
 
 ✓ There are no compiler warnings for macOS.
-✓ Updated test manifests.
 ✓ Tests pass on macOS.
 ✓ Test coverage is complete on macOS.
 

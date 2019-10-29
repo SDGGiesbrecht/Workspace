@@ -53,19 +53,15 @@ Checking build for tvOS... (§5)
 
 [$ xcodebuild...]
 
-Updating test manifests... (§6)
+Testing on macOS... (§6)
 
 [$ swift...]
 
-Testing on macOS... (§7)
-
-[$ swift...]
-
-Checking test coverage on macOS... (§8)
+Checking test coverage on macOS... (§7)
 
 Parsing report for “Tests/DefaultTests/DefaultTests.swift”...
 
-Checking documentation coverage... (§9)
+Checking documentation coverage... (§8)
 
 
 No original copyright date is specified.
@@ -81,10 +77,9 @@ Summary
 ✓ There are no compiler warnings for iOS.
 ✗ Build failed for watchOS. (See [⌘F] “§4”)
 ✓ There are no compiler warnings for tvOS.
-✓ Updated test manifests.
 ✓ Tests pass on macOS.
 ✓ Test coverage is complete on macOS.
-✗ Failed to process documentation. (See [⌘F] “§9”)
+✗ Failed to process documentation. (See [⌘F] “§8”)
 
 “Default” fails validation.
 2

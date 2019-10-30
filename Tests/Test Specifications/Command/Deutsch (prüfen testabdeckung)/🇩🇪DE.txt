@@ -1,10 +1,6 @@
 $ arbeitsbereich prüfen testabdeckung •no‐colour
 
-Testliste wird aktuelisiert ... (§1)
-
-[$ swift...]
-
-Auf macOS wird getestet ... (§2)
+Auf macOS wird getestet ... (§1)
 
 [$ swift...]
 
@@ -12,7 +8,6 @@ Testabdeckung auf macOS wird geprüft ...
 
 Ergebnisse zu „Tests/DeutschTests/DeutschTests.swift“ werden zerteilt ...
 
-✓ Testliste wurde aktualisiert.
 ✓ Teste werden auf macOS bestanden.
 ✓ Testabdeckung auf macOS ist vollständig.
 

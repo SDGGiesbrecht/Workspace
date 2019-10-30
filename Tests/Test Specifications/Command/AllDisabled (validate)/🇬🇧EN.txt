@@ -10,11 +10,7 @@ Normalising files...
 Proofreading source code... (§1)
 
 
-Updating test manifests... (§2)
-
-[$ swift...]
-
-Testing on macOS... (§3)
+Testing on macOS... (§2)
 
 [$ swift...]
 
@@ -22,7 +18,6 @@ Summary
 
 
 ✓ Source code passes proofreading.
-✓ Updated test manifests.
 ✓ Tests pass on macOS.
 
 

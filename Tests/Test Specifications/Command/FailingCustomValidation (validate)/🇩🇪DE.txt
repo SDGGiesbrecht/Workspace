@@ -10,15 +10,11 @@ Deteien werden normalisiert ...
 Quelltext Korrektur wird gelesen ...
 
 
-Testliste wird aktuelisiert ... (§2)
+Auf macOS wird getestet ... (§2)
 
 [$ swift...]
 
-Auf macOS wird getestet ... (§3)
-
-[$ swift...]
-
-Sonderprüfung wird ausgeführt: „Dependency“ ... (§4)
+Sonderprüfung wird ausgeführt: „Dependency“ ... (§3)
 
 
 $ Dependency fail
@@ -28,9 +24,8 @@ Summary
 
 
 ✓ Quelltext besteht das Korrekturlesen.
-✓ Testliste wurde aktualisiert.
 ✓ Teste werden auf macOS bestanden.
-✗ Sonderprüfung wurde nicht bestanden: “Dependency” (Siehe [⌘F] „§4“)
+✗ Sonderprüfung wurde nicht bestanden: “Dependency” (Siehe [⌘F] „§3“)
 
 „FailingCustomValidation“ besteht die Überprüfung nicht.
 2

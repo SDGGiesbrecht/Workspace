@@ -1,15 +1,10 @@
 $ workspace test •no‐colour
 
-Updating test manifests... (§1)
+Testing on macOS... (§1)
 
 [$ swift...]
 
-Testing on macOS... (§2)
-
-[$ swift...]
-
-✗ Failed to update test manifests. (See [⌘F] “§1”)
-✗ Tests fail on macOS. (See [⌘F] “§2”)
+✗ Tests fail on macOS. (See [⌘F] “§1”)
 
 “BrokenTests” fails validation.
 2

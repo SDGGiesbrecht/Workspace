@@ -1,15 +1,10 @@
 $ arbeitsbereich testen •no‐colour
 
-Testliste wird aktuelisiert ... (§1)
+Auf macOS wird getestet ... (§1)
 
 [$ swift...]
 
-Auf macOS wird getestet ... (§2)
-
-[$ swift...]
-
-✗ Die Aktualisierung der Testliste ist fehlgeschlagen. (Siehe [⌘F] „§1“)
-✗ Teste werden auf macOS nicht bestanden. (Siehe [⌘F] „§2“)
+✗ Teste werden auf macOS nicht bestanden. (Siehe [⌘F] „§1“)
 
 „NurDeutsch“ besteht die Überprüfung nicht.
 2

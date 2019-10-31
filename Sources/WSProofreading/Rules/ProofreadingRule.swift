@@ -24,6 +24,8 @@ extension ProofreadingRule : Comparable {
         switch self {
         case .deprecatedConditionDocumentation:
             return .text(DeprecatedConditionDocumentation.self)
+        case .deprecatedTestManifests:
+            return .text(DeprecatedTestManifests.self)
         case .manualWarnings:
             return .text(ManualWarnings.self)
         case .missingImplementation:

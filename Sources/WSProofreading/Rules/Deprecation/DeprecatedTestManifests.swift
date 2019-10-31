@@ -8,9 +8,9 @@ internal struct DeprecatedTestManifests : TextRule {
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "testManifests"
+            return "deprecatedTestManifests"
         case .deutschDeutschland:
-            return "testliste"
+            return "überholteTestlisten"
         }
     })
 
@@ -19,7 +19,7 @@ internal struct DeprecatedTestManifests : TextRule {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Test manifests are no longer necessary."
         case .deutschDeutschland:
-            return "Testliste werden nicht mehr benötigt."
+            return "Testlisten werden nicht mehr benötigt."
         }
     })
 

@@ -71,6 +71,7 @@ extension PackageRepository {
             if activeRules.contains(.deprecatedTestManifests) {
                 for url in try trackedFiles(output: output)
                     where url.lastPathComponent == "XCTestManifests.swift" {
+                        // #workaround(swift --version 5.1, Handle LinuxMain.swift too.)
                         let file = try TextFile(alreadyAt: url)
                         reporter.reportParsing(file: file.location.path(relativeTo: location), to: output)
                         DeprecatedTestManifests.check(file: file, in: self, status: status, output: output)

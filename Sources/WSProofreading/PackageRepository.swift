@@ -34,7 +34,7 @@ extension PackageRepository {
 
             var textRules: [TextRule.Type] = []
             var syntaxRules: [SyntaxRule.Type] = []
-            for rule in activeRules.lazy.map({ $0.parser }) {
+            for rule in activeRules.lazy.filter({ $0 ≠ .deprecatedTestManifests }).map({ $0.parser }) {
                 switch rule {
                 case .text(let textParser):
                     textRules.append(textParser)

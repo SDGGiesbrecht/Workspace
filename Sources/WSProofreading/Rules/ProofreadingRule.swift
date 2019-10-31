@@ -22,8 +22,6 @@ extension ProofreadingRule : Comparable {
 
     internal var parser: Rule {
         switch self {
-        case .deprecatedConditionDocumentation:
-            return .text(DeprecatedConditionDocumentation.self)
         case .deprecatedTestManifests:
             return .text(DeprecatedTestManifests.self)
         case .manualWarnings:

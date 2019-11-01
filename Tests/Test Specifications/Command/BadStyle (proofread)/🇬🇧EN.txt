@@ -9,7 +9,6 @@ Writing to ‘Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift’...
 
 Proofreading source code... (§1)
 
-.Workspace Configuration.txt
 .gitignore
 Other/CSS.css
 Other/HTML.html
@@ -265,6 +264,7 @@ Colons should be preceded by spaces when denoting conformance, inheritance or a 
 class BadStyleTests: XCTestCase {
 class BadStyleTests : XCTestCase {
 
+Tests/LinuxMain.swift
 
 [$ git...]
 

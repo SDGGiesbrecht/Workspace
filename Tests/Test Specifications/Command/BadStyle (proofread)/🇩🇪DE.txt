@@ -5,7 +5,6 @@ Deteien werden normalisiert ...
 
 Quelltext Korrektur wird gelesen ...
 
-.Workspace Configuration.txt
 .gitignore
 Other/CSS.css
 Other/HTML.html
@@ -261,6 +260,7 @@ Doppelpunkte sollen vorstehende Leerzeichen haben wenn sie Erfüllung, Erbe ode
 class BadStyleTests: XCTestCase {
 class BadStyleTests : XCTestCase {
 
+Tests/LinuxMain.swift
 
 $ Dependency fail
 Hello, world!

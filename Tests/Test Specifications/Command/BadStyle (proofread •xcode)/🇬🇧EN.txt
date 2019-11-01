@@ -49,6 +49,10 @@ $ workspace proofread •xcode •no‐colour
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:12:4: warning: Workaround: This should trigger no matter what. (workaroundReminders)
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:13:4: warning: Workaround: This malformed version check should trigger. (workaroundReminders)
 [Temporary]/BadStyle/Tests/BadStyleTests/BadStyleTests.swift:4:20: warning: Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition. (colonSpacing)
+[Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:1:1: warning: Test manifests are no longer necessary. (deprecatedTestManifests)
+[Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:6:22: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
+[Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:6:23: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
+[Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:6:32: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 
 $ Dependency fail
 Hello, world!

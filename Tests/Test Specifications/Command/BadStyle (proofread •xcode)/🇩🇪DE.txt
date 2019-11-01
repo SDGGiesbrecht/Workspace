@@ -49,6 +49,10 @@ $ arbeitsbereich proofread •xcode •no‐colour
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:12:4: warning: Notlösung: This should trigger no matter what. (notlösungsErinnerungen)
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:13:4: warning: Notlösung: This malformed version check should trigger. (notlösungsErinnerungen)
 [Temporary]/BadStyle/Tests/BadStyleTests/BadStyleTests.swift:4:20: warning: Doppelpunkte sollen vorstehende Leerzeichen haben wenn sie Erfüllung, Erbe oder ein ternären Auswahl bedeuten. (doppelpunktabstand)
+[Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:1:1: warning: Testlisten werden nicht mehr benötigt. (überholteTestlisten)
+[Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:6:22: warning: Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
+[Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:6:23: warning: Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
+[Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:6:32: warning: Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
 
 $ Dependency fail
 Hello, world!

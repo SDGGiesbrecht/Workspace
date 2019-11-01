@@ -60,6 +60,8 @@ public func allTests() -> [XCTestCaseEntry] {
 }
 #endif
 
+Tests/LinuxMain.swift
+
 Generating documentation... (§2)
 
 Checking for defunct URLs to redirect...

@@ -8,8 +8,4 @@ class BadStyleTests: XCTestCase {
         // results.
         XCTAssertEqual(BadStyle().text, "Hello, World!")
     }
-
-    static var allTests = [
-        ("testExample", testExample)
-    ]
 }

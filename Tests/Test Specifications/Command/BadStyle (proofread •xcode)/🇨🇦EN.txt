@@ -1,9 +1,6 @@
 $ workspace proofread •xcode •no‐colour
 [Temporary]/BadStyle/Package.swift:2:13: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 [Temporary]/BadStyle/Package.swift:2:19: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
-[Temporary]/BadStyle/Sources/BadStyle/Rules/Deprecation/LinuxDocumentation.swift:4:8: warning: Such headings are no longer necessary for the generated documentation. (deprecatedConditionDocumentation)
-[Temporary]/BadStyle/Sources/BadStyle/Rules/Documentation/CompilationConditions.swift:10:4: warning: Such headings are no longer necessary for the generated documentation. (deprecatedConditionDocumentation)
-[Temporary]/BadStyle/Sources/BadStyle/Rules/Documentation/ExtensionConstraints.swift:10:8: warning: Such headings are no longer necessary for the generated documentation. (deprecatedConditionDocumentation)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Documentation/SyntaxColouring.swift:7:5: warning: Language specifier missing. Specify a language for syntax colouring. (syntaxColouring)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/AutoindentResilience.swift:3:1: warning: “/**” may not survive autoindent (⌃I). Use “///” instead. (autoindentResilience)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift:3:22: warning: U+00B2 may be lost in normalization; use “2” instead. (compatibilityCharacters)

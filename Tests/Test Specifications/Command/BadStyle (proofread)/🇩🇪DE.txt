@@ -25,21 +25,6 @@ Sources/BadStyle/Normalization/Decomposition.swift
 Sources/BadStyle/Normalization/EmptyIndents.swift
 Sources/BadStyle/Normalization/MarkdownLineBreaks.md
 Sources/BadStyle/Normalization/ShellExecutability.sh
-Sources/BadStyle/Rules/Deprecation/LinuxDocumentation.swift
-Zeile 4
-Solche Überschriften sind nicht mehr nötig für die erstellte Dokumentation. (überholteBedingungsdokumentation)
-    // MARK: - #if os(macOS)
-
-Sources/BadStyle/Rules/Documentation/CompilationConditions.swift
-Zeile 10
-Solche Überschriften sind nicht mehr nötig für die erstellte Dokumentation. (überholteBedingungsdokumentation)
-// MARK: - #if os(Linux) (Warn: This header is no longer needed.)
-
-Sources/BadStyle/Rules/Documentation/ExtensionConstraints.swift
-Zeile 10
-Solche Überschriften sind nicht mehr nötig für die erstellte Dokumentation. (überholteBedingungsdokumentation)
-    // MARK: - where Self : Comparable (Warn. The heading is no longer necessary.)
-
 Sources/BadStyle/Rules/Documentation/SyntaxColouring.swift
 Zeile 7
 Das Sprachkennzeichen fehlt. Eine Sprache für Syntaxhervorhebung angeben. (syntaxhervorhebung)

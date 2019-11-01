@@ -29,21 +29,6 @@ Sources/BadStyle/Normalization/Decomposition.swift
 Sources/BadStyle/Normalization/EmptyIndents.swift
 Sources/BadStyle/Normalization/MarkdownLineBreaks.md
 Sources/BadStyle/Normalization/ShellExecutability.sh
-Sources/BadStyle/Rules/Deprecation/LinuxDocumentation.swift
-Line 4
-Such headings are no longer necessary for the generated documentation. (deprecatedConditionDocumentation)
-    // MARK: - #if os(macOS)
-
-Sources/BadStyle/Rules/Documentation/CompilationConditions.swift
-Line 10
-Such headings are no longer necessary for the generated documentation. (deprecatedConditionDocumentation)
-// MARK: - #if os(Linux) (Warn: This header is no longer needed.)
-
-Sources/BadStyle/Rules/Documentation/ExtensionConstraints.swift
-Line 10
-Such headings are no longer necessary for the generated documentation. (deprecatedConditionDocumentation)
-    // MARK: - where Self : Comparable (Warn. The heading is no longer necessary.)
-
 Sources/BadStyle/Rules/Documentation/SyntaxColouring.swift
 Line 7
 Language specifier missing. Specify a language for syntax colouring. (syntaxColouring)

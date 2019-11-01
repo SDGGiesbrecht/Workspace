@@ -34,6 +34,16 @@ final class AllTasksTests : XCTestCase {
 Tests/AllTasksTests/XCTestManifests.swift
 Line 1
 Test manifests are no longer necessary. (deprecatedTestManifests)
+/*
+ XCTestManifests.swift
+
+
+ ©2019
+
+ This software is subject to copyright law.
+ It may not be used, copied, distributed or modified without first obtaining a private licence from the copyright holder(s).
+ */
+
 import XCTest
 
 #if !os(macOS)
@@ -44,6 +54,7 @@ public func allTests() -> [XCTestCaseEntry] {
 }
 #endif
 
+Tests/LinuxMain.swift
 
 Checking build for macOS... (§2)
 

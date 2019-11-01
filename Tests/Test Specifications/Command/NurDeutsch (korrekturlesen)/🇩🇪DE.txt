@@ -34,11 +34,25 @@ Zeile 4
 "Warn." (warnungenVonHand)
 #warning("Warn.")
 
+Tests/LinuxMain.swift
 Tests/NurDeutschTests/NurDeutschTests.swift
 Zeile 4
 Doppelpunkte sollen vorstehende Leerzeichen haben wenn sie Erfüllung, Erbe oder ein ternären Auswahl bedeuten. (doppelpunktabstand)
 final class NurDeutschTests: XCTestCase {
 final class NurDeutschTests : XCTestCase {
+
+Tests/NurDeutschTests/XCTestManifests.swift
+Zeile 1
+Testlisten werden nicht mehr benötigt. (überholteTestlisten)
+import XCTest
+
+#if !canImport(ObjectiveC)
+public func allTests() -> [XCTestCaseEntry] {
+    return [
+        testCase(NurDeutschTests.allTests),
+    ]
+}
+#endif
 
 
 ✗ Der Quelltext besteht das Korrekturlesen nicht. (Siehe [⌘F] „§1“)

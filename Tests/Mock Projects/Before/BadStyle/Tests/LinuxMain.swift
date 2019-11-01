@@ -1,6 +1,8 @@
 import XCTest
-@testable import BadStyleTests
 
-XCTMain([
-    testCase(BadStyleTests.allTests)
-])
+import BadStyleTests
+
+var tests = [XCTestCaseEntry]()
+tests += BadStyleTests.__allTests()
+
+XCTMain(tests)

@@ -35,6 +35,7 @@ Package.swift
 README.md
 Sources/Library/Resources.swift
 Sources/Library/SDG.swift
+Tests/LinuxMain.swift
 Tests/SDGTests/Resources.swift
 Tests/SDGTests/SDGTests.swift
 

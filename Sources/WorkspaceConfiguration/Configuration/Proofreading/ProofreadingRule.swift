@@ -28,13 +28,13 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
     // ••••••• Deprecation •••••••
 
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-    // @crossReference(ProofreadingRule.deprecatedContditionDocumentation)
-    /// Catches deprecated condition documentation.
-    case deprecatedConditionDocumentation
-    // @localization(🇩🇪DE) @crossReference(ProofreadingRule.deprecatedContditionDocumentation)
-    /// Erwischt überholte Bedingungsdokumentation.
-    public static var überholteBedingungsdokumentation: Korrekturregel {
-        return .deprecatedConditionDocumentation
+    // @crossReference(ProofreadingRule.deprecatedTestManifests)
+    /// Catches deprecated test manifests.
+    case deprecatedTestManifests
+    // @localization(🇩🇪DE) @crossReference(ProofreadingRule.deprecatedTestManifests)
+    /// Erwischt überholte Testlisten.
+    public static var überholteTestlisten: Korrekturregel {
+        return .deprecatedTestManifests
     }
 
     // ••••••• Intentional •••••••
@@ -376,7 +376,7 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
     /// The category the rule belongs to.
     public var category: Category {
         switch self {
-        case .deprecatedConditionDocumentation:
+        case .deprecatedTestManifests:
             return .deprecation
 
         case .manualWarnings,

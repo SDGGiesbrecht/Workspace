@@ -131,12 +131,8 @@ public enum FileType {
     case xml
     case yaml
 
-    // Deprecated (Only exists so proofreading can detect it.)
-    case deprecatedWorkspaceConfiguration
-
     private static let specialNames: [String: FileType] = [
-        "Package.swift": .swiftPackageManifest,
-        ".Workspace Configuration.txt": .deprecatedWorkspaceConfiguration
+        "Package.swift": .swiftPackageManifest
     ]
 
     private static let fileExtensions: [String: FileType] = [
@@ -203,9 +199,6 @@ public enum FileType {
             return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"), requiredFirstLineToken: "#!")
 
         case .json:
-            return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: nil)
-
-        case .deprecatedWorkspaceConfiguration: // Not actually used anymore.
             return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: nil)
         }
     }

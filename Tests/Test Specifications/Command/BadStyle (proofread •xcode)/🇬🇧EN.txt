@@ -1,9 +1,6 @@
 $ workspace proofread •xcode •no‐colour
 [Temporary]/BadStyle/Package.swift:2:13: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 [Temporary]/BadStyle/Package.swift:2:19: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
-[Temporary]/BadStyle/Sources/BadStyle/Rules/Deprecation/LinuxDocumentation.swift:4:8: warning: Such headings are no longer necessary for the generated documentation. (deprecatedConditionDocumentation)
-[Temporary]/BadStyle/Sources/BadStyle/Rules/Documentation/CompilationConditions.swift:10:4: warning: Such headings are no longer necessary for the generated documentation. (deprecatedConditionDocumentation)
-[Temporary]/BadStyle/Sources/BadStyle/Rules/Documentation/ExtensionConstraints.swift:10:8: warning: Such headings are no longer necessary for the generated documentation. (deprecatedConditionDocumentation)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Documentation/SyntaxColouring.swift:7:5: warning: Language specifier missing. Specify a language for syntax colouring. (syntaxColouring)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/AutoindentResilience.swift:3:1: warning: ‘/**’ may not survive autoindent (⌃I). Use ‘///’ instead. (autoindentResilience)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift:3:22: warning: U+00B2 may be lost in normalisation; use ‘2’ instead. (compatibilityCharacters)
@@ -52,6 +49,10 @@ $ workspace proofread •xcode •no‐colour
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:12:4: warning: Workaround: This should trigger no matter what. (workaroundReminders)
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:13:4: warning: Workaround: This malformed version check should trigger. (workaroundReminders)
 [Temporary]/BadStyle/Tests/BadStyleTests/BadStyleTests.swift:4:20: warning: Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition. (colonSpacing)
+[Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:1:1: warning: Test manifests are no longer necessary. (deprecatedTestManifests)
+[Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:6:22: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
+[Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:6:23: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
+[Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:6:32: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 
 $ Dependency fail
 Hello, world!

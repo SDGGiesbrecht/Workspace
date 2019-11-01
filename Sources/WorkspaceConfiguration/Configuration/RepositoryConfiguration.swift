@@ -51,7 +51,6 @@ public struct RepositoryConfiguration : Codable {
         "icns",
         "in",
         "inc",
-        "LinuxMain.swift",
         "llbuild",
         "LLVM",
         "modulemap",
@@ -71,7 +70,6 @@ public struct RepositoryConfiguration : Codable {
         "TXT",
         "xcconfig",
         "xcsettings",
-        "XCTestManifests.swift",
         "xcworkspacedata"
     ]
 

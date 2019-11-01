@@ -34,6 +34,7 @@ Zeile 4
 "Warn." (warnungenVonHand)
 #warning("Warn.")
 
+Tests/LinuxMain.swift
 Tests/NurDeutschTests/NurDeutschTests.swift
 Zeile 4
 Doppelpunkte sollen vorstehende Leerzeichen haben wenn sie Erfüllung, Erbe oder ein ternären Auswahl bedeuten. (doppelpunktabstand)

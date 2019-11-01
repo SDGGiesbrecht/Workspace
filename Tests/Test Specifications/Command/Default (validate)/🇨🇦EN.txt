@@ -48,6 +48,7 @@ public func allTests() -> [XCTestCaseEntry] {
 }
 #endif
 
+Tests/LinuxMain.swift
 
 Checking build for macOS... (§2)
 

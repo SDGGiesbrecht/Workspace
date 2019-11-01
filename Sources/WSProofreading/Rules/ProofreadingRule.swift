@@ -22,7 +22,7 @@ extension ProofreadingRule : Comparable {
 
     internal var parser: Rule {
         switch self {
-        case .deprecatedTestManifests:
+        case .deprecatedTestManifests: // @exempt(from: tests) Unreachable. Handled exceptionally elsewhere.
             return .text(DeprecatedTestManifests.self)
         case .manualWarnings:
             return .text(ManualWarnings.self)

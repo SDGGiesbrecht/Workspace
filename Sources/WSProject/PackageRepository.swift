@@ -330,9 +330,6 @@ extension PackageRepository {
 
         return try cached(in: &fileCache.sourceFiles) { () -> [URL] in
             return try trackedFiles(output: output).filter { url in
-                if url.path(relativeTo: location) == ".Workspace Configuration.txt" {
-                    return true // So it triggers a deprecation notice.
-                }
                 for path in ignoredPaths {
                     if url.is(in: path) {
                         return false

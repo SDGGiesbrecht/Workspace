@@ -34,7 +34,7 @@ extension PackageRepository {
 
             var textRules: [TextRule.Type] = []
             var syntaxRules: [SyntaxRule.Type] = []
-            for rule in activeRules.lazy.filter({ $0 ≠ .deprecatedTestManifests }).map({ $0.parser }) {
+            for rule in activeRules.lazy.filter.map({ $0.parser }) {
                 switch rule {
                 case .text(let textParser):
                     textRules.append(textParser)
@@ -66,16 +66,6 @@ extension PackageRepository {
                                     output: output).scan(syntax)
                             }
                         }
-            }
-
-            if activeRules.contains(.deprecatedTestManifests) {
-                for url in try trackedFiles(output: output)
-                    where url.lastPathComponent == "XCTestManifests.swift" {
-                        // #workaround(swift --version 5.1, Handle LinuxMain.swift too.)
-                        let file = try TextFile(alreadyAt: url)
-                        reporter.reportParsing(file: file.location.path(relativeTo: location), to: output)
-                        DeprecatedTestManifests.check(file: file, in: self, status: status, output: output)
-                }
             }
         }
 

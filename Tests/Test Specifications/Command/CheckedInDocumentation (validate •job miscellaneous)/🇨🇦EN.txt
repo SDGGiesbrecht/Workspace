@@ -47,6 +47,18 @@ Colons should be preceded by spaces when denoting conformance, inheritance or a 
 final class CheckedInDocumentationTests: XCTestCase {
 final class CheckedInDocumentationTests : XCTestCase {
 
+Tests/CheckedInDocumentationTests/XCTestManifests.swift
+Line 1
+Test manifests are no longer necessary. (deprecatedTestManifests)
+import XCTest
+
+#if !os(macOS)
+public func allTests() -> [XCTestCaseEntry] {
+    return [
+        testCase(CheckedInDocumentationTests.allTests),
+    ]
+}
+#endif
 
 Generating documentation... (§2)
 

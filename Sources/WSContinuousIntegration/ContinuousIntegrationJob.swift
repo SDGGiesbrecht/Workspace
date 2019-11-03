@@ -245,7 +245,7 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
 
         switch platform {
         case .macOS:
-            result.append("      osx_image: xcode11.1")
+            result.append("      osx_image: xcode11.2")
         case .linux:
             result.append("      dist: bionic")
         case .iOS, .watchOS, .tvOS:

@@ -79,25 +79,12 @@ internal struct UnicodeRule : SyntaxRule {
                 isInfix: isInfix(),
                 isFloatLiteral: isFloatLiteral(),
                 isInAvailabilityDeclaration: isInAvailabilityDeclaration(),
-                isMarkdownEntity: false,
                 file: file, project: project, status: status, output: output)
         }
     }
 
     internal static func check(_ node: ExtendedSyntax, context: ExtendedSyntaxContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
         if let token = node as? ExtendedTokenSyntax {
-
-            func isMarkdownEntity() -> Bool {
-                if token.kind == .documentationText {
-                    // #workaround(SDGSwift 0.14.1, This lets others fall through, but SDGSwiftSource needs to handle entities properly to allow them.)
-                    // If the entity was resolved, the source must have changed.
-                    let range = node.lowerBound(in: context) ..< node.upperBound(in: context)
-                    return ¬file.contents.scalars[range].elementsEqual(node.text.scalars)
-                } else {
-                    return false
-                }
-            }
-
             check(
                 token.text, range: token.range(in: context),
                 textFreedom: token.kind.textFreedom,
@@ -106,7 +93,6 @@ internal struct UnicodeRule : SyntaxRule {
                 isInfix: false,
                 isFloatLiteral: false,
                 isInAvailabilityDeclaration: false, // @exempt(from: tests) All such cases handled by “isInfix”.
-                isMarkdownEntity: isMarkdownEntity(),
                 file: file, project: project, status: status, output: output)
         }
     }
@@ -120,7 +106,6 @@ internal struct UnicodeRule : SyntaxRule {
         isInfix: @escaping @autoclosure () -> Bool,
         isFloatLiteral: @escaping @autoclosure () -> Bool,
         isInAvailabilityDeclaration: @escaping @autoclosure () -> Bool,
-        isMarkdownEntity: @escaping @autoclosure() -> Bool,
         file: TextFile,
         project: PackageRepository,
         status: ProofreadingStatus,
@@ -174,10 +159,6 @@ internal struct UnicodeRule : SyntaxRule {
             }
 
             if allowInFloatLiteral ∧ isFloatLiteral() {
-                return
-            }
-
-            if isMarkdownEntity() {
                 return
             }
 

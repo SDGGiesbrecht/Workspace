@@ -141,15 +141,18 @@ internal struct PackageInterface {
         localization: LocalizationIdentifier) -> StrictString {
         var result: [StrictString] = []
 
-        result.append(generateIndexSection(named: packageHeader(localization: localization), contents: [
-            ElementSyntax(
-                "a",
-                attributes: [
-                "href": "[*site root*]\(HTML.percentEncodeURLPath(APIElement.package(package).relativePagePath[localization]!))"
-                ],
-                contents: HTML.escapeTextForCharacterData(StrictString(package.name.source())),
-                inline: false).normalizedSource()
-            ].joinedAsLines()))
+        result.append(generateIndexSection(
+            named: packageHeader(localization: localization),
+            identifier: .package,
+            contents: [
+                ElementSyntax(
+                    "a",
+                    attributes: [
+                        "href": "[*site root*]\(HTML.percentEncodeURLPath(APIElement.package(package).relativePagePath[localization]!))"
+                    ],
+                    contents: HTML.escapeTextForCharacterData(StrictString(package.name.source())),
+                    inline: false).normalizedSource()
+                ].joinedAsLines()))
 
         if hasInstallation {
             result.append(generateLoneIndexEntry(
@@ -165,40 +168,77 @@ internal struct PackageInterface {
         if ¬tools.commands.isEmpty {
             result.append(generateIndexSection(
                 named: SymbolPage.toolsHeader(localization: localization),
+                identifier: .tools,
                 tools: tools,
                 localization: localization))
         }
 
         if ¬package.libraries.lazy.filter({ localization ∉ APIElement.library($0).skippedLocalizations }).isEmpty {
-            result.append(generateIndexSection(named: SymbolPage.librariesHeader(localization: localization), apiEntries: package.libraries.lazy.map({ APIElement.library($0) }), localization: localization))
+            result.append(generateIndexSection(
+                named: SymbolPage.librariesHeader(localization: localization),
+                identifier: .libraries,
+                apiEntries: package.libraries.lazy.map({ APIElement.library($0) }),
+                localization: localization))
         }
         if ¬package.modules.lazy.filter({ localization ∉ APIElement.module($0).skippedLocalizations }).isEmpty {
-            result.append(generateIndexSection(named: SymbolPage.modulesHeader(localization: localization), apiEntries: package.modules.lazy.map({ APIElement.module($0) }), localization: localization))
+            result.append(generateIndexSection(
+                named: SymbolPage.modulesHeader(localization: localization),
+                identifier: .modules,
+                apiEntries: package.modules.lazy.map({ APIElement.module($0) }),
+                localization: localization))
         }
         if ¬package.types.lazy.filter({ localization ∉ APIElement.type($0).skippedLocalizations }).isEmpty {
-            result.append(generateIndexSection(named: SymbolPage.typesHeader(localization: localization), apiEntries: package.types.lazy.map({ APIElement.type($0) }), localization: localization))
+            result.append(generateIndexSection(
+                named: SymbolPage.typesHeader(localization: localization),
+                identifier: .types,
+                apiEntries: package.types.lazy.map({ APIElement.type($0) }),
+                localization: localization))
         }
         if ¬package.uniqueExtensions
             .lazy.filter({ localization ∉ APIElement.extension($0).skippedLocalizations }).isEmpty {
-            result.append(generateIndexSection(named: SymbolPage.extensionsHeader(localization: localization), apiEntries: package.uniqueExtensions.lazy.map({ APIElement.extension($0) }), localization: localization))
+            result.append(generateIndexSection(
+                named: SymbolPage.extensionsHeader(localization: localization),
+                identifier: .extensions,
+                apiEntries: package.uniqueExtensions.lazy.map({ APIElement.extension($0) }),
+                localization: localization))
         }
         if ¬package.protocols.lazy.filter({ localization ∉ APIElement.protocol($0).skippedLocalizations }).isEmpty {
-            result.append(generateIndexSection(named: SymbolPage.protocolsHeader(localization: localization), apiEntries: package.protocols.lazy.map({ APIElement.protocol($0) }), localization: localization))
+            result.append(generateIndexSection(
+                named: SymbolPage.protocolsHeader(localization: localization),
+                identifier: .protocols,
+                apiEntries: package.protocols.lazy.map({ APIElement.protocol($0) }),
+                localization: localization))
         }
         if ¬package.functions.lazy.filter({ localization ∉ APIElement.function($0).skippedLocalizations }).isEmpty {
-            result.append(generateIndexSection(named: SymbolPage.functionsHeader(localization: localization), apiEntries: package.functions.lazy.map({ APIElement.function($0) }), localization: localization))
+            result.append(generateIndexSection(
+                named: SymbolPage.functionsHeader(localization: localization),
+                identifier: .functions,
+                apiEntries: package.functions.lazy.map({ APIElement.function($0) }),
+                localization: localization))
         }
         if ¬package.globalVariables
             .lazy.filter({ localization ∉ APIElement.variable($0).skippedLocalizations }).isEmpty {
-            result.append(generateIndexSection(named: SymbolPage.variablesHeader(localization: localization), apiEntries: package.globalVariables.lazy.map({ APIElement.variable($0) }), localization: localization))
+            result.append(generateIndexSection(
+                named: SymbolPage.variablesHeader(localization: localization),
+                identifier: .variables,
+                apiEntries: package.globalVariables.lazy.map({ APIElement.variable($0) }),
+                localization: localization))
         }
         if ¬package.operators
             .lazy.filter({ localization ∉ APIElement.operator($0).skippedLocalizations }).isEmpty {
-            result.append(generateIndexSection(named: SymbolPage.operatorsHeader(localization: localization), apiEntries: package.operators.lazy.map({ APIElement.operator($0) }), localization: localization))
+            result.append(generateIndexSection(
+                named: SymbolPage.operatorsHeader(localization: localization),
+                identifier: .operators,
+                apiEntries: package.operators.lazy.map({ APIElement.operator($0) }),
+                localization: localization))
         }
-        if ¬package.functions
-            .lazy.filter({ localization ∉ APIElement.function($0).skippedLocalizations }).isEmpty {
-            result.append(generateIndexSection(named: SymbolPage.precedenceGroupsHeader(localization: localization), apiEntries: package.precedenceGroups.lazy.map({ APIElement.precedence($0) }), localization: localization))
+        if ¬package.precedenceGroups
+            .lazy.filter({ localization ∉ APIElement.precedence($0).skippedLocalizations }).isEmpty {
+            result.append(generateIndexSection(
+                named: SymbolPage.precedenceGroupsHeader(localization: localization),
+                identifier: .precedenceGroups,
+                apiEntries: package.precedenceGroups.lazy.map({ APIElement.precedence($0) }),
+                localization: localization))
         }
         if hasRelatedProjects {
             result.append(generateLoneIndexEntry(
@@ -214,7 +254,11 @@ internal struct PackageInterface {
         return result.joinedAsLines()
     }
 
-    private static func generateIndexSection(named name: StrictString, apiEntries: [APIElement], localization: LocalizationIdentifier) -> StrictString {
+    private static func generateIndexSection(
+        named name: StrictString,
+        identifier: IndexSectionIdentifier,
+        apiEntries: [APIElement],
+        localization: LocalizationIdentifier) -> StrictString {
         var entries: [StrictString] = []
         for entry in apiEntries.lazy.filter({ $0.exists(in: localization) }) {
             entries.append(ElementSyntax(
@@ -225,10 +269,14 @@ internal struct PackageInterface {
                 contents: HTML.escapeTextForCharacterData(StrictString(entry.name.source())),
                 inline: false).normalizedSource())
         }
-        return generateIndexSection(named: name, contents: entries.joinedAsLines())
+        return generateIndexSection(named: name, identifier: identifier, contents: entries.joinedAsLines())
     }
 
-    private static func generateIndexSection(named name: StrictString, tools: PackageCLI, localization: LocalizationIdentifier) -> StrictString {
+    private static func generateIndexSection(
+        named name: StrictString,
+        identifier: IndexSectionIdentifier,
+        tools: PackageCLI,
+        localization: LocalizationIdentifier) -> StrictString {
         var entries: [StrictString] = []
         for (_, entry) in tools.commands {
             if let interface = entry.interfaces[localization] {
@@ -242,12 +290,16 @@ internal struct PackageInterface {
             }
 
         }
-        return generateIndexSection(named: name, contents: entries.joinedAsLines())
+        return generateIndexSection(named: name, identifier: identifier, contents: entries.joinedAsLines())
     }
 
-    private static func generateIndexSection(named name: StrictString, contents: StrictString) -> StrictString {
+    private static func generateIndexSection(
+        named name: StrictString,
+        identifier: IndexSectionIdentifier,
+        contents: StrictString) -> StrictString {
         return ElementSyntax(
             "div",
+            attributes: ["id": identifier.htmlIdentifier],
             contents: [
                 ElementSyntax("a", attributes: [
                     "class": "heading",

@@ -106,6 +106,7 @@ internal class CommandPage : Page {
                 navigationPath: navigationPathLinks),
             packageImport: packageImport,
             index: index,
+            sectionIdentifier: .tools,
             platforms: platforms,
             symbolImports: "",
             symbolType: symbolType,

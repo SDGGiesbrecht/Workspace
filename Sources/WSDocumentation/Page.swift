@@ -91,6 +91,7 @@ internal class Page {
                   navigationPath: StrictString,
                   packageImport: StrictString?,
                   index: StrictString,
+                  sectionIdentifier: IndexSectionIdentifier?,
                   platforms: StrictString,
                   symbolImports: StrictString,
                   symbolType: StrictString?,
@@ -110,6 +111,7 @@ internal class Page {
         mutable.replaceMatches(for: "[*package import*]", with: packageImport ?? "")
 
         mutable.replaceMatches(for: "[*index*]", with: index)
+        mutable.replaceMatches(for: "[*section identifier*]", with: sectionIdentifier?.htmlIdentifier ?? "")
         mutable.replaceMatches(for: "[*platforms*]", with: platforms)
         mutable.replaceMatches(
             for: "[*site root*]".scalars,

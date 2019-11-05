@@ -555,6 +555,7 @@ internal struct PackageInterface {
                     navigationPath: [api],
                     packageImport: packageImport,
                     index: indices[localization]!,
+                    sectionIdentifier: .package,
                     platforms: platforms[localization]!,
                     symbol: api,
                     package: packageAPI,
@@ -620,6 +621,7 @@ internal struct PackageInterface {
                         navigationPath: [api, library],
                         packageImport: packageImport,
                         index: indices[localization]!,
+                        sectionIdentifier: .libraries,
                         platforms: platforms[localization]!,
                         symbol: library,
                         package: packageAPI,
@@ -648,6 +650,7 @@ internal struct PackageInterface {
                         navigationPath: [api, module],
                         packageImport: packageImport,
                         index: indices[localization]!,
+                        sectionIdentifier: .modules,
                         platforms: platforms[localization]!,
                         symbol: module,
                         package: packageAPI,
@@ -677,6 +680,25 @@ internal struct PackageInterface {
                 where symbol.exists(in: localization) {
                     try autoreleasepool {
                         let location = symbol.pageURL(in: outputDirectory, for: localization)
+                        let section: IndexSectionIdentifier
+                        switch symbol {
+                        case .package, .library, .module, .case, .initializer, .subscript, .conformance:
+                            unreachable()
+                        case .type:
+                            section = .types
+                        case .extension:
+                            section = .extensions
+                        case .protocol:
+                            section = .protocols
+                        case .function:
+                            section = .functions
+                        case .variable:
+                            section = .variables
+                        case .operator:
+                            section = .operators
+                        case .precedence:
+                            section = .precedenceGroups
+                        }
                         try SymbolPage(
                             localization: localization,
                             allLocalizations: localizations,
@@ -684,6 +706,7 @@ internal struct PackageInterface {
                             navigationPath: [api, symbol],
                             packageImport: packageImport,
                             index: indices[localization]!,
+                            sectionIdentifier: section,
                             platforms: platforms[localization]!,
                             symbol: symbol,
                             package: packageAPI,
@@ -701,7 +724,15 @@ internal struct PackageInterface {
                         case .extension:
                             break // Iterated separately below.
                         case .type, .protocol:
-                            try outputNestedSymbols(of: symbol, namespace: [symbol], to: outputDirectory, localization: localization, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
+                            try outputNestedSymbols(
+                                of: symbol,
+                                namespace: [symbol],
+                                sectionIdentifier: section,
+                                to: outputDirectory,
+                                localization: localization,
+                                status: status,
+                                output: output,
+                                coverageCheckOnly: coverageCheckOnly)
                         }
                     }
             }
@@ -710,18 +741,29 @@ internal struct PackageInterface {
                 let apiElement = APIElement.extension(`extension`)
 
                 var namespace = apiElement
+                var section: IndexSectionIdentifier = .extensions
                 for type in packageAPI.types where `extension`.isExtension(of: type) {
                     namespace = APIElement.type(type)
+                    section = .types
                     break
                 }
                 if namespace == apiElement /* Still not resolved. */ {
                     for `protocol` in packageAPI.protocols where `extension`.isExtension(of: `protocol`) {
                         namespace = APIElement.protocol(`protocol`)
+                        section = .protocols
                         break
                     }
                 }
 
-                try outputNestedSymbols(of: apiElement, namespace: [namespace], to: outputDirectory, localization: localization, status: status, output: output, coverageCheckOnly: coverageCheckOnly)
+                try outputNestedSymbols(
+                    of: apiElement,
+                    namespace: [namespace],
+                    sectionIdentifier: section,
+                    to: outputDirectory,
+                    localization: localization,
+                    status: status,
+                    output: output,
+                    coverageCheckOnly: coverageCheckOnly)
             }
         }
     }
@@ -729,6 +771,7 @@ internal struct PackageInterface {
     private func outputNestedSymbols(
         of parent: APIElement,
         namespace: [APIElement],
+        sectionIdentifier: IndexSectionIdentifier,
         to outputDirectory: URL,
         localization: LocalizationIdentifier,
         status: DocumentationStatus,
@@ -756,6 +799,7 @@ internal struct PackageInterface {
                     navigationPath: navigation,
                     packageImport: packageImport,
                     index: indices[localization]!,
+                    sectionIdentifier: sectionIdentifier,
                     platforms: platforms[localization]!,
                     symbol: symbol,
                     package: packageAPI,
@@ -774,6 +818,7 @@ internal struct PackageInterface {
                     try outputNestedSymbols(
                         of: symbol,
                         namespace: namespace + [symbol],
+                        sectionIdentifier: sectionIdentifier,
                         to: outputDirectory,
                         localization: localization,
                         status: status,
@@ -895,6 +940,7 @@ internal struct PackageInterface {
                         ]),
                     packageImport: packageImport,
                     index: indices[localization]!,
+                    sectionIdentifier: nil,
                     platforms: platforms[localization]!,
                     symbolImports: "",
                     symbolType: nil,

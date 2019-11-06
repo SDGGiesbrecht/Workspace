@@ -37,17 +37,35 @@ internal class ProofreadingStatus : DiagnosticConsumer {
 
     // MARK: - DiagnosticConsumer
 
+    internal var needsLineColumn: Bool {
+        return false
+    }
+
     internal func handle(_ diagnostic: Diagnostic) {
         #warning("Need access to the real file.")
         let file = currentFile!
-        /*let violation = StyleViolation(
+        #warning("Are highlights useful?")
+        let start: String.ScalarView.Index
+        if let location = diagnostic.location {
+            let utf8 = file.contents.utf8.index(file.contents.utf8.startIndex, offsetBy: location.offset)
+            start = utf8.scalar(in: file.contents.scalars)
+        } else {
+            start = file.contents.scalars.startIndex
+        }
+        #warning("Are fix‐its useful?")
+        let replacementSuggestion: StrictString? = nil
+        #warning("What to do with identifiers?")
+        let identifier = UserFacing<StrictString, InterfaceLocalization>({ _ in "swiftFormat"})
+        let diagnosticMessage = StrictString(diagnostic.message.text)
+        let message = UserFacing<StrictString, InterfaceLocalization>({ _ in diagnosticMessage })
+        let violation = StyleViolation(
             in: file,
-            at: <#T##Range<String.ScalarView.Index>#>,
-            replacementSuggestion: <#T##StrictString?#>,
-            noticeOnly: <#T##Bool#>,
-            ruleIdentifier: <#T##UserFacing<StrictString, InterfaceLocalization>#>,
-            message: <#T##UserFacing<StrictString, InterfaceLocalization>#>)*/
-        print(diagnostic)
+            at: start ..< start,
+            replacementSuggestion: replacementSuggestion,
+            noticeOnly: false,
+            ruleIdentifier: identifier,
+            message: message)
+        report(violation: violation)
     }
 
     internal func finalize() {}

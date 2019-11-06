@@ -55,7 +55,7 @@ internal struct CalloutCasing : SyntaxRule {
             let first = replacement.removeFirst()
             replacement.prepend(contentsOf: String(first).uppercased())
 
-            reportViolation(in: file, at: token.range(in: context), replacementSuggestion: StrictString(replacement), message: message, status: status, output: output)
+            reportViolation(in: file, at: token.range(in: context), replacementSuggestion: StrictString(replacement), message: message, status: status)
         }
     }
 }

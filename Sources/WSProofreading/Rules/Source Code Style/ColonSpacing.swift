@@ -123,7 +123,7 @@ internal struct ColonSpacing : SyntaxRule {
                 }
             }
             if let violation = precedingViolation {
-                reportViolation(in: file, at: violation.range, replacementSuggestion: violation.suggestion, message: violation.message, status: status, output: output)
+                reportViolation(in: file, at: violation.range, replacementSuggestion: violation.suggestion, message: violation.message, status: status)
             }
 
             // Trailing
@@ -187,7 +187,7 @@ internal struct ColonSpacing : SyntaxRule {
             }
 
             if let violation = trailingViolation {
-                reportViolation(in: file, at: violation.range, replacementSuggestion: violation.suggestion, message: violation.message, status: status, output: output)
+                reportViolation(in: file, at: violation.range, replacementSuggestion: violation.suggestion, message: violation.message, status: status)
             }
         }
     }

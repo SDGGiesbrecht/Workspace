@@ -40,7 +40,7 @@ internal struct MissingImplementation : TextRule {
 
     internal static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
         for match in file.contents.scalars.matches(for: "\u{6E}otImplementedYet".scalars) {
-            reportViolation(in: file, at: match.range, message: message, status: status, output: output)
+            reportViolation(in: file, at: match.range, message: message, status: status)
         }
     }
 }

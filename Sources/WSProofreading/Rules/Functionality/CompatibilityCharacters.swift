@@ -45,7 +45,7 @@ internal struct CompatibilityCharacters : TextRule {
                     case .deutschDeutschland:
                         return "U+\(scalar.hexadecimalCode) geht bei Normalisierung vielleicht verloren; stattdessen „\(normalized)“ verwenden."
                     }
-                }), status: status, output: output)
+                }), status: status)
             }
         }
     }

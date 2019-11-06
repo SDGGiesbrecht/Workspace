@@ -24,17 +24,18 @@ import SDGSwiftSource
 import WSProject
 import WSCustomTask
 
+#warning("Pointing at branch.")
 import SwiftFormat
 import SwiftFormatConfiguration
 
 extension PackageRepository {
 
     public func proofread(reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
-        let status = ProofreadingStatus(reporter: reporter)
+        let status = ProofreadingStatus(reporter: reporter, output: output)
 
         let formatConfiguration = SwiftFormatConfiguration.Configuration()
-        #warning("This needs to be plugged into something?")
         let diagnostics = DiagnosticEngine()
+        diagnostics.addConsumer(status)
         let linter = SwiftLinter(configuration: formatConfiguration, diagnosticEngine: diagnostics)
 
         let activeRules = try configuration(output: output).proofreading.rules.sorted()

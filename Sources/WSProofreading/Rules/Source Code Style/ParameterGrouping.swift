@@ -46,7 +46,7 @@ internal struct ParameterGrouping : SyntaxRule {
             token.kind == .callout,
             token.text.lowercased() == "parameter" {
 
-            reportViolation(in: file, at: token.range(in: context), message: message, status: status, output: output)
+            reportViolation(in: file, at: token.range(in: context), message: message, status: status)
         }
     }
 }

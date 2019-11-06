@@ -51,7 +51,7 @@ internal struct SyntaxColouring : SyntaxRule {
             codeBlock.openingDelimiter.indexInParent == codeDelimiter.indexInParent {
 
             if codeBlock.language == nil {
-                reportViolation(in: file, at: codeDelimiter.range(in: context), message: message, status: status, output: output)
+                reportViolation(in: file, at: codeDelimiter.range(in: context), message: message, status: status)
             }
         }
     }

@@ -225,7 +225,7 @@ internal struct UnicodeRule : SyntaxRule {
                             result += " " + aliasMessage.resolved(for: localization)
                         }
                         return result
-                    }), status: status, output: output)
+                    }), status: status)
             }
         }
 

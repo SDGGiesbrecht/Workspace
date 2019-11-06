@@ -21,5 +21,6 @@ import SDGSwiftSource
 import WSProject
 
 internal protocol TextRule : RuleProtocol {
+    #warning("Is output needed here?")
     static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) throws
 }

@@ -22,6 +22,7 @@ import SDGSwiftSource
 import WSProject
 
 internal protocol SyntaxRule : RuleProtocol {
+    #warning("Do any of these need output?")
     static func check(_ node: Syntax, context: SyntaxContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output)
     static func check(_ node: ExtendedSyntax, context: ExtendedSyntaxContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output)
     static func check(_ node: Trivia, context: TriviaContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output)

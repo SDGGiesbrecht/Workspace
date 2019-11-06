@@ -84,7 +84,7 @@ internal struct Marks : TextRule {
                 }
 
                 if errorExists {
-                    reportViolation(in: file, at: errorStart ..< errorEnd, replacementSuggestion: expectedSyntax, message: message, status: status, output: output)
+                    reportViolation(in: file, at: errorStart ..< errorEnd, replacementSuggestion: expectedSyntax, message: message, status: status)
                 }
             }
         }

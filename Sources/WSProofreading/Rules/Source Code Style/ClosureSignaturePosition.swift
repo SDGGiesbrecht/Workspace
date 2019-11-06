@@ -48,7 +48,7 @@ internal struct ClosureSignaturePosition : SyntaxRule {
             let leadingTrivia = signature.leadingTrivia { // Only nil if the signature does not really exist.
 
             if leadingTrivia.contains(where: { $0.isNewline }) {
-                reportViolation(in: file, at: signature.syntaxRange(in: context), message: message, status: status, output: output)
+                reportViolation(in: file, at: signature.syntaxRange(in: context), message: message, status: status)
             }
         }
     }

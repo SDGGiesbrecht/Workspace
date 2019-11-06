@@ -105,7 +105,7 @@ internal struct BraceSpacing : SyntaxRule {
                     }
                     if let violation = internalViolation {
                         if ¬context.isFragmented() {
-                            reportViolation(in: file, at: violation.range, replacementSuggestion: violation.suggestion, message: violation.message, status: status, output: output)
+                            reportViolation(in: file, at: violation.range, replacementSuggestion: violation.suggestion, message: violation.message, status: status)
                         }
                     }
                 }

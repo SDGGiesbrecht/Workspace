@@ -37,7 +37,7 @@ extension RuleProtocol {
 
     // MARK: - Reporting
 
-    internal static func reportViolation(in file: TextFile, at location: Range<String.ScalarView.Index>, replacementSuggestion: StrictString? = nil, message: UserFacing<StrictString, InterfaceLocalization>, status: ProofreadingStatus, output: Command.Output) {
+    internal static func reportViolation(in file: TextFile, at location: Range<String.ScalarView.Index>, replacementSuggestion: StrictString? = nil, message: UserFacing<StrictString, InterfaceLocalization>, status: ProofreadingStatus) {
 
         let fileLines = file.contents.lines
         let lineIndex = location.lowerBound.line(in: fileLines)
@@ -52,7 +52,7 @@ extension RuleProtocol {
             }
         }
 
-        status.report(violation: StyleViolation(in: file, at: location, replacementSuggestion: replacementSuggestion, noticeOnly: noticeOnly, ruleIdentifier: Self.name, message: message), to: output)
+        status.report(violation: StyleViolation(in: file, at: location, replacementSuggestion: replacementSuggestion, noticeOnly: noticeOnly, ruleIdentifier: Self.name, message: message))
     }
 }
 

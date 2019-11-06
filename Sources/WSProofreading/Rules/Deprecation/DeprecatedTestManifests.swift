@@ -45,7 +45,7 @@ internal struct DeprecatedTestManifests : TextRule {
         status: ProofreadingStatus,
         output: Command.Output) {
         if file.location.lastPathComponent == "XCTestManifests.swift" {
-            reportViolation(in: file, at: file.contents.bounds, message: message, status: status, output: output)
+            reportViolation(in: file, at: file.contents.bounds, message: message, status: status)
         }
     }
 }

@@ -214,6 +214,8 @@ let package = Package(
         .package(
             url: "https://github.com/SDGGiesbrecht/SDGSwift",
             .upToNextMinor(from: Version(0, 16, 2))),
+        // #warning(Remove branch dependency.)
+        .package(url: "https://github.com/apple/swift-format", .branch("swift-5.1-branch")),
         .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(4, 0, 0))
     ],
     targets: [
@@ -338,7 +340,8 @@ let package = Package(
             .product(name: "SDGCollections", package: "SDGCornerstone"),
             .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
             .product(name: "SDGVersioning", package: "SDGCornerstone"),
-            .product(name: "SDGSwiftSource", package: "SDGSwift")
+            .product(name: "SDGSwiftSource", package: "SDGSwift"),
+            .product(name: "SwiftFormat", package: "swift\u{2D}format")
             ]),
 
         // Testing.

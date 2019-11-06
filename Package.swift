@@ -215,7 +215,7 @@ let package = Package(
             url: "https://github.com/SDGGiesbrecht/SDGSwift",
             .upToNextMinor(from: Version(0, 16, 2))),
         // #warning(Remove branch dependency.)
-        .package(url: "https://github.com/apple/swift-format", .branch("swift-5.1-branch")),
+        .package(url: "https://github.com/apple/swift\u{2D}format", .branch("swift\u{2D}5.1\u{2D}branch")),
         .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(4, 0, 0))
     ],
     targets: [

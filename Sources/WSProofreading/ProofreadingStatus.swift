@@ -32,12 +32,21 @@ internal class ProofreadingStatus : DiagnosticConsumer {
 
     private let reporter: ProofreadingReporter
     private let output: Command.Output
+    internal var currentFile: TextFile?
     internal private(set) var passing: Bool = true
 
     // MARK: - DiagnosticConsumer
 
     internal func handle(_ diagnostic: Diagnostic) {
         #warning("Need access to the real file.")
+        let file = currentFile!
+        /*let violation = StyleViolation(
+            in: file,
+            at: <#T##Range<String.ScalarView.Index>#>,
+            replacementSuggestion: <#T##StrictString?#>,
+            noticeOnly: <#T##Bool#>,
+            ruleIdentifier: <#T##UserFacing<StrictString, InterfaceLocalization>#>,
+            message: <#T##UserFacing<StrictString, InterfaceLocalization>#>)*/
         print(diagnostic)
     }
 

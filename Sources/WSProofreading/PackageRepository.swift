@@ -59,6 +59,7 @@ extension PackageRepository {
 
                             let file = try TextFile(alreadyAt: url)
                             reporter.reportParsing(file: file.location.path(relativeTo: location), to: output)
+                            status.currentFile = file
 
                             for rule in textRules {
                                 try rule.check(file: file, in: self, status: status, output: output)

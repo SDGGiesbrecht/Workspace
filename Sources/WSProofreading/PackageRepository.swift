@@ -24,10 +24,18 @@ import SDGSwiftSource
 import WSProject
 import WSCustomTask
 
+import SwiftFormat
+import SwiftFormatConfiguration
+
 extension PackageRepository {
 
     public func proofread(reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
         let status = ProofreadingStatus(reporter: reporter)
+
+        let formatConfiguration = SwiftFormatConfiguration.Configuration()
+        #warning("This needs to be plugged into something?")
+        let diagnostics = DiagnosticEngine()
+        let linter = SwiftLinter(configuration: formatConfiguration, diagnosticEngine: diagnostics)
 
         let activeRules = try configuration(output: output).proofreading.rules.sorted()
         if ¬activeRules.isEmpty {
@@ -55,15 +63,17 @@ extension PackageRepository {
                                 try rule.check(file: file, in: self, status: status, output: output)
                             }
 
-                            if ¬syntaxRules.isEmpty,
-                                file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
-                                let syntax = try SyntaxParser.parseAndRetry(url)
-                                try RuleSyntaxScanner(
-                                    rules: syntaxRules,
-                                    file: file,
-                                    project: self,
-                                    status: status,
-                                    output: output).scan(syntax)
+                            if file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
+                                if ¬syntaxRules.isEmpty {
+                                    let syntax = try SyntaxParser.parseAndRetry(url)
+                                    try RuleSyntaxScanner(
+                                        rules: syntaxRules,
+                                        file: file,
+                                        project: self,
+                                        status: status,
+                                        output: output).scan(syntax)
+                                    try linter.lint(syntax: syntax, assumingFileURL: url)
+                                }
                             }
                         }
             }

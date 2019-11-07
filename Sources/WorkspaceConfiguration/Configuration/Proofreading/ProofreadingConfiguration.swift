@@ -50,13 +50,17 @@ public struct ProofreadingConfiguration : Codable {
 
     // @localization(🇩🇪DE) @crossReference(swiftFormatConfiguration)
     /// Die SwiftFormat‐Konfiguration.
-    public var swiftFormatKonfiguration: SwiftFormatKonfiguration {
+    ///
+    /// Wenn `nil`, werden keine SwiftFormat‐Aufgaben ausgeführt.
+    public var swiftFormatKonfiguration: SwiftFormatKonfiguration? {
         get { return swiftFormatConfiguration }
         set { swiftFormatConfiguration = newValue }
     }
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(swiftFormatConfiguration)
     /// The SwiftFormat configuration.
-    public var swiftFormatConfiguration: SwiftFormatConfiguration.Configuration = .default
+    ///
+    /// When `nil`, no SwiftFormat tasks will be carried out.
+    public var swiftFormatConfiguration: SwiftFormatConfiguration.Configuration? = .default
 
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(unicodeRuleScope)
     /// The scope in which to apply the `unicode` rule.

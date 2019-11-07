@@ -33,11 +33,12 @@ extension PackageRepository {
     public func proofread(reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
         let status = ProofreadingStatus(reporter: reporter, output: output)
 
-        let formatConfiguration = try configuration(output: output).proofreading.swiftFormatConfiguration
-
-        let diagnostics = DiagnosticEngine()
-        diagnostics.addConsumer(status)
-        let linter = SwiftLinter(configuration: formatConfiguration, diagnosticEngine: diagnostics)
+        var linter: SwiftLinter?
+        if let formatConfiguration = try configuration(output: output).proofreading.swiftFormatConfiguration {
+            let diagnostics = DiagnosticEngine()
+            diagnostics.addConsumer(status)
+            linter = SwiftLinter(configuration: formatConfiguration, diagnosticEngine: diagnostics)
+        }
 
         let activeRules = try configuration(output: output).proofreading.rules.sorted()
         if ¬activeRules.isEmpty {
@@ -67,7 +68,7 @@ extension PackageRepository {
                             }
 
                             if file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
-                                if ¬syntaxRules.isEmpty {
+                                if ¬syntaxRules.isEmpty ∨ linter ≠ nil {
                                     let syntax = try SyntaxParser.parseAndRetry(url)
                                     try RuleSyntaxScanner(
                                         rules: syntaxRules,
@@ -75,7 +76,7 @@ extension PackageRepository {
                                         project: self,
                                         status: status,
                                         output: output).scan(syntax)
-                                    try linter.lint(syntax: syntax, assumingFileURL: url)
+                                    try linter?.lint(syntax: syntax, assumingFileURL: url)
                                 }
                             }
                         }

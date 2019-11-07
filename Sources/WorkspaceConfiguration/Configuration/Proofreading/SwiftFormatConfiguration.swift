@@ -27,7 +27,7 @@ extension SwiftFormatConfiguration.Configuration {
         #warning("Change this to new default?")
         configuration.indentation = .spaces(4) // Xcode’s default.
         #warning("Change this to new default?")
-        configuration.lineBreakBeforeEachArgument = true
+        //configuration.lineBreakBeforeEachArgument = true
         #warning("Is this necessary?")
         configuration.respectsExistingLineBreaks = true
         return configuration

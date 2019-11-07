@@ -22,6 +22,8 @@ extension SwiftFormatConfiguration.Configuration {
 
     internal static let `default`: SwiftFormatConfiguration.Configuration = {
         let configuration = SwiftFormatConfiguration.Configuration()
+        #warning("Is this necessary?")
+        configuration.respectsExistingLineBreaks = true
         #warning("Restore some of these.")
         configuration.rules = [:]
         return configuration

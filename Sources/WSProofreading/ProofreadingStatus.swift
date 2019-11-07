@@ -42,7 +42,6 @@ internal class ProofreadingStatus : DiagnosticConsumer {
     }
 
     internal func handle(_ diagnostic: Diagnostic) {
-        #warning("Need access to the real file.")
         let file = currentFile!
         #warning("Are highlights useful?")
         let start: String.ScalarView.Index

@@ -33,7 +33,9 @@ extension PackageRepository {
     public func proofread(reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
         let status = ProofreadingStatus(reporter: reporter, output: output)
 
+        #warning("Use actual configuration.")
         let formatConfiguration = SwiftFormatConfiguration.Configuration()
+
         let diagnostics = DiagnosticEngine()
         diagnostics.addConsumer(status)
         let linter = SwiftLinter(configuration: formatConfiguration, diagnosticEngine: diagnostics)

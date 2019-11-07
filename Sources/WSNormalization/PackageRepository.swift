@@ -14,19 +14,34 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import SDGCollections
 import WSGeneralImports
 import WSProject
 
+import SwiftFormat
+
 extension PackageRepository {
 
     public func normalize(output: Command.Output) throws {
+
+        let formatConfiguration = try configuration(output: output).proofreading.swiftFormatConfiguration
+        let formatter = SwiftFormatter(configuration: formatConfiguration)
+        #warning("This debug option shouldn’t stay.")
+        formatter.debugOptions.set(.disablePrettyPrint, enabled: true)
 
         for url in try sourceFiles(output: output) {
             try autoreleasepool {
 
                 if let syntax = FileType(url: url)?.syntax {
                     var file = try TextFile(alreadyAt: url)
+
+                    if file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
+                        let source = file.contents
+                        var result: String = ""
+                        try formatter.format(source: source, assumingFileURL: file.location, to: &result)
+                        file.contents = result
+                    }
 
                     let lines = file.contents.lines.map({ String($0.line) })
                     let normalizedLines = lines.map { (line: String) -> String in

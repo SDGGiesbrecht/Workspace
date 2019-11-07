@@ -320,7 +320,8 @@ let package = Package(
         // Normalization.
         .target(name: "WSNormalization", dependencies: [
             "WSGeneralImports",
-            "WSProject"
+            "WSProject",
+            .product(name: "SwiftFormat", package: "swift\u{2D}format")
             ]),
 
         // Xcode project management.

@@ -468,7 +468,8 @@ let package = Package(
             .product(name: "SDGLocalization", package: "SDGCornerstone"),
             .product(name: "SDGCalendar", package: "SDGCornerstone"),
             .product(name: "SDGVersioning", package: "SDGCornerstone"),
-            .product(name: "SDGSwiftConfiguration", package: "SDGSwift")
+            .product(name: "SDGSwiftConfiguration", package: "SDGSwift"),
+            .product(name: "SwiftFormat", package: "swift\u{2D}format")
             ]),
 
         // Defines the lists of supported localizations.

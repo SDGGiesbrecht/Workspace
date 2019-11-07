@@ -67,7 +67,7 @@ public typealias ArbeitsbereichKonfiguration = WorkspaceConfiguration
 /// configuration.documentation.api.generate = true
 /// configuration.documentation.api.yearFirstPublished = 2017
 /// ```
-public final class WorkspaceConfiguration : Configuration {
+public final class WorkspaceConfiguration : SDGSwiftConfiguration.Configuration {
 
     // MARK: - Static Properties
 

@@ -28,8 +28,6 @@ extension PackageRepository {
         var formatter: SwiftFormatter?
         if let formatConfiguration = try configuration(output: output).proofreading.swiftFormatConfiguration {
             formatter = SwiftFormatter(configuration: formatConfiguration)
-            #warning("This debug option shouldn’t stay.")
-            formatter?.debugOptions.set(.disablePrettyPrint, enabled: true)
         }
 
         for url in try sourceFiles(output: output) {

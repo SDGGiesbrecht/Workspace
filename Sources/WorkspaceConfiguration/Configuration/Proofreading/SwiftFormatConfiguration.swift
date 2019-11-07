@@ -16,7 +16,7 @@
 
 // @notLocalized(🇬🇧EN) @notLocalized(🇺🇸EN) @notLocalized(🇨🇦EN)
 /// Eine SwiftFormat‐Konfiguration.
-typealias SwiftFormatKonfiguration = SwiftFormatConfiguration.Configuration
+public typealias SwiftFormatKonfiguration = SwiftFormatConfiguration.Configuration
 
 extension SwiftFormatConfiguration.Configuration {
 

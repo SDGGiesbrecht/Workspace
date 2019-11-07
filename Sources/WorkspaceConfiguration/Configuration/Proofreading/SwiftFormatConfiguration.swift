@@ -22,10 +22,12 @@ extension SwiftFormatConfiguration.Configuration {
 
     internal static let `default`: SwiftFormatConfiguration.Configuration = {
         let configuration = SwiftFormatConfiguration.Configuration()
-        #warning("Is this necessary?")
-        configuration.respectsExistingLineBreaks = true
         #warning("Restore some of these.")
         configuration.rules = [:]
+        #warning("Change this to new default?")
+        configuration.indentation = .spaces(4) // Xcode’s default.
+        #warning("Is this necessary?")
+        configuration.respectsExistingLineBreaks = true
         return configuration
     }()
 }

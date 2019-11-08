@@ -31,33 +31,28 @@ README.md
 Sources/CheckedInDocumentation/CheckedInDocumentation.swift
 Line 66
 Parameters should be grouped under a single callout. (parameterGrouping)
-    /// - Parameter parameterOne: The first parameter.
+  /// - Parameter parameterOne: The first parameter.
 
 Line 67
 Parameters should be grouped under a single callout. (parameterGrouping)
-    /// - Parameter parameterTwo: The second parameter.
+  /// - Parameter parameterTwo: The second parameter.
 
 Sources/EnableBuild/EnableBuild.swift
 Sources/Extensions/Extensions.swift
 Sources/Tool/Resources.swift
 Sources/Tool/main.swift
 Tests/CheckedInDocumentationTests/CheckedInDocumentationTests.swift
-Line 4
-Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition. (colonSpacing)
-final class CheckedInDocumentationTests: XCTestCase {
-final class CheckedInDocumentationTests : XCTestCase {
-
 Tests/CheckedInDocumentationTests/XCTestManifests.swift
 Line 1
 Test manifests are no longer necessary. (deprecatedTestManifests)
 import XCTest
 
 #if !os(macOS)
-public func allTests() -> [XCTestCaseEntry] {
+  public func allTests() -> [XCTestCaseEntry] {
     return [
-        testCase(CheckedInDocumentationTests.allTests),
+      testCase(CheckedInDocumentationTests.allTests),
     ]
-}
+  }
 #endif
 
 Tests/LinuxMain.swift

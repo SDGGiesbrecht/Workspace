@@ -31,16 +31,16 @@ extension Workspace.Refresh {
       }
     })
 
-    private static let description = UserFacing<StrictString, InterfaceLocalization>({
-      localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "regenerates code providing access to the project’s resources."
-      case .deutschDeutschland:
-        return
-          "erstellt den Quelltext neu, der zugriff auf die Ressourcen des Projekts bereitstellt."
-      }
-    })
+    private static let description
+      = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "regenerates code providing access to the project’s resources."
+        case .deutschDeutschland:
+          return
+            "erstellt den Quelltext neu, der zugriff auf die Ressourcen des Projekts bereitstellt."
+        }
+      })
 
     private static let discussion
       = UserFacing<StrictString, InterfaceLocalization>({ localization in

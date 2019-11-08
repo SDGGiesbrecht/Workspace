@@ -31,17 +31,17 @@ extension Workspace.Refresh {
       }
     })
 
-    private static let description = UserFacing<StrictString, InterfaceLocalization>({
-      localization in
-      switch localization {
-      case .englishUnitedKingdom:
-        return "synchronises the project’s inherited documentation."
-      case .englishUnitedStates, .englishCanada:
-        return "synchronizes the project’s inherited documentation."
-      case .deutschDeutschland:
-        return "stimmt die geerbte Dokumentation des Projekts ab."
-      }
-    })
+    private static let description
+      = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishUnitedKingdom:
+          return "synchronises the project’s inherited documentation."
+        case .englishUnitedStates, .englishCanada:
+          return "synchronizes the project’s inherited documentation."
+        case .deutschDeutschland:
+          return "stimmt die geerbte Dokumentation des Projekts ab."
+        }
+      })
 
     private static let discussion
       = UserFacing<StrictString, InterfaceLocalization>({ localization in

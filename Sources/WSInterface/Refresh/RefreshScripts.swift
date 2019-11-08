@@ -31,15 +31,15 @@ extension Workspace.Refresh {
       }
     })
 
-    private static let description = UserFacing<StrictString, InterfaceLocalization>({
-      localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "regenerates the project’s refresh and validation scripts."
-      case .deutschDeutschland:
-        return "erstellt die Auffrisch‐ und Überprüfungskripte neu."
-      }
-    })
+    private static let description
+      = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "regenerates the project’s refresh and validation scripts."
+        case .deutschDeutschland:
+          return "erstellt die Auffrisch‐ und Überprüfungskripte neu."
+        }
+      })
 
     static let command = Command(
       name: name,

@@ -18,11 +18,11 @@ import WSGeneralTestImports
 
 public enum OnlyBritish: String, InputLocalization, Localization {
 
-    // MARK: - Cases
+  // MARK: - Cases
 
-    case englishUnitedKingdom = "en\u{2D}GB"
+  case englishUnitedKingdom = "en\u{2D}GB"
 
-    // MARK: - Localization
+  // MARK: - Localization
 
-    public static let fallbackLocalization = OnlyBritish.englishUnitedKingdom
+  public static let fallbackLocalization = OnlyBritish.englishUnitedKingdom
 }

@@ -21,28 +21,28 @@ import SwiftSyntax
 import SDGSwiftSource
 
 internal protocol Parameter {
-    var firstName: TokenSyntax? { get }
-    var secondName: TokenSyntax? { get }
-    var optionalType: TypeSyntax? { get }
+  var firstName: TokenSyntax? { get }
+  var secondName: TokenSyntax? { get }
+  var optionalType: TypeSyntax? { get }
 }
 
 extension Parameter {
 
-    internal func parameterNames() -> [String] {
-        var result: [String] = []
-        if let second = secondName?.text,
-            ¬second.isEmpty
-        {
-            result.append(second)
-        } else if let first = firstName?.text,
-            ¬first.isEmpty
-        {
-            result.append(first)
-        }
-
-        if let type = optionalType {
-            result.append(contentsOf: type.parameterNames())
-        }
-        return result
+  internal func parameterNames() -> [String] {
+    var result: [String] = []
+    if let second = secondName?.text,
+      ¬second.isEmpty
+    {
+      result.append(second)
+    } else if let first = firstName?.text,
+      ¬first.isEmpty
+    {
+      result.append(first)
     }
+
+    if let type = optionalType {
+      result.append(contentsOf: type.parameterNames())
+    }
+    return result
+  }
 }

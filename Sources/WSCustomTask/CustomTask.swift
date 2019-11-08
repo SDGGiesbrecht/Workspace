@@ -24,18 +24,18 @@ import WorkspaceConfiguration
 
 extension CustomTask {
 
-    // MARK: - Static Properties
+  // MARK: - Static Properties
 
-    internal static let cache = FileManager.default.url(in: .cache, at: "Custom Tasks")
+  internal static let cache = FileManager.default.url(in: .cache, at: "Custom Tasks")
 
-    // MARK: - Execution
+  // MARK: - Execution
 
-    public func execute(output: Command.Output) throws {
-        _ = try Package(url: url).execute(
-            .version(version),
-            of: [executable],
-            with: arguments,
-            cacheDirectory: CustomTask.cache,
-            reportProgress: { output.print($0) }).get()
-    }
+  public func execute(output: Command.Output) throws {
+    _ = try Package(url: url).execute(
+      .version(version),
+      of: [executable],
+      with: arguments,
+      cacheDirectory: CustomTask.cache,
+      reportProgress: { output.print($0) }).get()
+  }
 }

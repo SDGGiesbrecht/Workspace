@@ -20,42 +20,42 @@ import WSGit
 
 extension Workspace.Refresh {
 
-    enum Git {
+  enum Git {
 
-        private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                .deutschDeutschland:
-                return "git"
-            }
-        })
+    private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+        .deutschDeutschland:
+        return "git"
+      }
+    })
 
-        private static let description = UserFacing<StrictString, InterfaceLocalization>({
-            localization in
+    private static let description = UserFacing<StrictString, InterfaceLocalization>({
+      localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "regenerates the project’s Git configuration files."
+      case .deutschDeutschland:
+        return "erstellt die Git‐Konfiguration des Projekts neu."
+      }
+    })
+
+    static let command = Command(
+      name: name, description: description, directArguments: [],
+      options: Workspace.standardOptions,
+      execution: { (_, options: Options, output: Command.Output) throws in
+
+        output.print(
+          UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "regenerates the project’s Git configuration files."
+              return "Refreshing Git configuration..."
             case .deutschDeutschland:
-                return "erstellt die Git‐Konfiguration des Projekts neu."
+              return "Git‐Konfiguration wird aufgefrischt ..."
             }
-        })
+          }).resolved().formattedAsSectionHeader())
 
-        static let command = Command(
-            name: name, description: description, directArguments: [],
-            options: Workspace.standardOptions,
-            execution: { (_, options: Options, output: Command.Output) throws in
-
-                output.print(
-                    UserFacing<StrictString, InterfaceLocalization>({ localization in
-                        switch localization {
-                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                            return "Refreshing Git configuration..."
-                        case .deutschDeutschland:
-                            return "Git‐Konfiguration wird aufgefrischt ..."
-                        }
-                    }).resolved().formattedAsSectionHeader())
-
-                try options.project.refreshGitConfiguration(output: output)
-            })
-    }
+        try options.project.refreshGitConfiguration(output: output)
+      })
+  }
 }

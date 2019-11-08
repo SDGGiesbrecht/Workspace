@@ -22,16 +22,16 @@ import WSProject
 
 extension CommandInterface {
 
-    internal mutating func sentenceCaseDescriptions() {
-        if let first = description.first,
-            first.properties.isLowercase
-        {
-            description.scalars.removeFirst()
-            description.scalars.prepend(
-                contentsOf: first.properties.titlecaseMapping.scalars)
-        }
-        for index in subcommands.indices {
-            subcommands[index].sentenceCaseDescriptions()
-        }
+  internal mutating func sentenceCaseDescriptions() {
+    if let first = description.first,
+      first.properties.isLowercase
+    {
+      description.scalars.removeFirst()
+      description.scalars.prepend(
+        contentsOf: first.properties.titlecaseMapping.scalars)
     }
+    for index in subcommands.indices {
+      subcommands[index].sentenceCaseDescriptions()
+    }
+  }
 }

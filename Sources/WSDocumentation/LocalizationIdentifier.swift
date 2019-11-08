@@ -20,10 +20,10 @@ import WSProject
 
 extension LocalizationIdentifier {
 
-    internal var textDirection: TextDirection? {
-        guard let supported = ContentLocalization(reasonableMatchFor: code) else {
-            return nil
-        }
-        return supported.textDirection
+  internal var textDirection: TextDirection? {
+    guard let supported = ContentLocalization(reasonableMatchFor: code) else {
+      return nil
     }
+    return supported.textDirection
+  }
 }

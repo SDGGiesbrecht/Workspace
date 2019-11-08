@@ -21,6 +21,6 @@ import SDGSwiftSource
 import WSProject
 
 internal enum Rule {
-    case text(TextRule.Type)
-    case syntax(SyntaxRule.Type)
+  case text(TextRule.Type)
+  case syntax(SyntaxRule.Type)
 }

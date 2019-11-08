@@ -23,57 +23,57 @@ import SDGSwiftSource
 import WSProject
 
 internal protocol RuleProtocol {
-    static var name: UserFacing<StrictString, InterfaceLocalization> { get }
-    static var noticeOnly: Bool { get }
+  static var name: UserFacing<StrictString, InterfaceLocalization> { get }
+  static var noticeOnly: Bool { get }
 }
 
 extension RuleProtocol {
 
-    // MARK: - Default Implementations
+  // MARK: - Default Implementations
 
-    internal static var noticeOnly: Bool {
-        return false
-    }
+  internal static var noticeOnly: Bool {
+    return false
+  }
 
-    // MARK: - Reporting
+  // MARK: - Reporting
 
-    internal static func reportViolation(
-        in file: TextFile, at location: Range<String.ScalarView.Index>,
-        replacementSuggestion: StrictString? = nil,
-        message: UserFacing<StrictString, InterfaceLocalization>, status: ProofreadingStatus
-    ) {
+  internal static func reportViolation(
+    in file: TextFile, at location: Range<String.ScalarView.Index>,
+    replacementSuggestion: StrictString? = nil,
+    message: UserFacing<StrictString, InterfaceLocalization>, status: ProofreadingStatus
+  ) {
 
-        let fileLines = file.contents.lines
-        let lineIndex = location.lowerBound.line(in: fileLines)
-        let line = fileLines[lineIndex].line
-        for exemptionMarker in exemptionMarkers {
-            if line.contains(exemptionMarker) {
-                for localization in InterfaceLocalization.allCases {
-                    if line.contains(
-                        StrictString("\(exemptionMarker)\(name.resolved(for: localization)))"))
-                    {
-                        return
-                    }
-                }
-            }
+    let fileLines = file.contents.lines
+    let lineIndex = location.lowerBound.line(in: fileLines)
+    let line = fileLines[lineIndex].line
+    for exemptionMarker in exemptionMarkers {
+      if line.contains(exemptionMarker) {
+        for localization in InterfaceLocalization.allCases {
+          if line.contains(
+            StrictString("\(exemptionMarker)\(name.resolved(for: localization)))"))
+          {
+            return
+          }
         }
-
-        status.report(
-            violation: StyleViolation(
-                in: file, at: location, replacementSuggestion: replacementSuggestion,
-                noticeOnly: noticeOnly, ruleIdentifier: Self.name, message: message))
+      }
     }
+
+    status.report(
+      violation: StyleViolation(
+        in: file, at: location, replacementSuggestion: replacementSuggestion,
+        noticeOnly: noticeOnly, ruleIdentifier: Self.name, message: message))
+  }
 }
 
 private let exemptionMarkers: [StrictString] = {
-    var result: Set<StrictString> = Set(
-        InterfaceLocalization.allCases.map({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "@exempt(from: _)"
-            case .deutschDeutschland:
-                return "@ausnahme(zu: _)"
-            }
-        }))
-    return result.map { $0.truncated(before: "_") }
+  var result: Set<StrictString> = Set(
+    InterfaceLocalization.allCases.map({ localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "@exempt(from: _)"
+      case .deutschDeutschland:
+        return "@ausnahme(zu: _)"
+      }
+    }))
+  return result.map { $0.truncated(before: "_") }
 }()

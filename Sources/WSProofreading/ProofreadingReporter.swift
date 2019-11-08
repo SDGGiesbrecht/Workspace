@@ -18,6 +18,6 @@ import WSGeneralImports
 
 public protocol ProofreadingReporter {
 
-    func reportParsing(file: String, to output: Command.Output)
-    func report(violation: StyleViolation, to output: Command.Output)
+  func reportParsing(file: String, to output: Command.Output)
+  func report(violation: StyleViolation, to output: Command.Output)
 }

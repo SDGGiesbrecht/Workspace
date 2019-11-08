@@ -25,62 +25,62 @@ public typealias Schicht = Platform
 /// A platform.
 public enum Platform: String, Codable, CaseIterable {
 
-    // MARK: - Cases
+  // MARK: - Cases
 
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
-    /// macOS.
-    case macOS
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+  /// macOS.
+  case macOS
 
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
-    /// Linux.
-    case linux
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+  /// Linux.
+  case linux
 
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
-    /// iOS.
-    case iOS
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+  /// iOS.
+  case iOS
 
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
-    /// watchOS.
-    case watchOS
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+  /// watchOS.
+  case watchOS
 
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
-    /// tvOS.
-    case tvOS
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+  /// tvOS.
+  case tvOS
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    public func _isolatedName(for localization: ContentLocalization) -> StrictString {
-        switch self {
-        case .macOS:
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                .deutschDeutschland:
-                return "macOS"
-            }
-        case .linux:
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                .deutschDeutschland:
-                return "Linux"
-            }
-        case .iOS:
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                .deutschDeutschland:
-                return "iOS"
-            }
-        case .watchOS:
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                .deutschDeutschland:
-                return "watchOS"
-            }
-        case .tvOS:
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                .deutschDeutschland:
-                return "tvOS"
-            }
-        }
+  public func _isolatedName(for localization: ContentLocalization) -> StrictString {
+    switch self {
+    case .macOS:
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+        .deutschDeutschland:
+        return "macOS"
+      }
+    case .linux:
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+        .deutschDeutschland:
+        return "Linux"
+      }
+    case .iOS:
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+        .deutschDeutschland:
+        return "iOS"
+      }
+    case .watchOS:
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+        .deutschDeutschland:
+        return "watchOS"
+      }
+    case .tvOS:
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+        .deutschDeutschland:
+        return "tvOS"
+      }
     }
+  }
 }

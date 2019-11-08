@@ -21,42 +21,42 @@ import WSGitHub
 
 extension Workspace.Refresh {
 
-    enum GitHub {
+  enum GitHub {
 
-        private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                .deutschDeutschland:
-                return "github"
-            }
-        })
+    private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+        .deutschDeutschland:
+        return "github"
+      }
+    })
 
-        private static let description = UserFacing<StrictString, InterfaceLocalization>({
-            localization in
+    private static let description = UserFacing<StrictString, InterfaceLocalization>({
+      localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "regenerates the project’s GitHub configuration files."
+      case .deutschDeutschland:
+        return "erstellt die GitHub‐Konfigurationen des Projekts neu."
+      }
+    })
+
+    static let command = Command(
+      name: name, description: description, directArguments: [],
+      options: Workspace.standardOptions,
+      execution: { (_, options: Options, output: Command.Output) throws in
+
+        output.print(
+          UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "regenerates the project’s GitHub configuration files."
+              return "Refreshing GitHub configuration..."
             case .deutschDeutschland:
-                return "erstellt die GitHub‐Konfigurationen des Projekts neu."
+              return "GitHub‐Konfiguration wird aufgefrischt ..."
             }
-        })
+          }).resolved().formattedAsSectionHeader())
 
-        static let command = Command(
-            name: name, description: description, directArguments: [],
-            options: Workspace.standardOptions,
-            execution: { (_, options: Options, output: Command.Output) throws in
-
-                output.print(
-                    UserFacing<StrictString, InterfaceLocalization>({ localization in
-                        switch localization {
-                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                            return "Refreshing GitHub configuration..."
-                        case .deutschDeutschland:
-                            return "GitHub‐Konfiguration wird aufgefrischt ..."
-                        }
-                    }).resolved().formattedAsSectionHeader())
-
-                try options.project.refreshGitHubConfiguration(output: output)
-            })
-    }
+        try options.project.refreshGitHubConfiguration(output: output)
+      })
+  }
 }

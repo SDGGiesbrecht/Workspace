@@ -18,36 +18,36 @@ import WSGeneralImports
 
 public class XcodeProofreadingReporter: ProofreadingReporter {
 
-    // MARK: - Static Properties
+  // MARK: - Static Properties
 
-    public static let `default` = XcodeProofreadingReporter()
+  public static let `default` = XcodeProofreadingReporter()
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    private init() {}
+  private init() {}
 
-    // MARK: - ProofreadingReporter
+  // MARK: - ProofreadingReporter
 
-    public func reportParsing(file: String, to output: Command.Output) {
-        // Unneeded.
-    }
+  public func reportParsing(file: String, to output: Command.Output) {
+    // Unneeded.
+  }
 
-    public func report(violation: StyleViolation, to output: Command.Output) {
+  public func report(violation: StyleViolation, to output: Command.Output) {
 
-        let file = violation.file.contents
-        let lines = file.lines
+    let file = violation.file.contents
+    let lines = file.lines
 
-        let path = violation.file.location.path
+    let path = violation.file.location.path
 
-        let lineIndex = violation.range.lowerBound.line(in: lines)
-        let lineNumber: Int = lines.distance(from: lines.startIndex, to: lineIndex) + 1
+    let lineIndex = violation.range.lowerBound.line(in: lines)
+    let lineNumber: Int = lines.distance(from: lines.startIndex, to: lineIndex) + 1
 
-        let utf16LineStart = lineIndex.samePosition(in: file.clusters).samePosition(in: file.utf16)!
-        let utf16ViolationStart = violation.range.lowerBound.samePosition(in: file.utf16)!
-        let column: Int = file.utf16.distance(from: utf16LineStart, to: utf16ViolationStart) + 1
+    let utf16LineStart = lineIndex.samePosition(in: file.clusters).samePosition(in: file.utf16)!
+    let utf16ViolationStart = violation.range.lowerBound.samePosition(in: file.utf16)!
+    let column: Int = file.utf16.distance(from: utf16LineStart, to: utf16ViolationStart) + 1
 
-        output.print(
-            "\(path):\(lineNumber):\(column): warning: \(violation.message.resolved()) (\(violation.ruleIdentifier.resolved()))"
-        )
-    }
+    output.print(
+      "\(path):\(lineNumber):\(column): warning: \(violation.message.resolved()) (\(violation.ruleIdentifier.resolved()))"
+    )
+  }
 }

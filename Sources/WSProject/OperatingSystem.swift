@@ -20,13 +20,13 @@ import WorkspaceConfiguration
 
 extension Platform {
 
-    // MARK: - Static Properties
+  // MARK: - Static Properties
 
-    public static var current: Platform {
-        #if os(macOS)
-            return .macOS
-        #elseif os(Linux)
-            return .linux
-        #endif
-    }
+  public static var current: Platform {
+    #if os(macOS)
+      return .macOS
+    #elseif os(Linux)
+      return .linux
+    #endif
+  }
 }

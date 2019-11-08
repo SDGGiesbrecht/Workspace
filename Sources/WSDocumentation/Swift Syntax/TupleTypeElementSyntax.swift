@@ -21,10 +21,10 @@ import SwiftSyntax
 import SDGSwiftSource
 
 extension TupleTypeElementSyntax: Parameter {
-    var firstName: TokenSyntax? {
-        return name
-    }
-    var optionalType: TypeSyntax? {
-        return type
-    }
+  var firstName: TokenSyntax? {
+    return name
+  }
+  var optionalType: TypeSyntax? {
+    return type
+  }
 }

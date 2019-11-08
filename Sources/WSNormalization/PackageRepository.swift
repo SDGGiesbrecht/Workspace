@@ -23,55 +23,55 @@ import SwiftFormat
 
 extension PackageRepository {
 
-    public func normalize(output: Command.Output) throws {
+  public func normalize(output: Command.Output) throws {
 
-        var formatter: SwiftFormatter?
-        if let formatConfiguration = try configuration(output: output).proofreading
-            .swiftFormatConfiguration
-        {
-            formatter = SwiftFormatter(configuration: formatConfiguration)
-        }
-
-        for url in try sourceFiles(output: output) {
-            try autoreleasepool {
-
-                if let syntax = FileType(url: url)?.syntax {
-                    var file = try TextFile(alreadyAt: url)
-
-                    if let formatter = formatter,
-                        file.fileType == .swift ∨ file.fileType == .swiftPackageManifest
-                    {
-                        let source = file.contents
-                        var result: String = ""
-                        try formatter.format(
-                            source: source, assumingFileURL: file.location, to: &result)
-                        file.contents = result
-                    }
-
-                    let lines = file.contents.lines.map({ String($0.line) })
-                    let normalizedLines = lines.map { (line: String) -> String in
-
-                        var normalized = line.decomposedStringWithCanonicalMapping
-
-                        var semanticWhitespace = ""
-                        for whitespace in syntax.semanticLineTerminalWhitespace {
-                            if normalized.hasSuffix(whitespace) {
-                                semanticWhitespace = whitespace
-                            }
-                        }
-
-                        while let last = normalized.unicodeScalars.last,
-                        last ∈ CharacterSet.whitespaces {
-                            normalized.unicodeScalars.removeLast()
-                        }
-
-                        return normalized + semanticWhitespace
-                    }
-
-                    file.contents = normalizedLines.joinedAsLines()
-                    try file.writeChanges(for: self, output: output)
-                }
-            }
-        }
+    var formatter: SwiftFormatter?
+    if let formatConfiguration = try configuration(output: output).proofreading
+      .swiftFormatConfiguration
+    {
+      formatter = SwiftFormatter(configuration: formatConfiguration)
     }
+
+    for url in try sourceFiles(output: output) {
+      try autoreleasepool {
+
+        if let syntax = FileType(url: url)?.syntax {
+          var file = try TextFile(alreadyAt: url)
+
+          if let formatter = formatter,
+            file.fileType == .swift ∨ file.fileType == .swiftPackageManifest
+          {
+            let source = file.contents
+            var result: String = ""
+            try formatter.format(
+              source: source, assumingFileURL: file.location, to: &result)
+            file.contents = result
+          }
+
+          let lines = file.contents.lines.map({ String($0.line) })
+          let normalizedLines = lines.map { (line: String) -> String in
+
+            var normalized = line.decomposedStringWithCanonicalMapping
+
+            var semanticWhitespace = ""
+            for whitespace in syntax.semanticLineTerminalWhitespace {
+              if normalized.hasSuffix(whitespace) {
+                semanticWhitespace = whitespace
+              }
+            }
+
+            while let last = normalized.unicodeScalars.last,
+            last ∈ CharacterSet.whitespaces {
+              normalized.unicodeScalars.removeLast()
+            }
+
+            return normalized + semanticWhitespace
+          }
+
+          file.contents = normalizedLines.joinedAsLines()
+          try file.writeChanges(for: self, output: output)
+        }
+      }
+    }
+  }
 }

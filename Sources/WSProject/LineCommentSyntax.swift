@@ -19,136 +19,136 @@ import WSGeneralImports
 
 public struct LineCommentSyntax {
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    internal init(start: String) {
-        self.start = start
+  internal init(start: String) {
+    self.start = start
+  }
+
+  // MARK: - Properties
+
+  private let start: String
+
+  // MARK: - Output
+
+  public func comment(contents: String, indent: String = "") -> String {
+
+    var first = true
+    var result: [String] = []
+    for line in contents.lines.map({ String($0.line) }) {
+      var modified = start
+      if ¬line.isWhitespace {
+        modified += " " + line
+      }
+
+      if first {
+        first = false
+        result.append(modified)
+      } else {
+        result.append(indent + modified)
+      }
     }
 
-    // MARK: - Properties
+    return result.joinedAsLines()
+  }
 
-    private let start: String
+  // MARK: - Parsing
 
-    // MARK: - Output
+  internal func nonDocumentationCommentExists(
+    at location: String.ScalarView.Index, in string: String
+  ) -> Bool {
 
-    public func comment(contents: String, indent: String = "") -> String {
+    var index = location
+    if ¬string.clusters.advance(&index, over: start.clusters) {
+      return false
+    } else {
+      // Comment
 
-        var first = true
-        var result: [String] = []
-        for line in contents.lines.map({ String($0.line) }) {
-            var modified = start
-            if ¬line.isWhitespace {
-                modified += " " + line
-            }
+      // Make sure this isn’t documentation.
+      if let nextCharacter = string[index...].unicodeScalars.first {
 
-            if first {
-                first = false
-                result.append(modified)
-            } else {
-                result.append(indent + modified)
-            }
+        if nextCharacter ∈ CharacterSet.whitespacesAndNewlines {
+          return true
         }
-
-        return result.joinedAsLines()
+      }
+      return false
     }
+  }
 
-    // MARK: - Parsing
+  private func restOfLine(
+    at index: String.ScalarView.Index, in range: Range<String.ScalarView.Index>,
+    of string: String
+  ) -> Range<String.ScalarView.Index> {
 
-    internal func nonDocumentationCommentExists(
-        at location: String.ScalarView.Index, in string: String
-    ) -> Bool {
-
-        var index = location
-        if ¬string.clusters.advance(&index, over: start.clusters) {
-            return false
-        } else {
-            // Comment
-
-            // Make sure this isn’t documentation.
-            if let nextCharacter = string[index...].unicodeScalars.first {
-
-                if nextCharacter ∈ CharacterSet.whitespacesAndNewlines {
-                    return true
-                }
-            }
-            return false
-        }
-    }
-
-    private func restOfLine(
-        at index: String.ScalarView.Index, in range: Range<String.ScalarView.Index>,
-        of string: String
-    ) -> Range<String.ScalarView.Index> {
-
-        if let newline = string.scalars[(index ..< range.upperBound).scalars(in: string.scalars)]
-            .firstMatch(for: ConditionalPattern({ $0 ∈ CharacterSet.newlines }))?.range
-        {
-
-            return index ..< newline.lowerBound
-        } else {
-            return index ..< range.upperBound
-        }
-    }
-
-    internal func rangeOfFirstComment(in range: Range<String.ScalarView.Index>, of string: String)
-        -> Range<String.ScalarView.Index>?
+    if let newline = string.scalars[(index ..< range.upperBound).scalars(in: string.scalars)]
+      .firstMatch(for: ConditionalPattern({ $0 ∈ CharacterSet.newlines }))?.range
     {
 
-        guard let startRange = string.scalars[range].firstMatch(for: start.scalars)?.range else {
-            return nil
-        }
+      return index ..< newline.lowerBound
+    } else {
+      return index ..< range.upperBound
+    }
+  }
 
-        var resultEnd = restOfLine(at: startRange.lowerBound, in: range, of: string).upperBound
-        var testIndex: String.ScalarView.Index = resultEnd
-        string.scalars.advance(
-            &testIndex, over: RepetitionPattern(CharacterSet.newlinePattern, count: 0 ... 1))
+  internal func rangeOfFirstComment(in range: Range<String.ScalarView.Index>, of string: String)
+    -> Range<String.ScalarView.Index>?
+  {
 
-        string.scalars.advance(
-            &testIndex,
-            over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
-
-        while string.scalars.suffix(from: testIndex).hasPrefix(start.scalars) {
-            resultEnd = restOfLine(at: testIndex, in: range, of: string).upperBound
-            testIndex = resultEnd
-            string.scalars.advance(
-                &testIndex, over: RepetitionPattern(CharacterSet.newlinePattern, count: 0 ... 1))
-
-            string.scalars.advance(
-                &testIndex,
-                over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
-        }
-
-        return startRange.lowerBound ..< resultEnd
+    guard let startRange = string.scalars[range].firstMatch(for: start.scalars)?.range else {
+      return nil
     }
 
-    internal func contentsOfFirstComment(
-        in range: Range<String.ScalarView.Index>, of string: String
-    ) -> String? {
-        guard let range = rangeOfFirstComment(in: range, of: string) else {
-            return nil  // @exempt(from: tests) Unreachable.
-        }
+    var resultEnd = restOfLine(at: startRange.lowerBound, in: range, of: string).upperBound
+    var testIndex: String.ScalarView.Index = resultEnd
+    string.scalars.advance(
+      &testIndex, over: RepetitionPattern(CharacterSet.newlinePattern, count: 0 ... 1))
 
-        let comment = String(string[range])
-        let lines = comment.lines.map({ String($0.line) }).map { (line: String) -> String in
+    string.scalars.advance(
+      &testIndex,
+      over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
 
-            var index = line.scalars.startIndex
+    while string.scalars.suffix(from: testIndex).hasPrefix(start.scalars) {
+      resultEnd = restOfLine(at: testIndex, in: range, of: string).upperBound
+      testIndex = resultEnd
+      string.scalars.advance(
+        &testIndex, over: RepetitionPattern(CharacterSet.newlinePattern, count: 0 ... 1))
 
-            line.scalars.advance(
-                &index,
-                over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
-            line.scalars.advance(&index, over: start.scalars)
-
-            line.scalars.advance(
-                &index,
-                over: RepetitionPattern(
-                    ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }), count: 0 ... 1))
-
-            return String(line.scalars.suffix(from: index))
-        }
-        return lines.joinedAsLines()
+      string.scalars.advance(
+        &testIndex,
+        over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
     }
 
-    internal func contentsOfFirstComment(in string: String) -> String? {
-        return contentsOfFirstComment(in: string.startIndex ..< string.endIndex, of: string)
+    return startRange.lowerBound ..< resultEnd
+  }
+
+  internal func contentsOfFirstComment(
+    in range: Range<String.ScalarView.Index>, of string: String
+  ) -> String? {
+    guard let range = rangeOfFirstComment(in: range, of: string) else {
+      return nil  // @exempt(from: tests) Unreachable.
     }
+
+    let comment = String(string[range])
+    let lines = comment.lines.map({ String($0.line) }).map { (line: String) -> String in
+
+      var index = line.scalars.startIndex
+
+      line.scalars.advance(
+        &index,
+        over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
+      line.scalars.advance(&index, over: start.scalars)
+
+      line.scalars.advance(
+        &index,
+        over: RepetitionPattern(
+          ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }), count: 0 ... 1))
+
+      return String(line.scalars.suffix(from: index))
+    }
+    return lines.joinedAsLines()
+  }
+
+  internal func contentsOfFirstComment(in string: String) -> String? {
+    return contentsOfFirstComment(in: string.startIndex ..< string.endIndex, of: string)
+  }
 }

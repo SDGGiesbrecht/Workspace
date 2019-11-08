@@ -16,31 +16,31 @@
 
 extension PackageManifest.Product {
 
-    // @localization(🇩🇪DE) @crossReference(ProductType)
-    /// Eine Produktart.
-    public typealias Produktart = ProductType
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProductType)
-    /// A product type.
-    public enum ProductType: String, Codable {
+  // @localization(🇩🇪DE) @crossReference(ProductType)
+  /// Eine Produktart.
+  public typealias Produktart = ProductType
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProductType)
+  /// A product type.
+  public enum ProductType: String, Codable {
 
-        // MARK: - Cases
+    // MARK: - Cases
 
-        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProductType.library)
-        /// A library.
-        case library
-        // @localization(🇩🇪DE) @crossReference(ProductType.library)
-        /// Eine Bibliotek.
-        public static var bibliotek: Produktart {
-            return .library
-        }
-
-        // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProductType.executable)
-        /// An executable.
-        case executable
-        // @localization(🇩🇪DE) @crossReference(ProductType.executable)
-        /// Ein ausführbare Datei.
-        public static var ausführbareDatei: Produktart {
-            return .executable
-        }
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProductType.library)
+    /// A library.
+    case library
+    // @localization(🇩🇪DE) @crossReference(ProductType.library)
+    /// Eine Bibliotek.
+    public static var bibliotek: Produktart {
+      return .library
     }
+
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProductType.executable)
+    /// An executable.
+    case executable
+    // @localization(🇩🇪DE) @crossReference(ProductType.executable)
+    /// Ein ausführbare Datei.
+    public static var ausführbareDatei: Produktart {
+      return .executable
+    }
+  }
 }

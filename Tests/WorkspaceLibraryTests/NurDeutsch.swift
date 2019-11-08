@@ -18,11 +18,11 @@ import WSGeneralTestImports
 
 public enum NurDeutsch: String, InputLocalization, Localization {
 
-    // MARK: - Cases
+  // MARK: - Cases
 
-    case deutschDeutschland = "de\u{2D}DE"
+  case deutschDeutschland = "de\u{2D}DE"
 
-    // MARK: - Localization
+  // MARK: - Localization
 
-    public static let fallbackLocalization = NurDeutsch.deutschDeutschland
+  public static let fallbackLocalization = NurDeutsch.deutschDeutschland
 }

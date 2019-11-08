@@ -20,49 +20,49 @@ import WSLicence
 
 extension Workspace.Refresh {
 
-    enum Licence {
+  enum Licence {
 
-        private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
+    private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishCanada:
+        return "licence"
+      case .englishUnitedStates:
+        return "license"
+      case .deutschDeutschland:
+        return "lizenz"
+      }
+    })
+
+    private static let description = UserFacing<StrictString, InterfaceLocalization>({
+      localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishCanada:
+        return "regenerates the project’s licence file."
+      case .englishUnitedStates:
+        return "regenerates the project’s license file."
+      case .deutschDeutschland:
+        return "erstellt die Lizenzdatei der Projekt neu."
+      }
+    })
+
+    static let command = Command(
+      name: name, description: description, directArguments: [],
+      options: Workspace.standardOptions,
+      execution: { (_, options: Options, output: Command.Output) throws in
+
+        output.print(
+          UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishUnitedKingdom, .englishCanada:
-                return "licence"
+              return "Refreshing licence..."
             case .englishUnitedStates:
-                return "license"
+              return "Refreshing license..."
             case .deutschDeutschland:
-                return "lizenz"
+              return "Lizenz wird aufgefrischt ..."
             }
-        })
+          }).resolved().formattedAsSectionHeader())
 
-        private static let description = UserFacing<StrictString, InterfaceLocalization>({
-            localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishCanada:
-                return "regenerates the project’s licence file."
-            case .englishUnitedStates:
-                return "regenerates the project’s license file."
-            case .deutschDeutschland:
-                return "erstellt die Lizenzdatei der Projekt neu."
-            }
-        })
-
-        static let command = Command(
-            name: name, description: description, directArguments: [],
-            options: Workspace.standardOptions,
-            execution: { (_, options: Options, output: Command.Output) throws in
-
-                output.print(
-                    UserFacing<StrictString, InterfaceLocalization>({ localization in
-                        switch localization {
-                        case .englishUnitedKingdom, .englishCanada:
-                            return "Refreshing licence..."
-                        case .englishUnitedStates:
-                            return "Refreshing license..."
-                        case .deutschDeutschland:
-                            return "Lizenz wird aufgefrischt ..."
-                        }
-                    }).resolved().formattedAsSectionHeader())
-
-                try options.project.refreshLicence(output: output)
-            })
-    }
+        try options.project.refreshLicence(output: output)
+      })
+  }
 }

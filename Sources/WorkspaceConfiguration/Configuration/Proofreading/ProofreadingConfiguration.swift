@@ -29,46 +29,46 @@ public typealias Korrektureinstellungen = ProofreadingConfiguration
 /// ```
 public struct ProofreadingConfiguration: Codable {
 
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-    // @crossReference(ProofreadingConfiguration.rules)
-    /// The set of active proofreading rules.
-    ///
-    /// All rules are active by default.
-    ///
-    /// Individual proofreading violations can be suppressed by placing `@exempt(from: ruleIdentifier)` on the same line.
-    public var rules: Set<ProofreadingRule> = Set(ProofreadingRule.allCases)
-    // @localization(🇩🇪DE) @crossReference(ProofreadingConfiguration.rules)
-    /// Die Menge gültiger Korrekturreglen.
-    ///
-    /// Wenn nicht angegeben, sind alle Regeln gültig.
-    ///
-    /// Einzelne Verstöße können unterdrückt werden, in dem `@ausnahme(zu: regelkennzeichen)` auf der selben Zeile plaziert wird.
-    public var regeln: Menge<Korrekturregel> {
-        get { return rules }
-        set { rules = newValue }
-    }
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+  // @crossReference(ProofreadingConfiguration.rules)
+  /// The set of active proofreading rules.
+  ///
+  /// All rules are active by default.
+  ///
+  /// Individual proofreading violations can be suppressed by placing `@exempt(from: ruleIdentifier)` on the same line.
+  public var rules: Set<ProofreadingRule> = Set(ProofreadingRule.allCases)
+  // @localization(🇩🇪DE) @crossReference(ProofreadingConfiguration.rules)
+  /// Die Menge gültiger Korrekturreglen.
+  ///
+  /// Wenn nicht angegeben, sind alle Regeln gültig.
+  ///
+  /// Einzelne Verstöße können unterdrückt werden, in dem `@ausnahme(zu: regelkennzeichen)` auf der selben Zeile plaziert wird.
+  public var regeln: Menge<Korrekturregel> {
+    get { return rules }
+    set { rules = newValue }
+  }
 
-    // @localization(🇩🇪DE) @crossReference(swiftFormatConfiguration)
-    /// Die SwiftFormat‐Konfiguration.
-    ///
-    /// Wenn `nil`, werden keine SwiftFormat‐Aufgaben ausgeführt.
-    public var swiftFormatKonfiguration: SwiftFormatKonfiguration? {
-        get { return swiftFormatConfiguration }
-        set { swiftFormatConfiguration = newValue }
-    }
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(swiftFormatConfiguration)
-    /// The SwiftFormat configuration.
-    ///
-    /// When `nil`, no SwiftFormat tasks will be carried out.
-    public var swiftFormatConfiguration: SwiftFormatConfiguration.Configuration? = .default
+  // @localization(🇩🇪DE) @crossReference(swiftFormatConfiguration)
+  /// Die SwiftFormat‐Konfiguration.
+  ///
+  /// Wenn `nil`, werden keine SwiftFormat‐Aufgaben ausgeführt.
+  public var swiftFormatKonfiguration: SwiftFormatKonfiguration? {
+    get { return swiftFormatConfiguration }
+    set { swiftFormatConfiguration = newValue }
+  }
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(swiftFormatConfiguration)
+  /// The SwiftFormat configuration.
+  ///
+  /// When `nil`, no SwiftFormat tasks will be carried out.
+  public var swiftFormatConfiguration: SwiftFormatConfiguration.Configuration? = .default
 
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(unicodeRuleScope)
-    /// The scope in which to apply the `unicode` rule.
-    public var unicodeRuleScope: Set<UnicodeRuleScope> = Set(UnicodeRuleScope.allCases)
-    // @localization(🇩🇪DE) @crossReference(unicodeRuleScope)
-    /// Das Geltungsbereich der Unicode‐Regel.
-    public var geltungsbereichUnicodeRegel: Menge<GeltungsbereichUnicodeRegel> {
-        get { return unicodeRuleScope }
-        set { unicodeRuleScope = newValue }
-    }
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(unicodeRuleScope)
+  /// The scope in which to apply the `unicode` rule.
+  public var unicodeRuleScope: Set<UnicodeRuleScope> = Set(UnicodeRuleScope.allCases)
+  // @localization(🇩🇪DE) @crossReference(unicodeRuleScope)
+  /// Das Geltungsbereich der Unicode‐Regel.
+  public var geltungsbereichUnicodeRegel: Menge<GeltungsbereichUnicodeRegel> {
+    get { return unicodeRuleScope }
+    set { unicodeRuleScope = newValue }
+  }
 }

@@ -23,206 +23,206 @@ import WSParsing
 
 extension PackageRepository {
 
-    private static var exampleDeclarationPattern:
-        ConcatenatedPatterns<
-            ConcatenatedPatterns<
-                InterfaceLocalization.DirectivePatternWithArguments,
-                RepetitionPattern<ConditionalPattern<Unicode.Scalar>>
-            >,
-            InterfaceLocalization.DirectivePattern
-        >
-    {
+  private static var exampleDeclarationPattern:
+    ConcatenatedPatterns<
+      ConcatenatedPatterns<
+        InterfaceLocalization.DirectivePatternWithArguments,
+        RepetitionPattern<ConditionalPattern<Unicode.Scalar>>
+      >,
+      InterfaceLocalization.DirectivePattern
+    >
+  {
 
-        return InterfaceLocalization.exampleDeclaration
-            + RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy)
-            + InterfaceLocalization.endExampleDeclaration
+    return InterfaceLocalization.exampleDeclaration
+      + RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy)
+      + InterfaceLocalization.endExampleDeclaration
+  }
+
+  public func examples(output: Command.Output) throws -> [StrictString: StrictString] {
+    return try _withExampleCache {
+      var list: [StrictString: StrictString] = [:]
+
+      for url in try sourceFiles(output: output) {
+        autoreleasepool {
+
+          if FileType(url: url) ≠ nil,
+            let file = try? TextFile(alreadyAt: url)
+          {
+
+            for match in file.contents.scalars.matches(
+              for: PackageRepository.exampleDeclarationPattern)
+            {
+              guard
+                let openingParenthesis = match.contents.firstMatch(
+                  for: "(".scalars),
+                let closingParenthesis = match.contents.firstMatch(
+                  for: ")".scalars),
+                let at = match.contents.lastMatch(for: "@".scalars)
+              else {
+                unreachable()
+              }
+
+              var identifier = StrictString(
+                file.contents.scalars[
+                  openingParenthesis.range.upperBound
+                    ..< closingParenthesis.range.lowerBound])
+              identifier.trimMarginalWhitespace()
+
+              var example = StrictString(
+                file.contents.scalars[
+                  closingParenthesis.range.upperBound ..< at.range.lowerBound])
+              // Remove token lines.
+              example.lines.removeFirst()
+              example.lines.removeLast()
+              // Remove final newline.
+              if let lastLine = example.lines.dropLast().last {
+                example.lines.removeLast(2)
+                example.lines.append(
+                  Line(line: StrictString(lastLine.line), newline: ""))
+              }
+              example = example.strippingCommonIndentation()
+
+              list[identifier] = example
+            }
+          }
+        }
+      }
+
+      return list
     }
+  }
 
-    public func examples(output: Command.Output) throws -> [StrictString: StrictString] {
-        return try _withExampleCache {
-            var list: [StrictString: StrictString] = [:]
+  public func refreshExamples(output: Command.Output) throws {
 
-            for url in try sourceFiles(output: output) {
-                autoreleasepool {
+    files: for url in try sourceFiles(output: output)
+    where ¬url.path.hasSuffix("Sources/WorkspaceConfiguration/Documentation/Examples.swift") {
 
-                    if FileType(url: url) ≠ nil,
-                        let file = try? TextFile(alreadyAt: url)
-                    {
+      try autoreleasepool {
 
-                        for match in file.contents.scalars.matches(
-                            for: PackageRepository.exampleDeclarationPattern)
-                        {
-                            guard
-                                let openingParenthesis = match.contents.firstMatch(
-                                    for: "(".scalars),
-                                let closingParenthesis = match.contents.firstMatch(
-                                    for: ")".scalars),
-                                let at = match.contents.lastMatch(for: "@".scalars)
-                            else {
-                                unreachable()
-                            }
+        if let type = FileType(url: url),
+          type ∈ Set([.swift, .swiftPackageManifest])
+        {
+          let documentationSyntax = FileType.swiftDocumentationSyntax
+          let lineDocumentationSyntax = documentationSyntax.lineCommentSyntax!
 
-                            var identifier = StrictString(
-                                file.contents.scalars[
-                                    openingParenthesis.range.upperBound
-                                        ..< closingParenthesis.range.lowerBound])
-                            identifier.trimMarginalWhitespace()
+          var file = try TextFile(alreadyAt: url)
 
-                            var example = StrictString(
-                                file.contents.scalars[
-                                    closingParenthesis.range.upperBound ..< at.range.lowerBound])
-                            // Remove token lines.
-                            example.lines.removeFirst()
-                            example.lines.removeLast()
-                            // Remove final newline.
-                            if let lastLine = example.lines.dropLast().last {
-                                example.lines.removeLast(2)
-                                example.lines.append(
-                                    Line(line: StrictString(lastLine.line), newline: ""))
-                            }
-                            example = example.strippingCommonIndentation()
+          var searchIndex = file.contents.scalars.startIndex
+          while let match = file.contents.scalars[
+            min(searchIndex, file.contents.scalars.endIndex)
+              ..< file.contents.scalars.endIndex]
+            .firstMatch(for: InterfaceLocalization.exampleDirective)
+          {
+            searchIndex = match.range.upperBound
 
-                            list[identifier] = example
-                        }
-                    }
-                }
+            let arguments = match.directiveArgument()
+            guard let comma = arguments.firstMatch(for: ",".scalars) else {
+              throw Command.Error(
+                description: UserFacing<StrictString, InterfaceLocalization>({
+                  localization in
+                  switch localization {
+                  case .englishUnitedKingdom, .englishUnitedStates,
+                    .englishCanada:
+                    return
+                      "An example directive has too few arguments:\n\(match.contents)"
+                  case .deutschDeutschland:
+                    return
+                      "Eine Beispielsanweisung hat zu wenig Argumente:\n\(match.contents)"
+                  }
+                }))
             }
 
-            return list
-        }
-    }
+            var indexString = StrictString(arguments[..<comma.range.lowerBound])
+            indexString.trimMarginalWhitespace()
 
-    public func refreshExamples(output: Command.Output) throws {
+            var identifier = StrictString(arguments[comma.range.upperBound...])
+            identifier.trimMarginalWhitespace()
 
-        files: for url in try sourceFiles(output: output)
-        where ¬url.path.hasSuffix("Sources/WorkspaceConfiguration/Documentation/Examples.swift") {
+            let index = try Int.parse(possibleDecimal: indexString).get()
+            guard let example = try examples(output: output)[identifier] else {
+              throw Command.Error(
+                description: UserFacing<StrictString, InterfaceLocalization>({
+                  localization in
+                  switch localization {
+                  case .englishUnitedKingdom:
+                    return "There is no example named ‘" + identifier + "’."
+                  case .englishUnitedStates, .englishCanada:
+                    return "There is no example named “" + identifier + "”."
+                  case .deutschDeutschland:
+                    return "Es gibt kein Beispiel Namens „" + identifier + "“."
+                  }
+                }))
+            }
 
-            try autoreleasepool {
+            let nextLineStart = match.range.lines(in: file.contents.lines).upperBound
+              .samePosition(in: file.contents.scalars)
+            if let commentRange = documentationSyntax.rangeOfFirstComment(
+              in: nextLineStart ..< file.contents.scalars.endIndex, of: file)
+            {
+              let commentIndent = String(
+                file.contents.scalars[nextLineStart ..< commentRange.lowerBound])
 
-                if let type = FileType(url: url),
-                    type ∈ Set([.swift, .swiftPackageManifest])
+              if var commentValue = documentationSyntax.contentsOfFirstComment(
+                in: commentRange, of: file)
+              {
+
+                var countingExampleIndex = 0
+                var searchIndex = commentValue.scalars.startIndex
+                exampleSearch: while let startRange = commentValue.scalars[
+                  searchIndex ..< commentValue.scalars.endIndex].firstMatch(
+                    for: "```".scalars)?.range,
+                let endRange = commentValue.scalars[
+                  startRange.upperBound ..< commentValue.scalars.endIndex]
+                  .firstMatch(for: "```".scalars)?.range
                 {
-                    let documentationSyntax = FileType.swiftDocumentationSyntax
-                    let lineDocumentationSyntax = documentationSyntax.lineCommentSyntax!
 
-                    var file = try TextFile(alreadyAt: url)
+                  let exampleRange = startRange.lowerBound ..< endRange.upperBound
 
-                    var searchIndex = file.contents.scalars.startIndex
-                    while let match = file.contents.scalars[
-                        min(searchIndex, file.contents.scalars.endIndex)
-                            ..< file.contents.scalars.endIndex]
-                        .firstMatch(for: InterfaceLocalization.exampleDirective)
-                    {
-                        searchIndex = match.range.upperBound
+                  searchIndex = exampleRange.upperBound
+                  countingExampleIndex.increment()
+                  if countingExampleIndex < index {
+                    continue exampleSearch
+                  } else if countingExampleIndex == index {
 
-                        let arguments = match.directiveArgument()
-                        guard let comma = arguments.firstMatch(for: ",".scalars) else {
-                            throw Command.Error(
-                                description: UserFacing<StrictString, InterfaceLocalization>({
-                                    localization in
-                                    switch localization {
-                                    case .englishUnitedKingdom, .englishUnitedStates,
-                                        .englishCanada:
-                                        return
-                                            "An example directive has too few arguments:\n\(match.contents)"
-                                    case .deutschDeutschland:
-                                        return
-                                            "Eine Beispielsanweisung hat zu wenig Argumente:\n\(match.contents)"
-                                    }
-                                }))
-                        }
+                    let lineStart = exampleRange.lowerBound.line(
+                      in: commentValue.lines).samePosition(
+                        in: commentValue.scalars)
+                    let indentCount = commentValue.scalars.distance(
+                      from: lineStart, to: exampleRange.lowerBound)
+                    let exampleIndent = StrictString(
+                      Array(repeating: " ", count: indentCount))
 
-                        var indexString = StrictString(arguments[..<comma.range.lowerBound])
-                        indexString.trimMarginalWhitespace()
+                    var exampleLines = [
+                      "```swift",
+                      example,
+                      "```"
+                    ].joinedAsLines().lines.map({ StrictString($0.line) })
 
-                        var identifier = StrictString(arguments[comma.range.upperBound...])
-                        identifier.trimMarginalWhitespace()
-
-                        let index = try Int.parse(possibleDecimal: indexString).get()
-                        guard let example = try examples(output: output)[identifier] else {
-                            throw Command.Error(
-                                description: UserFacing<StrictString, InterfaceLocalization>({
-                                    localization in
-                                    switch localization {
-                                    case .englishUnitedKingdom:
-                                        return "There is no example named ‘" + identifier + "’."
-                                    case .englishUnitedStates, .englishCanada:
-                                        return "There is no example named “" + identifier + "”."
-                                    case .deutschDeutschland:
-                                        return "Es gibt kein Beispiel Namens „" + identifier + "“."
-                                    }
-                                }))
-                        }
-
-                        let nextLineStart = match.range.lines(in: file.contents.lines).upperBound
-                            .samePosition(in: file.contents.scalars)
-                        if let commentRange = documentationSyntax.rangeOfFirstComment(
-                            in: nextLineStart ..< file.contents.scalars.endIndex, of: file)
-                        {
-                            let commentIndent = String(
-                                file.contents.scalars[nextLineStart ..< commentRange.lowerBound])
-
-                            if var commentValue = documentationSyntax.contentsOfFirstComment(
-                                in: commentRange, of: file)
-                            {
-
-                                var countingExampleIndex = 0
-                                var searchIndex = commentValue.scalars.startIndex
-                                exampleSearch: while let startRange = commentValue.scalars[
-                                    searchIndex ..< commentValue.scalars.endIndex].firstMatch(
-                                        for: "```".scalars)?.range,
-                                let endRange = commentValue.scalars[
-                                    startRange.upperBound ..< commentValue.scalars.endIndex]
-                                    .firstMatch(for: "```".scalars)?.range
-                                {
-
-                                    let exampleRange = startRange.lowerBound ..< endRange.upperBound
-
-                                    searchIndex = exampleRange.upperBound
-                                    countingExampleIndex.increment()
-                                    if countingExampleIndex < index {
-                                        continue exampleSearch
-                                    } else if countingExampleIndex == index {
-
-                                        let lineStart = exampleRange.lowerBound.line(
-                                            in: commentValue.lines).samePosition(
-                                                in: commentValue.scalars)
-                                        let indentCount = commentValue.scalars.distance(
-                                            from: lineStart, to: exampleRange.lowerBound)
-                                        let exampleIndent = StrictString(
-                                            Array(repeating: " ", count: indentCount))
-
-                                        var exampleLines = [
-                                            "```swift",
-                                            example,
-                                            "```"
-                                        ].joinedAsLines().lines.map({ StrictString($0.line) })
-
-                                        for index in exampleLines.startIndex
-                                            ..< exampleLines.endIndex
-                                        where index ≠ exampleLines.startIndex {
-                                            exampleLines[index] = exampleIndent
-                                                + exampleLines[index]
-                                        }
-
-                                        commentValue.scalars.replaceSubrange(
-                                            exampleRange, with: exampleLines.joinedAsLines())
-
-                                        let replacementComment = lineDocumentationSyntax.comment(
-                                            contents: commentValue, indent: commentIndent)
-                                        file.contents.scalars.replaceSubrange(
-                                            commentRange, with: replacementComment.scalars)
-
-                                        break exampleSearch
-                                    }
-                                }
-                            }
-                        }
+                    for index in exampleLines.startIndex
+                      ..< exampleLines.endIndex
+                    where index ≠ exampleLines.startIndex {
+                      exampleLines[index] = exampleIndent
+                        + exampleLines[index]
                     }
 
-                    try file.writeChanges(for: self, output: output)
+                    commentValue.scalars.replaceSubrange(
+                      exampleRange, with: exampleLines.joinedAsLines())
+
+                    let replacementComment = lineDocumentationSyntax.comment(
+                      contents: commentValue, indent: commentIndent)
+                    file.contents.scalars.replaceSubrange(
+                      commentRange, with: replacementComment.scalars)
+
+                    break exampleSearch
+                  }
                 }
+              }
             }
+          }
+
+          try file.writeChanges(for: self, output: output)
         }
+      }
     }
+  }
 }

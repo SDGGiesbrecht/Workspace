@@ -20,16 +20,14 @@ public typealias SwiftFormatKonfiguration = SwiftFormatConfiguration.Configurati
 
 extension SwiftFormatConfiguration.Configuration {
 
-    internal static let `default`: SwiftFormatConfiguration.Configuration = {
-        let configuration = SwiftFormatConfiguration.Configuration()
-        #warning("Restore some of these.")
-        configuration.rules = [:]
-        #warning("Change this to new default?")
-        configuration.indentation = .spaces(4)  // Xcode’s default.
-        #warning("Change this to new default?")
-        //configuration.lineBreakBeforeEachArgument = true
-        #warning("Is this necessary?")
-        configuration.respectsExistingLineBreaks = true
-        return configuration
-    }()
+  internal static let `default`: SwiftFormatConfiguration.Configuration = {
+    let configuration = SwiftFormatConfiguration.Configuration()
+    #warning("Restore some of these.")
+    configuration.rules = [:]
+    #warning("Change this to new default?")
+    //configuration.lineBreakBeforeEachArgument = true
+    #warning("Is this necessary?")
+    configuration.respectsExistingLineBreaks = true
+    return configuration
+  }()
 }

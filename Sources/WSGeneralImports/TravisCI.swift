@@ -21,22 +21,22 @@ import SDGExternalProcess
 
 public enum TravisCI {
 
-    @inlinable public static func keepAlive(during task: () throws -> Void) rethrows {
+  @inlinable public static func keepAlive(during task: () throws -> Void) rethrows {
 
-        var complete = false
-        if ProcessInfo.isInContinuousIntegration {
-            // @exempt(from: tests) Does not occur locally.
-            DispatchQueue.global().async {
-                while ¬complete {
-                    Thread.sleep(until: Date.init(timeIntervalSinceNow: TimeInterval(60 /* s */)))
-                    if ¬complete {
-                        Shell.default.run(command: ["echo", "...", ">", "/dev/tty"])  // @exempt(from: tests) Tests had better not take that long!
-                    }
-                }
-            }
+    var complete = false
+    if ProcessInfo.isInContinuousIntegration {
+      // @exempt(from: tests) Does not occur locally.
+      DispatchQueue.global().async {
+        while ¬complete {
+          Thread.sleep(until: Date.init(timeIntervalSinceNow: TimeInterval(60 /* s */)))
+          if ¬complete {
+            Shell.default.run(command: ["echo", "...", ">", "/dev/tty"])  // @exempt(from: tests) Tests had better not take that long!
+          }
         }
-
-        try task()
-        complete = true
+      }
     }
+
+    try task()
+    complete = true
+  }
 }

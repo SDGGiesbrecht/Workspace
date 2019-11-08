@@ -18,49 +18,49 @@ import WSGeneralImports
 
 public struct ReportSection {
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    internal init(number: Int) {
-        self.number = number
-    }
+  internal init(number: Int) {
+    self.number = number
+  }
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    private let number: Int
+  private let number: Int
 
-    // MARK: - Usage
+  // MARK: - Usage
 
-    private var identifier: StrictString {
-        return "§" + number.inDigits()
-    }
+  private var identifier: StrictString {
+    return "§" + number.inDigits()
+  }
 
-    public var anchor: StrictString {
-        return " (" + identifier + ")"
-    }
+  public var anchor: StrictString {
+    return " (" + identifier + ")"
+  }
 
-    public var crossReference: UserFacing<StrictString, InterfaceLocalization> {
-        let identifier = self.identifier
-        return UserFacing({ localization in
-            switch localization {
-            case .englishUnitedKingdom:
-                #if os(macOS)
-                    return " (See ⌘F ‘" + identifier + "’)"
-                #elseif os(Linux)
-                    return " (See Ctrl + F ‘" + identifier + "’)"
-                #endif
-            case .englishUnitedStates, .englishCanada:
-                #if os(macOS)
-                    return " (See ⌘F “" + identifier + "”)"
-                #elseif os(Linux)
-                    return " (See Ctrl + F “" + identifier + "”)"
-                #endif
-            case .deutschDeutschland:
-                #if os(macOS)
-                    return " (Siehe ⌘F „" + identifier + "“)"
-                #elseif os(Linux)
-                    return " (Siehe Strg + F „" + identifier + "“)"
-                #endif
-            }
-        })
-    }
+  public var crossReference: UserFacing<StrictString, InterfaceLocalization> {
+    let identifier = self.identifier
+    return UserFacing({ localization in
+      switch localization {
+      case .englishUnitedKingdom:
+        #if os(macOS)
+          return " (See ⌘F ‘" + identifier + "’)"
+        #elseif os(Linux)
+          return " (See Ctrl + F ‘" + identifier + "’)"
+        #endif
+      case .englishUnitedStates, .englishCanada:
+        #if os(macOS)
+          return " (See ⌘F “" + identifier + "”)"
+        #elseif os(Linux)
+          return " (See Ctrl + F “" + identifier + "”)"
+        #endif
+      case .deutschDeutschland:
+        #if os(macOS)
+          return " (Siehe ⌘F „" + identifier + "“)"
+        #elseif os(Linux)
+          return " (Siehe Strg + F „" + identifier + "“)"
+        #endif
+      }
+    })
+  }
 }

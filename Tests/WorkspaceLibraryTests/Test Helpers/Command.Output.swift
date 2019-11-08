@@ -18,23 +18,23 @@ import WSGeneralImports
 
 extension Command.Output {
 
-    private enum MockLocalization: String, InputLocalization {
-        case english = "en"
-        static let fallbackLocalization: MockLocalization = .english
-    }
+  private enum MockLocalization: String, InputLocalization {
+    case english = "en"
+    static let fallbackLocalization: MockLocalization = .english
+  }
 
-    static var mock: Command.Output = {
-        var result: Command.Output?
-        do {
-            _ = try Command(
-                name: UserFacing<StrictString, MockLocalization>({ _ in "" }),
-                description: UserFacing<StrictString, MockLocalization>({ _ in "" }),
-                directArguments: [],
-                options: [],
-                execution: { (_, _, output: Command.Output) in
-                    result = output
-                }).execute(with: []).get()
-        } catch {}
-        return result!
-    }()
+  static var mock: Command.Output = {
+    var result: Command.Output?
+    do {
+      _ = try Command(
+        name: UserFacing<StrictString, MockLocalization>({ _ in "" }),
+        description: UserFacing<StrictString, MockLocalization>({ _ in "" }),
+        directArguments: [],
+        options: [],
+        execution: { (_, _, output: Command.Output) in
+          result = output
+        }).execute(with: []).get()
+    } catch {}
+    return result!
+  }()
 }

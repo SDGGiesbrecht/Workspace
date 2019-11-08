@@ -16,27 +16,27 @@
 
 extension Dictionary where Key == LocalizationIdentifier {
 
-    // @localization(🇩🇪DE)
-    /// Greift auf den entsprechenden lokalisierten Wert zu.
-    ///
-    /// - Parameters:
-    ///     - key: Die Lokalisation.
-    // @localization(🇬🇧EN)
-    /// Accesses the respective localised value.
-    ///
-    /// - Parameters:
-    ///     - key: The localisation.
-    // @localization(🇺🇸EN) @localization(🇨🇦EN)
-    /// Accesses the respective localized value.
-    ///
-    /// - Parameters:
-    ///     - key: The localization.
-    public subscript<L>(_ key: L) -> Value? where L: Localization {
-        get {
-            return self[LocalizationIdentifier(key)]
-        }
-        set {
-            self[LocalizationIdentifier(key)] = newValue
-        }
+  // @localization(🇩🇪DE)
+  /// Greift auf den entsprechenden lokalisierten Wert zu.
+  ///
+  /// - Parameters:
+  ///     - key: Die Lokalisation.
+  // @localization(🇬🇧EN)
+  /// Accesses the respective localised value.
+  ///
+  /// - Parameters:
+  ///     - key: The localisation.
+  // @localization(🇺🇸EN) @localization(🇨🇦EN)
+  /// Accesses the respective localized value.
+  ///
+  /// - Parameters:
+  ///     - key: The localization.
+  public subscript<L>(_ key: L) -> Value? where L: Localization {
+    get {
+      return self[LocalizationIdentifier(key)]
     }
+    set {
+      self[LocalizationIdentifier(key)] = newValue
+    }
+  }
 }

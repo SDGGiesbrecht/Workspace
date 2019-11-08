@@ -19,112 +19,112 @@ import WSGeneralImports
 
 internal struct BlockCommentSyntax {
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    internal init(start: String, end: String) {
-        self.start = start
-        self.end = end
-    }
+  internal init(start: String, end: String) {
+    self.start = start
+    self.end = end
+  }
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    private let start: String
-    private let end: String
+  private let start: String
+  private let end: String
 
-    // MARK: - Output
+  // MARK: - Output
 
-    internal func comment(contents: String) -> String {
+  internal func comment(contents: String) -> String {
 
-        let withEndToken = [contents, end].joinedAsLines()
+    let withEndToken = [contents, end].joinedAsLines()
 
-        var lines = withEndToken.lines.map({ String($0.line) })
+    var lines = withEndToken.lines.map({ String($0.line) })
 
-        lines
-            = lines.map { (line: String) -> String in
+    lines
+      = lines.map { (line: String) -> String in
 
-                if line.isWhitespace {
-                    return line
-                } else {
-                    return " " + line
-                }
-            }
-
-        lines = [start, lines.joinedAsLines()]
-
-        return lines.joinedAsLines()
-    }
-
-    // MARK: - Parsing
-
-    internal func startOfNonDocumentationCommentExists(
-        at location: String.ScalarView.Index, in string: String
-    ) -> Bool {
-
-        var index = location
-        if ¬string.scalars.advance(&index, over: start.scalars) {
-            return false
+        if line.isWhitespace {
+          return line
         } else {
-
-            // Make sure this isn’t documentation.
-            if let nextCharacter = string.scalars[index...].first {
-
-                if nextCharacter ∈ CharacterSet.whitespacesAndNewlines {
-                    return true
-                }
-            }
-            return false
+          return " " + line
         }
+      }
+
+    lines = [start, lines.joinedAsLines()]
+
+    return lines.joinedAsLines()
+  }
+
+  // MARK: - Parsing
+
+  internal func startOfNonDocumentationCommentExists(
+    at location: String.ScalarView.Index, in string: String
+  ) -> Bool {
+
+    var index = location
+    if ¬string.scalars.advance(&index, over: start.scalars) {
+      return false
+    } else {
+
+      // Make sure this isn’t documentation.
+      if let nextCharacter = string.scalars[index...].first {
+
+        if nextCharacter ∈ CharacterSet.whitespacesAndNewlines {
+          return true
+        }
+      }
+      return false
+    }
+  }
+
+  internal func firstComment(in range: Range<String.ScalarView.Index>, of string: String)
+    -> NestingLevel<String.ScalarView>?
+  {
+    return string.scalars.firstNestingLevel(
+      startingWith: start.scalars, endingWith: end.scalars)
+  }
+
+  internal func contentsOfFirstComment(
+    in range: Range<String.ScalarView.Index>, of string: String
+  ) -> String? {
+    guard let range = firstComment(in: range, of: string)?.contents.range else {
+      return nil
     }
 
-    internal func firstComment(in range: Range<String.ScalarView.Index>, of string: String)
-        -> NestingLevel<String.ScalarView>?
-    {
-        return string.scalars.firstNestingLevel(
-            startingWith: start.scalars, endingWith: end.scalars)
+    var lines = String(string[range]).lines.map({ String($0.line) })
+    while let line = lines.first, line.isWhitespace {
+      lines.removeFirst()
     }
 
-    internal func contentsOfFirstComment(
-        in range: Range<String.ScalarView.Index>, of string: String
-    ) -> String? {
-        guard let range = firstComment(in: range, of: string)?.contents.range else {
-            return nil
-        }
+    guard let first = lines.first else {
+      return ""
+    }
+    lines.removeFirst()
 
-        var lines = String(string[range]).lines.map({ String($0.line) })
-        while let line = lines.first, line.isWhitespace {
-            lines.removeFirst()
-        }
+    var index = first.scalars.startIndex
+    first.scalars.advance(
+      &index, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
+    let indent = first.scalars.distance(from: first.scalars.startIndex, to: index)
 
-        guard let first = lines.first else {
-            return ""
-        }
-        lines.removeFirst()
-
-        var index = first.scalars.startIndex
-        first.scalars.advance(
-            &index, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
-        let indent = first.scalars.distance(from: first.scalars.startIndex, to: index)
-
-        var result = [first.scalars.suffix(from: index)]
-        for line in lines {
-            var indentIndex = line.scalars.startIndex
-            line.scalars.advance(
-                &indentIndex,
-                over: RepetitionPattern(
-                    ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }), count: 0 ... indent))
-            result.append(line.scalars.suffix(from: indentIndex))
-        }
-
-        var strings = result.map({ String($0) })
-        while let last = strings.last, last.isWhitespace {
-            strings.removeLast()
-        }
-
-        return strings.joinedAsLines()
+    var result = [first.scalars.suffix(from: index)]
+    for line in lines {
+      var indentIndex = line.scalars.startIndex
+      line.scalars.advance(
+        &indentIndex,
+        over: RepetitionPattern(
+          ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }), count: 0 ... indent))
+      result.append(line.scalars.suffix(from: indentIndex))
     }
 
-    internal func contentsOfFirstComment(in string: String) -> String? {
-        return contentsOfFirstComment(
-            in: string.scalars.startIndex ..< string.scalars.endIndex, of: string)
+    var strings = result.map({ String($0) })
+    while let last = strings.last, last.isWhitespace {
+      strings.removeLast()
     }
+
+    return strings.joinedAsLines()
+  }
+
+  internal func contentsOfFirstComment(in string: String) -> String? {
+    return contentsOfFirstComment(
+      in: string.scalars.startIndex ..< string.scalars.endIndex, of: string)
+  }
 }

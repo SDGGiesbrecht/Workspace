@@ -20,43 +20,43 @@ import WSOpenSource
 
 extension Workspace.Refresh {
 
-    enum ReadMe {
+  enum ReadMe {
 
-        private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
+    private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "read‐me"
+      case .deutschDeutschland:
+        return "lies‐mich"
+      }
+    })
+
+    private static let description = UserFacing<StrictString, InterfaceLocalization>({
+      localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "regenerates the project’s read‐me file."
+      case .deutschDeutschland:
+        return "erstellt die Lies‐mich‐Datei des Projekts neu."
+      }
+    })
+
+    static let command = Command(
+      name: name, description: description, directArguments: [],
+      options: Workspace.standardOptions,
+      execution: { (_, options: Options, output: Command.Output) throws in
+
+        output.print(
+          UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "read‐me"
+              return "Refreshing read‐me..."
             case .deutschDeutschland:
-                return "lies‐mich"
+              return "Lies‐mich wird aufgefrischt ..."
             }
-        })
+          }).resolved().formattedAsSectionHeader())
 
-        private static let description = UserFacing<StrictString, InterfaceLocalization>({
-            localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "regenerates the project’s read‐me file."
-            case .deutschDeutschland:
-                return "erstellt die Lies‐mich‐Datei des Projekts neu."
-            }
-        })
-
-        static let command = Command(
-            name: name, description: description, directArguments: [],
-            options: Workspace.standardOptions,
-            execution: { (_, options: Options, output: Command.Output) throws in
-
-                output.print(
-                    UserFacing<StrictString, InterfaceLocalization>({ localization in
-                        switch localization {
-                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                            return "Refreshing read‐me..."
-                        case .deutschDeutschland:
-                            return "Lies‐mich wird aufgefrischt ..."
-                        }
-                    }).resolved().formattedAsSectionHeader())
-
-                try options.project.refreshReadMe(output: output)
-            })
-    }
+        try options.project.refreshReadMe(output: output)
+      })
+  }
 }

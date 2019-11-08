@@ -23,84 +23,84 @@ import WSContinuousIntegration
 
 extension Workspace {
 
-    enum Test {
+  enum Test {
 
-        private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "test"
-            case .deutschDeutschland:
-                return "testen"
+    private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "test"
+      case .deutschDeutschland:
+        return "testen"
+      }
+    })
+
+    private static let description = UserFacing<StrictString, InterfaceLocalization>({
+      localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "runs the project’s test targets."
+      case .deutschDeutschland:
+        return "führt die Teste des Projekts aus."
+      }
+    })
+
+    static let command = Command(
+      name: name, description: description, directArguments: [],
+      options: Workspace.standardOptions + [ContinuousIntegrationJob.option],
+      execution: { (_, options: Options, output: Command.Output) throws in
+
+        #if !os(Linux)
+          if try options.project.configuration(output: output).xcode.manage {
+            try Workspace.Refresh.Xcode.executeAsStep(options: options, output: output)
+          }
+        #endif
+
+        try Validate.Build.validate(
+          job: options.job, against: ContinuousIntegrationJob.testJobs,
+          for: options.project, output: output)
+
+        var validationStatus = ValidationStatus()
+
+        try executeAsStep(
+          options: options, validationStatus: &validationStatus, output: output)
+
+        try validationStatus.reportOutcome(project: options.project, output: output)
+      })
+
+    static func executeAsStep(
+      options: Options, validationStatus: inout ValidationStatus, output: Command.Output
+    ) throws {
+
+      for job in ContinuousIntegrationJob.allCases
+      where try options.job.includes(job: job) ∧ (
+        try Validate.Build.job(
+          job, isRelevantTo: options.project,
+          andAvailableJobs: ContinuousIntegrationJob.testJobs, output: output)
+      ) {
+        try autoreleasepool {
+
+          if try options.project.configuration(output: output).continuousIntegration
+            .skipSimulatorOutsideContinuousIntegration,
+            options.job == nil,  // Not in continuous integration.
+            job ∈ ContinuousIntegrationJob.simulatorJobs
+          {
+            // @exempt(from: tests) Tested separately.
+            return  // and continue loop.
+          }
+
+          #if TEST_SHIMS
+            if job ∈ ContinuousIntegrationJob.simulatorJobs,
+              ProcessInfo.processInfo.environment["SIMULATOR_UNAVAILABLE_FOR_TESTING"]
+                ≠ nil
+            {  // Simulators are not available to all CI jobs and must be tested separately.
+              return  // and continue loop.
             }
-        })
+          #endif
 
-        private static let description = UserFacing<StrictString, InterfaceLocalization>({
-            localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "runs the project’s test targets."
-            case .deutschDeutschland:
-                return "führt die Teste des Projekts aus."
-            }
-        })
-
-        static let command = Command(
-            name: name, description: description, directArguments: [],
-            options: Workspace.standardOptions + [ContinuousIntegrationJob.option],
-            execution: { (_, options: Options, output: Command.Output) throws in
-
-                #if !os(Linux)
-                    if try options.project.configuration(output: output).xcode.manage {
-                        try Workspace.Refresh.Xcode.executeAsStep(options: options, output: output)
-                    }
-                #endif
-
-                try Validate.Build.validate(
-                    job: options.job, against: ContinuousIntegrationJob.testJobs,
-                    for: options.project, output: output)
-
-                var validationStatus = ValidationStatus()
-
-                try executeAsStep(
-                    options: options, validationStatus: &validationStatus, output: output)
-
-                try validationStatus.reportOutcome(project: options.project, output: output)
-            })
-
-        static func executeAsStep(
-            options: Options, validationStatus: inout ValidationStatus, output: Command.Output
-        ) throws {
-
-            for job in ContinuousIntegrationJob.allCases
-            where try options.job.includes(job: job) ∧ (
-                try Validate.Build.job(
-                    job, isRelevantTo: options.project,
-                    andAvailableJobs: ContinuousIntegrationJob.testJobs, output: output)
-            ) {
-                try autoreleasepool {
-
-                    if try options.project.configuration(output: output).continuousIntegration
-                        .skipSimulatorOutsideContinuousIntegration,
-                        options.job == nil,  // Not in continuous integration.
-                        job ∈ ContinuousIntegrationJob.simulatorJobs
-                    {
-                        // @exempt(from: tests) Tested separately.
-                        return  // and continue loop.
-                    }
-
-                    #if TEST_SHIMS
-                        if job ∈ ContinuousIntegrationJob.simulatorJobs,
-                            ProcessInfo.processInfo.environment["SIMULATOR_UNAVAILABLE_FOR_TESTING"]
-                                ≠ nil
-                        {  // Simulators are not available to all CI jobs and must be tested separately.
-                            return  // and continue loop.
-                        }
-                    #endif
-
-                    try options.project.test(
-                        on: job, validationStatus: &validationStatus, output: output)
-                }
-            }
+          try options.project.test(
+            on: job, validationStatus: &validationStatus, output: output)
         }
+      }
     }
+  }
 }

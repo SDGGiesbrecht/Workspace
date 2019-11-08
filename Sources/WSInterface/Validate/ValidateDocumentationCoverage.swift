@@ -22,58 +22,58 @@ import WSDocumentation
 
 extension Workspace.Validate {
 
-    enum DocumentationCoverage {
+  enum DocumentationCoverage {
 
-        private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "documentation‐coverage"
-            case .deutschDeutschland:
-                return "dokumentationsabdeckung"
-            }
-        })
+    private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "documentation‐coverage"
+      case .deutschDeutschland:
+        return "dokumentationsabdeckung"
+      }
+    })
 
-        private static let description = UserFacing<StrictString, InterfaceLocalization>({
-            localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return
-                    "validates documentation coverage, checking that every public symbol in every library product is documented."
-            case .deutschDeutschland:
-                return
-                    "prüft die Dokumentationsabdeckung, dass jedes öffentliche Symbol von jede Biblioteksprodukt dokumentiert ist."
-            }
-        })
+    private static let description = UserFacing<StrictString, InterfaceLocalization>({
+      localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return
+          "validates documentation coverage, checking that every public symbol in every library product is documented."
+      case .deutschDeutschland:
+        return
+          "prüft die Dokumentationsabdeckung, dass jedes öffentliche Symbol von jede Biblioteksprodukt dokumentiert ist."
+      }
+    })
 
-        static let command = Command(
-            name: name, description: description, directArguments: [],
-            options: Workspace.standardOptions,
-            execution: { (_, options: Options, output: Command.Output) throws in
+    static let command = Command(
+      name: name, description: description, directArguments: [],
+      options: Workspace.standardOptions,
+      execution: { (_, options: Options, output: Command.Output) throws in
 
-                var validationStatus = ValidationStatus()
-                try executeAsStep(
-                    options: options, validationStatus: &validationStatus, output: output)
+        var validationStatus = ValidationStatus()
+        try executeAsStep(
+          options: options, validationStatus: &validationStatus, output: output)
 
-                if ¬validationStatus.validatedSomething {
-                    validationStatus.passStep(
-                        message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                            switch localization {
-                            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                                return "No library products to document."
-                            case .deutschDeutschland:
-                                return "Keine Biblioteksprodukte zum Dokumentieren."
-                            }
-                        }))
-                }
-
-                try validationStatus.reportOutcome(project: options.project, output: output)
-            })
-
-        static func executeAsStep(
-            options: Options, validationStatus: inout ValidationStatus, output: Command.Output
-        ) throws {
-            try options.project.validateDocumentationCoverage(
-                validationStatus: &validationStatus, output: output)
+        if ¬validationStatus.validatedSomething {
+          validationStatus.passStep(
+            message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "No library products to document."
+              case .deutschDeutschland:
+                return "Keine Biblioteksprodukte zum Dokumentieren."
+              }
+            }))
         }
+
+        try validationStatus.reportOutcome(project: options.project, output: output)
+      })
+
+    static func executeAsStep(
+      options: Options, validationStatus: inout ValidationStatus, output: Command.Output
+    ) throws {
+      try options.project.validateDocumentationCoverage(
+        validationStatus: &validationStatus, output: output)
     }
+  }
 }

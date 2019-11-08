@@ -83,7 +83,11 @@ extension PackageRepository {
                 status: status,
                 output: output
               ).scan(syntax)
-              try linter?.lint(syntax: syntax, assumingFileURL: url)
+
+              if file.fileType ≠ .swiftPackageManifest {
+                // #workaround(SDGSwift 0.16.2, Manifest documentation vulnerable to whitespace changes.)
+                try linter?.lint(syntax: syntax, assumingFileURL: url)
+              }
             }
           }
         }

@@ -2,10 +2,15 @@ $ workspace proofread •no‐colour
 
 Normalising files...
 
+Writing to ‘Sources/BadStyle/BadStyle.swift’...
 Writing to ‘Sources/BadStyle/Normalization/Decomposition.swift’...
 Writing to ‘Sources/BadStyle/Normalization/EmptyIndents.swift’...
 Writing to ‘Sources/BadStyle/Rules/Functionality/AutoindentResilience.swift’...
-Writing to ‘Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift’...
+Writing to ‘Sources/BadStyle/Rules/Intentional/MissingImplementation.swift’...
+Writing to ‘Sources/BadStyle/Rules/Source Code Style/ClosureSignaturePosition.swift’...
+Writing to ‘Sources/BadStyle/Rules/Text Style/Unicode.swift’...
+Writing to ‘Tests/BadStyleTests/BadStyleTests.swift’...
+Writing to ‘Tests/BadStyleTests/XCTestManifests.swift’...
 
 Proofreading source code... (§1)
 
@@ -53,28 +58,7 @@ Incomplete heading syntax. Use ‘// MARK: - ’. (marks)
 Sources/BadStyle/Rules/Intentional/MissingImplementation.swift
 Line 4
 Missing implementation. (missingImplementation)
-    notImplementedYet() // This should trigger a warning.
-
-Sources/BadStyle/Rules/Source Code Style/BraceSpacing.swift
-Line 3
-Braces should be separated from their contents by a space. (braceSpacing)
-let x = [].map {$0} // These braces should trigger; they should be spaced.
-let x = [].map { $0} // These braces should trigger; they should be spaced.
-
-Line 3
-Braces should be separated from their contents by a space. (braceSpacing)
-let x = [].map {$0} // These braces should trigger; they should be spaced.
-let x = [].map {$0 } // These braces should trigger; they should be spaced.
-
-Line 5
-Braces should be separated from their contents by a space. (braceSpacing)
-func z() {/* These braces should trigger; they should be spaced. */}
-func z() { /* These braces should trigger; they should be spaced. */}
-
-Line 5
-Braces should be separated from their contents by a space. (braceSpacing)
-func z() {/* These braces should trigger; they should be spaced. */}
-func z() {/* These braces should trigger; they should be spaced. */ }
+  notImplementedYet()  // This should trigger a warning.
 
 Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift
 Line 5
@@ -85,47 +69,7 @@ Callouts should be capitalised. (calloutCasing)
 Sources/BadStyle/Rules/Source Code Style/ClosureSignaturePosition.swift
 Line 6
 A closure’s signature should be on the same line as its opening brace. (closureSignaturePosition)
-    parameter in // Wrong position; should trigger.
-
-Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift
-Line 3
-Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition. (colonSpacing)
-struct Conformance: Equatable { // This colon should trigger. It should be spaced.
-struct Conformance : Equatable { // This colon should trigger. It should be spaced.
-
-Line 4
-Colons should not be preceded by spaces. (colonSpacing)
-    static func == (lhs : Conformance, rhs:Conformance) -> Bool { // These colons should trigger. They need respacing.
-    static func == (lhs: Conformance, rhs:Conformance) -> Bool { // These colons should trigger. They need respacing.
-
-Line 4
-Colons should be followed by spaces. (colonSpacing)
-    static func == (lhs : Conformance, rhs:Conformance) -> Bool { // These colons should trigger. They need respacing.
-    static func == (lhs : Conformance, rhs: Conformance) -> Bool { // These colons should trigger. They need respacing.
-
-Line 21
-‘/**’ may not survive autoindent (⌃I). Use ‘///’ instead. (autoindentResilience)
-    /**
-
-Line 34
-Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition. (colonSpacing)
-    func function<T>(_ p: T) where `T`: Equatable // This colon should trigger. It should be spaced.
-    func function<T>(_ p: T) where `T` : Equatable // This colon should trigger. It should be spaced.
-
-Line 35
-Colons should be followed by spaces. (colonSpacing)
-    func withComment(parameter:/* */Bool) // This colon should trigger, it needs respacing.
-    func withComment(parameter: /* */Bool) // This colon should trigger, it needs respacing.
-
-Line 38
-Colons should not be followed by spaces when denoting an empty dictionary literal or a function name. (colonSpacing)
-    let x = String.insert(_: at: ) // These colons should trigger. They should not be spaced.
-    let x = String.insert(_:at: ) // These colons should trigger. They should not be spaced.
-
-Line 38
-Colons should not be followed by spaces when denoting an empty dictionary literal or a function name. (colonSpacing)
-    let x = String.insert(_: at: ) // These colons should trigger. They should not be spaced.
-    let x = String.insert(_: at:) // These colons should trigger. They should not be spaced.
+  parameter in  // Wrong position; should trigger.
 
 Sources/BadStyle/Rules/Source Code Style/ParameterStyle.swift
 Line 5
@@ -157,18 +101,6 @@ Line 19
 The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 /// - RecommendedOver: -
 
-Line 35
-Empty braces should not contain spaces. (braceSpacing)
-func shellSource() {
-
-func shellSource() {
-Line 35
-Empty braces should not contain spaces. (braceSpacing)
-func shellSource() {
-
-}
-func shellSource() {}
-
 Line 41
 The character U+0027 is obsolete. Use an apostrophe (’), quotation marks (‘, ’), degrees (°) or prime (′). (unicode)
 // 'These quotation marks are generic and should trigger.'
@@ -177,61 +109,60 @@ Line 41
 The character U+0027 is obsolete. Use an apostrophe (’), quotation marks (‘, ’), degrees (°) or prime (′). (unicode)
 // 'These quotation marks are generic and should trigger.'
 
-Line 46
+Line 45
 The character sequence “&&” is obsolete. Use the conjunction sign (∧). (unicode)
 // Trigger, because this is not a conjunction sign: a && b
 // Trigger, because this is not a conjunction sign: a ∧ b
 
-Line 47
+Line 46
 The character sequence “||” is obsolete. Use the disjunction sign (∨). (unicode)
 // Trigger, because this is not a disjunction sign: a || b
 // Trigger, because this is not a disjunction sign: a ∨ b
 
-Line 51
+Line 50
 The character sequence “!=” is obsolete. Use the not equal sign (≠). (unicode)
 // Trigger, because this is not a not‐equal sign: a != b
 // Trigger, because this is not a not‐equal sign: a ≠ b
 
-Line 52
+Line 51
 The character sequence “<=” is obsolete. Use the less‐than‐or‐equal sign (≤). (unicode)
 // Trigger, because this is not a less‐than‐or‐equal‐to sign: a <= b
 // Trigger, because this is not a less‐than‐or‐equal‐to sign: a ≤ b
 
-Line 53
+Line 52
 The character sequence “>=” is obsolete. Use the greater‐than‐or‐equal sign (≥). (unicode)
 // Trigger, because this is not a greater‐than‐or‐equal‐to sign: a >= b
 // Trigger, because this is not a greater‐than‐or‐equal‐to sign: a ≥ b
 
-Line 57
+Line 56
 The character “*” is obsolete. Use the multiplication sign (×). (Create an alias if necessary.) (unicode)
-let x = a * b // Trigger, because this is not a multiplication sign.
-let x = a × b // Trigger, because this is not a multiplication sign.
+let x = a * b  // Trigger, because this is not a multiplication sign.
+let x = a × b  // Trigger, because this is not a multiplication sign.
 
-Line 58
+Line 57
 The character sequence “*=” is obsolete. Use the multiplication sign (×). (unicode)
 // Trigger, because this is not a multiplication sign: a *= b
 // Trigger, because this is not a multiplication sign: a ×= b
 
-Line 59
+Line 58
 The character “/” is obsolete. Use the division sign (÷). (Create an alias if necessary.) (unicode)
-let x = a / b // Trigger, because this is not a division sign.
-let x = a ÷ b // Trigger, because this is not a division sign.
+let x = a / b  // Trigger, because this is not a division sign.
+let x = a ÷ b  // Trigger, because this is not a division sign.
 
-Line 60
+Line 59
 The character sequence “/=” is obsolete. Use the division sign (÷). (unicode)
 // Trigger, because this is not a division sign: a /= b
 // Trigger, because this is not a division sign: a ÷= b
 
-Line 64
+Line 63
 The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (Create an alias if necessary.) (unicode)
-let x = y - z // This should trigger and mention aliasing.
+let x = y - z  // This should trigger and mention aliasing.
 
-Line 66
+Line 65
 The character “!” is obsolete. Use the not sign (¬). (Create an alias if necessary.) (unicode)
-let x = !y // This should trigger; it is a prefix operator.
-let x = ¬y // This should trigger; it is a prefix operator.
+let x = !y  // This should trigger; it is a prefix operator.
+let x = ¬y  // This should trigger; it is a prefix operator.
 
-Sources/BadStyle/SwiftLint.swift
 Sources/BadStyle/Warnings/Warning.swift
 Line 3
 This should trigger a warning. (manualWarnings)
@@ -259,31 +190,26 @@ Workaround: This malformed version check should trigger. (workaroundReminders)
 // #workaround(echo oops 1.0.0, This malformed version check should trigger.)
 
 Tests/BadStyleTests/BadStyleTests.swift
-Line 4
-Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition. (colonSpacing)
-class BadStyleTests: XCTestCase {
-class BadStyleTests : XCTestCase {
-
 Tests/BadStyleTests/XCTestManifests.swift
 Line 1
 Test manifests are no longer necessary. (deprecatedTestManifests)
 #if !canImport(ObjectiveC)
-import XCTest
+  import XCTest
 
-extension BadStyleTests {
+  extension BadStyleTests {
     // DO NOT MODIFY: This is autogenerated, use:
     //   `swift test --generate-linuxmain`
     // to regenerate.
     static let __allTests__BadStyleTests = [
-        ("testExample", testExample),
+      ("testExample", testExample),
     ]
-}
+  }
 
-public func __allTests() -> [XCTestCaseEntry] {
+  public func __allTests() -> [XCTestCaseEntry] {
     return [
-        testCase(BadStyleTests.__allTests__BadStyleTests),
+      testCase(BadStyleTests.__allTests__BadStyleTests),
     ]
-}
+  }
 #endif
 
 Line 6

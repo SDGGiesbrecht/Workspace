@@ -35,15 +35,15 @@ internal struct WorkaroundReminders: Warning {
     }
   })
 
-  internal static let trigger = UserFacing<StrictString, InterfaceLocalization>({
-    (localization) in
-    switch localization {
-    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-      return "workaround"
-    case .deutschDeutschland:
-      return "notlösung"
-    }
-  })
+  internal static let trigger
+    = UserFacing<StrictString, InterfaceLocalization>({ localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "workaround"
+      case .deutschDeutschland:
+        return "notlösung"
+      }
+    })
 
   internal static func message(
     for details: StrictString,

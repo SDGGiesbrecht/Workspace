@@ -52,12 +52,7 @@ extension Workspace.Validate {
       options: Workspace.standardOptions + [
         ContinuousIntegrationJob.option
       ],
-      execution: {
-        (
-          arguments: DirectArguments,
-          options: Options,
-          output: Command.Output
-        ) throws in
+      execution: { arguments, options, output in
 
         var validationStatus = ValidationStatus()
 

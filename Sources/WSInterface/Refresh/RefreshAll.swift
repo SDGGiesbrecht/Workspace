@@ -44,12 +44,7 @@ extension Workspace.Refresh {
       description: description,
       directArguments: [],
       options: Workspace.standardOptions,
-      execution: {
-        (
-          arguments: DirectArguments,
-          options: Options,
-          output: Command.Output
-        ) throws in
+      execution: { arguments, options, output in
 
         if options.job == .deployment {
           try TravisCI.keepAlive {  // @exempt(from: tests)

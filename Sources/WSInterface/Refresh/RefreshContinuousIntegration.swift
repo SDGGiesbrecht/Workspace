@@ -29,16 +29,16 @@ extension Workspace.Refresh {
       }
     })
 
-    private static let description = UserFacing<StrictString, InterfaceLocalization>({
-      localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "regenerates the project’s continuous integration configuration files."
-      case .deutschDeutschland:
-        return
-          "erstellt die Konfigurationsdateien des Projekts, die fortlaufende Einbindung einrichten."
-      }
-    })
+    private static let description
+      = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "regenerates the project’s continuous integration configuration files."
+        case .deutschDeutschland:
+          return
+            "erstellt die Konfigurationsdateien des Projekts, die fortlaufende Einbindung einrichten."
+        }
+      })
 
     private static let discussion
       = UserFacing<StrictString, InterfaceLocalization>({ localization in

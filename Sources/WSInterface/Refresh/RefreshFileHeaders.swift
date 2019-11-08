@@ -31,15 +31,15 @@ extension Workspace.Refresh {
       }
     })
 
-    private static let description = UserFacing<StrictString, InterfaceLocalization>({
-      localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "re‐applies the project file header to each of the project’s files."
-      case .deutschDeutschland:
-        return "wendet die Dateivorspann des Projekts zu jeder Datei neu an."
-      }
-    })
+    private static let description
+      = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "re‐applies the project file header to each of the project’s files."
+        case .deutschDeutschland:
+          return "wendet die Dateivorspann des Projekts zu jeder Datei neu an."
+        }
+      })
 
     static let command = Command(
       name: name,

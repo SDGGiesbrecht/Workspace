@@ -55,7 +55,8 @@ public struct LineCommentSyntax {
   // MARK: - Parsing
 
   internal func nonDocumentationCommentExists(
-    at location: String.ScalarView.Index, in string: String
+    at location: String.ScalarView.Index,
+    in string: String
   ) -> Bool {
 
     var index = location
@@ -76,7 +77,8 @@ public struct LineCommentSyntax {
   }
 
   private func restOfLine(
-    at index: String.ScalarView.Index, in range: Range<String.ScalarView.Index>,
+    at index: String.ScalarView.Index,
+    in range: Range<String.ScalarView.Index>,
     of string: String
   ) -> Range<String.ScalarView.Index> {
 
@@ -101,28 +103,35 @@ public struct LineCommentSyntax {
     var resultEnd = restOfLine(at: startRange.lowerBound, in: range, of: string).upperBound
     var testIndex: String.ScalarView.Index = resultEnd
     string.scalars.advance(
-      &testIndex, over: RepetitionPattern(CharacterSet.newlinePattern, count: 0 ... 1))
+      &testIndex,
+      over: RepetitionPattern(CharacterSet.newlinePattern, count: 0 ... 1)
+    )
 
     string.scalars.advance(
       &testIndex,
-      over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
+      over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }))
+    )
 
     while string.scalars.suffix(from: testIndex).hasPrefix(start.scalars) {
       resultEnd = restOfLine(at: testIndex, in: range, of: string).upperBound
       testIndex = resultEnd
       string.scalars.advance(
-        &testIndex, over: RepetitionPattern(CharacterSet.newlinePattern, count: 0 ... 1))
+        &testIndex,
+        over: RepetitionPattern(CharacterSet.newlinePattern, count: 0 ... 1)
+      )
 
       string.scalars.advance(
         &testIndex,
-        over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
+        over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }))
+      )
     }
 
     return startRange.lowerBound ..< resultEnd
   }
 
   internal func contentsOfFirstComment(
-    in range: Range<String.ScalarView.Index>, of string: String
+    in range: Range<String.ScalarView.Index>,
+    of string: String
   ) -> String? {
     guard let range = rangeOfFirstComment(in: range, of: string) else {
       return nil  // @exempt(from: tests) Unreachable.
@@ -135,13 +144,17 @@ public struct LineCommentSyntax {
 
       line.scalars.advance(
         &index,
-        over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
+        over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }))
+      )
       line.scalars.advance(&index, over: start.scalars)
 
       line.scalars.advance(
         &index,
         over: RepetitionPattern(
-          ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }), count: 0 ... 1))
+          ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }),
+          count: 0 ... 1
+        )
+      )
 
       return String(line.scalars.suffix(from: index))
     }

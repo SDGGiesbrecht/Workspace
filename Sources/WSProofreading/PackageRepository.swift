@@ -64,7 +64,9 @@ extension PackageRepository {
 
           let file = try TextFile(alreadyAt: url)
           reporter.reportParsing(
-            file: file.location.path(relativeTo: location), to: output)
+            file: file.location.path(relativeTo: location),
+            to: output
+          )
           status.currentFile = file
 
           for rule in textRules {
@@ -79,7 +81,8 @@ extension PackageRepository {
                 file: file,
                 project: self,
                 status: status,
-                output: output).scan(syntax)
+                output: output
+              ).scan(syntax)
               try linter?.lint(syntax: syntax, assumingFileURL: url)
             }
           }

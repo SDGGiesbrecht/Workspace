@@ -40,8 +40,12 @@ internal struct UnicodeRule: SyntaxRule {
   }
 
   internal static func check(
-    _ node: Syntax, context: SyntaxContext, file: TextFile, project: PackageRepository,
-    status: ProofreadingStatus, output: Command.Output
+    _ node: Syntax,
+    context: SyntaxContext,
+    file: TextFile,
+    project: PackageRepository,
+    status: ProofreadingStatus,
+    output: Command.Output
   ) {
     if let token = node as? TokenSyntax {
 
@@ -75,31 +79,45 @@ internal struct UnicodeRule: SyntaxRule {
       }
 
       check(
-        token.text, range: token.syntaxRange(in: context),
+        token.text,
+        range: token.syntaxRange(in: context),
         textFreedom: token.textFreedom,
         kind: .syntax(token.tokenKind),
         isPrefix: isPrefix(),
         isInfix: isInfix(),
         isFloatLiteral: isFloatLiteral(),
         isInAvailabilityDeclaration: isInAvailabilityDeclaration(),
-        file: file, project: project, status: status, output: output)
+        file: file,
+        project: project,
+        status: status,
+        output: output
+      )
     }
   }
 
   internal static func check(
-    _ node: ExtendedSyntax, context: ExtendedSyntaxContext, file: TextFile,
-    project: PackageRepository, status: ProofreadingStatus, output: Command.Output
+    _ node: ExtendedSyntax,
+    context: ExtendedSyntaxContext,
+    file: TextFile,
+    project: PackageRepository,
+    status: ProofreadingStatus,
+    output: Command.Output
   ) {
     if let token = node as? ExtendedTokenSyntax {
       check(
-        token.text, range: token.range(in: context),
+        token.text,
+        range: token.range(in: context),
         textFreedom: token.kind.textFreedom,
         kind: .extended(token.kind),
         isPrefix: false,
         isInfix: false,
         isFloatLiteral: false,
         isInAvailabilityDeclaration: false,  // @exempt(from: tests) All such cases handled by “isInfix”.
-        file: file, project: project, status: status, output: output)
+        file: file,
+        project: project,
+        status: status,
+        output: output
+      )
     }
   }
 
@@ -180,14 +198,16 @@ internal struct UnicodeRule: SyntaxRule {
     }
 
     func check(
-      for obsolete: String, replacement: StrictString? = nil,
+      for obsolete: String,
+      replacement: StrictString? = nil,
       onlyProhibitPrefixUse: Bool = false,
       onlyProhibitInfixUse: Bool = false,
       allowInFloatLiteral: Bool = false,
       allowAsConditionalCompilationOperator: Bool = false,
       allowInAvailabilityDeclaration: Bool = false,
       allowInToolsVersion: Bool = false,
-      message: UserFacing<StrictString, InterfaceLocalization>, status: ProofreadingStatus,
+      message: UserFacing<StrictString, InterfaceLocalization>,
+      status: ProofreadingStatus,
       output: Command.Output
     ) {
 
@@ -212,11 +232,17 @@ internal struct UnicodeRule: SyntaxRule {
       matchSearch: for match in node.scalars.matches(for: obsolete.scalars) {
         let resolvedRange = range()
         let startOffset = node.scalars.distance(
-          from: node.scalars.startIndex, to: match.range.lowerBound)
+          from: node.scalars.startIndex,
+          to: match.range.lowerBound
+        )
         let length = node.scalars.distance(
-          from: match.range.lowerBound, to: match.range.upperBound)
+          from: match.range.lowerBound,
+          to: match.range.upperBound
+        )
         let lowerBound = file.contents.scalars.index(
-          resolvedRange.lowerBound, offsetBy: startOffset)
+          resolvedRange.lowerBound,
+          offsetBy: startOffset
+        )
         let upperBound = file.contents.scalars.index(lowerBound, offsetBy: length)
 
         if allowInToolsVersion {
@@ -228,7 +254,9 @@ internal struct UnicodeRule: SyntaxRule {
           }
         }
         reportViolation(
-          in: file, at: lowerBound ..< upperBound, replacementSuggestion: replacement,
+          in: file,
+          at: lowerBound ..< upperBound,
+          replacementSuggestion: replacement,
           message:
             UserFacing<StrictString, InterfaceLocalization>({ localization in
               let obsoleteMessage = UserFacing<StrictString, InterfaceLocalization>({
@@ -276,7 +304,9 @@ internal struct UnicodeRule: SyntaxRule {
                 result += " " + aliasMessage.resolved(for: localization)
               }
               return result
-            }), status: status)
+            }),
+          status: status
+        )
       }
     }
 
@@ -294,7 +324,10 @@ internal struct UnicodeRule: SyntaxRule {
           return
             "Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden."
         }
-      }), status: status, output: output)
+      }),
+      status: status,
+      output: output
+    )
 
     check(
       for: "\u{22}",
@@ -306,7 +339,10 @@ internal struct UnicodeRule: SyntaxRule {
         case .deutschDeutschland:
           return "Anführungszeichen („, “) oder Doppelprime (′′) verwenden."
         }
-      }), status: status, output: output)
+      }),
+      status: status,
+      output: output
+    )
 
     check(
       for: "\u{27}",
@@ -320,7 +356,10 @@ internal struct UnicodeRule: SyntaxRule {
           return
             "Einen Apostrophe (’), Anführungs‐ (‚, ‘), Grad‐ (°) oder Prime‐Zeichen (′) verwenden."
         }
-      }), status: status, output: output)
+      }),
+      status: status,
+      output: output
+    )
 
     check(
       for: "\u{21}\u{3D}",
@@ -332,7 +371,10 @@ internal struct UnicodeRule: SyntaxRule {
         case .deutschDeutschland:
           return "Ein Ungleichheitszeichen (≠) verwenden."
         }
-      }), status: status, output: output)
+      }),
+      status: status,
+      output: output
+    )
 
     check(
       for: "!",
@@ -346,7 +388,10 @@ internal struct UnicodeRule: SyntaxRule {
         case .deutschDeutschland:
           return "Ein Negationszeichen (¬) verwenden."
         }
-      }), status: status, output: output)
+      }),
+      status: status,
+      output: output
+    )
 
     check(
       for: "&\u{26}",
@@ -359,7 +404,10 @@ internal struct UnicodeRule: SyntaxRule {
         case .deutschDeutschland:
           return "Ein Konjunktionszeichen (∧) verwenden."
         }
-      }), status: status, output: output)
+      }),
+      status: status,
+      output: output
+    )
 
     check(
       for: "\u{7C}|",
@@ -372,7 +420,10 @@ internal struct UnicodeRule: SyntaxRule {
         case .deutschDeutschland:
           return "Ein Disjunktionszeichen (∨) verwenden."
         }
-      }), status: status, output: output)
+      }),
+      status: status,
+      output: output
+    )
 
     check(
       for: "\u{3C}=",
@@ -385,7 +436,10 @@ internal struct UnicodeRule: SyntaxRule {
         case .deutschDeutschland:
           return "Ein kleiner‐als‐oder‐gleich‐Zeichen (≤) verwenden."
         }
-      }), status: status, output: output)
+      }),
+      status: status,
+      output: output
+    )
 
     check(
       for: "\u{3E}=",
@@ -398,7 +452,10 @@ internal struct UnicodeRule: SyntaxRule {
         case .deutschDeutschland:
           return "Ein größer‐als‐oder‐gleich‐Zeichen (≥) verwenden."
         }
-      }), status: status, output: output)
+      }),
+      status: status,
+      output: output
+    )
 
     check(
       for: "\u{2A}",
@@ -412,7 +469,10 @@ internal struct UnicodeRule: SyntaxRule {
         case .deutschDeutschland:
           return "Ein Malzeichen (⋅) verwenden."
         }
-      }), status: status, output: output)
+      }),
+      status: status,
+      output: output
+    )
 
     check(
       for: "\u{2A}=",
@@ -424,7 +484,10 @@ internal struct UnicodeRule: SyntaxRule {
         case .deutschDeutschland:
           return "Ein Malzeichen (⋅) verwenden."
         }
-      }), status: status, output: output)
+      }),
+      status: status,
+      output: output
+    )
 
     check(
       for: "\u{2F}",
@@ -437,7 +500,10 @@ internal struct UnicodeRule: SyntaxRule {
         case .deutschDeutschland:
           return "Ein Geteiltzeichen (∶) verwenden."
         }
-      }), status: status, output: output)
+      }),
+      status: status,
+      output: output
+    )
 
     check(
       for: "\u{2F}=",
@@ -449,6 +515,9 @@ internal struct UnicodeRule: SyntaxRule {
         case .deutschDeutschland:
           return "Ein Geteiltzeichen (∶) verwenden."
         }
-      }), status: status, output: output)
+      }),
+      status: status,
+      output: output
+    )
   }
 }

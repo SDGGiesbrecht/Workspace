@@ -47,13 +47,18 @@ extension Workspace.Validate {
     })
 
     static let command = Command(
-      name: name, description: description, directArguments: [],
+      name: name,
+      description: description,
+      directArguments: [],
       options: Workspace.standardOptions + [ContinuousIntegrationJob.option],
       execution: { (_, options: Options, output: Command.Output) throws in
 
         try validate(
-          job: options.job, against: ContinuousIntegrationJob.buildJobs,
-          for: options.project, output: output)
+          job: options.job,
+          against: ContinuousIntegrationJob.buildJobs,
+          for: options.project,
+          output: output
+        )
 
         #if !os(Linux)
           if try options.project.configuration(output: output).xcode.manage {
@@ -64,14 +69,20 @@ extension Workspace.Validate {
         var validationStatus = ValidationStatus()
 
         try executeAsStep(
-          options: options, validationStatus: &validationStatus, output: output)
+          options: options,
+          validationStatus: &validationStatus,
+          output: output
+        )
 
         try validationStatus.reportOutcome(project: options.project, output: output)
-      })
+      }
+    )
 
     static func job(
-      _ job: ContinuousIntegrationJob, isRelevantTo project: PackageRepository,
-      andAvailableJobs validJobs: Set<ContinuousIntegrationJob>, output: Command.Output
+      _ job: ContinuousIntegrationJob,
+      isRelevantTo project: PackageRepository,
+      andAvailableJobs validJobs: Set<ContinuousIntegrationJob>,
+      output: Command.Output
     ) throws -> Bool {
       return try job ∈ validJobs
         ∧ (
@@ -81,14 +92,19 @@ extension Workspace.Validate {
     }
 
     static func validate(
-      job: ContinuousIntegrationJob?, against validJobs: Set<ContinuousIntegrationJob>,
-      for project: PackageRepository, output: Command.Output
+      job: ContinuousIntegrationJob?,
+      against validJobs: Set<ContinuousIntegrationJob>,
+      for project: PackageRepository,
+      output: Command.Output
     ) throws {
       if let specified = job,
         ¬(
           try Build.job(
-            specified, isRelevantTo: project, andAvailableJobs: validJobs,
-            output: output)
+            specified,
+            isRelevantTo: project,
+            andAvailableJobs: validJobs,
+            output: output
+          )
         )
       {
         throw Command.Error(
@@ -99,24 +115,33 @@ extension Workspace.Validate {
             case .deutschDeutschland:
               return "Ungültige Aufgabe."
             }
-          }))
+          })
+        )
       }
     }
 
     static func executeAsStep(
-      options: Options, validationStatus: inout ValidationStatus, output: Command.Output
+      options: Options,
+      validationStatus: inout ValidationStatus,
+      output: Command.Output
     ) throws {
 
       for job in ContinuousIntegrationJob.allCases
       where try options.job.includes(job: job) ∧ (
         try Build.job(
-          job, isRelevantTo: options.project,
-          andAvailableJobs: ContinuousIntegrationJob.buildJobs, output: output)
+          job,
+          isRelevantTo: options.project,
+          andAvailableJobs: ContinuousIntegrationJob.buildJobs,
+          output: output
+        )
       ) {
         try autoreleasepool {
 
           try options.project.build(
-            for: job, validationStatus: &validationStatus, output: output)
+            for: job,
+            validationStatus: &validationStatus,
+            output: output
+          )
         }
       }
     }

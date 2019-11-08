@@ -98,9 +98,11 @@ extension Workspace.Refresh {
             case .deutschDeutschland:
               return "Konfiguration für fortlaufende Einbindung wird aufgefrischt ..."
             }
-          }).resolved().formattedAsSectionHeader())
+          }).resolved().formattedAsSectionHeader()
+        )
 
         try options.project.refreshContinuousIntegration(output: output)
-      })
+      }
+    )
   }
 }

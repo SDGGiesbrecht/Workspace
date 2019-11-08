@@ -47,8 +47,9 @@ internal struct PackageCLI {
     for tool in tools {
       for localization in localizations {
         if let interface = try? CommandInterface.loadInterface(
-          of: tool, in: localization.code).get()
-        {
+          of: tool,
+          in: localization.code
+        ).get() {
           var modifiedInterface = interface
           modifiedInterface.sentenceCaseDescriptions()
 

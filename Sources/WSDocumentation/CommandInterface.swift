@@ -28,7 +28,8 @@ extension CommandInterface {
     {
       description.scalars.removeFirst()
       description.scalars.prepend(
-        contentsOf: first.properties.titlecaseMapping.scalars)
+        contentsOf: first.properties.titlecaseMapping.scalars
+      )
     }
     for index in subcommands.indices {
       subcommands[index].sentenceCaseDescriptions()

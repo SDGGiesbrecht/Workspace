@@ -207,16 +207,20 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(3, 1, 0)),
+      from: Version(3, 1, 0)
+    ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-      from: Version(1, 2, 2)),
+      from: Version(1, 2, 2)
+    ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      .upToNextMinor(from: Version(0, 16, 2))),
+      .upToNextMinor(from: Version(0, 16, 2))
+    ),
     .package(
       url: "https://github.com/apple/swift\u{2D}format",
-      .branch("swift\u{2D}5.1\u{2D}branch")),
+      .branch("swift\u{2D}5.1\u{2D}branch")
+    ),
     .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(4, 0, 0))
   ],
   targets: [
@@ -229,7 +233,8 @@ let package = Package(
         "WSGeneralImports",
         "WorkspaceProjectConfiguration",
         "WSInterface"
-      ]),
+      ]
+    ),
 
     // Components
 
@@ -259,7 +264,8 @@ let package = Package(
       ],
       swiftSettings: [
         .define("TEST_SHIMS", .when(configuration: .debug))
-      ]),
+      ]
+    ),
 
     // Workspace scripts.
     .target(
@@ -267,7 +273,8 @@ let package = Package(
       dependencies: [
         "WSGeneralImports",
         "WSProject"
-      ]),
+      ]
+    ),
 
     // Git management.
     .target(
@@ -275,7 +282,8 @@ let package = Package(
       dependencies: [
         "WSGeneralImports",
         "WSProject"
-      ]),
+      ]
+    ),
 
     // Open source management.
     .target(
@@ -286,7 +294,8 @@ let package = Package(
         "WSExamples",
         "WSDocumentation",
         .product(name: "SDGSwiftSource", package: "SDGSwift")
-      ]),
+      ]
+    ),
 
     // Licence management.
     .target(
@@ -295,7 +304,8 @@ let package = Package(
         "WSGeneralImports",
         "WorkspaceConfiguration",
         "WSProject"
-      ]),
+      ]
+    ),
 
     // GitHub management.
     .target(
@@ -304,7 +314,8 @@ let package = Package(
         "WSGeneralImports",
         "WSProject",
         "WorkspaceProjectConfiguration"
-      ]),
+      ]
+    ),
 
     // Continuous integration management.
     .target(
@@ -313,7 +324,8 @@ let package = Package(
         "WSGeneralImports",
         "WSProject",
         "WSDocumentation"
-      ]),
+      ]
+    ),
 
     // Resource management.
     .target(
@@ -323,7 +335,8 @@ let package = Package(
         "WSProject",
         "WSSwift",
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift")
-      ]),
+      ]
+    ),
 
     // File header management.
     .target(
@@ -331,7 +344,8 @@ let package = Package(
       dependencies: [
         "WSGeneralImports",
         "WSProject"
-      ]),
+      ]
+    ),
 
     // Example management.
     .target(
@@ -340,7 +354,8 @@ let package = Package(
         "WSGeneralImports",
         "WSProject",
         "WSParsing"
-      ]),
+      ]
+    ),
 
     // Normalization.
     .target(
@@ -349,7 +364,8 @@ let package = Package(
         "WSGeneralImports",
         "WSProject",
         .product(name: "SwiftFormat", package: "swift\u{2D}format")
-      ]),
+      ]
+    ),
 
     // Xcode project management.
     .target(
@@ -359,7 +375,8 @@ let package = Package(
         "WSProject",
         "WorkspaceProjectConfiguration",
         .product(name: "SDGXcode", package: "SDGSwift")
-      ]),
+      ]
+    ),
 
     // Proofreading.
     .target(
@@ -373,7 +390,8 @@ let package = Package(
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGSwiftSource", package: "SDGSwift"),
         .product(name: "SwiftFormat", package: "swift\u{2D}format")
-      ]),
+      ]
+    ),
 
     // Testing.
     .target(
@@ -390,7 +408,8 @@ let package = Package(
       ],
       swiftSettings: [
         .define("TEST_SHIMS", .when(configuration: .debug))
-      ]),
+      ]
+    ),
 
     // Documentation generation.
     .target(
@@ -411,7 +430,8 @@ let package = Package(
       ],
       swiftSettings: [
         .define("UNIDENTIFIED_SYNTAX_WARNINGS", .when(configuration: .debug))
-      ]),
+      ]
+    ),
 
     // Mechanism for embedding third party tools.
     .target(
@@ -421,7 +441,8 @@ let package = Package(
         "WorkspaceConfiguration",
         .product(name: "SDGSwift", package: "SDGSwift"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone")
-      ]),
+      ]
+    ),
 
     // Utilities for validation reports.
     .target(
@@ -429,14 +450,16 @@ let package = Package(
       dependencies: [
         "WSGeneralImports",
         "WSProject"
-      ]),
+      ]
+    ),
 
     // Utilities related to Swift syntax.
     .target(
       name: "WSSwift",
       dependencies: [
         "WSGeneralImports"
-      ]),
+      ]
+    ),
 
     // Utilities related to parsing in‐source declarations and directives.
     .target(
@@ -445,7 +468,8 @@ let package = Package(
         "WSGeneralImports",
         "WSLocalizations",
         "WSProject"
-      ]),
+      ]
+    ),
 
     // Defines general project structure queries and cache.
     .target(
@@ -461,7 +485,8 @@ let package = Package(
       ],
       swiftSettings: [
         .define("CACHE_LOG", .when(configuration: .debug))
-      ]),
+      ]
+    ),
 
     // @localization(🇩🇪DE)
     // #documentation(ArbeitsbereichKonfiguration)
@@ -521,14 +546,16 @@ let package = Package(
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGSwiftConfiguration", package: "SDGSwift"),
         .product(name: "SwiftFormat", package: "swift\u{2D}format")
-      ]),
+      ]
+    ),
 
     // Defines the lists of supported localizations.
     .target(
       name: "WSLocalizations",
       dependencies: [
         .product(name: "SDGLocalization", package: "SDGCornerstone")
-      ]),
+      ]
+    ),
 
     // Centralizes imports needed almost everywhere.
     .target(
@@ -548,7 +575,8 @@ let package = Package(
         .product(name: "SDGCommandLine", package: "SDGCommandLine"),
 
         .product(name: "SDGSwift", package: "SDGSwift")
-      ]),
+      ]
+    ),
 
     // Tests
 
@@ -562,7 +590,8 @@ let package = Package(
         .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGCommandLineTestUtilities", package: "SDGCommandLine")
-      ]),
+      ]
+    ),
     .testTarget(
       name: "WorkspaceLibraryTests",
       dependencies: [
@@ -571,27 +600,34 @@ let package = Package(
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGCommandLine", package: "SDGCommandLine"),
         .product(name: "SDGWeb", package: "SDGWeb")
-      ]),
+      ]
+    ),
     .target(
       name: "test‐ios‐simulator",
       dependencies: [
         "WSGeneralImports",
         "WSInterface",
         .product(name: "SDGExternalProcess", package: "SDGCornerstone")
-      ], path: "Tests/test‐ios‐simulator"),
+      ],
+      path: "Tests/test‐ios‐simulator"
+    ),
     .target(
       name: "test‐tvos‐simulator",
       dependencies: [
         "WSGeneralImports",
         "WSInterface",
         .product(name: "SDGExternalProcess", package: "SDGCornerstone")
-      ], path: "Tests/test‐tvos‐simulator"),
+      ],
+      path: "Tests/test‐tvos‐simulator"
+    ),
     .target(
       name: "WSConfigurationExample",
       dependencies: [
         "WorkspaceConfiguration",
         .product(name: "SDGControlFlow", package: "SDGCornerstone")
-      ], path: "Tests/WSConfigurationExample"),
+      ],
+      path: "Tests/WSConfigurationExample"
+    ),
 
     // Other
 
@@ -600,6 +636,9 @@ let package = Package(
       name: "WorkspaceProjectConfiguration",
       dependencies: [
         "WorkspaceConfiguration"
-      ], path: "", sources: ["Workspace.swift"])
+      ],
+      path: "",
+      sources: ["Workspace.swift"]
+    )
   ]
 )

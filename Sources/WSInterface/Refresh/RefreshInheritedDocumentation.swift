@@ -132,9 +132,11 @@ extension Workspace.Refresh {
             case .deutschDeutschland:
               return "Geerbte Dokumentation wird aufgefrischt ..."
             }
-          }).resolved().formattedAsSectionHeader())
+          }).resolved().formattedAsSectionHeader()
+        )
 
         try options.project.refreshInheritedDocumentation(output: output)
-      })
+      }
+    )
   }
 }

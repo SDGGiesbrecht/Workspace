@@ -27,7 +27,8 @@ public enum FileType {
     unsupportedFileTypesEncountered = [:]
   }
   public static func unsupportedTypesWarning(
-    for project: PackageRepository, output: Command.Output
+    for project: PackageRepository,
+    output: Command.Output
   ) throws -> StrictString? {
 
     let expected = try project.configuration(output: output).repository.ignoredFileTypes
@@ -69,7 +70,8 @@ public enum FileType {
               "All such files were skipped.",
               "If these are standard file types, please report them at",
               StrictString(
-                Metadata.issuesURL.absoluteString.in(Underline.underlined)),
+                Metadata.issuesURL.absoluteString.in(Underline.underlined)
+              ),
               "To silence this warning for non‐standard file types, configure “repository.ignoredFileTypes”."
             ].joinedAsLines()
           case .deutschDeutschland:
@@ -77,11 +79,13 @@ public enum FileType {
               "Solche Dateien wurden übersprungen.",
               "Falls sie Standarddateiformate sind, bitte melden Sie sie hier:",
               StrictString(
-                Metadata.issuesURL.absoluteString.in(Underline.underlined)),
+                Metadata.issuesURL.absoluteString.in(Underline.underlined)
+              ),
               "Um diese Warnung für ungenormten Dateiformate abzudämpfen, „lager.ausgelasseneDateiformate“ konfigurieren."
             ].joinedAsLines()
           }
-        }).resolved())
+        }).resolved()
+      )
 
       return warning.joinedAsLines()
     }
@@ -176,13 +180,16 @@ public enum FileType {
   // MARK: - Syntax
 
   private static let htmlBlockComment = BlockCommentSyntax(
-    start: "<\u{21}\u{2D}\u{2D}", end: "\u{2D}\u{2D}>")
+    start: "<\u{21}\u{2D}\u{2D}",
+    end: "\u{2D}\u{2D}>"
+  )
 
   private static let swiftBlockCommentSyntax = BlockCommentSyntax(start: "/*", end: "*/")
   private static let swiftLineCommentSyntax = LineCommentSyntax(start: "//")
   public static let swiftDocumentationSyntax = FileSyntax(
     blockCommentSyntax: BlockCommentSyntax(start: "/*" + "*", end: "*/"),
-    lineCommentSyntax: LineCommentSyntax(start: "///"))
+    lineCommentSyntax: LineCommentSyntax(start: "///")
+  )
 
   public var syntax: FileSyntax {
     switch self {
@@ -190,43 +197,57 @@ public enum FileType {
     case .swift, .c, .cPlusPlus, .css, .javaScript, .objectiveC, .objectiveCPlusPlus, .strings:
       return FileSyntax(
         blockCommentSyntax: FileType.swiftBlockCommentSyntax,
-        lineCommentSyntax: FileType.swiftLineCommentSyntax)
+        lineCommentSyntax: FileType.swiftLineCommentSyntax
+      )
     case .swiftPackageManifest:
       return FileSyntax(
         blockCommentSyntax: FileType.swiftBlockCommentSyntax,
         lineCommentSyntax: FileType.swiftLineCommentSyntax,
-        requiredFirstLineToken: "/\u{2F} swift\u{2D}tools\u{2D}version:")
+        requiredFirstLineToken: "/\u{2F} swift\u{2D}tools\u{2D}version:"
+      )
     case .xcodeProject:
       return FileSyntax(
         blockCommentSyntax: FileType.swiftBlockCommentSyntax,
-        lineCommentSyntax: FileType.swiftLineCommentSyntax, requiredFirstLineToken: "// !$*"
+        lineCommentSyntax: FileType.swiftLineCommentSyntax,
+        requiredFirstLineToken: "// !$*"
       )
 
     case .shell:
       return FileSyntax(
-        blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"),
-        requiredFirstLineToken: "#!")
+        blockCommentSyntax: nil,
+        lineCommentSyntax: LineCommentSyntax(start: "#"),
+        requiredFirstLineToken: "#!"
+      )
     case .gitIgnore, .yaml:
       return FileSyntax(
-        blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"))
+        blockCommentSyntax: nil,
+        lineCommentSyntax: LineCommentSyntax(start: "#")
+      )
 
     case .html, .xml:
       return FileSyntax(
-        blockCommentSyntax: FileType.htmlBlockComment, lineCommentSyntax: nil,
-        requiredFirstLineToken: "<\u{21}DOCTYPE")
+        blockCommentSyntax: FileType.htmlBlockComment,
+        lineCommentSyntax: nil,
+        requiredFirstLineToken: "<\u{21}DOCTYPE"
+      )
     case .markdown:
       return FileSyntax(
-        blockCommentSyntax: FileType.htmlBlockComment, lineCommentSyntax: nil,
-        semanticLineTerminalWhitespace: ["  "])
+        blockCommentSyntax: FileType.htmlBlockComment,
+        lineCommentSyntax: nil,
+        semanticLineTerminalWhitespace: ["  "]
+      )
 
     case .lisp:
       return FileSyntax(
         blockCommentSyntax: BlockCommentSyntax(start: "#|", end: "|#"),
-        lineCommentSyntax: LineCommentSyntax(start: ";"))
+        lineCommentSyntax: LineCommentSyntax(start: ";")
+      )
     case .python:
       return FileSyntax(
-        blockCommentSyntax: nil, lineCommentSyntax: LineCommentSyntax(start: "#"),
-        requiredFirstLineToken: "#!")
+        blockCommentSyntax: nil,
+        lineCommentSyntax: LineCommentSyntax(start: "#"),
+        requiredFirstLineToken: "#!"
+      )
 
     case .json:
       return FileSyntax(blockCommentSyntax: nil, lineCommentSyntax: nil)

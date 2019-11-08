@@ -50,7 +50,8 @@ internal class CommandPage: Page {
         case .deutschDeutschland:
           return "... \(StrictString(interface.name)) ..."
         }
-      }).resolved())
+      }).resolved()
+    )
 
     let symbolType: StrictString
     if navigationPath.count ≤ 1 {
@@ -83,27 +84,37 @@ internal class CommandPage: Page {
       (
         StrictString(package.name.source()),
         package.relativePagePath[localization]!
-      ))
+      )
+    )
 
     var content: [StrictString] = []
     content.append(
       SymbolPage.generateDescriptionSection(
-        contents: HTML.escapeTextForCharacterData(interface.description)))
+        contents: HTML.escapeTextForCharacterData(interface.description)
+      )
+    )
     content.append(
       CommandPage.generateDeclarationSection(
         navigationPath: navigationPath,
         localization: localization,
-        interface: interface))
+        interface: interface
+      )
+    )
     content.append(
-      CommandPage.generateDiscussionSection(localization: localization, interface: interface))
+      CommandPage.generateDiscussionSection(localization: localization, interface: interface)
+    )
     content.append(
       CommandPage.generateSubcommandsSection(localization: localization, interface: interface)
     )
     content.append(
-      CommandPage.generateOptionsSection(localization: localization, interface: interface))
+      CommandPage.generateOptionsSection(localization: localization, interface: interface)
+    )
     content.append(
       CommandPage.generateArgumentTypesSection(
-        localization: localization, interface: interface))
+        localization: localization,
+        interface: interface
+      )
+    )
 
     super.init(
       localization: localization,
@@ -116,7 +127,8 @@ internal class CommandPage: Page {
             localization: localization, path: command.relativePagePath[localization]!
           )
         }),
-        navigationPath: navigationPathLinks),
+        navigationPath: navigationPathLinks
+      ),
       packageImport: packageImport,
       index: index,
       sectionIdentifier: .tools,
@@ -128,7 +140,8 @@ internal class CommandPage: Page {
       title: interface.name,
       content: content.joinedAsLines(),
       extensions: "",
-      copyright: copyright)
+      copyright: copyright
+    )
   }
 
   private static func generateDeclarationSection(
@@ -143,7 +156,8 @@ internal class CommandPage: Page {
         "span",
         attributes: ["class": "command"],
         contents: HTML.escapeTextForCharacterData(name),
-        inline: true)
+        inline: true
+      )
     }
 
     let arguments = interface.arguments.map { argument in
@@ -151,7 +165,8 @@ internal class CommandPage: Page {
         "span",
         attributes: ["class": "argument‐type"],
         contents: "[" + HTML.escapeTextForCharacterData(argument.name) + "]",
-        inline: true)
+        inline: true
+      )
     }
 
     return SymbolPage.generateDeclarationSection(
@@ -161,7 +176,9 @@ internal class CommandPage: Page {
         attributes: ["class": "swift blockquote"],
         contents: (commands + arguments).map({ $0.normalizedSource() })
           .joined(separator: " "),
-        inline: true).normalizedSource())
+        inline: true
+      ).normalizedSource()
+    )
   }
 
   private static func generateDiscussionSection(
@@ -181,7 +198,8 @@ internal class CommandPage: Page {
     return SymbolPage.generateDiscussionSection(
       localization: localization,
       symbol: nil,
-      content: discussion)
+      content: discussion
+    )
   }
 
   internal static func subcommandsDirectoryName(
@@ -218,14 +236,16 @@ internal class CommandPage: Page {
             "span",
             attributes: ["class": "command"],
             contents: HTML.escapeTextForCharacterData(subcommand.name),
-            inline: true)
+            inline: true
+          )
 
           let arguments = subcommand.arguments.map { argument in
             ElementSyntax(
               "span",
               attributes: ["class": "argument‐type"],
               contents: "[" + HTML.escapeTextForCharacterData(argument.name) + "]",
-              inline: true)
+              inline: true
+            )
           }
           let tokens = [command] + arguments
 
@@ -243,15 +263,19 @@ internal class CommandPage: Page {
               "code",
               attributes: ["class": "swift code"],
               contents: tokens.map({ $0.normalizedSource() }).joined(separator: " "),
-              inline: true).normalizedSource(),
-            inline: true).normalizedSource()
+              inline: true
+            ).normalizedSource(),
+            inline: true
+          ).normalizedSource()
 
           let description = ElementSyntax(
             "p",
             contents: HTML.escapeTextForCharacterData(subcommand.description),
-            inline: true).normalizedSource()
+            inline: true
+          ).normalizedSource()
           return (term: term, description: description)
-        }))
+        })
+    )
   }
 
   private static func generateOptionsSection(
@@ -277,7 +301,8 @@ internal class CommandPage: Page {
             "span",
             attributes: ["class": "option"],
             contents: "•" + HTML.escapeTextForCharacterData(option.name),
-            inline: true)
+            inline: true
+          )
 
           var tokens = [optionElement]
           if ¬option.isFlag {
@@ -288,20 +313,26 @@ internal class CommandPage: Page {
                 contents: "["
                   + HTML.escapeTextForCharacterData(option.type.name)
                   + "]",
-                inline: true))
+                inline: true
+              )
+            )
           }
 
           let term = ElementSyntax(
             "code",
             attributes: ["class": "swift code"],
             contents: tokens.map({ $0.normalizedSource() }).joined(separator: " "),
-            inline: true).normalizedSource()
+            inline: true
+          ).normalizedSource()
 
           let description = ElementSyntax(
-            "p", contents: HTML.escapeTextForCharacterData(option.description),
-            inline: true).normalizedSource()
+            "p",
+            contents: HTML.escapeTextForCharacterData(option.description),
+            inline: true
+          ).normalizedSource()
           return (term: term, description: description)
-        }))
+        })
+    )
   }
 
   private static func generateArgumentTypesSection(
@@ -335,19 +366,23 @@ internal class CommandPage: Page {
           "span",
           attributes: ["class": "argument‐type"],
           contents: "[" + HTML.escapeTextForCharacterData(argument.name) + "]",
-          inline: true)
+          inline: true
+        )
 
         let term = ElementSyntax(
           "code",
           attributes: ["class": "swift code"],
           contents: argumentElement.normalizedSource(),
-          inline: true).normalizedSource()
+          inline: true
+        ).normalizedSource()
 
         let description = ElementSyntax(
           "p",
           contents: HTML.escapeTextForCharacterData(argument.description),
-          inline: true).normalizedSource()
+          inline: true
+        ).normalizedSource()
         return (term: term, description: description)
-      }))
+      })
+    )
   }
 }

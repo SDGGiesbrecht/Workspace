@@ -61,11 +61,14 @@ extension PackageRepository {
     // MARK: - Resources
 
     internal func refresh(
-      resources: [URL], from package: PackageRepository, output: Command.Output
+      resources: [URL],
+      from package: PackageRepository,
+      output: Command.Output
     ) throws {
 
       var resourceFile = try TextFile(
-        possiblyAt: sourceDirectory.appendingPathComponent("Resources.swift"))
+        possiblyAt: sourceDirectory.appendingPathComponent("Resources.swift")
+      )
       resourceFile.body = String(try generateSource(for: resources, of: package))
       try resourceFile.writeChanges(for: package, output: output)
     }
@@ -76,7 +79,8 @@ extension PackageRepository {
       var source: StrictString = "import Foundation\n\n"
 
       let enumName = PackageRepository.Target.resourceNamespace.resolved(
-        for: InterfaceLocalization.fallbackLocalization)
+        for: InterfaceLocalization.fallbackLocalization
+      )
       source += "internal enum " + enumName + " {}\n"
 
       var registeredAliases: Set<StrictString> = [enumName]
@@ -123,7 +127,8 @@ extension PackageRepository {
       var tree: [StrictString: Any] = [:]
       for resource in resources {
         let pathComponentsArray = resource.path(relativeTo: package.location).components(
-          separatedBy: "/").dropFirst(2).map({ String($0.contents) })
+          separatedBy: "/"
+        ).dropFirst(2).map({ String($0.contents) })
         let pathComponents = pathComponentsArray[pathComponentsArray.startIndex...]
         add(components: pathComponents, to: &tree, for: resource)
       }
@@ -131,14 +136,18 @@ extension PackageRepository {
     }
 
     private func add(
-      components: ArraySlice<String>, to tree: inout [StrictString: Any], for resource: URL
+      components: ArraySlice<String>,
+      to tree: inout [StrictString: Any],
+      for resource: URL
     ) {
       if ¬components.isEmpty {
         if components.count == 1 {
           tree[variableName(for: components.first!)] = resource
         } else {
           let name = SwiftLanguage.identifier(
-            for: StrictString(components.first!), casing: .type)
+            for: StrictString(components.first!),
+            casing: .type
+          )
           var branch = tree[name] as? [StrictString: Any] ?? [:]
           add(components: components.dropFirst(), to: &branch, for: resource)
           tree[name] = branch
@@ -176,7 +185,8 @@ extension PackageRepository {
       return StrictString(
         result.lines.map({ (lineInformation) in
           return "    " + StrictString(lineInformation.line)
-        }).joined(separator: "\n".scalars) + "\n")
+        }).joined(separator: "\n".scalars) + "\n"
+      )
     }
 
     private func source(for resource: URL, named name: StrictString) throws -> StrictString {

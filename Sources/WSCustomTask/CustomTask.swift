@@ -36,6 +36,7 @@ extension CustomTask {
       of: [executable],
       with: arguments,
       cacheDirectory: CustomTask.cache,
-      reportProgress: { output.print($0) }).get()
+      reportProgress: { output.print($0) }
+    ).get()
   }
 }

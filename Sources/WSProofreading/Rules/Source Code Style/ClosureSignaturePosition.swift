@@ -43,8 +43,12 @@ internal struct ClosureSignaturePosition: SyntaxRule {
   })
 
   internal static func check(
-    _ node: Syntax, context: SyntaxContext, file: TextFile, project: PackageRepository,
-    status: ProofreadingStatus, output: Command.Output
+    _ node: Syntax,
+    context: SyntaxContext,
+    file: TextFile,
+    project: PackageRepository,
+    status: ProofreadingStatus,
+    output: Command.Output
   ) {
 
     if let signature = node as? ClosureSignatureSyntax,
@@ -55,8 +59,11 @@ internal struct ClosureSignaturePosition: SyntaxRule {
 
       if leadingTrivia.contains(where: { $0.isNewline }) {
         reportViolation(
-          in: file, at: signature.syntaxRange(in: context), message: message,
-          status: status)
+          in: file,
+          at: signature.syntaxRange(in: context),
+          message: message,
+          status: status
+        )
       }
     }
   }

@@ -48,10 +48,14 @@ extension Workspace {
     })
 
     static let command = Command(
-      name: name, description: description, directArguments: [], options: standardOptions,
+      name: name,
+      description: description,
+      directArguments: [],
+      options: standardOptions,
       execution: { (_: DirectArguments, options: Options, output: Command.Output) throws in
         try executeAsStep(options: options, output: output)
-      })
+      }
+    )
 
     static func executeAsStep(options: Options, output: Command.Output) throws {
 
@@ -66,7 +70,8 @@ extension Workspace {
             case .deutschDeutschland:
               return "Deteien werden normalisiert ..."
             }
-          }).resolved().formattedAsSectionHeader())
+          }).resolved().formattedAsSectionHeader()
+        )
       }
 
       try options.project.normalize(output: output)

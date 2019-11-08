@@ -262,7 +262,8 @@ public struct DocumentationConfiguration: Codable {
           = localizedToolInstallationInstructions(
             packageURL: packageURL,
             version: version,
-            localization: provided)
+            localization: provided
+          )
       }
     }
     return result
@@ -298,7 +299,8 @@ public struct DocumentationConfiguration: Codable {
           = localizedLibraryImportingInstructions(
             packageURL: packageURL,
             version: version,
-            localization: provided)
+            localization: provided
+          )
       }
     }
     return result
@@ -351,7 +353,9 @@ public struct DocumentationConfiguration: Codable {
   // MARK: - Installation Instructions
 
   private static func localizedToolInstallationInstructions(
-    packageURL: URL, version: Version, localization: ContentLocalization
+    packageURL: URL,
+    version: Version,
+    localization: ContentLocalization
   ) -> StrictString? {
 
     let tools = WorkspaceContext.current.manifest.products.filter { $0.type == .executable }
@@ -431,7 +435,9 @@ public struct DocumentationConfiguration: Codable {
   }
 
   private static func localizedLibraryImportingInstructions(
-    packageURL: URL, version: Version, localization: ContentLocalization
+    packageURL: URL,
+    version: Version,
+    localization: ContentLocalization
   ) -> StrictString? {
 
     let libraries = WorkspaceContext.current.manifest.products.filter { $0.type == .library }

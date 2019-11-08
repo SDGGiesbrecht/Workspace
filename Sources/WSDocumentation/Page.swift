@@ -78,8 +78,11 @@ internal class Page {
       .deutschDeutschland:
       sdg
         = ElementSyntax(
-          "span", attributes: ["lang": "la\u{2D}IT"], contents: "Soli Deo gloria.",
-          inline: true).normalizedSource()
+          "span",
+          attributes: ["lang": "la\u{2D}IT"],
+          contents: "Soli Deo gloria.",
+          inline: true
+        ).normalizedSource()
     }
 
     return ElementSyntax(
@@ -87,7 +90,10 @@ internal class Page {
       attributes: [
         "lang": StrictString(resolved.code),
         "dir": StrictString(resolved.textDirection.htmlAttribute)
-      ], contents: generatedUsing + " " + sdg, inline: true).normalizedSource()
+      ],
+      contents: generatedUsing + " " + sdg,
+      inline: true
+    ).normalizedSource()
   }
 
   // MARK: - Initialization
@@ -114,7 +120,8 @@ internal class Page {
     mutable.replaceMatches(for: "[*localization*]".scalars, with: localization.code.scalars)
     mutable.replaceMatches(
       for: "[*text direction*]".scalars,
-      with: localization.textDirection.htmlAttribute.scalars)
+      with: localization.textDirection.htmlAttribute.scalars
+    )
 
     mutable.replaceMatches(for: "[*navigation path*]", with: navigationPath.scalars)
 
@@ -122,11 +129,14 @@ internal class Page {
 
     mutable.replaceMatches(for: "[*index*]", with: index)
     mutable.replaceMatches(
-      for: "[*section identifier*]", with: sectionIdentifier?.htmlIdentifier ?? "")
+      for: "[*section identifier*]",
+      with: sectionIdentifier?.htmlIdentifier ?? ""
+    )
     mutable.replaceMatches(for: "[*platforms*]", with: platforms)
     mutable.replaceMatches(
       for: "[*site root*]".scalars,
-      with: HTML.escapeTextForAttribute(pathToSiteRoot))
+      with: HTML.escapeTextForAttribute(pathToSiteRoot)
+    )
 
     mutable.replaceMatches(for: "[*imports*]".scalars, with: symbolImports)
 
@@ -134,7 +144,11 @@ internal class Page {
     if let specified = symbolType {
       symbolTypeLabel
         = ElementSyntax(
-          "div", attributes: ["class": "symbol‐type"], contents: specified, inline: true)
+          "div",
+          attributes: ["class": "symbol‐type"],
+          contents: specified,
+          inline: true
+        )
         .normalizedSource()
     } else {
       symbolTypeLabel = ""  // @exempt(from: tests) Unreachable yet.
@@ -147,9 +161,12 @@ internal class Page {
 
     mutable.replaceMatches(
       for: "[*copyright*]",
-      with: ElementSyntax("span", contents: copyright, inline: false).normalizedSource())
+      with: ElementSyntax("span", contents: copyright, inline: false).normalizedSource()
+    )
     mutable.replaceMatches(
-      for: "[*workspace*]", with: Page.watermark(localization: localization))
+      for: "[*workspace*]",
+      with: Page.watermark(localization: localization)
+    )
 
     mutable.replaceMatches(for: "[*content*]", with: content)
 

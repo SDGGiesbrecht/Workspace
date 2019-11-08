@@ -45,8 +45,12 @@ internal struct CalloutCasing: SyntaxRule {
   })
 
   internal static func check(
-    _ node: ExtendedSyntax, context: ExtendedSyntaxContext, file: TextFile,
-    project: PackageRepository, status: ProofreadingStatus, output: Command.Output
+    _ node: ExtendedSyntax,
+    context: ExtendedSyntaxContext,
+    file: TextFile,
+    project: PackageRepository,
+    status: ProofreadingStatus,
+    output: Command.Output
   ) {
 
     if let token = node as? ExtendedTokenSyntax,
@@ -60,8 +64,12 @@ internal struct CalloutCasing: SyntaxRule {
       replacement.prepend(contentsOf: String(first).uppercased())
 
       reportViolation(
-        in: file, at: token.range(in: context),
-        replacementSuggestion: StrictString(replacement), message: message, status: status)
+        in: file,
+        at: token.range(in: context),
+        replacementSuggestion: StrictString(replacement),
+        message: message,
+        status: status
+      )
     }
   }
 }

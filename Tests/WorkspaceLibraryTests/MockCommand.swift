@@ -43,7 +43,8 @@ let mockCommand = Command(
       return "Paragraf eins.\nZeile zwei.\n\nParagraf zwei."
     }
   }),
-  subcommands: [mockSubcommand])
+  subcommands: [mockSubcommand]
+)
 
 let mockOption = Option(
   name: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -61,7 +62,8 @@ let mockOption = Option(
       return "Eine Alternative."
     }
   }),
-  type: ArgumentType.string)
+  type: ArgumentType.string
+)
 
 let mockSubcommand = Command(
   name: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -82,4 +84,5 @@ let mockSubcommand = Command(
   }),
   directArguments: [ArgumentType.string],
   options: [mockOption],
-  execution: { _, _, _ in })
+  execution: { _, _, _ in }
+)

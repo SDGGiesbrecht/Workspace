@@ -39,7 +39,9 @@ internal struct MissingImplementation: TextRule {
   })
 
   internal static func check(
-    file: TextFile, in project: PackageRepository, status: ProofreadingStatus,
+    file: TextFile,
+    in project: PackageRepository,
+    status: ProofreadingStatus,
     output: Command.Output
   ) {
     for match in file.contents.scalars.matches(for: "\u{6E}otImplementedYet".scalars) {

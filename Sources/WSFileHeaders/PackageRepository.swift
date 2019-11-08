@@ -30,7 +30,8 @@ extension PackageRepository {
 
   private var skippedFiles: Set<URL> {
     return Set(
-      PackageRepository.skippedRelativePaths.map({ location.appendingPathComponent($0) }))
+      PackageRepository.skippedRelativePaths.map({ location.appendingPathComponent($0) })
+    )
   }
 
   public func refreshFileHeaders(output: Command.Output) throws {
@@ -51,10 +52,14 @@ extension PackageRepository {
 
           header
             = header.replacingMatches(
-              for: "#filename", with: StrictString(url.lastPathComponent))
+              for: "#filename",
+              with: StrictString(url.lastPathComponent)
+            )
           header
             = header.replacingMatches(
-              for: "#dates", with: copyright(fromText: oldHeader))
+              for: "#dates",
+              with: copyright(fromText: oldHeader)
+            )
 
           file.header = String(header)
           try file.writeChanges(for: self, output: output)

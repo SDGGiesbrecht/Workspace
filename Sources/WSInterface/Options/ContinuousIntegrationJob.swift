@@ -40,7 +40,10 @@ extension ContinuousIntegrationJob {
   })
 
   internal static let option = SDGCommandLine.Option(
-    name: optionName, description: optionDescription, type: argument)
+    name: optionName,
+    description: optionDescription,
+    type: argument
+  )
 
   private static let argumentTypeName = UserFacing<StrictString, InterfaceLocalization>({
     localization in
@@ -60,5 +63,6 @@ extension ContinuousIntegrationJob {
         label: UserFacing<StrictString, InterfaceLocalization>
       ) in
       return (value: job, label: job.argumentName)
-    })
+    }
+  )
 }

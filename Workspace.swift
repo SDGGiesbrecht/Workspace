@@ -36,7 +36,8 @@ public let configuration: WorkspaceConfiguration = {
 
   configuration.documentation.currentVersion = Metadata.latestStableVersion
   configuration.documentation.projectWebsite = URL(
-    string: "https://github.com/SDGGiesbrecht/Workspace#workspace")!
+    string: "https://github.com/SDGGiesbrecht/Workspace#workspace"
+  )!
   configuration.documentation.documentationURL = Metadata.documentationURL
   configuration.documentation.repositoryURL = Metadata.packageURL
 

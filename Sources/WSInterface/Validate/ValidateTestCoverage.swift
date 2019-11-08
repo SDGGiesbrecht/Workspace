@@ -47,7 +47,9 @@ extension Workspace.Validate {
     })
 
     static let command = Command(
-      name: name, description: description, directArguments: [],
+      name: name,
+      description: description,
+      directArguments: [],
       options: Workspace.standardOptions + [ContinuousIntegrationJob.option],
       execution: { (_, options: Options, output: Command.Output) throws in
 
@@ -58,26 +60,38 @@ extension Workspace.Validate {
         #endif
 
         try Build.validate(
-          job: options.job, against: ContinuousIntegrationJob.coverageJobs,
-          for: options.project, output: output)
+          job: options.job,
+          against: ContinuousIntegrationJob.coverageJobs,
+          for: options.project,
+          output: output
+        )
 
         var validationStatus = ValidationStatus()
 
         try executeAsStep(
-          options: options, validationStatus: &validationStatus, output: output)
+          options: options,
+          validationStatus: &validationStatus,
+          output: output
+        )
 
         try validationStatus.reportOutcome(project: options.project, output: output)
-      })
+      }
+    )
 
     static func executeAsStep(
-      options: Options, validationStatus: inout ValidationStatus, output: Command.Output
+      options: Options,
+      validationStatus: inout ValidationStatus,
+      output: Command.Output
     ) throws {
 
       for job in ContinuousIntegrationJob.allCases
       where try options.job.includes(job: job) ∧ (
         try Build.job(
-          job, isRelevantTo: options.project,
-          andAvailableJobs: ContinuousIntegrationJob.coverageJobs, output: output)
+          job,
+          isRelevantTo: options.project,
+          andAvailableJobs: ContinuousIntegrationJob.coverageJobs,
+          output: output
+        )
       ) {
         try autoreleasepool {
 
@@ -100,9 +114,15 @@ extension Workspace.Validate {
           #endif
 
           try options.project.test(
-            on: job, validationStatus: &validationStatus, output: output)
+            on: job,
+            validationStatus: &validationStatus,
+            output: output
+          )
           try options.project.validateCodeCoverage(
-            on: job, validationStatus: &validationStatus, output: output)
+            on: job,
+            validationStatus: &validationStatus,
+            output: output
+          )
         }
       }
     }

@@ -34,7 +34,8 @@ extension PackageRepository {
             return
               "Fortlaufende Einbindung benötigt, dass Arbeitsablaufsskripte vorhanden sind. (arbeitsablaufsskripteBereitstellen)"
           }
-        }))
+        })
+      )
     }
 
     var travisConfiguration: [String] = [
@@ -49,7 +50,8 @@ extension PackageRepository {
     {  // Simulator is unavailable during normal test.
 
       travisConfiguration.append(
-        contentsOf: try job.script(configuration: configuration(output: output)))
+        contentsOf: try job.script(configuration: configuration(output: output))
+      )
     }
 
     if try isWorkspaceProject() {
@@ -60,12 +62,14 @@ extension PackageRepository {
             for:
               "\u{22}bash \u{5C}\u{22}./Validate (macOS).command\u{5C}\u{22} •job ios\u{22}"
               .scalars,
-            with: "swift run test‐ios‐simulator".scalars)
+            with: "swift run test‐ios‐simulator".scalars
+          )
           line.scalars.replaceMatches(
             for:
               "\u{22}bash \u{5C}\u{22}./Validate (macOS).command\u{5C}\u{22} •job tvos\u{22}"
               .scalars,
-            with: "swift run test‐tvos‐simulator".scalars)
+            with: "swift run test‐tvos‐simulator".scalars
+          )
           return line
         }
     }
@@ -79,7 +83,8 @@ extension PackageRepository {
     ])
 
     var travisConfigurationFile = try TextFile(
-      possiblyAt: location.appendingPathComponent(".travis.yml"))
+      possiblyAt: location.appendingPathComponent(".travis.yml")
+    )
     travisConfigurationFile.body = travisConfiguration.joinedAsLines()
     try travisConfigurationFile.writeChanges(for: self, output: output)
   }

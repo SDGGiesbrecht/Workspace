@@ -51,7 +51,8 @@ extension PackageRepository {
 
     return InterfaceLocalization.allCases.map { (localization) in
       return location.appendingPathComponent(
-        String(PackageRepository.resourceDirectoryName.resolved(for: localization)))
+        String(PackageRepository.resourceDirectoryName.resolved(for: localization))
+      )
     }
   }
 
@@ -83,7 +84,8 @@ extension PackageRepository {
             return
               "Kein Ziel wurde für eine Ressource angegeben:\n\(path)\nDateien müssen in Unterverzeichnissen sein, dessen Namen mit dem gemeinten Ziel übereinstimmen."
           }
-        }))
+        })
+      )
     }
     guard let target = (try targetsByName())[String(targetName)] else {
       throw Command.Error(
@@ -99,7 +101,8 @@ extension PackageRepository {
             return
               "Kein Ziel Namens „\(targetName)“.\nRessourcen müssen in Unterverzeichnissen sein, dessen Namen mit dem gemeinten Ziel übereinstimmen."
           }
-        }))
+        })
+      )
     }
     return target
   }

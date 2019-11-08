@@ -83,8 +83,11 @@ extension Workspace {
         var validationStatus = ValidationStatus()
         let outputDirectory = options.project.defaultDocumentationDirectory
         try executeAsStep(
-          outputDirectory: outputDirectory, options: options,
-          validationStatus: &validationStatus, output: output)
+          outputDirectory: outputDirectory,
+          options: options,
+          validationStatus: &validationStatus,
+          output: output
+        )
 
         guard validationStatus.validatedSomething else {
           throw Command.Error(
@@ -102,18 +105,24 @@ extension Workspace {
                   "Die Paketenladeliste bestimmt keine Produkte."
                 ].joinedAsLines()
               }
-            }))
+            })
+          )
         }
         try validationStatus.reportOutcome(project: options.project, output: output)
-      })
+      }
+    )
 
     static func executeAsStep(
-      outputDirectory: URL, options: Options, validationStatus: inout ValidationStatus,
+      outputDirectory: URL,
+      options: Options,
+      validationStatus: inout ValidationStatus,
       output: Command.Output
     ) throws {
       try options.project.document(
-        outputDirectory: outputDirectory, validationStatus: &validationStatus,
-        output: output)
+        outputDirectory: outputDirectory,
+        validationStatus: &validationStatus,
+        output: output
+      )
     }
   }
 }

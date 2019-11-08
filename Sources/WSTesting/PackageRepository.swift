@@ -32,7 +32,8 @@ extension PackageRepository {
   // MARK: - Testing
 
   public func build(
-    for job: ContinuousIntegrationJob, validationStatus: inout ValidationStatus,
+    for job: ContinuousIntegrationJob,
+    validationStatus: inout ValidationStatus,
     output: Command.Output
   ) throws {
 
@@ -46,7 +47,8 @@ extension PackageRepository {
         case .deutschDeutschland:
           return "Erstellung für \(job.deutscherName) wird geprüft ..." + section.anchor
         }
-      }).resolved().formattedAsSectionHeader())
+      }).resolved().formattedAsSectionHeader()
+    )
 
     do {
       let buildCommand: (Command.Output) throws -> Bool
@@ -54,8 +56,10 @@ extension PackageRepository {
       case .macOS, .linux:
         buildCommand = { output in
           let log = try self.build(
-            releaseConfiguration: false, staticallyLinkStandardLibrary: false,
-            reportProgress: { output.print($0) }).get()
+            releaseConfiguration: false,
+            staticallyLinkStandardLibrary: false,
+            reportProgress: { output.print($0) }
+          ).get()
           return ¬SwiftCompiler.warningsOccurred(during: log)
         }
       case .iOS, .watchOS, .tvOS:  // @exempt(from: tests) Unreachable from Linux.
@@ -66,7 +70,8 @@ extension PackageRepository {
               if let relevant = Xcode.abbreviate(output: report) {
                 output.print(relevant)
               }
-            }).get()
+            }
+          ).get()
           return ¬Xcode.warningsOccurred(during: log)
         }
       case .miscellaneous, .deployment:
@@ -82,7 +87,8 @@ extension PackageRepository {
             case .deutschDeutschland:
               return "Es gibt keine Übersetzerwarnungen zu \(job.deutscherName)."
             }
-          }))
+          })
+        )
       } else {
         validationStatus.failStep(
           message: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -94,7 +100,8 @@ extension PackageRepository {
               return "Es gibt Übersetzerwarnungen zu \(job.englishName)."
                 + section.crossReference.resolved(for: localization)
             }
-          }))
+          })
+        )
       }
     } catch {
       // @exempt(from: tests) Unreachable on Linux.
@@ -119,12 +126,14 @@ extension PackageRepository {
             return "Erstellung für \(job.deutscherName) ist fehlgeschlagen."
               + section.crossReference.resolved(for: localization)
           }
-        }))
+        })
+      )
     }
   }
 
   public func test(
-    on job: ContinuousIntegrationJob, validationStatus: inout ValidationStatus,
+    on job: ContinuousIntegrationJob,
+    validationStatus: inout ValidationStatus,
     output: Command.Output
   ) throws {
 
@@ -138,7 +147,8 @@ extension PackageRepository {
         case .deutschDeutschland:
           return "Auf \(job.deutscherName) wird getestet ..." + section.anchor
         }
-      }).resolved().formattedAsSectionHeader())
+      }).resolved().formattedAsSectionHeader()
+    )
 
     let testCommand: (Command.Output) -> Bool
     switch job {
@@ -161,7 +171,8 @@ extension PackageRepository {
             if let relevant = Xcode.abbreviate(output: report) {
               output.print(relevant)
             }
-          })
+          }
+        )
         {
         case .failure(let error):
           var description = StrictString(error.localizedDescription)
@@ -190,7 +201,8 @@ extension PackageRepository {
           case .deutschDeutschland:
             return "Teste werden auf \(job.deutscherName) bestanden."
           }
-        }))
+        })
+      )
     } else {
       validationStatus.failStep(
         message: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -202,12 +214,14 @@ extension PackageRepository {
             return "Teste werden auf \(job.deutscherName) nicht bestanden."
               + section.crossReference.resolved(for: localization)
           }
-        }))
+        })
+      )
     }
   }
 
   public func validateCodeCoverage(
-    on job: ContinuousIntegrationJob, validationStatus: inout ValidationStatus,
+    on job: ContinuousIntegrationJob,
+    validationStatus: inout ValidationStatus,
     output: Command.Output
   ) throws {
 
@@ -220,7 +234,8 @@ extension PackageRepository {
         case .deutschDeutschland:
           return "Testabdeckung auf \(job.deutscherName) wird geprüft ..."
         }
-      }).resolved().formattedAsSectionHeader())
+      }).resolved().formattedAsSectionHeader()
+    )
 
     func failStepWithError(message: StrictString) {
       // @exempt(from: tests) Difficult to reach consistently.
@@ -238,7 +253,8 @@ extension PackageRepository {
               "Testabdeckung auf \(job.englishName) konnte nicht verarbeitet werden."
               + section.crossReference.resolved(for: localization)
           }
-        }))
+        })
+      )
     }
 
     do {
@@ -247,7 +263,9 @@ extension PackageRepository {
       case .macOS, .linux:
         guard
           let fromPackageManager = try codeCoverageReport(
-            ignoreCoveredRegions: true, reportProgress: { output.print($0) }).get()
+            ignoreCoveredRegions: true,
+            reportProgress: { output.print($0) }
+          ).get()
         else {  // @exempt(from: tests) Untestable in Xcode due to interference.
           failStepWithError(
             message: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -259,7 +277,8 @@ extension PackageRepository {
                 return
                   "Der Paketverwalter hat keinen Testabdeckungsbericht erstellt."
               }
-            }).resolved())
+            }).resolved()
+          )
           return
         }
         report = fromPackageManager  // @exempt(from: tests)
@@ -269,7 +288,8 @@ extension PackageRepository {
             on: job.testSDK,
             derivedData: stableDerivedData,
             ignoreCoveredRegions: true,
-            reportProgress: { output.print($0) }).get()
+            reportProgress: { output.print($0) }
+          ).get()
         else {
           failStepWithError(
             message: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -279,7 +299,8 @@ extension PackageRepository {
               case .deutschDeutschland:
                 return "Xcode erstellte keinen Testabdeckungsbericht erstellt."
               }
-            }).resolved())
+            }).resolved()
+          )
           return
         }
         report = fromXcode
@@ -296,13 +317,15 @@ extension PackageRepository {
           // Not testable.
           for path in target.sources.paths {
             irrelevantFiles.insert(
-              URL(fileURLWithPath: path.pathString).resolvingSymlinksInPath())
+              URL(fileURLWithPath: path.pathString).resolvingSymlinksInPath()
+            )
           }
         case .test:
           // Coverage unimportant.
           for path in target.sources.paths {
             irrelevantFiles.insert(
-              URL(fileURLWithPath: path.pathString).resolvingSymlinksInPath())
+              URL(fileURLWithPath: path.pathString).resolvingSymlinksInPath()
+            )
           }
         }
       }
@@ -327,7 +350,9 @@ extension PackageRepository {
         }
 
         CommandLineProofreadingReporter.default.reportParsing(
-          file: file.file.path(relativeTo: location), to: output)
+          file: file.file.path(relativeTo: location),
+          to: output
+        )
         try autoreleasepool {
           let sourceFile = try String(from: file.file)
           regionLoop: for region in file.regions {
@@ -346,7 +371,10 @@ extension PackageRepository {
             // No ignore tokens.
 
             CommandLineProofreadingReporter.default.report(
-              violation: region.region, in: sourceFile, to: output)
+              violation: region.region,
+              in: sourceFile,
+              to: output
+            )
             passing = false
           }
         }
@@ -361,7 +389,8 @@ extension PackageRepository {
             case .deutschDeutschland:
               return "Testabdeckung auf \(job.deutscherName) ist vollständig."
             }
-          }))
+          })
+        )
       } else {
         validationStatus.failStep(
           message: UserFacing<StrictString, InterfaceLocalization>({ localization in  // @exempt(from: tests)
@@ -373,7 +402,8 @@ extension PackageRepository {
               return "Testabdeckung auf \(job.deutscherName) ist unvollständig."
                 + section.crossReference.resolved(for: localization)
             }
-          }))
+          })
+        )
       }
     } catch {
       // @exempt(from: tests) Unreachable on Linux.

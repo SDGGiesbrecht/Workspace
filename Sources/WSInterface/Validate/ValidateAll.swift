@@ -46,7 +46,9 @@ extension Workspace.Validate {
     })
 
     static let command = Command(
-      name: name, description: description, directArguments: [],
+      name: name,
+      description: description,
+      directArguments: [],
       options: Workspace.standardOptions + [
         ContinuousIntegrationJob.option
       ],
@@ -58,24 +60,36 @@ extension Workspace.Validate {
         if options.job == .deployment {
           try TravisCI.keepAlive {  // @exempt(from: tests)
             try executeAsStep(
-              validationStatus: &validationStatus, arguments: arguments,
-              options: options, output: output)
+              validationStatus: &validationStatus,
+              arguments: arguments,
+              options: options,
+              output: output
+            )
           }
         } else {
           try executeAsStep(
-            validationStatus: &validationStatus, arguments: arguments, options: options,
-            output: output)
+            validationStatus: &validationStatus,
+            arguments: arguments,
+            options: options,
+            output: output
+          )
         }
-      })
+      }
+    )
 
     static func executeAsStep(
-      validationStatus: inout ValidationStatus, arguments: DirectArguments, options: Options,
+      validationStatus: inout ValidationStatus,
+      arguments: DirectArguments,
+      options: Options,
       output: Command.Output
     ) throws {
 
       if ¬ProcessInfo.isInContinuousIntegration {
         try Workspace.Refresh.All.executeAsStep(
-          withArguments: arguments, options: options, output: output)  // @exempt(from: tests)
+          withArguments: arguments,
+          options: options,
+          output: output
+        )  // @exempt(from: tests)
       }
 
       let projectName = try options.project.localizedIsolatedProjectName(output: output)
@@ -89,19 +103,26 @@ extension Workspace.Validate {
           case .deutschDeutschland:
             return "„\(projectName)“ wird geprüft ..."
           }
-        }).resolved().formattedAsSectionHeader())
+        }).resolved().formattedAsSectionHeader()
+      )
 
       // Proofread
       if options.job == .miscellaneous ∨ options.job == nil {
         try Workspace.Proofread.executeAsStep(
-          normalizingFirst: false, options: options, validationStatus: &validationStatus,
-          output: output)
+          normalizingFirst: false,
+          options: options,
+          validationStatus: &validationStatus,
+          output: output
+        )
       }
 
       // Build
       if try options.project.configuration(output: output).testing.prohibitCompilerWarnings {
         try Workspace.Validate.Build.executeAsStep(
-          options: options, validationStatus: &validationStatus, output: output)
+          options: options,
+          validationStatus: &validationStatus,
+          output: output
+        )
       }
 
       // Test
@@ -111,16 +132,25 @@ extension Workspace.Validate {
         {
           // Coverage impossible to check.
           try Workspace.Test.executeAsStep(
-            options: options, validationStatus: &validationStatus, output: output)
+            options: options,
+            validationStatus: &validationStatus,
+            output: output
+          )
         } else {
           // Check coverage.
           try Workspace.Validate.TestCoverage.executeAsStep(
-            options: options, validationStatus: &validationStatus, output: output)
+            options: options,
+            validationStatus: &validationStatus,
+            output: output
+          )
         }
       } else {
         // Coverage irrelevant.
         try Workspace.Test.executeAsStep(
-          options: options, validationStatus: &validationStatus, output: output)
+          options: options,
+          validationStatus: &validationStatus,
+          output: output
+        )
       }
 
       // Document
@@ -134,13 +164,19 @@ extension Workspace.Validate {
             .enforceCoverage
         {
           try Workspace.Validate.DocumentationCoverage.executeAsStep(
-            options: options, validationStatus: &validationStatus, output: output)
+            options: options,
+            validationStatus: &validationStatus,
+            output: output
+          )
         } else if try options.project.configuration(output: output).documentation.api
           .generate
         {
           try Workspace.Document.executeAsStep(
             outputDirectory: options.project.defaultDocumentationDirectory,
-            options: options, validationStatus: &validationStatus, output: output)
+            options: options,
+            validationStatus: &validationStatus,
+            output: output
+          )
         }
       }
 
@@ -149,7 +185,10 @@ extension Workspace.Validate {
       {
         try Workspace.Document.executeAsStep(
           outputDirectory: options.project.defaultDocumentationDirectory,
-          options: options, validationStatus: &validationStatus, output: output)
+          options: options,
+          validationStatus: &validationStatus,
+          output: output
+        )
       }
 
       // Custom
@@ -168,7 +207,8 @@ extension Workspace.Validate {
               return "Sonderprüfung wird ausgeführt: „\(task.executable)“ ..."
                 + state.anchor
             }
-          }).resolved().formattedAsSectionHeader())
+          }).resolved().formattedAsSectionHeader()
+        )
         do {
           try task.execute(output: output)
           validationStatus.passStep(
@@ -181,7 +221,8 @@ extension Workspace.Validate {
               case .deutschDeutschland:
                 return "Sonderprüfung wurde bestanden: “\(task.executable)”"
               }
-            }))
+            })
+          )
         } catch {
           validationStatus.failStep(
             message: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -196,7 +237,8 @@ extension Workspace.Validate {
                 return "Sonderprüfung wurde nicht bestanden: “\(task.executable)”"
                   + state.crossReference.resolved(for: localization)
               }
-            }))
+            })
+          )
         }
       }
 
@@ -216,7 +258,8 @@ extension Workspace.Validate {
             case .deutschDeutschland:
               return "Projektstand wird geprüft ..." + state.anchor
             }
-          }).resolved().formattedAsSectionHeader())
+          }).resolved().formattedAsSectionHeader()
+        )
 
         let difference = try options.project.uncommittedChanges(excluding: ["*.dsidx"])
           .get()
@@ -234,7 +277,8 @@ extension Workspace.Validate {
                 return "Das Projektstand ist veraltet. Bitte prüfen vor übergeben."
                   + state.crossReference.resolved(for: localization)
               }
-            }))
+            })
+          )
         } else {
           validationStatus.passStep(
             message: UserFacing({ localization in  // @exempt(from: tests)
@@ -244,7 +288,8 @@ extension Workspace.Validate {
               case .deutschDeutschland:
                 return "Das Projekt ist auf dem neuesten Stand."
               }
-            }))
+            })
+          )
         }
       }
 
@@ -268,7 +313,8 @@ extension Workspace.Validate {
                 "\(update.string()) ist erhältlich."
               ].joinedAsLines()
             }
-          }).resolved().formattedAsWarning().separated())
+          }).resolved().formattedAsWarning().separated()
+        )
       }
 
       try validationStatus.reportOutcome(project: options.project, output: output)

@@ -239,7 +239,8 @@ public struct FileHeaderConfiguration: Codable {
         case .deutschDeutschland:
           return "Diese Quelldatei ist Teil des qeulloffenen \(projectName)‐Projekt."
         }
-      }))
+      })
+    )
     if let site = configuration.documentation.projectWebsite {
       header.append(StrictString(site.absoluteString))
     }
@@ -262,7 +263,8 @@ public struct FileHeaderConfiguration: Codable {
             .deutschDeutschland:
             return "Soli Deo gloria."
           }
-        }))
+        })
+      )
     }
 
     if let licence = configuration.licence.licence {

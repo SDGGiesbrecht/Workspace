@@ -41,7 +41,8 @@ extension StringFamily {
         .lowerBound
       {
         smallestIndent.decrease(
-          to: line.distance(from: line.startIndex, to: firstCharacter))
+          to: line.distance(from: line.startIndex, to: firstCharacter)
+        )
       }
     }
     let stripped: [Self] = lines.map { line in

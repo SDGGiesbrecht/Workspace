@@ -101,8 +101,8 @@ public struct ReadMeConfiguration: Codable {
       ]
 
       if let installation = configuration.documentation.installationInstructions.resolve(
-        configuration)[localization]
-      {
+        configuration
+      )[localization] {
         let header: StrictString
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
@@ -117,8 +117,8 @@ public struct ReadMeConfiguration: Codable {
         ]
       }
       if let importing = configuration.documentation.importingInstructions.resolve(
-        configuration)[localization]
-      {
+        configuration
+      )[localization] {
         let header: StrictString
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -163,7 +163,9 @@ public struct ReadMeConfiguration: Codable {
   }
 
   private static func _locationOfDocumentationFile(
-    named name: StrictString, for localization: LocalizationIdentifier, in project: URL
+    named name: StrictString,
+    for localization: LocalizationIdentifier,
+    in project: URL
   ) -> URL {
     let icon = ContentLocalization.icon(for: localization.code) ?? "[\(localization.code)]"
     let fileName: StrictString = icon + " " + name + ".md"
@@ -228,7 +230,8 @@ public struct ReadMeConfiguration: Codable {
     var link: StrictString = "[" + label + "]("
     link
       += StrictString(
-        baseURL.appendingPathComponent(String(localization._directoryName)).absoluteString)
+        baseURL.appendingPathComponent(String(localization._directoryName)).absoluteString
+      )
       + ")"
     return link
   }
@@ -236,7 +239,8 @@ public struct ReadMeConfiguration: Codable {
   // MARK: - Related Projects
 
   public static func _relatedProjectsLocation(
-    for project: URL, localization: LocalizationIdentifier
+    for project: URL,
+    localization: LocalizationIdentifier
   ) -> URL {
     let name: StrictString
     switch localization._bestMatch {

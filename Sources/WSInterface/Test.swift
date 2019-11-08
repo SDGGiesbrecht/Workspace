@@ -45,7 +45,9 @@ extension Workspace {
     })
 
     static let command = Command(
-      name: name, description: description, directArguments: [],
+      name: name,
+      description: description,
+      directArguments: [],
       options: Workspace.standardOptions + [ContinuousIntegrationJob.option],
       execution: { (_, options: Options, output: Command.Output) throws in
 
@@ -56,26 +58,38 @@ extension Workspace {
         #endif
 
         try Validate.Build.validate(
-          job: options.job, against: ContinuousIntegrationJob.testJobs,
-          for: options.project, output: output)
+          job: options.job,
+          against: ContinuousIntegrationJob.testJobs,
+          for: options.project,
+          output: output
+        )
 
         var validationStatus = ValidationStatus()
 
         try executeAsStep(
-          options: options, validationStatus: &validationStatus, output: output)
+          options: options,
+          validationStatus: &validationStatus,
+          output: output
+        )
 
         try validationStatus.reportOutcome(project: options.project, output: output)
-      })
+      }
+    )
 
     static func executeAsStep(
-      options: Options, validationStatus: inout ValidationStatus, output: Command.Output
+      options: Options,
+      validationStatus: inout ValidationStatus,
+      output: Command.Output
     ) throws {
 
       for job in ContinuousIntegrationJob.allCases
       where try options.job.includes(job: job) ∧ (
         try Validate.Build.job(
-          job, isRelevantTo: options.project,
-          andAvailableJobs: ContinuousIntegrationJob.testJobs, output: output)
+          job,
+          isRelevantTo: options.project,
+          andAvailableJobs: ContinuousIntegrationJob.testJobs,
+          output: output
+        )
       ) {
         try autoreleasepool {
 
@@ -98,7 +112,10 @@ extension Workspace {
           #endif
 
           try options.project.test(
-            on: job, validationStatus: &validationStatus, output: output)
+            on: job,
+            validationStatus: &validationStatus,
+            output: output
+          )
         }
       }
     }

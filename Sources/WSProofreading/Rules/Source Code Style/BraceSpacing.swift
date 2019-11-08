@@ -61,8 +61,12 @@ internal struct BraceSpacing: SyntaxRule {
   private static let prohibitedClosingSpaceSuggestion: StrictString = "}"
 
   internal static func check(
-    _ node: Syntax, context: SyntaxContext, file: TextFile, project: PackageRepository,
-    status: ProofreadingStatus, output: Command.Output
+    _ node: Syntax,
+    context: SyntaxContext,
+    file: TextFile,
+    project: PackageRepository,
+    status: ProofreadingStatus,
+    output: Command.Output
   ) {
 
     if let token = node as? TokenSyntax {
@@ -108,7 +112,9 @@ internal struct BraceSpacing: SyntaxRule {
                 var range = token.syntaxRange(in: context)
                 range
                   = extendInternalBound(
-                    range, firstInternalTrivia.text.scalars.count)
+                    range,
+                    firstInternalTrivia.text.scalars.count
+                  )
                 internalViolation = (
                   prohibitedInternalSpaceMessage, prohibitedSuggestion, range
                 )
@@ -134,9 +140,12 @@ internal struct BraceSpacing: SyntaxRule {
           if let violation = internalViolation {
             if ¬context.isFragmented() {
               reportViolation(
-                in: file, at: violation.range,
+                in: file,
+                at: violation.range,
                 replacementSuggestion: violation.suggestion,
-                message: violation.message, status: status)
+                message: violation.message,
+                status: status
+              )
             }
           }
         }
@@ -153,7 +162,8 @@ internal struct BraceSpacing: SyntaxRule {
           $0.lowerBound ..< file.contents.scalars.index($0.upperBound, offsetBy: $1)
         },
         requiredInternalSuggestion: requiredOpeningInternalSpaceSuggestion,
-        prohibitedSuggestion: prohibitedOpeningSpaceSuggestion)
+        prohibitedSuggestion: prohibitedOpeningSpaceSuggestion
+      )
       check(
         kind: .rightBrace,
         oppositeKind: .leftBrace,
@@ -165,7 +175,8 @@ internal struct BraceSpacing: SyntaxRule {
           file.contents.scalars.index($0.lowerBound, offsetBy: −$1) ..< $0.upperBound
         },
         requiredInternalSuggestion: requiredClosingInternalSpaceSuggestion,
-        prohibitedSuggestion: prohibitedClosingSpaceSuggestion)
+        prohibitedSuggestion: prohibitedClosingSpaceSuggestion
+      )
     }
   }
 }

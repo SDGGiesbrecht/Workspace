@@ -33,7 +33,8 @@ extension Command.Output {
         options: [],
         execution: { (_, _, output: Command.Output) in
           result = output
-        }).execute(with: []).get()
+        }
+      ).execute(with: []).get()
     } catch {}
     return result!
   }()

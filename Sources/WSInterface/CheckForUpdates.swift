@@ -43,7 +43,10 @@ extension Workspace {
     })
 
     static let command = Command(
-      name: name, description: description, directArguments: [], options: [],
+      name: name,
+      description: description,
+      directArguments: [],
+      options: [],
       execution: { (_, _, output: Command.Output) throws in
         if let update = try checkForUpdates(output: output) {
           // @exempt(from: tests) Execution path is determined externally.
@@ -68,7 +71,8 @@ extension Workspace {
                 return
                   "Arbeitsbereich \(update.string()) ist erhältlich.\nFür Aktualisierungsanweisungen, siehe \(url.absoluteString.in(Underline.underlined))"
               }
-            }).resolved())
+            }).resolved()
+          )
         } else {
           // @exempt(from: tests) Execution path is determined externally.
           output.print(
@@ -79,9 +83,11 @@ extension Workspace {
               case .deutschDeutschland:  // @exempt(from: tests)
                 return "Arbeitsbereich ist auf dem neuesten Stand."
               }
-            }).resolved())
+            }).resolved()
+          )
         }
-      })
+      }
+    )
 
     static func checkForUpdates(output: Command.Output) throws -> Version? {
       let latestRemote = try Package(url: Metadata.packageURL).versions().get().sorted().last!

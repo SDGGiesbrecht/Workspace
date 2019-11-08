@@ -154,7 +154,9 @@ public struct TestingConfiguration: Codable {
     Testabdeckungsausnahmszeichen("behauptungsfehlschlag", geltungsbereich: .vorstehendeZeile),
     Testabdeckungsausnahmszeichen("voraussetzung", geltungsbereich: .selbeZeile),
     Testabdeckungsausnahmszeichen(
-      "voraussetzungsfehlschlag", geltungsbereich: .vorstehendeZeile),
+      "voraussetzungsfehlschlag",
+      geltungsbereich: .vorstehendeZeile
+    ),
     Testabdeckungsausnahmszeichen("unbehebbarerFehler", geltungsbereich: .vorstehendeZeile),
 
     Testabdeckungsausnahmszeichen("stammmethode", geltungsbereich: .vorstehendeZeile),

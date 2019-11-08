@@ -38,15 +38,15 @@ extension Array where Element == SymbolDocumentation {
       for comment in documentation.developerComments {
         let content = StrictString(comment.content.text)
         for match in content.matches(
-          for: InterfaceLocalization.localizationDeclaration)
-        {
+          for: InterfaceLocalization.localizationDeclaration
+        ) {
           let identifier = match.declarationArgument()
           let localization = LocalizationIdentifier(String(identifier))
           result[localization] = documentation.documentationComment
         }
         for match in content.matches(
-          for: InterfaceLocalization.crossReferenceDeclaration)
-        {
+          for: InterfaceLocalization.crossReferenceDeclaration
+        ) {
           parent = match.declarationArgument()
         }
         for match in content.matches(for: InterfaceLocalization.notLocalizedDeclaration) {

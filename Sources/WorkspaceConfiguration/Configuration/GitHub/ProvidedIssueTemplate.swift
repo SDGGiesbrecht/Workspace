@@ -149,10 +149,12 @@ internal enum ProvidedIssueTemplate: CaseIterable {
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
         contents.append(
-          "There appears to be a mistake in the documentation about such‐and‐such.")
+          "There appears to be a mistake in the documentation about such‐and‐such."
+        )
       case .deutschDeutschland:
         contents.append(
-          "In die Dokumentation über soundso gibt es anscheinend einen Fehler.")
+          "In die Dokumentation über soundso gibt es anscheinend einen Fehler."
+        )
       }
     case .question:
       switch localization {
@@ -214,7 +216,8 @@ internal enum ProvidedIssueTemplate: CaseIterable {
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
         contents.append(
-          "<!\u{2D}\u{2D} Or provide a link to a demonstration elsewhere. \u{2D}\u{2D}>")
+          "<!\u{2D}\u{2D} Or provide a link to a demonstration elsewhere. \u{2D}\u{2D}>"
+        )
       case .deutschDeutschland:
         contents.append(
           "<!\u{2D}\u{2D} Oder einen Verweis bereitstellen, zum Nachweis sonstwo. \u{2D}\u{2D}>"
@@ -410,6 +413,7 @@ internal enum ProvidedIssueTemplate: CaseIterable {
       name: name,
       description: description,
       content: contents.joinedAsLines(),
-      labels: labels)
+      labels: labels
+    )
   }
 }

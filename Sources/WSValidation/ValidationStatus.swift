@@ -53,14 +53,16 @@ public struct ValidationStatus {
   public mutating func passStep(message: UserFacing<StrictString, InterfaceLocalization>) {
     summary.append(
       (ValidationStatus.passOrFailSymbol.resolved(using: true) + " " + message.resolved())
-        .formattedAsSuccess())
+        .formattedAsSuccess()
+    )
   }
 
   public mutating func failStep(message: UserFacing<StrictString, InterfaceLocalization>) {
     passing = false
     summary.append(
       (ValidationStatus.passOrFailSymbol.resolved(using: false) + " " + message.resolved())
-        .formattedAsError())
+        .formattedAsError()
+    )
   }
 
   public var validatedSomething: Bool {
@@ -84,7 +86,8 @@ public struct ValidationStatus {
           case .deutschDeutschland:
             return "„" + projectName + "“ besteht die Überprüfung."
           }
-        }).resolved().formattedAsSuccess().separated())
+        }).resolved().formattedAsSuccess().separated()
+      )
     } else {
       throw Command.Error(
         description: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -96,7 +99,9 @@ public struct ValidationStatus {
           case .deutschDeutschland:
             return "„" + projectName + "“ besteht die Überprüfung nicht."
           }
-        }), exitCode: 2)
+        }),
+        exitCode: 2
+      )
     }
   }
 }

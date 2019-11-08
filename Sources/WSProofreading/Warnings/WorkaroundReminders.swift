@@ -46,7 +46,9 @@ internal struct WorkaroundReminders: Warning {
   })
 
   internal static func message(
-    for details: StrictString, in project: PackageRepository, output: Command.Output
+    for details: StrictString,
+    in project: PackageRepository,
+    output: Command.Output
   ) throws -> UserFacing<StrictString, InterfaceLocalization>? {
 
     var description = details
@@ -64,21 +66,26 @@ internal struct WorkaroundReminders: Warning {
       {
 
         var dependency = parameters.map({ StrictString($0.contents) }).joined(
-          separator: " ")
+          separator: " "
+        )
         dependency.trimMarginalWhitespace()
 
         if dependency == "Swift" {
           var newDetails = details
           let script: StrictString = "swift \u{2D}\u{2D}version"
           newDetails.replaceSubrange(
-            versionCheckRange, with: "\(script) \(problemVersion.string())".scalars)
+            versionCheckRange,
+            with: "\(script) \(problemVersion.string())".scalars
+          )
           if try message(for: newDetails, in: project, output: output) == nil {
             return nil
           }
         } else {
           if let current = try currentVersion(
-            of: dependency, for: project, output: output)
-          {
+            of: dependency,
+            for: project,
+            output: output
+          ) {
             if current ≤ problemVersion {
               return nil
             }
@@ -102,7 +109,9 @@ internal struct WorkaroundReminders: Warning {
 
   private static var dependencyVersionCache: [StrictString: SDGVersioning.Version?] = [:]
   private static func currentVersion(
-    of dependency: StrictString, for project: PackageRepository, output: Command.Output
+    of dependency: StrictString,
+    for project: PackageRepository,
+    output: Command.Output
   ) throws -> SDGVersioning.Version? {
     if let dependency = try project.dependenciesByName()[String(dependency)],
       let version = dependency.manifest.version
@@ -113,14 +122,16 @@ internal struct WorkaroundReminders: Warning {
         in: &dependencyVersionCache[dependency],
         {
           if let shellOutput = try? Shell.default.run(
-            command: String(dependency).components(separatedBy: " ")).get(),
+            command: String(dependency).components(separatedBy: " ")
+          ).get(),
             let version = Version(firstIn: shellOutput)
           {
             return version
           } else {
             return nil
           }
-        })  // @exempt(from: tests) Meaningless coverage region.
+        }
+      )  // @exempt(from: tests) Meaningless coverage region.
     }
   }
 }

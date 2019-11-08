@@ -40,7 +40,9 @@ extension Workspace.Refresh {
     })
 
     static let command = Command(
-      name: name, description: description, directArguments: [],
+      name: name,
+      description: description,
+      directArguments: [],
       options: Workspace.standardOptions,
       execution: {
         (arguments: DirectArguments, options: Options, output: Command.Output) throws in
@@ -48,7 +50,10 @@ extension Workspace.Refresh {
         if options.job == .deployment {
           try TravisCI.keepAlive {  // @exempt(from: tests)
             try executeAsStep(
-              withArguments: arguments, options: options, output: output)
+              withArguments: arguments,
+              options: options,
+              output: output
+            )
           }
         } else {
           try executeAsStep(withArguments: arguments, options: options, output: output)
@@ -88,10 +93,13 @@ extension Workspace.Refresh {
         }
 
         try output.succeed(message: success, project: options.project)
-      })
+      }
+    )
 
     static func executeAsStep(
-      withArguments arguments: DirectArguments, options: Options, output: Command.Output
+      withArguments arguments: DirectArguments,
+      options: Options,
+      output: Command.Output
     ) throws {
 
       let projectName = try options.project.localizedIsolatedProjectName(output: output)
@@ -105,61 +113,92 @@ extension Workspace.Refresh {
           case .deutschDeutschland:
             return "„\(projectName)“ wird aufgefrischt ..."
           }
-        }).resolved().formattedAsSectionHeader())
+        }).resolved().formattedAsSectionHeader()
+      )
 
       // Scripts
       if try options.project.configuration(output: output).provideWorkflowScripts {
         try Workspace.Refresh.Scripts.command.execute(
-          withArguments: arguments, options: options, output: output)
+          withArguments: arguments,
+          options: options,
+          output: output
+        )
       }
 
       // Git
       if try options.project.configuration(output: output).git.manage {
         try Workspace.Refresh.Git.command.execute(
-          withArguments: arguments, options: options, output: output)
+          withArguments: arguments,
+          options: options,
+          output: output
+        )
       }
 
       // Read‐Me
       if try options.project.configuration(output: output).documentation.readMe.manage {
         try Workspace.Refresh.ReadMe.command.execute(
-          withArguments: arguments, options: options, output: output)
+          withArguments: arguments,
+          options: options,
+          output: output
+        )
       }
 
       // Licence
       if try options.project.configuration(output: output).licence.manage {
         try Workspace.Refresh.Licence.command.execute(
-          withArguments: arguments, options: options, output: output)
+          withArguments: arguments,
+          options: options,
+          output: output
+        )
       }
 
       // GitHub
       if try options.project.configuration(output: output).gitHub.manage {
         try Workspace.Refresh.GitHub.command.execute(
-          withArguments: arguments, options: options, output: output)
+          withArguments: arguments,
+          options: options,
+          output: output
+        )
       }
 
       // Continuous Integration
       if try options.project.configuration(output: output).continuousIntegration.manage {
         try Workspace.Refresh.ContinuousIntegration.command.execute(
-          withArguments: arguments, options: options, output: output)
+          withArguments: arguments,
+          options: options,
+          output: output
+        )
       }
 
       // Resources
       try Workspace.Refresh.Resources.command.execute(
-        withArguments: arguments, options: options, output: output)
+        withArguments: arguments,
+        options: options,
+        output: output
+      )
 
       // File Headers
       if try options.project.configuration(output: output).fileHeaders.manage {
         try Workspace.Refresh.FileHeaders.command.execute(
-          withArguments: arguments, options: options, output: output)
+          withArguments: arguments,
+          options: options,
+          output: output
+        )
       }
 
       // Examples
       try Workspace.Refresh.Examples.command.execute(
-        withArguments: arguments, options: options, output: output)
+        withArguments: arguments,
+        options: options,
+        output: output
+      )
 
       // Inherited Documentation
       try Workspace.Refresh.InheritedDocumentation.command.execute(
-        withArguments: arguments, options: options, output: output)
+        withArguments: arguments,
+        options: options,
+        output: output
+      )
 
       // Normalization
       try Workspace.Normalize.executeAsStep(options: options, output: output)
@@ -168,7 +207,10 @@ extension Workspace.Refresh {
       #if !os(Linux)
         if try options.project.configuration(output: output).xcode.manage {
           try Workspace.Refresh.Xcode.command.execute(
-            withArguments: arguments, options: options, output: output)
+            withArguments: arguments,
+            options: options,
+            output: output
+          )
         }
       #endif
 
@@ -184,7 +226,8 @@ extension Workspace.Refresh {
             case .deutschDeutschland:
               return "Sonderaufgabe wird ausgeführt: „\(task.executable)“ ..."
             }
-          }).resolved().formattedAsSectionHeader())
+          }).resolved().formattedAsSectionHeader()
+        )
         try task.execute(output: output)
       }
     }

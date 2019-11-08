@@ -95,7 +95,8 @@ extension PackageRepository {
 
       if let projectBundle = try xcodeProject() {
         var project = try TextFile(
-          alreadyAt: projectBundle.appendingPathComponent("project.pbxproj"))
+          alreadyAt: projectBundle.appendingPathComponent("project.pbxproj")
+        )
 
         let objectsLine = "objects = {"
         if let range = project.contents.scalars.firstMatch(for: objectsLine.scalars)?.range {
@@ -105,7 +106,8 @@ extension PackageRepository {
               objectsLine,
               aggregateTarget,
               try scriptObject()
-            ].joinedAsLines().scalars)
+            ].joinedAsLines().scalars
+          )
         }
 
         let targetsLine = "targets = ("
@@ -115,18 +117,23 @@ extension PackageRepository {
             with: [
               targetsLine,
               PackageRepository.proofreadTargetIdentifier + ","
-            ].joinedAsLines().scalars)
+            ].joinedAsLines().scalars
+          )
         }
 
         try project.writeChanges(for: self, output: output)
 
         var scheme = try TextFile(
           possiblyAt: projectBundle.appendingPathComponent(
-            "/xcshareddata/xcschemes/Proofread.xcscheme"))
+            "/xcshareddata/xcschemes/Proofread.xcscheme"
+          )
+        )
         var schemeDefinition = Resources.proofreadScheme
         schemeDefinition.drop(through: "\u{2D}\u{2D}>\n\n")
         schemeDefinition.replaceMatches(
-          for: "[*project*]", with: projectBundle.lastPathComponent)
+          for: "[*project*]",
+          with: projectBundle.lastPathComponent
+        )
         scheme.contents = schemeDefinition
         try scheme.writeChanges(for: self, output: output)
       }

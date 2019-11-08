@@ -47,7 +47,8 @@ class APITests: TestCase {
       ],
       configuration: configuration,
       localizations: InterfaceLocalization.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testAllTasks() {
@@ -71,7 +72,8 @@ class APITests: TestCase {
       ],
       configuration: configuration,
       localizations: FastTestLocalization.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testArray() {
@@ -81,15 +83,22 @@ class APITests: TestCase {
   func testBadStyle() {
     let configuration = WorkspaceConfiguration()
     let failing = CustomTask(
-      url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0),
-      executable: "Dependency", arguments: ["fail"])
+      url: URL(string: "file:///tmp/Developer/Dependency")!,
+      version: Version(1, 0, 0),
+      executable: "Dependency",
+      arguments: ["fail"]
+    )
     configuration.customProofreadingTasks.append(failing)
     PackageRepository(mock: "BadStyle").test(
       commands: [
         ["proofread"],
         ["proofread", "•xcode"]
-      ], configuration: configuration, localizations: InterfaceLocalization.self,
-      withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
+      ],
+      configuration: configuration,
+      localizations: InterfaceLocalization.self,
+      withCustomTask: true,
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testBrokenExample() {
@@ -98,7 +107,8 @@ class APITests: TestCase {
         ["refresh", "examples"]
       ],
       localizations: InterfaceLocalization.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testBrokenTests() {
@@ -107,7 +117,8 @@ class APITests: TestCase {
         ["test"]
       ],
       localizations: FastTestLocalization.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testCheckedInDocumentation() throws {
@@ -117,20 +128,24 @@ class APITests: TestCase {
     // macOS & Linux have different JSON whitespace.
     output.scalars.replaceMatches(
       for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
-      with: "\n\n".scalars)
+      with: "\n\n".scalars
+    )
     try output.save(
       to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
-        .appendingPathComponent("Resources/Tool/English.txt"))
+        .appendingPathComponent("Resources/Tool/English.txt")
+    )
     output = try mockCommand.withRootBehaviour().execute(with: [
       "export‐interface", "•language", "de"
     ]).get()
     // macOS & Linux have different JSON whitespace.
     output.scalars.replaceMatches(
       for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
-      with: "\n\n".scalars)
+      with: "\n\n".scalars
+    )
     try output.save(
       to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
-        .appendingPathComponent("Resources/Tool/Deutsch.txt"))
+        .appendingPathComponent("Resources/Tool/Deutsch.txt")
+    )
 
     let configuration = WorkspaceConfiguration()
     configuration.optimizeForTests()
@@ -170,7 +185,8 @@ class APITests: TestCase {
       ],
       configuration: configuration,
       localizations: FastTestLocalization.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testCheckForUpdates() throws {
@@ -188,13 +204,16 @@ class APITests: TestCase {
       = true
     XCTAssert(
       configuration.fortlaufenderEinbindung
-        .auserhalbFortlaufenderEinbindungSimulatorÜberspringen)
+        .auserhalbFortlaufenderEinbindungSimulatorÜberspringen
+    )
     configuration.customRefreshmentTasks.append(
       Sonderaufgabe(
         ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "domain.tld")!,
         version: Version(1, 0),
         ausführbareDatei: "werkzeug",
-        argumente: ["argument"]))
+        argumente: ["argument"]
+      )
+    )
     XCTAssertEqual(configuration.customRefreshmentTasks.last?.version.major, 1)
     configuration.dokumentation.programmierschnittstelle.erstellen = false
     XCTAssertFalse(configuration.dokumentation.programmierschnittstelle.erstellen)
@@ -202,24 +221,30 @@ class APITests: TestCase {
     XCTAssertFalse(configuration.dokumentation.programmierschnittstelle.abdeckungErzwingen)
     configuration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 1
     XCTAssertEqual(
-      configuration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung, 1)
+      configuration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung,
+      1
+    )
     configuration.dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk
       = BequemeEinstellung(auswerten: { _ in [:] })
     XCTAssertEqual(
       configuration.dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk
         .auswerten(configuration),
-      [:])
+      [:]
+    )
     configuration.dokumentation.programmierschnittstelle
       .verschlüsselterTravisCIVerteilungsschlüssel = ""
     XCTAssertEqual(
       configuration.dokumentation.programmierschnittstelle
         .verschlüsselterTravisCIVerteilungsschlüssel,
-      "")
+      ""
+    )
     configuration.dokumentation.programmierschnittstelle.übergegangeneAbhängigkeiten.insert(
-      "...")
+      "..."
+    )
     XCTAssert(
       configuration.dokumentation.programmierschnittstelle.übergegangeneAbhängigkeiten
-        .contains("..."))
+        .contains("...")
+    )
     configuration.dokumentation.localisations = ["und"]
     XCTAssertEqual(configuration.dokumentation.localisations, ["und"])
     configuration.dokumentation.lokalisationen = ["zxx"]
@@ -229,28 +254,36 @@ class APITests: TestCase {
     configuration.dokumentation.projektSeite = EinheitlicherRessourcenzeiger(string: "seite.de")
     XCTAssertEqual(
       configuration.dokumentation.projektSeite,
-      EinheitlicherRessourcenzeiger(string: "seite.de"))
+      EinheitlicherRessourcenzeiger(string: "seite.de")
+    )
     configuration.dokumentation.dokumentationsRessourcenzeiger
       = EinheitlicherRessourcenzeiger(
-        string: "dokumentation.de")
+        string: "dokumentation.de"
+      )
     XCTAssertEqual(
       configuration.dokumentation.dokumentationsRessourcenzeiger,
-      EinheitlicherRessourcenzeiger(string: "dokumentation.de"))
+      EinheitlicherRessourcenzeiger(string: "dokumentation.de")
+    )
     configuration.dokumentation.lagerRessourcenzeiger
       = EinheitlicherRessourcenzeiger(string: "lager.de")
     XCTAssertEqual(
       configuration.dokumentation.lagerRessourcenzeiger,
-      EinheitlicherRessourcenzeiger(string: "lager.de"))
+      EinheitlicherRessourcenzeiger(string: "lager.de")
+    )
     configuration.dokumentation.hauptautor = "Autor"
     XCTAssertEqual(configuration.dokumentation.hauptautor, "Autor")
     configuration.dokumentation.installationsanleitungen
       = BequemeEinstellung(auswerten: { _ in [:] })
     XCTAssertEqual(
-      configuration.dokumentation.installationsanleitungen.auswerten(configuration), [:])
+      configuration.dokumentation.installationsanleitungen.auswerten(configuration),
+      [:]
+    )
     configuration.dokumentation.einführungsanleitungen
       = BequemeEinstellung(auswerten: { _ in [:] })
     XCTAssertEqual(
-      configuration.dokumentation.einführungsanleitungen.auswerten(configuration), [:])
+      configuration.dokumentation.einführungsanleitungen.auswerten(configuration),
+      [:]
+    )
     configuration.dokumentation.über = ["zxx": "..."]
     XCTAssertEqual(configuration.dokumentation.über, ["zxx": "..."])
     configuration.dokumentation.verwandteProjekte = []
@@ -280,7 +313,8 @@ class APITests: TestCase {
     configuration.dateiVorspänne.urheberrechtshinweis
       = BequemeEinstellung(auswerten: { _ in [:] })
     XCTAssertNil(
-      configuration.dateiVorspänne.urheberrechtshinweis.auswerten(configuration)["de"])
+      configuration.dateiVorspänne.urheberrechtshinweis.auswerten(configuration)["de"]
+    )
     configuration.dateiVorspänne.inhalt = BequemeEinstellung(auswerten: { _ in "" })
     XCTAssertEqual(configuration.dateiVorspänne.inhalt.auswerten(configuration), "")
     configuration.git.verwalten = true
@@ -337,7 +371,9 @@ class APITests: TestCase {
         _packageName: "Package",
         products: [
           PackageManifest.Product(_name: "Product", type: .library, modules: ["Module"])
-        ]))
+        ]
+      )
+    )
     XCTAssertEqual(context.standort, URL(string: "site.tld")!)
     XCTAssertEqual(context.ladeliste.paketenName, "Package")
     XCTAssertEqual(context.ladeliste.produktmodule.first, "Module")
@@ -363,7 +399,8 @@ class APITests: TestCase {
       ],
       configuration: configuration,
       localizations: InterfaceLocalization.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testCustomProofread() {
@@ -377,8 +414,11 @@ class APITests: TestCase {
     configuration.licence.licence = .gnuGeneralPublic3_0
     configuration.fileHeaders.manage = true
     let passing = CustomTask(
-      url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0),
-      executable: "Dependency", arguments: [])
+      url: URL(string: "file:///tmp/Developer/Dependency")!,
+      version: Version(1, 0, 0),
+      executable: "Dependency",
+      arguments: []
+    )
     configuration.customProofreadingTasks.append(passing)
     PackageRepository(mock: "CustomProofread").test(
       commands: [
@@ -390,14 +430,16 @@ class APITests: TestCase {
       configuration: configuration,
       localizations: FastTestLocalization.self,
       withCustomTask: true,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testCustomReadMe() {
     let configuration = WorkspaceConfiguration()
     configuration.documentation.currentVersion = Version(1, 2, 3)
     configuration.documentation.repositoryURL = URL(
-      string: "https://github.com/User/Repository")!
+      string: "https://github.com/User/Repository"
+    )!
     configuration.documentation.localizations = ["en"]
     configuration.documentation.installationInstructions
       = Lazy(resolve: { configuration in
@@ -407,7 +449,8 @@ class APITests: TestCase {
               "## Installation",
               "",
               "Build from source at tag `\(configuration.documentation.currentVersion!.string())` of `\(configuration.documentation.repositoryURL!.absoluteString)`."
-            ].joinedAsLines())
+            ].joinedAsLines()
+          )
         ]
       })
     configuration.licence.manage = true
@@ -421,15 +464,19 @@ class APITests: TestCase {
       ],
       configuration: configuration,
       localizations: FastTestLocalization.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testCustomTasks() {
     let configuration = WorkspaceConfiguration()
     configuration.optimizeForTests()
     let passing = CustomTask(
-      url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0),
-      executable: "Dependency", arguments: [])
+      url: URL(string: "file:///tmp/Developer/Dependency")!,
+      version: Version(1, 0, 0),
+      executable: "Dependency",
+      arguments: []
+    )
     configuration.customRefreshmentTasks.append(passing)
     configuration.customValidationTasks.append(passing)
     configuration.provideWorkflowScripts = false
@@ -446,15 +493,19 @@ class APITests: TestCase {
       configuration: configuration,
       localizations: InterfaceLocalization.self,
       withCustomTask: true,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
 
     var aufgabe = Sonderaufgabe(
       ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "domain.tld")!,
       version: Version(1, 0),
-      ausführbareDatei: "werkzeug")
+      ausführbareDatei: "werkzeug"
+    )
     aufgabe.ressourcenzeiger = EinheitlicherRessourcenzeiger(string: "other.tld")!
     XCTAssertEqual(
-      aufgabe.ressourcenzeiger, EinheitlicherRessourcenzeiger(string: "other.tld")!)
+      aufgabe.ressourcenzeiger,
+      EinheitlicherRessourcenzeiger(string: "other.tld")!
+    )
     aufgabe.version = Version(2, 0)
     XCTAssertEqual(aufgabe.version, Version(2, 0))
     aufgabe.ausführbareDatei = "andere"
@@ -487,7 +538,8 @@ class APITests: TestCase {
     PackageRepository(mock: "Default").test(
       commands: commands,
       localizations: FastTestLocalization.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testDeutsch() throws {
@@ -497,10 +549,12 @@ class APITests: TestCase {
     // macOS & Linux have different JSON whitespace.
     output.scalars.replaceMatches(
       for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
-      with: "\n\n".scalars)
+      with: "\n\n".scalars
+    )
     try output.save(
       to: PackageRepository.beforeDirectory(for: "Deutsch")
-        .appendingPathComponent("Resources/werkzeug/Deutsch.txt"))
+        .appendingPathComponent("Resources/werkzeug/Deutsch.txt")
+    )
 
     let konfiguration = ArbeitsbereichKonfiguration()
     konfiguration.optimizeForTests()
@@ -527,7 +581,8 @@ class APITests: TestCase {
       commands: commands,
       configuration: konfiguration,
       localizations: InterfaceLocalization.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testExecutable() {
@@ -546,14 +601,18 @@ class APITests: TestCase {
       ],
       configuration: configuration,
       localizations: InterfaceLocalization.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testFailingCustomTasks() {
     let configuration = WorkspaceConfiguration()
     let failing = CustomTask(
-      url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0),
-      executable: "Dependency", arguments: ["fail"])
+      url: URL(string: "file:///tmp/Developer/Dependency")!,
+      version: Version(1, 0, 0),
+      executable: "Dependency",
+      arguments: ["fail"]
+    )
     configuration.customRefreshmentTasks.append(failing)
     configuration.provideWorkflowScripts = false
     configuration.proofreading.rules = []
@@ -567,15 +626,19 @@ class APITests: TestCase {
       configuration: configuration,
       localizations: FastTestLocalization.self,
       withCustomTask: true,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testFailingCustomValidation() {
     let configuration = WorkspaceConfiguration()
     configuration.optimizeForTests()
     let failing = CustomTask(
-      url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0),
-      executable: "Dependency", arguments: ["fail"])
+      url: URL(string: "file:///tmp/Developer/Dependency")!,
+      version: Version(1, 0, 0),
+      executable: "Dependency",
+      arguments: ["fail"]
+    )
     configuration.customValidationTasks.append(failing)
     configuration.provideWorkflowScripts = false
     configuration.proofreading.rules = []
@@ -589,7 +652,8 @@ class APITests: TestCase {
       configuration: configuration,
       localizations: InterfaceLocalization.self,
       withCustomTask: true,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testFailingDocumentationCoverage() {
@@ -605,7 +669,8 @@ class APITests: TestCase {
       ],
       configuration: configuration,
       localizations: InterfaceLocalization.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testFailingTests() {
@@ -617,9 +682,11 @@ class APITests: TestCase {
     do {
       for url in try FileManager.default.contentsOfDirectory(
         at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent(
-          "Library/Developer/Xcode/DerivedData"), includingPropertiesForKeys: nil,
-        options: [])
-      {
+          "Library/Developer/Xcode/DerivedData"
+        ),
+        includingPropertiesForKeys: nil,
+        options: []
+      ) {
         if url.lastPathComponent.contains("FailingTests") {
           try? FileManager.default.removeItem(at: url)
         }
@@ -634,7 +701,8 @@ class APITests: TestCase {
       ],
       configuration: configuration,
       localizations: InterfaceLocalization.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testHeaders() {
@@ -648,17 +716,25 @@ class APITests: TestCase {
       ],
       configuration: configuration,
       localizations: FastTestLocalization.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testHelp() throws {
     testCommand(
-      Workspace.command, with: ["help"], localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace)", overwriteSpecificationInsteadOfFailing: false)
+      Workspace.command,
+      with: ["help"],
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Help (workspace)",
+      overwriteSpecificationInsteadOfFailing: false
+    )
     testCommand(
-      Workspace.command, with: ["proofread", "help"],
-      localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace proofread)",
-      overwriteSpecificationInsteadOfFailing: false)
+      Workspace.command,
+      with: ["proofread", "help"],
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Help (workspace proofread)",
+      overwriteSpecificationInsteadOfFailing: false
+    )
     #if os(Linux)  // Linux has no “xcode” subcommand, causing spec mis‐match.
       for localization in InterfaceLocalization.allCases {
         try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
@@ -667,44 +743,62 @@ class APITests: TestCase {
       }
     #else
       testCommand(
-        Workspace.command, with: ["refresh", "help"],
+        Workspace.command,
+        with: ["refresh", "help"],
         localizations: InterfaceLocalization.self,
         uniqueTestName: "Help (workspace refresh)",
-        overwriteSpecificationInsteadOfFailing: false)
+        overwriteSpecificationInsteadOfFailing: false
+      )
     #endif
     testCommand(
-      Workspace.command, with: ["validate", "help"],
-      localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace validate)",
-      overwriteSpecificationInsteadOfFailing: false)
+      Workspace.command,
+      with: ["validate", "help"],
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Help (workspace validate)",
+      overwriteSpecificationInsteadOfFailing: false
+    )
     testCommand(
-      Workspace.command, with: ["document", "help"],
-      localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace document)",
-      overwriteSpecificationInsteadOfFailing: false)
+      Workspace.command,
+      with: ["document", "help"],
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Help (workspace document)",
+      overwriteSpecificationInsteadOfFailing: false
+    )
     testCommand(
-      Workspace.command, with: ["refresh", "continuous‐integration", "help"],
+      Workspace.command,
+      with: ["refresh", "continuous‐integration", "help"],
       localizations: InterfaceLocalization.self,
       uniqueTestName: "Help (workspace refresh continuous‐integration)",
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
     testCommand(
-      Workspace.command, with: ["refresh", "examples", "help"],
+      Workspace.command,
+      with: ["refresh", "examples", "help"],
       localizations: InterfaceLocalization.self,
       uniqueTestName: "Help (workspace refresh examples)",
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
     testCommand(
-      Workspace.command, with: ["refresh", "inherited‐documentation", "help"],
+      Workspace.command,
+      with: ["refresh", "inherited‐documentation", "help"],
       localizations: InterfaceLocalization.self,
       uniqueTestName: "Help (workspace refresh inherited‐documentation)",
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
     testCommand(
-      Workspace.command, with: ["refresh", "resources", "help"],
+      Workspace.command,
+      with: ["refresh", "resources", "help"],
       localizations: InterfaceLocalization.self,
       uniqueTestName: "Help (workspace refresh resources)",
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
     testCommand(
-      Workspace.command, with: ["refresh", "scripts", "help"],
+      Workspace.command,
+      with: ["refresh", "scripts", "help"],
       localizations: InterfaceLocalization.self,
       uniqueTestName: "Help (workspace refresh scripts)",
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testInvalidResourceDirectory() {
@@ -713,7 +807,8 @@ class APITests: TestCase {
         ["refresh", "resources"]
       ],
       localizations: InterfaceLocalization.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testInvalidTarget() {
@@ -722,7 +817,8 @@ class APITests: TestCase {
         ["refresh", "resources"]
       ],
       localizations: InterfaceLocalization.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testIssueTemplate() {
@@ -730,7 +826,8 @@ class APITests: TestCase {
       name: "",
       beschreibung: "",
       inhalt: "",
-      etiketten: [])
+      etiketten: []
+    )
     vorlage.beschreibung = "..."
     XCTAssertEqual(vorlage.beschreibung, "...")
     vorlage.titel = "..."
@@ -761,14 +858,23 @@ class APITests: TestCase {
     XCTAssertEqual(dictionary[ContentLocalization.englishUnitedKingdom], false)
 
     testCustomStringConvertibleConformance(
-      of: LocalizationIdentifier("en"), localizations: FastTestLocalization.self,
-      uniqueTestName: "English", overwriteSpecificationInsteadOfFailing: false)
+      of: LocalizationIdentifier("en"),
+      localizations: FastTestLocalization.self,
+      uniqueTestName: "English",
+      overwriteSpecificationInsteadOfFailing: false
+    )
     testCustomStringConvertibleConformance(
-      of: LocalizationIdentifier("cmn"), localizations: FastTestLocalization.self,
-      uniqueTestName: "Mandarin", overwriteSpecificationInsteadOfFailing: false)
+      of: LocalizationIdentifier("cmn"),
+      localizations: FastTestLocalization.self,
+      uniqueTestName: "Mandarin",
+      overwriteSpecificationInsteadOfFailing: false
+    )
     testCustomStringConvertibleConformance(
-      of: LocalizationIdentifier("zxx"), localizations: FastTestLocalization.self,
-      uniqueTestName: "Unknown", overwriteSpecificationInsteadOfFailing: false)
+      of: LocalizationIdentifier("zxx"),
+      localizations: FastTestLocalization.self,
+      uniqueTestName: "Unknown",
+      overwriteSpecificationInsteadOfFailing: false
+    )
 
     var identifier = LocalizationIdentifier("zxx")
     identifier.kennzeichen = "de"
@@ -782,7 +888,8 @@ class APITests: TestCase {
         ["refresh", "inherited‐documentation"]
       ],
       localizations: InterfaceLocalization.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testMissingExample() {
@@ -791,7 +898,8 @@ class APITests: TestCase {
         ["refresh", "examples"]
       ],
       localizations: InterfaceLocalization.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testMissingReadMeLocalization() {
@@ -804,7 +912,8 @@ class APITests: TestCase {
       ],
       configuration: configuration,
       localizations: InterfaceLocalization.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testMultipleProducts() {
@@ -818,7 +927,8 @@ class APITests: TestCase {
       ],
       configuration: configuration,
       localizations: FastTestLocalization.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testNoLibraries() {
@@ -832,7 +942,8 @@ class APITests: TestCase {
       ],
       configuration: configuration,
       localizations: FastTestLocalization.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testNoLocalizations() {
@@ -842,7 +953,8 @@ class APITests: TestCase {
         ["validate", "documentation‐coverage"]
       ],
       localizations: InterfaceLocalization.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testNurDeutsch() {
@@ -858,7 +970,8 @@ class APITests: TestCase {
       ],
       configuration: configuration,
       localizations: NurDeutsch.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testOneLocalization() {
@@ -870,7 +983,8 @@ class APITests: TestCase {
       ],
       configuration: configuration,
       localizations: FastTestLocalization.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testOneProductMultipleModules() {
@@ -884,7 +998,8 @@ class APITests: TestCase {
       ],
       configuration: configuration,
       localizations: FastTestLocalization.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testOnlyBritish() {
@@ -897,7 +1012,8 @@ class APITests: TestCase {
       ],
       configuration: configuration,
       localizations: OnlyBritish.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testPartialReadMe() {
@@ -929,7 +1045,8 @@ class APITests: TestCase {
       ],
       configuration: configuration,
       localizations: FastTestLocalization.self,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testProofreadingRule() {
@@ -956,7 +1073,8 @@ class APITests: TestCase {
 
   func testRelatedProject() {
     var project = RelatedProjectEntry.projekt(
-      ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "seite.de")!)
+      ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "seite.de")!
+    )
     project = RelatedProjectEntry.überschrift(text: [:])
     _ = project
   }
@@ -968,7 +1086,8 @@ class APITests: TestCase {
     configuration.licence.licence = .apache2_0
     configuration.documentation.currentVersion = Version(1, 0, 0)
     configuration.documentation.projectWebsite = URL(
-      string: "https://example.github.io/SDG/SDG")!
+      string: "https://example.github.io/SDG/SDG"
+    )!
     configuration.documentation.documentationURL = URL(string: "https://example.github.io/SDG")!
     configuration.documentation.repositoryURL = URL(string: "https://github.com/JohnDoe/SDG")!
     configuration.documentation.primaryAuthor = "John Doe"
@@ -987,9 +1106,11 @@ class APITests: TestCase {
       .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
     ]
     configuration.testing.exemptionTokens.insert(
-      TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
+      TestCoverageExemptionToken("customSameLineToken", scope: .sameLine)
+    )
     configuration.testing.exemptionTokens.insert(
-      TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
+      TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine)
+    )
 
     let builtIn = configuration.fileHeaders.copyrightNotice
     configuration.fileHeaders.copyrightNotice
@@ -1032,7 +1153,9 @@ class APITests: TestCase {
       configuration: configuration,
       sdg: true,
       localizations: FastTestLocalization.self,
-      withDependency: true, overwriteSpecificationInsteadOfFailing: false)
+      withDependency: true,
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testSDGTool() {
@@ -1045,7 +1168,8 @@ class APITests: TestCase {
     configuration.licence.licence = .apache2_0
     configuration.documentation.currentVersion = Version(1, 0, 0)
     configuration.documentation.projectWebsite = URL(
-      string: "https://example.github.io/SDG/SDG")!
+      string: "https://example.github.io/SDG/SDG"
+    )!
     configuration.documentation.documentationURL = URL(string: "https://example.github.io/SDG")!
     configuration.documentation.repositoryURL = URL(string: "https://github.com/JohnDoe/SDG")!
     configuration.documentation.primaryAuthor = "John Doe"
@@ -1063,9 +1187,11 @@ class APITests: TestCase {
       .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
     ]
     configuration.testing.exemptionTokens.insert(
-      TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
+      TestCoverageExemptionToken("customSameLineToken", scope: .sameLine)
+    )
     configuration.testing.exemptionTokens.insert(
-      TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
+      TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine)
+    )
 
     let builtIn = configuration.fileHeaders.copyrightNotice
     configuration.fileHeaders.copyrightNotice
@@ -1108,7 +1234,8 @@ class APITests: TestCase {
       sdg: true,
       localizations: FastTestLocalization.self,
       withDependency: true,
-      overwriteSpecificationInsteadOfFailing: false)
+      overwriteSpecificationInsteadOfFailing: false
+    )
   }
 
   func testSelfSpecificScripts() throws {

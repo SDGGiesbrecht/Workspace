@@ -45,7 +45,9 @@ internal struct Marks: TextRule {
   })
 
   internal static func check(
-    file: TextFile, in project: PackageRepository, status: ProofreadingStatus,
+    file: TextFile,
+    in project: PackageRepository,
+    status: ProofreadingStatus,
     output: Command.Output
   ) {
     for match in file.contents.scalars.matches(for: "MAR\u{4B}".scalars) {
@@ -57,12 +59,12 @@ internal struct Marks: TextRule {
       let line = file.contents.lineRange(for: match.range)
       if file.contents.scalars[line].hasPrefix(
         RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }))
-          + "//".scalars)
-      {
+          + "//".scalars
+      ) {
 
         if ¬file.contents.scalars[..<match.range.lowerBound].hasSuffix(
-          ¬"/".scalars + "/\u{2F} ".scalars)
-        {
+          ¬"/".scalars + "/\u{2F} ".scalars
+        ) {
           errorExists = true
 
           var possibleStart = match.range.lowerBound
@@ -88,16 +90,23 @@ internal struct Marks: TextRule {
             &errorEnd,
             over: RepetitionPattern(":".scalars, count: 0 ... 1)
               + RepetitionPattern(
-                ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }))
+                ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })
+              )
               + RepetitionPattern("\u{2D}".scalars, count: 0 ... 1)
               + RepetitionPattern(
-                ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
+                ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })
+              )
+          )
         }
 
         if errorExists {
           reportViolation(
-            in: file, at: errorStart ..< errorEnd,
-            replacementSuggestion: expectedSyntax, message: message, status: status)
+            in: file,
+            at: errorStart ..< errorEnd,
+            replacementSuggestion: expectedSyntax,
+            message: message,
+            status: status
+          )
         }
       }
     }

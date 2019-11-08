@@ -29,8 +29,12 @@ public struct TextFile {
     let contents = try String(from: location)
     let executable = FileManager.default.isExecutableFile(atPath: location.path)
     self.init(
-      location: location, fileType: fileType, executable: executable, contents: contents,
-      isNew: false)
+      location: location,
+      fileType: fileType,
+      executable: executable,
+      contents: contents,
+      isNew: false
+    )
   }
 
   public init(possiblyAt location: URL, executable: Bool = false) throws {
@@ -47,8 +51,12 @@ public struct TextFile {
       }
       self
         = TextFile(
-          location: location, fileType: fileType, executable: executable, contents: "",
-          isNew: true)
+          location: location,
+          fileType: fileType,
+          executable: executable,
+          contents: "",
+          isNew: true
+        )
     }
   }
 
@@ -58,7 +66,12 @@ public struct TextFile {
       url = temporary
     }
     self.init(
-      location: url!, fileType: fileType, executable: false, contents: contents, isNew: true)
+      location: url!,
+      fileType: fileType,
+      executable: false,
+      contents: contents,
+      isNew: true
+    )
   }
 
   private init(location: URL, fileType: FileType, executable: Bool, contents: String, isNew: Bool) {
@@ -168,7 +181,9 @@ public struct TextFile {
   // MARK: - Writing
 
   public static func reportWriteOperation(
-    to location: URL, in repository: PackageRepository, output: Command.Output
+    to location: URL,
+    in repository: PackageRepository,
+    output: Command.Output
   ) {
     output.print(
       UserFacingDynamic<StrictString, InterfaceLocalization, String>({ localization, path in
@@ -180,7 +195,8 @@ public struct TextFile {
         case .deutschDeutschland:
           return "Zu „\(path)“ wird geschrieben ..."
         }
-      }).resolved(using: location.path(relativeTo: repository.location)))
+      }).resolved(using: location.path(relativeTo: repository.location))
+    )
   }
 
   public func writeChanges(for repository: PackageRepository, output: Command.Output) throws {
@@ -190,7 +206,9 @@ public struct TextFile {
       try contents.save(to: location)
       if isExecutable {
         try FileManager.default.setAttributes(
-          [.posixPermissions: NSNumber(value: 0o777)], ofItemAtPath: location.path)
+          [.posixPermissions: NSNumber(value: 0o777)],
+          ofItemAtPath: location.path
+        )
       }
 
       if location.pathExtension == "swift" {

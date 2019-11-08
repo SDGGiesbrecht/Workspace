@@ -47,7 +47,9 @@ internal class ProofreadingStatus: DiagnosticConsumer {
     let start: String.ScalarView.Index
     if let location = diagnostic.location {
       let utf8 = file.contents.utf8.index(
-        file.contents.utf8.startIndex, offsetBy: location.offset)
+        file.contents.utf8.startIndex,
+        offsetBy: location.offset
+      )
       start = utf8.scalar(in: file.contents.scalars)
     } else {
       #warning("This seems conterproductive.")
@@ -65,7 +67,8 @@ internal class ProofreadingStatus: DiagnosticConsumer {
       replacementSuggestion: replacementSuggestion,
       noticeOnly: false,
       ruleIdentifier: identifier,
-      message: message)
+      message: message
+    )
     report(violation: violation)
   }
 

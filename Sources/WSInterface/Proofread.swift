@@ -55,24 +55,34 @@ extension Workspace {
         case .deutschDeutschland:
           return "verhält sich wie ein Xcode‐Erstellungsschritt."
         }
-      }), type: ArgumentType.boolean)
+      }),
+      type: ArgumentType.boolean
+    )
 
     static let command = Command(
-      name: name, description: description, directArguments: [],
+      name: name,
+      description: description,
+      directArguments: [],
       options: standardOptions + [runAsXcodeBuildPhase],
       execution: { (_: DirectArguments, options: Options, output: Command.Output) throws in
         var validationStatus = ValidationStatus()
         try executeAsStep(
-          normalizingFirst: true, options: options, validationStatus: &validationStatus,
-          output: output)
+          normalizingFirst: true,
+          options: options,
+          validationStatus: &validationStatus,
+          output: output
+        )
 
         if ¬options.runAsXcodeBuildPhase {  // Xcode should keep building anyway.
           try validationStatus.reportOutcome(project: options.project, output: output)
         }
-      })
+      }
+    )
 
     static func executeAsStep(
-      normalizingFirst: Bool, options: Options, validationStatus: inout ValidationStatus,
+      normalizingFirst: Bool,
+      options: Options,
+      validationStatus: inout ValidationStatus,
       output: Command.Output
     ) throws {
 
@@ -89,7 +99,8 @@ extension Workspace {
             case .deutschDeutschland:
               return "Quelltext Korrektur wird gelesen ..."
             }
-          }).resolved().formattedAsSectionHeader())
+          }).resolved().formattedAsSectionHeader()
+        )
       }
 
       let reporter: ProofreadingReporter
@@ -108,7 +119,8 @@ extension Workspace {
             case .deutschDeutschland:
               return "Quelltext besteht das Korrekturlesen."
             }
-          }))
+          })
+        )
       } else {
         validationStatus.failStep(
           message: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -120,7 +132,8 @@ extension Workspace {
               return "Der Quelltext besteht das Korrekturlesen nicht."
                 + section.crossReference.resolved(for: localization)
             }
-          }))
+          })
+        )
       }
     }
   }

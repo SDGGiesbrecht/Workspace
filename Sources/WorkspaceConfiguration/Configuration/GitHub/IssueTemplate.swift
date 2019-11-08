@@ -45,7 +45,8 @@ public struct IssueTemplate: Decodable, Encodable {
       title: titel,
       content: inhalt,
       labels: etiketten,
-      assignees: beauftragte)
+      assignees: beauftragte
+    )
   }
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(IssueTemplate.init(name:description:title:content:labels:assignees))

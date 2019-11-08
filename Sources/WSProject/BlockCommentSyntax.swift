@@ -57,7 +57,8 @@ internal struct BlockCommentSyntax {
   // MARK: - Parsing
 
   internal func startOfNonDocumentationCommentExists(
-    at location: String.ScalarView.Index, in string: String
+    at location: String.ScalarView.Index,
+    in string: String
   ) -> Bool {
 
     var index = location
@@ -80,11 +81,14 @@ internal struct BlockCommentSyntax {
     -> NestingLevel<String.ScalarView>?
   {
     return string.scalars.firstNestingLevel(
-      startingWith: start.scalars, endingWith: end.scalars)
+      startingWith: start.scalars,
+      endingWith: end.scalars
+    )
   }
 
   internal func contentsOfFirstComment(
-    in range: Range<String.ScalarView.Index>, of string: String
+    in range: Range<String.ScalarView.Index>,
+    of string: String
   ) -> String? {
     guard let range = firstComment(in: range, of: string)?.contents.range else {
       return nil
@@ -102,7 +106,9 @@ internal struct BlockCommentSyntax {
 
     var index = first.scalars.startIndex
     first.scalars.advance(
-      &index, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
+      &index,
+      over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }))
+    )
     let indent = first.scalars.distance(from: first.scalars.startIndex, to: index)
 
     var result = [first.scalars.suffix(from: index)]
@@ -111,7 +117,10 @@ internal struct BlockCommentSyntax {
       line.scalars.advance(
         &indentIndex,
         over: RepetitionPattern(
-          ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }), count: 0 ... indent))
+          ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }),
+          count: 0 ... indent
+        )
+      )
       result.append(line.scalars.suffix(from: indentIndex))
     }
 
@@ -125,6 +134,8 @@ internal struct BlockCommentSyntax {
 
   internal func contentsOfFirstComment(in string: String) -> String? {
     return contentsOfFirstComment(
-      in: string.scalars.startIndex ..< string.scalars.endIndex, of: string)
+      in: string.scalars.startIndex ..< string.scalars.endIndex,
+      of: string
+    )
   }
 }

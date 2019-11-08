@@ -44,11 +44,14 @@
       })
 
       static let command = Command(
-        name: name, description: description, directArguments: [],
+        name: name,
+        description: description,
+        directArguments: [],
         options: Workspace.standardOptions,
         execution: { (_, options: Options, output: Command.Output) throws in
           try executeAsStep(options: options, output: output)
-        })
+        }
+      )
 
       static func executeAsStep(options: Options, output: Command.Output) throws {
 
@@ -60,7 +63,8 @@
             case .deutschDeutschland:
               return "Xcode‐Projekt wird aufgefrischt ..."
             }
-          }).resolved().formattedAsSectionHeader())
+          }).resolved().formattedAsSectionHeader()
+        )
 
         try options.project.refreshXcodeProject(output: output)
       }

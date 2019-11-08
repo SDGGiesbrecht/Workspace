@@ -48,7 +48,8 @@ extension InterfaceLocalization {
     let arguments = parenthesis
       + RepetitionPattern(
         ConditionalPattern({ $0 ≠ ")" ∧ $0 ∉ CharacterSet.newlines }),
-        consumption: .greedy)
+        consumption: .greedy
+      )
     return arguments + ")".scalars
   }
 

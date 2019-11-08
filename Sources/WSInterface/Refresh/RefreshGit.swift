@@ -41,7 +41,9 @@ extension Workspace.Refresh {
     })
 
     static let command = Command(
-      name: name, description: description, directArguments: [],
+      name: name,
+      description: description,
+      directArguments: [],
       options: Workspace.standardOptions,
       execution: { (_, options: Options, output: Command.Output) throws in
 
@@ -53,9 +55,11 @@ extension Workspace.Refresh {
             case .deutschDeutschland:
               return "Git‐Konfiguration wird aufgefrischt ..."
             }
-          }).resolved().formattedAsSectionHeader())
+          }).resolved().formattedAsSectionHeader()
+        )
 
         try options.project.refreshGitConfiguration(output: output)
-      })
+      }
+    )
   }
 }

@@ -121,13 +121,15 @@ public struct GitHubConfiguration: Codable {
 
         template.replaceMatches(
           for: "#packageName".scalars,
-          with: WorkspaceContext.current.manifest.packageName.scalars)
+          with: WorkspaceContext.current.manifest.packageName.scalars
+        )
 
         if let url = configuration.documentation.repositoryURL {
           template.replaceMatches(
             for: "#cloneScript".scalars,
             with: " `git clone https://github.com/user/\(url.lastPathComponent)`"
-              .scalars)
+              .scalars
+          )
         } else {
           template.replaceMatches(for: "#cloneScript".scalars, with: "".scalars)
         }
@@ -155,7 +157,8 @@ public struct GitHubConfiguration: Codable {
             finalSeparator = " oder "
           }
           let commas = StrictString(
-            administrators.dropLast().joined(separator: separator))
+            administrators.dropLast().joined(separator: separator)
+          )
           let or = finalSeparator + administrators.last!
           administratorList = commas + or
         }
@@ -168,7 +171,8 @@ public struct GitHubConfiguration: Codable {
               "## \(GitHubConfiguration.developmentNotesHeading(for: localization))",
               "",
               notes
-            ].joinedAsLines())
+            ].joinedAsLines()
+          )
         }
 
         result[localization] = template
@@ -200,7 +204,8 @@ public struct GitHubConfiguration: Codable {
       var localizations = configuration.documentation.localizations
       if localizations.isEmpty {
         localizations.append(
-          LocalizationIdentifier(ContentLocalization.fallbackLocalization))
+          LocalizationIdentifier(ContentLocalization.fallbackLocalization)
+        )
       }
 
       var result: [LocalizationIdentifier: [IssueTemplate]] = [:]
@@ -208,7 +213,8 @@ public struct GitHubConfiguration: Codable {
         for providedTemplate in ProvidedIssueTemplate.allCases {
           if let language = localization._reasonableMatch {
             result[localization, default: []].append(
-              providedTemplate.constructed(for: language))
+              providedTemplate.constructed(for: language)
+            )
           }
         }
       }

@@ -292,7 +292,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       commandEntry("bash \u{22}./Refresh (macOS).command\u{22}"),
       commandEntry(
         "bash \u{22}./Validate (macOS).command\u{22} •job "
-          + String(argumentName.resolved(for: .englishCanada)))
+          + String(argumentName.resolved(for: .englishCanada))
+      )
     ])
 
     return result

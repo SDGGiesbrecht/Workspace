@@ -53,7 +53,12 @@ internal class RuleSyntaxScanner: SyntaxScanner {
   internal override func visit(_ node: Syntax, context: SyntaxContext) -> Bool {
     for rule in rules {
       rule.check(
-        node, context: context, file: file, project: project, status: status, output: output
+        node,
+        context: context,
+        file: file,
+        project: project,
+        status: status,
+        output: output
       )
     }
     return true
@@ -62,7 +67,12 @@ internal class RuleSyntaxScanner: SyntaxScanner {
   internal override func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
     for rule in rules {
       rule.check(
-        node, context: context, file: file, project: project, status: status, output: output
+        node,
+        context: context,
+        file: file,
+        project: project,
+        status: status,
+        output: output
       )
     }
     return true
@@ -71,7 +81,12 @@ internal class RuleSyntaxScanner: SyntaxScanner {
   internal override func visit(_ node: Trivia, context: TriviaContext) -> Bool {
     for rule in rules {
       rule.check(
-        node, context: context, file: file, project: project, status: status, output: output
+        node,
+        context: context,
+        file: file,
+        project: project,
+        status: status,
+        output: output
       )
     }
     return true
@@ -80,7 +95,12 @@ internal class RuleSyntaxScanner: SyntaxScanner {
   internal override func visit(_ node: TriviaPiece, context: TriviaPieceContext) -> Bool {
     for rule in rules {
       rule.check(
-        node, context: context, file: file, project: project, status: status, output: output
+        node,
+        context: context,
+        file: file,
+        project: project,
+        status: status,
+        output: output
       )
     }
     return true

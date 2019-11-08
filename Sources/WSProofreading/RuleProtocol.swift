@@ -38,9 +38,11 @@ extension RuleProtocol {
   // MARK: - Reporting
 
   internal static func reportViolation(
-    in file: TextFile, at location: Range<String.ScalarView.Index>,
+    in file: TextFile,
+    at location: Range<String.ScalarView.Index>,
     replacementSuggestion: StrictString? = nil,
-    message: UserFacing<StrictString, InterfaceLocalization>, status: ProofreadingStatus
+    message: UserFacing<StrictString, InterfaceLocalization>,
+    status: ProofreadingStatus
   ) {
 
     let fileLines = file.contents.lines
@@ -50,8 +52,8 @@ extension RuleProtocol {
       if line.contains(exemptionMarker) {
         for localization in InterfaceLocalization.allCases {
           if line.contains(
-            StrictString("\(exemptionMarker)\(name.resolved(for: localization)))"))
-          {
+            StrictString("\(exemptionMarker)\(name.resolved(for: localization)))")
+          ) {
             return
           }
         }
@@ -60,8 +62,14 @@ extension RuleProtocol {
 
     status.report(
       violation: StyleViolation(
-        in: file, at: location, replacementSuggestion: replacementSuggestion,
-        noticeOnly: noticeOnly, ruleIdentifier: Self.name, message: message))
+        in: file,
+        at: location,
+        replacementSuggestion: replacementSuggestion,
+        noticeOnly: noticeOnly,
+        ruleIdentifier: Self.name,
+        message: message
+      )
+    )
   }
 }
 
@@ -74,6 +82,7 @@ private let exemptionMarkers: [StrictString] = {
       case .deutschDeutschland:
         return "@ausnahme(zu: _)"
       }
-    }))
+    })
+  )
   return result.map { $0.truncated(before: "_") }
 }()

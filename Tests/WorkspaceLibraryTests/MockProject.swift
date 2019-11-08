@@ -27,14 +27,17 @@ import WSProject
 extension PackageRepository {
 
   private static let mockProjectsDirectory = repositoryRoot.appendingPathComponent(
-    "Tests/Mock Projects")
+    "Tests/Mock Projects"
+  )
   internal static func beforeDirectory(for mockProject: String) -> URL {
     return mockProjectsDirectory.appendingPathComponent("Before").appendingPathComponent(
-      mockProject)
+      mockProject
+    )
   }
   private static func afterDirectory(for mockProject: String) -> URL {
     return mockProjectsDirectory.appendingPathComponent("After").appendingPathComponent(
-      mockProject)
+      mockProject
+    )
   }
 
   // MARK: - Initialization
@@ -83,7 +86,9 @@ extension PackageRepository {
                 "import Foundation\nprint(\u{22}Hello, world!\u{22})\nif ProcessInfo.processInfo.arguments.count > 1 {\n    exit(1)\n}"
                 .save(
                   to: dependency.appendingPathComponent(
-                    "Sources/Dependency/main.swift"))
+                    "Sources/Dependency/main.swift"
+                  )
+                )
             }
             _ = try Shell.default.run(command: ["git", "init"]).get()
             _ = try Shell.default.run(command: ["git", "add", "."]).get()
@@ -94,7 +99,8 @@ extension PackageRepository {
           }
         }
         let beforeLocation = PackageRepository.beforeDirectory(
-          for: location.lastPathComponent)
+          for: location.lastPathComponent
+        )
 
         // Simulators are not available to all CI jobs and must be tested separately.
         setenv("SIMULATOR_UNAVAILABLE_FOR_TESTING", "YES", 1 /* overwrite */)
@@ -119,7 +125,9 @@ extension PackageRepository {
           let gitIgnore = location.appendingPathComponent(".gitignore")
           if (try? gitIgnore.checkResourceIsReachable()) ≠ true {
             _ = try? FileManager.default.copy(
-              repositoryRoot.appendingPathComponent(".gitignore"), to: gitIgnore)
+              repositoryRoot.appendingPathComponent(".gitignore"),
+              to: gitIgnore
+            )
           }
 
           WorkspaceContext.current = try configurationContext()
@@ -165,7 +173,8 @@ extension PackageRepository {
                       .get()
                     // Reset cache to resurface compiler warnings.
                     try? FileManager.default.removeItem(
-                      at: location.appendingPathComponent(".build"))
+                      at: location.appendingPathComponent(".build")
+                    )
                     output = try Workspace.command.execute(with: command).get()
                     XCTFail(String(output), file: file, line: line)
                   } catch {
@@ -242,81 +251,106 @@ extension PackageRepository {
 
               let any = RepetitionPattern(
                 ConditionalPattern<Unicode.Scalar>({ _ in true }),
-                consumption: .lazy)
+                consumption: .lazy
+              )
 
               // Temporary directory varies.
               output.scalars.replaceMatches(for: "`..".scalars, with: "`".scalars)
               output.scalars.replaceMatches(for: "/..".scalars, with: "".scalars)
               output.scalars.replaceMatches(
-                for: "/private/tmp".scalars, with: "[Temporary]".scalars)
+                for: "/private/tmp".scalars,
+                with: "[Temporary]".scalars
+              )
               output.scalars.replaceMatches(
-                for: "/tmp".scalars, with: "[Temporary]".scalars)
+                for: "/tmp".scalars,
+                with: "[Temporary]".scalars
+              )
 
               // Find hotkey varies.
               output.scalars.replaceMatches(for: "⌘F".scalars, with: "[⌘F]".scalars)
               output.scalars.replaceMatches(
-                for: "Ctrl + F".scalars, with: "[⌘F]".scalars)
+                for: "Ctrl + F".scalars,
+                with: "[⌘F]".scalars
+              )
               output.scalars.replaceMatches(
-                for: "Strg + F".scalars, with: "[⌘F]".scalars)
+                for: "Strg + F".scalars,
+                with: "[⌘F]".scalars
+              )
 
               // Git paths vary.
               output.scalars.replaceMatches(
                 for: "$ git ".scalars + any + "\n\n".scalars,
-                with: "[$ git...]\n\n".scalars)
+                with: "[$ git...]\n\n".scalars
+              )
 
               // Swift order varies.
               output.scalars.replaceMatches(
                 for: "$ swift ".scalars + any + "\n\n".scalars,
-                with: "[$ swift...]\n\n".scalars)
+                with: "[$ swift...]\n\n".scalars
+              )
               output.scalars.replaceMatches(
                 for: "$ swift ".scalars + any + "\n0".scalars,
-                with: "[$ swift...]\n0".scalars)
+                with: "[$ swift...]\n0".scalars
+              )
 
               // Xcode order varies.
               output.scalars.replaceMatches(
                 for: "$ xcodebuild".scalars + any + "\n\n".scalars,
-                with: "[$ xcodebuild...]\n\n".scalars)
+                with: "[$ xcodebuild...]\n\n".scalars
+              )
 
               if command == ["validate"] ∨ command.hasPrefix(["validate", "•job"]) {
                 // Refreshment occurs elswhere in continuous integration.
                 output.scalars.replaceMatches(
                   for: "\n".scalars + any + "\nValidating “".scalars,
-                  with: "\n[Refreshing ...]\n\nValidating “".scalars)
+                  with: "\n[Refreshing ...]\n\nValidating “".scalars
+                )
                 output.scalars.replaceMatches(
                   for: "\n".scalars + any + "\nValidating ‘".scalars,
-                  with: "\n[Refreshing ...]\n\nValidating ‘".scalars)
+                  with: "\n[Refreshing ...]\n\nValidating ‘".scalars
+                )
                 output.scalars.replaceMatches(
                   for: "\n".scalars + any
                     + "\n„AllDisabled“ wird geprüft".scalars,
                   with:
                     "\n[... wird aufgefrisct ...]\n\n„AllDisabled“ wird geprüft"
-                    .scalars)
+                    .scalars
+                )
                 output.scalars.replaceMatches(
                   for: "\n".scalars + any
                     + "\n„CustomTasks“ wird geprüft".scalars,
                   with:
                     "\n[... wird aufgefrisct ...]\n\n„CustomTasks“ wird geprüft"
-                    .scalars)
+                    .scalars
+                )
                 output.scalars.replaceMatches(
                   for: "\n".scalars + any
                     + "\n„FailingCustomValidation“ wird geprüft".scalars,
                   with:
                     "\n[... wird aufgefrisct ...]\n\n„FailingCustomValidation“ wird geprüft"
-                    .scalars)
+                    .scalars
+                )
               }
             }
 
             testCommand(
-              Workspace.command, with: command, localizations: localizations,
-              uniqueTestName: specificationName, postprocess: postprocess,
+              Workspace.command,
+              with: command,
+              localizations: localizations,
+              uniqueTestName: specificationName,
+              postprocess: postprocess,
               overwriteSpecificationInsteadOfFailing:
-                overwriteSpecificationInsteadOfFailing, file: file, line: line)
+                overwriteSpecificationInsteadOfFailing,
+              file: file,
+              line: line
+            )
           }
 
           let documentationDirectory = location.appendingPathComponent("docs")
           if (try? documentationDirectory.checkResourceIsReachable()) == true {
             let warnings = Site<InterfaceLocalization>.validate(
-              site: documentationDirectory)
+              site: documentationDirectory
+            )
             if ¬warnings.isEmpty {
               let files = warnings.keys.sorted()
               let warningList = files.map({ url in
@@ -325,7 +359,8 @@ extension PackageRepository {
                 fileMessage.append(
                   contentsOf: errors.map({ error in
                     return error.localizedDescription
-                  }).joined(separator: "\n"))
+                  }).joined(separator: "\n")
+                )
                 return fileMessage
               }).joined(separator: "\n\n")
               XCTFail(warningList, file: file, line: line)
@@ -334,10 +369,12 @@ extension PackageRepository {
 
           /// Commit hashes vary.
           try? FileManager.default.removeItem(
-            at: location.appendingPathComponent("Package.resolved"))
+            at: location.appendingPathComponent("Package.resolved")
+          )
           /// Manifest updates only on macOS.
           try? FileManager.default.removeItem(
-            at: location.appendingPathComponent("Tests/LinuxMain.swift"))
+            at: location.appendingPathComponent("Tests/LinuxMain.swift")
+          )
           for manifest in (
             (try? FileManager.default.deepFileEnumeration(in: location)) ?? []
           )
@@ -346,7 +383,8 @@ extension PackageRepository {
           }
 
           let afterLocation = PackageRepository.afterDirectory(
-            for: location.lastPathComponent)
+            for: location.lastPathComponent
+          )
           if overwriteSpecificationInsteadOfFailing ∨ (
             try? afterLocation.checkResourceIsReachable()
           ) ≠ true {
@@ -356,13 +394,13 @@ extension PackageRepository {
 
             var files: Set<String> = []
             for file in try PackageRepository(at: location).trackedFiles(
-              output: Command.Output.mock)
-            {
+              output: Command.Output.mock
+            ) {
               files.insert(file.path(relativeTo: location))
             }
             for file in try PackageRepository(at: afterLocation).trackedFiles(
-              output: Command.Output.mock)
-            {
+              output: Command.Output.mock
+            ) {
               files.insert(file.path(relativeTo: afterLocation))
             }
 
@@ -372,16 +410,22 @@ extension PackageRepository {
               if let resultContents = try? String(from: result) {
                 if (try? String(from: after)) ≠ nil {
                   compare(
-                    resultContents, against: after,
-                    overwriteSpecificationInsteadOfFailing: false, file: file,
-                    line: line)
+                    resultContents,
+                    against: after,
+                    overwriteSpecificationInsteadOfFailing: false,
+                    file: file,
+                    line: line
+                  )
                 } else {
                   XCTFail("Unexpected file produced: “\(fileName)”")
                 }
               } else {
                 if (try? String(from: after)) ≠ nil {
                   XCTFail(
-                    "Failed to produce “\(fileName)”.", file: file, line: line)
+                    "Failed to produce “\(fileName)”.",
+                    file: file,
+                    line: line
+                  )
                 }
               }
             }

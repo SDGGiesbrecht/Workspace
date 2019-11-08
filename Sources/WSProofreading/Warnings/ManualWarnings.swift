@@ -38,7 +38,9 @@ internal struct ManualWarnings: Warning {
   })
 
   internal static func message(
-    for details: StrictString, in project: PackageRepository, output: Command.Output
+    for details: StrictString,
+    in project: PackageRepository,
+    output: Command.Output
   ) -> UserFacing<StrictString, InterfaceLocalization>? {
     return UserFacing({ _ in details })
   }

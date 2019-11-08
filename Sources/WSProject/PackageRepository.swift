@@ -160,7 +160,8 @@ extension PackageRepository {
 
       // Filter out tools which have not been declared as products.
       let declaredTools: Set<String> = Set(
-        try cachedManifest().products.lazy.map({ $0.name }))
+        try cachedManifest().products.lazy.map({ $0.name })
+      )
 
       for product in try cachedPackage().products where ¬product.name.hasPrefix("_") {
         switch product.type {
@@ -217,7 +218,9 @@ extension PackageRepository {
       }
 
       let manifest = PackageManifest(
-        _packageName: String(try packageName()), products: products)
+        _packageName: String(try packageName()),
+        products: products
+      )
       return WorkspaceContext(_location: location, manifest: manifest)
     }
   }
@@ -248,7 +251,8 @@ extension PackageRepository {
           at: Metadata.latestStableVersion,
           minimumMacOSVersion: PackageRepository.macOSDeploymentVersion,
           context: try configurationContext(),
-          reportProgress: { output.print($0) }).get()
+          reportProgress: { output.print($0) }
+        ).get()
       }
 
       // Force lazy options to resolve under the right context before it changes.
@@ -270,7 +274,8 @@ extension PackageRepository {
           case .deutschDeutschland:
             return "Keine Lokalisationen sind angegeben. (dokumentation.localisationen)"
           }
-        }))
+        })
+      )
     }
     return result
   }
@@ -278,7 +283,8 @@ extension PackageRepository {
   public func fileHeader(output: Command.Output) throws -> StrictString {
     return try cached(in: &configurationCache.fileHeader) {
       return try configuration(output: output).fileHeaders.contents.resolve(
-        configuration(output: output))
+        configuration(output: output)
+      )
     }
   }
 
@@ -287,14 +293,16 @@ extension PackageRepository {
   {
     return try cached(in: &configurationCache.documentationCopyright) {
       return try configuration(output: output).documentation.api.copyrightNotice.resolve(
-        configuration(output: output))
+        configuration(output: output)
+      )
     }
   }
 
   public func readMe(output: Command.Output) throws -> [LocalizationIdentifier: StrictString] {
     return try cached(in: &configurationCache.readMe) {
       return try configuration(output: output).documentation.readMe.contents.resolve(
-        configuration(output: output))
+        configuration(output: output)
+      )
     }
   }
 
@@ -303,7 +311,8 @@ extension PackageRepository {
   {
     return try cached(in: &configurationCache.contributingInstructions) {
       return try configuration(output: output).gitHub.contributingInstructions.resolve(
-        configuration(output: output))
+        configuration(output: output)
+      )
     }
   }
 
@@ -312,7 +321,8 @@ extension PackageRepository {
   {
     return try cached(in: &configurationCache.issueTemplates) {
       return try configuration(output: output).gitHub.issueTemplates.resolve(
-        configuration(output: output))
+        configuration(output: output)
+      )
     }
   }
 
@@ -389,7 +399,8 @@ extension PackageRepository {
 
       output.print(
         UserFacingDynamic<StrictString, InterfaceLocalization, String>({
-          localization, path in
+          localization,
+          path in
           switch localization {
           case .englishUnitedKingdom:
             return "Deleting ‘\(path)’..."
@@ -398,7 +409,8 @@ extension PackageRepository {
           case .deutschDeutschland:
             return "„\(path)“ wird gelöscht ..."
           }
-        }).resolved(using: location.path(relativeTo: self.location)))
+        }).resolved(using: location.path(relativeTo: self.location))
+      )
 
       try? FileManager.default.removeItem(at: location)
       if location.pathExtension == "swift" {
@@ -412,7 +424,9 @@ extension PackageRepository {
   // MARK: - Related Projects
 
   private static let relatedProjectCache = FileManager.default.url(
-    in: .cache, at: "Related Projects")
+    in: .cache,
+    at: "Related Projects"
+  )
 
   public static func relatedPackage(_ package: SDGSwift.Package, output: Command.Output) throws
     -> PackageRepository
@@ -423,7 +437,8 @@ extension PackageRepository {
     let commit = try package.latestCommitIdentifier().get()
 
     let repositoryLocation = cache.appendingPathComponent(commit).appendingPathComponent(
-      String(directoryName))
+      String(directoryName)
+    )
 
     let repository: PackageRepository
     if (try? repositoryLocation.checkResourceIsReachable()) == true {
@@ -442,10 +457,15 @@ extension PackageRepository {
             case .deutschDeutschland:  // @exempt(from: tests)
               return "„\(package.url.lastPathComponent)“ wird abgerufen ..."
             }
-          }).resolved())
+          }).resolved()
+        )
 
         repository = try PackageRepository.clone(
-          package, to: repositoryLocation, at: .development, shallow: true).get()
+          package,
+          to: repositoryLocation,
+          at: .development,
+          shallow: true
+        ).get()
       } catch {
         // Clean up if there is a failure.
         try? FileManager.default.removeItem(at: cache)
@@ -456,7 +476,8 @@ extension PackageRepository {
 
     // Remove deprecated cache.
     try? FileManager.default.removeItem(
-      at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent(".Workspace"))
+      at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent(".Workspace")
+    )
     return repository
   }
 

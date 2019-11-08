@@ -36,7 +36,10 @@ extension ElementSyntax {
         AttributeSyntax(
           name: TokenSyntax(kind: .attributeName(name)),
           value: AttributeValueSyntax(
-            value: TokenSyntax(kind: .attributeText(String(value))))))
+            value: TokenSyntax(kind: .attributeText(String(value)))
+          )
+        )
+      )
     }
 
     let constructedContents = inline ? contents : "\n" + contents + "\n"
@@ -47,15 +50,22 @@ extension ElementSyntax {
         openingTag: OpeningTagSyntax(
           name: name,
           attributes: AttributesSyntax(
-            attributes: ListSyntax(entries: constructedAttributes))),
+            attributes: ListSyntax(entries: constructedAttributes)
+          )
+        ),
         continuation: ElementContinuationSyntax(
           content: ListSyntax(entries: [
             ContentSyntax(
               kind: .text(
                 TextSyntax(
-                  text: TokenSyntax(kind: .text(String(constructedContents))))))
+                  text: TokenSyntax(kind: .text(String(constructedContents)))
+                )
+              )
+            )
           ]),
-          closingTag: ClosingTagSyntax(name: name)))
+          closingTag: ClosingTagSyntax(name: name)
+        )
+      )
   }
 
   func normalizedSource() -> StrictString {

@@ -109,9 +109,11 @@ extension Workspace.Refresh {
             case .deutschDeutschland:
               return "Ressourcen werden aufgefrischt ..."
             }
-          }).resolved().formattedAsSectionHeader())
+          }).resolved().formattedAsSectionHeader()
+        )
 
         try options.project.refreshResources(output: output)
-      })
+      }
+    )
   }
 }

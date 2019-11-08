@@ -87,7 +87,10 @@ public enum RelatedProjectEntry: Decodable, Encodable {
       self
         = .heading(
           text: try container.decode(
-            [LocalizationIdentifier: StrictString].self, forKey: CodingKeys.details))
+            [LocalizationIdentifier: StrictString].self,
+            forKey: CodingKeys.details
+          )
+        )
     }
   }
 }

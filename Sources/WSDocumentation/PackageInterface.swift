@@ -36,55 +36,89 @@ internal struct PackageInterface {
       ElementSyntax("span", attributes: ["class": "punctuation"], contents: ".", inline: true)
         .normalizedSource(),
       ElementSyntax(
-        "span", attributes: ["class": "external identifier"], contents: "package",
-        inline: true).normalizedSource(),
+        "span",
+        attributes: ["class": "external identifier"],
+        contents: "package",
+        inline: true
+      ).normalizedSource(),
       ElementSyntax("span", attributes: ["class": "punctuation"], contents: "(", inline: true)
         .normalizedSource(),
       ElementSyntax(
-        "span", attributes: ["class": "external identifier"], contents: "url", inline: true)
+        "span",
+        attributes: ["class": "external identifier"],
+        contents: "url",
+        inline: true
+      )
         .normalizedSource(),
       ElementSyntax("span", attributes: ["class": "punctuation"], contents: ":", inline: true)
         .normalizedSource(),
       " ",
       ElementSyntax(
-        "span", attributes: ["class": "string"],
+        "span",
+        attributes: ["class": "string"],
         contents: [
           ElementSyntax(
-            "span", attributes: ["class": "punctuation"], contents: "\u{22}",
-            inline: true).normalizedSource(),
+            "span",
+            attributes: ["class": "punctuation"],
+            contents: "\u{22}",
+            inline: true
+          ).normalizedSource(),
           ElementSyntax(
-            "a", attributes: ["href": packageURL],
+            "a",
+            attributes: ["href": packageURL],
             contents: [
               ElementSyntax(
                 "span",
                 attributes: ["class": "text"],
                 contents: HTML.escapeTextForCharacterData(packageURL),
-                inline: true).normalizedSource()
-            ].joined(), inline: true).normalizedSource(),
+                inline: true
+              ).normalizedSource()
+            ].joined(),
+            inline: true
+          ).normalizedSource(),
           ElementSyntax(
-            "span", attributes: ["class": "punctuation"], contents: "\u{22}",
-            inline: true).normalizedSource()
-        ].joined(), inline: true).normalizedSource()
+            "span",
+            attributes: ["class": "punctuation"],
+            contents: "\u{22}",
+            inline: true
+          ).normalizedSource()
+        ].joined(),
+        inline: true
+      ).normalizedSource()
     ].joined()
 
     if let specified = specify(version: version) {
       result.append(
         contentsOf: [
           ElementSyntax(
-            "span", attributes: ["class": "punctuation"], contents: ",", inline: true)
+            "span",
+            attributes: ["class": "punctuation"],
+            contents: ",",
+            inline: true
+          )
             .normalizedSource(),
           " ",
           specified
-        ].joined())
+        ].joined()
+      )
     }
 
     result.append(
       contentsOf: ElementSyntax(
-        "span", attributes: ["class": "punctuation"], contents: ")", inline: true)
-        .normalizedSource())
+        "span",
+        attributes: ["class": "punctuation"],
+        contents: ")",
+        inline: true
+      )
+        .normalizedSource()
+    )
 
     return ElementSyntax(
-      "span", attributes: ["class": "swift blockquote"], contents: result, inline: true)
+      "span",
+      attributes: ["class": "swift blockquote"],
+      contents: result,
+      inline: true
+    )
       .normalizedSource()
   }
 
@@ -95,42 +129,72 @@ internal struct PackageInterface {
 
     var result = [
       ElementSyntax(
-        "span", attributes: ["class": "external identifier"], contents: "from", inline: true
+        "span",
+        attributes: ["class": "external identifier"],
+        contents: "from",
+        inline: true
       ).normalizedSource(),
       ElementSyntax("span", attributes: ["class": "punctuation"], contents: ":", inline: true)
         .normalizedSource(),
       " ",
       ElementSyntax(
-        "span", attributes: ["class": "string"],
+        "span",
+        attributes: ["class": "string"],
         contents: [
           ElementSyntax(
-            "span", attributes: ["class": "punctuation"], contents: "\u{22}",
-            inline: true).normalizedSource(),
+            "span",
+            attributes: ["class": "punctuation"],
+            contents: "\u{22}",
+            inline: true
+          ).normalizedSource(),
           ElementSyntax(
-            "span", attributes: ["class": "text"],
-            contents: StrictString(specified.string()), inline: true)
+            "span",
+            attributes: ["class": "text"],
+            contents: StrictString(specified.string()),
+            inline: true
+          )
             .normalizedSource(),
           ElementSyntax(
-            "span", attributes: ["class": "punctuation"], contents: "\u{22}",
-            inline: true).normalizedSource()
-        ].joined(), inline: true).normalizedSource()
+            "span",
+            attributes: ["class": "punctuation"],
+            contents: "\u{22}",
+            inline: true
+          ).normalizedSource()
+        ].joined(),
+        inline: true
+      ).normalizedSource()
     ].joined()
 
     if specified.major == 0 {
       result
         = [
           ElementSyntax(
-            "span", attributes: ["class": "punctuation"], contents: ".", inline: true)
+            "span",
+            attributes: ["class": "punctuation"],
+            contents: ".",
+            inline: true
+          )
             .normalizedSource(),
           ElementSyntax(
-            "span", attributes: ["class": "external identifier"],
-            contents: "upToNextMinor", inline: true).normalizedSource(),
+            "span",
+            attributes: ["class": "external identifier"],
+            contents: "upToNextMinor",
+            inline: true
+          ).normalizedSource(),
           ElementSyntax(
-            "span", attributes: ["class": "punctuation"], contents: "(", inline: true)
+            "span",
+            attributes: ["class": "punctuation"],
+            contents: "(",
+            inline: true
+          )
             .normalizedSource(),
           result,
           ElementSyntax(
-            "span", attributes: ["class": "punctuation"], contents: ")", inline: true)
+            "span",
+            attributes: ["class": "punctuation"],
+            contents: ")",
+            inline: true
+          )
             .normalizedSource()
         ].joined()
     }
@@ -158,7 +222,8 @@ internal struct PackageInterface {
             hasImporting: importing[localization] ≠ nil,
             hasRelatedProjects: relatedProjects[localization] ≠ nil,
             hasAbout: about[localization] ≠ nil,
-            localization: localization)
+            localization: localization
+          )
       }
     }
     return result
@@ -200,21 +265,29 @@ internal struct PackageInterface {
                 "[*site root*]\(HTML.percentEncodeURLPath(APIElement.package(package).relativePagePath[localization]!))"
             ],
             contents: HTML.escapeTextForCharacterData(
-              StrictString(package.name.source())),
-            inline: false).normalizedSource()
-        ].joinedAsLines()))
+              StrictString(package.name.source())
+            ),
+            inline: false
+          ).normalizedSource()
+        ].joinedAsLines()
+      )
+    )
 
     if hasInstallation {
       result.append(
         generateLoneIndexEntry(
           named: installation(localization: localization),
-          target: installationLocation(localization: localization)))
+          target: installationLocation(localization: localization)
+        )
+      )
     }
     if hasImporting {
       result.append(
         generateLoneIndexEntry(
           named: importing(localization: localization),
-          target: importingLocation(localization: localization)))
+          target: importingLocation(localization: localization)
+        )
+      )
     }
 
     if ¬tools.commands.isEmpty {
@@ -223,7 +296,9 @@ internal struct PackageInterface {
           named: SymbolPage.toolsHeader(localization: localization),
           identifier: .tools,
           tools: tools,
-          localization: localization))
+          localization: localization
+        )
+      )
     }
 
     if ¬package.libraries.lazy
@@ -234,7 +309,9 @@ internal struct PackageInterface {
           named: SymbolPage.librariesHeader(localization: localization),
           identifier: .libraries,
           apiEntries: package.libraries.lazy.map({ APIElement.library($0) }),
-          localization: localization))
+          localization: localization
+        )
+      )
     }
     if ¬package.modules.lazy.filter({
       localization ∉ APIElement.module($0).skippedLocalizations
@@ -244,7 +321,9 @@ internal struct PackageInterface {
           named: SymbolPage.modulesHeader(localization: localization),
           identifier: .modules,
           apiEntries: package.modules.lazy.map({ APIElement.module($0) }),
-          localization: localization))
+          localization: localization
+        )
+      )
     }
     if ¬package.types.lazy.filter({ localization ∉ APIElement.type($0).skippedLocalizations })
       .isEmpty
@@ -254,7 +333,9 @@ internal struct PackageInterface {
           named: SymbolPage.typesHeader(localization: localization),
           identifier: .types,
           apiEntries: package.types.lazy.map({ APIElement.type($0) }),
-          localization: localization))
+          localization: localization
+        )
+      )
     }
     if ¬package.uniqueExtensions
       .lazy.filter({ localization ∉ APIElement.extension($0).skippedLocalizations }).isEmpty
@@ -264,7 +345,9 @@ internal struct PackageInterface {
           named: SymbolPage.extensionsHeader(localization: localization),
           identifier: .extensions,
           apiEntries: package.uniqueExtensions.lazy.map({ APIElement.extension($0) }),
-          localization: localization))
+          localization: localization
+        )
+      )
     }
     if ¬package.protocols.lazy.filter({
       localization ∉ APIElement.protocol($0).skippedLocalizations
@@ -274,7 +357,9 @@ internal struct PackageInterface {
           named: SymbolPage.protocolsHeader(localization: localization),
           identifier: .protocols,
           apiEntries: package.protocols.lazy.map({ APIElement.protocol($0) }),
-          localization: localization))
+          localization: localization
+        )
+      )
     }
     if ¬package.functions.lazy.filter({
       localization ∉ APIElement.function($0).skippedLocalizations
@@ -284,7 +369,9 @@ internal struct PackageInterface {
           named: SymbolPage.functionsHeader(localization: localization),
           identifier: .functions,
           apiEntries: package.functions.lazy.map({ APIElement.function($0) }),
-          localization: localization))
+          localization: localization
+        )
+      )
     }
     if ¬package.globalVariables
       .lazy.filter({ localization ∉ APIElement.variable($0).skippedLocalizations }).isEmpty
@@ -294,7 +381,9 @@ internal struct PackageInterface {
           named: SymbolPage.variablesHeader(localization: localization),
           identifier: .variables,
           apiEntries: package.globalVariables.lazy.map({ APIElement.variable($0) }),
-          localization: localization))
+          localization: localization
+        )
+      )
     }
     if ¬package.operators
       .lazy.filter({ localization ∉ APIElement.operator($0).skippedLocalizations }).isEmpty
@@ -304,7 +393,9 @@ internal struct PackageInterface {
           named: SymbolPage.operatorsHeader(localization: localization),
           identifier: .operators,
           apiEntries: package.operators.lazy.map({ APIElement.operator($0) }),
-          localization: localization))
+          localization: localization
+        )
+      )
     }
     if ¬package.precedenceGroups
       .lazy.filter({ localization ∉ APIElement.precedence($0).skippedLocalizations }).isEmpty
@@ -314,19 +405,25 @@ internal struct PackageInterface {
           named: SymbolPage.precedenceGroupsHeader(localization: localization),
           identifier: .precedenceGroups,
           apiEntries: package.precedenceGroups.lazy.map({ APIElement.precedence($0) }),
-          localization: localization))
+          localization: localization
+        )
+      )
     }
     if hasRelatedProjects {
       result.append(
         generateLoneIndexEntry(
           named: relatedProjects(localization: localization),
-          target: relatedProjectsLocation(localization: localization)))
+          target: relatedProjectsLocation(localization: localization)
+        )
+      )
     }
     if hasAbout {
       result.append(
         generateLoneIndexEntry(
           named: about(localization: localization),
-          target: aboutLocation(localization: localization)))
+          target: aboutLocation(localization: localization)
+        )
+      )
     }
 
     return result.joinedAsLines()
@@ -348,10 +445,15 @@ internal struct PackageInterface {
               "[*site root*]\(HTML.percentEncodeURLPath(entry.relativePagePath[localization]!))"
           ],
           contents: HTML.escapeTextForCharacterData(StrictString(entry.name.source())),
-          inline: false).normalizedSource())
+          inline: false
+        ).normalizedSource()
+      )
     }
     return generateIndexSection(
-      named: name, identifier: identifier, contents: entries.joinedAsLines())
+      named: name,
+      identifier: identifier,
+      contents: entries.joinedAsLines()
+    )
   }
 
   private static func generateIndexSection(
@@ -371,12 +473,17 @@ internal struct PackageInterface {
                 "[*site root*]\(HTML.percentEncodeURLPath(entry.relativePagePath[localization]!))"
             ],
             contents: HTML.escapeTextForCharacterData(StrictString(interface.name)),
-            inline: false).normalizedSource())
+            inline: false
+          ).normalizedSource()
+        )
       }
 
     }
     return generateIndexSection(
-      named: name, identifier: identifier, contents: entries.joinedAsLines())
+      named: name,
+      identifier: identifier,
+      contents: entries.joinedAsLines()
+    )
   }
 
   private static func generateIndexSection(
@@ -393,11 +500,15 @@ internal struct PackageInterface {
           attributes: [
             "class": "heading",
             "onclick": "toggleIndexSectionVisibility(this)"
-          ], contents: HTML.escapeTextForCharacterData(name), inline: true)
+          ],
+          contents: HTML.escapeTextForCharacterData(name),
+          inline: true
+        )
           .normalizedSource(),
         contents
       ].joinedAsLines(),
-      inline: false).normalizedSource()
+      inline: false
+    ).normalizedSource()
   }
 
   private static func generateLoneIndexEntry(named name: StrictString, target: StrictString)
@@ -410,9 +521,13 @@ internal struct PackageInterface {
         attributes: [
           "class": "heading",
           "href": "[*site root*]\(HTML.percentEncodeURLPath(target))"
-        ], contents: HTML.escapeTextForCharacterData(name), inline: true)
+        ],
+        contents: HTML.escapeTextForCharacterData(name),
+        inline: true
+      )
         .normalizedSource(),
-      inline: false).normalizedSource()
+      inline: false
+    ).normalizedSource()
   }
 
   private static func installation(localization: LocalizationIdentifier) -> StrictString {
@@ -472,7 +587,9 @@ internal struct PackageInterface {
         ElementSyntax(
           "span",
           contents: HTML.escapeTextForCharacterData(platform),
-          inline: false).normalizedSource())
+          inline: false
+        ).normalizedSource()
+      )
     }
     return result.joinedAsLines()
   }
@@ -503,7 +620,8 @@ internal struct PackageInterface {
         case .deutschDeutschland:
           return "Die Programmierschnitstelle wird verarbeitet ..."
         }
-      }).resolved())
+      }).resolved()
+    )
 
     self.localizations = localizations
     self.developmentLocalization = developmentLocalization
@@ -542,7 +660,8 @@ internal struct PackageInterface {
         importing: importing,
         relatedProjects: relatedProjects,
         about: about,
-        localizations: localizations)
+        localizations: localizations
+      )
     self.platforms = platforms.mapValues { PackageInterface.generate(platforms: $0) }
   }
 
@@ -579,7 +698,9 @@ internal struct PackageInterface {
   // MARK: - Output
 
   internal func outputHTML(
-    to outputDirectory: URL, status: DocumentationStatus, output: Command.Output,
+    to outputDirectory: URL,
+    status: DocumentationStatus,
+    output: Command.Output,
     coverageCheckOnly: Bool
   ) throws {
     output.print(
@@ -590,33 +711,39 @@ internal struct PackageInterface {
         case .deutschDeutschland:
           return "Auszeichnung wird erstellt ..."
         }
-      }).resolved())
+      }).resolved()
+    )
 
     try outputPackagePages(
       to: outputDirectory,
       status: status,
       output: output,
-      coverageCheckOnly: coverageCheckOnly)
+      coverageCheckOnly: coverageCheckOnly
+    )
     try outputToolPages(
       to: outputDirectory,
       status: status,
       output: output,
-      coverageCheckOnly: coverageCheckOnly)
+      coverageCheckOnly: coverageCheckOnly
+    )
     try outputLibraryPages(
       to: outputDirectory,
       status: status,
       output: output,
-      coverageCheckOnly: coverageCheckOnly)
+      coverageCheckOnly: coverageCheckOnly
+    )
     try outputModulePages(
       to: outputDirectory,
       status: status,
       output: output,
-      coverageCheckOnly: coverageCheckOnly)
+      coverageCheckOnly: coverageCheckOnly
+    )
     try outputTopLevelSymbols(
       to: outputDirectory,
       status: status,
       output: output,
-      coverageCheckOnly: coverageCheckOnly)
+      coverageCheckOnly: coverageCheckOnly
+    )
 
     if coverageCheckOnly {
       return
@@ -628,34 +755,40 @@ internal struct PackageInterface {
       title: PackageInterface.installation,
       content: installation,
       status: status,
-      output: output)
+      output: output
+    )
     try outputGeneralPage(
       to: outputDirectory,
       location: PackageInterface.importingLocation,
       title: PackageInterface.importing,
       content: importing,
       status: status,
-      output: output)
+      output: output
+    )
     try outputGeneralPage(
       to: outputDirectory,
       location: PackageInterface.relatedProjectsLocation,
       title: PackageInterface.relatedProjects,
       content: relatedProjects,
       status: status,
-      output: output)
+      output: output
+    )
     try outputGeneralPage(
       to: outputDirectory,
       location: PackageInterface.aboutLocation,
       title: PackageInterface.about,
       content: about,
       status: status,
-      output: output)
+      output: output
+    )
 
     try outputRedirects(to: outputDirectory)
   }
 
   private func outputPackagePages(
-    to outputDirectory: URL, status: DocumentationStatus, output: Command.Output,
+    to outputDirectory: URL,
+    status: DocumentationStatus,
+    output: Command.Output,
     coverageCheckOnly: Bool
   ) throws {
     for localization in localizations {
@@ -708,7 +841,8 @@ internal struct PackageInterface {
             platforms: platforms[localization]!,
             command: tool,
             copyright: copyright(for: localization, status: status),
-            output: output).contents.save(to: location)
+            output: output
+          ).contents.save(to: location)
 
           try outputNestedCommands(
             of: tool,
@@ -716,14 +850,17 @@ internal struct PackageInterface {
             to: outputDirectory,
             localization: localization,
             status: status,
-            output: output)
+            output: output
+          )
         }
       }
     }
   }
 
   private func outputLibraryPages(
-    to outputDirectory: URL, status: DocumentationStatus, output: Command.Output,
+    to outputDirectory: URL,
+    status: DocumentationStatus,
+    output: Command.Output,
     coverageCheckOnly: Bool
   ) throws {
     for localization in localizations {
@@ -755,7 +892,9 @@ internal struct PackageInterface {
   }
 
   private func outputModulePages(
-    to outputDirectory: URL, status: DocumentationStatus, output: Command.Output,
+    to outputDirectory: URL,
+    status: DocumentationStatus,
+    output: Command.Output,
     coverageCheckOnly: Bool
   ) throws {
     for localization in localizations {
@@ -787,7 +926,9 @@ internal struct PackageInterface {
   }
 
   private func outputTopLevelSymbols(
-    to outputDirectory: URL, status: DocumentationStatus, output: Command.Output,
+    to outputDirectory: URL,
+    status: DocumentationStatus,
+    output: Command.Output,
     coverageCheckOnly: Bool
   ) throws {
     for localization in localizations {
@@ -856,7 +997,8 @@ internal struct PackageInterface {
               localization: localization,
               status: status,
               output: output,
-              coverageCheckOnly: coverageCheckOnly)
+              coverageCheckOnly: coverageCheckOnly
+            )
           }
         }
       }
@@ -888,7 +1030,8 @@ internal struct PackageInterface {
           localization: localization,
           status: status,
           output: output,
-          coverageCheckOnly: coverageCheckOnly)
+          coverageCheckOnly: coverageCheckOnly
+        )
       }
     }
   }
@@ -950,7 +1093,8 @@ internal struct PackageInterface {
             localization: localization,
             status: status,
             output: output,
-            coverageCheckOnly: coverageCheckOnly)
+            coverageCheckOnly: coverageCheckOnly
+          )
         }
       }
     }
@@ -1009,7 +1153,8 @@ internal struct PackageInterface {
           platforms: platforms[localization]!,
           command: information,
           copyright: copyright(for: localization, status: status),
-          output: output).contents.save(to: location)
+          output: output
+        ).contents.save(to: location)
 
         try outputNestedCommands(
           of: information,
@@ -1017,7 +1162,8 @@ internal struct PackageInterface {
           to: outputDirectory,
           localization: localization,
           status: status,
-          output: output)
+          output: output
+        )
       }
     }
   }
@@ -1044,7 +1190,9 @@ internal struct PackageInterface {
             contentsOf: StrictString(
               specifiedContent.lines.lazy.map({ line in
                 return "/// " + StrictString(line.line)
-              }).joined(separator: "\n")))
+              }).joined(separator: "\n")
+            )
+          )
         }
         documentationMarkup.append(contentsOf: "\npublic func function() {}\n")
         let parsed = try SyntaxParser.parse(source: String(documentationMarkup))
@@ -1057,7 +1205,9 @@ internal struct PackageInterface {
             contentsOf: paragraph.renderedHTML(
               localization: localization.code,
               symbolLinks: symbolLinks[localization]!
-                .mapValues({ String(pathToSiteRoot) + $0 })))
+                .mapValues({ String(pathToSiteRoot) + $0 })
+            )
+          )
         }
 
         let page = Page(
@@ -1076,7 +1226,8 @@ internal struct PackageInterface {
                 path: api.relativePagePath[localization]!
               ),
               (label: pageTitle, path: pagePath)
-            ]),
+            ]
+          ),
           packageImport: packageImport,
           index: indices[localization]!,
           sectionIdentifier: nil,
@@ -1088,7 +1239,8 @@ internal struct PackageInterface {
           title: HTML.escapeTextForCharacterData(pageTitle),
           content: StrictString(pageContent),
           extensions: "",
-          copyright: copyright(for: localization, status: status))
+          copyright: copyright(for: localization, status: status)
+        )
         let url = outputDirectory.appendingPathComponent(String(location(localization)))
         try page.contents.save(to: url)
       }
@@ -1121,7 +1273,8 @@ internal struct PackageInterface {
       .contents.save(to: outputDirectory.appendingPathComponent("index.html"))
     for localization in localizations {
       let localizationDirectory = outputDirectory.appendingPathComponent(
-        String(localization._directoryName))
+        String(localization._directoryName)
+      )
       let redirectURL = localizationDirectory.appendingPathComponent("index.html")
       let pageURL = api.pageURL(in: outputDirectory, for: localization)
       if redirectURL ≠ pageURL {

@@ -46,13 +46,18 @@ extension Workspace.Validate {
     })
 
     static let command = Command(
-      name: name, description: description, directArguments: [],
+      name: name,
+      description: description,
+      directArguments: [],
       options: Workspace.standardOptions,
       execution: { (_, options: Options, output: Command.Output) throws in
 
         var validationStatus = ValidationStatus()
         try executeAsStep(
-          options: options, validationStatus: &validationStatus, output: output)
+          options: options,
+          validationStatus: &validationStatus,
+          output: output
+        )
 
         if ¬validationStatus.validatedSomething {
           validationStatus.passStep(
@@ -63,17 +68,23 @@ extension Workspace.Validate {
               case .deutschDeutschland:
                 return "Keine Biblioteksprodukte zum Dokumentieren."
               }
-            }))
+            })
+          )
         }
 
         try validationStatus.reportOutcome(project: options.project, output: output)
-      })
+      }
+    )
 
     static func executeAsStep(
-      options: Options, validationStatus: inout ValidationStatus, output: Command.Output
+      options: Options,
+      validationStatus: inout ValidationStatus,
+      output: Command.Output
     ) throws {
       try options.project.validateDocumentationCoverage(
-        validationStatus: &validationStatus, output: output)
+        validationStatus: &validationStatus,
+        output: output
+      )
     }
   }
 }

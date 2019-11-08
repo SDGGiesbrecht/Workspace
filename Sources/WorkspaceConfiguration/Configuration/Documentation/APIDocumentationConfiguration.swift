@@ -113,7 +113,8 @@ public struct APIDocumentationConfiguration: Codable {
     [LocalizationIdentifier: StrictString]
   >(resolve: { configuration in
     return configuration.fileHeaders.copyrightNotice.resolve(configuration).mapKeyValuePairs {
-      localization, notice in
+      localization,
+      notice in
       if let provided = localization._reasonableMatch {
         switch provided {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:

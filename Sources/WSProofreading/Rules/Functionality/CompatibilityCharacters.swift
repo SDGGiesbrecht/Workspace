@@ -31,7 +31,9 @@ internal struct CompatibilityCharacters: TextRule {
   })
 
   internal static func check(
-    file: TextFile, in project: PackageRepository, status: ProofreadingStatus,
+    file: TextFile,
+    in project: PackageRepository,
+    status: ProofreadingStatus,
     output: Command.Output
   ) {
     for index in file.contents.scalars.indices {
@@ -40,7 +42,8 @@ internal struct CompatibilityCharacters: TextRule {
       let normalized = character.decomposedStringWithCompatibilityMapping
       if character ≠ normalized {
         reportViolation(
-          in: file, at: index ..< file.contents.scalars.index(after: index),
+          in: file,
+          at: index ..< file.contents.scalars.index(after: index),
           replacementSuggestion: StrictString(normalized),
           message: UserFacing<StrictString, InterfaceLocalization>({ (localization) in
             switch localization {
@@ -54,7 +57,9 @@ internal struct CompatibilityCharacters: TextRule {
               return
                 "U+\(scalar.hexadecimalCode) geht bei Normalisierung vielleicht verloren; stattdessen „\(normalized)“ verwenden."
             }
-          }), status: status)
+          }),
+          status: status
+        )
       }
     }
   }

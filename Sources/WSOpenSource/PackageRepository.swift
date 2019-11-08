@@ -27,8 +27,10 @@ import SDGSwiftSource
 extension PackageRepository {
 
   private func refreshReadMe(
-    at location: URL, for localization: LocalizationIdentifier,
-    allLocalizations: [LocalizationIdentifier], output: Command.Output
+    at location: URL,
+    for localization: LocalizationIdentifier,
+    allLocalizations: [LocalizationIdentifier],
+    output: Command.Output
   ) throws {
 
     guard var readMe = try readMe(output: output)[localization] else {
@@ -45,13 +47,15 @@ extension PackageRepository {
             return
               "Das Lies‐mich für „\(arbitraryDescriptionOf: localization)“ fehlt. (dokumentation.liesMich.inhalt"
           }
-        }))
+        })
+      )
     }
 
     var fromDocumentation: StrictString = ""
     if let documentation = try? PackageAPI.documentation(
-      for: package().get()).resolved(localizations: allLocalizations).documentation[
-        localization]
+      for: package().get()
+    ).resolved(localizations: allLocalizations).documentation[
+      localization]
     {
 
       if let description = documentation.descriptionSection {
@@ -72,7 +76,8 @@ extension PackageRepository {
           "```swift",
           StrictString(example),
           "```"
-        ].joinedAsLines())
+        ].joinedAsLines()
+      )
     }
 
     var file = try TextFile(possiblyAt: location)
@@ -86,7 +91,8 @@ extension PackageRepository {
       at: location.appendingPathComponent("README.md"),
       for: try developmentLocalization(output: output),
       allLocalizations: try configuration(output: output).documentation.localizations,
-      output: output)
+      output: output
+    )
 
     // Deprecated file locations.
     delete(location.appendingPathComponent("Documentation/Related Projects.md"), output: output)
@@ -94,10 +100,15 @@ extension PackageRepository {
       autoreleasepool {
         delete(
           ReadMeConfiguration._readMeLocation(for: location, localization: localization),
-          output: output)
+          output: output
+        )
         delete(
           ReadMeConfiguration._relatedProjectsLocation(
-            for: location, localization: localization), output: output)
+            for: location,
+            localization: localization
+          ),
+          output: output
+        )
       }
     }
   }

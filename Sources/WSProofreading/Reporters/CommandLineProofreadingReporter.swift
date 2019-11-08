@@ -49,8 +49,10 @@ public class CommandLineProofreadingReporter: ProofreadingReporter {
   }
 
   private func display(
-    source: String, violation: Range<String.ScalarView.Index>,
-    replacementSuggestion: StrictString?, highlight: (String) -> String
+    source: String,
+    violation: Range<String.ScalarView.Index>,
+    replacementSuggestion: StrictString?,
+    highlight: (String) -> String
   ) -> String {
     let lines = source.lines
     let lineRange = violation.lines(in: lines)
@@ -83,21 +85,31 @@ public class CommandLineProofreadingReporter: ProofreadingReporter {
         String(lineMessage(source: violation.file.contents, violation: violation.range)),
         String(description),
         display(
-          source: violation.file.contents, violation: violation.range,
-          replacementSuggestion: violation.replacementSuggestion, highlight: highlight)
-      ].joinedAsLines())
+          source: violation.file.contents,
+          violation: violation.range,
+          replacementSuggestion: violation.replacementSuggestion,
+          highlight: highlight
+        )
+      ].joinedAsLines()
+    )
   }
 
   // Parallel reporting style for test coverage.
   public func report(
-    violation: Range<String.ScalarView.Index>, in file: String, to output: Command.Output
+    violation: Range<String.ScalarView.Index>,
+    in file: String,
+    to output: Command.Output
   ) {
     output.print(
       [
         String(lineMessage(source: file, violation: violation)),
         display(
-          source: file, violation: violation, replacementSuggestion: nil,
-          highlight: { $0.formattedAsError() })
-      ].joinedAsLines())
+          source: file,
+          violation: violation,
+          replacementSuggestion: nil,
+          highlight: { $0.formattedAsError() }
+        )
+      ].joinedAsLines()
+    )
   }
 }

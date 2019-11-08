@@ -39,7 +39,10 @@ public enum Workspace {
     }
   })
   internal static let projectOption = Option(
-    name: projectName, description: projectDescription, type: ArgumentType.path)
+    name: projectName,
+    description: projectDescription,
+    type: ArgumentType.path
+  )
 
   internal static let standardOptions: [AnyOption] = [projectOption]
 
@@ -63,7 +66,8 @@ public enum Workspace {
   })
 
   public static let command = Command(
-    name: name, description: description,
+    name: name,
+    description: description,
     subcommands: [
 
       // Primary Workflow
@@ -80,5 +84,6 @@ public enum Workspace {
 
       // Other
       Workspace.CheckForUpdates.command
-    ])
+    ]
+  )
 }

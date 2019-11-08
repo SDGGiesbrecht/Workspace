@@ -61,7 +61,10 @@ extension Workspace {
     }
 
     static let command = Command(
-      name: name, description: description, subcommands: subcommands,
-      defaultSubcommand: All.command)
+      name: name,
+      description: description,
+      subcommands: subcommands,
+      defaultSubcommand: All.command
+    )
   }
 }

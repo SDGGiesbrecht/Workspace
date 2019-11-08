@@ -56,9 +56,11 @@ extension Workspace.Refresh {
             case .deutschDeutschland:
               return "Skripte werden aufgefrischt ..."
             }
-          }).resolved().formattedAsSectionHeader())
+          }).resolved().formattedAsSectionHeader()
+        )
 
         try options.project.refreshScripts(output: output)
-      })
+      }
+    )
   }
 }

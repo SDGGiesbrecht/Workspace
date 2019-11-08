@@ -32,7 +32,8 @@ extension PackageRepository {
           case .deutschDeutschland:
             return "Keine Lizenz wurde ausgewählt. (lizenz.lizenz)"
           }
-        }))
+        })
+      )
     }
 
     var text = licence.text
@@ -43,7 +44,8 @@ extension PackageRepository {
     let copyright = WSProject.copyright(fromText: oldContents)
     let projectName = try self.projectName(
       in: LocalizationIdentifier(InterfaceLocalization.englishUnitedStates.code),
-      output: output)
+      output: output
+    )
     var authors: StrictString = "the \(projectName) project contributors."
     if let configuredAuthor = try configuration(output: output).documentation.primaryAuthor {
       authors = configuredAuthor + " and " + authors

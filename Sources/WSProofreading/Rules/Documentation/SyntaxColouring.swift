@@ -44,8 +44,12 @@ internal struct SyntaxColouring: SyntaxRule {
   })
 
   internal static func check(
-    _ node: ExtendedSyntax, context: ExtendedSyntaxContext, file: TextFile,
-    project: PackageRepository, status: ProofreadingStatus, output: Command.Output
+    _ node: ExtendedSyntax,
+    context: ExtendedSyntaxContext,
+    file: TextFile,
+    project: PackageRepository,
+    status: ProofreadingStatus,
+    output: Command.Output
   ) {
 
     if let codeDelimiter = node as? ExtendedTokenSyntax,
@@ -56,7 +60,10 @@ internal struct SyntaxColouring: SyntaxRule {
 
       if codeBlock.language == nil {
         reportViolation(
-          in: file, at: codeDelimiter.range(in: context), message: message, status: status
+          in: file,
+          at: codeDelimiter.range(in: context),
+          message: message,
+          status: status
         )
       }
     }

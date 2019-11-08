@@ -460,7 +460,8 @@ extension APIElement {
           group[indexA].addLocalizations(
             from: group[indexB],
             isSame: indexA == indexB,
-            globalScope: globalScope)
+            globalScope: globalScope
+          )
         }
       }
     }
@@ -483,7 +484,8 @@ extension APIElement {
             case .function(let function):
               return function.declaration.isTypeMember()
             }
-          })
+          }
+        )
       if ¬isSame {
         localizedChildren.append(contentsOf: other.children)
       }
@@ -737,7 +739,8 @@ extension APIElement {
       ?? directoryName(
         for: localization,
         globalScope: globalScope,
-        typeMember: { typeMember })  // @exempt(from: tests) Should never be called.
+        typeMember: { typeMember }
+      )  // @exempt(from: tests) Should never be called.
   }
 
   internal func pageURL(
@@ -748,7 +751,8 @@ extension APIElement {
   }
 
   internal func determinePaths(
-    for localization: LocalizationIdentifier, namespace: StrictString = ""
+    for localization: LocalizationIdentifier,
+    namespace: StrictString = ""
   ) -> [String: String] {
     return autoreleasepool {
 
@@ -791,13 +795,15 @@ extension APIElement {
           + localizedDirectoryName(
             for: localization,
             globalScope: namespace.isEmpty,
-            typeMember: variable.declaration.isTypeMember()) + "/"
+            typeMember: variable.declaration.isTypeMember()
+          ) + "/"
       case .function(let function):
         path += namespace
           + localizedDirectoryName(
             for: localization,
             globalScope: namespace.isEmpty,
-            typeMember: function.declaration.isTypeMember()) + "/"
+            typeMember: function.declaration.isTypeMember()
+          ) + "/"
       case .conformance:
         unreachable()
       }

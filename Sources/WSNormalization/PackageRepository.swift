@@ -44,7 +44,10 @@ extension PackageRepository {
             let source = file.contents
             var result: String = ""
             try formatter.format(
-              source: source, assumingFileURL: file.location, to: &result)
+              source: source,
+              assumingFileURL: file.location,
+              to: &result
+            )
             file.contents = result
           }
 

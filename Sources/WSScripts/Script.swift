@@ -125,7 +125,9 @@ internal enum Script: Int, CaseIterable {
   }
 
   private func getWorkspace(
-    andExecute command: StrictString, for project: PackageRepository, output: Command.Output
+    andExecute command: StrictString,
+    for project: PackageRepository,
+    output: Command.Output
   ) throws -> [StrictString] {
     let command = command.appending(contentsOf: " $1 $2")
 
@@ -187,10 +189,12 @@ internal enum Script: Int, CaseIterable {
       lines.append(openTerminal(andExecute: "Validate"))
     case .refreshMacOS:
       lines.append(
-        contentsOf: try getWorkspace(andExecute: "refresh", for: project, output: output))
+        contentsOf: try getWorkspace(andExecute: "refresh", for: project, output: output)
+      )
     case .validateMacOS:
       lines.append(
-        contentsOf: try getWorkspace(andExecute: "validate", for: project, output: output))
+        contentsOf: try getWorkspace(andExecute: "validate", for: project, output: output)
+      )
     }
 
     return StrictString(lines.joined(separator: "\n".scalars))

@@ -88,8 +88,12 @@ internal struct ColonSpacing: SyntaxRule {
   private static let prohibitedFollowingSpaceSuggestion: StrictString = ":"
 
   internal static func check(
-    _ node: Syntax, context: SyntaxContext, file: TextFile, project: PackageRepository,
-    status: ProofreadingStatus, output: Command.Output
+    _ node: Syntax,
+    context: SyntaxContext,
+    file: TextFile,
+    project: PackageRepository,
+    status: ProofreadingStatus,
+    output: Command.Output
   ) {
 
     if let token = node as? TokenSyntax,
@@ -136,7 +140,9 @@ internal struct ColonSpacing: SyntaxRule {
             var range = token.syntaxRange(in: context)
             range
               = file.contents.scalars.index(
-                range.lowerBound, offsetBy: −precedingTrivia.text.scalars.count)
+                range.lowerBound,
+                offsetBy: −precedingTrivia.text.scalars.count
+              )
               ..< range.upperBound
             precedingViolation = (
               prohibitedPrecedingSpaceMessage, prohibitedPrecedingSpaceSuggestion,
@@ -163,8 +169,12 @@ internal struct ColonSpacing: SyntaxRule {
       }
       if let violation = precedingViolation {
         reportViolation(
-          in: file, at: violation.range, replacementSuggestion: violation.suggestion,
-          message: violation.message, status: status)
+          in: file,
+          at: violation.range,
+          replacementSuggestion: violation.suggestion,
+          message: violation.message,
+          status: status
+        )
       }
 
       // Trailing
@@ -222,7 +232,9 @@ internal struct ColonSpacing: SyntaxRule {
             var range = token.syntaxRange(in: context)
             range = range.lowerBound
               ..< file.contents.scalars.index(
-                range.upperBound, offsetBy: followingTrivia.text.scalars.count)
+                range.upperBound,
+                offsetBy: followingTrivia.text.scalars.count
+              )
             trailingViolation = (
               prohibitedFollowingSpaceMessage, prohibitedFollowingSpaceSuggestion,
               range
@@ -248,8 +260,12 @@ internal struct ColonSpacing: SyntaxRule {
 
       if let violation = trailingViolation {
         reportViolation(
-          in: file, at: violation.range, replacementSuggestion: violation.suggestion,
-          message: violation.message, status: status)
+          in: file,
+          at: violation.range,
+          replacementSuggestion: violation.suggestion,
+          message: violation.message,
+          status: status
+        )
       }
     }
   }

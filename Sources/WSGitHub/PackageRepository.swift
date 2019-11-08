@@ -62,7 +62,8 @@ extension PackageRepository {
   private func refreshContributingInstructions(output: Command.Output) throws {
 
     var contributingInstructionsFile = try TextFile(
-      possiblyAt: contributingInstructionsLocation)
+      possiblyAt: contributingInstructionsLocation
+    )
     contributingInstructionsFile.body
       = String(try constructedContributingInstructions(output: output))
     try contributingInstructionsFile.writeChanges(for: self, output: output)

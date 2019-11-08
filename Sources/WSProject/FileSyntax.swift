@@ -23,8 +23,10 @@ public struct FileSyntax {
   // MARK: - Initialization
 
   internal init(
-    blockCommentSyntax: BlockCommentSyntax? = nil, lineCommentSyntax: LineCommentSyntax? = nil,
-    requiredFirstLineToken: String? = nil, semanticLineTerminalWhitespace: [String] = []
+    blockCommentSyntax: BlockCommentSyntax? = nil,
+    lineCommentSyntax: LineCommentSyntax? = nil,
+    requiredFirstLineToken: String? = nil,
+    semanticLineTerminalWhitespace: [String] = []
   ) {
     self.blockCommentSyntax = blockCommentSyntax
     self.lineCommentSyntax = lineCommentSyntax
@@ -132,14 +134,21 @@ public struct FileSyntax {
   }
 
   private static func advance(
-    _ index: inout String.ScalarView.Index, pastLayoutSpacingIn string: String
+    _ index: inout String.ScalarView.Index,
+    pastLayoutSpacingIn string: String
   ) {
     string.scalars.advance(
-      &index, over: RepetitionPattern(CharacterSet.newlinePattern, count: 0 ... 1))
+      &index,
+      over: RepetitionPattern(CharacterSet.newlinePattern, count: 0 ... 1)
+    )
     string.scalars.advance(
-      &index, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
+      &index,
+      over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }))
+    )
     string.scalars.advance(
-      &index, over: RepetitionPattern(CharacterSet.newlinePattern, count: 0 ... 1))
+      &index,
+      over: RepetitionPattern(CharacterSet.newlinePattern, count: 0 ... 1)
+    )
   }
 
   internal func headerStart(file: TextFile) -> String.ScalarView.Index {
@@ -166,7 +175,9 @@ public struct FileSyntax {
     if let blockSyntax = blockCommentSyntax,
       blockSyntax.startOfNonDocumentationCommentExists(at: start, in: file.contents),
       let block = blockSyntax.firstComment(
-        in: start ..< file.contents.scalars.endIndex, of: file.contents)?.container.range
+        in: start ..< file.contents.scalars.endIndex,
+        of: file.contents
+      )?.container.range
         .upperBound
     {
       return block
@@ -175,7 +186,9 @@ public struct FileSyntax {
     if let lineSyntax = lineCommentSyntax,
       lineSyntax.nonDocumentationCommentExists(at: start, in: file.contents),
       let line = lineSyntax.rangeOfFirstComment(
-        in: start ..< file.contents.endIndex, of: file.contents)?.upperBound
+        in: start ..< file.contents.endIndex,
+        of: file.contents
+      )?.upperBound
     {
       return line
     }

@@ -42,8 +42,11 @@ public struct CustomTask: Decodable, Encodable {
     argumente: [Zeichenkette] = []
   ) {
     self.init(
-      url: ressourcenzeiger, version: ausgabe, executable: ausführbareDatei,
-      arguments: argumente)
+      url: ressourcenzeiger,
+      version: ausgabe,
+      executable: ausführbareDatei,
+      arguments: argumente
+    )
   }
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(CustomTask.init(url:version:executable:arguments:))
@@ -55,7 +58,10 @@ public struct CustomTask: Decodable, Encodable {
   ///     - executable: The name of the executable for the task.
   ///     - arguments: Any arguments for the executable.
   public init(
-    url: URL, version release: Version, executable: StrictString, arguments: [String] = []
+    url: URL,
+    version release: Version,
+    executable: StrictString,
+    arguments: [String] = []
   ) {
     self.url = url
     self.version = release

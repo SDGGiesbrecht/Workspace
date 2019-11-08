@@ -50,13 +50,15 @@ extension PackageRepository {
           {
 
             for match in file.contents.scalars.matches(
-              for: PackageRepository.exampleDeclarationPattern)
-            {
+              for: PackageRepository.exampleDeclarationPattern
+            ) {
               guard
                 let openingParenthesis = match.contents.firstMatch(
-                  for: "(".scalars),
+                  for: "(".scalars
+                ),
                 let closingParenthesis = match.contents.firstMatch(
-                  for: ")".scalars),
+                  for: ")".scalars
+                ),
                 let at = match.contents.lastMatch(for: "@".scalars)
               else {
                 unreachable()
@@ -65,12 +67,14 @@ extension PackageRepository {
               var identifier = StrictString(
                 file.contents.scalars[
                   openingParenthesis.range.upperBound
-                    ..< closingParenthesis.range.lowerBound])
+                    ..< closingParenthesis.range.lowerBound]
+              )
               identifier.trimMarginalWhitespace()
 
               var example = StrictString(
                 file.contents.scalars[
-                  closingParenthesis.range.upperBound ..< at.range.lowerBound])
+                  closingParenthesis.range.upperBound ..< at.range.lowerBound]
+              )
               // Remove token lines.
               example.lines.removeFirst()
               example.lines.removeLast()
@@ -78,7 +82,8 @@ extension PackageRepository {
               if let lastLine = example.lines.dropLast().last {
                 example.lines.removeLast(2)
                 example.lines.append(
-                  Line(line: StrictString(lastLine.line), newline: ""))
+                  Line(line: StrictString(lastLine.line), newline: "")
+                )
               }
               example = example.strippingCommonIndentation()
 
@@ -129,7 +134,8 @@ extension PackageRepository {
                     return
                       "Eine Beispielsanweisung hat zu wenig Argumente:\n\(match.contents)"
                   }
-                }))
+                })
+              )
             }
 
             var indexString = StrictString(arguments[..<comma.range.lowerBound])
@@ -151,26 +157,31 @@ extension PackageRepository {
                   case .deutschDeutschland:
                     return "Es gibt kein Beispiel Namens „" + identifier + "“."
                   }
-                }))
+                })
+              )
             }
 
             let nextLineStart = match.range.lines(in: file.contents.lines).upperBound
               .samePosition(in: file.contents.scalars)
             if let commentRange = documentationSyntax.rangeOfFirstComment(
-              in: nextLineStart ..< file.contents.scalars.endIndex, of: file)
-            {
+              in: nextLineStart ..< file.contents.scalars.endIndex,
+              of: file
+            ) {
               let commentIndent = String(
-                file.contents.scalars[nextLineStart ..< commentRange.lowerBound])
+                file.contents.scalars[nextLineStart ..< commentRange.lowerBound]
+              )
 
               if var commentValue = documentationSyntax.contentsOfFirstComment(
-                in: commentRange, of: file)
-              {
+                in: commentRange,
+                of: file
+              ) {
 
                 var countingExampleIndex = 0
                 var searchIndex = commentValue.scalars.startIndex
                 exampleSearch: while let startRange = commentValue.scalars[
                   searchIndex ..< commentValue.scalars.endIndex].firstMatch(
-                    for: "```".scalars)?.range,
+                    for: "```".scalars
+                  )?.range,
                 let endRange = commentValue.scalars[
                   startRange.upperBound ..< commentValue.scalars.endIndex]
                   .firstMatch(for: "```".scalars)?.range
@@ -185,12 +196,17 @@ extension PackageRepository {
                   } else if countingExampleIndex == index {
 
                     let lineStart = exampleRange.lowerBound.line(
-                      in: commentValue.lines).samePosition(
-                        in: commentValue.scalars)
+                      in: commentValue.lines
+                    ).samePosition(
+                      in: commentValue.scalars
+                    )
                     let indentCount = commentValue.scalars.distance(
-                      from: lineStart, to: exampleRange.lowerBound)
+                      from: lineStart,
+                      to: exampleRange.lowerBound
+                    )
                     let exampleIndent = StrictString(
-                      Array(repeating: " ", count: indentCount))
+                      Array(repeating: " ", count: indentCount)
+                    )
 
                     var exampleLines = [
                       "```swift",
@@ -206,12 +222,18 @@ extension PackageRepository {
                     }
 
                     commentValue.scalars.replaceSubrange(
-                      exampleRange, with: exampleLines.joinedAsLines())
+                      exampleRange,
+                      with: exampleLines.joinedAsLines()
+                    )
 
                     let replacementComment = lineDocumentationSyntax.comment(
-                      contents: commentValue, indent: commentIndent)
+                      contents: commentValue,
+                      indent: commentIndent
+                    )
                     file.contents.scalars.replaceSubrange(
-                      commentRange, with: replacementComment.scalars)
+                      commentRange,
+                      with: replacementComment.scalars
+                    )
 
                     break exampleSearch
                   }

@@ -77,12 +77,13 @@ extension PackageRepository {
     try gitIgnore.writeChanges(for: self, output: output)
 
     var gitAttributes = try TextFile(
-      possiblyAt: location.appendingPathComponent(".gitattributes"))
+      possiblyAt: location.appendingPathComponent(".gitattributes")
+    )
     if let deprecatedManagedSection = gitAttributes.contents.scalars.firstMatch(
       for: "# [_Begin Workspace Section_]".scalars
         + RepetitionPattern(ConditionalPattern({ _ in true }))
-        + "# [_End Workspace Section]".scalars)
-    {
+        + "# [_End Workspace Section]".scalars
+    ) {
       if gitAttributes.contents.scalars[deprecatedManagedSection.range.upperBound...]
         .contains(where: { $0 ∉ CharacterSet.whitespacesAndNewlines })
       {

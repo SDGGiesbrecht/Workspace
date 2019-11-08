@@ -311,17 +311,23 @@ public final class WorkspaceConfiguration: SDGSwiftConfiguration.Configuration {
     }
 
     documentation.relatedProjects.append(
-      .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!))
+      .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
+    )
     documentation.relatedProjects.append(
-      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!))
+      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
+    )
     documentation.relatedProjects.append(
-      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGInterface")!))
+      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGInterface")!)
+    )
     documentation.relatedProjects.append(
-      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCommandLine")!))
+      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCommandLine")!)
+    )
     documentation.relatedProjects.append(
-      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGWeb")!))
+      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGWeb")!)
+    )
     documentation.relatedProjects.append(
-      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!))
+      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
+    )
   }
 
   public func _applySDGOverrides() {
@@ -362,7 +368,8 @@ public final class WorkspaceConfiguration: SDGSwiftConfiguration.Configuration {
       if needsAPIDocumentation {
         assert(
           documentation.api.encryptedTravisCIDeploymentKey ≠ nil,
-          "No Travis CI deployment key specified.")
+          "No Travis CI deployment key specified."
+        )
       }
 
       for localization in documentation.localizations {
@@ -468,7 +475,9 @@ public final class WorkspaceConfiguration: SDGSwiftConfiguration.Configuration {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     provideWorkflowScripts = try container.decode(Bool.self, forKey: .provideWorkflowScripts)
     projectName = try container.decode(
-      [LocalizationIdentifier: StrictString].self, forKey: .projectName)
+      [LocalizationIdentifier: StrictString].self,
+      forKey: .projectName
+    )
     supportedPlatforms = try container.decode(Set<Platform>.self, forKey: .supportedPlatforms)
     git = try container.decode(GitConfiguration.self, forKey: .git)
     licence = try container.decode(LicenceConfiguration.self, forKey: .licence)
@@ -478,16 +487,26 @@ public final class WorkspaceConfiguration: SDGSwiftConfiguration.Configuration {
     proofreading = try container.decode(ProofreadingConfiguration.self, forKey: .proofreading)
     testing = try container.decode(TestingConfiguration.self, forKey: .testing)
     documentation = try container.decode(
-      DocumentationConfiguration.self, forKey: .documentation)
+      DocumentationConfiguration.self,
+      forKey: .documentation
+    )
     continuousIntegration = try container.decode(
-      ContinuousIntegrationConfiguration.self, forKey: .continuousIntegration)
+      ContinuousIntegrationConfiguration.self,
+      forKey: .continuousIntegration
+    )
     repository = try container.decode(RepositoryConfiguration.self, forKey: .repository)
     customRefreshmentTasks = try container.decode(
-      [CustomTask].self, forKey: .customRefreshmentTasks)
+      [CustomTask].self,
+      forKey: .customRefreshmentTasks
+    )
     customProofreadingTasks = try container.decode(
-      [CustomTask].self, forKey: .customProofreadingTasks)
+      [CustomTask].self,
+      forKey: .customProofreadingTasks
+    )
     customValidationTasks = try container.decode(
-      [CustomTask].self, forKey: .customValidationTasks)
+      [CustomTask].self,
+      forKey: .customValidationTasks
+    )
     _isSDG = try container.decode(Bool.self, forKey: .isSDG)
     try super.init(from: container.superDecoder())
 

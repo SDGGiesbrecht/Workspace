@@ -74,9 +74,11 @@ class InternalTests: TestCase {
           [
             "Unexpected files are being tracked by Git:",
             unexpected.joinedAsLines()
-          ].joinedAsLines())
+          ].joinedAsLines()
+        )
 
-      }).execute(with: []).get()
+      }
+    ).execute(with: []).get()
   }
 
   func testXcodeProjectFormat() {

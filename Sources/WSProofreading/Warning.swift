@@ -22,14 +22,18 @@ import WSProject
 internal protocol Warning: TextRule {
   static var trigger: UserFacing<StrictString, InterfaceLocalization> { get }
   static func message(
-    for details: StrictString, in project: PackageRepository, output: Command.Output
+    for details: StrictString,
+    in project: PackageRepository,
+    output: Command.Output
   ) throws -> UserFacing<StrictString, InterfaceLocalization>?
 }
 
 extension Warning {
 
   internal static func check(
-    file: TextFile, in project: PackageRepository, status: ProofreadingStatus,
+    file: TextFile,
+    in project: PackageRepository,
+    status: ProofreadingStatus,
     output: Command.Output
   ) throws {
     if file.location.lastPathComponent == "ProofreadingRule.swift" {
@@ -55,8 +59,11 @@ extension Warning {
 
           if let description = try message(for: details, in: project, output: output) {
             reportViolation(
-              in: file, at: match.container.range, message: description,
-              status: status)
+              in: file,
+              at: match.container.range,
+              message: description,
+              status: status
+            )
           }
         }
       }

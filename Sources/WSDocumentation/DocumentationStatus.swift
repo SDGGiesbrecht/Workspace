@@ -76,7 +76,8 @@ internal class DocumentationStatus {
           result.append(theHint.resolved(for: localization))
         }
         return result.joined(separator: "\n")
-      }))
+      })
+    )
   }
 
   internal func reportMissingDescription(
@@ -100,7 +101,8 @@ internal class DocumentationStatus {
     }
     if var search = possibleSearch {
       search.append(
-        contentsOf: "(name: \u{22}" + StrictString(symbol.name.source()) + "\u{22}")
+        contentsOf: "(name: \u{22}" + StrictString(symbol.name.source()) + "\u{22}"
+      )
 
       hint
         = UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -129,7 +131,11 @@ internal class DocumentationStatus {
         case .deutschDeutschland:
           return "Einem Symbol fehlt die Beschreibung."
         }
-      }), with: symbol, navigationPath: navigationPath, localization: localization, hint: hint
+      }),
+      with: symbol,
+      navigationPath: navigationPath,
+      localization: localization,
+      hint: hint
     )
   }
 
@@ -159,7 +165,8 @@ internal class DocumentationStatus {
         case .deutschDeutschland:
           return "(Erwartete: \(expected.joined(separator: ", ")))"
         }
-      }))
+      })
+    )
   }
 
   internal func reportUnlabelledParameter(
@@ -175,7 +182,11 @@ internal class DocumentationStatus {
         case .deutschDeutschland:
           return "Einem Abschluss fehlt die Beschriftung."
         }
-      }), with: symbol, navigationPath: navigationPath, parameter: closureType)
+      }),
+      with: symbol,
+      navigationPath: navigationPath,
+      parameter: closureType
+    )
   }
 
   internal func reportMissingVariableType(_ variable: VariableAPI, navigationPath: [APIElement]) {
@@ -187,7 +198,10 @@ internal class DocumentationStatus {
         case .deutschDeutschland:
           return "Einem öffentlichen Variable fehlt der ausdrückliche Typ."
         }
-      }), with: APIElement.variable(variable), navigationPath: navigationPath)
+      }),
+      with: APIElement.variable(variable),
+      navigationPath: navigationPath
+    )
   }
 
   internal func reportMissingYearFirstPublished() {
@@ -209,7 +223,8 @@ internal class DocumentationStatus {
             ] as [StrictString]
           ).joinedAsLines()
         }
-      }))
+      })
+    )
   }
 
   internal func reportMissingCopyright(localization: LocalizationIdentifier) {
@@ -240,7 +255,8 @@ internal class DocumentationStatus {
               ] as [StrictString]
             ).joinedAsLines()
           }
-        }))
+        })
+      )
     }
   }
 
@@ -270,6 +286,7 @@ internal class DocumentationStatus {
           return
             "(Überschriftsebenen drei bis sechs stehen offen. Ebene eins und zwei sind für den umliegenden Rahmen vorbehalten.)"
         }
-      }))
+      })
+    )
   }
 }

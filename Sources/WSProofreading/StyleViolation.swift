@@ -22,8 +22,10 @@ public struct StyleViolation {
   // MARK: - Initialization
 
   internal init(
-    in file: TextFile, at location: Range<String.ScalarView.Index>,
-    replacementSuggestion: StrictString? = nil, noticeOnly: Bool = false,
+    in file: TextFile,
+    at location: Range<String.ScalarView.Index>,
+    replacementSuggestion: StrictString? = nil,
+    noticeOnly: Bool = false,
     ruleIdentifier: UserFacing<StrictString, InterfaceLocalization>,
     message: UserFacing<StrictString, InterfaceLocalization>
   ) {
@@ -39,10 +41,12 @@ public struct StyleViolation {
       let modifiedScalarRange = clusterRange.scalars(in: file.contents.scalars)
       let clusterReplacement
         = StrictString(
-          file.contents.scalars[modifiedScalarRange.lowerBound ..< location.lowerBound])
+          file.contents.scalars[modifiedScalarRange.lowerBound ..< location.lowerBound]
+        )
         + scalarReplacement
         + StrictString(
-          file.contents.scalars[location.upperBound ..< modifiedScalarRange.upperBound])
+          file.contents.scalars[location.upperBound ..< modifiedScalarRange.upperBound]
+        )
       self.replacementSuggestion = clusterReplacement
     } else {
       self.replacementSuggestion = nil

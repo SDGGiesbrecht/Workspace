@@ -21,7 +21,7 @@ import WSGeneralImports
 import WSProject
 import WSDocumentation
 
-public enum ContinuousIntegrationJob : Int, CaseIterable {
+public enum ContinuousIntegrationJob: Int, CaseIterable {
 
     // MARK: - Cases
 
@@ -46,7 +46,7 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
             return UserFacing({ (localization) in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                     .deutschDeutschland:
+                    .deutschDeutschland:
                     return "macOS"
                 }
             })
@@ -54,7 +54,7 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
             return UserFacing({ (localization) in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                     .deutschDeutschland:
+                    .deutschDeutschland:
                     return "Linux"
                 }
             })
@@ -62,7 +62,7 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
             return UserFacing({ (localization) in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                     .deutschDeutschland:
+                    .deutschDeutschland:
                     return "iOS"
                 }
             })
@@ -70,7 +70,7 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
             return UserFacing({ (localization) in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                     .deutschDeutschland:
+                    .deutschDeutschland:
                     return "watchOS"
                 }
             })
@@ -78,7 +78,7 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
             return UserFacing({ (localization) in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                     .deutschDeutschland:
+                    .deutschDeutschland:
                     return "tvOS"
                 }
             })
@@ -109,7 +109,7 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
             return UserFacing({ (localization) in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                     .deutschDeutschland:
+                    .deutschDeutschland:
                     return "macos"
                 }
             })
@@ -117,7 +117,7 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
             return UserFacing({ (localization) in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                     .deutschDeutschland:
+                    .deutschDeutschland:
                     return "linux"
                 }
             })
@@ -125,7 +125,7 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
             return UserFacing({ (localization) in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                     .deutschDeutschland:
+                    .deutschDeutschland:
                     return "ios"
                 }
             })
@@ -133,7 +133,7 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
             return UserFacing({ (localization) in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                     .deutschDeutschland:
+                    .deutschDeutschland:
                     return "watchos"
                 }
             })
@@ -141,7 +141,7 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
             return UserFacing({ (localization) in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                     .deutschDeutschland:
+                    .deutschDeutschland:
                     return "tvos"
                 }
             })
@@ -183,7 +183,10 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
         case .deployment:
             return try project.configuration(output: output).documentation.api.generate
                 ∧ project.hasTargetsToDocument()
-                ∧ (try project.configuration(output: output).documentation.api.encryptedTravisCIDeploymentKey) ≠ nil
+                ∧ (
+                    try project.configuration(output: output).documentation.api
+                        .encryptedTravisCIDeploymentKey
+                ) ≠ nil
         }
     }
 
@@ -219,7 +222,10 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
     }
 
     internal func script(configuration: WorkspaceConfiguration) throws -> [String] {
-        let configuredLocalization = configuration.documentation.localizations.first.flatMap { InterfaceLocalization(reasonableMatchFor: $0.code) }
+        let configuredLocalization = configuration.documentation.localizations.first.flatMap {
+            localization in
+            InterfaceLocalization(reasonableMatchFor: localization.code)
+        }
         let localization = configuredLocalization ?? InterfaceLocalization.fallbackLocalization
         var result: [String] = [
             "    \u{2D} name: \u{22}" + String(name.resolved(for: localization)) + "\u{22}",
@@ -240,7 +246,7 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
                 "        local_dir: " + PackageRepository.documentationDirectoryName,
                 "        github_token: $GITHUB_TOKEN",
                 "        skip_cleanup: true"
-                ])
+            ])
         }
 
         switch platform {
@@ -256,7 +262,7 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
             result.append(contentsOf: [
                 "      language: objective\u{2D}c",
                 "      xcode_sdk: " + sdk
-                ])
+            ])
         }
 
         result.append("      script:")
@@ -270,20 +276,24 @@ public enum ContinuousIntegrationJob : Int, CaseIterable {
         if platform == .macOS {
             result.append(contentsOf: [
                 commandEntry("git config \u{2D}\u{2D}global protocol.version 1")
-                ])
+            ])
         }
 
         if platform == .linux {
             result.append(contentsOf: [
                 commandEntry("export SWIFT_VERSION=5.1.1"),
-                commandEntry("eval \u{22}$(curl \u{2D}sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv\u{2D}install.sh)\u{22}")
-                ])
+                commandEntry(
+                    "eval \u{22}$(curl \u{2D}sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv\u{2D}install.sh)\u{22}"
+                )
+            ])
         }
 
         result.append(contentsOf: [
             commandEntry("bash \u{22}./Refresh (macOS).command\u{22}"),
-            commandEntry("bash \u{22}./Validate (macOS).command\u{22} •job " + String(argumentName.resolved(for: .englishCanada)))
-            ])
+            commandEntry(
+                "bash \u{22}./Validate (macOS).command\u{22} •job "
+                    + String(argumentName.resolved(for: .englishCanada)))
+        ])
 
         return result
     }

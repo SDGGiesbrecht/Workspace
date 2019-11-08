@@ -19,7 +19,7 @@
 public typealias XcodeEinstellungen = XcodeConfiguration
 // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(XcodeConfiguration)
 /// Options related to Xcode.
-public struct XcodeConfiguration : Codable {
+public struct XcodeConfiguration: Codable {
 
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(XcodeConfiguration.manage)
     /// Whether or not to manage the Xcode project.

@@ -31,10 +31,12 @@ extension Parameter {
     internal func parameterNames() -> [String] {
         var result: [String] = []
         if let second = secondName?.text,
-            ¬second.isEmpty {
+            ¬second.isEmpty
+        {
             result.append(second)
         } else if let first = firstName?.text,
-            ¬first.isEmpty {
+            ¬first.isEmpty
+        {
             result.append(first)
         }
 

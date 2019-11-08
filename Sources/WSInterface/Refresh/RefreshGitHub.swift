@@ -26,12 +26,13 @@ extension Workspace.Refresh {
         private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                 .deutschDeutschland:
+                .deutschDeutschland:
                 return "github"
             }
         })
 
-        private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        private static let description = UserFacing<StrictString, InterfaceLocalization>({
+            localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "regenerates the project’s GitHub configuration files."
@@ -40,18 +41,22 @@ extension Workspace.Refresh {
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: Workspace.standardOptions, execution: { (_, options: Options, output: Command.Output) throws in
+        static let command = Command(
+            name: name, description: description, directArguments: [],
+            options: Workspace.standardOptions,
+            execution: { (_, options: Options, output: Command.Output) throws in
 
-            output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Refreshing GitHub configuration..."
-                case .deutschDeutschland:
-                    return "GitHub‐Konfiguration wird aufgefrischt ..."
-                }
-            }).resolved().formattedAsSectionHeader())
+                output.print(
+                    UserFacing<StrictString, InterfaceLocalization>({ localization in
+                        switch localization {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "Refreshing GitHub configuration..."
+                        case .deutschDeutschland:
+                            return "GitHub‐Konfiguration wird aufgefrischt ..."
+                        }
+                    }).resolved().formattedAsSectionHeader())
 
-            try options.project.refreshGitHubConfiguration(output: output)
-        })
+                try options.project.refreshGitHubConfiguration(output: output)
+            })
     }
 }

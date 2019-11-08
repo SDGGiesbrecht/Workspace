@@ -24,9 +24,9 @@ extension Platform {
 
     public static var current: Platform {
         #if os(macOS)
-        return .macOS
+            return .macOS
         #elseif os(Linux)
-        return .linux
+            return .linux
         #endif
     }
 }

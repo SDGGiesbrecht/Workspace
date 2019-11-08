@@ -121,7 +121,7 @@ public typealias Dateivorspannseinstellungen = FileHeaderConfiguration
 ///
 /// # This is a header
 /// ```
-public struct FileHeaderConfiguration : Codable {
+public struct FileHeaderConfiguration: Codable {
 
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(FileHeaderConfiguration.manage)
     /// Whether or not to manage the project file headers.
@@ -149,7 +149,9 @@ public struct FileHeaderConfiguration : Codable {
     /// Arbeitsbereich verwendet das vorbestehende Anfangsdatum wenn der Vorspann schon Daten enthält. Arbeitsbereich sucht die Zeichenketten `©`, `(C)`, oder `(c)` aus, die von vier Ziffern gefolgt werden, und erkennt sie mit oder ohne ein Lehrzeichen inzwischen. Falls keine gefunden wird, verwendet Arbeitsbereich das aktuelle Datum als Anfangsdatum.
     ///
     /// Arbeitsbereich verwendet immer das aktuelle Datum als Enddatum.
-    public var urheberrechtshinweis: BequemeEinstellung<[Lokalisationskennzeichen: StrengeZeichenkette]> {
+    public var urheberrechtshinweis:
+        BequemeEinstellung<[Lokalisationskennzeichen: StrengeZeichenkette]>
+    {
         get { return copyrightNotice }
         set { copyrightNotice = newValue }
     }
@@ -177,7 +179,9 @@ public struct FileHeaderConfiguration : Codable {
     /// Workspace uses any pre‐existing start date if it can detect one already in the file header. Workspace searches for `©`, `(C)`, or `(c)` followed by an optional space and four digits. If none is found, Workspace will use the current date as the start date.
     ///
     /// Workspace always uses the current date as the end date.
-    public var copyrightNotice: Lazy<[LocalizationIdentifier: StrictString]> = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
+    public var copyrightNotice: Lazy<[LocalizationIdentifier: StrictString]> = Lazy<
+        [LocalizationIdentifier: StrictString]
+    >(resolve: { configuration in
         let packageName = StrictString(WorkspaceContext.current.manifest.packageName)
         return configuration.localizationDictionary { localization in
             let projectName = configuration.projectName[localization] ?? packageName
@@ -186,7 +190,8 @@ public struct FileHeaderConfiguration : Codable {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     return "Copyright #dates \(author) and the \(projectName) project contributors."
                 case .deutschDeutschland:
-                    return "Urheberrecht #dates \(author) und die Mitwirkenden des \(projectName)‐Projekts."
+                    return
+                        "Urheberrecht #dates \(author) und die Mitwirkenden des \(projectName)‐Projekts."
                 }
             } else {
                 switch localization {
@@ -225,15 +230,16 @@ public struct FileHeaderConfiguration : Codable {
             ""
         ]
 
-        header.append(contentsOf: configuration.sequentialLocalizations({ localization in
-            let projectName = configuration.projectName[localization] ?? packageName
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "This source file is part of the \(projectName) open source project."
-            case .deutschDeutschland:
-                return "Diese Quelldatei ist Teil des qeulloffenen \(projectName)‐Projekt."
-            }
-        }))
+        header.append(
+            contentsOf: configuration.sequentialLocalizations({ localization in
+                let projectName = configuration.projectName[localization] ?? packageName
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "This source file is part of the \(projectName) open source project."
+                case .deutschDeutschland:
+                    return "Diese Quelldatei ist Teil des qeulloffenen \(projectName)‐Projekt."
+                }
+            }))
         if let site = configuration.documentation.projectWebsite {
             header.append(StrictString(site.absoluteString))
         }
@@ -249,20 +255,21 @@ public struct FileHeaderConfiguration : Codable {
 
         if configuration._isSDG {
             header.append("")
-            header.append(contentsOf: configuration.sequentialLocalizations({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                     .deutschDeutschland:
-                    return "Soli Deo gloria."
-                }
-            }))
+            header.append(
+                contentsOf: configuration.sequentialLocalizations({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+                        .deutschDeutschland:
+                        return "Soli Deo gloria."
+                    }
+                }))
         }
 
         if let licence = configuration.licence.licence {
             header.append(contentsOf: [
                 "",
                 licence.notice
-                ])
+            ])
         }
 
         return header.joinedAsLines()

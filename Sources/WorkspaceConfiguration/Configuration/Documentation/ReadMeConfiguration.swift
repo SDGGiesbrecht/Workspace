@@ -35,7 +35,7 @@ public typealias LiesMichEinstellungen = ReadMeConfiguration
 /// ```
 ///
 /// A read‐me is a `README.md` file that GitHub uses as the project’s main page.
-public struct ReadMeConfiguration : Codable {
+public struct ReadMeConfiguration: Codable {
 
     // MARK: - Options
 
@@ -69,7 +69,9 @@ public struct ReadMeConfiguration : Codable {
     /// By default, this is assembled from the other documentation and read‐me options.
     ///
     /// Workspace will replace the dynamic element `#packageDocumentation` with the documentation comment parsed from the package manifest.
-    public var contents: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>(resolve: { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
+    public var contents: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<
+        [LocalizationIdentifier: Markdown]
+    >(resolve: { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
 
         var result: [LocalizationIdentifier: Markdown] = [:]
         for localization in configuration.documentation.localizations {
@@ -78,7 +80,8 @@ public struct ReadMeConfiguration : Codable {
 
             if let provided = localization._reasonableMatch {
                 readMe += [
-                    Platform.allCases.filter({ configuration.supportedPlatforms.contains($0) }).map({ $0._isolatedName(for: provided) }).joined(separator: " • "),
+                    Platform.allCases.filter({ configuration.supportedPlatforms.contains($0) }).map(
+                        { $0._isolatedName(for: provided) }).joined(separator: " • "),
                     ""
                 ]
             }
@@ -97,11 +100,13 @@ public struct ReadMeConfiguration : Codable {
                 "#packageDocumentation"
             ]
 
-            if let installation = configuration.documentation.installationInstructions.resolve(configuration)[localization] {
+            if let installation = configuration.documentation.installationInstructions.resolve(
+                configuration)[localization]
+            {
                 let header: StrictString
                 switch localization._bestMatch {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                     .deutschDeutschland:
+                    .deutschDeutschland:
                     header = "Installation"
                 }
                 readMe += [
@@ -111,7 +116,9 @@ public struct ReadMeConfiguration : Codable {
                     installation
                 ]
             }
-            if let importing = configuration.documentation.importingInstructions.resolve(configuration)[localization] {
+            if let importing = configuration.documentation.importingInstructions.resolve(
+                configuration)[localization]
+            {
                 let header: StrictString
                 switch localization._bestMatch {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -155,13 +162,17 @@ public struct ReadMeConfiguration : Codable {
         return project.appendingPathComponent(documentationDirectoryName)
     }
 
-    private static func _locationOfDocumentationFile(named name: StrictString, for localization: LocalizationIdentifier, in project: URL) -> URL {
+    private static func _locationOfDocumentationFile(
+        named name: StrictString, for localization: LocalizationIdentifier, in project: URL
+    ) -> URL {
         let icon = ContentLocalization.icon(for: localization.code) ?? "[\(localization.code)]"
         let fileName: StrictString = icon + " " + name + ".md"
         return _documentationDirectory(for: project).appendingPathComponent(String(fileName))
     }
 
-    public static func _readMeLocation(for project: URL, localization: LocalizationIdentifier) -> URL {
+    public static func _readMeLocation(for project: URL, localization: LocalizationIdentifier)
+        -> URL
+    {
         let name: StrictString
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -182,7 +193,8 @@ public struct ReadMeConfiguration : Codable {
     ///     - lokalisation: The localization to use.
     public static func programmierschnittstellenverweis(
         für konfiguration: ArbeitsbereichKonfiguration,
-        auf lokalisation: Lokalisationskennzeichen) -> StrengeZeichenkette? {
+        auf lokalisation: Lokalisationskennzeichen
+    ) -> StrengeZeichenkette? {
         return apiLink(for: konfiguration, in: lokalisation)
     }
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
@@ -196,10 +208,12 @@ public struct ReadMeConfiguration : Codable {
     ///     - localization: The localization to use.
     public static func apiLink(
         for configuration: WorkspaceConfiguration,
-        in localization: LocalizationIdentifier) -> StrictString? {
+        in localization: LocalizationIdentifier
+    ) -> StrictString? {
 
         guard let baseURL = configuration.documentation.documentationURL,
-            let provided = localization._reasonableMatch else {
+            let provided = localization._reasonableMatch
+        else {
             return nil
         }
 
@@ -212,13 +226,18 @@ public struct ReadMeConfiguration : Codable {
         }
 
         var link: StrictString = "[" + label + "]("
-        link += StrictString(baseURL.appendingPathComponent(String(localization._directoryName)).absoluteString) + ")"
+        link
+            += StrictString(
+                baseURL.appendingPathComponent(String(localization._directoryName)).absoluteString)
+            + ")"
         return link
     }
 
     // MARK: - Related Projects
 
-    public static func _relatedProjectsLocation(for project: URL, localization: LocalizationIdentifier) -> URL {
+    public static func _relatedProjectsLocation(
+        for project: URL, localization: LocalizationIdentifier
+    ) -> URL {
         let name: StrictString
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:

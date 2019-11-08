@@ -21,7 +21,7 @@ extension TestCoverageExemptionToken {
     public typealias Geltungsbereich = Scope
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Scope)
     /// The scope of a test coverage exemption.
-    public enum Scope : String, Codable {
+    public enum Scope: String, Codable {
 
         // MARK: - Cases
 

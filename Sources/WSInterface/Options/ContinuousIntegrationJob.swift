@@ -19,7 +19,8 @@ import WSContinuousIntegration
 
 extension ContinuousIntegrationJob {
 
-    private static let optionName = UserFacing<StrictString, InterfaceLocalization>({ localization in
+    private static let optionName = UserFacing<StrictString, InterfaceLocalization>({
+        localization in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "job"
@@ -28,7 +29,8 @@ extension ContinuousIntegrationJob {
         }
     })
 
-    private static let optionDescription = UserFacing<StrictString, InterfaceLocalization>({ localization in
+    private static let optionDescription = UserFacing<StrictString, InterfaceLocalization>({
+        localization in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "A particular continuous integration job."
@@ -37,9 +39,11 @@ extension ContinuousIntegrationJob {
         }
     })
 
-    internal static let option = SDGCommandLine.Option(name: optionName, description: optionDescription, type: argument)
+    internal static let option = SDGCommandLine.Option(
+        name: optionName, description: optionDescription, type: argument)
 
-    private static let argumentTypeName = UserFacing<StrictString, InterfaceLocalization>({ localization in
+    private static let argumentTypeName = UserFacing<StrictString, InterfaceLocalization>({
+        localization in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "job"
@@ -48,7 +52,13 @@ extension ContinuousIntegrationJob {
         }
     })
 
-    private static let argument = ArgumentType.enumeration(name: argumentTypeName, cases: ContinuousIntegrationJob.allCases.map { (job: ContinuousIntegrationJob) -> (value: ContinuousIntegrationJob, label: UserFacing<StrictString, InterfaceLocalization>) in
-        return (value: job, label: job.argumentName)
-    })
+    private static let argument = ArgumentType.enumeration(
+        name: argumentTypeName,
+        cases: ContinuousIntegrationJob.allCases.map {
+            (job: ContinuousIntegrationJob) -> (
+                value: ContinuousIntegrationJob,
+                label: UserFacing<StrictString, InterfaceLocalization>
+            ) in
+            return (value: job, label: job.argumentName)
+        })
 }

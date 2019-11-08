@@ -16,7 +16,7 @@
 
 import WSGeneralTestImports
 
-public enum FastTestLocalization : String, InputLocalization, Localization {
+public enum FastTestLocalization: String, InputLocalization, Localization {
 
     // MARK: - Cases
 

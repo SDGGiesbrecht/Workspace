@@ -44,9 +44,9 @@ public struct ReportSection {
             switch localization {
             case .englishUnitedKingdom:
                 #if os(macOS)
-                return " (See ⌘F ‘" + identifier + "’)"
+                    return " (See ⌘F ‘" + identifier + "’)"
                 #elseif os(Linux)
-                return " (See Ctrl + F ‘" + identifier + "’)"
+                    return " (See Ctrl + F ‘" + identifier + "’)"
                 #endif
             case .englishUnitedStates, .englishCanada:
                 #if os(macOS)
@@ -56,9 +56,9 @@ public struct ReportSection {
                 #endif
             case .deutschDeutschland:
                 #if os(macOS)
-                return " (Siehe ⌘F „" + identifier + "“)"
+                    return " (Siehe ⌘F „" + identifier + "“)"
                 #elseif os(Linux)
-                return " (Siehe Strg + F „" + identifier + "“)"
+                    return " (Siehe Strg + F „" + identifier + "“)"
                 #endif
             }
         })

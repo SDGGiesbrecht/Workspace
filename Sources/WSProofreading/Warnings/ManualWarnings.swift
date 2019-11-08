@@ -16,7 +16,7 @@
 
 import WSGeneralImports
 
-internal struct ManualWarnings : Warning {
+internal struct ManualWarnings: Warning {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
@@ -27,7 +27,8 @@ internal struct ManualWarnings : Warning {
         }
     })
 
-    internal static let trigger = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
+    internal static let trigger = UserFacing<StrictString, InterfaceLocalization>({
+        (localization) in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "warning"
@@ -36,7 +37,9 @@ internal struct ManualWarnings : Warning {
         }
     })
 
-    internal static func message(for details: StrictString, in project: PackageRepository, output: Command.Output) -> UserFacing<StrictString, InterfaceLocalization>? {
+    internal static func message(
+        for details: StrictString, in project: PackageRepository, output: Command.Output
+    ) -> UserFacing<StrictString, InterfaceLocalization>? {
         return UserFacing({ _ in details })
     }
 }

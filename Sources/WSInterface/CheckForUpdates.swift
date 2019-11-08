@@ -32,7 +32,8 @@ extension Workspace {
             }
         })
 
-        private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        private static let description = UserFacing<StrictString, InterfaceLocalization>({
+            localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "checks for available Workspace updates."
@@ -41,49 +42,55 @@ extension Workspace {
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: [], execution: { (_, _, output: Command.Output) throws in
-            if let update = try checkForUpdates(output: output) {
-                // @exempt(from: tests) Execution path is determined externally.
-                output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    var url: URL = Metadata.documentationURL
-                    switch localization {
-                    case .englishUnitedKingdom: // @exempt(from: tests)
-                        url.appendPathComponent("🇬🇧EN/Installation.html")
-                    case .englishUnitedStates: // @exempt(from: tests)
-                        url.appendPathComponent("🇺🇸EN/Installation.html")
-                    case .englishCanada: // @exempt(from: tests)
-                        url.appendPathComponent("🇨🇦EN/Installation.html")
-                    case .deutschDeutschland: // @exempt(from: tests)
-                        url.appendPathComponent("🇩🇪DE/Installation.html")
-                    }
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "Workspace \(update.string()) is available.\nFor update instructions, see \(url.absoluteString.in(Underline.underlined))"
-                    case .deutschDeutschland: // @exempt(from: tests)
-                        return "Arbeitsbereich \(update.string()) ist erhältlich.\nFür Aktualisierungsanweisungen, siehe \(url.absoluteString.in(Underline.underlined))"
-                    }
-                }).resolved())
-            } else {
-                // @exempt(from: tests) Execution path is determined externally.
-                output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "Workspace is up to date."
-                    case .deutschDeutschland: // @exempt(from: tests)
-                        return "Arbeitsbereich ist auf dem neuesten Stand."
-                    }
-                }).resolved())
-            }
-        })
+        static let command = Command(
+            name: name, description: description, directArguments: [], options: [],
+            execution: { (_, _, output: Command.Output) throws in
+                if let update = try checkForUpdates(output: output) {
+                    // @exempt(from: tests) Execution path is determined externally.
+                    output.print(
+                        UserFacing<StrictString, InterfaceLocalization>({ localization in
+                            var url: URL = Metadata.documentationURL
+                            switch localization {
+                            case .englishUnitedKingdom:  // @exempt(from: tests)
+                                url.appendPathComponent("🇬🇧EN/Installation.html")
+                            case .englishUnitedStates:  // @exempt(from: tests)
+                                url.appendPathComponent("🇺🇸EN/Installation.html")
+                            case .englishCanada:  // @exempt(from: tests)
+                                url.appendPathComponent("🇨🇦EN/Installation.html")
+                            case .deutschDeutschland:  // @exempt(from: tests)
+                                url.appendPathComponent("🇩🇪DE/Installation.html")
+                            }
+                            switch localization {
+                            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                                return
+                                    "Workspace \(update.string()) is available.\nFor update instructions, see \(url.absoluteString.in(Underline.underlined))"
+                            case .deutschDeutschland:  // @exempt(from: tests)
+                                return
+                                    "Arbeitsbereich \(update.string()) ist erhältlich.\nFür Aktualisierungsanweisungen, siehe \(url.absoluteString.in(Underline.underlined))"
+                            }
+                        }).resolved())
+                } else {
+                    // @exempt(from: tests) Execution path is determined externally.
+                    output.print(
+                        UserFacing<StrictString, InterfaceLocalization>({ localization in
+                            switch localization {
+                            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                                return "Workspace is up to date."
+                            case .deutschDeutschland:  // @exempt(from: tests)
+                                return "Arbeitsbereich ist auf dem neuesten Stand."
+                            }
+                        }).resolved())
+                }
+            })
 
         static func checkForUpdates(output: Command.Output) throws -> Version? {
             let latestRemote = try Package(url: Metadata.packageURL).versions().get().sorted().last!
             if latestRemote ≠ Metadata.latestStableVersion {
                 // @exempt(from: tests) Execution path is determined externally.
                 return latestRemote
-            } else { // @exempt(from: tests) Execution path is determined externally.
+            } else {  // @exempt(from: tests) Execution path is determined externally.
                 // @exempt(from: tests)
-                return nil // Up to date.
+                return nil  // Up to date.
             }
         }
     }

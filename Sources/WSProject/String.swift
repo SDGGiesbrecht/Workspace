@@ -37,8 +37,11 @@ extension StringFamily {
         var smallestIndent = Int.max
         let lines = self.lines.map { $0.line }
         for line in lines {
-            if let firstCharacter = line.firstMatch(for: ConditionalPattern({ $0 ≠ " " }))?.range.lowerBound {
-                smallestIndent.decrease(to: line.distance(from: line.startIndex, to: firstCharacter))
+            if let firstCharacter = line.firstMatch(for: ConditionalPattern({ $0 ≠ " " }))?.range
+                .lowerBound
+            {
+                smallestIndent.decrease(
+                    to: line.distance(from: line.startIndex, to: firstCharacter))
             }
         }
         let stripped: [Self] = lines.map { line in

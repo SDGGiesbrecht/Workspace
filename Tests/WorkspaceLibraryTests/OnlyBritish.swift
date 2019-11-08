@@ -16,7 +16,7 @@
 
 import WSGeneralTestImports
 
-public enum OnlyBritish : String, InputLocalization, Localization {
+public enum OnlyBritish: String, InputLocalization, Localization {
 
     // MARK: - Cases
 

@@ -24,7 +24,7 @@ import SDGSwiftSource
 
 import WSProject
 
-internal class CommandPage : Page {
+internal class CommandPage: Page {
 
     internal init(
         localization: LocalizationIdentifier,
@@ -37,18 +37,20 @@ internal class CommandPage : Page {
         platforms: StrictString,
         command: CommandInterfaceInformation,
         copyright: StrictString,
-        output: Command.Output) {
+        output: Command.Output
+    ) {
 
         let interface = command.interfaces[localization]!
 
-        output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "...\(StrictString(interface.name))..."
-            case .deutschDeutschland:
-                return "... \(StrictString(interface.name)) ..."
-            }
-        }).resolved())
+        output.print(
+            UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "...\(StrictString(interface.name))..."
+                case .deutschDeutschland:
+                    return "... \(StrictString(interface.name)) ..."
+                }
+            }).resolved())
 
         let symbolType: StrictString
         if navigationPath.count ≤ 1 {
@@ -60,7 +62,7 @@ internal class CommandPage : Page {
                     symbolType = "Befehlszeilenprogramm"
                 }
             } else {
-                symbolType = "executable" // From “products: [.executable(...)]”
+                symbolType = "executable"  // From “products: [.executable(...)]”
             }
         } else {
             switch localization._bestMatch {
@@ -77,22 +79,31 @@ internal class CommandPage : Page {
                 path: commandInformation.relativePagePath[localization]!
             )
         }
-        navigationPathLinks.prepend((
-            StrictString(package.name.source()),
-            package.relativePagePath[localization]!
-        ))
+        navigationPathLinks.prepend(
+            (
+                StrictString(package.name.source()),
+                package.relativePagePath[localization]!
+            ))
 
         var content: [StrictString] = []
-        content.append(SymbolPage.generateDescriptionSection(
-            contents: HTML.escapeTextForCharacterData(interface.description)))
-        content.append(CommandPage.generateDeclarationSection(
-            navigationPath: navigationPath,
-            localization: localization,
-            interface: interface))
-        content.append(CommandPage.generateDiscussionSection(localization: localization, interface: interface))
-        content.append(CommandPage.generateSubcommandsSection(localization: localization, interface: interface))
-        content.append(CommandPage.generateOptionsSection(localization: localization, interface: interface))
-        content.append(CommandPage.generateArgumentTypesSection(localization: localization, interface: interface))
+        content.append(
+            SymbolPage.generateDescriptionSection(
+                contents: HTML.escapeTextForCharacterData(interface.description)))
+        content.append(
+            CommandPage.generateDeclarationSection(
+                navigationPath: navigationPath,
+                localization: localization,
+                interface: interface))
+        content.append(
+            CommandPage.generateDiscussionSection(localization: localization, interface: interface))
+        content.append(
+            CommandPage.generateSubcommandsSection(localization: localization, interface: interface)
+        )
+        content.append(
+            CommandPage.generateOptionsSection(localization: localization, interface: interface))
+        content.append(
+            CommandPage.generateArgumentTypesSection(
+                localization: localization, interface: interface))
 
         super.init(
             localization: localization,
@@ -101,7 +112,9 @@ internal class CommandPage : Page {
                 localization: localization,
                 pathToSiteRoot: pathToSiteRoot,
                 allLocalizations: allLocalizations.map({ localization in
-                    return (localization: localization, path: command.relativePagePath[localization]!)
+                    return (
+                        localization: localization, path: command.relativePagePath[localization]!
+                    )
                 }),
                 navigationPath: navigationPathLinks),
             packageImport: packageImport,
@@ -121,7 +134,8 @@ internal class CommandPage : Page {
     private static func generateDeclarationSection(
         navigationPath: [CommandInterfaceInformation],
         localization: LocalizationIdentifier,
-        interface: CommandInterface) -> StrictString {
+        interface: CommandInterface
+    ) -> StrictString {
 
         let commands: [ElementSyntax] = navigationPath.map { command in
             let name = command.interfaces[localization]!.name
@@ -145,15 +159,18 @@ internal class CommandPage : Page {
             declaration: ElementSyntax(
                 "code",
                 attributes: ["class": "swift blockquote"],
-                contents: (commands + arguments).map({ $0.normalizedSource() }).joined(separator: " "),
+                contents: (commands + arguments).map({ $0.normalizedSource() })
+                    .joined(separator: " "),
                 inline: true).normalizedSource())
     }
 
     private static func generateDiscussionSection(
         localization: LocalizationIdentifier,
-        interface: CommandInterface) -> StrictString {
+        interface: CommandInterface
+    ) -> StrictString {
 
-        var discussion: StrictString? = interface.discussion.map { HTML.escapeTextForCharacterData($0) }
+        var discussion: StrictString? = interface.discussion
+            .map({ HTML.escapeTextForCharacterData($0) })
         discussion?.replaceMatches(for: "\n\n", with: "</p><p>")
         discussion?.replaceMatches(for: "\n", with: "<br>")
 
@@ -167,7 +184,9 @@ internal class CommandPage : Page {
             content: discussion)
     }
 
-    internal static func subcommandsDirectoryName(for localization: LocalizationIdentifier) -> StrictString {
+    internal static func subcommandsDirectoryName(
+        for localization: LocalizationIdentifier
+    ) -> StrictString {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Subcommands"
@@ -178,7 +197,8 @@ internal class CommandPage : Page {
 
     private static func generateSubcommandsSection(
         localization: LocalizationIdentifier,
-        interface: CommandInterface) -> StrictString {
+        interface: CommandInterface
+    ) -> StrictString {
 
         let heading: StrictString
         switch localization._bestMatch {
@@ -226,14 +246,18 @@ internal class CommandPage : Page {
                             inline: true).normalizedSource(),
                         inline: true).normalizedSource()
 
-                    let description = ElementSyntax("p", contents: HTML.escapeTextForCharacterData(subcommand.description), inline: true).normalizedSource()
+                    let description = ElementSyntax(
+                        "p",
+                        contents: HTML.escapeTextForCharacterData(subcommand.description),
+                        inline: true).normalizedSource()
                     return (term: term, description: description)
                 }))
     }
 
     private static func generateOptionsSection(
         localization: LocalizationIdentifier,
-        interface: CommandInterface) -> StrictString {
+        interface: CommandInterface
+    ) -> StrictString {
 
         let heading: StrictString
         switch localization._bestMatch {
@@ -257,11 +281,14 @@ internal class CommandPage : Page {
 
                     var tokens = [optionElement]
                     if ¬option.isFlag {
-                        tokens.append(ElementSyntax(
-                            "span",
-                            attributes: ["class": "argument‐type"],
-                            contents: "[" + HTML.escapeTextForCharacterData(option.type.name) + "]",
-                            inline: true))
+                        tokens.append(
+                            ElementSyntax(
+                                "span",
+                                attributes: ["class": "argument‐type"],
+                                contents: "["
+                                    + HTML.escapeTextForCharacterData(option.type.name)
+                                    + "]",
+                                inline: true))
                     }
 
                     let term = ElementSyntax(
@@ -270,14 +297,17 @@ internal class CommandPage : Page {
                         contents: tokens.map({ $0.normalizedSource() }).joined(separator: " "),
                         inline: true).normalizedSource()
 
-                    let description = ElementSyntax("p", contents: HTML.escapeTextForCharacterData(option.description), inline: true).normalizedSource()
+                    let description = ElementSyntax(
+                        "p", contents: HTML.escapeTextForCharacterData(option.description),
+                        inline: true).normalizedSource()
                     return (term: term, description: description)
                 }))
     }
 
     private static func generateArgumentTypesSection(
         localization: LocalizationIdentifier,
-        interface: CommandInterface) -> StrictString {
+        interface: CommandInterface
+    ) -> StrictString {
 
         let heading: StrictString
         switch localization._bestMatch {

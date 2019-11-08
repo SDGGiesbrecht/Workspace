@@ -16,7 +16,7 @@
 
 import SDGLocalization
 
-public enum ContentLocalization : String, Codable, InputLocalization {
+public enum ContentLocalization: String, Codable, InputLocalization {
 
     // MARK: - Cases
 

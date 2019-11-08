@@ -37,7 +37,11 @@ extension RuleProtocol {
 
     // MARK: - Reporting
 
-    internal static func reportViolation(in file: TextFile, at location: Range<String.ScalarView.Index>, replacementSuggestion: StrictString? = nil, message: UserFacing<StrictString, InterfaceLocalization>, status: ProofreadingStatus) {
+    internal static func reportViolation(
+        in file: TextFile, at location: Range<String.ScalarView.Index>,
+        replacementSuggestion: StrictString? = nil,
+        message: UserFacing<StrictString, InterfaceLocalization>, status: ProofreadingStatus
+    ) {
 
         let fileLines = file.contents.lines
         let lineIndex = location.lowerBound.line(in: fileLines)
@@ -45,25 +49,31 @@ extension RuleProtocol {
         for exemptionMarker in exemptionMarkers {
             if line.contains(exemptionMarker) {
                 for localization in InterfaceLocalization.allCases {
-                    if line.contains(StrictString("\(exemptionMarker)\(name.resolved(for: localization)))")) {
+                    if line.contains(
+                        StrictString("\(exemptionMarker)\(name.resolved(for: localization)))"))
+                    {
                         return
                     }
                 }
             }
         }
 
-        status.report(violation: StyleViolation(in: file, at: location, replacementSuggestion: replacementSuggestion, noticeOnly: noticeOnly, ruleIdentifier: Self.name, message: message))
+        status.report(
+            violation: StyleViolation(
+                in: file, at: location, replacementSuggestion: replacementSuggestion,
+                noticeOnly: noticeOnly, ruleIdentifier: Self.name, message: message))
     }
 }
 
 private let exemptionMarkers: [StrictString] = {
-    var result: Set<StrictString> = Set(InterfaceLocalization.allCases.map({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "@exempt(from: _)"
-        case .deutschDeutschland:
-            return "@ausnahme(zu: _)"
-        }
-    }))
+    var result: Set<StrictString> = Set(
+        InterfaceLocalization.allCases.map({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "@exempt(from: _)"
+            case .deutschDeutschland:
+                return "@ausnahme(zu: _)"
+            }
+        }))
     return result.map { $0.truncated(before: "_") }
 }()

@@ -18,7 +18,7 @@ import WSGeneralImports
 
 extension Command.Output {
 
-    private enum MockLocalization : String, InputLocalization {
+    private enum MockLocalization: String, InputLocalization {
         case english = "en"
         static let fallbackLocalization: MockLocalization = .english
     }
@@ -32,8 +32,8 @@ extension Command.Output {
                 directArguments: [],
                 options: [],
                 execution: { (_, _, output: Command.Output) in
-                result = output
-            }).execute(with: []).get()
+                    result = output
+                }).execute(with: []).get()
         } catch {}
         return result!
     }()

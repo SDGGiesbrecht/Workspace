@@ -39,7 +39,7 @@ extension APIElement {
                     return "Paket"
                 }
             } else {
-                return "Package" // From “let ... = Package(...)”
+                return "Package"  // From “let ... = Package(...)”
             }
         case .library:
             if let match = localization._reasonableMatch {
@@ -50,7 +50,7 @@ extension APIElement {
                     return "Biblioteksprodukt"
                 }
             } else {
-                return "library" // From “products: [.library(...)]”
+                return "library"  // From “products: [.library(...)]”
             }
         case .module:
             if let match = localization._reasonableMatch {
@@ -61,7 +61,7 @@ extension APIElement {
                     return "Modul"
                 }
             } else {
-                return "target" // From “targets: [.target(...)]”
+                return "target"  // From “targets: [.target(...)]”
             }
         case .type(let type):
             switch type.genericDeclaration {
@@ -120,7 +120,7 @@ extension APIElement {
                 } else {
                     return "associatedtype"
                 }
-            default: // @exempt(from: tests)
+            default:  // @exempt(from: tests)
                 // @exempt(from: tests)
                 type.genericDeclaration.warnUnidentified()
                 return ""
@@ -315,7 +315,10 @@ extension APIElement {
 
     internal var localizedDocumentation: [LocalizationIdentifier: DocumentationSyntax] {
         get {
-            return (extendedProperties[.localizedDocumentation] as? [LocalizationIdentifier: DocumentationSyntax]) ?? [:] // @exempt(from: tests) Never nil.
+            return (
+                extendedProperties[.localizedDocumentation]
+                    as? [LocalizationIdentifier: DocumentationSyntax]
+            ) ?? [:]  // @exempt(from: tests) Never nil.
         }
         nonmutating set {
             extendedProperties[.localizedDocumentation] = newValue
@@ -333,7 +336,10 @@ extension APIElement {
 
     internal var skippedLocalizations: Set<LocalizationIdentifier> {
         get {
-            return (extendedProperties[.skippedLocalizations] as? Set<LocalizationIdentifier>) ?? [] // @exempt(from: tests) Never nil.
+            return (
+                extendedProperties[.skippedLocalizations]
+                    as? Set<LocalizationIdentifier>
+            ) ?? []  // @exempt(from: tests) Never nil.
         }
         nonmutating set {
             extendedProperties[.skippedLocalizations] = newValue
@@ -342,7 +348,10 @@ extension APIElement {
 
     private var localizedEquivalentFileNames: [LocalizationIdentifier: StrictString] {
         get {
-            return (extendedProperties[.localizedEquivalentFileNames] as? [LocalizationIdentifier: StrictString]) ?? [:]
+            return (
+                extendedProperties[.localizedEquivalentFileNames]
+                    as? [LocalizationIdentifier: StrictString]
+            ) ?? [:]
         }
         nonmutating set {
             extendedProperties[.localizedEquivalentFileNames] = newValue
@@ -351,7 +360,10 @@ extension APIElement {
 
     private var localizedEquivalentDirectoryNames: [LocalizationIdentifier: StrictString] {
         get {
-            return (extendedProperties[.localizedEquivalentDirectoryNames] as? [LocalizationIdentifier: StrictString]) ?? [:]
+            return (
+                extendedProperties[.localizedEquivalentDirectoryNames]
+                    as? [LocalizationIdentifier: StrictString]
+            ) ?? [:]
         }
         nonmutating set {
             extendedProperties[.localizedEquivalentDirectoryNames] = newValue
@@ -360,7 +372,10 @@ extension APIElement {
 
     internal var localizedEquivalentPaths: [LocalizationIdentifier: StrictString] {
         get {
-            return (extendedProperties[.localizedEquivalentPaths] as? [LocalizationIdentifier: StrictString]) ?? [:]
+            return (
+                extendedProperties[.localizedEquivalentPaths]
+                    as? [LocalizationIdentifier: StrictString]
+            ) ?? [:]
         }
         nonmutating set {
             extendedProperties[.localizedEquivalentPaths] = newValue
@@ -382,7 +397,9 @@ extension APIElement {
 
     internal var relativePagePath: [LocalizationIdentifier: StrictString] {
         get {
-            return (extendedProperties[.relativePagePath] as? [LocalizationIdentifier: StrictString]) ?? [:]
+            return (
+                extendedProperties[.relativePagePath] as? [LocalizationIdentifier: StrictString]
+            ) ?? [:]
         }
         nonmutating set {
             extendedProperties[.relativePagePath] = newValue
@@ -403,7 +420,7 @@ extension APIElement {
 
     internal var homeProduct: Weak<LibraryAPI> {
         get {
-            return (extendedProperties[.homeProduct] as? Weak<LibraryAPI>) ?? Weak<LibraryAPI>(nil) // @exempt(from: tests) Should never be nil.
+            return (extendedProperties[.homeProduct] as? Weak<LibraryAPI>) ?? Weak<LibraryAPI>(nil)  // @exempt(from: tests) Should never be nil.
         }
         nonmutating set {
             extendedProperties[.homeProduct] = newValue
@@ -430,9 +447,10 @@ extension APIElement {
         var groups: [StrictString: [APIElement]] = [:]
         for child in children {
             child.determine(localizations: localizations)
-            let crossReference = child.crossReference ?? {
-                unique += 1
-                return "\u{7F}\(String(describing: unique))"
+            let crossReference = child.crossReference
+                ?? {
+                    unique += 1
+                    return "\u{7F}\(String(describing: unique))"
                 }()
             groups[crossReference, default: []].append(child)
         }
@@ -451,19 +469,21 @@ extension APIElement {
     private func addLocalizations(from other: APIElement, isSame: Bool, globalScope: Bool) {
         for (localization, _) in other.localizedDocumentation {
             localizedEquivalentFileNames[localization] = other.fileName
-            localizedEquivalentDirectoryNames[localization] = other.directoryName(
-                for: localization,
-                globalScope: globalScope,
-                typeMember: {
-                    switch other {
-                    case .package, .library, .module, .type, .protocol, .extension, .case, .initializer, .subscript, .operator, .precedence, .conformance:
-                        unreachable()
-                    case .variable(let variable):
-                        return variable.declaration.isTypeMember()
-                    case .function(let function):
-                        return function.declaration.isTypeMember()
-                    }
-            })
+            localizedEquivalentDirectoryNames[localization]
+                = other.directoryName(
+                    for: localization,
+                    globalScope: globalScope,
+                    typeMember: {
+                        switch other {
+                        case .package, .library, .module, .type, .protocol, .extension, .case,
+                            .initializer, .subscript, .operator, .precedence, .conformance:
+                            unreachable()
+                        case .variable(let variable):
+                            return variable.declaration.isTypeMember()
+                        case .function(let function):
+                            return function.declaration.isTypeMember()
+                        }
+                    })
             if ¬isSame {
                 localizedChildren.append(contentsOf: other.children)
             }
@@ -508,7 +528,8 @@ extension APIElement {
     private func directoryName(
         for localization: LocalizationIdentifier,
         globalScope: Bool,
-        typeMember: () -> Bool) -> StrictString {
+        typeMember: () -> Bool
+    ) -> StrictString {
 
         switch self {
         case .package:
@@ -522,7 +543,7 @@ extension APIElement {
                     return "Biblioteken"
                 }
             } else {
-                return "library" // From “products: [.library(...)]”
+                return "library"  // From “products: [.library(...)]”
             }
         case .module:
             if let match = localization._reasonableMatch {
@@ -533,7 +554,7 @@ extension APIElement {
                     return "Module"
                 }
             } else {
-                return "target" // From “targets: [.target(...)]”
+                return "target"  // From “targets: [.target(...)]”
             }
         case .type:
             if let match = localization._reasonableMatch {
@@ -710,18 +731,25 @@ extension APIElement {
     internal func localizedDirectoryName(
         for localization: LocalizationIdentifier,
         globalScope: Bool = false,
-        typeMember: Bool = false) -> StrictString {
-        return localizedEquivalentDirectoryNames[localization] ?? directoryName(
-            for: localization,
-            globalScope: globalScope,
-            typeMember: { typeMember }) // @exempt(from: tests) Should never be called.
+        typeMember: Bool = false
+    ) -> StrictString {
+        return localizedEquivalentDirectoryNames[localization]
+            ?? directoryName(
+                for: localization,
+                globalScope: globalScope,
+                typeMember: { typeMember })  // @exempt(from: tests) Should never be called.
     }
 
-    internal func pageURL(in outputDirectory: URL, for localization: LocalizationIdentifier) -> URL {
+    internal func pageURL(
+        in outputDirectory: URL,
+        for localization: LocalizationIdentifier
+    ) -> URL {
         return outputDirectory.appendingPathComponent(String(relativePagePath[localization]!))
     }
 
-    internal func determinePaths(for localization: LocalizationIdentifier, namespace: StrictString = "") -> [String: String] {
+    internal func determinePaths(
+        for localization: LocalizationIdentifier, namespace: StrictString = ""
+    ) -> [String: String] {
         return autoreleasepool {
 
             var links: [String: String] = [:]
@@ -730,12 +758,16 @@ extension APIElement {
             switch self {
             case .package(let package):
                 for library in package.libraries {
-                    links = APIElement.library(library).determinePaths(for: localization).mergedByOverwriting(from: links)
+                    links
+                        = APIElement.library(library).determinePaths(for: localization)
+                        .mergedByOverwriting(from: links)
                 }
             case .library(let library):
                 path += localizedDirectoryName(for: localization) + "/"
                 for module in library.modules {
-                    links = APIElement.module(module).determinePaths(for: localization).mergedByOverwriting(from: links)
+                    links
+                        = APIElement.module(module).determinePaths(for: localization)
+                        .mergedByOverwriting(from: links)
                 }
             case .module(let module):
                 path += localizedDirectoryName(for: localization) + "/"
@@ -748,20 +780,24 @@ extension APIElement {
                 newNamespace.append(contentsOf: localizedDirectoryName(for: localization) + "/")
                 newNamespace.append(contentsOf: localizedFileName(for: localization) + "/")
                 for child in children where child.receivesPage {
-                    links = child.determinePaths(for: localization, namespace: newNamespace).mergedByOverwriting(from: links)
+                    links
+                        = child.determinePaths(for: localization, namespace: newNamespace)
+                        .mergedByOverwriting(from: links)
                 }
             case .case, .initializer, .subscript, .operator, .precedence:
                 path += namespace + localizedDirectoryName(for: localization) + "/"
             case .variable(let variable):
-                path += namespace + localizedDirectoryName(
-                    for: localization,
-                    globalScope: namespace.isEmpty,
-                    typeMember: variable.declaration.isTypeMember()) + "/"
+                path += namespace
+                    + localizedDirectoryName(
+                        for: localization,
+                        globalScope: namespace.isEmpty,
+                        typeMember: variable.declaration.isTypeMember()) + "/"
             case .function(let function):
-                path += namespace + localizedDirectoryName(
-                    for: localization,
-                    globalScope: namespace.isEmpty,
-                    typeMember: function.declaration.isTypeMember()) + "/"
+                path += namespace
+                    + localizedDirectoryName(
+                        for: localization,
+                        globalScope: namespace.isEmpty,
+                        typeMember: function.declaration.isTypeMember()) + "/"
             case .conformance:
                 unreachable()
             }
@@ -782,13 +818,14 @@ extension APIElement {
     func parameters() -> [String] {
         let parameterList: FunctionParameterListSyntax
         switch self {
-        case .package, .library, .module, .type, .protocol, .extension, .case, .operator, .precedence, .conformance:
+        case .package, .library, .module, .type, .protocol, .extension, .case, .operator,
+            .precedence, .conformance:
             return []
         case .variable(let variable):
-        guard let typeAnnotation = variable.declaration.bindings.first?.typeAnnotation else {
+            guard let typeAnnotation = variable.declaration.bindings.first?.typeAnnotation else {
                 return []
-        }
-        return typeAnnotation.type.parameterNames()
+            }
+            return typeAnnotation.type.parameterNames()
         case .initializer(let initializer):
             parameterList = initializer.declaration.parameters.parameterList
         case .subscript(let `subscript`):

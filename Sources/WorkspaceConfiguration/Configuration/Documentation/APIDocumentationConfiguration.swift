@@ -18,10 +18,11 @@ import SDGCollections
 
 // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration)
 /// Einstellungen zur Programmierschnittstellendokumentation.
-public typealias Programmierschnittstellendokumentationseinstellungen = APIDocumentationConfiguration
+public typealias Programmierschnittstellendokumentationseinstellungen
+    = APIDocumentationConfiguration
 // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(APIDocumentationConfiguration)
 /// Options related to API documentation.
-public struct APIDocumentationConfiguration : Codable {
+public struct APIDocumentationConfiguration: Codable {
 
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     // @crossReference(APIDocumentationConfiguration.generate)
@@ -90,7 +91,9 @@ public struct APIDocumentationConfiguration : Codable {
     /// Wenn nicht angegeben, wird diese Einstellung von dem des Dateivorspanns hergeleitet.
     ///
     /// Arbeitsbereich wird das dynamische Element `#daten` mit die berechnete Urheberrechtsdaten ersetzen. (z. B. „©2016–2017“).
-    public var urheberrechtsschutzvermerk: BequemeEinstellung<[Lokalisationskennzeichen: StrengeZeichenkette]> {
+    public var urheberrechtsschutzvermerk:
+        BequemeEinstellung<[Lokalisationskennzeichen: StrengeZeichenkette]>
+    {
         get { return copyrightNotice }
         set { copyrightNotice = newValue }
     }
@@ -106,8 +109,11 @@ public struct APIDocumentationConfiguration : Codable {
     /// By default, this is assembled from the file header copyright notice.
     ///
     /// Workspace will replace the dynamic element `#dates` with the computed copyright dates. (e.g. “©2016–2017”).
-    public var copyrightNotice: Lazy<[LocalizationIdentifier: StrictString]> = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
-        return configuration.fileHeaders.copyrightNotice.resolve(configuration).mapKeyValuePairs { localization, notice in
+    public var copyrightNotice: Lazy<[LocalizationIdentifier: StrictString]> = Lazy<
+        [LocalizationIdentifier: StrictString]
+    >(resolve: { configuration in
+        return configuration.fileHeaders.copyrightNotice.resolve(configuration).mapKeyValuePairs {
+            localization, notice in
             if let provided = localization._reasonableMatch {
                 switch provided {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:

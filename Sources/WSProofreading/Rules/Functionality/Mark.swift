@@ -20,7 +20,7 @@ import WSGeneralImports
 
 import WSProject
 
-internal struct Marks : TextRule {
+internal struct Marks: TextRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
@@ -44,7 +44,10 @@ internal struct Marks : TextRule {
         }
     })
 
-    internal static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
+    internal static func check(
+        file: TextFile, in project: PackageRepository, status: ProofreadingStatus,
+        output: Command.Output
+    ) {
         for match in file.contents.scalars.matches(for: "MAR\u{4B}".scalars) {
 
             var errorExists = false
@@ -53,10 +56,13 @@ internal struct Marks : TextRule {
 
             let line = file.contents.lineRange(for: match.range)
             if file.contents.scalars[line].hasPrefix(
-                RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })) + "//".scalars) {
+                RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }))
+                    + "//".scalars)
+            {
 
                 if ¬file.contents.scalars[..<match.range.lowerBound].hasSuffix(
-                    ¬"/".scalars + "/\u{2F} ".scalars) {
+                    ¬"/".scalars + "/\u{2F} ".scalars)
+                {
                     errorExists = true
 
                     var possibleStart = match.range.lowerBound
@@ -72,19 +78,26 @@ internal struct Marks : TextRule {
                 }
 
                 if ¬file.contents.scalars[match.range.upperBound...]
-                    .hasPrefix(": \u{2D} ".scalars + ¬ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })) {
+                    .hasPrefix(
+                        ": \u{2D} ".scalars + ¬ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })
+                    )
+                {
                     errorExists = true
 
                     file.contents.scalars.advance(
                         &errorEnd,
                         over: RepetitionPattern(":".scalars, count: 0 ... 1)
-                            + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }))
+                            + RepetitionPattern(
+                                ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }))
                             + RepetitionPattern("\u{2D}".scalars, count: 0 ... 1)
-                            + RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
+                            + RepetitionPattern(
+                                ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
                 }
 
                 if errorExists {
-                    reportViolation(in: file, at: errorStart ..< errorEnd, replacementSuggestion: expectedSyntax, message: message, status: status)
+                    reportViolation(
+                        in: file, at: errorStart ..< errorEnd,
+                        replacementSuggestion: expectedSyntax, message: message, status: status)
                 }
             }
         }

@@ -24,14 +24,17 @@ internal struct CommandInterfaceInformation {
 
     // MARK: - Initialization
 
-    internal init () {}
+    internal init() {}
 
     // MARK: - Properties
 
     internal var interfaces: [LocalizationIdentifier: CommandInterface] = [:]
     internal var relativePagePath: [LocalizationIdentifier: StrictString] = [:]
 
-    internal func pageURL(in outputDirectory: URL, for localization: LocalizationIdentifier) -> URL {
+    internal func pageURL(
+        in outputDirectory: URL,
+        for localization: LocalizationIdentifier
+    ) -> URL {
         return outputDirectory.appendingPathComponent(String(relativePagePath[localization]!))
     }
 }

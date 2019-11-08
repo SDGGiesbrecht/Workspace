@@ -16,7 +16,7 @@
 
 import WSLocalizations
 
-internal enum ProvidedIssueTemplate : CaseIterable {
+internal enum ProvidedIssueTemplate: CaseIterable {
 
     // MARK: - Cases
 
@@ -99,18 +99,18 @@ internal enum ProvidedIssueTemplate : CaseIterable {
                 " Reminder:",
                 " Have you searched to see if a related issue exists already?",
                 " If one exists, please add your information there instead."
-                ])
+            ])
         case .deutschDeutschland:
             contents.append(contentsOf: [
                 " Erinnerung:",
                 " Haben Sie die bereits bestehende Themen nach ähnliches durchsucht?",
                 " Sollte etwas bereits bestehen, bitte melden Sie Eure Informationen dort."
-                ])
+            ])
         }
         contents.append(contentsOf: [
             " \u{2D}\u{2D}>",
             ""
-            ])
+        ])
 
         switch self {
         case .bugReport, .featureRequest, .documentationCorrection:
@@ -148,9 +148,11 @@ internal enum ProvidedIssueTemplate : CaseIterable {
         case .documentationCorrection:
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                contents.append("There appears to be a mistake in the documentation about such‐and‐such.")
+                contents.append(
+                    "There appears to be a mistake in the documentation about such‐and‐such.")
             case .deutschDeutschland:
-                contents.append("In die Dokumentation über soundso gibt es anscheinend einen Fehler.")
+                contents.append(
+                    "In die Dokumentation über soundso gibt es anscheinend einen Fehler.")
             }
         case .question:
             switch localization {
@@ -168,11 +170,11 @@ internal enum ProvidedIssueTemplate : CaseIterable {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 contents.append(contentsOf: [
                     "### Demonstration",
-                    ])
+                ])
             case .deutschDeutschland:
                 contents.append(contentsOf: [
                     "### Nachweis"
-                    ])
+                ])
             }
             contents.append("")
             if products.contains(where: { $0.type == .executable }) {
@@ -181,16 +183,16 @@ internal enum ProvidedIssueTemplate : CaseIterable {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     contents.append(contentsOf: [
                         "$ this command •triggers \u{22}the bug\u{22}"
-                        ])
+                    ])
                 case .deutschDeutschland:
                     contents.append(contentsOf: [
                         "$ dieser behehl •löst \u{22}den Fehler aus\u{22}"
-                        ])
+                    ])
                 }
                 contents.append(contentsOf: [
                     "```",
                     ""
-                    ])
+                ])
             }
             if products.contains(where: { $0.type == .library }) {
                 contents.append("```swift")
@@ -198,22 +200,25 @@ internal enum ProvidedIssueTemplate : CaseIterable {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                     contents.append(contentsOf: [
                         "let thisCode = trigger(theBug)"
-                        ])
+                    ])
                 case .deutschDeutschland:
                     contents.append(contentsOf: [
                         "diese.quelltext = löst[denFehler].aus()"
-                        ])
+                    ])
                 }
                 contents.append(contentsOf: [
                     "```",
                     ""
-                    ])
+                ])
             }
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                contents.append("<!\u{2D}\u{2D} Or provide a link to a demonstration elsewhere. \u{2D}\u{2D}>")
+                contents.append(
+                    "<!\u{2D}\u{2D} Or provide a link to a demonstration elsewhere. \u{2D}\u{2D}>")
             case .deutschDeutschland:
-                contents.append("<!\u{2D}\u{2D} Oder einen Verweis bereitstellen, zum Nachweis sonstwo. \u{2D}\u{2D}>")
+                contents.append(
+                    "<!\u{2D}\u{2D} Oder einen Verweis bereitstellen, zum Nachweis sonstwo. \u{2D}\u{2D}>"
+                )
             }
         }
 
@@ -236,7 +241,7 @@ internal enum ProvidedIssueTemplate : CaseIterable {
                     "I **would like to help** \(task) it, and I think **I know my way around**.",
                     "I **would like to help** \(task) it, but **I would need some guidance**.",
                     "I **would not like to help** \(task) it.",
-                    ])
+                ])
             case .deutschDeutschland:
                 let task: StrictString
                 switch self {
@@ -253,7 +258,7 @@ internal enum ProvidedIssueTemplate : CaseIterable {
                     "Ich **möchte helfen**, es \(task), und ich glaube, **ich kenne mich aus**.",
                     "Ich **möchte helfen**, es \(task), aber **ich braüchte etwas Anleitung**.",
                     "Ich **möchte nicht helfen**, es \(task).",
-                    ])
+                ])
             }
         case .question:
             break
@@ -297,11 +302,11 @@ internal enum ProvidedIssueTemplate : CaseIterable {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 contents.append(contentsOf: [
                     "It might work to do something like..."
-                    ])
+                ])
             case .deutschDeutschland:
                 contents.append(contentsOf: [
                     "Eine Möglichkeit wäre ..."
-                    ])
+                ])
             }
         case .documentationCorrection:
             contents.append("")
@@ -309,46 +314,46 @@ internal enum ProvidedIssueTemplate : CaseIterable {
             case .englishUnitedKingdom:
                 contents.append(contentsOf: [
                     "‘It makes more sense written like this.’"
-                    ])
+                ])
             case .englishUnitedStates, .englishCanada:
                 contents.append(contentsOf: [
                     "“It makes more sense written like this.”"
-                    ])
+                ])
             case .deutschDeutschland:
                 contents.append(contentsOf: [
                     "„So geschrieben wäre es verständlicher.“"
-                    ])
+                ])
             }
         case .question:
             contents.append(contentsOf: [
                 "",
                 "<!\u{2D}\u{2D}",
-                ])
+            ])
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 contents.append(contentsOf: [
                     " Where did you look for the answer?",
                     " (Answering this may help us organize the documentation more intuitively.)",
-                    ])
+                ])
             case .deutschDeutschland:
                 contents.append(contentsOf: [
                     " Wo haben Sie die Antwort gesucht?",
                     " (Die Antwort auf dieser frage könnte uns helfen, die Dokumentation besser zu ordnen.)",
-                    ])
+                ])
             }
             contents.append(contentsOf: [
                 " \u{2D}\u{2D}>",
                 ""
-                ])
+            ])
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 contents.append(contentsOf: [
                     "I expected to find the answer under such‐and‐such.",
-                    ])
+                ])
             case .deutschDeutschland:
                 contents.append(contentsOf: [
                     "Ich erwartete, die Antwort unter soundso zu finden.",
-                    ])
+                ])
             }
         }
 

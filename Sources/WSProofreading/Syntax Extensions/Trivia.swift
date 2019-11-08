@@ -22,9 +22,11 @@ extension Trivia {
     func isEffectivelyEmpty() -> Bool {
         for piece in self {
             switch piece {
-            case .spaces, .tabs, .verticalTabs, .formfeeds, .newlines, .carriageReturns, .carriageReturnLineFeeds:
+            case .spaces, .tabs, .verticalTabs, .formfeeds, .newlines, .carriageReturns,
+                .carriageReturnLineFeeds:
                 break
-            case .backticks, .lineComment, .blockComment, .docLineComment, .docBlockComment, .garbageText:
+            case .backticks, .lineComment, .blockComment, .docLineComment, .docBlockComment,
+                .garbageText:
                 return false
             }
         }

@@ -18,12 +18,14 @@ import WSGeneralImports
 
 import WSProject
 
-extension PatternMatch where Searched : SearchableBidirectionalCollection, Searched.Element == Unicode.Scalar {
+extension PatternMatch
+where Searched: SearchableBidirectionalCollection, Searched.Element == Unicode.Scalar {
 
     public func declarationArgument() -> StrictString {
         guard let openingParenthesis = contents.firstMatch(for: "(".scalars),
-            let closingParenthesis = contents.lastMatch(for: ")".scalars) else {
-                unreachable()
+            let closingParenthesis = contents.lastMatch(for: ")".scalars)
+        else {
+            unreachable()
         }
 
         var argument = StrictString(

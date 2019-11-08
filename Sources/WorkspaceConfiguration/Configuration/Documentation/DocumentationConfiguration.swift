@@ -23,7 +23,7 @@ import WSLocalizations
 public typealias Dokumentationseinstellungen = DocumentationConfiguration
 // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(DocumentationConfiguration)
 /// Options related to documentation.
-public struct DocumentationConfiguration : Codable {
+public struct DocumentationConfiguration: Codable {
 
     // MARK: - Properties
 
@@ -245,20 +245,24 @@ public struct DocumentationConfiguration : Codable {
     /// Installation instructions.
     ///
     /// Default instructions exist for executable products if `repositoryURL` and `currentVersion` are defined.
-    public var installationInstructions: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>(resolve: { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
+    public var installationInstructions: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<
+        [LocalizationIdentifier: Markdown]
+    >(resolve: { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
 
         guard let packageURL = configuration.documentation.repositoryURL,
-            let version = configuration.documentation.currentVersion else {
-                return [:]
+            let version = configuration.documentation.currentVersion
+        else {
+            return [:]
         }
 
         var result: [LocalizationIdentifier: StrictString] = [:]
         for localization in configuration.documentation.localizations {
             if let provided = localization._reasonableMatch {
-                result[localization] = localizedToolInstallationInstructions(
-                    packageURL: packageURL,
-                    version: version,
-                    localization: provided)
+                result[localization]
+                    = localizedToolInstallationInstructions(
+                        packageURL: packageURL,
+                        version: version,
+                        localization: provided)
             }
         }
         return result
@@ -277,20 +281,24 @@ public struct DocumentationConfiguration : Codable {
     /// Importing instructions.
     ///
     /// Default instructions exist for library products if `repositoryURL` and `currentVersion` are defined.
-    public var importingInstructions: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>(resolve: { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
+    public var importingInstructions: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<
+        [LocalizationIdentifier: Markdown]
+    >(resolve: { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
 
         guard let packageURL = configuration.documentation.repositoryURL,
-            let version = configuration.documentation.currentVersion else {
-                return [:]
+            let version = configuration.documentation.currentVersion
+        else {
+            return [:]
         }
 
         var result: [LocalizationIdentifier: StrictString] = [:]
         for localization in configuration.documentation.localizations {
             if let provided = localization._reasonableMatch {
-                result[localization] = localizedLibraryImportingInstructions(
-                    packageURL: packageURL,
-                    version: version,
-                    localization: provided)
+                result[localization]
+                    = localizedLibraryImportingInstructions(
+                        packageURL: packageURL,
+                        version: version,
+                        localization: provided)
             }
         }
         return result
@@ -342,7 +350,9 @@ public struct DocumentationConfiguration : Codable {
 
     // MARK: - Installation Instructions
 
-    private static func localizedToolInstallationInstructions(packageURL: URL, version: Version, localization: ContentLocalization) -> StrictString? {
+    private static func localizedToolInstallationInstructions(
+        packageURL: URL, version: Version, localization: ContentLocalization
+    ) -> StrictString? {
 
         let tools = WorkspaceContext.current.manifest.products.filter { $0.type == .executable }
 
@@ -386,7 +396,8 @@ public struct DocumentationConfiguration : Codable {
                     } else {
                         result += "They"
                     }
-                    result += " can be installed any way Swift packages can be installed. The most direct method is pasting the following into a terminal, which will either install or update "
+                    result
+                        += " can be installed any way Swift packages can be installed. The most direct method is pasting the following into a terminal, which will either install or update "
                     if tools.count == 1 {
                         result += "it"
                     } else {
@@ -401,7 +412,8 @@ public struct DocumentationConfiguration : Codable {
                     } else {
                         result += "Sie können"
                     }
-                    result += " installiert werden nach allen Methoden, die Swift‐Pakete unterstützen. Die direkteste ist, folgendes im Terminal einzugeben. Somit "
+                    result
+                        += " installiert werden nach allen Methoden, die Swift‐Pakete unterstützen. Die direkteste ist, folgendes im Terminal einzugeben. Somit "
                     if tools.count == 1 {
                         result += "wird es"
                     } else {
@@ -415,10 +427,12 @@ public struct DocumentationConfiguration : Codable {
             "```shell",
             "curl \u{2D}sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash \u{2D}s \(projectName) \u{22}\(packageURL.absoluteString)\u{22} \(version.string()) \u{22}\(toolNames.first!) help\u{22} \(toolNames.joined(separator: " "))",
             "```"
-            ].joinedAsLines()
+        ].joinedAsLines()
     }
 
-    private static func localizedLibraryImportingInstructions(packageURL: URL, version: Version, localization: ContentLocalization) -> StrictString? {
+    private static func localizedLibraryImportingInstructions(
+        packageURL: URL, version: Version, localization: ContentLocalization
+    ) -> StrictString? {
 
         let libraries = WorkspaceContext.current.manifest.products.filter { $0.type == .library }
 
@@ -430,9 +444,11 @@ public struct DocumentationConfiguration : Codable {
 
         var versionSpecification: StrictString
         if version.major == 0 {
-            versionSpecification = ".upToNextMinor(from: Version(\(version.major.inDigits()), \(version.minor.inDigits()), \(version.patch.inDigits())))"
+            versionSpecification
+                = ".upToNextMinor(from: Version(\(version.major.inDigits()), \(version.minor.inDigits()), \(version.patch.inDigits())))"
         } else {
-            versionSpecification = "from: Version(\(version.major.inDigits()), \(version.minor.inDigits()), \(version.patch.inDigits()))"
+            versionSpecification
+                = "from: Version(\(version.major.inDigits()), \(version.minor.inDigits()), \(version.patch.inDigits()))"
         }
 
         var result = [
@@ -445,7 +461,8 @@ public struct DocumentationConfiguration : Codable {
                     } else {
                         result += "libraries"
                     }
-                    result += " for use with the [Swift Package Manager](https://swift.org/package\u{2D}manager/)."
+                    result
+                        += " for use with the [Swift Package Manager](https://swift.org/package\u{2D}manager/)."
                     return result
                 case .deutschDeutschland:
                     var result: StrictString = "\(projectName) stellt "
@@ -454,7 +471,8 @@ public struct DocumentationConfiguration : Codable {
                     } else {
                         result += "Biblioteken"
                     }
-                    result += " für zur Verwendung mit dem [Swift‐Paketenverwalter (*Swift Package Manager*)](https://swift.org/package\u{2D}manager/) bereit."
+                    result
+                        += " für zur Verwendung mit dem [Swift‐Paketenverwalter (*Swift Package Manager*)](https://swift.org/package\u{2D}manager/) bereit."
                     return result
                 }
             }).resolved(for: localization),
@@ -462,7 +480,8 @@ public struct DocumentationConfiguration : Codable {
             UserFacing<StrictString, ContentLocalization>({ localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    var result: StrictString = "Simply add \(projectName) as a dependency in `Package.swift`"
+                    var result: StrictString
+                        = "Simply add \(projectName) as a dependency in `Package.swift`"
                     if libraries.count == 1 {
                         result += ":"
                     } else {
@@ -470,7 +489,8 @@ public struct DocumentationConfiguration : Codable {
                     }
                     return result
                 case .deutschDeutschland:
-                    var result: StrictString = "\(projectName) einfach als Abhängigkeit (*dependency*) in `Package.swift` hinzufügen"
+                    var result: StrictString
+                        = "\(projectName) einfach als Abhängigkeit (*dependency*) in `Package.swift` hinzufügen"
                     if libraries.count == 1 {
                         result += ":"
                     } else {
@@ -481,38 +501,49 @@ public struct DocumentationConfiguration : Codable {
             }).resolved(for: localization),
             "",
             "```swift",
-            ("let " + UserFacing<StrictString, ContentLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "package"
-                case .deutschDeutschland:
-                    return "paket"
-                }
-            }).resolved(for: localization) + " = Package(") as StrictString,
-            ("    name: \u{22}" + UserFacing<StrictString, ContentLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "MyPackage"
-                case .deutschDeutschland:
-                    return "MeinePaket"
-                }
-            }).resolved(for: localization) + "\u{22},") as StrictString,
+            (
+                "let "
+                    + UserFacing<StrictString, ContentLocalization>({ localization in
+                        switch localization {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "package"
+                        case .deutschDeutschland:
+                            return "paket"
+                        }
+                    }).resolved(for: localization) + " = Package("
+            ) as StrictString,
+            (
+                "    name: \u{22}"
+                    + UserFacing<StrictString, ContentLocalization>({ localization in
+                        switch localization {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "MyPackage"
+                        case .deutschDeutschland:
+                            return "MeinePaket"
+                        }
+                    }).resolved(for: localization) + "\u{22},"
+            ) as StrictString,
             "    dependencies: [",
             "        .package(url: \u{22}\(packageURL.absoluteString)\u{22}, \(versionSpecification)),",
             "    ],",
             "    targets: [",
-            ("        .target(name: \u{22}" + UserFacing<StrictString, ContentLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "MyTarget"
-                case .deutschDeutschland:
-                    return "MeinZiel"
-                }
-            }).resolved(for: localization) + "\u{22}, dependencies: [") as StrictString
+            (
+                "        .target(name: \u{22}"
+                    + UserFacing<StrictString, ContentLocalization>({ localization in
+                        switch localization {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "MyTarget"
+                        case .deutschDeutschland:
+                            return "MeinZiel"
+                        }
+                    }).resolved(for: localization) + "\u{22}, dependencies: ["
+            ) as StrictString
         ]
 
         for library in libraries {
-            result += ["            .productItem(name: \u{22}\(library.name)\u{22}, package: \u{22}\(projectName)\u{22}),"]
+            result += [
+                "            .productItem(name: \u{22}\(library.name)\u{22}, package: \u{22}\(projectName)\u{22}),"
+            ]
         }
 
         result += [

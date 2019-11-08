@@ -26,7 +26,9 @@ extension PackageRepository {
     public func normalize(output: Command.Output) throws {
 
         var formatter: SwiftFormatter?
-        if let formatConfiguration = try configuration(output: output).proofreading.swiftFormatConfiguration {
+        if let formatConfiguration = try configuration(output: output).proofreading
+            .swiftFormatConfiguration
+        {
             formatter = SwiftFormatter(configuration: formatConfiguration)
         }
 
@@ -37,10 +39,12 @@ extension PackageRepository {
                     var file = try TextFile(alreadyAt: url)
 
                     if let formatter = formatter,
-                        file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
+                        file.fileType == .swift ∨ file.fileType == .swiftPackageManifest
+                    {
                         let source = file.contents
                         var result: String = ""
-                        try formatter.format(source: source, assumingFileURL: file.location, to: &result)
+                        try formatter.format(
+                            source: source, assumingFileURL: file.location, to: &result)
                         file.contents = result
                     }
 
@@ -56,7 +60,8 @@ extension PackageRepository {
                             }
                         }
 
-                        while let last = normalized.unicodeScalars.last, last ∈ CharacterSet.whitespaces {
+                        while let last = normalized.unicodeScalars.last,
+                        last ∈ CharacterSet.whitespaces {
                             normalized.unicodeScalars.removeLast()
                         }
 

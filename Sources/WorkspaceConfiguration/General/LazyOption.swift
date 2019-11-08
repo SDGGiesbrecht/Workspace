@@ -19,7 +19,7 @@
 public typealias BequemeEinstellung = Lazy
 // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Lazy<Option>)
 /// An option which can be resolved lazily. It can be derived from the state of other options, which can be modified before this option’s value is resolved.
-public struct Lazy<Option> : Decodable, Encodable where Option : Codable {
+public struct Lazy<Option>: Decodable, Encodable where Option: Codable {
 
     // MARK: - Initialization
 

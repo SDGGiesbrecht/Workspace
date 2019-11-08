@@ -24,7 +24,7 @@ import SDGHTML
 
 import WSProject
 
-internal class SymbolPage : Page {
+internal class SymbolPage: Page {
 
     // MARK: - Initialization
 
@@ -48,19 +48,21 @@ internal class SymbolPage : Page {
         symbolLinks: [String: String],
         status: DocumentationStatus,
         output: Command.Output,
-        coverageCheckOnly: Bool) {
+        coverageCheckOnly: Bool
+    ) {
 
         if symbol.relativePagePath.first?.value.components(separatedBy: "/").count == 3 {
             switch symbol {
             case .package, .module, .type, .extension, .protocol:
-                output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "...\(StrictString(symbol.name.source()))..."
-                    case .deutschDeutschland:
-                        return "... \(StrictString(symbol.name.source())) ..."
-                    }
-                }).resolved())
+                output.print(
+                    UserFacing<StrictString, InterfaceLocalization>({ localization in
+                        switch localization {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "...\(StrictString(symbol.name.source()))..."
+                        case .deutschDeutschland:
+                            return "... \(StrictString(symbol.name.source())) ..."
+                        }
+                    }).resolved())
             default:
                 break
             }
@@ -69,12 +71,33 @@ internal class SymbolPage : Page {
         let adjustedSymbolLinks = symbolLinks.mapValues { String(pathToSiteRoot) + $0 }
 
         var content: [StrictString] = []
-        content.append(SymbolPage.generateDescriptionSection(symbol: symbol, navigationPath: navigationPath, localization: localization, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks, status: status))
-        content.append(SymbolPage.generateDeclarationSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks, status: status))
-        content.append(SymbolPage.generateDiscussionSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks, status: status))
-        content.append(SymbolPage.generateParametersSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status))
-        content.append(SymbolPage.generateThrowsSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status))
-        content.append(SymbolPage.generateReturnsSection(localization: localization, symbol: symbol, navigationPath: navigationPath, packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status))
+        content.append(
+            SymbolPage.generateDescriptionSection(
+                symbol: symbol, navigationPath: navigationPath, localization: localization,
+                packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks,
+                status: status))
+        content.append(
+            SymbolPage.generateDeclarationSection(
+                localization: localization, symbol: symbol, navigationPath: navigationPath,
+                packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks,
+                status: status))
+        content.append(
+            SymbolPage.generateDiscussionSection(
+                localization: localization, symbol: symbol, navigationPath: navigationPath,
+                packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks,
+                status: status))
+        content.append(
+            SymbolPage.generateParametersSection(
+                localization: localization, symbol: symbol, navigationPath: navigationPath,
+                packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status))
+        content.append(
+            SymbolPage.generateThrowsSection(
+                localization: localization, symbol: symbol, navigationPath: navigationPath,
+                packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status))
+        content.append(
+            SymbolPage.generateReturnsSection(
+                localization: localization, symbol: symbol, navigationPath: navigationPath,
+                packageIdentifiers: packageIdentifiers, symbolLinks: symbolLinks, status: status))
 
         if coverageCheckOnly {
             return nil
@@ -116,112 +139,128 @@ internal class SymbolPage : Page {
         packageIdentifiers: Set<String>,
         symbolLinks: [String: String],
         adjustedSymbolLinks: [String: String],
-        partiallyConstructedContent: [StrictString]) {
+        partiallyConstructedContent: [StrictString]
+    ) {
 
         let navigationPath = SymbolPage.generateNavigationPath(
             localization: localization,
             pathToSiteRoot: pathToSiteRoot,
             allLocalizations: allLocalizations
                 .lazy.filter({ $0 ∉ symbol.skippedLocalizations }).map({ localization in
-                let path: StrictString
-                if symbol.exists(in: localization) {
-                    path = symbol.relativePagePath[localization]!
-                } else {
-                    path = symbol.localizedEquivalentPaths[localization]!
-                }
-                return (localization: localization, path: path)
-            }),
+                    let path: StrictString
+                    if symbol.exists(in: localization) {
+                        path = symbol.relativePagePath[localization]!
+                    } else {
+                        path = symbol.localizedEquivalentPaths[localization]!
+                    }
+                    return (localization: localization, path: path)
+                }),
             navigationPath: navigationPath)
 
         var content = partiallyConstructedContent
 
-        content.append(SymbolPage.generateToolsSection(
-            localization: localization,
-            tools: tools,
-            pathToSiteRoot: pathToSiteRoot))
+        content.append(
+            SymbolPage.generateToolsSection(
+                localization: localization,
+                tools: tools,
+                pathToSiteRoot: pathToSiteRoot))
 
-        content.append(SymbolPage.generateLibrariesSection(
-            localization: localization,
-            symbol: symbol,
-            pathToSiteRoot: pathToSiteRoot,
-            package: package,
-            packageIdentifiers: packageIdentifiers,
-            symbolLinks: adjustedSymbolLinks))
+        content.append(
+            SymbolPage.generateLibrariesSection(
+                localization: localization,
+                symbol: symbol,
+                pathToSiteRoot: pathToSiteRoot,
+                package: package,
+                packageIdentifiers: packageIdentifiers,
+                symbolLinks: adjustedSymbolLinks))
 
-        content.append(SymbolPage.generateModulesSection(
-            localization: localization,
-            symbol: symbol,
-            pathToSiteRoot: pathToSiteRoot,
-            package: package,
-            packageIdentifiers: packageIdentifiers,
-            symbolLinks: adjustedSymbolLinks))
+        content.append(
+            SymbolPage.generateModulesSection(
+                localization: localization,
+                symbol: symbol,
+                pathToSiteRoot: pathToSiteRoot,
+                package: package,
+                packageIdentifiers: packageIdentifiers,
+                symbolLinks: adjustedSymbolLinks))
 
         switch symbol {
         case .package, .library, .module:
-            content.append(SymbolPage.generateTypesSection(
-                localization: localization,
-                symbol: symbol, pathToSiteRoot: pathToSiteRoot,
-                package: package,
-                packageIdentifiers: packageIdentifiers,
-                symbolLinks: adjustedSymbolLinks))
-            content.append(SymbolPage.generateExtensionsSection(
-                localization: localization,
-                symbol: symbol,
-                pathToSiteRoot: pathToSiteRoot,
-                package: package,
-                packageIdentifiers: packageIdentifiers,
-                symbolLinks: adjustedSymbolLinks))
-            content.append(SymbolPage.generateProtocolsSection(
-                localization: localization,
-                symbol: symbol,
-                pathToSiteRoot: pathToSiteRoot,
-                package: package,
-                packageIdentifiers: packageIdentifiers,
-                symbolLinks: adjustedSymbolLinks))
-            content.append(SymbolPage.generateFunctionsSection(
-                localization: localization,
-                symbol: symbol,
-                pathToSiteRoot: pathToSiteRoot,
-                package: package,
-                packageIdentifiers: packageIdentifiers,
-                symbolLinks: adjustedSymbolLinks))
-            content.append(SymbolPage.generateVariablesSection(
-                localization: localization,
-                symbol: symbol,
-                pathToSiteRoot: pathToSiteRoot,
-                package: package,
-                packageIdentifiers: packageIdentifiers,
-                symbolLinks: adjustedSymbolLinks))
-            content.append(SymbolPage.generateOperatorsSection(
-                localization: localization,
-                symbol: symbol,
-                pathToSiteRoot: pathToSiteRoot,
-                package: package,
-                packageIdentifiers: packageIdentifiers,
-                symbolLinks: adjustedSymbolLinks))
-            content.append(SymbolPage.generatePrecedenceGroupsSection(
-                localization: localization,
-                symbol: symbol,
-                pathToSiteRoot: pathToSiteRoot,
-                package: package,
-                packageIdentifiers: packageIdentifiers,
-                symbolLinks: adjustedSymbolLinks))
-        case .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .conformance:
+            content.append(
+                SymbolPage.generateTypesSection(
+                    localization: localization,
+                    symbol: symbol, pathToSiteRoot: pathToSiteRoot,
+                    package: package,
+                    packageIdentifiers: packageIdentifiers,
+                    symbolLinks: adjustedSymbolLinks))
+            content.append(
+                SymbolPage.generateExtensionsSection(
+                    localization: localization,
+                    symbol: symbol,
+                    pathToSiteRoot: pathToSiteRoot,
+                    package: package,
+                    packageIdentifiers: packageIdentifiers,
+                    symbolLinks: adjustedSymbolLinks))
+            content.append(
+                SymbolPage.generateProtocolsSection(
+                    localization: localization,
+                    symbol: symbol,
+                    pathToSiteRoot: pathToSiteRoot,
+                    package: package,
+                    packageIdentifiers: packageIdentifiers,
+                    symbolLinks: adjustedSymbolLinks))
+            content.append(
+                SymbolPage.generateFunctionsSection(
+                    localization: localization,
+                    symbol: symbol,
+                    pathToSiteRoot: pathToSiteRoot,
+                    package: package,
+                    packageIdentifiers: packageIdentifiers,
+                    symbolLinks: adjustedSymbolLinks))
+            content.append(
+                SymbolPage.generateVariablesSection(
+                    localization: localization,
+                    symbol: symbol,
+                    pathToSiteRoot: pathToSiteRoot,
+                    package: package,
+                    packageIdentifiers: packageIdentifiers,
+                    symbolLinks: adjustedSymbolLinks))
+            content.append(
+                SymbolPage.generateOperatorsSection(
+                    localization: localization,
+                    symbol: symbol,
+                    pathToSiteRoot: pathToSiteRoot,
+                    package: package,
+                    packageIdentifiers: packageIdentifiers,
+                    symbolLinks: adjustedSymbolLinks))
+            content.append(
+                SymbolPage.generatePrecedenceGroupsSection(
+                    localization: localization,
+                    symbol: symbol,
+                    pathToSiteRoot: pathToSiteRoot,
+                    package: package,
+                    packageIdentifiers: packageIdentifiers,
+                    symbolLinks: adjustedSymbolLinks))
+        case .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function,
+            .conformance:
             if case .protocol = symbol {
                 content.append(SymbolPage.protocolModeInterface(localization: localization))
             }
-            content.append(contentsOf: SymbolPage.generateMembersSections(
-                localization: localization,
-                symbol: symbol,
-                pathToSiteRoot: pathToSiteRoot,
-                package: package,
-                packageIdentifiers: packageIdentifiers,
-                symbolLinks: adjustedSymbolLinks))
+            content.append(
+                contentsOf: SymbolPage.generateMembersSections(
+                    localization: localization,
+                    symbol: symbol,
+                    pathToSiteRoot: pathToSiteRoot,
+                    package: package,
+                    packageIdentifiers: packageIdentifiers,
+                    symbolLinks: adjustedSymbolLinks))
         case .operator, .precedence:
             break
         }
 
-        let extensions: [StrictString] = SymbolPage.generateOtherModuleExtensionsSections(symbol: symbol, package: package, localization: localization, pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks)
+        let extensions: [StrictString] = SymbolPage.generateOtherModuleExtensionsSections(
+            symbol: symbol, package: package, localization: localization,
+            pathToSiteRoot: pathToSiteRoot, packageIdentifiers: packageIdentifiers,
+            symbolLinks: adjustedSymbolLinks)
 
         super.init(
             localization: localization,
@@ -231,10 +270,14 @@ internal class SymbolPage : Page {
             index: index,
             sectionIdentifier: sectionIdentifier,
             platforms: platforms,
-            symbolImports: SymbolPage.generateImportStatement(for: symbol, package: package, localization: localization, pathToSiteRoot: pathToSiteRoot),
+            symbolImports: SymbolPage.generateImportStatement(
+                for: symbol, package: package, localization: localization,
+                pathToSiteRoot: pathToSiteRoot),
             symbolType: symbol.symbolType(localization: localization),
             compilationConditions: SymbolPage.generateCompilationConditions(symbol: symbol),
-            constraints: SymbolPage.generateConstraints(symbol: symbol, packageIdentifiers: packageIdentifiers, symbolLinks: adjustedSymbolLinks),
+            constraints: SymbolPage.generateConstraints(
+                symbol: symbol, packageIdentifiers: packageIdentifiers,
+                symbolLinks: adjustedSymbolLinks),
             title: StrictString(symbol.name.source()),
             content: content.joinedAsLines(),
             extensions: extensions.joinedAsLines(),
@@ -243,15 +286,18 @@ internal class SymbolPage : Page {
 
     // MARK: - Generation
 
-    internal static func conformanceFilterLabel(localization: LocalizationIdentifier) -> StrictString {
+    internal static func conformanceFilterLabel(
+        localization: LocalizationIdentifier
+    ) -> StrictString {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-             .deutschDeutschland:
+            .deutschDeutschland:
             return "Filter"
         }
     }
 
-    internal static func conformanceFilterOff(localization: LocalizationIdentifier) -> StrictString {
+    internal static func conformanceFilterOff(localization: LocalizationIdentifier) -> StrictString
+    {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "All"
@@ -260,7 +306,9 @@ internal class SymbolPage : Page {
         }
     }
 
-    internal static func conformanceFilterRequired(localization: LocalizationIdentifier) -> StrictString {
+    internal static func conformanceFilterRequired(
+        localization: LocalizationIdentifier) -> StrictString
+    {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Conformance Requirements"
@@ -269,7 +317,9 @@ internal class SymbolPage : Page {
         }
     }
 
-    internal static func conformanceFilterCustomizable(localization: LocalizationIdentifier) -> StrictString {
+    internal static func conformanceFilterCustomizable(
+        localization: LocalizationIdentifier) -> StrictString
+    {
         switch localization._bestMatch {
         case .englishUnitedKingdom:
             return "Customisation Points"
@@ -280,7 +330,9 @@ internal class SymbolPage : Page {
         }
     }
 
-    internal static func conformanceFilterButton(labelled label: StrictString, value: StrictString) -> StrictString {
+    internal static func conformanceFilterButton(
+        labelled label: StrictString, value: StrictString) -> StrictString
+    {
         return ElementSyntax(
             "input",
             attributes: [
@@ -293,22 +345,27 @@ internal class SymbolPage : Page {
             inline: false).normalizedSource()
     }
 
-    private static func protocolModeInterface(localization: LocalizationIdentifier) -> StrictString {
+    private static func protocolModeInterface(localization: LocalizationIdentifier) -> StrictString
+    {
         var contents: StrictString = ""
-        contents.append(contentsOf: ElementSyntax(
-            "p",
-            attributes: ["class": "conformance‐filter‐label"],
-            contents: conformanceFilterLabel(localization: localization),
-            inline: false).normalizedSource())
-        contents.append(contentsOf: conformanceFilterButton(
-            labelled: conformanceFilterOff(localization: localization),
-            value: "all"))
-        contents.append(contentsOf: conformanceFilterButton(
-            labelled: conformanceFilterRequired(localization: localization),
-            value: "required"))
-        contents.append(contentsOf: conformanceFilterButton(
-            labelled: conformanceFilterCustomizable(localization: localization),
-            value: "customizable"))
+        contents.append(
+            contentsOf: ElementSyntax(
+                "p",
+                attributes: ["class": "conformance‐filter‐label"],
+                contents: conformanceFilterLabel(localization: localization),
+                inline: false).normalizedSource())
+        contents.append(
+            contentsOf: conformanceFilterButton(
+                labelled: conformanceFilterOff(localization: localization),
+                value: "all"))
+        contents.append(
+            contentsOf: conformanceFilterButton(
+                labelled: conformanceFilterRequired(localization: localization),
+                value: "required"))
+        contents.append(
+            contentsOf: conformanceFilterButton(
+                labelled: conformanceFilterCustomizable(localization: localization),
+                value: "customizable"))
         return ElementSyntax(
             "div",
             attributes: ["class": "conformance‐filter"],
@@ -322,71 +379,81 @@ internal class SymbolPage : Page {
         pathToSiteRoot: StrictString,
         package: PackageAPI,
         packageIdentifiers: Set<String>,
-        symbolLinks: [String: String]) -> [StrictString] {
+        symbolLinks: [String: String]
+    ) -> [StrictString] {
         var result: [StrictString] = []
-        result.append(SymbolPage.generateCasesSection(
-            localization: localization,
-            symbol: symbol,
-            pathToSiteRoot: pathToSiteRoot,
-            package: package,
-            packageIdentifiers: packageIdentifiers,
-            symbolLinks: symbolLinks))
-        result.append(SymbolPage.generateNestedTypesSection(
-            localization: localization,
-            symbol: symbol,
-            pathToSiteRoot: pathToSiteRoot,
-            package: package,
-            packageIdentifiers: packageIdentifiers,
-            symbolLinks: symbolLinks))
-        result.append(SymbolPage.generateTypePropertiesSection(
-            localization: localization,
-            symbol: symbol,
-            pathToSiteRoot: pathToSiteRoot,
-            package: package,
-            packageIdentifiers: packageIdentifiers,
-            symbolLinks: symbolLinks))
-        result.append(SymbolPage.generateTypeMethodsSection(
-            localization: localization,
-            symbol: symbol,
-            pathToSiteRoot: pathToSiteRoot,
-            package: package,
-            packageIdentifiers: packageIdentifiers,
-            symbolLinks: symbolLinks))
-        result.append(SymbolPage.generateInitializersSection(
-            localization: localization,
-            symbol: symbol,
-            pathToSiteRoot: pathToSiteRoot,
-            package: package,
-            packageIdentifiers: packageIdentifiers,
-            symbolLinks: symbolLinks))
-        result.append(SymbolPage.generatePropertiesSection(
-            localization: localization,
-            symbol: symbol,
-            pathToSiteRoot: pathToSiteRoot,
-            package: package,
-            packageIdentifiers: packageIdentifiers,
-            symbolLinks: symbolLinks))
-        result.append(SymbolPage.generateSubscriptsSection(
-            localization: localization,
-            symbol: symbol,
-            pathToSiteRoot: pathToSiteRoot,
-            package: package,
-            packageIdentifiers: packageIdentifiers,
-            symbolLinks: symbolLinks))
-        result.append(SymbolPage.generateMethodsSection(
-            localization: localization,
-            symbol: symbol,
-            pathToSiteRoot: pathToSiteRoot,
-            package: package,
-            packageIdentifiers: packageIdentifiers,
-            symbolLinks: symbolLinks))
-        result.append(contentsOf: SymbolPage.generateConformanceSections(
-            localization: localization,
-            symbol: symbol,
-            pathToSiteRoot: pathToSiteRoot,
-            package: package,
-            packageIdentifiers: packageIdentifiers,
-            symbolLinks: symbolLinks))
+        result.append(
+            SymbolPage.generateCasesSection(
+                localization: localization,
+                symbol: symbol,
+                pathToSiteRoot: pathToSiteRoot,
+                package: package,
+                packageIdentifiers: packageIdentifiers,
+                symbolLinks: symbolLinks))
+        result.append(
+            SymbolPage.generateNestedTypesSection(
+                localization: localization,
+                symbol: symbol,
+                pathToSiteRoot: pathToSiteRoot,
+                package: package,
+                packageIdentifiers: packageIdentifiers,
+                symbolLinks: symbolLinks))
+        result.append(
+            SymbolPage.generateTypePropertiesSection(
+                localization: localization,
+                symbol: symbol,
+                pathToSiteRoot: pathToSiteRoot,
+                package: package,
+                packageIdentifiers: packageIdentifiers,
+                symbolLinks: symbolLinks))
+        result.append(
+            SymbolPage.generateTypeMethodsSection(
+                localization: localization,
+                symbol: symbol,
+                pathToSiteRoot: pathToSiteRoot,
+                package: package,
+                packageIdentifiers: packageIdentifiers,
+                symbolLinks: symbolLinks))
+        result.append(
+            SymbolPage.generateInitializersSection(
+                localization: localization,
+                symbol: symbol,
+                pathToSiteRoot: pathToSiteRoot,
+                package: package,
+                packageIdentifiers: packageIdentifiers,
+                symbolLinks: symbolLinks))
+        result.append(
+            SymbolPage.generatePropertiesSection(
+                localization: localization,
+                symbol: symbol,
+                pathToSiteRoot: pathToSiteRoot,
+                package: package,
+                packageIdentifiers: packageIdentifiers,
+                symbolLinks: symbolLinks))
+        result.append(
+            SymbolPage.generateSubscriptsSection(
+                localization: localization,
+                symbol: symbol,
+                pathToSiteRoot: pathToSiteRoot,
+                package: package,
+                packageIdentifiers: packageIdentifiers,
+                symbolLinks: symbolLinks))
+        result.append(
+            SymbolPage.generateMethodsSection(
+                localization: localization,
+                symbol: symbol,
+                pathToSiteRoot: pathToSiteRoot,
+                package: package,
+                packageIdentifiers: packageIdentifiers,
+                symbolLinks: symbolLinks))
+        result.append(
+            contentsOf: SymbolPage.generateConformanceSections(
+                localization: localization,
+                symbol: symbol,
+                pathToSiteRoot: pathToSiteRoot,
+                package: package,
+                packageIdentifiers: packageIdentifiers,
+                symbolLinks: symbolLinks))
         return result
     }
 
@@ -394,13 +461,16 @@ internal class SymbolPage : Page {
         localization: LocalizationIdentifier,
         pathToSiteRoot: StrictString,
         allLocalizations: [(localization: LocalizationIdentifier, path: StrictString)],
-        navigationPath: [APIElement]) -> StrictString {
+        navigationPath: [APIElement]
+    ) -> StrictString {
         return generateNavigationPath(
             localization: localization,
             pathToSiteRoot: pathToSiteRoot,
             allLocalizations: allLocalizations,
             navigationPath: navigationPath.map({ element in
-                return (StrictString(element.name.source()), element.relativePagePath[localization]!)
+                return (
+                    StrictString(element.name.source()), element.relativePagePath[localization]!
+                )
             }))
     }
 
@@ -408,65 +478,80 @@ internal class SymbolPage : Page {
         localization: LocalizationIdentifier,
         pathToSiteRoot: StrictString,
         allLocalizations: [(localization: LocalizationIdentifier, path: StrictString)],
-        navigationPath: [(label: StrictString, path: StrictString)]) -> StrictString {
+        navigationPath: [(label: StrictString, path: StrictString)]
+    ) -> StrictString {
 
         var elements: [ElementSyntax] = []
         if allLocalizations.count > 1 {
-            elements.append(ElementSyntax(
-                "a",
-                attributes: [
-                    "id": "current‐language‐icon",
-                    "onmouseenter": "showLanguageSwitch(this)"
-                ],
-                contents: [
-                    ElementSyntax(
-                        "span",
-                        contents: HTML.escapeTextForCharacterData(localization._iconOrCode),
-                        inline: true),
+            elements.append(
+                ElementSyntax(
+                    "a",
+                    attributes: [
+                        "id": "current‐language‐icon",
+                        "onmouseenter": "showLanguageSwitch(this)"
+                    ],
+                    contents: [
+                        ElementSyntax(
+                            "span",
+                            contents: HTML.escapeTextForCharacterData(localization._iconOrCode),
+                            inline: true),
                     ].lazy.map({ $0.normalizedSource() }).joinedAsLines(),
-                inline: true))
+                    inline: true))
 
-            elements.append(ElementSyntax(
-                "div",
-                attributes: [
-                    "id": "language‐switch",
-                    "onmouseleave": "hideLanguageSwitch(this)"
-                ],
-                contents: allLocalizations.lazy.filter({ $0.localization ≠ localization }).map({ entry in
-                    return ElementSyntax(
-                        "a",
-                        attributes: ["href": pathToSiteRoot + HTML.percentEncodeURLPath(entry.path)],
-                        contents: HTML.escapeTextForCharacterData(entry.localization._iconOrCode),
-                        inline: true).normalizedSource()
-                }).joinedAsLines(),
-                inline: false))
+            elements.append(
+                ElementSyntax(
+                    "div",
+                    attributes: [
+                        "id": "language‐switch",
+                        "onmouseleave": "hideLanguageSwitch(this)"
+                    ],
+                    contents: allLocalizations.lazy.filter({ $0.localization ≠ localization }).map({
+                        entry in
+                        return ElementSyntax(
+                            "a",
+                            attributes: [
+                                "href": pathToSiteRoot + HTML.percentEncodeURLPath(entry.path)
+                            ],
+                            contents: HTML.escapeTextForCharacterData(
+                                entry.localization._iconOrCode),
+                            inline: true).normalizedSource()
+                    }).joinedAsLines(),
+                    inline: false))
         }
 
-        elements.append(contentsOf: navigationPath.indices.lazy.map { (level: Int) -> ElementSyntax in
-            let (label, path) = navigationPath[level]
-            let url = pathToSiteRoot.appending(contentsOf: path)
-            if ¬navigationPath.isEmpty,
-                level ≠ navigationPath.index(before: navigationPath.endIndex) {
-                return ElementSyntax("a", attributes: [
-                    "href": HTML.percentEncodeURLPath(url)
-                    ], contents: HTML.escapeTextForCharacterData(label), inline: true)
-            } else {
-                return ElementSyntax(
-                    "span",
-                    attributes: [:],
-                    contents: HTML.escapeTextForCharacterData(label),
-                    inline: true)
-            }
-        })
+        elements.append(
+            contentsOf: navigationPath.indices.lazy.map { (level: Int) -> ElementSyntax in
+                let (label, path) = navigationPath[level]
+                let url = pathToSiteRoot.appending(contentsOf: path)
+                if ¬navigationPath.isEmpty,
+                    level ≠ navigationPath.index(before: navigationPath.endIndex)
+                {
+                    return ElementSyntax(
+                        "a",
+                        attributes: [
+                            "href": HTML.percentEncodeURLPath(url)
+                        ], contents: HTML.escapeTextForCharacterData(label), inline: true)
+                } else {
+                    return ElementSyntax(
+                        "span",
+                        attributes: [:],
+                        contents: HTML.escapeTextForCharacterData(label),
+                        inline: true)
+                }
+            })
 
         return elements.lazy.map({ $0.normalizedSource() }).joined(separator: "\n")
     }
 
-    private static func generateDependencyStatement(for symbol: APIElement, package: PackageAPI, localization: LocalizationIdentifier, pathToSiteRoot: StrictString) -> StrictString {
+    private static func generateDependencyStatement(
+        for symbol: APIElement, package: PackageAPI, localization: LocalizationIdentifier,
+        pathToSiteRoot: StrictString
+    ) -> StrictString {
 
         guard let module = symbol.homeModule.pointee,
-            let product = APIElement.module(module).homeProduct.pointee else {
-                return "" // @exempt(from: tests) Should never be nil.
+            let product = APIElement.module(module).homeProduct.pointee
+        else {
+            return ""  // @exempt(from: tests) Should never be nil.
         }
         let libraryName = product.name.text
         let packageName = package.name.text
@@ -489,7 +574,7 @@ internal class SymbolPage : Page {
                     colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
                     expression: SyntaxFactory.makeStringLiteralExpr(packageName),
                     trailingComma: nil)
-                ]),
+            ]),
             rightParen: SyntaxFactory.makeToken(.rightParen),
             trailingClosure: nil)
 
@@ -501,7 +586,10 @@ internal class SymbolPage : Page {
         return StrictString(source)
     }
 
-    private static func generateImportStatement(for symbol: APIElement, package: PackageAPI, localization: LocalizationIdentifier, pathToSiteRoot: StrictString) -> StrictString {
+    private static func generateImportStatement(
+        for symbol: APIElement, package: PackageAPI, localization: LocalizationIdentifier,
+        pathToSiteRoot: StrictString
+    ) -> StrictString {
 
         guard let module = symbol.homeModule.pointee else {
             return ""
@@ -517,7 +605,7 @@ internal class SymbolPage : Page {
                 SyntaxFactory.makeAccessPathComponent(
                     name: SyntaxFactory.makeToken(.identifier(moduleName)),
                     trailingDot: nil)
-                ]))
+            ]))
 
         var links: [String: String] = [:]
         if let link = APIElement.module(module).relativePagePath[localization] {
@@ -529,9 +617,13 @@ internal class SymbolPage : Page {
             internalIdentifiers: [moduleName],
             symbolLinks: links)
 
-        return ElementSyntax("div", attributes: ["class": "import‐header"], contents: [
-            StrictString(source),
-            SymbolPage.generateDependencyStatement(for: symbol, package: package, localization: localization, pathToSiteRoot: pathToSiteRoot)
+        return ElementSyntax(
+            "div", attributes: ["class": "import‐header"],
+            contents: [
+                StrictString(source),
+                SymbolPage.generateDependencyStatement(
+                    for: symbol, package: package, localization: localization,
+                    pathToSiteRoot: pathToSiteRoot)
             ].joinedAsLines(), inline: false).normalizedSource()
     }
 
@@ -542,10 +634,16 @@ internal class SymbolPage : Page {
         return nil
     }
 
-    private static func generateConstraints(symbol: APIElement, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> StrictString? {
+    private static func generateConstraints(
+        symbol: APIElement, packageIdentifiers: Set<String>, symbolLinks: [String: String]
+    ) -> StrictString? {
         if let constraints = symbol.constraints {
-            let withoutSpace = constraints.withWhereKeyword(constraints.whereKeyword.withLeadingTrivia([]))
-            return StrictString(withoutSpace.syntaxHighlightedHTML(inline: true, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks))
+            let withoutSpace = constraints.withWhereKeyword(
+                constraints.whereKeyword.withLeadingTrivia([]))
+            return StrictString(
+                withoutSpace.syntaxHighlightedHTML(
+                    inline: true, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
+            )
         }
         return nil
     }
@@ -564,14 +662,18 @@ internal class SymbolPage : Page {
         localization: LocalizationIdentifier,
         packageIdentifiers: Set<String>,
         symbolLinks: [String: String],
-        status: DocumentationStatus) -> StrictString {
+        status: DocumentationStatus
+    ) -> StrictString {
 
         if let documentation = symbol.localizedDocumentation[localization],
-            let description = documentation.descriptionSection {
-            return generateDescriptionSection(contents: StrictString(description.renderedHTML(
-                localization: localization.code,
-                internalIdentifiers: packageIdentifiers,
-                symbolLinks: symbolLinks)))
+            let description = documentation.descriptionSection
+        {
+            return generateDescriptionSection(
+                contents: StrictString(
+                    description.renderedHTML(
+                        localization: localization.code,
+                        internalIdentifiers: packageIdentifiers,
+                        symbolLinks: symbolLinks)))
         }
         if case .extension = symbol {} else {
             status.reportMissingDescription(
@@ -584,7 +686,8 @@ internal class SymbolPage : Page {
 
     internal static func generateDeclarationSection(
         localization: LocalizationIdentifier,
-        declaration: StrictString) -> StrictString {
+        declaration: StrictString
+    ) -> StrictString {
 
         let declarationHeading: StrictString
         switch localization._bestMatch {
@@ -599,7 +702,9 @@ internal class SymbolPage : Page {
             declaration
         ]
 
-        return ElementSyntax("section", attributes: ["class": "declaration"], contents: sectionContents.joinedAsLines(), inline: false).normalizedSource()
+        return ElementSyntax(
+            "section", attributes: ["class": "declaration"],
+            contents: sectionContents.joinedAsLines(), inline: false).normalizedSource()
     }
 
     private static func generateDeclarationSection(
@@ -608,33 +713,38 @@ internal class SymbolPage : Page {
         navigationPath: [APIElement],
         packageIdentifiers: Set<String>,
         symbolLinks: [String: String],
-        status: DocumentationStatus) -> StrictString {
+        status: DocumentationStatus
+    ) -> StrictString {
 
         guard var declaration = symbol.declaration else {
             return ""
         }
         if let constraints = symbol.constraints,
-            let constrained = declaration as? Constrained {
+            let constrained = declaration as? Constrained
+        {
             declaration = constrained.withGenericWhereClause(constraints)
         }
 
         if case .variable(let variable) = symbol,
-            variable.declaration.bindings.first?.typeAnnotation?.isMissing ≠ false {
+            variable.declaration.bindings.first?.typeAnnotation?.isMissing ≠ false
+        {
             status.reportMissingVariableType(variable, navigationPath: navigationPath)
         }
 
         return generateDeclarationSection(
             localization: localization,
-            declaration: StrictString(declaration.syntaxHighlightedHTML(
-                inline: false,
-                internalIdentifiers: packageIdentifiers,
-                symbolLinks: symbolLinks)))
+            declaration: StrictString(
+                declaration.syntaxHighlightedHTML(
+                    inline: false,
+                    internalIdentifiers: packageIdentifiers,
+                    symbolLinks: symbolLinks)))
     }
 
     internal static func generateDiscussionSection(
         localization: LocalizationIdentifier,
         symbol: APIElement?,
-        content: StrictString?) -> StrictString {
+        content: StrictString?
+    ) -> StrictString {
 
         guard let discussion = content else {
             return ""
@@ -656,7 +766,8 @@ internal class SymbolPage : Page {
                 case .deutschDeutschland:
                     discussionHeading = "Übersicht"
                 }
-            case .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
+            case .case, .initializer, .variable, .subscript, .function, .operator, .precedence,
+                .conformance:
                 break
             }
         }
@@ -667,7 +778,8 @@ internal class SymbolPage : Page {
 
         sectionContents.append(discussion)
 
-        return ElementSyntax("section", contents: sectionContents.joinedAsLines(), inline: false).normalizedSource()
+        return ElementSyntax("section", contents: sectionContents.joinedAsLines(), inline: false)
+            .normalizedSource()
     }
 
     private static func generateDiscussionSection(
@@ -676,21 +788,24 @@ internal class SymbolPage : Page {
         navigationPath: [APIElement],
         packageIdentifiers: Set<String>,
         symbolLinks: [String: String],
-        status: DocumentationStatus) -> StrictString {
+        status: DocumentationStatus
+    ) -> StrictString {
 
         guard let discussion = symbol.localizedDocumentation[localization]?.discussionEntries,
-            ¬discussion.isEmpty else {
-                return ""
+            ¬discussion.isEmpty
+        else {
+            return ""
         }
 
         var sectionContents: [StrictString] = []
 
         var empty = true
         for paragraph in discussion {
-            let rendered = StrictString(paragraph.renderedHTML(
-                localization: localization.code,
-                internalIdentifiers: packageIdentifiers,
-                symbolLinks: symbolLinks))
+            let rendered = StrictString(
+                paragraph.renderedHTML(
+                    localization: localization.code,
+                    internalIdentifiers: packageIdentifiers,
+                    symbolLinks: symbolLinks))
             if rendered.contains("<h1>".scalars) ∨ rendered.contains("<h2>".scalars) {
                 status.reportExcessiveHeading(
                     symbol: symbol,
@@ -714,7 +829,8 @@ internal class SymbolPage : Page {
 
     internal static func generateParameterLikeSection(
         heading: StrictString,
-        entries: [(term: StrictString, description: StrictString)]) -> StrictString {
+        entries: [(term: StrictString, description: StrictString)]
+    ) -> StrictString {
 
         guard ¬entries.isEmpty else {
             return ""
@@ -733,7 +849,8 @@ internal class SymbolPage : Page {
                 contents: list.map({ $0.normalizedSource() }).joinedAsLines(),
                 inline: true).normalizedSource()
         ]
-        return ElementSyntax("section", contents: section.joinedAsLines(), inline: false).normalizedSource()
+        return ElementSyntax("section", contents: section.joinedAsLines(), inline: false)
+            .normalizedSource()
     }
 
     private static func generateParametersSection(
@@ -742,10 +859,12 @@ internal class SymbolPage : Page {
         navigationPath: [APIElement],
         packageIdentifiers: Set<String>,
         symbolLinks: [String: String],
-        status: DocumentationStatus) -> StrictString {
+        status: DocumentationStatus
+    ) -> StrictString {
 
         let parameters = symbol.parameters()
-        let parameterDocumentation = symbol.localizedDocumentation[localization]?.normalizedParameters ?? []
+        let parameterDocumentation
+            = symbol.localizedDocumentation[localization]?.normalizedParameters ?? []
         let documentedParameters = parameterDocumentation.map { $0.name.text }
 
         if parameters ≠ documentedParameters {
@@ -756,12 +875,14 @@ internal class SymbolPage : Page {
                 navigationPath: navigationPath,
                 localization: localization)
         }
-        let validatedParameters = parameterDocumentation.filter { parameters.contains($0.name.text) }
+        let validatedParameters = parameterDocumentation
+            .filter { parameters.contains($0.name.text) }
 
         /// Check that closure parameters are labelled.
         if let declaration = symbol.declaration {
-            class Scanner : SyntaxVisitor {
-                init(status: DocumentationStatus, symbol: APIElement, navigationPath: [APIElement]) {
+            class Scanner: SyntaxVisitor {
+                init(status: DocumentationStatus, symbol: APIElement, navigationPath: [APIElement])
+                {
                     self.status = status
                     self.symbol = symbol
                     self.navigationPath = navigationPath
@@ -771,14 +892,19 @@ internal class SymbolPage : Page {
                 let navigationPath: [APIElement]
                 func visit(_ node: FunctionTypeSyntax) -> SyntaxVisitorContinueKind {
                     for argument in node.arguments
-                        where (argument.secondName?.text.isEmpty ≠ false
-                            ∨ argument.secondName?.tokenKind == .wildcardKeyword) // @exempt(from: tests)
-                            ∧ (argument.firstName?.text.isEmpty ≠ false
-                                ∨ argument.firstName?.tokenKind == .wildcardKeyword) {
-                                    status.reportUnlabelledParameter(
-                                        node.source(),
-                                        symbol: symbol,
-                                        navigationPath: navigationPath)
+                    where (
+                        argument.secondName?.text.isEmpty ≠ false
+                            ∨ argument.secondName?.tokenKind == .wildcardKeyword
+                    )  // @exempt(from: tests)
+                        ∧ (
+                            argument.firstName?.text.isEmpty ≠ false
+                                ∨ argument.firstName?.tokenKind == .wildcardKeyword
+                        )
+                    {
+                        status.reportUnlabelledParameter(
+                            node.source(),
+                            symbol: symbol,
+                            navigationPath: navigationPath)
                     }
                     return .visitChildren
                 }
@@ -790,49 +916,78 @@ internal class SymbolPage : Page {
         let parametersHeading: StrictString = Callout.parameters.localizedText(localization.code)
         return generateParameterLikeSection(
             heading: parametersHeading,
-            entries: validatedParameters.map({ (entry: ParameterDocumentation) -> (term: StrictString, description: StrictString) in
-                let term = StrictString(entry.name.syntaxHighlightedHTML(
-                    inline: true,
-                    internalIdentifiers: [entry.name.text],
-                    symbolLinks: [:]))
+            entries: validatedParameters.map({
+                (entry: ParameterDocumentation) -> (term: StrictString, description: StrictString)
+                in
+                let term = StrictString(
+                    entry.name.syntaxHighlightedHTML(
+                        inline: true,
+                        internalIdentifiers: [entry.name.text],
+                        symbolLinks: [:]))
 
-                let description = entry.description.map({ $0.renderedHTML(
-                    localization: localization.code,
-                    internalIdentifiers: packageIdentifiers,
-                    symbolLinks: symbolLinks) })
+                let description = entry.description.map({ description in
+                    description.renderedHTML(
+                        localization: localization.code,
+                        internalIdentifiers: packageIdentifiers,
+                        symbolLinks: symbolLinks)
+                })
                 return (term: term, description: StrictString(description.joinedAsLines()))
             }))
     }
 
-    private static func generateThrowsSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
+    private static func generateThrowsSection(
+        localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement],
+        packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus
+    ) -> StrictString {
         guard let callout = symbol.localizedDocumentation[localization]?.throwsCallout else {
             return ""
         }
         let throwsHeading: StrictString = Callout.throws.localizedText(localization.code)
-        var section = [ElementSyntax("h2", contents: throwsHeading, inline: true).normalizedSource()]
+        var section = [
+            ElementSyntax("h2", contents: throwsHeading, inline: true).normalizedSource()
+        ]
         for contents in callout.contents {
-            section.append(StrictString(contents.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)))
+            section.append(
+                StrictString(
+                    contents.renderedHTML(
+                        localization: localization.code, internalIdentifiers: packageIdentifiers,
+                        symbolLinks: symbolLinks)))
         }
-        return ElementSyntax("section", contents: section.joinedAsLines(), inline: false).normalizedSource()
+        return ElementSyntax("section", contents: section.joinedAsLines(), inline: false)
+            .normalizedSource()
     }
 
-    private static func generateReturnsSection(localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement], packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus) -> StrictString {
+    private static func generateReturnsSection(
+        localization: LocalizationIdentifier, symbol: APIElement, navigationPath: [APIElement],
+        packageIdentifiers: Set<String>, symbolLinks: [String: String], status: DocumentationStatus
+    ) -> StrictString {
         guard let callout = symbol.localizedDocumentation[localization]?.returnsCallout else {
             return ""
         }
         let returnsHeading: StrictString = Callout.returns.localizedText(localization.code)
-        var section = [ElementSyntax("h2", contents: returnsHeading, inline: true).normalizedSource()]
+        var section = [
+            ElementSyntax("h2", contents: returnsHeading, inline: true).normalizedSource()
+        ]
         for contents in callout.contents {
-            section.append(StrictString(contents.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)))
+            section.append(
+                StrictString(
+                    contents.renderedHTML(
+                        localization: localization.code, internalIdentifiers: packageIdentifiers,
+                        symbolLinks: symbolLinks)))
         }
-        return ElementSyntax("section", contents: section.joinedAsLines(), inline: false).normalizedSource()
+        return ElementSyntax("section", contents: section.joinedAsLines(), inline: false)
+            .normalizedSource()
     }
 
-    private static func generateOtherModuleExtensionsSections(symbol: APIElement, package: PackageAPI, localization: LocalizationIdentifier, pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]) -> [StrictString] {
+    private static func generateOtherModuleExtensionsSections(
+        symbol: APIElement, package: PackageAPI, localization: LocalizationIdentifier,
+        pathToSiteRoot: StrictString, packageIdentifiers: Set<String>, symbolLinks: [String: String]
+    ) -> [StrictString] {
         var extensions: [ExtensionAPI] = []
         for `extension` in package.allExtensions {
             switch symbol {
-            case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
+            case .package, .library, .module, .case, .initializer, .variable, .subscript, .function,
+                .operator, .precedence, .conformance:
                 break
             case .type(let type):
                 if `extension`.isExtension(of: type) {
@@ -844,7 +999,8 @@ internal class SymbolPage : Page {
                 }
             case .extension(let `rootExtension`):
                 if ¬(`extension` === `rootExtension`),
-                    `extension`.extendsSameType(as: `rootExtension`) {
+                    `extension`.extendsSameType(as: `rootExtension`)
+                {
                     extensions.append(`extension`)
                 }
             }
@@ -852,7 +1008,10 @@ internal class SymbolPage : Page {
 
         return extensions.map({ (`extension`: ExtensionAPI) -> StrictString in
             var result: [StrictString] = []
-            result.append(generateImportStatement(for: APIElement.extension(`extension`), package: package, localization: localization, pathToSiteRoot: pathToSiteRoot))
+            result.append(
+                generateImportStatement(
+                    for: APIElement.extension(`extension`), package: package,
+                    localization: localization, pathToSiteRoot: pathToSiteRoot))
 
             let sections = generateMembersSections(
                 localization: localization,
@@ -861,7 +1020,10 @@ internal class SymbolPage : Page {
                 package: package,
                 packageIdentifiers: packageIdentifiers,
                 symbolLinks: symbolLinks)
-            result.append(ElementSyntax("div", attributes: ["class": "main‐text‐column"], contents: sections.joinedAsLines(), inline: false).normalizedSource())
+            result.append(
+                ElementSyntax(
+                    "div", attributes: ["class": "main‐text‐column"],
+                    contents: sections.joinedAsLines(), inline: false).normalizedSource())
             return result.joinedAsLines()
         })
     }
@@ -876,7 +1038,7 @@ internal class SymbolPage : Page {
                 heading = "Befehlszeilenprogramme"
             }
         } else {
-            heading = "executable" // From “products: [.executable(...)]”
+            heading = "executable"  // From “products: [.executable(...)]”
         }
         return heading
     }
@@ -884,18 +1046,20 @@ internal class SymbolPage : Page {
     internal static func generateToolsSection(
         localization: LocalizationIdentifier,
         tools: PackageCLI?,
-        pathToSiteRoot: StrictString) -> StrictString {
+        pathToSiteRoot: StrictString
+    ) -> StrictString {
 
         guard let commands = tools?.commands,
-            ¬commands.isEmpty else {
-                return ""
+            ¬commands.isEmpty
+        else {
+            return ""
         }
 
         return generateChildrenSection(
             localization: localization,
             heading: toolsHeader(localization: localization),
             children: commands.values.sorted(
-                by: { $0.interfaces[localization]!.name < $1.interfaces[localization]!.name }), // @exempt(from: tests)
+                by: { $0.interfaces[localization]!.name < $1.interfaces[localization]!.name }),  // @exempt(from: tests)
             pathToSiteRoot: pathToSiteRoot)
     }
 
@@ -909,7 +1073,7 @@ internal class SymbolPage : Page {
                 heading = "Biblioteksprodukte"
             }
         } else {
-            heading = "library" // From “products: [.library(...)]”
+            heading = "library"  // From “products: [.library(...)]”
         }
         return heading
     }
@@ -920,10 +1084,12 @@ internal class SymbolPage : Page {
         pathToSiteRoot: StrictString,
         package: PackageAPI,
         packageIdentifiers: Set<String>,
-        symbolLinks: [String: String]) -> StrictString {
+        symbolLinks: [String: String]
+    ) -> StrictString {
         guard case .package(let package) = symbol,
-            ¬package.libraries.isEmpty else {
-                return ""
+            ¬package.libraries.isEmpty
+        else {
+            return ""
         }
         return generateChildrenSection(
             localization: localization,
@@ -945,7 +1111,7 @@ internal class SymbolPage : Page {
                 heading = "Module"
             }
         } else {
-            heading = "target" // From “targets: [.target(...)]”
+            heading = "target"  // From “targets: [.target(...)]”
         }
         return heading
     }
@@ -956,10 +1122,12 @@ internal class SymbolPage : Page {
         pathToSiteRoot: StrictString,
         package: PackageAPI,
         packageIdentifiers: Set<String>,
-        symbolLinks: [String: String]) -> StrictString {
+        symbolLinks: [String: String]
+    ) -> StrictString {
         guard case .library(let library) = symbol,
-            ¬library.modules.isEmpty else {
-                return ""
+            ¬library.modules.isEmpty
+        else {
+            return ""
         }
         return generateChildrenSection(
             localization: localization,
@@ -992,7 +1160,8 @@ internal class SymbolPage : Page {
         pathToSiteRoot: StrictString,
         package: PackageAPI,
         packageIdentifiers: Set<String>,
-        symbolLinks: [String: String]) -> StrictString {
+        symbolLinks: [String: String]
+    ) -> StrictString {
         guard ¬symbol.types.isEmpty else {
             return ""
         }
@@ -1027,7 +1196,8 @@ internal class SymbolPage : Page {
         pathToSiteRoot: StrictString,
         package: PackageAPI,
         packageIdentifiers: Set<String>,
-        symbolLinks: [String: String]) -> StrictString {
+        symbolLinks: [String: String]
+    ) -> StrictString {
         guard ¬symbol.extensions.isEmpty else {
             return ""
         }
@@ -1062,7 +1232,8 @@ internal class SymbolPage : Page {
         pathToSiteRoot: StrictString,
         package: PackageAPI,
         packageIdentifiers: Set<String>,
-        symbolLinks: [String: String]) -> StrictString {
+        symbolLinks: [String: String]
+    ) -> StrictString {
         guard ¬symbol.protocols.isEmpty else {
             return ""
         }
@@ -1097,7 +1268,8 @@ internal class SymbolPage : Page {
         pathToSiteRoot: StrictString,
         package: PackageAPI,
         packageIdentifiers: Set<String>,
-        symbolLinks: [String: String]) -> StrictString {
+        symbolLinks: [String: String]
+    ) -> StrictString {
         guard ¬symbol.instanceMethods.isEmpty else {
             return ""
         }
@@ -1132,7 +1304,8 @@ internal class SymbolPage : Page {
         pathToSiteRoot: StrictString,
         package: PackageAPI,
         packageIdentifiers: Set<String>,
-        symbolLinks: [String: String]) -> StrictString {
+        symbolLinks: [String: String]
+    ) -> StrictString {
         guard ¬symbol.instanceProperties.isEmpty else {
             return ""
         }
@@ -1167,7 +1340,8 @@ internal class SymbolPage : Page {
         pathToSiteRoot: StrictString,
         package: PackageAPI,
         packageIdentifiers: Set<String>,
-        symbolLinks: [String: String]) -> StrictString {
+        symbolLinks: [String: String]
+    ) -> StrictString {
         guard ¬symbol.operators.isEmpty else {
             return ""
         }
@@ -1181,7 +1355,9 @@ internal class SymbolPage : Page {
             symbolLinks: symbolLinks)
     }
 
-    internal static func precedenceGroupsHeader(localization: LocalizationIdentifier) -> StrictString {
+    internal static func precedenceGroupsHeader(localization: LocalizationIdentifier)
+        -> StrictString
+    {
         let heading: StrictString
         if let match = localization._reasonableMatch {
             switch match {
@@ -1202,7 +1378,8 @@ internal class SymbolPage : Page {
         pathToSiteRoot: StrictString,
         package: PackageAPI,
         packageIdentifiers: Set<String>,
-        symbolLinks: [String: String]) -> StrictString {
+        symbolLinks: [String: String]
+    ) -> StrictString {
         guard ¬symbol.operators.isEmpty else {
             return ""
         }
@@ -1222,7 +1399,8 @@ internal class SymbolPage : Page {
         pathToSiteRoot: StrictString,
         package: PackageAPI,
         packageIdentifiers: Set<String>,
-        symbolLinks: [String: String]) -> StrictString {
+        symbolLinks: [String: String]
+    ) -> StrictString {
         guard ¬symbol.cases.isEmpty else {
             return ""
         }
@@ -1255,7 +1433,8 @@ internal class SymbolPage : Page {
         pathToSiteRoot: StrictString,
         package: PackageAPI,
         packageIdentifiers: Set<String>,
-        symbolLinks: [String: String]) -> StrictString {
+        symbolLinks: [String: String]
+    ) -> StrictString {
         guard ¬symbol.types.isEmpty else {
             return ""
         }
@@ -1288,7 +1467,8 @@ internal class SymbolPage : Page {
         pathToSiteRoot: StrictString,
         package: PackageAPI,
         packageIdentifiers: Set<String>,
-        symbolLinks: [String: String]) -> StrictString {
+        symbolLinks: [String: String]
+    ) -> StrictString {
         guard ¬symbol.typeProperties.isEmpty else {
             return ""
         }
@@ -1321,7 +1501,8 @@ internal class SymbolPage : Page {
         pathToSiteRoot: StrictString,
         package: PackageAPI,
         packageIdentifiers: Set<String>,
-        symbolLinks: [String: String]) -> StrictString {
+        symbolLinks: [String: String]
+    ) -> StrictString {
         guard ¬symbol.typeMethods.isEmpty else {
             return ""
         }
@@ -1354,7 +1535,8 @@ internal class SymbolPage : Page {
         pathToSiteRoot: StrictString,
         package: PackageAPI,
         packageIdentifiers: Set<String>,
-        symbolLinks: [String: String]) -> StrictString {
+        symbolLinks: [String: String]
+    ) -> StrictString {
         guard ¬symbol.initializers.isEmpty else {
             return ""
         }
@@ -1389,7 +1571,8 @@ internal class SymbolPage : Page {
         pathToSiteRoot: StrictString,
         package: PackageAPI,
         packageIdentifiers: Set<String>,
-        symbolLinks: [String: String]) -> StrictString {
+        symbolLinks: [String: String]
+    ) -> StrictString {
         guard ¬symbol.instanceProperties.isEmpty else {
             return ""
         }
@@ -1422,7 +1605,8 @@ internal class SymbolPage : Page {
         pathToSiteRoot: StrictString,
         package: PackageAPI,
         packageIdentifiers: Set<String>,
-        symbolLinks: [String: String]) -> StrictString {
+        symbolLinks: [String: String]
+    ) -> StrictString {
         guard ¬symbol.subscripts.isEmpty else {
             return ""
         }
@@ -1455,7 +1639,8 @@ internal class SymbolPage : Page {
         pathToSiteRoot: StrictString,
         package: PackageAPI,
         packageIdentifiers: Set<String>,
-        symbolLinks: [String: String]) -> StrictString {
+        symbolLinks: [String: String]
+    ) -> StrictString {
         guard ¬symbol.instanceMethods.isEmpty else {
             return ""
         }
@@ -1488,10 +1673,12 @@ internal class SymbolPage : Page {
         pathToSiteRoot: StrictString,
         package: PackageAPI,
         packageIdentifiers: Set<String>,
-        symbolLinks: [String: String]) -> [StrictString] {
+        symbolLinks: [String: String]
+    ) -> [StrictString] {
         var result: [StrictString] = []
         conformanceProcessing: for conformance in symbol.conformances {
-            let name = conformance.type.syntaxHighlightedHTML(inline: true, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
+            let name = conformance.type.syntaxHighlightedHTML(
+                inline: true, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)
 
             var children: [APIElement] = []
             if let reference = conformance.reference {
@@ -1516,21 +1703,23 @@ internal class SymbolPage : Page {
 
             let subconformancesFiltered = children.filter { child in
                 switch child {
-                case .package, .library, .module, .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .operator, .precedence:
+                case .package, .library, .module, .type, .protocol, .extension, .case, .initializer,
+                    .variable, .subscript, .function, .operator, .precedence:
                     return true
                 case .conformance:
                     return false
                 }
             }
-            result.append(generateChildrenSection(
-                localization: localization,
-                heading: StrictString(name),
-                escapeHeading: false,
-                children: subconformancesFiltered,
-                pathToSiteRoot: pathToSiteRoot,
-                package: package,
-                packageIdentifiers: packageIdentifiers,
-                symbolLinks: symbolLinks))
+            result.append(
+                generateChildrenSection(
+                    localization: localization,
+                    heading: StrictString(name),
+                    escapeHeading: false,
+                    children: subconformancesFiltered,
+                    pathToSiteRoot: pathToSiteRoot,
+                    package: package,
+                    packageIdentifiers: packageIdentifiers,
+                    symbolLinks: symbolLinks))
         }
         return result
     }
@@ -1540,30 +1729,34 @@ internal class SymbolPage : Page {
         heading: StrictString,
         escapeHeading: Bool = true,
         children: [CommandInterfaceInformation],
-        pathToSiteRoot: StrictString) -> StrictString {
+        pathToSiteRoot: StrictString
+    ) -> StrictString {
 
         func getEntryContents(_ child: CommandInterfaceInformation) -> [StrictString] {
             var entry: [StrictString] = []
 
             let target = pathToSiteRoot + child.relativePagePath[localization]!
-            entry.append(ElementSyntax(
-                "a",
-                attributes: ["href": HTML.percentEncodeURLPath(target)],
-                contents: ElementSyntax(
-                    "code",
-                    attributes: ["class": "swift code"],
+            entry.append(
+                ElementSyntax(
+                    "a",
+                    attributes: ["href": HTML.percentEncodeURLPath(target)],
                     contents: ElementSyntax(
-                        "span",
-                        attributes: ["class": "command"],
-                        contents: child.interfaces[localization]!.name,
+                        "code",
+                        attributes: ["class": "swift code"],
+                        contents: ElementSyntax(
+                            "span",
+                            attributes: ["class": "command"],
+                            contents: child.interfaces[localization]!.name,
+                            inline: true).normalizedSource(),
                         inline: true).normalizedSource(),
-                    inline: true).normalizedSource(),
-                inline: true).normalizedSource())
+                    inline: true).normalizedSource())
 
-            entry.append(ElementSyntax(
-                "p",
-                contents: HTML.escapeTextForCharacterData(child.interfaces[localization]!.description),
-                inline: false).normalizedSource())
+            entry.append(
+                ElementSyntax(
+                    "p",
+                    contents: HTML.escapeTextForCharacterData(
+                        child.interfaces[localization]!.description),
+                    inline: false).normalizedSource())
 
             return entry
         }
@@ -1583,12 +1776,16 @@ internal class SymbolPage : Page {
         pathToSiteRoot: StrictString,
         package: PackageAPI,
         packageIdentifiers: Set<String>,
-        symbolLinks: [String: String]) -> StrictString {
+        symbolLinks: [String: String]
+    ) -> StrictString {
 
         func getEntryContents(_ child: APIElement) -> [StrictString] {
             var entry: [StrictString] = []
             if let conditions = child.compilationConditions {
-                entry.append(StrictString(conditions.syntaxHighlightedHTML(inline: true, internalIdentifiers: [], symbolLinks: [:])))
+                entry.append(
+                    StrictString(
+                        conditions.syntaxHighlightedHTML(
+                            inline: true, internalIdentifiers: [], symbolLinks: [:])))
                 entry.append("<br>")
             }
 
@@ -1601,7 +1798,8 @@ internal class SymbolPage : Page {
                     break
                 }
                 if baseType == nil /* Still not resolved. */ {
-                    for `protocol` in package.protocols where `extension`.isExtension(of: `protocol`) {
+                    for `protocol` in package.protocols
+                    where `extension`.isExtension(of: `protocol`) {
                         baseType = APIElement.protocol(`protocol`)
                         break
                     }
@@ -1613,27 +1811,46 @@ internal class SymbolPage : Page {
 
             switch child {
             case .package, .library:
-                name = ElementSyntax(
-                    "span",
-                    attributes: ["class": "text"],
-                    contents: HTML.escapeTextForCharacterData(name),
-                    inline: true).normalizedSource()
-                name = ElementSyntax("span", attributes: ["class": "string"], contents: name, inline: true).normalizedSource()
-            case .module, .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
+                name
+                    = ElementSyntax(
+                        "span",
+                        attributes: ["class": "text"],
+                        contents: HTML.escapeTextForCharacterData(name),
+                        inline: true).normalizedSource()
+                name
+                    = ElementSyntax(
+                        "span", attributes: ["class": "string"], contents: name, inline: true)
+                    .normalizedSource()
+            case .module, .type, .protocol, .extension, .case, .initializer, .variable, .subscript,
+                .function, .operator, .precedence, .conformance:
                 name = highlight(name: name, internal: relativePathOfChild ≠ nil)
             }
-            name = ElementSyntax("code", attributes: ["class": "swift"], contents: name, inline: true).normalizedSource()
+            name
+                = ElementSyntax(
+                    "code", attributes: ["class": "swift"], contents: name, inline: true)
+                .normalizedSource()
             if let constraints = child.constraints {
-                name += StrictString(constraints.syntaxHighlightedHTML(inline: true, internalIdentifiers: packageIdentifiers))
+                name
+                    += StrictString(
+                        constraints.syntaxHighlightedHTML(
+                            inline: true, internalIdentifiers: packageIdentifiers))
             }
 
             if let local = relativePathOfChild {
                 let target = pathToSiteRoot + local
-                entry.append(ElementSyntax("a", attributes: [
-                    "href": HTML.percentEncodeURLPath(target)
-                    ], contents: name, inline: true).normalizedSource())
-                if let description = child.localizedDocumentation[localization]?.descriptionSection {
-                    entry.append(StrictString(description.renderedHTML(localization: localization.code, internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)))
+                entry.append(
+                    ElementSyntax(
+                        "a",
+                        attributes: [
+                            "href": HTML.percentEncodeURLPath(target)
+                        ], contents: name, inline: true).normalizedSource())
+                if let description = child.localizedDocumentation[localization]?.descriptionSection
+                {
+                    entry.append(
+                        StrictString(
+                            description.renderedHTML(
+                                localization: localization.code,
+                                internalIdentifiers: packageIdentifiers, symbolLinks: symbolLinks)))
                 }
             } else {
                 entry.append(name)
@@ -1666,7 +1883,8 @@ internal class SymbolPage : Page {
         escapeHeading: Bool,
         children: [T],
         childContents: (T) -> [StrictString],
-        childAttributes: (T) -> [StrictString: StrictString] = { _ in [:] }) -> StrictString {
+        childAttributes: (T) -> [StrictString: StrictString] = { _ in [:] }
+    ) -> StrictString {
 
         var sectionContents: [StrictString] = [
             ElementSyntax(
@@ -1678,15 +1896,18 @@ internal class SymbolPage : Page {
             let entry = childContents(child)
 
             var attributes: [StrictString: StrictString] = ["class": "child"]
-            attributes.merge(childAttributes(child), uniquingKeysWith: { _, second in return second }) // @exempt(from. tests) Keys always unique.
+            attributes.merge(
+                childAttributes(child), uniquingKeysWith: { _, second in return second })  // @exempt(from. tests) Keys always unique.
 
-            sectionContents.append(ElementSyntax(
-                "div",
-                attributes: attributes,
-                contents: entry.joinedAsLines(),
-                inline: false).normalizedSource())
+            sectionContents.append(
+                ElementSyntax(
+                    "div",
+                    attributes: attributes,
+                    contents: entry.joinedAsLines(),
+                    inline: false).normalizedSource())
         }
-        return ElementSyntax("section", contents: sectionContents.joinedAsLines(), inline: false).normalizedSource()
+        return ElementSyntax("section", contents: sectionContents.joinedAsLines(), inline: false)
+            .normalizedSource()
     }
 
     private static func highlight(name: StrictString, internal: Bool = true) -> StrictString {
@@ -1697,11 +1918,21 @@ internal class SymbolPage : Page {
         highlight("_", as: "keyword", in: &result, internal: `internal`)
         highlight("[", as: "punctuation", in: &result, internal: `internal`)
         highlight("]", as: "punctuation", in: &result, internal: `internal`)
-        result.prepend(contentsOf: "<span class=\u{22}" + (`internal` ? "internal" : "external") as StrictString + " identifier\u{22}>")
+        result.prepend(
+            contentsOf: "<span class=\u{22}" + (`internal` ? "internal" : "external")
+                as StrictString + " identifier\u{22}>")
         result.append(contentsOf: "</span>")
         return result
     }
-    private static func highlight(_ token: StrictString, as class: StrictString, in name: inout StrictString, internal: Bool) {
-        name.replaceMatches(for: token, with: "</span>" + ElementSyntax("span", attributes: ["class": `class`], contents: token, inline: true).normalizedSource() + "<span class=\u{22}" + (`internal` ? "internal" : "external") as StrictString + " identifier\u{22}>")
+    private static func highlight(
+        _ token: StrictString, as class: StrictString, in name: inout StrictString, internal: Bool
+    ) {
+        name.replaceMatches(
+            for: token,
+            with: "</span>"
+                + ElementSyntax(
+                    "span", attributes: ["class": `class`], contents: token, inline: true)
+                .normalizedSource() + "<span class=\u{22}" + (`internal` ? "internal" : "external")
+                as StrictString + " identifier\u{22}>")
     }
 }

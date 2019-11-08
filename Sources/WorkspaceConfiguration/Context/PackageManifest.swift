@@ -21,7 +21,7 @@ import SDGCollections
 public typealias Paketenladeliste = PackageManifest
 // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(PackageManifest)
 /// Information from the package manifest.
-public struct PackageManifest : Codable {
+public struct PackageManifest: Codable {
 
     // MARK: - Initialization
 
@@ -49,7 +49,6 @@ public struct PackageManifest : Codable {
     public var produkte: [Produkt] {
         return products
     }
-
 
     // @localization(🇩🇪DE) @crossReference(PackageManifest.productModules)
     /// Die Liste von öffentliche Module.

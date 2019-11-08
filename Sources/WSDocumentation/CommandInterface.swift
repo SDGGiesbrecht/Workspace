@@ -24,7 +24,8 @@ extension CommandInterface {
 
     internal mutating func sentenceCaseDescriptions() {
         if let first = description.first,
-            first.properties.isLowercase {
+            first.properties.isLowercase
+        {
             description.scalars.removeFirst()
             description.scalars.prepend(
                 contentsOf: first.properties.titlecaseMapping.scalars)

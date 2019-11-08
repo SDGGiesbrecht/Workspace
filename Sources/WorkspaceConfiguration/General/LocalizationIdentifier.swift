@@ -25,7 +25,9 @@ public typealias Lokalisationskennzeichen = LocalizationIdentifier
 public typealias LocalisationIdentifier = LocalizationIdentifier
 // @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(LocalizationIdentifier)
 /// A localisation identifier; either an IETF language tag or a language icon.
-public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hashable, TransparentWrapper {
+public struct LocalizationIdentifier: Codable, ExpressibleByStringLiteral, Hashable,
+    TransparentWrapper
+{
 
     // MARK: - Initialization
 
@@ -44,7 +46,7 @@ public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hash
     ///
     /// - Parameters:
     ///     - localization: The localization.
-    public init<L>(_ localization: L) where L : Localization {
+    public init<L>(_ localization: L) where L: Localization {
         code = localization.code
     }
 
@@ -65,7 +67,8 @@ public struct LocalizationIdentifier : Codable, ExpressibleByStringLiteral, Hash
     ///     - identifier: The IETF language tag or language icon.
     public init(_ identifier: String) {
         if let icon = ContentLocalization.icon(for: identifier),
-            let fromIcon = ContentLocalization.code(for: icon) {
+            let fromIcon = ContentLocalization.code(for: icon)
+        {
             code = fromIcon
         } else if let fromIcon = ContentLocalization.code(for: StrictString(identifier)) {
             code = fromIcon

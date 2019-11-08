@@ -34,7 +34,9 @@ extension PackageRepository {
         let status = ProofreadingStatus(reporter: reporter, output: output)
 
         var linter: SwiftLinter?
-        if let formatConfiguration = try configuration(output: output).proofreading.swiftFormatConfiguration {
+        if let formatConfiguration = try configuration(output: output).proofreading
+            .swiftFormatConfiguration
+        {
             let diagnostics = DiagnosticEngine()
             diagnostics.addConsumer(status)
             linter = SwiftLinter(configuration: formatConfiguration, diagnosticEngine: diagnostics)
@@ -55,31 +57,33 @@ extension PackageRepository {
             }
 
             for url in try sourceFiles(output: output)
-                where FileType(url: url) ≠ nil
-                    ∧ FileType(url: url) ≠ .xcodeProject {
-                        try autoreleasepool {
+            where FileType(url: url) ≠ nil
+                ∧ FileType(url: url) ≠ .xcodeProject
+            {
+                try autoreleasepool {
 
-                            let file = try TextFile(alreadyAt: url)
-                            reporter.reportParsing(file: file.location.path(relativeTo: location), to: output)
-                            status.currentFile = file
+                    let file = try TextFile(alreadyAt: url)
+                    reporter.reportParsing(
+                        file: file.location.path(relativeTo: location), to: output)
+                    status.currentFile = file
 
-                            for rule in textRules {
-                                try rule.check(file: file, in: self, status: status, output: output)
-                            }
+                    for rule in textRules {
+                        try rule.check(file: file, in: self, status: status, output: output)
+                    }
 
-                            if file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
-                                if ¬syntaxRules.isEmpty ∨ linter ≠ nil {
-                                    let syntax = try SyntaxParser.parseAndRetry(url)
-                                    try RuleSyntaxScanner(
-                                        rules: syntaxRules,
-                                        file: file,
-                                        project: self,
-                                        status: status,
-                                        output: output).scan(syntax)
-                                    try linter?.lint(syntax: syntax, assumingFileURL: url)
-                                }
-                            }
+                    if file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
+                        if ¬syntaxRules.isEmpty ∨ linter ≠ nil {
+                            let syntax = try SyntaxParser.parseAndRetry(url)
+                            try RuleSyntaxScanner(
+                                rules: syntaxRules,
+                                file: file,
+                                project: self,
+                                status: status,
+                                output: output).scan(syntax)
+                            try linter?.lint(syntax: syntax, assumingFileURL: url)
                         }
+                    }
+                }
             }
         }
 

@@ -23,7 +23,7 @@ import WSLocalizations
 public typealias Schicht = Platform
 // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Platform)
 /// A platform.
-public enum Platform : String, Codable, CaseIterable {
+public enum Platform: String, Codable, CaseIterable {
 
     // MARK: - Cases
 
@@ -54,31 +54,31 @@ public enum Platform : String, Codable, CaseIterable {
         case .macOS:
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                 .deutschDeutschland:
+                .deutschDeutschland:
                 return "macOS"
             }
         case .linux:
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                 .deutschDeutschland:
+                .deutschDeutschland:
                 return "Linux"
             }
         case .iOS:
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                 .deutschDeutschland:
+                .deutschDeutschland:
                 return "iOS"
             }
         case .watchOS:
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                 .deutschDeutschland:
+                .deutschDeutschland:
                 return "watchOS"
             }
         case .tvOS:
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                 .deutschDeutschland:
+                .deutschDeutschland:
                 return "tvOS"
             }
         }

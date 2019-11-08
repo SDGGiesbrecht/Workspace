@@ -30,7 +30,7 @@ public enum TravisCI {
                 while ¬complete {
                     Thread.sleep(until: Date.init(timeIntervalSinceNow: TimeInterval(60 /* s */)))
                     if ¬complete {
-                        Shell.default.run(command: ["echo", "...", ">", "/dev/tty"]) // @exempt(from: tests) Tests had better not take that long!
+                        Shell.default.run(command: ["echo", "...", ">", "/dev/tty"])  // @exempt(from: tests) Tests had better not take that long!
                     }
                 }
             }

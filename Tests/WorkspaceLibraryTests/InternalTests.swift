@@ -19,7 +19,7 @@ import WSGeneralTestImports
 
 import WSProject
 
-class InternalTests : TestCase {
+class InternalTests: TestCase {
 
     func testGitIgnoreCoverage() throws {
 
@@ -69,12 +69,14 @@ class InternalTests : TestCase {
                     return true
                 }
 
-                XCTAssert(unexpected.isEmpty, [
-                    "Unexpected files are being tracked by Git:",
-                    unexpected.joinedAsLines()
+                XCTAssert(
+                    unexpected.isEmpty,
+                    [
+                        "Unexpected files are being tracked by Git:",
+                        unexpected.joinedAsLines()
                     ].joinedAsLines())
 
-        }).execute(with: []).get()
+            }).execute(with: []).get()
     }
 
     func testXcodeProjectFormat() {

@@ -46,13 +46,16 @@ internal struct PackageCLI {
         var commands: [StrictString: CommandInterfaceInformation] = [:]
         for tool in tools {
             for localization in localizations {
-                if let interface = try? CommandInterface.loadInterface(of: tool, in: localization.code).get() {
+                if let interface = try? CommandInterface.loadInterface(
+                    of: tool, in: localization.code).get()
+                {
                     var modifiedInterface = interface
                     modifiedInterface.sentenceCaseDescriptions()
 
                     commands[
                         interface.identifier,
-                        default: CommandInterfaceInformation()].interfaces[localization] = modifiedInterface
+                        default: CommandInterfaceInformation()].interfaces[localization]
+                        = modifiedInterface
 
                     let directory = PackageCLI.toolsDirectory(for: localization)
                     let filename = Page.sanitize(fileName: interface.name)

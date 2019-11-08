@@ -21,7 +21,7 @@ extension PackageManifest.Product {
     public typealias Produktart = ProductType
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProductType)
     /// A product type.
-    public enum ProductType : String, Codable {
+    public enum ProductType: String, Codable {
 
         // MARK: - Cases
 

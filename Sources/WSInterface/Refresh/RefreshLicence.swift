@@ -33,7 +33,8 @@ extension Workspace.Refresh {
             }
         })
 
-        private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        private static let description = UserFacing<StrictString, InterfaceLocalization>({
+            localization in
             switch localization {
             case .englishUnitedKingdom, .englishCanada:
                 return "regenerates the project’s licence file."
@@ -44,20 +45,24 @@ extension Workspace.Refresh {
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: Workspace.standardOptions, execution: { (_, options: Options, output: Command.Output) throws in
+        static let command = Command(
+            name: name, description: description, directArguments: [],
+            options: Workspace.standardOptions,
+            execution: { (_, options: Options, output: Command.Output) throws in
 
-            output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishCanada:
-                    return "Refreshing licence..."
-                case .englishUnitedStates:
-                    return "Refreshing license..."
-                case .deutschDeutschland:
-                    return "Lizenz wird aufgefrischt ..."
-                }
-            }).resolved().formattedAsSectionHeader())
+                output.print(
+                    UserFacing<StrictString, InterfaceLocalization>({ localization in
+                        switch localization {
+                        case .englishUnitedKingdom, .englishCanada:
+                            return "Refreshing licence..."
+                        case .englishUnitedStates:
+                            return "Refreshing license..."
+                        case .deutschDeutschland:
+                            return "Lizenz wird aufgefrischt ..."
+                        }
+                    }).resolved().formattedAsSectionHeader())
 
-            try options.project.refreshLicence(output: output)
-        })
+                try options.project.refreshLicence(output: output)
+            })
     }
 }

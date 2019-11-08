@@ -26,12 +26,15 @@ import WSProject
 
 extension PackageRepository {
 
-    private static let mockProjectsDirectory = repositoryRoot.appendingPathComponent("Tests/Mock Projects")
+    private static let mockProjectsDirectory = repositoryRoot.appendingPathComponent(
+        "Tests/Mock Projects")
     internal static func beforeDirectory(for mockProject: String) -> URL {
-        return mockProjectsDirectory.appendingPathComponent("Before").appendingPathComponent(mockProject)
+        return mockProjectsDirectory.appendingPathComponent("Before").appendingPathComponent(
+            mockProject)
     }
     private static func afterDirectory(for mockProject: String) -> URL {
-        return mockProjectsDirectory.appendingPathComponent("After").appendingPathComponent(mockProject)
+        return mockProjectsDirectory.appendingPathComponent("After").appendingPathComponent(
+            mockProject)
     }
 
     // MARK: - Initialization
@@ -50,7 +53,8 @@ extension PackageRepository {
         withCustomTask: Bool = false,
         overwriteSpecificationInsteadOfFailing: Bool,
         file: StaticString = #file,
-        line: UInt = #line) where L : InputLocalization {
+        line: UInt = #line
+    ) where L: InputLocalization {
 
         do {
             try autoreleasepool {
@@ -69,17 +73,28 @@ extension PackageRepository {
                         if withCustomTask {
                             let manifest = dependency.appendingPathComponent("Package.swift")
                             var manifestContents = try StrictString(from: manifest)
-                            manifestContents.replaceMatches(for: "name: \u{22}Dependency\u{22},\n    dependencies: [", with: "name: \u{22}Dependency\u{22},\n    products: [\n        .executable(name: \u{22}Dependency\u{22}, targets: [\u{22}Dependency\u{22}])\n    ],\n    dependencies: [")
+                            manifestContents.replaceMatches(
+                                for: "name: \u{22}Dependency\u{22},\n    dependencies: [",
+                                with:
+                                    "name: \u{22}Dependency\u{22},\n    products: [\n        .executable(name: \u{22}Dependency\u{22}, targets: [\u{22}Dependency\u{22}])\n    ],\n    dependencies: ["
+                            )
                             try manifestContents.save(to: manifest)
-                            try "import Foundation\nprint(\u{22}Hello, world!\u{22})\nif ProcessInfo.processInfo.arguments.count > 1 {\n    exit(1)\n}".save(to: dependency.appendingPathComponent("Sources/Dependency/main.swift"))
+                            try
+                                "import Foundation\nprint(\u{22}Hello, world!\u{22})\nif ProcessInfo.processInfo.arguments.count > 1 {\n    exit(1)\n}"
+                                .save(
+                                    to: dependency.appendingPathComponent(
+                                        "Sources/Dependency/main.swift"))
                         }
                         _ = try Shell.default.run(command: ["git", "init"]).get()
                         _ = try Shell.default.run(command: ["git", "add", "."]).get()
-                        _ = try Shell.default.run(command: ["git", "commit", "\u{2D}m", "Initialized."]).get()
+                        _ = try Shell.default.run(command: [
+                            "git", "commit", "\u{2D}m", "Initialized."
+                        ]).get()
                         _ = try Shell.default.run(command: ["git", "tag", "1.0.0"]).get()
                     }
                 }
-                let beforeLocation = PackageRepository.beforeDirectory(for: location.lastPathComponent)
+                let beforeLocation = PackageRepository.beforeDirectory(
+                    for: location.lastPathComponent)
 
                 // Simulators are not available to all CI jobs and must be tested separately.
                 setenv("SIMULATOR_UNAVAILABLE_FOR_TESTING", "YES", 1 /* overwrite */)
@@ -90,9 +105,12 @@ extension PackageRepository {
 
                 try? FileManager.default.removeItem(at: location)
                 #if os(Linux)
-                try Shell.default.run(command: ["cp", "\u{2D}r", Shell.quote(beforeLocation.path), Shell.quote(location.path)])
+                    try Shell.default.run(command: [
+                        "cp", "\u{2D}r", Shell.quote(beforeLocation.path),
+                        Shell.quote(location.path)
+                    ])
                 #else
-                try FileManager.default.copy(beforeLocation, to: location)
+                    try FileManager.default.copy(beforeLocation, to: location)
                 #endif
                 defer { try? FileManager.default.removeItem(at: location) }
 
@@ -100,7 +118,8 @@ extension PackageRepository {
                     Shell.default.run(command: ["git", "init"])
                     let gitIgnore = location.appendingPathComponent(".gitignore")
                     if (try? gitIgnore.checkResourceIsReachable()) ≠ true {
-                        _ = try? FileManager.default.copy(repositoryRoot.appendingPathComponent(".gitignore"), to: gitIgnore)
+                        _ = try? FileManager.default.copy(
+                            repositoryRoot.appendingPathComponent(".gitignore"), to: gitIgnore)
                     }
 
                     WorkspaceContext.current = try configurationContext()
@@ -109,7 +128,7 @@ extension PackageRepository {
                         configuration._validateSDGStandards()
                     }
                     WorkspaceConfiguration.queue(mock: configuration)
-                    defer { _ = try? self.configuration(output: Command.Output.mock ) } // Dequeue even if unused.
+                    defer { _ = try? self.configuration(output: Command.Output.mock) }  // Dequeue even if unused.
                     resetConfigurationCache(debugReason: "new test")
 
                     for command in commands {
@@ -117,11 +136,14 @@ extension PackageRepository {
 
                         if ProcessInfo.isInContinuousIntegration {
                             // Travis CI needs periodic output of some sort; otherwise it assumes the tests have stalled.
-                            Shell.default.run(command: ["echo", "Tests continuing...", ">", "/dev/tty"])
+                            Shell.default.run(command: [
+                                "echo", "Tests continuing...", ">", "/dev/tty"
+                            ])
                         }
 
                         print(StrictString("$ workspace ") + command.joined(separator: " "))
-                        let specificationName: StrictString = "\(location.lastPathComponent) (\(command.joined(separator: " ")))"
+                        let specificationName: StrictString
+                            = "\(location.lastPathComponent) (\(command.joined(separator: " ")))"
 
                         // Special handling of commands with platform differences
                         func requireSuccess() {
@@ -139,7 +161,8 @@ extension PackageRepository {
                             for localization in L.allCases {
                                 LocalizationSetting(orderOfPrecedence: [localization.code]).do {
                                     do {
-                                        var output = try Workspace.command.execute(with: command).get()
+                                        var output = try Workspace.command.execute(with: command)
+                                            .get()
                                         // Reset cache to resurface compiler warnings.
                                         try? FileManager.default.removeItem(
                                             at: location.appendingPathComponent(".build"))
@@ -153,38 +176,65 @@ extension PackageRepository {
                         }
 
                         #if os(Linux)
-                        if command == ["refresh", "scripts"]
-                            ∨ command == ["auffrischen", "skripte"]
-                            ∨ command == ["validate", "build"]
-                            ∨ command == ["prüfen", "erstellung"]
-                            ∨ command == ["test"]
-                            ∨ command == ["testen"] {
-                            // Differing task set on Linux.
-                            if location.lastPathComponent ∈ Set(["BrokenTests", "FailingTests", "NurDeutsch"]) {
-                                expectFailure()
-                            } else {
-                                requireSuccess()
+                            if command == ["refresh", "scripts"]
+                                ∨ command == ["auffrischen", "skripte"]
+                                ∨ command == ["validate", "build"]
+                                ∨ command == ["prüfen", "erstellung"]
+                                ∨ command == ["test"]
+                                ∨ command == ["testen"]
+                            {
+                                // Differing task set on Linux.
+                                if location.lastPathComponent
+                                    ∈ Set(["BrokenTests", "FailingTests", "NurDeutsch"])
+                                {
+                                    expectFailure()
+                                } else {
+                                    requireSuccess()
+                                }
+                                continue
                             }
-                            continue
-                        }
-                        if command == ["validate", "build", "•job", "macos"] {
-                            // Invalid on Linux
-                            expectFailure()
-                            continue
-                        }
-                        // Differing task sets on Linux.
-                        if (command == ["refresh"] ∧ location.lastPathComponent ∈ Set(["AllTasks", "CustomTasks"]))
-                            ∨ (command == ["validate"] ∧ location.lastPathComponent ∈ Set(["AllDisabled", "CustomTasks", "SDGLibrary"]))
-                            ∨ (command == ["validate", "test‐coverage"] ∧ location.lastPathComponent ∈ Set(["Default", "SDGLibrary", "SDGTool"]))
-                            ∨ (command == ["prüfen", "testabdeckung"] ∧ location.lastPathComponent ∈ Set(["Deutsch"]))
-                            ∨ (command == ["validate", "•job", "macos"] ∧ location.lastPathComponent ∈ Set(["Default"])){
-                            requireSuccess()
-                            continue
-                        } else if (command == ["validate"] ∧ location.lastPathComponent ∈ Set(["AllTasks", "Default", "FailingCustomValidation"]))
-                            ∨ (command == ["validate", "test‐coverage"] ∧ location.lastPathComponent ∈ Set(["FailingTests"])) {
-                            expectFailure()
-                            continue
-                        }
+                            if command == ["validate", "build", "•job", "macos"] {
+                                // Invalid on Linux
+                                expectFailure()
+                                continue
+                            }
+                            // Differing task sets on Linux.
+                            if (
+                                command == ["refresh"] ∧ location.lastPathComponent
+                                    ∈ Set(["AllTasks", "CustomTasks"])
+                            )
+                                ∨ (
+                                    command == ["validate"] ∧ location.lastPathComponent
+                                        ∈ Set(["AllDisabled", "CustomTasks", "SDGLibrary"])
+                                )
+                                ∨ (
+                                    command == ["validate", "test‐coverage"]
+                                        ∧ location.lastPathComponent
+                                        ∈ Set(["Default", "SDGLibrary", "SDGTool"])
+                                )
+                                ∨ (
+                                    command == ["prüfen", "testabdeckung"]
+                                        ∧ location.lastPathComponent ∈ Set(["Deutsch"])
+                                )
+                                ∨ (
+                                    command == ["validate", "•job", "macos"]
+                                        ∧ location.lastPathComponent ∈ Set(["Default"])
+                                )
+                            {
+                                requireSuccess()
+                                continue
+                            } else if (
+                                command == ["validate"] ∧ location.lastPathComponent
+                                    ∈ Set(["AllTasks", "Default", "FailingCustomValidation"])
+                            )
+                                ∨ (
+                                    command == ["validate", "test‐coverage"]
+                                        ∧ location.lastPathComponent ∈ Set(["FailingTests"])
+                                )
+                            {
+                                expectFailure()
+                                continue
+                            }
                         #endif
 
                         // General commands
@@ -197,13 +247,17 @@ extension PackageRepository {
                             // Temporary directory varies.
                             output.scalars.replaceMatches(for: "`..".scalars, with: "`".scalars)
                             output.scalars.replaceMatches(for: "/..".scalars, with: "".scalars)
-                            output.scalars.replaceMatches(for: "/private/tmp".scalars, with: "[Temporary]".scalars)
-                            output.scalars.replaceMatches(for: "/tmp".scalars, with: "[Temporary]".scalars)
+                            output.scalars.replaceMatches(
+                                for: "/private/tmp".scalars, with: "[Temporary]".scalars)
+                            output.scalars.replaceMatches(
+                                for: "/tmp".scalars, with: "[Temporary]".scalars)
 
                             // Find hotkey varies.
                             output.scalars.replaceMatches(for: "⌘F".scalars, with: "[⌘F]".scalars)
-                            output.scalars.replaceMatches(for: "Ctrl + F".scalars, with: "[⌘F]".scalars)
-                            output.scalars.replaceMatches(for: "Strg + F".scalars, with: "[⌘F]".scalars)
+                            output.scalars.replaceMatches(
+                                for: "Ctrl + F".scalars, with: "[⌘F]".scalars)
+                            output.scalars.replaceMatches(
+                                for: "Strg + F".scalars, with: "[⌘F]".scalars)
 
                             // Git paths vary.
                             output.scalars.replaceMatches(
@@ -232,31 +286,46 @@ extension PackageRepository {
                                     for: "\n".scalars + any + "\nValidating ‘".scalars,
                                     with: "\n[Refreshing ...]\n\nValidating ‘".scalars)
                                 output.scalars.replaceMatches(
-                                    for: "\n".scalars + any + "\n„AllDisabled“ wird geprüft".scalars,
-                                    with: "\n[... wird aufgefrisct ...]\n\n„AllDisabled“ wird geprüft".scalars)
+                                    for: "\n".scalars + any
+                                        + "\n„AllDisabled“ wird geprüft".scalars,
+                                    with:
+                                        "\n[... wird aufgefrisct ...]\n\n„AllDisabled“ wird geprüft"
+                                        .scalars)
                                 output.scalars.replaceMatches(
-                                    for: "\n".scalars + any + "\n„CustomTasks“ wird geprüft".scalars,
-                                    with: "\n[... wird aufgefrisct ...]\n\n„CustomTasks“ wird geprüft".scalars)
+                                    for: "\n".scalars + any
+                                        + "\n„CustomTasks“ wird geprüft".scalars,
+                                    with:
+                                        "\n[... wird aufgefrisct ...]\n\n„CustomTasks“ wird geprüft"
+                                        .scalars)
                                 output.scalars.replaceMatches(
-                                    for: "\n".scalars + any + "\n„FailingCustomValidation“ wird geprüft".scalars,
-                                    with: "\n[... wird aufgefrisct ...]\n\n„FailingCustomValidation“ wird geprüft".scalars)
+                                    for: "\n".scalars + any
+                                        + "\n„FailingCustomValidation“ wird geprüft".scalars,
+                                    with:
+                                        "\n[... wird aufgefrisct ...]\n\n„FailingCustomValidation“ wird geprüft"
+                                        .scalars)
                             }
                         }
 
-                        testCommand(Workspace.command, with: command, localizations: localizations, uniqueTestName: specificationName, postprocess: postprocess, overwriteSpecificationInsteadOfFailing: overwriteSpecificationInsteadOfFailing, file: file, line: line)
+                        testCommand(
+                            Workspace.command, with: command, localizations: localizations,
+                            uniqueTestName: specificationName, postprocess: postprocess,
+                            overwriteSpecificationInsteadOfFailing:
+                                overwriteSpecificationInsteadOfFailing, file: file, line: line)
                     }
 
                     let documentationDirectory = location.appendingPathComponent("docs")
                     if (try? documentationDirectory.checkResourceIsReachable()) == true {
-                        let warnings = Site<InterfaceLocalization>.validate(site: documentationDirectory)
+                        let warnings = Site<InterfaceLocalization>.validate(
+                            site: documentationDirectory)
                         if ¬warnings.isEmpty {
                             let files = warnings.keys.sorted()
                             let warningList = files.map({ url in
                                 var fileMessage = url.path(relativeTo: documentationDirectory)
                                 let errors = warnings[url]!
-                                fileMessage.append(contentsOf: errors.map({ error in
-                                    return error.localizedDescription
-                                }).joined(separator: "\n"))
+                                fileMessage.append(
+                                    contentsOf: errors.map({ error in
+                                        return error.localizedDescription
+                                    }).joined(separator: "\n"))
                                 return fileMessage
                             }).joined(separator: "\n\n")
                             XCTFail(warningList, file: file, line: line)
@@ -264,25 +333,36 @@ extension PackageRepository {
                     }
 
                     /// Commit hashes vary.
-                    try? FileManager.default.removeItem(at: location.appendingPathComponent("Package.resolved"))
+                    try? FileManager.default.removeItem(
+                        at: location.appendingPathComponent("Package.resolved"))
                     /// Manifest updates only on macOS.
-                    try? FileManager.default.removeItem(at: location.appendingPathComponent("Tests/LinuxMain.swift"))
-                    for manifest in ((try? FileManager.default.deepFileEnumeration(in: location)) ?? [])
-                        where manifest.lastPathComponent == "XCTestManifests.swift" {
-                            try? FileManager.default.removeItem(at: manifest)
+                    try? FileManager.default.removeItem(
+                        at: location.appendingPathComponent("Tests/LinuxMain.swift"))
+                    for manifest in (
+                        (try? FileManager.default.deepFileEnumeration(in: location)) ?? []
+                    )
+                    where manifest.lastPathComponent == "XCTestManifests.swift" {
+                        try? FileManager.default.removeItem(at: manifest)
                     }
 
-                    let afterLocation = PackageRepository.afterDirectory(for: location.lastPathComponent)
-                    if overwriteSpecificationInsteadOfFailing ∨ (try? afterLocation.checkResourceIsReachable()) ≠ true {
+                    let afterLocation = PackageRepository.afterDirectory(
+                        for: location.lastPathComponent)
+                    if overwriteSpecificationInsteadOfFailing ∨ (
+                        try? afterLocation.checkResourceIsReachable()
+                    ) ≠ true {
                         try? FileManager.default.removeItem(at: afterLocation)
                         try FileManager.default.move(location, to: afterLocation)
                     } else {
 
                         var files: Set<String> = []
-                        for file in try PackageRepository(at: location).trackedFiles(output: Command.Output.mock) {
+                        for file in try PackageRepository(at: location).trackedFiles(
+                            output: Command.Output.mock)
+                        {
                             files.insert(file.path(relativeTo: location))
                         }
-                        for file in try PackageRepository(at: afterLocation).trackedFiles(output: Command.Output.mock) {
+                        for file in try PackageRepository(at: afterLocation).trackedFiles(
+                            output: Command.Output.mock)
+                        {
                             files.insert(file.path(relativeTo: afterLocation))
                         }
 
@@ -291,13 +371,17 @@ extension PackageRepository {
                             let after = afterLocation.appendingPathComponent(fileName)
                             if let resultContents = try? String(from: result) {
                                 if (try? String(from: after)) ≠ nil {
-                                    compare(resultContents, against: after, overwriteSpecificationInsteadOfFailing: false, file: file, line: line)
+                                    compare(
+                                        resultContents, against: after,
+                                        overwriteSpecificationInsteadOfFailing: false, file: file,
+                                        line: line)
                                 } else {
                                     XCTFail("Unexpected file produced: “\(fileName)”")
                                 }
                             } else {
                                 if (try? String(from: after)) ≠ nil {
-                                    XCTFail("Failed to produce “\(fileName)”.", file: file, line: line)
+                                    XCTFail(
+                                        "Failed to produce “\(fileName)”.", file: file, line: line)
                                 }
                             }
                         }

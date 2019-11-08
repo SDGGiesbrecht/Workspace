@@ -19,7 +19,7 @@ import WSProject
 
 import SwiftSyntax
 
-internal class ProofreadingStatus : DiagnosticConsumer {
+internal class ProofreadingStatus: DiagnosticConsumer {
 
     // MARK: - Initialization
 
@@ -46,7 +46,8 @@ internal class ProofreadingStatus : DiagnosticConsumer {
         #warning("Are highlights useful?")
         let start: String.ScalarView.Index
         if let location = diagnostic.location {
-            let utf8 = file.contents.utf8.index(file.contents.utf8.startIndex, offsetBy: location.offset)
+            let utf8 = file.contents.utf8.index(
+                file.contents.utf8.startIndex, offsetBy: location.offset)
             start = utf8.scalar(in: file.contents.scalars)
         } else {
             start = file.contents.scalars.startIndex
@@ -54,7 +55,7 @@ internal class ProofreadingStatus : DiagnosticConsumer {
         #warning("Are fix‐its useful?")
         let replacementSuggestion: StrictString? = nil
         #warning("What to do with identifiers?")
-        let identifier = UserFacing<StrictString, InterfaceLocalization>({ _ in "swiftFormat"})
+        let identifier = UserFacing<StrictString, InterfaceLocalization>({ _ in "swiftFormat" })
         let diagnosticMessage = StrictString(diagnostic.message.text)
         if diagnosticMessage.hasPrefix("[Indentation]") {
             #warning("Restore some of these.")

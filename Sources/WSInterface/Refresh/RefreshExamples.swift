@@ -31,7 +31,8 @@ extension Workspace.Refresh {
             }
         })
 
-        private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        private static let description = UserFacing<StrictString, InterfaceLocalization>({
+            localization in
             switch localization {
             case .englishUnitedKingdom:
                 return "synchronises the project’s compiled examples."
@@ -42,7 +43,8 @@ extension Workspace.Refresh {
             }
         })
 
-        private static let discussion = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        private static let discussion = UserFacing<StrictString, InterfaceLocalization>({
+            localization in
             switch localization {
             case .englishUnitedKingdom:
                 return [
@@ -89,7 +91,7 @@ extension Workspace.Refresh {
                     "func == (lhs: Thing, rhs: Thing) \u{2D}> Bool {",
                     "    return lhs.rawValue == rhs.rawValue",
                     "}",
-                    ].joinedAsLines()
+                ].joinedAsLines()
             case .englishUnitedStates, .englishCanada:
                 return [
                     "When APIs change, it is easy to forget to update any examples in the documentation. Workspace allows examples to be synchronized with real, compiled source code in a test module. That way, when an API change makes an example invalid, it will be caught by the compiler.",
@@ -135,7 +137,7 @@ extension Workspace.Refresh {
                     "func == (lhs: Thing, rhs: Thing) \u{2D}> Bool {",
                     "    return lhs.rawValue == rhs.rawValue",
                     "}",
-                    ].joinedAsLines()
+                ].joinedAsLines()
             case .deutschDeutschland:
                 return [
                     "Bei Änderungen zu der Programmierschnittstelle, werden oft Beispiele in der Dokumentation vergessen. Arbeitsbereich ermöglicht das Abstimmen zwischen Beispiele und echten, Übersetzten Quelltext in einem Testmodul. So werden überholte Beispiele von dem Übersetzer erwischt.",
@@ -181,7 +183,7 @@ extension Workspace.Refresh {
                     "func == (links: Thing, rechts: Thing) \u{2D}> Bool {",
                     "    return links.rawValue == rechts.rawValue",
                     "}",
-                    ].joinedAsLines()
+                ].joinedAsLines()
             }
         })
 
@@ -193,16 +195,17 @@ extension Workspace.Refresh {
             options: Workspace.standardOptions,
             execution: { (_, options: Options, output: Command.Output) throws in
 
-            output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Refreshing examples..."
-                case .deutschDeutschland:
-                    return "Beispiele werden aufgefrischt ..."
-                }
-            }).resolved().formattedAsSectionHeader())
+                output.print(
+                    UserFacing<StrictString, InterfaceLocalization>({ localization in
+                        switch localization {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "Refreshing examples..."
+                        case .deutschDeutschland:
+                            return "Beispiele werden aufgefrischt ..."
+                        }
+                    }).resolved().formattedAsSectionHeader())
 
-            try options.project.refreshExamples(output: output)
-        })
+                try options.project.refreshExamples(output: output)
+            })
     }
 }

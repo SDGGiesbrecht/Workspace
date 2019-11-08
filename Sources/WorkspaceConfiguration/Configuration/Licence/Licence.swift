@@ -28,7 +28,7 @@ public typealias License = Licence
 /// A project licence.
 ///
 /// For information about the various licences, see [choosealicense.com](https://choosealicense.com).
-public enum Licence : String, Codable {
+public enum Licence: String, Codable {
 
     // MARK: - Cases
 

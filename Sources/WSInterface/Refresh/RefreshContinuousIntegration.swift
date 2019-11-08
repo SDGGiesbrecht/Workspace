@@ -29,16 +29,19 @@ extension Workspace.Refresh {
             }
         })
 
-        private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        private static let description = UserFacing<StrictString, InterfaceLocalization>({
+            localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "regenerates the project’s continuous integration configuration files."
             case .deutschDeutschland:
-                return "erstellt die Konfigurationsdateien des Projekts, die fortlaufende Einbindung einrichten."
+                return
+                    "erstellt die Konfigurationsdateien des Projekts, die fortlaufende Einbindung einrichten."
             }
         })
 
-        private static let discussion = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        private static let discussion = UserFacing<StrictString, InterfaceLocalization>({
+            localization in
             switch localization {
             case .englishUnitedKingdom:
                 return [
@@ -51,7 +54,7 @@ extension Workspace.Refresh {
                     "• Travis CI (https://travis\u{2D}ci.org)",
                     "",
                     "• Kyle Fuller and Swift Version Manager (https://github.com/kylef/swiftenv), which makes continuous integration possible on Linux.",
-                    ].joinedAsLines()
+                ].joinedAsLines()
             case .englishUnitedStates, .englishCanada:
                 return [
                     "Workspace will create a “.travis.yml” file at the project root, which configures Travis CI to run all the tests from “Validate” on every operating system supported by the project.",
@@ -63,7 +66,7 @@ extension Workspace.Refresh {
                     "• Travis CI (https://travis\u{2D}ci.org)",
                     "",
                     "• Kyle Fuller and Swift Version Manager (https://github.com/kylef/swiftenv), which makes continuous integration possible on Linux.",
-                    ].joinedAsLines()
+                ].joinedAsLines()
             case .deutschDeutschland:
                 return [
                     "Arbeitsbereich erstellt ein ‘.travis.yml’‐Datei in der Projektwurzel, die Travis‐CI konfiguriert, alle Teste von ‘Validate’ auf jede unterstützte Betriebssystem auszuführen.",
@@ -75,7 +78,7 @@ extension Workspace.Refresh {
                     "• Travis CI (https://travis\u{2D}ci.org)",
                     "",
                     "• Kyle Fuller und das Swift Version Manager (https://github.com/kylef/swiftenv), fortlaufende Einbindung auf Linux ermöglicht.",
-                    ].joinedAsLines()
+                ].joinedAsLines()
             }
         })
 
@@ -87,16 +90,17 @@ extension Workspace.Refresh {
             options: Workspace.standardOptions,
             execution: { (_, options: Options, output: Command.Output) throws in
 
-            output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Refreshing continuous integration configuration..."
-                case .deutschDeutschland:
-                    return "Konfiguration für fortlaufende Einbindung wird aufgefrischt ..."
-                }
-            }).resolved().formattedAsSectionHeader())
+                output.print(
+                    UserFacing<StrictString, InterfaceLocalization>({ localization in
+                        switch localization {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "Refreshing continuous integration configuration..."
+                        case .deutschDeutschland:
+                            return "Konfiguration für fortlaufende Einbindung wird aufgefrischt ..."
+                        }
+                    }).resolved().formattedAsSectionHeader())
 
-            try options.project.refreshContinuousIntegration(output: output)
-        })
+                try options.project.refreshContinuousIntegration(output: output)
+            })
     }
 }

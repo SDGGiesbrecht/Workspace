@@ -48,7 +48,9 @@ extension PackageRepository {
     public func resetFileCache(debugReason: String) {
         PackageRepository.fileCaches[location] = FileCache()
         #if CACHE_LOG
-        print("(Debug notice: File cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)")
+            print(
+                "(Debug notice: File cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)"
+            )
         #endif
     }
 
@@ -73,7 +75,9 @@ extension PackageRepository {
         resetFileCache(debugReason: debugReason)
         PackageRepository.manifestCaches[location] = ManifestCache()
         #if CACHE_LOG
-        print("(Debug notice: Manifest cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)")
+            print(
+                "(Debug notice: Manifest cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)"
+            )
         #endif
     }
 
@@ -101,7 +105,9 @@ extension PackageRepository {
         resetManifestCache(debugReason: "testing")
         PackageRepository.configurationCaches[location] = ConfigurationCache()
         #if CACHE_LOG
-        print("(Debug notice: Configuration cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)")
+            print(
+                "(Debug notice: Configuration cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)"
+            )
         #endif
     }
 
@@ -135,7 +141,9 @@ extension PackageRepository {
         return StrictString(try cachedManifest().name)
     }
 
-    public func projectName(in localization: LocalizationIdentifier, output: Command.Output) throws -> StrictString {
+    public func projectName(in localization: LocalizationIdentifier, output: Command.Output) throws
+        -> StrictString
+    {
         return try configuration(output: output).projectName[localization] ?? packageName()
     }
 
@@ -151,7 +159,8 @@ extension PackageRepository {
             var products: [PackageModel.Product] = []
 
             // Filter out tools which have not been declared as products.
-            let declaredTools: Set<String> = Set(try cachedManifest().products.lazy.map({ $0.name }))
+            let declaredTools: Set<String> = Set(
+                try cachedManifest().products.lazy.map({ $0.name }))
 
             for product in try cachedPackage().products where ¬product.name.hasPrefix("_") {
                 switch product.type {
@@ -161,10 +170,10 @@ extension PackageRepository {
                     if product.name ∈ declaredTools {
                         products.append(product)
                     } else {
-                        continue // skip
+                        continue  // skip
                     }
                 case .test:
-                    continue // skip
+                    continue  // skip
                 }
             }
             return products
@@ -188,7 +197,8 @@ extension PackageRepository {
     public func configurationContext() throws -> WorkspaceContext {
         return try cached(in: &configurationCache.configurationContext) {
 
-            let products = try self.products().map { (product: PackageModel.Product) -> PackageManifest.Product in
+            let products = try self.products().map {
+                (product: PackageModel.Product) -> PackageManifest.Product in
 
                 let type: PackageManifest.Product.ProductType
                 let modules: [String]
@@ -206,7 +216,8 @@ extension PackageRepository {
                 return PackageManifest.Product(_name: product.name, type: type, modules: modules)
             }
 
-            let manifest = PackageManifest(_packageName: String(try packageName()), products: products)
+            let manifest = PackageManifest(
+                _packageName: String(try packageName()), products: products)
             return WorkspaceContext(_location: location, manifest: manifest)
         }
     }
@@ -247,48 +258,61 @@ extension PackageRepository {
     }
 
     public func developmentLocalization(output: Command.Output) throws -> LocalizationIdentifier {
-        guard let result = try configuration(output: output).documentation.localizations.first else {
-            throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom:
-                    return "There are no localisations specified. (documentation.localisations)"
-                case .englishUnitedStates, .englishCanada:
-                    return "There are no localizations specified. (documentation.localizations)"
-                case .deutschDeutschland:
-                    return "Keine Lokalisationen sind angegeben. (dokumentation.localisationen)"
-                }
-            }))
+        guard let result = try configuration(output: output).documentation.localizations.first
+        else {
+            throw Command.Error(
+                description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom:
+                        return "There are no localisations specified. (documentation.localisations)"
+                    case .englishUnitedStates, .englishCanada:
+                        return "There are no localizations specified. (documentation.localizations)"
+                    case .deutschDeutschland:
+                        return "Keine Lokalisationen sind angegeben. (dokumentation.localisationen)"
+                    }
+                }))
         }
         return result
     }
 
     public func fileHeader(output: Command.Output) throws -> StrictString {
         return try cached(in: &configurationCache.fileHeader) {
-            return try configuration(output: output).fileHeaders.contents.resolve(configuration(output: output))
+            return try configuration(output: output).fileHeaders.contents.resolve(
+                configuration(output: output))
         }
     }
 
-    public func documentationCopyright(output: Command.Output) throws -> [LocalizationIdentifier: StrictString] {
+    public func documentationCopyright(output: Command.Output) throws -> [LocalizationIdentifier:
+        StrictString]
+    {
         return try cached(in: &configurationCache.documentationCopyright) {
-            return try configuration(output: output).documentation.api.copyrightNotice.resolve(configuration(output: output))
+            return try configuration(output: output).documentation.api.copyrightNotice.resolve(
+                configuration(output: output))
         }
     }
 
     public func readMe(output: Command.Output) throws -> [LocalizationIdentifier: StrictString] {
         return try cached(in: &configurationCache.readMe) {
-            return try configuration(output: output).documentation.readMe.contents.resolve(configuration(output: output))
+            return try configuration(output: output).documentation.readMe.contents.resolve(
+                configuration(output: output))
         }
     }
 
-    public func contributingInstructions(output: Command.Output) throws -> [LocalizationIdentifier: Markdown] {
+    public func contributingInstructions(output: Command.Output) throws -> [LocalizationIdentifier:
+        Markdown]
+    {
         return try cached(in: &configurationCache.contributingInstructions) {
-            return try configuration(output: output).gitHub.contributingInstructions.resolve(configuration(output: output))
+            return try configuration(output: output).gitHub.contributingInstructions.resolve(
+                configuration(output: output))
         }
     }
 
-    public func issueTemplates(output: Command.Output) throws -> [LocalizationIdentifier: [IssueTemplate]] {
+    public func issueTemplates(output: Command.Output) throws -> [LocalizationIdentifier:
+        [IssueTemplate]]
+    {
         return try cached(in: &configurationCache.issueTemplates) {
-            return try configuration(output: output).gitHub.issueTemplates.resolve(configuration(output: output))
+            return try configuration(output: output).gitHub.issueTemplates.resolve(
+                configuration(output: output))
         }
     }
 
@@ -326,7 +350,9 @@ extension PackageRepository {
     public func sourceFiles(output: Command.Output) throws -> [URL] {
         let configuration = try self.configuration(output: output)
         let ignoredTypes = configuration.repository.ignoredFileTypes
-        let ignoredPaths = configuration.repository.ignoredPaths.map { location.appendingPathComponent($0) }
+        let ignoredPaths = configuration.repository.ignoredPaths.map {
+            location.appendingPathComponent($0)
+        }
 
         return try cached(in: &fileCache.sourceFiles) { () -> [URL] in
             return try trackedFiles(output: output).filter { url in
@@ -340,13 +366,17 @@ extension PackageRepository {
         }
     }
 
-    public func _withExampleCache(_ operation: () throws -> [StrictString: StrictString]) rethrows -> [StrictString: StrictString] {
+    public func _withExampleCache(_ operation: () throws -> [StrictString: StrictString]) rethrows
+        -> [StrictString: StrictString]
+    {
         return try cached(in: &fileCache.examples) {
             return try operation()
         }
     }
 
-    public func _withDocumentationCache(_ operation: () throws -> [StrictString: StrictString]) rethrows -> [StrictString: StrictString] {
+    public func _withDocumentationCache(_ operation: () throws -> [StrictString: StrictString])
+        rethrows -> [StrictString: StrictString]
+    {
         return try cached(in: &fileCache.documentation) {
             return try operation()
         }
@@ -357,20 +387,22 @@ extension PackageRepository {
     public func delete(_ location: URL, output: Command.Output) {
         if FileManager.default.fileExists(atPath: location.path, isDirectory: nil) {
 
-            output.print(UserFacingDynamic<StrictString, InterfaceLocalization, String>({ localization, path in
-                switch localization {
-                case .englishUnitedKingdom:
-                    return "Deleting ‘\(path)’..."
-                case .englishUnitedStates, .englishCanada:
-                    return "Deleting “\(path)”..."
-                case .deutschDeutschland:
-                    return "„\(path)“ wird gelöscht ..."
-                }
-            }).resolved(using: location.path(relativeTo: self.location)))
+            output.print(
+                UserFacingDynamic<StrictString, InterfaceLocalization, String>({
+                    localization, path in
+                    switch localization {
+                    case .englishUnitedKingdom:
+                        return "Deleting ‘\(path)’..."
+                    case .englishUnitedStates, .englishCanada:
+                        return "Deleting “\(path)”..."
+                    case .deutschDeutschland:
+                        return "„\(path)“ wird gelöscht ..."
+                    }
+                }).resolved(using: location.path(relativeTo: self.location)))
 
             try? FileManager.default.removeItem(at: location)
             if location.pathExtension == "swift" {
-                resetManifestCache(debugReason: location.lastPathComponent) // @exempt(from: tests) Nothing deletes Swift files yet.
+                resetManifestCache(debugReason: location.lastPathComponent)  // @exempt(from: tests) Nothing deletes Swift files yet.
             } else {
                 resetFileCache(debugReason: location.lastPathComponent)
             }
@@ -379,35 +411,41 @@ extension PackageRepository {
 
     // MARK: - Related Projects
 
-    private static let relatedProjectCache = FileManager.default.url(in: .cache, at: "Related Projects")
+    private static let relatedProjectCache = FileManager.default.url(
+        in: .cache, at: "Related Projects")
 
-    public static func relatedPackage(_ package: SDGSwift.Package, output: Command.Output) throws -> PackageRepository {
+    public static func relatedPackage(_ package: SDGSwift.Package, output: Command.Output) throws
+        -> PackageRepository
+    {
         let directoryName = StrictString(package.url.lastPathComponent)
         let cache = relatedProjectCache.appendingPathComponent(String(directoryName))
 
         let commit = try package.latestCommitIdentifier().get()
 
-        let repositoryLocation = cache.appendingPathComponent(commit).appendingPathComponent(String(directoryName))
+        let repositoryLocation = cache.appendingPathComponent(commit).appendingPathComponent(
+            String(directoryName))
 
         let repository: PackageRepository
         if (try? repositoryLocation.checkResourceIsReachable()) == true {
             repository = PackageRepository(at: repositoryLocation)
         } else {
-            try? FileManager.default.removeItem(at: cache) // Remove older commits.
+            try? FileManager.default.removeItem(at: cache)  // Remove older commits.
             do {
 
-                output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom: // @exempt(from: tests) To time consuming to rebuild cache for each localization.
-                        return "Fetching ‘\(package.url.lastPathComponent)’..."
-                    case .englishUnitedStates, .englishCanada:
-                        return "Fetching “\(package.url.lastPathComponent)”..."
-                    case .deutschDeutschland: // @exempt(from: tests)
-                        return "„\(package.url.lastPathComponent)“ wird abgerufen ..."
-                    }
-                }).resolved())
+                output.print(
+                    UserFacing<StrictString, InterfaceLocalization>({ localization in
+                        switch localization {
+                        case .englishUnitedKingdom:  // @exempt(from: tests) To time consuming to rebuild cache for each localization.
+                            return "Fetching ‘\(package.url.lastPathComponent)’..."
+                        case .englishUnitedStates, .englishCanada:
+                            return "Fetching “\(package.url.lastPathComponent)”..."
+                        case .deutschDeutschland:  // @exempt(from: tests)
+                            return "„\(package.url.lastPathComponent)“ wird abgerufen ..."
+                        }
+                    }).resolved())
 
-                repository = try PackageRepository.clone(package, to: repositoryLocation, at: .development, shallow: true).get()
+                repository = try PackageRepository.clone(
+                    package, to: repositoryLocation, at: .development, shallow: true).get()
             } catch {
                 // Clean up if there is a failure.
                 try? FileManager.default.removeItem(at: cache)
@@ -417,7 +455,8 @@ extension PackageRepository {
         }
 
         // Remove deprecated cache.
-        try? FileManager.default.removeItem(at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent(".Workspace"))
+        try? FileManager.default.removeItem(
+            at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent(".Workspace"))
         return repository
     }
 

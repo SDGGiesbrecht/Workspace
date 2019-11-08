@@ -19,7 +19,7 @@
 public typealias EintragZuVerwantdenProjekten = RelatedProjectEntry
 // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(RelatedProjectEntry)
 /// An entry for the related projects list.
-public enum RelatedProjectEntry : Decodable, Encodable {
+public enum RelatedProjectEntry: Decodable, Encodable {
 
     // MARK: - Cases
 
@@ -32,7 +32,9 @@ public enum RelatedProjectEntry : Decodable, Encodable {
     ///
     /// - Parameters:
     ///     - ressourcenzeiger: Der Ressourcenzeiger.
-    public static func projekt(ressourcenzeiger: EinheitlicherRessourcenzeiger) -> EintragZuVerwantdenProjekten {
+    public static func projekt(ressourcenzeiger: EinheitlicherRessourcenzeiger)
+        -> EintragZuVerwantdenProjekten
+    {
         return .project(url: ressourcenzeiger)
     }
 
@@ -46,18 +48,19 @@ public enum RelatedProjectEntry : Decodable, Encodable {
     /// - Parameters:
     ///     - text: Der Text.
     public static func überschrift(
-        text: [Lokalisationskennzeichen: StrengeZeichenkette]) -> EintragZuVerwantdenProjekten {
+        text: [Lokalisationskennzeichen: StrengeZeichenkette]
+    ) -> EintragZuVerwantdenProjekten {
         return .heading(text: text)
     }
 
-    private enum RelatedProjectEntryType : String, Codable {
+    private enum RelatedProjectEntryType: String, Codable {
         case project
         case heading
     }
 
     // MARK: - Encoding
 
-    private enum CodingKeys : CodingKey {
+    private enum CodingKeys: CodingKey {
         case type
         case details
     }
@@ -81,7 +84,10 @@ public enum RelatedProjectEntry : Decodable, Encodable {
         case .project:
             self = .project(url: try container.decode(URL.self, forKey: CodingKeys.details))
         case .heading:
-            self = .heading(text: try container.decode([LocalizationIdentifier: StrictString].self, forKey: CodingKeys.details))
+            self
+                = .heading(
+                    text: try container.decode(
+                        [LocalizationIdentifier: StrictString].self, forKey: CodingKeys.details))
         }
     }
 }

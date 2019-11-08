@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension Array where Element : StringFamily {
+extension Array where Element: StringFamily {
 
     // @localization(🇩🇪DE) @crossReference(Array.joinedAsLines())
     /// Verbindet ein Feld von Zeichenketten, damit jeder Eintrag des Felds zu eine Zeile der Zeichenkette wird.

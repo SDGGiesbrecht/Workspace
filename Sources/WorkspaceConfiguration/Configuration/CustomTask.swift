@@ -23,7 +23,7 @@ public typealias Sonderaufgabe = CustomTask
 /// A custom task.
 ///
 /// A custom task can be any executable vended as a Swift package. Exit code 0 must indicate that the project passes validation or that refreshment was successful. Any other exit code must indicate that the project fails validation or that the task itself failed. Output will be included in the log.
-public struct CustomTask : Decodable, Encodable {
+public struct CustomTask: Decodable, Encodable {
 
     // MARK: - Initialization
 
@@ -39,8 +39,11 @@ public struct CustomTask : Decodable, Encodable {
         ressourcenzeiger: EinheitlicherRessourcenzeiger,
         version ausgabe: Version,
         ausführbareDatei: StrengeZeichenkette,
-        argumente: [Zeichenkette] = []) {
-        self.init(url: ressourcenzeiger, version: ausgabe, executable: ausführbareDatei, arguments: argumente)
+        argumente: [Zeichenkette] = []
+    ) {
+        self.init(
+            url: ressourcenzeiger, version: ausgabe, executable: ausführbareDatei,
+            arguments: argumente)
     }
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     // @crossReference(CustomTask.init(url:version:executable:arguments:))
@@ -51,7 +54,9 @@ public struct CustomTask : Decodable, Encodable {
     ///     - release: The version of the Swift package defining the task.
     ///     - executable: The name of the executable for the task.
     ///     - arguments: Any arguments for the executable.
-    public init(url: URL, version release: Version, executable: StrictString, arguments: [String] = []) {
+    public init(
+        url: URL, version release: Version, executable: StrictString, arguments: [String] = []
+    ) {
         self.url = url
         self.version = release
         self.executable = executable

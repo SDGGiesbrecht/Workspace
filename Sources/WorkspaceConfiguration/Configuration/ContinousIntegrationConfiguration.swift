@@ -19,7 +19,7 @@
 public typealias EinstellungenFortlaufenderEinbindung = ContinuousIntegrationConfiguration
 // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ContinuousIntegrationConfiguration)
 /// Options related to continuous integration.
-public struct ContinuousIntegrationConfiguration : Codable {
+public struct ContinuousIntegrationConfiguration: Codable {
 
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     // @crossReference(ContinuousIntegrationConfiguration.manage)

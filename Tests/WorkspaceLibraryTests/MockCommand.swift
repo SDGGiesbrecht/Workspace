@@ -49,7 +49,7 @@ let mockOption = Option(
     name: UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-             .deutschDeutschland:
+            .deutschDeutschland:
             return "alternative"
         }
     }),

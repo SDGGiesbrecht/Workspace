@@ -19,7 +19,7 @@
 public typealias Lagerseinstellungen = RepositoryConfiguration
 // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(RepositoryConfiguration)
 /// Options related to the project repository.
-public struct RepositoryConfiguration : Codable {
+public struct RepositoryConfiguration: Codable {
 
     // @localization(🇩🇪DE) @crossReference(RepositoryConfiguration.ignoredFileTypes)
     /// Eine Menge von Dateinamenserweiterungen, die Quellverarbeitung übergehen soll.

@@ -19,7 +19,7 @@
 public typealias GitEinstellungen = GitConfiguration
 // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(GitConfiguration)
 /// Options related to Git.
-public struct GitConfiguration : Codable {
+public struct GitConfiguration: Codable {
 
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(GitConfiguration.manage)
     /// Whether or not to manage the project’s Git configuration files.

@@ -21,7 +21,7 @@ import SDGSwiftConfiguration
 public typealias Arbeitsbereichszusammenhang = WorkspaceContext
 // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(WorkspaceContext)
 /// External information about the project.
-public struct WorkspaceContext : Context {
+public struct WorkspaceContext: Context {
 
     // MARK: - Static Properties
 
@@ -36,7 +36,7 @@ public struct WorkspaceContext : Context {
     /// The context of the current project.
     public static var current: WorkspaceContext {
         get {
-            return _current ?? accept()! // @exempt(from: tests)
+            return _current ?? accept()!  // @exempt(from: tests)
         }
         set {
             _current = newValue

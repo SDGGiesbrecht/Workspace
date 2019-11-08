@@ -20,7 +20,7 @@ import WSGeneralImports
 import SwiftSyntax
 import SDGSwiftSource
 
-extension TupleTypeElementSyntax : Parameter {
+extension TupleTypeElementSyntax: Parameter {
     var firstName: TokenSyntax? {
         return name
     }

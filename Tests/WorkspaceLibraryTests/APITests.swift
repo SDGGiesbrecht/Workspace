@@ -22,13 +22,13 @@ import SDGExternalProcess
 import WorkspaceConfiguration
 import WSProject
 
-class APITests : TestCase {
+class APITests: TestCase {
 
     static var triggeredVersionChecks: Void?
     override func setUp() {
         super.setUp()
         Command.Output.testMode = true
-        PackageRepository.emptyRelatedProjectCache() // Make sure starting state is consistent.
+        PackageRepository.emptyRelatedProjectCache()  // Make sure starting state is consistent.
         CustomTask.emptyCache()
     }
 
@@ -58,11 +58,12 @@ class APITests : TestCase {
         configuration.licence.licence = .copyright
         configuration.documentation.api.yearFirstPublished = 2018
         let builtIn = configuration.fileHeaders.copyrightNotice
-        configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
-            var result = builtIn.resolve(configuration)
-            result["🇮🇱עב"] = "#dates"
-            return result
-        })
+        configuration.fileHeaders.copyrightNotice
+            = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
+                var result = builtIn.resolve(configuration)
+                result["🇮🇱עב"] = "#dates"
+                return result
+            })
         PackageRepository(mock: "AllTasks").test(
             commands: [
                 ["refresh"],
@@ -79,12 +80,16 @@ class APITests : TestCase {
 
     func testBadStyle() {
         let configuration = WorkspaceConfiguration()
-        let failing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: ["fail"])
+        let failing = CustomTask(
+            url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0),
+            executable: "Dependency", arguments: ["fail"])
         configuration.customProofreadingTasks.append(failing)
-        PackageRepository(mock: "BadStyle").test(commands: [
-            ["proofread"],
-            ["proofread", "•xcode"]
-            ], configuration: configuration, localizations: InterfaceLocalization.self, withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
+        PackageRepository(mock: "BadStyle").test(
+            commands: [
+                ["proofread"],
+                ["proofread", "•xcode"]
+            ], configuration: configuration, localizations: InterfaceLocalization.self,
+            withCustomTask: true, overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testBrokenExample() {
@@ -106,7 +111,9 @@ class APITests : TestCase {
     }
 
     func testCheckedInDocumentation() throws {
-        var output = try mockCommand.withRootBehaviour().execute(with: ["export‐interface", "•language", "en"]).get()
+        var output = try mockCommand.withRootBehaviour().execute(with: [
+            "export‐interface", "•language", "en"
+        ]).get()
         // macOS & Linux have different JSON whitespace.
         output.scalars.replaceMatches(
             for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
@@ -114,7 +121,9 @@ class APITests : TestCase {
         try output.save(
             to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
                 .appendingPathComponent("Resources/Tool/English.txt"))
-        output = try mockCommand.withRootBehaviour().execute(with: ["export‐interface", "•language", "de"]).get()
+        output = try mockCommand.withRootBehaviour().execute(with: [
+            "export‐interface", "•language", "de"
+        ]).get()
         // macOS & Linux have different JSON whitespace.
         output.scalars.replaceMatches(
             for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
@@ -130,7 +139,8 @@ class APITests : TestCase {
         configuration.documentation.api.enforceCoverage = false
         configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "🇩🇪DE", "zxx"]
         configuration.documentation.api.generate = true
-        configuration.documentation.about["🇨🇦EN"] = "Stuff about the creators...\n\n...and more stuff..."
+        configuration.documentation.about["🇨🇦EN"]
+            = "Stuff about the creators...\n\n...and more stuff..."
         configuration.documentation.about["🇺🇸EN"] = ""
         configuration.documentation.api.yearFirstPublished = 2018
         configuration.documentation.api.ignoredDependencies.remove("Swift")
@@ -145,11 +155,12 @@ class APITests : TestCase {
             .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
         ]
         let builtIn = configuration.fileHeaders.copyrightNotice
-        configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
-            var result = builtIn.resolve(configuration)
-            result["zxx"] = "#dates"
-            return result
-        })
+        configuration.fileHeaders.copyrightNotice
+            = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
+                var result = builtIn.resolve(configuration)
+                result["zxx"] = "#dates"
+                return result
+            })
         configuration.provideWorkflowScripts = false
         PackageRepository(mock: "CheckedInDocumentation").test(
             commands: [
@@ -173,31 +184,42 @@ class APITests : TestCase {
 
         configuration.fortlaufenderEinbindung.verwalten = false
         XCTAssertFalse(configuration.fortlaufenderEinbindung.verwalten)
-        configuration.fortlaufenderEinbindung.auserhalbFortlaufenderEinbindungSimulatorÜberspringen = true
-        XCTAssert(configuration.fortlaufenderEinbindung.auserhalbFortlaufenderEinbindungSimulatorÜberspringen)
-        configuration.customRefreshmentTasks.append(Sonderaufgabe(
-            ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "domain.tld")!,
-            version: Version(1, 0),
-            ausführbareDatei: "werkzeug",
-            argumente: ["argument"]))
+        configuration.fortlaufenderEinbindung.auserhalbFortlaufenderEinbindungSimulatorÜberspringen
+            = true
+        XCTAssert(
+            configuration.fortlaufenderEinbindung
+                .auserhalbFortlaufenderEinbindungSimulatorÜberspringen)
+        configuration.customRefreshmentTasks.append(
+            Sonderaufgabe(
+                ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "domain.tld")!,
+                version: Version(1, 0),
+                ausführbareDatei: "werkzeug",
+                argumente: ["argument"]))
         XCTAssertEqual(configuration.customRefreshmentTasks.last?.version.major, 1)
         configuration.dokumentation.programmierschnittstelle.erstellen = false
         XCTAssertFalse(configuration.dokumentation.programmierschnittstelle.erstellen)
         configuration.dokumentation.programmierschnittstelle.abdeckungErzwingen = false
         XCTAssertFalse(configuration.dokumentation.programmierschnittstelle.abdeckungErzwingen)
         configuration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 1
-        XCTAssertEqual(configuration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung, 1)
-        configuration.dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk = BequemeEinstellung(auswerten: { _ in [:] })
+        XCTAssertEqual(
+            configuration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung, 1)
+        configuration.dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk
+            = BequemeEinstellung(auswerten: { _ in [:] })
         XCTAssertEqual(
             configuration.dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk
                 .auswerten(configuration),
             [:])
-        configuration.dokumentation.programmierschnittstelle.verschlüsselterTravisCIVerteilungsschlüssel = ""
+        configuration.dokumentation.programmierschnittstelle
+            .verschlüsselterTravisCIVerteilungsschlüssel = ""
         XCTAssertEqual(
-            configuration.dokumentation.programmierschnittstelle.verschlüsselterTravisCIVerteilungsschlüssel,
+            configuration.dokumentation.programmierschnittstelle
+                .verschlüsselterTravisCIVerteilungsschlüssel,
             "")
-        configuration.dokumentation.programmierschnittstelle.übergegangeneAbhängigkeiten.insert("...")
-        XCTAssert(configuration.dokumentation.programmierschnittstelle.übergegangeneAbhängigkeiten.contains("..."))
+        configuration.dokumentation.programmierschnittstelle.übergegangeneAbhängigkeiten.insert(
+            "...")
+        XCTAssert(
+            configuration.dokumentation.programmierschnittstelle.übergegangeneAbhängigkeiten
+                .contains("..."))
         configuration.dokumentation.localisations = ["und"]
         XCTAssertEqual(configuration.dokumentation.localisations, ["und"])
         configuration.dokumentation.lokalisationen = ["zxx"]
@@ -205,22 +227,30 @@ class APITests : TestCase {
         configuration.dokumentation.aktuelleVersion = Version(1, 0)
         XCTAssertEqual(configuration.dokumentation.aktuelleVersion, Version(1, 0))
         configuration.dokumentation.projektSeite = EinheitlicherRessourcenzeiger(string: "seite.de")
-        XCTAssertEqual(configuration.dokumentation.projektSeite, EinheitlicherRessourcenzeiger(string: "seite.de"))
-        configuration.dokumentation.dokumentationsRessourcenzeiger = EinheitlicherRessourcenzeiger(
-            string: "dokumentation.de")
+        XCTAssertEqual(
+            configuration.dokumentation.projektSeite,
+            EinheitlicherRessourcenzeiger(string: "seite.de"))
+        configuration.dokumentation.dokumentationsRessourcenzeiger
+            = EinheitlicherRessourcenzeiger(
+                string: "dokumentation.de")
         XCTAssertEqual(
             configuration.dokumentation.dokumentationsRessourcenzeiger,
             EinheitlicherRessourcenzeiger(string: "dokumentation.de"))
-        configuration.dokumentation.lagerRessourcenzeiger = EinheitlicherRessourcenzeiger(string: "lager.de")
+        configuration.dokumentation.lagerRessourcenzeiger
+            = EinheitlicherRessourcenzeiger(string: "lager.de")
         XCTAssertEqual(
             configuration.dokumentation.lagerRessourcenzeiger,
             EinheitlicherRessourcenzeiger(string: "lager.de"))
         configuration.dokumentation.hauptautor = "Autor"
         XCTAssertEqual(configuration.dokumentation.hauptautor, "Autor")
-        configuration.dokumentation.installationsanleitungen = BequemeEinstellung(auswerten: { _ in [:] })
-        XCTAssertEqual(configuration.dokumentation.installationsanleitungen.auswerten(configuration), [:])
-        configuration.dokumentation.einführungsanleitungen = BequemeEinstellung(auswerten: { _ in [:] })
-        XCTAssertEqual(configuration.dokumentation.einführungsanleitungen.auswerten(configuration), [:])
+        configuration.dokumentation.installationsanleitungen
+            = BequemeEinstellung(auswerten: { _ in [:] })
+        XCTAssertEqual(
+            configuration.dokumentation.installationsanleitungen.auswerten(configuration), [:])
+        configuration.dokumentation.einführungsanleitungen
+            = BequemeEinstellung(auswerten: { _ in [:] })
+        XCTAssertEqual(
+            configuration.dokumentation.einführungsanleitungen.auswerten(configuration), [:])
         configuration.dokumentation.über = ["zxx": "..."]
         XCTAssertEqual(configuration.dokumentation.über, ["zxx": "..."])
         configuration.dokumentation.verwandteProjekte = []
@@ -247,8 +277,10 @@ class APITests : TestCase {
         XCTAssertFalse(falsch)
         configuration.dateiVorspänne.verwalten = true
         XCTAssert(configuration.dateiVorspänne.verwalten)
-        configuration.dateiVorspänne.urheberrechtshinweis = BequemeEinstellung(auswerten: { _ in [:] })
-        XCTAssertNil(configuration.dateiVorspänne.urheberrechtshinweis.auswerten(configuration)["de"])
+        configuration.dateiVorspänne.urheberrechtshinweis
+            = BequemeEinstellung(auswerten: { _ in [:] })
+        XCTAssertNil(
+            configuration.dateiVorspänne.urheberrechtshinweis.auswerten(configuration)["de"])
         configuration.dateiVorspänne.inhalt = BequemeEinstellung(auswerten: { _ in "" })
         XCTAssertEqual(configuration.dateiVorspänne.inhalt.auswerten(configuration), "")
         configuration.git.verwalten = true
@@ -301,8 +333,10 @@ class APITests : TestCase {
     func testConfiguartionContext() {
         let context = WorkspaceContext(
             _location: URL(string: "site.tld")!,
-            manifest: PackageManifest(_packageName: "Package", products: [
-                PackageManifest.Product(_name: "Product", type: .library, modules: ["Module"])
+            manifest: PackageManifest(
+                _packageName: "Package",
+                products: [
+                    PackageManifest.Product(_name: "Product", type: .library, modules: ["Module"])
                 ]))
         XCTAssertEqual(context.standort, URL(string: "site.tld")!)
         XCTAssertEqual(context.ladeliste.paketenName, "Package")
@@ -342,7 +376,9 @@ class APITests : TestCase {
         configuration.licence.manage = true
         configuration.licence.licence = .gnuGeneralPublic3_0
         configuration.fileHeaders.manage = true
-        let passing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: [])
+        let passing = CustomTask(
+            url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0),
+            executable: "Dependency", arguments: [])
         configuration.customProofreadingTasks.append(passing)
         PackageRepository(mock: "CustomProofread").test(
             commands: [
@@ -360,17 +396,20 @@ class APITests : TestCase {
     func testCustomReadMe() {
         let configuration = WorkspaceConfiguration()
         configuration.documentation.currentVersion = Version(1, 2, 3)
-        configuration.documentation.repositoryURL = URL(string: "https://github.com/User/Repository")!
+        configuration.documentation.repositoryURL = URL(
+            string: "https://github.com/User/Repository")!
         configuration.documentation.localizations = ["en"]
-        configuration.documentation.installationInstructions = Lazy(resolve: { configuration in
-            return [
-                "en": StrictString([
-                    "## Installation",
-                    "",
-                    "Build from source at tag `\(configuration.documentation.currentVersion!.string())` of `\(configuration.documentation.repositoryURL!.absoluteString)`."
-                    ].joinedAsLines())
-            ]
-        })
+        configuration.documentation.installationInstructions
+            = Lazy(resolve: { configuration in
+                return [
+                    "en": StrictString(
+                        [
+                            "## Installation",
+                            "",
+                            "Build from source at tag `\(configuration.documentation.currentVersion!.string())` of `\(configuration.documentation.repositoryURL!.absoluteString)`."
+                        ].joinedAsLines())
+                ]
+            })
         configuration.licence.manage = true
         configuration.licence.licence = .unlicense
         configuration.fileHeaders.manage = true
@@ -388,7 +427,9 @@ class APITests : TestCase {
     func testCustomTasks() {
         let configuration = WorkspaceConfiguration()
         configuration.optimizeForTests()
-        let passing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: [])
+        let passing = CustomTask(
+            url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0),
+            executable: "Dependency", arguments: [])
         configuration.customRefreshmentTasks.append(passing)
         configuration.customValidationTasks.append(passing)
         configuration.provideWorkflowScripts = false
@@ -412,7 +453,8 @@ class APITests : TestCase {
             version: Version(1, 0),
             ausführbareDatei: "werkzeug")
         aufgabe.ressourcenzeiger = EinheitlicherRessourcenzeiger(string: "other.tld")!
-        XCTAssertEqual(aufgabe.ressourcenzeiger, EinheitlicherRessourcenzeiger(string: "other.tld")!)
+        XCTAssertEqual(
+            aufgabe.ressourcenzeiger, EinheitlicherRessourcenzeiger(string: "other.tld")!)
         aufgabe.version = Version(2, 0)
         XCTAssertEqual(aufgabe.version, Version(2, 0))
         aufgabe.ausführbareDatei = "andere"
@@ -449,7 +491,9 @@ class APITests : TestCase {
     }
 
     func testDeutsch() throws {
-        var output = try mockCommand.withRootBehaviour().execute(with: ["export‐interface", "•language", "de"]).get()
+        var output = try mockCommand.withRootBehaviour().execute(with: [
+            "export‐interface", "•language", "de"
+        ]).get()
         // macOS & Linux have different JSON whitespace.
         output.scalars.replaceMatches(
             for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
@@ -462,7 +506,8 @@ class APITests : TestCase {
         konfiguration.optimizeForTests()
         konfiguration.dokumentation.lokalisationen = ["de"]
         konfiguration.dokumentation.programmierschnittstelle.erstellen = true
-        konfiguration.dokumentation.programmierschnittstelle.verschlüsselterTravisCIVerteilungsschlüssel = "..."
+        konfiguration.dokumentation.programmierschnittstelle
+            .verschlüsselterTravisCIVerteilungsschlüssel = "..."
         konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2000
         var commands: [[StrictString]] = [
             ["auffrischen", "skripte"],
@@ -476,7 +521,7 @@ class APITests : TestCase {
             ["dokumentieren"]
         ]
         #if !os(Linux)
-        commands.append(["auffrischen", "xcode"])
+            commands.append(["auffrischen", "xcode"])
         #endif
         PackageRepository(mock: "Deutsch").test(
             commands: commands,
@@ -506,7 +551,9 @@ class APITests : TestCase {
 
     func testFailingCustomTasks() {
         let configuration = WorkspaceConfiguration()
-        let failing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: ["fail"])
+        let failing = CustomTask(
+            url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0),
+            executable: "Dependency", arguments: ["fail"])
         configuration.customRefreshmentTasks.append(failing)
         configuration.provideWorkflowScripts = false
         configuration.proofreading.rules = []
@@ -526,7 +573,9 @@ class APITests : TestCase {
     func testFailingCustomValidation() {
         let configuration = WorkspaceConfiguration()
         configuration.optimizeForTests()
-        let failing = CustomTask(url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0), executable: "Dependency", arguments: ["fail"])
+        let failing = CustomTask(
+            url: URL(string: "file:///tmp/Developer/Dependency")!, version: Version(1, 0, 0),
+            executable: "Dependency", arguments: ["fail"])
         configuration.customValidationTasks.append(failing)
         configuration.provideWorkflowScripts = false
         configuration.proofreading.rules = []
@@ -566,7 +615,11 @@ class APITests : TestCase {
         // Attempt to remove existing derived data so that the build is clean.
         // Otherwise Xcode skips the build stages where the awaited warnings occur.
         do {
-            for url in try FileManager.default.contentsOfDirectory(at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent("Library/Developer/Xcode/DerivedData"), includingPropertiesForKeys: nil, options: []) {
+            for url in try FileManager.default.contentsOfDirectory(
+                at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent(
+                    "Library/Developer/Xcode/DerivedData"), includingPropertiesForKeys: nil,
+                options: [])
+            {
                 if url.lastPathComponent.contains("FailingTests") {
                     try? FileManager.default.removeItem(at: url)
                 }
@@ -599,24 +652,59 @@ class APITests : TestCase {
     }
 
     func testHelp() throws {
-        testCommand(Workspace.command, with: ["help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace)", overwriteSpecificationInsteadOfFailing: false)
-        testCommand(Workspace.command, with: ["proofread", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace proofread)", overwriteSpecificationInsteadOfFailing: false)
-        #if os(Linux) // Linux has no “xcode” subcommand, causing spec mis‐match.
-        for localization in InterfaceLocalization.allCases {
-            try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-                _ = try Workspace.command.execute(with: ["refresh", "help"])
+        testCommand(
+            Workspace.command, with: ["help"], localizations: InterfaceLocalization.self,
+            uniqueTestName: "Help (workspace)", overwriteSpecificationInsteadOfFailing: false)
+        testCommand(
+            Workspace.command, with: ["proofread", "help"],
+            localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace proofread)",
+            overwriteSpecificationInsteadOfFailing: false)
+        #if os(Linux)  // Linux has no “xcode” subcommand, causing spec mis‐match.
+            for localization in InterfaceLocalization.allCases {
+                try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+                    _ = try Workspace.command.execute(with: ["refresh", "help"])
+                }
             }
-        }
         #else
-        testCommand(Workspace.command, with: ["refresh", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace refresh)", overwriteSpecificationInsteadOfFailing: false)
+            testCommand(
+                Workspace.command, with: ["refresh", "help"],
+                localizations: InterfaceLocalization.self,
+                uniqueTestName: "Help (workspace refresh)",
+                overwriteSpecificationInsteadOfFailing: false)
         #endif
-        testCommand(Workspace.command, with: ["validate", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace validate)", overwriteSpecificationInsteadOfFailing: false)
-        testCommand(Workspace.command, with: ["document", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace document)", overwriteSpecificationInsteadOfFailing: false)
-        testCommand(Workspace.command, with: ["refresh", "continuous‐integration", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace refresh continuous‐integration)", overwriteSpecificationInsteadOfFailing: false)
-        testCommand(Workspace.command, with: ["refresh", "examples", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace refresh examples)", overwriteSpecificationInsteadOfFailing: false)
-        testCommand(Workspace.command, with: ["refresh", "inherited‐documentation", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace refresh inherited‐documentation)", overwriteSpecificationInsteadOfFailing: false)
-        testCommand(Workspace.command, with: ["refresh", "resources", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace refresh resources)", overwriteSpecificationInsteadOfFailing: false)
-        testCommand(Workspace.command, with: ["refresh", "scripts", "help"], localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace refresh scripts)", overwriteSpecificationInsteadOfFailing: false)
+        testCommand(
+            Workspace.command, with: ["validate", "help"],
+            localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace validate)",
+            overwriteSpecificationInsteadOfFailing: false)
+        testCommand(
+            Workspace.command, with: ["document", "help"],
+            localizations: InterfaceLocalization.self, uniqueTestName: "Help (workspace document)",
+            overwriteSpecificationInsteadOfFailing: false)
+        testCommand(
+            Workspace.command, with: ["refresh", "continuous‐integration", "help"],
+            localizations: InterfaceLocalization.self,
+            uniqueTestName: "Help (workspace refresh continuous‐integration)",
+            overwriteSpecificationInsteadOfFailing: false)
+        testCommand(
+            Workspace.command, with: ["refresh", "examples", "help"],
+            localizations: InterfaceLocalization.self,
+            uniqueTestName: "Help (workspace refresh examples)",
+            overwriteSpecificationInsteadOfFailing: false)
+        testCommand(
+            Workspace.command, with: ["refresh", "inherited‐documentation", "help"],
+            localizations: InterfaceLocalization.self,
+            uniqueTestName: "Help (workspace refresh inherited‐documentation)",
+            overwriteSpecificationInsteadOfFailing: false)
+        testCommand(
+            Workspace.command, with: ["refresh", "resources", "help"],
+            localizations: InterfaceLocalization.self,
+            uniqueTestName: "Help (workspace refresh resources)",
+            overwriteSpecificationInsteadOfFailing: false)
+        testCommand(
+            Workspace.command, with: ["refresh", "scripts", "help"],
+            localizations: InterfaceLocalization.self,
+            uniqueTestName: "Help (workspace refresh scripts)",
+            overwriteSpecificationInsteadOfFailing: false)
     }
 
     func testInvalidResourceDirectory() {
@@ -672,9 +760,15 @@ class APITests : TestCase {
         dictionary["🇬🇧EN"] = false
         XCTAssertEqual(dictionary[ContentLocalization.englishUnitedKingdom], false)
 
-        testCustomStringConvertibleConformance(of: LocalizationIdentifier("en"), localizations: FastTestLocalization.self, uniqueTestName: "English", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: LocalizationIdentifier("cmn"), localizations: FastTestLocalization.self, uniqueTestName: "Mandarin", overwriteSpecificationInsteadOfFailing: false)
-        testCustomStringConvertibleConformance(of: LocalizationIdentifier("zxx"), localizations: FastTestLocalization.self, uniqueTestName: "Unknown", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(
+            of: LocalizationIdentifier("en"), localizations: FastTestLocalization.self,
+            uniqueTestName: "English", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(
+            of: LocalizationIdentifier("cmn"), localizations: FastTestLocalization.self,
+            uniqueTestName: "Mandarin", overwriteSpecificationInsteadOfFailing: false)
+        testCustomStringConvertibleConformance(
+            of: LocalizationIdentifier("zxx"), localizations: FastTestLocalization.self,
+            uniqueTestName: "Unknown", overwriteSpecificationInsteadOfFailing: false)
 
         var identifier = LocalizationIdentifier("zxx")
         identifier.kennzeichen = "de"
@@ -812,18 +906,21 @@ class APITests : TestCase {
         configuration.xcode.manage = true
         configuration.documentation.currentVersion = Version(0, 1, 0)
         configuration.documentation.repositoryURL = URL(string: "http://example.com")!
-        configuration.documentation.localizations = ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"]
+        configuration.documentation.localizations = [
+            "🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"
+        ]
         configuration.documentation.api.yearFirstPublished = 2018
         configuration.gitHub.developmentNotes = "..."
         let builtIn = configuration.fileHeaders.copyrightNotice
-        configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
-            var result = builtIn.resolve(configuration)
-            result["🇫🇷FR"] = "#dates"
-            result["🇬🇷ΕΛ"] = "#dates"
-            result["🇮🇱עב"] = "#dates"
-            result["zxx"] = "#dates"
-            return result
-        })
+        configuration.fileHeaders.copyrightNotice
+            = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
+                var result = builtIn.resolve(configuration)
+                result["🇫🇷FR"] = "#dates"
+                result["🇬🇷ΕΛ"] = "#dates"
+                result["🇮🇱עב"] = "#dates"
+                result["zxx"] = "#dates"
+                return result
+            })
         PackageRepository(mock: "PartialReadMe").test(
             commands: [
                 ["refresh", "read‐me"],
@@ -858,7 +955,8 @@ class APITests : TestCase {
     }
 
     func testRelatedProject() {
-        var project = RelatedProjectEntry.projekt(ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "seite.de")!)
+        var project = RelatedProjectEntry.projekt(
+            ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "seite.de")!)
         project = RelatedProjectEntry.überschrift(text: [:])
         _ = project
     }
@@ -869,14 +967,17 @@ class APITests : TestCase {
         configuration.optimizeForTests()
         configuration.licence.licence = .apache2_0
         configuration.documentation.currentVersion = Version(1, 0, 0)
-        configuration.documentation.projectWebsite = URL(string: "https://example.github.io/SDG/SDG")!
+        configuration.documentation.projectWebsite = URL(
+            string: "https://example.github.io/SDG/SDG")!
         configuration.documentation.documentationURL = URL(string: "https://example.github.io/SDG")!
         configuration.documentation.repositoryURL = URL(string: "https://github.com/JohnDoe/SDG")!
         configuration.documentation.primaryAuthor = "John Doe"
         configuration.documentation.api.yearFirstPublished = 2017
         configuration.documentation.api.encryptedTravisCIDeploymentKey = "0123456789abcdef"
         configuration.gitHub.administrators = ["John Doe", "Jane Doe"]
-        configuration.documentation.localizations = ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"]
+        configuration.documentation.localizations = [
+            "🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"
+        ]
         for localization in configuration.documentation.localizations {
             configuration.documentation.about[localization] = "..."
         }
@@ -885,18 +986,21 @@ class APITests : TestCase {
             .heading(text: ["🇨🇦EN": "Heading"]),
             .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
         ]
-        configuration.testing.exemptionTokens.insert(TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
-        configuration.testing.exemptionTokens.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
+        configuration.testing.exemptionTokens.insert(
+            TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
+        configuration.testing.exemptionTokens.insert(
+            TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
 
         let builtIn = configuration.fileHeaders.copyrightNotice
-        configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
-            var result = builtIn.resolve(configuration)
-            result["🇫🇷FR"] = "#dates"
-            result["🇬🇷ΕΛ"] = "#dates"
-            result["🇮🇱עב"] = "#dates"
-            result["zxx"] = "#dates"
-            return result
-        })
+        configuration.fileHeaders.copyrightNotice
+            = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
+                var result = builtIn.resolve(configuration)
+                result["🇫🇷FR"] = "#dates"
+                result["🇬🇷ΕΛ"] = "#dates"
+                result["🇮🇱עב"] = "#dates"
+                result["zxx"] = "#dates"
+                return result
+            })
         var commands: [[StrictString]] = [
             ["refresh", "scripts"],
             ["refresh", "git"],
@@ -911,7 +1015,7 @@ class APITests : TestCase {
             ["normalize"]
         ]
         #if !os(Linux)
-        commands.append(["refresh", "xcode"])
+            commands.append(["refresh", "xcode"])
         #endif
         commands.append(contentsOf: [
             ["proofread"],
@@ -922,7 +1026,7 @@ class APITests : TestCase {
 
             ["proofread", "•xcode"],
             ["validate"]
-            ])
+        ])
         PackageRepository(mock: "SDGLibrary").test(
             commands: commands,
             configuration: configuration,
@@ -940,14 +1044,17 @@ class APITests : TestCase {
         configuration.supportedPlatforms.remove(.tvOS)
         configuration.licence.licence = .apache2_0
         configuration.documentation.currentVersion = Version(1, 0, 0)
-        configuration.documentation.projectWebsite = URL(string: "https://example.github.io/SDG/SDG")!
+        configuration.documentation.projectWebsite = URL(
+            string: "https://example.github.io/SDG/SDG")!
         configuration.documentation.documentationURL = URL(string: "https://example.github.io/SDG")!
         configuration.documentation.repositoryURL = URL(string: "https://github.com/JohnDoe/SDG")!
         configuration.documentation.primaryAuthor = "John Doe"
         configuration.documentation.api.yearFirstPublished = 2017
         configuration.documentation.api.encryptedTravisCIDeploymentKey = "0123456789abcdef"
         configuration.gitHub.administrators = ["John Doe"]
-        configuration.documentation.localizations = ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"]
+        configuration.documentation.localizations = [
+            "🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"
+        ]
         for localization in configuration.documentation.localizations {
             configuration.documentation.about[localization] = "..."
         }
@@ -955,18 +1062,21 @@ class APITests : TestCase {
         configuration.documentation.relatedProjects = [
             .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
         ]
-        configuration.testing.exemptionTokens.insert(TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
-        configuration.testing.exemptionTokens.insert(TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
+        configuration.testing.exemptionTokens.insert(
+            TestCoverageExemptionToken("customSameLineToken", scope: .sameLine))
+        configuration.testing.exemptionTokens.insert(
+            TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine))
 
         let builtIn = configuration.fileHeaders.copyrightNotice
-        configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
-            var result = builtIn.resolve(configuration)
-            result["🇫🇷FR"] = "#dates"
-            result["🇬🇷ΕΛ"] = "#dates"
-            result["🇮🇱עב"] = "#dates"
-            result["zxx"] = "#dates"
-            return result
-        })
+        configuration.fileHeaders.copyrightNotice
+            = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
+                var result = builtIn.resolve(configuration)
+                result["🇫🇷FR"] = "#dates"
+                result["🇬🇷ΕΛ"] = "#dates"
+                result["🇮🇱עב"] = "#dates"
+                result["zxx"] = "#dates"
+                return result
+            })
         var commands: [[StrictString]] = [
             ["refresh", "scripts"],
             ["refresh", "git"],
@@ -981,7 +1091,7 @@ class APITests : TestCase {
             ["normalize"]
         ]
         #if !os(Linux)
-        commands.append(["refresh", "xcode"])
+            commands.append(["refresh", "xcode"])
         #endif
         commands.append(contentsOf: [
             ["proofread"],
@@ -991,7 +1101,7 @@ class APITests : TestCase {
             ["validate", "documentation‐coverage"],
 
             ["proofread", "•xcode"]
-            ])
+        ])
         PackageRepository(mock: "SDGTool").test(
             commands: commands,
             configuration: configuration,

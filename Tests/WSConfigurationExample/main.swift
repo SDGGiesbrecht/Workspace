@@ -21,7 +21,7 @@ import WorkspaceConfiguration
  Exernal packages can be imported with this syntax:
  import [module] // [url], [version], [product]
  */
-import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
+import SDGControlFlow  // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
 
 let configuration = WorkspaceConfiguration()
 configuration.optIntoAllTasks()
@@ -36,7 +36,7 @@ import WorkspaceConfiguration
  Externe Pakete sind mit dieser Syntax einführbar:
  import [Modul] // [Ressourcenzeiger], [Version], [Produkt]
  */
-import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
+import SDGControlFlow  // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
 
 let konfiguration = ArbeitsbereichKonfiguration()
 konfiguration.alleAufgabenEinschalten()

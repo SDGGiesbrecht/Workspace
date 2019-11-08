@@ -21,7 +21,7 @@ extension PackageManifest {
     public typealias Produkt = Product
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Product)
     /// A product of a package.
-    public struct Product : Codable {
+    public struct Product: Codable {
 
         // MARK: - Initialization
 

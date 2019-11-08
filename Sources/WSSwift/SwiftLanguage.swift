@@ -109,9 +109,8 @@ public enum SwiftLanguage {
         return result
     }()
 
-    private static let casedLetters =
-        CharacterSet.lowercaseLetters
-        ∪ CharacterSet.uppercaseLetters // Includes titlecase.
+    private static let casedLetters = CharacterSet.lowercaseLetters
+        ∪ CharacterSet.uppercaseLetters  // Includes titlecase.
 
     // MARK: - Generating
 
@@ -121,18 +120,25 @@ public enum SwiftLanguage {
         switch casing {
         case .variable:
             // Lowercase first word/acronym.
-            if let match = identifier.firstMatch(for: RepetitionPattern(ConditionalPattern({ $0 ∉ CharacterSet.lowercaseLetters }))),
-                match.range.lowerBound == identifier.startIndex {
+            if let match = identifier.firstMatch(
+                for: RepetitionPattern(ConditionalPattern({ $0 ∉ CharacterSet.lowercaseLetters }))),
+                match.range.lowerBound == identifier.startIndex
+            {
 
-                identifier.replaceSubrange(match.range, with: String(StrictString(match.contents)).lowercased().scalars)
+                identifier.replaceSubrange(
+                    match.range, with: String(StrictString(match.contents)).lowercased().scalars)
             }
         case .type:
             // Uppercase first letter.
-            identifier.replaceSubrange(identifier.startIndex ... identifier.startIndex, with: "\(identifier[identifier.startIndex])".uppercased().scalars)
+            identifier.replaceSubrange(
+                identifier.startIndex ... identifier.startIndex,
+                with: "\(identifier[identifier.startIndex])".uppercased().scalars)
         }
 
         // Replace disallowed characters.
-        identifier.replaceMatches(for: ConditionalPattern({ $0 ∉ SwiftLanguage.allowedIdentifierCharacters }), with: "_".scalars)
+        identifier.replaceMatches(
+            for: ConditionalPattern({ $0 ∉ SwiftLanguage.allowedIdentifierCharacters }),
+            with: "_".scalars)
 
         // Replace underscores with camel case where legible.
         var scalarArray = Array(identifier.scalars)
@@ -146,16 +152,19 @@ public enum SwiftLanguage {
                 let after = index + 1
 
                 if before ≥ scalarArray.startIndex,
-                    after < scalarArray.endIndex {
+                    after < scalarArray.endIndex
+                {
 
                     let scalarBefore = scalarArray[before]
                     let scalarAfter = scalarArray[after]
 
                     if (scalarBefore ∈ SwiftLanguage.casedLetters ∨ scalarBefore == "_")
-                        ∨ (scalarAfter ∈ SwiftLanguage.casedLetters ∨ scalarBefore == "_") {
+                        ∨ (scalarAfter ∈ SwiftLanguage.casedLetters ∨ scalarBefore == "_")
+                    {
                         // Would otherwise need separation for legibility.
 
-                        scalarArray.replaceSubrange(after ... after, with: "\(scalarAfter)".uppercased().scalars)
+                        scalarArray.replaceSubrange(
+                            after ... after, with: "\(scalarAfter)".uppercased().scalars)
                         scalarArray.remove(at: index)
                         index −= 1
                     }
@@ -172,7 +181,8 @@ public enum SwiftLanguage {
         // Push disallowed starters away from start.
         if let first = identifier.first,
             first ∈ SwiftLanguage.allowedIdentifierCharacters,
-            first ∉ SwiftLanguage.allowedIdentifierStarters {
+            first ∉ SwiftLanguage.allowedIdentifierStarters
+        {
             identifier.prepend("_")
         }
 

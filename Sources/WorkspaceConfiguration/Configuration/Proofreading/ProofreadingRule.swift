@@ -21,7 +21,7 @@ import SDGControlFlow
 public typealias Korrekturregel = ProofreadingRule
 // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProofreadingRule)
 /// A proofreading rule.
-public enum ProofreadingRule : String, CaseIterable, Codable {
+public enum ProofreadingRule: String, CaseIterable, Codable {
 
     // MARK: - Cases
 
@@ -380,13 +380,13 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
             return .deprecation
 
         case .manualWarnings,
-             .missingImplementation,
-             .workaroundReminders:
+            .missingImplementation,
+            .workaroundReminders:
             return .intentional
 
         case .compatibilityCharacters,
-             .autoindentResilience,
-             .marks:
+            .autoindentResilience,
+            .marks:
             return .functionality
 
         case .syntaxColouring:
@@ -395,7 +395,8 @@ public enum ProofreadingRule : String, CaseIterable, Codable {
         case .unicode:
             return .textStyle
 
-        case .braceSpacing, .colonSpacing, .calloutCasing, .closureSignaturePosition, .parameterGrouping:
+        case .braceSpacing, .colonSpacing, .calloutCasing, .closureSignaturePosition,
+            .parameterGrouping:
             return .sourceCodeStyle
         }
     }

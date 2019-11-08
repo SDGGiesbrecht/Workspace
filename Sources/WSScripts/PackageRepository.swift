@@ -29,8 +29,11 @@ extension PackageRepository {
         for script in Script.allCases where script.isCheckedIn ∨ script.isRelevantOnCurrentDevice {
             try autoreleasepool {
 
-                var file = try TextFile(possiblyAt: location.appendingPathComponent(String(script.fileName)), executable: true)
-                file.contents.replaceSubrange(file.contents.startIndex ..< file.headerStart, with: String(script.shebang()))
+                var file = try TextFile(
+                    possiblyAt: location.appendingPathComponent(String(script.fileName)),
+                    executable: true)
+                file.contents.replaceSubrange(
+                    file.contents.startIndex ..< file.headerStart, with: String(script.shebang()))
                 file.header = file.header
                 file.body = String(try script.source(for: self, output: output))
                 try file.writeChanges(for: self, output: output)

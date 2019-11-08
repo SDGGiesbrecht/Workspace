@@ -22,10 +22,12 @@ public struct ValidationStatus {
 
     // MARK: - Static Properties
 
-    private static let passOrFailSymbol = UserFacingDynamic<StrictString, InterfaceLocalization, Bool>({ localization, passing in
+    private static let passOrFailSymbol = UserFacingDynamic<
+        StrictString, InterfaceLocalization, Bool
+    >({ localization, passing in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-             .deutschDeutschland:
+            .deutschDeutschland:
             return passing ? "✓" : "✗"
         }
     })
@@ -49,12 +51,16 @@ public struct ValidationStatus {
     }
 
     public mutating func passStep(message: UserFacing<StrictString, InterfaceLocalization>) {
-        summary.append((ValidationStatus.passOrFailSymbol.resolved(using: true) + " " + message.resolved()).formattedAsSuccess())
+        summary.append(
+            (ValidationStatus.passOrFailSymbol.resolved(using: true) + " " + message.resolved())
+                .formattedAsSuccess())
     }
 
     public mutating func failStep(message: UserFacing<StrictString, InterfaceLocalization>) {
         passing = false
-        summary.append((ValidationStatus.passOrFailSymbol.resolved(using: false) + " " + message.resolved()).formattedAsError())
+        summary.append(
+            (ValidationStatus.passOrFailSymbol.resolved(using: false) + " " + message.resolved())
+                .formattedAsError())
     }
 
     public var validatedSomething: Bool {
@@ -68,27 +74,29 @@ public struct ValidationStatus {
 
         let projectName: StrictString = try project.localizedIsolatedProjectName(output: output)
         if passing {
-            output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom:
-                    return "‘" + projectName + "’ passes validation."
-                case .englishUnitedStates, .englishCanada:
-                    return "“" + projectName + "” passes validation."
-                case .deutschDeutschland:
-                    return "„" + projectName + "“ besteht die Überprüfung."
-                }
-            }).resolved().formattedAsSuccess().separated())
+            output.print(
+                UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom:
+                        return "‘" + projectName + "’ passes validation."
+                    case .englishUnitedStates, .englishCanada:
+                        return "“" + projectName + "” passes validation."
+                    case .deutschDeutschland:
+                        return "„" + projectName + "“ besteht die Überprüfung."
+                    }
+                }).resolved().formattedAsSuccess().separated())
         } else {
-            throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom:
-                    return "‘" + projectName + "’ fails validation."
-                case .englishUnitedStates, .englishCanada:
-                    return "“" + projectName + "” fails validation."
-                case .deutschDeutschland:
-                    return "„" + projectName + "“ besteht die Überprüfung nicht."
-                }
-            }), exitCode: 2)
+            throw Command.Error(
+                description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom:
+                        return "‘" + projectName + "’ fails validation."
+                    case .englishUnitedStates, .englishCanada:
+                        return "“" + projectName + "” fails validation."
+                    case .deutschDeutschland:
+                        return "„" + projectName + "“ besteht die Überprüfung nicht."
+                    }
+                }), exitCode: 2)
         }
     }
 }

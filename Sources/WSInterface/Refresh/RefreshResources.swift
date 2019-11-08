@@ -31,16 +31,19 @@ extension Workspace.Refresh {
             }
         })
 
-        private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        private static let description = UserFacing<StrictString, InterfaceLocalization>({
+            localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "regenerates code providing access to the project’s resources."
             case .deutschDeutschland:
-                return "erstellt den Quelltext neu, der zugriff auf die Ressourcen des Projekts bereitstellt."
+                return
+                    "erstellt den Quelltext neu, der zugriff auf die Ressourcen des Projekts bereitstellt."
             }
         })
 
-        private static let discussion = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        private static let discussion = UserFacing<StrictString, InterfaceLocalization>({
+            localization in
             switch localization {
             case .englishUnitedKingdom:
                 return [
@@ -56,7 +59,7 @@ extension Workspace.Refresh {
                     "print(template)",
                     "",
                     "By default, files are embedded as ‘Data’, but some file extensions will be recognized and given a more specific Swift type (such as ‘.txt’ embedded as ‘String’).",
-                    ].joinedAsLines()
+                ].joinedAsLines()
             case .englishUnitedStates, .englishCanada:
                 return [
                     "Workspace can embed resources in Swift package targets.",
@@ -86,7 +89,7 @@ extension Workspace.Refresh {
                     "print(vorlage)",
                     "",
                     "Die meisten Dateien werden als „Data“ eingebaut, aber manche Dateinamenserweiterungen sind erkannt und werden als genaueren Typen eingebaut (z. B. „.txt“ als „String“).",
-                    ].joinedAsLines()
+                ].joinedAsLines()
             }
         })
 
@@ -98,16 +101,17 @@ extension Workspace.Refresh {
             options: Workspace.standardOptions,
             execution: { (_, options: Options, output: Command.Output) throws in
 
-            output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Refreshing resources..."
-                case .deutschDeutschland:
-                    return "Ressourcen werden aufgefrischt ..."
-                }
-            }).resolved().formattedAsSectionHeader())
+                output.print(
+                    UserFacing<StrictString, InterfaceLocalization>({ localization in
+                        switch localization {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "Refreshing resources..."
+                        case .deutschDeutschland:
+                            return "Ressourcen werden aufgefrischt ..."
+                        }
+                    }).resolved().formattedAsSectionHeader())
 
-            try options.project.refreshResources(output: output)
-        })
+                try options.project.refreshResources(output: output)
+            })
     }
 }

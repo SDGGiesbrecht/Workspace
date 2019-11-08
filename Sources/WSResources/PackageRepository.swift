@@ -37,7 +37,8 @@ extension PackageRepository {
         return byName
     }
 
-    private static let resourceDirectoryName = UserFacing<StrictString, InterfaceLocalization>({ localization in
+    private static let resourceDirectoryName = UserFacing<StrictString, InterfaceLocalization>({
+        localization in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Resources"
@@ -49,7 +50,8 @@ extension PackageRepository {
     private func resourceDirectories() -> [URL] {
 
         return InterfaceLocalization.allCases.map { (localization) in
-            return location.appendingPathComponent(String(PackageRepository.resourceDirectoryName.resolved(for: localization)))
+            return location.appendingPathComponent(
+                String(PackageRepository.resourceDirectoryName.resolved(for: localization)))
         }
     }
 
@@ -71,26 +73,33 @@ extension PackageRepository {
     private func target(for resource: URL, output: Command.Output) throws -> Target {
         let path = resource.path(relativeTo: location).dropping(through: "/")
         guard let targetName = path.prefix(upTo: "/")?.contents else {
-            throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ (localization) in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "No target specified for resource:\n\(path)\nFiles must be in subdirectories named corresponding to the intended target."
-                case .deutschDeutschland:
-                    return "Kein Ziel wurde für eine Ressource angegeben:\n\(path)\nDateien müssen in Unterverzeichnissen sein, dessen Namen mit dem gemeinten Ziel übereinstimmen."
-                }
-            }))
+            throw Command.Error(
+                description: UserFacing<StrictString, InterfaceLocalization>({ (localization) in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return
+                            "No target specified for resource:\n\(path)\nFiles must be in subdirectories named corresponding to the intended target."
+                    case .deutschDeutschland:
+                        return
+                            "Kein Ziel wurde für eine Ressource angegeben:\n\(path)\nDateien müssen in Unterverzeichnissen sein, dessen Namen mit dem gemeinten Ziel übereinstimmen."
+                    }
+                }))
         }
         guard let target = (try targetsByName())[String(targetName)] else {
-            throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ (localization) in
-                switch localization {
-                case .englishUnitedKingdom:
-                    return "No target named ‘\(targetName)’.\nResources must be in subdirectories named corresponding to the intended target."
-                case .englishUnitedStates, .englishCanada:
-                    return "No target named “\(targetName)”.\nResources must be in subdirectories named corresponding to the intended target."
-                case .deutschDeutschland:
-                    return "Kein Ziel Namens „\(targetName)“.\nRessourcen müssen in Unterverzeichnissen sein, dessen Namen mit dem gemeinten Ziel übereinstimmen."
-                }
-            }))
+            throw Command.Error(
+                description: UserFacing<StrictString, InterfaceLocalization>({ (localization) in
+                    switch localization {
+                    case .englishUnitedKingdom:
+                        return
+                            "No target named ‘\(targetName)’.\nResources must be in subdirectories named corresponding to the intended target."
+                    case .englishUnitedStates, .englishCanada:
+                        return
+                            "No target named “\(targetName)”.\nResources must be in subdirectories named corresponding to the intended target."
+                    case .deutschDeutschland:
+                        return
+                            "Kein Ziel Namens „\(targetName)“.\nRessourcen müssen in Unterverzeichnissen sein, dessen Namen mit dem gemeinten Ziel übereinstimmen."
+                    }
+                }))
         }
         return target
     }
@@ -103,7 +112,7 @@ extension PackageRepository {
             targets[intendedTarget, default: []].append(resource)
         }
 
-        for (target, resources) in targets.keys.sorted().map({ ($0, targets[$0]!) }) { // So that output order is consistent.
+        for (target, resources) in targets.keys.sorted().map({ ($0, targets[$0]!) }) {  // So that output order is consistent.
 
             try autoreleasepool {
                 try target.refresh(resources: resources, from: self, output: output)

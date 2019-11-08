@@ -34,7 +34,7 @@ public typealias LicenseConfiguration = LicenceConfiguration
 /// ```shell
 /// $ workspace refresh licence
 /// ```
-public struct LicenceConfiguration : Codable {
+public struct LicenceConfiguration: Codable {
 
     // @localization(🇺🇸EN)
     /// Whether or not to manage the project license.

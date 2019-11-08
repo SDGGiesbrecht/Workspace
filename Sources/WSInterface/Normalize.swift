@@ -32,34 +32,41 @@ extension Workspace {
             }
         })
 
-        private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        private static let description = UserFacing<StrictString, InterfaceLocalization>({
+            localization in
             switch localization {
             case .englishUnitedKingdom:
-                return "normalises the project’s files by removing trailing whitespace, applying Unix newlines and performing canonical decomposition."
+                return
+                    "normalises the project’s files by removing trailing whitespace, applying Unix newlines and performing canonical decomposition."
             case .englishUnitedStates, .englishCanada:
-                return "normalizes the project’s files by removing trailing whitespace, applying Unix newlines and performing canonical decomposition."
+                return
+                    "normalizes the project’s files by removing trailing whitespace, applying Unix newlines and performing canonical decomposition."
             case .deutschDeutschland:
-                return "normalisiert die Dateien des Projekt, in dem Leerzeichen vom Zeilenende entfernt werden, Unix‐Zeilenumbrüche eingetauscht werden und kanonische Zersetzung ausgeführt wird."
+                return
+                    "normalisiert die Dateien des Projekt, in dem Leerzeichen vom Zeilenende entfernt werden, Unix‐Zeilenumbrüche eingetauscht werden und kanonische Zersetzung ausgeführt wird."
             }
         })
 
-        static let command = Command(name: name, description: description, directArguments: [], options: standardOptions, execution: { (_: DirectArguments, options: Options, output: Command.Output) throws in
-            try executeAsStep(options: options, output: output)
-        })
+        static let command = Command(
+            name: name, description: description, directArguments: [], options: standardOptions,
+            execution: { (_: DirectArguments, options: Options, output: Command.Output) throws in
+                try executeAsStep(options: options, output: output)
+            })
 
         static func executeAsStep(options: Options, output: Command.Output) throws {
 
             if ¬options.runAsXcodeBuildPhase {
-                output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom:
-                        return "Normalising files..."
-                    case .englishUnitedStates, .englishCanada:
-                        return "Normalizing files..."
-                    case .deutschDeutschland:
-                        return "Deteien werden normalisiert ..."
-                    }
-                }).resolved().formattedAsSectionHeader())
+                output.print(
+                    UserFacing<StrictString, InterfaceLocalization>({ localization in
+                        switch localization {
+                        case .englishUnitedKingdom:
+                            return "Normalising files..."
+                        case .englishUnitedStates, .englishCanada:
+                            return "Normalizing files..."
+                        case .deutschDeutschland:
+                            return "Deteien werden normalisiert ..."
+                        }
+                    }).resolved().formattedAsSectionHeader())
             }
 
             try options.project.normalize(output: output)

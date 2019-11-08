@@ -31,7 +31,8 @@ extension Workspace.Refresh {
             }
         })
 
-        private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        private static let description = UserFacing<StrictString, InterfaceLocalization>({
+            localization in
             switch localization {
             case .englishUnitedKingdom:
                 return "synchronises the project’s inherited documentation."
@@ -42,7 +43,8 @@ extension Workspace.Refresh {
             }
         })
 
-        private static let discussion = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        private static let discussion = UserFacing<StrictString, InterfaceLocalization>({
+            localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 let quotationMarks: (StrictString, StrictString)
@@ -81,7 +83,7 @@ extension Workspace.Refresh {
                     "        }",
                     "    }",
                     "}",
-                    ].joinedAsLines()
+                ].joinedAsLines()
             case .deutschDeutschland:
                 return [
                     "Dokementationskommentare immer wieder neu zu schreiben kann mühsam werden. Arbeitsbereich kann Dokumentationskommentare wiederverwendbar machen.",
@@ -110,7 +112,7 @@ extension Workspace.Refresh {
                     "        }",
                     "    }",
                     "}",
-                    ].joinedAsLines()
+                ].joinedAsLines()
             }
         })
 
@@ -122,16 +124,17 @@ extension Workspace.Refresh {
             options: Workspace.standardOptions,
             execution: { (_, options: Options, output: Command.Output) throws in
 
-            output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Refreshing inherited documentation..."
-                case .deutschDeutschland:
-                    return "Geerbte Dokumentation wird aufgefrischt ..."
-                }
-            }).resolved().formattedAsSectionHeader())
+                output.print(
+                    UserFacing<StrictString, InterfaceLocalization>({ localization in
+                        switch localization {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "Refreshing inherited documentation..."
+                        case .deutschDeutschland:
+                            return "Geerbte Dokumentation wird aufgefrischt ..."
+                        }
+                    }).resolved().formattedAsSectionHeader())
 
-            try options.project.refreshInheritedDocumentation(output: output)
-        })
+                try options.project.refreshInheritedDocumentation(output: output)
+            })
     }
 }

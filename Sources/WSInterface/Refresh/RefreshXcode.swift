@@ -16,48 +16,54 @@
 
 #if !os(Linux)
 
-import WSGeneralImports
+    import WSGeneralImports
 
-import WSXcode
+    import WSXcode
 
-extension Workspace.Refresh {
+    extension Workspace.Refresh {
 
-    enum Xcode {
+        enum Xcode {
 
-        private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-                 .deutschDeutschland:
-                return "xcode"
-            }
-        })
+            private static let name = UserFacing<StrictString, InterfaceLocalization>({
+                localization in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+                    .deutschDeutschland:
+                    return "xcode"
+                }
+            })
 
-        private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "regenerates the project’s Xcode set‐up."
-            case .deutschDeutschland:
-                return "erstellt die Xcode‐Einrichtung des Projekts neu."
-            }
-        })
-
-        static let command = Command(name: name, description: description, directArguments: [], options: Workspace.standardOptions, execution: { (_, options: Options, output: Command.Output) throws in
-            try executeAsStep(options: options, output: output)
-        })
-
-        static func executeAsStep(options: Options, output: Command.Output) throws {
-
-            output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
+            private static let description = UserFacing<StrictString, InterfaceLocalization>({
+                localization in
                 switch localization {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Refreshing Xcode project..."
+                    return "regenerates the project’s Xcode set‐up."
                 case .deutschDeutschland:
-                    return "Xcode‐Projekt wird aufgefrischt ..."
+                    return "erstellt die Xcode‐Einrichtung des Projekts neu."
                 }
-            }).resolved().formattedAsSectionHeader())
+            })
 
-            try options.project.refreshXcodeProject(output: output)
+            static let command = Command(
+                name: name, description: description, directArguments: [],
+                options: Workspace.standardOptions,
+                execution: { (_, options: Options, output: Command.Output) throws in
+                    try executeAsStep(options: options, output: output)
+                })
+
+            static func executeAsStep(options: Options, output: Command.Output) throws {
+
+                output.print(
+                    UserFacing<StrictString, InterfaceLocalization>({ localization in
+                        switch localization {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "Refreshing Xcode project..."
+                        case .deutschDeutschland:
+                            return "Xcode‐Projekt wird aufgefrischt ..."
+                        }
+                    }).resolved().formattedAsSectionHeader())
+
+                try options.project.refreshXcodeProject(output: output)
+            }
         }
     }
-}
 #endif

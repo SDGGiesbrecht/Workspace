@@ -32,7 +32,7 @@ extension PackageRepository {
 
     // MARK: - Static Properties
 
-    public static let documentationDirectoryName = "docs" // Matches GitHub Pages.
+    public static let documentationDirectoryName = "docs"  // Matches GitHub Pages.
 
     // MARK: - Properties
 
@@ -46,7 +46,9 @@ extension PackageRepository {
         return location.appendingPathComponent(PackageRepository.documentationDirectoryName)
     }
 
-    private func platforms(output: Command.Output) throws -> [LocalizationIdentifier: [StrictString]] {
+    private func platforms(
+        output: Command.Output
+    ) throws -> [LocalizationIdentifier: [StrictString]] {
         var result: [LocalizationIdentifier: [StrictString]] = [:]
         for localization in try configuration(output: output).documentation.localizations {
             var list: [StrictString] = []
@@ -70,12 +72,17 @@ extension PackageRepository {
         }).lazy.map({ $0.name })
         build(releaseConfiguration: false)
         let toolLocations = Array(toolNames.map({ productsURL.appendingPathComponent($0) }))
-        return PackageCLI(tools: toolLocations, localizations: try configuration(output: output).documentation.localizations)
+        return PackageCLI(
+            tools: toolLocations,
+            localizations: try configuration(output: output).documentation.localizations)
     }
 
-    internal func resolvedCopyright(documentationStatus: DocumentationStatus, output: Command.Output) throws -> [LocalizationIdentifier?: StrictString] {
+    internal func resolvedCopyright(
+        documentationStatus: DocumentationStatus, output: Command.Output
+    ) throws -> [LocalizationIdentifier?: StrictString] {
 
-        var template: [LocalizationIdentifier?: StrictString] = try documentationCopyright(output: output).mapKeys { $0 }
+        var template: [LocalizationIdentifier?: StrictString] = try documentationCopyright(
+            output: output).mapKeys { $0 }
         template[nil] = "#dates"
 
         let dates: StrictString
@@ -90,7 +97,9 @@ extension PackageRepository {
         return template
     }
 
-    private func relatedProjects(output: Command.Output) throws -> [LocalizationIdentifier: Markdown] {
+    private func relatedProjects(
+        output: Command.Output
+    ) throws -> [LocalizationIdentifier: Markdown] {
         let relatedProjects = try configuration(output: output).documentation.relatedProjects
         let localizations = try configuration(output: output).documentation.localizations
         var result: [LocalizationIdentifier: Markdown] = [:]
@@ -107,10 +116,13 @@ extension PackageRepository {
                             ]
                         }
                     case .project(url: let url):
-                        let package = try PackageRepository.relatedPackage(Package(url: url), output: output)
+                        let package = try PackageRepository.relatedPackage(
+                            Package(url: url), output: output)
                         let name: StrictString
-                        if let packageName = try? package.projectName(in: localization, output: output) {
-                            name = packageName // @exempt(from: tests) False positive in Xcode 10.
+                        if let packageName = try? package.projectName(
+                            in: localization, output: output)
+                        {
+                            name = packageName  // @exempt(from: tests) False positive in Xcode 10.
                         } else {
                             // @exempt(from: tests) Only reachable with a non‐package repository.
                             name = StrictString(url.lastPathComponent)
@@ -121,10 +133,12 @@ extension PackageRepository {
                             "### [\(name)](\(url.absoluteString))"
                         ]
 
-                        if let packageDocumentation = try? PackageAPI.documentation(for: package.package().get()),
+                        if let packageDocumentation = try? PackageAPI.documentation(
+                            for: package.package().get()),
                             let documentation = packageDocumentation.resolved(
                                 localizations: localizations).documentation[localization],
-                            let description = documentation.descriptionSection {
+                            let description = documentation.descriptionSection
+                        {
                             markdown += [
                                 "",
                                 StrictString(description.text)
@@ -142,73 +156,89 @@ extension PackageRepository {
 
     // MARK: - Documentation
 
-    public func document(outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output) throws {
+    public func document(
+        outputDirectory: URL, validationStatus: inout ValidationStatus, output: Command.Output
+    ) throws {
 
         if try ¬hasTargetsToDocument() {
             return
         }
 
         let section = validationStatus.newSection()
-        output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "Generating documentation..." + section.anchor
-            case .deutschDeutschland:
-                return "Dokumentation wird erstellt ..."
-            }
-        }).resolved().formattedAsSectionHeader())
+        output.print(
+            UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Generating documentation..." + section.anchor
+                case .deutschDeutschland:
+                    return "Dokumentation wird erstellt ..."
+                }
+            }).resolved().formattedAsSectionHeader())
         do {
             try prepare(outputDirectory: outputDirectory, output: output)
 
             let status = DocumentationStatus(output: output)
-            try document(outputDirectory: outputDirectory, documentationStatus: status, validationStatus: &validationStatus, output: output, coverageCheckOnly: false)
+            try document(
+                outputDirectory: outputDirectory, documentationStatus: status,
+                validationStatus: &validationStatus, output: output, coverageCheckOnly: false)
 
             try finalizeSite(outputDirectory: outputDirectory)
 
             if status.passing {
-                validationStatus.passStep(message: UserFacing({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "Generated documentation."
-                    case .deutschDeutschland:
-                        return "Dokumentation erstellt."
-                    }
-                }))
+                validationStatus.passStep(
+                    message: UserFacing({ localization in
+                        switch localization {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "Generated documentation."
+                        case .deutschDeutschland:
+                            return "Dokumentation erstellt."
+                        }
+                    }))
             } else {
-                validationStatus.failStep(message: UserFacing({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                        return "Generated documentation, but encountered warnings." + section.crossReference.resolved(for: localization)
-                    case .deutschDeutschland:
-                        return "Dokumentation wurde erstellt, aber Warnungen wurden dabei ausgelöst."
-                    }
-                }))
+                validationStatus.failStep(
+                    message: UserFacing({ localization in
+                        switch localization {
+                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                            return "Generated documentation, but encountered warnings."
+                                + section.crossReference.resolved(for: localization)
+                        case .deutschDeutschland:
+                            return
+                                "Dokumentation wurde erstellt, aber Warnungen wurden dabei ausgelöst."
+                        }
+                    }))
             }
         } catch {
-            output.print(error.localizedDescription.formattedAsError()) // @exempt(from: tests) Unreachable without SwiftSyntax or file system failure.
-            validationStatus.failStep(message: UserFacing({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Failed to generate documentation." + section.crossReference.resolved(for: localization)
-                case .deutschDeutschland:
-                    return "Dokumentationserstellung ist fehlgeschlagen." + section.crossReference.resolved(for: localization)
-                }
-            }))
+            output.print(error.localizedDescription.formattedAsError())  // @exempt(from: tests) Unreachable without SwiftSyntax or file system failure.
+            validationStatus.failStep(
+                message: UserFacing({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "Failed to generate documentation."
+                            + section.crossReference.resolved(for: localization)
+                    case .deutschDeutschland:
+                        return "Dokumentationserstellung ist fehlgeschlagen."
+                            + section.crossReference.resolved(for: localization)
+                    }
+                }))
         }
     }
 
     // Preliminary steps irrelevent to validation.
     private func prepare(outputDirectory: URL, output: Command.Output) throws {
-        try retrievePublishedDocumentationIfAvailable(outputDirectory: outputDirectory, output: output)
+        try retrievePublishedDocumentationIfAvailable(
+            outputDirectory: outputDirectory, output: output)
         try redirectExistingURLs(outputDirectory: outputDirectory)
     }
 
     // Steps which participate in validation.
-    private func document(outputDirectory: URL, documentationStatus: DocumentationStatus, validationStatus: inout ValidationStatus, output: Command.Output, coverageCheckOnly: Bool) throws {
+    private func document(
+        outputDirectory: URL, documentationStatus: DocumentationStatus,
+        validationStatus: inout ValidationStatus, output: Command.Output, coverageCheckOnly: Bool
+    ) throws {
 
         if ProcessInfo.isInContinuousIntegration {
-            DispatchQueue.global(qos: .background).async { // @exempt(from: tests)
-                while true { // @exempt(from: tests)
+            DispatchQueue.global(qos: .background).async {  // @exempt(from: tests)
+                while true {  // @exempt(from: tests)
                     print("...")
                     Thread.sleep(until: Date(timeIntervalSinceNow: 9 × 60))
                 }
@@ -216,7 +246,8 @@ extension PackageRepository {
         }
 
         let configuration = try self.configuration(output: output)
-        let copyright = try resolvedCopyright(documentationStatus: documentationStatus, output: output)
+        let copyright = try resolvedCopyright(
+            documentationStatus: documentationStatus, output: output)
 
         let developmentLocalization = try self.developmentLocalization(output: output)
         let api = try PackageAPI(
@@ -238,14 +269,17 @@ extension PackageRepository {
             packageURL: configuration.documentation.repositoryURL,
             version: configuration.documentation.currentVersion,
             platforms: try platforms(output: output),
-            installation: configuration.documentation.installationInstructions.resolve(configuration),
+            installation: configuration.documentation.installationInstructions
+                .resolve(configuration),
             importing: configuration.documentation.importingInstructions.resolve(configuration),
             relatedProjects: relatedProjects,
             about: configuration.documentation.about,
             copyright: copyright,
             output: output)
 
-        try interface.outputHTML(to: outputDirectory, status: documentationStatus, output: output, coverageCheckOnly: coverageCheckOnly)
+        try interface.outputHTML(
+            to: outputDirectory, status: documentationStatus, output: output,
+            coverageCheckOnly: coverageCheckOnly)
     }
 
     // Final steps irrelevent to validation.
@@ -258,28 +292,35 @@ extension PackageRepository {
         try siteCSS.contents.save(to: outputDirectory.appendingPathComponent("CSS/Site.css"))
         var siteJavaScript = TextFile(mockFileWithContents: Resources.script, fileType: .javaScript)
         siteJavaScript.header = ""
-        try siteJavaScript.contents.save(to: outputDirectory.appendingPathComponent("JavaScript/Site.js"))
+        try siteJavaScript.contents.save(
+            to: outputDirectory.appendingPathComponent("JavaScript/Site.js"))
 
         try preventJekyllInterference(outputDirectory: outputDirectory)
     }
 
-    private func retrievePublishedDocumentationIfAvailable(outputDirectory: URL, output: Command.Output) throws {
+    private func retrievePublishedDocumentationIfAvailable(
+        outputDirectory: URL, output: Command.Output
+    ) throws {
         if let packageURL = try configuration(output: output).documentation.repositoryURL {
 
-            output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Checking for defunct URLs to redirect..."
-                case .deutschDeutschland:
-                    return "Verstorbene Ressourcenzeiger werden weiterleitet ..."
-                }
-            }).resolved())
+            output.print(
+                UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "Checking for defunct URLs to redirect..."
+                    case .deutschDeutschland:
+                        return "Verstorbene Ressourcenzeiger werden weiterleitet ..."
+                    }
+                }).resolved())
 
-            FileManager.default.withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
+            FileManager.default.withTemporaryDirectory(appropriateFor: outputDirectory) {
+                temporary in
                 let package = Package(url: packageURL)
                 do {
                     _ = try Git.clone(package, to: temporary).get()
-                    _ = try Git.runCustomSubcommand(["checkout", "gh\u{2D}pages"], in: temporary).get()
+                    _ = try Git.runCustomSubcommand(
+                        ["checkout", "gh\u{2D}pages"],
+                        in: temporary).get()
                     try FileManager.default.removeItem(at: outputDirectory)
                     try FileManager.default.move(temporary, to: outputDirectory)
                 } catch {}
@@ -313,63 +354,77 @@ extension PackageRepository {
 
     // MARK: - Validation
 
-    public func validateDocumentationCoverage(validationStatus: inout ValidationStatus, output: Command.Output) throws {
+    public func validateDocumentationCoverage(
+        validationStatus: inout ValidationStatus, output: Command.Output
+    ) throws {
 
         if try ¬hasTargetsToDocument() {
             return
         }
 
         let section = validationStatus.newSection()
-        output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "Checking documentation coverage..." + section.anchor
-            case .deutschDeutschland:
-                return "Die Dokumentationsabdeckung wird überprüft ..."  + section.anchor
-            }
-        }).resolved().formattedAsSectionHeader())
+        output.print(
+            UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Checking documentation coverage..." + section.anchor
+                case .deutschDeutschland:
+                    return "Die Dokumentationsabdeckung wird überprüft ..." + section.anchor
+                }
+            }).resolved().formattedAsSectionHeader())
         do {
             try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { outputDirectory in
 
                 let status = DocumentationStatus(output: output)
-                try document(outputDirectory: outputDirectory, documentationStatus: status, validationStatus: &validationStatus, output: output, coverageCheckOnly: true)
+                try document(
+                    outputDirectory: outputDirectory, documentationStatus: status,
+                    validationStatus: &validationStatus, output: output, coverageCheckOnly: true)
 
                 if status.passing {
-                    validationStatus.passStep(message: UserFacing({ localization in
-                        switch localization {
-                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                            return "Documentation coverage is complete."
-                        case .deutschDeutschland:
-                            return "Die Dokumentationsabdeckung ist vollständig."
-                        }
-                    }))
+                    validationStatus.passStep(
+                        message: UserFacing({ localization in
+                            switch localization {
+                            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                                return "Documentation coverage is complete."
+                            case .deutschDeutschland:
+                                return "Die Dokumentationsabdeckung ist vollständig."
+                            }
+                        }))
                 } else {
-                    validationStatus.failStep(message: UserFacing({ localization in
-                        switch localization {
-                        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                            return "Documentation coverage is incomplete." + section.crossReference.resolved(for: localization)
-                        case .deutschDeutschland:
-                            return "Die Dokumentationsabdeckung ist unvollständig." + section.crossReference.resolved(for: localization)
-                        }
-                    }))
+                    validationStatus.failStep(
+                        message: UserFacing({ localization in
+                            switch localization {
+                            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                                return "Documentation coverage is incomplete."
+                                    + section.crossReference.resolved(for: localization)
+                            case .deutschDeutschland:
+                                return "Die Dokumentationsabdeckung ist unvollständig."
+                                    + section.crossReference.resolved(for: localization)
+                            }
+                        }))
                 }
             }
         } catch {
             output.print(error.localizedDescription.formattedAsError())
-            validationStatus.failStep(message: UserFacing({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Failed to process documentation." + section.crossReference.resolved(for: localization)
-                case .deutschDeutschland:
-                    return "Die Dokumentationsverarbeitung ist fehlgeschlagen." + section.crossReference.resolved(for: localization)
-                }
-            }))
+            validationStatus.failStep(
+                message: UserFacing({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "Failed to process documentation."
+                            + section.crossReference.resolved(for: localization)
+                    case .deutschDeutschland:
+                        return "Die Dokumentationsverarbeitung ist fehlgeschlagen."
+                            + section.crossReference.resolved(for: localization)
+                    }
+                }))
         }
     }
 
     // MARK: - Inheritance
 
-    private func documentationDefinitions(output: Command.Output) throws -> [StrictString: StrictString] {
+    private func documentationDefinitions(output: Command.Output) throws -> [StrictString:
+        StrictString]
+    {
         return try _withDocumentationCache {
 
             var list: [StrictString: StrictString] = [:]
@@ -378,17 +433,23 @@ extension PackageRepository {
                 try autoreleasepool {
 
                     if let type = FileType(url: url),
-                        type ∈ Set([.swift, .swiftPackageManifest]) {
+                        type ∈ Set([.swift, .swiftPackageManifest])
+                    {
                         let file = try TextFile(alreadyAt: url)
 
                         for match in file.contents.scalars.matches(
-                            for: InterfaceLocalization.documentationDeclaration) {
-                                let identifier = match.declarationArgument()
+                            for: InterfaceLocalization.documentationDeclaration)
+                        {
+                            let identifier = match.declarationArgument()
 
-                                let nextLineStart = match.range.lines(in: file.contents.lines).upperBound.samePosition(in: file.contents.scalars)
-                                if let comment = FileType.swiftDocumentationSyntax.contentsOfFirstComment(in: nextLineStart ..< file.contents.scalars.endIndex, of: file) {
-                                    list[identifier] = StrictString(comment)
-                                }
+                            let nextLineStart = match.range.lines(in: file.contents.lines)
+                                .upperBound.samePosition(in: file.contents.scalars)
+                            if let comment = FileType.swiftDocumentationSyntax
+                                .contentsOfFirstComment(
+                                    in: nextLineStart ..< file.contents.scalars.endIndex, of: file)
+                            {
+                                list[identifier] = StrictString(comment)
+                            }
                         }
                     }
                 }
@@ -404,7 +465,8 @@ extension PackageRepository {
             try autoreleasepool {
 
                 if let type = FileType(url: url),
-                    type ∈ Set([.swift, .swiftPackageManifest]) {
+                    type ∈ Set([.swift, .swiftPackageManifest])
+                {
 
                     let documentationSyntax = FileType.swiftDocumentationSyntax
                     let lineDocumentationSyntax = documentationSyntax.lineCommentSyntax!
@@ -413,42 +475,68 @@ extension PackageRepository {
 
                     var searchIndex = file.contents.scalars.startIndex
                     while let match = file.contents.scalars[
-                        min(searchIndex, file.contents.scalars.endIndex) ..< file.contents.scalars.endIndex]
-                        .firstMatch(for: InterfaceLocalization.documentationDirective) {
-                            searchIndex = match.range.upperBound
+                        min(searchIndex, file.contents.scalars.endIndex)
+                            ..< file.contents.scalars.endIndex]
+                        .firstMatch(for: InterfaceLocalization.documentationDirective)
+                    {
+                        searchIndex = match.range.upperBound
 
-                            let identifier = match.directiveArgument()
-                            guard let replacement = try documentationDefinitions(output: output)[identifier] else {
-                                throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                        let identifier = match.directiveArgument()
+                        guard
+                            let replacement = try documentationDefinitions(output: output)[
+                                identifier]
+                        else {
+                            throw Command.Error(
+                                description: UserFacing<StrictString, InterfaceLocalization>({
+                                    localization in
                                     switch localization {
                                     case .englishUnitedKingdom:
-                                        return "There is no documentation named ‘" + identifier + "’."
+                                        return "There is no documentation named ‘" + identifier
+                                            + "’."
                                     case .englishUnitedStates, .englishCanada:
-                                        return "There is no documentation named “" + identifier + "”."
+                                        return "There is no documentation named “" + identifier
+                                            + "”."
                                     case .deutschDeutschland:
-                                        return "Es gibt keine Dokumentation Namens „" + identifier + "“."
+                                        return "Es gibt keine Dokumentation Namens „" + identifier
+                                            + "“."
                                     }
                                 }))
-                            }
+                        }
 
-                            let matchLines = match.range.lines(in: file.contents.lines)
-                            let nextLineStart = matchLines.upperBound.samePosition(in: file.contents.scalars)
-                            if let commentRange = documentationSyntax.rangeOfFirstComment(in: nextLineStart ..< file.contents.scalars.endIndex, of: file),
-                                file.contents.scalars[nextLineStart ..< commentRange.lowerBound].firstMatch(for: CharacterSet.newlinePattern) == nil {
+                        let matchLines = match.range.lines(in: file.contents.lines)
+                        let nextLineStart = matchLines.upperBound.samePosition(
+                            in: file.contents.scalars)
+                        if let commentRange = documentationSyntax.rangeOfFirstComment(
+                            in: nextLineStart ..< file.contents.scalars.endIndex, of: file),
+                            file.contents.scalars[nextLineStart ..< commentRange.lowerBound]
+                                .firstMatch(for: CharacterSet.newlinePattern) == nil
+                        {
 
-                                let indent = StrictString(file.contents.scalars[nextLineStart ..< commentRange.lowerBound])
+                            let indent = StrictString(
+                                file.contents.scalars[nextLineStart ..< commentRange.lowerBound])
 
-                                file.contents.scalars.replaceSubrange(commentRange, with: lineDocumentationSyntax.comment(contents: String(replacement), indent: String(indent)).scalars)
-                            } else {
-                                var location: String.ScalarView.Index = nextLineStart
-                                file.contents.scalars.advance(&location, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
+                            file.contents.scalars.replaceSubrange(
+                                commentRange,
+                                with: lineDocumentationSyntax.comment(
+                                    contents: String(replacement), indent: String(indent)).scalars)
+                        } else {
+                            var location: String.ScalarView.Index = nextLineStart
+                            file.contents.scalars.advance(
+                                &location,
+                                over: RepetitionPattern(
+                                    ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
 
-                                let indent = StrictString(file.contents.scalars[nextLineStart ..< location])
+                            let indent = StrictString(
+                                file.contents.scalars[nextLineStart ..< location])
 
-                                let result = StrictString(lineDocumentationSyntax.comment(contents: String(replacement), indent: String(indent))) + "\n" + indent
+                            let result
+                                = StrictString(
+                                    lineDocumentationSyntax.comment(
+                                        contents: String(replacement), indent: String(indent)))
+                                + "\n" + indent
 
-                                file.contents.scalars.insert(contentsOf: result.scalars, at: location)
-                            }
+                            file.contents.scalars.insert(contentsOf: result.scalars, at: location)
+                        }
                     }
 
                     try file.writeChanges(for: self, output: output)

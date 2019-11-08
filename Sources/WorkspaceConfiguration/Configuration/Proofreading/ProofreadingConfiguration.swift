@@ -27,7 +27,7 @@ public typealias Korrektureinstellungen = ProofreadingConfiguration
 /// ```shell
 /// $ workspace proofread
 /// ```
-public struct ProofreadingConfiguration : Codable {
+public struct ProofreadingConfiguration: Codable {
 
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     // @crossReference(ProofreadingConfiguration.rules)

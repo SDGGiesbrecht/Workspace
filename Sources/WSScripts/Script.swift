@@ -20,7 +20,7 @@ import WSGeneralImports
 import WorkspaceProjectConfiguration
 import WSProject
 
-internal enum Script : Int, CaseIterable {
+internal enum Script: Int, CaseIterable {
 
     // MARK: - Cases
 
@@ -59,7 +59,8 @@ internal enum Script : Int, CaseIterable {
         var deprecated: Set<StrictString> = []
         for script in Script.allCases {
             if let pre0_1_1 = script.deprecatedPre0_1_1FileName,
-                pre0_1_1 ≠ script.fileName {
+                pre0_1_1 ≠ script.fileName
+            {
                 deprecated.insert(pre0_1_1)
             }
         }
@@ -70,15 +71,15 @@ internal enum Script : Int, CaseIterable {
         switch self {
         case .refreshMacOS, .validateMacOS:
             #if os(macOS)
-            return true
+                return true
             #elseif os(Linux)
-            return true // Linux scripts use the macOS ones internally.
+                return true  // Linux scripts use the macOS ones internally.
             #endif
         case .refreshLinux, .validateLinux:
             #if os(macOS)
-            return false
+                return false
             #elseif os(Linux)
-            return true
+                return true
             #endif
         }
     }
@@ -109,7 +110,8 @@ internal enum Script : Int, CaseIterable {
         // “REPOSITORY=\u{22}${0%/*}\u{22}”
         // Does not work for double‐click on Linux or as a command on macOS or Linux from a different directory.
 
-        return "REPOSITORY=\u{22}$( cd \u{22}$( dirname \u{22}${BASH_SOURCE[0]}\u{22} )\u{22} \u{26}& pwd )\u{22}"
+        return
+            "REPOSITORY=\u{22}$( cd \u{22}$( dirname \u{22}${BASH_SOURCE[0]}\u{22} )\u{22} \u{26}& pwd )\u{22}"
     }
 
     private func enterRepository() -> StrictString {
@@ -117,10 +119,14 @@ internal enum Script : Int, CaseIterable {
     }
 
     private func openTerminal(andExecute script: StrictString) -> StrictString {
-        return "gnome\u{2D}terminal \u{2D}e \u{22}bash \u{2D}\u{2D}login \u{2D}c \u{5C}\u{22}source ~/.bashrc; ./" + script + "\u{5C} \u{5C}(macOS\u{5C}).command; exec bash\u{5C}\u{22}\u{22}"
+        return
+            "gnome\u{2D}terminal \u{2D}e \u{22}bash \u{2D}\u{2D}login \u{2D}c \u{5C}\u{22}source ~/.bashrc; ./"
+            + script + "\u{5C} \u{5C}(macOS\u{5C}).command; exec bash\u{5C}\u{22}\u{22}"
     }
 
-    private func getWorkspace(andExecute command: StrictString, for project: PackageRepository, output: Command.Output) throws -> [StrictString] {
+    private func getWorkspace(
+        andExecute command: StrictString, for project: PackageRepository, output: Command.Output
+    ) throws -> [StrictString] {
         let command = command.appending(contentsOf: " $1 $2")
 
         if try project.isWorkspaceProject() {
@@ -129,8 +135,10 @@ internal enum Script : Int, CaseIterable {
             let version = StrictString(Metadata.latestStableVersion.string())
             let arguments: StrictString = command + " •use‐version " + version
 
-            let macOSCachePath: StrictString = "~/Library/Caches/ca.solideogloria.Workspace/Versions/" + version + "/"
-            let linuxCachePath: StrictString = "~/.cache/ca.solideogloria.Workspace/Versions/" + version + "/"
+            let macOSCachePath: StrictString
+                = "~/Library/Caches/ca.solideogloria.Workspace/Versions/" + version + "/"
+            let linuxCachePath: StrictString = "~/.cache/ca.solideogloria.Workspace/Versions/"
+                + version + "/"
 
             let buildLocation: StrictString = "/tmp/Workspace"
 
@@ -138,16 +146,20 @@ internal enum Script : Int, CaseIterable {
                 ("if workspace version > /dev/null 2>&1 ; then") as StrictString,
                 ("    echo \u{22}Using system install of Workspace...\u{22}") as StrictString,
                 ("    workspace " + arguments) as StrictString,
-                ("elif " + macOSCachePath + "workspace version > /dev/null 2>&1 ; then") as StrictString,
+                ("elif " + macOSCachePath + "workspace version > /dev/null 2>&1 ; then")
+                    as StrictString,
                 ("    echo \u{22}Using cached build of Workspace...\u{22}") as StrictString,
                 ("    " + macOSCachePath + "workspace " + arguments) as StrictString,
-                ("elif " + linuxCachePath + "workspace version > /dev/null 2>&1 ; then") as StrictString,
+                ("elif " + linuxCachePath + "workspace version > /dev/null 2>&1 ; then")
+                    as StrictString,
                 ("    echo \u{22}Using cached build of Workspace...\u{22}") as StrictString,
                 ("    " + linuxCachePath + "workspace " + arguments) as StrictString,
                 ("else") as StrictString,
-                ("    echo \u{22}No cached build detected, fetching Workspace...\u{22}") as StrictString,
+                ("    echo \u{22}No cached build detected, fetching Workspace...\u{22}")
+                    as StrictString,
                 ("    rm \u{2D}rf " + buildLocation) as StrictString,
-                ("    git clone https://github.com/SDGGiesbrecht/Workspace " + buildLocation) as StrictString,
+                ("    git clone https://github.com/SDGGiesbrecht/Workspace " + buildLocation)
+                    as StrictString,
                 ("    cd " + buildLocation) as StrictString,
                 ("    swift build \u{2D}\u{2D}configuration release") as StrictString,
                 ("    " + enterRepository()) as StrictString,
@@ -158,7 +170,9 @@ internal enum Script : Int, CaseIterable {
         }
     }
 
-    internal func source(for project: PackageRepository, output: Command.Output) throws -> StrictString {
+    internal func source(for project: PackageRepository, output: Command.Output) throws
+        -> StrictString
+    {
         var lines: [StrictString] = [
             stopOnFailure(),
             findRepository(),
@@ -168,13 +182,15 @@ internal enum Script : Int, CaseIterable {
         switch self {
         case .refreshLinux:
             lines.append(openTerminal(andExecute: "Refresh"))
-        case .validateLinux: // @exempt(from: tests)
+        case .validateLinux:  // @exempt(from: tests)
             // @exempt(from: tests) Unreachable from macOS.
             lines.append(openTerminal(andExecute: "Validate"))
         case .refreshMacOS:
-            lines.append(contentsOf: try getWorkspace(andExecute: "refresh", for: project, output: output))
+            lines.append(
+                contentsOf: try getWorkspace(andExecute: "refresh", for: project, output: output))
         case .validateMacOS:
-            lines.append(contentsOf: try getWorkspace(andExecute: "validate", for: project, output: output))
+            lines.append(
+                contentsOf: try getWorkspace(andExecute: "validate", for: project, output: output))
         }
 
         return StrictString(lines.joined(separator: "\n".scalars))

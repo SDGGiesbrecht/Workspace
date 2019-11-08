@@ -28,7 +28,7 @@ import WSLocalizations
 /// ```shell
 /// $ workspace refresh github
 /// ```
-public struct GitHubConfiguration : Codable {
+public struct GitHubConfiguration: Codable {
 
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(GitHubConfiguration.manage)
     /// Whether or not to manage the project’s GitHub configuration files.
@@ -65,7 +65,9 @@ public struct GitHubConfiguration : Codable {
         set { developmentNotes = newValue }
     }
 
-    private static func contributingTemplate(for localization: LocalizationIdentifier) -> StrictString? {
+    private static func contributingTemplate(for localization: LocalizationIdentifier)
+        -> StrictString?
+    {
         guard let match = localization._reasonableMatch else {
             return nil
         }
@@ -77,7 +79,9 @@ public struct GitHubConfiguration : Codable {
         }
     }
 
-    private static func developmentNotesHeading(for localization: LocalizationIdentifier) -> StrictString {
+    private static func developmentNotesHeading(for localization: LocalizationIdentifier)
+        -> StrictString
+    {
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Development Notes"
@@ -103,7 +107,9 @@ public struct GitHubConfiguration : Codable {
     /// By default, this is assembled from the other GitHub options.
     ///
     /// Contributing instructions are instructions in a `CONTRIBUTING.md` file which GitHub directs contributors to read.
-    public var contributingInstructions: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<[LocalizationIdentifier: Markdown]>(resolve: { configuration in
+    public var contributingInstructions: Lazy<[LocalizationIdentifier: Markdown]> = Lazy<
+        [LocalizationIdentifier: Markdown]
+    >(resolve: { configuration in
         var localizations = configuration.documentation.localizations
         if localizations.isEmpty {
             localizations.append(LocalizationIdentifier(ContentLocalization.fallbackLocalization))
@@ -113,10 +119,15 @@ public struct GitHubConfiguration : Codable {
         for localization in localizations {
             if var template = GitHubConfiguration.contributingTemplate(for: localization) {
 
-                template.replaceMatches(for: "#packageName".scalars, with: WorkspaceContext.current.manifest.packageName.scalars)
+                template.replaceMatches(
+                    for: "#packageName".scalars,
+                    with: WorkspaceContext.current.manifest.packageName.scalars)
 
                 if let url = configuration.documentation.repositoryURL {
-                    template.replaceMatches(for: "#cloneScript".scalars, with: " `git clone https://github.com/user/\(url.lastPathComponent)`".scalars)
+                    template.replaceMatches(
+                        for: "#cloneScript".scalars,
+                        with: " `git clone https://github.com/user/\(url.lastPathComponent)`"
+                            .scalars)
                 } else {
                     template.replaceMatches(for: "#cloneScript".scalars, with: "".scalars)
                 }
@@ -143,24 +154,26 @@ public struct GitHubConfiguration : Codable {
                         separator = ", "
                         finalSeparator = " oder "
                     }
-                    let commas = StrictString(administrators.dropLast().joined(separator: separator))
+                    let commas = StrictString(
+                        administrators.dropLast().joined(separator: separator))
                     let or = finalSeparator + administrators.last!
                     administratorList = commas + or
                 }
                 template.replaceMatches(for: "#administrators".scalars, with: administratorList)
 
                 if let notes = configuration.gitHub.developmentNotes {
-                    template.append(contentsOf: [
-                        "",
-                        "## \(GitHubConfiguration.developmentNotesHeading(for: localization))",
-                        "",
-                        notes
+                    template.append(
+                        contentsOf: [
+                            "",
+                            "## \(GitHubConfiguration.developmentNotesHeading(for: localization))",
+                            "",
+                            notes
                         ].joinedAsLines())
                 }
 
                 result[localization] = template
             }
-        } // @exempt(from: tests) False positive with Swift 5.0.1.
+        }  // @exempt(from: tests) False positive with Swift 5.0.1.
         return result
     })
 
@@ -186,14 +199,16 @@ public struct GitHubConfiguration : Codable {
 
             var localizations = configuration.documentation.localizations
             if localizations.isEmpty {
-                localizations.append(LocalizationIdentifier(ContentLocalization.fallbackLocalization))
+                localizations.append(
+                    LocalizationIdentifier(ContentLocalization.fallbackLocalization))
             }
 
             var result: [LocalizationIdentifier: [IssueTemplate]] = [:]
             for localization in localizations {
                 for providedTemplate in ProvidedIssueTemplate.allCases {
                     if let language = localization._reasonableMatch {
-                        result[localization, default: []].append(providedTemplate.constructed(for: language))
+                        result[localization, default: []].append(
+                            providedTemplate.constructed(for: language))
                     }
                 }
             }

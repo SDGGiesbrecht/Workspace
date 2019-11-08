@@ -31,13 +31,14 @@ extension PackageAPI {
         var operators: [OperatorAPI] = []
         var precedenceGroups: [PrecedenceAPI] = []
         for module in modules {
-            APIElement.module(module).homeProduct = Weak(libraries.first(where: { $0.modules.contains(module) }))
+            APIElement.module(module).homeProduct
+                = Weak(libraries.first(where: { $0.modules.contains(module) }))
             for element in module.children {
                 element.homeModule = Weak(module)
 
                 switch element {
-                case .package, .library, .module, .case, .initializer, .subscript, .conformance: // @exempt(from: tests)
-                    break // @exempt(from: tests) Should never occur.
+                case .package, .library, .module, .case, .initializer, .subscript, .conformance:  // @exempt(from: tests)
+                    break  // @exempt(from: tests) Should never occur.
                 case .type(let type):
                     types.append(type)
                 case .protocol(let `protocol`):
@@ -60,7 +61,8 @@ extension PackageAPI {
         for `extension` in unprocessedExtensions {
             if ¬types.contains(where: { `extension`.isExtension(of: $0) }),
                 ¬protocols.contains(where: { `extension`.isExtension(of: $0) }),
-                ¬extensions.contains(where: { `extension`.extendsSameType(as: $0) }) {
+                ¬extensions.contains(where: { `extension`.extendsSameType(as: $0) })
+            {
                 extensions.append(`extension`)
             }
         }
@@ -76,7 +78,7 @@ extension PackageAPI {
 
     internal var types: [TypeAPI] {
         get {
-            return APIElement.package(self).extendedProperties[.types] as? [TypeAPI] ?? [] // @exempt(from: tests) Should never be nil.
+            return APIElement.package(self).extendedProperties[.types] as? [TypeAPI] ?? []  // @exempt(from: tests) Should never be nil.
         }
         set {
             APIElement.package(self).extendedProperties[.types] = newValue
@@ -85,7 +87,7 @@ extension PackageAPI {
 
     internal var uniqueExtensions: [ExtensionAPI] {
         get {
-            return APIElement.package(self).extendedProperties[.extensions] as? [ExtensionAPI] ?? [] // @exempt(from: tests) Should never be nil.
+            return APIElement.package(self).extendedProperties[.extensions] as? [ExtensionAPI] ?? []  // @exempt(from: tests) Should never be nil.
         }
         set {
             APIElement.package(self).extendedProperties[.extensions] = newValue
@@ -98,7 +100,7 @@ extension PackageAPI {
 
     internal var protocols: [ProtocolAPI] {
         get {
-            return APIElement.package(self).extendedProperties[.protocols] as? [ProtocolAPI] ?? [] // @exempt(from: tests) Should never be nil.
+            return APIElement.package(self).extendedProperties[.protocols] as? [ProtocolAPI] ?? []  // @exempt(from: tests) Should never be nil.
         }
         set {
             APIElement.package(self).extendedProperties[.protocols] = newValue
@@ -107,7 +109,7 @@ extension PackageAPI {
 
     internal var functions: [FunctionAPI] {
         get {
-            return APIElement.package(self).extendedProperties[.functions] as? [FunctionAPI] ?? [] // @exempt(from: tests) Should never be nil.
+            return APIElement.package(self).extendedProperties[.functions] as? [FunctionAPI] ?? []  // @exempt(from: tests) Should never be nil.
         }
         set {
             APIElement.package(self).extendedProperties[.functions] = newValue
@@ -116,7 +118,8 @@ extension PackageAPI {
 
     internal var globalVariables: [VariableAPI] {
         get {
-            return APIElement.package(self).extendedProperties[.globalVariables] as? [VariableAPI] ?? [] // @exempt(from: tests) Should never be nil.
+            return APIElement.package(self).extendedProperties[.globalVariables] as? [VariableAPI]
+                ?? []  // @exempt(from: tests) Should never be nil.
         }
         set {
             APIElement.package(self).extendedProperties[.globalVariables] = newValue
@@ -125,7 +128,7 @@ extension PackageAPI {
 
     internal var operators: [OperatorAPI] {
         get {
-            return APIElement.package(self).extendedProperties[.operators] as? [OperatorAPI] ?? [] // @exempt(from: tests) Should never be nil.
+            return APIElement.package(self).extendedProperties[.operators] as? [OperatorAPI] ?? []  // @exempt(from: tests) Should never be nil.
         }
         set {
             APIElement.package(self).extendedProperties[.operators] = newValue
@@ -134,7 +137,8 @@ extension PackageAPI {
 
     internal var precedenceGroups: [PrecedenceAPI] {
         get {
-            return APIElement.package(self).extendedProperties[.precedenceGroups] as? [PrecedenceAPI] ?? [] // @exempt(from: tests) Should never be nil.
+            return APIElement.package(self).extendedProperties[.precedenceGroups]
+                as? [PrecedenceAPI] ?? []  // @exempt(from: tests) Should never be nil.
         }
         set {
             APIElement.package(self).extendedProperties[.precedenceGroups] = newValue

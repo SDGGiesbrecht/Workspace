@@ -31,7 +31,7 @@ extension Dictionary where Key == LocalizationIdentifier {
     ///
     /// - Parameters:
     ///     - key: The localization.
-    public subscript<L>(_ key: L) -> Value? where L : Localization {
+    public subscript<L>(_ key: L) -> Value? where L: Localization {
         get {
             return self[LocalizationIdentifier(key)]
         }

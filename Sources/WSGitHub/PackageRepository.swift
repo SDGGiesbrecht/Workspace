@@ -54,24 +54,28 @@ extension PackageRepository {
         try refreshIssueTemplates(output: output)
 
         var pullRequestTemplateFile = try TextFile(possiblyAt: pullRequestTemplateLocation)
-        pullRequestTemplateFile.contents = String(try configuration(output: output).gitHub.pullRequestTemplate)
+        pullRequestTemplateFile.contents
+            = String(try configuration(output: output).gitHub.pullRequestTemplate)
         try pullRequestTemplateFile.writeChanges(for: self, output: output)
     }
 
     private func refreshContributingInstructions(output: Command.Output) throws {
 
-        var contributingInstructionsFile = try TextFile(possiblyAt: contributingInstructionsLocation)
-        contributingInstructionsFile.body = String(try constructedContributingInstructions(output: output))
+        var contributingInstructionsFile = try TextFile(
+            possiblyAt: contributingInstructionsLocation)
+        contributingInstructionsFile.body
+            = String(try constructedContributingInstructions(output: output))
         try contributingInstructionsFile.writeChanges(for: self, output: output)
 
         // Remove deprecated.
         delete(depricatedContributingInstructions, output: output)
     }
 
-    private func constructedContributingInstructions(output: Command.Output) throws -> StrictString {
+    private func constructedContributingInstructions(output: Command.Output) throws -> StrictString
+    {
         let configuration = try self.configuration(output: output)
         let entries = try contributingInstructions(output: output)
-        if entries.count == 1 { // No separation of localizations needed.
+        if entries.count == 1 {  // No separation of localizations needed.
             for (_, entry) in entries {
                 return entry
             }

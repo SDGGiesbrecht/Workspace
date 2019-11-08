@@ -18,11 +18,11 @@ import WSGeneralImports
 
 import WSProject
 
-extension ProofreadingRule : Comparable {
+extension ProofreadingRule: Comparable {
 
     internal var parser: Rule {
         switch self {
-        case .deprecatedTestManifests: // @exempt(from: tests) Unreachable. Handled exceptionally elsewhere.
+        case .deprecatedTestManifests:  // @exempt(from: tests) Unreachable. Handled exceptionally elsewhere.
             return .text(DeprecatedTestManifests.self)
         case .manualWarnings:
             return .text(ManualWarnings.self)

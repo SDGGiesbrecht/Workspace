@@ -28,7 +28,8 @@ extension Workspace {
             }
         })
 
-        private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        private static let description = UserFacing<StrictString, InterfaceLocalization>({
+            localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "validates the project against a thorough battery of tests."
@@ -37,11 +38,13 @@ extension Workspace {
             }
         })
 
-        static let command = Command(name: name, description: description, subcommands: [
-            All.command,
-            Build.command,
-            TestCoverage.command,
-            DocumentationCoverage.command
+        static let command = Command(
+            name: name, description: description,
+            subcommands: [
+                All.command,
+                Build.command,
+                TestCoverage.command,
+                DocumentationCoverage.command
             ], defaultSubcommand: All.command)
     }
 }

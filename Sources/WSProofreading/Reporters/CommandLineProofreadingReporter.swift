@@ -16,7 +16,7 @@
 
 import WSGeneralImports
 
-public class CommandLineProofreadingReporter : ProofreadingReporter {
+public class CommandLineProofreadingReporter: ProofreadingReporter {
 
     // MARK: - Static Properties
 
@@ -32,7 +32,9 @@ public class CommandLineProofreadingReporter : ProofreadingReporter {
         output.print(file.in(FontWeight.bold))
     }
 
-    private func lineMessage(source: String, violation: Range<String.ScalarView.Index>) -> StrictString {
+    private func lineMessage(source: String, violation: Range<String.ScalarView.Index>)
+        -> StrictString
+    {
         let lines = source.lines
         let lineRange = violation.lines(in: lines)
         let lineNumber = lines.distance(from: lines.startIndex, to: lineRange.lowerBound) + 1
@@ -46,7 +48,10 @@ public class CommandLineProofreadingReporter : ProofreadingReporter {
         }).resolved()
     }
 
-    private func display(source: String, violation: Range<String.ScalarView.Index>, replacementSuggestion: StrictString?, highlight: (String) -> String) -> String {
+    private func display(
+        source: String, violation: Range<String.ScalarView.Index>,
+        replacementSuggestion: StrictString?, highlight: (String) -> String
+    ) -> String {
         let lines = source.lines
         let lineRange = violation.lines(in: lines)
         let context = lineRange.sameRange(in: source.clusters)
@@ -62,7 +67,7 @@ public class CommandLineProofreadingReporter : ProofreadingReporter {
 
     public func report(violation: StyleViolation, to output: Command.Output) {
 
-        func highlight<S : StringFamily>(_ problem: S) -> S {
+        func highlight<S: StringFamily>(_ problem: S) -> S {
             if violation.noticeOnly {
                 return problem.formattedAsWarning()
             } else {
@@ -70,20 +75,29 @@ public class CommandLineProofreadingReporter : ProofreadingReporter {
             }
         }
 
-        let description = highlight(violation.message.resolved()) + " (" + violation.ruleIdentifier.resolved() + ")"
+        let description = highlight(violation.message.resolved()) + " ("
+            + violation.ruleIdentifier.resolved() + ")"
 
-        output.print([
-            String(lineMessage(source: violation.file.contents, violation: violation.range)),
-            String(description),
-            display(source: violation.file.contents, violation: violation.range, replacementSuggestion: violation.replacementSuggestion, highlight: highlight)
+        output.print(
+            [
+                String(lineMessage(source: violation.file.contents, violation: violation.range)),
+                String(description),
+                display(
+                    source: violation.file.contents, violation: violation.range,
+                    replacementSuggestion: violation.replacementSuggestion, highlight: highlight)
             ].joinedAsLines())
     }
 
     // Parallel reporting style for test coverage.
-    public func report(violation: Range<String.ScalarView.Index>, in file: String, to output: Command.Output) {
-        output.print([
-            String(lineMessage(source: file, violation: violation)),
-            display(source: file, violation: violation, replacementSuggestion: nil, highlight: { $0.formattedAsError() })
+    public func report(
+        violation: Range<String.ScalarView.Index>, in file: String, to output: Command.Output
+    ) {
+        output.print(
+            [
+                String(lineMessage(source: file, violation: violation)),
+                display(
+                    source: file, violation: violation, replacementSuggestion: nil,
+                    highlight: { $0.formattedAsError() })
             ].joinedAsLines())
     }
 }

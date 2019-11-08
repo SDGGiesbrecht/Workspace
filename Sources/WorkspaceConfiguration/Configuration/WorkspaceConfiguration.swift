@@ -67,7 +67,7 @@ public typealias ArbeitsbereichKonfiguration = WorkspaceConfiguration
 /// configuration.documentation.api.generate = true
 /// configuration.documentation.api.yearFirstPublished = 2017
 /// ```
-public final class WorkspaceConfiguration : SDGSwiftConfiguration.Configuration {
+public final class WorkspaceConfiguration: SDGSwiftConfiguration.Configuration {
 
     // MARK: - Static Properties
 
@@ -210,7 +210,8 @@ public final class WorkspaceConfiguration : SDGSwiftConfiguration.Configuration 
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     // @crossReference(WorkspaceConfiguration.continuousIntegration)
     /// Options related to continuous integration.
-    public var continuousIntegration: ContinuousIntegrationConfiguration = ContinuousIntegrationConfiguration()
+    public var continuousIntegration: ContinuousIntegrationConfiguration
+        = ContinuousIntegrationConfiguration()
     // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.continuousIntegration)
     /// Einstellungen zur fortlaufenden Einbindung.
     public var fortlaufenderEinbindung: EinstellungenFortlaufenderEinbindung {
@@ -309,12 +310,18 @@ public final class WorkspaceConfiguration : SDGSwiftConfiguration.Configuration 
             licence.licence = .apache2_0
         }
 
-        documentation.relatedProjects.append(.project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!))
-        documentation.relatedProjects.append(.project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!))
-        documentation.relatedProjects.append(.project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGInterface")!))
-        documentation.relatedProjects.append(.project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCommandLine")!))
-        documentation.relatedProjects.append(.project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGWeb")!))
-        documentation.relatedProjects.append(.project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!))
+        documentation.relatedProjects.append(
+            .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!))
+        documentation.relatedProjects.append(
+            .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!))
+        documentation.relatedProjects.append(
+            .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGInterface")!))
+        documentation.relatedProjects.append(
+            .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCommandLine")!))
+        documentation.relatedProjects.append(
+            .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGWeb")!))
+        documentation.relatedProjects.append(
+            .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!))
     }
 
     public func _applySDGOverrides() {
@@ -324,21 +331,23 @@ public final class WorkspaceConfiguration : SDGSwiftConfiguration.Configuration 
             "",
             "If \(project) saves you money, consider giving some of it as a [donation](https://paypal.me/JeremyGiesbrecht).",
             "",
-            "If \(project) saves you time, consider devoting some of it to [contributing](\(documentation.repositoryURL?.absoluteString ?? "")) back to the project.", // @exempt(from: tests)
+            "If \(project) saves you time, consider devoting some of it to [contributing](\(documentation.repositoryURL?.absoluteString ?? "")) back to the project.",  // @exempt(from: tests)
             "",
             "> [Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.](https://www.biblegateway.com/passage/?search=Luke+10&version=SBLGNT;NIV)",
             ">",
             "> [For the worker is worthy of his wages.](https://www.biblegateway.com/passage/?search=Luke+10&version=SBLGNT;NIV)",
             ">",
             "> ―‎ישוע/Yeshuʼa"
-            ].joinedAsLines()
+        ].joinedAsLines()
         for localization in ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN"] as [LocalizationIdentifier] {
             documentation.about[localization] = Markdown(about)
         }
     }
 
     public func _validateSDGStandards(openSource: Bool = true) {
-        let needsAPIDocumentation = WorkspaceContext.current.manifest.products.contains(where: { $0.type == .library })
+        let needsAPIDocumentation = WorkspaceContext.current.manifest.products.contains(where: {
+            $0.type == .library
+        })
 
         assert(documentation.currentVersion ≠ nil, "No version specified.")
         assert(¬documentation.localizations.isEmpty, "No localizations specified.")
@@ -351,7 +360,9 @@ public final class WorkspaceConfiguration : SDGSwiftConfiguration.Configuration 
             assert(documentation.repositoryURL ≠ nil, "No repository URL specified.")
 
             if needsAPIDocumentation {
-                assert(documentation.api.encryptedTravisCIDeploymentKey ≠ nil, "No Travis CI deployment key specified.")
+                assert(
+                    documentation.api.encryptedTravisCIDeploymentKey ≠ nil,
+                    "No Travis CI deployment key specified.")
             }
 
             for localization in documentation.localizations {
@@ -362,7 +373,9 @@ public final class WorkspaceConfiguration : SDGSwiftConfiguration.Configuration 
 
     // MARK: - Localization
 
-    private func resolvedLocalizations<T>(_ localize: (ContentLocalization) -> T) -> [(localization: LocalizationIdentifier, value: T)] {
+    private func resolvedLocalizations<T>(_ localize: (ContentLocalization) -> T) -> [(
+        localization: LocalizationIdentifier, value: T
+    )] {
         let localizations = documentation.localizations
         var result: [(localization: LocalizationIdentifier, value: T)] = []
         for localization in localizations {
@@ -373,7 +386,9 @@ public final class WorkspaceConfiguration : SDGSwiftConfiguration.Configuration 
         return result
     }
 
-    internal func localizationDictionary<T>(_ localize: (ContentLocalization) -> T) -> [LocalizationIdentifier: T] {
+    internal func localizationDictionary<T>(_ localize: (ContentLocalization) -> T)
+        -> [LocalizationIdentifier: T]
+    {
         var dictionary: [LocalizationIdentifier: T] = [:]
         for pair in resolvedLocalizations(localize) {
             dictionary[pair.localization] = pair.value
@@ -381,17 +396,20 @@ public final class WorkspaceConfiguration : SDGSwiftConfiguration.Configuration 
         return dictionary
     }
 
-    internal func sequentialLocalizations<T>(_ unordered: [LocalizationIdentifier: T]) -> [T] where T : Equatable {
+    internal func sequentialLocalizations<T>(_ unordered: [LocalizationIdentifier: T]) -> [T]
+    where T: Equatable {
         var result: [T] = []
         for localization in documentation.localizations {
             if let value = unordered[localization],
-                ¬result.contains(value) {
+                ¬result.contains(value)
+            {
                 result.append(value)
             }
         }
         return result
     }
-    internal func sequentialLocalizations<T>(_ localize: (ContentLocalization) -> T) -> [T] where T : Equatable {
+    internal func sequentialLocalizations<T>(_ localize: (ContentLocalization) -> T) -> [T]
+    where T: Equatable {
         var array: [T] = []
         for pair in resolvedLocalizations(localize) {
             let value = pair.value
@@ -404,7 +422,7 @@ public final class WorkspaceConfiguration : SDGSwiftConfiguration.Configuration 
 
     // MARK: - Encoding
 
-    private enum CodingKeys : CodingKey {
+    private enum CodingKeys: CodingKey {
         case provideWorkflowScripts
         case projectName
         case supportedPlatforms
@@ -449,7 +467,8 @@ public final class WorkspaceConfiguration : SDGSwiftConfiguration.Configuration 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         provideWorkflowScripts = try container.decode(Bool.self, forKey: .provideWorkflowScripts)
-        projectName = try container.decode([LocalizationIdentifier: StrictString].self, forKey: .projectName)
+        projectName = try container.decode(
+            [LocalizationIdentifier: StrictString].self, forKey: .projectName)
         supportedPlatforms = try container.decode(Set<Platform>.self, forKey: .supportedPlatforms)
         git = try container.decode(GitConfiguration.self, forKey: .git)
         licence = try container.decode(LicenceConfiguration.self, forKey: .licence)
@@ -458,12 +477,17 @@ public final class WorkspaceConfiguration : SDGSwiftConfiguration.Configuration 
         xcode = try container.decode(XcodeConfiguration.self, forKey: .xcode)
         proofreading = try container.decode(ProofreadingConfiguration.self, forKey: .proofreading)
         testing = try container.decode(TestingConfiguration.self, forKey: .testing)
-        documentation = try container.decode(DocumentationConfiguration.self, forKey: .documentation)
-        continuousIntegration = try container.decode(ContinuousIntegrationConfiguration.self, forKey: .continuousIntegration)
+        documentation = try container.decode(
+            DocumentationConfiguration.self, forKey: .documentation)
+        continuousIntegration = try container.decode(
+            ContinuousIntegrationConfiguration.self, forKey: .continuousIntegration)
         repository = try container.decode(RepositoryConfiguration.self, forKey: .repository)
-        customRefreshmentTasks = try container.decode([CustomTask].self, forKey: .customRefreshmentTasks)
-        customProofreadingTasks = try container.decode([CustomTask].self, forKey: .customProofreadingTasks)
-        customValidationTasks = try container.decode([CustomTask].self, forKey: .customValidationTasks)
+        customRefreshmentTasks = try container.decode(
+            [CustomTask].self, forKey: .customRefreshmentTasks)
+        customProofreadingTasks = try container.decode(
+            [CustomTask].self, forKey: .customProofreadingTasks)
+        customValidationTasks = try container.decode(
+            [CustomTask].self, forKey: .customValidationTasks)
         _isSDG = try container.decode(Bool.self, forKey: .isSDG)
         try super.init(from: container.superDecoder())
 

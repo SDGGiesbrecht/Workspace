@@ -21,7 +21,7 @@ import SDGSwiftSource
 
 import WSProject
 
-internal class RuleSyntaxScanner : SyntaxScanner {
+internal class RuleSyntaxScanner: SyntaxScanner {
 
     // MARK: - Initialization
 
@@ -30,7 +30,8 @@ internal class RuleSyntaxScanner : SyntaxScanner {
         file: TextFile,
         project: PackageRepository,
         status: ProofreadingStatus,
-        output: Command.Output) {
+        output: Command.Output
+    ) {
 
         self.rules = rules
         self.file = file
@@ -51,28 +52,36 @@ internal class RuleSyntaxScanner : SyntaxScanner {
 
     internal override func visit(_ node: Syntax, context: SyntaxContext) -> Bool {
         for rule in rules {
-            rule.check(node, context: context, file: file, project: project, status: status, output: output)
+            rule.check(
+                node, context: context, file: file, project: project, status: status, output: output
+            )
         }
         return true
     }
 
     internal override func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
         for rule in rules {
-            rule.check(node, context: context, file: file, project: project, status: status, output: output)
+            rule.check(
+                node, context: context, file: file, project: project, status: status, output: output
+            )
         }
         return true
     }
 
     internal override func visit(_ node: Trivia, context: TriviaContext) -> Bool {
         for rule in rules {
-            rule.check(node, context: context, file: file, project: project, status: status, output: output)
+            rule.check(
+                node, context: context, file: file, project: project, status: status, output: output
+            )
         }
         return true
     }
 
     internal override func visit(_ node: TriviaPiece, context: TriviaPieceContext) -> Bool {
         for rule in rules {
-            rule.check(node, context: context, file: file, project: project, status: status, output: output)
+            rule.check(
+                node, context: context, file: file, project: project, status: status, output: output
+            )
         }
         return true
     }

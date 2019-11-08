@@ -28,7 +28,9 @@ public struct TextFile {
 
         let contents = try String(from: location)
         let executable = FileManager.default.isExecutableFile(atPath: location.path)
-        self.init(location: location, fileType: fileType, executable: executable, contents: contents, isNew: false)
+        self.init(
+            location: location, fileType: fileType, executable: executable, contents: contents,
+            isNew: false)
     }
 
     public init(possiblyAt location: URL, executable: Bool = false) throws {
@@ -43,7 +45,10 @@ public struct TextFile {
             guard let fileType = FileType(url: location) else {
                 unreachable()
             }
-            self = TextFile(location: location, fileType: fileType, executable: executable, contents: "", isNew: true)
+            self
+                = TextFile(
+                    location: location, fileType: fileType, executable: executable, contents: "",
+                    isNew: true)
         }
     }
 
@@ -52,10 +57,12 @@ public struct TextFile {
         FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporary in
             url = temporary
         }
-        self.init(location: url!, fileType: fileType, executable: false, contents: contents, isNew: true)
+        self.init(
+            location: url!, fileType: fileType, executable: false, contents: contents, isNew: true)
     }
 
-    private init(location: URL, fileType: FileType, executable: Bool, contents: String, isNew: Bool) {
+    private init(location: URL, fileType: FileType, executable: Bool, contents: String, isNew: Bool)
+    {
         self.location = location
         self.isExecutable = executable
         self._contents = contents
@@ -75,8 +82,8 @@ public struct TextFile {
     public let location: URL
 
     private var isExecutable: Bool {
-        willSet { // @exempt(from: tests) Unreachable except with corrupt files.
-            if newValue ≠ isExecutable { // @exempt(from: tests)
+        willSet {  // @exempt(from: tests) Unreachable except with corrupt files.
+            if newValue ≠ isExecutable {  // @exempt(from: tests)
                 hasChanged = true
             }
         }
@@ -143,7 +150,7 @@ public struct TextFile {
             var new = newValue
             // Remove unnecessary initial spacing
             while new.hasPrefix("\n") {
-                new.scalars.removeFirst() // @exempt(from: tests) Should not be reachable.
+                new.scalars.removeFirst()  // @exempt(from: tests) Should not be reachable.
             }
 
             let headerSource = String(contents[headerStart ..< headerEnd])
@@ -161,17 +168,20 @@ public struct TextFile {
 
     // MARK: - Writing
 
-    public static func reportWriteOperation(to location: URL, in repository: PackageRepository, output: Command.Output) {
-        output.print(UserFacingDynamic<StrictString, InterfaceLocalization, String>({ localization, path in
-            switch localization {
-            case .englishUnitedKingdom:
-                return "Writing to ‘\(path)’..."
-            case .englishUnitedStates, .englishCanada:
-                return "Writing to “\(path)”..."
-            case .deutschDeutschland:
-                return "Zu „\(path)“ wird geschrieben ..."
-            }
-        }).resolved(using: location.path(relativeTo: repository.location)))
+    public static func reportWriteOperation(
+        to location: URL, in repository: PackageRepository, output: Command.Output
+    ) {
+        output.print(
+            UserFacingDynamic<StrictString, InterfaceLocalization, String>({ localization, path in
+                switch localization {
+                case .englishUnitedKingdom:
+                    return "Writing to ‘\(path)’..."
+                case .englishUnitedStates, .englishCanada:
+                    return "Writing to “\(path)”..."
+                case .deutschDeutschland:
+                    return "Zu „\(path)“ wird geschrieben ..."
+                }
+            }).resolved(using: location.path(relativeTo: repository.location)))
     }
 
     public func writeChanges(for repository: PackageRepository, output: Command.Output) throws {
@@ -180,7 +190,8 @@ public struct TextFile {
 
             try contents.save(to: location)
             if isExecutable {
-                try FileManager.default.setAttributes([.posixPermissions: NSNumber(value: 0o777)], ofItemAtPath: location.path)
+                try FileManager.default.setAttributes(
+                    [.posixPermissions: NSNumber(value: 0o777)], ofItemAtPath: location.path)
             }
 
             if location.pathExtension == "swift" {

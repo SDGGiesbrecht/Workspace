@@ -18,7 +18,7 @@ import WSGeneralImports
 
 import WSProject
 
-internal struct DeprecatedTestManifests : TextRule {
+internal struct DeprecatedTestManifests: TextRule {
     // Deprecated in 0.25.0 (????‐??‐??)
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
@@ -43,7 +43,8 @@ internal struct DeprecatedTestManifests : TextRule {
         file: TextFile,
         in project: PackageRepository,
         status: ProofreadingStatus,
-        output: Command.Output) {
+        output: Command.Output
+    ) {
         if file.location.lastPathComponent == "XCTestManifests.swift" {
             reportViolation(in: file, at: file.contents.bounds, message: message, status: status)
         }

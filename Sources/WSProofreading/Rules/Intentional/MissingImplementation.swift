@@ -18,7 +18,7 @@ import WSGeneralImports
 
 import WSProject
 
-internal struct MissingImplementation : TextRule {
+internal struct MissingImplementation: TextRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
@@ -38,7 +38,10 @@ internal struct MissingImplementation : TextRule {
         }
     })
 
-    internal static func check(file: TextFile, in project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
+    internal static func check(
+        file: TextFile, in project: PackageRepository, status: ProofreadingStatus,
+        output: Command.Output
+    ) {
         for match in file.contents.scalars.matches(for: "\u{6E}otImplementedYet".scalars) {
             reportViolation(in: file, at: match.range, message: message, status: status)
         }

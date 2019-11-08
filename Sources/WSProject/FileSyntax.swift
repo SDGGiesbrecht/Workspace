@@ -22,7 +22,10 @@ public struct FileSyntax {
 
     // MARK: - Initialization
 
-    internal init(blockCommentSyntax: BlockCommentSyntax? = nil, lineCommentSyntax: LineCommentSyntax? = nil, requiredFirstLineToken: String? = nil, semanticLineTerminalWhitespace: [String] = []) {
+    internal init(
+        blockCommentSyntax: BlockCommentSyntax? = nil, lineCommentSyntax: LineCommentSyntax? = nil,
+        requiredFirstLineToken: String? = nil, semanticLineTerminalWhitespace: [String] = []
+    ) {
         self.blockCommentSyntax = blockCommentSyntax
         self.lineCommentSyntax = lineCommentSyntax
         self.requiredFirstLineToken = requiredFirstLineToken
@@ -48,7 +51,7 @@ public struct FileSyntax {
             return blockSyntax.comment(contents: contents)
         } else if let lineSyntax = lineCommentSyntax {
             return lineSyntax.comment(contents: contents)
-        } else { // @exempt(from: tests) Not currently reachable.
+        } else {  // @exempt(from: tests) Not currently reachable.
             return nil  // @exempt(from: tests)
         }
     }
@@ -67,18 +70,20 @@ public struct FileSyntax {
                     firstLines.removeLast()
                 }
                 firstLines.append("")
-                firstLines.append("") // Header starts in this line.
+                firstLines.append("")  // Header starts in this line.
                 first = firstLines.joinedAsLines()
             }
 
             var body = String(file.contents.scalars[file.headerEnd...])
-            while let firstCharacter = body.scalars.first, firstCharacter ∈ CharacterSet.whitespacesAndNewlines {
+            while let firstCharacter = body.scalars.first,
+            firstCharacter ∈ CharacterSet.whitespacesAndNewlines {
                 body.scalars.removeFirst()
             }
-            body = [
-                "", // Line at end of header
-                "",
-                "" // Body starts in this line
+            body
+                = [
+                    "",  // Line at end of header
+                    "",
+                    ""  // Body starts in this line
                 ].joinedAsLines() + body
 
             let contents = first + generated + body
@@ -89,8 +94,11 @@ public struct FileSyntax {
 
     // MARK: - Parsing
 
-    public func rangeOfFirstComment(in range: Range<String.ScalarView.Index>, of file: TextFile) -> Range<String.ScalarView.Index>? {
-        let possibleBlock = blockCommentSyntax?.firstComment(in: range, of: file.contents)?.container.range
+    public func rangeOfFirstComment(in range: Range<String.ScalarView.Index>, of file: TextFile)
+        -> Range<String.ScalarView.Index>?
+    {
+        let possibleBlock = blockCommentSyntax?.firstComment(in: range, of: file.contents)?
+            .container.range
         let possibleLine = lineCommentSyntax?.rangeOfFirstComment(in: range, of: file.contents)
 
         if let block = possibleBlock {
@@ -112,19 +120,27 @@ public struct FileSyntax {
         }
     }
 
-    public func contentsOfFirstComment(in range: Range<String.ScalarView.Index>, of file: TextFile) -> String? {
+    public func contentsOfFirstComment(in range: Range<String.ScalarView.Index>, of file: TextFile)
+        -> String?
+    {
         if let block = blockCommentSyntax?.contentsOfFirstComment(in: range, of: file.contents) {
             return block
-        } else if let line = lineCommentSyntax?.contentsOfFirstComment(in: range, of: file.contents) {
+        } else if let line = lineCommentSyntax?.contentsOfFirstComment(in: range, of: file.contents)
+        {
             return line
         }
-        return nil // @exempt(from: tests) Unreachable.
+        return nil  // @exempt(from: tests) Unreachable.
     }
 
-    private static func advance(_ index: inout String.ScalarView.Index, pastLayoutSpacingIn string: String) {
-        string.scalars.advance(&index, over: RepetitionPattern(CharacterSet.newlinePattern, count: 0 ... 1))
-        string.scalars.advance(&index, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
-        string.scalars.advance(&index, over: RepetitionPattern(CharacterSet.newlinePattern, count: 0 ... 1))
+    private static func advance(
+        _ index: inout String.ScalarView.Index, pastLayoutSpacingIn string: String
+    ) {
+        string.scalars.advance(
+            &index, over: RepetitionPattern(CharacterSet.newlinePattern, count: 0 ... 1))
+        string.scalars.advance(
+            &index, over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })))
+        string.scalars.advance(
+            &index, over: RepetitionPattern(CharacterSet.newlinePattern, count: 0 ... 1))
     }
 
     internal func headerStart(file: TextFile) -> String.ScalarView.Index {
@@ -134,7 +150,9 @@ public struct FileSyntax {
         if let required = requiredFirstLineToken {
 
             if file.contents.scalars.hasPrefix(required.scalars),
-                let endOfLine = file.contents.scalars.firstMatch(for: CharacterSet.newlinePattern)?.range {
+                let endOfLine = file.contents.scalars.firstMatch(for: CharacterSet.newlinePattern)?
+                    .range
+            {
                 index = endOfLine.lowerBound
             }
             FileSyntax.advance(&index, pastLayoutSpacingIn: file.contents)
@@ -148,13 +166,18 @@ public struct FileSyntax {
 
         if let blockSyntax = blockCommentSyntax,
             blockSyntax.startOfNonDocumentationCommentExists(at: start, in: file.contents),
-            let block = blockSyntax.firstComment(in: start ..< file.contents.scalars.endIndex, of: file.contents)?.container.range.upperBound {
+            let block = blockSyntax.firstComment(
+                in: start ..< file.contents.scalars.endIndex, of: file.contents)?.container.range
+                .upperBound
+        {
             return block
         }
 
         if let lineSyntax = lineCommentSyntax,
             lineSyntax.nonDocumentationCommentExists(at: start, in: file.contents),
-            let line = lineSyntax.rangeOfFirstComment(in: start ..< file.contents.endIndex, of: file.contents)?.upperBound {
+            let line = lineSyntax.rangeOfFirstComment(
+                in: start ..< file.contents.endIndex, of: file.contents)?.upperBound
+        {
             return line
         }
 

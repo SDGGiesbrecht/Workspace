@@ -33,36 +33,59 @@ internal struct PackageInterface {
         let packageURL = StrictString(specified.absoluteString)
 
         var result = [
-            ElementSyntax("span", attributes: ["class": "punctuation"], contents: ".", inline: true).normalizedSource(),
-            ElementSyntax("span", attributes: ["class": "external identifier"], contents: "package", inline: true).normalizedSource(),
-            ElementSyntax("span", attributes: ["class": "punctuation"], contents: "(", inline: true).normalizedSource(),
-            ElementSyntax("span", attributes: ["class": "external identifier"], contents: "url", inline: true).normalizedSource(),
-            ElementSyntax("span", attributes: ["class": "punctuation"], contents: ":", inline: true).normalizedSource(),
+            ElementSyntax("span", attributes: ["class": "punctuation"], contents: ".", inline: true)
+                .normalizedSource(),
+            ElementSyntax(
+                "span", attributes: ["class": "external identifier"], contents: "package",
+                inline: true).normalizedSource(),
+            ElementSyntax("span", attributes: ["class": "punctuation"], contents: "(", inline: true)
+                .normalizedSource(),
+            ElementSyntax(
+                "span", attributes: ["class": "external identifier"], contents: "url", inline: true)
+                .normalizedSource(),
+            ElementSyntax("span", attributes: ["class": "punctuation"], contents: ":", inline: true)
+                .normalizedSource(),
             " ",
-            ElementSyntax("span", attributes: ["class": "string"], contents: [
-                ElementSyntax("span", attributes: ["class": "punctuation"], contents: "\u{22}", inline: true).normalizedSource(),
-                ElementSyntax("a", attributes: ["href": packageURL], contents: [
+            ElementSyntax(
+                "span", attributes: ["class": "string"],
+                contents: [
                     ElementSyntax(
-                        "span",
-                        attributes: ["class": "text"],
-                        contents: HTML.escapeTextForCharacterData(packageURL),
+                        "span", attributes: ["class": "punctuation"], contents: "\u{22}",
+                        inline: true).normalizedSource(),
+                    ElementSyntax(
+                        "a", attributes: ["href": packageURL],
+                        contents: [
+                            ElementSyntax(
+                                "span",
+                                attributes: ["class": "text"],
+                                contents: HTML.escapeTextForCharacterData(packageURL),
+                                inline: true).normalizedSource()
+                        ].joined(), inline: true).normalizedSource(),
+                    ElementSyntax(
+                        "span", attributes: ["class": "punctuation"], contents: "\u{22}",
                         inline: true).normalizedSource()
-                    ].joined(), inline: true).normalizedSource(),
-                ElementSyntax("span", attributes: ["class": "punctuation"], contents: "\u{22}", inline: true).normalizedSource()
                 ].joined(), inline: true).normalizedSource()
-            ].joined()
+        ].joined()
 
         if let specified = specify(version: version) {
-            result.append(contentsOf: [
-                ElementSyntax("span", attributes: ["class": "punctuation"], contents: ",", inline: true).normalizedSource(),
-                " ",
-                specified
+            result.append(
+                contentsOf: [
+                    ElementSyntax(
+                        "span", attributes: ["class": "punctuation"], contents: ",", inline: true)
+                        .normalizedSource(),
+                    " ",
+                    specified
                 ].joined())
         }
 
-        result.append(contentsOf: ElementSyntax("span", attributes: ["class": "punctuation"], contents: ")", inline: true).normalizedSource())
+        result.append(
+            contentsOf: ElementSyntax(
+                "span", attributes: ["class": "punctuation"], contents: ")", inline: true)
+                .normalizedSource())
 
-        return ElementSyntax("span", attributes: ["class": "swift blockquote"], contents: result, inline: true).normalizedSource()
+        return ElementSyntax(
+            "span", attributes: ["class": "swift blockquote"], contents: result, inline: true)
+            .normalizedSource()
     }
 
     private static func specify(version: Version?) -> StrictString? {
@@ -71,23 +94,44 @@ internal struct PackageInterface {
         }
 
         var result = [
-            ElementSyntax("span", attributes: ["class": "external identifier"], contents: "from", inline: true).normalizedSource(),
-            ElementSyntax("span", attributes: ["class": "punctuation"], contents: ":", inline: true).normalizedSource(),
+            ElementSyntax(
+                "span", attributes: ["class": "external identifier"], contents: "from", inline: true
+            ).normalizedSource(),
+            ElementSyntax("span", attributes: ["class": "punctuation"], contents: ":", inline: true)
+                .normalizedSource(),
             " ",
-            ElementSyntax("span", attributes: ["class": "string"], contents: [
-                ElementSyntax("span", attributes: ["class": "punctuation"], contents: "\u{22}", inline: true).normalizedSource(),
-                ElementSyntax("span", attributes: ["class": "text"], contents: StrictString(specified.string()), inline: true).normalizedSource(),
-                ElementSyntax("span", attributes: ["class": "punctuation"], contents: "\u{22}", inline: true).normalizedSource()
+            ElementSyntax(
+                "span", attributes: ["class": "string"],
+                contents: [
+                    ElementSyntax(
+                        "span", attributes: ["class": "punctuation"], contents: "\u{22}",
+                        inline: true).normalizedSource(),
+                    ElementSyntax(
+                        "span", attributes: ["class": "text"],
+                        contents: StrictString(specified.string()), inline: true)
+                        .normalizedSource(),
+                    ElementSyntax(
+                        "span", attributes: ["class": "punctuation"], contents: "\u{22}",
+                        inline: true).normalizedSource()
                 ].joined(), inline: true).normalizedSource()
-            ].joined()
+        ].joined()
 
         if specified.major == 0 {
-            result = [
-                ElementSyntax("span", attributes: ["class": "punctuation"], contents: ".", inline: true).normalizedSource(),
-                ElementSyntax("span", attributes: ["class": "external identifier"], contents: "upToNextMinor", inline: true).normalizedSource(),
-                ElementSyntax("span", attributes: ["class": "punctuation"], contents: "(", inline: true).normalizedSource(),
-                result,
-                ElementSyntax("span", attributes: ["class": "punctuation"], contents: ")", inline: true).normalizedSource()
+            result
+                = [
+                    ElementSyntax(
+                        "span", attributes: ["class": "punctuation"], contents: ".", inline: true)
+                        .normalizedSource(),
+                    ElementSyntax(
+                        "span", attributes: ["class": "external identifier"],
+                        contents: "upToNextMinor", inline: true).normalizedSource(),
+                    ElementSyntax(
+                        "span", attributes: ["class": "punctuation"], contents: "(", inline: true)
+                        .normalizedSource(),
+                    result,
+                    ElementSyntax(
+                        "span", attributes: ["class": "punctuation"], contents: ")", inline: true)
+                        .normalizedSource()
                 ].joined()
         }
 
@@ -101,18 +145,20 @@ internal struct PackageInterface {
         importing: [LocalizationIdentifier: StrictString],
         relatedProjects: [LocalizationIdentifier: StrictString],
         about: [LocalizationIdentifier: StrictString],
-        localizations: [LocalizationIdentifier]) -> [LocalizationIdentifier: StrictString] {
+        localizations: [LocalizationIdentifier]
+    ) -> [LocalizationIdentifier: StrictString] {
         var result: [LocalizationIdentifier: StrictString] = [:]
         for localization in localizations {
             autoreleasepool {
-                result[localization] = generateIndex(
-                    for: package,
-                    tools: tools,
-                    hasInstallation: installation[localization] ≠ nil,
-                    hasImporting: importing[localization] ≠ nil,
-                    hasRelatedProjects: relatedProjects[localization] ≠ nil,
-                    hasAbout: about[localization] ≠ nil,
-                    localization: localization)
+                result[localization]
+                    = generateIndex(
+                        for: package,
+                        tools: tools,
+                        hasInstallation: installation[localization] ≠ nil,
+                        hasImporting: importing[localization] ≠ nil,
+                        hasRelatedProjects: relatedProjects[localization] ≠ nil,
+                        hasAbout: about[localization] ≠ nil,
+                        localization: localization)
             }
         }
         return result
@@ -127,7 +173,7 @@ internal struct PackageInterface {
                 return "Paket"
             }
         } else {
-            return "Package" // From “let ... = Package(...)”
+            return "Package"  // From “let ... = Package(...)”
         }
     }
 
@@ -138,117 +184,149 @@ internal struct PackageInterface {
         hasImporting: Bool,
         hasRelatedProjects: Bool,
         hasAbout: Bool,
-        localization: LocalizationIdentifier) -> StrictString {
+        localization: LocalizationIdentifier
+    ) -> StrictString {
         var result: [StrictString] = []
 
-        result.append(generateIndexSection(
-            named: packageHeader(localization: localization),
-            identifier: .package,
-            contents: [
-                ElementSyntax(
-                    "a",
-                    attributes: [
-                        "href": "[*site root*]\(HTML.percentEncodeURLPath(APIElement.package(package).relativePagePath[localization]!))"
-                    ],
-                    contents: HTML.escapeTextForCharacterData(StrictString(package.name.source())),
-                    inline: false).normalizedSource()
+        result.append(
+            generateIndexSection(
+                named: packageHeader(localization: localization),
+                identifier: .package,
+                contents: [
+                    ElementSyntax(
+                        "a",
+                        attributes: [
+                            "href":
+                                "[*site root*]\(HTML.percentEncodeURLPath(APIElement.package(package).relativePagePath[localization]!))"
+                        ],
+                        contents: HTML.escapeTextForCharacterData(
+                            StrictString(package.name.source())),
+                        inline: false).normalizedSource()
                 ].joinedAsLines()))
 
         if hasInstallation {
-            result.append(generateLoneIndexEntry(
-                named: installation(localization: localization),
-                target: installationLocation(localization: localization)))
+            result.append(
+                generateLoneIndexEntry(
+                    named: installation(localization: localization),
+                    target: installationLocation(localization: localization)))
         }
         if hasImporting {
-            result.append(generateLoneIndexEntry(
-                named: importing(localization: localization),
-                target: importingLocation(localization: localization)))
+            result.append(
+                generateLoneIndexEntry(
+                    named: importing(localization: localization),
+                    target: importingLocation(localization: localization)))
         }
 
         if ¬tools.commands.isEmpty {
-            result.append(generateIndexSection(
-                named: SymbolPage.toolsHeader(localization: localization),
-                identifier: .tools,
-                tools: tools,
-                localization: localization))
+            result.append(
+                generateIndexSection(
+                    named: SymbolPage.toolsHeader(localization: localization),
+                    identifier: .tools,
+                    tools: tools,
+                    localization: localization))
         }
 
-        if ¬package.libraries.lazy.filter({ localization ∉ APIElement.library($0).skippedLocalizations }).isEmpty {
-            result.append(generateIndexSection(
-                named: SymbolPage.librariesHeader(localization: localization),
-                identifier: .libraries,
-                apiEntries: package.libraries.lazy.map({ APIElement.library($0) }),
-                localization: localization))
+        if ¬package.libraries.lazy
+            .filter({ localization ∉ APIElement.library($0).skippedLocalizations }).isEmpty
+        {
+            result.append(
+                generateIndexSection(
+                    named: SymbolPage.librariesHeader(localization: localization),
+                    identifier: .libraries,
+                    apiEntries: package.libraries.lazy.map({ APIElement.library($0) }),
+                    localization: localization))
         }
-        if ¬package.modules.lazy.filter({ localization ∉ APIElement.module($0).skippedLocalizations }).isEmpty {
-            result.append(generateIndexSection(
-                named: SymbolPage.modulesHeader(localization: localization),
-                identifier: .modules,
-                apiEntries: package.modules.lazy.map({ APIElement.module($0) }),
-                localization: localization))
+        if ¬package.modules.lazy.filter({
+            localization ∉ APIElement.module($0).skippedLocalizations
+        }).isEmpty {
+            result.append(
+                generateIndexSection(
+                    named: SymbolPage.modulesHeader(localization: localization),
+                    identifier: .modules,
+                    apiEntries: package.modules.lazy.map({ APIElement.module($0) }),
+                    localization: localization))
         }
-        if ¬package.types.lazy.filter({ localization ∉ APIElement.type($0).skippedLocalizations }).isEmpty {
-            result.append(generateIndexSection(
-                named: SymbolPage.typesHeader(localization: localization),
-                identifier: .types,
-                apiEntries: package.types.lazy.map({ APIElement.type($0) }),
-                localization: localization))
+        if ¬package.types.lazy.filter({ localization ∉ APIElement.type($0).skippedLocalizations })
+            .isEmpty
+        {
+            result.append(
+                generateIndexSection(
+                    named: SymbolPage.typesHeader(localization: localization),
+                    identifier: .types,
+                    apiEntries: package.types.lazy.map({ APIElement.type($0) }),
+                    localization: localization))
         }
         if ¬package.uniqueExtensions
-            .lazy.filter({ localization ∉ APIElement.extension($0).skippedLocalizations }).isEmpty {
-            result.append(generateIndexSection(
-                named: SymbolPage.extensionsHeader(localization: localization),
-                identifier: .extensions,
-                apiEntries: package.uniqueExtensions.lazy.map({ APIElement.extension($0) }),
-                localization: localization))
+            .lazy.filter({ localization ∉ APIElement.extension($0).skippedLocalizations }).isEmpty
+        {
+            result.append(
+                generateIndexSection(
+                    named: SymbolPage.extensionsHeader(localization: localization),
+                    identifier: .extensions,
+                    apiEntries: package.uniqueExtensions.lazy.map({ APIElement.extension($0) }),
+                    localization: localization))
         }
-        if ¬package.protocols.lazy.filter({ localization ∉ APIElement.protocol($0).skippedLocalizations }).isEmpty {
-            result.append(generateIndexSection(
-                named: SymbolPage.protocolsHeader(localization: localization),
-                identifier: .protocols,
-                apiEntries: package.protocols.lazy.map({ APIElement.protocol($0) }),
-                localization: localization))
+        if ¬package.protocols.lazy.filter({
+            localization ∉ APIElement.protocol($0).skippedLocalizations
+        }).isEmpty {
+            result.append(
+                generateIndexSection(
+                    named: SymbolPage.protocolsHeader(localization: localization),
+                    identifier: .protocols,
+                    apiEntries: package.protocols.lazy.map({ APIElement.protocol($0) }),
+                    localization: localization))
         }
-        if ¬package.functions.lazy.filter({ localization ∉ APIElement.function($0).skippedLocalizations }).isEmpty {
-            result.append(generateIndexSection(
-                named: SymbolPage.functionsHeader(localization: localization),
-                identifier: .functions,
-                apiEntries: package.functions.lazy.map({ APIElement.function($0) }),
-                localization: localization))
+        if ¬package.functions.lazy.filter({
+            localization ∉ APIElement.function($0).skippedLocalizations
+        }).isEmpty {
+            result.append(
+                generateIndexSection(
+                    named: SymbolPage.functionsHeader(localization: localization),
+                    identifier: .functions,
+                    apiEntries: package.functions.lazy.map({ APIElement.function($0) }),
+                    localization: localization))
         }
         if ¬package.globalVariables
-            .lazy.filter({ localization ∉ APIElement.variable($0).skippedLocalizations }).isEmpty {
-            result.append(generateIndexSection(
-                named: SymbolPage.variablesHeader(localization: localization),
-                identifier: .variables,
-                apiEntries: package.globalVariables.lazy.map({ APIElement.variable($0) }),
-                localization: localization))
+            .lazy.filter({ localization ∉ APIElement.variable($0).skippedLocalizations }).isEmpty
+        {
+            result.append(
+                generateIndexSection(
+                    named: SymbolPage.variablesHeader(localization: localization),
+                    identifier: .variables,
+                    apiEntries: package.globalVariables.lazy.map({ APIElement.variable($0) }),
+                    localization: localization))
         }
         if ¬package.operators
-            .lazy.filter({ localization ∉ APIElement.operator($0).skippedLocalizations }).isEmpty {
-            result.append(generateIndexSection(
-                named: SymbolPage.operatorsHeader(localization: localization),
-                identifier: .operators,
-                apiEntries: package.operators.lazy.map({ APIElement.operator($0) }),
-                localization: localization))
+            .lazy.filter({ localization ∉ APIElement.operator($0).skippedLocalizations }).isEmpty
+        {
+            result.append(
+                generateIndexSection(
+                    named: SymbolPage.operatorsHeader(localization: localization),
+                    identifier: .operators,
+                    apiEntries: package.operators.lazy.map({ APIElement.operator($0) }),
+                    localization: localization))
         }
         if ¬package.precedenceGroups
-            .lazy.filter({ localization ∉ APIElement.precedence($0).skippedLocalizations }).isEmpty {
-            result.append(generateIndexSection(
-                named: SymbolPage.precedenceGroupsHeader(localization: localization),
-                identifier: .precedenceGroups,
-                apiEntries: package.precedenceGroups.lazy.map({ APIElement.precedence($0) }),
-                localization: localization))
+            .lazy.filter({ localization ∉ APIElement.precedence($0).skippedLocalizations }).isEmpty
+        {
+            result.append(
+                generateIndexSection(
+                    named: SymbolPage.precedenceGroupsHeader(localization: localization),
+                    identifier: .precedenceGroups,
+                    apiEntries: package.precedenceGroups.lazy.map({ APIElement.precedence($0) }),
+                    localization: localization))
         }
         if hasRelatedProjects {
-            result.append(generateLoneIndexEntry(
-                named: relatedProjects(localization: localization),
-                target: relatedProjectsLocation(localization: localization)))
+            result.append(
+                generateLoneIndexEntry(
+                    named: relatedProjects(localization: localization),
+                    target: relatedProjectsLocation(localization: localization)))
         }
         if hasAbout {
-            result.append(generateLoneIndexEntry(
-                named: about(localization: localization),
-                target: aboutLocation(localization: localization)))
+            result.append(
+                generateLoneIndexEntry(
+                    named: about(localization: localization),
+                    target: aboutLocation(localization: localization)))
         }
 
         return result.joinedAsLines()
@@ -258,65 +336,82 @@ internal struct PackageInterface {
         named name: StrictString,
         identifier: IndexSectionIdentifier,
         apiEntries: [APIElement],
-        localization: LocalizationIdentifier) -> StrictString {
+        localization: LocalizationIdentifier
+    ) -> StrictString {
         var entries: [StrictString] = []
         for entry in apiEntries.lazy.filter({ $0.exists(in: localization) }) {
-            entries.append(ElementSyntax(
-                "a",
-                attributes: [
-                "href": "[*site root*]\(HTML.percentEncodeURLPath(entry.relativePagePath[localization]!))"
-                ],
-                contents: HTML.escapeTextForCharacterData(StrictString(entry.name.source())),
-                inline: false).normalizedSource())
+            entries.append(
+                ElementSyntax(
+                    "a",
+                    attributes: [
+                        "href":
+                            "[*site root*]\(HTML.percentEncodeURLPath(entry.relativePagePath[localization]!))"
+                    ],
+                    contents: HTML.escapeTextForCharacterData(StrictString(entry.name.source())),
+                    inline: false).normalizedSource())
         }
-        return generateIndexSection(named: name, identifier: identifier, contents: entries.joinedAsLines())
+        return generateIndexSection(
+            named: name, identifier: identifier, contents: entries.joinedAsLines())
     }
 
     private static func generateIndexSection(
         named name: StrictString,
         identifier: IndexSectionIdentifier,
         tools: PackageCLI,
-        localization: LocalizationIdentifier) -> StrictString {
+        localization: LocalizationIdentifier
+    ) -> StrictString {
         var entries: [StrictString] = []
         for (_, entry) in tools.commands {
             if let interface = entry.interfaces[localization] {
-                entries.append(ElementSyntax(
-                    "a",
-                    attributes: [
-                        "href": "[*site root*]\(HTML.percentEncodeURLPath(entry.relativePagePath[localization]!))"
-                    ],
-                    contents: HTML.escapeTextForCharacterData(StrictString(interface.name)),
-                    inline: false).normalizedSource())
+                entries.append(
+                    ElementSyntax(
+                        "a",
+                        attributes: [
+                            "href":
+                                "[*site root*]\(HTML.percentEncodeURLPath(entry.relativePagePath[localization]!))"
+                        ],
+                        contents: HTML.escapeTextForCharacterData(StrictString(interface.name)),
+                        inline: false).normalizedSource())
             }
 
         }
-        return generateIndexSection(named: name, identifier: identifier, contents: entries.joinedAsLines())
+        return generateIndexSection(
+            named: name, identifier: identifier, contents: entries.joinedAsLines())
     }
 
     private static func generateIndexSection(
         named name: StrictString,
         identifier: IndexSectionIdentifier,
-        contents: StrictString) -> StrictString {
+        contents: StrictString
+    ) -> StrictString {
         return ElementSyntax(
             "div",
             attributes: ["id": identifier.htmlIdentifier],
             contents: [
-                ElementSyntax("a", attributes: [
-                    "class": "heading",
-                    "onclick": "toggleIndexSectionVisibility(this)"
-                    ], contents: HTML.escapeTextForCharacterData(name), inline: true).normalizedSource(),
+                ElementSyntax(
+                    "a",
+                    attributes: [
+                        "class": "heading",
+                        "onclick": "toggleIndexSectionVisibility(this)"
+                    ], contents: HTML.escapeTextForCharacterData(name), inline: true)
+                    .normalizedSource(),
                 contents
-                ].joinedAsLines(),
+            ].joinedAsLines(),
             inline: false).normalizedSource()
     }
 
-    private static func generateLoneIndexEntry(named name: StrictString, target: StrictString) -> StrictString {
+    private static func generateLoneIndexEntry(named name: StrictString, target: StrictString)
+        -> StrictString
+    {
         return ElementSyntax(
             "div",
-            contents: ElementSyntax("a", attributes: [
-                "class": "heading",
-                "href": "[*site root*]\(HTML.percentEncodeURLPath(target))"
-                ], contents: HTML.escapeTextForCharacterData(name), inline: true).normalizedSource(),
+            contents: ElementSyntax(
+                "a",
+                attributes: [
+                    "class": "heading",
+                    "href": "[*site root*]\(HTML.percentEncodeURLPath(target))"
+                ], contents: HTML.escapeTextForCharacterData(name), inline: true)
+                .normalizedSource(),
             inline: false).normalizedSource()
     }
 
@@ -352,7 +447,9 @@ internal struct PackageInterface {
             return "Verwandte Projekte"
         }
     }
-    private static func relatedProjectsLocation(localization: LocalizationIdentifier) -> StrictString {
+    private static func relatedProjectsLocation(localization: LocalizationIdentifier)
+        -> StrictString
+    {
         return "\(localization._directoryName)/\(relatedProjects(localization: localization)).html"
     }
 
@@ -371,38 +468,42 @@ internal struct PackageInterface {
     private static func generate(platforms: [StrictString]) -> StrictString {
         var result: [StrictString] = []
         for platform in platforms.sorted() {
-            result.append(ElementSyntax(
-                "span",
-                contents: HTML.escapeTextForCharacterData(platform),
-                inline: false).normalizedSource())
+            result.append(
+                ElementSyntax(
+                    "span",
+                    contents: HTML.escapeTextForCharacterData(platform),
+                    inline: false).normalizedSource())
         }
         return result.joinedAsLines()
     }
 
     // MARK: - Initialization
 
-    init(localizations: [LocalizationIdentifier],
-         developmentLocalization: LocalizationIdentifier,
-         api: PackageAPI,
-         cli: PackageCLI,
-         packageURL: URL?,
-         version: Version?,
-         platforms: [LocalizationIdentifier: [StrictString]],
-         installation: [LocalizationIdentifier: StrictString],
-         importing: [LocalizationIdentifier: StrictString],
-         relatedProjects: [LocalizationIdentifier: StrictString],
-         about: [LocalizationIdentifier: StrictString],
-         copyright: [LocalizationIdentifier?: StrictString],
-         output: Command.Output) {
+    init(
+        localizations: [LocalizationIdentifier],
+        developmentLocalization: LocalizationIdentifier,
+        api: PackageAPI,
+        cli: PackageCLI,
+        packageURL: URL?,
+        version: Version?,
+        platforms: [LocalizationIdentifier: [StrictString]],
+        installation: [LocalizationIdentifier: StrictString],
+        importing: [LocalizationIdentifier: StrictString],
+        relatedProjects: [LocalizationIdentifier: StrictString],
+        about: [LocalizationIdentifier: StrictString],
+        copyright: [LocalizationIdentifier?: StrictString],
+        output: Command.Output
+    ) {
 
-        output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "Processing API..."
-            case .deutschDeutschland:
-                return "Die Programmierschnitstelle wird verarbeitet ..."
-            }
-        }).resolved())
+        output.print(
+            UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Processing API..."
+                case .deutschDeutschland:
+                    return "Die Programmierschnitstelle wird verarbeitet ..."
+                }
+            }).resolved())
 
         self.localizations = localizations
         self.developmentLocalization = developmentLocalization
@@ -426,20 +527,22 @@ internal struct PackageInterface {
             paths[localization] = APIElement.package(api).determinePaths(for: localization)
         }
         APIElement.package(api).determineLocalizedPaths(localizations: localizations)
-        self.symbolLinks = paths.mapValues { localization in
-            localization.mapValues { link in
-                return HTML.percentEncodeURLPath(link)
+        self.symbolLinks
+            = paths.mapValues { localization in
+                localization.mapValues { link in
+                    return HTML.percentEncodeURLPath(link)
+                }
             }
-        }
 
-        self.indices = PackageInterface.generateIndices(
-            for: api,
-            tools: cli,
-            installation: installation,
-            importing: importing,
-            relatedProjects: relatedProjects,
-            about: about,
-            localizations: localizations)
+        self.indices
+            = PackageInterface.generateIndices(
+                for: api,
+                tools: cli,
+                installation: installation,
+                importing: importing,
+                relatedProjects: relatedProjects,
+                about: about,
+                localizations: localizations)
         self.platforms = platforms.mapValues { PackageInterface.generate(platforms: $0) }
     }
 
@@ -461,7 +564,10 @@ internal struct PackageInterface {
     private let packageIdentifiers: Set<String>
     private let symbolLinks: [LocalizationIdentifier: [String: String]]
 
-    private func copyright(for localization: LocalizationIdentifier, status: DocumentationStatus) -> StrictString {
+    private func copyright(
+        for localization: LocalizationIdentifier,
+        status: DocumentationStatus
+    ) -> StrictString {
         if let result = copyrightNotices[localization] {
             return result
         } else {
@@ -472,15 +578,19 @@ internal struct PackageInterface {
 
     // MARK: - Output
 
-    internal func outputHTML(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output, coverageCheckOnly: Bool) throws {
-        output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "Generating HTML..."
-            case .deutschDeutschland:
-                return "Auszeichnung wird erstellt ..."
-            }
-        }).resolved())
+    internal func outputHTML(
+        to outputDirectory: URL, status: DocumentationStatus, output: Command.Output,
+        coverageCheckOnly: Bool
+    ) throws {
+        output.print(
+            UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "Generating HTML..."
+                case .deutschDeutschland:
+                    return "Auszeichnung wird erstellt ..."
+                }
+            }).resolved())
 
         try outputPackagePages(
             to: outputDirectory,
@@ -544,7 +654,10 @@ internal struct PackageInterface {
         try outputRedirects(to: outputDirectory)
     }
 
-    private func outputPackagePages(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output, coverageCheckOnly: Bool) throws {
+    private func outputPackagePages(
+        to outputDirectory: URL, status: DocumentationStatus, output: Command.Output,
+        coverageCheckOnly: Bool
+    ) throws {
         for localization in localizations {
             try autoreleasepool {
                 let pageURL = api.pageURL(in: outputDirectory, for: localization)
@@ -566,7 +679,7 @@ internal struct PackageInterface {
                     status: status,
                     output: output,
                     coverageCheckOnly: coverageCheckOnly
-                    )?.contents.save(to: pageURL)
+                )?.contents.save(to: pageURL)
             }
         }
     }
@@ -575,7 +688,8 @@ internal struct PackageInterface {
         to outputDirectory: URL,
         status: DocumentationStatus,
         output: Command.Output,
-        coverageCheckOnly: Bool) throws {
+        coverageCheckOnly: Bool
+    ) throws {
         if coverageCheckOnly {
             return
         }
@@ -608,10 +722,13 @@ internal struct PackageInterface {
         }
     }
 
-    private func outputLibraryPages(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output, coverageCheckOnly: Bool) throws {
+    private func outputLibraryPages(
+        to outputDirectory: URL, status: DocumentationStatus, output: Command.Output,
+        coverageCheckOnly: Bool
+    ) throws {
         for localization in localizations {
             for library in api.libraries.lazy.map({ APIElement.library($0) })
-                where library.exists(in: localization) {
+            where library.exists(in: localization) {
                 try autoreleasepool {
                     let location = library.pageURL(in: outputDirectory, for: localization)
                     try SymbolPage(
@@ -631,16 +748,19 @@ internal struct PackageInterface {
                         status: status,
                         output: output,
                         coverageCheckOnly: coverageCheckOnly
-                        )?.contents.save(to: location)
+                    )?.contents.save(to: location)
                 }
             }
         }
     }
 
-    private func outputModulePages(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output, coverageCheckOnly: Bool) throws {
+    private func outputModulePages(
+        to outputDirectory: URL, status: DocumentationStatus, output: Command.Output,
+        coverageCheckOnly: Bool
+    ) throws {
         for localization in localizations {
             for module in api.modules.lazy.map({ APIElement.module($0) })
-                where module.exists(in: localization) {
+            where module.exists(in: localization) {
                 try autoreleasepool {
                     let location = module.pageURL(in: outputDirectory, for: localization)
                     try SymbolPage(
@@ -660,13 +780,16 @@ internal struct PackageInterface {
                         status: status,
                         output: output,
                         coverageCheckOnly: coverageCheckOnly
-                        )?.contents.save(to: location)
+                    )?.contents.save(to: location)
                 }
             }
         }
     }
 
-    private func outputTopLevelSymbols(to outputDirectory: URL, status: DocumentationStatus, output: Command.Output, coverageCheckOnly: Bool) throws {
+    private func outputTopLevelSymbols(
+        to outputDirectory: URL, status: DocumentationStatus, output: Command.Output,
+        coverageCheckOnly: Bool
+    ) throws {
         for localization in localizations {
             for symbol in [
                 packageAPI.types.map({ APIElement.type($0) }),
@@ -676,65 +799,66 @@ internal struct PackageInterface {
                 packageAPI.globalVariables.map({ APIElement.variable($0) }),
                 packageAPI.operators.map({ APIElement.operator($0) }),
                 packageAPI.precedenceGroups.map({ APIElement.precedence($0) })
-                ].joined()
-                where symbol.exists(in: localization) {
-                    try autoreleasepool {
-                        let location = symbol.pageURL(in: outputDirectory, for: localization)
-                        let section: IndexSectionIdentifier
-                        switch symbol {
-                        case .package, .library, .module, .case, .initializer, .subscript, .conformance:
-                            unreachable()
-                        case .type:
-                            section = .types
-                        case .extension:
-                            section = .extensions
-                        case .protocol:
-                            section = .protocols
-                        case .function:
-                            section = .functions
-                        case .variable:
-                            section = .variables
-                        case .operator:
-                            section = .operators
-                        case .precedence:
-                            section = .precedenceGroups
-                        }
-                        try SymbolPage(
-                            localization: localization,
-                            allLocalizations: localizations,
-                            pathToSiteRoot: "../../",
-                            navigationPath: [api, symbol],
-                            packageImport: packageImport,
-                            index: indices[localization]!,
+            ].joined()
+            where symbol.exists(in: localization) {
+                try autoreleasepool {
+                    let location = symbol.pageURL(in: outputDirectory, for: localization)
+                    let section: IndexSectionIdentifier
+                    switch symbol {
+                    case .package, .library, .module, .case, .initializer, .subscript, .conformance:
+                        unreachable()
+                    case .type:
+                        section = .types
+                    case .extension:
+                        section = .extensions
+                    case .protocol:
+                        section = .protocols
+                    case .function:
+                        section = .functions
+                    case .variable:
+                        section = .variables
+                    case .operator:
+                        section = .operators
+                    case .precedence:
+                        section = .precedenceGroups
+                    }
+                    try SymbolPage(
+                        localization: localization,
+                        allLocalizations: localizations,
+                        pathToSiteRoot: "../../",
+                        navigationPath: [api, symbol],
+                        packageImport: packageImport,
+                        index: indices[localization]!,
+                        sectionIdentifier: section,
+                        platforms: platforms[localization]!,
+                        symbol: symbol,
+                        package: packageAPI,
+                        copyright: copyright(for: localization, status: status),
+                        packageIdentifiers: packageIdentifiers,
+                        symbolLinks: symbolLinks[localization]!,
+                        status: status,
+                        output: output,
+                        coverageCheckOnly: coverageCheckOnly
+                    )?.contents.save(to: location)
+
+                    switch symbol {
+                    case .package, .library, .module, .case, .initializer, .variable, .subscript,
+                        .function, .operator, .precedence, .conformance:
+                        break
+                    case .extension:
+                        break  // Iterated separately below.
+                    case .type, .protocol:
+                        try outputNestedSymbols(
+                            of: symbol,
+                            namespace: [symbol],
                             sectionIdentifier: section,
-                            platforms: platforms[localization]!,
-                            symbol: symbol,
-                            package: packageAPI,
-                            copyright: copyright(for: localization, status: status),
-                            packageIdentifiers: packageIdentifiers,
-                            symbolLinks: symbolLinks[localization]!,
+                            to: outputDirectory,
+                            localization: localization,
                             status: status,
                             output: output,
-                            coverageCheckOnly: coverageCheckOnly
-                            )?.contents.save(to: location)
-
-                        switch symbol {
-                        case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
-                            break
-                        case .extension:
-                            break // Iterated separately below.
-                        case .type, .protocol:
-                            try outputNestedSymbols(
-                                of: symbol,
-                                namespace: [symbol],
-                                sectionIdentifier: section,
-                                to: outputDirectory,
-                                localization: localization,
-                                status: status,
-                                output: output,
-                                coverageCheckOnly: coverageCheckOnly)
-                        }
+                            coverageCheckOnly: coverageCheckOnly)
                     }
+                }
             }
 
             for `extension` in packageAPI.allExtensions {
@@ -748,7 +872,8 @@ internal struct PackageInterface {
                     break
                 }
                 if namespace == apiElement /* Still not resolved. */ {
-                    for `protocol` in packageAPI.protocols where `extension`.isExtension(of: `protocol`) {
+                    for `protocol` in packageAPI.protocols
+                    where `extension`.isExtension(of: `protocol`) {
                         namespace = APIElement.protocol(`protocol`)
                         section = .protocols
                         break
@@ -776,10 +901,11 @@ internal struct PackageInterface {
         localization: LocalizationIdentifier,
         status: DocumentationStatus,
         output: Command.Output,
-        coverageCheckOnly: Bool) throws {
+        coverageCheckOnly: Bool
+    ) throws {
 
         for symbol in [parent.children, parent.localizedChildren].joined()
-            where symbol.receivesPage ∧ symbol.exists(in: localization) {
+        where symbol.receivesPage ∧ symbol.exists(in: localization) {
             try autoreleasepool {
                 let location = symbol.pageURL(in: outputDirectory, for: localization)
 
@@ -809,10 +935,11 @@ internal struct PackageInterface {
                     status: status,
                     output: output,
                     coverageCheckOnly: coverageCheckOnly
-                    )?.contents.save(to: location)
+                )?.contents.save(to: location)
 
                 switch symbol {
-                case .package, .library, .module, .case, .initializer, .variable, .subscript, .function, .operator, .precedence, .conformance:
+                case .package, .library, .module, .case, .initializer, .variable, .subscript,
+                    .function, .operator, .precedence, .conformance:
                     break
                 case .type, .protocol, .extension:
                     try outputNestedSymbols(
@@ -835,7 +962,8 @@ internal struct PackageInterface {
         to outputDirectory: URL,
         localization: LocalizationIdentifier,
         status: DocumentationStatus,
-        output: Command.Output) throws {
+        output: Command.Output
+    ) throws {
 
         for subcommand in parent.interfaces[localization]!.subcommands {
             try autoreleasepool {
@@ -843,13 +971,15 @@ internal struct PackageInterface {
                 information.interfaces[localization] = subcommand
 
                 for otherLocalization in localizations {
-                    let localized = parent.interfaces[otherLocalization]!.subcommands.first(where: { $0.identifier == subcommand.identifier })!
+                    let localized = parent.interfaces[otherLocalization]!.subcommands.first(where: {
+                        $0.identifier == subcommand.identifier
+                    })!
                     if otherLocalization ≠ localization {
                         information.interfaces[otherLocalization] = localized
                     }
 
                     var nestedPagePath = parent.relativePagePath[otherLocalization]!
-                    nestedPagePath.removeLast(5) // .html
+                    nestedPagePath.removeLast(5)  // .html
                     nestedPagePath += "/"
                     nestedPagePath += CommandPage.subcommandsDirectoryName(for: otherLocalization)
                     nestedPagePath += "/"
@@ -898,7 +1028,8 @@ internal struct PackageInterface {
         title: (LocalizationIdentifier) -> StrictString,
         content: [LocalizationIdentifier: Markdown],
         status: DocumentationStatus,
-        output: Command.Output) throws {
+        output: Command.Output
+    ) throws {
         for localization in localizations {
             if let specifiedContent = content[localization] {
                 let pathToSiteRoot: StrictString = "../"
@@ -909,20 +1040,24 @@ internal struct PackageInterface {
                 var documentationMarkup: StrictString = ""
                 if ¬specifiedContent.isEmpty {
                     documentationMarkup.append(contentsOf: StrictString("/// ...\n///\n"))
-                    documentationMarkup.append(contentsOf: StrictString(specifiedContent.lines.lazy.map({ line in
-                        return "/// " + StrictString(line.line)
-                    }).joined(separator: "\n")))
+                    documentationMarkup.append(
+                        contentsOf: StrictString(
+                            specifiedContent.lines.lazy.map({ line in
+                                return "/// " + StrictString(line.line)
+                            }).joined(separator: "\n")))
                 }
                 documentationMarkup.append(contentsOf: "\npublic func function() {}\n")
                 let parsed = try SyntaxParser.parse(source: String(documentationMarkup))
                 let documentation = parsed.api().first!.documentation.last?.documentationComment
 
                 var pageContent = ""
-                for paragraph in documentation?.discussionEntries ?? [] { // @exempt(from: tests)
+                for paragraph in documentation?.discussionEntries ?? [] {  // @exempt(from: tests)
                     pageContent.append("\n")
-                    pageContent.append(contentsOf: paragraph.renderedHTML(
-                        localization: localization.code,
-                        symbolLinks: symbolLinks[localization]!.mapValues { String(pathToSiteRoot) + $0 }))
+                    pageContent.append(
+                        contentsOf: paragraph.renderedHTML(
+                            localization: localization.code,
+                            symbolLinks: symbolLinks[localization]!
+                                .mapValues({ String(pathToSiteRoot) + $0 })))
                 }
 
                 let page = Page(
@@ -931,11 +1066,15 @@ internal struct PackageInterface {
                     navigationPath: SymbolPage.generateNavigationPath(
                         localization: localization,
                         pathToSiteRoot: pathToSiteRoot,
-                        allLocalizations: localizations.lazy.filter({ content[$0] ≠ nil }).map({ localization in
-                            return (localization: localization, path: location(localization))
-                        }),
+                        allLocalizations: localizations.lazy.filter({ content[$0] ≠ nil })
+                            .map({ localization in
+                                return (localization: localization, path: location(localization))
+                            }),
                         navigationPath: [
-                            (label: StrictString(api.name.source()), path: api.relativePagePath[localization]!),
+                            (
+                                label: StrictString(api.name.source()),
+                                path: api.relativePagePath[localization]!
+                            ),
                             (label: pageTitle, path: pagePath)
                         ]),
                     packageImport: packageImport,
@@ -963,24 +1102,26 @@ internal struct PackageInterface {
             try autoreleasepool {
                 var directory = url.deletingLastPathComponent()
                 while directory ∉ handled,
-                    directory.is(in: outputDirectory) {
-                        defer {
-                            handled.insert(directory)
-                            directory = directory.deletingLastPathComponent()
-                        }
+                directory.is(in: outputDirectory) {
+                    defer {
+                        handled.insert(directory)
+                        directory = directory.deletingLastPathComponent()
+                    }
 
-                        let redirect = directory.appendingPathComponent("index.html")
-                        if (try? redirect.checkResourceIsReachable()) ≠ true { // Do not overwrite if there is a file name clash.
-                            try Redirect(target: "../index.html").contents.save(to: redirect)
-                        }
+                    let redirect = directory.appendingPathComponent("index.html")
+                    if (try? redirect.checkResourceIsReachable()) ≠ true {  // Do not overwrite if there is a file name clash.
+                        try Redirect(target: "../index.html").contents.save(to: redirect)
+                    }
                 }
             }
         }
 
         // To home page.
-        try Redirect(target: String(developmentLocalization._directoryName) + "/index.html").contents.save(to: outputDirectory.appendingPathComponent("index.html"))
+        try Redirect(target: String(developmentLocalization._directoryName) + "/index.html")
+            .contents.save(to: outputDirectory.appendingPathComponent("index.html"))
         for localization in localizations {
-            let localizationDirectory = outputDirectory.appendingPathComponent(String(localization._directoryName))
+            let localizationDirectory = outputDirectory.appendingPathComponent(
+                String(localization._directoryName))
             let redirectURL = localizationDirectory.appendingPathComponent("index.html")
             let pageURL = api.pageURL(in: outputDirectory, for: localization)
             if redirectURL ≠ pageURL {

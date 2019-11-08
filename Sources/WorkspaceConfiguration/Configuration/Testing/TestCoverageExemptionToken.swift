@@ -19,7 +19,7 @@
 public typealias Testabdeckungsausnahmszeichen = TestCoverageExemptionToken
 // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(TestCoverageExemptionToken)
 /// A test coverage exemption token.
-public struct TestCoverageExemptionToken : Codable, Hashable {
+public struct TestCoverageExemptionToken: Codable, Hashable {
 
     // MARK: - Initialization
 

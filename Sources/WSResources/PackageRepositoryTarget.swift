@@ -26,7 +26,7 @@ import PackageModel
 
 extension PackageRepository {
 
-    internal struct Target : Comparable, Hashable {
+    internal struct Target: Comparable, Hashable {
 
         // MARK: - Initialization
 
@@ -60,21 +60,29 @@ extension PackageRepository {
 
         // MARK: - Resources
 
-        internal func refresh(resources: [URL], from package: PackageRepository, output: Command.Output) throws {
+        internal func refresh(
+            resources: [URL], from package: PackageRepository, output: Command.Output
+        ) throws {
 
-            var resourceFile = try TextFile(possiblyAt: sourceDirectory.appendingPathComponent("Resources.swift"))
+            var resourceFile = try TextFile(
+                possiblyAt: sourceDirectory.appendingPathComponent("Resources.swift"))
             resourceFile.body = String(try generateSource(for: resources, of: package))
             try resourceFile.writeChanges(for: package, output: output)
         }
 
-        private func generateSource(for resources: [URL], of package: PackageRepository) throws -> StrictString {
+        private func generateSource(for resources: [URL], of package: PackageRepository) throws
+            -> StrictString
+        {
             var source: StrictString = "import Foundation\n\n"
 
-            let enumName = PackageRepository.Target.resourceNamespace.resolved(for: InterfaceLocalization.fallbackLocalization)
+            let enumName = PackageRepository.Target.resourceNamespace.resolved(
+                for: InterfaceLocalization.fallbackLocalization)
             source += "internal enum " + enumName + " {}\n"
 
             var registeredAliases: Set<StrictString> = [enumName]
-            for alias in InterfaceLocalization.allCases.map({ PackageRepository.Target.resourceNamespace.resolved(for: $0) }) where alias ∉ registeredAliases {
+            for alias in InterfaceLocalization.allCases.map({
+                PackageRepository.Target.resourceNamespace.resolved(for: $0)
+            }) where alias ∉ registeredAliases {
                 registeredAliases.insert(alias)
                 source += "internal typealias "
                 source += alias
@@ -93,7 +101,8 @@ extension PackageRepository {
             return source
         }
 
-        private static let resourceNamespace = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
+        private static let resourceNamespace = UserFacing<StrictString, InterfaceLocalization>({
+            (localization) in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Resources"
@@ -102,26 +111,34 @@ extension PackageRepository {
             }
         })
 
-        private func namespaceTreeSource(for resources: [URL], of package: PackageRepository) throws -> StrictString {
+        private func namespaceTreeSource(for resources: [URL], of package: PackageRepository) throws
+            -> StrictString
+        {
             return try source(for: namespaceTree(for: resources, of: package))
         }
 
-        private func namespaceTree(for resources: [URL], of package: PackageRepository) -> [StrictString: Any] {
+        private func namespaceTree(for resources: [URL], of package: PackageRepository)
+            -> [StrictString: Any]
+        {
             var tree: [StrictString: Any] = [:]
             for resource in resources {
-                let pathComponentsArray = resource.path(relativeTo: package.location).components(separatedBy: "/").dropFirst(2).map({ String($0.contents) })
+                let pathComponentsArray = resource.path(relativeTo: package.location).components(
+                    separatedBy: "/").dropFirst(2).map({ String($0.contents) })
                 let pathComponents = pathComponentsArray[pathComponentsArray.startIndex...]
                 add(components: pathComponents, to: &tree, for: resource)
             }
             return tree
         }
 
-        private func add(components: ArraySlice<String>, to tree: inout [StrictString: Any], for resource: URL) {
+        private func add(
+            components: ArraySlice<String>, to tree: inout [StrictString: Any], for resource: URL
+        ) {
             if ¬components.isEmpty {
                 if components.count == 1 {
                     tree[variableName(for: components.first!)] = resource
                 } else {
-                    let name = SwiftLanguage.identifier(for: StrictString(components.first!), casing: .type)
+                    let name = SwiftLanguage.identifier(
+                        for: StrictString(components.first!), casing: .type)
                     var branch = tree[name] as? [StrictString: Any] ?? [:]
                     add(components: components.dropFirst(), to: &branch, for: resource)
                     tree[name] = branch
@@ -130,7 +147,8 @@ extension PackageRepository {
         }
 
         private func variableName(for fileName: String) -> StrictString {
-            let nameOnly = URL(fileURLWithPath: "/" + fileName).deletingPathExtension().lastPathComponent
+            let nameOnly = URL(fileURLWithPath: "/" + fileName).deletingPathExtension()
+                .lastPathComponent
             return SwiftLanguage.identifier(for: StrictString(nameOnly), casing: .variable)
         }
 
@@ -155,9 +173,10 @@ extension PackageRepository {
             if result.scalars.last == "\n" {
                 result.scalars.removeLast()
             }
-            return StrictString(result.lines.map({ (lineInformation) in
-                return "    " + StrictString(lineInformation.line)
-            }).joined(separator: "\n".scalars) + "\n")
+            return StrictString(
+                result.lines.map({ (lineInformation) in
+                    return "    " + StrictString(lineInformation.line)
+                }).joined(separator: "\n".scalars) + "\n")
         }
 
         private func source(for resource: URL, named name: StrictString) throws -> StrictString {
@@ -185,13 +204,17 @@ extension PackageRepository {
 
         // MARK: - Comparable
 
-        internal static func < (lhs: PackageRepository.Target, rhs: PackageRepository.Target) -> Bool {
+        internal static func < (lhs: PackageRepository.Target, rhs: PackageRepository.Target)
+            -> Bool
+        {
             return (lhs.name, lhs.sourceDirectory) < (rhs.name, rhs.sourceDirectory)
         }
 
         // MARK: - Equatable
 
-        internal static func == (lhs: PackageRepository.Target, rhs: PackageRepository.Target) -> Bool {
+        internal static func == (lhs: PackageRepository.Target, rhs: PackageRepository.Target)
+            -> Bool
+        {
             return (lhs.name, lhs.sourceDirectory) == (rhs.name, rhs.sourceDirectory)
         }
 

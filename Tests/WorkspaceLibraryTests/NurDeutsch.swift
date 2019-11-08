@@ -16,7 +16,7 @@
 
 import WSGeneralTestImports
 
-public enum NurDeutsch : String, InputLocalization, Localization {
+public enum NurDeutsch: String, InputLocalization, Localization {
 
     // MARK: - Cases
 

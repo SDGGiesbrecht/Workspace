@@ -21,7 +21,7 @@ import SDGSwiftSource
 
 import WSProject
 
-internal struct SyntaxColouring : SyntaxRule {
+internal struct SyntaxColouring: SyntaxRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
@@ -43,15 +43,21 @@ internal struct SyntaxColouring : SyntaxRule {
         }
     })
 
-    internal static func check(_ node: ExtendedSyntax, context: ExtendedSyntaxContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
+    internal static func check(
+        _ node: ExtendedSyntax, context: ExtendedSyntaxContext, file: TextFile,
+        project: PackageRepository, status: ProofreadingStatus, output: Command.Output
+    ) {
 
         if let codeDelimiter = node as? ExtendedTokenSyntax,
             codeDelimiter.kind == .codeDelimiter,
             let codeBlock = codeDelimiter.parent as? CodeBlockSyntax,
-            codeBlock.openingDelimiter.indexInParent == codeDelimiter.indexInParent {
+            codeBlock.openingDelimiter.indexInParent == codeDelimiter.indexInParent
+        {
 
             if codeBlock.language == nil {
-                reportViolation(in: file, at: codeDelimiter.range(in: context), message: message, status: status)
+                reportViolation(
+                    in: file, at: codeDelimiter.range(in: context), message: message, status: status
+                )
             }
         }
     }

@@ -46,15 +46,15 @@ extension ContinuousIntegrationJob {
 
     private var englishTargetOperatingSystemName: StrictString {
         switch self {
-        case .macOS: // @exempt(from: tests) Unreachable from Linux.
+        case .macOS:  // @exempt(from: tests) Unreachable from Linux.
             return "macOS"
         case .linux:  // @exempt(from: tests)
-            return "Linux" // @exempt(from: tests) Unreachable from macOS.
-        case .iOS: // @exempt(from: tests) Unreachable from Linux.
+            return "Linux"  // @exempt(from: tests) Unreachable from macOS.
+        case .iOS:  // @exempt(from: tests) Unreachable from Linux.
             return "iOS"
-        case .watchOS: // @exempt(from: tests) Unreachable from Linux.
+        case .watchOS:  // @exempt(from: tests) Unreachable from Linux.
             return "watchOS"
-        case .tvOS: // @exempt(from: tests) Unreachable from Linux.
+        case .tvOS:  // @exempt(from: tests) Unreachable from Linux.
             return "tvOS"
         case .miscellaneous, .deployment:
             unreachable()
@@ -62,15 +62,15 @@ extension ContinuousIntegrationJob {
     }
     private var deutscherZielsystemname: StrictString {
         switch self {
-        case .macOS: // @exempt(from: tests) Unreachable from Linux.
+        case .macOS:  // @exempt(from: tests) Unreachable from Linux.
             return "macOS"
         case .linux:  // @exempt(from: tests)
-            return "Linux" // @exempt(from: tests) Unreachable from macOS.
-        case .iOS: // @exempt(from: tests) Unreachable from Linux.
+            return "Linux"  // @exempt(from: tests) Unreachable from macOS.
+        case .iOS:  // @exempt(from: tests) Unreachable from Linux.
             return "iOS"
-        case .watchOS: // @exempt(from: tests) Unreachable from Linux.
+        case .watchOS:  // @exempt(from: tests) Unreachable from Linux.
             return "watchOS"
-        case .tvOS: // @exempt(from: tests) Unreachable from Linux.
+        case .tvOS:  // @exempt(from: tests) Unreachable from Linux.
             return "tvOS"
         case .miscellaneous, .deployment:
             unreachable()
@@ -80,7 +80,7 @@ extension ContinuousIntegrationJob {
     // MARK: - SDK
 
     internal var buildSDK: Xcode.SDK {
-        switch self { // @exempt(from: tests) Unreachable from Linux.
+        switch self {  // @exempt(from: tests) Unreachable from Linux.
         case .iOS:
             return .iOS(simulator: false)
         case .watchOS:
@@ -93,11 +93,11 @@ extension ContinuousIntegrationJob {
     }
 
     internal var testSDK: Xcode.SDK {
-        switch self { // @exempt(from: tests) Unreachable from Linux.
-        case .iOS: // @exempt(from: tests)
+        switch self {  // @exempt(from: tests) Unreachable from Linux.
+        case .iOS:  // @exempt(from: tests)
             // @exempt(from: tests) Tested separately.
             return .iOS(simulator: true)
-        case .tvOS: // @exempt(from: tests)
+        case .tvOS:  // @exempt(from: tests)
             // @exempt(from: tests) Tested separately.
             return .tvOS(simulator: true)
         case .macOS, .linux, .watchOS, .miscellaneous, .deployment:

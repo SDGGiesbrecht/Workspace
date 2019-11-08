@@ -19,7 +19,7 @@
 public typealias Themavorlage = IssueTemplate
 // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(IssueTemplate)
 /// A GitHub issue template.
-public struct IssueTemplate : Decodable, Encodable {
+public struct IssueTemplate: Decodable, Encodable {
 
     // @localization(🇩🇪DE) @crossReference(IssueTemplate.init(name:description:title:content:labels:assignees))
     /// Erstellt eine Themavorlage.
@@ -37,7 +37,8 @@ public struct IssueTemplate : Decodable, Encodable {
         titel: StrengeZeichenkette? = nil,
         inhalt: Markdown,
         etiketten: [StrengeZeichenkette],
-        beauftragte: [StrengeZeichenkette] = []) {
+        beauftragte: [StrengeZeichenkette] = []
+    ) {
         self.init(
             name: name,
             description: beschreibung,
@@ -63,7 +64,8 @@ public struct IssueTemplate : Decodable, Encodable {
         title: StrictString? = nil,
         content: Markdown,
         labels: [StrictString],
-        assignees: [StrictString] = []) {
+        assignees: [StrictString] = []
+    ) {
         self.name = name
         self.description = description
         self.title = title

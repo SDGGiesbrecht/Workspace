@@ -16,7 +16,7 @@
 
 import SDGLocalization
 
-public enum InterfaceLocalization : String, InputLocalization, Localization {
+public enum InterfaceLocalization: String, InputLocalization, Localization {
 
     // MARK: - Cases
 

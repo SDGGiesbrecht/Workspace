@@ -19,7 +19,7 @@
 public typealias Testeinstellungen = TestingConfiguration
 // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(TestingConfiguration)
 /// Options related to building and testing.
-public struct TestingConfiguration : Codable {
+public struct TestingConfiguration: Codable {
 
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     // @crossReference(TestingConfiguration.prohibitCompilerWarnings)
@@ -153,7 +153,8 @@ public struct TestingConfiguration : Codable {
         Testabdeckungsausnahmszeichen("behaupten", geltungsbereich: .selbeZeile),
         Testabdeckungsausnahmszeichen("behauptungsfehlschlag", geltungsbereich: .vorstehendeZeile),
         Testabdeckungsausnahmszeichen("voraussetzung", geltungsbereich: .selbeZeile),
-        Testabdeckungsausnahmszeichen("voraussetzungsfehlschlag", geltungsbereich: .vorstehendeZeile),
+        Testabdeckungsausnahmszeichen(
+            "voraussetzungsfehlschlag", geltungsbereich: .vorstehendeZeile),
         Testabdeckungsausnahmszeichen("unbehebbarerFehler", geltungsbereich: .vorstehendeZeile),
 
         Testabdeckungsausnahmszeichen("stammmethode", geltungsbereich: .vorstehendeZeile),

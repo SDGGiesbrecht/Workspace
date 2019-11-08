@@ -19,7 +19,7 @@ import WorkspaceConfiguration
 public enum Metadata {
 
     public static let latestStableVersion = Version(0, 25, 1)
-    public static let thisVersion: Version? = nil // Set this to latestStableWorkspaceVersion for release commits, nil the rest of the time.
+    public static let thisVersion: Version? = nil  // Set this to latestStableWorkspaceVersion for release commits, nil the rest of the time.
 
     public static let packageURL = URL(string: "https://github.com/SDGGiesbrecht/Workspace")!
     public static let issuesURL = packageURL.appendingPathComponent("issues")
@@ -35,7 +35,8 @@ public let configuration: WorkspaceConfiguration = {
     configuration.supportedPlatforms.remove(.tvOS)
 
     configuration.documentation.currentVersion = Metadata.latestStableVersion
-    configuration.documentation.projectWebsite = URL(string: "https://github.com/SDGGiesbrecht/Workspace#workspace")!
+    configuration.documentation.projectWebsite = URL(
+        string: "https://github.com/SDGGiesbrecht/Workspace#workspace")!
     configuration.documentation.documentationURL = Metadata.documentationURL
     configuration.documentation.repositoryURL = Metadata.packageURL
 
@@ -48,7 +49,8 @@ public let configuration: WorkspaceConfiguration = {
 
     configuration.repository.ignoredPaths.insert("Tests/Mock Projects")
 
-    configuration.documentation.api.encryptedTravisCIDeploymentKey = "WfBLnstfcBi0Z8yioAfvEnoK/R59u+fLag3vBulzdePBF60jRQbT4qCr1wCuBsp1JHWJlJSM/GmVsqFEJgt1hJOL4lfx2proY6XUBNdn3BElPkDBgG2eIbPFHkdCtDLGSVqzNhUca6MKWJ4qZCujLKMSfvb+OBylzdhhVd+j5l/Icza0shRpAWDaSWiio3RkvxD08lFm9Fvlg4d09uRKzGPhlg1PjUP7bbl9xcoEqh/4ZzL2GTXGbHfJJOkQQXoPTbF0R8LiYVJVA5euFfHQw1rFepHhfSdhililvC0ld/ksSpQRLwCY93Sb9wOMRrc6HASApRALi9M3TGOQQrEI/Kjh4lJ+Okjg7wZnKixAuGPMUH0DWy57t+gSy51PyFi0bHfJzGm3Y5t8gtimsIiiWbWlNyZF3EndFmtQRfzLjfdJwHx34Zj44kX+rr7p29hkTlfv9YUuOP6CizVQnDfAoWPyv6lsD/PSYTdw97yWBoNXNVbKp8Ge4MmgtpYuWdOaZj0Lim0WZ/04A0clXW7wj/G+MJCbeRiFxKyVi6OUdhRy+BkVVqdNul892/vKyeLwJp9d6DtDkwy11TaxLeGpu0eBWUEhfQJIUG/EaE5FD1v6GsZpmy8FF+XVKeOPDI+kHuHQ6hUjXnOM8HGr0HGpbiQ9Nw0mv4ozUi+EFv7429Q="
+    configuration.documentation.api.encryptedTravisCIDeploymentKey
+        = "WfBLnstfcBi0Z8yioAfvEnoK/R59u+fLag3vBulzdePBF60jRQbT4qCr1wCuBsp1JHWJlJSM/GmVsqFEJgt1hJOL4lfx2proY6XUBNdn3BElPkDBgG2eIbPFHkdCtDLGSVqzNhUca6MKWJ4qZCujLKMSfvb+OBylzdhhVd+j5l/Icza0shRpAWDaSWiio3RkvxD08lFm9Fvlg4d09uRKzGPhlg1PjUP7bbl9xcoEqh/4ZzL2GTXGbHfJJOkQQXoPTbF0R8LiYVJVA5euFfHQw1rFepHhfSdhililvC0ld/ksSpQRLwCY93Sb9wOMRrc6HASApRALi9M3TGOQQrEI/Kjh4lJ+Okjg7wZnKixAuGPMUH0DWy57t+gSy51PyFi0bHfJzGm3Y5t8gtimsIiiWbWlNyZF3EndFmtQRfzLjfdJwHx34Zj44kX+rr7p29hkTlfv9YUuOP6CizVQnDfAoWPyv6lsD/PSYTdw97yWBoNXNVbKp8Ge4MmgtpYuWdOaZj0Lim0WZ/04A0clXW7wj/G+MJCbeRiFxKyVi6OUdhRy+BkVVqdNul892/vKyeLwJp9d6DtDkwy11TaxLeGpu0eBWUEhfQJIUG/EaE5FD1v6GsZpmy8FF+XVKeOPDI+kHuHQ6hUjXnOM8HGr0HGpbiQ9Nw0mv4ozUi+EFv7429Q="
 
     configuration._applySDGOverrides()
     configuration._validateSDGStandards()

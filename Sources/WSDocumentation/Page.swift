@@ -61,7 +61,8 @@ internal class Page {
             name = "Arbeitsbereich"
         }
 
-        let link = ElementSyntax("a", attributes: ["href": targetURL], contents: name, inline: true).normalizedSource()
+        let link = ElementSyntax("a", attributes: ["href": targetURL], contents: name, inline: true)
+            .normalizedSource()
 
         let generatedUsing: StrictString
         switch resolved {
@@ -74,44 +75,54 @@ internal class Page {
         let sdg: StrictString
         switch resolved {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-             .deutschDeutschland:
-            sdg = ElementSyntax("span", attributes: ["lang": "la\u{2D}IT"], contents: "Soli Deo gloria.", inline: true).normalizedSource()
+            .deutschDeutschland:
+            sdg
+                = ElementSyntax(
+                    "span", attributes: ["lang": "la\u{2D}IT"], contents: "Soli Deo gloria.",
+                    inline: true).normalizedSource()
         }
 
-        return ElementSyntax("span", attributes: [
-            "lang": StrictString(resolved.code),
-            "dir": StrictString(resolved.textDirection.htmlAttribute)
+        return ElementSyntax(
+            "span",
+            attributes: [
+                "lang": StrictString(resolved.code),
+                "dir": StrictString(resolved.textDirection.htmlAttribute)
             ], contents: generatedUsing + " " + sdg, inline: true).normalizedSource()
     }
 
     // MARK: - Initialization
 
-    internal init(localization: LocalizationIdentifier,
-                  pathToSiteRoot: StrictString,
-                  navigationPath: StrictString,
-                  packageImport: StrictString?,
-                  index: StrictString,
-                  sectionIdentifier: IndexSectionIdentifier?,
-                  platforms: StrictString,
-                  symbolImports: StrictString,
-                  symbolType: StrictString?,
-                  compilationConditions: StrictString?,
-                  constraints: StrictString?,
-                  title: StrictString,
-                  content: StrictString,
-                  extensions: StrictString,
-                  copyright: StrictString) {
+    internal init(
+        localization: LocalizationIdentifier,
+        pathToSiteRoot: StrictString,
+        navigationPath: StrictString,
+        packageImport: StrictString?,
+        index: StrictString,
+        sectionIdentifier: IndexSectionIdentifier?,
+        platforms: StrictString,
+        symbolImports: StrictString,
+        symbolType: StrictString?,
+        compilationConditions: StrictString?,
+        constraints: StrictString?,
+        title: StrictString,
+        content: StrictString,
+        extensions: StrictString,
+        copyright: StrictString
+    ) {
 
         var mutable = Page.template
         mutable.replaceMatches(for: "[*localization*]".scalars, with: localization.code.scalars)
-        mutable.replaceMatches(for: "[*text direction*]".scalars, with: localization.textDirection.htmlAttribute.scalars)
+        mutable.replaceMatches(
+            for: "[*text direction*]".scalars,
+            with: localization.textDirection.htmlAttribute.scalars)
 
         mutable.replaceMatches(for: "[*navigation path*]", with: navigationPath.scalars)
 
         mutable.replaceMatches(for: "[*package import*]", with: packageImport ?? "")
 
         mutable.replaceMatches(for: "[*index*]", with: index)
-        mutable.replaceMatches(for: "[*section identifier*]", with: sectionIdentifier?.htmlIdentifier ?? "")
+        mutable.replaceMatches(
+            for: "[*section identifier*]", with: sectionIdentifier?.htmlIdentifier ?? "")
         mutable.replaceMatches(for: "[*platforms*]", with: platforms)
         mutable.replaceMatches(
             for: "[*site root*]".scalars,
@@ -121,9 +132,12 @@ internal class Page {
 
         let symbolTypeLabel: StrictString
         if let specified = symbolType {
-            symbolTypeLabel = ElementSyntax("div", attributes: ["class": "symbol‐type"], contents: specified, inline: true).normalizedSource()
+            symbolTypeLabel
+                = ElementSyntax(
+                    "div", attributes: ["class": "symbol‐type"], contents: specified, inline: true)
+                .normalizedSource()
         } else {
-            symbolTypeLabel = "" // @exempt(from: tests) Unreachable yet.
+            symbolTypeLabel = ""  // @exempt(from: tests) Unreachable yet.
         }
         mutable.replaceMatches(for: "[*symbol type*]", with: symbolTypeLabel)
 
@@ -131,8 +145,11 @@ internal class Page {
         mutable.replaceMatches(for: "[*title*]", with: HTML.escapeTextForCharacterData(title))
         mutable.replaceMatches(for: "[*constraints*]", with: constraints ?? "")
 
-        mutable.replaceMatches(for: "[*copyright*]", with: ElementSyntax("span", contents: copyright, inline: false).normalizedSource())
-        mutable.replaceMatches(for: "[*workspace*]", with: Page.watermark(localization: localization))
+        mutable.replaceMatches(
+            for: "[*copyright*]",
+            with: ElementSyntax("span", contents: copyright, inline: false).normalizedSource())
+        mutable.replaceMatches(
+            for: "[*workspace*]", with: Page.watermark(localization: localization))
 
         mutable.replaceMatches(for: "[*content*]", with: content)
 

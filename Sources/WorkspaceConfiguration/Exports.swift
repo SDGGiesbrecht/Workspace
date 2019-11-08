@@ -16,13 +16,13 @@
 
 @_exported import struct Foundation.URL
 
-@_exported import SDGLogic // Bool (Localized)
-@_exported import SDGMathematics // +=
-@_exported import SDGCollections // SearchableCollection
-@_exported import SDGText // StrictString
-@_exported import SDGPersistence // URL (Localized)
+@_exported import SDGLogic  // Bool (Localized)
+@_exported import SDGMathematics  // +=
+@_exported import SDGCollections  // SearchableCollection
+@_exported import SDGText  // StrictString
+@_exported import SDGPersistence  // URL (Localized)
 @_exported import SDGLocalization
-@_exported import SDGCalendar // GregorianYear
+@_exported import SDGCalendar  // GregorianYear
 @_exported import SDGVersioning
 
 @_exported import SDGSwiftConfiguration

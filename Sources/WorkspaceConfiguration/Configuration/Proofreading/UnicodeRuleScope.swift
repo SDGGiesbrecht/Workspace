@@ -19,7 +19,7 @@
 public typealias GeltungsbereichUnicodeRegel = UnicodeRuleScope
 // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(UnicodeRuleScope)
 /// A scope of application for the `unicode` rule.
-public enum UnicodeRuleScope : String, CaseIterable, Decodable, Encodable {
+public enum UnicodeRuleScope: String, CaseIterable, Decodable, Encodable {
 
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(UnicodeRuleScope.humanLanguage)
     /// Scopes which are usually human language, such as documentation and comments.

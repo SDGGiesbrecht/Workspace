@@ -23,7 +23,7 @@ import WSProject
 import SwiftSyntax
 import SDGSwiftSource
 
-internal struct AutoindentResilience : SyntaxRule {
+internal struct AutoindentResilience: SyntaxRule {
 
     internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
         switch localization {
@@ -41,11 +41,15 @@ internal struct AutoindentResilience : SyntaxRule {
         case .englishUnitedStates, .englishCanada:
             return "“/*\u{2A}” may not survive autoindent (⌃I). Use “///” instead."
         case .deutschDeutschland:
-            return "„/*\u{2A}“ widersteht automatische Einzüge (⌃I) nicht. Stattdessen „///“ verwenden."
+            return
+                "„/*\u{2A}“ widersteht automatische Einzüge (⌃I) nicht. Stattdessen „///“ verwenden."
         }
     })
 
-    static func check(_ node: TriviaPiece, context: TriviaPieceContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
+    static func check(
+        _ node: TriviaPiece, context: TriviaPieceContext, file: TextFile,
+        project: PackageRepository, status: ProofreadingStatus, output: Command.Output
+    ) {
         switch node {
         case .docBlockComment:
             if file.location.lastPathComponent ≠ "FileHeaderConfiguration.swift" {

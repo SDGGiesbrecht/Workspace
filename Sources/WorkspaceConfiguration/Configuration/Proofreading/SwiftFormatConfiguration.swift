@@ -25,8 +25,6 @@ extension SwiftFormatConfiguration.Configuration {
     #warning("Restore some of these.")
     configuration.rules = [:]
     configuration.lineBreakBeforeEachArgument = true
-    #warning("Is this necessary?")
-    configuration.respectsExistingLineBreaks = true
     return configuration
   }()
 }

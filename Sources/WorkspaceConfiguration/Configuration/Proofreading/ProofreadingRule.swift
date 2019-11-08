@@ -312,17 +312,6 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
 
   // ••••••• Source Code Style •••••••
 
-  // Punctuation
-
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProofreadingRule.braceSpacing)
-  /// Enforces consistent spacing around braces.
-  case braceSpacing
-  // @localization(🇩🇪DE) @crossReference(ProofreadingRule.braceSpacing)
-  /// Erzwingt einheitlichen Abstand um geschweiften Klammern.
-  public static var abstandGeschweifterKlammern: Korrekturregel {
-    return .braceSpacing
-  }
-
   // Tokens
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProofreadingRule.calloutCasing)
@@ -386,7 +375,7 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
     case .unicode:
       return .textStyle
 
-    case .braceSpacing, .calloutCasing, .closureSignaturePosition,
+    case .calloutCasing, .closureSignaturePosition,
       .parameterGrouping:
       return .sourceCodeStyle
     }

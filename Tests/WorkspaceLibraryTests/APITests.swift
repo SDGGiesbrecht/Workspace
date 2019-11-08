@@ -1059,7 +1059,6 @@ class APITests: TestCase {
     XCTAssertEqual(Korrekturregel.widerstandGegenAutomatischenEinzug, .autoindentResilience)
     XCTAssertEqual(Korrekturregel.überschrifte, .marks)
     XCTAssertEqual(Korrekturregel.syntaxhervorhebung, .syntaxColoring)
-    XCTAssertEqual(Korrekturregel.abstandGeschweifterKlammern, .braceSpacing)
     XCTAssertEqual(Korrekturregel.hervorhebungsGroßschreibung, .calloutCasing)
     XCTAssertEqual(Korrekturregel.abschlusssignaturplatzierung, .closureSignaturePosition)
     XCTAssertEqual(Korrekturregel.übergabewertenzusammenstellung, .parameterGrouping)

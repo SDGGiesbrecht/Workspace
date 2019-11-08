@@ -26,11 +26,6 @@ The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime
 README.md
 Sources/AllTasks/AllTasks.swift
 Tests/AllTasksTests/AllTasksTests.swift
-Line 14
-Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition. (colonSpacing)
-final class AllTasksTests: XCTestCase {
-final class AllTasksTests : XCTestCase {
-
 Tests/AllTasksTests/XCTestManifests.swift
 Line 1
 Test manifests are no longer necessary. (deprecatedTestManifests)
@@ -47,11 +42,11 @@ Test manifests are no longer necessary. (deprecatedTestManifests)
 import XCTest
 
 #if !os(macOS)
-public func allTests() -> [XCTestCaseEntry] {
+  public func allTests() -> [XCTestCaseEntry] {
     return [
-        testCase(AllTasksTests.allTests),
+      testCase(AllTasksTests.allTests),
     ]
-}
+  }
 #endif
 
 Tests/LinuxMain.swift

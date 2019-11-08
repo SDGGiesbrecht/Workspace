@@ -29,15 +29,15 @@ extension Workspace.Refresh {
       }
     })
 
-    private static let description = UserFacing<StrictString, InterfaceLocalization>({
-      localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "performs all configured refreshment tasks."
-      case .deutschDeutschland:
-        return "führt alle konfigurierte Auffrischungsaufgaben aus."
-      }
-    })
+    private static let description
+      = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "performs all configured refreshment tasks."
+        case .deutschDeutschland:
+          return "führt alle konfigurierte Auffrischungsaufgaben aus."
+        }
+      })
 
     static let command = Command(
       name: name,
@@ -45,7 +45,11 @@ extension Workspace.Refresh {
       directArguments: [],
       options: Workspace.standardOptions,
       execution: {
-        (arguments: DirectArguments, options: Options, output: Command.Output) throws in
+        (
+          arguments: DirectArguments,
+          options: Options,
+          output: Command.Output
+        ) throws in
 
         if options.job == .deployment {
           try TravisCI.keepAlive {  // @exempt(from: tests)
@@ -71,19 +75,20 @@ extension Workspace.Refresh {
           }
         }).resolved()
 
-        if let xcodeProject = (try? options.project.xcodeProject())??.lastPathComponent {  // @exempt(from: tests) Unreachable on Linux.
-          let xcodeInstructions = UserFacing<StrictString, InterfaceLocalization>({
-            localization in
-            switch localization {
-            case .englishUnitedKingdom:
-              return "Open ‘\(StrictString(xcodeProject))’ to work on the project."
-            case .englishUnitedStates, .englishCanada:
-              return "Open “\(StrictString(xcodeProject))” to work on the project."
-            case .deutschDeutschland:
-              return
-                "Um auf das Projekt zu arbeiten, „\(StrictString(xcodeProject))“ öffnen."
-            }
-          }).resolved()
+        if let xcodeProject = (try? options.project.xcodeProject())??.lastPathComponent {
+          // @exempt(from: tests) Unreachable on Linux.
+          let xcodeInstructions
+            = UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom:
+                return "Open ‘\(StrictString(xcodeProject))’ to work on the project."
+              case .englishUnitedStates, .englishCanada:
+                return "Open “\(StrictString(xcodeProject))” to work on the project."
+              case .deutschDeutschland:
+                return
+                  "Um auf das Projekt zu arbeiten, „\(StrictString(xcodeProject))“ öffnen."
+              }
+            }).resolved()
 
           success
             = [

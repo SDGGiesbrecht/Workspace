@@ -1261,7 +1261,8 @@ internal struct PackageInterface {
           }
 
           let redirect = directory.appendingPathComponent("index.html")
-          if (try? redirect.checkResourceIsReachable()) ≠ true {  // Do not overwrite if there is a file name clash.
+          if (try? redirect.checkResourceIsReachable()) ≠ true {
+            // Do not overwrite if there is a file name clash.
             try Redirect(target: "../index.html").contents.save(to: redirect)
           }
         }

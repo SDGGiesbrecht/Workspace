@@ -30,15 +30,15 @@ extension Workspace.Refresh {
       }
     })
 
-    private static let description = UserFacing<StrictString, InterfaceLocalization>({
-      localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "regenerates the project’s Git configuration files."
-      case .deutschDeutschland:
-        return "erstellt die Git‐Konfiguration des Projekts neu."
-      }
-    })
+    private static let description
+      = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "regenerates the project’s Git configuration files."
+        case .deutschDeutschland:
+          return "erstellt die Git‐Konfiguration des Projekts neu."
+        }
+      })
 
     static let command = Command(
       name: name,

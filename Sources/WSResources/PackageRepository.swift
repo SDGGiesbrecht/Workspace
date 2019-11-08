@@ -37,15 +37,15 @@ extension PackageRepository {
     return byName
   }
 
-  private static let resourceDirectoryName = UserFacing<StrictString, InterfaceLocalization>({
-    localization in
-    switch localization {
-    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-      return "Resources"
-    case .deutschDeutschland:
-      return "Ressourcen"
-    }
-  })
+  private static let resourceDirectoryName
+    = UserFacing<StrictString, InterfaceLocalization>({ localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Resources"
+      case .deutschDeutschland:
+        return "Ressourcen"
+      }
+    })
 
   private func resourceDirectories() -> [URL] {
 
@@ -115,7 +115,9 @@ extension PackageRepository {
       targets[intendedTarget, default: []].append(resource)
     }
 
-    for (target, resources) in targets.keys.sorted().map({ ($0, targets[$0]!) }) {  // So that output order is consistent.
+    for (target, resources) in targets.keys.sorted()
+      .map({ ($0, targets[$0]!) })
+    {  // So that output order is consistent.
 
       try autoreleasepool {
         try target.refresh(resources: resources, from: self, output: output)

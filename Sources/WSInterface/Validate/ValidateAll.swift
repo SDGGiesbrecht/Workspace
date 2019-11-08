@@ -35,15 +35,15 @@ extension Workspace.Validate {
       }
     })
 
-    private static let description = UserFacing<StrictString, InterfaceLocalization>({
-      localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "performs all configured validation checks."
-      case .deutschDeutschland:
-        return "führt alle eingestellte Prüfungen aus."
-      }
-    })
+    private static let description
+      = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "performs all configured validation checks."
+        case .deutschDeutschland:
+          return "führt alle eingestellte Prüfungen aus."
+        }
+      })
 
     static let command = Command(
       name: name,
@@ -53,7 +53,11 @@ extension Workspace.Validate {
         ContinuousIntegrationJob.option
       ],
       execution: {
-        (arguments: DirectArguments, options: Options, output: Command.Output) throws in
+        (
+          arguments: DirectArguments,
+          options: Options,
+          output: Command.Output
+        ) throws in
 
         var validationStatus = ValidationStatus()
 
@@ -251,7 +255,10 @@ extension Workspace.Validate {
         let state = validationStatus.newSection()
 
         output.print(
-          UserFacing<StrictString, InterfaceLocalization>({ localization in  // @exempt(from: tests)
+          UserFacing<
+            StrictString,
+            InterfaceLocalization
+          >({ localization in  // @exempt(from: tests)
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
               return "Validating project state..." + state.anchor
@@ -298,9 +305,13 @@ extension Workspace.Validate {
       // Workspace
       if ¬_isDuringSpecificationTest,
         let update = try Workspace.CheckForUpdates.checkForUpdates(output: output)
-      {  // @exempt(from: tests) Determined externally.
+      {
+        // @exempt(from: tests) Determined externally.
         output.print(
-          UserFacing<StrictString, InterfaceLocalization>({ localization in  // @exempt(from: tests)
+          UserFacing<
+            StrictString,
+            InterfaceLocalization
+          >({ localization in  // @exempt(from: tests)
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
               return [

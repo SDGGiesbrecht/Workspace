@@ -605,19 +605,19 @@ internal class SymbolPage: Page {
             "id": "language‐switch",
             "onmouseleave": "hideLanguageSwitch(this)"
           ],
-          contents: allLocalizations.lazy.filter({ $0.localization ≠ localization }).map({
-            entry in
-            return ElementSyntax(
-              "a",
-              attributes: [
-                "href": pathToSiteRoot + HTML.percentEncodeURLPath(entry.path)
-              ],
-              contents: HTML.escapeTextForCharacterData(
-                entry.localization._iconOrCode
-              ),
-              inline: true
-            ).normalizedSource()
-          }).joinedAsLines(),
+          contents: allLocalizations.lazy.filter({ $0.localization ≠ localization })
+            .map({ entry in
+              return ElementSyntax(
+                "a",
+                attributes: [
+                  "href": pathToSiteRoot + HTML.percentEncodeURLPath(entry.path)
+                ],
+                contents: HTML.escapeTextForCharacterData(
+                  entry.localization._iconOrCode
+                ),
+                inline: true
+              ).normalizedSource()
+            }).joinedAsLines(),
           inline: false
         )
       )
@@ -1066,26 +1066,25 @@ internal class SymbolPage: Page {
     let parametersHeading: StrictString = Callout.parameters.localizedText(localization.code)
     return generateParameterLikeSection(
       heading: parametersHeading,
-      entries: validatedParameters.map({
-        (entry: ParameterDocumentation) -> (term: StrictString, description: StrictString)
-        in
-        let term = StrictString(
-          entry.name.syntaxHighlightedHTML(
-            inline: true,
-            internalIdentifiers: [entry.name.text],
-            symbolLinks: [:]
+      entries: validatedParameters
+        .map({ (entry: ParameterDocumentation) -> (term: StrictString, description: StrictString) in
+          let term = StrictString(
+            entry.name.syntaxHighlightedHTML(
+              inline: true,
+              internalIdentifiers: [entry.name.text],
+              symbolLinks: [:]
+            )
           )
-        )
 
-        let description = entry.description.map({ description in
-          description.renderedHTML(
-            localization: localization.code,
-            internalIdentifiers: packageIdentifiers,
-            symbolLinks: symbolLinks
-          )
+          let description = entry.description.map({ description in
+            description.renderedHTML(
+              localization: localization.code,
+              internalIdentifiers: packageIdentifiers,
+              symbolLinks: symbolLinks
+            )
+          })
+          return (term: term, description: StrictString(description.joinedAsLines()))
         })
-        return (term: term, description: StrictString(description.joinedAsLines()))
-      })
     )
   }
 
@@ -1242,7 +1241,9 @@ internal class SymbolPage: Page {
       localization: localization,
       heading: toolsHeader(localization: localization),
       children: commands.values.sorted(
-        by: { $0.interfaces[localization]!.name < $1.interfaces[localization]!.name }),  // @exempt(from: tests)
+        by: { commandA, commandB in  // @exempt(from: tests)
+          commandA.interfaces[localization]!.name < commandB.interfaces[localization]!.name
+        }),
       pathToSiteRoot: pathToSiteRoot
     )
   }

@@ -32,15 +32,15 @@ extension Workspace {
       }
     })
 
-    private static let description = UserFacing<StrictString, InterfaceLocalization>({
-      localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "checks for available Workspace updates."
-      case .deutschDeutschland:
-        return "sucht nach erhältliche Aktualisierungen zu Arbeitsbereich."
-      }
-    })
+    private static let description
+      = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "checks for available Workspace updates."
+        case .deutschDeutschland:
+          return "sucht nach erhältliche Aktualisierungen zu Arbeitsbereich."
+        }
+      })
 
     static let command = Command(
       name: name,

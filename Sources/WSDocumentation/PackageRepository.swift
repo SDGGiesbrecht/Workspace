@@ -225,7 +225,8 @@ extension PackageRepository {
         )
       }
     } catch {
-      output.print(error.localizedDescription.formattedAsError())  // @exempt(from: tests) Unreachable without SwiftSyntax or file system failure.
+      // @exempt(from: tests) Unreachable without SwiftSyntax or file system failure.
+      output.print(error.localizedDescription.formattedAsError())
       validationStatus.failStep(
         message: UserFacing({ localization in
           switch localization {
@@ -346,19 +347,19 @@ extension PackageRepository {
         }).resolved()
       )
 
-      FileManager.default.withTemporaryDirectory(appropriateFor: outputDirectory) {
-        temporary in
-        let package = Package(url: packageURL)
-        do {
-          _ = try Git.clone(package, to: temporary).get()
-          _ = try Git.runCustomSubcommand(
-            ["checkout", "gh\u{2D}pages"],
-            in: temporary
-          ).get()
-          try FileManager.default.removeItem(at: outputDirectory)
-          try FileManager.default.move(temporary, to: outputDirectory)
-        } catch {}
-      }
+      FileManager.default
+        .withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
+          let package = Package(url: packageURL)
+          do {
+            _ = try Git.clone(package, to: temporary).get()
+            _ = try Git.runCustomSubcommand(
+              ["checkout", "gh\u{2D}pages"],
+              in: temporary
+            ).get()
+            try FileManager.default.removeItem(at: outputDirectory)
+            try FileManager.default.move(temporary, to: outputDirectory)
+          } catch {}
+        }
     }
   }
 
@@ -465,9 +466,9 @@ extension PackageRepository {
 
   // MARK: - Inheritance
 
-  private func documentationDefinitions(output: Command.Output) throws -> [StrictString:
-    StrictString]
-  {
+  private func documentationDefinitions(
+    output: Command.Output
+  ) throws -> [StrictString: StrictString] {
     return try _withDocumentationCache {
 
       var list: [StrictString: StrictString] = [:]
@@ -532,20 +533,20 @@ extension PackageRepository {
                 identifier]
             else {
               throw Command.Error(
-                description: UserFacing<StrictString, InterfaceLocalization>({
-                  localization in
-                  switch localization {
-                  case .englishUnitedKingdom:
-                    return "There is no documentation named ‘" + identifier
-                      + "’."
-                  case .englishUnitedStates, .englishCanada:
-                    return "There is no documentation named “" + identifier
-                      + "”."
-                  case .deutschDeutschland:
-                    return "Es gibt keine Dokumentation Namens „" + identifier
-                      + "“."
-                  }
-                })
+                description:
+                  UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom:
+                      return "There is no documentation named ‘" + identifier
+                        + "’."
+                    case .englishUnitedStates, .englishCanada:
+                      return "There is no documentation named “" + identifier
+                        + "”."
+                    case .deutschDeutschland:
+                      return "Es gibt keine Dokumentation Namens „" + identifier
+                        + "“."
+                    }
+                  })
               )
             }
 

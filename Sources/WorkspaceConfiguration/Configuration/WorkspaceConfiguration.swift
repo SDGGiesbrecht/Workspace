@@ -332,12 +332,14 @@ public final class WorkspaceConfiguration: SDGSwiftConfiguration.Configuration {
 
   public func _applySDGOverrides() {
     let project = WorkspaceContext.current.manifest.packageName
+    let repositoryURL = documentation.repositoryURL?.absoluteString
+      ?? ""  // @exempt(from: tests)
     let about = [
       "The \(project) project is maintained by Jeremy David Giesbrecht.",
       "",
       "If \(project) saves you money, consider giving some of it as a [donation](https://paypal.me/JeremyGiesbrecht).",
       "",
-      "If \(project) saves you time, consider devoting some of it to [contributing](\(documentation.repositoryURL?.absoluteString ?? "")) back to the project.",  // @exempt(from: tests)
+      "If \(project) saves you time, consider devoting some of it to [contributing](\(repositoryURL)) back to the project.",
       "",
       "> [Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.](https://www.biblegateway.com/passage/?search=Luke+10&version=SBLGNT;NIV)",
       ">",

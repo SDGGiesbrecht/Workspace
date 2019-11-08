@@ -123,18 +123,18 @@ extension PackageRepository {
             let arguments = match.directiveArgument()
             guard let comma = arguments.firstMatch(for: ",".scalars) else {
               throw Command.Error(
-                description: UserFacing<StrictString, InterfaceLocalization>({
-                  localization in
-                  switch localization {
-                  case .englishUnitedKingdom, .englishUnitedStates,
-                    .englishCanada:
-                    return
-                      "An example directive has too few arguments:\n\(match.contents)"
-                  case .deutschDeutschland:
-                    return
-                      "Eine Beispielsanweisung hat zu wenig Argumente:\n\(match.contents)"
-                  }
-                })
+                description:
+                  UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom, .englishUnitedStates,
+                      .englishCanada:
+                      return
+                        "An example directive has too few arguments:\n\(match.contents)"
+                    case .deutschDeutschland:
+                      return
+                        "Eine Beispielsanweisung hat zu wenig Argumente:\n\(match.contents)"
+                    }
+                  })
               )
             }
 
@@ -147,17 +147,17 @@ extension PackageRepository {
             let index = try Int.parse(possibleDecimal: indexString).get()
             guard let example = try examples(output: output)[identifier] else {
               throw Command.Error(
-                description: UserFacing<StrictString, InterfaceLocalization>({
-                  localization in
-                  switch localization {
-                  case .englishUnitedKingdom:
-                    return "There is no example named ‘" + identifier + "’."
-                  case .englishUnitedStates, .englishCanada:
-                    return "There is no example named “" + identifier + "”."
-                  case .deutschDeutschland:
-                    return "Es gibt kein Beispiel Namens „" + identifier + "“."
-                  }
-                })
+                description:
+                  UserFacing<StrictString, InterfaceLocalization>({ localization in
+                    switch localization {
+                    case .englishUnitedKingdom:
+                      return "There is no example named ‘" + identifier + "’."
+                    case .englishUnitedStates, .englishCanada:
+                      return "There is no example named “" + identifier + "”."
+                    case .deutschDeutschland:
+                      return "Es gibt kein Beispiel Namens „" + identifier + "“."
+                    }
+                  })
               )
             }
 

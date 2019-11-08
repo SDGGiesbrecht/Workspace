@@ -117,9 +117,14 @@ extension PackageRepository {
       output.print(description.formattedAsError())
 
       validationStatus.failStep(
-        message: UserFacing<StrictString, InterfaceLocalization>({ localization in  // @exempt(from: tests)
+        message: UserFacing<
+          StrictString,
+          InterfaceLocalization
+        >({ localization in  // @exempt(from: tests)
           switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:  // @exempt(from: tests)
+          case .englishUnitedKingdom,
+            .englishUnitedStates,
+            .englishCanada:  // @exempt(from: tests)
             return "Build failed for \(job.englishName)."
               + section.crossReference.resolved(for: localization)
           case .deutschDeutschland:
@@ -243,9 +248,14 @@ extension PackageRepository {
       output.print(message.formattedAsError())
 
       validationStatus.failStep(
-        message: UserFacing<StrictString, InterfaceLocalization>({ localization in  // @exempt(from: tests)
+        message: UserFacing<
+          StrictString,
+          InterfaceLocalization
+        >({ localization in  // @exempt(from: tests)
           switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:  // @exempt(from: tests)
+          case .englishUnitedKingdom,
+            .englishUnitedStates,
+            .englishCanada:  // @exempt(from: tests)
             return "Test coverage could not be determined on \(job.englishName)."
               + section.crossReference.resolved(for: localization)
           case .deutschDeutschland:
@@ -393,9 +403,14 @@ extension PackageRepository {
         )
       } else {
         validationStatus.failStep(
-          message: UserFacing<StrictString, InterfaceLocalization>({ localization in  // @exempt(from: tests)
+          message: UserFacing<
+            StrictString,
+            InterfaceLocalization
+          >({ localization in  // @exempt(from: tests)
             switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:  // @exempt(from: tests)
+            case .englishUnitedKingdom,
+              .englishUnitedStates,
+              .englishCanada:  // @exempt(from: tests)
               return "Test coverage is incomplete on \(job.englishName)."
                 + section.crossReference.resolved(for: localization)
             case .deutschDeutschland:

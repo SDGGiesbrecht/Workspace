@@ -136,7 +136,10 @@ extension PackageRepository {
             configuration._validateSDGStandards()
           }
           WorkspaceConfiguration.queue(mock: configuration)
-          defer { _ = try? self.configuration(output: Command.Output.mock) }  // Dequeue even if unused.
+          defer {
+            // Dequeue even if unused.
+            _ = try? self.configuration(output: Command.Output.mock)
+          }
           resetConfigurationCache(debugReason: "new test")
 
           for command in commands {

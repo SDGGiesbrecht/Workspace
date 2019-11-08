@@ -112,20 +112,19 @@ public struct APIDocumentationConfiguration: Codable {
   public var copyrightNotice: Lazy<[LocalizationIdentifier: StrictString]> = Lazy<
     [LocalizationIdentifier: StrictString]
   >(resolve: { configuration in
-    return configuration.fileHeaders.copyrightNotice.resolve(configuration).mapKeyValuePairs {
-      localization,
-      notice in
-      if let provided = localization._reasonableMatch {
-        switch provided {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return (localization, notice + " All rights reserved.")
-        case .deutschDeutschland:
-          return (localization, notice + " Alle rechte vorbehalten.")
+    return configuration.fileHeaders.copyrightNotice.resolve(configuration)
+      .mapKeyValuePairs { localization, notice in
+        if let provided = localization._reasonableMatch {
+          switch provided {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return (localization, notice + " All rights reserved.")
+          case .deutschDeutschland:
+            return (localization, notice + " Alle rechte vorbehalten.")
+          }
+        } else {
+          return (localization, notice)
         }
-      } else {
-        return (localization, notice)
       }
-    }
   })
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)

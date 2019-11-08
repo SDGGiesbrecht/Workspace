@@ -30,15 +30,15 @@ extension Workspace {
       }
     })
 
-    private static let description = UserFacing<StrictString, InterfaceLocalization>({
-      localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "proofreads the project’s source for style violations."
-      case .deutschDeutschland:
-        return "liest die Projektquellenstyl Korrektur."
-      }
-    })
+    private static let description
+      = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "proofreads the project’s source for style violations."
+        case .deutschDeutschland:
+          return "liest die Projektquellenstyl Korrektur."
+        }
+      })
 
     static let runAsXcodeBuildPhase = SDGCommandLine.Option(
       name: UserFacing<StrictString, InterfaceLocalization>({ localization in

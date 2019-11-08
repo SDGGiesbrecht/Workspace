@@ -198,24 +198,24 @@ extension PackageRepository {
   public func configurationContext() throws -> WorkspaceContext {
     return try cached(in: &configurationCache.configurationContext) {
 
-      let products = try self.products().map {
-        (product: PackageModel.Product) -> PackageManifest.Product in
+      let products = try self.products()
+        .map { (product: PackageModel.Product) -> PackageManifest.Product in
 
-        let type: PackageManifest.Product.ProductType
-        let modules: [String]
-        switch product.type {
-        case .library:
-          type = .library
-          modules = product.targets.map { $0.name }
-        case .executable:
-          type = .executable
-          modules = []
-        case .test:
-          unreachable()
+          let type: PackageManifest.Product.ProductType
+          let modules: [String]
+          switch product.type {
+          case .library:
+            type = .library
+            modules = product.targets.map { $0.name }
+          case .executable:
+            type = .executable
+            modules = []
+          case .test:
+            unreachable()
+          }
+
+          return PackageManifest.Product(_name: product.name, type: type, modules: modules)
         }
-
-        return PackageManifest.Product(_name: product.name, type: type, modules: modules)
-      }
 
       let manifest = PackageManifest(
         _packageName: String(try packageName()),
@@ -398,9 +398,11 @@ extension PackageRepository {
     if FileManager.default.fileExists(atPath: location.path, isDirectory: nil) {
 
       output.print(
-        UserFacingDynamic<StrictString, InterfaceLocalization, String>({
-          localization,
-          path in
+        UserFacingDynamic<
+          StrictString,
+          InterfaceLocalization,
+          String
+        >({ localization, path in
           switch localization {
           case .englishUnitedKingdom:
             return "Deleting ‘\(path)’..."
@@ -414,7 +416,8 @@ extension PackageRepository {
 
       try? FileManager.default.removeItem(at: location)
       if location.pathExtension == "swift" {
-        resetManifestCache(debugReason: location.lastPathComponent)  // @exempt(from: tests) Nothing deletes Swift files yet.
+        // @exempt(from: tests) Nothing deletes Swift files yet.
+        resetManifestCache(debugReason: location.lastPathComponent)
       } else {
         resetFileCache(debugReason: location.lastPathComponent)
       }
@@ -450,7 +453,8 @@ extension PackageRepository {
         output.print(
           UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishUnitedKingdom:  // @exempt(from: tests) To time consuming to rebuild cache for each localization.
+            case .englishUnitedKingdom:  // @exempt(from: tests)
+              // Exemption because it is too time consuming to rebuild cache for each localization.
               return "Fetching ‘\(package.url.lastPathComponent)’..."
             case .englishUnitedStates, .englishCanada:
               return "Fetching “\(package.url.lastPathComponent)”..."

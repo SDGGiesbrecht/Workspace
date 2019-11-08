@@ -27,15 +27,15 @@ internal struct ManualWarnings: Warning {
     }
   })
 
-  internal static let trigger = UserFacing<StrictString, InterfaceLocalization>({
-    (localization) in
-    switch localization {
-    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-      return "warning"
-    case .deutschDeutschland:
-      return "warnung"
-    }
-  })
+  internal static let trigger
+    = UserFacing<StrictString, InterfaceLocalization>({ localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "warning"
+      case .deutschDeutschland:
+        return "warnung"
+      }
+    })
 
   internal static func message(
     for details: StrictString,

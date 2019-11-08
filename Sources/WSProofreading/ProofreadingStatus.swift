@@ -50,6 +50,7 @@ internal class ProofreadingStatus: DiagnosticConsumer {
                 file.contents.utf8.startIndex, offsetBy: location.offset)
             start = utf8.scalar(in: file.contents.scalars)
         } else {
+            #warning("This seems conterproductive.")
             start = file.contents.scalars.startIndex
         }
         #warning("Are fix‐its useful?")
@@ -57,10 +58,6 @@ internal class ProofreadingStatus: DiagnosticConsumer {
         #warning("What to do with identifiers?")
         let identifier = UserFacing<StrictString, InterfaceLocalization>({ _ in "swiftFormat" })
         let diagnosticMessage = StrictString(diagnostic.message.text)
-        if diagnosticMessage.hasPrefix("[Indentation]") {
-            #warning("Restore some of these.")
-            return
-        }
         let message = UserFacing<StrictString, InterfaceLocalization>({ _ in diagnosticMessage })
         let violation = StyleViolation(
             in: file,

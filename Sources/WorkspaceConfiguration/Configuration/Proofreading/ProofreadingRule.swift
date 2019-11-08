@@ -323,15 +323,6 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
     return .braceSpacing
   }
 
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProofreadingRule.colonSpacing)
-  /// Enforces consistent spacing around colons.
-  case colonSpacing
-  // @localization(🇩🇪DE) @crossReference(ProofreadingRule.colonSpacing)
-  /// Erzwingt einheitlichen Abstand um Doppelpunkte.
-  public static var doppelpunktabstand: Korrekturregel {
-    return .colonSpacing
-  }
-
   // Tokens
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProofreadingRule.calloutCasing)
@@ -395,7 +386,7 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
     case .unicode:
       return .textStyle
 
-    case .braceSpacing, .colonSpacing, .calloutCasing, .closureSignaturePosition,
+    case .braceSpacing, .calloutCasing, .closureSignaturePosition,
       .parameterGrouping:
       return .sourceCodeStyle
     }

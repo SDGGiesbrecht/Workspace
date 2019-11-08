@@ -42,8 +42,6 @@ extension ProofreadingRule: Comparable {
       return .syntax(UnicodeRule.self)
     case .braceSpacing:
       return .syntax(BraceSpacing.self)
-    case .colonSpacing:
-      return .syntax(ColonSpacing.self)
     case .calloutCasing:
       return .syntax(CalloutCasing.self)
     case .closureSignaturePosition:

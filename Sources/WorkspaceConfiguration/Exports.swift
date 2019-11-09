@@ -27,5 +27,4 @@
 
 @_exported import SDGSwiftConfiguration
 
-#warning("Should just depend on SwiftFormatConfiguration in the manifest.")
 @_exported import SwiftFormatConfiguration

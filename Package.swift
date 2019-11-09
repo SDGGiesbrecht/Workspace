@@ -545,7 +545,7 @@ let package = Package(
         .product(name: "SDGCalendar", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGSwiftConfiguration", package: "SDGSwift"),
-        .product(name: "SwiftFormat", package: "swift\u{2D}format")
+        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format")
       ]
     ),
 

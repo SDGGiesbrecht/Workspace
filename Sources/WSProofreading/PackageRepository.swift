@@ -24,7 +24,6 @@ import SDGSwiftSource
 import WSProject
 import WSCustomTask
 
-#warning("Pointing at branch.")
 import SwiftFormat
 import SwiftFormatConfiguration
 

@@ -21,6 +21,9 @@ internal enum Resources {}
 internal typealias Ressourcen = Resources
 
 extension Resources {
-    static let textResource = String(data: Data(base64Encoded: "SGVsbG8sIHdvcmxkIQ==")!, encoding: String.Encoding.utf8)!
+  static let textResource = String(
+    data: Data(base64Encoded: "SGVsbG8sIHdvcmxkIQ==")!,
+    encoding: String.Encoding.utf8
+  )!
 
 }

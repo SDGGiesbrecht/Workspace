@@ -16,7 +16,7 @@
  */
 
 struct SDG {
-    func text() -> String {
-        return "Hello, World!"
-    }
+  func text() -> String {
+    return "Hello, World!"
+  }
 }

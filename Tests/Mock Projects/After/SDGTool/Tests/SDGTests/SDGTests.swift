@@ -18,17 +18,17 @@
 import XCTest
 @testable import Library
 
-class SDGTests : XCTestCase {
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(SDG().text(), "Hello, World!")
-    }
+class SDGTests: XCTestCase {
+  func testExample() {
+    // This is an example of a functional test case.
+    // Use XCTAssert and related functions to verify your tests produce the correct
+    // results.
+    XCTAssertEqual(SDG().text(), "Hello, World!")
+  }
 
-    static var allTests = [
-        ("testExample", testExample)
-    ]
+  static var allTests = [
+    ("testExample", testExample)
+  ]
 }
 
 // @example(Read‐Me 🇨🇦EN)

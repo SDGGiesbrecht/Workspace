@@ -66,17 +66,21 @@ extension PackageRepository {
       from package: PackageRepository,
       output: Command.Output
     ) throws {
+      let resourceFileLocation = sourceDirectory.appendingPathComponent("Resources.swift")
 
-      var resourceFile = try TextFile(
-        possiblyAt: sourceDirectory.appendingPathComponent("Resources.swift")
-      )
-      resourceFile.body = String(try generateSource(for: resources, of: package))
+      var source = String(try generateSource(for: resources, of: package))
 
-      #warning("Restore this.")
-      /*if let formatConfiguration = try package.configuration(output: output)
-        .proofreading.swiftFormatConfiguration {
-        formatter = SwiftFormatter(configuration: formatConfiguration)
-      }*/
+      if let formatConfiguration = try package.configuration(output: output)
+        .proofreading.swiftFormatConfiguration
+      {
+        let formatter = SwiftFormatter(configuration: formatConfiguration)
+        var result: String = ""
+        try formatter.format(source: source, assumingFileURL: resourceFileLocation, to: &result)
+        source = result
+      }
+
+      var resourceFile = try TextFile(possiblyAt: resourceFileLocation)
+      resourceFile.body = source
 
       try resourceFile.writeChanges(for: package, output: output)
     }

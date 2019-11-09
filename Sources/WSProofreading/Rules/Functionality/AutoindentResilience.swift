@@ -59,7 +59,7 @@ internal struct AutoindentResilience: SyntaxRule {
       if file.location.lastPathComponent ≠ "FileHeaderConfiguration.swift" {
         let start = node.lowerBound(in: context)
         let end = file.contents.scalars.index(start, offsetBy: 3)
-        reportViolation(in: file, at: start ..< end, message: message, status: status)
+        reportViolation(in: file, at: start..<end, message: message, status: status)
       }
     default:
       break

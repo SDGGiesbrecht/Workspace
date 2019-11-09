@@ -79,7 +79,10 @@ public struct TestingConfiguration: Codable {
   /// Testabdeckungsausnahmszeichen("behaupten", geltungsbereich: .selbeZeile),
   /// Testabdeckungsausnahmszeichen("behauptungsfehlschlag", geltungsbereich: .vorstehendeZeile),
   /// Testabdeckungsausnahmszeichen("voraussetzung", geltungsbereich: .selbeZeile),
-  /// Testabdeckungsausnahmszeichen("voraussetzungsfehlschlag", geltungsbereich: .vorstehendeZeile),
+  /// Testabdeckungsausnahmszeichen(
+  ///   "voraussetzungsfehlschlag",
+  ///   geltungsbereich: .vorstehendeZeile
+  /// ),
   /// Testabdeckungsausnahmszeichen("unbehebbarerFehler", geltungsbereich: .vorstehendeZeile),
   ///
   /// Testabdeckungsausnahmszeichen("stammmethode", geltungsbereich: .vorstehendeZeile),

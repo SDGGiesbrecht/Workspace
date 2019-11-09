@@ -258,12 +258,11 @@ public struct DocumentationConfiguration: Codable {
     var result: [LocalizationIdentifier: StrictString] = [:]
     for localization in configuration.documentation.localizations {
       if let provided = localization._reasonableMatch {
-        result[localization]
-          = localizedToolInstallationInstructions(
-            packageURL: packageURL,
-            version: version,
-            localization: provided
-          )
+        result[localization] = localizedToolInstallationInstructions(
+          packageURL: packageURL,
+          version: version,
+          localization: provided
+        )
       }
     }
     return result
@@ -295,12 +294,11 @@ public struct DocumentationConfiguration: Codable {
     var result: [LocalizationIdentifier: StrictString] = [:]
     for localization in configuration.documentation.localizations {
       if let provided = localization._reasonableMatch {
-        result[localization]
-          = localizedLibraryImportingInstructions(
-            packageURL: packageURL,
-            version: version,
-            localization: provided
-          )
+        result[localization] = localizedLibraryImportingInstructions(
+          packageURL: packageURL,
+          version: version,
+          localization: provided
+        )
       }
     }
     return result
@@ -400,8 +398,8 @@ public struct DocumentationConfiguration: Codable {
           } else {
             result += "They"
           }
-          result
-            += " can be installed any way Swift packages can be installed. The most direct method is pasting the following into a terminal, which will either install or update "
+          result +=
+            " can be installed any way Swift packages can be installed. The most direct method is pasting the following into a terminal, which will either install or update "
           if tools.count == 1 {
             result += "it"
           } else {
@@ -416,8 +414,8 @@ public struct DocumentationConfiguration: Codable {
           } else {
             result += "Sie können"
           }
-          result
-            += " installiert werden nach allen Methoden, die Swift‐Pakete unterstützen. Die direkteste ist, folgendes im Terminal einzugeben. Somit "
+          result +=
+            " installiert werden nach allen Methoden, die Swift‐Pakete unterstützen. Die direkteste ist, folgendes im Terminal einzugeben. Somit "
           if tools.count == 1 {
             result += "wird es"
           } else {
@@ -450,11 +448,11 @@ public struct DocumentationConfiguration: Codable {
 
     var versionSpecification: StrictString
     if version.major == 0 {
-      versionSpecification
-        = ".upToNextMinor(from: Version(\(version.major.inDigits()), \(version.minor.inDigits()), \(version.patch.inDigits())))"
+      versionSpecification =
+        ".upToNextMinor(from: Version(\(version.major.inDigits()), \(version.minor.inDigits()), \(version.patch.inDigits())))"
     } else {
-      versionSpecification
-        = "from: Version(\(version.major.inDigits()), \(version.minor.inDigits()), \(version.patch.inDigits()))"
+      versionSpecification =
+        "from: Version(\(version.major.inDigits()), \(version.minor.inDigits()), \(version.patch.inDigits()))"
     }
 
     var result = [
@@ -467,8 +465,8 @@ public struct DocumentationConfiguration: Codable {
           } else {
             result += "libraries"
           }
-          result
-            += " for use with the [Swift Package Manager](https://swift.org/package\u{2D}manager/)."
+          result +=
+            " for use with the [Swift Package Manager](https://swift.org/package\u{2D}manager/)."
           return result
         case .deutschDeutschland:
           var result: StrictString = "\(projectName) stellt "
@@ -477,8 +475,8 @@ public struct DocumentationConfiguration: Codable {
           } else {
             result += "Biblioteken"
           }
-          result
-            += " für zur Verwendung mit dem [Swift‐Paketenverwalter (*Swift Package Manager*)](https://swift.org/package\u{2D}manager/) bereit."
+          result +=
+            " für zur Verwendung mit dem [Swift‐Paketenverwalter (*Swift Package Manager*)](https://swift.org/package\u{2D}manager/) bereit."
           return result
         }
       }).resolved(for: localization),
@@ -486,8 +484,7 @@ public struct DocumentationConfiguration: Codable {
       UserFacing<StrictString, ContentLocalization>({ localization in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          var result: StrictString
-            = "Simply add \(projectName) as a dependency in `Package.swift`"
+          var result: StrictString = "Simply add \(projectName) as a dependency in `Package.swift`"
           if libraries.count == 1 {
             result += ":"
           } else {
@@ -495,8 +492,8 @@ public struct DocumentationConfiguration: Codable {
           }
           return result
         case .deutschDeutschland:
-          var result: StrictString
-            = "\(projectName) einfach als Abhängigkeit (*dependency*) in `Package.swift` hinzufügen"
+          var result: StrictString =
+            "\(projectName) einfach als Abhängigkeit (*dependency*) in `Package.swift` hinzufügen"
           if libraries.count == 1 {
             result += ":"
           } else {

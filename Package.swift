@@ -147,7 +147,7 @@ import PackageDescription
 /// - Manages projects for macOS, Linux, iOS, watchOS and tvOS.
 /// - [Configurable](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Libraries/WorkspaceConfiguration.html)
 let package = Package(
-  name: "Workspace",
+    name: "Workspace",
   platforms: [
     // These must also be updated in Sources/WSProject/PackageRepository.swift.
     .macOS(.v10_10)
@@ -168,7 +168,7 @@ let package = Package(
     ///  Externe Pakete sind mit dieser Syntax einführbar:
     ///  import [Modul] // [Ressourcenzeiger], [Version], [Produkt]
     ///  */
-    /// import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
+    /// import SDGControlFlow  // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
     ///
     /// let konfiguration = ArbeitsbereichKonfiguration()
     /// konfiguration.alleAufgabenEinschalten()
@@ -190,7 +190,7 @@ let package = Package(
     ///  Exernal packages can be imported with this syntax:
     ///  import [module] // [url], [version], [product]
     ///  */
-    /// import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
+    /// import SDGControlFlow  // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
     ///
     /// let configuration = WorkspaceConfiguration()
     /// configuration.optIntoAllTasks()
@@ -503,7 +503,7 @@ let package = Package(
     ///  Externe Pakete sind mit dieser Syntax einführbar:
     ///  import [Modul] // [Ressourcenzeiger], [Version], [Produkt]
     ///  */
-    /// import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
+    /// import SDGControlFlow  // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
     ///
     /// let konfiguration = ArbeitsbereichKonfiguration()
     /// konfiguration.alleAufgabenEinschalten()
@@ -525,7 +525,7 @@ let package = Package(
     ///  Exernal packages can be imported with this syntax:
     ///  import [module] // [url], [version], [product]
     ///  */
-    /// import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
+    /// import SDGControlFlow  // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
     ///
     /// let configuration = WorkspaceConfiguration()
     /// configuration.optIntoAllTasks()

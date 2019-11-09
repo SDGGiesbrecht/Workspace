@@ -76,13 +76,12 @@ internal class Page {
     switch resolved {
     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
       .deutschDeutschland:
-      sdg
-        = ElementSyntax(
-          "span",
-          attributes: ["lang": "la\u{2D}IT"],
-          contents: "Soli Deo gloria.",
-          inline: true
-        ).normalizedSource()
+      sdg = ElementSyntax(
+        "span",
+        attributes: ["lang": "la\u{2D}IT"],
+        contents: "Soli Deo gloria.",
+        inline: true
+      ).normalizedSource()
     }
 
     return ElementSyntax(
@@ -142,13 +141,12 @@ internal class Page {
 
     let symbolTypeLabel: StrictString
     if let specified = symbolType {
-      symbolTypeLabel
-        = ElementSyntax(
-          "div",
-          attributes: ["class": "symbol‐type"],
-          contents: specified,
-          inline: true
-        )
+      symbolTypeLabel = ElementSyntax(
+        "div",
+        attributes: ["class": "symbol‐type"],
+        contents: specified,
+        inline: true
+      )
         .normalizedSource()
     } else {
       symbolTypeLabel = ""  // @exempt(from: tests) Unreachable yet.

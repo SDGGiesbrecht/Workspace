@@ -137,8 +137,8 @@ internal enum Script: Int, CaseIterable {
       let version = StrictString(Metadata.latestStableVersion.string())
       let arguments: StrictString = command + " •use‐version " + version
 
-      let macOSCachePath: StrictString
-        = "~/Library/Caches/ca.solideogloria.Workspace/Versions/" + version + "/"
+      let macOSCachePath: StrictString = "~/Library/Caches/ca.solideogloria.Workspace/Versions/"
+        + version + "/"
       let linuxCachePath: StrictString = "~/.cache/ca.solideogloria.Workspace/Versions/"
         + version + "/"
 

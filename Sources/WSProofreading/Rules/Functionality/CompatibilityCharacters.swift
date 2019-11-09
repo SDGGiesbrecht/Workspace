@@ -43,7 +43,7 @@ internal struct CompatibilityCharacters: TextRule {
       if character ≠ normalized {
         reportViolation(
           in: file,
-          at: index ..< file.contents.scalars.index(after: index),
+          at: index..<file.contents.scalars.index(after: index),
           replacementSuggestion: StrictString(normalized),
           message: UserFacing<StrictString, InterfaceLocalization>({ (localization) in
             switch localization {

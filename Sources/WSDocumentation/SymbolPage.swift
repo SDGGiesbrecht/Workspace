@@ -1012,8 +1012,8 @@ internal class SymbolPage: Page {
   ) -> StrictString {
 
     let parameters = symbol.parameters()
-    let parameterDocumentation
-      = symbol.localizedDocumentation[localization]?.normalizedParameters ?? []
+    let parameterDocumentation = symbol.localizedDocumentation[localization]?.normalizedParameters
+      ?? []
     let documentedParameters = parameterDocumentation.map { $0.name.text }
 
     if parameters ≠ documentedParameters {
@@ -1025,8 +1025,9 @@ internal class SymbolPage: Page {
         localization: localization
       )
     }
-    let validatedParameters = parameterDocumentation
-      .filter { parameters.contains($0.name.text) }
+    let validatedParameters =
+      parameterDocumentation
+        .filter { parameters.contains($0.name.text) }
 
     /// Check that closure parameters are labelled.
     if let declaration = symbol.declaration {
@@ -1066,7 +1067,8 @@ internal class SymbolPage: Page {
     let parametersHeading: StrictString = Callout.parameters.localizedText(localization.code)
     return generateParameterLikeSection(
       heading: parametersHeading,
-      entries: validatedParameters
+      entries:
+        validatedParameters
         .map({ (entry: ParameterDocumentation) -> (term: StrictString, description: StrictString) in
           let term = StrictString(
             entry.name.syntaxHighlightedHTML(
@@ -2031,41 +2033,37 @@ internal class SymbolPage: Page {
 
       switch child {
       case .package, .library:
-        name
-          = ElementSyntax(
-            "span",
-            attributes: ["class": "text"],
-            contents: HTML.escapeTextForCharacterData(name),
-            inline: true
-          ).normalizedSource()
-        name
-          = ElementSyntax(
-            "span",
-            attributes: ["class": "string"],
-            contents: name,
-            inline: true
-          )
+        name = ElementSyntax(
+          "span",
+          attributes: ["class": "text"],
+          contents: HTML.escapeTextForCharacterData(name),
+          inline: true
+        ).normalizedSource()
+        name = ElementSyntax(
+          "span",
+          attributes: ["class": "string"],
+          contents: name,
+          inline: true
+        )
           .normalizedSource()
       case .module, .type, .protocol, .extension, .case, .initializer, .variable, .subscript,
         .function, .operator, .precedence, .conformance:
         name = highlight(name: name, internal: relativePathOfChild ≠ nil)
       }
-      name
-        = ElementSyntax(
-          "code",
-          attributes: ["class": "swift"],
-          contents: name,
-          inline: true
-        )
+      name = ElementSyntax(
+        "code",
+        attributes: ["class": "swift"],
+        contents: name,
+        inline: true
+      )
         .normalizedSource()
       if let constraints = child.constraints {
-        name
-          += StrictString(
-            constraints.syntaxHighlightedHTML(
-              inline: true,
-              internalIdentifiers: packageIdentifiers
-            )
+        name += StrictString(
+          constraints.syntaxHighlightedHTML(
+            inline: true,
+            internalIdentifiers: packageIdentifiers
           )
+        )
       }
 
       if let local = relativePathOfChild {

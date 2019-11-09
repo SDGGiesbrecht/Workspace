@@ -49,14 +49,13 @@ public struct TextFile {
       guard let fileType = FileType(url: location) else {
         unreachable()
       }
-      self
-        = TextFile(
-          location: location,
-          fileType: fileType,
-          executable: executable,
-          contents: "",
-          isNew: true
-        )
+      self = TextFile(
+        location: location,
+        fileType: fileType,
+        executable: executable,
+        contents: "",
+        isNew: true
+      )
     }
   }
 
@@ -165,7 +164,7 @@ public struct TextFile {
         new.scalars.removeFirst()  // @exempt(from: tests) Should not be reachable.
       }
 
-      let headerSource = String(contents[headerStart ..< headerEnd])
+      let headerSource = String(contents[headerStart..<headerEnd])
       if ¬headerSource.hasSuffix("\n") {
         new = "\n" + new
       }
@@ -173,7 +172,7 @@ public struct TextFile {
         new = "\n" + new
       }
 
-      contents.replaceSubrange(headerEnd ..< contents.endIndex, with: new)
+      contents.replaceSubrange(headerEnd..<contents.endIndex, with: new)
     }
 
   }

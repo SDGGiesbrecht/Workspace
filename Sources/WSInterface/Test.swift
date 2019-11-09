@@ -34,15 +34,15 @@ extension Workspace {
       }
     })
 
-    private static let description
-      = UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "runs the project’s test targets."
-        case .deutschDeutschland:
-          return "führt die Teste des Projekts aus."
-        }
-      })
+    private static let description = UserFacing<StrictString, InterfaceLocalization>({
+      localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "runs the project’s test targets."
+      case .deutschDeutschland:
+        return "führt die Teste des Projekts aus."
+      }
+    })
 
     static let command = Command(
       name: name,

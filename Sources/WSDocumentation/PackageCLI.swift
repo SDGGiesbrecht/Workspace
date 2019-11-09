@@ -55,8 +55,7 @@ internal struct PackageCLI {
 
           commands[
             interface.identifier,
-            default: CommandInterfaceInformation()].interfaces[localization]
-            = modifiedInterface
+            default: CommandInterfaceInformation()].interfaces[localization] = modifiedInterface
 
           let directory = PackageCLI.toolsDirectory(for: localization)
           let filename = Page.sanitize(fileName: interface.name)

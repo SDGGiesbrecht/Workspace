@@ -228,10 +228,9 @@ public struct ReadMeConfiguration: Codable {
     }
 
     var link: StrictString = "[" + label + "]("
-    link
-      += StrictString(
-        baseURL.appendingPathComponent(String(localization._directoryName)).absoluteString
-      )
+    link += StrictString(
+      baseURL.appendingPathComponent(String(localization._directoryName)).absoluteString
+    )
       + ")"
     return link
   }

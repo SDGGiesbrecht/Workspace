@@ -490,7 +490,7 @@ extension PackageRepository {
                 .upperBound.samePosition(in: file.contents.scalars)
               if let comment = FileType.swiftDocumentationSyntax
                 .contentsOfFirstComment(
-                  in: nextLineStart ..< file.contents.scalars.endIndex,
+                  in: nextLineStart..<file.contents.scalars.endIndex,
                   of: file
                 )
               {
@@ -521,8 +521,7 @@ extension PackageRepository {
 
           var searchIndex = file.contents.scalars.startIndex
           while let match = file.contents.scalars[
-            min(searchIndex, file.contents.scalars.endIndex)
-              ..< file.contents.scalars.endIndex]
+            min(searchIndex, file.contents.scalars.endIndex)..<file.contents.scalars.endIndex]
             .firstMatch(for: InterfaceLocalization.documentationDirective)
           {
             searchIndex = match.range.upperBound
@@ -555,15 +554,15 @@ extension PackageRepository {
               in: file.contents.scalars
             )
             if let commentRange = documentationSyntax.rangeOfFirstComment(
-              in: nextLineStart ..< file.contents.scalars.endIndex,
+              in: nextLineStart..<file.contents.scalars.endIndex,
               of: file
             ),
-              file.contents.scalars[nextLineStart ..< commentRange.lowerBound]
+              file.contents.scalars[nextLineStart..<commentRange.lowerBound]
                 .firstMatch(for: CharacterSet.newlinePattern) == nil
             {
 
               let indent = StrictString(
-                file.contents.scalars[nextLineStart ..< commentRange.lowerBound]
+                file.contents.scalars[nextLineStart..<commentRange.lowerBound]
               )
 
               file.contents.scalars.replaceSubrange(
@@ -583,16 +582,15 @@ extension PackageRepository {
               )
 
               let indent = StrictString(
-                file.contents.scalars[nextLineStart ..< location]
+                file.contents.scalars[nextLineStart..<location]
               )
 
-              let result
-                = StrictString(
-                  lineDocumentationSyntax.comment(
-                    contents: String(replacement),
-                    indent: String(indent)
-                  )
+              let result = StrictString(
+                lineDocumentationSyntax.comment(
+                  contents: String(replacement),
+                  indent: String(indent)
                 )
+              )
                 + "\n" + indent
 
               file.contents.scalars.insert(contentsOf: result.scalars, at: location)

@@ -33,17 +33,17 @@ extension Workspace.Refresh {
       }
     })
 
-    private static let description
-      = UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishCanada:
-          return "regenerates the project’s licence file."
-        case .englishUnitedStates:
-          return "regenerates the project’s license file."
-        case .deutschDeutschland:
-          return "erstellt die Lizenzdatei der Projekt neu."
-        }
-      })
+    private static let description = UserFacing<StrictString, InterfaceLocalization>({
+      localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishCanada:
+        return "regenerates the project’s licence file."
+      case .englishUnitedStates:
+        return "regenerates the project’s license file."
+      case .deutschDeutschland:
+        return "erstellt die Lizenzdatei der Projekt neu."
+      }
+    })
 
     static let command = Command(
       name: name,

@@ -25,31 +25,31 @@ extension PackageRepository {
 
   #if !os(Linux)
 
-    private static let proofreadTargetName
-      = UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Proofread"
-        case .deutschDeutschland:
-          return "Korrektur lesen"
-        }
-      })
+    private static let proofreadTargetName = UserFacing<StrictString, InterfaceLocalization>({
+      localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Proofread"
+      case .deutschDeutschland:
+        return "Korrektur lesen"
+      }
+    })
 
-    private static let instructions
-      = UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return [
-            "Install Workspace if you wish to receive in‐code reports of style errors for this project.",
-            "See " + StrictString(Metadata.packageURL.absoluteString)
-          ].joinedAsLines()
-        case .deutschDeutschland:
-          return [
-            "Installieren Sie Arbeitsbereich, wenn Sie Gestalltungsfehlermeldungen im Quelltext dieses Projekts sehen wollen.",
-            "Siehe " + StrictString(Metadata.packageURL.absoluteString)
-          ].joinedAsLines()
-        }
-      })
+    private static let instructions = UserFacing<StrictString, InterfaceLocalization>({
+      localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return [
+          "Install Workspace if you wish to receive in‐code reports of style errors for this project.",
+          "See " + StrictString(Metadata.packageURL.absoluteString)
+        ].joinedAsLines()
+      case .deutschDeutschland:
+        return [
+          "Installieren Sie Arbeitsbereich, wenn Sie Gestalltungsfehlermeldungen im Quelltext dieses Projekts sehen wollen.",
+          "Siehe " + StrictString(Metadata.packageURL.absoluteString)
+        ].joinedAsLines()
+      }
+    })
 
     private static let proofreadTargetIdentifier = "WORKSPACE_PROOFREAD_TARGET"
     private static let proofreadScriptIdentifier = "WORKSPACE_PROOFREAD_SCRIPT"

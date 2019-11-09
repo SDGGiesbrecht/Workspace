@@ -30,7 +30,7 @@ public func copyright(fromText text: String) -> StrictString {
           &numberEnd,
           over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.decimalDigits }))
         )
-        let number = text.scalars[range.upperBound ..< numberEnd]
+        let number = text.scalars[range.upperBound..<numberEnd]
         if number.count == 4 {
           oldStartDate = String(number)
           break

@@ -55,23 +55,22 @@ extension PackageRepository {
     }
 
     if try isWorkspaceProject() {
-      travisConfiguration
-        = travisConfiguration.map { line in
-          var line = line
-          line.scalars.replaceMatches(
-            for:
-              "\u{22}bash \u{5C}\u{22}./Validate (macOS).command\u{5C}\u{22} •job ios\u{22}"
-              .scalars,
-            with: "swift run test‐ios‐simulator".scalars
-          )
-          line.scalars.replaceMatches(
-            for:
-              "\u{22}bash \u{5C}\u{22}./Validate (macOS).command\u{5C}\u{22} •job tvos\u{22}"
-              .scalars,
-            with: "swift run test‐tvos‐simulator".scalars
-          )
-          return line
-        }
+      travisConfiguration = travisConfiguration.map { line in
+        var line = line
+        line.scalars.replaceMatches(
+          for:
+            "\u{22}bash \u{5C}\u{22}./Validate (macOS).command\u{5C}\u{22} •job ios\u{22}"
+            .scalars,
+          with: "swift run test‐ios‐simulator".scalars
+        )
+        line.scalars.replaceMatches(
+          for:
+            "\u{22}bash \u{5C}\u{22}./Validate (macOS).command\u{5C}\u{22} •job tvos\u{22}"
+            .scalars,
+          with: "swift run test‐tvos‐simulator".scalars
+        )
+        return line
+      }
     }
 
     travisConfiguration.append(contentsOf: [

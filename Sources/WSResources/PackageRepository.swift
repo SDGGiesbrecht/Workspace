@@ -37,15 +37,15 @@ extension PackageRepository {
     return byName
   }
 
-  private static let resourceDirectoryName
-    = UserFacing<StrictString, InterfaceLocalization>({ localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Resources"
-      case .deutschDeutschland:
-        return "Ressourcen"
-      }
-    })
+  private static let resourceDirectoryName = UserFacing<StrictString, InterfaceLocalization>({
+    localization in
+    switch localization {
+    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+      return "Resources"
+    case .deutschDeutschland:
+      return "Ressourcen"
+    }
+  })
 
   private func resourceDirectories() -> [URL] {
 

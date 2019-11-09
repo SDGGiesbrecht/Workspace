@@ -33,17 +33,17 @@ extension Workspace.Validate {
       }
     })
 
-    private static let description
-      = UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return
-            "validates documentation coverage, checking that every public symbol in every library product is documented."
-        case .deutschDeutschland:
-          return
-            "prüft die Dokumentationsabdeckung, dass jedes öffentliche Symbol von jede Biblioteksprodukt dokumentiert ist."
-        }
-      })
+    private static let description = UserFacing<StrictString, InterfaceLocalization>({
+      localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return
+          "validates documentation coverage, checking that every public symbol in every library product is documented."
+      case .deutschDeutschland:
+        return
+          "prüft die Dokumentationsabdeckung, dass jedes öffentliche Symbol von jede Biblioteksprodukt dokumentiert ist."
+      }
+    })
 
     static let command = Command(
       name: name,

@@ -32,20 +32,20 @@ extension Workspace {
       }
     })
 
-    private static let description
-      = UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom:
-          return
-            "normalises the project’s files by removing trailing whitespace, applying Unix newlines and performing canonical decomposition."
-        case .englishUnitedStates, .englishCanada:
-          return
-            "normalizes the project’s files by removing trailing whitespace, applying Unix newlines and performing canonical decomposition."
-        case .deutschDeutschland:
-          return
-            "normalisiert die Dateien des Projekt, in dem Leerzeichen vom Zeilenende entfernt werden, Unix‐Zeilenumbrüche eingetauscht werden und kanonische Zersetzung ausgeführt wird."
-        }
-      })
+    private static let description = UserFacing<StrictString, InterfaceLocalization>({
+      localization in
+      switch localization {
+      case .englishUnitedKingdom:
+        return
+          "normalises the project’s files by removing trailing whitespace, applying Unix newlines and performing canonical decomposition."
+      case .englishUnitedStates, .englishCanada:
+        return
+          "normalizes the project’s files by removing trailing whitespace, applying Unix newlines and performing canonical decomposition."
+      case .deutschDeutschland:
+        return
+          "normalisiert die Dateien des Projekt, in dem Leerzeichen vom Zeilenende entfernt werden, Unix‐Zeilenumbrüche eingetauscht werden und kanonische Zersetzung ausgeführt wird."
+      }
+    })
 
     static let command = Command(
       name: name,

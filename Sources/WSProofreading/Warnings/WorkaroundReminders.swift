@@ -35,15 +35,14 @@ internal struct WorkaroundReminders: Warning {
     }
   })
 
-  internal static let trigger
-    = UserFacing<StrictString, InterfaceLocalization>({ localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "workaround"
-      case .deutschDeutschland:
-        return "notlösung"
-      }
-    })
+  internal static let trigger = UserFacing<StrictString, InterfaceLocalization>({ localization in
+    switch localization {
+    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+      return "workaround"
+    case .deutschDeutschland:
+      return "notlösung"
+    }
+  })
 
   internal static func message(
     for details: StrictString,
@@ -56,7 +55,7 @@ internal struct WorkaroundReminders: Warning {
     if let comma = details.scalars.firstMatch(for: ",".scalars) {
       description = StrictString(details.scalars[comma.range.upperBound...])
 
-      let versionCheckRange = details.scalars.startIndex ..< comma.range.lowerBound
+      let versionCheckRange = details.scalars.startIndex..<comma.range.lowerBound
       var versionCheck = StrictString(details.scalars[versionCheckRange])
       versionCheck.trimMarginalWhitespace()
 

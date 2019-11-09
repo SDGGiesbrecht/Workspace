@@ -54,8 +54,9 @@ extension PackageRepository {
     try refreshIssueTemplates(output: output)
 
     var pullRequestTemplateFile = try TextFile(possiblyAt: pullRequestTemplateLocation)
-    pullRequestTemplateFile.contents
-      = String(try configuration(output: output).gitHub.pullRequestTemplate)
+    pullRequestTemplateFile.contents = String(
+      try configuration(output: output).gitHub.pullRequestTemplate
+    )
     try pullRequestTemplateFile.writeChanges(for: self, output: output)
   }
 
@@ -64,8 +65,9 @@ extension PackageRepository {
     var contributingInstructionsFile = try TextFile(
       possiblyAt: contributingInstructionsLocation
     )
-    contributingInstructionsFile.body
-      = String(try constructedContributingInstructions(output: output))
+    contributingInstructionsFile.body = String(
+      try constructedContributingInstructions(output: output)
+    )
     try contributingInstructionsFile.writeChanges(for: self, output: output)
 
     // Remove deprecated.

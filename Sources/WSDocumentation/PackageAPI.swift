@@ -31,8 +31,9 @@ extension PackageAPI {
     var operators: [OperatorAPI] = []
     var precedenceGroups: [PrecedenceAPI] = []
     for module in modules {
-      APIElement.module(module).homeProduct
-        = Weak(libraries.first(where: { $0.modules.contains(module) }))
+      APIElement.module(module).homeProduct = Weak(
+        libraries.first(where: { $0.modules.contains(module) })
+      )
       for element in module.children {
         element.homeModule = Weak(module)
 

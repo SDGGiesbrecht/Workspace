@@ -72,8 +72,8 @@ extension InterfaceLocalization {
 
   // MARK: - Examples
 
-  private static let exampleDeclarationName: UserFacing<StrictString, InterfaceLocalization>
-    = UserFacing<StrictString, InterfaceLocalization>({ localization in
+  private static let exampleDeclarationName: UserFacing<StrictString, InterfaceLocalization> =
+    UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
         return "example"
@@ -81,11 +81,11 @@ extension InterfaceLocalization {
         return "beispiel"
       }
     })
-  public static let exampleDeclaration: DirectivePatternWithArguments
-    = declarationPatternWithArguments(exampleDeclarationName)
+  public static let exampleDeclaration: DirectivePatternWithArguments =
+    declarationPatternWithArguments(exampleDeclarationName)
 
-  private static let endExampleDecarationName: UserFacing<StrictString, InterfaceLocalization>
-    = UserFacing<StrictString, InterfaceLocalization>({ localization in
+  private static let endExampleDecarationName: UserFacing<StrictString, InterfaceLocalization> =
+    UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
         return "endExample"
@@ -93,11 +93,12 @@ extension InterfaceLocalization {
         return "beispielBeenden"
       }
     })
-  public static let endExampleDeclaration: DirectivePattern
-    = declarationPattern(endExampleDecarationName)
+  public static let endExampleDeclaration: DirectivePattern = declarationPattern(
+    endExampleDecarationName
+  )
 
-  private static let exampleDirectiveName: UserFacing<StrictString, InterfaceLocalization>
-    = UserFacing<StrictString, InterfaceLocalization>({ localization in
+  private static let exampleDirectiveName: UserFacing<StrictString, InterfaceLocalization> =
+    UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
         return "example"
@@ -105,13 +106,14 @@ extension InterfaceLocalization {
         return "beispiel"
       }
     })
-  public static let exampleDirective: DirectivePatternWithArguments
-    = directivePatternWithArguments(exampleDirectiveName)
+  public static let exampleDirective: DirectivePatternWithArguments = directivePatternWithArguments(
+    exampleDirectiveName
+  )
 
   // MARK: - Documentation Inheritance
 
-  private static let documentationDeclarationName: UserFacing<StrictString, InterfaceLocalization>
-    = UserFacing<StrictString, InterfaceLocalization>({ localization in
+  private static let documentationDeclarationName: UserFacing<StrictString, InterfaceLocalization> =
+    UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
         return "documentation"
@@ -119,11 +121,11 @@ extension InterfaceLocalization {
         return "dokumentation"
       }
     })
-  public static let documentationDeclaration: DirectivePatternWithArguments
-    = declarationPatternWithArguments(documentationDeclarationName)
+  public static let documentationDeclaration: DirectivePatternWithArguments =
+    declarationPatternWithArguments(documentationDeclarationName)
 
-  private static let documentationDirectiveName: UserFacing<StrictString, InterfaceLocalization>
-    = UserFacing<StrictString, InterfaceLocalization>({ localization in
+  private static let documentationDirectiveName: UserFacing<StrictString, InterfaceLocalization> =
+    UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
         return "documentation"
@@ -131,13 +133,13 @@ extension InterfaceLocalization {
         return "dokumentation"
       }
     })
-  public static let documentationDirective: DirectivePatternWithArguments
-    = directivePatternWithArguments(documentationDirectiveName)
+  public static let documentationDirective: DirectivePatternWithArguments =
+    directivePatternWithArguments(documentationDirectiveName)
 
   // MARK: - Documentation Generation
 
-  private static let localizationDeclarationName: UserFacing<StrictString, InterfaceLocalization>
-    = UserFacing<StrictString, InterfaceLocalization>({ localization in
+  private static let localizationDeclarationName: UserFacing<StrictString, InterfaceLocalization> =
+    UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {
       case .englishUnitedKingdom:
         return "localisation"
@@ -147,12 +149,13 @@ extension InterfaceLocalization {
         return "lokalisation"
       }
     })
-  public static let localizationDeclaration: DirectivePatternWithArguments
-    = declarationPatternWithArguments(localizationDeclarationName)
+  public static let localizationDeclaration: DirectivePatternWithArguments =
+    declarationPatternWithArguments(localizationDeclarationName)
 
   private static let crossReferenceDeclarationName:
-    UserFacing<StrictString, InterfaceLocalization>
-    = UserFacing<StrictString, InterfaceLocalization>({ localization in
+    UserFacing<StrictString, InterfaceLocalization> = UserFacing<
+      StrictString, InterfaceLocalization
+    >({ localization in
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
         return "crossReference"
@@ -160,11 +163,11 @@ extension InterfaceLocalization {
         return "querverweis"
       }
     })
-  public static let crossReferenceDeclaration: DirectivePatternWithArguments
-    = declarationPatternWithArguments(crossReferenceDeclarationName)
+  public static let crossReferenceDeclaration: DirectivePatternWithArguments =
+    declarationPatternWithArguments(crossReferenceDeclarationName)
 
-  private static let notLocalizedDeclarationName: UserFacing<StrictString, InterfaceLocalization>
-    = UserFacing<StrictString, InterfaceLocalization>({ localization in
+  private static let notLocalizedDeclarationName: UserFacing<StrictString, InterfaceLocalization> =
+    UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {
       case .englishUnitedKingdom:
         return "notLocalised"
@@ -174,6 +177,6 @@ extension InterfaceLocalization {
         return "nichtLokalisiert"
       }
     })
-  public static let notLocalizedDeclaration: DirectivePatternWithArguments
-    = declarationPatternWithArguments(notLocalizedDeclarationName)
+  public static let notLocalizedDeclaration: DirectivePatternWithArguments =
+    declarationPatternWithArguments(notLocalizedDeclarationName)
 }

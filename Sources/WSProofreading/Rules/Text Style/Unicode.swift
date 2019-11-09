@@ -259,48 +259,47 @@ internal struct UnicodeRule: SyntaxRule {
         }
         reportViolation(
           in: file,
-          at: lowerBound ..< upperBound,
+          at: lowerBound..<upperBound,
           replacementSuggestion: replacement,
           message:
             UserFacing<StrictString, InterfaceLocalization>({ localization in
-              let obsoleteMessage
-                = UserFacing<StrictString, InterfaceLocalization>({ localization in
-                  let error: StrictString
-                  switch String(match.contents) {
-                  case "\u{2D}":
-                    error = "U+002D"
-                  case "\u{22}":
-                    error = "U+0022"
-                  case "\u{27}":
-                    error = "U+0027"
-                  default:
-                    error = "“\(StrictString(match.contents))”"
+              let obsoleteMessage = UserFacing<StrictString, InterfaceLocalization>({
+                localization in
+                let error: StrictString
+                switch String(match.contents) {
+                case "\u{2D}":
+                  error = "U+002D"
+                case "\u{22}":
+                  error = "U+0022"
+                case "\u{27}":
+                  error = "U+0027"
+                default:
+                  error = "“\(StrictString(match.contents))”"
+                }
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                  if match.contents.count == 1 {
+                    return "The character " + error + " is obsolete."
+                  } else {
+                    return "The character sequence " + error + " is obsolete."
                   }
-                  switch localization {
-                  case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    if match.contents.count == 1 {
-                      return "The character " + error + " is obsolete."
-                    } else {
-                      return "The character sequence " + error + " is obsolete."
-                    }
-                  case .deutschDeutschland:
-                    if match.contents.count == 1 {
-                      return "Das Schriftzeichen " + error + " ist überholt."
-                    } else {
-                      return "Die Schriftzeichenfolge " + error + " ist überholt."
-                    }
+                case .deutschDeutschland:
+                  if match.contents.count == 1 {
+                    return "Das Schriftzeichen " + error + " ist überholt."
+                  } else {
+                    return "Die Schriftzeichenfolge " + error + " ist überholt."
                   }
-                })
+                }
+              })
 
-              let aliasMessage
-                = UserFacing<StrictString, InterfaceLocalization>({ localization in
-                  switch localization {
-                  case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "(Create an alias if necessary.)"
-                  case .deutschDeutschland:
-                    return "(Wenn nötig, ein Alias erstellen.)"
-                  }
-                })
+              let aliasMessage = UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                  return "(Create an alias if necessary.)"
+                case .deutschDeutschland:
+                  return "(Wenn nötig, ein Alias erstellen.)"
+                }
+              })
 
               var result = obsoleteMessage.resolved(for: localization) + " "
                 + message.resolved(for: localization)

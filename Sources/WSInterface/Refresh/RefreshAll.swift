@@ -29,15 +29,15 @@ extension Workspace.Refresh {
       }
     })
 
-    private static let description
-      = UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "performs all configured refreshment tasks."
-        case .deutschDeutschland:
-          return "führt alle konfigurierte Auffrischungsaufgaben aus."
-        }
-      })
+    private static let description = UserFacing<StrictString, InterfaceLocalization>({
+      localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "performs all configured refreshment tasks."
+      case .deutschDeutschland:
+        return "führt alle konfigurierte Auffrischungsaufgaben aus."
+      }
+    })
 
     static let command = Command(
       name: name,
@@ -72,24 +72,22 @@ extension Workspace.Refresh {
 
         if let xcodeProject = (try? options.project.xcodeProject())??.lastPathComponent {
           // @exempt(from: tests) Unreachable on Linux.
-          let xcodeInstructions
-            = UserFacing<StrictString, InterfaceLocalization>({ localization in
-              switch localization {
-              case .englishUnitedKingdom:
-                return "Open ‘\(StrictString(xcodeProject))’ to work on the project."
-              case .englishUnitedStates, .englishCanada:
-                return "Open “\(StrictString(xcodeProject))” to work on the project."
-              case .deutschDeutschland:
-                return
-                  "Um auf das Projekt zu arbeiten, „\(StrictString(xcodeProject))“ öffnen."
-              }
-            }).resolved()
+          let xcodeInstructions = UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom:
+              return "Open ‘\(StrictString(xcodeProject))’ to work on the project."
+            case .englishUnitedStates, .englishCanada:
+              return "Open “\(StrictString(xcodeProject))” to work on the project."
+            case .deutschDeutschland:
+              return
+                "Um auf das Projekt zu arbeiten, „\(StrictString(xcodeProject))“ öffnen."
+            }
+          }).resolved()
 
-          success
-            = [
-              success,
-              xcodeInstructions
-            ].joinedAsLines()
+          success = [
+            success,
+            xcodeInstructions
+          ].joinedAsLines()
         }
 
         try output.succeed(message: success, project: options.project)

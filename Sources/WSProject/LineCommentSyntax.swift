@@ -82,13 +82,13 @@ public struct LineCommentSyntax {
     of string: String
   ) -> Range<String.ScalarView.Index> {
 
-    if let newline = string.scalars[(index ..< range.upperBound).scalars(in: string.scalars)]
+    if let newline = string.scalars[(index..<range.upperBound).scalars(in: string.scalars)]
       .firstMatch(for: ConditionalPattern({ $0 ∈ CharacterSet.newlines }))?.range
     {
 
-      return index ..< newline.lowerBound
+      return index..<newline.lowerBound
     } else {
-      return index ..< range.upperBound
+      return index..<range.upperBound
     }
   }
 
@@ -104,7 +104,7 @@ public struct LineCommentSyntax {
     var testIndex: String.ScalarView.Index = resultEnd
     string.scalars.advance(
       &testIndex,
-      over: RepetitionPattern(CharacterSet.newlinePattern, count: 0 ... 1)
+      over: RepetitionPattern(CharacterSet.newlinePattern, count: 0...1)
     )
 
     string.scalars.advance(
@@ -117,7 +117,7 @@ public struct LineCommentSyntax {
       testIndex = resultEnd
       string.scalars.advance(
         &testIndex,
-        over: RepetitionPattern(CharacterSet.newlinePattern, count: 0 ... 1)
+        over: RepetitionPattern(CharacterSet.newlinePattern, count: 0...1)
       )
 
       string.scalars.advance(
@@ -126,7 +126,7 @@ public struct LineCommentSyntax {
       )
     }
 
-    return startRange.lowerBound ..< resultEnd
+    return startRange.lowerBound..<resultEnd
   }
 
   internal func contentsOfFirstComment(
@@ -152,7 +152,7 @@ public struct LineCommentSyntax {
         &index,
         over: RepetitionPattern(
           ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }),
-          count: 0 ... 1
+          count: 0...1
         )
       )
 
@@ -162,6 +162,6 @@ public struct LineCommentSyntax {
   }
 
   internal func contentsOfFirstComment(in string: String) -> String? {
-    return contentsOfFirstComment(in: string.startIndex ..< string.endIndex, of: string)
+    return contentsOfFirstComment(in: string.startIndex..<string.endIndex, of: string)
   }
 }

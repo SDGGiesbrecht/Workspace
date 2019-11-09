@@ -60,8 +60,8 @@ class APITests: TestCase {
     configuration.licence.licence = .copyright
     configuration.documentation.api.yearFirstPublished = 2018
     let builtIn = configuration.fileHeaders.copyrightNotice
-    configuration.fileHeaders.copyrightNotice
-      = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
+    configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(
+      resolve: { configuration in
         var result = builtIn.resolve(configuration)
         result["🇮🇱עב"] = "#dates"
         return result
@@ -155,8 +155,7 @@ class APITests: TestCase {
     configuration.documentation.api.enforceCoverage = false
     configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "🇩🇪DE", "zxx"]
     configuration.documentation.api.generate = true
-    configuration.documentation.about["🇨🇦EN"]
-      = "Stuff about the creators...\n\n...and more stuff..."
+    configuration.documentation.about["🇨🇦EN"] = "Stuff about the creators...\n\n...and more stuff..."
     configuration.documentation.about["🇺🇸EN"] = ""
     configuration.documentation.api.yearFirstPublished = 2018
     configuration.documentation.api.ignoredDependencies.remove("Swift")
@@ -171,8 +170,8 @@ class APITests: TestCase {
       .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
     ]
     let builtIn = configuration.fileHeaders.copyrightNotice
-    configuration.fileHeaders.copyrightNotice
-      = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
+    configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(
+      resolve: { configuration in
         var result = builtIn.resolve(configuration)
         result["zxx"] = "#dates"
         return result
@@ -201,8 +200,8 @@ class APITests: TestCase {
 
     configuration.fortlaufenderEinbindung.verwalten = false
     XCTAssertFalse(configuration.fortlaufenderEinbindung.verwalten)
-    configuration.fortlaufenderEinbindung.auserhalbFortlaufenderEinbindungSimulatorÜberspringen
-      = true
+    configuration.fortlaufenderEinbindung.auserhalbFortlaufenderEinbindungSimulatorÜberspringen =
+      true
     XCTAssert(
       configuration.fortlaufenderEinbindung
         .auserhalbFortlaufenderEinbindungSimulatorÜberspringen
@@ -225,8 +224,8 @@ class APITests: TestCase {
       configuration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung,
       1
     )
-    configuration.dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk
-      = BequemeEinstellung(auswerten: { _ in [:] })
+    configuration.dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk =
+      BequemeEinstellung(auswerten: { _ in [:] })
     XCTAssertEqual(
       configuration.dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk
         .auswerten(configuration),
@@ -257,30 +256,29 @@ class APITests: TestCase {
       configuration.dokumentation.projektSeite,
       EinheitlicherRessourcenzeiger(string: "seite.de")
     )
-    configuration.dokumentation.dokumentationsRessourcenzeiger
-      = EinheitlicherRessourcenzeiger(
-        string: "dokumentation.de"
-      )
+    configuration.dokumentation.dokumentationsRessourcenzeiger = EinheitlicherRessourcenzeiger(
+      string: "dokumentation.de"
+    )
     XCTAssertEqual(
       configuration.dokumentation.dokumentationsRessourcenzeiger,
       EinheitlicherRessourcenzeiger(string: "dokumentation.de")
     )
-    configuration.dokumentation.lagerRessourcenzeiger
-      = EinheitlicherRessourcenzeiger(string: "lager.de")
+    configuration.dokumentation.lagerRessourcenzeiger = EinheitlicherRessourcenzeiger(
+      string: "lager.de"
+    )
     XCTAssertEqual(
       configuration.dokumentation.lagerRessourcenzeiger,
       EinheitlicherRessourcenzeiger(string: "lager.de")
     )
     configuration.dokumentation.hauptautor = "Autor"
     XCTAssertEqual(configuration.dokumentation.hauptautor, "Autor")
-    configuration.dokumentation.installationsanleitungen
-      = BequemeEinstellung(auswerten: { _ in [:] })
+    configuration.dokumentation.installationsanleitungen = BequemeEinstellung(auswerten: { _ in [:]
+      })
     XCTAssertEqual(
       configuration.dokumentation.installationsanleitungen.auswerten(configuration),
       [:]
     )
-    configuration.dokumentation.einführungsanleitungen
-      = BequemeEinstellung(auswerten: { _ in [:] })
+    configuration.dokumentation.einführungsanleitungen = BequemeEinstellung(auswerten: { _ in [:] })
     XCTAssertEqual(
       configuration.dokumentation.einführungsanleitungen.auswerten(configuration),
       [:]
@@ -311,8 +309,7 @@ class APITests: TestCase {
     XCTAssertFalse(falsch)
     configuration.dateiVorspänne.verwalten = true
     XCTAssert(configuration.dateiVorspänne.verwalten)
-    configuration.dateiVorspänne.urheberrechtshinweis
-      = BequemeEinstellung(auswerten: { _ in [:] })
+    configuration.dateiVorspänne.urheberrechtshinweis = BequemeEinstellung(auswerten: { _ in [:] })
     XCTAssertNil(
       configuration.dateiVorspänne.urheberrechtshinweis.auswerten(configuration)["de"]
     )
@@ -442,18 +439,17 @@ class APITests: TestCase {
       string: "https://github.com/User/Repository"
     )!
     configuration.documentation.localizations = ["en"]
-    configuration.documentation.installationInstructions
-      = Lazy(resolve: { configuration in
-        return [
-          "en": StrictString(
-            [
-              "## Installation",
-              "",
-              "Build from source at tag `\(configuration.documentation.currentVersion!.string())` of `\(configuration.documentation.repositoryURL!.absoluteString)`."
-            ].joinedAsLines()
-          )
-        ]
-      })
+    configuration.documentation.installationInstructions = Lazy(resolve: { configuration in
+      return [
+        "en": StrictString(
+          [
+            "## Installation",
+            "",
+            "Build from source at tag `\(configuration.documentation.currentVersion!.string())` of `\(configuration.documentation.repositoryURL!.absoluteString)`."
+          ].joinedAsLines()
+        )
+      ]
+    })
     configuration.licence.manage = true
     configuration.licence.licence = .unlicense
     configuration.fileHeaders.manage = true
@@ -1029,8 +1025,8 @@ class APITests: TestCase {
     configuration.documentation.api.yearFirstPublished = 2018
     configuration.gitHub.developmentNotes = "..."
     let builtIn = configuration.fileHeaders.copyrightNotice
-    configuration.fileHeaders.copyrightNotice
-      = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
+    configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(
+      resolve: { configuration in
         var result = builtIn.resolve(configuration)
         result["🇫🇷FR"] = "#dates"
         result["🇬🇷ΕΛ"] = "#dates"
@@ -1112,8 +1108,8 @@ class APITests: TestCase {
     )
 
     let builtIn = configuration.fileHeaders.copyrightNotice
-    configuration.fileHeaders.copyrightNotice
-      = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
+    configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(
+      resolve: { configuration in
         var result = builtIn.resolve(configuration)
         result["🇫🇷FR"] = "#dates"
         result["🇬🇷ΕΛ"] = "#dates"
@@ -1193,8 +1189,8 @@ class APITests: TestCase {
     )
 
     let builtIn = configuration.fileHeaders.copyrightNotice
-    configuration.fileHeaders.copyrightNotice
-      = Lazy<[LocalizationIdentifier: StrictString]>(resolve: { configuration in
+    configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(
+      resolve: { configuration in
         var result = builtIn.resolve(configuration)
         result["🇫🇷FR"] = "#dates"
         result["🇬🇷ΕΛ"] = "#dates"

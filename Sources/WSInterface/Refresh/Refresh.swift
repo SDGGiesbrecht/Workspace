@@ -28,17 +28,17 @@ extension Workspace {
       }
     })
 
-    private static let description
-      = UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return
-            "refreshes the project by updating its components and readying it for development."
-        case .deutschDeutschland:
-          return
-            "frischt das Projekt auf, durch Aktualisierungen der Bestandteile und Vorbereitungen für Entwicklung."
-        }
-      })
+    private static let description = UserFacing<StrictString, InterfaceLocalization>({
+      localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return
+          "refreshes the project by updating its components and readying it for development."
+      case .deutschDeutschland:
+        return
+          "frischt das Projekt auf, durch Aktualisierungen der Bestandteile und Vorbereitungen für Entwicklung."
+      }
+    })
 
     private static var subcommands: [Command] {
       var list = [

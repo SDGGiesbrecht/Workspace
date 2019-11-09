@@ -471,22 +471,21 @@ extension APIElement {
   private func addLocalizations(from other: APIElement, isSame: Bool, globalScope: Bool) {
     for (localization, _) in other.localizedDocumentation {
       localizedEquivalentFileNames[localization] = other.fileName
-      localizedEquivalentDirectoryNames[localization]
-        = other.directoryName(
-          for: localization,
-          globalScope: globalScope,
-          typeMember: {
-            switch other {
-            case .package, .library, .module, .type, .protocol, .extension, .case,
-              .initializer, .subscript, .operator, .precedence, .conformance:
-              unreachable()
-            case .variable(let variable):
-              return variable.declaration.isTypeMember()
-            case .function(let function):
-              return function.declaration.isTypeMember()
-            }
+      localizedEquivalentDirectoryNames[localization] = other.directoryName(
+        for: localization,
+        globalScope: globalScope,
+        typeMember: {
+          switch other {
+          case .package, .library, .module, .type, .protocol, .extension, .case,
+            .initializer, .subscript, .operator, .precedence, .conformance:
+            unreachable()
+          case .variable(let variable):
+            return variable.declaration.isTypeMember()
+          case .function(let function):
+            return function.declaration.isTypeMember()
           }
-        )
+        }
+      )
       if ¬isSame {
         localizedChildren.append(contentsOf: other.children)
       }
@@ -763,15 +762,13 @@ extension APIElement {
       switch self {
       case .package(let package):
         for library in package.libraries {
-          links
-            = APIElement.library(library).determinePaths(for: localization)
+          links = APIElement.library(library).determinePaths(for: localization)
             .mergedByOverwriting(from: links)
         }
       case .library(let library):
         path += localizedDirectoryName(for: localization) + "/"
         for module in library.modules {
-          links
-            = APIElement.module(module).determinePaths(for: localization)
+          links = APIElement.module(module).determinePaths(for: localization)
             .mergedByOverwriting(from: links)
         }
       case .module(let module):
@@ -785,8 +782,7 @@ extension APIElement {
         newNamespace.append(contentsOf: localizedDirectoryName(for: localization) + "/")
         newNamespace.append(contentsOf: localizedFileName(for: localization) + "/")
         for child in children where child.receivesPage {
-          links
-            = child.determinePaths(for: localization, namespace: newNamespace)
+          links = child.determinePaths(for: localization, namespace: newNamespace)
             .mergedByOverwriting(from: links)
         }
       case .case, .initializer, .subscript, .operator, .precedence:

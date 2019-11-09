@@ -35,15 +35,15 @@ extension Workspace.Validate {
       }
     })
 
-    private static let description
-      = UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "performs all configured validation checks."
-        case .deutschDeutschland:
-          return "führt alle eingestellte Prüfungen aus."
-        }
-      })
+    private static let description = UserFacing<StrictString, InterfaceLocalization>({
+      localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "performs all configured validation checks."
+      case .deutschDeutschland:
+        return "führt alle eingestellte Prüfungen aus."
+      }
+    })
 
     static let command = Command(
       name: name,

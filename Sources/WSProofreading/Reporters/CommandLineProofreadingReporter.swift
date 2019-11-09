@@ -57,9 +57,9 @@ public class CommandLineProofreadingReporter: ProofreadingReporter {
     let lines = source.lines
     let lineRange = violation.lines(in: lines)
     let context = lineRange.sameRange(in: source.clusters)
-    let preceding = String(source.clusters[context.lowerBound ..< violation.lowerBound])
+    let preceding = String(source.clusters[context.lowerBound..<violation.lowerBound])
     let problem = highlight(String(source.clusters[violation])).in(Underline.underlined)
-    let following = String(source.clusters[violation.upperBound ..< context.upperBound])
+    let following = String(source.clusters[violation.upperBound..<context.upperBound])
     var result = preceding + problem + following
     if let suggestion = replacementSuggestion {
       result += preceding + String(suggestion).formattedAsSuccess() + following

@@ -66,14 +66,13 @@ extension PackageRepository {
 
               var identifier = StrictString(
                 file.contents.scalars[
-                  openingParenthesis.range.upperBound
-                    ..< closingParenthesis.range.lowerBound]
+                  openingParenthesis.range.upperBound..<closingParenthesis.range.lowerBound]
               )
               identifier.trimMarginalWhitespace()
 
               var example = StrictString(
                 file.contents.scalars[
-                  closingParenthesis.range.upperBound ..< at.range.lowerBound]
+                  closingParenthesis.range.upperBound..<at.range.lowerBound]
               )
               // Remove token lines.
               example.lines.removeFirst()
@@ -114,8 +113,7 @@ extension PackageRepository {
 
           var searchIndex = file.contents.scalars.startIndex
           while let match = file.contents.scalars[
-            min(searchIndex, file.contents.scalars.endIndex)
-              ..< file.contents.scalars.endIndex]
+            min(searchIndex, file.contents.scalars.endIndex)..<file.contents.scalars.endIndex]
             .firstMatch(for: InterfaceLocalization.exampleDirective)
           {
             searchIndex = match.range.upperBound
@@ -164,11 +162,11 @@ extension PackageRepository {
             let nextLineStart = match.range.lines(in: file.contents.lines).upperBound
               .samePosition(in: file.contents.scalars)
             if let commentRange = documentationSyntax.rangeOfFirstComment(
-              in: nextLineStart ..< file.contents.scalars.endIndex,
+              in: nextLineStart..<file.contents.scalars.endIndex,
               of: file
             ) {
               let commentIndent = String(
-                file.contents.scalars[nextLineStart ..< commentRange.lowerBound]
+                file.contents.scalars[nextLineStart..<commentRange.lowerBound]
               )
 
               if var commentValue = documentationSyntax.contentsOfFirstComment(
@@ -179,15 +177,15 @@ extension PackageRepository {
                 var countingExampleIndex = 0
                 var searchIndex = commentValue.scalars.startIndex
                 exampleSearch: while let startRange = commentValue.scalars[
-                  searchIndex ..< commentValue.scalars.endIndex].firstMatch(
+                  searchIndex..<commentValue.scalars.endIndex].firstMatch(
                     for: "```".scalars
                   )?.range,
                 let endRange = commentValue.scalars[
-                  startRange.upperBound ..< commentValue.scalars.endIndex]
+                  startRange.upperBound..<commentValue.scalars.endIndex]
                   .firstMatch(for: "```".scalars)?.range
                 {
 
-                  let exampleRange = startRange.lowerBound ..< endRange.upperBound
+                  let exampleRange = startRange.lowerBound..<endRange.upperBound
 
                   searchIndex = exampleRange.upperBound
                   countingExampleIndex.increment()
@@ -214,8 +212,7 @@ extension PackageRepository {
                       "```"
                     ].joinedAsLines().lines.map({ StrictString($0.line) })
 
-                    for index in exampleLines.startIndex
-                      ..< exampleLines.endIndex
+                    for index in exampleLines.startIndex..<exampleLines.endIndex
                     where index ≠ exampleLines.startIndex {
                       exampleLines[index] = exampleIndent
                         + exampleLines[index]

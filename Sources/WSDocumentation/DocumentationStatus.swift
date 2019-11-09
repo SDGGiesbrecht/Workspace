@@ -56,8 +56,7 @@ internal class DocumentationStatus {
       symbolName = StrictString(symbol.name.source())
     case .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function,
       .operator, .precedence, .conformance:
-      symbolName
-        = navigationPath.dropFirst().map({ StrictString($0.name.source()) })
+      symbolName = navigationPath.dropFirst().map({ StrictString($0.name.source()) })
         .joined(separator: ".")
     }
     if let specificParameter = parameter {
@@ -104,23 +103,22 @@ internal class DocumentationStatus {
         contentsOf: "(name: \u{22}" + StrictString(symbol.name.source()) + "\u{22}"
       )
 
-      hint
-        = UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom:
-            return
-              "(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.\nWorkspace will look for documentation on the line above ‘"
-              + search + "’.)"
-          case .englishUnitedStates, .englishCanada:
-            return
-              "(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.\nWorkspace will look for documentation on the line above “"
-              + search + "”.)"
-          case .deutschDeutschland:
-            return
-              "(Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.\nArbeitsbereich sucht für die Dokumentation in der Zeile über „"
-              + search + "“.)"
-          }
-        })
+      hint = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishUnitedKingdom:
+          return
+            "(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.\nWorkspace will look for documentation on the line above ‘"
+            + search + "’.)"
+        case .englishUnitedStates, .englishCanada:
+          return
+            "(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.\nWorkspace will look for documentation on the line above “"
+            + search + "”.)"
+        case .deutschDeutschland:
+          return
+            "(Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.\nArbeitsbereich sucht für die Dokumentation in der Zeile über „"
+            + search + "“.)"
+        }
+      })
     }
 
     report(

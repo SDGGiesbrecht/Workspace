@@ -118,15 +118,15 @@ extension PackageRepository {
       return source
     }
 
-    private static let resourceNamespace
-      = UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Resources"
-        case .deutschDeutschland:
-          return "Ressourcen"
-        }
-      })
+    private static let resourceNamespace = UserFacing<StrictString, InterfaceLocalization>({
+      localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Resources"
+      case .deutschDeutschland:
+        return "Ressourcen"
+      }
+    })
 
     private func namespaceTreeSource(
       for resources: [URL],

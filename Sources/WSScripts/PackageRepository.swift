@@ -34,7 +34,7 @@ extension PackageRepository {
           executable: true
         )
         file.contents.replaceSubrange(
-          file.contents.startIndex ..< file.headerStart,
+          file.contents.startIndex..<file.headerStart,
           with: String(script.shebang())
         )
         file.header = file.header

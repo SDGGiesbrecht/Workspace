@@ -166,37 +166,36 @@ internal struct PackageInterface {
     ].joined()
 
     if specified.major == 0 {
-      result
-        = [
-          ElementSyntax(
-            "span",
-            attributes: ["class": "punctuation"],
-            contents: ".",
-            inline: true
-          )
-            .normalizedSource(),
-          ElementSyntax(
-            "span",
-            attributes: ["class": "external identifier"],
-            contents: "upToNextMinor",
-            inline: true
-          ).normalizedSource(),
-          ElementSyntax(
-            "span",
-            attributes: ["class": "punctuation"],
-            contents: "(",
-            inline: true
-          )
-            .normalizedSource(),
-          result,
-          ElementSyntax(
-            "span",
-            attributes: ["class": "punctuation"],
-            contents: ")",
-            inline: true
-          )
-            .normalizedSource()
-        ].joined()
+      result = [
+        ElementSyntax(
+          "span",
+          attributes: ["class": "punctuation"],
+          contents: ".",
+          inline: true
+        )
+          .normalizedSource(),
+        ElementSyntax(
+          "span",
+          attributes: ["class": "external identifier"],
+          contents: "upToNextMinor",
+          inline: true
+        ).normalizedSource(),
+        ElementSyntax(
+          "span",
+          attributes: ["class": "punctuation"],
+          contents: "(",
+          inline: true
+        )
+          .normalizedSource(),
+        result,
+        ElementSyntax(
+          "span",
+          attributes: ["class": "punctuation"],
+          contents: ")",
+          inline: true
+        )
+          .normalizedSource()
+      ].joined()
     }
 
     return result
@@ -214,16 +213,15 @@ internal struct PackageInterface {
     var result: [LocalizationIdentifier: StrictString] = [:]
     for localization in localizations {
       autoreleasepool {
-        result[localization]
-          = generateIndex(
-            for: package,
-            tools: tools,
-            hasInstallation: installation[localization] ≠ nil,
-            hasImporting: importing[localization] ≠ nil,
-            hasRelatedProjects: relatedProjects[localization] ≠ nil,
-            hasAbout: about[localization] ≠ nil,
-            localization: localization
-          )
+        result[localization] = generateIndex(
+          for: package,
+          tools: tools,
+          hasInstallation: installation[localization] ≠ nil,
+          hasImporting: importing[localization] ≠ nil,
+          hasRelatedProjects: relatedProjects[localization] ≠ nil,
+          hasAbout: about[localization] ≠ nil,
+          localization: localization
+        )
       }
     }
     return result
@@ -645,23 +643,21 @@ internal struct PackageInterface {
       paths[localization] = APIElement.package(api).determinePaths(for: localization)
     }
     APIElement.package(api).determineLocalizedPaths(localizations: localizations)
-    self.symbolLinks
-      = paths.mapValues { localization in
-        localization.mapValues { link in
-          return HTML.percentEncodeURLPath(link)
-        }
+    self.symbolLinks = paths.mapValues { localization in
+      localization.mapValues { link in
+        return HTML.percentEncodeURLPath(link)
       }
+    }
 
-    self.indices
-      = PackageInterface.generateIndices(
-        for: api,
-        tools: cli,
-        installation: installation,
-        importing: importing,
-        relatedProjects: relatedProjects,
-        about: about,
-        localizations: localizations
-      )
+    self.indices = PackageInterface.generateIndices(
+      for: api,
+      tools: cli,
+      installation: installation,
+      importing: importing,
+      relatedProjects: relatedProjects,
+      about: about,
+      localizations: localizations
+    )
     self.platforms = platforms.mapValues { PackageInterface.generate(platforms: $0) }
   }
 

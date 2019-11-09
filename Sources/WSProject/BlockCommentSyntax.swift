@@ -39,15 +39,14 @@ internal struct BlockCommentSyntax {
 
     var lines = withEndToken.lines.map({ String($0.line) })
 
-    lines
-      = lines.map { (line: String) -> String in
+    lines = lines.map { (line: String) -> String in
 
-        if line.isWhitespace {
-          return line
-        } else {
-          return " " + line
-        }
+      if line.isWhitespace {
+        return line
+      } else {
+        return " " + line
       }
+    }
 
     lines = [start, lines.joinedAsLines()]
 
@@ -118,7 +117,7 @@ internal struct BlockCommentSyntax {
         &indentIndex,
         over: RepetitionPattern(
           ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }),
-          count: 0 ... indent
+          count: 0...indent
         )
       )
       result.append(line.scalars.suffix(from: indentIndex))
@@ -134,7 +133,7 @@ internal struct BlockCommentSyntax {
 
   internal func contentsOfFirstComment(in string: String) -> String? {
     return contentsOfFirstComment(
-      in: string.scalars.startIndex ..< string.scalars.endIndex,
+      in: string.scalars.startIndex..<string.scalars.endIndex,
       of: string
     )
   }

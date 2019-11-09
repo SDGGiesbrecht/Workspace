@@ -88,11 +88,11 @@ internal struct Marks: TextRule {
 
           file.contents.scalars.advance(
             &errorEnd,
-            over: RepetitionPattern(":".scalars, count: 0 ... 1)
+            over: RepetitionPattern(":".scalars, count: 0...1)
               + RepetitionPattern(
                 ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })
               )
-              + RepetitionPattern("\u{2D}".scalars, count: 0 ... 1)
+              + RepetitionPattern("\u{2D}".scalars, count: 0...1)
               + RepetitionPattern(
                 ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })
               )
@@ -102,7 +102,7 @@ internal struct Marks: TextRule {
         if errorExists {
           reportViolation(
             in: file,
-            at: errorStart ..< errorEnd,
+            at: errorStart..<errorEnd,
             replacementSuggestion: expectedSyntax,
             message: message,
             status: status

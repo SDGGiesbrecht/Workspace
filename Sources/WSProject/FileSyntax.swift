@@ -81,12 +81,11 @@ public struct FileSyntax {
       firstCharacter ∈ CharacterSet.whitespacesAndNewlines {
         body.scalars.removeFirst()
       }
-      body
-        = [
-          "",  // Line at end of header
-          "",
-          ""  // Body starts in this line
-        ].joinedAsLines() + body
+      body = [
+        "",  // Line at end of header
+        "",
+        ""  // Body starts in this line
+      ].joinedAsLines() + body
 
       let contents = first + generated + body
 
@@ -139,7 +138,7 @@ public struct FileSyntax {
   ) {
     string.scalars.advance(
       &index,
-      over: RepetitionPattern(CharacterSet.newlinePattern, count: 0 ... 1)
+      over: RepetitionPattern(CharacterSet.newlinePattern, count: 0...1)
     )
     string.scalars.advance(
       &index,
@@ -147,7 +146,7 @@ public struct FileSyntax {
     )
     string.scalars.advance(
       &index,
-      over: RepetitionPattern(CharacterSet.newlinePattern, count: 0 ... 1)
+      over: RepetitionPattern(CharacterSet.newlinePattern, count: 0...1)
     )
   }
 
@@ -175,7 +174,7 @@ public struct FileSyntax {
     if let blockSyntax = blockCommentSyntax,
       blockSyntax.startOfNonDocumentationCommentExists(at: start, in: file.contents),
       let block = blockSyntax.firstComment(
-        in: start ..< file.contents.scalars.endIndex,
+        in: start..<file.contents.scalars.endIndex,
         of: file.contents
       )?.container.range
         .upperBound
@@ -186,7 +185,7 @@ public struct FileSyntax {
     if let lineSyntax = lineCommentSyntax,
       lineSyntax.nonDocumentationCommentExists(at: start, in: file.contents),
       let line = lineSyntax.rangeOfFirstComment(
-        in: start ..< file.contents.endIndex,
+        in: start..<file.contents.endIndex,
         of: file.contents
       )?.upperBound
     {
@@ -203,7 +202,7 @@ public struct FileSyntax {
   }
 
   internal func header(file: TextFile) -> String {
-    let markup = String(file.contents[file.headerStart ..< file.headerEnd])
+    let markup = String(file.contents[file.headerStart..<file.headerEnd])
 
     if markup.lines.map({ String($0.line) }).filter({ ¬$0.isWhitespace }).isEmpty {
       return markup

@@ -84,13 +84,12 @@ public enum RelatedProjectEntry: Decodable, Encodable {
     case .project:
       self = .project(url: try container.decode(URL.self, forKey: CodingKeys.details))
     case .heading:
-      self
-        = .heading(
-          text: try container.decode(
-            [LocalizationIdentifier: StrictString].self,
-            forKey: CodingKeys.details
-          )
+      self = .heading(
+        text: try container.decode(
+          [LocalizationIdentifier: StrictString].self,
+          forKey: CodingKeys.details
         )
+      )
     }
   }
 }

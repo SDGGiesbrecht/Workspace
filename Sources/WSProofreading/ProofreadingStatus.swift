@@ -63,7 +63,7 @@ internal class ProofreadingStatus: DiagnosticConsumer {
     let message = UserFacing<StrictString, InterfaceLocalization>({ _ in diagnosticMessage })
     let violation = StyleViolation(
       in: file,
-      at: start ..< start,
+      at: start..<start,
       replacementSuggestion: replacementSuggestion,
       noticeOnly: false,
       ruleIdentifier: identifier,

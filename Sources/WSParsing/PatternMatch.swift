@@ -29,7 +29,7 @@ where Searched: SearchableBidirectionalCollection, Searched.Element == Unicode.S
     }
 
     var argument = StrictString(
-      contents[openingParenthesis.range.upperBound ..< closingParenthesis.range.lowerBound]
+      contents[openingParenthesis.range.upperBound..<closingParenthesis.range.lowerBound]
     )
     argument.trimMarginalWhitespace()
 

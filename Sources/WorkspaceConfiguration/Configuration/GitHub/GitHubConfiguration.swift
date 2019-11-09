@@ -198,28 +198,29 @@ public struct GitHubConfiguration: Codable {
   /// By default, these are assembled from the other GitHub options.
   ///
   /// An issue template is a markdown file in a `.github` folder which GitHub uses when someone creates a new issue.
-  public var issueTemplates: Lazy<[LocalizationIdentifier: [IssueTemplate]]>
-    = Lazy<[LocalizationIdentifier: [IssueTemplate]]>(resolve: { configuration in
+  public var issueTemplates: Lazy<[LocalizationIdentifier: [IssueTemplate]]> = Lazy<
+    [LocalizationIdentifier: [IssueTemplate]]
+  >(resolve: { configuration in
 
-      var localizations = configuration.documentation.localizations
-      if localizations.isEmpty {
-        localizations.append(
-          LocalizationIdentifier(ContentLocalization.fallbackLocalization)
-        )
-      }
+    var localizations = configuration.documentation.localizations
+    if localizations.isEmpty {
+      localizations.append(
+        LocalizationIdentifier(ContentLocalization.fallbackLocalization)
+      )
+    }
 
-      var result: [LocalizationIdentifier: [IssueTemplate]] = [:]
-      for localization in localizations {
-        for providedTemplate in ProvidedIssueTemplate.allCases {
-          if let language = localization._reasonableMatch {
-            result[localization, default: []].append(
-              providedTemplate.constructed(for: language)
-            )
-          }
+    var result: [LocalizationIdentifier: [IssueTemplate]] = [:]
+    for localization in localizations {
+      for providedTemplate in ProvidedIssueTemplate.allCases {
+        if let language = localization._reasonableMatch {
+          result[localization, default: []].append(
+            providedTemplate.constructed(for: language)
+          )
         }
       }
-      return result
-    })
+    }
+    return result
+  })
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(GitHubConfiguration.pullRequestTemplate)

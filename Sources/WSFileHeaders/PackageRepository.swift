@@ -50,16 +50,14 @@ extension PackageRepository {
           let oldHeader = file.header
           var header = template
 
-          header
-            = header.replacingMatches(
-              for: "#filename",
-              with: StrictString(url.lastPathComponent)
-            )
-          header
-            = header.replacingMatches(
-              for: "#dates",
-              with: copyright(fromText: oldHeader)
-            )
+          header = header.replacingMatches(
+            for: "#filename",
+            with: StrictString(url.lastPathComponent)
+          )
+          header = header.replacingMatches(
+            for: "#dates",
+            with: copyright(fromText: oldHeader)
+          )
 
           file.header = String(header)
           try file.writeChanges(for: self, output: output)

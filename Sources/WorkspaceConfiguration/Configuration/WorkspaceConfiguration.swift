@@ -36,7 +36,7 @@ import WSLocalizations
 ///  Externe Pakete sind mit dieser Syntax einführbar:
 ///  import [Modul] // [Ressourcenzeiger], [Version], [Produkt]
 ///  */
-/// import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
+/// import SDGControlFlow  // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
 ///
 /// let konfiguration = ArbeitsbereichKonfiguration()
 /// konfiguration.alleAufgabenEinschalten()
@@ -60,7 +60,7 @@ public typealias ArbeitsbereichKonfiguration = WorkspaceConfiguration
 ///  Exernal packages can be imported with this syntax:
 ///  import [module] // [url], [version], [product]
 ///  */
-/// import SDGControlFlow // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
+/// import SDGControlFlow  // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
 ///
 /// let configuration = WorkspaceConfiguration()
 /// configuration.optIntoAllTasks()
@@ -210,8 +210,8 @@ public final class WorkspaceConfiguration: SDGSwiftConfiguration.Configuration {
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(WorkspaceConfiguration.continuousIntegration)
   /// Options related to continuous integration.
-  public var continuousIntegration: ContinuousIntegrationConfiguration
-    = ContinuousIntegrationConfiguration()
+  public var continuousIntegration: ContinuousIntegrationConfiguration =
+    ContinuousIntegrationConfiguration()
   // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.continuousIntegration)
   /// Einstellungen zur fortlaufenden Einbindung.
   public var fortlaufenderEinbindung: EinstellungenFortlaufenderEinbindung {

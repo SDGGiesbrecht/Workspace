@@ -1,3 +1,3 @@
 struct CustomTasks {
-    var text = "Hello, World!"
+  var text = "Hello, World!"
 }

@@ -30,22 +30,17 @@ The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime
 README.md
 Sources/Default/Default.swift
 Tests/DefaultTests/DefaultTests.swift
-Line 4
-Colons should be preceded by spaces when denoting conformance, inheritance or a ternary condition. (colonSpacing)
-final class DefaultTests: XCTestCase {
-final class DefaultTests : XCTestCase {
-
 Tests/DefaultTests/XCTestManifests.swift
 Line 1
 Test manifests are no longer necessary. (deprecatedTestManifests)
 import XCTest
 
 #if !canImport(ObjectiveC)
-public func allTests() -> [XCTestCaseEntry] {
+  public func allTests() -> [XCTestCaseEntry] {
     return [
-        testCase(DefaultTests.allTests),
+      testCase(DefaultTests.allTests),
     ]
-}
+  }
 #endif
 
 Tests/LinuxMain.swift

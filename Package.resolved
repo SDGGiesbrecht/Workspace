@@ -48,11 +48,11 @@
       },
       {
         "package": "swift-format",
-        "repositoryURL": "https://github.com/apple/swift-format",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-format",
         "state": {
-          "branch": "swift-5.1-branch",
-          "revision": "08040f2cf17299b14da0c0803de4c7fccee175e4",
-          "version": null
+          "branch": null,
+          "revision": "ffcc668d5a3d654aa17bd84f6ca3b73de5ab46be",
+          "version": "0.0.50100"
         }
       },
       {

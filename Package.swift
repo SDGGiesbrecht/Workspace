@@ -218,8 +218,7 @@ let package = Package(
       .upToNextMinor(from: Version(0, 16, 2))
     ),
     .package(
-      url: "https://github.com/apple/swift\u{2D}format",
-      .branch("swift\u{2D}5.1\u{2D}branch")
+      url: "https://github.com/SDGGiesbrecht/swift\u{2D}format", .exact(Version(0, 0, 50100))
     ),
     .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(4, 0, 0))
   ],

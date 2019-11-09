@@ -532,8 +532,7 @@ let package = Package(
     /// configuration.documentation.api.generate = true
     /// configuration.documentation.api.yearFirstPublished = 2017
     /// ```
-    .target(
-      name: "WorkspaceConfiguration",
+    .target(name: "WorkspaceConfiguration",
       dependencies: [
         "WSLocalizations",
         .product(name: "SDGControlFlow", package: "SDGCornerstone"),

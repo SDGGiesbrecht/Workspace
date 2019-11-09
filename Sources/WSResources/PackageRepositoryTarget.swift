@@ -23,6 +23,7 @@ import WSProject
 import WSSwift
 
 import PackageModel
+import SwiftFormat
 
 extension PackageRepository {
 
@@ -70,12 +71,20 @@ extension PackageRepository {
         possiblyAt: sourceDirectory.appendingPathComponent("Resources.swift")
       )
       resourceFile.body = String(try generateSource(for: resources, of: package))
+
+      #warning("Restore this.")
+      /*if let formatConfiguration = try package.configuration(output: output)
+        .proofreading.swiftFormatConfiguration {
+        formatter = SwiftFormatter(configuration: formatConfiguration)
+      }*/
+
       try resourceFile.writeChanges(for: package, output: output)
     }
 
-    private func generateSource(for resources: [URL], of package: PackageRepository) throws
-      -> StrictString
-    {
+    private func generateSource(
+      for resources: [URL],
+      of package: PackageRepository
+    ) throws -> StrictString {
       var source: StrictString = "import Foundation\n\n"
 
       let enumName = PackageRepository.Target.resourceNamespace.resolved(
@@ -115,15 +124,17 @@ extension PackageRepository {
         }
       })
 
-    private func namespaceTreeSource(for resources: [URL], of package: PackageRepository) throws
-      -> StrictString
-    {
+    private func namespaceTreeSource(
+      for resources: [URL],
+      of package: PackageRepository
+    ) throws -> StrictString {
       return try source(for: namespaceTree(for: resources, of: package))
     }
 
-    private func namespaceTree(for resources: [URL], of package: PackageRepository)
-      -> [StrictString: Any]
-    {
+    private func namespaceTree(
+      for resources: [URL],
+      of package: PackageRepository
+    ) -> [StrictString: Any] {
       var tree: [StrictString: Any] = [:]
       for resource in resources {
         let pathComponentsArray = resource.path(relativeTo: package.location).components(
@@ -156,8 +167,8 @@ extension PackageRepository {
     }
 
     private func variableName(for fileName: String) -> StrictString {
-      let nameOnly = URL(fileURLWithPath: "/" + fileName).deletingPathExtension()
-        .lastPathComponent
+      let nameOnly = URL(fileURLWithPath: "/" + fileName)
+        .deletingPathExtension().lastPathComponent
       return SwiftLanguage.identifier(for: StrictString(nameOnly), casing: .variable)
     }
 
@@ -184,7 +195,7 @@ extension PackageRepository {
       }
       return StrictString(
         result.lines.map({ (lineInformation) in
-          return "    " + StrictString(lineInformation.line)
+          return "  " + StrictString(lineInformation.line)
         }).joined(separator: "\n".scalars) + "\n"
       )
     }

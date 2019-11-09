@@ -334,7 +334,8 @@ let package = Package(
         "WSGeneralImports",
         "WSProject",
         "WSSwift",
-        .product(name: "SDGSwiftPackageManager", package: "SDGSwift")
+        .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
+        .product(name: "SwiftFormat", package: "swift\u{2D}format")
       ]
     ),
 

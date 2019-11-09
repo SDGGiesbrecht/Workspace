@@ -43,7 +43,7 @@ internal class ProofreadingStatus: DiagnosticConsumer {
 
   internal func handle(_ diagnostic: Diagnostic) {
     let file = currentFile!
-    #warning("Are highlights useful?")
+    // #workaround(Are highlights useful?)
     let start: String.ScalarView.Index
     if let location = diagnostic.location {
       let utf8 = file.contents.utf8.index(
@@ -52,12 +52,12 @@ internal class ProofreadingStatus: DiagnosticConsumer {
       )
       start = utf8.scalar(in: file.contents.scalars)
     } else {
-      #warning("This seems conterproductive.")
+      // #workaround(This seems conterproductive.)
       start = file.contents.scalars.startIndex
     }
-    #warning("Are fix‐its useful?")
+    // #workaround(Are fix‐its useful?)
     let replacementSuggestion: StrictString? = nil
-    #warning("What to do with identifiers?")
+    // #workaround(What to do with identifiers?)
     let identifier = UserFacing<StrictString, InterfaceLocalization>({ _ in "swiftFormat" })
     let diagnosticMessage = StrictString(diagnostic.message.text)
     let message = UserFacing<StrictString, InterfaceLocalization>({ _ in diagnosticMessage })

@@ -24,13 +24,17 @@ extension SwiftFormatConfiguration.Configuration {
     let configuration = SwiftFormatConfiguration.Configuration()
 
     // Illogical style choices.
+    configuration.rules["IdentifiersMustBeASCII"] = false
     configuration.rules["MultiLineTrailingCommas"] = false
     configuration.rules["NoBlockComments"] = false
 
-    // Not universally a good idea.
+    // Generally good advice, but rules are noisy due to many valid exceptions.
+    configuration.rules["DontRepeatTypeInStaticProperties"] = false
     configuration.rules["NeverForceUnwrap"] = false
+    configuration.rules["NeverUseImplicitlyUnwrappedOptionals"] = false
     configuration.rules["NoLeadingUnderscores"] = false
     configuration.rules["OrderedImports"] = false
+    configuration.rules["UseSynthesizedInitializer"] = false
 
     // Handled better during documentation coverage check.
     configuration.rules["AllPublicDeclarationsHaveDocumentation"] = false
@@ -38,6 +42,8 @@ extension SwiftFormatConfiguration.Configuration {
     // Bugs currently result in false positives.
     // #workaround(Swift 5.1, Can these be restored?)
     configuration.rules["AlwaysUseLowerCamelCase"] = false
+    configuration.rules["BlankLineBetweenMembers"] = false
+    configuration.rules["CaseIndentLevelEqualsSwitch"] = false
     configuration.rules["UseLetInEveryBoundCaseVariable"] = false
     configuration.rules["ValidateDocumentationComments"] = false
 

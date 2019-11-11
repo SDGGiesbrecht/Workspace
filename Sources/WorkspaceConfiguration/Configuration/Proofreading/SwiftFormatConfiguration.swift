@@ -22,7 +22,6 @@ extension SwiftFormatConfiguration.Configuration {
 
   internal static let `default`: SwiftFormatConfiguration.Configuration = {
     let configuration = SwiftFormatConfiguration.Configuration()
-    configuration.rules = [:]
     configuration.lineBreakBeforeEachArgument = true
     return configuration
   }()

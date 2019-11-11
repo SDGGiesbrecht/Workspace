@@ -38,14 +38,14 @@ internal class ProofreadingStatus: DiagnosticConsumer {
   // MARK: - DiagnosticConsumer
 
   internal var needsLineColumn: Bool {
-    // @exempt(from: tests) #workaround(Not triggerable without more rules.)
+    #warning("Not triggerable without more rules.")
     return false
   }
 
   internal func handle(_ diagnostic: Diagnostic) {
-    // @exempt(from: tests) #workaround(Not triggerable without more rules.)
+    #warning("Not triggerable without more rules.")
     let file = currentFile!
-    // #workaround(Are highlights useful?)
+    #warning("Are highlights useful?")
     let start: String.ScalarView.Index
     if let location = diagnostic.location {
       let utf8 = file.contents.utf8.index(
@@ -54,12 +54,12 @@ internal class ProofreadingStatus: DiagnosticConsumer {
       )
       start = utf8.scalar(in: file.contents.scalars)
     } else {
-      // #workaround(This seems conterproductive.)
+      #warning("This seems conterproductive.")
       start = file.contents.scalars.startIndex
     }
-    // #workaround(Are fix‐its useful?)
+    #warning("Are fix‐its useful?")
     let replacementSuggestion: StrictString? = nil
-    // #workaround(What to do with identifiers?)
+    #warning("What to do with identifiers?")
     let identifier = UserFacing<StrictString, InterfaceLocalization>({ _ in "swiftFormat" })
     let diagnosticMessage = StrictString(diagnostic.message.text)
     let message = UserFacing<StrictString, InterfaceLocalization>({ _ in diagnosticMessage })

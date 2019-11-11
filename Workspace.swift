@@ -91,6 +91,7 @@ public let configuration: WorkspaceConfiguration = {
     "SDGPersistenceTestUtilities",
     "SDGTesting",
     "SDGText",
+    "SDGVersioning",
     "SDGXCTestUtilities",
 
     // SDGSwift
@@ -112,6 +113,14 @@ public let configuration: WorkspaceConfiguration = {
     "Foundation",
     "Dispatch",
     "XCTest",
+
+    // SwiftFormat
+    "SwiftFormat",
+    "SwiftFormatConfiguration",
+    "SwiftFormatCore",
+    "SwiftFormatPrettyPrint",
+    "SwiftFormatRules",
+    "SwiftFormatWhitespaceLinter",
 
     // SwiftPM
     "Basic",

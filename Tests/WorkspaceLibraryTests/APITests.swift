@@ -391,11 +391,16 @@ class APITests: TestCase {
     configuration.licence.manage = true
     configuration.licence.licence = .mit
     configuration.fileHeaders.manage = true
+
+    // Text rules but no syntax rules.
+    configuration.proofreading.rules = [.manualWarnings]
+
     PackageRepository(mock: "ContinuousIntegrationWithoutScripts").test(
       commands: [
         ["refresh", "continuous‐integration"],
         ["refresh", "licence"],
-        ["refresh", "file‐headers"]
+        ["refresh", "file‐headers"],
+        ["proofread"]
       ],
       configuration: configuration,
       localizations: InterfaceLocalization.self,

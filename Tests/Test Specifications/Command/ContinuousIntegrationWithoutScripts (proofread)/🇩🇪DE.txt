@@ -1,0 +1,22 @@
+$ arbeitsbereich proofread •no‐colour
+
+Deteien werden normalisiert ...
+
+
+Quelltext Korrektur wird gelesen ...
+
+.gitignore
+LICENSE.md
+Package.swift
+README.md
+Sources/ContinuousIntegrationWithoutScripts/ContinuousIntegrationWithoutScripts.swift
+Tests/ContinuousIntegrationWithoutScriptsTests/ContinuousIntegrationWithoutScriptsTests.swift
+Tests/ContinuousIntegrationWithoutScriptsTests/XCTestManifests.swift
+Tests/LinuxMain.swift
+
+✓ Quelltext besteht das Korrekturlesen.
+
+
+„ContinuousIntegrationWithoutScripts“ besteht die Überprüfung.
+
+0

@@ -360,6 +360,8 @@ class APITests: TestCase {
     XCTAssert(configuration.gitHub.mitwirkungsanweisungen.auswerten(configuration).isEmpty)
     configuration.projektname["de"] = "Lokalisiert"
     XCTAssertEqual(configuration.projektname["de"], "Lokalisiert")
+    configuration.korrektur.swiftFormatKonfiguration = nil
+    XCTAssertNil(configuration.korrektur.swiftFormatKonfiguration)
   }
 
   func testConfiguartionContext() {

@@ -178,13 +178,32 @@ internal struct UnicodeRule: SyntaxRule {
       }
     case .extended(let kind):
       switch kind {
-      case .quotationMark, .escape, .lineCommentDelimiter, .openingBlockCommentDelimiter,
-        .closingBlockCommentDelimiter, .commentURL, .mark, .lineDocumentationDelimiter,
-        .openingBlockDocumentationDelimiter, .closingBlockDocumentationDelimiter, .bullet,
-        .codeDelimiter, .language, .source, .headingDelimiter, .asterism,
-        .fontModificationDelimiter, .linkDelimiter, .linkURL, .imageDelimiter,
-        .quotationDelimiter, .callout, .parameter, .colon, .lineSeparator:
-        scope = .machineIdentifiers  // @exempt(from: tests) Probably unreachable.
+      case .quotationMark,  // @exempt(from: tests) Probably unreachable.
+        .escape,
+        .lineCommentDelimiter,
+        .openingBlockCommentDelimiter,
+        .closingBlockCommentDelimiter,
+        .commentURL,
+        .mark,
+        .lineDocumentationDelimiter,
+        .openingBlockDocumentationDelimiter,
+        .closingBlockDocumentationDelimiter,
+        .bullet,
+        .codeDelimiter,
+        .language,
+        .source,
+        .headingDelimiter,
+        .asterism,
+        .fontModificationDelimiter,
+        .linkDelimiter,
+        .linkURL,
+        .imageDelimiter,
+        .quotationDelimiter,
+        .callout,
+        .parameter,
+        .colon,
+        .lineSeparator:
+        scope = .machineIdentifiers
       case .string, .whitespace, .newlines:
         scope = .ambiguous
       case .commentText, .sourceHeadingText, .documentationText:

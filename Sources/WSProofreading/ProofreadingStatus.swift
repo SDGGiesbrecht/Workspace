@@ -38,10 +38,12 @@ internal class ProofreadingStatus: DiagnosticConsumer {
   // MARK: - DiagnosticConsumer
 
   internal var needsLineColumn: Bool {
+    // @exempt(from: tests) #workaround(Not triggerable without more rules.)
     return false
   }
 
   internal func handle(_ diagnostic: Diagnostic) {
+    // @exempt(from: tests) #workaround(Not triggerable without more rules.)
     let file = currentFile!
     // #workaround(Are highlights useful?)
     let start: String.ScalarView.Index

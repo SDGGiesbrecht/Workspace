@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// @notLocalized(🇬🇧EN) @notLocalized(🇺🇸EN) @notLocalized(🇨🇦EN)
+// @localization(🇩🇪DE) @notLocalized(🇬🇧EN) @notLocalized(🇺🇸EN) @notLocalized(🇨🇦EN)
 /// Eine SwiftFormat‐Konfiguration.
 public typealias SwiftFormatKonfiguration = SwiftFormatConfiguration.Configuration
 

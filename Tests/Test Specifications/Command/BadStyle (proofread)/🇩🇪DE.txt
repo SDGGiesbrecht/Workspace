@@ -49,28 +49,7 @@ Unvollständige Überschriftssyntax. „// MARK: - “ verwenden. (überschri
 Sources/BadStyle/Rules/Intentional/MissingImplementation.swift
 Zeile 4
 Fehlende Implementierung. (fehlendeImplementierung)
-    notImplementedYet() // This should trigger a warning.
-
-Sources/BadStyle/Rules/Source Code Style/BraceSpacing.swift
-Zeile 3
-Geschweifte Klammern sollen von ihrem Inhalt mit einem Leerzeichen getrennt sein. (abstandGeschweifterKlammern)
-let x = [].map {$0} // These braces should trigger; they should be spaced.
-let x = [].map { $0} // These braces should trigger; they should be spaced.
-
-Zeile 3
-Geschweifte Klammern sollen von ihrem Inhalt mit einem Leerzeichen getrennt sein. (abstandGeschweifterKlammern)
-let x = [].map {$0} // These braces should trigger; they should be spaced.
-let x = [].map {$0 } // These braces should trigger; they should be spaced.
-
-Zeile 5
-Geschweifte Klammern sollen von ihrem Inhalt mit einem Leerzeichen getrennt sein. (abstandGeschweifterKlammern)
-func z() {/* These braces should trigger; they should be spaced. */}
-func z() { /* These braces should trigger; they should be spaced. */}
-
-Zeile 5
-Geschweifte Klammern sollen von ihrem Inhalt mit einem Leerzeichen getrennt sein. (abstandGeschweifterKlammern)
-func z() {/* These braces should trigger; they should be spaced. */}
-func z() {/* These braces should trigger; they should be spaced. */ }
+  notImplementedYet()  // This should trigger a warning.
 
 Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift
 Zeile 5
@@ -81,47 +60,7 @@ Hervorhebungen sollen großgeschrieben sein. (hervorhebungsGroßschreibung)
 Sources/BadStyle/Rules/Source Code Style/ClosureSignaturePosition.swift
 Zeile 6
 Die Signatur eines Abschluss soll an der selbe Zeile stehen als seine öffnende geschweifte Klammer. (abschlusssignaturplatzierung)
-    parameter in // Wrong position; should trigger.
-
-Sources/BadStyle/Rules/Source Code Style/ColonSpacing.swift
-Zeile 3
-Doppelpunkte sollen vorstehende Leerzeichen haben wenn sie Erfüllung, Erbe oder ein ternären Auswahl bedeuten. (doppelpunktabstand)
-struct Conformance: Equatable { // This colon should trigger. It should be spaced.
-struct Conformance : Equatable { // This colon should trigger. It should be spaced.
-
-Zeile 4
-Doppelpunkte sollen keine vorstehende Leerzeichen haben. (doppelpunktabstand)
-    static func == (lhs : Conformance, rhs:Conformance) -> Bool { // These colons should trigger. They need respacing.
-    static func == (lhs: Conformance, rhs:Conformance) -> Bool { // These colons should trigger. They need respacing.
-
-Zeile 4
-Doppelpunkte sollen nachstehende Leerzeichen haben. (doppelpunktabstand)
-    static func == (lhs : Conformance, rhs:Conformance) -> Bool { // These colons should trigger. They need respacing.
-    static func == (lhs : Conformance, rhs: Conformance) -> Bool { // These colons should trigger. They need respacing.
-
-Zeile 21
-„/**“ widersteht automatische Einzüge (⌃I) nicht. Stattdessen „///“ verwenden. (widerstandGegenAutomatischenEinzug)
-    /**
-
-Zeile 34
-Doppelpunkte sollen vorstehende Leerzeichen haben wenn sie Erfüllung, Erbe oder ein ternären Auswahl bedeuten. (doppelpunktabstand)
-    func function<T>(_ p: T) where `T`: Equatable // This colon should trigger. It should be spaced.
-    func function<T>(_ p: T) where `T` : Equatable // This colon should trigger. It should be spaced.
-
-Zeile 35
-Doppelpunkte sollen nachstehende Leerzeichen haben. (doppelpunktabstand)
-    func withComment(parameter:/* */Bool) // This colon should trigger, it needs respacing.
-    func withComment(parameter: /* */Bool) // This colon should trigger, it needs respacing.
-
-Zeile 38
-Doppelpunkte sollen keine nachstehende Leerzeichen haben, wenn sie Teil eines leeres selbstdeutendes Wörterbuch oder einen Functionsname sind. (doppelpunktabstand)
-    let x = String.insert(_: at: ) // These colons should trigger. They should not be spaced.
-    let x = String.insert(_:at: ) // These colons should trigger. They should not be spaced.
-
-Zeile 38
-Doppelpunkte sollen keine nachstehende Leerzeichen haben, wenn sie Teil eines leeres selbstdeutendes Wörterbuch oder einen Functionsname sind. (doppelpunktabstand)
-    let x = String.insert(_: at: ) // These colons should trigger. They should not be spaced.
-    let x = String.insert(_: at:) // These colons should trigger. They should not be spaced.
+  parameter in  // Wrong position; should trigger.
 
 Sources/BadStyle/Rules/Source Code Style/ParameterStyle.swift
 Zeile 5
@@ -153,18 +92,6 @@ Zeile 19
 Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
 /// - RecommendedOver: -
 
-Zeile 35
-Leere geschweifte Klammern sollen keinen Leerzeichen beinhalten. (abstandGeschweifterKlammern)
-func shellSource() {
-
-func shellSource() {
-Zeile 35
-Leere geschweifte Klammern sollen keinen Leerzeichen beinhalten. (abstandGeschweifterKlammern)
-func shellSource() {
-
-}
-func shellSource() {}
-
 Zeile 41
 Das Schriftzeichen U+0027 ist überholt. Einen Apostrophe (’), Anführungs‐ (‚, ‘), Grad‐ (°) oder Prime‐Zeichen (′) verwenden. (unicode)
 // 'These quotation marks are generic and should trigger.'
@@ -173,61 +100,60 @@ Zeile 41
 Das Schriftzeichen U+0027 ist überholt. Einen Apostrophe (’), Anführungs‐ (‚, ‘), Grad‐ (°) oder Prime‐Zeichen (′) verwenden. (unicode)
 // 'These quotation marks are generic and should trigger.'
 
-Zeile 46
+Zeile 45
 Die Schriftzeichenfolge “&&” ist überholt. Ein Konjunktionszeichen (∧) verwenden. (unicode)
 // Trigger, because this is not a conjunction sign: a && b
 // Trigger, because this is not a conjunction sign: a ∧ b
 
-Zeile 47
+Zeile 46
 Die Schriftzeichenfolge “||” ist überholt. Ein Disjunktionszeichen (∨) verwenden. (unicode)
 // Trigger, because this is not a disjunction sign: a || b
 // Trigger, because this is not a disjunction sign: a ∨ b
 
-Zeile 51
+Zeile 50
 Die Schriftzeichenfolge “!=” ist überholt. Ein Ungleichheitszeichen (≠) verwenden. (unicode)
 // Trigger, because this is not a not‐equal sign: a != b
 // Trigger, because this is not a not‐equal sign: a ≠ b
 
-Zeile 52
+Zeile 51
 Die Schriftzeichenfolge “<=” ist überholt. Ein kleiner‐als‐oder‐gleich‐Zeichen (≤) verwenden. (unicode)
 // Trigger, because this is not a less‐than‐or‐equal‐to sign: a <= b
 // Trigger, because this is not a less‐than‐or‐equal‐to sign: a ≤ b
 
-Zeile 53
+Zeile 52
 Die Schriftzeichenfolge “>=” ist überholt. Ein größer‐als‐oder‐gleich‐Zeichen (≥) verwenden. (unicode)
 // Trigger, because this is not a greater‐than‐or‐equal‐to sign: a >= b
 // Trigger, because this is not a greater‐than‐or‐equal‐to sign: a ≥ b
 
-Zeile 57
+Zeile 56
 Das Schriftzeichen “*” ist überholt. Ein Malzeichen (⋅) verwenden. (Wenn nötig, ein Alias erstellen.) (unicode)
-let x = a * b // Trigger, because this is not a multiplication sign.
-let x = a × b // Trigger, because this is not a multiplication sign.
+let x = a * b  // Trigger, because this is not a multiplication sign.
+let x = a × b  // Trigger, because this is not a multiplication sign.
 
-Zeile 58
+Zeile 57
 Die Schriftzeichenfolge “*=” ist überholt. Ein Malzeichen (⋅) verwenden. (unicode)
 // Trigger, because this is not a multiplication sign: a *= b
 // Trigger, because this is not a multiplication sign: a ×= b
 
-Zeile 59
+Zeile 58
 Das Schriftzeichen “/” ist überholt. Ein Geteiltzeichen (∶) verwenden. (Wenn nötig, ein Alias erstellen.) (unicode)
-let x = a / b // Trigger, because this is not a division sign.
-let x = a ÷ b // Trigger, because this is not a division sign.
+let x = a / b  // Trigger, because this is not a division sign.
+let x = a ÷ b  // Trigger, because this is not a division sign.
 
-Zeile 60
+Zeile 59
 Die Schriftzeichenfolge “/=” ist überholt. Ein Geteiltzeichen (∶) verwenden. (unicode)
 // Trigger, because this is not a division sign: a /= b
 // Trigger, because this is not a division sign: a ÷= b
 
-Zeile 64
+Zeile 63
 Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (Wenn nötig, ein Alias erstellen.) (unicode)
-let x = y - z // This should trigger and mention aliasing.
+let x = y - z  // This should trigger and mention aliasing.
 
-Zeile 66
+Zeile 65
 Das Schriftzeichen “!” ist überholt. Ein Negationszeichen (¬) verwenden. (Wenn nötig, ein Alias erstellen.) (unicode)
-let x = !y // This should trigger; it is a prefix operator.
-let x = ¬y // This should trigger; it is a prefix operator.
+let x = !y  // This should trigger; it is a prefix operator.
+let x = ¬y  // This should trigger; it is a prefix operator.
 
-Sources/BadStyle/SwiftLint.swift
 Sources/BadStyle/Warnings/Warning.swift
 Zeile 3
 This should trigger a warning. (warnungenVonHand)
@@ -255,31 +181,26 @@ Notlösung: This malformed version check should trigger. (notlösungsErinnerun
 // #workaround(echo oops 1.0.0, This malformed version check should trigger.)
 
 Tests/BadStyleTests/BadStyleTests.swift
-Zeile 4
-Doppelpunkte sollen vorstehende Leerzeichen haben wenn sie Erfüllung, Erbe oder ein ternären Auswahl bedeuten. (doppelpunktabstand)
-class BadStyleTests: XCTestCase {
-class BadStyleTests : XCTestCase {
-
 Tests/BadStyleTests/XCTestManifests.swift
 Zeile 1
 Testlisten werden nicht mehr benötigt. (überholteTestlisten)
 #if !canImport(ObjectiveC)
-import XCTest
+  import XCTest
 
-extension BadStyleTests {
+  extension BadStyleTests {
     // DO NOT MODIFY: This is autogenerated, use:
     //   `swift test --generate-linuxmain`
     // to regenerate.
     static let __allTests__BadStyleTests = [
-        ("testExample", testExample),
+      ("testExample", testExample),
     ]
-}
+  }
 
-public func __allTests() -> [XCTestCaseEntry] {
+  public func __allTests() -> [XCTestCaseEntry] {
     return [
-        testCase(BadStyleTests.__allTests__BadStyleTests),
+      testCase(BadStyleTests.__allTests__BadStyleTests),
     ]
-}
+  }
 #endif
 
 Zeile 6

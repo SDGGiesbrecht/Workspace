@@ -21,38 +21,53 @@ import SDGHTML
 
 extension ElementSyntax {
 
-    internal init(
-        _ element: StrictString,
-        attributes: [StrictString: StrictString] = [:],
-        contents: StrictString,
-        inline: Bool
-        ) {
+  internal init(
+    _ element: StrictString,
+    attributes: [StrictString: StrictString] = [:],
+    contents: StrictString,
+    inline: Bool
+  ) {
 
-        var constructedAttributes: [AttributeSyntax] = []
-        for key in attributes.keys.sorted() {
-            let name = String(key)
-            let value = HTML.escapeTextForAttribute(attributes[key]!)
-            constructedAttributes.append(AttributeSyntax(
-                name: TokenSyntax(kind: .attributeName(name)),
-                value: AttributeValueSyntax(value: TokenSyntax(kind: .attributeText(String(value))))))
-        }
-
-        let constructedContents = inline ? contents : "\n" + contents + "\n"
-
-        let name = TokenSyntax(kind: .elementName(String(element)))
-        self = ElementSyntax(
-            openingTag: OpeningTagSyntax(
-                name: name,
-                attributes: AttributesSyntax(attributes: ListSyntax(entries: constructedAttributes))),
-            continuation: ElementContinuationSyntax(
-                content: ListSyntax(entries: [
-                    ContentSyntax(
-                        kind: .text(TextSyntax(text: TokenSyntax(kind: .text(String(constructedContents))))))
-                    ]),
-                closingTag: ClosingTagSyntax(name: name)))
+    var constructedAttributes: [AttributeSyntax] = []
+    for key in attributes.keys.sorted() {
+      let name = String(key)
+      let value = HTML.escapeTextForAttribute(attributes[key]!)
+      constructedAttributes.append(
+        AttributeSyntax(
+          name: TokenSyntax(kind: .attributeName(name)),
+          value: AttributeValueSyntax(
+            value: TokenSyntax(kind: .attributeText(String(value)))
+          )
+        )
+      )
     }
 
-    func normalizedSource() -> StrictString {
-        return StrictString(source())
-    }
+    let constructedContents = inline ? contents : "\n" + contents + "\n"
+
+    let name = TokenSyntax(kind: .elementName(String(element)))
+    self = ElementSyntax(
+      openingTag: OpeningTagSyntax(
+        name: name,
+        attributes: AttributesSyntax(
+          attributes: ListSyntax(entries: constructedAttributes)
+        )
+      ),
+      continuation: ElementContinuationSyntax(
+        content: ListSyntax(entries: [
+          ContentSyntax(
+            kind: .text(
+              TextSyntax(
+                text: TokenSyntax(kind: .text(String(constructedContents)))
+              )
+            )
+          )
+        ]),
+        closingTag: ClosingTagSyntax(name: name)
+      )
+    )
+  }
+
+  func normalizedSource() -> StrictString {
+    return StrictString(source())
+  }
 }

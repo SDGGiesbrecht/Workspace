@@ -19,50 +19,62 @@ import WSGeneralImports
 import WSNormalization
 
 extension Workspace {
-    enum Normalize {
+  enum Normalize {
 
-        private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom:
-                return "normalise"
-            case .englishUnitedStates, .englishCanada:
-                return "normalize"
-            case .deutschDeutschland:
-                return "normalisieren"
-            }
-        })
+    private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
+      switch localization {
+      case .englishUnitedKingdom:
+        return "normalise"
+      case .englishUnitedStates, .englishCanada:
+        return "normalize"
+      case .deutschDeutschland:
+        return "normalisieren"
+      }
+    })
 
-        private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom:
-                return "normalises the project’s files by removing trailing whitespace, applying Unix newlines and performing canonical decomposition."
-            case .englishUnitedStates, .englishCanada:
-                return "normalizes the project’s files by removing trailing whitespace, applying Unix newlines and performing canonical decomposition."
-            case .deutschDeutschland:
-                return "normalisiert die Dateien des Projekt, in dem Leerzeichen vom Zeilenende entfernt werden, Unix‐Zeilenumbrüche eingetauscht werden und kanonische Zersetzung ausgeführt wird."
-            }
-        })
-
-        static let command = Command(name: name, description: description, directArguments: [], options: standardOptions, execution: { (_: DirectArguments, options: Options, output: Command.Output) throws in
-            try executeAsStep(options: options, output: output)
-        })
-
-        static func executeAsStep(options: Options, output: Command.Output) throws {
-
-            if ¬options.runAsXcodeBuildPhase {
-                output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                    switch localization {
-                    case .englishUnitedKingdom:
-                        return "Normalising files..."
-                    case .englishUnitedStates, .englishCanada:
-                        return "Normalizing files..."
-                    case .deutschDeutschland:
-                        return "Deteien werden normalisiert ..."
-                    }
-                }).resolved().formattedAsSectionHeader())
-            }
-
-            try options.project.normalize(output: output)
+    private static let description = UserFacing<StrictString, InterfaceLocalization>(
+      { localization in
+        switch localization {
+        case .englishUnitedKingdom:
+          return
+            "normalises the project’s files by removing trailing whitespace, applying Unix newlines and performing canonical decomposition."
+        case .englishUnitedStates, .englishCanada:
+          return
+            "normalizes the project’s files by removing trailing whitespace, applying Unix newlines and performing canonical decomposition."
+        case .deutschDeutschland:
+          return
+            "normalisiert die Dateien des Projekt, in dem Leerzeichen vom Zeilenende entfernt werden, Unix‐Zeilenumbrüche eingetauscht werden und kanonische Zersetzung ausgeführt wird."
         }
+      })
+
+    static let command = Command(
+      name: name,
+      description: description,
+      directArguments: [],
+      options: standardOptions,
+      execution: { (_: DirectArguments, options: Options, output: Command.Output) throws in
+        try executeAsStep(options: options, output: output)
+      }
+    )
+
+    static func executeAsStep(options: Options, output: Command.Output) throws {
+
+      if ¬options.runAsXcodeBuildPhase {
+        output.print(
+          UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom:
+              return "Normalising files..."
+            case .englishUnitedStates, .englishCanada:
+              return "Normalizing files..."
+            case .deutschDeutschland:
+              return "Deteien werden normalisiert ..."
+            }
+          }).resolved().formattedAsSectionHeader()
+        )
+      }
+
+      try options.project.normalize(output: output)
     }
+  }
 }

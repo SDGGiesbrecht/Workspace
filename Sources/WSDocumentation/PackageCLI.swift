@@ -23,49 +23,52 @@ import WSProject
 
 internal struct PackageCLI {
 
-    // MARK: - Static Methods
+  // MARK: - Static Methods
 
-    private static func toolsDirectory(for localization: LocalizationIdentifier) -> StrictString {
-        var result = localization._directoryName + "/"
-        if let match = localization._reasonableMatch {
-            switch match {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                result += "Tools"
-            case .deutschDeutschland:
-                result += "Programme"
-            }
-        } else {
-            result += "executable"
-        }
-        return result
+  private static func toolsDirectory(for localization: LocalizationIdentifier) -> StrictString {
+    var result = localization._directoryName + "/"
+    if let match = localization._reasonableMatch {
+      switch match {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        result += "Tools"
+      case .deutschDeutschland:
+        result += "Programme"
+      }
+    } else {
+      result += "executable"
     }
+    return result
+  }
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    internal init(tools: [URL], localizations: [LocalizationIdentifier]) {
-        var commands: [StrictString: CommandInterfaceInformation] = [:]
-        for tool in tools {
-            for localization in localizations {
-                if let interface = try? CommandInterface.loadInterface(of: tool, in: localization.code).get() {
-                    var modifiedInterface = interface
-                    modifiedInterface.sentenceCaseDescriptions()
+  internal init(tools: [URL], localizations: [LocalizationIdentifier]) {
+    var commands: [StrictString: CommandInterfaceInformation] = [:]
+    for tool in tools {
+      for localization in localizations {
+        if let interface = try? CommandInterface.loadInterface(
+          of: tool,
+          in: localization.code
+        ).get() {
+          var modifiedInterface = interface
+          modifiedInterface.sentenceCaseDescriptions()
 
-                    commands[
-                        interface.identifier,
-                        default: CommandInterfaceInformation()].interfaces[localization] = modifiedInterface
+          commands[
+            interface.identifier,
+            default: CommandInterfaceInformation()].interfaces[localization] = modifiedInterface
 
-                    let directory = PackageCLI.toolsDirectory(for: localization)
-                    let filename = Page.sanitize(fileName: interface.name)
-                    let path = directory + "/" + filename + ".html"
+          let directory = PackageCLI.toolsDirectory(for: localization)
+          let filename = Page.sanitize(fileName: interface.name)
+          let path = directory + "/" + filename + ".html"
 
-                    commands[interface.identifier]!.relativePagePath[localization] = path
-                }
-            }
+          commands[interface.identifier]!.relativePagePath[localization] = path
         }
-        self.commands = commands
+      }
     }
+    self.commands = commands
+  }
 
-    // MARK: - Properties
+  // MARK: - Properties
 
-    let commands: [StrictString: CommandInterfaceInformation]
+  let commands: [StrictString: CommandInterfaceInformation]
 }

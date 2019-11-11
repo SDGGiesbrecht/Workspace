@@ -21,50 +21,70 @@ import WSProject
 
 extension PackageRepository {
 
-    public func refreshContinuousIntegration(output: Command.Output) throws {
+  public func refreshContinuousIntegration(output: Command.Output) throws {
 
-        if try configuration(output: output).provideWorkflowScripts == false {
-            throw Command.Error(description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Continuous integration requires workflow scripts to be present. (provideWorkflowScripts)"
-                case .deutschDeutschland:
-                    return "Fortlaufende Einbindung benötigt, dass Arbeitsablaufsskripte vorhanden sind. (arbeitsablaufsskripteBereitstellen)"
-                }
-            }))
-        }
-
-        var travisConfiguration: [String] = [
-            "language: generic",
-            "matrix:",
-            "  include:"
-        ]
-
-        for job in ContinuousIntegrationJob.allCases where try job.isRequired(by: self, output: output)
-            ∨ (job ∈ ContinuousIntegrationJob.simulatorJobs ∧ isWorkspaceProject()) { // Simulator is unavailable during normal test.
-
-                travisConfiguration.append(contentsOf: try job.script(configuration: configuration(output: output)))
-        }
-
-        if try isWorkspaceProject() {
-            travisConfiguration = travisConfiguration.map {
-                var line = $0
-                line.scalars.replaceMatches(for: "\u{22}bash \u{5C}\u{22}./Validate (macOS).command\u{5C}\u{22} •job ios\u{22}".scalars, with: "swift run test‐ios‐simulator".scalars)
-                line.scalars.replaceMatches(for: "\u{22}bash \u{5C}\u{22}./Validate (macOS).command\u{5C}\u{22} •job tvos\u{22}".scalars, with: "swift run test‐tvos‐simulator".scalars)
-                return line
-            }
-        }
-
-        travisConfiguration.append(contentsOf: [
-            "",
-            "cache:",
-            "  directories:",
-            "  \u{2D} $HOME/Library/Caches/ca.solideogloria.Workspace",
-            "  \u{2D} $HOME/.cache/ca.solideogloria.Workspace"
-            ])
-
-        var travisConfigurationFile = try TextFile(possiblyAt: location.appendingPathComponent(".travis.yml"))
-        travisConfigurationFile.body = travisConfiguration.joinedAsLines()
-        try travisConfigurationFile.writeChanges(for: self, output: output)
+    if try configuration(output: output).provideWorkflowScripts == false {
+      throw Command.Error(
+        description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return
+              "Continuous integration requires workflow scripts to be present. (provideWorkflowScripts)"
+          case .deutschDeutschland:
+            return
+              "Fortlaufende Einbindung benötigt, dass Arbeitsablaufsskripte vorhanden sind. (arbeitsablaufsskripteBereitstellen)"
+          }
+        })
+      )
     }
+
+    var travisConfiguration: [String] = [
+      "language: generic",
+      "matrix:",
+      "  include:"
+    ]
+
+    for job in ContinuousIntegrationJob.allCases
+    where try job.isRequired(by: self, output: output)
+      ∨ (job ∈ ContinuousIntegrationJob.simulatorJobs ∧ isWorkspaceProject())
+    {  // Simulator is unavailable during normal test.
+
+      travisConfiguration.append(
+        contentsOf: try job.script(configuration: configuration(output: output))
+      )
+    }
+
+    if try isWorkspaceProject() {
+      travisConfiguration = travisConfiguration.map { line in
+        var line = line
+        line.scalars.replaceMatches(
+          for:
+            "\u{22}bash \u{5C}\u{22}./Validate (macOS).command\u{5C}\u{22} •job ios\u{22}"
+            .scalars,
+          with: "swift run test‐ios‐simulator".scalars
+        )
+        line.scalars.replaceMatches(
+          for:
+            "\u{22}bash \u{5C}\u{22}./Validate (macOS).command\u{5C}\u{22} •job tvos\u{22}"
+            .scalars,
+          with: "swift run test‐tvos‐simulator".scalars
+        )
+        return line
+      }
+    }
+
+    travisConfiguration.append(contentsOf: [
+      "",
+      "cache:",
+      "  directories:",
+      "  \u{2D} $HOME/Library/Caches/ca.solideogloria.Workspace",
+      "  \u{2D} $HOME/.cache/ca.solideogloria.Workspace"
+    ])
+
+    var travisConfigurationFile = try TextFile(
+      possiblyAt: location.appendingPathComponent(".travis.yml")
+    )
+    travisConfigurationFile.body = travisConfiguration.joinedAsLines()
+    try travisConfigurationFile.writeChanges(for: self, output: output)
+  }
 }

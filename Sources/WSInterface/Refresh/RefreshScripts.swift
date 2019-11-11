@@ -20,43 +20,47 @@ import WSScripts
 
 extension Workspace.Refresh {
 
-    enum Scripts {
+  enum Scripts {
 
-        private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
+    private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "scripts"
+      case .deutschDeutschland:
+        return "skripte"
+      }
+    })
+
+    private static let description = UserFacing<StrictString, InterfaceLocalization>(
+      { localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "regenerates the project’s refresh and validation scripts."
+        case .deutschDeutschland:
+          return "erstellt die Auffrisch‐ und Überprüfungskripte neu."
+        }
+      })
+
+    static let command = Command(
+      name: name,
+      description: description,
+      directArguments: [],
+      options: Workspace.standardOptions,
+      execution: { (_, options: Options, output: Command.Output) throws in
+
+        output.print(
+          UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "scripts"
+              return "Refreshing scripts..."
             case .deutschDeutschland:
-                return "skripte"
+              return "Skripte werden aufgefrischt ..."
             }
-        })
+          }).resolved().formattedAsSectionHeader()
+        )
 
-        private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "regenerates the project’s refresh and validation scripts."
-            case .deutschDeutschland:
-                return "erstellt die Auffrisch‐ und Überprüfungskripte neu."
-            }
-        })
-
-        static let command = Command(
-            name: name,
-            description: description,
-            directArguments: [],
-            options: Workspace.standardOptions,
-            execution: { (_, options: Options, output: Command.Output) throws in
-
-            output.print(UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "Refreshing scripts..."
-                case .deutschDeutschland:
-                    return "Skripte werden aufgefrischt ..."
-                }
-            }).resolved().formattedAsSectionHeader())
-
-            try options.project.refreshScripts(output: output)
-        })
-    }
+        try options.project.refreshScripts(output: output)
+      }
+    )
+  }
 }

@@ -23,7 +23,7 @@ import PackageModel
 
 extension SDGVersioning.Version {
 
-    public init(_ version: PackageModel.Version) {
-        self.init(version.major, version.minor, version.patch)
-    }
+  public init(_ version: PackageModel.Version) {
+    self.init(version.major, version.minor, version.patch)
+  }
 }

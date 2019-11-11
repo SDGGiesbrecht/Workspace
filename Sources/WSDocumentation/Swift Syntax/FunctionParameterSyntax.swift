@@ -17,8 +17,8 @@
 import SwiftSyntax
 import SDGSwiftSource
 
-extension FunctionParameterSyntax : Parameter {
-    var optionalType: TypeSyntax? {
-        return type
-    }
+extension FunctionParameterSyntax: Parameter {
+  var optionalType: TypeSyntax? {
+    return type
+  }
 }

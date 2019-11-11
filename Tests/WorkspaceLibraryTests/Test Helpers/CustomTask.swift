@@ -20,7 +20,7 @@ import WorkspaceConfiguration
 
 extension CustomTask {
 
-    static func emptyCache() {
-        try? FileManager.default.removeItem(at: cache)
-    }
+  static func emptyCache() {
+    try? FileManager.default.removeItem(at: cache)
+  }
 }

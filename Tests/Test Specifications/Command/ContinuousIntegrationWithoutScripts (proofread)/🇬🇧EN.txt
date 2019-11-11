@@ -1,0 +1,25 @@
+$ workspace proofread •no‐colour
+
+Normalising files...
+
+Writing to ‘Sources/ContinuousIntegrationWithoutScripts/ContinuousIntegrationWithoutScripts.swift’...
+Writing to ‘Tests/ContinuousIntegrationWithoutScriptsTests/ContinuousIntegrationWithoutScriptsTests.swift’...
+Writing to ‘Tests/ContinuousIntegrationWithoutScriptsTests/XCTestManifests.swift’...
+
+Proofreading source code... (§1)
+
+.gitignore
+LICENSE.md
+Package.swift
+README.md
+Sources/ContinuousIntegrationWithoutScripts/ContinuousIntegrationWithoutScripts.swift
+Tests/ContinuousIntegrationWithoutScriptsTests/ContinuousIntegrationWithoutScriptsTests.swift
+Tests/ContinuousIntegrationWithoutScriptsTests/XCTestManifests.swift
+Tests/LinuxMain.swift
+
+✓ Source code passes proofreading.
+
+
+‘ContinuousIntegrationWithoutScripts’ passes validation.
+
+0

@@ -18,59 +18,70 @@ import WSGeneralImports
 
 public enum Workspace {
 
-    private static let projectName = UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "project"
-        case .deutschDeutschland:
-            return "projekt"
-        }
+  private static let projectName = UserFacing<StrictString, InterfaceLocalization>({ localization in
+    switch localization {
+    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+      return "project"
+    case .deutschDeutschland:
+      return "projekt"
+    }
+  })
+  private static let projectDescription = UserFacing<StrictString, InterfaceLocalization>(
+    { localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return
+          "The location of the target project if it is not at the current working directory."
+      case .deutschDeutschland:
+        return
+          "Die Standort von dem Zielprojekt, wenn es nicht in dem aktuellen Arbeitsverzeichnis ist."
+      }
     })
-    private static let projectDescription = UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "The location of the target project if it is not at the current working directory."
-        case .deutschDeutschland:
-            return "Die Standort von dem Zielprojekt, wenn es nicht in dem aktuellen Arbeitsverzeichnis ist."
-        }
-    })
-    internal static let projectOption = Option(name: projectName, description: projectDescription, type: ArgumentType.path)
+  internal static let projectOption = Option(
+    name: projectName,
+    description: projectDescription,
+    type: ArgumentType.path
+  )
 
-    internal static let standardOptions: [AnyOption] = [projectOption]
+  internal static let standardOptions: [AnyOption] = [projectOption]
 
-    private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "workspace"
-        case .deutschDeutschland:
-            return "arbeitsbereich"
-        }
-    })
+  private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
+    switch localization {
+    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+      return "workspace"
+    case .deutschDeutschland:
+      return "arbeitsbereich"
+    }
+  })
 
-    private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "automates management of Swift projects."
-        case .deutschDeutschland:
-            return "automatisiert die Verwaltung von Swift‐Projekten."
-        }
-    })
+  private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
+    switch localization {
+    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+      return "automates management of Swift projects."
+    case .deutschDeutschland:
+      return "automatisiert die Verwaltung von Swift‐Projekten."
+    }
+  })
 
-    public static let command = Command(name: name, description: description, subcommands: [
+  public static let command = Command(
+    name: name,
+    description: description,
+    subcommands: [
 
-        // Primary Workflow
-        Workspace.Refresh.command,
-        Workspace.Validate.command,
-        Workspace.Document.command,
+      // Primary Workflow
+      Workspace.Refresh.command,
+      Workspace.Validate.command,
+      Workspace.Document.command,
 
-        // Xcode Build Phase
-        Workspace.Proofread.command,
+      // Xcode Build Phase
+      Workspace.Proofread.command,
 
-        // Individual Steps
-        Workspace.Normalize.command,
-        Workspace.Test.command,
+      // Individual Steps
+      Workspace.Normalize.command,
+      Workspace.Test.command,
 
-        // Other
-        Workspace.CheckForUpdates.command
-        ])
+      // Other
+      Workspace.CheckForUpdates.command
+    ]
+  )
 }

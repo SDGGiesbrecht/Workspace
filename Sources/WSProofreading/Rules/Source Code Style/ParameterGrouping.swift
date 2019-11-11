@@ -20,33 +20,46 @@ import WSProject
 
 import SDGSwiftSource
 
-internal struct ParameterGrouping : SyntaxRule {
+internal struct ParameterGrouping: SyntaxRule {
 
-    internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "parameterGrouping"
-        case .deutschDeutschland:
-            return "übergabewertenzusammenstellung"
-        }
-    })
-
-    private static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "Parameters should be grouped under a single callout."
-        case .deutschDeutschland:
-            return "Übergabewerte sollen unter einer einzigen Hervorhebung gestellt sein."
-        }
-    })
-
-    internal static func check(_ node: ExtendedSyntax, context: ExtendedSyntaxContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {
-
-        if let token = node as? ExtendedTokenSyntax,
-            token.kind == .callout,
-            token.text.lowercased() == "parameter" {
-
-            reportViolation(in: file, at: token.range(in: context), message: message, status: status, output: output)
-        }
+  internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
+    switch localization {
+    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+      return "parameterGrouping"
+    case .deutschDeutschland:
+      return "übergabewertenzusammenstellung"
     }
+  })
+
+  private static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
+    switch localization {
+    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+      return "Parameters should be grouped under a single callout."
+    case .deutschDeutschland:
+      return "Übergabewerte sollen unter einer einzigen Hervorhebung gestellt sein."
+    }
+  })
+
+  internal static func check(
+    _ node: ExtendedSyntax,
+    context: ExtendedSyntaxContext,
+    file: TextFile,
+    project: PackageRepository,
+    status: ProofreadingStatus,
+    output: Command.Output
+  ) {
+
+    if let token = node as? ExtendedTokenSyntax,
+      token.kind == .callout,
+      token.text.lowercased() == "parameter"
+    {
+
+      reportViolation(
+        in: file,
+        at: token.range(in: context),
+        message: message,
+        status: status
+      )
+    }
+  }
 }

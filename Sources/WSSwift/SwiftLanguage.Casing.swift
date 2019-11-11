@@ -16,8 +16,8 @@
 
 extension SwiftLanguage {
 
-    public enum Casing {
-        case type
-        case variable
-    }
+  public enum Casing {
+    case type
+    case variable
+  }
 }

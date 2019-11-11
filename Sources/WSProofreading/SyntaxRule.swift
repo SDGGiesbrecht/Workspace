@@ -21,16 +21,72 @@ import SDGSwiftSource
 
 import WSProject
 
-internal protocol SyntaxRule : RuleProtocol {
-    static func check(_ node: Syntax, context: SyntaxContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output)
-    static func check(_ node: ExtendedSyntax, context: ExtendedSyntaxContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output)
-    static func check(_ node: Trivia, context: TriviaContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output)
-    static func check(_ node: TriviaPiece, context: TriviaPieceContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output)
+internal protocol SyntaxRule: RuleProtocol {
+  static func check(
+    _ node: Syntax,
+    context: SyntaxContext,
+    file: TextFile,
+    project: PackageRepository,
+    status: ProofreadingStatus,
+    output: Command.Output
+  )
+  static func check(
+    _ node: ExtendedSyntax,
+    context: ExtendedSyntaxContext,
+    file: TextFile,
+    project: PackageRepository,
+    status: ProofreadingStatus,
+    output: Command.Output
+  )
+  static func check(
+    _ node: Trivia,
+    context: TriviaContext,
+    file: TextFile,
+    project: PackageRepository,
+    status: ProofreadingStatus,
+    output: Command.Output
+  )
+  static func check(
+    _ node: TriviaPiece,
+    context: TriviaPieceContext,
+    file: TextFile,
+    project: PackageRepository,
+    status: ProofreadingStatus,
+    output: Command.Output
+  )
 }
 
 extension SyntaxRule {
-    static func check(_ node: Syntax, context: SyntaxContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {}
-    static func check(_ node: ExtendedSyntax, context: ExtendedSyntaxContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {}
-    static func check(_ node: Trivia, context: TriviaContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {}
-    static func check(_ node: TriviaPiece, context: TriviaPieceContext, file: TextFile, project: PackageRepository, status: ProofreadingStatus, output: Command.Output) {}
+  static func check(
+    _ node: Syntax,
+    context: SyntaxContext,
+    file: TextFile,
+    project: PackageRepository,
+    status: ProofreadingStatus,
+    output: Command.Output
+  ) {}
+  static func check(
+    _ node: ExtendedSyntax,
+    context: ExtendedSyntaxContext,
+    file: TextFile,
+    project: PackageRepository,
+    status: ProofreadingStatus,
+    output: Command.Output
+  ) {}
+  static func check(
+    _ node: Trivia,
+    context: TriviaContext,
+    file: TextFile,
+    project: PackageRepository,
+    status: ProofreadingStatus,
+    output: Command.Output
+  ) {}
+  static func check(
+    _ node: TriviaPiece,
+    context: TriviaPieceContext,
+    file: TextFile,
+    project: PackageRepository,
+    status: ProofreadingStatus,
+    output: Command.Output
+  ) {}
 }

@@ -17,12 +17,12 @@
 import WorkspaceConfiguration
 
 extension WorkspaceConfiguration {
-    func optimizeForTests() {
-        documentation.api.ignoredDependencies = [
-            "Swift",
-            "Foundation",
-            "Dispatch",
-            "XCTest"
-        ]
-    }
+  func optimizeForTests() {
+    documentation.api.ignoredDependencies = [
+      "Swift",
+      "Foundation",
+      "Dispatch",
+      "XCTest"
+    ]
+  }
 }

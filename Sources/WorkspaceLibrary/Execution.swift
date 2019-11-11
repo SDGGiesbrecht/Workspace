@@ -21,28 +21,31 @@ import Dispatch
 import WorkspaceProjectConfiguration
 import WSInterface
 
-public func run() { // @exempt(from: tests)
+public func run() {  // @exempt(from: tests)
 
-    DispatchQueue.global(qos: .utility).sync {
+  DispatchQueue.global(qos: .utility).sync {
 
-        ProcessInfo.applicationIdentifier = "ca.solideogloria.Workspace"
-        ProcessInfo.version = Metadata.thisVersion
-        ProcessInfo.packageURL = Metadata.packageURL
+    ProcessInfo.applicationIdentifier = "ca.solideogloria.Workspace"
+    ProcessInfo.version = Metadata.thisVersion
+    ProcessInfo.packageURL = Metadata.packageURL
 
-        #if os(Linux)
-        Workspace.command.executeAsMain()
-        #else
-        let reason = UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "Workspace"
-            case .deutschDeutschland:
-                return "Arbeitsbereich"
-            }
-        })
-        ProcessInfo.processInfo.performActivity(options: [.userInitiated, .idleSystemSleepDisabled], reason: String(reason.resolved())) {
-            Workspace.command.executeAsMain()
+    #if os(Linux)
+      Workspace.command.executeAsMain()
+    #else
+      let reason = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "Workspace"
+        case .deutschDeutschland:
+          return "Arbeitsbereich"
         }
-        #endif
-    }
+      })
+      ProcessInfo.processInfo.performActivity(
+        options: [.userInitiated, .idleSystemSleepDisabled],
+        reason: String(reason.resolved())
+      ) {
+        Workspace.command.executeAsMain()
+      }
+    #endif
+  }
 }

@@ -22,86 +22,86 @@ import SDGXcode
 
 extension ContinuousIntegrationJob {
 
-    // MARK: - Sets
+  // MARK: - Sets
 
-    public static let coverageJobs: Set<ContinuousIntegrationJob> = [
-        .macOS,
-        .linux,
-        .iOS,
-        .tvOS
-    ]
-    public static let testJobs: Set<ContinuousIntegrationJob> = coverageJobs
-    public static let buildJobs: Set<ContinuousIntegrationJob> = testJobs ∪ [
-        .watchOS
-    ]
+  public static let coverageJobs: Set<ContinuousIntegrationJob> = [
+    .macOS,
+    .linux,
+    .iOS,
+    .tvOS
+  ]
+  public static let testJobs: Set<ContinuousIntegrationJob> = coverageJobs
+  public static let buildJobs: Set<ContinuousIntegrationJob> = testJobs ∪ [
+    .watchOS
+  ]
 
-    // MARK: - Description
+  // MARK: - Description
 
-    internal var englishName: StrictString {
-        return englishTargetOperatingSystemName
+  internal var englishName: StrictString {
+    return englishTargetOperatingSystemName
+  }
+  internal var deutscherName: StrictString {
+    return deutscherZielsystemname
+  }
+
+  private var englishTargetOperatingSystemName: StrictString {
+    switch self {
+    case .macOS:  // @exempt(from: tests) Unreachable from Linux.
+      return "macOS"
+    case .linux:  // @exempt(from: tests)
+      return "Linux"  // @exempt(from: tests) Unreachable from macOS.
+    case .iOS:  // @exempt(from: tests) Unreachable from Linux.
+      return "iOS"
+    case .watchOS:  // @exempt(from: tests) Unreachable from Linux.
+      return "watchOS"
+    case .tvOS:  // @exempt(from: tests) Unreachable from Linux.
+      return "tvOS"
+    case .miscellaneous, .deployment:
+      unreachable()
     }
-    internal var deutscherName: StrictString {
-        return deutscherZielsystemname
+  }
+  private var deutscherZielsystemname: StrictString {
+    switch self {
+    case .macOS:  // @exempt(from: tests) Unreachable from Linux.
+      return "macOS"
+    case .linux:  // @exempt(from: tests)
+      return "Linux"  // @exempt(from: tests) Unreachable from macOS.
+    case .iOS:  // @exempt(from: tests) Unreachable from Linux.
+      return "iOS"
+    case .watchOS:  // @exempt(from: tests) Unreachable from Linux.
+      return "watchOS"
+    case .tvOS:  // @exempt(from: tests) Unreachable from Linux.
+      return "tvOS"
+    case .miscellaneous, .deployment:
+      unreachable()
     }
+  }
 
-    private var englishTargetOperatingSystemName: StrictString {
-        switch self {
-        case .macOS: // @exempt(from: tests) Unreachable from Linux.
-            return "macOS"
-        case .linux:  // @exempt(from: tests)
-            return "Linux" // @exempt(from: tests) Unreachable from macOS.
-        case .iOS: // @exempt(from: tests) Unreachable from Linux.
-            return "iOS"
-        case .watchOS: // @exempt(from: tests) Unreachable from Linux.
-            return "watchOS"
-        case .tvOS: // @exempt(from: tests) Unreachable from Linux.
-            return "tvOS"
-        case .miscellaneous, .deployment:
-            unreachable()
-        }
-    }
-    private var deutscherZielsystemname: StrictString {
-        switch self {
-        case .macOS: // @exempt(from: tests) Unreachable from Linux.
-            return "macOS"
-        case .linux:  // @exempt(from: tests)
-            return "Linux" // @exempt(from: tests) Unreachable from macOS.
-        case .iOS: // @exempt(from: tests) Unreachable from Linux.
-            return "iOS"
-        case .watchOS: // @exempt(from: tests) Unreachable from Linux.
-            return "watchOS"
-        case .tvOS: // @exempt(from: tests) Unreachable from Linux.
-            return "tvOS"
-        case .miscellaneous, .deployment:
-            unreachable()
-        }
-    }
+  // MARK: - SDK
 
-    // MARK: - SDK
-
-    internal var buildSDK: Xcode.SDK {
-        switch self { // @exempt(from: tests) Unreachable from Linux.
-        case .iOS:
-            return .iOS(simulator: false)
-        case .watchOS:
-            return .watchOS
-        case .tvOS:
-            return .tvOS(simulator: false)
-        case .macOS, .linux, .miscellaneous, .deployment:
-            unreachable()
-        }
+  internal var buildSDK: Xcode.SDK {
+    switch self {  // @exempt(from: tests) Unreachable from Linux.
+    case .iOS:
+      return .iOS(simulator: false)
+    case .watchOS:
+      return .watchOS
+    case .tvOS:
+      return .tvOS(simulator: false)
+    case .macOS, .linux, .miscellaneous, .deployment:
+      unreachable()
     }
+  }
 
-    internal var testSDK: Xcode.SDK {
-        switch self { // @exempt(from: tests) Unreachable from Linux.
-        case .iOS: // @exempt(from: tests)
-            // @exempt(from: tests) Tested separately.
-            return .iOS(simulator: true)
-        case .tvOS: // @exempt(from: tests)
-            // @exempt(from: tests) Tested separately.
-            return .tvOS(simulator: true)
-        case .macOS, .linux, .watchOS, .miscellaneous, .deployment:
-            unreachable()
-        }
+  internal var testSDK: Xcode.SDK {
+    switch self {  // @exempt(from: tests) Unreachable from Linux.
+    case .iOS:  // @exempt(from: tests)
+      // @exempt(from: tests) Tested separately.
+      return .iOS(simulator: true)
+    case .tvOS:  // @exempt(from: tests)
+      // @exempt(from: tests) Tested separately.
+      return .tvOS(simulator: true)
+    case .macOS, .linux, .watchOS, .miscellaneous, .deployment:
+      unreachable()
     }
+  }
 }

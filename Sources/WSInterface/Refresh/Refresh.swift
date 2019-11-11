@@ -17,46 +17,54 @@
 import WSGeneralImports
 
 extension Workspace {
-    enum Refresh {
+  enum Refresh {
 
-        private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "refresh"
-            case .deutschDeutschland:
-                return "auffrischen"
-            }
-        })
+    private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "refresh"
+      case .deutschDeutschland:
+        return "auffrischen"
+      }
+    })
 
-        private static let description = UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "refreshes the project by updating its components and readying it for development."
-            case .deutschDeutschland:
-                return "frischt das Projekt auf, durch Aktualisierungen der Bestandteile und Vorbereitungen für Entwicklung."
-            }
-        })
-
-        private static var subcommands: [Command] {
-            var list = [
-                All.command,
-                Scripts.command,
-                Git.command,
-                ReadMe.command,
-                Licence.command,
-                GitHub.command,
-                ContinuousIntegration.command,
-                Resources.command,
-                FileHeaders.command,
-                Examples.command,
-                InheritedDocumentation.command
-            ]
-            #if !os(Linux)
-            list.append(Xcode.command)
-            #endif
-            return list
+    private static let description = UserFacing<StrictString, InterfaceLocalization>(
+      { localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return
+            "refreshes the project by updating its components and readying it for development."
+        case .deutschDeutschland:
+          return
+            "frischt das Projekt auf, durch Aktualisierungen der Bestandteile und Vorbereitungen für Entwicklung."
         }
+      })
 
-        static let command = Command(name: name, description: description, subcommands: subcommands, defaultSubcommand: All.command)
+    private static var subcommands: [Command] {
+      var list = [
+        All.command,
+        Scripts.command,
+        Git.command,
+        ReadMe.command,
+        Licence.command,
+        GitHub.command,
+        ContinuousIntegration.command,
+        Resources.command,
+        FileHeaders.command,
+        Examples.command,
+        InheritedDocumentation.command
+      ]
+      #if !os(Linux)
+        list.append(Xcode.command)
+      #endif
+      return list
     }
+
+    static let command = Command(
+      name: name,
+      description: description,
+      subcommands: subcommands,
+      defaultSubcommand: All.command
+    )
+  }
 }

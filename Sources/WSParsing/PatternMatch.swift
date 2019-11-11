@@ -18,22 +18,25 @@ import WSGeneralImports
 
 import WSProject
 
-extension PatternMatch where Searched : SearchableBidirectionalCollection, Searched.Element == Unicode.Scalar {
+extension PatternMatch
+where Searched: SearchableBidirectionalCollection, Searched.Element == Unicode.Scalar {
 
-    public func declarationArgument() -> StrictString {
-        guard let openingParenthesis = contents.firstMatch(for: "(".scalars),
-            let closingParenthesis = contents.lastMatch(for: ")".scalars) else {
-                unreachable()
-        }
-
-        var argument = StrictString(
-            contents[openingParenthesis.range.upperBound ..< closingParenthesis.range.lowerBound])
-        argument.trimMarginalWhitespace()
-
-        return argument
+  public func declarationArgument() -> StrictString {
+    guard let openingParenthesis = contents.firstMatch(for: "(".scalars),
+      let closingParenthesis = contents.lastMatch(for: ")".scalars)
+    else {
+      unreachable()
     }
 
-    public func directiveArgument() -> StrictString {
-        return declarationArgument()
-    }
+    var argument = StrictString(
+      contents[openingParenthesis.range.upperBound..<closingParenthesis.range.lowerBound]
+    )
+    argument.trimMarginalWhitespace()
+
+    return argument
+  }
+
+  public func directiveArgument() -> StrictString {
+    return declarationArgument()
+  }
 }

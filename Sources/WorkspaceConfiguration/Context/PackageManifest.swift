@@ -21,52 +21,51 @@ import SDGCollections
 public typealias Paketenladeliste = PackageManifest
 // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(PackageManifest)
 /// Information from the package manifest.
-public struct PackageManifest : Codable {
+public struct PackageManifest: Codable {
 
-    // MARK: - Initialization
+  // MARK: - Initialization
 
-    public init(_packageName: String, products: [Product]) {
-        self.packageName = _packageName
-        self.products = products
+  public init(_packageName: String, products: [Product]) {
+    self.packageName = _packageName
+    self.products = products
+  }
+
+  // MARK: - Properties
+
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(PackageManifest.packageName)
+  /// The name of the package.
+  public let packageName: String
+  // @localization(🇩🇪DE) @crossReference(PackageManifest.packageName)
+  /// Der Name des Pakets.
+  public var paketenName: Zeichenkette {
+    return packageName
+  }
+
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(PackageManifest.products)
+  /// The products the package provides.
+  public let products: [Product]
+  // @localization(🇩🇪DE) @crossReference(PackageManifest.products)
+  /// Die Produkte, die das Paket bereitstellt.
+  public var produkte: [Produkt] {
+    return products
+  }
+
+  // @localization(🇩🇪DE) @crossReference(PackageManifest.productModules)
+  /// Die Liste von öffentliche Module.
+  public var produktmodule: [Zeichenkette] {
+    return productModules
+  }
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(PackageManifest.productModules)
+  /// The list of the publically accessible modules.
+  public var productModules: [String] {
+    var accountedFor: Set<String> = []
+    var result: [String] = []
+    for product in products {
+      for module in product.modules where module ∉ accountedFor {
+        accountedFor.insert(module)
+        result.append(module)
+      }
     }
-
-    // MARK: - Properties
-
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(PackageManifest.packageName)
-    /// The name of the package.
-    public let packageName: String
-    // @localization(🇩🇪DE) @crossReference(PackageManifest.packageName)
-    /// Der Name des Pakets.
-    public var paketenName: Zeichenkette {
-        return packageName
-    }
-
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(PackageManifest.products)
-    /// The products the package provides.
-    public let products: [Product]
-    // @localization(🇩🇪DE) @crossReference(PackageManifest.products)
-    /// Die Produkte, die das Paket bereitstellt.
-    public var produkte: [Produkt] {
-        return products
-    }
-
-
-    // @localization(🇩🇪DE) @crossReference(PackageManifest.productModules)
-    /// Die Liste von öffentliche Module.
-    public var produktmodule: [Zeichenkette] {
-        return productModules
-    }
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(PackageManifest.productModules)
-    /// The list of the publically accessible modules.
-    public var productModules: [String] {
-        var accountedFor: Set<String> = []
-        var result: [String] = []
-        for product in products {
-            for module in product.modules where module ∉ accountedFor {
-                accountedFor.insert(module)
-                result.append(module)
-            }
-        }
-        return result
-    }
+    return result
+  }
 }

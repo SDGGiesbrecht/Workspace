@@ -84,11 +84,12 @@ extension Workspace.Validate {
     ) throws {
 
       if ¬ProcessInfo.isInContinuousIntegration {
+        // @exempt(from: tests)
         try Workspace.Refresh.All.executeAsStep(
           withArguments: arguments,
           options: options,
           output: output
-        )  // @exempt(from: tests)
+        )
       }
 
       let projectName = try options.project.localizedIsolatedProjectName(output: output)
@@ -243,9 +244,9 @@ extension Workspace.Validate {
 
       // State
       if ProcessInfo.isInContinuousIntegration ∧ ProcessInfo.isPullRequest
-        ∧ ¬_isDuringSpecificationTest
-      {  // @exempt(from: tests) Only reachable during pull request.
-        // @exempt(from: tests)
+        ∧ ¬_isDuringSpecificationTest  // @exempt(from: tests)
+      {
+        // @exempt(from: tests) Only reachable during pull request.
 
         let state = validationStatus.newSection()
 

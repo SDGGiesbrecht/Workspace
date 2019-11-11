@@ -42,7 +42,7 @@ extension PackageRepository {
     }
 
     let activeRules = try configuration(output: output).proofreading.rules.sorted()
-    if ¬activeRules.isEmpty {
+    if ¬activeRules.isEmpty ∨ linter ≠ nil {
 
       var textRules: [TextRule.Type] = []
       var syntaxRules: [SyntaxRule.Type] = []

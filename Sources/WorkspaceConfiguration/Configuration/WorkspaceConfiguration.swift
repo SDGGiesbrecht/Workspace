@@ -367,11 +367,9 @@ public final class WorkspaceConfiguration: SDGSwiftConfiguration.Configuration {
       }
       assert(documentation.repositoryURL ≠ nil, "No repository URL specified.")
 
-      if needsAPIDocumentation {
-        assert(
-          documentation.api.encryptedTravisCIDeploymentKey ≠ nil,
-          "No Travis CI deployment key specified."
-        )
+      if needsAPIDocumentation,
+        documentation.api.encryptedTravisCIDeploymentKey == nil {
+        assertionFailure("No Travis CI deployment key specified.")
       }
 
       for localization in documentation.localizations {

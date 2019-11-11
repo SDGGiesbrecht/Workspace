@@ -22,6 +22,25 @@ extension SwiftFormatConfiguration.Configuration {
 
   internal static let `default`: SwiftFormatConfiguration.Configuration = {
     let configuration = SwiftFormatConfiguration.Configuration()
+
+    // Illogical style choices.
+    configuration.rules["MultiLineTrailingCommas"] = false
+    configuration.rules["NoBlockComments"] = false
+
+    // Not universally a good idea.
+    configuration.rules["NeverForceUnwrap"] = false
+    configuration.rules["NoLeadingUnderscores"] = false
+    configuration.rules["OrderedImports"] = false
+
+    // Handled better during documentation coverage check.
+    configuration.rules["AllPublicDeclarationsHaveDocumentation"] = false
+
+    // Bugs currently result in false positives.
+    // #workaround(Swift 5.1, Can these be restored?)
+    configuration.rules["AlwaysUseLowerCamelCase"] = false
+    configuration.rules["UseLetInEveryBoundCaseVariable"] = false
+    configuration.rules["ValidateDocumentationComments"] = false
+
     configuration.lineBreakBeforeEachArgument = true
     return configuration
   }()

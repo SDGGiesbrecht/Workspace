@@ -2137,7 +2137,9 @@ internal class SymbolPage: Page {
       var attributes: [StrictString: StrictString] = ["class": "child"]
       attributes.merge(
         childAttributes(child),
-        uniquingKeysWith: { _, second in return second }  // @exempt(from. tests) Keys always unique.
+        uniquingKeysWith: { _, second in  // @exempt(from. tests) Keys always unique.
+          return second
+        }
       )
 
       sectionContents.append(

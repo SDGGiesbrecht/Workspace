@@ -476,8 +476,18 @@ extension APIElement {
         globalScope: globalScope,
         typeMember: {
           switch other {
-          case .package, .library, .module, .type, .protocol, .extension, .case,
-            .initializer, .subscript, .operator, .precedence, .conformance:
+          case .package,  // @exempt(from: tests)
+            .library,
+            .module,
+            .type,
+            .protocol,
+            .extension,
+            .case,
+            .initializer,
+            .subscript,
+            .operator,
+            .precedence,
+            .conformance:
             unreachable()
           case .variable(let variable):
             return variable.declaration.isTypeMember()
@@ -739,8 +749,8 @@ extension APIElement {
       ?? directoryName(
         for: localization,
         globalScope: globalScope,
-        typeMember: { typeMember }
-      )  // @exempt(from: tests) Should never be called.
+        typeMember: { typeMember }  // @exempt(from: tests) Should never be called.
+      )
   }
 
   internal func pageURL(

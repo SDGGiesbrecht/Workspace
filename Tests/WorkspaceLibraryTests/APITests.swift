@@ -480,6 +480,7 @@ class APITests: TestCase {
     configuration.customValidationTasks.append(passing)
     configuration.provideWorkflowScripts = false
     configuration.proofreading.rules = []
+    configuration.proofreading.swiftFormatKonfiguration = nil
     configuration.testing.prohibitCompilerWarnings = false
     configuration.testing.enforceCoverage = false
     configuration.documentation.api.enforceCoverage = false
@@ -641,6 +642,7 @@ class APITests: TestCase {
     configuration.customValidationTasks.append(failing)
     configuration.provideWorkflowScripts = false
     configuration.proofreading.rules = []
+    configuration.proofreading.swiftFormatConfiguration = nil
     configuration.testing.prohibitCompilerWarnings = false
     configuration.testing.enforceCoverage = false
     configuration.documentation.api.enforceCoverage = false

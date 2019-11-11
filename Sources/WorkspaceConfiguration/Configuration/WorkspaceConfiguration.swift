@@ -67,7 +67,7 @@ public typealias ArbeitsbereichKonfiguration = WorkspaceConfiguration
 /// configuration.documentation.api.generate = true
 /// configuration.documentation.api.yearFirstPublished = 2017
 /// ```
-public final class WorkspaceConfiguration: SDGSwiftConfiguration.Configuration {
+public final class WorkspaceConfiguration: Configuration {
 
   // MARK: - Static Properties
 
@@ -368,7 +368,8 @@ public final class WorkspaceConfiguration: SDGSwiftConfiguration.Configuration {
       assert(documentation.repositoryURL ≠ nil, "No repository URL specified.")
 
       if needsAPIDocumentation,
-        documentation.api.encryptedTravisCIDeploymentKey == nil {
+        documentation.api.encryptedTravisCIDeploymentKey == nil
+      {
         assertionFailure("No Travis CI deployment key specified.")
       }
 
@@ -533,3 +534,8 @@ public final class WorkspaceConfiguration: SDGSwiftConfiguration.Configuration {
     WorkspaceConfiguration.registered = self
   }
 }
+
+// Just to help the documenter resolve the difference between SDGSwiftConfiguration.Configuration and SwiftFormatConfiguration.Configuration.
+// @notLocalized(🇬🇧EN) @notLocalized(🇺🇸EN) @notLocalized(🇨🇦EN) @notLocalized(🇩🇪DE)
+/// `SDGSwiftConfiguration.Configuration`
+public typealias Configuration = SDGSwiftConfiguration.Configuration

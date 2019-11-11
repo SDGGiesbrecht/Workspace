@@ -32,15 +32,15 @@
         }
       })
 
-      private static let description = UserFacing<StrictString, InterfaceLocalization>({
-        localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "regenerates the project’s Xcode set‐up."
-        case .deutschDeutschland:
-          return "erstellt die Xcode‐Einrichtung des Projekts neu."
-        }
-      })
+      private static let description = UserFacing<StrictString, InterfaceLocalization>(
+        { localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "regenerates the project’s Xcode set‐up."
+          case .deutschDeutschland:
+            return "erstellt die Xcode‐Einrichtung des Projekts neu."
+          }
+        })
 
       static let command = Command(
         name: name,

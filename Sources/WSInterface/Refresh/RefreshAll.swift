@@ -29,15 +29,15 @@ extension Workspace.Refresh {
       }
     })
 
-    private static let description = UserFacing<StrictString, InterfaceLocalization>({
-      localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "performs all configured refreshment tasks."
-      case .deutschDeutschland:
-        return "führt alle konfigurierte Auffrischungsaufgaben aus."
-      }
-    })
+    private static let description = UserFacing<StrictString, InterfaceLocalization>(
+      { localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "performs all configured refreshment tasks."
+        case .deutschDeutschland:
+          return "führt alle konfigurierte Auffrischungsaufgaben aus."
+        }
+      })
 
     static let command = Command(
       name: name,

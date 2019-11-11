@@ -36,15 +36,15 @@ extension Workspace.Validate {
       }
     })
 
-    private static let description = UserFacing<StrictString, InterfaceLocalization>({
-      localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "validates the build, checking that it triggers no compiler warnings."
-      case .deutschDeutschland:
-        return "prüft die Erstellung, dass keine Übersetzungswarnungen auftreten."
-      }
-    })
+    private static let description = UserFacing<StrictString, InterfaceLocalization>(
+      { localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "validates the build, checking that it triggers no compiler warnings."
+        case .deutschDeutschland:
+          return "prüft die Erstellung, dass keine Übersetzungswarnungen auftreten."
+        }
+      })
 
     static let command = Command(
       name: name,

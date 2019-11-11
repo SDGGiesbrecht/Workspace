@@ -31,15 +31,15 @@ extension Workspace.Refresh {
       }
     })
 
-    private static let description = UserFacing<StrictString, InterfaceLocalization>({
-      localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "regenerates the project’s read‐me file."
-      case .deutschDeutschland:
-        return "erstellt die Lies‐mich‐Datei des Projekts neu."
-      }
-    })
+    private static let description = UserFacing<StrictString, InterfaceLocalization>(
+      { localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "regenerates the project’s read‐me file."
+        case .deutschDeutschland:
+          return "erstellt die Lies‐mich‐Datei des Projekts neu."
+        }
+      })
 
     static let command = Command(
       name: name,

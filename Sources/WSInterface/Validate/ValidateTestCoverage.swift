@@ -35,16 +35,16 @@ extension Workspace.Validate {
       }
     })
 
-    private static let description = UserFacing<StrictString, InterfaceLocalization>({
-      localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return
-          "validates test coverage, checking that every code path is reached by the project’s tests."
-      case .deutschDeutschland:
-        return "prüft die Testabdeckung, dass jede Quellweg durch Teste erreicht wird."
-      }
-    })
+    private static let description = UserFacing<StrictString, InterfaceLocalization>(
+      { localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return
+            "validates test coverage, checking that every code path is reached by the project’s tests."
+        case .deutschDeutschland:
+          return "prüft die Testabdeckung, dass jede Quellweg durch Teste erreicht wird."
+        }
+      })
 
     static let command = Command(
       name: name,

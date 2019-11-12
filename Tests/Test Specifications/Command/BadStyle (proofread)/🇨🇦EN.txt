@@ -29,11 +29,6 @@ Line 7
 Language specifier missing. Specify a language for syntax colouring. (syntaxColouring)
 /// ```
 
-Sources/BadStyle/Rules/Functionality/AutoindentResilience.swift
-Line 3
-“/**” may not survive autoindent (⌃I). Use “///” instead. (autoindentResilience)
-/**
-
 Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift
 Line 3
 U+00B2 may be lost in normalization; use “2” instead. (compatibilityCharacters)
@@ -154,6 +149,7 @@ The character “!” is obsolete. Use the not sign (¬). (Create an alias if ne
 let x = !y  // This should trigger; it is a prefix operator.
 let x = ¬y  // This should trigger; it is a prefix operator.
 
+Sources/BadStyle/SwiftFormat.swift
 Sources/BadStyle/Warnings/Warning.swift
 Line 3
 This should trigger a warning. (manualWarnings)

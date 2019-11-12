@@ -2,7 +2,6 @@ $ workspace proofread •xcode •no‐colour
 [Temporary]/BadStyle/Package.swift:2:13: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 [Temporary]/BadStyle/Package.swift:2:19: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Documentation/SyntaxColouring.swift:7:5: warning: Language specifier missing. Specify a language for syntax colouring. (syntaxColoring)
-[Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/AutoindentResilience.swift:3:1: warning: “/**” may not survive autoindent (⌃I). Use “///” instead. (autoindentResilience)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift:3:22: warning: U+00B2 may be lost in normalization; use “2” instead. (compatibilityCharacters)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/Mark.swift:3:1: warning: Incomplete heading syntax. Use “// MARK: - ”. (marks)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Intentional/MissingImplementation.swift:4:3: warning: Missing implementation. (missingImplementation)

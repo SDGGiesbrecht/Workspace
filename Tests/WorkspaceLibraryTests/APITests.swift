@@ -1061,7 +1061,6 @@ class APITests: TestCase {
     XCTAssertEqual(Korrekturregel.fehlendeImplementierung, .missingImplementation)
     XCTAssertEqual(Korrekturregel.notlösungsErinnerungen, .workaroundReminders)
     XCTAssertEqual(Korrekturregel.verträglichkeitsschriftzeichen, .compatibilityCharacters)
-    XCTAssertEqual(Korrekturregel.widerstandGegenAutomatischenEinzug, .autoindentResilience)
     XCTAssertEqual(Korrekturregel.überschrifte, .marks)
     XCTAssertEqual(Korrekturregel.syntaxhervorhebung, .syntaxColoring)
     XCTAssertEqual(Korrekturregel.hervorhebungsGroßschreibung, .calloutCasing)

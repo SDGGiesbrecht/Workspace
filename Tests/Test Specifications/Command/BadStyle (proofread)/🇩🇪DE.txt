@@ -29,11 +29,6 @@ Zeile 7
 Das Sprachkennzeichen fehlt. Eine Sprache für Syntaxhervorhebung angeben. (syntaxhervorhebung)
 /// ```
 
-Sources/BadStyle/Rules/Functionality/AutoindentResilience.swift
-Zeile 3
-„/**“ widersteht automatische Einzüge (⌃I) nicht. Stattdessen „///“ verwenden. (widerstandGegenAutomatischenEinzug)
-/**
-
 Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift
 Zeile 3
 U+00B2 geht bei Normalisierung vielleicht verloren; stattdessen „2“ verwenden. (verträglichkeitsschriftzeichen)
@@ -154,6 +149,7 @@ Das Schriftzeichen “!” ist überholt. Ein Negationszeichen (¬) verwenden. 
 let x = !y  // This should trigger; it is a prefix operator.
 let x = ¬y  // This should trigger; it is a prefix operator.
 
+Sources/BadStyle/SwiftFormat.swift
 Sources/BadStyle/Warnings/Warning.swift
 Zeile 3
 This should trigger a warning. (warnungenVonHand)

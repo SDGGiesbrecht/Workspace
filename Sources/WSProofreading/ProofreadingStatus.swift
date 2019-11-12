@@ -94,6 +94,19 @@ internal class ProofreadingStatus: DiagnosticConsumer {
       mutation: { (match: PatternMatch<StrictString>) -> StrictString in
         var contents = StrictString(match.contents)
         contents.removeFirst()
+        contents.prepend("‘")
+        contents.removeLast()
+        contents.append("’")
+        return contents
+    })
+    let doubleQuotationPattern = "\u{22}".scalars
+      + RepetitionPattern(ConditionalPattern({ $0 ≠ "\u{22}" }))
+      + "\u{22}".scalars
+    diagnosticMessage.mutateMatches(
+      for: doubleQuotationPattern,
+      mutation: { (match: PatternMatch<StrictString>) -> StrictString in
+        var contents = StrictString(match.contents)
+        contents.removeFirst()
         contents.prepend("“")
         contents.removeLast()
         contents.append("”")

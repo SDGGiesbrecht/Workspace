@@ -160,6 +160,8 @@ class APITests: TestCase {
     configuration.documentation.about["🇺🇸EN"] = ""
     configuration.documentation.api.yearFirstPublished = 2018
     configuration.documentation.api.ignoredDependencies.remove("Swift")
+    configuration.proofreading.swiftFormatConfiguration?.rules["UseShorthandTypeNames"] = false
+    configuration.proofreading.swiftFormatConfiguration?.rules["UseEnumForNamespacing"] = false
     configuration.documentation.relatedProjects = [
       .heading(text: [
         "🇬🇧EN": "Heading",

@@ -160,11 +160,11 @@ let x = ¬y  // This should trigger; it is a prefix operator.
 
 Sources/BadStyle/SwiftFormat.swift
 Line 1
-Rename “triggerSwiftFormatWithOverload(_:)” so it is no longer ambiguous with a trailing closure. (swiftFormat[AmbiguousTrailingClosureOverload])
+Rename 'triggerSwiftFormatWithOverload(_:)' so it is no longer ambiguous with a trailing closure. (swiftFormat[AmbiguousTrailingClosureOverload])
 func triggerSwiftFormatWithOverload(_ closure: (Bool) -> Bool) {}
 
 Line 4
-Rename variable “TriggerSwiftFormatWithBadCasing” using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
+Rename variable 'TriggerSwiftFormatWithBadCasing' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
 let TriggerSwiftFormatWithBadCasing = true
 
 Sources/BadStyle/Warnings/Warning.swift
@@ -229,11 +229,11 @@ The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (�
     //   `swift test --generate-linuxmain`
 
 Line 8
-Rename variable “__allTests__BadStyleTests” using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
+Rename variable '__allTests__BadStyleTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
     static let __allTests__BadStyleTests = [
 
 Line 13
-Rename variable “__allTests” using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
+Rename variable '__allTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
   public func __allTests() -> [XCTestCaseEntry] {
 
 Tests/LinuxMain.swift

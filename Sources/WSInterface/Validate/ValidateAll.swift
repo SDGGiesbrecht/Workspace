@@ -155,11 +155,9 @@ extension Workspace.Validate {
 
       // Document
       if options.job.includes(job: .miscellaneous) {
-        if (
-          try ¬options.project.configuration(output: output).documentation.api.generate
+        if try ¬options.project.configuration(output: output).documentation.api.generate
             ∨ options.project.configuration(output: output).documentation.api
-            .encryptedTravisCIDeploymentKey ≠ nil
-        ),
+            .encryptedTravisCIDeploymentKey ≠ nil,
           try options.project.configuration(output: output).documentation.api
             .enforceCoverage
         {

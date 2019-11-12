@@ -537,5 +537,5 @@ public final class WorkspaceConfiguration: Configuration {
 
 // Just to help the documenter resolve the difference between SDGSwiftConfiguration.Configuration and SwiftFormatConfiguration.Configuration.
 // @notLocalized(🇬🇧EN) @notLocalized(🇺🇸EN) @notLocalized(🇨🇦EN) @notLocalized(🇩🇪DE)
-/// `SDGSwiftConfiguration.Configuration`
+/// An alias for `SDGSwiftConfiguration.Configuration`.
 public typealias Configuration = SDGSwiftConfiguration.Configuration

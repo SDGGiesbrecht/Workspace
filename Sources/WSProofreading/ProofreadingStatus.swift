@@ -86,32 +86,6 @@ internal class ProofreadingStatus: DiagnosticConsumer {
     if diagnosticMessage.last ≠ "." {
       diagnosticMessage.append(".")
     }
-    let quotationPattern = "\u{27}".scalars
-      + RepetitionPattern(ConditionalPattern({ $0 ≠ "\u{27}" }))
-      + "\u{27}".scalars
-    diagnosticMessage.mutateMatches(
-      for: quotationPattern,
-      mutation: { (match: PatternMatch<StrictString>) -> StrictString in
-        var contents = StrictString(match.contents)
-        contents.removeFirst()
-        contents.prepend("‘")
-        contents.removeLast()
-        contents.append("’")
-        return contents
-    })
-    let doubleQuotationPattern = "\u{22}".scalars
-      + RepetitionPattern(ConditionalPattern({ $0 ≠ "\u{22}" }))
-      + "\u{22}".scalars
-    diagnosticMessage.mutateMatches(
-      for: doubleQuotationPattern,
-      mutation: { (match: PatternMatch<StrictString>) -> StrictString in
-        var contents = StrictString(match.contents)
-        contents.removeFirst()
-        contents.prepend("“")
-        contents.removeLast()
-        contents.append("”")
-        return contents
-    })
 
     let identifier = UserFacing<StrictString, InterfaceLocalization>({ _ in ruleIdentifier })
     let message = UserFacing<StrictString, InterfaceLocalization>({ _ in diagnosticMessage })

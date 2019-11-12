@@ -118,7 +118,7 @@ extension PackageRepository {
                 "## \(text)"
               ]
             }
-          case .project(url: let url):
+          case .project(let url):
             let package = try PackageRepository.relatedPackage(
               Package(url: url),
               output: output

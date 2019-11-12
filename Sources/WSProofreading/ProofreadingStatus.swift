@@ -43,11 +43,19 @@ internal class ProofreadingStatus: DiagnosticConsumer {
 
   internal func handle(_ diagnostic: Diagnostic) {
     let file = currentFile!
-    guard let location = diagnostic.location else {
-      return
+
+    let range: Range<String.ScalarView.Index>
+    if let highlight = diagnostic.highlights.first,
+    diagnostic.highlights.count == 1 {
+      range = highlight.scalars(in: file.contents)
+    } else {
+      guard let location = diagnostic.location else {
+        return
+      }
+      let start = location.scalar(in: file.contents)
+      range = start ..< start
     }
-    let start = location.scalar(in: file.contents)
-    #warning("Are highlights useful?")
+
     #warning("Are fix‐its useful?")
     let replacementSuggestion: StrictString? = nil
     #warning("What to do with identifiers?")
@@ -56,7 +64,7 @@ internal class ProofreadingStatus: DiagnosticConsumer {
     let message = UserFacing<StrictString, InterfaceLocalization>({ _ in diagnosticMessage })
     let violation = StyleViolation(
       in: file,
-      at: start..<start,
+      at: range,
       replacementSuggestion: replacementSuggestion,
       noticeOnly: false,
       ruleIdentifier: identifier,

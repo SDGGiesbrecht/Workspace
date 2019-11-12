@@ -14,6 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import WSGeneralImports
 import WSProject
 
@@ -56,11 +57,32 @@ internal class ProofreadingStatus: DiagnosticConsumer {
       range = start ..< start
     }
 
-    #warning("Are fix‐its useful?")
-    let replacementSuggestion: StrictString? = nil
-    #warning("What to do with identifiers?")
-    let identifier = UserFacing<StrictString, InterfaceLocalization>({ _ in "swiftFormat" })
-    let diagnosticMessage = StrictString(diagnostic.message.text)
+    var replacementSuggestion: StrictString? = nil
+    if let fixIt = diagnostic.fixIts.first,
+      diagnostic.fixIts.count == 1, // @exempt(from: tests) No rules provide fix‐its yet.
+      fixIt.range.scalars(in: file.contents) == range {
+      replacementSuggestion = StrictString(fixIt.text)
+    }
+
+    var diagnosticMessage = StrictString(diagnostic.message.text)
+    var ruleIdentifier = StrictString("swiftFormat")
+    if let ruleName = diagnosticMessage.firstMatch(
+      for: "[".scalars
+        + RepetitionPattern(ConditionalPattern({ ¬$0.properties.isWhitespace ∧ $0 ≠ "]" }))
+        + "]:".scalars) {
+      ruleIdentifier += "[" + StrictString(ruleName.contents.dropFirst().dropLast(2)) + "]"
+      diagnosticMessage.removeSubrange(ruleName.range)
+      while diagnosticMessage.first?.properties.isWhitespace == true {
+        diagnosticMessage.removeFirst()
+      }
+    }
+    diagnosticMessage.prepend(
+      contentsOf: String(diagnosticMessage.removeFirst()).uppercased().scalars)
+    if diagnosticMessage.last ≠ "." {
+      diagnosticMessage.append(".")
+    }
+
+    let identifier = UserFacing<StrictString, InterfaceLocalization>({ _ in ruleIdentifier })
     let message = UserFacing<StrictString, InterfaceLocalization>({ _ in diagnosticMessage })
     let violation = StyleViolation(
       in: file,

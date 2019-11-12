@@ -45,6 +45,7 @@ internal class ProofreadingStatus: DiagnosticConsumer {
   internal func handle(_ diagnostic: Diagnostic) {
     let file = currentFile!
 
+    // Determine highlight range.
     let range: Range<String.ScalarView.Index>
     if let highlight = diagnostic.highlights.first,
     diagnostic.highlights.count == 1 {
@@ -57,6 +58,7 @@ internal class ProofreadingStatus: DiagnosticConsumer {
       range = start ..< start
     }
 
+    // Determine replacement.
     var replacementSuggestion: StrictString? = nil
     if let fixIt = diagnostic.fixIts.first,
       diagnostic.fixIts.count == 1, // @exempt(from: tests) No rules provide fix‐its yet.
@@ -64,6 +66,7 @@ internal class ProofreadingStatus: DiagnosticConsumer {
       replacementSuggestion = StrictString(fixIt.text)
     }
 
+    // Extract rule identifier.
     var diagnosticMessage = StrictString(diagnostic.message.text)
     var ruleIdentifier = StrictString("swiftFormat")
     if let ruleName = diagnosticMessage.firstMatch(
@@ -76,11 +79,26 @@ internal class ProofreadingStatus: DiagnosticConsumer {
         diagnosticMessage.removeFirst()
       }
     }
+
+    // Clean message up.
     diagnosticMessage.prepend(
       contentsOf: String(diagnosticMessage.removeFirst()).uppercased().scalars)
     if diagnosticMessage.last ≠ "." {
       diagnosticMessage.append(".")
     }
+    let quotationPattern = "\u{27}".scalars
+      + RepetitionPattern(ConditionalPattern({ $0 ≠ "\u{27}" }))
+      + "\u{27}".scalars
+    diagnosticMessage.mutateMatches(
+      for: quotationPattern,
+      mutation: { (match: PatternMatch<StrictString>) -> StrictString in
+        var contents = StrictString(match.contents)
+        contents.removeFirst()
+        contents.prepend("“")
+        contents.removeLast()
+        contents.append("”")
+        return contents
+    })
 
     let identifier = UserFacing<StrictString, InterfaceLocalization>({ _ in ruleIdentifier })
     let message = UserFacing<StrictString, InterfaceLocalization>({ _ in diagnosticMessage })

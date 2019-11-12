@@ -46,11 +46,7 @@ internal class ProofreadingStatus: DiagnosticConsumer {
     guard let location = diagnostic.location else {
       return
     }
-    let utf8 = file.contents.utf8.index(
-      file.contents.utf8.startIndex,
-      offsetBy: location.offset
-    )
-    let start = utf8.scalar(in: file.contents.scalars)
+    let start = location.scalar(in: file.contents)
     #warning("Are highlights useful?")
     #warning("Are fix‐its useful?")
     let replacementSuggestion: StrictString? = nil

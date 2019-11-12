@@ -1,5 +1,5 @@
 /*
- SourceLocation.swift
+ SourceRange.swift
 
  This source file is part of the Workspace open source project.
  Diese Quelldatei ist Teil des qeulloffenen Arbeitsbereich‐Projekt.
@@ -14,14 +14,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import WSGeneralImports
+
 import SwiftSyntax
 
-extension SourceLocation {
+extension SourceRange {
 
-  internal func utf8(in source: String) -> String.UTF8View.Index {
-    return source.utf8.index(source.utf8.startIndex, offsetBy: offset)
-  }
-  internal func scalar(in source: String) -> String.ScalarView.Index {
-    return utf8(in: source).scalar(in: source.scalars)
+  internal func scalars(in source: String) -> Range<String.ScalarView.Index> {
+    let utf8 = start.utf8(in: source) ..< end.utf8(in: source)
+    return utf8.scalars(in: source.scalars)
   }
 }

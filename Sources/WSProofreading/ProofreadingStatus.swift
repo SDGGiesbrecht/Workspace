@@ -37,26 +37,21 @@ internal class ProofreadingStatus: DiagnosticConsumer {
 
   // MARK: - DiagnosticConsumer
 
-  internal var needsLineColumn: Bool {
-    #warning("Not triggerable without more rules.")
+  internal var needsLineColumn: Bool {  // @exempt(from: tests) Never called?
     return false
   }
 
   internal func handle(_ diagnostic: Diagnostic) {
-    #warning("Not triggerable without more rules.")
     let file = currentFile!
-    #warning("Are highlights useful?")
-    let start: String.ScalarView.Index
-    if let location = diagnostic.location {
-      let utf8 = file.contents.utf8.index(
-        file.contents.utf8.startIndex,
-        offsetBy: location.offset
-      )
-      start = utf8.scalar(in: file.contents.scalars)
-    } else {
-      #warning("This seems conterproductive.")
-      start = file.contents.scalars.startIndex
+    guard let location = diagnostic.location else {
+      return
     }
+    let utf8 = file.contents.utf8.index(
+      file.contents.utf8.startIndex,
+      offsetBy: location.offset
+    )
+    let start = utf8.scalar(in: file.contents.scalars)
+    #warning("Are highlights useful?")
     #warning("Are fix‐its useful?")
     let replacementSuggestion: StrictString? = nil
     #warning("What to do with identifiers?")

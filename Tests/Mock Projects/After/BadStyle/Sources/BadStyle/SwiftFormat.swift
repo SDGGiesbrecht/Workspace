@@ -1,5 +1,2 @@
-func stuffSwiftFormatProhibits() -> Bool {
-  if 1 == 2 {  // Parenthesized condition.
-    return false
-  }
-}
+func triggerSwiftFormatWithOverload(_ closure: (Bool) -> Bool) {}
+func triggerSwiftFormatWithOverload(_ closure: (Int) -> Int)

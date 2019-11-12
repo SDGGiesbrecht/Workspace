@@ -83,6 +83,7 @@ class APITests: TestCase {
 
   func testBadStyle() {
     let configuration = WorkspaceConfiguration()
+    configuration.proofreading.swiftFormatConfiguration?.rules["AlwaysUseLowerCamelCase"] = true
     let failing = CustomTask(
       url: URL(string: "file:///tmp/Developer/Dependency")!,
       version: Version(1, 0, 0),

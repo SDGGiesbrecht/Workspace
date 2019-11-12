@@ -154,6 +154,10 @@ Zeile 1
 [AmbiguousTrailingClosureOverload]: rename 'triggerSwiftFormatWithOverload(_:)' so it is no longer ambiguous with a trailing closure (swiftFormat)
 func triggerSwiftFormatWithOverload(_ closure: (Bool) -> Bool) {}
 
+Zeile 4
+[AlwaysUseLowerCamelCase]: rename variable 'TriggerSwiftFormatWithBadCasing' using lower-camel-case (swiftFormat)
+let TriggerSwiftFormatWithBadCasing = true
+
 Sources/BadStyle/Warnings/Warning.swift
 Zeile 3
 This should trigger a warning. (warnungenVonHand)
@@ -214,6 +218,14 @@ Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen 
 Zeile 6
 Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
     //   `swift test --generate-linuxmain`
+
+Zeile 8
+[AlwaysUseLowerCamelCase]: rename variable '__allTests__BadStyleTests' using lower-camel-case (swiftFormat)
+    static let __allTests__BadStyleTests = [
+
+Zeile 13
+[AlwaysUseLowerCamelCase]: rename variable '__allTests' using lower-camel-case (swiftFormat)
+  public func __allTests() -> [XCTestCaseEntry] {
 
 Tests/LinuxMain.swift
 

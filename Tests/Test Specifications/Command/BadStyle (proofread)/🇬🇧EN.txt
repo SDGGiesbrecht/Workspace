@@ -163,6 +163,10 @@ Line 1
 [AmbiguousTrailingClosureOverload]: rename 'triggerSwiftFormatWithOverload(_:)' so it is no longer ambiguous with a trailing closure (swiftFormat)
 func triggerSwiftFormatWithOverload(_ closure: (Bool) -> Bool) {}
 
+Line 4
+[AlwaysUseLowerCamelCase]: rename variable 'TriggerSwiftFormatWithBadCasing' using lower-camel-case (swiftFormat)
+let TriggerSwiftFormatWithBadCasing = true
+
 Sources/BadStyle/Warnings/Warning.swift
 Line 3
 This should trigger a warning. (manualWarnings)
@@ -223,6 +227,14 @@ The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (�
 Line 6
 The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
     //   `swift test --generate-linuxmain`
+
+Line 8
+[AlwaysUseLowerCamelCase]: rename variable '__allTests__BadStyleTests' using lower-camel-case (swiftFormat)
+    static let __allTests__BadStyleTests = [
+
+Line 13
+[AlwaysUseLowerCamelCase]: rename variable '__allTests' using lower-camel-case (swiftFormat)
+  public func __allTests() -> [XCTestCaseEntry] {
 
 Tests/LinuxMain.swift
 

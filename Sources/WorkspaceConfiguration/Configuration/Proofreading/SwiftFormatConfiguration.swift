@@ -20,7 +20,7 @@ public typealias SwiftFormatKonfiguration = SwiftFormatConfiguration.Configurati
 
 extension SwiftFormatConfiguration.Configuration {
 
-  internal static let `default`: SwiftFormatConfiguration.Configuration = {
+  internal static var `default`: SwiftFormatConfiguration.Configuration {
     let configuration = SwiftFormatConfiguration.Configuration()
 
     // Illogical style choices.
@@ -49,5 +49,5 @@ extension SwiftFormatConfiguration.Configuration {
 
     configuration.lineBreakBeforeEachArgument = true
     return configuration
-  }()
+  }
 }

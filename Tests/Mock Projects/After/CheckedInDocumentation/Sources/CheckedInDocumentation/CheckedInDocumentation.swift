@@ -146,7 +146,7 @@ extension Bool {
 }
 
 // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
-/// A protocol
+/// A protocol.
 public protocol Protocol {
 
   // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)

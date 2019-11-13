@@ -48,22 +48,24 @@ internal class ProofreadingStatus: DiagnosticConsumer {
     // Determine highlight range.
     let range: Range<String.ScalarView.Index>
     if let highlight = diagnostic.highlights.first,
-    diagnostic.highlights.count == 1 {
+      diagnostic.highlights.count == 1
+    {
       range = highlight.scalars(in: file.contents)
     } else {
       guard let location = diagnostic.location else {
-        return // @exempt(from: tests) Trigger unknown.
+        return  // @exempt(from: tests) Trigger unknown.
       }
       let start = location.scalar(in: file.contents)
-      range = start ..< start
+      range = start..<start
     }
 
     // Determine replacement.
     var replacementSuggestion: StrictString? = nil
     if let fixIt = diagnostic.fixIts.first,
-      diagnostic.fixIts.count == 1, // @exempt(from: tests) No rules provide fix‐its yet.
-      fixIt.range.scalars(in: file.contents) == range {
-      replacementSuggestion = StrictString(fixIt.text) // @exempt(from: tests)
+      diagnostic.fixIts.count == 1,  // @exempt(from: tests) No rules provide fix‐its yet.
+      fixIt.range.scalars(in: file.contents) == range
+    {
+      replacementSuggestion = StrictString(fixIt.text)  // @exempt(from: tests)
     }
 
     // Extract rule identifier.
@@ -72,7 +74,8 @@ internal class ProofreadingStatus: DiagnosticConsumer {
     if let ruleName = diagnosticMessage.firstMatch(
       for: "[".scalars
         + RepetitionPattern(ConditionalPattern({ ¬$0.properties.isWhitespace ∧ $0 ≠ "]" }))
-        + "]:".scalars) {
+        + "]:".scalars
+    ) {
       ruleIdentifier += "[" + StrictString(ruleName.contents.dropFirst().dropLast(2)) + "]"
       diagnosticMessage.removeSubrange(ruleName.range)
       while diagnosticMessage.first?.properties.isWhitespace == true {
@@ -82,7 +85,8 @@ internal class ProofreadingStatus: DiagnosticConsumer {
 
     // Clean message up.
     diagnosticMessage.prepend(
-      contentsOf: String(diagnosticMessage.removeFirst()).uppercased().scalars)
+      contentsOf: String(diagnosticMessage.removeFirst()).uppercased().scalars
+    )
     if diagnosticMessage.last ≠ "." {
       diagnosticMessage.append(".")
     }

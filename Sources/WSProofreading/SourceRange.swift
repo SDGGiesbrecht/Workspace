@@ -21,7 +21,7 @@ import SwiftSyntax
 extension SourceRange {
 
   internal func scalars(in source: String) -> Range<String.ScalarView.Index> {
-    let utf8 = start.utf8(in: source) ..< end.utf8(in: source)
+    let utf8 = start.utf8(in: source)..<end.utf8(in: source)
     return utf8.scalars(in: source.scalars)
   }
 }

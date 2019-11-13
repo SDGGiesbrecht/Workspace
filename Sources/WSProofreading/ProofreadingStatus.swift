@@ -14,6 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import WSGeneralImports
 import WSProject
 
@@ -37,35 +38,64 @@ internal class ProofreadingStatus: DiagnosticConsumer {
 
   // MARK: - DiagnosticConsumer
 
-  internal var needsLineColumn: Bool {
-    // @exempt(from: tests) #workaround(Not triggerable without more rules.)
+  internal var needsLineColumn: Bool {  // @exempt(from: tests) Never called?
     return false
   }
 
   internal func handle(_ diagnostic: Diagnostic) {
-    // @exempt(from: tests) #workaround(Not triggerable without more rules.)
     let file = currentFile!
-    // #workaround(Are highlights useful?)
-    let start: String.ScalarView.Index
-    if let location = diagnostic.location {
-      let utf8 = file.contents.utf8.index(
-        file.contents.utf8.startIndex,
-        offsetBy: location.offset
-      )
-      start = utf8.scalar(in: file.contents.scalars)
+
+    // Determine highlight range.
+    let range: Range<String.ScalarView.Index>
+    if let highlight = diagnostic.highlights.first,
+      diagnostic.highlights.count == 1
+    {
+      range = highlight.scalars(in: file.contents)
     } else {
-      // #workaround(This seems conterproductive.)
-      start = file.contents.scalars.startIndex
+      guard let location = diagnostic.location else {
+        return  // @exempt(from: tests) Trigger unknown.
+      }
+      let start = location.scalar(in: file.contents)
+      range = start..<start
     }
-    // #workaround(Are fix‐its useful?)
-    let replacementSuggestion: StrictString? = nil
-    // #workaround(What to do with identifiers?)
-    let identifier = UserFacing<StrictString, InterfaceLocalization>({ _ in "swiftFormat" })
-    let diagnosticMessage = StrictString(diagnostic.message.text)
+
+    // Determine replacement.
+    var replacementSuggestion: StrictString? = nil
+    if let fixIt = diagnostic.fixIts.first,
+      diagnostic.fixIts.count == 1,  // @exempt(from: tests) No rules provide fix‐its yet.
+      fixIt.range.scalars(in: file.contents) == range
+    {
+      replacementSuggestion = StrictString(fixIt.text)  // @exempt(from: tests)
+    }
+
+    // Extract rule identifier.
+    var diagnosticMessage = StrictString(diagnostic.message.text)
+    var ruleIdentifier = StrictString("swiftFormat")
+    if let ruleName = diagnosticMessage.firstMatch(
+      for: "[".scalars
+        + RepetitionPattern(ConditionalPattern({ ¬$0.properties.isWhitespace ∧ $0 ≠ "]" }))
+        + "]:".scalars
+    ) {
+      ruleIdentifier += "[" + StrictString(ruleName.contents.dropFirst().dropLast(2)) + "]"
+      diagnosticMessage.removeSubrange(ruleName.range)
+      while diagnosticMessage.first?.properties.isWhitespace == true {
+        diagnosticMessage.removeFirst()
+      }
+    }
+
+    // Clean message up.
+    diagnosticMessage.prepend(
+      contentsOf: String(diagnosticMessage.removeFirst()).uppercased().scalars
+    )
+    if diagnosticMessage.last ≠ "." {
+      diagnosticMessage.append(".")
+    }
+
+    let identifier = UserFacing<StrictString, InterfaceLocalization>({ _ in ruleIdentifier })
     let message = UserFacing<StrictString, InterfaceLocalization>({ _ in diagnosticMessage })
     let violation = StyleViolation(
       in: file,
-      at: start..<start,
+      at: range,
       replacementSuggestion: replacementSuggestion,
       noticeOnly: false,
       ruleIdentifier: identifier,

@@ -33,8 +33,6 @@ extension ProofreadingRule: Comparable {
       return .text(WorkaroundReminders.self)
     case .compatibilityCharacters:
       return .text(CompatibilityCharacters.self)
-    case .autoindentResilience:
-      return .syntax(AutoindentResilience.self)
     case .marks:
       return .text(Marks.self)
     case .syntaxColouring:

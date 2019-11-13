@@ -15,10 +15,14 @@
  */
 
 // @localization(🇩🇪DE) @crossReference(Lazy<Option>)
-/// Eine Einstellung, die bequem ausgewertet werden kann. Es kann sich von anderen Optionen herleiten, die geändert werden können bevor diese Einstellung ausgewertet wird.
+/// Eine Einstellung, die bequem ausgewertet werden kann.
+///
+/// Es kann sich von anderen Optionen herleiten, die geändert werden können bevor diese Einstellung ausgewertet wird.
 public typealias BequemeEinstellung = Lazy
 // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Lazy<Option>)
-/// An option which can be resolved lazily. It can be derived from the state of other options, which can be modified before this option’s value is resolved.
+/// An option which can be resolved lazily.
+///
+/// It can be derived from the state of other options, which can be modified before this option’s value is resolved.
 public struct Lazy<Option>: Decodable, Encodable where Option: Codable {
 
   // MARK: - Initialization

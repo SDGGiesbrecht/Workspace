@@ -29,11 +29,6 @@ Line 7
 Language specifier missing. Specify a language for syntax colouring. (syntaxColoring)
 /// ```
 
-Sources/BadStyle/Rules/Functionality/AutoindentResilience.swift
-Line 3
-“/**” may not survive autoindent (⌃I). Use “///” instead. (autoindentResilience)
-/**
-
 Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift
 Line 3
 U+00B2 may be lost in normalization; use “2” instead. (compatibilityCharacters)
@@ -154,6 +149,15 @@ The character “!” is obsolete. Use the not sign (¬). (Create an alias if ne
 let x = !y  // This should trigger; it is a prefix operator.
 let x = ¬y  // This should trigger; it is a prefix operator.
 
+Sources/BadStyle/SwiftFormat.swift
+Line 1
+Rename 'triggerSwiftFormatWithOverload(_:)' so it is no longer ambiguous with a trailing closure. (swiftFormat[AmbiguousTrailingClosureOverload])
+func triggerSwiftFormatWithOverload(_ closure: (Bool) -> Bool) {}
+
+Line 4
+Rename variable 'TriggerSwiftFormatWithBadCasing' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
+let TriggerSwiftFormatWithBadCasing = true
+
 Sources/BadStyle/Warnings/Warning.swift
 Line 3
 This should trigger a warning. (manualWarnings)
@@ -214,6 +218,14 @@ The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (�
 Line 6
 The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
     //   `swift test --generate-linuxmain`
+
+Line 8
+Rename variable '__allTests__BadStyleTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
+    static let __allTests__BadStyleTests = [
+
+Line 13
+Rename variable '__allTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
+  public func __allTests() -> [XCTestCaseEntry] {
 
 Tests/LinuxMain.swift
 

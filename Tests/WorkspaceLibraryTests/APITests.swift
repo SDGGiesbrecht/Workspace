@@ -83,6 +83,7 @@ class APITests: TestCase {
 
   func testBadStyle() {
     let configuration = WorkspaceConfiguration()
+    configuration.proofreading.swiftFormatConfiguration?.rules["AlwaysUseLowerCamelCase"] = true
     let failing = CustomTask(
       url: URL(string: "file:///tmp/Developer/Dependency")!,
       version: Version(1, 0, 0),
@@ -159,6 +160,8 @@ class APITests: TestCase {
     configuration.documentation.about["🇺🇸EN"] = ""
     configuration.documentation.api.yearFirstPublished = 2018
     configuration.documentation.api.ignoredDependencies.remove("Swift")
+    configuration.proofreading.swiftFormatConfiguration?.rules["UseShorthandTypeNames"] = false
+    configuration.proofreading.swiftFormatConfiguration?.rules["UseEnumForNamespacing"] = false
     configuration.documentation.relatedProjects = [
       .heading(text: [
         "🇬🇧EN": "Heading",
@@ -1061,7 +1064,6 @@ class APITests: TestCase {
     XCTAssertEqual(Korrekturregel.fehlendeImplementierung, .missingImplementation)
     XCTAssertEqual(Korrekturregel.notlösungsErinnerungen, .workaroundReminders)
     XCTAssertEqual(Korrekturregel.verträglichkeitsschriftzeichen, .compatibilityCharacters)
-    XCTAssertEqual(Korrekturregel.widerstandGegenAutomatischenEinzug, .autoindentResilience)
     XCTAssertEqual(Korrekturregel.überschrifte, .marks)
     XCTAssertEqual(Korrekturregel.syntaxhervorhebung, .syntaxColoring)
     XCTAssertEqual(Korrekturregel.hervorhebungsGroßschreibung, .calloutCasing)

@@ -158,16 +158,6 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
   }
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-  // @crossReference(ProofreadingRule.autoindentResilience)
-  /// Prohibits documentation comments vulnerable to auto‐indent.
-  case autoindentResilience
-  // @localization(🇩🇪DE) @crossReference(ProofreadingRule.autoindentResilience)
-  /// Verbietet Dokumentationskommentare, die automatische Einzüge nicht widerstehen.
-  public static var widerstandGegenAutomatischenEinzug: Korrekturregel {
-    return .autoindentResilience
-  }
-
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(ProofreadingRule.marks)
   /// Catches broken syntax in source code headings.
   case marks
@@ -365,7 +355,6 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
       return .intentional
 
     case .compatibilityCharacters,
-      .autoindentResilience,
       .marks:
       return .functionality
 

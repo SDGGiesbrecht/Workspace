@@ -29,11 +29,6 @@ Zeile 7
 Das Sprachkennzeichen fehlt. Eine Sprache für Syntaxhervorhebung angeben. (syntaxhervorhebung)
 /// ```
 
-Sources/BadStyle/Rules/Functionality/AutoindentResilience.swift
-Zeile 3
-„/**“ widersteht automatische Einzüge (⌃I) nicht. Stattdessen „///“ verwenden. (widerstandGegenAutomatischenEinzug)
-/**
-
 Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift
 Zeile 3
 U+00B2 geht bei Normalisierung vielleicht verloren; stattdessen „2“ verwenden. (verträglichkeitsschriftzeichen)
@@ -154,6 +149,15 @@ Das Schriftzeichen “!” ist überholt. Ein Negationszeichen (¬) verwenden. 
 let x = !y  // This should trigger; it is a prefix operator.
 let x = ¬y  // This should trigger; it is a prefix operator.
 
+Sources/BadStyle/SwiftFormat.swift
+Zeile 1
+Rename 'triggerSwiftFormatWithOverload(_:)' so it is no longer ambiguous with a trailing closure. (swiftFormat[AmbiguousTrailingClosureOverload])
+func triggerSwiftFormatWithOverload(_ closure: (Bool) -> Bool) {}
+
+Zeile 4
+Rename variable 'TriggerSwiftFormatWithBadCasing' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
+let TriggerSwiftFormatWithBadCasing = true
+
 Sources/BadStyle/Warnings/Warning.swift
 Zeile 3
 This should trigger a warning. (warnungenVonHand)
@@ -214,6 +218,14 @@ Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen 
 Zeile 6
 Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
     //   `swift test --generate-linuxmain`
+
+Zeile 8
+Rename variable '__allTests__BadStyleTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
+    static let __allTests__BadStyleTests = [
+
+Zeile 13
+Rename variable '__allTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
+  public func __allTests() -> [XCTestCaseEntry] {
 
 Tests/LinuxMain.swift
 

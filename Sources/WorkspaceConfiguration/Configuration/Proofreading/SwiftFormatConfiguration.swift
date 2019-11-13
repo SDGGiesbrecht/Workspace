@@ -20,10 +20,34 @@ public typealias SwiftFormatKonfiguration = SwiftFormatConfiguration.Configurati
 
 extension SwiftFormatConfiguration.Configuration {
 
-  internal static let `default`: SwiftFormatConfiguration.Configuration = {
+  internal static var `default`: SwiftFormatConfiguration.Configuration {
     let configuration = SwiftFormatConfiguration.Configuration()
-    configuration.rules = [:]
+
+    // Illogical style choices.
+    configuration.rules["IdentifiersMustBeASCII"] = false
+    configuration.rules["MultiLineTrailingCommas"] = false
+    configuration.rules["NoBlockComments"] = false
+
+    // Generally good advice, but rules are noisy due to many valid exceptions.
+    configuration.rules["DontRepeatTypeInStaticProperties"] = false
+    configuration.rules["NeverForceUnwrap"] = false
+    configuration.rules["NeverUseImplicitlyUnwrappedOptionals"] = false
+    configuration.rules["NoLeadingUnderscores"] = false
+    configuration.rules["OrderedImports"] = false
+    configuration.rules["UseSynthesizedInitializer"] = false
+
+    // Handled better during documentation coverage check.
+    configuration.rules["AllPublicDeclarationsHaveDocumentation"] = false
+
+    // Bugs currently result in false positives.
+    // #workaround(Swift 5.1.2, Can these be restored?)
+    configuration.rules["AlwaysUseLowerCamelCase"] = false
+    configuration.rules["BlankLineBetweenMembers"] = false
+    configuration.rules["CaseIndentLevelEqualsSwitch"] = false
+    configuration.rules["UseLetInEveryBoundCaseVariable"] = false
+    configuration.rules["ValidateDocumentationComments"] = false
+
     configuration.lineBreakBeforeEachArgument = true
     return configuration
-  }()
+  }
 }

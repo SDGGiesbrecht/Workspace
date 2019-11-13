@@ -68,10 +68,10 @@ public enum RelatedProjectEntry: Decodable, Encodable {
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
     switch self {
-    case .project(url: let url):
+    case .project(let url):
       try container.encode(RelatedProjectEntryType.project, forKey: CodingKeys.type)
       try container.encode(url, forKey: CodingKeys.details)
-    case .heading(text: let text):
+    case .heading(let text):
       try container.encode(RelatedProjectEntryType.heading, forKey: CodingKeys.type)
       try container.encode(text, forKey: CodingKeys.details)
     }

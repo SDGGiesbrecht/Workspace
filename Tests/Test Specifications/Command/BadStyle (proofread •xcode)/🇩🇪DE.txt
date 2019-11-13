@@ -2,7 +2,6 @@ $ arbeitsbereich proofread •xcode •no‐colour
 [Temporary]/BadStyle/Package.swift:2:13: warning: Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
 [Temporary]/BadStyle/Package.swift:2:19: warning: Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Documentation/SyntaxColouring.swift:7:5: warning: Das Sprachkennzeichen fehlt. Eine Sprache für Syntaxhervorhebung angeben. (syntaxhervorhebung)
-[Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/AutoindentResilience.swift:3:1: warning: „/**“ widersteht automatische Einzüge (⌃I) nicht. Stattdessen „///“ verwenden. (widerstandGegenAutomatischenEinzug)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift:3:22: warning: U+00B2 geht bei Normalisierung vielleicht verloren; stattdessen „2“ verwenden. (verträglichkeitsschriftzeichen)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/Mark.swift:3:1: warning: Unvollständige Überschriftssyntax. „// MARK: - “ verwenden. (überschrifte)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Intentional/MissingImplementation.swift:4:3: warning: Fehlende Implementierung. (fehlendeImplementierung)
@@ -28,6 +27,8 @@ $ arbeitsbereich proofread •xcode •no‐colour
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:59:52: warning: Die Schriftzeichenfolge “/=” ist überholt. Ein Geteiltzeichen (∶) verwenden. (unicode)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:63:11: warning: Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (Wenn nötig, ein Alias erstellen.) (unicode)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:65:9: warning: Das Schriftzeichen “!” ist überholt. Ein Negationszeichen (¬) verwenden. (Wenn nötig, ein Alias erstellen.) (unicode)
+[Temporary]/BadStyle/Sources/BadStyle/SwiftFormat.swift:1:6: warning: Rename 'triggerSwiftFormatWithOverload(_:)' so it is no longer ambiguous with a trailing closure. (swiftFormat[AmbiguousTrailingClosureOverload])
+[Temporary]/BadStyle/Sources/BadStyle/SwiftFormat.swift:4:5: warning: Rename variable 'TriggerSwiftFormatWithBadCasing' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Warning.swift:3:4: warning: This should trigger a warning. (warnungenVonHand)
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:3:4: warning: Notlösung: This should trigger. The workaround may no longer be necessary. (notlösungsErinnerungen)
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:6:4: warning: Notlösung: This should trigger. The workaround may no longer be necessary. (notlösungsErinnerungen)
@@ -38,6 +39,8 @@ $ arbeitsbereich proofread •xcode •no‐colour
 [Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:6:22: warning: Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
 [Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:6:23: warning: Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
 [Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:6:32: warning: Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
+[Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:8:16: warning: Rename variable '__allTests__BadStyleTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
+[Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:13:15: warning: Rename variable '__allTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
 
 $ Dependency fail
 Hello, world!

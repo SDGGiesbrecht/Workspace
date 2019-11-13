@@ -52,7 +52,7 @@ internal class ProofreadingStatus: DiagnosticConsumer {
       range = highlight.scalars(in: file.contents)
     } else {
       guard let location = diagnostic.location else {
-        return
+        return // @exempt(from: tests) Trigger unknown.
       }
       let start = location.scalar(in: file.contents)
       range = start ..< start
@@ -63,7 +63,7 @@ internal class ProofreadingStatus: DiagnosticConsumer {
     if let fixIt = diagnostic.fixIts.first,
       diagnostic.fixIts.count == 1, // @exempt(from: tests) No rules provide fix‐its yet.
       fixIt.range.scalars(in: file.contents) == range {
-      replacementSuggestion = StrictString(fixIt.text)
+      replacementSuggestion = StrictString(fixIt.text) // @exempt(from: tests)
     }
 
     // Extract rule identifier.

@@ -30,6 +30,7 @@ extension SwiftFormatConfiguration.Configuration {
 
     // Generally good advice, but rules are noisy due to many valid exceptions.
     configuration.rules["DontRepeatTypeInStaticProperties"] = false
+    configuration.rules["NeverForceTry"] = false
     configuration.rules["NeverForceUnwrap"] = false
     configuration.rules["NeverUseImplicitlyUnwrappedOptionals"] = false
     configuration.rules["NoLeadingUnderscores"] = false

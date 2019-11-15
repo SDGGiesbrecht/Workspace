@@ -211,11 +211,11 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-      from: Version(1, 2, 2)
+      from: Version(1, 2, 3)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      .upToNextMinor(from: Version(0, 16, 2))
+      .upToNextMinor(from: Version(0, 17, 0))
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}format", .exact(Version(0, 0, 50100))

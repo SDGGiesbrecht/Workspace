@@ -27,7 +27,7 @@ extension PackageRepository {
 
     var formatter: SwiftFormatter?
     if let formatConfiguration = try configuration(output: output).proofreading
-      .swiftFormatConfiguration
+      .swiftFormatConfiguration?.reducedToMachineResponsibilities()
     {
       formatter = SwiftFormatter(configuration: formatConfiguration)
     }

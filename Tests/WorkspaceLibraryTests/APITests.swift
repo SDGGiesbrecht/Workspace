@@ -367,6 +367,10 @@ class APITests: TestCase {
     XCTAssertEqual(configuration.projektname["de"], "Lokalisiert")
     configuration.korrektur.swiftFormatKonfiguration = nil
     XCTAssertNil(configuration.korrektur.swiftFormatKonfiguration)
+    configuration.normalise = true
+    XCTAssert(configuration.normalise)
+    configuration.normalisieren = false
+    XCTAssertFalse(configuration.normalisieren)
   }
 
   func testConfiguartionContext() {

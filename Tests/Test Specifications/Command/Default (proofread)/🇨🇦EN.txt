@@ -1,8 +1,5 @@
 $ workspace proofread •no‐colour
 
-Normalizing files...
-
-
 Proofreading source code... (§1)
 
 .gitignore

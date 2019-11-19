@@ -175,6 +175,42 @@ public final class WorkspaceConfiguration: Configuration {
   /// Options related to Xcode.
   public var xcode: XcodeConfiguration = XcodeConfiguration()
 
+  // @localization(🇺🇸EN) @localization(🇨🇦EN)
+  // @crossReference(WorkspaceConfiguration.normalize)
+  /// Whether or not to normalize project files.
+  ///
+  /// This is off by default.
+  ///
+  /// ```swift
+  /// $ workspace normalize
+  /// ```
+  public var normalize: Bool = false
+  // @localization(🇬🇧EN)
+  // @crossReference(WorkspaceConfiguration.normalize)
+  /// Whether or not to normalise project files.
+  ///
+  /// This is off by default.
+  ///
+  /// ```swift
+  /// $ workspace normalise
+  /// ```
+  public var normalise: Bool {
+    get { return normalize }
+    set { normalize = newValue }
+  }
+  // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.normalize)
+  /// Ob Arbeitsbereich die Projektdateien normalisieren soll.
+  ///
+  /// Wenn nicht angegeben, ist diese Einstellung aus.
+  ///
+  /// ```shell
+  /// $ arbeitsbereich normalisieren
+  /// ```
+  public var normalisieren: Bool {
+    get { return normalize }
+    set { normalize = newValue }
+  }
+
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(WorkspaceConfiguration.proofreading)
   /// Options related to proofreading.
@@ -285,6 +321,7 @@ public final class WorkspaceConfiguration: Configuration {
     fileHeaders.manage = true
     gitHub.manage = true
     xcode.manage = true
+    normalize = true
     documentation.readMe.manage = true
     continuousIntegration.manage = true
     documentation.api.generate = true
@@ -439,6 +476,7 @@ public final class WorkspaceConfiguration: Configuration {
     case fileHeaders
     case gitHub
     case xcode
+    case normalize
     case proofreading
     case testing
     case documentation
@@ -460,6 +498,7 @@ public final class WorkspaceConfiguration: Configuration {
     try container.encode(fileHeaders, forKey: .fileHeaders)
     try container.encode(gitHub, forKey: .gitHub)
     try container.encode(xcode, forKey: .xcode)
+    try container.encode(normalize, forKey: .normalize)
     try container.encode(proofreading, forKey: .proofreading)
     try container.encode(testing, forKey: .testing)
     try container.encode(documentation, forKey: .documentation)
@@ -485,6 +524,7 @@ public final class WorkspaceConfiguration: Configuration {
     fileHeaders = try container.decode(FileHeaderConfiguration.self, forKey: .fileHeaders)
     gitHub = try container.decode(GitHubConfiguration.self, forKey: .gitHub)
     xcode = try container.decode(XcodeConfiguration.self, forKey: .xcode)
+    normalize = try container.decode(Bool.self, forKey: .normalize)
     proofreading = try container.decode(ProofreadingConfiguration.self, forKey: .proofreading)
     testing = try container.decode(TestingConfiguration.self, forKey: .testing)
     documentation = try container.decode(

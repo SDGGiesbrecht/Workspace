@@ -86,7 +86,9 @@ extension Workspace {
       output: Command.Output
     ) throws {
 
-      try Workspace.Normalize.executeAsStep(options: options, output: output)
+      if try options.project.configuration(output: output).normalize {
+        try Workspace.Normalize.executeAsStep(options: options, output: output)
+      }
 
       let section = validationStatus.newSection()
 

@@ -83,6 +83,7 @@ class APITests: TestCase {
 
   func testBadStyle() {
     let configuration = WorkspaceConfiguration()
+    configuration.normalize = true
     configuration.proofreading.swiftFormatConfiguration?.rules["AlwaysUseLowerCamelCase"] = true
     let failing = CustomTask(
       url: URL(string: "file:///tmp/Developer/Dependency")!,
@@ -151,6 +152,7 @@ class APITests: TestCase {
 
     let configuration = WorkspaceConfiguration()
     configuration.optimizeForTests()
+    configuration.normalize = true
     configuration.documentation.repositoryURL = URL(string: "http://example.com")!
     configuration.documentation.currentVersion = Version(1, 0, 0)
     configuration.documentation.api.enforceCoverage = false
@@ -365,6 +367,10 @@ class APITests: TestCase {
     XCTAssertEqual(configuration.projektname["de"], "Lokalisiert")
     configuration.korrektur.swiftFormatKonfiguration = nil
     XCTAssertNil(configuration.korrektur.swiftFormatKonfiguration)
+    configuration.normalise = true
+    XCTAssert(configuration.normalise)
+    configuration.normalisieren = false
+    XCTAssertFalse(configuration.normalisieren)
   }
 
   func testConfiguartionContext() {
@@ -390,6 +396,7 @@ class APITests: TestCase {
   func testContinuousIntegrationWithoutScripts() {
     let configuration = WorkspaceConfiguration()
     configuration.provideWorkflowScripts = false
+    configuration.normalize = true
     configuration.continuousIntegration.manage = true
     configuration.licence.manage = true
     configuration.licence.licence = .mit
@@ -413,6 +420,7 @@ class APITests: TestCase {
 
   func testCustomProofread() {
     let configuration = WorkspaceConfiguration()
+    configuration.normalize = true
     configuration.proofreading.rules.remove(.calloutCasing)
     configuration.proofreading.unicodeRuleScope.remove(.ambiguous)
     for rule in ProofreadingRule.allCases {

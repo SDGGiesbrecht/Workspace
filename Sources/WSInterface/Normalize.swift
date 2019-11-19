@@ -37,13 +37,13 @@ extension Workspace {
         switch localization {
         case .englishUnitedKingdom:
           return
-            "normalises the project’s files by removing trailing whitespace, applying Unix newlines and performing canonical decomposition."
+            "normalises the project’s files by removing trailing whitespace, applying Unix newlines, performing canonical decomposition and formatting Swift files."
         case .englishUnitedStates, .englishCanada:
           return
-            "normalizes the project’s files by removing trailing whitespace, applying Unix newlines and performing canonical decomposition."
+            "normalizes the project’s files by removing trailing whitespace, applying Unix newlines, performing canonical decomposition and formatting Swift files."
         case .deutschDeutschland:
           return
-            "normalisiert die Dateien des Projekt, in dem Leerzeichen vom Zeilenende entfernt werden, Unix‐Zeilenumbrüche eingetauscht werden und kanonische Zersetzung ausgeführt wird."
+            "normalisiert die Dateien des Projekt, in dem Leerzeichen vom Zeilenende entfernt werden, Unix‐Zeilenumbrüche eingetauscht werden, kanonische Zersetzung ausgeführt wird und Swift‐Dateien formatiert werden."
         }
       })
 

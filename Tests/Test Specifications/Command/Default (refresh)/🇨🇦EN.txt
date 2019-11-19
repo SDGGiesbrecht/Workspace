@@ -15,9 +15,6 @@ Refreshing examples...
 Refreshing inherited documentation...
 
 
-Normalizing files...
-
-
 “Default” is refreshed and ready.
 
 0

@@ -152,6 +152,7 @@ class APITests: TestCase {
 
     let configuration = WorkspaceConfiguration()
     configuration.optimizeForTests()
+    configuration.normalize = true
     configuration.documentation.repositoryURL = URL(string: "http://example.com")!
     configuration.documentation.currentVersion = Version(1, 0, 0)
     configuration.documentation.api.enforceCoverage = false
@@ -391,6 +392,7 @@ class APITests: TestCase {
   func testContinuousIntegrationWithoutScripts() {
     let configuration = WorkspaceConfiguration()
     configuration.provideWorkflowScripts = false
+    configuration.normalize = true
     configuration.continuousIntegration.manage = true
     configuration.licence.manage = true
     configuration.licence.licence = .mit
@@ -414,6 +416,7 @@ class APITests: TestCase {
 
   func testCustomProofread() {
     let configuration = WorkspaceConfiguration()
+    configuration.normalize = true
     configuration.proofreading.rules.remove(.calloutCasing)
     configuration.proofreading.unicodeRuleScope.remove(.ambiguous)
     for rule in ProofreadingRule.allCases {

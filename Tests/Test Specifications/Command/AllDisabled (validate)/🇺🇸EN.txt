@@ -4,9 +4,6 @@ $ workspace validate •no‐colour
 Validating “AllDisabled”...
 
 
-Normalizing files...
-
-
 Proofreading source code... (§1)
 
 

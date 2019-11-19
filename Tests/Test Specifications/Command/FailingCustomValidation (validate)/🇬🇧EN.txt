@@ -4,9 +4,6 @@ $ workspace validate •no‐colour
 Validating ‘FailingCustomValidation’...
 
 
-Normalising files...
-
-
 Proofreading source code... (§1)
 
 

@@ -4,9 +4,6 @@ $ arbeitsbereich validate •no‐colour
 „FailingCustomValidation“ wird geprüft ...
 
 
-Deteien werden normalisiert ...
-
-
 Quelltext Korrektur wird gelesen ...
 
 

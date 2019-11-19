@@ -1,8 +1,5 @@
 $ arbeitsbereich korrekturlesen •no‐colour
 
-Deteien werden normalisiert ...
-
-
 Quelltext Korrektur wird gelesen ...
 
 .github/CONTRIBUTING.md

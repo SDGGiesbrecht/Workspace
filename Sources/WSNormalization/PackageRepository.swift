@@ -39,8 +39,7 @@ extension PackageRepository {
           var file = try TextFile(alreadyAt: url)
 
           if let formatter = formatter,
-            file.fileType == .swift  // ∨ file.fileType == .swiftPackageManifest
-          // #workaround(SDGSwift 0.16.2, Manifest documentation vulnerable to whitespace changes.)
+            file.fileType == .swift ∨ file.fileType == .swiftPackageManifest
           {
             let source = file.contents
             var result: String = ""

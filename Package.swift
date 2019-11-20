@@ -147,7 +147,7 @@ import PackageDescription
 /// - Manages projects for macOS, Linux, iOS, watchOS and tvOS.
 /// - [Configurable](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Libraries/WorkspaceConfiguration.html)
 let package = Package(
-    name: "Workspace",
+  name: "Workspace",
   platforms: [
     // These must also be updated in Sources/WSProject/PackageRepository.swift.
     .macOS(.v10_10)
@@ -218,7 +218,8 @@ let package = Package(
       .upToNextMinor(from: Version(0, 17, 0))
     ),
     .package(
-      url: "https://github.com/SDGGiesbrecht/swift\u{2D}format", .exact(Version(0, 0, 50100))
+      url: "https://github.com/SDGGiesbrecht/swift\u{2D}format",
+      .exact(Version(0, 0, 50100))
     ),
     .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(4, 0, 0))
   ],
@@ -533,7 +534,8 @@ let package = Package(
     /// configuration.documentation.api.generate = true
     /// configuration.documentation.api.yearFirstPublished = 2017
     /// ```
-    .target(name: "WorkspaceConfiguration",
+    .target(
+      name: "WorkspaceConfiguration",
       dependencies: [
         "WSLocalizations",
         .product(name: "SDGControlFlow", package: "SDGCornerstone"),

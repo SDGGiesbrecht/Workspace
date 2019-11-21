@@ -42,6 +42,14 @@ extension PackageRepository {
     try refreshTravisCI(output: output)
   }
 
+  private func relevantJobs(output: Command.Output) throws -> [ContinuousIntegrationJob] {
+    return try ContinuousIntegrationJob.allCases.filter { job in
+      return try job.isRequired(by: self, output: output)
+        // Simulator is unavailable during normal test.
+        ∨ (job ∈ ContinuousIntegrationJob.simulatorJobs ∧ isWorkspaceProject())
+    }
+  }
+
   private func refreshGitHubWorkflow(output: Command.Output) throws {
 
   }
@@ -53,11 +61,7 @@ extension PackageRepository {
       "  include:"
     ]
 
-    for job in ContinuousIntegrationJob.allCases
-    where try job.isRequired(by: self, output: output)
-      ∨ (job ∈ ContinuousIntegrationJob.simulatorJobs ∧ isWorkspaceProject())
-    {  // Simulator is unavailable during normal test.
-
+    for job in try relevantJobs(output: output) {
       travisConfiguration.append(
         contentsOf: try job.script(configuration: configuration(output: output))
       )

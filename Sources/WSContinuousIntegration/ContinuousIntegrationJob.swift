@@ -201,8 +201,55 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   // MARK: - GitHub Actions
 
+  private var gitHubActionMachine: String {
+    switch platform {
+    case .macOS:
+      return "macos\u{2D}10.15"
+    case .linux:
+      return "ubuntu\u{2D}18.04"
+    case .iOS, .watchOS, .tvOS:
+      unreachable()
+    }
+  }
+
+  private var refreshStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Refresh"
+      case .deutschDeutschland:
+        return "Auffrischen"
+      }
+    })
+  }
+
+  private var validateStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Refresh"
+      case .deutschDeutschland:
+        return "Prüfen"
+      }
+    })
+  }
+
   internal func gitHubWorkflowJob(configuration: WorkspaceConfiguration) -> [String] {
-    var result: [String] = []
+    let interfaceLocalization = configuration.developmentInterfaceLocalization()
+
+    #warning("Fill in other nuances from Travis CI.")
+    var result: [String] = [
+      "  \(name.resolved(for: interfaceLocalization)):",
+      "    runs\u{2D}on: \(gitHubActionMachine)",
+      "    steps:",
+      "    \u{2D} uses: actions/checkout@v1"
+    ]
+    result.append(contentsOf: [
+      "    \u{2D} name: \(refreshStepName.resolved(for: interfaceLocalization))",
+      "      run: \u{22}./Refresh (macOS).command\u{22}",
+      "    \u{2D} name: \(validateStepName.resolved(for: interfaceLocalization))",
+      "      run: \u{22}./Validate (macOS).command\u{22}"
+    ])
 
     return result
   }

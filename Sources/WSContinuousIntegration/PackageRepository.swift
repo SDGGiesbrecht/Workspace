@@ -38,20 +38,33 @@ extension PackageRepository {
       )
     }
 
-    try refreshGitHubWorkflow(output: output)
+    try refreshGitHubWorkflows(output: output)
     try refreshTravisCI(output: output)
   }
 
   private func relevantJobs(output: Command.Output) throws -> [ContinuousIntegrationJob] {
     return try ContinuousIntegrationJob.allCases.filter { job in
       return try job.isRequired(by: self, output: output)
-        // Simulator is unavailable during normal test.
+      // Simulator is unavailable during normal test.
         ∨ (job ∈ ContinuousIntegrationJob.simulatorJobs ∧ isWorkspaceProject())
     }
   }
 
-  private func refreshGitHubWorkflow(output: Command.Output) throws {
+  private func refreshGitHubWorkflows(output: Command.Output) throws {
+    let interfaceLocalization = try configuration(output: output).developmentInterfaceLocalization()
+    for job in try relevantJobs(output: output) {
+      let name = job.name.resolved(for: interfaceLocalization)
 
+      var workflow: [String] = [
+        "name: \(name)"
+      ]
+
+      var workflowFile = try TextFile(
+        possiblyAt: location.appendingPathComponent(".github/workflows/\(name).yaml")
+      )
+      workflowFile.body = workflow.joinedAsLines()
+      try workflowFile.writeChanges(for: self, output: output)
+    }
   }
 
   private func refreshTravisCI(output: Command.Output) throws {
@@ -63,7 +76,7 @@ extension PackageRepository {
 
     for job in try relevantJobs(output: output) {
       travisConfiguration.append(
-        contentsOf: try job.script(configuration: configuration(output: output))
+        contentsOf: try job.travisScript(configuration: configuration(output: output))
       )
     }
 

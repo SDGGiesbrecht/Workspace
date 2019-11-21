@@ -40,7 +40,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   // MARK: - Properties
 
-  private var name: UserFacing<StrictString, InterfaceLocalization> {
+  internal var name: UserFacing<StrictString, InterfaceLocalization> {
     switch self {
     case .macOS:
       return UserFacing({ (localization) in
@@ -199,6 +199,20 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
   }
 
+  // MARK: - GitHub Actions
+
+  internal func gitHubWorkflow(configuration: WorkspaceConfiguration) throws -> [String] {
+    var workflow: [String] = []
+
+    let localization = configuration.developmentInterfaceLocalization()
+    let name = self.name.resolved(for: localization)
+    workflow.append("name: \(name)")
+
+    return workflow
+  }
+
+  // MARK: - Travis CI
+
   private var travisOperatingSystemKey: String {
     switch platform {
     case .macOS:
@@ -221,7 +235,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
   }
 
-  internal func script(configuration: WorkspaceConfiguration) throws -> [String] {
+  internal func travisScript(configuration: WorkspaceConfiguration) throws -> [String] {
     let localization = configuration.developmentInterfaceLocalization()
     var result: [String] = [
       "    \u{2D} name: \u{22}" + String(name.resolved(for: localization)) + "\u{22}",

@@ -16,13 +16,13 @@ Line 2
 The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
-Line 16
+Line 17
 The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
-        // .package(url: /* package url */, from: "1.0.0"),
+    // .package(url: /* package url */, from: "1.0.0"),
 
-Line 16
+Line 17
 The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
-        // .package(url: /* package url */, from: "1.0.0"),
+    // .package(url: /* package url */, from: "1.0.0"),
 
 README.md
 Sources/Default/Default.swift

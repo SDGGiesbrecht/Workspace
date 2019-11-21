@@ -17,11 +17,11 @@ LICENSE.md
 Package.swift
 Line 24
 The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
-        // .package(url: /* package url */, from: "1.0.0"),
+    // .package(url: /* package url */, from: "1.0.0"),
 
 Line 24
 The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
-        // .package(url: /* package url */, from: "1.0.0"),
+    // .package(url: /* package url */, from: "1.0.0"),
 
 README.md
 Sources/AllTasks/AllTasks.swift

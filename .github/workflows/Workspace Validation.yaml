@@ -17,3 +17,51 @@ name: Workspace Validation
 on: [push, pull_request]
 
 jobs:
+  macOS:
+    runs-on: macos-10.15
+    steps:
+    - uses: actions/checkout@v1
+    - name: Refresh
+      run: "./Refresh (macOS).command"
+    - name: Refresh
+      run: "./Validate (macOS).command"
+  Linux:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v1
+    - name: Refresh
+      run: "./Refresh (macOS).command"
+    - name: Refresh
+      run: "./Validate (macOS).command"
+  iOS:
+    runs-on: macos-10.15
+    steps:
+    - uses: actions/checkout@v1
+    - name: Refresh
+      run: "./Refresh (macOS).command"
+    - name: Refresh
+      run: "./Validate (macOS).command"
+  tvOS:
+    runs-on: macos-10.15
+    steps:
+    - uses: actions/checkout@v1
+    - name: Refresh
+      run: "./Refresh (macOS).command"
+    - name: Refresh
+      run: "./Validate (macOS).command"
+  Miscellaneous:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v1
+    - name: Refresh
+      run: "./Refresh (macOS).command"
+    - name: Refresh
+      run: "./Validate (macOS).command"
+  Deployment:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v1
+    - name: Refresh
+      run: "./Refresh (macOS).command"
+    - name: Refresh
+      run: "./Validate (macOS).command"

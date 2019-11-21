@@ -38,6 +38,15 @@ extension PackageRepository {
       )
     }
 
+    try refreshGitHubWorkflow(output: output)
+    try refreshTravisCI(output: output)
+  }
+
+  private func refreshGitHubWorkflow(output: Command.Output) throws {
+
+  }
+
+  private func refreshTravisCI(output: Command.Output) throws {
     var travisConfiguration: [String] = [
       "language: generic",
       "matrix:",

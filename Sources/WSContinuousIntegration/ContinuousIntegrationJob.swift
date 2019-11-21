@@ -222,9 +222,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   }
 
   internal func script(configuration: WorkspaceConfiguration) throws -> [String] {
-    let configuredLocalization = configuration.documentation.localizations
-      .first.flatMap { InterfaceLocalization(reasonableMatchFor: $0.code) }
-    let localization = configuredLocalization ?? InterfaceLocalization.fallbackLocalization
+    let localization = configuration.developmentInterfaceLocalization()
     var result: [String] = [
       "    \u{2D} name: \u{22}" + String(name.resolved(for: localization)) + "\u{22}",
       "      os: " + travisOperatingSystemKey

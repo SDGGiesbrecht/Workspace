@@ -201,14 +201,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   // MARK: - GitHub Actions
 
-  internal func gitHubWorkflow(configuration: WorkspaceConfiguration) throws -> [String] {
-    var workflow: [String] = []
+  internal func gitHubWorkflowJob(configuration: WorkspaceConfiguration) -> [String] {
+    var result: [String] = []
 
-    let localization = configuration.developmentInterfaceLocalization()
-    let name = self.name.resolved(for: localization)
-    workflow.append("name: \(name)")
-
-    return workflow
+    return result
   }
 
   // MARK: - Travis CI

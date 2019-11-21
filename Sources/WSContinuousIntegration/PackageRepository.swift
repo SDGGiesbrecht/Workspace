@@ -38,7 +38,7 @@ extension PackageRepository {
       )
     }
 
-    try refreshGitHubWorkflows(output: output)
+    try refreshGitHubWorkflow(output: output)
     try refreshTravisCI(output: output)
   }
 
@@ -50,21 +50,35 @@ extension PackageRepository {
     }
   }
 
-  private func refreshGitHubWorkflows(output: Command.Output) throws {
-    let interfaceLocalization = try configuration(output: output).developmentInterfaceLocalization()
+  private func refreshGitHubWorkflow(output: Command.Output) throws {
+    let configuration = try self.configuration(output: output)
+    let interfaceLocalization = configuration.developmentInterfaceLocalization()
+    let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Workspace Validation"
+      case .deutschDeutschland:
+        return "Arbeitsbereichprüfung"
+      }
+    }).resolved(for: interfaceLocalization)
+
+    var workflow: [String] = [
+      "name: \(name)",
+      "",
+      "on: [push, pull_request]",
+      "",
+      "jobs:"
+    ]
+
     for job in try relevantJobs(output: output) {
-      let name = job.name.resolved(for: interfaceLocalization)
-
-      var workflow: [String] = [
-        "name: \(name)"
-      ]
-
-      var workflowFile = try TextFile(
-        possiblyAt: location.appendingPathComponent(".github/workflows/\(name).yaml")
-      )
-      workflowFile.body = workflow.joinedAsLines()
-      try workflowFile.writeChanges(for: self, output: output)
+      workflow.append(contentsOf: job.gitHubWorkflowJob(configuration: configuration))
     }
+
+    var workflowFile = try TextFile(
+      possiblyAt: location.appendingPathComponent(".github/workflows/\(name).yaml")
+    )
+    workflowFile.body = workflow.joinedAsLines()
+    try workflowFile.writeChanges(for: self, output: output)
   }
 
   private func refreshTravisCI(output: Command.Output) throws {

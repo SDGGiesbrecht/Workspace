@@ -24,7 +24,7 @@ jobs:
     - name: Validate
       run: |
         export SWIFT_VERSION=5.1.2
-        eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\"
+        eval \"$(curl -sL https://swiftenv.fuller.li/install.sh)\"
         \"./Refresh (macOS).command\"
         \"./Validate (macOS).command\" •job macos
   Linux:
@@ -34,7 +34,7 @@ jobs:
     - name: Validate
       run: |
         export SWIFT_VERSION=5.1.2
-        eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\"
+        eval \"$(curl -sL https://swiftenv.fuller.li/install.sh)\"
         \"./Refresh (macOS).command\"
         \"./Validate (macOS).command\" •job linux
   iOS:
@@ -44,7 +44,7 @@ jobs:
     - name: Validate
       run: |
         export SWIFT_VERSION=5.1.2
-        eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\"
+        eval \"$(curl -sL https://swiftenv.fuller.li/install.sh)\"
         \"./Refresh (macOS).command\"
         \"./Validate (macOS).command\" •job ios
   tvOS:
@@ -54,7 +54,7 @@ jobs:
     - name: Validate
       run: |
         export SWIFT_VERSION=5.1.2
-        eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\"
+        eval \"$(curl -sL https://swiftenv.fuller.li/install.sh)\"
         \"./Refresh (macOS).command\"
         \"./Validate (macOS).command\" •job tvos
   Miscellaneous:
@@ -64,7 +64,7 @@ jobs:
     - name: Validate
       run: |
         export SWIFT_VERSION=5.1.2
-        eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\"
+        eval \"$(curl -sL https://swiftenv.fuller.li/install.sh)\"
         \"./Refresh (macOS).command\"
         \"./Validate (macOS).command\" •job miscellaneous
   Deployment:
@@ -74,6 +74,6 @@ jobs:
     - name: Validate
       run: |
         export SWIFT_VERSION=5.1.2
-        eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\"
+        eval \"$(curl -sL https://swiftenv.fuller.li/install.sh)\"
         \"./Refresh (macOS).command\"
         \"./Validate (macOS).command\" •job deployment

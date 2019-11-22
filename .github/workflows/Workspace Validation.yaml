@@ -25,8 +25,8 @@ jobs:
       run: |
         export SWIFT_VERSION=5.1.2
         eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
-        \"./Refresh (macOS).command\"
-        \"./Validate (macOS).command\" •job macos
+        './Refresh (macOS).command'
+        './Validate (macOS).command' •job macos
   Linux:
     runs-on: ubuntu-18.04
     steps:
@@ -35,8 +35,8 @@ jobs:
       run: |
         export SWIFT_VERSION=5.1.2
         eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
-        \"./Refresh (macOS).command\"
-        \"./Validate (macOS).command\" •job linux
+        './Refresh (macOS).command'
+        './Validate (macOS).command' •job linux
   iOS:
     runs-on: macos-latest
     steps:
@@ -45,8 +45,8 @@ jobs:
       run: |
         export SWIFT_VERSION=5.1.2
         eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
-        \"./Refresh (macOS).command\"
-        \"./Validate (macOS).command\" •job ios
+        './Refresh (macOS).command'
+        './Validate (macOS).command' •job ios
   tvOS:
     runs-on: macos-latest
     steps:
@@ -55,8 +55,8 @@ jobs:
       run: |
         export SWIFT_VERSION=5.1.2
         eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
-        \"./Refresh (macOS).command\"
-        \"./Validate (macOS).command\" •job tvos
+        './Refresh (macOS).command'
+        './Validate (macOS).command' •job tvos
   Miscellaneous:
     runs-on: ubuntu-18.04
     steps:
@@ -65,8 +65,8 @@ jobs:
       run: |
         export SWIFT_VERSION=5.1.2
         eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
-        \"./Refresh (macOS).command\"
-        \"./Validate (macOS).command\" •job miscellaneous
+        './Refresh (macOS).command'
+        './Validate (macOS).command' •job miscellaneous
   Deployment:
     runs-on: ubuntu-18.04
     steps:
@@ -75,5 +75,5 @@ jobs:
       run: |
         export SWIFT_VERSION=5.1.2
         eval "$(curl -sL https://swiftenv.fuller.li/install.sh)"
-        \"./Refresh (macOS).command\"
-        \"./Validate (macOS).command\" •job deployment
+        './Refresh (macOS).command'
+        './Validate (macOS).command' •job deployment

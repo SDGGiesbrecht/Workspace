@@ -261,9 +261,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       "      run: |",
       commandEntry(swiftVersionSelection),
       commandEntry(swiftVersionFetch, escaping: false),
-      commandEntry("\u{22}./Refresh (macOS).command\u{22}"),
+      commandEntry("\u{27}./Refresh (macOS).command\u{27}"),
       commandEntry(
-        "\u{22}./Validate (macOS).command\u{22} •job "
+        "\u{27}./Validate (macOS).command\u{27} •job "
           + String(argumentName.resolved(for: .englishCanada))
       )
     ])

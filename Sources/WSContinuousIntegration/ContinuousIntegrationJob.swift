@@ -253,11 +253,19 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       "    steps:",
       "    \u{2D} uses: actions/checkout@v1"
     ]
+
+    func commandEntry(_ command: String) -> String {
+      return "      run: \(escapeCommand(command))"
+    }
+
     result.append(contentsOf: [
       "    \u{2D} name: \(refreshStepName.resolved(for: interfaceLocalization))",
-      "      run: \(escapeCommand("\u{22}./Refresh (macOS).command\u{22}"))",
+      commandEntry("bash \u{22}./Refresh (macOS).command\u{22}"),
       "    \u{2D} name: \(validateStepName.resolved(for: interfaceLocalization))",
-      "      run: \(escapeCommand("\u{22}./Validate (macOS).command\u{22}"))",
+      commandEntry(
+        "bash \u{22}./Validate (macOS).command\u{22} •job "
+          + String(argumentName.resolved(for: .englishCanada))
+      )
     ])
 
     return result

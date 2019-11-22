@@ -22,46 +22,46 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Refresh
-      run: "\"./Refresh (macOS).command\""
+      run: "bash \"./Refresh (macOS).command\""
     - name: Refresh
-      run: "\"./Validate (macOS).command\""
+      run: "bash \"./Validate (macOS).command\" •job macos"
   Linux:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v1
     - name: Refresh
-      run: "\"./Refresh (macOS).command\""
+      run: "bash \"./Refresh (macOS).command\""
     - name: Refresh
-      run: "\"./Validate (macOS).command\""
+      run: "bash \"./Validate (macOS).command\" •job linux"
   iOS:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v1
     - name: Refresh
-      run: "\"./Refresh (macOS).command\""
+      run: "bash \"./Refresh (macOS).command\""
     - name: Refresh
-      run: "\"./Validate (macOS).command\""
+      run: "bash \"./Validate (macOS).command\" •job ios"
   tvOS:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v1
     - name: Refresh
-      run: "\"./Refresh (macOS).command\""
+      run: "bash \"./Refresh (macOS).command\""
     - name: Refresh
-      run: "\"./Validate (macOS).command\""
+      run: "bash \"./Validate (macOS).command\" •job tvos"
   Miscellaneous:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v1
     - name: Refresh
-      run: "\"./Refresh (macOS).command\""
+      run: "bash \"./Refresh (macOS).command\""
     - name: Refresh
-      run: "\"./Validate (macOS).command\""
+      run: "bash \"./Validate (macOS).command\" •job miscellaneous"
   Deployment:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v1
     - name: Refresh
-      run: "\"./Refresh (macOS).command\""
+      run: "bash \"./Refresh (macOS).command\""
     - name: Refresh
-      run: "\"./Validate (macOS).command\""
+      run: "bash \"./Validate (macOS).command\" •job deployment"

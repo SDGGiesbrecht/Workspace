@@ -199,6 +199,14 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
   }
 
+  // MARK: - YAML
+
+  func escapeCommand(_ command: String) -> String {
+    var escapedCommand = command.replacingOccurrences(of: "\u{5C}", with: "\u{5C}\u{5C}")
+    escapedCommand = escapedCommand.replacingOccurrences(of: "\u{22}", with: "\u{5C}\u{22}")
+    return "\u{22}\(escapedCommand)\u{22}"
+  }
+
   // MARK: - GitHub Actions
 
   private var gitHubActionMachine: String {
@@ -247,9 +255,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     ]
     result.append(contentsOf: [
       "    \u{2D} name: \(refreshStepName.resolved(for: interfaceLocalization))",
-      "      run: \u{22}./Refresh (macOS).command\u{22}",
+      "      run: \(escapeCommand("\u{22}./Refresh (macOS).command\u{22}"))",
       "    \u{2D} name: \(validateStepName.resolved(for: interfaceLocalization))",
-      "      run: \u{22}./Validate (macOS).command\u{22}"
+      "      run: \(escapeCommand("\u{22}./Validate (macOS).command\u{22}"))",
     ])
 
     return result
@@ -322,9 +330,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     result.append("      script:")
 
     func commandEntry(_ command: String) -> String {
-      var escapedCommand = command.replacingOccurrences(of: "\u{5C}", with: "\u{5C}\u{5C}")
-      escapedCommand = escapedCommand.replacingOccurrences(of: "\u{22}", with: "\u{5C}\u{22}")
-      return "        \u{2D} \u{22}\(escapedCommand)\u{22}"
+      return "        \u{2D} \(escapeCommand(command))"
     }
 
     if platform == .macOS {
@@ -342,6 +348,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       ])
     }
 
+    #warning("Is bash necessary?")
     result.append(contentsOf: [
       commandEntry("bash \u{22}./Refresh (macOS).command\u{22}"),
       commandEntry(

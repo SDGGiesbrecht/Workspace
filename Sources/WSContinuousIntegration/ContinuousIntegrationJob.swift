@@ -354,7 +354,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       ])
     }
 
-    #warning("Is bash necessary?")
+    #warning("Is bash necessary? Can these be merged with GitHub actions?")
     result.append(contentsOf: [
       commandEntry("bash \u{22}./Refresh (macOS).command\u{22}"),
       commandEntry(

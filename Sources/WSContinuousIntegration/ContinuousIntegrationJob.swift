@@ -212,7 +212,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   func escapeCommand(_ command: String) -> String {
     var escapedCommand = command.replacingOccurrences(of: "\u{5C}", with: "\u{5C}\u{5C}")
     escapedCommand = escapedCommand.replacingOccurrences(of: "\u{22}", with: "\u{5C}\u{22}")
-    return "\u{22}\(escapedCommand)\u{22}"
+    return escapedCommand
   }
 
   // MARK: - GitHub Actions
@@ -337,7 +337,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     result.append("      script:")
 
     func commandEntry(_ command: String) -> String {
-      return "        \u{2D} \(escapeCommand(command))"
+      return "        \u{2D} \u{22}\(escapeCommand(command))\u{22}"
     }
 
     if platform == .macOS {

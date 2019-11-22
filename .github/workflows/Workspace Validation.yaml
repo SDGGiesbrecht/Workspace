@@ -21,47 +21,59 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Refresh
-      run: "bash \"./Refresh (macOS).command\""
     - name: Validate
-      run: "bash \"./Validate (macOS).command\" •job macos"
+      run: |
+        "export SWIFT_VERSION=5.1.2"
+        "eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\""
+        "\"./Refresh (macOS).command\""
+        "\"./Validate (macOS).command\" •job macos"
   Linux:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v1
-    - name: Refresh
-      run: "bash \"./Refresh (macOS).command\""
     - name: Validate
-      run: "bash \"./Validate (macOS).command\" •job linux"
+      run: |
+        "export SWIFT_VERSION=5.1.2"
+        "eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\""
+        "\"./Refresh (macOS).command\""
+        "\"./Validate (macOS).command\" •job linux"
   iOS:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Refresh
-      run: "bash \"./Refresh (macOS).command\""
     - name: Validate
-      run: "bash \"./Validate (macOS).command\" •job ios"
+      run: |
+        "export SWIFT_VERSION=5.1.2"
+        "eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\""
+        "\"./Refresh (macOS).command\""
+        "\"./Validate (macOS).command\" •job ios"
   tvOS:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Refresh
-      run: "bash \"./Refresh (macOS).command\""
     - name: Validate
-      run: "bash \"./Validate (macOS).command\" •job tvos"
+      run: |
+        "export SWIFT_VERSION=5.1.2"
+        "eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\""
+        "\"./Refresh (macOS).command\""
+        "\"./Validate (macOS).command\" •job tvos"
   Miscellaneous:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v1
-    - name: Refresh
-      run: "bash \"./Refresh (macOS).command\""
     - name: Validate
-      run: "bash \"./Validate (macOS).command\" •job miscellaneous"
+      run: |
+        "export SWIFT_VERSION=5.1.2"
+        "eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\""
+        "\"./Refresh (macOS).command\""
+        "\"./Validate (macOS).command\" •job miscellaneous"
   Deployment:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v1
-    - name: Refresh
-      run: "bash \"./Refresh (macOS).command\""
     - name: Validate
-      run: "bash \"./Validate (macOS).command\" •job deployment"
+      run: |
+        "export SWIFT_VERSION=5.1.2"
+        "eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\""
+        "\"./Refresh (macOS).command\""
+        "\"./Validate (macOS).command\" •job deployment"

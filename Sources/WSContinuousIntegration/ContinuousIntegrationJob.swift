@@ -199,7 +199,15 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
   }
 
-  // MARK: - YAML
+  // MARK: - Shared
+
+  private var swiftVersionSelection: String {
+    return "export SWIFT_VERSION=5.1.2"
+  }
+  private var swiftVersionFetch: String {
+    return
+      "eval \u{22}$(curl \u{2D}sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv\u{2D}install.sh)\u{22}"
+  }
 
   func escapeCommand(_ command: String) -> String {
     var escapedCommand = command.replacingOccurrences(of: "\u{5C}", with: "\u{5C}\u{5C}")
@@ -219,17 +227,6 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     case .iOS, .watchOS, .tvOS:
       unreachable()
     }
-  }
-
-  private var refreshStepName: UserFacing<StrictString, InterfaceLocalization> {
-    return UserFacing({ (localization) in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Refresh"
-      case .deutschDeutschland:
-        return "Auffrischen"
-      }
-    })
   }
 
   private var validateStepName: UserFacing<StrictString, InterfaceLocalization> {
@@ -255,15 +252,17 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     ]
 
     func commandEntry(_ command: String) -> String {
-      return "      run: \(escapeCommand(command))"
+      return "        \(escapeCommand(command))"
     }
 
     result.append(contentsOf: [
-      "    \u{2D} name: \(refreshStepName.resolved(for: interfaceLocalization))",
-      commandEntry("bash \u{22}./Refresh (macOS).command\u{22}"),
       "    \u{2D} name: \(validateStepName.resolved(for: interfaceLocalization))",
+      "      run: |",
+      commandEntry(swiftVersionSelection),
+      commandEntry(swiftVersionFetch),
+      commandEntry("\u{22}./Refresh (macOS).command\u{22}"),
       commandEntry(
-        "bash \u{22}./Validate (macOS).command\u{22} •job "
+        "\u{22}./Validate (macOS).command\u{22} •job "
           + String(argumentName.resolved(for: .englishCanada))
       )
     ])
@@ -349,10 +348,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
     if platform == .linux {
       result.append(contentsOf: [
-        commandEntry("export SWIFT_VERSION=5.1.1"),
-        commandEntry(
-          "eval \u{22}$(curl \u{2D}sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv\u{2D}install.sh)\u{22}"
-        )
+        commandEntry(swiftVersionSelection),
+        commandEntry(swiftVersionFetch)
       ])
     }
 

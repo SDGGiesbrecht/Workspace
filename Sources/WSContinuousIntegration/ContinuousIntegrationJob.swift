@@ -208,6 +208,13 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return
       "eval \u{22}$(curl \u{2D}sL https://swiftenv.fuller.li/install.sh)\u{22}"
   }
+  private var refreshCommand: String {
+    return "\u{27}./Refresh (macOS).command\u{27}"
+  }
+  private var validateCommand: String {
+    return "\u{27}./Validate (macOS).command\u{27} •job "
+      + String(argumentName.resolved(for: .englishCanada))
+  }
 
   func escapeCommand(_ command: String) -> String {
     var escapedCommand = command.replacingOccurrences(of: "\u{5C}", with: "\u{5C}\u{5C}")
@@ -243,7 +250,6 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   internal func gitHubWorkflowJob(configuration: WorkspaceConfiguration) -> [String] {
     let interfaceLocalization = configuration.developmentInterfaceLocalization()
 
-    #warning("Fill in other nuances from Travis CI.")
     var result: [String] = [
       "  \(name.resolved(for: interfaceLocalization)):",
       "    runs\u{2D}on: \(gitHubActionMachine)",
@@ -261,11 +267,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       "      run: |",
       commandEntry(swiftVersionSelection),
       commandEntry(swiftVersionFetch, escaping: false),
-      commandEntry("\u{27}./Refresh (macOS).command\u{27}"),
-      commandEntry(
-        "\u{27}./Validate (macOS).command\u{27} •job "
-          + String(argumentName.resolved(for: .englishCanada))
-      )
+      commandEntry(refreshCommand),
+      commandEntry(validateCommand)
     ])
 
     return result
@@ -354,13 +357,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       ])
     }
 
-    #warning("Is bash necessary? Can these be merged with GitHub actions?")
     result.append(contentsOf: [
-      commandEntry("bash \u{22}./Refresh (macOS).command\u{22}"),
-      commandEntry(
-        "bash \u{22}./Validate (macOS).command\u{22} •job "
-          + String(argumentName.resolved(for: .englishCanada))
-      )
+      commandEntry(refreshCommand),
+      commandEntry(validateCommand)
     ])
 
     return result

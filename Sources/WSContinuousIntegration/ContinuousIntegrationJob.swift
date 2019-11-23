@@ -206,7 +206,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   }
   private var swiftVersionFetch: String {
     return
-      "eval \u{22}$(curl \u{2D}sL https://swiftenv.fuller.li/install.sh)\u{22}"
+      "eval \u{22}$(curl \u{2D}sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv\u{2D}install.sh)\u{22}"
   }
   private var refreshCommand: String {
     return "\u{27}./Refresh (macOS).command\u{27}"

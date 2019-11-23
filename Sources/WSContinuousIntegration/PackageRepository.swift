@@ -71,8 +71,8 @@ extension PackageRepository {
     ]
 
     for job in try relevantJobs(output: output)
-      // #workaround(Activating one at a time.)
-      where job ∉ Set([.linux, .iOS, .watchOS, .tvOS, .miscellaneous, .deployment]) {
+    // #workaround(Activating one at a time.)
+    where job ∉ Set([.linux, .iOS, .watchOS, .tvOS, .miscellaneous, .deployment]) {
       workflow.append(contentsOf: job.gitHubWorkflowJob(configuration: configuration))
     }
 

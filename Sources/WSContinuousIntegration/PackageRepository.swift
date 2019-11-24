@@ -101,13 +101,13 @@ extension PackageRepository {
         var line = line
         line.scalars.replaceMatches(
           for:
-            "\u{22}bash \u{5C}\u{22}./Validate (macOS).command\u{5C}\u{22} •job ios\u{22}"
+            "\u{27}./Validate (macOS).command\u{27} •job ios"
             .scalars,
           with: "swift run test‐ios‐simulator".scalars
         )
         line.scalars.replaceMatches(
           for:
-            "\u{22}bash \u{5C}\u{22}./Validate (macOS).command\u{5C}\u{22} •job tvos\u{22}"
+            "\u{27}./Validate (macOS).command\u{27} •job tvos"
             .scalars,
           with: "swift run test‐tvos‐simulator".scalars
         )

@@ -202,7 +202,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   // MARK: - Shared
 
   private var swiftVersionSelection: String {
-    return "export SWIFT_VERSION=5.1.2"
+    return "export SWIFT_VERSION=5.1.1"
   }
   private var swiftVersionFetch: String {
     return

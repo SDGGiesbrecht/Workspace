@@ -229,7 +229,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     case .macOS:
       // #workaround(workspace version 0.27.0, GitHub doesn’t provide version specificity.)
       return "macos\u{2D}latest"
-    case .linux:
+    case .linux: // @exempt(from: tests)
+      // #workaround(Not yet reachable; Linux workflow not exposed.)
       return "ubuntu\u{2D}18.04"
     case .iOS, .watchOS, .tvOS:
       unreachable()

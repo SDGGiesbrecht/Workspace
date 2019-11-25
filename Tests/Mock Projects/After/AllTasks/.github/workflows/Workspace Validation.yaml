@@ -1,0 +1,23 @@
+# Workspace Validation.yaml
+#
+#
+# ©2019
+#
+# This software is subject to copyright law.
+# It may not be used, copied, distributed or modified without first obtaining a private licence from the copyright holder(s).
+
+name: Workspace Validation
+
+on: [push, pull_request]
+
+jobs:
+  macOS:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Validate
+      run: |
+        export SWIFT_VERSION=5.1.1
+        eval "$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)"
+        './Refresh (macOS).command'
+        './Validate (macOS).command' •job macos

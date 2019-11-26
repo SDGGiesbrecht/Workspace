@@ -267,11 +267,12 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       return "        \(processed)"
     }
 
+    let xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion.string(droppingEmptyPatch: true)
     result.append(contentsOf: [
       "    \u{2D} name: \(validateStepName.resolved(for: interfaceLocalization))",
       "      run: |",
-      commandEntry(swiftVersionSelection),
-      commandEntry(swiftVersionFetch, escaping: false),
+      commandEntry("xcversion install \(xcodeVersion)"),
+      commandEntry("xcversion select \(xcodeVersion)"),
       commandEntry(refreshCommand),
       commandEntry(validateCommand)
     ])
@@ -330,7 +331,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     switch platform {
     case .macOS:
       var version = ContinuousIntegrationJob.currentXcodeVersion.string(droppingEmptyPatch: true)
-      if version.hasSuffix(".0") {
+      if version.hasSuffix(".0") { // @exempt(from: tests)
         version.removeLast(2)
       }
       result.append("      osx_image: xcode\(version)")

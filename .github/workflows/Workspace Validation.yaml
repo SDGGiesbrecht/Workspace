@@ -27,3 +27,13 @@ jobs:
         xcversion select 11.2
         './Refresh (macOS).command'
         './Validate (macOS).command' •job macos
+  Linux:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v1
+    - name: Validate
+      run: |
+        xcversion install 11.2
+        xcversion select 11.2
+        './Refresh (macOS).command'
+        './Validate (macOS).command' •job linux

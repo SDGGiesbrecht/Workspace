@@ -33,6 +33,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   case miscellaneous
   case deployment
 
+  public static let currentSwiftVersion = Version(5, 1, 1)
+  public static let currentXcodeVersion = Version(11, 2, 0)
+
   public static let simulatorJobs: Set<ContinuousIntegrationJob> = [
     .iOS,
     .tvOS
@@ -202,7 +205,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   // MARK: - Shared
 
   private var swiftVersionSelection: String {
-    return "export SWIFT_VERSION=5.1.1"
+    let version = ContinuousIntegrationJob.currentSwiftVersion.string(droppingEmptyPatch: true)
+    return "export SWIFT_VERSION=\(version)"
   }
   private var swiftVersionFetch: String {
     return
@@ -325,7 +329,11 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
     switch platform {
     case .macOS:
-      result.append("      osx_image: xcode11.2")
+      var version = ContinuousIntegrationJob.currentXcodeVersion.string(droppingEmptyPatch: true)
+      if version.hasSuffix(".0") {
+        version.removeLast(2)
+      }
+      result.append("      osx_image: xcode\(version)")
     case .linux:
       result.append("      dist: bionic")
     case .iOS, .watchOS, .tvOS:

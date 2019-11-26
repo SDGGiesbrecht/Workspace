@@ -241,7 +241,8 @@ extension Workspace.Validate {
       }
 
       // State
-      if ProcessInfo.isInContinuousIntegration ∧ ProcessInfo.isPullRequest
+      if ProcessInfo.isInContinuousIntegration
+        ∧ ProcessInfo.isPullRequest  // @exempt(from: tests)
         ∧ ¬_isDuringSpecificationTest  // @exempt(from: tests)
       {
         // @exempt(from: tests) Only reachable during pull request.

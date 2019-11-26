@@ -38,19 +38,61 @@ extension PackageRepository {
       )
     }
 
+    try refreshGitHubWorkflow(output: output)
+    try refreshTravisCI(output: output)
+  }
+
+  private func relevantJobs(output: Command.Output) throws -> [ContinuousIntegrationJob] {
+    return try ContinuousIntegrationJob.allCases.filter { job in
+      return try job.isRequired(by: self, output: output)
+      // Simulator is unavailable during normal test.
+        ∨ (job ∈ ContinuousIntegrationJob.simulatorJobs ∧ isWorkspaceProject())
+    }
+  }
+
+  private func refreshGitHubWorkflow(output: Command.Output) throws {
+    let configuration = try self.configuration(output: output)
+    let interfaceLocalization = configuration.developmentInterfaceLocalization()
+    let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Workspace Validation"
+      case .deutschDeutschland:
+        return "Arbeitsbereichprüfung"
+      }
+    }).resolved(for: interfaceLocalization)
+
+    var workflow: [String] = [
+      "name: \(name)",
+      "",
+      "on: [push, pull_request]",
+      "",
+      "jobs:"
+    ]
+
+    for job in try relevantJobs(output: output)
+    // #workaround(Activating one at a time.)
+    where job ∉ Set([.linux, .iOS, .watchOS, .tvOS, .miscellaneous, .deployment]) {
+      workflow.append(contentsOf: job.gitHubWorkflowJob(configuration: configuration))
+    }
+
+    var workflowFile = try TextFile(
+      possiblyAt: location.appendingPathComponent(".github/workflows/\(name).yaml")
+    )
+    workflowFile.body = workflow.joinedAsLines()
+    try workflowFile.writeChanges(for: self, output: output)
+  }
+
+  private func refreshTravisCI(output: Command.Output) throws {
     var travisConfiguration: [String] = [
       "language: generic",
       "matrix:",
       "  include:"
     ]
 
-    for job in ContinuousIntegrationJob.allCases
-    where try job.isRequired(by: self, output: output)
-      ∨ (job ∈ ContinuousIntegrationJob.simulatorJobs ∧ isWorkspaceProject())
-    {  // Simulator is unavailable during normal test.
-
+    for job in try relevantJobs(output: output) {
       travisConfiguration.append(
-        contentsOf: try job.script(configuration: configuration(output: output))
+        contentsOf: try job.travisScript(configuration: configuration(output: output))
       )
     }
 
@@ -59,13 +101,13 @@ extension PackageRepository {
         var line = line
         line.scalars.replaceMatches(
           for:
-            "\u{22}bash \u{5C}\u{22}./Validate (macOS).command\u{5C}\u{22} •job ios\u{22}"
+            "\u{27}./Validate (macOS).command\u{27} •job ios"
             .scalars,
           with: "swift run test‐ios‐simulator".scalars
         )
         line.scalars.replaceMatches(
           for:
-            "\u{22}bash \u{5C}\u{22}./Validate (macOS).command\u{5C}\u{22} •job tvos\u{22}"
+            "\u{27}./Validate (macOS).command\u{27} •job tvos"
             .scalars,
           with: "swift run test‐tvos‐simulator".scalars
         )

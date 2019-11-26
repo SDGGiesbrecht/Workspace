@@ -33,6 +33,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   case miscellaneous
   case deployment
 
+  public static let currentSwiftVersion = Version(5, 1, 1)
+  public static let currentXcodeVersion = Version(11, 2, 0)
+
   public static let simulatorJobs: Set<ContinuousIntegrationJob> = [
     .iOS,
     .tvOS
@@ -40,7 +43,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   // MARK: - Properties
 
-  private var name: UserFacing<StrictString, InterfaceLocalization> {
+  internal var name: UserFacing<StrictString, InterfaceLocalization> {
     switch self {
     case .macOS:
       return UserFacing({ (localization) in
@@ -199,6 +202,85 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
   }
 
+  // MARK: - Shared
+
+  private var swiftVersionSelection: String {
+    let version = ContinuousIntegrationJob.currentSwiftVersion.string(droppingEmptyPatch: true)
+    return "export SWIFT_VERSION=\(version)"
+  }
+  private var swiftVersionFetch: String {
+    return
+      "eval \u{22}$(curl \u{2D}sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv\u{2D}install.sh)\u{22}"
+  }
+  private var refreshCommand: String {
+    return "\u{27}./Refresh (macOS).command\u{27}"
+  }
+  private var validateCommand: String {
+    return "\u{27}./Validate (macOS).command\u{27} •job "
+      + String(argumentName.resolved(for: .englishCanada))
+  }
+
+  func escapeCommand(_ command: String) -> String {
+    var escapedCommand = command.replacingOccurrences(of: "\u{5C}", with: "\u{5C}\u{5C}")
+    escapedCommand = escapedCommand.replacingOccurrences(of: "\u{22}", with: "\u{5C}\u{22}")
+    return escapedCommand
+  }
+
+  // MARK: - GitHub Actions
+
+  private var gitHubActionMachine: String {
+    switch platform {
+    case .macOS:
+      // #workaround(workspace version 0.27.0, GitHub doesn’t provide version specificity.)
+      return "macos\u{2D}latest"
+    case .linux:  // @exempt(from: tests)
+      // #workaround(Not yet reachable; Linux workflow not exposed.)
+      return "ubuntu\u{2D}18.04"
+    case .iOS, .watchOS, .tvOS:
+      unreachable()
+    }
+  }
+
+  private var validateStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Validate"
+      case .deutschDeutschland:
+        return "Prüfen"
+      }
+    })
+  }
+
+  internal func gitHubWorkflowJob(configuration: WorkspaceConfiguration) -> [String] {
+    let interfaceLocalization = configuration.developmentInterfaceLocalization()
+
+    var result: [String] = [
+      "  \(name.resolved(for: interfaceLocalization)):",
+      "    runs\u{2D}on: \(gitHubActionMachine)",
+      "    steps:",
+      "    \u{2D} uses: actions/checkout@v1"
+    ]
+
+    func commandEntry(_ command: String) -> String {
+      return "        \(escapeCommand(command))"
+    }
+
+    let xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion.string(droppingEmptyPatch: true)
+    result.append(contentsOf: [
+      "    \u{2D} name: \(validateStepName.resolved(for: interfaceLocalization))",
+      "      run: |",
+      commandEntry("xcversion install \(xcodeVersion)"),
+      commandEntry("xcversion select \(xcodeVersion)"),
+      commandEntry(refreshCommand),
+      commandEntry(validateCommand)
+    ])
+
+    return result
+  }
+
+  // MARK: - Travis CI
+
   private var travisOperatingSystemKey: String {
     switch platform {
     case .macOS:
@@ -221,10 +303,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
   }
 
-  internal func script(configuration: WorkspaceConfiguration) throws -> [String] {
-    let configuredLocalization = configuration.documentation.localizations
-      .first.flatMap { InterfaceLocalization(reasonableMatchFor: $0.code) }
-    let localization = configuredLocalization ?? InterfaceLocalization.fallbackLocalization
+  internal func travisScript(configuration: WorkspaceConfiguration) throws -> [String] {
+    let localization = configuration.developmentInterfaceLocalization()
     var result: [String] = [
       "    \u{2D} name: \u{22}" + String(name.resolved(for: localization)) + "\u{22}",
       "      os: " + travisOperatingSystemKey
@@ -249,7 +329,11 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
     switch platform {
     case .macOS:
-      result.append("      osx_image: xcode11.2")
+      var version = ContinuousIntegrationJob.currentXcodeVersion.string(droppingEmptyPatch: true)
+      if version.hasSuffix(".0") { // @exempt(from: tests)
+        version.removeLast(2)
+      }
+      result.append("      osx_image: xcode\(version)")
     case .linux:
       result.append("      dist: bionic")
     case .iOS, .watchOS, .tvOS:
@@ -266,9 +350,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     result.append("      script:")
 
     func commandEntry(_ command: String) -> String {
-      var escapedCommand = command.replacingOccurrences(of: "\u{5C}", with: "\u{5C}\u{5C}")
-      escapedCommand = escapedCommand.replacingOccurrences(of: "\u{22}", with: "\u{5C}\u{22}")
-      return "        \u{2D} \u{22}\(escapedCommand)\u{22}"
+      return "        \u{2D} \u{22}\(escapeCommand(command))\u{22}"
     }
 
     if platform == .macOS {
@@ -279,19 +361,14 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
     if platform == .linux {
       result.append(contentsOf: [
-        commandEntry("export SWIFT_VERSION=5.1.1"),
-        commandEntry(
-          "eval \u{22}$(curl \u{2D}sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv\u{2D}install.sh)\u{22}"
-        )
+        commandEntry(swiftVersionSelection),
+        commandEntry(swiftVersionFetch)
       ])
     }
 
     result.append(contentsOf: [
-      commandEntry("bash \u{22}./Refresh (macOS).command\u{22}"),
-      commandEntry(
-        "bash \u{22}./Validate (macOS).command\u{22} •job "
-          + String(argumentName.resolved(for: .englishCanada))
-      )
+      commandEntry(refreshCommand),
+      commandEntry(validateCommand)
     ])
 
     return result

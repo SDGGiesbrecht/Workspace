@@ -261,16 +261,33 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       "    \u{2D} uses: actions/checkout@v1"
     ]
 
-    func commandEntry(_ command: String) -> String {
-      return "        \(escapeCommand(command))"
+    func commandEntry(_ command: String, escaping: Bool = true) -> String {
+      let processed = escaping ? escapeCommand(command) : command
+      return "        \(processed)"
     }
 
     let xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion.string(droppingEmptyPatch: true)
     result.append(contentsOf: [
       "    \u{2D} name: \(validateStepName.resolved(for: interfaceLocalization))",
       "      run: |",
-      commandEntry("xcversion install \(xcodeVersion)"),
-      commandEntry("xcversion select \(xcodeVersion)"),
+    ])
+
+    switch platform {
+    case .macOS:
+      result.append(contentsOf: [
+        commandEntry("xcversion install \(xcodeVersion)"),
+        commandEntry("xcversion select \(xcodeVersion)")
+      ])
+    case .linux:
+      result.append(contentsOf: [
+        commandEntry(swiftVersionSelection),
+        commandEntry(swiftVersionFetch, escaping: false)
+      ])
+    case .iOS, .watchOS, .tvOS:
+      unreachable()
+    }
+
+    result.append(contentsOf: [
       commandEntry(refreshCommand),
       commandEntry(validateCommand)
     ])
@@ -329,7 +346,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     switch platform {
     case .macOS:
       var version = ContinuousIntegrationJob.currentXcodeVersion.string(droppingEmptyPatch: true)
-      if version.hasSuffix(".0") { // @exempt(from: tests)
+      if version.hasSuffix(".0") {  // @exempt(from: tests)
         version.removeLast(2)
       }
       result.append("      osx_image: xcode\(version)")

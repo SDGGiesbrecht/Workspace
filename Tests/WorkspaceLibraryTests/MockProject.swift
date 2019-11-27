@@ -111,7 +111,7 @@ extension PackageRepository {
 
         try? FileManager.default.removeItem(at: location)
         #if os(Linux)
-          try Shell.default.run(command: [
+          _ = try Shell.default.run(command: [
             "cp", "\u{2D}r", Shell.quote(beforeLocation.path),
             Shell.quote(location.path)
           ]).get()

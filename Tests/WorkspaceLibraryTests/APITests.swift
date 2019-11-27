@@ -755,7 +755,7 @@ class APITests: TestCase {
     #if os(Linux)  // Linux has no “xcode” subcommand, causing spec mis‐match.
       for localization in InterfaceLocalization.allCases {
         try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-          _ = try Workspace.command.execute(with: ["refresh", "help"])
+          _ = try Workspace.command.execute(with: ["refresh", "help"]).get()
         }
       }
     #else

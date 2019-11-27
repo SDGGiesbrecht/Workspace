@@ -114,7 +114,7 @@ extension PackageRepository {
           try Shell.default.run(command: [
             "cp", "\u{2D}r", Shell.quote(beforeLocation.path),
             Shell.quote(location.path)
-          ])
+          ]).get()
         #else
           try FileManager.default.copy(beforeLocation, to: location)
         #endif

@@ -24,12 +24,23 @@ import WSProject
 
 class APITests: TestCase {
 
-  static var triggeredVersionChecks: Void?
+  static let configureGit: Void = {
+    if ProcessInfo.isInGitHubAction {
+      #if os(Linux)
+        _ = try? Git.runCustomSubcommand([
+          "config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"
+        ]).get()
+        _ = try? Git.runCustomSubcommand(["config", "\u{2D}\u{2D}global", "user.name", "John Doe"])
+          .get()
+      #endif
+    }
+  }()
   override func setUp() {
     super.setUp()
     Command.Output.testMode = true
     PackageRepository.emptyRelatedProjectCache()  // Make sure starting state is consistent.
     CustomTask.emptyCache()
+    APITests.configureGit
   }
 
   func testAllDisabled() {

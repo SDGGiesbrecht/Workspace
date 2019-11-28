@@ -23,7 +23,7 @@ import WSProject
 
 internal struct ClosureSignaturePosition: SyntaxRule {
 
-  internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
+  internal static let identifier = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
     switch localization {
     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
       return "closureSignaturePosition"

@@ -23,7 +23,7 @@ import SDGSwiftSource
 import WSProject
 
 internal protocol RuleProtocol {
-  static var name: UserFacing<StrictString, InterfaceLocalization> { get }
+  static var identifier: UserFacing<StrictString, InterfaceLocalization> { get }
   static var noticeOnly: Bool { get }
 }
 
@@ -45,44 +45,15 @@ extension RuleProtocol {
     status: ProofreadingStatus
   ) {
 
-    let fileLines = file.contents.lines
-    let lineIndex = location.lowerBound.line(in: fileLines)
-    let line = fileLines[lineIndex].line
-    for exemptionMarker in exemptionMarkers {
-      if line.contains(exemptionMarker) {
-        for localization in InterfaceLocalization.allCases {
-          if line.contains(
-            StrictString("\(exemptionMarker)\(name.resolved(for: localization)))")
-          ) {
-            return
-          }
-        }
-      }
+    if let notExempt = StyleViolation(
+      in: file,
+      at: location,
+      replacementSuggestion: replacementSuggestion,
+      noticeOnly: noticeOnly,
+      ruleIdentifier: Self.identifier,
+      message: message
+      ) {
+      status.report(violation: notExempt)
     }
-
-    status.report(
-      violation: StyleViolation(
-        in: file,
-        at: location,
-        replacementSuggestion: replacementSuggestion,
-        noticeOnly: noticeOnly,
-        ruleIdentifier: Self.name,
-        message: message
-      )
-    )
   }
 }
-
-private let exemptionMarkers: [StrictString] = {
-  var result: Set<StrictString> = Set(
-    InterfaceLocalization.allCases.map({ localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "@exempt(from: _)"
-      case .deutschDeutschland:
-        return "@ausnahme(zu: _)"
-      }
-    })
-  )
-  return result.map { $0.truncated(before: "_") }
-}()

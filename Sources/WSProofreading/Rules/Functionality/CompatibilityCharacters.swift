@@ -21,7 +21,7 @@ import WSProject
 
 internal struct CompatibilityCharacters: TextRule {
 
-  internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
+  internal static let identifier = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
     switch localization {
     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
       return "compatibilityCharacters"

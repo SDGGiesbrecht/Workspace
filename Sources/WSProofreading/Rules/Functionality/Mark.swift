@@ -23,8 +23,7 @@ import WSProject
 internal struct Marks: TextRule {
 
   internal static let identifier = UserFacing<StrictString, InterfaceLocalization>(
-    {
-      (localization) in
+    { localization in
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
         return "marks"

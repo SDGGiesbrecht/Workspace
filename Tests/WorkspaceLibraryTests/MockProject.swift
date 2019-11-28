@@ -111,10 +111,10 @@ extension PackageRepository {
 
         try? FileManager.default.removeItem(at: location)
         #if os(Linux)
-          try Shell.default.run(command: [
+          _ = try Shell.default.run(command: [
             "cp", "\u{2D}r", Shell.quote(beforeLocation.path),
             Shell.quote(location.path)
-          ])
+          ]).get()
         #else
           try FileManager.default.copy(beforeLocation, to: location)
         #endif
@@ -349,6 +349,8 @@ extension PackageRepository {
             )
           }
 
+          #if !os(Linux)
+          // #workaround(Linux has false positives during dead link check.)
           let documentationDirectory = location.appendingPathComponent("docs")
           if (try? documentationDirectory.checkResourceIsReachable()) == true {
             let warnings = Site<InterfaceLocalization>.validate(
@@ -369,6 +371,7 @@ extension PackageRepository {
               XCTFail(warningList, file: file, line: line)
             }
           }
+          #endif
 
           /// Commit hashes vary.
           try? FileManager.default.removeItem(

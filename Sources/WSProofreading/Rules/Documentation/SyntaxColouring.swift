@@ -23,16 +23,17 @@ import WSProject
 
 internal struct SyntaxColouring: SyntaxRule {
 
-  internal static let identifier = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
-    switch localization {
-    case .englishUnitedKingdom, .englishCanada:
-      return "syntaxColouring"
-    case .englishUnitedStates:
-      return "syntaxColoring"
-    case .deutschDeutschland:
-      return "syntaxhervorhebung"
-    }
-  })
+  internal static let identifier = UserFacing<StrictString, InterfaceLocalization>(
+    { localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishCanada:
+        return "syntaxColouring"
+      case .englishUnitedStates:
+        return "syntaxColoring"
+      case .deutschDeutschland:
+        return "syntaxhervorhebung"
+      }
+    })
 
   private static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
     switch localization {

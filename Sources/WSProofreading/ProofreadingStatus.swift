@@ -100,7 +100,7 @@ internal class ProofreadingStatus: DiagnosticConsumer {
       noticeOnly: false,
       ruleIdentifier: identifier,
       message: message
-      ) {
+    ) {
       report(violation: notExempt)
     }
   }

@@ -52,7 +52,7 @@ extension RuleProtocol {
       noticeOnly: noticeOnly,
       ruleIdentifier: Self.identifier,
       message: message
-      ) {
+    ) {
       status.report(violation: notExempt)
     }
   }

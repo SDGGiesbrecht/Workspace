@@ -26,13 +26,14 @@ import SDGSwiftSource
 
 internal struct UnicodeRule: SyntaxRule {
 
-  internal static let identifier = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
-    switch localization {
-    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-      .deutschDeutschland:
-      return "unicode"
-    }
-  })
+  internal static let identifier = UserFacing<StrictString, InterfaceLocalization>(
+    { localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+        .deutschDeutschland:
+        return "unicode"
+      }
+    })
 
   private enum EitherTokenKind {
     case syntax(TokenKind)

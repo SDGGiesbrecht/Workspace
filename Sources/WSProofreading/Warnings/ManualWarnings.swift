@@ -18,14 +18,15 @@ import WSGeneralImports
 
 internal struct ManualWarnings: Warning {
 
-  internal static let identifier = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
-    switch localization {
-    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-      return "manualWarnings"
-    case .deutschDeutschland:
-      return "warnungenVonHand"
-    }
-  })
+  internal static let identifier = UserFacing<StrictString, InterfaceLocalization>(
+    { localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "manualWarnings"
+      case .deutschDeutschland:
+        return "warnungenVonHand"
+      }
+    })
 
   internal static let trigger = UserFacing<StrictString, InterfaceLocalization>({ localization in
     switch localization {

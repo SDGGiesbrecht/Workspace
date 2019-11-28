@@ -24,14 +24,15 @@ import SDGSwiftSource
 
 internal struct CalloutCasing: SyntaxRule {
 
-  internal static let identifier = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
-    switch localization {
-    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-      return "calloutCasing"
-    case .deutschDeutschland:
-      return "hervorhebungsGroßschreibung"
-    }
-  })
+  internal static let identifier = UserFacing<StrictString, InterfaceLocalization>(
+    { localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "calloutCasing"
+      case .deutschDeutschland:
+        return "hervorhebungsGroßschreibung"
+      }
+    })
 
   private static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
     switch localization {

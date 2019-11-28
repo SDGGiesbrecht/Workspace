@@ -21,14 +21,15 @@ import WSProject
 internal struct DeprecatedTestManifests: TextRule {
   // Deprecated in 0.25.0 (????‐??‐??)
 
-  internal static let identifier = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
-    switch localization {
-    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-      return "deprecatedTestManifests"
-    case .deutschDeutschland:
-      return "überholteTestlisten"
-    }
-  })
+  internal static let identifier = UserFacing<StrictString, InterfaceLocalization>(
+    { localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "deprecatedTestManifests"
+      case .deutschDeutschland:
+        return "überholteTestlisten"
+      }
+    })
 
   private static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
     switch localization {

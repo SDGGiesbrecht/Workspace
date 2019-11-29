@@ -93,15 +93,16 @@ internal class ProofreadingStatus: DiagnosticConsumer {
 
     let identifier = UserFacing<StrictString, InterfaceLocalization>({ _ in ruleIdentifier })
     let message = UserFacing<StrictString, InterfaceLocalization>({ _ in diagnosticMessage })
-    let violation = StyleViolation(
+    if let notExempt = StyleViolation(
       in: file,
       at: range,
       replacementSuggestion: replacementSuggestion,
       noticeOnly: false,
       ruleIdentifier: identifier,
       message: message
-    )
-    report(violation: violation)
+    ) {
+      report(violation: notExempt)
+    }
   }
 
   internal func finalize() {}

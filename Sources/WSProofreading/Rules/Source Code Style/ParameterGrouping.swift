@@ -22,14 +22,15 @@ import SDGSwiftSource
 
 internal struct ParameterGrouping: SyntaxRule {
 
-  internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
-    switch localization {
-    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-      return "parameterGrouping"
-    case .deutschDeutschland:
-      return "übergabewertenzusammenstellung"
-    }
-  })
+  internal static let identifier = UserFacing<StrictString, InterfaceLocalization>(
+    { localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "parameterGrouping"
+      case .deutschDeutschland:
+        return "übergabewertenzusammenstellung"
+      }
+    })
 
   private static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
     switch localization {

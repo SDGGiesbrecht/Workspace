@@ -22,14 +22,15 @@ import WSProject
 
 internal struct Marks: TextRule {
 
-  internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
-    switch localization {
-    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-      return "marks"
-    case .deutschDeutschland:
-      return "überschrifte"
-    }
-  })
+  internal static let identifier = UserFacing<StrictString, InterfaceLocalization>(
+    { localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "marks"
+      case .deutschDeutschland:
+        return "überschrifte"
+      }
+    })
 
   internal static let expectedSyntax: StrictString = "/\u{2F} MAR\u{4B}: \u{2D} "
 

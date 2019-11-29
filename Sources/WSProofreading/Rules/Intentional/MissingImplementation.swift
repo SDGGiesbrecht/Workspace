@@ -20,14 +20,15 @@ import WSProject
 
 internal struct MissingImplementation: TextRule {
 
-  internal static let name = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
-    switch localization {
-    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-      return "missingImplementation"
-    case .deutschDeutschland:
-      return "fehlendeImplementierung"
-    }
-  })
+  internal static let identifier = UserFacing<StrictString, InterfaceLocalization>(
+    { localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "missingImplementation"
+      case .deutschDeutschland:
+        return "fehlendeImplementierung"
+      }
+    })
 
   private static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
     switch localization {

@@ -19,9 +19,26 @@ import WSProject
 
 public struct StyleViolation {
 
+  // MARK: - Static Properties
+
+  private static let exemptionMarkers: [StrictString] = {
+    var result: Set<StrictString> = Set(
+      InterfaceLocalization.allCases.map({ localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "@exempt(from: _)"
+        case .deutschDeutschland:
+          return "@ausnahme(zu: _)"
+        }
+      })
+    )
+    return result.map { $0.truncated(before: "_") }
+  }()
+
   // MARK: - Initialization
 
-  internal init(
+  /// This initializer validates the violation, returning `nil` if it is under an exemption.
+  internal init?(
     in file: TextFile,
     at location: Range<String.ScalarView.Index>,
     replacementSuggestion: StrictString? = nil,
@@ -29,6 +46,22 @@ public struct StyleViolation {
     ruleIdentifier: UserFacing<StrictString, InterfaceLocalization>,
     message: UserFacing<StrictString, InterfaceLocalization>
   ) {
+
+    let fileLines = file.contents.lines
+    let lineIndex = location.lowerBound.line(in: fileLines)
+    let line = fileLines[lineIndex].line
+    for exemptionMarker in StyleViolation.exemptionMarkers {
+      if line.contains(exemptionMarker) {
+        for localization in InterfaceLocalization.allCases {
+          if line.contains(
+            StrictString("\(exemptionMarker)\(ruleIdentifier.resolved(for: localization)))")
+          ) {
+            return nil
+          }
+        }
+      }
+    }
+
     self.file = file
     self.noticeOnly = noticeOnly
     self.ruleIdentifier = ruleIdentifier

@@ -76,6 +76,7 @@ extension PackageRepository {
       workflow.append(contentsOf: job.gitHubWorkflowJob(configuration: configuration))
     }
 
+    try adjustForWorkspace(&workflow)
     var workflowFile = try TextFile(
       possiblyAt: location.appendingPathComponent(".github/workflows/\(name).yaml")
     )
@@ -96,8 +97,25 @@ extension PackageRepository {
       )
     }
 
+    travisConfiguration.append(contentsOf: [
+      "",
+      "cache:",
+      "  directories:",
+      "  \u{2D} $HOME/Library/Caches/ca.solideogloria.Workspace",
+      "  \u{2D} $HOME/.cache/ca.solideogloria.Workspace"
+    ])
+
+    try adjustForWorkspace(&travisConfiguration)
+    var travisConfigurationFile = try TextFile(
+      possiblyAt: location.appendingPathComponent(".travis.yml")
+    )
+    travisConfigurationFile.body = travisConfiguration.joinedAsLines()
+    try travisConfigurationFile.writeChanges(for: self, output: output)
+  }
+
+  private func adjustForWorkspace(_ configuration: inout [String]) throws {
     if try isWorkspaceProject() {
-      travisConfiguration = travisConfiguration.map { line in
+      configuration = configuration.map { line in
         var line = line
         line.scalars.replaceMatches(
           for:
@@ -114,19 +132,5 @@ extension PackageRepository {
         return line
       }
     }
-
-    travisConfiguration.append(contentsOf: [
-      "",
-      "cache:",
-      "  directories:",
-      "  \u{2D} $HOME/Library/Caches/ca.solideogloria.Workspace",
-      "  \u{2D} $HOME/.cache/ca.solideogloria.Workspace"
-    ])
-
-    var travisConfigurationFile = try TextFile(
-      possiblyAt: location.appendingPathComponent(".travis.yml")
-    )
-    travisConfigurationFile.body = travisConfiguration.joinedAsLines()
-    try travisConfigurationFile.writeChanges(for: self, output: output)
   }
 }

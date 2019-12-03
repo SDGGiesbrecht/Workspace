@@ -46,7 +46,7 @@ extension PackageRepository {
       in: LocalizationIdentifier(InterfaceLocalization.englishUnitedStates.code),
       output: output
     )
-    var authors: StrictString = "the \(projectName) project contributors."
+    var authors: StrictString = "the \(projectName) project contributors"
     if let configuredAuthor = try configuration(output: output).documentation.primaryAuthor {
       authors = configuredAuthor + " and " + authors
     }

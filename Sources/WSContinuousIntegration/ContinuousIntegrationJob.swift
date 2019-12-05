@@ -280,6 +280,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       ])
     case .linux:
       result.append(contentsOf: [
+        commandEntry("sudo apt\u{2D}get update"),
         commandEntry("sudo apt\u{2D}get install libsqlite3\u{2D}dev libncurses\u{2D}dev"),
         commandEntry(swiftVersionSelection),
         commandEntry(swiftVersionFetch, escaping: false)

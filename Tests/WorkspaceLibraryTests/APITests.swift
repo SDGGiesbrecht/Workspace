@@ -27,10 +27,16 @@ class APITests: TestCase {
   static let configureGit: Void = {
     if ProcessInfo.isInGitHubAction {
       #if os(Linux)
-        _ = try? Git.runCustomSubcommand([
-          "config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"
-        ]).get()
-        _ = try? Git.runCustomSubcommand(["config", "\u{2D}\u{2D}global", "user.name", "John Doe"])
+        _ = try? Git.runCustomSubcommand(
+          [
+            "config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"
+          ],
+          versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
+        ).get()
+        _ = try? Git.runCustomSubcommand(
+          ["config", "\u{2D}\u{2D}global", "user.name", "John Doe"],
+          versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
+        )
           .get()
       #endif
     }

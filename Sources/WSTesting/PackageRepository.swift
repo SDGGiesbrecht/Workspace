@@ -110,7 +110,7 @@ extension PackageRepository {
         case .xcodeError:  // @exempt(from: tests)
           description = ""  // Already printed.
         case .foundationError, .noPackageScheme:  // @exempt(from: tests)
-            break
+          break
         }
       }
       output.print(description.formattedAsError())
@@ -180,8 +180,8 @@ extension PackageRepository {
         case .failure(let error):
           var description = StrictString(error.localizedDescription)
           switch error {
-            case .xcodeError:
-              description = ""  // Already printed.
+          case .xcodeError:
+            description = ""  // Already printed.
           case .foundationError, .noPackageScheme:
             break
           }

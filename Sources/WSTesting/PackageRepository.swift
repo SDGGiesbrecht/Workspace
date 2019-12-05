@@ -57,7 +57,6 @@ extension PackageRepository {
         buildCommand = { output in
           let log = try self.build(
             releaseConfiguration: false,
-            staticallyLinkStandardLibrary: false,
             reportProgress: { output.print($0) }
           ).get()
           return ¬SwiftCompiler.warningsOccurred(during: log)
@@ -108,10 +107,10 @@ extension PackageRepository {
       var description = StrictString(error.localizedDescription)
       if let schemeError = error as? Xcode.SchemeError {
         switch schemeError {
-        case .noPackageScheme:  // @exempt(from: tests)
-          break
         case .xcodeError:  // @exempt(from: tests)
           description = ""  // Already printed.
+        case .foundationError, .noPackageScheme:  // @exempt(from: tests)
+            break
         }
       }
       output.print(description.formattedAsError())
@@ -171,7 +170,6 @@ extension PackageRepository {
       testCommand = { output in
         switch self.test(
           on: job.testSDK,
-          derivedData: self.stableDerivedData,
           reportProgress: { report in
             if let relevant = Xcode.abbreviate(output: report) {
               output.print(relevant)
@@ -182,10 +180,10 @@ extension PackageRepository {
         case .failure(let error):
           var description = StrictString(error.localizedDescription)
           switch error {
-          case .noPackageScheme:
+            case .xcodeError:
+              description = ""  // Already printed.
+          case .foundationError, .noPackageScheme:
             break
-          case .xcodeError:
-            description = ""  // Already printed.
           }
           output.print(description.formattedAsError())
           return false
@@ -296,7 +294,6 @@ extension PackageRepository {
         guard
           let fromXcode = try codeCoverageReport(
             on: job.testSDK,
-            derivedData: stableDerivedData,
             ignoreCoveredRegions: true,
             reportProgress: { output.print($0) }
           ).get()

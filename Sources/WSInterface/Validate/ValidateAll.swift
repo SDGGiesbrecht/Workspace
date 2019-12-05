@@ -263,8 +263,7 @@ extension Workspace.Validate {
           }).resolved().formattedAsSectionHeader()
         )
 
-        let difference = try options.project.uncommittedChanges(excluding: ["*.dsidx"])
-          .get()
+        let difference = try options.project.uncommittedChanges().get()
         if ¬difference.isEmpty {
           output.print(difference.separated())
 

@@ -352,12 +352,7 @@ extension PackageRepository {
           let package = Package(url: packageURL)
           do {
             _ = try Git.clone(package, to: temporary).get()
-            // #workaround(SDGSwift 0.18.0, Should use from SDGSwift.)
-            _ = try Git.runCustomSubcommand(
-              ["checkout", "gh\u{2D}pages"],
-              in: temporary,
-              versionConstraints: Version(1, 0, 0)..<Version(3, 0, 0)
-            ).get()
+            _ = try PackageRepository(at: temporary).checkout("gh\u{2D}pages").get()
             try FileManager.default.removeItem(at: outputDirectory)
             try FileManager.default.move(temporary, to: outputDirectory)
           } catch {}

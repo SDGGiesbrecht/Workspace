@@ -67,6 +67,8 @@ extension PackageRepository {
             for: job.buildSDK,
             reportProgress: { report in
               if let relevant = Xcode.abbreviate(output: report) {
+                #warning("Remove.")
+                print(relevant)
                 output.print(relevant)
               }
             }

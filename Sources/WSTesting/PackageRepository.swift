@@ -57,14 +57,13 @@ extension PackageRepository {
         buildCommand = { output in
           let log = try self.build(
             releaseConfiguration: false,
-            staticallyLinkStandardLibrary: false,
             reportProgress: { output.print($0) }
           ).get()
           return ¬SwiftCompiler.warningsOccurred(during: log)
         }
       case .iOS, .watchOS, .tvOS:  // @exempt(from: tests) Unreachable from Linux.
         buildCommand = { output in
-          let log = try self.build(
+          var log = try self.build(
             for: job.buildSDK,
             reportProgress: { report in
               if let relevant = Xcode.abbreviate(output: report) {
@@ -72,6 +71,13 @@ extension PackageRepository {
               }
             }
           ).get()
+
+          // #workaround(SDGSwift 0.18.1, Meaningless warnings caused by SwiftPM.)
+          let linesArray = log.lines.lazy.filter { line in
+            return ¬line.line.contains("ld: warning: directory not found for option".scalars)
+          }
+          log = linesArray.map({ String($0.line) }).joined(separator: "\n")
+
           return ¬Xcode.warningsOccurred(during: log)
         }
       case .miscellaneous, .deployment:
@@ -108,10 +114,10 @@ extension PackageRepository {
       var description = StrictString(error.localizedDescription)
       if let schemeError = error as? Xcode.SchemeError {
         switch schemeError {
-        case .noPackageScheme:  // @exempt(from: tests)
-          break
         case .xcodeError:  // @exempt(from: tests)
           description = ""  // Already printed.
+        case .foundationError, .noPackageScheme:  // @exempt(from: tests)
+          break
         }
       }
       output.print(description.formattedAsError())
@@ -171,7 +177,6 @@ extension PackageRepository {
       testCommand = { output in
         switch self.test(
           on: job.testSDK,
-          derivedData: self.stableDerivedData,
           reportProgress: { report in
             if let relevant = Xcode.abbreviate(output: report) {
               output.print(relevant)
@@ -182,10 +187,10 @@ extension PackageRepository {
         case .failure(let error):
           var description = StrictString(error.localizedDescription)
           switch error {
-          case .noPackageScheme:
-            break
           case .xcodeError:
             description = ""  // Already printed.
+          case .foundationError, .noPackageScheme:
+            break
           }
           output.print(description.formattedAsError())
           return false
@@ -296,7 +301,6 @@ extension PackageRepository {
         guard
           let fromXcode = try codeCoverageReport(
             on: job.testSDK,
-            derivedData: stableDerivedData,
             ignoreCoveredRegions: true,
             reportProgress: { output.print($0) }
           ).get()

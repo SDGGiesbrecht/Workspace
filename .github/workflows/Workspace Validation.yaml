@@ -49,3 +49,13 @@ jobs:
         xcversion select 11.2
         './Refresh (macOS).command'
         swift run test‐ios‐simulator
+  tvOS:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Validate
+      run: |
+        xcversion install 11.2
+        xcversion select 11.2
+        './Refresh (macOS).command'
+        swift run test‐tvos‐simulator

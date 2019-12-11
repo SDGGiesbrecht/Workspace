@@ -215,9 +215,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      // #warning(Branch dependency.)
-      .branch("master")
-      //.upToNextMinor(from: Version(0, 18, 2))
+      .upToNextMinor(from: Version(0, 18, 4))
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}format",

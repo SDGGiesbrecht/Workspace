@@ -17,7 +17,7 @@ matrix:
   include:
     - name: "macOS"
       os: osx
-      osx_image: xcode11.2
+      osx_image: xcode11.3
       script:
         - "git config --global protocol.version 1"
         - "'./Refresh (macOS).command'"
@@ -26,13 +26,13 @@ matrix:
       os: linux
       dist: bionic
       script:
-        - "export SWIFT_VERSION=5.1.1"
+        - "export SWIFT_VERSION=5.1.2"
         - "eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\""
         - "'./Refresh (macOS).command'"
         - "'./Validate (macOS).command' •job linux"
     - name: "iOS"
       os: osx
-      osx_image: xcode11.2
+      osx_image: xcode11.3
       language: objective-c
       xcode_sdk: iphonesimulator
       script:
@@ -41,7 +41,7 @@ matrix:
         - "swift run test‐ios‐simulator"
     - name: "tvOS"
       os: osx
-      osx_image: xcode11.2
+      osx_image: xcode11.3
       language: objective-c
       xcode_sdk: appletvsimulator
       script:
@@ -52,7 +52,7 @@ matrix:
       os: linux
       dist: bionic
       script:
-        - "export SWIFT_VERSION=5.1.1"
+        - "export SWIFT_VERSION=5.1.2"
         - "eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\""
         - "'./Refresh (macOS).command'"
         - "'./Validate (macOS).command' •job miscellaneous"
@@ -69,7 +69,7 @@ matrix:
         skip_cleanup: true
       dist: bionic
       script:
-        - "export SWIFT_VERSION=5.1.1"
+        - "export SWIFT_VERSION=5.1.2"
         - "eval \"$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)\""
         - "'./Refresh (macOS).command'"
         - "'./Validate (macOS).command' •job deployment"

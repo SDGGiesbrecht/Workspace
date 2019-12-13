@@ -33,7 +33,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   case miscellaneous
   case deployment
 
-  public static let currentSwiftVersion = Version(5, 1, 1)
+  public static let currentSwiftVersion = Version(5, 1, 2)
   public static let currentXcodeVersion = Version(11, 2, 0)
 
   public static let simulatorJobs: Set<ContinuousIntegrationJob> = [

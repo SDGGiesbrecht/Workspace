@@ -258,8 +258,25 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       "  \(name.resolved(for: interfaceLocalization)):",
       "    runs\u{2D}on: \(gitHubActionMachine)",
       "    steps:",
-      "    \u{2D} uses: actions/checkout@v1"
+      "    \u{2D} uses: actions/checkout@v1",
+      "    \u{2D} uses: actions/cache@v1",
+      "      with:",
     ]
+
+    func cacheEntry(os: String, path: String) -> [String] {
+      return [
+        "        key: \(os)‐${{ hashFiles('Refresh*') }}",
+        "        path: ~/\(path)"
+      ]
+    }
+    switch platform {
+    case .macOS:
+      result.append(contentsOf: cacheEntry(os: "macOS", path: PackageRepository.macOSCachePath))
+    case .linux:
+      result.append(contentsOf: cacheEntry(os: "Linux", path: PackageRepository.linuxCachePath))
+    case .iOS, .watchOS, .tvOS:
+      unreachable()
+    }
 
     func commandEntry(_ command: String, escaping: Bool = true) -> String {
       let processed = escaping ? escapeCommand(command) : command

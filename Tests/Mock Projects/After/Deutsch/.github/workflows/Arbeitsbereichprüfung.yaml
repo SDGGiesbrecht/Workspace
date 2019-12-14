@@ -9,6 +9,10 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        key: macOS‐${{ hashFiles('Refresh*') }}
+        path: ~/Library/Caches/ca.solideogloria.Workspace
     - name: Prüfen
       run: |
         xcversion install 11.2
@@ -19,6 +23,10 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        key: Linux‐${{ hashFiles('Refresh*') }}
+        path: ~/.cache/ca.solideogloria.Workspace
     - name: Prüfen
       run: |
         sudo apt-get update
@@ -31,6 +39,10 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        key: macOS‐${{ hashFiles('Refresh*') }}
+        path: ~/Library/Caches/ca.solideogloria.Workspace
     - name: Prüfen
       run: |
         xcversion install 11.2
@@ -41,6 +53,10 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        key: macOS‐${{ hashFiles('Refresh*') }}
+        path: ~/Library/Caches/ca.solideogloria.Workspace
     - name: Prüfen
       run: |
         xcversion install 11.2
@@ -51,6 +67,10 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        key: macOS‐${{ hashFiles('Refresh*') }}
+        path: ~/Library/Caches/ca.solideogloria.Workspace
     - name: Prüfen
       run: |
         xcversion install 11.2

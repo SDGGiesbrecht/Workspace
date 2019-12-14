@@ -50,6 +50,13 @@ extension PackageRepository {
     }
   }
 
+  internal static var macOSCachePath: String {
+    return "Library/Caches/ca.solideogloria.Workspace"
+  }
+  internal static var linuxCachePath: String {
+    return ".cache/ca.solideogloria.Workspace"
+  }
+
   private func refreshGitHubWorkflow(output: Command.Output) throws {
     let configuration = try self.configuration(output: output)
     let interfaceLocalization = configuration.developmentInterfaceLocalization()
@@ -101,8 +108,8 @@ extension PackageRepository {
       "",
       "cache:",
       "  directories:",
-      "  \u{2D} $HOME/Library/Caches/ca.solideogloria.Workspace",
-      "  \u{2D} $HOME/.cache/ca.solideogloria.Workspace"
+      "  \u{2D} $HOME/\(PackageRepository.macOSCachePath)",
+      "  \u{2D} $HOME/\(PackageRepository.linuxCachePath)"
     ])
 
     try adjustForWorkspace(&travisConfiguration)

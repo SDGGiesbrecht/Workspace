@@ -265,7 +265,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
     func cacheEntry(os: String, path: String) -> [String] {
       return [
-        "        key: \(os)‐${{ hashFiles('Refresh*') }}",
+        "        key: \(os)‐${{ hashFiles(\u{27}Refresh*\u{27}) }}",
         "        path: ~/\(path)"
       ]
     }

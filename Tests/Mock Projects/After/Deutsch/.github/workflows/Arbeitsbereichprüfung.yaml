@@ -77,3 +77,19 @@ jobs:
         xcversion select 11.2
         './Refresh (macOS).command'
         './Validate (macOS).command' •job tvos
+  Sonstiges:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        key: Linux‐${{ hashFiles('Refresh*') }}
+        path: ~/.cache/ca.solideogloria.Workspace
+    - name: Prüfen
+      run: |
+        sudo apt-get update
+        sudo apt-get install libsqlite3-dev libncurses-dev
+        export SWIFT_VERSION=5.1.2
+        eval "$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)"
+        './Refresh (macOS).command'
+        './Validate (macOS).command' •job miscellaneous

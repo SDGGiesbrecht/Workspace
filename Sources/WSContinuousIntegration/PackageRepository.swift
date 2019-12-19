@@ -105,24 +105,26 @@ extension PackageRepository {
       output: output
     )
 
-    try refreshGitHubWorkflow(
-      name: UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Documentation Deployment"
-        case .deutschDeutschland:
-          return "Dokumentationsverteilung"
-        }
-      }),
-      onConditions: [
-        "on:",
-        "  push:",
-        "    branches:",
-        "      \u{2D} master"
-      ],
-      jobFilter: { $0 == .deployment },
-      output: output
-    )
+    if try relevantJobs(output: output).contains(.deployment) {
+      try refreshGitHubWorkflow(
+        name: UserFacing<StrictString, InterfaceLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Documentation Deployment"
+          case .deutschDeutschland:
+            return "Dokumentationsverteilung"
+          }
+        }),
+        onConditions: [
+          "on:",
+          "  push:",
+          "    branches:",
+          "      \u{2D} master"
+        ],
+        jobFilter: { $0 == .deployment },
+        output: output
+      )
+    }
   }
 
   private func refreshTravisCI(output: Command.Output) throws {

@@ -316,8 +316,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         "    \u{2D} uses: maxheld83/ghpages@v0.2.1",
         "      env:",
         "        BUILD_DIR: docs/",
-        "      secrets:",
-        "        \u{2D} GH_PAT"
+        "        GH_PAT: ${{ secrets.GH_PAT }}"
       ])
     }
 

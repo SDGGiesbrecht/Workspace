@@ -38,7 +38,7 @@ extension PackageRepository {
       )
     }
 
-    try refreshGitHubWorkflow(output: output)
+    try refreshGitHubWorkflows(output: output)
     try refreshTravisCI(output: output)
   }
 
@@ -57,38 +57,74 @@ extension PackageRepository {
     return ".cache/ca.solideogloria.Workspace"
   }
 
-  private func refreshGitHubWorkflow(output: Command.Output) throws {
+  private func refreshGitHubWorkflow(
+    name: UserFacing<StrictString, InterfaceLocalization>,
+    onConditions: [String],
+    jobFilter: (ContinuousIntegrationJob) -> Bool,
+    output: Command.Output
+  ) throws {
     let configuration = try self.configuration(output: output)
     let interfaceLocalization = configuration.developmentInterfaceLocalization()
-    let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Workspace Validation"
-      case .deutschDeutschland:
-        return "Arbeitsbereichprüfung"
-      }
-    }).resolved(for: interfaceLocalization)
+    let resolvedName = name.resolved(for: interfaceLocalization)
 
     var workflow: [String] = [
-      "name: \(name)",
-      "",
-      "on: [push, pull_request]",
+      "name: \(resolvedName)",
+      ""
+    ]
+    workflow.append(contentsOf: onConditions)
+    workflow.append(contentsOf: [
       "",
       "jobs:"
-    ]
+    ])
 
     for job in try relevantJobs(output: output)
-    // #workaround(Activating one at a time.)
-    where job ∉ Set([.deployment]) {
+    where jobFilter(job) {
       workflow.append(contentsOf: job.gitHubWorkflowJob(configuration: configuration))
     }
 
     try adjustForWorkspace(&workflow)
     var workflowFile = try TextFile(
-      possiblyAt: location.appendingPathComponent(".github/workflows/\(name).yaml")
+      possiblyAt: location.appendingPathComponent(".github/workflows/\(resolvedName).yaml")
     )
     workflowFile.body = workflow.joinedAsLines()
     try workflowFile.writeChanges(for: self, output: output)
+  }
+
+  private func refreshGitHubWorkflows(output: Command.Output) throws {
+    try refreshGitHubWorkflow(
+      name: UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "Workspace Validation"
+        case .deutschDeutschland:
+          return "Arbeitsbereichprüfung"
+        }
+      }),
+      onConditions: ["on: [push, pull_request]"],
+      jobFilter: { $0 ≠ .deployment },
+      output: output
+    )
+
+    if try relevantJobs(output: output).contains(.deployment) {
+      try refreshGitHubWorkflow(
+        name: UserFacing<StrictString, InterfaceLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Documentation Deployment"
+          case .deutschDeutschland:
+            return "Dokumentationsverteilung"
+          }
+        }),
+        onConditions: [
+          "on:",
+          "  push:",
+          "    branches:",
+          "      \u{2D} master"
+        ],
+        jobFilter: { $0 == .deployment },
+        output: output
+      )
+    }
   }
 
   private func refreshTravisCI(output: Command.Output) throws {

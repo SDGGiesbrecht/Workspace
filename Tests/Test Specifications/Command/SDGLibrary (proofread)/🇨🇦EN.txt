@@ -23,6 +23,7 @@ Proofreading source code... (§1)
 .github/ISSUE_TEMPLATE/🇺🇸EN Feature Request.md
 .github/ISSUE_TEMPLATE/🇺🇸EN Question.md
 .github/PULL_REQUEST_TEMPLATE.md
+.github/workflows/Documentation Deployment.yaml
 .github/workflows/Workspace Validation.yaml
 .gitignore
 .travis.yml

@@ -1,0 +1,43 @@
+# Documentation Deployment.yaml
+#
+# This source file is part of the SDG open source project.
+# Diese Quelldatei ist Teil des qeulloffenen SDG‐Projekt.
+# https://example.github.io/SDG/SDG
+#
+# Copyright ©2019 John Doe and the SDG project contributors.
+# Urheberrecht ©2019 John Doe und die Mitwirkenden des SDG‐Projekts.
+# ©2019
+#
+# Soli Deo gloria.
+#
+# Licensed under the Apache Licence, Version 2.0.
+# See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+
+name: Documentation Deployment
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  Deployment:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        key: Linux‐${{ hashFiles('Refresh*') }}
+        path: ~/.cache/ca.solideogloria.Workspace
+    - name: Validate
+      run: |
+        sudo apt-get update
+        sudo apt-get install libsqlite3-dev libncurses-dev
+        export SWIFT_VERSION=5.1.2
+        eval "$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)"
+        './Refresh (macOS).command'
+        './Validate (macOS).command' •job deployment
+    - uses: maxheld83/ghpages@v0.2.1
+      env:
+        BUILD_DIR: docs/
+        GH_PAT: ${{ secrets.GH_PAT }}

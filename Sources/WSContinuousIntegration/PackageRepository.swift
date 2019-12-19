@@ -59,6 +59,7 @@ extension PackageRepository {
 
   private func refreshGitHubWorkflow(
     name: UserFacing<StrictString, InterfaceLocalization>,
+    onConditions: [String],
     jobFilter: (ContinuousIntegrationJob) -> Bool,
     output: Command.Output
   ) throws {
@@ -68,11 +69,13 @@ extension PackageRepository {
 
     var workflow: [String] = [
       "name: \(resolvedName)",
-      "",
-      "on: [push, pull_request]",
+      ""
+    ]
+    workflow.append(contentsOf: onConditions)
+    workflow.append(contentsOf: [
       "",
       "jobs:"
-    ]
+    ])
 
     for job in try relevantJobs(output: output)
     where jobFilter(job) {
@@ -97,6 +100,7 @@ extension PackageRepository {
           return "Arbeitsbereichprüfung"
         }
       }),
+      onConditions: ["on: [push, pull_request]"],
       jobFilter: { $0 ≠ .deployment },
       output: output
     )
@@ -110,6 +114,12 @@ extension PackageRepository {
           return "Dokumentationsverteilung"
         }
       }),
+      onConditions: [
+        "on:",
+        "  push:",
+        "    branches:",
+        "      \u{2D} master"
+      ],
       jobFilter: { $0 == .deployment },
       output: output
     )

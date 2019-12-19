@@ -311,6 +311,16 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       commandEntry(validateCommand)
     ])
 
+    if self == .deployment {
+      result.append(contentsOf: [
+        "    \u{2D} uses: maxheld83/ghpages@v0.2.1",
+        "      env:",
+        "        BUILD_DIR: docs/",
+        "      secrets:",
+        "        \u{2D} GH_PAT"
+      ])
+    }
+
     return result
   }
 

@@ -24,6 +24,6 @@ extension ProcessInfo {
 
   public static let isPullRequest =
     ProcessInfo.processInfo.environment["GITHUB_EVENT_NAME"] == "pull_request"
-    ∨ ProcessInfo.processInfo.environment["TRAVIS_PULL_REQUEST"]
-    .flatMap({ Int($0) }) ≠ nil  // @exempt(from: tests)
+      ∨ ProcessInfo.processInfo.environment["TRAVIS_PULL_REQUEST"]
+      .flatMap({ Int($0) }) ≠ nil  // @exempt(from: tests)
 }

@@ -18,10 +18,12 @@ extension ProcessInfo {
 
   public static let isInContinuousIntegration =
     ProcessInfo.processInfo.environment["CONTINUOUS_INTEGRATION"] ≠ nil
-      ∧ isInGitHubAction  // @exempt(from: tests)
+      ∨ isInGitHubAction  // @exempt(from: tests)
 
   public static let isInGitHubAction = ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] ≠ nil
 
-  public static let isPullRequest = ProcessInfo.processInfo.environment["TRAVIS_PULL_REQUEST"]
-    .flatMap({ Int($0) }) ≠ nil  // @exempt(from: tests)
+  public static let isPullRequest =
+    ProcessInfo.processInfo.environment["GITHUB_EVENT_NAME"] == "pull_request"
+      ∨ ProcessInfo.processInfo.environment["TRAVIS_PULL_REQUEST"]  // @exempt(from: tests)
+      .flatMap({ Int($0) }) ≠ nil  // @exempt(from: tests)
 }

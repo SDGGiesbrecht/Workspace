@@ -16,8 +16,6 @@ name: Documentation Deployment
 
 on:
   push:
-    branches:
-      - master
 
 jobs:
   Deployment:
@@ -36,7 +34,14 @@ jobs:
         eval "$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)"
         './Refresh (macOS).command'
         './Validate (macOS).command' •job deployment
-    - uses: maxheld83/ghpages@v0.2.1
+    - name: Deploy
+      run: |
+        cd docs
+        git init
+        git config user.name "${GITHUB_ACTOR}"
+        git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+        git add .
+        git commit -m 'Generated documentation for ${GITHUB_SHA}.'
+        git push --force https://${GH_PAT}@github.com/${GITHUB_REPOSITORY}.git master:gh-pages
       env:
-        BUILD_DIR: docs/
         GH_PAT: ${{ secrets.GH_PAT }}

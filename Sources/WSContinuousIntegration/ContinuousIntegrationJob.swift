@@ -251,6 +251,28 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     })
   }
 
+  private var deployStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Deploy"
+      case .deutschDeutschland:
+        return "Verteilen"
+      }
+    })
+  }
+
+  private var deployCommitMessage: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Generated documentation for ${GITHUB_SHA}."
+      case .deutschDeutschland:
+        return "Erstellte Dokumentation für ${GITHUB_SHA}."
+      }
+    })
+  }
+
   internal func gitHubWorkflowJob(configuration: WorkspaceConfiguration) -> [String] {
     let interfaceLocalization = configuration.developmentInterfaceLocalization()
 
@@ -313,9 +335,16 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
     if self == .deployment {
       result.append(contentsOf: [
-        "    \u{2D} uses: maxheld83/ghpages@v0.2.1",
+        "    \u{2D} name: \(deployStepName.resolved(for: interfaceLocalization))",
+        "      run: |",
+        "        cd docs",
+        "        git init",
+        "        git config user.name \u{22}${GITHUB_ACTOR}\u{22}",
+        "        git config user.email \u{22}${GITHUB_ACTOR}@users.noreply.github.com\u{22}",
+        "        git add .",
+        "        git commit \u{2D}m \u{22}\(deployCommitMessage.resolved(for: interfaceLocalization))\u{22}",
+        "        git push \u{2D}\u{2D}force https://${GH_PAT}@github.com/${GITHUB_REPOSITORY}.git master:gh\u{2D}pages",
         "      env:",
-        "        BUILD_DIR: docs/",
         "        GH_PAT: ${{ secrets.GH_PAT }}"
       ])
     }

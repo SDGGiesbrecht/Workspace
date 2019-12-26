@@ -343,9 +343,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         "        git config user.email \u{22}${GITHUB_ACTOR}@users.noreply.github.com\u{22}",
         "        git add .",
         "        git commit \u{2D}m \u{22}\(deployCommitMessage.resolved(for: interfaceLocalization))\u{22}",
-        "        git push \u{2D}\u{2D}force https://${GH_PAT}@github.com/${GITHUB_REPOSITORY}.git master:gh\u{2D}pages",
+        "        git push \u{2D}\u{2D}force https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git master:gh\u{2D}pages",
         "      env:",
-        "        GH_PAT: ${{ secrets.GH_PAT }}"
+        "        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}"
       ])
     }
 

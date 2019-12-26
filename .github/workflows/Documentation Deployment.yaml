@@ -16,6 +16,8 @@ name: Documentation Deployment
 
 on:
   push:
+    branches:
+      - master
 
 jobs:
   Deployment:

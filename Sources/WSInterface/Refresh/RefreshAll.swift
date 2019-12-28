@@ -47,13 +47,11 @@ extension Workspace.Refresh {
       execution: { arguments, options, output in
 
         if options.job == .deployment {
-          try TravisCI.keepAlive {  // @exempt(from: tests)
-            try executeAsStep(
-              withArguments: arguments,
-              options: options,
-              output: output
-            )
-          }
+          try executeAsStep(
+            withArguments: arguments,
+            options: options,
+            output: output
+          )
         } else {
           try executeAsStep(withArguments: arguments, options: options, output: output)
         }

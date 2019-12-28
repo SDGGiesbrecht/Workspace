@@ -351,30 +351,6 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
     return result
   }
-
-  // MARK: - Travis CI
-
-  private var travisOperatingSystemKey: String {
-    switch platform {
-    case .macOS:
-      return "osx"
-    case .linux:
-      return "linux"
-    case .iOS, .watchOS, .tvOS:
-      unreachable()
-    }
-  }
-
-  private var travisSDKKey: String? {
-    switch self {
-    case .macOS, .linux, .watchOS, .miscellaneous, .deployment:
-      return nil
-    case .iOS:
-      return "iphonesimulator"
-    case .tvOS:
-      return "appletvsimulator"
-    }
-  }
 }
 
 extension Optional where Wrapped == ContinuousIntegrationJob {

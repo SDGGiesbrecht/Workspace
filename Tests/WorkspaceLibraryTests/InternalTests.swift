@@ -43,10 +43,7 @@ class InternalTests: TestCase {
       // GitHub
       "README.md",
       "LICENSE.md",
-      ".github",
-
-      // Travis CI
-      ".travis.yml"
+      ".github"
     ]
 
     _ = try Command(

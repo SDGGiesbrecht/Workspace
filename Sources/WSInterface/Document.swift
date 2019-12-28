@@ -55,19 +55,11 @@ extension Workspace {
             unreachable()
           }
           return [
-            "By default, the generated documentation will be placed in a \(quotationMarks.0)docs\(quotationMarks.1) folder at the project root. The GitHub settings described in the following link can be adjusted to automatically host the documentation directly from the repository.",
-            "",
-            "https://help.github.com/articles/configuring\u{2D}a\u{2D}publishing\u{2D}source\u{2D}for\u{2D}github\u{2D}pages/#publishing\u{2D}your\u{2D}github\u{2D}pages\u{2D}site\u{2D}from\u{2D}a\u{2D}docs\u{2D}folder\u{2D}on\u{2D}your\u{2D}master\u{2D}branch",
-            "",
-            "(If you wish to avoid checking generated files into \(quotationMarks.0)master\(quotationMarks.1), see the documentation of the \(quotationMarks.0)encryptedTravisCIDeploymentKey\(quotationMarks.1) configuration option for a more advanced method.)"
+            "By default, the generated documentation will be placed in a \(quotationMarks.0)docs\(quotationMarks.1) folder at the project root. Projects on GitHub can instead activate the \(quotationMarks.0)serveFromGitHubPagesBranch\(quotationMarks.1) configuration setting to automatically host the documentation with GitHub Pages."
           ].joinedAsLines()
         case .deutschDeutschland:
           return [
-            "Die Dokumentation wird in einem „docs“‐Verzeichnis im Projektwurzel erstellt. Mit der unter dem folgenden Verweis beschriebenen GitHub‐Einstellungen, kann man die Dokumentation direkt vom Lager aus veröffentlichen.",
-            "",
-            "https://help.github.com/articles/configuring\u{2D}a\u{2D}publishing\u{2D}source\u{2D}for\u{2D}github\u{2D}pages/#publishing\u{2D}your\u{2D}github\u{2D}pages\u{2D}site\u{2D}from\u{2D}a\u{2D}docs\u{2D}folder\u{2D}on\u{2D}your\u{2D}master\u{2D}branch",
-            "",
-            "(Wenn Sie die erstellte Dateien nicht in „master“ eintragen wollen, siehen Sie die Dokumentation zu „verschlüsselterTravisCIVerteilungsSchlüssel“ für eine fortgeschrittene Methode.)"
+            "Normaleweise wird die Dokumentation in einem „docs“‐Verzeichnis im Projektwurzel erstellt. Projekt auf GitHub können stattdessen die „durchGitHubSeitenVeröffentlichen“ konfigurationseinstellung einschalten, um die Dokumentation durch GitHub Seiten automatisch zu veröffentlichen."
           ].joinedAsLines()
         }
       })

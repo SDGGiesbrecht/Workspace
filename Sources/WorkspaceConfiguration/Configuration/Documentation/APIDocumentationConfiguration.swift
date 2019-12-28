@@ -128,14 +128,14 @@ public struct APIDocumentationConfiguration: Codable {
   })
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-  // @crossReference(APIDocumentationConfiguration.encryptedTravisCIDeploymentKey)
+  // @crossReference(APIDocumentationConfiguration.serveFromGitHubPagesBranch)
   /// Whether or not to automatically serve the documentation using GitHub Pages.
   ///
   /// By setting this to `true`, projects with continuous integration management active can avoid checking generated files into the main branch.
   ///
   /// Workspace will only generate documentation in continuous integration and stop generating it locally. (If needed for coverage checks, Workspace may still do so in a temporary directory.) The generated documentation will be automatically published to GitHub Pages via the gh&#x2D;pages branch, making the `docs` directory unnecessary.
   public var serveFromGitHubPagesBranch: Bool = false
-  // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration.encryptedTravisCIDeploymentKey)
+  // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration.serveFromGitHubPagesBranch)
   /// Ob Arbeitsbereich die Dokumentation automatisch durch GitHub Seiten veröffentlichen soll.
   ///
   /// Mit dieser Einstellung eingeschalltet, Projekte mit aktivierten Verwaltung von fortlaufenden Einbindung können das Eintragen der erstellten Dateien zur Hauptzweig vermeiden.

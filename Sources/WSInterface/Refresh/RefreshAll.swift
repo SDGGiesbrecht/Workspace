@@ -47,6 +47,7 @@ extension Workspace.Refresh {
       execution: { arguments, options, output in
 
         if options.job == .deployment {
+          // @exempt(from: tests)
           try executeAsStep(
             withArguments: arguments,
             options: options,

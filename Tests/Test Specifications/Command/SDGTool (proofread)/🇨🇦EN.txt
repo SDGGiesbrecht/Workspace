@@ -27,7 +27,6 @@ Proofreading source code... (§1)
 .github/workflows/Documentation Deployment.yaml
 .github/workflows/Workspace Validation.yaml
 .gitignore
-.travis.yml
 LICENSE.md
 Package.swift
 README.md
